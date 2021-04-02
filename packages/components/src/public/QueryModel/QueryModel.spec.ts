@@ -145,18 +145,18 @@ describe('QueryModel', () => {
     });
 
     test('SelectedState', () => {
-        let model = new QueryModel({schemaQuery: SCHEMA_QUERY });
+        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
         // not loaded, no data
         expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.NONE);
 
         // loaded, no selections
         model = model.mutate({
-            rows: {'1': {test: 1}, '2': {test: 2}, '3': {test: 3}},
+            rows: { '1': { test: 1 }, '2': { test: 2 }, '3': { test: 3 } },
             orderedRows: ['1', '3', '2'],
             rowCount: 3,
             maxRows: 20,
             queryInfoLoadingState: LoadingState.LOADED,
-            rowsLoadingState: LoadingState.LOADED
+            rowsLoadingState: LoadingState.LOADED,
         });
         expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.NONE);
 
@@ -170,13 +170,13 @@ describe('QueryModel', () => {
 
         // some selected on page
         model = model.mutate({
-            selections: new Set(['2', '3'])
+            selections: new Set(['2', '3']),
         });
         expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.SOME);
 
         // none selected on page
         model = model.mutate({
-            selections: new Set()
+            selections: new Set(),
         });
         expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.NONE);
 
@@ -195,5 +195,5 @@ describe('QueryModel', () => {
             maxRows: 33,
         });
         expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.SOME);
-    })
+    });
 });

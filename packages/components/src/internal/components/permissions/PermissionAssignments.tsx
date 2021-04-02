@@ -110,7 +110,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
 
         return (
             <Button
-                className="pull-right"
+                className="pull-right alert-button"
                 bsStyle="success"
                 disabled={submitting || !dirty}
                 onClick={this.onSavePolicy}

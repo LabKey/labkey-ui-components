@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Cards/> custom column headers 1`] = `
+exports[`<FilePreviewGrid/> custom column headers 1`] = `
 Array [
   <strong>
     File preview:
@@ -164,7 +164,7 @@ Array [
 ]
 `;
 
-exports[`<Cards/> custom header and info message 1`] = `
+exports[`<FilePreviewGrid/> custom header and info message 1`] = `
 Array [
   <strong>
     Custom Header
@@ -329,7 +329,7 @@ Array [
 ]
 `;
 
-exports[`<Cards/> error message 1`] = `
+exports[`<FilePreviewGrid/> error message 1`] = `
 <div
   className="alert alert-warning"
   role="alert"
@@ -338,7 +338,7 @@ exports[`<Cards/> error message 1`] = `
 </div>
 `;
 
-exports[`<Cards/> error message with custom style 1`] = `
+exports[`<FilePreviewGrid/> error message with custom style 1`] = `
 <div
   className="alert alert-danger"
   role="alert"
@@ -347,7 +347,7 @@ exports[`<Cards/> error message with custom style 1`] = `
 </div>
 `;
 
-exports[`<Cards/> no data 1`] = `
+exports[`<FilePreviewGrid/> no data 1`] = `
 Array [
   <strong>
     File preview:
@@ -393,7 +393,7 @@ Array [
 ]
 `;
 
-exports[`<Cards/> one row of data 1`] = `
+exports[`<FilePreviewGrid/> one row of data 1`] = `
 Array [
   <strong>
     File preview:
@@ -455,11 +455,181 @@ Array [
 ]
 `;
 
-exports[`<Cards/> three rows of data 1`] = `
+exports[`<FilePreviewGrid/> three rows of data 1`] = `
 Array [
   <strong>
     File preview:
   </strong>,
+  <p
+    className="margin-top"
+  >
+    <span>
+      The 
+      first 3 rows 
+       of your data file
+       
+      are
+       shown below.
+    </span>
+     
+  </p>,
+  <div
+    className="table-responsive"
+  >
+    <div
+      className="grid-messages"
+    />
+    <table
+      className="table table-striped table-bordered"
+    >
+      <thead>
+        <tr>
+          <th
+            className="grid-header-cell"
+            onClick={[Function]}
+            style={
+              Object {
+                "minWidth": undefined,
+              }
+            }
+          >
+            col1
+          </th>
+          <th
+            className="grid-header-cell"
+            onClick={[Function]}
+            style={
+              Object {
+                "minWidth": undefined,
+              }
+            }
+          >
+            col2
+          </th>
+          <th
+            className="grid-header-cell"
+            onClick={[Function]}
+            style={
+              Object {
+                "minWidth": undefined,
+              }
+            }
+          >
+            col3
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className=""
+        >
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            abc
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            123
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            2019-01-01
+          </td>
+        </tr>
+        <tr
+          className=""
+        >
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            def
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            456
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            2019-01-02
+          </td>
+        </tr>
+        <tr
+          className=""
+        >
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            ghi
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            789
+          </td>
+          <td
+            style={
+              Object {
+                "textAlign": "left",
+              }
+            }
+          >
+            2019-01-03
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>,
+]
+`;
+
+exports[`<FilePreviewGrid/> warning message 1`] = `
+Array [
+  <strong>
+    File preview:
+  </strong>,
+  <div
+    className="margin-top alert alert-warning"
+    role="alert"
+  >
+    Testing warning message
+  </div>,
   <p
     className="margin-top"
   >

@@ -90,11 +90,26 @@ describe('SampleTypeDesigner', () => {
         expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
         expect(wrapped.find(FileAttachmentForm)).toHaveLength(1);
 
-        expect(wrapped.find(Alert)).toHaveLength(2);
-        expect(wrapped.find(Alert).at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
-        expect(wrapped.find(Alert).at(1).text()).toEqual(
-            'Please correct errors in the properties panel before saving.'
-        );
+        const alerts = wrapped.find(Alert);
+        expect(alerts).toHaveLength(2);
+        expect(alerts.at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
+        expect(alerts.at(1).text()).toEqual('Please correct errors in the properties panel before saving.');
+        wrapped.unmount();
+    });
+
+    test('open fields panel, with barcodes', async () => {
+        LABKEY.moduleContext = { api: { moduleNames: ['sampleManagement', 'api', 'core', 'premium'] } };
+        const wrapped = mount(<SampleTypeDesigner {...BASE_PROPS} />);
+        await sleep();
+
+        const panelHeader = wrapped.find('div#domain-header');
+        panelHeader.simulate('click');
+        const alerts = wrapped.find(Alert);
+        // still expect to have only two alerts.  We don't show the Barcode header in the file import panel.
+        // Jest doesn't wnat to switch to that panel.
+        expect(alerts).toHaveLength(2);
+        expect(alerts.at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
+        expect(alerts.at(1).text()).toEqual('Please correct errors in the properties panel before saving.');
         wrapped.unmount();
     });
 });

@@ -139,6 +139,7 @@ export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#Participa
 export const VISITID_CONCEPT_URI = 'http://cpas.labkey.com/Study#VisitId';
 export const SAMPLE_TYPE_CONCEPT_URI = 'http://www.labkey.org/exp/xml#sample';
 export const CONCEPT_CODE_CONCEPT_URI = 'http://www.labkey.org/types#conceptCode';
+export const STORAGE_UNIQUE_ID_CONCEPT_URI = 'http://www.labkey.org/types#storageUniqueId';
 export const CREATED_TIMESTAMP_CONCEPT_URI = 'http://www.labkey.org/types#createdTimestamp';
 export const MODIFIED_TIMESTAMP_CONCEPT_URI = 'http://www.labkey.org/types#modifiedTimestamp';
 

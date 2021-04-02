@@ -178,7 +178,7 @@ export function removeQueryGridModel(model: QueryGridModel, connectedComponent?:
 
 export function lookupStoreInvalidate(col: QueryColumn): void {
     setGlobal({
-        QueryGrid_lookups: getGlobalState('lookups').delete(LookupStore.key(col))
+        QueryGrid_lookups: getGlobalState('lookups').delete(LookupStore.key(col)),
     });
 }
 

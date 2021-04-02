@@ -33,6 +33,7 @@ import {
     PropDescType,
     SAMPLE_TYPE,
     TEXT_TYPE,
+    UNIQUE_ID_TYPE,
     USERS_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
@@ -40,14 +41,15 @@ import {
 
 import { acceptablePropertyType, DomainDesign, DomainField, FieldErrors, isPropertyTypeAllowed } from './models';
 import {
+    BOOLEAN_RANGE_URI,
     CONCEPT_CODE_CONCEPT_URI,
+    DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_NOT_LOCKED,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
     INT_RANGE_URI,
-    STRING_RANGE_URI,
-    BOOLEAN_RANGE_URI,
+    MULTILINE_RANGE_URI,
     SAMPLE_TYPE_CONCEPT_URI,
-    DOMAIN_FIELD_FULLY_LOCKED,
+    STRING_RANGE_URI,
 } from './constants';
 
 const GRID_DATA = DomainDesign.create({
@@ -395,6 +397,8 @@ describe('PropDescType', () => {
         expect(acceptablePropertyType(BOOLEAN_TYPE, INT_RANGE_URI)).toBeFalsy();
         expect(acceptablePropertyType(BOOLEAN_TYPE, STRING_RANGE_URI)).toBeFalsy();
         expect(acceptablePropertyType(BOOLEAN_TYPE, BOOLEAN_RANGE_URI)).toBeTruthy();
+        expect(acceptablePropertyType(UNIQUE_ID_TYPE, STRING_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(UNIQUE_ID_TYPE, MULTILINE_RANGE_URI)).toBeFalsy();
     });
 });
 

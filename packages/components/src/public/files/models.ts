@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import { InferDomainResponse } from '../..';
 
 export interface FileSizeLimitProps {
@@ -21,4 +23,5 @@ export interface FileGridPreviewProps {
     skipPreviewGrid?: boolean;
     errorStyle?: string;
     domainKindName?: string;
+    warningMsg?: ReactNode;
 }

@@ -1,6 +1,19 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.21.0
+*Released*: 2 April 2021
+* Add support for uniqueId (barcode) fields
+    * Add Concept URI for unique Id fields.
+    * In EntityInsertPanel, add placeholder text for generated Ids and make them read-only
+    * Add condition on column filter used for bulk insert to remove the unique id fields
+    * Add UniqueIdBanner containing call to action in SampleTypeDesigner properties panel and fields panel for adding uniqueIds
+    * Add `getUniqueIdFields` method to QueryInfo class
+* add `isCommunityDistribution` method
+* add `alert-button` css class for buttons that appear in alert banners
+* Update EntityInsertPanel and FilePreviewGrid to show warnings about fields detected that will be ignored during import,
+either because they are not known or because they are uniqueId fields.
+
 ### version 2.20.1
 *Released*: 31 March 2021
 * Handle domain field data type check for created/modified timestamp conceptURI

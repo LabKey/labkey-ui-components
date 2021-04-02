@@ -9,6 +9,7 @@ import {
     DOMAIN_FIELD_IMPORTALIASES,
     DOMAIN_FIELD_LABEL,
     DOMAIN_FIELD_URL,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
     STRING_RANGE_URI,
 } from './constants';
 
@@ -31,6 +32,15 @@ const field = DomainField.create({
     propertyURI: 'test',
 });
 
+const uniqueIdField = DomainField.create({
+    name: 'uniqueId',
+    rangeURI: STRING_RANGE_URI,
+    propertyId: 2,
+    description: 'test uniqueId',
+    label: 'UniqueId label',
+    conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
+});
+
 const DEFAULT_PROPS = {
     index: 1,
     domainIndex: 1,
@@ -42,16 +52,16 @@ const DEFAULT_PROPS = {
 
 describe('NameAndLinkingOptions', () => {
     test('Name and Linking options', () => {
-        const numeric = mount(<NameAndLinkingOptions {...DEFAULT_PROPS} />);
+        const wrapper = mount(<NameAndLinkingOptions {...DEFAULT_PROPS} />);
 
         // Verify section label
-        const sectionLabel = numeric.find({ className: 'domain-field-section-heading domain-field-section-hdr' });
+        const sectionLabel = wrapper.find({ className: 'domain-field-section-heading domain-field-section-hdr' });
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual('Name and Linking Options');
 
         // Verify values
         // Description
-        let formField = numeric.find({
+        let formField = wrapper.find({
             id: createFormInputId(DOMAIN_FIELD_DESCRIPTION, 1, 1),
             className: 'form-control textarea-noresize form-control',
         });
@@ -59,12 +69,12 @@ describe('NameAndLinkingOptions', () => {
         expect(formField.props().value).toEqual(_description);
 
         // Label
-        formField = numeric.find({ id: createFormInputId(DOMAIN_FIELD_LABEL, 1, 1), className: 'form-control' });
+        formField = wrapper.find({ id: createFormInputId(DOMAIN_FIELD_LABEL, 1, 1), className: 'form-control' });
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_label);
 
         // Aliases
-        formField = numeric.find({
+        formField = wrapper.find({
             id: createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1),
             className: 'form-control',
         });
@@ -72,12 +82,12 @@ describe('NameAndLinkingOptions', () => {
         expect(formField.props().value).toEqual(_importAliases);
 
         // URL
-        formField = numeric.find({ id: createFormInputId(DOMAIN_FIELD_URL, 1, 1), className: 'form-control' });
+        formField = wrapper.find({ id: createFormInputId(DOMAIN_FIELD_URL, 1, 1), className: 'form-control' });
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_URL);
 
-        expect(numeric).toMatchSnapshot();
-        numeric.unmount();
+        expect(wrapper).toMatchSnapshot();
+        wrapper.unmount();
     });
 
     test('appPropertiesOnly and ontology module', () => {
@@ -91,6 +101,17 @@ describe('NameAndLinkingOptions', () => {
             <NameAndLinkingOptions {...DEFAULT_PROPS} serverModuleNames={['ontology']} appPropertiesOnly={false} />
         );
         expect(wrapper.find(OntologyConceptAnnotation)).toHaveLength(1);
+        wrapper.unmount();
+    });
+
+    test('uniqueId field', () => {
+        const wrapper = mount(<NameAndLinkingOptions {...DEFAULT_PROPS} field={uniqueIdField} />);
+        expect(
+            wrapper.find({
+                id: createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1),
+                className: 'form-control',
+            })
+        ).toHaveLength(0);
         wrapper.unmount();
     });
 });

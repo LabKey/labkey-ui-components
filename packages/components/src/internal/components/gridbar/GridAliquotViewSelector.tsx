@@ -38,7 +38,6 @@ enum MODE {
 
 const IS_ALIQUOT_COL = "IsAliquot";
 
-//TODO add jest tests
 export class GridAliquotViewSelector extends Component<Props> {
     dropId: string;
 
@@ -107,6 +106,8 @@ export class GridAliquotViewSelector extends Component<Props> {
                         mode = value === 'true' || value === true ? MODE.aliquots : MODE.samples;
                     }
                     else if (filterType == Filter.Types.NOT_EQUAL || filterType == Filter.Types.NEQ || filterType == Filter.Types.NEQ_OR_NULL) {
+                        if (value === '')
+                            return;
                         mode = value === 'true' || value === true ? MODE.samples : MODE.aliquots;
                     }
 

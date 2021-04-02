@@ -4,7 +4,7 @@
  */
 import { useMemo } from 'react';
 import { List, Map } from 'immutable';
-import { getServerContext, PermissionTypes } from '@labkey/api';
+import { ActionURL, getServerContext, PermissionTypes } from '@labkey/api';
 
 import { AppURL, buildURL, imageURL, MenuSectionConfig, hasAllPermissions, User } from '../..';
 
@@ -27,6 +27,12 @@ import {
     SERVER_NOTIFICATIONS_INVALIDATE,
     MENU_RELOAD,
     SET_RESET_QUERY_GRID_STATE,
+    SAMPLE_MANAGER_PRODUCT_ID,
+    FREEZER_MANAGER_PRODUCT_ID,
+    BIOLOGICS_PRODUCT_ID,
+    SAMPLE_MANAGER_PRODUCT_NAME,
+    BIOLOGICS_PRODUCT_NAME,
+    LABKEY_SERVER_PRODUCT_NAME,
 } from './constants';
 
 // Type definition not provided for event codes so here we provide our own
@@ -137,9 +143,17 @@ export function isSampleAliquotEnabled(): boolean {
     return getServerContext().experimental && getServerContext().experimental['sampleAliquot'] === true;
 }
 
-export function hasPremiumModule(): boolean {
+export function hasModule(moduleName: string) {
     const { moduleContext } = getServerContext();
-    return useMemo(() => moduleContext?.samplemanagement?.hasPremiumModule ?? false, [moduleContext]);
+    return moduleContext.api?.moduleNames?.indexOf(moduleName.toLowerCase()) >= 0;
+}
+
+export function hasPremiumModule(): boolean {
+    return hasModule('Premium');
+}
+
+export function isCommunityDistribution(): boolean {
+    return !hasModule('SampleManagement') && !hasPremiumModule();
 }
 
 export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<string, MenuSectionConfig>> {
@@ -256,4 +270,17 @@ function getApplicationUrlBase(moduleName: string, currentApp: string): string {
 
 export function getDateFormat(): string {
     return getServerContext().container.formats.dateFormat;
+}
+
+export function getCurrentProductName() {
+    const lcController = ActionURL.getController().toLowerCase();
+    if (!lcController) return LABKEY_SERVER_PRODUCT_NAME;
+
+    if (
+        lcController === SAMPLE_MANAGER_PRODUCT_ID.toLowerCase() ||
+        lcController === FREEZER_MANAGER_PRODUCT_ID.toLowerCase()
+    )
+        return SAMPLE_MANAGER_PRODUCT_NAME;
+    else if (lcController === BIOLOGICS_PRODUCT_ID.toLowerCase()) return BIOLOGICS_PRODUCT_NAME;
+    return LABKEY_SERVER_PRODUCT_NAME;
 }

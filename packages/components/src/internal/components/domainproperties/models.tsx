@@ -40,6 +40,7 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
     UNLIMITED_TEXT_LENGTH,
     USER_RANGE_URI,
 } from './constants';
@@ -64,11 +65,11 @@ import {
     VISIT_ID_TYPE,
 } from './PropDescType';
 import {
-    removeUnusedProperties,
     removeFalseyObjKeys,
-    removeUnusedOntologyProperties,
-    reorderSummaryColumns,
     removeNonAppProperties,
+    removeUnusedOntologyProperties,
+    removeUnusedProperties,
+    reorderSummaryColumns,
 } from './propertiesUtil';
 
 export interface IFieldChange {
@@ -993,6 +994,10 @@ export class DomainField
         return isFieldSaved(this);
     }
 
+    isUniqueIdField(): boolean {
+        return this.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
+    }
+
     static hasRangeValidation(field: DomainField): boolean {
         return (
             field.dataType === INTEGER_TYPE ||
@@ -1004,7 +1009,7 @@ export class DomainField
     }
 
     static hasRegExValidation(field: DomainField): boolean {
-        return field.dataType.isString();
+        return field.dataType.isString() && !field.isUniqueIdField();
     }
 
     static updateDefaultValues(field: DomainField): DomainField {
@@ -1225,7 +1230,12 @@ export function acceptablePropertyType(type: PropDescType, rangeURI: string): bo
         return true;
     }
 
-    // Catches Multiline text
+    // Original field is a string, we can't convert to a unique Id
+    if (type.isUniqueId() && PropDescType.isString(rangeURI)) {
+        return false;
+    }
+
+    // Original field is a uniqueId, text, or multi-line text, can convert to a string type
     if (type.isString() && PropDescType.isString(rangeURI)) {
         return true;
     }

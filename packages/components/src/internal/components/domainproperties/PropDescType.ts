@@ -23,6 +23,7 @@ import {
     VISITID_CONCEPT_URI,
     CREATED_TIMESTAMP_CONCEPT_URI,
     MODIFIED_TIMESTAMP_CONCEPT_URI,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './constants';
 
 export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string';
@@ -68,6 +69,10 @@ export class PropDescType
 
     static isOntologyLookup(conceptURI: string): boolean {
         return conceptURI === CONCEPT_CODE_CONCEPT_URI;
+    }
+
+    static isUniqueIdField(conceptURI: string): boolean {
+        return conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
     }
 
     static isLookup(name: string): boolean {
@@ -159,6 +164,10 @@ export class PropDescType
 
     isOntologyLookup(): boolean {
         return PropDescType.isOntologyLookup(this.conceptURI);
+    }
+
+    isUniqueId(): boolean {
+        return PropDescType.isUniqueIdField(this.conceptURI);
     }
 }
 
@@ -267,6 +276,13 @@ export const VISIT_ID_TYPE = new PropDescType({
     conceptURI: VISITID_CONCEPT_URI,
 });
 
+export const UNIQUE_ID_TYPE = new PropDescType({
+    name: 'uniqueId',
+    display: 'Unique ID',
+    rangeURI: STRING_RANGE_URI,
+    conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
+});
+
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
     MULTILINE_TYPE,
@@ -284,6 +300,7 @@ export const PROP_DESC_TYPES = List([
     ONTOLOGY_LOOKUP_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
+    UNIQUE_ID_TYPE,
 ]);
 
 export const READONLY_DESC_TYPES = List([BINARY_TYPE, DATE_TYPE, DECIMAL_TYPE, FLOAT_TYPE, LONG_TYPE, TIME_TYPE]);

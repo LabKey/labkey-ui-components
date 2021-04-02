@@ -79,6 +79,7 @@ import { getSortFromUrl } from './url/ActionURL';
 
 import { intersect, not } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
+import { hasModule } from './app/utils';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -1379,11 +1380,7 @@ export function getVisualizationConfig(reportId: string): Promise<VisualizationC
 export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<List<DataViewInfo>> {
     return new Promise((resolve, reject) => {
         // if we know we don't have the study module, no need to make the API call
-        if (
-            LABKEY.getModuleContext &&
-            LABKEY.getModuleContext('samplemanagement') &&
-            !LABKEY.getModuleContext('samplemanagement').hasStudyModule
-        ) {
+        if (!hasModule('Study')) {
             resolve(List<DataViewInfo>());
             return;
         }

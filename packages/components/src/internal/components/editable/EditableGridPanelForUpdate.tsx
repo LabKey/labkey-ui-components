@@ -6,6 +6,8 @@ import { getEditorModel } from '../../global';
 import { QueryGridModel, SchemaQuery, WizardNavButtons } from '../../..';
 import { capitalizeFirstChar, getUpdatedDataFromGrid } from '../../util/utils';
 
+import { getUniqueIdColumnMetadata } from '../entities/utils';
+
 import { EditableGridPanel } from './EditableGridPanel';
 
 interface Props {
@@ -78,6 +80,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                     bordered={true}
                     striped={true}
                     forUpdate={true}
+                    columnMetadata={getUniqueIdColumnMetadata(model.queryInfo)}
                 />
                 <WizardNavButtons
                     cancel={onCancel}

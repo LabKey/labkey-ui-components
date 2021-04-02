@@ -15,6 +15,8 @@
  */
 import { List } from 'immutable';
 
+import { Domain } from '@labkey/api';
+
 import { QueryColumn } from '../../..';
 
 import { initUnitTestMocks } from '../../testHelperMocks';
@@ -52,6 +54,7 @@ import {
     TEXT_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
+    UNIQUE_ID_TYPE,
 } from './PropDescType';
 import {
     CONCEPT_CODE_CONCEPT_URI,
@@ -330,34 +333,40 @@ describe('domain properties actions', () => {
         expect(hasActiveModule('Query')).toBeTruthy();
     });
 
-    test('getAvailableTypes', () => {
-        let domain = DomainDesign.create({
+    test('getAvailableTypes, all optional allowed', () => {
+        const domain = DomainDesign.create({
             allowFlagProperties: true,
             allowFileLinkProperties: true,
             allowAttachmentProperties: true,
             allowTimepointProperties: true,
         });
-        expect(getAvailableTypes(domain).contains(FLAG_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(FILE_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(ATTACHMENT_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(TEXT_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(VISIT_DATE_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(VISIT_ID_TYPE)).toBeTruthy();
+        const available = getAvailableTypes(domain);
+        expect(available.contains(FLAG_TYPE)).toBeTruthy();
+        expect(available.contains(FILE_TYPE)).toBeTruthy();
+        expect(available.contains(ATTACHMENT_TYPE)).toBeTruthy();
+        expect(available.contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
+        expect(available.contains(TEXT_TYPE)).toBeTruthy();
+        expect(available.contains(VISIT_DATE_TYPE)).toBeTruthy();
+        expect(available.contains(VISIT_ID_TYPE)).toBeTruthy();
+        expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
+    });
 
-        domain = DomainDesign.create({
+    test('getAvailableTypes, no optional allowed', () => {
+        const domain = DomainDesign.create({
             allowFlagProperties: false,
             allowFileLinkProperties: false,
             allowAttachmentProperties: false,
             allowTimepointProperties: false,
         });
-        expect(getAvailableTypes(domain).contains(FLAG_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(FILE_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(ATTACHMENT_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(TEXT_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(VISIT_DATE_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(VISIT_ID_TYPE)).toBeFalsy();
+        const available = getAvailableTypes(domain);
+        expect(available.contains(FLAG_TYPE)).toBeFalsy();
+        expect(available.contains(FILE_TYPE)).toBeFalsy();
+        expect(available.contains(ATTACHMENT_TYPE)).toBeFalsy();
+        expect(available.contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
+        expect(available.contains(TEXT_TYPE)).toBeTruthy();
+        expect(available.contains(VISIT_DATE_TYPE)).toBeFalsy();
+        expect(available.contains(VISIT_ID_TYPE)).toBeFalsy();
+        expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
     });
 
     test('getAvailableTypesForOntology', async () => {
@@ -368,6 +377,38 @@ describe('domain properties actions', () => {
         expect(types.contains(ATTACHMENT_TYPE)).toBeFalsy();
         expect(types.contains(ONTOLOGY_LOOKUP_TYPE)).toBeTruthy();
         expect(types.contains(TEXT_TYPE)).toBeTruthy();
+    });
+
+    test('getAvailableTypes, sampleType LKSM', () => {
+        LABKEY.moduleContext = {
+            sampleManagement: {},
+            api: {
+                moduleNames: ['samplemanagement'],
+            },
+        };
+        const domain = DomainDesign.create({
+            domainKindName: Domain.KINDS.SAMPLE_TYPE,
+        });
+        const available = getAvailableTypes(domain);
+        expect(available.contains(UNIQUE_ID_TYPE)).toBeTruthy();
+    });
+
+    test('getAvailableTypes, sampleType Premium', () => {
+        LABKEY.moduleContext.api = { moduleNames: ['premium'] };
+        const domain = DomainDesign.create({
+            domainKindName: Domain.KINDS.SAMPLE_TYPE,
+        });
+        const available = getAvailableTypes(domain);
+        expect(available.contains(UNIQUE_ID_TYPE)).toBeTruthy();
+    });
+
+    test('getAvailableTypes, sampleType community', () => {
+        LABKEY.moduleContext.api = { moduleNames: ['api', 'core'] };
+        const domain = DomainDesign.create({
+            domainKindName: Domain.KINDS.SAMPLE_TYPE,
+        });
+        const available = getAvailableTypes(domain);
+        expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
     });
 
     test('updateOntologyFieldProperties', () => {

@@ -51,6 +51,7 @@ import {
     EXPAND_TRANSITION_FAST,
     PHILEVEL_NOT_PHI,
     SEVERITY_LEVEL_ERROR,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './constants';
 import { LookupProvider } from './Lookup/Context';
 import {
@@ -228,6 +229,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
 
         // query to get the set of available modules for the given LabKey server
+        // TODO change this to use hasModule instead
         Security.getModules({
             containerPath: getServerContext().container.path,
             success: async data => {
@@ -627,7 +629,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     applyAddField = (config?: Partial<IDomainField>) => {
-        const newDomain = addDomainField(this.props.domain, config);
+        const newConfig = config ? { ...config } : undefined;
+        const newDomain = addDomainField(this.props.domain, newConfig);
         this.onDomainChange(newDomain);
         this.setState({ selectAll: false, visibleFieldsCount: getVisibleFieldCount(newDomain) });
         this.collapseRow();

@@ -80,9 +80,15 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
         [searchPathClickHandler]
     );
 
+    // cancel form submit since we are just using the input for the search menu display
+    const onSubmit = useCallback((evt) => {
+        evt.preventDefault();
+        return false;
+    }, []);
+
     return (
         <div className="concept-search-container">
-            <form autoComplete="off">
+            <form autoComplete="off" onSubmit={onSubmit}>
                 <input
                     type="text"
                     className="form-control"

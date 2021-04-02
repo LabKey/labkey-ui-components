@@ -788,6 +788,15 @@ export class QueryModel {
             || this.queryInfo?.getFilters(this.schemaQuery.viewName)?.size > 0
     }
 
+    get selectionKey() {
+        const pk = this.queryInfo?.get('pkCols')?.toArray() ?? this.keyValue;
+        if (pk !== undefined) {
+            return SchemaQuery.createAppSelectionKey(this.queryInfo.schemaQuery, Array.isArray(pk) ? pk : [pk]);
+        }
+
+        return this.id;
+    }
+
     /**
      * Returns the model attributes given a set of queryParams from the URL. Used for URL Binding.
      * @param queryParams: The query attribute from a ReactRouter Location object.

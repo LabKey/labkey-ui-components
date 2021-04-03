@@ -789,12 +789,16 @@ export class QueryModel {
     }
 
     get selectionKey() {
-        const pk = this.queryInfo?.get('pkCols')?.toArray() ?? this.keyValue;
-        if (pk !== undefined) {
-            return SchemaQuery.createAppSelectionKey(this.queryInfo.schemaQuery, Array.isArray(pk) ? pk : [pk]);
+        if (!this.queryInfo) {
+            return undefined;
         }
 
-        return this.id;
+        let keys;
+        if (this.keyValue !== undefined) {
+            keys = [this.keyValue];
+        }
+
+        return SchemaQuery.createAppSelectionKey(this.queryInfo.schemaQuery, this.id, keys);
     }
 
     /**

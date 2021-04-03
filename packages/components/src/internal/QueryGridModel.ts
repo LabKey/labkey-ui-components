@@ -536,7 +536,7 @@ export class QueryGridModel
         }
 
         if (this.keyValue !== undefined) {
-            return SchemaQuery.createAppSelectionKey(this.queryInfo.schemaQuery, [this.keyValue]);
+            return SchemaQuery.createAppSelectionKey(this.queryInfo.schemaQuery, undefined, [this.keyValue]);
         }
 
         return this.getId();

@@ -20,11 +20,11 @@ import {
     User,
 } from '../../..';
 
-import { ASSAYS_KEY, getDateFormat, SAMPLES_KEY } from '../../app';
-
 import { processChartData } from './utils';
 import { BaseBarChart } from './BaseBarChart';
 import { ChartConfig, ChartData, ChartSelector } from './types';
+import { getDateFormat } from '../../app/utils';
+import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 
 function fetchItemCount(schemaQuery: SchemaQuery, filters?: Filter.IFilter[]): Promise<number> {
     return new Promise(resolve => {

@@ -3,6 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.21.1
 *Released*: 5 April 2021
+* Remove /src/internal/app/index.ts and instead define App in /src/index.ts
+
+### version 2.21.1
+*Released*: 5 April 2021
 * Issue 42598: FileTree component styling fixes for font family, text color, and node display for wide text
 * Ontology search input - cancel form submit on enter key to prevent page reload
 

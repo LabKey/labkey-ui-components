@@ -5,7 +5,11 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
 
-import { createLineageNodeCollections, LineageNodeCollectionByType } from '../vis/VisGraphGenerator';
+import {
+    createLineageNodeCollections,
+    isAliquotNodeCollection,
+    LineageNodeCollectionByType
+} from '../vis/VisGraphGenerator';
 import { LineageSummary } from '../LineageSummary';
 import { LineageNode } from '../models';
 import { LineageOptions } from '../types';
@@ -104,11 +108,20 @@ interface ClusterNodeDetailProps {
     nodes: LineageNode[];
     nodesByType?: LineageNodeCollectionByType;
     options?: LineageOptions;
+    parentNodeName?: string;
 }
 
 export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
+
+    static getGroupDisplayName (nodesByType, groupName, parentNodeName?) {
+        const group = nodesByType[groupName];
+        const isAliquot = isAliquotNodeCollection(group);
+        const aliquotDisplayName = (parentNodeName ? parentNodeName + ' ' : '') + 'Aliquots';
+        return isAliquot ? aliquotDisplayName : group.displayType;
+    }
+
     render(): ReactNode {
-        const { highlightNode, nodes, options } = this.props;
+        const { highlightNode, nodes, options, parentNodeName } = this.props;
 
         const nodesByType = this.props.nodesByType ?? createLineageNodeCollections(nodes, options);
         const groups = Object.keys(nodesByType).sort();
@@ -116,7 +129,7 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
         let iconURL;
         let title;
         if (groups.length === 1) {
-            title = nodes.length + ' ' + groups[0];
+            title = nodes.length + ' ' + ClusterNodeDetail.getGroupDisplayName(nodesByType, groups[0]);
             iconURL = nodes[0].iconProps.iconURL;
         } else {
             title = nodes.length + ' items of different types';
@@ -126,14 +139,16 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
         return (
             <div className="cluster-node-detail">
                 <DetailHeader header={title} iconSrc={iconURL} />
-                {groups.map(groupName => (
+                {groups.map(groupName => {
+                    const groupDisplayName = ClusterNodeDetail.getGroupDisplayName(nodesByType, groupName, parentNodeName);
+                    return (
                     <DetailsListNodes
                         key={groupName}
-                        title={groupName}
+                        title={groupDisplayName}
                         nodes={nodesByType[groupName]}
                         highlightNode={highlightNode}
-                    />
-                ))}
+                    />)
+                })}
             </div>
         );
     }

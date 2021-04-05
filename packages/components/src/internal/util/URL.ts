@@ -16,6 +16,8 @@
 import { List, Map } from 'immutable';
 
 import { getBrowserHistory } from './global';
+import { Filter } from "@labkey/api";
+import { QueryGridModel } from "../QueryGridModel";
 
 // This type is roughly equivalent to the Location object from this history package
 // but here we have all fields optional to make it also compatible with the window.location object
@@ -84,7 +86,7 @@ export function buildQueryString(params: Map<string, string | number>): string {
     return q.length > 0 ? '?' + q : '';
 }
 
-function build(pathname: string, hash?: string, params?: Map<string, string | number>): string {
+export function build(pathname: string, hash?: string, params?: Map<string, string | number>): string {
     return pathname + (hash || '') + (params ? buildQueryString(params) : '');
 }
 
@@ -140,4 +142,24 @@ export function resetParameters(except?: List<string>) {
     });
 
     setParameters(location, emptyParams);
+}
+
+export function replaceFilter(model: QueryGridModel, queryColumn: string, newFilter: Filter.IFilter) {
+    const location = getLocation();
+    const { query } = location;
+
+    const paramPrefix = model.createParam(queryColumn, 'query') + '~';
+    let params = Map<string, string | number>(query).asMutable();
+    params.forEach((value, key) => {
+        if (key.toLowerCase().indexOf(paramPrefix.toLowerCase()) === 0) {
+            params.delete(key);
+            return;
+        }
+    });
+
+    if (newFilter !== null) {
+        params.set(newFilter.getURLParameterName(model.urlPrefix), newFilter.getURLParameterValue());
+    }
+
+    getBrowserHistory().replace(build(location.pathname, location.hash, params.asImmutable()));
 }

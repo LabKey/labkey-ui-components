@@ -107,3 +107,19 @@
     list-style: none;
   }
 }
+
+.dropdown-menu > li > div.dropdown-menu-row {
+    display: block;
+    padding: 0 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857;
+    color: #333333;
+    white-space: nowrap;
+    cursor: pointer;
+    outline: 0;
+
+    &:hover, &:focus {
+        text-decoration: none;
+    }
+}

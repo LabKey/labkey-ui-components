@@ -218,6 +218,7 @@ export class LineageNode
         schemaName: undefined,
         steps: undefined,
         type: undefined,
+        materialLineageType: undefined,
         url: undefined,
 
         // computed properties
@@ -253,6 +254,7 @@ export class LineageNode
     declare schemaName: string;
     declare steps: List<LineageRunStep>;
     declare type: string;
+    declare materialLineageType: string;
     declare url: string;
 
     // computed properties

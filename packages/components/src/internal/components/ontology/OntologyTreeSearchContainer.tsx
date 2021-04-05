@@ -81,7 +81,7 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
     );
 
     // cancel form submit since we are just using the input for the search menu display
-    const onSubmit = useCallback((evt) => {
+    const onSubmit = useCallback(evt => {
         evt.preventDefault();
         return false;
     }, []);

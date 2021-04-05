@@ -8,7 +8,7 @@ import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-i
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-const fileTree_color = '#777';
+const fileTree_color = '#333'; // $text-color
 const customStyle: TreeTheme = {
     tree: {
         base: {
@@ -17,7 +17,7 @@ const customStyle: TreeTheme = {
             margin: 0,
             padding: 0,
             color: fileTree_color,
-            fontFamily: 'lucida grande ,tahoma,verdana,arial,sans-serif',
+            fontFamily: 'Roboto, Helvetica Neue, Helvetica, Arial, sans-serif', // $font-family-sans-serif
             fontSize: '14px',
         },
         node: {
@@ -29,6 +29,7 @@ const customStyle: TreeTheme = {
                 position: 'relative',
                 padding: '0px 5px',
                 display: 'flex',
+                width: 'fit-content',
             },
             activeLink: {
                 borderRadius: '5px',

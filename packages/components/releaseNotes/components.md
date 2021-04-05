@@ -1,13 +1,18 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 2.22.0
+*Released*: 5 April 2021
 * Add GridAliquotViewSelector
 * Add showSampleAliquotSelector to QueryGridBar and GridPanel
 * Add URL.replaceFilter uti
 * Update EntityDeleteModal to work with QueryModel
 * Group lineage nodes based on materialLineageType
+
+### version 2.21.1
+*Released*: 5 April 2021
+* Issue 42598: FileTree component styling fixes for font family, text color, and node display for wide text
+* Ontology search input - cancel form submit on enter key to prevent page reload
 
 ### version 2.21.0
 *Released*: 2 April 2021

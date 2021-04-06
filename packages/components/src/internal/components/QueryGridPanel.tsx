@@ -42,6 +42,7 @@ interface Props {
     showAllTabs?: boolean;
     showGridBar?: boolean;
     showSampleComparisonReports?: boolean;
+    showSampleAliquotSelector?: boolean;
     onReportClicked?: Function;
     onCreateReportClicked?: Function;
     activeTab?: number;
@@ -201,6 +202,7 @@ export class QueryGridPanel extends ReactN.Component<Props, State, GlobalAppStat
             message,
             model,
             showSampleComparisonReports,
+            showSampleAliquotSelector,
             onReportClicked,
             onCreateReportClicked,
             onExport,
@@ -218,6 +220,7 @@ export class QueryGridPanel extends ReactN.Component<Props, State, GlobalAppStat
                     buttons={buttons}
                     model={activeModel}
                     showSampleComparisonReports={showSampleComparisonReports}
+                    showSampleAliquotSelector={showSampleAliquotSelector}
                     onReportClicked={onReportClicked}
                     onCreateReportClicked={onCreateReportClicked}
                     onSelectionChange={onSelectionChange}

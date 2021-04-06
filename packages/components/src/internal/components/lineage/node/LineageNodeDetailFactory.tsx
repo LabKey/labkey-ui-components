@@ -58,6 +58,7 @@ export class LineageNodeDetailFactory extends PureComponent<LineageNodeDetailFac
                         nodes={node.containedNodes}
                         nodesByType={node.containedNodesByType}
                         options={lineageOptions}
+                        parentNodeName={node.parentNodeName}
                     />
                 );
             } else if (isClusterNode(node)) {

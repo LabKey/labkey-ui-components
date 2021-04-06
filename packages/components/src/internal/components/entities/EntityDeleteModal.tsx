@@ -10,14 +10,16 @@ import {
     SchemaQuery,
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
-    deleteRows, QueryModel,
+    deleteRows,
+    QueryModel,
 } from '../../..';
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDataType } from './models';
 
 interface Props {
-    model: QueryGridModel | QueryModel;
+    model?: QueryGridModel;
+    queryModel?: QueryModel;
     maxSelected?: number;
     useSelected: boolean;
     beforeDelete?: () => any;
@@ -32,6 +34,7 @@ export const EntityDeleteModal: React.FC<Props> = props => {
     const {
         auditBehavior,
         model,
+        queryModel,
         onCancel,
         afterDelete,
         beforeDelete,
@@ -43,32 +46,27 @@ export const EntityDeleteModal: React.FC<Props> = props => {
     const [showProgress, setShowProgress] = useState(false);
     const [numConfirmed, setNumConfirmed] = useState(0);
     const noun = ' ' + getNoun(numConfirmed);
-    const isFiltered = model instanceof QueryGridModel ? model.isFiltered() : model.isFiltered;
     let rowIds;
     let numSelected = 0;
-    if (useSelected) {
-        if( model instanceof QueryGridModel ) {
-            if (isFiltered) {
+
+    if (model) {
+        if (useSelected) {
+            if (model.isFiltered()) {
                 rowIds = model.selectedIds.toArray();
                 numSelected = rowIds.length;
-            }
-            else {
+            } else {
                 numSelected = model.selectedQuantity;
             }
-        }
-        else {
-            rowIds = model.selections ?? [];
-            numSelected = rowIds.length
-        }
-    } else {
-        if( model instanceof QueryGridModel ) {
+        } else {
             rowIds = [model.dataIds.get(0)];
+            numSelected = 1;
         }
-        else {
-            rowIds = model.gridData[0]?.key
-        }
-        numSelected = 1;
     }
+    else if (queryModel) {
+        rowIds = Array.from(queryModel.selections);
+        numSelected = rowIds.length;
+    }
+
 
     function getNoun(quantity: number): string {
         return quantity === 1 ? nounSingular : nounPlural;
@@ -79,10 +77,7 @@ export const EntityDeleteModal: React.FC<Props> = props => {
         setShowProgress(true);
         beforeDelete?.();
         const noun = ' ' + getNoun(rowsToDelete.length);
-
-        const schema = model['schema'] ?? model['schemaName'];
-        const query = model['query'] ?? model['queryName'];
-        const schemaQuery = SchemaQuery.create(schema, query);
+        const schemaQuery = model ? SchemaQuery.create(model.schema, model.query) : queryModel.schemaQuery;
 
         deleteRows({
             schemaQuery,
@@ -99,6 +94,9 @@ export const EntityDeleteModal: React.FC<Props> = props => {
             });
     }
 
+    if (!model && !queryModel)
+        return null;
+
     if (useSelected && maxSelected && numSelected > maxSelected) {
         return (
             <ConfirmModal
@@ -111,11 +109,15 @@ export const EntityDeleteModal: React.FC<Props> = props => {
         );
     }
 
+    let selectionKey = model && useSelected && !model.isFiltered() ? model.selectionKey : undefined;
+    if (queryModel)
+        selectionKey = queryModel.selectionKey;
+
     return (
         <>
             {!showProgress && (
                 <EntityDeleteConfirmModal
-                    selectionKey={useSelected && !isFiltered ? model.selectionKey : undefined}
+                    selectionKey={selectionKey}
                     rowIds={rowIds}
                     onConfirm={onConfirm}
                     onCancel={onCancel}

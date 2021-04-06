@@ -49,8 +49,8 @@ if (process.argv.length > 2) {
 
         const branch = stdout;
 
-        // Diff current branch against master to get changed file names
-        ({stdout} = await execa('git', ['diff', 'master...' + branch, '--name-only', '--diff-filter=AM']));
+        // Diff current branch against develop to get changed file names
+        ({stdout} = await execa('git', ['diff', 'develop...' + branch, '--name-only', '--diff-filter=AM']));
         if (!stdout) {
             console.log('No changed files in branch ' + branch);
         }

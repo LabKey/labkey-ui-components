@@ -81,7 +81,7 @@ export interface LineageNodeCollection {
     nodes: LineageNode[];
 }
 
-export function isAliquotNodeCollection(node: LineageNodeCollection | LineageNode) : boolean {
+export function isAliquotNodeCollection(node: LineageNodeCollection | LineageNode): boolean {
     return node.materialLineageType === 'Aliquot';
 }
 
@@ -99,7 +99,7 @@ export function createLineageNodeCollections(
         .forEach(n => {
             const { displayType } = n.meta;
             const { materialLineageType } = n;
-            const displayTypeGroup = displayType + (materialLineageType ? '-' + materialLineageType : '')
+            const displayTypeGroup = displayType + (materialLineageType ? '-' + materialLineageType : '');
             let byTypeList = nodesByType[displayTypeGroup];
             if (!byTypeList) {
                 byTypeList = {
@@ -422,7 +422,9 @@ function _processNodes(
         }
 
         if (grouping.combineSize && edges.size >= grouping.combineSize) {
-            let newCombinedNodes = [], combineAliquotNode = undefined, combineNonAliquotNode = undefined;
+            let newCombinedNodes = [],
+                combineAliquotNode,
+                combineNonAliquotNode;
 
             const aliquotEdges = edges.filter(e => {
                 const node = nodes.get(e.lsid);
@@ -454,22 +456,27 @@ function _processNodes(
 
                 // create a VisGraph Edge from the current node to the new combined node
                 // as well as an edge for each of the combined nodes that one of the edge target nodes may belong to.
-                addEdges(lsid, combineNonAliquotNode.id, visEdges, nonAliquotEdges.toList(), nodesInCombinedNode, dir, depth);
-            }
-            else {
+                addEdges(
+                    lsid,
+                    combineNonAliquotNode.id,
+                    visEdges,
+                    nonAliquotEdges.toList(),
+                    nodesInCombinedNode,
+                    dir,
+                    depth
+                );
+            } else {
                 // create a VisGraph Edge from the current node to the edge's target for each edge
                 if (nonAliquotEdges.size > 0)
                     addEdges(lsid, null, visEdges, nonAliquotEdges.toList(), nodesInCombinedNode, dir, depth);
             }
-
 
             edges.forEach(e => {
                 const node = nodes.get(e.lsid);
                 const isAliquot = isAliquotNodeCollection(node);
                 const combinedNode = isAliquot ? combineAliquotNode : combineNonAliquotNode;
 
-                if (!combinedNode)
-                    return;
+                if (!combinedNode) return;
 
                 // remove the basic node from the graph if it exists
                 if (visNodes[e.lsid]) {
@@ -548,7 +555,6 @@ function _processNodes(
                 if (existingCombinedNodes === undefined) existingCombinedNodes = nodesInCombinedNode[e.lsid] = [];
                 existingCombinedNodes.push(combinedNode.id);
             });
-
         } else {
             // create a VisGraph Edge from the current node to the edge's target for each edge
             addEdges(lsid, null, visEdges, edges, nodesInCombinedNode, dir, depth);
@@ -700,8 +706,7 @@ function createCombinedVisNode(
     if (types.length === 1) {
         typeLabel = containedNodesByType[types[0]].displayType;
         commonNode = containedNodesByType[types[0]].nodes[0];
-        if (containedNodesByType[types[0]].materialLineageType === 'Aliquot')
-            typeLabel = 'aliquots';
+        if (containedNodesByType[types[0]].materialLineageType === 'Aliquot') typeLabel = 'aliquots';
     } else {
         typeLabel = 'of different types';
     }
@@ -732,7 +737,7 @@ function createCombinedVisNode(
         containedNodesByType,
         title,
         label: containedNodes.length + ' ' + typeLabel,
-        parentNodeName
+        parentNodeName,
     };
 
     if (commonNode) {

@@ -9,7 +9,7 @@ import { LoadingSpinner } from '../../..';
 
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
 import { LineageLink, LineageResult } from './models';
-import {createLineageNodeCollections, isAliquotNodeCollection} from './vis/VisGraphGenerator';
+import { createLineageNodeCollections, isAliquotNodeCollection } from './vis/VisGraphGenerator';
 import { DetailsListNodes } from './node/DetailsList';
 import { InjectedLineage, withLineage } from './withLineage';
 
@@ -18,7 +18,12 @@ interface LineageSummaryOwnProps extends LineageOptions {
 }
 
 class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryOwnProps> {
-    renderNodeList = (direction: LINEAGE_DIRECTIONS, lineage: LineageResult, edges: List<LineageLink>, nodeName: string): ReactNode => {
+    renderNodeList = (
+        direction: LINEAGE_DIRECTIONS,
+        lineage: LineageResult,
+        edges: List<LineageLink>,
+        nodeName: string
+    ): ReactNode => {
         if (this.empty(edges)) {
             return null;
         }
@@ -37,17 +42,23 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
             const group = nodesByType[groupName];
             const groupDisplayName = group.displayType;
             const isAliquot = isAliquotNodeCollection(group);
-            const title = isAliquot && group.nodes.length > 1 ? nodeName + ' Aliquots' :
-                (groupDisplayName +
-                ' ' +
-                (suffixes.has(nodesByType[groupName].queryName) ? suffixes.get(nodesByType[groupName].queryName) : defaultTitleSuffix));
-            return (<DetailsListNodes
-                key={groupName}
-                title={title}
-                nodes={nodesByType[groupName]}
-                highlightNode={highlightNode}
-            />)}
-        );
+            const title =
+                isAliquot && group.nodes.length > 1
+                    ? nodeName + ' Aliquots'
+                    : groupDisplayName +
+                      ' ' +
+                      (suffixes.has(nodesByType[groupName].queryName)
+                          ? suffixes.get(nodesByType[groupName].queryName)
+                          : defaultTitleSuffix);
+            return (
+                <DetailsListNodes
+                    key={groupName}
+                    title={title}
+                    nodes={nodesByType[groupName]}
+                    highlightNode={highlightNode}
+                />
+            );
+        });
     };
 
     private empty(nodes?: List<LineageLink>): boolean {

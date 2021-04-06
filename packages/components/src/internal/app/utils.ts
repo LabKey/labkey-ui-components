@@ -124,7 +124,10 @@ export function userCanDesignLocations(user: User): boolean {
 }
 
 export function isFreezerManagementEnabled(): boolean {
-    return getServerContext().moduleContext?.inventory !== undefined;
+    return (
+        getServerContext().moduleContext?.inventory !== undefined &&
+        (!isBiologicsEnabled() || isFreezerManagerEnabledInBiologics())
+    );
 }
 
 export function isSampleManagerEnabled(): boolean {
@@ -135,7 +138,7 @@ export function isBiologicsEnabled(): boolean {
     return getServerContext().moduleContext?.biologics !== undefined;
 }
 
-export function isFreezerManagerEnabledInBiologics(): boolean {
+function isFreezerManagerEnabledInBiologics(): boolean {
     return getServerContext().moduleContext?.biologics?.isFreezerManagerEnabled === true;
 }
 

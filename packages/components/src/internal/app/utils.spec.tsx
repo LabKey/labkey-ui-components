@@ -16,6 +16,7 @@ import {
 import {
     getMenuSectionConfigs,
     hasPremiumModule,
+    isBiologicsEnabled,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,
     userCanDesignLocations,
@@ -184,6 +185,22 @@ describe('utils', () => {
         expect(isSampleManagerEnabled()).toBeTruthy();
     });
 
+    test('isBiologicsEnabled', () => {
+        LABKEY.moduleContext = {};
+        expect(isBiologicsEnabled()).toBeFalsy();
+
+        LABKEY.moduleContext = {
+            inventory: {},
+        };
+        expect(isBiologicsEnabled()).toBeFalsy();
+
+        LABKEY.moduleContext = {
+            inventory: {},
+            biologics: {},
+        };
+        expect(isBiologicsEnabled()).toBeTruthy();
+    });
+
     test('isFreezerManagementEnabled', () => {
         LABKEY.moduleContext = {};
         expect(isFreezerManagementEnabled()).toBeFalsy();
@@ -196,6 +213,27 @@ describe('utils', () => {
         LABKEY.moduleContext = {
             inventory: {},
             samplemanagement: {},
+        };
+        expect(isFreezerManagementEnabled()).toBeTruthy();
+
+        LABKEY.moduleContext = {
+            inventory: {},
+            samplemanagement: {},
+            biologics: {},
+        };
+        expect(isFreezerManagementEnabled()).toBeFalsy();
+
+        LABKEY.moduleContext = {
+            inventory: {},
+            samplemanagement: {},
+            biologics: { isFreezerManagerEnabled: false },
+        };
+        expect(isFreezerManagementEnabled()).toBeFalsy();
+
+        LABKEY.moduleContext = {
+            inventory: {},
+            samplemanagement: {},
+            biologics: { isFreezerManagerEnabled: true },
         };
         expect(isFreezerManagementEnabled()).toBeTruthy();
     });

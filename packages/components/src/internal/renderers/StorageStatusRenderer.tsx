@@ -9,8 +9,7 @@ export class StorageStatusRenderer extends React.PureComponent<StorageStatusProp
     render() {
         const { data } = this.props;
 
-        if (!data)
-            return null;
+        if (!data) return null;
 
         const value = data.get('value');
 

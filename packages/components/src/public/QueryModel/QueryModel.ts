@@ -789,8 +789,8 @@ export class QueryModel {
     }
 
     get selectionKey() {
-        if (!this.queryInfo) {
-            return undefined;
+        if (!this.queryInfo || !this.queryInfo.schemaQuery) {
+            return this.id;
         }
 
         let keys;

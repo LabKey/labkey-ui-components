@@ -115,7 +115,7 @@ export const EntityDeleteModal: React.FC<Props> = props => {
         <>
             {!showProgress && (
                 <EntityDeleteConfirmModal
-                    selectionKey={useSelected && !isFiltered ? model.id : undefined}
+                    selectionKey={useSelected && !isFiltered ? model.selectionKey : undefined}
                     rowIds={rowIds}
                     onConfirm={onConfirm}
                     onCancel={onCancel}

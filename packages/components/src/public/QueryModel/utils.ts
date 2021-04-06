@@ -145,13 +145,13 @@ export function getQueryModelExportParams(
     type: EXPORT_TYPES,
     advancedOptions?: Record<string, any>
 ): any {
-    const { id, filters, hasSelections, schemaQuery, exportColumnString, sortString, selections } = model;
+    const { selectionKey, filters, hasSelections, schemaQuery, exportColumnString, sortString } = model;
     const showRows = hasSelections ? 'SELECTED' : 'ALL';
     const exportOptions: ExportOptions = {
         filters: List(filters),
         columns: exportColumnString,
         sorts: sortString,
-        selectionKey: id,
+        selectionKey: selectionKey,
         showRows,
     };
     return getExportParams(type, schemaQuery, exportOptions, advancedOptions);

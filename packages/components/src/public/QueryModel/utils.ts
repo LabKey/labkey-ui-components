@@ -151,7 +151,7 @@ export function getQueryModelExportParams(
         filters: List(filters),
         columns: exportColumnString,
         sorts: sortString,
-        selectionKey: selectionKey,
+        selectionKey,
         showRows,
     };
     return getExportParams(type, schemaQuery, exportOptions, advancedOptions);

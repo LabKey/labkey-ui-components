@@ -108,7 +108,7 @@ export class SchemaQuery extends Record({
     static createAppSelectionKey(targetSQ: SchemaQuery, prefix?: string, keys?: any[]): string {
         let keyParts = [prefix ?? APP_SELECTION_PREFIX, resolveSchemaQuery(targetSQ)];
         if (keys) {
-            keyParts = keyParts.concat(keys.join(';'))
+            keyParts = keyParts.concat(keys.join(';'));
         }
         return keyParts.join('|');
     }

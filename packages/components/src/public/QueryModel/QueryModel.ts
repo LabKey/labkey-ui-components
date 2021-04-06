@@ -784,8 +784,11 @@ export class QueryModel {
     }
 
     get isFiltered(): boolean {
-        return this.baseFilters?.length > 0 || this.filterArray?.length > 0
-            || this.queryInfo?.getFilters(this.schemaQuery.viewName)?.size > 0
+        return (
+            this.baseFilters?.length > 0 ||
+            this.filterArray?.length > 0 ||
+            this.queryInfo?.getFilters(this.schemaQuery.viewName)?.size > 0
+        );
     }
 
     get selectionKey() {

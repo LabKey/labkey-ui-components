@@ -496,9 +496,7 @@ enableMapSet();
 enablePatches();
 
 const App = {
-    AppModel,
     AppReducers,
-    LogoutReason,
     ProductMenuReducers,
     RoutingTableReducers,
     ServerNotificationReducers,
@@ -566,6 +564,8 @@ const App = {
 export {
     // internal application
     App,
+    AppModel,
+    LogoutReason,
     // global state functions
     initQueryGridState,
     initNotificationsState,

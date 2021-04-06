@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Remove /src/internal/app/index.ts and instead define App in /src/index.ts
+
 ### version 2.22.1
 *Released*: 6 April 2021
 * Fix for FM enabled check related to LKB experimental feature flag
@@ -14,10 +18,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add URL.replaceFilter uti
 * Update EntityDeleteModal to work with QueryModel
 * Group lineage nodes based on materialLineageType
-
-### version 2.21.1
-*Released*: 5 April 2021
-* Remove /src/internal/app/index.ts and instead define App in /src/index.ts
 
 ### version 2.21.1
 *Released*: 5 April 2021

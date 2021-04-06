@@ -141,7 +141,7 @@ function isFreezerManagerEnabledInBiologics(): boolean {
 }
 
 export function isSampleAliquotEnabled(): boolean {
-    return getServerContext().experimental['sampleAliquot'] === true;
+    return getServerContext().experimental && getServerContext().experimental['sampleAliquot'] === true;
 }
 
 export function hasModule(moduleName: string) {

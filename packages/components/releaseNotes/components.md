@@ -7,6 +7,14 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Change to isFreezerManagementEnabled() helper to check that both the inventory module is enabled in the folder
     and that if biologics is enabled then the experimental feature flag must be enabled as well
 
+### version 2.22.0
+*Released*: 5 April 2021
+* Add GridAliquotViewSelector
+* Add showSampleAliquotSelector to QueryGridBar and GridPanel
+* Add URL.replaceFilter uti
+* Update EntityDeleteModal to work with QueryModel
+* Group lineage nodes based on materialLineageType
+
 ### version 2.21.1
 *Released*: 5 April 2021
 * Issue 42598: FileTree component styling fixes for font family, text color, and node display for wide text

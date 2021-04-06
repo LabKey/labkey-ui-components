@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.22.1
+*Released*: 6 April 2021
 * Fix for FM enabled check related to LKB experimental feature flag
     * Change to isFreezerManagementEnabled() helper to check that both the inventory module is enabled in the folder
     and that if biologics is enabled then the experimental feature flag must be enabled as well

@@ -77,6 +77,7 @@ export class EntityParentType extends Record({
     schema: undefined,
     value: undefined,
     isParentTypeOnly: false,
+    isAliquotParent: false,
 }) {
     declare index: number;
     declare key: string;
@@ -84,6 +85,7 @@ export class EntityParentType extends Record({
     declare schema: string;
     declare value: List<DisplayObject>;
     declare isParentTypeOnly: boolean;
+    declare isAliquotParent: boolean;
 
     static create(values: any): EntityParentType {
         if (!values.key) values.key = generateId('parent-type-');
@@ -92,6 +94,9 @@ export class EntityParentType extends Record({
 
     createColumnName() {
         const parentInputType = this.getInputType();
+        if (parentInputType === QueryColumn.ALIQUOTED_FROM)
+            return QueryColumn.ALIQUOTED_FROM;
+
         const formattedQueryName = capitalizeFirstChar(this.query);
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
         // capitalized here and we lower it where needed
@@ -99,7 +104,9 @@ export class EntityParentType extends Record({
     }
 
     getInputType(): string {
-        return this.schema === SCHEMAS.DATA_CLASSES.SCHEMA ? QueryColumn.DATA_INPUTS : QueryColumn.MATERIAL_INPUTS;
+        if (this.schema === SCHEMAS.DATA_CLASSES.SCHEMA)
+            return QueryColumn.DATA_INPUTS;
+        return this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM : QueryColumn.MATERIAL_INPUTS;
     }
 
     // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
@@ -108,7 +115,7 @@ export class EntityParentType extends Record({
         const formattedQueryName = capitalizeFirstChar(this.query);
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
         // capitalized here and we lower it where needed
-        const parentColName = [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
+        const parentColName = this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM : [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
         // Issue 40233: SM app allows for two types of parents, sources and samples, and its confusing if both use
         // the "Parents" suffix in the editable grid header
         const captionSuffix = this.schema !== SCHEMAS.DATA_CLASSES.SCHEMA ? ' Parents' : '';
@@ -124,18 +131,18 @@ export class EntityParentType extends Record({
         }
 
         return QueryColumn.create({
-            caption: formattedQueryName + captionSuffix,
-            description: 'Contains optional parent entity for this ' + formattedQueryName,
+            caption: this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM : formattedQueryName + captionSuffix,
+            description: this.isAliquotParent ? 'The parent sample of the aliquot' : 'Contains optional parent entity for this ' + formattedQueryName,
             fieldKeyArray: [parentColName],
             fieldKey: parentColName,
             lookup: {
-                displayColumn,
+                displayColumn : displayColumn,
                 isPublic: true,
                 keyColumn: 'RowId',
-                multiValued: 'junction',
+                multiValued: this.isAliquotParent ? undefined : 'junction',
                 queryName: this.query,
                 schemaName: this.schema,
-                table: parentInputType,
+                table: this.isAliquotParent ? QueryColumn.MATERIAL_INPUTS : parentInputType,
             },
             name: parentColName,
             required: false,
@@ -510,24 +517,35 @@ export class EntityIdCreationModel extends Record({
         if (this.entityCount > 0) {
             queryInfo.getInsertColumns().forEach(col => {
                 const colName = col.name;
-
-                if (col.isExpInput()) {
+                let selected;
+                if (col.isExpInput() && this.creationType !== SampleCreationType.Aliquots) {
                     // Convert parent values into appropriate column names
                     const sq = EntityIdCreationModel.revertParentInputSchema(col);
 
                     // should be only one parent with the matching schema and query name
-                    const selected = this.entityParents.reduce((found, parentList) => {
+                    selected = this.entityParents.reduce((found, parentList) => {
                         return (
                             found ||
                             parentList.find(parent => parent.schema === sq.schemaName && parent.query === sq.queryName)
                         );
                     }, undefined);
-                    if (selected && selected.value) {
-                        values = values.set(colName, selected.value);
-                        parentCols.push(colName);
-                    }
+
+                }
+                else if (col.isAliquotParent() && this.creationType === SampleCreationType.Aliquots) {
+                    selected = this.entityParents.reduce((found, parentList) => {
+                        return (
+                            found ||
+                            parentList.find(parent => parent.isAliquotParent)
+                        );
+                    }, undefined);
+                }
+
+                if (selected && selected.value) {
+                    values = values.set(colName, selected.value);
+                    parentCols.push(colName);
                 }
             });
+
             if (separateParents && this.creationType && this.creationType != SampleCreationType.PooledSamples) {
                 parentCols.forEach(parentCol => {
                     const parents: Array<any> = values.get(parentCol);

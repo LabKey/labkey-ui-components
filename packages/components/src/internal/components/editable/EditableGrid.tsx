@@ -141,6 +141,7 @@ export interface EditableColumnMetadata {
     toolTip?: ReactNode;
     filteredLookupValues?: List<string>;
     filteredLookupKeys?: List<any>;
+    caption?: string;
 }
 
 export interface BulkAddData {
@@ -360,6 +361,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         if (!hideCountCol) gridColumns = gridColumns.push(rowNumColumn ? rowNumColumn : COUNT_COL);
 
         this.getColumns().forEach(qCol => {
+            const metaCaption = columnMetadata.get(qCol.fieldKey)?.caption;
             gridColumns = gridColumns.push(
                 new GridColumn({
                     align: qCol.align,
@@ -374,7 +376,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,
-                    title: qCol.caption,
+                    title: metaCaption ?? qCol.caption,
                     width: 100,
                 })
             );

@@ -172,6 +172,7 @@ export class QueryColumn extends Record({
 
     static DATA_INPUTS = 'DataInputs';
     static MATERIAL_INPUTS = 'MaterialInputs';
+    static ALIQUOTED_FROM = 'AliquotedFrom';
 
     isExpInput(): boolean {
         return this.isDataInput() || this.isMaterialInput();
@@ -179,6 +180,10 @@ export class QueryColumn extends Record({
 
     isDataInput(): boolean {
         return this.name && this.name.toLowerCase().indexOf(QueryColumn.DATA_INPUTS.toLowerCase()) !== -1;
+    }
+
+    isAliquotParent(): boolean {
+        return this.name && this.name.toLowerCase() === QueryColumn.ALIQUOTED_FROM.toLowerCase();
     }
 
     isEditable() {

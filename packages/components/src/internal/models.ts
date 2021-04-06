@@ -400,7 +400,7 @@ export class EditorModel
                 if (renderer?.getEditableRawValue) {
                     row = row.set(col.name, renderer.getEditableRawValue(values));
                 } else if (col.isLookup()) {
-                    if (col.isExpInput()) {
+                    if (col.isExpInput() || col.isAliquotParent()) {
                         let sep = '';
                         row = row.set(
                             col.name,

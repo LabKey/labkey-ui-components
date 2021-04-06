@@ -4,10 +4,11 @@ import { mount } from 'enzyme';
 import { List } from 'immutable';
 import { Checkbox } from 'react-bootstrap';
 
-import {makeTestQueryModel, QueryGridModel, SchemaQuery} from '../../..';
+import { Filter } from '@labkey/api';
 
-import { GridAliquotViewSelector } from "./GridAliquotViewSelector";
-import { Filter } from "@labkey/api";
+import { makeTestQueryModel, QueryGridModel, SchemaQuery } from '../../..';
+
+import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 
 describe('<GridAliquotViewSelector/>', () => {
     test('no queryGridModel or queryModel', () => {
@@ -32,7 +33,7 @@ describe('<GridAliquotViewSelector/>', () => {
         expect(checkboxes.at(1).props().checked).toBe(true);
 
         const buttons = wrapper.find('.dropdown-toggle');
-        expect(buttons.at(0).text().trim()).toEqual("All Samples");
+        expect(buttons.at(0).text().trim()).toEqual('All Samples');
 
         wrapper.unmount();
     });
@@ -44,7 +45,7 @@ describe('<GridAliquotViewSelector/>', () => {
             selectedLoaded: false,
             maxRows: undefined,
             totalRows: undefined,
-            filterArray: List([Filter.create("IsAliquot", false)])
+            filterArray: List([Filter.create('IsAliquot', false)]),
         });
         const component = <GridAliquotViewSelector queryGridModel={model} />;
         const wrapper = mount(component);
@@ -54,7 +55,7 @@ describe('<GridAliquotViewSelector/>', () => {
         expect(checkboxes.at(1).props().checked).toBe(false);
 
         const buttons = wrapper.find('.dropdown-toggle');
-        expect(buttons.at(0).text().trim()).toEqual("Samples Only");
+        expect(buttons.at(0).text().trim()).toEqual('Samples Only');
 
         wrapper.unmount();
     });
@@ -66,7 +67,7 @@ describe('<GridAliquotViewSelector/>', () => {
             selectedLoaded: false,
             maxRows: undefined,
             totalRows: undefined,
-            filterArray: List([Filter.create("IsAliquot", "true")])
+            filterArray: List([Filter.create('IsAliquot', 'true')]),
         });
         const component = <GridAliquotViewSelector queryGridModel={model} />;
         const wrapper = mount(component);
@@ -76,13 +77,13 @@ describe('<GridAliquotViewSelector/>', () => {
         expect(checkboxes.at(1).props().checked).toBe(true);
 
         const buttons = wrapper.find('.dropdown-toggle');
-        expect(buttons.at(0).text().trim()).toEqual("Aliquots Only");
+        expect(buttons.at(0).text().trim()).toEqual('Aliquots Only');
 
         wrapper.unmount();
     });
 
     test('with queryModel, without filter', () => {
-        let model = makeTestQueryModel(SchemaQuery.create('a','b'));
+        const model = makeTestQueryModel(SchemaQuery.create('a', 'b'));
 
         const component = <GridAliquotViewSelector queryModel={model} />;
         const wrapper = mount(component);
@@ -92,15 +93,15 @@ describe('<GridAliquotViewSelector/>', () => {
         expect(checkboxes.at(1).props().checked).toBe(true);
 
         const buttons = wrapper.find('.dropdown-toggle');
-        expect(buttons.at(0).text().trim()).toEqual("All Samples");
+        expect(buttons.at(0).text().trim()).toEqual('All Samples');
 
         wrapper.unmount();
     });
 
     test('with queryModel, with filter', () => {
-        let model = makeTestQueryModel(SchemaQuery.create('a','b'));
+        let model = makeTestQueryModel(SchemaQuery.create('a', 'b'));
         model = model.mutate({
-            filterArray: [Filter.create("IsAliquot", true)]
+            filterArray: [Filter.create('IsAliquot', true)],
         });
         const component = <GridAliquotViewSelector queryModel={model} />;
         const wrapper = mount(component);
@@ -110,10 +111,8 @@ describe('<GridAliquotViewSelector/>', () => {
         expect(checkboxes.at(1).props().checked).toBe(true);
 
         const buttons = wrapper.find('.dropdown-toggle');
-        expect(buttons.at(0).text().trim()).toEqual("Aliquots Only");
+        expect(buttons.at(0).text().trim()).toEqual('Aliquots Only');
 
         wrapper.unmount();
     });
-
-
 });

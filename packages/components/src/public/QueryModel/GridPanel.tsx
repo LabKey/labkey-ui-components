@@ -26,6 +26,8 @@ import { SortAction } from '../../internal/components/omnibox/actions/Sort';
 import { ViewAction } from '../../internal/components/omnibox/actions/View';
 import { Change, ChangeType, OmniBox } from '../../internal/components/omnibox/OmniBox';
 
+import { GridAliquotViewSelector } from '../../internal/components/gridbar/GridAliquotViewSelector';
+
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ViewMenu } from './ViewMenu';
 import { ExportMenu } from './ExportMenu';
@@ -34,7 +36,6 @@ import { ChartMenu } from './ChartMenu';
 
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { createQueryModelId } from './QueryModel';
-import { GridAliquotViewSelector } from "../../internal/components/gridbar/GridAliquotViewSelector";
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -166,7 +167,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                         )}
 
                         {showSampleAliquotSelector && (
-                            <GridAliquotViewSelector queryModel={model} updateFilter={onFilteredViewChange}/>
+                            <GridAliquotViewSelector queryModel={model} updateFilter={onFilteredViewChange} />
                         )}
                     </div>
                 </div>
@@ -271,18 +272,16 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return actionValues;
     };
 
-    onFilteredViewChange = (filter: Filter.IFilter, filterColumnToRemove?: string) : void => {
+    onFilteredViewChange = (filter: Filter.IFilter, filterColumnToRemove?: string): void => {
         const { model, actions, allowSelections } = this.props;
 
-        let filterToReplace = filter?.getColumnName() ?? filterColumnToRemove;
-        let newFilters = [];
+        const filterToReplace = filter?.getColumnName() ?? filterColumnToRemove;
+        const newFilters = [];
         model.filterArray.forEach((filter): void => {
-            if (filterToReplace.toLowerCase() !== filter.getColumnName().toLowerCase())
-                newFilters.push(filter);
+            if (filterToReplace.toLowerCase() !== filter.getColumnName().toLowerCase()) newFilters.push(filter);
         });
 
-        if (filter)
-            newFilters.push(filter);
+        if (filter) newFilters.push(filter);
 
         actions.setFilters(model.id, newFilters, allowSelections);
     };
@@ -601,7 +600,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 )}
 
                 <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
-                    {showButtonBar && <ButtonBar {...this.props} onViewSelect={this.onViewSelect} onFilteredViewChange={this.onFilteredViewChange} />}
+                    {showButtonBar && (
+                        <ButtonBar
+                            {...this.props}
+                            onViewSelect={this.onViewSelect}
+                            onFilteredViewChange={this.onFilteredViewChange}
+                        />
+                    )}
 
                     {showOmniBox && (
                         <div className="grid-panel__omnibox">

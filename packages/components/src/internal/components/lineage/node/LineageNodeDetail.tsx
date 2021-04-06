@@ -8,7 +8,7 @@ import { Tab, Tabs } from 'react-bootstrap';
 import {
     createLineageNodeCollections,
     isAliquotNodeCollection,
-    LineageNodeCollectionByType
+    LineageNodeCollectionByType,
 } from '../vis/VisGraphGenerator';
 import { LineageSummary } from '../LineageSummary';
 import { LineageNode } from '../models';
@@ -112,8 +112,7 @@ interface ClusterNodeDetailProps {
 }
 
 export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
-
-    static getGroupDisplayName (nodesByType, groupName, parentNodeName?) {
+    static getGroupDisplayName(nodesByType, groupName, parentNodeName?) {
         const group = nodesByType[groupName];
         const isAliquot = isAliquotNodeCollection(group);
         const aliquotDisplayName = (parentNodeName ? parentNodeName + ' ' : '') + 'Aliquots';
@@ -140,14 +139,19 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
             <div className="cluster-node-detail">
                 <DetailHeader header={title} iconSrc={iconURL} />
                 {groups.map(groupName => {
-                    const groupDisplayName = ClusterNodeDetail.getGroupDisplayName(nodesByType, groupName, parentNodeName);
+                    const groupDisplayName = ClusterNodeDetail.getGroupDisplayName(
+                        nodesByType,
+                        groupName,
+                        parentNodeName
+                    );
                     return (
-                    <DetailsListNodes
-                        key={groupName}
-                        title={groupDisplayName}
-                        nodes={nodesByType[groupName]}
-                        highlightNode={highlightNode}
-                    />)
+                        <DetailsListNodes
+                            key={groupName}
+                            title={groupDisplayName}
+                            nodes={nodesByType[groupName]}
+                            highlightNode={highlightNode}
+                        />
+                    );
                 })}
             </div>
         );

@@ -17,26 +17,26 @@ import React, { Component, ReactNode } from 'react';
 import { Checkbox, DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { Filter } from "@labkey/api";
+import { Filter } from '@labkey/api';
 
 import { generateId, QueryGridModel, QueryModel } from '../../..';
-import { getCheckedValue } from "../domainproperties/actions";
-import { replaceFilter } from "../../util/URL";
+import { getCheckedValue } from '../domainproperties/actions';
+import { replaceFilter } from '../../util/URL';
 
 interface Props {
     queryGridModel?: QueryGridModel;
     queryModel?: QueryModel;
-    updateFilter?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void
+    updateFilter?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
 }
 
 enum MODE {
     all,
     samples,
     aliquots,
-    none//when using omni filter with 'is blank'
+    none, // when using omni filter with 'is blank'
 }
 
-const IS_ALIQUOT_COL = "IsAliquot";
+const IS_ALIQUOT_COL = 'IsAliquot';
 
 export class GridAliquotViewSelector extends Component<Props> {
     dropId: string;
@@ -61,17 +61,14 @@ export class GridAliquotViewSelector extends Component<Props> {
         let newFilter;
         if (filterMode == MODE.all || filterMode == MODE.none)
             newFilter = Filter.create(IS_ALIQUOT_COL, (isAliquot && check) || (!isAliquot && !check));
-        else
-            newFilter = null; // if neither is checked, or if both are checked, clear the filter
+        else newFilter = null; // if neither is checked, or if both are checked, clear the filter
 
         if (queryGridModel) {
             replaceFilter(queryGridModel, IS_ALIQUOT_COL, newFilter);
-        }
-        else if (updateFilter) {
+        } else if (updateFilter) {
             updateFilter(newFilter, IS_ALIQUOT_COL);
         }
-
-    };
+    }
 
     getTitle(mode: MODE) {
         switch (mode) {
@@ -84,47 +81,44 @@ export class GridAliquotViewSelector extends Component<Props> {
             default:
                 return 'All Samples';
         }
-    };
+    }
 
-    getAliquotFilterMode = () : MODE => {
+    getAliquotFilterMode = (): MODE => {
         const { queryGridModel, queryModel } = this.props;
         let mode = MODE.all;
         const filterArray = queryGridModel ? queryGridModel.filterArray : queryModel?.filterArray;
         if (filterArray) {
             filterArray.forEach(filter => {
                 if (filter.getColumnName().toLowerCase() === IS_ALIQUOT_COL.toLowerCase()) {
-
                     const filterType = filter.getFilterType();
                     const value = filter.getValue();
 
                     if (filterType == Filter.Types.ISBLANK || filterType == Filter.Types.MISSING) {
                         mode = MODE.none;
-                    }
-                    else if (filterType == Filter.Types.EQUAL) {
-                        if (value === '')
-                            return;
+                    } else if (filterType == Filter.Types.EQUAL) {
+                        if (value === '') return;
                         mode = value === 'true' || value === true ? MODE.aliquots : MODE.samples;
-                    }
-                    else if (filterType == Filter.Types.NOT_EQUAL || filterType == Filter.Types.NEQ || filterType == Filter.Types.NEQ_OR_NULL) {
-                        if (value === '')
-                            return;
+                    } else if (
+                        filterType == Filter.Types.NOT_EQUAL ||
+                        filterType == Filter.Types.NEQ ||
+                        filterType == Filter.Types.NEQ_OR_NULL
+                    ) {
+                        if (value === '') return;
                         mode = value === 'true' || value === true ? MODE.samples : MODE.aliquots;
                     }
-
-                    return;
                 }
-            })
+            });
         }
 
         return mode;
-    }
+    };
 
     createItem(key, label, checked): ReactNode {
         return (
             <li key={key}>
                 <Checkbox
                     checked={checked}
-                    className={'dropdown-menu-row'}
+                    className="dropdown-menu-row"
                     onChange={this.handleCheckboxChange}
                     id={'checkbox-' + key}
                     name={key}
@@ -153,10 +147,9 @@ export class GridAliquotViewSelector extends Component<Props> {
     }
 
     render(): ReactNode {
-        const {queryGridModel, queryModel} = this.props;
+        const { queryGridModel, queryModel } = this.props;
 
-        if (!queryGridModel && !queryModel)
-            return null;
+        if (!queryGridModel && !queryModel) return null;
 
         const filterMode = this.getAliquotFilterMode();
 

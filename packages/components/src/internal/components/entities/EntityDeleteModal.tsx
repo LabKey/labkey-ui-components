@@ -60,12 +60,10 @@ export const EntityDeleteModal: React.FC<Props> = props => {
             rowIds = [model.dataIds.get(0)];
             numSelected = 1;
         }
-    }
-    else if (queryModel) {
+    } else if (queryModel) {
         rowIds = Array.from(queryModel.selections);
         numSelected = rowIds.length;
     }
-
 
     function getNoun(quantity: number): string {
         return quantity === 1 ? nounSingular : nounPlural;
@@ -94,8 +92,7 @@ export const EntityDeleteModal: React.FC<Props> = props => {
             });
     }
 
-    if (!model && !queryModel)
-        return null;
+    if (!model && !queryModel) return null;
 
     if (useSelected && maxSelected && numSelected > maxSelected) {
         return (
@@ -110,8 +107,7 @@ export const EntityDeleteModal: React.FC<Props> = props => {
     }
 
     let selectionKey = model && useSelected && !model.isFiltered() ? model.getId() : undefined;
-    if (queryModel)
-        selectionKey = queryModel.id;
+    if (queryModel) selectionKey = queryModel.id;
 
     return (
         <>

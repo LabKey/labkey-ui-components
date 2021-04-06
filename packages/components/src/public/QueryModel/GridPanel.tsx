@@ -1,7 +1,7 @@
 import React, { ComponentType, FC, memo, PureComponent, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
-import { Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import {
     Alert,
@@ -25,6 +25,8 @@ import { SearchAction } from '../../internal/components/omnibox/actions/Search';
 import { SortAction } from '../../internal/components/omnibox/actions/Sort';
 import { ViewAction } from '../../internal/components/omnibox/actions/View';
 import { Change, ChangeType, OmniBox } from '../../internal/components/omnibox/OmniBox';
+
+import { GridAliquotViewSelector } from '../../internal/components/gridbar/GridAliquotViewSelector';
 
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ViewMenu } from './ViewMenu';
@@ -55,6 +57,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showOmniBox?: boolean;
     showPagination?: boolean;
     showSampleComparisonReports?: boolean;
+    showSampleAliquotSelector?: boolean;
     showViewMenu?: boolean;
     showHeader?: boolean;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
@@ -64,6 +67,7 @@ type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
 interface GridBarProps<T> extends Props<T> {
     onViewSelect: (viewName) => void;
+    onFilteredViewChange: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -103,11 +107,13 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             onChartClicked,
             onCreateReportClicked,
             onViewSelect,
+            onFilteredViewChange,
             pageSizes,
             showChartMenu,
             showExport,
             showPagination,
             showSampleComparisonReports,
+            showSampleAliquotSelector,
             showViewMenu,
         } = this.props;
 
@@ -159,6 +165,10 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                         {canSelectView && (
                             <ViewMenu model={model} onViewSelect={onViewSelect} hideEmptyViewMenu={hideEmptyViewMenu} />
                         )}
+
+                        {showSampleAliquotSelector && (
+                            <GridAliquotViewSelector queryModel={model} updateFilter={onFilteredViewChange} />
+                        )}
                     </div>
                 </div>
             </div>
@@ -186,6 +196,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         showExport: true,
         showOmniBox: true,
         showSampleComparisonReports: false,
+        showSampleAliquotSelector: false,
         showViewMenu: true,
         showHeader: true,
     };
@@ -259,6 +270,20 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         });
 
         return actionValues;
+    };
+
+    onFilteredViewChange = (filter: Filter.IFilter, filterColumnToRemove?: string): void => {
+        const { model, actions, allowSelections } = this.props;
+
+        const filterToReplace = filter?.getColumnName() ?? filterColumnToRemove;
+        const newFilters = [];
+        model.filterArray.forEach((filter): void => {
+            if (filterToReplace.toLowerCase() !== filter.getColumnName().toLowerCase()) newFilters.push(filter);
+        });
+
+        if (filter) newFilters.push(filter);
+
+        actions.setFilters(model.id, newFilters, allowSelections);
     };
 
     /**
@@ -575,7 +600,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 )}
 
                 <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
-                    {showButtonBar && <ButtonBar {...this.props} onViewSelect={this.onViewSelect} />}
+                    {showButtonBar && (
+                        <ButtonBar
+                            {...this.props}
+                            onViewSelect={this.onViewSelect}
+                            onFilteredViewChange={this.onFilteredViewChange}
+                        />
+                    )}
 
                     {showOmniBox && (
                         <div className="grid-panel__omnibox">

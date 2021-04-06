@@ -1,6 +1,20 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.22.1
+*Released*: 6 April 2021
+* Fix for FM enabled check related to LKB experimental feature flag
+    * Change to isFreezerManagementEnabled() helper to check that both the inventory module is enabled in the folder
+    and that if biologics is enabled then the experimental feature flag must be enabled as well
+
+### version 2.22.0
+*Released*: 5 April 2021
+* Add GridAliquotViewSelector
+* Add showSampleAliquotSelector to QueryGridBar and GridPanel
+* Add URL.replaceFilter uti
+* Update EntityDeleteModal to work with QueryModel
+* Group lineage nodes based on materialLineageType
+
 ### version 2.21.1
 *Released*: 5 April 2021
 * Remove /src/internal/app/index.ts and instead define App in /src/index.ts

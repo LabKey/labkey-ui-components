@@ -9,7 +9,7 @@ import { LoadingSpinner } from '../../..';
 
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
 import { LineageLink, LineageResult } from './models';
-import { createLineageNodeCollections } from './vis/VisGraphGenerator';
+import { createLineageNodeCollections, isAliquotNodeCollection } from './vis/VisGraphGenerator';
 import { DetailsListNodes } from './node/DetailsList';
 import { InjectedLineage, withLineage } from './withLineage';
 
@@ -18,7 +18,12 @@ interface LineageSummaryOwnProps extends LineageOptions {
 }
 
 class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryOwnProps> {
-    renderNodeList = (direction: LINEAGE_DIRECTIONS, lineage: LineageResult, edges: List<LineageLink>): ReactNode => {
+    renderNodeList = (
+        direction: LINEAGE_DIRECTIONS,
+        lineage: LineageResult,
+        edges: List<LineageLink>,
+        nodeName: string
+    ): ReactNode => {
         if (this.empty(edges)) {
             return null;
         }
@@ -33,18 +38,27 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
         // Issue 40008:  TBD This isn't a full fix here because of differences in treatment of the text of the queryName that identifies the groups
         const suffixes = groupTitles?.get(direction) || Map<string, string>();
 
-        return groups.map(groupName => (
-            <DetailsListNodes
-                key={groupName}
-                title={
-                    groupName +
-                    ' ' +
-                    (suffixes.has(nodesByType[groupName].queryName) ? suffixes.get(nodesByType[groupName].queryName) : defaultTitleSuffix)
-                }
-                nodes={nodesByType[groupName]}
-                highlightNode={highlightNode}
-            />
-        ));
+        return groups.map(groupName => {
+            const group = nodesByType[groupName];
+            const groupDisplayName = group.displayType;
+            const isAliquot = isAliquotNodeCollection(group);
+            const title =
+                isAliquot && group.nodes.length > 1
+                    ? nodeName + ' Aliquots'
+                    : groupDisplayName +
+                      ' ' +
+                      (suffixes.has(nodesByType[groupName].queryName)
+                          ? suffixes.get(nodesByType[groupName].queryName)
+                          : defaultTitleSuffix);
+            return (
+                <DetailsListNodes
+                    key={groupName}
+                    title={title}
+                    nodes={nodesByType[groupName]}
+                    highlightNode={highlightNode}
+                />
+            );
+        });
     };
 
     private empty(nodes?: List<LineageLink>): boolean {
@@ -77,9 +91,9 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
 
         return (
             <>
-                {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, result, parents)}
+                {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, result, parents, node.name)}
                 {hasChildren && hasParents && <hr />}
-                {this.renderNodeList(LINEAGE_DIRECTIONS.Children, result, children)}
+                {this.renderNodeList(LINEAGE_DIRECTIONS.Children, result, children, node.name)}
             </>
         );
     }

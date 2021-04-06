@@ -1205,7 +1205,6 @@ export function isPropertyTypeAllowed(type: PropDescType, includeFileType: boole
         LOOKUP_TYPE,
         PARTICIPANT_TYPE,
         FLAG_TYPE,
-        ATTACHMENT_TYPE,
         ONTOLOGY_LOOKUP_TYPE,
         VISIT_DATE_TYPE,
         VISIT_ID_TYPE,

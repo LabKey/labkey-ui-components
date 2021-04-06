@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 8735: Enable files and attachment data types for sample type designer and data class designer
+
 ### version 2.22.1
 *Released*: 6 April 2021
 * Fix for FM enabled check related to LKB experimental feature flag

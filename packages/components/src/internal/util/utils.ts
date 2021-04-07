@@ -470,3 +470,22 @@ export function isNonNegativeInteger(value: number | string): boolean {
 export function isNonNegativeFloat(value: number | string): boolean {
     return isFloat(value) && Number(value) >= 0;
 }
+
+export function isImage(value): boolean {
+    const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'png', 'tif'];
+    const parts = value.split('.');
+    const extensionType = parts[parts.length - 1].toLowerCase();
+
+    return validImageExtensions.indexOf(extensionType) > -1;
+}
+
+export function downloadAttachment(href: string, openInTab?: boolean, fileName?: string): void {
+    if (openInTab) {
+        window.open(href, '_blank');
+    } else {
+        const link = document.createElement('a');
+        link.href = href;
+        link.download = fileName;
+        link.click();
+    }
+}

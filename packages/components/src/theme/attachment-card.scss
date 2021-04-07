@@ -1,0 +1,80 @@
+// TODO use variables for colors and ...
+
+.attachment-card {
+    border: 1px solid #C7C7C7;
+    border-radius: 4px;
+    display: inline-flex;
+    height: 48px;
+    margin: 5px 15px 0 0;
+    width: 234px;
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.05);
+    }
+}
+.attachment-card__body {
+    display: inline-flex;
+}
+.attachment-card__icon {
+    height: 46px;
+    padding-top: 7px;
+    text-align: center;
+    width: 48px;
+
+    .attachment-card__icon_img,
+    .attachment-card__icon_tile {
+        height: 32px;
+        width: 32px;
+    }
+
+    .attachment-card__icon_tile {
+        background-color: #CCE5FF;
+        border-radius: 50%;
+        color: #004085;
+        font-size: 18px;
+        padding-top: 7px;
+        text-align: center;
+    }
+}
+.attachment-card__content {
+    border-left: 1px solid #C7C7C7;
+    padding: 5px 8px;
+    width: 138px;
+
+    .fa-check-circle {
+        color: #5CB85C;
+    }
+}
+.attachment-card__menu {
+    vertical-align: middle;
+    width: 48px;
+
+    .caret {
+        display: none;
+    }
+
+    .dropdown-toggle {
+        color: #777777;
+        display: block;
+        height: 100%;
+        padding-left: 50%;
+        padding-top: 14px;
+        font-size: 14px;
+
+        &:focus, &:hover {
+            color: #333333;
+        }
+    }
+}
+.attachment-card__name {
+    color: #2980B9;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.attachment-card__size {
+    color: #777777;
+    font-size: 14px;
+}

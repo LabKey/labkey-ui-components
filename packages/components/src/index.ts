@@ -48,9 +48,11 @@ import {
     caseInsensitive,
     debounce,
     devToolsActive,
+    downloadAttachment,
     generateId,
     getDisambiguatedSelectInputOptions,
     isIntegerInRange,
+    isImage,
     isNonNegativeFloat,
     isNonNegativeInteger,
     toggleDevTools,
@@ -200,6 +202,7 @@ import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { AppendUnits } from './internal/renderers/AppendUnits';
+import { AttachmentCard } from './internal/renderers/AttachmentCard';
 import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
 import { FileColumnRenderer } from './internal/renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './internal/renderers/MultiValueRenderer';
@@ -498,6 +501,7 @@ export {
     createProductUrl,
     createProductUrlFromParts,
     // renderers
+    AttachmentCard,
     AliasRenderer,
     AppendUnits,
     DefaultRenderer,
@@ -751,8 +755,10 @@ export {
     blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,
+    downloadAttachment,
     resolveKey,
     isIntegerInRange,
+    isImage,
     isNonNegativeFloat,
     isNonNegativeInteger,
     isLoading,
@@ -946,3 +952,4 @@ export type { WithFormStepsProps } from './internal/components/forms/FormStep';
 export type { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
 export type { Location } from './internal/util/URL';
+export type { IAttachment } from './internal/renderers/AttachmentCard';

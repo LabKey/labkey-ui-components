@@ -106,8 +106,8 @@ export const EntityDeleteModal: React.FC<Props> = props => {
         );
     }
 
-    let selectionKey = model && useSelected && !model.isFiltered() ? model.selectionKey : undefined;
-    if (queryModel) selectionKey = queryModel.selectionKey;
+    let selectionKey = model && useSelected && !model.isFiltered() ? model.getId() : undefined;
+    if (queryModel) selectionKey = queryModel.id;
 
     return (
         <>

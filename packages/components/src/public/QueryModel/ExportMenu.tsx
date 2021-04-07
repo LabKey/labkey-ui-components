@@ -29,7 +29,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
 
     render(): ReactNode {
         const { model } = this.props;
-        const { id, hasData, hasSelections } = model;
+        const { id, hasData, hasSelections, selections } = model;
 
         return (
             hasData && (

@@ -4,6 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item 8735: Enable files and attachment data types for sample type designer and data class designer
+    * Refactor AttachmentCard component from LKB ELN and use in FileColumnRenderer.tsx
+    * Enable FileColumnRenderer for DetailsPanel
 
 ### version 2.22.1
 *Released*: 6 April 2021

@@ -13,43 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode, PureComponent } from 'react';
 import { Modal } from 'react-bootstrap';
+
+import { isImage, downloadAttachment } from '../..';
+import { AttachmentCard, IAttachment } from './AttachmentCard';
 
 interface FileColumnRendererProps {
     data?: any;
 }
 
 interface FileColumnRendererState {
-    showModal?: boolean;
+    showModal: boolean;
 }
 
-function isImage(value) {
-    const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'png'];
-    const parts = value.split('.');
-    const extensionType = parts[parts.length - 1].toLowerCase();
+export class FileColumnRenderer extends PureComponent<FileColumnRendererProps, FileColumnRendererState> {
+    state: Readonly<FileColumnRendererState> = {
+        showModal: false,
+    };
 
-    return validImageExtensions.indexOf(extensionType) > -1;
-}
-
-export class FileColumnRenderer extends React.Component<FileColumnRendererProps, FileColumnRendererState> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            showModal: false,
-        };
-    }
-
-    onHide = () => {
+    onHide = (): void => {
         this.setState({ showModal: false });
     };
 
-    onImageClick = () => {
+    onImageClick = (): void => {
         this.setState({ showModal: true });
     };
 
-    render() {
+    onDownload = (attachment: IAttachment): void => {
         const { data } = this.props;
+        const url = data?.get('url');
+        if (url) {
+            downloadAttachment(url, true, attachment.name);
+        }
+    };
+
+    render(): ReactNode {
+        const { data } = this.props;
+        const { showModal } = this.state;
 
         if (!data) {
             return null;
@@ -58,44 +59,48 @@ export class FileColumnRenderer extends React.Component<FileColumnRendererProps,
         const url = data.get('url');
         const value = data.get('value');
         const displayValue = data.get('displayValue');
+        const name = displayValue || value;
 
         // Attachment URLs will look like images, so we check if the URL is an image.
         // FileLink URLs don't look like images, so you have to check value or displayValue.
         if ((url && isImage(url)) || (displayValue && isImage(displayValue)) || (value && isImage(value))) {
-            const title = displayValue || value;
-            const alt = `${title} image`;
+            const alt = `${name} image`;
             return (
                 <>
-                    <img src={url} alt={alt} title={title} onClick={this.onImageClick} className="file-renderer-img" />
+                    <AttachmentCard
+                        allowRemove={false}
+                        attachment={{ name, iconFontCls: 'fa fa-file-image-o' } as IAttachment}
+                        imageURL={url}
+                        imageCls="file-renderer-img"
+                        onClick={this.onImageClick}
+                        onDownload={this.onDownload}
+                    />
 
-                    <Modal bsSize="large" show={this.state.showModal} onHide={this.onHide}>
+                    <Modal bsSize="large" show={showModal} onHide={this.onHide}>
                         <Modal.Header closeButton>
-                            <Modal.Title>{title}</Modal.Title>
+                            <Modal.Title>
+                                <a href={url}>{name}</a>
+                            </Modal.Title>
                         </Modal.Header>
 
                         <Modal.Body>
-                            <img src={url} alt={alt} title={title} className="file-renderer-img__modal" />
+                            <img src={url} alt={alt} title={name} className="file-renderer-img__modal" />
                         </Modal.Body>
                     </Modal>
                 </>
             );
         }
 
-        if (!displayValue) {
+        if (!name) {
             return null;
         }
 
-        const content = (
-            <span>
-                {displayValue}&nbsp;
-                <i className="fa fa-file-o" />
-            </span>
+        return (
+            <AttachmentCard
+                allowRemove={false}
+                attachment={{ name, iconFontCls: 'fa fa-file-o' } as IAttachment}
+                onDownload={this.onDownload}
+            />
         );
-
-        if (url) {
-            return <a href={url}>{content}</a>;
-        }
-
-        return content;
     }
 }

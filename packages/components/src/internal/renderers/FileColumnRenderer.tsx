@@ -65,11 +65,13 @@ export class FileColumnRenderer extends PureComponent<FileColumnRendererProps, F
         // FileLink URLs don't look like images, so you have to check value or displayValue.
         if ((url && isImage(url)) || (displayValue && isImage(displayValue)) || (value && isImage(value))) {
             const alt = `${name} image`;
+            const attachment = { name, iconFontCls: 'fa fa-file-image-o' } as IAttachment;
+
             return (
                 <>
                     <AttachmentCard
                         allowRemove={false}
-                        attachment={{ name, iconFontCls: 'fa fa-file-image-o' } as IAttachment}
+                        attachment={attachment}
                         imageURL={url}
                         imageCls="file-renderer-img"
                         onClick={this.onImageClick}
@@ -79,7 +81,9 @@ export class FileColumnRenderer extends PureComponent<FileColumnRendererProps, F
                     <Modal bsSize="large" show={showModal} onHide={this.onHide}>
                         <Modal.Header closeButton>
                             <Modal.Title>
-                                <a href={url}>{name}</a>
+                                <a onClick={() => this.onDownload(attachment)} style={{ cursor: 'pointer' }}>
+                                    {name}
+                                </a>
                             </Modal.Title>
                         </Modal.Header>
 

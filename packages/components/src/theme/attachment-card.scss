@@ -1,7 +1,5 @@
-// TODO use variables for colors and ...
-
 .attachment-card {
-    border: 1px solid #C7C7C7;
+    border: 1px solid $border-color;
     border-radius: 4px;
     display: inline-flex;
     height: 48px;
@@ -29,21 +27,21 @@
     }
 
     .attachment-card__icon_tile {
-        background-color: #CCE5FF;
+        background-color: $brand-primary;
         border-radius: 50%;
-        color: #004085;
+        color: $white;
         font-size: 18px;
         padding-top: 7px;
         text-align: center;
     }
 }
 .attachment-card__content {
-    border-left: 1px solid #C7C7C7;
+    border-left: 1px solid $border-color;
     padding: 5px 8px;
     width: 138px;
 
     .fa-check-circle {
-        color: #5CB85C;
+        color: $brand-success;
     }
 }
 .attachment-card__menu {
@@ -55,7 +53,7 @@
     }
 
     .dropdown-toggle {
-        color: #777777;
+        color: $gray-light;
         display: block;
         height: 100%;
         padding-left: 50%;
@@ -63,18 +61,18 @@
         font-size: 14px;
 
         &:focus, &:hover {
-            color: #333333;
+            color: $gray-dark;
         }
     }
 }
 .attachment-card__name {
-    color: #2980B9;
+    color: $brand-primary;
     font-size: 14px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 .attachment-card__size {
-    color: #777777;
+    color: $gray-light;
     font-size: 14px;
 }

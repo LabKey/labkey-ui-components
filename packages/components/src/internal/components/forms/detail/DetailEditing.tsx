@@ -37,6 +37,7 @@ interface Props {
     queryColumns?: List<QueryColumn>;
     queryModel: QueryGridModel;
     submitText?: string;
+    detailHeader?: ReactNode;
     title?: string;
     useEditIcon: boolean;
 }
@@ -155,6 +156,7 @@ export class DetailEditing extends Component<Props, State> {
             asSubPanel,
             submitText,
             title,
+            detailHeader,
         } = this.props;
         const { canSubmit, editing, isSubmitting, warning, error } = this.state;
 
@@ -224,7 +226,10 @@ export class DetailEditing extends Component<Props, State> {
         return (
             <Panel>
                 <Panel.Heading>{header}</Panel.Heading>
-                <Panel.Body>{detail}</Panel.Body>
+                <Panel.Body>
+                    {detailHeader && !editingMode ? detailHeader : null}
+                    {detail}
+                </Panel.Body>
             </Panel>
         );
     }

@@ -1,5 +1,5 @@
-import { ActionURL, Ajax, Filter, Utils } from '@labkey/api';
-import { fromJS, List, Map } from 'immutable';
+import {ActionURL, Ajax, Filter, Utils} from '@labkey/api';
+import {fromJS, List, Map} from 'immutable';
 
 import {
     buildURL,
@@ -23,7 +23,7 @@ import {
     IEntityTypeOption,
     IParentOption,
 } from './models';
-import { DataClassDataType, SampleTypeDataType } from './constants';
+import {DataClassDataType, SampleTypeDataType} from './constants';
 
 export interface DeleteConfirmationData {
     canDelete: any[];
@@ -200,7 +200,8 @@ export function extractEntityTypeOptionFromRow(row: Map<string, any>, lowerCaseV
 export function getChosenParentData(
     model: EntityIdCreationModel,
     parentEntityDataTypes: Map<string, EntityDataType>,
-    allowParents: boolean
+    allowParents: boolean,
+    creationType: SampleCreationType
 ): Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
         const entityParents = EntityIdCreationModel.getEmptyEntityParents(
@@ -225,7 +226,7 @@ export function getChosenParentData(
                             : parentRep.value.size * numPerParent
                         : 0;
 
-                    if (validEntityCount >= 1 || parentRep?.isParentTypeOnly) {
+                    if (validEntityCount >= 1 || parentRep?.isParentTypeOnly || creationType === SampleCreationType.Aliquots) {
                         resolve({
                             entityCount: validEntityCount,
                             entityParents: entityParents.set(
@@ -312,7 +313,7 @@ export function getEntityTypeData(
         const promises: Array<Promise<any>> = [
             getEntityTypeOptions(entityDataType),
             // get all the parent schemaQuery data
-            getChosenParentData(model, parentSchemaQueries, allowParents),
+            getChosenParentData(model, parentSchemaQueries, allowParents, model.creationType),
             ...parentSchemaQueries.map(getEntityTypeOptions).toArray(),
         ];
 

@@ -866,7 +866,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel, creationType } = this.state;
-        const { creationTypeOptions, entityDataType, nounPlural, nounSingular, onBulkAdd } = this.props;
+        const { creationTypeOptions, nounPlural, nounSingular, onBulkAdd } = this.props;
 
         const columnMetadata = this.getGeneratedIdColumnMetadata();
 
@@ -877,6 +877,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const gridNounSingularCap = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_SINGULAR) : this.capNounSingular;
         const gridNounPluralCap = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_PLURAL) : this.capNounPlural;
         const gridNounPlural = isAliquotCreation ? ALIQUOT_NOUN_PLURAL : nounPlural;
+
+        let bulkCreationTypeOptions = creationTypeOptions;
+        const selectedType = creationTypeOptions.find(type => type.type === creationType);
+        if (selectedType)
+            bulkCreationTypeOptions = bulkCreationTypeOptions.filter(option => option.typeGroup === selectedType.typeGroup);
 
         return (
             <>
@@ -906,7 +911,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                 header: `Add a batch of ${gridNounPlural} that will share the properties set below.`,
                                 columnFilter: this.columnFilter,
                                 fieldValues: this.getBulkAddFormValues(),
-                                creationTypeOptions,
+                                creationTypeOptions: bulkCreationTypeOptions,
                                 countText: `New ${gridNounPlural}`,
                             }}
                             onBulkAdd={onBulkAdd}

@@ -661,22 +661,13 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
         const { fillEmptyFields, rows, schemaQuery, auditBehavior, auditUserComment } = options;
         const _rows = fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows;
 
-        const config = {
+        Query.insertRows({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             rows: _rows.toArray(),
             auditBehavior,
             auditUserComment,
             apiVersion: 13.2,
-        };
-
-        // if the caller has provided a FormData object, put the config props into the form as a json string
-        if (options.form && options.form instanceof FormData && !options.form.has('json')) {
-            options.form.append('json', JSON.stringify(config));
-        }
-
-        Query.insertRows({
-            ...config,
             form: options.form,
             success: response => {
                 resolve(
@@ -750,22 +741,13 @@ interface IUpdateRowsOptions {
 
 export function updateRows(options: IUpdateRowsOptions): Promise<any> {
     return new Promise((resolve, reject) => {
-        const config = {
+        Query.updateRows({
             containerPath: options.containerPath ? options.containerPath : LABKEY.container.path,
             schemaName: options.schemaQuery.schemaName,
             queryName: options.schemaQuery.queryName,
             rows: options.rows,
             auditBehavior: options.auditBehavior,
             auditUserComment: options.auditUserComment,
-        };
-
-        // if the caller has provided a FormData object, put the config props into the form as a json string
-        if (options.form && options.form instanceof FormData && !options.form.has('json')) {
-            options.form.append('json', JSON.stringify(config));
-        }
-
-        Query.updateRows({
-            ...config,
             form: options.form,
             success: response => {
                 resolve(

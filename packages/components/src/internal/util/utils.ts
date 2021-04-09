@@ -472,7 +472,7 @@ export function isNonNegativeFloat(value: number | string): boolean {
 }
 
 export function isImage(value): boolean {
-    const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'png', 'tif'];
+    const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'png', 'svg', 'tif'];
     const parts = value.split('.');
     const extensionType = parts[parts.length - 1].toLowerCase();
 

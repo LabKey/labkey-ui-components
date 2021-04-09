@@ -130,9 +130,10 @@ export class DetailEditing extends Component<Props, State> {
         const queryInfo = queryModel.queryInfo;
         const schemaQuery = queryInfo.schemaQuery;
         const updatedValues = extractChanges(queryInfo, queryData, values);
+        const hasFileUpdates = Object.keys(fileMap).length > 0;
 
         // If form contains new values, proceed to update
-        if (Object.keys(updatedValues).length > 0 || Object.keys(fileMap).length > 0) {
+        if (Object.keys(updatedValues).length > 0 || hasFileUpdates) {
             // iterate the set of pkCols for this QueryInfo -- include value from queryData
             queryInfo.getPkCols().forEach(pkCol => {
                 const pkVal = queryData.getIn([pkCol.fieldKey, 'value']);
@@ -144,25 +145,21 @@ export class DetailEditing extends Component<Props, State> {
                 }
             });
 
-            const form = new FormData();
-            form.append(
-                'json',
-                JSON.stringify({
-                    schemaName: schemaQuery.getSchema(),
-                    queryName: schemaQuery.getQuery(),
-                    auditBehavior,
-                    rows: [updatedValues],
-                })
-            );
-            Object.keys(fileMap).forEach(key => {
-                form.append(key, fileMap[key] ?? EMPTY_FILE_FOR_DELETE);
-            });
+            let form;
+            if (hasFileUpdates) {
+                form = new FormData();
+                Object.keys(fileMap).forEach(key => {
+                    form.append(key, fileMap[key] ?? EMPTY_FILE_FOR_DELETE);
+                });
+            }
 
-            return Ajax.request({
-                url: ActionURL.buildURL('query', 'updateRows.api'),
-                method: 'POST',
+            return updateRows({
+                schemaQuery,
+                rows: [updatedValues],
                 form,
-                success: Utils.getCallbackWrapper(() => {
+                auditBehavior,
+            })
+                .then(() => {
                     this.setState(
                         () => ({ isSubmitting: false, editing: false }),
                         () => {
@@ -170,39 +167,15 @@ export class DetailEditing extends Component<Props, State> {
                             onEditToggle?.(false);
                         }
                     );
-                }),
-                failure: Utils.getCallbackWrapper(error => {
+                })
+                .catch(error => {
                     console.error(error);
                     this.setState(() => ({
                         warning: undefined,
                         isSubmitting: false,
                         error: resolveErrorMessage(error, 'data', undefined, 'update'),
                     }));
-                }),
-            });
-
-            // return updateRows({
-            //     schemaQuery,
-            //     rows: [updatedValues],
-            //     auditBehavior,
-            // })
-            //     .then(() => {
-            //         this.setState(
-            //             () => ({ isSubmitting: false, editing: false }),
-            //             () => {
-            //                 onUpdate?.();
-            //                 onEditToggle?.(false);
-            //             }
-            //         );
-            //     })
-            //     .catch(error => {
-            //         console.error(error);
-            //         this.setState(() => ({
-            //             warning: undefined,
-            //             isSubmitting: false,
-            //             error: resolveErrorMessage(error, 'data', undefined, 'update'),
-            //         }));
-            //     });
+                });
         } else {
             this.setState({
                 canSubmit: false,

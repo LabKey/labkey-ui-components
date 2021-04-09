@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.##.#
+*Released*: # April 2021
+* Pass already supplied `containerPath` to `getQueryDetails()` for fetching underlying metadata for `<QuerySelect />`.
+
 ### version 2.22.2
 *Released*: 9 April 2021
 * Add showImportDataButton, showInsertNewButton and isFiltered to QueryModel

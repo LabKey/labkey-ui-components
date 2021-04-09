@@ -14,32 +14,16 @@
  * limitations under the License.
  */
 import React, { ReactNode, PureComponent } from 'react';
-import { Modal } from 'react-bootstrap';
 
 import { isImage, downloadAttachment } from '../..';
 import { AttachmentCard, IAttachment } from './AttachmentCard';
 
-interface FileColumnRendererProps {
+interface Props {
     data?: any;
+    onRemove?: (attachment: IAttachment) => void;
 }
 
-interface FileColumnRendererState {
-    showModal: boolean;
-}
-
-export class FileColumnRenderer extends PureComponent<FileColumnRendererProps, FileColumnRendererState> {
-    state: Readonly<FileColumnRendererState> = {
-        showModal: false,
-    };
-
-    onHide = (): void => {
-        this.setState({ showModal: false });
-    };
-
-    onImageClick = (): void => {
-        this.setState({ showModal: true });
-    };
-
+export class FileColumnRenderer extends PureComponent<Props> {
     onDownload = (attachment: IAttachment): void => {
         const { data } = this.props;
         const url = data?.get('url');
@@ -49,8 +33,7 @@ export class FileColumnRenderer extends PureComponent<FileColumnRendererProps, F
     };
 
     render(): ReactNode {
-        const { data } = this.props;
-        const { showModal } = this.state;
+        const { data, onRemove } = this.props;
 
         if (!data) {
             return null;
@@ -61,50 +44,26 @@ export class FileColumnRenderer extends PureComponent<FileColumnRendererProps, F
         const displayValue = data.get('displayValue');
         const name = displayValue || value;
 
-        // Attachment URLs will look like images, so we check if the URL is an image.
-        // FileLink URLs don't look like images, so you have to check value or displayValue.
-        if ((url && isImage(url)) || (displayValue && isImage(displayValue)) || (value && isImage(value))) {
-            const alt = `${name} image`;
-            const attachment = { name, iconFontCls: 'fa fa-file-image-o' } as IAttachment;
-
-            return (
-                <>
-                    <AttachmentCard
-                        allowRemove={false}
-                        attachment={attachment}
-                        imageURL={url}
-                        imageCls="file-renderer-img"
-                        onClick={this.onImageClick}
-                        onDownload={this.onDownload}
-                    />
-
-                    <Modal bsSize="large" show={showModal} onHide={this.onHide}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>
-                                <a onClick={() => this.onDownload(attachment)} style={{ cursor: 'pointer' }}>
-                                    {name}
-                                </a>
-                            </Modal.Title>
-                        </Modal.Header>
-
-                        <Modal.Body>
-                            <img src={url} alt={alt} title={name} className="file-renderer-img__modal" />
-                        </Modal.Body>
-                    </Modal>
-                </>
-            );
-        }
-
         if (!name) {
             return null;
         }
 
+        // Attachment URLs will look like images, so we check if the URL is an image.
+        // FileLink URLs don't look like images, so you have to check value or displayValue.
+        const _isImage = (url && isImage(url)) || (displayValue && isImage(displayValue)) || (value && isImage(value));
+        const attachment = { name, iconFontCls: _isImage ? 'fa fa-file-image-o' : 'fa fa-file-o' } as IAttachment;
+
         return (
-            <AttachmentCard
-                allowRemove={false}
-                attachment={{ name, iconFontCls: 'fa fa-file-o' } as IAttachment}
-                onDownload={this.onDownload}
-            />
+            <>
+                <AttachmentCard
+                    attachment={attachment}
+                    imageURL={_isImage ? url : undefined}
+                    imageCls="attachment-card__img"
+                    onDownload={this.onDownload}
+                    allowRemove={onRemove !== undefined}
+                    onRemove={onRemove}
+                />
+            </>
         );
     }
 }

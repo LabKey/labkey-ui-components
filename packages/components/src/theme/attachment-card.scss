@@ -76,3 +76,11 @@
     color: $gray-light;
     font-size: 14px;
 }
+
+.attachment-card__img {
+    max-width: 70px;
+    cursor: pointer;
+}
+.attachment-card__img_modal {
+    max-width: 100%;
+}

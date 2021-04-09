@@ -145,6 +145,7 @@ export class DetailEditing extends Component<Props, State> {
                 }
             });
 
+            // to support file/attachment columns, we need to pass them in as FormData and updateRows will handle the rest
             let form;
             if (hasFileUpdates) {
                 form = new FormData();

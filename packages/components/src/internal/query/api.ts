@@ -626,6 +626,7 @@ export interface InsertRowsOptions {
     schemaQuery: SchemaQuery;
     auditBehavior?: AuditBehaviorTypes;
     auditUserComment?: string;
+    form?: FormData;
 }
 
 export class InsertRowsResponse extends Record({
@@ -660,13 +661,23 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
         const { fillEmptyFields, rows, schemaQuery, auditBehavior, auditUserComment } = options;
         const _rows = fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows;
 
-        Query.insertRows({
+        const config = {
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             rows: _rows.toArray(),
             auditBehavior,
             auditUserComment,
             apiVersion: 13.2,
+        };
+
+        // if the caller has provided a FormData object, put the config props into the form as a json string
+        if (options.form && options.form instanceof FormData && !options.form.has('json')) {
+            options.form.append('json', JSON.stringify(config));
+        }
+
+        Query.insertRows({
+            ...config,
+            form: options.form,
             success: response => {
                 resolve(
                     new InsertRowsResponse({

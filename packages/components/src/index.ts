@@ -344,7 +344,7 @@ import {
     getSampleDeleteConfirmationData,
 } from './internal/components/entities/actions';
 import { DataClassDataType, SampleTypeDataType } from './internal/components/entities/constants';
-import { createEntityParentKey } from './internal/components/entities/utils';
+import { createEntityParentKey, getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
@@ -594,6 +594,7 @@ export {
     getSampleDeleteConfirmationData,
     getDataDeleteConfirmationData,
     createEntityParentKey,
+    getUniqueIdColumnMetadata,
     // search related items
     SearchResultsModel,
     SearchResultCard,

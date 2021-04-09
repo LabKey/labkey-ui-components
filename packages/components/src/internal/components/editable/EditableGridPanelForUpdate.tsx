@@ -3,7 +3,7 @@ import { List, Map } from 'immutable';
 
 import { getEditorModel } from '../../global';
 
-import { QueryGridModel, SchemaQuery, WizardNavButtons } from '../../..';
+import {EditableColumnMetadata, QueryColumn, QueryGridModel, SchemaQuery, WizardNavButtons} from '../../..';
 import { capitalizeFirstChar, getUpdatedDataFromGrid } from '../../util/utils';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
@@ -18,8 +18,11 @@ interface Props {
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
     idField: string;
     readOnlyColumns?: List<string>;
+    readonlyRows?: List<any>;
     singularNoun?: string;
     pluralNoun?: string;
+    columnMetadata?: Map<string, EditableColumnMetadata>;
+    getUpdateColumns?: () => List<QueryColumn>;
 }
 
 interface State {
@@ -65,7 +68,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     };
 
     render() {
-        const { model, readOnlyColumns, onCancel, singularNoun, pluralNoun } = this.props;
+        const { model, readOnlyColumns, readonlyRows, onCancel, singularNoun, pluralNoun, columnMetadata, getUpdateColumns } = this.props;
         const { isSubmitting } = this.state;
 
         return (
@@ -75,12 +78,14 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                     bsStyle="info"
                     model={model}
                     readOnlyColumns={readOnlyColumns}
+                    readonlyRows={readonlyRows}
                     allowAdd={false}
                     allowRemove={false}
                     bordered={true}
                     striped={true}
                     forUpdate={true}
-                    columnMetadata={getUniqueIdColumnMetadata(model.queryInfo)}
+                    columnMetadata={columnMetadata ? columnMetadata : getUniqueIdColumnMetadata(model.queryInfo)}
+                    getUpdateColumns={getUpdateColumns}
                 />
                 <WizardNavButtons
                     cancel={onCancel}

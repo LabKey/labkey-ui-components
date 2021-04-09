@@ -357,4 +357,9 @@ export class QueryInfo extends Record({
 
         return [];
     }
+
+    getInsertQueryInfo(): QueryInfo {
+        const updateColumns = this.columns.filter(column => column.shownInInsertView && !column.isFileInput);
+        return this.set('columns', updateColumns) as QueryInfo;
+    }
 }

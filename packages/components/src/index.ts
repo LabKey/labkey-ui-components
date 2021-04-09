@@ -207,7 +207,6 @@ import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
 import { FileColumnRenderer } from './internal/renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './internal/renderers/MultiValueRenderer';
 import { LabelColorRenderer } from './internal/renderers/LabelColorRenderer';
-import { BulkAddUpdateForm } from './internal/components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
 import { resolveDetailFieldValue, resolveRenderer } from './internal/components/forms/renderers';
@@ -512,7 +511,6 @@ export {
     resolveDetailRenderer,
     resolveRenderer,
     // form related items
-    BulkAddUpdateForm,
     BulkUpdateForm,
     QueryFormInputs,
     LookupSelectInput,

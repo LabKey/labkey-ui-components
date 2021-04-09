@@ -110,7 +110,10 @@ export class BulkUpdateForm extends React.Component<Props, State> {
         const { queryInfo, uniqueFieldKey } = this.props;
         const lcUniqueFieldKey = uniqueFieldKey ? uniqueFieldKey.toLowerCase() : undefined;
         const updateColumns = queryInfo.columns.filter(
-            column => column.shownInUpdateView && (!lcUniqueFieldKey || column.name.toLowerCase() !== lcUniqueFieldKey)
+            column =>
+                column.shownInUpdateView &&
+                (!lcUniqueFieldKey || column.name.toLowerCase() !== lcUniqueFieldKey) &&
+                !column.isFileInput
         );
         return queryInfo.set('columns', updateColumns) as QueryInfo;
     }

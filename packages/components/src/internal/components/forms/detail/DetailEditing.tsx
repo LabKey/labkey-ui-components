@@ -17,13 +17,23 @@ import React, { Component, ReactNode } from 'react';
 import { Button, Panel } from 'react-bootstrap';
 import { List } from 'immutable';
 import Formsy from 'formsy-react';
-import { AuditBehaviorTypes } from '@labkey/api';
+import { ActionURL, Ajax, AuditBehaviorTypes, Utils } from '@labkey/api';
 
-import { updateRows, Alert, resolveErrorMessage, QueryColumn, QueryGridModel } from '../../../..';
+import {
+    updateRows,
+    Alert,
+    resolveErrorMessage,
+    QueryColumn,
+    QueryGridModel,
+    FileColumnRenderer,
+    FileInput,
+} from '../../../..';
 
 import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { extractChanges } from './utils';
+
+const EMPTY_FILE_FOR_DELETE = new File([], '');
 
 interface Props {
     appEditable?: boolean;
@@ -47,6 +57,7 @@ interface State {
     error: ReactNode;
     isSubmitting: boolean;
     warning: string;
+    fileMap: Record<string, File>;
 }
 
 export class DetailEditing extends Component<Props, State> {
@@ -62,6 +73,7 @@ export class DetailEditing extends Component<Props, State> {
         warning: undefined,
         error: undefined,
         isSubmitting: false,
+        fileMap: {},
     };
 
     disableSubmitButton = (): void => {
@@ -89,17 +101,38 @@ export class DetailEditing extends Component<Props, State> {
         }
     };
 
+    handleFileInputChange = (fileMap: Record<string, File>): void => {
+        this.setState(state => ({
+            fileMap: { ...state.fileMap, ...fileMap },
+        }));
+    };
+
+    fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
+        const updatedFile = this.state.fileMap[col.name];
+        const value = data?.get('value');
+
+        // check to see if an existing file for this column has been removed / changed
+        if (value && updatedFile === undefined) {
+            return <FileColumnRenderer data={data} onRemove={() => this.handleFileInputChange({ [col.name]: null })} />;
+        }
+
+        return (
+            <FileInput key={col.fieldKey} queryColumn={col} showLabel={false} onChange={this.handleFileInputChange} />
+        );
+    };
+
     handleSubmit = values => {
         this.setState(() => ({ isSubmitting: true }));
 
         const { auditBehavior, queryModel, onEditToggle, onUpdate } = this.props;
+        const { fileMap } = this.state;
         const queryData = queryModel.getRow();
         const queryInfo = queryModel.queryInfo;
         const schemaQuery = queryInfo.schemaQuery;
         const updatedValues = extractChanges(queryInfo, queryData, values);
 
         // If form contains new values, proceed to update
-        if (Object.keys(updatedValues).length > 0) {
+        if (Object.keys(updatedValues).length > 0 || Object.keys(fileMap).length > 0) {
             // iterate the set of pkCols for this QueryInfo -- include value from queryData
             queryInfo.getPkCols().forEach(pkCol => {
                 const pkVal = queryData.getIn([pkCol.fieldKey, 'value']);
@@ -111,12 +144,25 @@ export class DetailEditing extends Component<Props, State> {
                 }
             });
 
-            return updateRows({
-                schemaQuery,
-                rows: [updatedValues],
-                auditBehavior,
-            })
-                .then(() => {
+            const form = new FormData();
+            form.append(
+                'json',
+                JSON.stringify({
+                    schemaName: schemaQuery.getSchema(),
+                    queryName: schemaQuery.getQuery(),
+                    auditBehavior,
+                    rows: [updatedValues],
+                })
+            );
+            Object.keys(fileMap).forEach(key => {
+                form.append(key, fileMap[key] ?? EMPTY_FILE_FOR_DELETE);
+            });
+
+            return Ajax.request({
+                url: ActionURL.buildURL('query', 'updateRows.api'),
+                method: 'POST',
+                form,
+                success: Utils.getCallbackWrapper(() => {
                     this.setState(
                         () => ({ isSubmitting: false, editing: false }),
                         () => {
@@ -124,15 +170,39 @@ export class DetailEditing extends Component<Props, State> {
                             onEditToggle?.(false);
                         }
                     );
-                })
-                .catch(error => {
+                }),
+                failure: Utils.getCallbackWrapper(error => {
                     console.error(error);
                     this.setState(() => ({
                         warning: undefined,
                         isSubmitting: false,
                         error: resolveErrorMessage(error, 'data', undefined, 'update'),
                     }));
-                });
+                }),
+            });
+
+            // return updateRows({
+            //     schemaQuery,
+            //     rows: [updatedValues],
+            //     auditBehavior,
+            // })
+            //     .then(() => {
+            //         this.setState(
+            //             () => ({ isSubmitting: false, editing: false }),
+            //             () => {
+            //                 onUpdate?.();
+            //                 onEditToggle?.(false);
+            //             }
+            //         );
+            //     })
+            //     .catch(error => {
+            //         console.error(error);
+            //         this.setState(() => ({
+            //             warning: undefined,
+            //             isSubmitting: false,
+            //             error: resolveErrorMessage(error, 'data', undefined, 'update'),
+            //         }));
+            //     });
         } else {
             this.setState({
                 canSubmit: false,
@@ -183,6 +253,7 @@ export class DetailEditing extends Component<Props, State> {
                 editingMode={editingMode}
                 queryColumns={queryColumns}
                 queryModel={queryModel}
+                fileInputRenderer={this.fileInputRenderer}
             />
         );
 

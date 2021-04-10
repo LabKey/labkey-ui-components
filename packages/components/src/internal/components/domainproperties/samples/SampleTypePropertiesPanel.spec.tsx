@@ -19,9 +19,8 @@ import { mount } from 'enzyme';
 import { fromJS, Map } from 'immutable';
 
 import { sleep } from '../../../testHelpers';
-import { initUnitTestMocks } from '../../../testHelperMocks';
 import { ENTITY_FORM_IDS } from '../entities/constants';
-import { DomainDesign, DomainDetails, DomainPanelStatus } from '../models';
+import { DomainDetails, DomainPanelStatus } from '../models';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';

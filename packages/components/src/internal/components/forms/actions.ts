@@ -61,7 +61,9 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
         const { componentId, schemaQuery, containerPath } = props;
 
         if (schemaQuery) {
-            getQueryDetails(schemaQuery)
+            const { queryName, schemaName } = schemaQuery;
+
+            getQueryDetails({ schemaName, queryName, containerPath })
                 .then(queryInfo => {
                     const valueColumn = initValueColumn(queryInfo, props.valueColumn);
                     const displayColumn = initDisplayColumn(queryInfo, props.displayColumn);
@@ -89,8 +91,8 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
 
                         selectRows({
                             containerPath,
-                            schemaName: schemaQuery.schemaName,
-                            queryName: schemaQuery.queryName,
+                            schemaName,
+                            queryName,
                             filterArray: [filter],
                         }).then(data => {
                             const { componentId } = props;

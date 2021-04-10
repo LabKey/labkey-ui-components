@@ -357,4 +357,12 @@ export class QueryInfo extends Record({
 
         return [];
     }
+
+    getShowImportDataButton(): boolean {
+        return this.showInsertNewButton && this.importUrl && !this.importUrlDisabled;
+    }
+
+    getShowInsertNewButton(): boolean {
+        return this.showInsertNewButton && this.insertUrl && !this.insertUrlDisabled;
+    }
 }

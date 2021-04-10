@@ -775,6 +775,22 @@ export class QueryModel {
         };
     }
 
+    get showImportDataButton(): boolean {
+        return this.queryInfo?.getShowImportDataButton();
+    }
+
+    get showInsertNewButton(): boolean {
+        return this.queryInfo?.getShowInsertNewButton();
+    }
+
+    get isFiltered(): boolean {
+        return (
+            this.baseFilters?.length > 0 ||
+            this.filterArray?.length > 0 ||
+            this.queryInfo?.getFilters(this.schemaQuery.viewName)?.size > 0
+        );
+    }
+
     /**
      * Returns the model attributes given a set of queryParams from the URL. Used for URL Binding.
      * @param queryParams: The query attribute from a ReactRouter Location object.

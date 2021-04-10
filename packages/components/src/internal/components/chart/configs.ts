@@ -1,7 +1,8 @@
 import { AppURL, App, SCHEMAS } from '../../..';
 
-import { ChartConfig, ChartSelector } from './types';
 import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
+
+import { ChartConfig, ChartSelector } from './types';
 
 const CHART_SELECTORS: Record<string, ChartSelector> = {
     All: { name: 'TotalCount', label: 'All' },

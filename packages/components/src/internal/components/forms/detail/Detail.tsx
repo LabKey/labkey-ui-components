@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { PureComponent } from 'react';
+import React, { FC, memo } from 'react';
 import { List } from 'immutable';
 
 import { LoadingSpinner, QueryColumn, QueryGridModel } from '../../../..';
@@ -21,38 +21,25 @@ import { LoadingSpinner, QueryColumn, QueryGridModel } from '../../../..';
 import { DetailDisplay, DetailDisplaySharedProps } from './DetailDisplay';
 
 interface DetailProps extends DetailDisplaySharedProps {
-    queryModel?: QueryGridModel;
+    editColumns?: List<QueryColumn>;
     queryColumns?: List<QueryColumn>;
+    queryModel?: QueryGridModel;
 }
 
-export class Detail extends PureComponent<DetailProps> {
-    get detailDisplayProps(): DetailDisplaySharedProps {
-        const { queryColumns, queryModel, ...detailDisplayProps } = this.props;
-        return detailDisplayProps;
-    }
+export const Detail: FC<DetailProps> = memo(props => {
+    const { editColumns, queryColumns, queryModel, ...detailDisplayProps } = props;
+    let displayColumns: List<QueryColumn>;
 
-    render() {
-        const { editingMode, queryColumns, queryModel } = this.props;
-
-        if (queryModel && queryModel.isLoaded) {
-            let displayColumns: List<QueryColumn>;
-            if (queryColumns) {
-                displayColumns = queryColumns;
-            } else if (editingMode) {
-                displayColumns = queryModel.getUpdateDisplayColumns();
-            } else {
-                displayColumns = queryModel.getDetailsDisplayColumns();
-            }
-
-            return (
-                <DetailDisplay
-                    {...this.detailDisplayProps}
-                    data={queryModel.getData()}
-                    displayColumns={displayColumns}
-                />
-            );
-        }
-
+    if (!queryModel?.isLoaded) {
         return <LoadingSpinner />;
     }
-}
+
+    // This logic should be kept consistent with corollary logic in <DetailPanel/>
+    if (props.editingMode) {
+        displayColumns = editColumns ?? queryModel.getUpdateDisplayColumns();
+    } else {
+        displayColumns = queryColumns ?? queryModel.getDetailsDisplayColumns();
+    }
+
+    return <DetailDisplay {...detailDisplayProps} data={queryModel.getData()} displayColumns={displayColumns} />;
+});

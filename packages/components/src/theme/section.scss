@@ -83,6 +83,12 @@
 .section-panel--title-medium {
     display: inline-block;
     font-size: 125%;
-    color: $gray-light;
+    color: $gray;
     margin-bottom: 8px;
+}
+
+.alert {
+    .alert-button {
+        padding: 0 12px;
+    }
 }

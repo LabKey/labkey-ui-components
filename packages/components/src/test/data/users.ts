@@ -1,4 +1,5 @@
 import { List } from 'immutable';
+import { PermissionTypes } from '@labkey/api';
 
 import { User } from '../..';
 
@@ -16,7 +17,7 @@ export const TEST_USER_GUEST = new User({
     isSignedIn: false,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>(['org.labkey.api.security.permissions.ReadPermission']),
+    permissionsList: List<string>([PermissionTypes.Read]),
 });
 
 export const TEST_USER_READER = new User({
@@ -35,7 +36,7 @@ export const TEST_USER_READER = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>(['org.labkey.api.security.permissions.ReadPermission']),
+    permissionsList: List<string>([PermissionTypes.Read]),
 });
 
 export const TEST_USER_AUTHOR = new User({
@@ -54,10 +55,7 @@ export const TEST_USER_AUTHOR = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: true,
-    permissionsList: List<string>([
-        'org.labkey.api.security.permissions.ReadPermission',
-        'org.labkey.api.security.permissions.InsertPermission',
-    ]),
+    permissionsList: List<string>([PermissionTypes.Read, PermissionTypes.Insert]),
 });
 
 export const TEST_USER_EDITOR = new User({
@@ -77,10 +75,10 @@ export const TEST_USER_EDITOR = new User({
     isSystemAdmin: false,
     isTrusted: true,
     permissionsList: List<string>([
-        'org.labkey.api.security.permissions.DeletePermission',
-        'org.labkey.api.security.permissions.ReadPermission',
-        'org.labkey.api.security.permissions.InsertPermission',
-        'org.labkey.api.security.permissions.UpdatePermission',
+        PermissionTypes.Delete,
+        PermissionTypes.Read,
+        PermissionTypes.Insert,
+        PermissionTypes.Update,
     ]),
 });
 
@@ -100,10 +98,7 @@ export const TEST_USER_ASSAY_DESIGNER = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([
-        'org.labkey.api.security.permissions.ReadPermission',
-        'org.labkey.api.assay.security.DesignAssayPermission',
-    ]),
+    permissionsList: List<string>([PermissionTypes.Read, PermissionTypes.DesignAssay]),
 });
 
 export const TEST_USER_FOLDER_ADMIN = new User({
@@ -123,14 +118,14 @@ export const TEST_USER_FOLDER_ADMIN = new User({
     isSystemAdmin: false,
     isTrusted: true,
     permissionsList: List<string>([
-        'org.labkey.api.security.permissions.DeletePermission',
-        'org.labkey.api.security.permissions.ReadPermission',
-        'org.labkey.api.security.permissions.DesignDataClassPermission',
-        'org.labkey.api.security.permissions.DesignSampleSetPermission',
-        'org.labkey.api.assay.security.DesignAssayPermission',
-        'org.labkey.api.security.permissions.InsertPermission',
-        'org.labkey.api.security.permissions.UpdatePermission',
-        'org.labkey.api.security.permissions.AdminPermission',
+        PermissionTypes.Delete,
+        PermissionTypes.Read,
+        PermissionTypes.DesignDataClass,
+        PermissionTypes.DesignSampleSet,
+        PermissionTypes.DesignAssay,
+        PermissionTypes.Insert,
+        PermissionTypes.Update,
+        PermissionTypes.Admin,
     ]),
 });
 
@@ -151,15 +146,15 @@ export const TEST_USER_APP_ADMIN = new User({
     isSystemAdmin: false,
     isTrusted: false,
     permissionsList: List<string>([
-        'org.labkey.api.security.permissions.DeletePermission',
-        'org.labkey.api.security.permissions.ReadPermission',
-        'org.labkey.api.security.permissions.DesignDataClassPermission',
-        'org.labkey.api.security.permissions.DesignSampleSetPermission',
-        'org.labkey.api.assay.security.DesignAssayPermission',
-        'org.labkey.api.security.permissions.InsertPermission',
-        'org.labkey.api.security.permissions.UpdatePermission',
-        'org.labkey.api.security.permissions.AdminPermission',
-        'org.labkey.api.security.permissions.UserManagementPermission',
-        'org.labkey.api.security.permissions.ApplicationAdminPermission',
+        PermissionTypes.Delete,
+        PermissionTypes.Read,
+        PermissionTypes.DesignDataClass,
+        PermissionTypes.DesignSampleSet,
+        PermissionTypes.DesignAssay,
+        PermissionTypes.Insert,
+        PermissionTypes.Update,
+        PermissionTypes.Admin,
+        PermissionTypes.UserManagement,
+        PermissionTypes.ApplicationAdmin,
     ]),
 });

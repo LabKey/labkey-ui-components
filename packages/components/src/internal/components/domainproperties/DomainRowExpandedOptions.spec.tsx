@@ -1,6 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
+import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
+
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { DomainField } from './models';
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DOMAIN_FIELD_FULLY_LOCKED } from './constants';
@@ -15,7 +17,6 @@ import {
     SAMPLE_TYPE,
     TEXT_TYPE,
 } from './PropDescType';
-import { OntologyLookupOptions } from './OntologyLookupOptions';
 import { TextFieldOptions } from './TextFieldOptions';
 import { BooleanFieldOptions } from './BooleanFieldOptions';
 import { DateTimeFieldOptions } from './DateTimeFieldOptions';
@@ -24,11 +25,13 @@ import { LookupFieldOptions } from './LookupFieldOptions';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
+import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
 
 const DEFAULT_PROPS = {
     index: 1,
     domainIndex: 1,
     domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    serverModuleNames: undefined,
     onChange: jest.fn(),
     onMultiChange: jest.fn(),
     showingModal: jest.fn(),
@@ -43,7 +46,7 @@ describe('DomainExpandedOptions', () => {
         expect(row.find(LookupFieldOptions)).toHaveLength(expected.lookup || 0);
         expect(row.find(SampleFieldOptions)).toHaveLength(expected.sample || 0);
         expect(row.find(OntologyLookupOptions)).toHaveLength(expected.ontologyLookup || 0);
-
+        expect(row.find(DerivationDataScopeFieldOptions)).toHaveLength(expected.aliquot || 0);
         expect(row.find(NameAndLinkingOptions)).toHaveLength(1);
         expect(row.find(ConditionalFormattingAndValidation)).toHaveLength(expectCondFormAndVal ? 1 : 0);
     }
@@ -178,6 +181,19 @@ describe('DomainExpandedOptions', () => {
 
         const row = mount(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
         validateRender(row, { text: 1 }, false);
+        row.unmount();
+    });
+
+    test('Include DerivationDataScope', () => {
+        const field = DomainField.create({
+            rangeURI: BOOLEAN_TYPE.rangeURI,
+        });
+
+        const displayOption = { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS };
+        displayOption['derivationDataScopeConfig'] = { show: true };
+        const props = { ...DEFAULT_PROPS, ...{ domainFormDisplayOptions: displayOption } };
+        const row = mount(<DomainRowExpandedOptions {...props} field={field} />);
+        validateRender(row, { boolean: 1, aliquot: 1 });
         row.unmount();
     });
 });

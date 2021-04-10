@@ -1,20 +1,22 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { PureComponent, ReactNode, FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { getServerContext } from '@labkey/api';
 
 import { DomainField, LabelHelpTip } from '../../..';
-import { helpLinkNode, ONTOLOGY_TOPIC } from '../../util/helpLinks';
+import { helpLinkNode, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
-import { isFieldFullyLocked } from './propertiesUtil';
-import { createFormInputId, fetchOntologies } from './actions';
+import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
+import { createFormInputId, fetchOntologies } from '../domainproperties/actions';
 import {
     DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
     DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
     DOMAIN_FIELD_ONTOLOGY_SOURCE,
-} from './constants';
-import { ITypeDependentProps, OntologyModel } from './models';
-import { SectionHeading } from './SectionHeading';
+} from '../domainproperties/constants';
+import { ITypeDependentProps } from '../domainproperties/models';
+import { SectionHeading } from '../domainproperties/SectionHeading';
+
+import { OntologyModel } from './models';
 
 interface Props extends ITypeDependentProps {
     field: DomainField;
@@ -77,42 +79,15 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
         return createFormInputId(DOMAIN_FIELD_ONTOLOGY_SOURCE, domainIndex, index);
     }
 
-    renderTextDomainFieldSelect(id: string, value: string, filterValue: string): ReactNode {
-        const { domainFields, lockType, field } = this.props;
-
-        return (
-            <FormControl
-                componentClass="select"
-                id={id}
-                key={id}
-                disabled={isFieldFullyLocked(lockType)}
-                onChange={this.onFieldChange}
-                value={value}
-            >
-                <option value={null} />
-                {domainFields.map((df, index) => {
-                    // Need to preserve index so don't filter, but return null for those fields we don't want as options
-                    // (i.e. don't show self, fields with no name, fields not of type string, or field selected as the other lookup option)
-                    if (df === field || df.hasInvalidName() || !df.dataType.isString() || df.name === filterValue) {
-                        return null;
-                    }
-
-                    return (
-                        <option key={index} value={df.name}>
-                            {df.name}
-                        </option>
-                    );
-                })}
-            </FormControl>
-        );
-    }
-
     render(): ReactNode {
-        const { index, label, lockType, domainIndex, field } = this.props;
+        const { index, label, lockType, domainIndex, field, domainFields } = this.props;
         const { loading, ontologies } = this.state;
         const sourceId = this.getSourceInputId();
         const labelColId = createFormInputId(DOMAIN_FIELD_ONTOLOGY_LABEL_COL, domainIndex, index);
         const importColId = createFormInputId(DOMAIN_FIELD_ONTOLOGY_IMPORT_COL, domainIndex, index);
+        const learnMore = (
+            <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>
+        );
 
         return (
             <div>
@@ -130,15 +105,12 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                     <p>
                                         <i>
                                             This is currently an experimental feature and is not officially supported.
-                                            By using this feature By using this feature you acknowledge that these
-                                            functions may change, possibly affecting your possibly affecting your data.
+                                            By using this feature you acknowledge that these functions may change,
+                                            possibly affecting your data.
                                         </i>
                                     </p>
                                     <p>Choose which ontology to use to lookup concept codes and preferred names.</p>
-                                    <p>
-                                        Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in
-                                        LabKey.
-                                    </p>
+                                    {learnMore}
                                 </>
                             </LabelHelpTip>
                         </div>
@@ -150,9 +122,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                 <p>
                                     Choose which text field to use when looking up a code against the selected ontology.
                                 </p>
-                                <p>
-                                    Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.
-                                </p>
+                                {learnMore}
                             </LabelHelpTip>
                         </div>
                     </Col>
@@ -161,9 +131,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                             Choose a Label Field
                             <LabelHelpTip title="Experimental Feature">
                                 <p>Choose which text field to store the preferred name of the concept.</p>
-                                <p>
-                                    Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.
-                                </p>
+                                {learnMore}
                             </LabelHelpTip>
                         </div>
                     </Col>
@@ -193,28 +161,76 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                 ontologies.map(ontology => {
                                     return (
                                         <option key={ontology.abbreviation} value={ontology.abbreviation}>
-                                            {ontology.getLabel()}
+                                            {ontology.getDisplayName()}
                                         </option>
                                     );
                                 })}
                         </FormControl>
                     </Col>
                     <Col xs={3}>
-                        {this.renderTextDomainFieldSelect(
-                            importColId,
-                            field.conceptImportColumn,
-                            field.conceptLabelColumn
-                        )}
+                        <OntologyTextDomainFieldSelect
+                            field={field}
+                            domainFields={domainFields}
+                            lockType={lockType}
+                            id={importColId}
+                            value={field.conceptImportColumn}
+                            filterValue={field.conceptLabelColumn}
+                            onFieldChange={this.onFieldChange}
+                        />
                     </Col>
                     <Col xs={3}>
-                        {this.renderTextDomainFieldSelect(
-                            labelColId,
-                            field.conceptLabelColumn,
-                            field.conceptImportColumn
-                        )}
+                        <OntologyTextDomainFieldSelect
+                            field={field}
+                            domainFields={domainFields}
+                            lockType={lockType}
+                            id={labelColId}
+                            value={field.conceptLabelColumn}
+                            filterValue={field.conceptImportColumn}
+                            onFieldChange={this.onFieldChange}
+                        />
                     </Col>
                 </Row>
             </div>
         );
     }
 }
+
+interface OntologyTextDomainFieldSelectProps {
+    field: DomainField;
+    domainFields: List<DomainField>;
+    lockType: string;
+    id: string;
+    value: string;
+    filterValue: string;
+    onFieldChange: (evt: any) => void;
+}
+
+const OntologyTextDomainFieldSelect: FC<OntologyTextDomainFieldSelectProps> = memo(props => {
+    const { domainFields, lockType, field, id, value, filterValue, onFieldChange } = props;
+
+    return (
+        <FormControl
+            componentClass="select"
+            id={id}
+            key={id}
+            disabled={isFieldFullyLocked(lockType)}
+            onChange={onFieldChange}
+            value={value}
+        >
+            <option value={null} />
+            {domainFields.map((df, index) => {
+                // Need to preserve index so don't filter, but return null for those fields we don't want as options
+                // (i.e. don't show self, fields with no name, fields not of type string, or field selected as the other lookup option)
+                if (df === field || df.hasInvalidName() || !df.dataType.isString() || df.name === filterValue) {
+                    return null;
+                }
+
+                return (
+                    <option key={index} value={df.name}>
+                        {df.name}
+                    </option>
+                );
+            })}
+        </FormControl>
+    );
+});

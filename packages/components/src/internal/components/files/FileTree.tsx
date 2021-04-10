@@ -1,17 +1,15 @@
-import { Treebeard, decorators } from 'react-treebeard';
-
-import React, {PureComponent} from 'react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+import React, { PureComponent } from 'react';
+import { Treebeard, decorators, TreeTheme, animations } from 'react-treebeard';
 import { Checkbox, Alert } from 'react-bootstrap';
 import { List } from 'immutable';
 import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 
-import { LoadingSpinner } from '../../..';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
-const fileTree_color = '#777';
-const customStyle = {
+const fileTree_color = '#333'; // $text-color
+const customStyle: TreeTheme = {
     tree: {
         base: {
             listStyle: 'none',
@@ -19,7 +17,7 @@ const customStyle = {
             margin: 0,
             padding: 0,
             color: fileTree_color,
-            fontFamily: 'lucida grande ,tahoma,verdana,arial,sans-serif',
+            fontFamily: 'Roboto, Helvetica Neue, Helvetica, Arial, sans-serif', // $font-family-sans-serif
             fontSize: '14px',
         },
         node: {
@@ -31,9 +29,10 @@ const customStyle = {
                 position: 'relative',
                 padding: '0px 5px',
                 display: 'flex',
+                width: 'fit-content',
             },
             activeLink: {
-                borderRadius: '5px'
+                borderRadius: '5px',
             },
             toggle: {
                 base: {
@@ -89,26 +88,53 @@ const customStyle = {
     },
 };
 
-const DEFAULT_ROOT_PREFIX = '|root';
+export const DEFAULT_ROOT_PREFIX = '|root';
 const CHECK_ID_PREFIX = 'filetree-check-';
 
 // Place holder names for empty or loading display.  Uses asterisk which will never be in a file name.
-const EMPTY_FILE_NAME = '*empty';
-const LOADING_FILE_NAME = '*loading';
+export const EMPTY_FILE_NAME = '*empty';
+export const LOADING_FILE_NAME = '*loading';
 
 const nodeIsLoading = (id: string): boolean => {
-    return id.endsWith('|' + LOADING_FILE_NAME);
+    return id?.endsWith('|' + LOADING_FILE_NAME);
 };
 
 const nodeIsEmpty = (id: string): boolean => {
-    return id.endsWith('|' + EMPTY_FILE_NAME);
+    return id?.endsWith('|' + EMPTY_FILE_NAME);
 };
 
-const Header = props => {
-    const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls, emptyDirectoryText, allowMultiSelect } = props;
-    const isDirectory = node.children !== undefined;
+// exported for jest testing
+export const NodeIcon = props => {
+    const { isDirectory, useFileIconCls, node } = props;
     const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
-    const activeColor = (node.active && !allowMultiSelect) ? 'lk-text-theme-dark' : undefined; // $brand-primary and $gray-light
+
+    return (
+        <>
+            {!isDirectory && useFileIconCls && node.data && node.data.iconFontCls ? (
+                <i className={node.data.iconFontCls + ' filetree-folder-icon'} />
+            ) : (
+                <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
+            )}
+        </>
+    );
+};
+
+// exported for jest testing
+export const Header = props => {
+    const {
+        style,
+        onSelect,
+        node,
+        customStyles,
+        checked,
+        handleCheckbox,
+        useFileIconCls,
+        emptyDirectoryText,
+        allowMultiSelect,
+        showNodeIcon = true,
+    } = props;
+    const isDirectory = node.children !== undefined;
+    const activeColor = node.active && !allowMultiSelect ? 'lk-text-theme-dark filetree-node-active' : undefined; // $brand-primary and $gray-light
 
     if (nodeIsEmpty(node.id)) {
         return <div className="filetree-empty-directory">{emptyDirectoryText}</div>;
@@ -146,16 +172,19 @@ const Header = props => {
             <div style={style.base} onClick={onSelect}>
                 <div className={activeColor}>
                     <div
-                        className='filetree-resource-row'
+                        className="filetree-resource-row"
                         style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}
                         title={node.name}
                     >
-                        {!isDirectory && useFileIconCls && node.data && node.data.iconFontCls ? (
-                            <i className={node.data.iconFontCls + ' filetree-folder-icon'} />
-                        ) : (
-                            <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
+                        {showNodeIcon && (
+                            <NodeIcon useFileIconCls={useFileIconCls} isDirectory={isDirectory} node={node} />
                         )}
-                        <div className={classNames({'filetree-file-name': !isDirectory, 'filetree-directory-name': isDirectory })}>
+                        <div
+                            className={classNames({
+                                'filetree-file-name': !isDirectory,
+                                'filetree-directory-name': isDirectory,
+                            })}
+                        >
                             {node.name}
                         </div>
                     </div>
@@ -171,8 +200,11 @@ interface FileTreeProps {
     allowMultiSelect?: boolean;
     useFileIconCls?: boolean;
     emptyDirectoryText?: string;
-    getRootPermissions?: (directory?: string) => Promise<any>
+    getRootPermissions?: (directory?: string) => Promise<any>;
     defaultRootName?: string;
+    showNodeIcon?: boolean;
+    showLoading?: boolean;
+    showAnimations?: boolean;
 }
 
 interface FileTreeState {
@@ -190,7 +222,9 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         allowMultiSelect: true,
         useFileIconCls: false,
         emptyDirectoryText: 'No Files Found',
-        defaultRootName: 'root'
+        defaultRootName: 'root',
+        showLoading: false,
+        showAnimations: true,
     };
 
     constructor(props: FileTreeProps) {
@@ -215,12 +249,14 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                 // treebeard has bugs when there is not a single root node
                 if (Array.isArray(data)) {
                     if (data.length < 1) {
-                        data = [{
-                            id: DEFAULT_ROOT_PREFIX + '|' + EMPTY_FILE_NAME,
-                            active: false,
-                            name: 'empty',
-                            permissions
-                        }];
+                        data = [
+                            {
+                                id: DEFAULT_ROOT_PREFIX + '|' + EMPTY_FILE_NAME,
+                                active: false,
+                                name: 'empty',
+                                permissions,
+                            },
+                        ];
                     }
 
                     loadedData = {
@@ -228,7 +264,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                         id: DEFAULT_ROOT_PREFIX, // Special id
                         children: data,
                         toggled: true,
-                        permissions
+                        permissions,
                     };
                 }
 
@@ -241,13 +277,13 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             .catch((reason: any) => {
                 this.setState(() => ({ error: reason, loading: false }));
             });
-    }
+    };
 
     componentDidMount(): void {
         const { getRootPermissions } = this.props;
         this.setState(() => ({ loading: true }));
 
-        if (getRootPermissions){
+        if (getRootPermissions) {
             getRootPermissions()
                 .then(data => {
                     this.loadData(data);
@@ -261,7 +297,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     }
 
     headerDecorator = props => {
-        const { allowMultiSelect, useFileIconCls, emptyDirectoryText } = this.props;
+        const { allowMultiSelect, useFileIconCls, emptyDirectoryText, showNodeIcon } = this.props;
         const { checked } = this.state;
 
         if (allowMultiSelect) {
@@ -273,10 +309,19 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                     handleCheckbox={this.handleCheckbox}
                     emptyDirectoryText={emptyDirectoryText}
                     allowMultiSelect={allowMultiSelect}
+                    showNodeIcon={showNodeIcon}
                 />
             );
         } else {
-            return <Header {...props} useFileIconCls={useFileIconCls} emptyDirectoryText={emptyDirectoryText} allowMultiSelect={allowMultiSelect} />;
+            return (
+                <Header
+                    {...props}
+                    useFileIconCls={useFileIconCls}
+                    emptyDirectoryText={emptyDirectoryText}
+                    allowMultiSelect={allowMultiSelect}
+                    showNodeIcon={showNodeIcon}
+                />
+            );
         }
     };
 
@@ -290,11 +335,11 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     };
 
     getNodeFromId = (id, name) => {
-        let path = id.split('|').slice(0, -1)
+        const path = id.split('|').slice(0, -1);
         path.push(name);
         let level = this.state.data;
         for (const step in path) {
-            if (level.children){
+            if (level.children) {
                 level = level.children.find(children => children.name === path[step]);
             }
         }
@@ -382,6 +427,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
 
     // recursively toggle all child files. afterCascade used to check selection box of each subfile
     cascadeToggle = (node, afterCascade: (any) => any): void => {
+        // TODO move this to be defined as a function of the component so it isn't redefined for each recursive call
         const afterToggle = () => {
             afterCascade(node);
             if (node.children) {
@@ -391,7 +437,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             }
         };
 
-        this.onToggle(node, true, afterToggle);
+        this.onToggle(node, true, true, afterToggle);
     };
 
     handleCheckbox = (evt): void => {
@@ -427,7 +473,9 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                 }
 
                 children = children.map(child => {
-                    child.id = dataNode.id + '|' + child.name; // generate Id from path
+                    if (!child.id) {
+                        child.id = dataNode.id + '|' + child.name; // generate Id from path
+                    }
                     return child;
                 });
 
@@ -453,9 +501,16 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     // node in this.state.data. This function is updating that node which is directly updating this.state.data, then
     // we make a clone of this.state.data for setState.  Directly manipulating anything in this.state is NOT a recommended React
     // pattern.  This is done in this case to work with the treebeard package, but should not be copied elsewhere.
-    onToggle = (node: any, toggled: boolean, callback?: () => any): void => {
+    onToggle = (node: any, toggled: boolean, active = true, callback?: () => any): void => {
         const { allowMultiSelect } = this.props;
         const { cursor, data } = this.state;
+
+        if (cursor) {
+            cursor.active = false;
+        }
+
+        node.active = active;
+        node.toggled = toggled;
 
         if (!allowMultiSelect) {
             if (!this.onFileSelect(node.id, true, !!node.children, node)) {
@@ -463,15 +518,8 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             }
         }
 
-        if (cursor) {
-            cursor.active = false;
-            this.setState(() => ({ cursor, data: { ...data } }));
-        }
-        node.active = true;
-        node.toggled = toggled;
-
         // load data in directory if not already loaded
-        if (node.children && node.children.length === 0) {
+        if (node.children?.length === 0) {
             node.children = [{ id: node.id + '|' + LOADING_FILE_NAME }];
             this.setState(
                 () => ({ cursor: node, data: { ...data } }),
@@ -503,17 +551,21 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             .catch((reason: any) => {
                 failureCallback(reason);
             });
-    }
+    };
 
     render(): React.ReactNode {
+        const { showLoading, showAnimations } = this.props;
         const { data, error } = this.state;
 
         return (
             <div className="filetree-container">
-                {error ? (
+                {showLoading ? (
+                    <LoadingSpinner />
+                ) : error ? (
                     <Alert bsStyle="danger">{error}</Alert>
                 ) : (
                     <Treebeard
+                        animations={showAnimations ? animations : false}
                         data={data}
                         onToggle={this.onToggle}
                         decorators={{ ...decorators, Header: this.headerDecorator }}

@@ -1,0 +1,11 @@
+{
+  "hits" : [ ],
+  "metaData" : {
+    "successProperty" : "success",
+    "idProperty" : "id",
+    "root" : "hits"
+  },
+  "q" : "Alzheimer's",
+  "totalHits" : 0,
+  "success" : true
+}

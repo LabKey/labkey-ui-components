@@ -13,14 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Button, Checkbox, Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Sticky, StickyContainer } from 'react-sticky';
+import { getServerContext, Security } from '@labkey/api';
 
-import { AddEntityButton, ConfirmModal, InferDomainResponse, FileAttachmentForm, Alert } from '../../..';
+import {
+    AddEntityButton,
+    ConfirmModal,
+    InferDomainResponse,
+    FileAttachmentForm,
+    Alert,
+    valueIsEmpty,
+    QueryColumn,
+} from '../../..';
 
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
@@ -32,12 +41,17 @@ import { generateNameWithTimestamp } from '../../util/Date';
 
 import { ActionButton } from '../buttons/ActionButton';
 
+import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
+
+import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
+
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     EXPAND_TRANSITION,
     EXPAND_TRANSITION_FAST,
     PHILEVEL_NOT_PHI,
     SEVERITY_LEVEL_ERROR,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './constants';
 import { LookupProvider } from './Lookup/Context';
 import {
@@ -57,7 +71,6 @@ import {
     updateDomainPanelClassList,
     getAvailableTypes,
     getAvailableTypesForOntology,
-    hasActiveModule,
     updateOntologyFieldProperties,
     removeFields,
     getNameFromId,
@@ -88,6 +101,7 @@ import {
     getVisibleSelectedFieldIndexes,
     isFieldDeletable,
 } from './propertiesUtil';
+import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 
 interface IDomainFormInput {
     allowImportExport?: boolean;
@@ -120,6 +134,7 @@ interface IDomainFormInput {
     todoIconHelpMsg?: string;
     useTheme?: boolean;
     validate?: boolean;
+    testMode?: boolean;
 }
 
 interface IDomainFormState {
@@ -133,13 +148,16 @@ interface IDomainFormState {
     selectAll: boolean;
     visibleSelection: Set<number>;
     visibleFieldsCount: number;
+    summaryViewMode: boolean;
+    search: string;
     // used for quicker access to field information (i.e. details display info and if a field is an ontology)
     fieldDetails: FieldDetails;
-    filtered: boolean;
     filePreviewData: InferDomainResponse;
     file: File;
     filePreviewMsg: string;
     bulkDeleteConfirmInfo: BulkDeleteConfirmInfo;
+    reservedFieldsMsg: ReactNode;
+    serverModuleNames: string[];
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -156,6 +174,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput> {
  * Form containing all properties of a domain
  */
 export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
+    refsArray: DomainRow[];
     static defaultProps = {
         helpNoun: 'field designer',
         helpTopic: FIELD_EDITOR_TOPIC,
@@ -166,6 +185,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         domainIndex: 0,
         successBsStyle: 'success',
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
+        testMode: false,
     };
 
     constructor(props: IDomainFormInput) {
@@ -180,7 +200,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             availableTypes: getAvailableTypes(props.domain),
             collapsed: props.initCollapsed,
             fieldDetails: props.domain?.getFieldDetails(),
-            filtered: false,
             filePreviewData: undefined,
             file: undefined,
             filePreviewMsg: undefined,
@@ -188,7 +207,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             bulkDeleteConfirmInfo: undefined,
             visibleSelection: new Set(),
             visibleFieldsCount: props.domain?.fields.size,
+            summaryViewMode: false,
+            search: undefined,
+            reservedFieldsMsg: undefined,
+            serverModuleNames: undefined,
         };
+
+        this.refsArray = [];
     }
 
     componentDidMount = async (): Promise<void> => {
@@ -203,15 +228,27 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             }
         }
 
-        // if the given container does have the Ontology module enabled, get the updated set of available data types
-        if (hasActiveModule('Ontology')) {
-            try {
-                const availableTypes = await getAvailableTypesForOntology(domain);
-                this.setState({ availableTypes });
-            } catch (error) {
-                console.error('Failed to retrieve available types for Ontology.', error);
-            }
-        }
+        // query to get the set of available modules for the given LabKey server
+        // TODO change this to use hasModule instead
+        Security.getModules({
+            containerPath: getServerContext().container.path,
+            success: async data => {
+                const serverModuleNames = data.modules
+                    .filter(module => module.enabled)
+                    .map(module => module.name.toLowerCase());
+                this.setState({ serverModuleNames });
+
+                // if the Ontology module is available, get the updated set of available data types
+                if (serverModuleNames.indexOf(ONTOLOGY_MODULE_NAME) > -1) {
+                    try {
+                        const availableTypes = await getAvailableTypesForOntology(domain);
+                        this.setState({ availableTypes });
+                    } catch (error) {
+                        console.error('Failed to retrieve available types for Ontology.', error);
+                    }
+                }
+            },
+        });
 
         // TODO since this is called in componentDidUpdate, can it be removed here?
         updateDomainPanelClassList(useTheme, domain);
@@ -389,7 +426,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             });
         }
 
-        this.setState(() => ({ fieldDetails: updatedDomain.getFieldDetails() }));
+        this.setState(() => ({ reservedFieldsMsg: undefined, fieldDetails: updatedDomain.getFieldDetails() }));
 
         this.props.onChange?.(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChanges);
     }
@@ -592,7 +629,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     applyAddField = (config?: Partial<IDomainField>) => {
-        const newDomain = addDomainField(this.props.domain, config);
+        const newConfig = config ? { ...config } : undefined;
+        const newDomain = addDomainField(this.props.domain, newConfig);
         this.onDomainChange(newDomain);
         this.setState({ selectAll: false, visibleFieldsCount: getVisibleFieldCount(newDomain) });
         this.collapseRow();
@@ -866,12 +904,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderRowHeaders() {
         const { domainFormDisplayOptions } = this.props;
-        const { visibleSelection, selectAll, visibleFieldsCount } = this.state;
+        const { visibleSelection, selectAll, visibleFieldsCount, reservedFieldsMsg } = this.state;
         const fieldPlural = visibleSelection.size !== 1 ? 'fields' : 'field';
         const clearText =
             visibleFieldsCount !== 0 && visibleSelection.size === visibleFieldsCount ? 'Clear All' : 'Clear';
         return (
             <div className="domain-field-row domain-row-border-default domain-floating-hdr">
+                <Alert bsStyle="info">{reservedFieldsMsg}</Alert>
                 <Row>
                     <div className="domain-field-header">
                         {visibleSelection.size} {fieldPlural} selected
@@ -920,20 +959,49 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     handleFilePreviewLoad = (response: InferDomainResponse, file: File) => {
-        const { domain, setFileImportData } = this.props;
+        const { domain, setFileImportData, domainFormDisplayOptions } = this.props;
+        const retainReservedFields = domainFormDisplayOptions?.retainReservedFields;
 
-        // if the DomainForm usage wants to show the file preview and import data options, then set these state values
-        if (response && response.fields.size > 0) {
+        let fields = List<QueryColumn>();
+        let reservedFields = response?.reservedFields || List<QueryColumn>();
+        if (retainReservedFields) {
+            fields = fields.merge(reservedFields);
+        }
+        if (response?.fields?.size) {
+            response.fields.forEach(field => {
+                if (domain.reservedFieldNames?.indexOf(field.name.toLowerCase()) < 0) {
+                    fields = fields.push(field);
+                } else {
+                    reservedFields = reservedFields.push(field);
+                }
+            });
+        }
+
+        if (fields.size === 0) {
+            this.setState({
+                filePreviewMsg:
+                    'The selected file contains only fields that will be created by default. Please remove the file and try uploading a new one.',
+            });
+        } else {
+            // if the DomainForm usage wants to show the file preview and import data options, then set these state values
             if (setFileImportData) {
                 this.setState({ filePreviewData: response, file, filePreviewMsg: undefined });
                 setFileImportData(file, true);
             }
 
-            this.onDomainChange(setDomainFields(domain, response.fields));
-        } else {
+            this.onDomainChange(setDomainFields(domain, fields));
+        }
+        if (reservedFields.size && !retainReservedFields) {
             this.setState({
-                filePreviewMsg:
-                    'The selected file does not have any data. Please remove it and try selecting another file.',
+                reservedFieldsMsg:
+                    'Reserved fields found in your file are not shown below. ' +
+                    'These fields are already used by LabKey' +
+                    (domainFormDisplayOptions?.domainKindDisplayName
+                        ? ' to support this ' + domainFormDisplayOptions.domainKindDisplayName
+                        : '') +
+                    ': ' +
+                    reservedFields.map(field => field.name).join(', ') +
+                    '.',
             });
         }
     };
@@ -975,7 +1043,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderEmptyDomain() {
-        const { allowImportExport, index } = this.props;
+        const { allowImportExport, domain, index } = this.props;
         const shouldShowInferFromFile = this.shouldShowInferFromFile();
         if (shouldShowInferFromFile || allowImportExport) {
             let acceptedFormats = [];
@@ -1010,6 +1078,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 previewCount: 3,
                                 skipPreviewGrid: true,
                                 onPreviewLoad: this.handleFilePreviewLoad,
+                                domainKindName: domain.domainKindName,
                             }
                         }
                         fileSpecificCallback={Map({ '.json': this.importFieldsFromJson })}
@@ -1027,6 +1096,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             );
         }
     }
+
+    onToggleSummaryView = () => {
+        this.setState(state => ({ summaryViewMode: !state.summaryViewMode }));
+    };
 
     onSearch = evt => {
         const { value } = evt.target;
@@ -1054,8 +1127,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.setState(() => ({
             visibleSelection,
             visibleFieldsCount,
+            search: value,
             selectAll: visibleFieldsCount !== 0 && visibleSelection.size === visibleFieldsCount,
-            filtered: value !== undefined && value.length > 0,
         }));
         this.onDomainChange(filteredDomain, false);
     };
@@ -1089,8 +1162,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderToolbar() {
-        const { domain, domainIndex, allowImportExport, domainFormDisplayOptions } = this.props;
-        const { visibleSelection } = this.state;
+        const { domain, domainIndex, allowImportExport, domainFormDisplayOptions, testMode } = this.props;
+        const { visibleSelection, summaryViewMode } = this.state;
         const { fields } = domain;
         const disableExport = fields.size < 1 || fields.filter((field: DomainField) => field.visible).size < 1;
         const selectedExists = visibleSelection.size > 0;
@@ -1126,8 +1199,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     )}
                 </Col>
                 <Col xs={8}>
-                    <div className="pull-right">
-                        {this.state.filtered && (
+                    <div className="pull-right domain-field-toolbar-right-aligned">
+                        {!valueIsEmpty(this.state.search) && (
                             <span className="domain-search-text">
                                 Showing {fields.filter(f => f.visible).size} of {fields.size} field
                                 {fields.size > 1 ? 's' : ''}.
@@ -1140,11 +1213,113 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             placeholder="Search Fields"
                             onChange={this.onSearch}
                         />
+
+                        {!testMode && (
+                            <ToggleWithInputField
+                                active={summaryViewMode}
+                                id={'domain-toggle-summary-' + domainIndex}
+                                onClick={this.onToggleSummaryView}
+                                on="Summary mode"
+                                off="Detail mode"
+                                containerClassName="domain-toolbar-toggle-summary"
+                                style={{ height: '100%', marginLeft: '10px' }} // Inline style necessary for <ReactBootstrapToggle/>
+                            />
+                        )}
                     </div>
                 </Col>
             </Row>
         );
     }
+
+    scrollFunction = (i: number): void => {
+        this.setState({ summaryViewMode: false, expandedRowIndex: i }, () => {
+            this.refsArray[i].scrollIntoView();
+        });
+    };
+
+    renderDetailedFieldView = () => {
+        const {
+            domain,
+            helpNoun,
+            appPropertiesOnly,
+            containerTop,
+            showFilePropertyType,
+            domainIndex,
+            successBsStyle,
+            domainFormDisplayOptions,
+        } = this.props;
+        const {
+            expandedRowIndex,
+            expandTransition,
+            fieldDetails,
+            maxPhiLevel,
+            dragId,
+            availableTypes,
+            search,
+            serverModuleNames,
+        } = this.state;
+
+        return (
+            <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
+                <StickyContainer>
+                    <Sticky topOffset={containerTop ? -1 * containerTop : 0}>
+                        {({ style, isSticky }) => (
+                            <div style={this.stickyStyle(style, isSticky)}>{this.renderRowHeaders()}</div>
+                        )}
+                    </Sticky>
+                    <Droppable droppableId="domain-form-droppable">
+                        {provided => (
+                            <div ref={provided.innerRef} {...provided.droppableProps}>
+                                <Form>
+                                    {domain.fields.map((field, i) => {
+                                        // Need to preserve index so don't filter, instead just use empty div
+                                        if (!field.visible) return <div key={'domain-row-key-' + i} />;
+
+                                        return (
+                                            <DomainRow
+                                                ref={ref => {
+                                                    this.refsArray[i] = ref;
+                                                }}
+                                                domainId={domain.domainId}
+                                                helpNoun={helpNoun}
+                                                key={'domain-row-key-' + i}
+                                                field={field}
+                                                fieldError={this.getFieldError(domain, i)}
+                                                getDomainFields={this.getDomainFields}
+                                                fieldDetailsInfo={fieldDetails.detailsInfo}
+                                                domainIndex={domainIndex}
+                                                index={i}
+                                                expanded={expandedRowIndex === i}
+                                                expandTransition={expandTransition}
+                                                onChange={this.onFieldsChange}
+                                                onExpand={this.onFieldExpandToggle}
+                                                onDelete={this.onDeleteField}
+                                                maxPhiLevel={maxPhiLevel}
+                                                dragging={dragId === i}
+                                                availableTypes={availableTypes}
+                                                showDefaultValueSettings={domain.showDefaultValueSettings}
+                                                defaultDefaultValueType={domain.defaultDefaultValueType}
+                                                defaultValueOptions={domain.defaultValueOptions}
+                                                appPropertiesOnly={appPropertiesOnly}
+                                                serverModuleNames={serverModuleNames}
+                                                showFilePropertyType={showFilePropertyType}
+                                                successBsStyle={successBsStyle}
+                                                isDragDisabled={
+                                                    !valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled
+                                                }
+                                                domainFormDisplayOptions={domainFormDisplayOptions}
+                                            />
+                                        );
+                                    })}
+                                    {provided.placeholder}
+                                </Form>
+                            </div>
+                        )}
+                    </Droppable>
+                </StickyContainer>
+            </DragDropContext>
+        );
+    };
 
     renderAppDomainHeader = () => {
         const { appDomainHeaderRenderer, modelDomains, domain, domainIndex } = this.props;
@@ -1160,92 +1335,38 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderForm() {
-        const {
-            domain,
-            helpNoun,
-            containerTop,
-            appDomainHeaderRenderer,
-            appPropertiesOnly,
-            showFilePropertyType,
-            domainIndex,
-            successBsStyle,
-            domainFormDisplayOptions,
-            allowImportExport,
-        } = this.props;
-        const {
-            expandedRowIndex,
-            expandTransition,
-            fieldDetails,
-            maxPhiLevel,
-            dragId,
-            availableTypes,
-            filtered,
-        } = this.state;
+        const { domain, appDomainHeaderRenderer, allowImportExport, appPropertiesOnly } = this.props;
+        const { summaryViewMode, search, selectAll, serverModuleNames } = this.state;
         const hasFields = domain.fields.size > 0;
+        const actions = {
+            toggleSelectAll: this.toggleSelectAll,
+            scrollFunction: this.scrollFunction,
+            onFieldsChange: this.onFieldsChange,
+        };
 
         return (
             <>
                 {(hasFields || !(this.shouldShowInferFromFile() || allowImportExport)) && this.renderToolbar()}
                 {this.renderPanelHeaderContent()}
                 {appDomainHeaderRenderer && this.renderAppDomainHeader()}
-                {hasFields ? (
-                    <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
-                        <StickyContainer>
-                            <Sticky topOffset={containerTop ? -1 * containerTop : 0}>
-                                {({ style, isSticky }) => (
-                                    <div style={this.stickyStyle(style, isSticky)}>{this.renderRowHeaders()}</div>
-                                )}
-                            </Sticky>
-                            <Droppable droppableId="domain-form-droppable">
-                                {provided => (
-                                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                                        <Form>
-                                            {domain.fields.map((field, i) => {
-                                                // Need to preserve index so don't filter, instead just use empty div
-                                                if (!field.visible) return <div key={'domain-row-key-' + i} />;
 
-                                                return (
-                                                    <DomainRow
-                                                        domainId={domain.domainId}
-                                                        helpNoun={helpNoun}
-                                                        key={'domain-row-key-' + i}
-                                                        field={field}
-                                                        fieldError={this.getFieldError(domain, i)}
-                                                        getDomainFields={this.getDomainFields}
-                                                        fieldDetailsInfo={fieldDetails.detailsInfo}
-                                                        domainIndex={domainIndex}
-                                                        index={i}
-                                                        expanded={expandedRowIndex === i}
-                                                        expandTransition={expandTransition}
-                                                        onChange={this.onFieldsChange}
-                                                        onExpand={this.onFieldExpandToggle}
-                                                        onDelete={this.onDeleteField}
-                                                        maxPhiLevel={maxPhiLevel}
-                                                        dragging={dragId === i}
-                                                        availableTypes={availableTypes}
-                                                        showDefaultValueSettings={domain.showDefaultValueSettings}
-                                                        defaultDefaultValueType={domain.defaultDefaultValueType}
-                                                        defaultValueOptions={domain.defaultValueOptions}
-                                                        appPropertiesOnly={appPropertiesOnly}
-                                                        showFilePropertyType={showFilePropertyType}
-                                                        successBsStyle={successBsStyle}
-                                                        isDragDisabled={
-                                                            filtered || domainFormDisplayOptions.isDragDisabled
-                                                        }
-                                                        domainFormDisplayOptions={domainFormDisplayOptions}
-                                                    />
-                                                );
-                                            })}
-                                            {provided.placeholder}
-                                        </Form>
-                                    </div>
-                                )}
-                            </Droppable>
-                        </StickyContainer>
-                    </DragDropContext>
+                {hasFields ? (
+                    summaryViewMode ? (
+                        <DomainPropertiesGrid
+                            domain={domain}
+                            search={search}
+                            selectAll={selectAll}
+                            actions={actions}
+                            appPropertiesOnly={appPropertiesOnly}
+                            hasOntologyModule={serverModuleNames?.indexOf(ONTOLOGY_MODULE_NAME) > -1}
+                        />
+                    ) : (
+                        this.renderDetailedFieldView()
+                    )
                 ) : (
                     this.renderEmptyDomain()
                 )}
+
                 {this.renderAddFieldOption()}
             </>
         );

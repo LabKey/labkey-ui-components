@@ -7,7 +7,8 @@ import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetails.json';
 import DomainForm from '../DomainForm';
 
-import { initUnitTestMocks, sleep } from '../../../testHelpers';
+import { sleep } from '../../../testHelpers';
+import { initUnitTestMocks } from '../../../testHelperMocks';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel } from './models';
@@ -16,6 +17,7 @@ import { DataClassDesigner } from './DataClassDesigner';
 const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
+    testMode: true,
 };
 
 beforeAll(() => {

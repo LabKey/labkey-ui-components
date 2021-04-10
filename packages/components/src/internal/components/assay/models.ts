@@ -67,9 +67,22 @@ export class AssayStateModel {
         return this.definitions.find(def => def.name.toLowerCase() === lowerName);
     }
 
-    getDefinitionsByType(type: string): AssayDefinitionModel[] {
-        const lowerName = type.toLowerCase();
-        return this.definitions.filter(def => def.type.toLowerCase() === lowerName);
+    getDefinitionsByTypes(included?: string[], excluded?: string[]): AssayDefinitionModel[] {
+        if (!included && !excluded) return this.definitions;
+
+        const lowerIncluded = included?.join('|').toLowerCase().split('|');
+        const lowerExcluded = excluded?.join('|').toLowerCase().split('|');
+
+        return this.definitions.filter(def => {
+            let include = true;
+            if (included?.length > 0) {
+                include = lowerIncluded.indexOf(def.type.toLowerCase()) !== -1;
+            }
+            if (excluded?.length > 0) {
+                include = lowerExcluded.indexOf(def.type.toLowerCase()) === -1;
+            }
+            return include;
+        });
     }
 
     mutate(props: Partial<AssayStateModel>): AssayStateModel {

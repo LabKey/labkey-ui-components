@@ -1,3 +1,6 @@
+import React, { FC } from 'react';
+import { mount } from 'enzyme';
+
 import { User } from '../..';
 
 import {
@@ -12,6 +15,8 @@ import {
 
 import {
     getMenuSectionConfigs,
+    hasPremiumModule,
+    isBiologicsEnabled,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,
     userCanDesignLocations,
@@ -21,9 +26,10 @@ import {
 describe('getMenuSectionConfigs', () => {
     test('sampleManager enabled', () => {
         LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['samplemanagement', 'study', 'premium'],
+            },
             samplemanagement: {
-                hasPremiumModule: true,
-                hasStudyModule: true,
                 productId: 'SampleManager',
             },
         };
@@ -62,9 +68,10 @@ describe('getMenuSectionConfigs', () => {
 
     test('SM and FM enabled, SM current app', () => {
         LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['samplemanagement', 'study', 'premium'],
+            },
             samplemanagement: {
-                hasPremiumModule: true,
-                hasStudyModule: true,
                 productId: 'SampleManager',
             },
             inventory: {
@@ -94,9 +101,10 @@ describe('getMenuSectionConfigs', () => {
 
     test('SM and FM enabled, FM current app', () => {
         LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['samplemanagement', 'study', 'premium'],
+            },
             samplemanagement: {
-                hasPremiumModule: true,
-                hasStudyModule: true,
                 productId: 'SampleManager',
             },
             inventory: {
@@ -133,9 +141,10 @@ describe('getMenuSectionConfigs', () => {
 
 describe('utils', () => {
     LABKEY.moduleContext = {
+        api: {
+            moduleNames: ['samplemanagement', 'study', 'premium'],
+        },
         samplemanagement: {
-            hasPremiumModule: true,
-            hasStudyModule: true,
             productId: 'SampleManager',
         },
     };
@@ -176,6 +185,22 @@ describe('utils', () => {
         expect(isSampleManagerEnabled()).toBeTruthy();
     });
 
+    test('isBiologicsEnabled', () => {
+        LABKEY.moduleContext = {};
+        expect(isBiologicsEnabled()).toBeFalsy();
+
+        LABKEY.moduleContext = {
+            inventory: {},
+        };
+        expect(isBiologicsEnabled()).toBeFalsy();
+
+        LABKEY.moduleContext = {
+            inventory: {},
+            biologics: {},
+        };
+        expect(isBiologicsEnabled()).toBeTruthy();
+    });
+
     test('isFreezerManagementEnabled', () => {
         LABKEY.moduleContext = {};
         expect(isFreezerManagementEnabled()).toBeFalsy();
@@ -190,5 +215,52 @@ describe('utils', () => {
             samplemanagement: {},
         };
         expect(isFreezerManagementEnabled()).toBeTruthy();
+
+        LABKEY.moduleContext = {
+            inventory: {},
+            samplemanagement: {},
+            biologics: {},
+        };
+        expect(isFreezerManagementEnabled()).toBeFalsy();
+
+        LABKEY.moduleContext = {
+            inventory: {},
+            samplemanagement: {},
+            biologics: { isFreezerManagerEnabled: false },
+        };
+        expect(isFreezerManagementEnabled()).toBeFalsy();
+
+        LABKEY.moduleContext = {
+            inventory: {},
+            samplemanagement: {},
+            biologics: { isFreezerManagerEnabled: true },
+        };
+        expect(isFreezerManagementEnabled()).toBeTruthy();
+    });
+
+    test('hasPremiumModule', () => {
+        const Component: FC = () => {
+            return <div>{hasPremiumModule() ? 'true' : 'false'}</div>;
+        };
+
+        LABKEY.moduleContext = {};
+        let wrapper = mount(<Component />);
+        expect(wrapper.find('div').text()).toBe('false');
+        wrapper.unmount();
+
+        LABKEY.moduleContext = { api: { moduleNames: ['sampleManagement'] } };
+        wrapper = mount(<Component />);
+        expect(wrapper.find('div').text()).toBe('false');
+        wrapper.unmount();
+
+        LABKEY.moduleContext = { api: { moduleNames: ['api', 'core', 'premium'] } };
+        wrapper = mount(<Component />);
+        expect(wrapper.find('div').text()).toBe('true');
+        wrapper.unmount();
+
+        LABKEY.moduleContext = { api: {} };
+        wrapper = mount(<Component />);
+        expect(wrapper.find('div').text()).toBe('false');
+        wrapper.unmount();
     });
 });

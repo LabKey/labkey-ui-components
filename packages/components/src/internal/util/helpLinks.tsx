@@ -13,7 +13,8 @@ export const FIELD_EDITOR_CONDITIONAL_FORMAT_TOPIC = FIELD_EDITOR_TOPIC + '#cond
 export const FIELD_EDITOR_SAMPLE_TYPES_TOPIC = FIELD_EDITOR_TOPIC + '#samp';
 export const DATE_FORMATS_TOPIC = 'dateFormats#date';
 export const NUMBER_FORMATS_TOPIC = 'dateFormats#number';
-export const ONTOLOGY_TOPIC = 'ontology';
+export const ONTOLOGY_LOOKUP_TOPIC = 'ontologyLookup';
+export const ONTOLOGY_CONCEPT_TOPIC = 'ontologyConcept';
 
 export const ASSAY_EDIT_PLATE_TEMPLATE_TOPIC = 'editPlateTemplate';
 export const CONFIGURE_SCRIPTING_TOPIC = 'configureScripting';
@@ -35,6 +36,10 @@ export const URL_ENCODING_TOPIC = 'urlEncoding';
 
 export const SEARCH_SYNTAX_TOPIC = 'luceneSearch';
 export const DATA_IMPORT_TOPIC = 'dataImport';
+
+export const SAMPLE_ALIQUOT_TOPIC = 'aliquot';
+
+export const UNIQUE_IDS_TOPIC = 'uniqueStorageIds';
 
 export function getHelpLink(topic: string): string {
     return getServerContext().helpLinkPrefix + topic;

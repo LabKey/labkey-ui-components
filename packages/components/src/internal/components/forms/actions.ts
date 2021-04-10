@@ -28,9 +28,10 @@ import {
     selectRows,
 } from '../../..';
 
+import { similaritySortFactory } from '../../util/similaritySortFactory';
+
 import { QuerySelectModel, QuerySelectModelProps } from './model';
 import { FOCUS_FLAG } from './constants';
-import { similaritySortFactory } from '../../util/similaritySortFactory';
 
 const emptyMap = Map<string, any>();
 
@@ -60,27 +61,38 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
         const { componentId, schemaQuery, containerPath } = props;
 
         if (schemaQuery) {
-            getQueryDetails(schemaQuery)
+            const { queryName, schemaName } = schemaQuery;
+
+            getQueryDetails({ schemaName, queryName, containerPath })
                 .then(queryInfo => {
                     const valueColumn = initValueColumn(queryInfo, props.valueColumn);
                     const displayColumn = initDisplayColumn(queryInfo, props.displayColumn);
 
                     if (props.value !== undefined && props.value !== null) {
-                        let filter = Filter.create(valueColumn, props.value);
+                        let filter: Filter.IFilter;
 
-                        if (props.multiple && typeof props.value === 'string') {
-                            // Allow for setting multiValue value.
-                            // This requires updating the filter and the string
-                            const inputArr = props.value.split(props.delimiter);
-                            if (inputArr.length > 1) {
-                                filter = Filter.create(valueColumn, inputArr, Filter.Types.IN);
+                        if (props.multiple) {
+                            if (Array.isArray(props.value)) {
+                                filter = Filter.create(valueColumn, props.value, Filter.Types.IN);
+                            } else if (typeof props.value === 'string') {
+                                // Allow for setting multiValue value.
+                                // This requires updating the filter and the string
+                                filter = Filter.create(
+                                    valueColumn,
+                                    props.value.split(props.delimiter),
+                                    Filter.Types.IN
+                                );
                             }
+                        }
+
+                        if (!filter) {
+                            filter = Filter.create(valueColumn, props.value);
                         }
 
                         selectRows({
                             containerPath,
-                            schemaName: schemaQuery.schemaName,
-                            queryName: schemaQuery.queryName,
+                            schemaName,
+                            queryName,
                             filterArray: [filter],
                         }).then(data => {
                             const { componentId } = props;

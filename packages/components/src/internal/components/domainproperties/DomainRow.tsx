@@ -45,6 +45,7 @@ import {
 import {
     DomainField,
     DomainFieldError,
+    DomainOnChange,
     IDomainFormDisplayOptions,
     IFieldChange,
     resolveAvailableTypes,
@@ -71,7 +72,7 @@ interface IDomainRowProps {
     index: number;
     maxPhiLevel: string;
     availableTypes: List<PropDescType>;
-    onChange: (changes: List<IFieldChange>, index?: number, expand?: boolean) => any;
+    onChange: DomainOnChange;
     fieldError?: DomainFieldError;
     onDelete: (any) => void;
     onExpand: (index?: number) => void;
@@ -79,6 +80,7 @@ interface IDomainRowProps {
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
     appPropertiesOnly?: boolean;
+    serverModuleNames: string[];
     showFilePropertyType?: boolean;
     domainIndex: number;
     successBsStyle?: string;
@@ -112,7 +114,14 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             showingModal: false,
             isDragDisabled: props.isDragDisabled,
         };
+
+        this[`${props.index}_ref`] = React.createRef();
     }
+
+    // Used in DomainPropertiesGrid
+    scrollIntoView = () => {
+        this[`${this.props.index}_ref`].current.scrollIntoView({ behavior: 'smooth' });
+    };
 
     UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
         // if there was a prop change to isDragDisabled, need to call setDragDisabled
@@ -341,7 +350,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         } = this.props;
 
         return (
-            <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)}>
+            <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)} ref={this[`${this.props.index}_ref`]}>
                 <Col xs={6}>
                     <FormControl
                         // autoFocus={field.isNew()}  // TODO: This is not working great with drag and drop, need to investigate
@@ -358,7 +367,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         componentClass="select"
                         name={createFormInputName(DOMAIN_FIELD_TYPE)}
                         disabled={
-                            (!field.isNew() && field.primaryKey) ||
+                            (!field.isNew() && field.isPrimaryKey) ||
                             isFieldPartiallyLocked(field.lockType) ||
                             isFieldFullyLocked(field.lockType) ||
                             isPrimaryKeyFieldLocked(field.lockType)
@@ -444,6 +453,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             defaultDefaultValueType,
             defaultValueOptions,
             appPropertiesOnly,
+            serverModuleNames,
             successBsStyle,
             domainFormDisplayOptions,
             getDomainFields,
@@ -539,6 +549,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                     onChange={this.onSingleFieldChange}
                                     showingModal={this.showingModal}
                                     appPropertiesOnly={appPropertiesOnly}
+                                    serverModuleNames={serverModuleNames}
                                     successBsStyle={successBsStyle}
                                     domainFormDisplayOptions={domainFormDisplayOptions}
                                 />

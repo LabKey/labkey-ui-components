@@ -21,6 +21,7 @@ import $ from 'jquery';
 
 import {
     addRows,
+    addRowsPerPivotValue,
     beginDrag,
     clearSelection,
     copyEvent,
@@ -32,18 +33,18 @@ import {
     select,
     updateGridFromBulkForm,
 } from '../../actions';
-import { getQueryGridModel } from '../../global';
+import { getQueryGridModel, GlobalAppState } from '../../global';
 
 import { headerSelectionCell } from '../../renderers';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
-import { MAX_EDITABLE_GRID_ROWS, GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from '../../constants';
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import {
+    Alert,
+    BulkAddUpdateForm,
+    DeleteIcon,
     Grid,
     GridColumn,
-    DeleteIcon,
-    Alert,
     LoadingSpinner,
-    BulkAddUpdateForm,
     QueryColumn,
     QueryGridModel,
 } from '../../..';
@@ -142,6 +143,13 @@ export interface EditableColumnMetadata {
     filteredLookupKeys?: List<any>;
 }
 
+export interface BulkAddData {
+    pivotKey?: string;
+    pivotValues?: string[];
+    totalItems?: number;
+    validationMsg?: ReactNode;
+}
+
 export interface EditableGridProps {
     allowAdd?: boolean;
     allowBulkAdd?: boolean;
@@ -149,6 +157,7 @@ export interface EditableGridProps {
     allowBulkUpdate?: boolean;
     allowFieldDisable?: boolean;
     bordered?: boolean;
+    onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData;
     bulkAddProps?: Partial<QueryInfoFormProps>;
     bulkUpdateProps?: Partial<QueryInfoFormProps>;
     condensed?: boolean;
@@ -174,6 +183,7 @@ export interface EditableGridProps {
     hideCountCol?: boolean;
     rowNumColumn?: GridColumn;
     onCellModify?: () => any;
+    getInsertColumns?: () => List<QueryColumn>;
 }
 
 export interface EditableGridState {
@@ -183,7 +193,7 @@ export interface EditableGridState {
     showBulkUpdate: boolean;
 }
 
-export class EditableGrid extends ReactN.PureComponent<EditableGridProps, EditableGridState> {
+export class EditableGrid extends ReactN.PureComponent<EditableGridProps, EditableGridState, GlobalAppState> {
     static defaultProps = {
         allowAdd: true,
         allowBulkAdd: false,
@@ -310,6 +320,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         if (this.props.forUpdate) {
             return model.getUpdateColumns(this.props.readOnlyColumns);
         } else {
+            if (this.props.getInsertColumns) return this.props.getInsertColumns();
             return model.getInsertColumns();
         }
     };
@@ -701,36 +712,58 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
     }
 
     bulkAdd = (data: OrderedMap<string, any>): Promise<any> => {
-        const { addControlProps, bulkAddProps } = this.props;
+        const { addControlProps, bulkAddProps, onBulkAdd } = this.props;
         const { nounSingular, nounPlural } = addControlProps;
         const model = this.getModel(this.props);
 
         const numItems = data.get('numItems');
-        let updatedData = data.delete('numItems');
 
-        if (numItems) {
-            if (bulkAddProps.columnFilter) {
-                updatedData = this.restoreBulkInsertData(model, updatedData);
-            }
-
-            return new Promise(resolve => {
-                addRows(model, numItems, updatedData);
-                this.onRowCountChange();
-                resolve({
-                    success: true,
-                    message: 'Added ' + numItems + ' ' + (numItems > 1 ? nounPlural : nounSingular),
+        if (!numItems) {
+            return new Promise((resolve, reject) => {
+                reject({
+                    exception: 'Quantity unknown.  No ' + nounPlural + ' added.',
                 });
             });
         }
-        return new Promise((resolve, reject) => {
-            reject({
-                exception: 'Quantity unknown.  No ' + nounPlural + ' added.',
+
+        let bulkAddData;
+        let totalItems = 0;
+        if (onBulkAdd) {
+            bulkAddData = onBulkAdd(data);
+            if (bulkAddData.validationMsg) {
+                return new Promise((resolve, reject) => {
+                    reject({
+                        exception: bulkAddData.validationMsg,
+                    });
+                });
+            }
+            totalItems = bulkAddData.totalItems;
+        }
+
+        let updatedData = data.delete('numItems').delete('creationType');
+
+        if (totalItems === 0) totalItems = numItems;
+
+        if (bulkAddProps.columnFilter) {
+            updatedData = this.restoreBulkInsertData(model, updatedData);
+        }
+        if (bulkAddData?.pivotKey && bulkAddData?.pivotValues?.length > 0) {
+            addRowsPerPivotValue(model, numItems, bulkAddData?.pivotKey, bulkAddData?.pivotValues, updatedData);
+        } else {
+            addRows(model, numItems, updatedData);
+        }
+        this.onRowCountChange();
+        return new Promise(resolve => {
+            resolve({
+                success: true,
+                message: 'Added ' + totalItems + ' ' + (totalItems > 1 ? nounPlural : nounSingular),
             });
         });
     };
 
     renderBulkAdd = (): ReactNode => {
         const { showBulkAdd } = this.state;
+        const { bulkAddProps } = this.props;
         const model = this.getModel(this.props);
         const maxToAdd =
             this.props.maxTotalRows && this.props.maxTotalRows - model.data.size < MAX_EDITABLE_GRID_ROWS
@@ -749,12 +782,14 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                     onHide={this.toggleBulkAdd}
                     onCancel={this.toggleBulkAdd}
                     onSuccess={this.toggleBulkAdd}
-                    fieldValues={this.props.bulkAddProps ? this.props.bulkAddProps.fieldValues : null}
-                    columnFilter={this.props.bulkAddProps ? this.props.bulkAddProps.columnFilter : null}
                     queryInfo={model.queryInfo}
                     schemaQuery={model.queryInfo.schemaQuery}
-                    title={this.props.bulkAddProps && this.props.bulkAddProps.title}
                     header={this.renderBulkCreationHeader()}
+                    fieldValues={bulkAddProps?.fieldValues}
+                    columnFilter={bulkAddProps?.columnFilter}
+                    title={bulkAddProps?.title}
+                    countText={bulkAddProps?.countText}
+                    creationTypeOptions={bulkAddProps?.creationTypeOptions}
                 />
             )
         );

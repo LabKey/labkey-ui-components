@@ -142,11 +142,19 @@ describe('QueryColumn: Sample Lookup', () => {
         expect(bogusColumn.isSampleLookup()).toBe(false);
     });
 
-    test('test lookup to exp.Materials/Samples', () => {
+    test('lookup to exp.Materials/Samples', () => {
         expect(materialSamplesColumn.isSampleLookup()).toBe(true);
     });
 
-    test('test lookup with different casing for query, schema and table names', () => {
+    test('lookup with different casing for query, schema and table names', () => {
         expect(materialSamplesWithAllCapsColumn.isSampleLookup()).toBe(true);
+    });
+
+    test('isImportColumn', () => {
+        expect(validColumn.isImportColumn(undefined)).toBeFalsy();
+        expect(validColumn.isImportColumn('not a name')).toBeFalsy();
+        expect(validColumn.isImportColumn('Special Column')).toBeTruthy();
+        expect(validColumn.isImportColumn('special_column')).toBeTruthy();
+        expect(validColumn.isImportColumn('Special_column')).toBeTruthy();
     });
 });

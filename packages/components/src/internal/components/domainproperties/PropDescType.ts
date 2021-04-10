@@ -20,6 +20,10 @@ import {
     STRING_RANGE_URI,
     TIME_RANGE_URI,
     USER_RANGE_URI,
+    VISITID_CONCEPT_URI,
+    CREATED_TIMESTAMP_CONCEPT_URI,
+    MODIFIED_TIMESTAMP_CONCEPT_URI,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './constants';
 
 export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string';
@@ -46,14 +50,14 @@ export class PropDescType
         lookupQuery: undefined,
     })
     implements IPropDescType {
-    conceptURI: string;
-    display: string;
-    name: string;
-    rangeURI: string;
-    alternateRangeURI: string;
-    shortDisplay: string;
-    lookupSchema?: string;
-    lookupQuery?: string;
+    declare conceptURI: string;
+    declare display: string;
+    declare name: string;
+    declare rangeURI: string;
+    declare alternateRangeURI: string;
+    declare shortDisplay: string;
+    declare lookupSchema?: string;
+    declare lookupQuery?: string;
 
     static isUser(name: string): boolean {
         return name === 'users';
@@ -65,6 +69,10 @@ export class PropDescType
 
     static isOntologyLookup(conceptURI: string): boolean {
         return conceptURI === CONCEPT_CODE_CONCEPT_URI;
+    }
+
+    static isUniqueIdField(conceptURI: string): boolean {
+        return conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
     }
 
     static isLookup(name: string): boolean {
@@ -156,6 +164,10 @@ export class PropDescType
 
     isOntologyLookup(): boolean {
         return PropDescType.isOntologyLookup(this.conceptURI);
+    }
+
+    isUniqueId(): boolean {
+        return PropDescType.isUniqueIdField(this.conceptURI);
     }
 }
 
@@ -251,6 +263,26 @@ export const AUTOINT_TYPE = new PropDescType({
     alternateRangeURI: 'xsd:int',
 });
 
+export const VISIT_DATE_TYPE = new PropDescType({
+    name: 'visitDate',
+    display: 'Visit Date',
+    rangeURI: DATETIME_RANGE_URI,
+    conceptURI: VISITID_CONCEPT_URI,
+});
+export const VISIT_ID_TYPE = new PropDescType({
+    name: 'visitId',
+    display: 'Visit ID',
+    rangeURI: DOUBLE_RANGE_URI,
+    conceptURI: VISITID_CONCEPT_URI,
+});
+
+export const UNIQUE_ID_TYPE = new PropDescType({
+    name: 'uniqueId',
+    display: 'Unique ID',
+    rangeURI: STRING_RANGE_URI,
+    conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
+});
+
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
     MULTILINE_TYPE,
@@ -266,6 +298,10 @@ export const PROP_DESC_TYPES = List([
     LOOKUP_TYPE,
     SAMPLE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
+    UNIQUE_ID_TYPE,
 ]);
 
 export const READONLY_DESC_TYPES = List([BINARY_TYPE, DATE_TYPE, DECIMAL_TYPE, FLOAT_TYPE, LONG_TYPE, TIME_TYPE]);
+export const CONCEPT_URIS_NOT_USED_IN_TYPES = List([CREATED_TIMESTAMP_CONCEPT_URI, MODIFIED_TIMESTAMP_CONCEPT_URI]);

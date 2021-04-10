@@ -19,12 +19,13 @@ import { mount, shallow } from 'enzyme';
 
 import { Button, Modal, ModalTitle } from 'react-bootstrap';
 
-import { initUnitTestMocks } from '../../testHelpers';
+import { initUnitTestMocks } from '../../testHelperMocks';
 import { getQueryDetails, SchemaQuery } from '../../..';
 
 import { TextInput } from './input/TextInput';
 import { QueryFormInputs } from './QueryFormInputs';
 import { QueryInfoForm } from './QueryInfoForm';
+import { QueryInfoQuantity } from './QueryInfoQuantity';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -123,7 +124,8 @@ describe('QueryInfoForm', () => {
             expect(cancelButton.childAt(0).text()).toBe(cancelText);
             const submitButton = formWrapper.find('.test-loc-submit-button');
             expect(submitButton.childAt(0).text()).toBe(submitText);
-            expect(formWrapper.find({ label: countText })).toHaveLength(1);
+            expect(formWrapper.find(QueryInfoQuantity)).toHaveLength(1);
+            expect(formWrapper.find(QueryInfoQuantity).prop('countText')).toBe(countText);
         });
     });
 

@@ -23,9 +23,11 @@ import {
     capitalizeFirstChar,
     generateId,
     insertRows,
+    InsertRowsResponse,
     QueryColumn,
     QueryGridModel,
     QueryInfo,
+    SampleCreationType,
     SCHEMAS,
     SchemaQuery,
 } from '../../..';
@@ -74,12 +76,14 @@ export class EntityParentType extends Record({
     query: undefined,
     schema: undefined,
     value: undefined,
+    isParentTypeOnly: false,
 }) {
-    index: number;
-    key: string;
-    query: string;
-    schema: string;
-    value: List<DisplayObject>;
+    declare index: number;
+    declare key: string;
+    declare query: string;
+    declare schema: string;
+    declare value: List<DisplayObject>;
+    declare isParentTypeOnly: boolean;
 
     static create(values: any): EntityParentType {
         if (!values.key) values.key = generateId('parent-type-');
@@ -187,12 +191,12 @@ export class GenerateEntityResponse extends Record({
     message: undefined,
     success: false,
 }) {
-    data: {
+    declare data: {
         materialOutputs: MaterialOutput[];
         [key: string]: any;
     };
-    message: string;
-    success: boolean;
+    declare message: string;
+    declare success: boolean;
 
     // Get all of the rowIds of the newly generated entity Ids (or the runs)
     getFilter(): Filter.IFilter {
@@ -227,20 +231,24 @@ export class EntityIdCreationModel extends Record({
     entityCount: 0,
     entityDataType: undefined,
     auditBehavior: undefined,
+    creationType: undefined,
+    numPerParent: 1,
 }) {
-    errors: any[];
-    initialEntityType: any;
-    isError: boolean;
-    isInit: boolean;
-    originalParents: string[]; // taken from the query string
-    parentOptions: Map<string, List<IParentOption>>; // map from query name to the options for the different types of parents allowed
-    entityParents: Map<string, List<EntityParentType>>; // map from query name to the parents already selected for that query
-    entityTypeOptions: List<IEntityTypeOption>; // the target type options
-    selectionKey: string;
-    targetEntityType: EntityTypeOption; // the target entity Type
-    entityCount: number; // how many rows are in the grid
-    entityDataType: EntityDataType; // target entity data type
-    auditBehavior: AuditBehaviorTypes;
+    declare errors: any[];
+    declare initialEntityType: any;
+    declare isError: boolean;
+    declare isInit: boolean;
+    declare originalParents: string[]; // taken from the query string
+    declare parentOptions: Map<string, List<IParentOption>>; // map from query name to the options for the different types of parents allowed
+    declare entityParents: Map<string, List<EntityParentType>>; // map from query name to the parents already selected for that query
+    declare entityTypeOptions: List<IEntityTypeOption>; // the target type options
+    declare selectionKey: string;
+    declare targetEntityType: EntityTypeOption; // the target entity Type
+    declare entityCount: number; // how many rows are in the grid
+    declare entityDataType: EntityDataType; // target entity data type
+    declare auditBehavior: AuditBehaviorTypes;
+    declare creationType: SampleCreationType;
+    declare numPerParent: number;
 
     static revertParentInputSchema(inputColumn: QueryColumn): SchemaQuery {
         if (inputColumn.isExpInput()) {
@@ -362,11 +370,15 @@ export class EntityIdCreationModel extends Record({
     }
 
     hasTargetEntityType(): boolean {
-        return this.targetEntityType && this.targetEntityType.value;
+        return this.targetEntityType && this.targetEntityType.value !== undefined;
     }
 
-    getTargetEntityTypeName(): string {
+    getTargetEntityTypeValue(): string {
         return this.hasTargetEntityType() ? this.targetEntityType.value : undefined;
+    }
+
+    getTargetEntityTypeLabel(): string {
+        return this.hasTargetEntityType() ? this.targetEntityType.label : undefined;
     }
 
     getParentCount(): number {
@@ -463,11 +475,11 @@ export class EntityIdCreationModel extends Record({
     }
 
     getSchemaQuery(): SchemaQuery {
-        const entityTypeName = this.getTargetEntityTypeName();
+        const entityTypeName = this.getTargetEntityTypeValue();
         return entityTypeName ? SchemaQuery.create(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }
 
-    postEntityGrid(queryGridModel: QueryGridModel): Promise<any> {
+    postEntityGrid(queryGridModel: QueryGridModel): Promise<InsertRowsResponse> {
         const editorModel = getEditorModel(queryGridModel.getId());
         if (!editorModel) {
             gridShowError(queryGridModel, {
@@ -490,12 +502,12 @@ export class EntityIdCreationModel extends Record({
         });
     }
 
-    getGridValues(queryInfo: QueryInfo): Map<any, any> {
+    getGridValues(queryInfo: QueryInfo, separateParents?: boolean): Map<any, any> {
         let data = List<Map<string, any>>();
+        let parentCols = [];
+        let values = Map<string, any>();
 
-        for (let i = 0; i < this.entityCount; i++) {
-            let values = Map<string, any>();
-
+        if (this.entityCount > 0) {
             queryInfo.getInsertColumns().forEach(col => {
                 const colName = col.name;
 
@@ -512,11 +524,27 @@ export class EntityIdCreationModel extends Record({
                     }, undefined);
                     if (selected && selected.value) {
                         values = values.set(colName, selected.value);
+                        parentCols.push(colName);
                     }
                 }
             });
-
-            data = data.push(values);
+            if (separateParents && this.creationType && this.creationType != SampleCreationType.PooledSamples) {
+                parentCols.forEach(parentCol => {
+                    const parents: Array<any> = values.get(parentCol);
+                    parents.forEach((parent) => {
+                        let singleParentValues = Map<string, any>(values);
+                        singleParentValues = singleParentValues.set(parentCol, List<any>([parent]));
+                        for (let c = 0; c < this.numPerParent; c++) {
+                            data = data.push(singleParentValues);
+                        }
+                    });
+                })
+            }
+            else {
+                for (let c = 0; c < this.numPerParent; c++) {
+                    data = data.push(values);
+                }
+            }
         }
 
         return data.toOrderedMap();
@@ -528,7 +556,7 @@ export interface IEntityTypeDetails extends IEntityDetails {
     importAliasValues?: string[];
 }
 
-export const enum EntityInsertPanelTabs {
+export enum EntityInsertPanelTabs {
     First = 1,
     Second = 2,
 }
@@ -552,4 +580,6 @@ export interface EntityDataType {
     appUrlPrefixParts?: string[]; // the prefix used for creating links to this type in the application
     insertColumnNamePrefix: string; // when updating this value as an input, the name of that column (e.g, MaterialInputs)
     filterArray?: Filter.IFilter[]; // A list of filters to use when selecting the set of values
+    editTypeAppUrlPrefix?: string; // the app url route prefix for the edit design page for the given data type
+    importFileAction: string; // the action in the 'experiment' controller to use for file import for the given data type
 }

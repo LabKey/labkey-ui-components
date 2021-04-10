@@ -25,7 +25,7 @@ interface AssayProvidersOptions {
     defaultLocation: string;
 }
 
-export const enum AssayPickerTabs {
+export enum AssayPickerTabs {
     STANDARD_ASSAY_TAB = 'standard',
     SPECIALTY_ASSAY_TAB = 'specialty',
     XAR_IMPORT_TAB = 'import',

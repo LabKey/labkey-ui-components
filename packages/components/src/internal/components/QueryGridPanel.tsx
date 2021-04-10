@@ -21,7 +21,7 @@ import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
 import { gridInit } from '../actions';
-import { getQueryGridModel } from '../global';
+import { getQueryGridModel, GlobalAppState } from '../global';
 
 import '../../theme/index.scss';
 import { QueryGridModel, LoadingSpinner, Alert } from '../..';
@@ -42,6 +42,7 @@ interface Props {
     showAllTabs?: boolean;
     showGridBar?: boolean;
     showSampleComparisonReports?: boolean;
+    showSampleAliquotSelector?: boolean;
     onReportClicked?: Function;
     onCreateReportClicked?: Function;
     activeTab?: number;
@@ -58,7 +59,7 @@ interface State {
     activeTab: number;
 }
 
-export class QueryGridPanel extends ReactN.Component<Props, State> {
+export class QueryGridPanel extends ReactN.Component<Props, State, GlobalAppState> {
     static defaultProps = {
         asPanel: true,
         initModelOnMount: true,
@@ -201,6 +202,7 @@ export class QueryGridPanel extends ReactN.Component<Props, State> {
             message,
             model,
             showSampleComparisonReports,
+            showSampleAliquotSelector,
             onReportClicked,
             onCreateReportClicked,
             onExport,
@@ -218,6 +220,7 @@ export class QueryGridPanel extends ReactN.Component<Props, State> {
                     buttons={buttons}
                     model={activeModel}
                     showSampleComparisonReports={showSampleComparisonReports}
+                    showSampleAliquotSelector={showSampleAliquotSelector}
                     onReportClicked={onReportClicked}
                     onCreateReportClicked={onCreateReportClicked}
                     onSelectionChange={onSelectionChange}

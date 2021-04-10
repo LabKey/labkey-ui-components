@@ -8,33 +8,36 @@ const lkModuleContainer = process.env.LK_MODULE_CONTAINER;
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 // Conditionalize the path to use for the @labkey packages based on if the user wants to LINK their labkey-ui-components repo.
 // NOTE: the LABKEY_UI_COMPONENTS_HOME environment variable must be set for this to work.
-let labkeyUIComponentsPath = path.resolve("./node_modules/@labkey/components");
-let freezerManagerPath = path.resolve("./node_modules/@labkey/freezermanager");
-let workflowPath = path.resolve("./node_modules/@labkey/workflow");
+let labkeyUIComponentsPath = path.resolve('./node_modules/@labkey/components');
+let freezerManagerPath = path.resolve('./node_modules/@labkey/freezermanager');
+let workflowPath = path.resolve('./node_modules/@labkey/workflow');
+const tsconfigPath = path.resolve('./node_modules/@labkey/build/webpack/tsconfig.json');
+
 if (process.env.LINK) {
     if (process.env.LABKEY_UI_COMPONENTS_HOME === undefined) {
-        throw "ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.";
+        throw 'ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.';
     }
 
-    labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + "/packages/components";
+    labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + '/packages/components/src';
 
-    const freezerManagerRelPath = (lkModuleContainer ? "../../../../../../" : "../../../../../") + "inventory/packages/freezermanager";
+    const freezerManagerRelPath = (lkModuleContainer ? '../../../../../../' : '../../../../../') + 'inventory/packages/freezermanager/src';
     freezerManagerPath = path.resolve(__dirname, freezerManagerRelPath);
 
-    const workflowRelPath = (lkModuleContainer ? "../../../../../../" : "../../../../../") + "sampleManagement/packages/workflow";
+    const workflowRelPath = (lkModuleContainer ? '../../../../../../' : '../../../../../') + 'sampleManagement/packages/workflow/src';
     workflowPath = path.resolve(__dirname, workflowRelPath);
 }
 if (process.env.npm_package_dependencies__labkey_components) {
-    console.log("Using @labkey/components path: " + labkeyUIComponentsPath);
+    console.log('Using @labkey/components path: ' + labkeyUIComponentsPath);
 }
 if (process.env.npm_package_dependencies__labkey_freezermanager) {
-    console.log("Using @labkey/freezermanager path: " + freezerManagerPath);
+    console.log('Using @labkey/freezermanager path: ' + freezerManagerPath);
 }
 if (process.env.npm_package_dependencies__labkey_workflow) {
-    console.log("Using @labkey/workflow path: " + workflowPath);
+    console.log('Using @labkey/workflow path: ' + workflowPath);
 }
 
 const watchPort = process.env.WATCH_PORT || 3001;
@@ -45,7 +48,7 @@ const watchPort = process.env.WATCH_PORT || 3001;
 // For more information see https://github.com/jantimon/html-webpack-plugin#minification.
 const minifyTemplateOptions = {
     caseSensitive: true,
-    collapseWhitespace: process.env.NODE_ENV === "production",
+    collapseWhitespace: process.env.NODE_ENV === 'production',
     keepClosingSlash: true,
     removeComments: true,
     removeRedundantAttributes: true,
@@ -54,11 +57,103 @@ const minifyTemplateOptions = {
     useShortDoctype: true
 }
 
+const SASS_PLUGINS = [
+    {
+        loader: 'css-loader',
+        options: {
+            importLoaders: 1
+        }
+    },{
+        loader: 'resolve-url-loader'
+    },{
+        loader: 'sass-loader',
+        options: {
+            sourceMap: true
+        }
+    }
+];
+
+const BABEL_PLUGINS = [
+    // These make up @babel/preset-react, we cannot use preset-react because we need to ensure that the
+    // typescript plugins run before the class properties plugins in order for allowDeclareFields to work
+    // properly. We can use preset-react and stop using allowDeclareFields if we stop using Immutable.
+    '@babel/plugin-syntax-jsx',
+    '@babel/plugin-transform-react-jsx',
+    '@babel/plugin-transform-react-display-name',
+
+    // These make up @babel/preset-typescript
+    ['@babel/plugin-transform-typescript', {
+        allExtensions: true, // required when using isTSX
+        allowDeclareFields: true,
+        isTSX: true,
+    }],
+
+    '@babel/proposal-class-properties',
+    '@babel/proposal-object-rest-spread',
+];
+
+const BABEL_CONFIG = {
+    loader: 'babel-loader',
+    options: {
+        babelrc: false,
+        cacheDirectory: true,
+        presets: [
+            [
+                '@babel/preset-env',
+                {
+                    // support async/await
+                    'targets': 'last 2 versions, not dead, not IE 11, > 5%',
+                }
+            ],
+        ],
+        plugins: BABEL_PLUGINS,
+    }
+};
+
+const BABEL_DEV_CONFIG = {
+    ...BABEL_CONFIG,
+    options: {
+        ...BABEL_CONFIG.options,
+        plugins: ['react-hot-loader/babel'].concat(BABEL_PLUGINS),
+    }
+};
+
+const TS_CHECKER_CONFIG = {
+    typescript: {
+        configFile: tsconfigPath,
+        context: '.',
+        diagnosticOptions: {
+            semantic: true,
+            syntactic: true,
+        },
+        mode: "write-references",
+    }
+};
+
+const TS_CHECKER_DEV_CONFIG = {
+    ...TS_CHECKER_CONFIG,
+    typescript: {
+        ...TS_CHECKER_CONFIG.typescript,
+        configOverwrite: {
+            compilerOptions: {
+                "paths": {
+                    "@labkey/components": [labkeyUIComponentsPath],
+                    "@labkey/freezermanager": [freezerManagerPath],
+                    "@labkey/workflow": [workflowPath]
+                }
+            }
+        },
+    }
+};
+
 module.exports = {
     labkeyUIComponentsPath: labkeyUIComponentsPath,
     freezerManagerPath: freezerManagerPath,
     workflowPath: workflowPath,
+    tsconfigPath: tsconfigPath,
     watchPort: watchPort,
+    TS_CHECKER_CONFIG: TS_CHECKER_CONFIG,
+    TS_CHECKER_DEV_CONFIG: TS_CHECKER_DEV_CONFIG,
     context: function(dir) {
         return path.resolve(dir, '..');
     },
@@ -66,149 +161,105 @@ module.exports = {
         TYPESCRIPT: [ '.jsx', '.js', '.tsx', '.ts' ]
     },
     loaders: {
-        STYLE_LOADERS: [
+        FILES: [
             {
-                test: /\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader'
-                ]
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1
-                        }
-                    },{
-                        loader: 'resolve-url-loader'
-                    },{
-                        loader: 'sass-loader',
-                        options: {
-                            sourceMap: true
-                        }
-                    }]
-            },
-
-            { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
-            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader" },
-            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" },
-            { test: /\.png(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/png" }
-        ],
-        STYLE_LOADERS_DEV: [
-            {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    'style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1
-                        }
-                    },{
-                        loader: 'resolve-url-loader'
-                    },{
-                        loader: 'sass-loader',
-                        options: {
-                            sourceMap: true
-                        }
-                    }]
-            },
-
-            { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
-            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader" },
-            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" },
-            { test: /\.png(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/png" }
-        ],
-        TYPESCRIPT_LOADERS: [
-            {
-                test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
-                loaders: [{
-                    loader: 'babel-loader',
+                test: /\.(woff|woff2)$/,
+                use: {
+                    loader: 'url-loader',
                     options: {
-                        babelrc: false,
-                        cacheDirectory: true,
-                        presets: [
-                            [
-                                "@babel/preset-env",
-                                {
-                                    // support async/await
-                                    "targets": {
-                                        "node": "10"
-                                    }
-                                }
-                            ],
-                            "@babel/preset-react"
-                        ]
-                    }
-                },{
-                    loader: 'ts-loader',
+                        limit: 10000,
+                        mimetype: 'application/font-woff',
+                    },
+                },
+            },
+            {
+                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                use: {
+                    loader: 'url-loader',
                     options: {
-                        onlyCompileBundledFiles: true
-                        // this flag and the test regex will make sure that test files do not get bundled
-                        // see: https://github.com/TypeStrong/ts-loader/issues/267
+                        limit: 10000,
+                        mimetype: 'application/octet-stream',
+                    },
+                },
+            },
+            {
+                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                use: 'file-loader'
+            },
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 10000,
+                        mimetype: 'image/svg+xml',
+                    },
+                },
+            },
+            {
+                test: /\.png(\?v=\d+\.\d+\.\d+)?$/,
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 10000,
+                        mimetype: 'image/png',
                     }
-                }]
+                },
             }
         ],
-        TYPESCRIPT_LOADERS_DEV: [
+        STYLE: [
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
+            },
+            {
+                test: /\.scss$/,
+                use: [MiniCssExtractPlugin.loader].concat(SASS_PLUGINS),
+            },
+        ],
+        STYLE_DEV: [
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.scss$/,
+                use: ['style-loader'].concat(SASS_PLUGINS),
+            },
+        ],
+        TYPESCRIPT: [
             {
                 test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
-                loaders: [{
-                    loader: 'babel-loader',
-                    options: {
-                        babelrc: false,
-                        cacheDirectory: true,
-                        presets: [
-                            [
-                                "@babel/preset-env",
-                                {
-                                    // support async/await
-                                    "targets": {
-                                        "node": "10"
-                                    }
-                                }
-                            ],
-                            "@babel/preset-react"
-                        ],
-                        plugins: [
-                            "react-hot-loader/babel"
-                        ]
-                    }
-                },{
-                    loader: 'ts-loader',
-                    options: {
-                        // override default "compilerOptions" declared in tsconfig.json
-                        compilerOptions: {
-                            "baseUrl": ".",
-                            "paths": {
-                                "immutable": [labkeyUIComponentsPath + "/node_modules/immutable"],
-                                "@labkey/components": [labkeyUIComponentsPath],
-                                "@labkey/freezermanager": [freezerManagerPath],
-                                "@labkey/workflow": [workflowPath]
-                            }
-                        },
-                        onlyCompileBundledFiles: true
-                        // this flag and the test regex will make sure that test files do not get bundled
-                        // see: https://github.com/TypeStrong/ts-loader/issues/267
-                    }
-                }]
+                use: [BABEL_CONFIG]
+            }
+        ],
+        TYPESCRIPT_DEV: [
+            {
+                test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
+                use: [BABEL_DEV_CONFIG]
             }
         ]
+    },
+    aliases: {
+        LABKEY_PACKAGES: {
+            '@labkey/components-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme',
+            '@labkey/components-app-scss': labkeyUIComponentsPath + '/dist/assets/scss',
+            '@labkey/freezermanager-scss': freezerManagerPath + '/dist/assets/scss/theme',
+            '@labkey/workflow-scss': workflowPath + '/dist/assets/scss/theme',
+        },
+        LABKEY_PACKAGES_DEV: {
+            // Note that for modules that don't have these packages, the aliases are just ignored and don't
+            // seem to cause any problems.
+            '@labkey/components': labkeyUIComponentsPath,
+            '@labkey/freezermanager': freezerManagerPath,
+            '@labkey/workflow': workflowPath,
+
+            // need to set the path based on the LINK var
+            '@labkey/components-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
+            '@labkey/components-app-scss': labkeyUIComponentsPath + (process.env.LINK ? '/internal/app/scss' : '/dist/assets/scss'),
+            '@labkey/freezermanager-scss': freezerManagerPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
+            '@labkey/workflow-scss': workflowPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
+        },
     },
     outputPath: function(dir) {
         return path.resolve(dir, '../resources/web/' + lkModule + '/gen');
@@ -283,7 +334,11 @@ module.exports = {
             return plugins;
         }, []);
 
-        allPlugins.push(new MiniCssExtractPlugin());
+        allPlugins.push(new MiniCssExtractPlugin({
+            filename: '[name].[contenthash].css',
+        }));
+
+        allPlugins.push(new ForkTsCheckerWebpackPlugin(TS_CHECKER_CONFIG));
 
         return allPlugins;
     }

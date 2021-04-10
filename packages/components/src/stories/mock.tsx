@@ -107,6 +107,19 @@ import serverNotifications from '../test/data/notification-getUserNotificationsF
 import pipelineJobQueryDetails from '../test/data/pipelineJob-getQueryDetails.json';
 import pipelineJobQuery from '../test/data/pipelineJob-getQuery.json';
 import pipelineStatusDetails from '../test/data/pipelineStatusDetails.json';
+import getModulesInfo from '../test/data/admin-getModules.json';
+import getRegisteredProductsInfo from '../test/data/product-getRegisteredProducts.json';
+import getProjectContainersInfo from '../test/data/project-getProjectContainers.json';
+import getLKSMMenuSectionsInfo from '../test/data/product-getMenuSections-lksm.json';
+import getLKBMenuSectionsInfo from '../test/data/product-getMenuSections-lkb.json';
+import getFolderTabsInfo from '../test/data/admin-getFolderTabs.json';
+import getOntologyChildPathsInfo from '../test/data/ontologies-getChildPaths.json';
+import getOntologiesChildPathsInfo from '../test/data/ontologies-getRootChildPaths.json';
+import getOntologyInfo from '../test/data/ontologies-getOntology.json';
+import getAlternateConceptPaths from '../test/data/ontologies-getAlternateConceptPaths.json';
+import getConceptParentPaths from '../test/data/ontologies-getParentPaths.json';
+import getOntologyConceptSearchInfo from '../test/data/ontologies-searchConcepts.json';
+import getSearchEmptyInfo from '../test/data/search-jsonEmpty.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -220,6 +233,7 @@ const QUERY_RESPONSES = fromJS({
     },
     ontology: {
         ontologies: ontologiesQuery,
+        getchildpaths: getOntologyChildPathsInfo,
     },
     pipeline: {
         job: pipelineJobQuery,
@@ -272,6 +286,7 @@ export function initMocks() {
     initUserPropsMocks();
     initDomainPropertiesMocks();
     initPipelineStatusDetailsMocks();
+    initOnotologyMocks();
 
     mock.post(/.*\/query\/?.*\/executeSql.*/, (req, res) => {
         const body = decodeURIComponent(req.body());
@@ -356,6 +371,25 @@ export function initMocks() {
     mock.get(/.*browseData.*/, delay(jsonResponse(browseData), 1000));
 
     mock.get(/.*getUserNotification.*/, jsonResponse(serverNotifications));
+
+    mock.post(/.*getModules.*/, jsonResponse(getModulesInfo));
+
+    mock.post(/.*getRegisteredProducts.*/, delay(jsonResponse(getRegisteredProductsInfo), 1000));
+
+    mock.post(/.*getFolderTabs.*/, jsonResponse(getFolderTabsInfo));
+
+    mock.get(/.*menuSections.*/, (req, res) => {
+        const queryParams = req.url().query;
+
+        let responseBody = getLKSMMenuSectionsInfo;
+        if (queryParams.currentProductId === 'Biologics') {
+            responseBody = getLKBMenuSectionsInfo;
+        }
+
+        return jsonResponse(responseBody, res);
+    });
+
+    mock.get(/.*getContainers.*/, jsonResponse(getProjectContainersInfo));
 
     mock.use(proxy);
 }
@@ -654,5 +688,59 @@ export function initPipelineStatusDetailsMocks(): void {
         });
 
         return jsonResponse(responseBody.length > 0 ? responseBody[0] : { success: false }, res);
+    });
+}
+
+export function initOnotologyMocks(): void {
+    mock.get(/.*\/ontology\/?.*\/getOntology.*/, jsonResponse(getOntologyInfo));
+
+    mock.get(/.*\/ontology\/?.*\/getChildPaths.*/, (req, res) => {
+        const queryParams = req.url().query;
+
+        if (queryParams.path === '/') {
+            return jsonResponse(getOntologiesChildPathsInfo, res);
+        }
+
+        return jsonResponse(getOntologyChildPathsInfo, res);
+    });
+
+    mock.get(/.*\/ontology\/?.*\/getAlternateConceptPaths.*/, (req, res) => {
+        return jsonResponse(getAlternateConceptPaths, res);
+    });
+
+    mock.get(/.*\/ontology\/?.*\/getConceptParentPaths.*/, (req, res) => {
+        return jsonResponse(getConceptParentPaths, res);
+    });
+
+    mock.get(/.*\/ontology\/?.*\/getConcept.*/, (req, res) => {
+        const queryParams = req.url().query;
+        return jsonResponse(
+            {
+                success: true,
+                concept: {
+                    code: queryParams.code,
+                    label: queryParams.code.split(':').join(' '),
+                    description: 'This is the description for this concept.',
+                    synonyms: [
+                        'c987654321',
+                        'code',
+                        'synonym one',
+                        'Max length label ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta metus nec lobortis. Aliquam erat volutpat. Vivamus cursus dui sit amet efficitur semper. Fusce vehicula sollicitudin volutpat. Cras auctor mi at tellus interdum aliquam. Morbi et faucibus turpis. Donec quis malesuada enim. Etiam scelerisque pharetra libero, blandit efficitur nisl varius mollis. Etiam orci nunc, aliquet ac hendrerit ac, porttitor in ex. Aenean placerat justo ut metus maximus ullamcorper. Morbi metus lorem, gravida eget massa in, finibus egestas erat. Suspendisse sollicitudin metus sapien, vitae dictum odio aliquam a. Ut euismod nisi ultricies condimentum luctus. Vestibulum tempor ultrices nunc.',
+                    ],
+                    url: null,
+                },
+            },
+            res
+        );
+    });
+
+    mock.get(/.*\/search\/?.*\/json.*/, (req, res) => {
+        const queryParams = req.url().query;
+
+        if (queryParams.category === 'concept') {
+            return jsonResponse(getOntologyConceptSearchInfo, res);
+        }
+
+        return jsonResponse(getSearchEmptyInfo, res);
     });
 }

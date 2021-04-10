@@ -1,14 +1,12 @@
 import { List, Map, Set } from 'immutable';
 
-import { naturalSort, QueryGridModel } from '../../..';
+import { EditableColumnMetadata, naturalSort, QueryGridModel, QueryInfo, SchemaQuery } from '../../..';
 import { DELIMITER } from '../forms/input/SelectInput';
 
-import { PARENT_DATA_GRID_PREFIX } from './constants';
-import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
+import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
+import { getCurrentProductName } from '../../app/utils';
 
-export function getParentGridPrefix(parentDataType: EntityDataType): string {
-    return parentDataType.typeListingSchemaQuery.queryName + '-' + PARENT_DATA_GRID_PREFIX;
-}
+import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 export function parentValuesDiffer(
     sortedOriginalParents: List<EntityChoice>,
@@ -90,7 +88,7 @@ export function getUpdatedRowForParentChanges(
     originalParents: List<EntityChoice>,
     currentParents: List<EntityChoice>,
     childModel: QueryGridModel
-) {
+): Record<string, any> {
     const queryData = childModel.getRow();
     const queryInfo = childModel.queryInfo;
 
@@ -129,4 +127,26 @@ export function getUpdatedRowForParentChanges(
         }
     });
     return updatedValues;
+}
+
+export function createEntityParentKey(schemaQuery: SchemaQuery, id?: string): string {
+    const keys = [schemaQuery.schemaName, schemaQuery.queryName];
+    if (id) {
+        keys.push(id);
+    }
+    return keys.join(':').toLowerCase();
+}
+
+export function getUniqueIdColumnMetadata(queryInfo: QueryInfo): Map<string, EditableColumnMetadata> {
+    let columnMetadata = Map<string, EditableColumnMetadata>();
+    queryInfo?.columns
+        .filter(column => column.isUniqueIdColumn)
+        .forEach(column => {
+            columnMetadata = columnMetadata.set(column.fieldKey, {
+                readOnly: true,
+                placeholder: '[generated value]',
+                toolTip: `A unique value will be provided by ${getCurrentProductName()} for this field.`,
+            });
+        });
+    return columnMetadata;
 }

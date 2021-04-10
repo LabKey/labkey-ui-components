@@ -17,7 +17,7 @@
 import { List } from 'immutable';
 
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from './constants';
-import { DomainDesign, DomainField } from './models';
+import { DomainDesign, DomainField, DomainPropertiesGridColumn } from './models';
 
 // this is similar to what's in PropertiesEditorUtil.java that does the name validation in the old UI
 export function isLegalName(str: string): boolean {
@@ -95,4 +95,122 @@ export function isFieldDeletable(field: DomainField): boolean {
 
 export function getVisibleFieldCount(domain: DomainDesign): number {
     return domain.fields.filter((field: DomainField) => field.visible).size;
+}
+
+export function compareStringsAlphabetically(a: string, b: string, direction): number {
+    const aStr = a ? a.toUpperCase() : '';
+    const bStr = b ? b.toUpperCase() : '';
+    const isAsc = direction === '+';
+
+    if (aStr < bStr) {
+        return isAsc ? -1 : 1;
+    }
+    if (aStr > bStr) {
+        return isAsc ? 1 : -1;
+    }
+    return 0;
+}
+
+export function removeFalseyObjKeys(obj) {
+    return Object.entries(obj).reduce((a, [k, v]) => (v ? ((a[k] = v), a) : a), {});
+}
+
+// columnOrder determines the left-to-right ordering of columns within the domain summary view
+export function reorderSummaryColumns(a: DomainPropertiesGridColumn, b: DomainPropertiesGridColumn): number {
+    const columnOrder = [
+        // Collapsed field options
+        'name',
+        'rangeURI',
+        'required',
+        'isPrimaryKey',
+        'lockType',
+        // Lookup options
+        'lookupContainer',
+        'lookupSchema',
+        'lookupQuery',
+        // Integer options
+        'format',
+        'defaultScale',
+        // Ontology options
+        'sourceOntology',
+        'conceptImportColumn',
+        'conceptLabelColumn',
+        'principalConceptCode',
+        // Other expanded field options
+        'conceptURI', // ParticipantId, Flag, Sample, and Ontology Lookup
+        'scale',
+        'description',
+        'label',
+        'importAliases',
+        'url',
+        'conditionalFormats',
+        'propertyValidators',
+        // Advanced Settings
+        'hidden',
+        'shownInUpdateView',
+        'shownInInsertView',
+        'shownInDetailsView',
+        'defaultValueType',
+        'defaultValue',
+        'defaultDisplayValue',
+        'phi',
+        'excludeFromShifting', // Appears for datetime fields
+        'measure',
+        'dimension',
+        'recommendedVariable',
+        'mvEnabled',
+    ];
+    return columnOrder.indexOf(a.index) > columnOrder.indexOf(b.index) ? 1 : -1;
+}
+
+export function removeUnusedProperties(obj) {
+    // only applicable in the QueryMetadata field editor case
+    delete obj.wrappedColumnName;
+    // Not surfaced in UI, and so removed from summary view
+    delete obj.propertyId;
+    delete obj.propertyURI;
+    // Currently only surfaced in SM Sample Types as a experimental feature.
+    // To be added to Summary View columns when aliquots are no longer hidden behind experimental flag
+    delete obj.derivationDataScope;
+
+    return obj;
+}
+
+export function removeUnusedOntologyProperties(obj) {
+    delete obj.sourceOntology;
+    delete obj.conceptImportColumn;
+    delete obj.conceptLabelColumn;
+    delete obj.principalConceptCode;
+    return obj;
+}
+
+export function removeNonAppProperties(obj) {
+    delete obj.lookupContainer;
+    delete obj.lookupSchema;
+    delete obj.lookupQuery;
+
+    // these props are always removed for appPropertiesOnly and then also conditionally removed for
+    // containers that don't have the Ontology module enabled (see removeUnusedOntologyProperties)
+    delete obj.sourceOntology;
+    delete obj.conceptImportColumn;
+    delete obj.conceptLabelColumn;
+    delete obj.principalConceptCode;
+
+    delete obj.conditionalFormats;
+
+    delete obj.hidden;
+    delete obj.shownInUpdateView;
+    delete obj.shownInInsertView;
+    delete obj.shownInDetailsView;
+    delete obj.defaultValueType;
+    delete obj.defaultValue;
+    delete obj.defaultDisplayValue;
+    delete obj.phi;
+    delete obj.excludeFromShifting;
+    delete obj.measure;
+    delete obj.dimension;
+    delete obj.recommendedVariable;
+    delete obj.mvEnabled;
+
+    return obj;
 }

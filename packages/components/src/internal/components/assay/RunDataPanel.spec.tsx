@@ -7,8 +7,8 @@ import { getStateQueryGridModel } from '../../models';
 import { gridInit } from '../../actions';
 import { FormTabs, withFormSteps, WithFormStepsProps } from '../../..';
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
-import { initUnitTestMocks } from '../../testHelpers';
-import { AssayUploadTabs } from '../../AssayDefinitionModel';
+import { initUnitTestMocks } from '../../testHelperMocks';
+import { AssayUploadTabs } from '../../constants';
 
 import { RunDataPanel } from './RunDataPanel';
 

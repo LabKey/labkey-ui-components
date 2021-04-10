@@ -1,30 +1,35 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { Domain } from '@labkey/api';
 
-import { DomainDesign, DomainDetails, IDomainField } from '../models';
+import { DomainDesign, DomainDetails, IAppDomainHeader, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
 import {
-    IParentOption,
     Alert,
+    ConfirmModal,
     generateId,
+    getHelpLink,
     initQueryGridState,
+    IParentOption,
     MetricUnitProps,
     naturalSort,
     resolveErrorMessage,
     SCHEMAS,
-    getHelpLink,
 } from '../../../..';
 
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { SAMPLE_TYPE } from '../PropDescType';
+import { SAMPLE_TYPE, UNIQUE_ID_TYPE } from '../PropDescType';
+
+import { isCommunityDistribution } from '../../../app/utils';
 
 import { IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
+import { UniqueIdBanner } from './UniqueIdBanner';
 
 export const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,
@@ -71,6 +76,7 @@ interface Props {
     dataClassParentageLabel?: string;
     showParentLabelPrefix?: boolean;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
+    testMode?: boolean;
 
     // EntityDetailsForm props
     nounSingular?: string;
@@ -88,12 +94,16 @@ interface Props {
     metricUnitProps?: MetricUnitProps;
 
     validateProperties?: (designerDetails?: any) => Promise<any>;
+
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
 }
 
 interface State {
     model: SampleTypeModel;
     parentOptions: IParentOption[];
     error: React.ReactNode;
+    showUniqueIdConfirmation: boolean;
+    uniqueIdsConfirmed: boolean;
 }
 
 class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -107,13 +117,21 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         showParentLabelPrefix: true,
         useTheme: false,
         appPropertiesOnly: true,
+        domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'sample type' },
     };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 
         initQueryGridState();
-        const domainDetails = this.props.initModel || DomainDetails.create();
+        let domainDetails = this.props.initModel || DomainDetails.create();
+        if (props.defaultSampleFieldConfig) {
+            const domainDesign = domainDetails.domainDesign.merge({
+                reservedFieldNames: List<string>([props.defaultSampleFieldConfig?.name.toLowerCase()]),
+            });
+            domainDetails = domainDetails.set('domainDesign', domainDesign) as DomainDetails;
+        }
+
         const model = SampleTypeModel.create(
             domainDetails,
             domainDetails.domainDesign ? domainDetails.domainDesign.name : undefined
@@ -123,6 +141,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             model,
             parentOptions: undefined,
             error: undefined,
+            showUniqueIdConfirmation: false,
+            uniqueIdsConfirmed: undefined,
         };
     }
 
@@ -239,7 +259,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const { onChange } = this.props;
 
         this.setState(
-            () => ({ model }),
+            () => ({ model, uniqueIdsConfirmed: undefined }),
             () => {
                 if (onChange) {
                     onChange(model);
@@ -343,9 +363,33 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         );
     };
 
+    onUniqueIdCancel = () => {
+        this.setState({
+            showUniqueIdConfirmation: false,
+            uniqueIdsConfirmed: false,
+        });
+    };
+
+    onUniqueIdConfirm = () => {
+        this.setState(
+            () => ({
+                showUniqueIdConfirmation: false,
+                uniqueIdsConfirmed: true,
+            }),
+            () => this.onFinish()
+        );
+    };
+
     onFinish = (): void => {
         const { defaultSampleFieldConfig, setSubmitting, metricUnitProps } = this.props;
-        const { model } = this.state;
+        const { model, uniqueIdsConfirmed } = this.state;
+
+        if (!model.isNew() && this.getNumNewUniqueIdFields() > 0 && !uniqueIdsConfirmed) {
+            this.setState({
+                showUniqueIdConfirmation: true,
+            });
+            return;
+        }
 
         const metricUnitLabel = metricUnitProps?.metricUnitLabel;
         const metricUnitRequired = metricUnitProps?.metricUnitRequired;
@@ -379,7 +423,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     saveDomain = async () => {
         const { beforeFinish, setSubmitting } = this.props;
         const { model } = this.state;
-        const { name, domain, description, nameExpression, labelColor, metricUnit } = model;
+        const { name, domain, description, nameExpression, labelColor, metricUnit, autoLinkTargetContainerId } = model;
 
         if (beforeFinish) {
             beforeFinish(model);
@@ -395,6 +439,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             nameExpression,
             labelColor,
             metricUnit,
+            autoLinkTargetContainerId,
             importAliases: this.getImportAliasesAsMap(model).toJS(),
         };
 
@@ -448,6 +493,25 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         }
     };
 
+    onAddUniqueIdField = (fieldConfig: Partial<IDomainField>): void => {
+        this.setState(state => ({
+            model: state.model.set('domain', addDomainField(this.state.model.domain, fieldConfig)) as SampleTypeModel,
+        }));
+    };
+
+    uniqueIdBannerRenderer = (config: IAppDomainHeader): ReactNode => {
+        const { model } = this.state;
+        if (isCommunityDistribution() || !model.isNew() || model.domain?.fields?.isEmpty()) {
+            return null;
+        }
+        return <UniqueIdBanner model={this.state.model} isFieldsPanel={true} onAddField={config.onAddField} />;
+    };
+
+    getNumNewUniqueIdFields(): number {
+        const { model } = this.state;
+        return model.domain.fields.filter(field => field.isNew() && field.isUniqueIdField()).count();
+    }
+
     render() {
         const {
             containerTop,
@@ -475,8 +539,11 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             dataClassTypeCaption,
             dataClassParentageLabel,
             metricUnitProps,
+            testMode,
+            domainFormDisplayOptions,
         } = this.props;
-        const { error, model, parentOptions } = this.state;
+        const { error, model, parentOptions, showUniqueIdConfirmation } = this.state;
+        const numNewUniqueIdFields = this.getNumNewUniqueIdFields();
 
         return (
             <BaseDomainDesigner
@@ -524,9 +591,11 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     metricUnitProps={metricUnitProps}
+                    onAddUniqueIdField={this.onAddUniqueIdField}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}
+                    appDomainHeaderRenderer={this.uniqueIdBannerRenderer}
                     domainIndex={0}
                     domain={model.domain}
                     headerTitle="Fields"
@@ -547,8 +616,32 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                     allowImportExport={true}
+                    testMode={testMode}
+                    domainFormDisplayOptions={domainFormDisplayOptions}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}
+                {showUniqueIdConfirmation && (
+                    <ConfirmModal
+                        title={'Updating Sample Type with Unique ID field' + (numNewUniqueIdFields !== 1 ? 's' : '')}
+                        msg={
+                            'You have added ' +
+                            numNewUniqueIdFields +
+                            ' ' +
+                            UNIQUE_ID_TYPE.display +
+                            ' field' +
+                            (numNewUniqueIdFields !== 1 ? 's' : '') +
+                            ' to this Sample Type. ' +
+                            'Values for ' +
+                            (numNewUniqueIdFields !== 1 ? 'these fields' : 'this field') +
+                            ' will be created for all existing samples.'
+                        }
+                        onCancel={this.onUniqueIdCancel}
+                        onConfirm={this.onUniqueIdConfirm}
+                        confirmButtonText="Finish Updating Sample Type"
+                        confirmVariant="success"
+                        cancelButtonText="Cancel"
+                    />
+                )}
             </BaseDomainDesigner>
         );
     }

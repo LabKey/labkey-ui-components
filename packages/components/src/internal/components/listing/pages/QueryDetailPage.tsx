@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, PureComponent, memo, ReactNode, useMemo } from 'react';
-import { fromJS } from 'immutable';
 import { Link, WithRouterProps } from 'react-router';
 
 import {

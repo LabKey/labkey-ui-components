@@ -1,0 +1,26 @@
+[ {
+  "disabled" : false,
+  "id" : "portal:Overview",
+  "text" : "Overview",
+  "href" : "/labkey/testContainer/project-begin.view?"
+}, {
+  "disabled" : false,
+  "id" : "portal:study.PARTICIPANTS",
+  "text" : "Subjects",
+  "href" : "/labkey/testContainer/project-begin.view?pageId=study.PARTICIPANTS"
+}, {
+  "disabled" : false,
+  "id" : "portal:study.DATA_ANALYSIS",
+  "text" : "Clinical and Assay Data",
+  "href" : "/labkey/testContainer/project-begin.view?pageId=study.DATA_ANALYSIS"
+}, {
+  "disabled" : true,
+  "id" : "portal:Hide me",
+  "text" : "Hide me",
+  "href" : "/labkey/testContainer/project-begin.view?pageId=Hide%20me"
+}, {
+  "disabled" : false,
+  "id" : "portal:Manage",
+  "text" : "Manage",
+  "href" : "/labkey/testContainer/study-manageStudy.view?"
+} ]

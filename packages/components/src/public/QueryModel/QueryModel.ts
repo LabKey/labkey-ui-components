@@ -114,6 +114,10 @@ export interface QueryConfig {
      */
     sorts?: QuerySort[];
     /**
+     * String value to use in grid panel header.
+     */
+    title?: string;
+    /**
      * Prefix string value to use in url parameters when bindURL is true. Defaults to "query".
      */
     urlPrefix?: string;
@@ -217,6 +221,10 @@ export class QueryModel {
      * Array of [[QuerySort]] objects to use for the QueryModel data load.
      */
     readonly sorts: QuerySort[];
+    /**
+     * String value to use in grid panel header.
+     */
+    readonly title?: string;
     /**
      * Prefix string value to use in url parameters when bindURL is true. Defaults to "query".
      */
@@ -350,6 +358,7 @@ export class QueryModel {
         this.selections = undefined;
         this.selectionsError = undefined;
         this.selectionsLoadingState = LoadingState.INITIALIZED;
+        this.title = queryConfig.title;
         this.urlPrefix = queryConfig.urlPrefix ?? 'query'; // match Data Region defaults
         this.charts = undefined;
         this.chartsError = undefined;
@@ -694,7 +703,7 @@ export class QueryModel {
         if (!isLoading && hasData && selections) {
             const selectedOnPage = orderedRows.filter(rowId => selections.has(rowId)).length;
 
-            if (selectedOnPage === maxRows && rowCount > 0) {
+            if ((selectedOnPage === rowCount || selectedOnPage === maxRows) && rowCount > 0) {
                 return GRID_CHECKBOX_OPTIONS.ALL;
             } else if (selectedOnPage > 0) {
                 // if model has any selected on the page show checkbox as indeterminate
@@ -764,6 +773,22 @@ export class QueryModel {
             pageSize: this.maxRows,
             rowCount: this.rowCount,
         };
+    }
+
+    get showImportDataButton(): boolean {
+        return this.queryInfo?.getShowImportDataButton();
+    }
+
+    get showInsertNewButton(): boolean {
+        return this.queryInfo?.getShowInsertNewButton();
+    }
+
+    get isFiltered(): boolean {
+        return (
+            this.baseFilters?.length > 0 ||
+            this.filterArray?.length > 0 ||
+            this.queryInfo?.getFilters(this.schemaQuery.viewName)?.size > 0
+        );
     }
 
     /**

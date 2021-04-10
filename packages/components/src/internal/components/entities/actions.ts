@@ -1,7 +1,18 @@
-import { Ajax, Filter, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
-import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../../..';
+import {
+    buildURL,
+    getQueryGridModel,
+    getSelected,
+    importData,
+    InsertOptions,
+    naturalSort,
+    QueryInfo,
+    SampleCreationType,
+    SchemaQuery,
+    selectRows,
+} from '../../..';
 
 import {
     DisplayObject,
@@ -122,6 +133,21 @@ function initParents(initialParents: string[], selectionKey: string): Promise<Li
             const parent = initialParents[0];
             const [schema, query, value] = parent.toLowerCase().split(':');
 
+            // if the parent key doesn't have a value, we don't need to make the request to getSelectedParents
+            if (value === undefined) {
+                resolve(
+                    List<EntityParentType>([
+                        EntityParentType.create({
+                            index: 1,
+                            schema,
+                            query,
+                            value: List<DisplayObject>(),
+                            isParentTypeOnly: true, // tell the UI to keep the parent type but not add any default rows to the editable grid
+                        }),
+                    ])
+                );
+            }
+
             return getSelectedParents(SchemaQuery.create(schema, query), [Filter.create('RowId', value)])
                 .then(response => resolve(response))
                 .catch(reason => reject(reason));
@@ -166,7 +192,8 @@ export function extractEntityTypeOptionFromRow(row: Map<string, any>, lowerCaseV
     };
 }
 
-function getChosenParentData(
+// exported for jest testing
+export function getChosenParentData(
     model: EntityIdCreationModel,
     parentEntityDataTypes: Map<string, EntityDataType>,
     allowParents: boolean
@@ -187,9 +214,14 @@ function getChosenParentData(
                     const parentRep = chosenParents.find(
                         parent => parent.value !== undefined && parentSchemaNames.contains(parent.schema)
                     );
-                    const validEntityCount = parentRep ? 1 : 0;
+                    const numPerParent = model.numPerParent ?? 1;
+                    const validEntityCount = parentRep
+                        ? model.creationType === SampleCreationType.PooledSamples
+                            ? numPerParent
+                            : parentRep.value.size * numPerParent
+                        : 0;
 
-                    if (validEntityCount === 1) {
+                    if (validEntityCount >= 1 || parentRep?.isParentTypeOnly) {
                         resolve({
                             entityCount: validEntityCount,
                             entityParents: entityParents.set(
@@ -334,5 +366,43 @@ export function deleteEntityType(deleteActionName: string, rowId: number): Promi
                 reject(response);
             }),
         });
+    });
+}
+
+export function handleEntityFileImport(
+    importAction: string,
+    importParameters: Record<string, any>,
+    queryInfo: QueryInfo,
+    file: File,
+    isMerge: boolean,
+    useAsync: boolean
+): Promise<any> {
+    return new Promise((resolve, reject) => {
+        const { schemaQuery } = queryInfo;
+
+        return importData({
+            schemaName: schemaQuery.getSchema(),
+            queryName: schemaQuery.getQuery(),
+            file,
+            importUrl: ActionURL.buildURL('experiment', importAction, null, {
+                ...importParameters,
+                schemaName: schemaQuery.getSchema(),
+                'query.queryName': schemaQuery.getQuery(),
+            }),
+            importLookupByAlternateKey: true,
+            useAsync,
+            insertOption: InsertOptions[isMerge ? InsertOptions.MERGE : InsertOptions.IMPORT],
+        })
+            .then(response => {
+                if (response.success) {
+                    resolve(response);
+                } else {
+                    reject({ msg: response.errors._form });
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                reject({ msg: error.exception });
+            });
     });
 }

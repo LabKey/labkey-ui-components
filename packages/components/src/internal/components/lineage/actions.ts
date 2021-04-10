@@ -170,7 +170,7 @@ function applyLineageIOMetadata(
 }
 
 export function processLineageResult(lineage: LineageResult, options?: LineageOptions): Promise<LineageResult> {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         return Promise.all(fetchNodeMetadata(lineage))
             .then(results => {
                 const iconURLByLsid = {};
@@ -187,9 +187,14 @@ export function processLineageResult(lineage: LineageResult, options?: LineageOp
 
                 return applyLineageMetadata(lineage, metadata, iconURLByLsid, options);
             })
-            .then(result => {
-                resolve(result);
-            });
+            .then(
+                result => {
+                    resolve(result);
+                },
+                reason => {
+                    reject(reason);
+                }
+            );
     });
 }
 
@@ -210,6 +215,7 @@ export function loadLineageResult(
     const fetchOptions: Experiment.LineageOptions = {
         ...options?.request,
         lsid: seed,
+        runProtocolLsid: options?.runProtocolLsid,
     };
 
     const currentContainerId = getServerContext().container.id;
@@ -237,6 +243,7 @@ export function loadLineageResult(
         fetchOptions.includeInputsAndOutputs === true,
         fetchOptions.includeRunSteps === true,
         fetchOptions.includeProperties === true,
+        options?.runProtocolLsid ?? '',
     ].join('|');
 
     if (!lineageResultCache[key]) {

@@ -17,11 +17,19 @@ import React, { FC, memo, useMemo } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import { InjectedQueryModels, LoadingSpinner, QueryColumn, QueryConfig, RequiresModelAndActions, withQueryModels } from '../..';
+import {
+    InjectedQueryModels,
+    LoadingSpinner,
+    QueryColumn,
+    QueryConfig,
+    RequiresModelAndActions,
+    withQueryModels,
+} from '../..';
 
 import { DetailDisplay, DetailDisplaySharedProps } from '../../internal/components/forms/detail/DetailDisplay';
 
 interface DetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndActions {
+    editColumns?: QueryColumn[];
     queryColumns?: QueryColumn[];
 }
 
@@ -29,7 +37,8 @@ interface DetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndAct
  * Render a QueryModel with a single row of a data. For in-depth documentation and examples see
  * components/docs/QueryModel.md.
  */
-export const DetailPanel: FC<DetailPanelProps> = memo(({ actions, model, queryColumns, ...detailDisplayProps }) => {
+export const DetailPanel: FC<DetailPanelProps> = memo(props => {
+    const { actions, editColumns, model, queryColumns, ...detailDisplayProps } = props;
     // ignoring actions so we don't pass to DetailDisplay
     const { editingMode } = detailDisplayProps;
     const error = model.queryInfoError ?? model.rowsError;
@@ -41,10 +50,11 @@ export const DetailPanel: FC<DetailPanelProps> = memo(({ actions, model, queryCo
         return <LoadingSpinner />;
     }
 
-    if (queryColumns !== undefined) {
-        displayColumns = List(queryColumns);
+    // This logic should be kept consistent with corollary logic in <Detail/>
+    if (editingMode) {
+        displayColumns = List(editColumns ?? model.updateColumns);
     } else {
-        displayColumns = List(editingMode ? model.updateColumns : model.detailColumns);
+        displayColumns = List(queryColumns ?? model.detailColumns);
     }
 
     return <DetailDisplay {...detailDisplayProps} data={fromJS(model.gridData)} displayColumns={displayColumns} />;
@@ -54,9 +64,11 @@ interface DetailPanelBodyProps extends DetailDisplaySharedProps {
     queryColumns?: QueryColumn[];
 }
 
-const DetailPanelWithModelBodyImpl: FC<DetailPanelBodyProps & InjectedQueryModels> = memo(({ queryModels, ...rest }) => {
-    return <DetailPanel {...rest} model={queryModels.model} />;
-});
+const DetailPanelWithModelBodyImpl: FC<DetailPanelBodyProps & InjectedQueryModels> = memo(
+    ({ queryModels, ...rest }) => {
+        return <DetailPanel {...rest} model={queryModels.model} />;
+    }
+);
 
 const DetailPanelWithModelBody = withQueryModels<DetailPanelBodyProps>(DetailPanelWithModelBodyImpl);
 
@@ -64,8 +76,9 @@ interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
     queryConfig: QueryConfig;
 }
 
-export const DetailPanelWithModel: FC<DetailPanelWithModelProps> = memo(({ asPanel, detailRenderer, editingMode, titleRenderer, useDatePicker, queryConfig }) => {
-    const queryConfigs = useMemo(() => ({ model: queryConfig }), [ queryConfig ]);
+export const DetailPanelWithModel: FC<DetailPanelWithModelProps> = memo(props => {
+    const { asPanel, detailRenderer, editingMode, titleRenderer, useDatePicker, queryConfig } = props;
+    const queryConfigs = useMemo(() => ({ model: queryConfig }), [queryConfig]);
     const { keyValue, schemaQuery } = queryConfig;
     const { schemaName, queryName } = schemaQuery;
     // Key is used here to ensure we re-mount the DetailPanel when the queryConfig changes

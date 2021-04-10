@@ -122,7 +122,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
     }
 
     shouldComponentUpdate(nextProps): boolean {
-        return this.props.seed !== nextProps.seed;
+        return this.props.seed !== nextProps.seed || this.props.options?.nodes !== nextProps.options?.nodes;
     }
 
     componentDidUpdate(): void {

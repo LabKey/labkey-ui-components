@@ -5,7 +5,7 @@ exports[`FileTree with data 1`] = `
   className="filetree-container"
 >
   <ul
-    className="css-utoqxu"
+    className="css-1fcb9io"
   >
     <li
       className="css-79elbk"
@@ -19,6 +19,7 @@ exports[`FileTree with data 1`] = `
             "display": "flex",
             "padding": "0px 5px",
             "position": "relative",
+            "width": "fit-content",
           }
         }
       >
@@ -33,7 +34,7 @@ exports[`FileTree with data 1`] = `
               width={10}
             >
               <polygon
-                className="css-l0fi0l"
+                className="css-1gdmwl6"
                 points="0,0 0,10 10,5"
               />
             </svg>
@@ -61,7 +62,7 @@ exports[`FileTree with data 1`] = `
           <div
             style={
               Object {
-                "color": "#777",
+                "color": "#333",
                 "display": "inline-block",
                 "verticalAlign": "top",
               }
@@ -120,6 +121,7 @@ exports[`FileTree with data 1`] = `
                   "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
+                  "width": "fit-content",
                 }
               }
             >
@@ -134,7 +136,7 @@ exports[`FileTree with data 1`] = `
                     width={10}
                   >
                     <polygon
-                      className="css-l0fi0l"
+                      className="css-1gdmwl6"
                       points="0,0 0,10 10,5"
                     />
                   </svg>
@@ -162,7 +164,7 @@ exports[`FileTree with data 1`] = `
                 <div
                   style={
                     Object {
-                      "color": "#777",
+                      "color": "#333",
                       "display": "inline-block",
                       "verticalAlign": "top",
                     }
@@ -219,6 +221,7 @@ exports[`FileTree with data 1`] = `
                   "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
+                  "width": "fit-content",
                 }
               }
             >
@@ -233,7 +236,7 @@ exports[`FileTree with data 1`] = `
                     width={10}
                   >
                     <polygon
-                      className="css-l0fi0l"
+                      className="css-1gdmwl6"
                       points="0,0 0,10 10,5"
                     />
                   </svg>
@@ -261,7 +264,7 @@ exports[`FileTree with data 1`] = `
                 <div
                   style={
                     Object {
-                      "color": "#777",
+                      "color": "#333",
                       "display": "inline-block",
                       "verticalAlign": "top",
                     }
@@ -318,6 +321,7 @@ exports[`FileTree with data 1`] = `
                   "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
+                  "width": "fit-content",
                 }
               }
             >
@@ -332,7 +336,7 @@ exports[`FileTree with data 1`] = `
                     width={10}
                   >
                     <polygon
-                      className="css-l0fi0l"
+                      className="css-1gdmwl6"
                       points="0,0 0,10 10,5"
                     />
                   </svg>
@@ -360,7 +364,7 @@ exports[`FileTree with data 1`] = `
                 <div
                   style={
                     Object {
-                      "color": "#777",
+                      "color": "#333",
                       "display": "inline-block",
                       "verticalAlign": "top",
                     }
@@ -417,6 +421,7 @@ exports[`FileTree with data 1`] = `
                   "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
+                  "width": "fit-content",
                 }
               }
             >
@@ -431,7 +436,7 @@ exports[`FileTree with data 1`] = `
                     width={10}
                   >
                     <polygon
-                      className="css-l0fi0l"
+                      className="css-1gdmwl6"
                       points="0,0 0,10 10,5"
                     />
                   </svg>
@@ -459,7 +464,7 @@ exports[`FileTree with data 1`] = `
                 <div
                   style={
                     Object {
-                      "color": "#777",
+                      "color": "#333",
                       "display": "inline-block",
                       "verticalAlign": "top",
                     }
@@ -517,7 +522,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
   className="filetree-container"
 >
   <ul
-    className="css-utoqxu"
+    className="css-1fcb9io"
   >
     <li
       className="css-79elbk"
@@ -531,6 +536,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
             "display": "flex",
             "padding": "0px 5px",
             "position": "relative",
+            "width": "fit-content",
           }
         }
       >
@@ -545,7 +551,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
               width={10}
             >
               <polygon
-                className="css-l0fi0l"
+                className="css-1gdmwl6"
                 points="0,0 0,10 10,5"
               />
             </svg>
@@ -557,14 +563,14 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
           <div
             style={
               Object {
-                "color": "#777",
+                "color": "#333",
                 "display": "inline-block",
                 "verticalAlign": "top",
               }
             }
           >
             <div
-              className="lk-text-theme-dark"
+              className="lk-text-theme-dark filetree-node-active"
             >
               <div
                 className="filetree-resource-row"
@@ -618,6 +624,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                   "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
+                  "width": "fit-content",
                 }
               }
             >
@@ -632,7 +639,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                     width={10}
                   >
                     <polygon
-                      className="css-l0fi0l"
+                      className="css-1gdmwl6"
                       points="0,0 0,10 10,5"
                     />
                   </svg>
@@ -644,7 +651,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                 <div
                   style={
                     Object {
-                      "color": "#777",
+                      "color": "#333",
                       "display": "inline-block",
                       "verticalAlign": "top",
                     }
@@ -701,6 +708,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                   "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
+                  "width": "fit-content",
                 }
               }
             >
@@ -715,7 +723,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                     width={10}
                   >
                     <polygon
-                      className="css-l0fi0l"
+                      className="css-1gdmwl6"
                       points="0,0 0,10 10,5"
                     />
                   </svg>
@@ -727,7 +735,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                 <div
                   style={
                     Object {
-                      "color": "#777",
+                      "color": "#333",
                       "display": "inline-block",
                       "verticalAlign": "top",
                     }
@@ -784,6 +792,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                   "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
+                  "width": "fit-content",
                 }
               }
             >
@@ -798,7 +807,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                     width={10}
                   >
                     <polygon
-                      className="css-l0fi0l"
+                      className="css-1gdmwl6"
                       points="0,0 0,10 10,5"
                     />
                   </svg>
@@ -810,7 +819,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                 <div
                   style={
                     Object {
-                      "color": "#777",
+                      "color": "#333",
                       "display": "inline-block",
                       "verticalAlign": "top",
                     }
@@ -867,6 +876,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                   "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
+                  "width": "fit-content",
                 }
               }
             >
@@ -881,7 +891,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                     width={10}
                   >
                     <polygon
-                      className="css-l0fi0l"
+                      className="css-1gdmwl6"
                       points="0,0 0,10 10,5"
                     />
                   </svg>
@@ -893,7 +903,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                 <div
                   style={
                     Object {
-                      "color": "#777",
+                      "color": "#333",
                       "display": "inline-block",
                       "verticalAlign": "top",
                     }

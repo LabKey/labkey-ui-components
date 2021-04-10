@@ -26,10 +26,11 @@ module.exports = {
     },
 
     module: {
-        rules: constants.loaders.TYPESCRIPT_LOADERS.concat(constants.loaders.STYLE_LOADERS)
+        rules: constants.loaders.TYPESCRIPT.concat(constants.loaders.STYLE).concat(constants.loaders.FILES),
     },
 
     resolve: {
+        alias: constants.aliases.LABKEY_PACKAGES,
         extensions: constants.extensions.TYPESCRIPT
     },
 

@@ -1,6 +1,6 @@
 import { fromJS, List, Map } from 'immutable';
 
-import { DataClassDataType, QueryGridModel, SchemaQuery } from '../../..';
+import { createEntityParentKey, DataClassDataType, QueryGridModel, SchemaQuery } from '../../..';
 
 import { EntityChoice, IEntityTypeOption } from './models';
 import { getInitialParentChoices, parentValuesDiffer } from './utils';
@@ -528,5 +528,14 @@ describe('parentValuesDiffer', () => {
             },
         ]);
         expect(parentValuesDiffer(original, current)).toBe(false);
+    });
+});
+
+describe('createEntityParentKey', () => {
+    test('without id', () => {
+        expect(createEntityParentKey(SchemaQuery.create('schema', 'query'))).toBe('schema:query');
+    });
+    test('with id', () => {
+        expect(createEntityParentKey(SchemaQuery.create('schema', 'query'), 'id')).toBe('schema:query:id');
     });
 });

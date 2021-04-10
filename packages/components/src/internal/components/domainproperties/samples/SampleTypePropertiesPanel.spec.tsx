@@ -18,11 +18,14 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { fromJS, Map } from 'immutable';
 
+import { sleep } from '../../../testHelpers';
+import { initUnitTestMocks } from '../../../testHelperMocks';
 import { ENTITY_FORM_IDS } from '../entities/constants';
-import { DomainDetails, DomainPanelStatus } from '../models';
+import { DomainDesign, DomainDetails, DomainPanelStatus } from '../models';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
+import { UniqueIdBanner } from './UniqueIdBanner';
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,
@@ -35,15 +38,20 @@ const BASE_PROPS = {
     onAddParentAlias: jest.fn,
     onRemoveParentAlias: jest.fn,
     onParentAliasChange: jest.fn,
+    onAddUniqueIdField: jest.fn,
     parentOptions: [],
 };
+
+const sampleTypeModel = SampleTypeModel.create({
+    domainDesign: fromJS({ allowTimepointProperties: false }),
+} as DomainDetails);
 
 describe('<SampleTypePropertiesPanel/>', () => {
     test('default props', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
-                model={SampleTypeModel.create()}
+                model={sampleTypeModel}
             />
         );
 
@@ -55,7 +63,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
                 appPropertiesOnly={true}
-                model={SampleTypeModel.create()}
+                model={sampleTypeModel}
             />
         );
 
@@ -66,7 +74,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
-                model={SampleTypeModel.create()}
+                model={sampleTypeModel}
                 nameExpressionInfoUrl="#anything"
             />
         );
@@ -85,6 +93,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                     description: descVal,
                 }),
                 domainKindName: 'SampleType',
+                domainDesign: sampleTypeModel.get('domain'),
             })
         );
 
@@ -108,6 +117,9 @@ describe('<SampleTypePropertiesPanel/>', () => {
         // Add parent alias button should be visible
         expect(wrapper.find('.container--addition-icon')).toHaveLength(1);
 
+        // Link to Study dropdown should not be visible since allowTimepointProperties: false
+        expect(wrapper.text()).not.toContain('Auto-Link Data to Study');
+
         wrapper.unmount();
     });
 
@@ -115,7 +127,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
-                model={SampleTypeModel.create()}
+                model={sampleTypeModel}
                 parentOptions={[{ schema: 'exp.data' }]}
                 includeDataClasses={true}
                 useSeparateDataClassesAliasMenu={true}
@@ -136,7 +148,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                 {...BASE_PROPS}
                 appPropertiesOnly={true}
                 metricUnitProps={{ includeMetricUnitProperty: true }}
-                model={SampleTypeModel.create()}
+                model={sampleTypeModel}
             />
         );
 
@@ -160,10 +172,70 @@ describe('<SampleTypePropertiesPanel/>', () => {
                         { id: 'g', label: 'g' },
                     ],
                 }}
-                model={SampleTypeModel.create()}
+                model={sampleTypeModel}
             />
         );
 
         expect(tree).toMatchSnapshot();
+    });
+
+    test('Auto-Link Data to Study', async () => {
+        const sampleTypeModelWithTimepoint = SampleTypeModel.create({
+            domainDesign: fromJS({ allowTimepointProperties: true }),
+        } as DomainDetails);
+        const wrapper = mount(
+            <SampleTypePropertiesPanel
+                {...BASE_PROPS}
+                appPropertiesOnly={false}
+                model={sampleTypeModelWithTimepoint}
+            />
+        );
+
+        // Currently appears only when 'allowTimepointProperties' is true and 'appPropertiesOnly' is false
+        // That is, only on LKS, and not on LKB or LKSM
+        expect(wrapper.text()).toContain('Auto-Link Data to Study');
+
+        wrapper.setProps({ appPropertiesOnly: true });
+        expect(wrapper.text()).not.toContain('Auto-Link Data to Study');
+
+        wrapper.unmount();
+    });
+
+    test('community edition, no barcodes', async () => {
+        LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['api', 'core'],
+            },
+        };
+        const wrapper = mount(
+            <SampleTypePropertiesPanel
+                {...BASE_PROPS}
+                model={sampleTypeModel}
+            />
+        );
+
+        await sleep();
+
+        expect(wrapper.find(UniqueIdBanner)).toHaveLength(0);
+        wrapper.unmount();
+    });
+
+    test('premium edition with barcodes', async () => {
+        LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['premium'],
+            },
+        };
+        const wrapper = mount(
+            <SampleTypePropertiesPanel
+                {...BASE_PROPS}
+                model={sampleTypeModel}
+            />
+        );
+
+        await sleep();
+
+        expect(wrapper.find(UniqueIdBanner)).toHaveLength(1);
+        wrapper.unmount();
     });
 });

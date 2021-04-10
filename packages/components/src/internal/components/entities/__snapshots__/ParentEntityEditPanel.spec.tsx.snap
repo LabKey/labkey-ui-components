@@ -69,6 +69,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
       "descriptionSingular": "parent type",
+      "importFileAction": "importData",
       "inputColumnName": "Inputs/Data/First",
       "inputTypeColumnName": "Inputs/Data/First/DataClass",
       "inputTypeValueField": "rowId",
@@ -135,6 +136,9 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
             <div
               className="panel-body"
             >
+              <Alert
+                bsStyle="danger"
+              />
               <div
                 className="bottom-spacing"
               >
@@ -144,11 +148,9 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                   Test
                 </b>
               </div>
-              <div
-                key="1"
-              >
+              <div>
                 <hr />
-                <SingleParentEntityPanel
+                <Memo()
                   childNounSingular="Testing"
                   editing={true}
                   index={0}
@@ -162,6 +164,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                       "dependencyText": "derived sample dependencies",
                       "descriptionPlural": "parent types",
                       "descriptionSingular": "parent type",
+                      "importFileAction": "importData",
                       "inputColumnName": "Inputs/Data/First",
                       "inputTypeColumnName": "Inputs/Data/First/DataClass",
                       "inputTypeValueField": "rowId",
@@ -180,22 +183,173 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                     }
                   }
                 >
-                  <LoadingSpinner
-                    msg="Loading..."
-                    wrapperClassName=""
+                  <withRouter(ComponentWithQueryModels)
+                    childNounSingular="Testing"
+                    editing={true}
+                    index={0}
+                    onChangeParentType={[Function]}
+                    onChangeParentValue={[Function]}
+                    onInitialParentValue={[Function]}
+                    onTypeChange={[Function]}
+                    onValueChange={[Function]}
+                    parentDataType={
+                      Object {
+                        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                        "deleteHelpLinkTopic": "dataClass",
+                        "dependencyText": "derived sample dependencies",
+                        "descriptionPlural": "parent types",
+                        "descriptionSingular": "parent type",
+                        "importFileAction": "importData",
+                        "inputColumnName": "Inputs/Data/First",
+                        "inputTypeColumnName": "Inputs/Data/First/DataClass",
+                        "inputTypeValueField": "rowId",
+                        "insertColumnNamePrefix": "DataInputs/",
+                        "instanceSchemaName": "exp.data",
+                        "nounAsParentSingular": "Parent",
+                        "nounPlural": "data",
+                        "nounSingular": "data",
+                        "typeListingSchemaQuery": Immutable.Record {
+                          "schemaName": "exp",
+                          "queryName": "DataClasses",
+                          "viewName": undefined,
+                        },
+                        "typeNounSingular": "Data Type",
+                        "uniqueFieldKey": "Name",
+                      }
+                    }
+                    queryConfigs={Object {}}
                   >
-                    <span
-                      className=""
+                    <ComponentWithQueryModels
+                      autoLoad={false}
+                      childNounSingular="Testing"
+                      editing={true}
+                      index={0}
+                      modelLoader={
+                        Object {
+                          "clearSelections": [Function],
+                          "loadCharts": [Function],
+                          "loadQueryInfo": [Function],
+                          "loadRows": [Function],
+                          "loadSelections": [Function],
+                          "replaceSelections": [Function],
+                          "selectAllRows": [Function],
+                          "setSelections": [Function],
+                        }
+                      }
+                      onChangeParentType={[Function]}
+                      onChangeParentValue={[Function]}
+                      onInitialParentValue={[Function]}
+                      onTypeChange={[Function]}
+                      onValueChange={[Function]}
+                      parentDataType={
+                        Object {
+                          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                          "deleteHelpLinkTopic": "dataClass",
+                          "dependencyText": "derived sample dependencies",
+                          "descriptionPlural": "parent types",
+                          "descriptionSingular": "parent type",
+                          "importFileAction": "importData",
+                          "inputColumnName": "Inputs/Data/First",
+                          "inputTypeColumnName": "Inputs/Data/First/DataClass",
+                          "inputTypeValueField": "rowId",
+                          "insertColumnNamePrefix": "DataInputs/",
+                          "instanceSchemaName": "exp.data",
+                          "nounAsParentSingular": "Parent",
+                          "nounPlural": "data",
+                          "nounSingular": "data",
+                          "typeListingSchemaQuery": Immutable.Record {
+                            "schemaName": "exp",
+                            "queryName": "DataClasses",
+                            "viewName": undefined,
+                          },
+                          "typeNounSingular": "Data Type",
+                          "uniqueFieldKey": "Name",
+                        }
+                      }
+                      queryConfigs={Object {}}
                     >
-                      <i
-                        aria-hidden="true"
-                        className="fa fa-spinner fa-pulse"
-                      />
-                       
-                      Loading...
-                    </span>
-                  </LoadingSpinner>
-                </SingleParentEntityPanel>
+                      <SingleParentEntity
+                        actions={
+                          Object {
+                            "addModel": [Function],
+                            "clearSelections": [Function],
+                            "loadAllModels": [Function],
+                            "loadCharts": [Function],
+                            "loadFirstPage": [Function],
+                            "loadLastPage": [Function],
+                            "loadModel": [Function],
+                            "loadNextPage": [Function],
+                            "loadPreviousPage": [Function],
+                            "loadRows": [Function],
+                            "replaceSelections": [Function],
+                            "selectAllRows": [Function],
+                            "selectPage": [Function],
+                            "selectReport": [Function],
+                            "selectRow": [Function],
+                            "setFilters": [Function],
+                            "setMaxRows": [Function],
+                            "setOffset": [Function],
+                            "setSchemaQuery": [Function],
+                            "setSelections": [Function],
+                            "setSorts": [Function],
+                            "setView": [Function],
+                          }
+                        }
+                        autoLoad={false}
+                        childNounSingular="Testing"
+                        editing={true}
+                        index={0}
+                        onChangeParentType={[Function]}
+                        onChangeParentValue={[Function]}
+                        onInitialParentValue={[Function]}
+                        onTypeChange={[Function]}
+                        onValueChange={[Function]}
+                        parentDataType={
+                          Object {
+                            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                            "deleteHelpLinkTopic": "dataClass",
+                            "dependencyText": "derived sample dependencies",
+                            "descriptionPlural": "parent types",
+                            "descriptionSingular": "parent type",
+                            "importFileAction": "importData",
+                            "inputColumnName": "Inputs/Data/First",
+                            "inputTypeColumnName": "Inputs/Data/First/DataClass",
+                            "inputTypeValueField": "rowId",
+                            "insertColumnNamePrefix": "DataInputs/",
+                            "instanceSchemaName": "exp.data",
+                            "nounAsParentSingular": "Parent",
+                            "nounPlural": "data",
+                            "nounSingular": "data",
+                            "typeListingSchemaQuery": Immutable.Record {
+                              "schemaName": "exp",
+                              "queryName": "DataClasses",
+                              "viewName": undefined,
+                            },
+                            "typeNounSingular": "Data Type",
+                            "uniqueFieldKey": "Name",
+                          }
+                        }
+                        queryModels={Object {}}
+                      >
+                        <LoadingSpinner
+                          msg="Loading..."
+                          wrapperClassName=""
+                        >
+                          <span
+                            className=""
+                          >
+                            <i
+                              aria-hidden="true"
+                              className="fa fa-spinner fa-pulse"
+                            />
+                             
+                            Loading...
+                          </span>
+                        </LoadingSpinner>
+                      </SingleParentEntity>
+                    </ComponentWithQueryModels>
+                  </withRouter(ComponentWithQueryModels)>
+                </Memo()>
               </div>
             </div>
           </PanelBody>
@@ -381,6 +535,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
       "descriptionSingular": "parent type",
+      "importFileAction": "importData",
       "inputColumnName": "Inputs/Data/First",
       "inputTypeColumnName": "Inputs/Data/First/DataClass",
       "inputTypeValueField": "rowId",
@@ -471,11 +626,9 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                   Test
                 </b>
               </div>
-              <div
-                key="1"
-              >
+              <div>
                 <hr />
-                <SingleParentEntityPanel
+                <Memo()
                   childNounSingular="Testing"
                   editing={false}
                   index={0}
@@ -489,6 +642,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                       "dependencyText": "derived sample dependencies",
                       "descriptionPlural": "parent types",
                       "descriptionSingular": "parent type",
+                      "importFileAction": "importData",
                       "inputColumnName": "Inputs/Data/First",
                       "inputTypeColumnName": "Inputs/Data/First/DataClass",
                       "inputTypeValueField": "rowId",
@@ -507,46 +661,197 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                     }
                   }
                 >
-                  <div
-                    className="top-spacing"
-                    key="grid-0"
+                  <withRouter(ComponentWithQueryModels)
+                    childNounSingular="Testing"
+                    editing={false}
+                    index={0}
+                    onChangeParentType={[Function]}
+                    onChangeParentValue={[Function]}
+                    onInitialParentValue={[Function]}
+                    onTypeChange={[Function]}
+                    onValueChange={[Function]}
+                    parentDataType={
+                      Object {
+                        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                        "deleteHelpLinkTopic": "dataClass",
+                        "dependencyText": "derived sample dependencies",
+                        "descriptionPlural": "parent types",
+                        "descriptionSingular": "parent type",
+                        "importFileAction": "importData",
+                        "inputColumnName": "Inputs/Data/First",
+                        "inputTypeColumnName": "Inputs/Data/First/DataClass",
+                        "inputTypeValueField": "rowId",
+                        "insertColumnNamePrefix": "DataInputs/",
+                        "instanceSchemaName": "exp.data",
+                        "nounAsParentSingular": "Parent",
+                        "nounPlural": "data",
+                        "nounSingular": "data",
+                        "typeListingSchemaQuery": Immutable.Record {
+                          "schemaName": "exp",
+                          "queryName": "DataClasses",
+                          "viewName": undefined,
+                        },
+                        "typeNounSingular": "Data Type",
+                        "uniqueFieldKey": "Name",
+                      }
+                    }
+                    queryConfigs={Object {}}
                   >
-                    <table
-                      className="table table-responsive table-condensed detail-component--table__fixed"
+                    <ComponentWithQueryModels
+                      autoLoad={false}
+                      childNounSingular="Testing"
+                      editing={false}
+                      index={0}
+                      modelLoader={
+                        Object {
+                          "clearSelections": [Function],
+                          "loadCharts": [Function],
+                          "loadQueryInfo": [Function],
+                          "loadRows": [Function],
+                          "loadSelections": [Function],
+                          "replaceSelections": [Function],
+                          "selectAllRows": [Function],
+                          "setSelections": [Function],
+                        }
+                      }
+                      onChangeParentType={[Function]}
+                      onChangeParentValue={[Function]}
+                      onInitialParentValue={[Function]}
+                      onTypeChange={[Function]}
+                      onValueChange={[Function]}
+                      parentDataType={
+                        Object {
+                          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                          "deleteHelpLinkTopic": "dataClass",
+                          "dependencyText": "derived sample dependencies",
+                          "descriptionPlural": "parent types",
+                          "descriptionSingular": "parent type",
+                          "importFileAction": "importData",
+                          "inputColumnName": "Inputs/Data/First",
+                          "inputTypeColumnName": "Inputs/Data/First/DataClass",
+                          "inputTypeValueField": "rowId",
+                          "insertColumnNamePrefix": "DataInputs/",
+                          "instanceSchemaName": "exp.data",
+                          "nounAsParentSingular": "Parent",
+                          "nounPlural": "data",
+                          "nounSingular": "data",
+                          "typeListingSchemaQuery": Immutable.Record {
+                            "schemaName": "exp",
+                            "queryName": "DataClasses",
+                            "viewName": undefined,
+                          },
+                          "typeNounSingular": "Data Type",
+                          "uniqueFieldKey": "Name",
+                        }
+                      }
+                      queryConfigs={Object {}}
                     >
-                      <tbody>
-                        <tr
-                          key="type-name"
+                      <SingleParentEntity
+                        actions={
+                          Object {
+                            "addModel": [Function],
+                            "clearSelections": [Function],
+                            "loadAllModels": [Function],
+                            "loadCharts": [Function],
+                            "loadFirstPage": [Function],
+                            "loadLastPage": [Function],
+                            "loadModel": [Function],
+                            "loadNextPage": [Function],
+                            "loadPreviousPage": [Function],
+                            "loadRows": [Function],
+                            "replaceSelections": [Function],
+                            "selectAllRows": [Function],
+                            "selectPage": [Function],
+                            "selectReport": [Function],
+                            "selectRow": [Function],
+                            "setFilters": [Function],
+                            "setMaxRows": [Function],
+                            "setOffset": [Function],
+                            "setSchemaQuery": [Function],
+                            "setSelections": [Function],
+                            "setSorts": [Function],
+                            "setView": [Function],
+                          }
+                        }
+                        autoLoad={false}
+                        childNounSingular="Testing"
+                        editing={false}
+                        index={0}
+                        onChangeParentType={[Function]}
+                        onChangeParentValue={[Function]}
+                        onInitialParentValue={[Function]}
+                        onTypeChange={[Function]}
+                        onValueChange={[Function]}
+                        parentDataType={
+                          Object {
+                            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                            "deleteHelpLinkTopic": "dataClass",
+                            "dependencyText": "derived sample dependencies",
+                            "descriptionPlural": "parent types",
+                            "descriptionSingular": "parent type",
+                            "importFileAction": "importData",
+                            "inputColumnName": "Inputs/Data/First",
+                            "inputTypeColumnName": "Inputs/Data/First/DataClass",
+                            "inputTypeValueField": "rowId",
+                            "insertColumnNamePrefix": "DataInputs/",
+                            "instanceSchemaName": "exp.data",
+                            "nounAsParentSingular": "Parent",
+                            "nounPlural": "data",
+                            "nounSingular": "data",
+                            "typeListingSchemaQuery": Immutable.Record {
+                              "schemaName": "exp",
+                              "queryName": "DataClasses",
+                              "viewName": undefined,
+                            },
+                            "typeNounSingular": "Data Type",
+                            "uniqueFieldKey": "Name",
+                          }
+                        }
+                        queryModels={Object {}}
+                      >
+                        <div
+                          className="top-spacing"
+                          key="grid-0"
                         >
-                          <td>
-                            Data Type
-                          </td>
-                          <td>
-                            No 
-                            data type
-                             has been set for this 
-                            testing
-                            .
-                          </td>
-                        </tr>
-                        <tr
-                          key="parent-id"
-                        >
-                          <td>
-                            Data ID
-                          </td>
-                          <td>
-                            No 
-                            data
-                             ID has been set for this 
-                            testing
-                            .
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </SingleParentEntityPanel>
+                          <table
+                            className="table table-responsive table-condensed detail-component--table__fixed"
+                          >
+                            <tbody>
+                              <tr
+                                key="type-name"
+                              >
+                                <td>
+                                  Data Type
+                                </td>
+                                <td>
+                                  No 
+                                  data type
+                                   has been set for this 
+                                  testing
+                                  .
+                                </td>
+                              </tr>
+                              <tr
+                                key="parent-id"
+                              >
+                                <td>
+                                  Data ID
+                                </td>
+                                <td>
+                                  No 
+                                  data
+                                   ID has been set for this 
+                                  testing
+                                  .
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </SingleParentEntity>
+                    </ComponentWithQueryModels>
+                  </withRouter(ComponentWithQueryModels)>
+                </Memo()>
               </div>
             </div>
           </PanelBody>
@@ -626,6 +931,7 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
       "descriptionSingular": "parent type",
+      "importFileAction": "importData",
       "inputColumnName": "Inputs/Data/First",
       "inputTypeColumnName": "Inputs/Data/First/DataClass",
       "inputTypeValueField": "rowId",
@@ -691,6 +997,9 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
             <div
               className="panel-body"
             >
+              <Alert
+                bsStyle="danger"
+              />
               <div
                 className="bottom-spacing"
               >

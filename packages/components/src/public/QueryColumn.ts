@@ -2,6 +2,8 @@
 // commented out attributes are not used in app
 import { Record } from 'immutable';
 
+import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
+
 import { SchemaQuery } from './SchemaQuery';
 
 export class QueryLookup extends Record({
@@ -15,16 +17,16 @@ export class QueryLookup extends Record({
     schemaName: undefined,
     table: undefined,
 }) {
-    displayColumn: string;
-    isPublic: boolean;
-    junctionLookup: string; // name of the column on the junction table that is also a lookup
-    keyColumn: string;
-    multiValued: string; // can be "junction", "value" or undefined. Server only support "junction" at this time
-    // public: boolean; -- NOT ALLOWING DUE TO KEYWORD -- USE isPublic
-    queryName: string;
-    // schema: string; -- NOT ALLOWING -- USE schemaName
-    schemaName: string;
-    // table: string; -- NOT ALLOWING -- USE queryName
+    declare displayColumn: string;
+    declare isPublic: boolean;
+    declare junctionLookup: string; // name of the column on the junction table that is also a lookup
+    declare keyColumn: string;
+    declare multiValued: string; // can be "junction", "value" or undefined. Server only support "junction" at this time
+    // declare public: boolean; -- NOT ALLOWING DUE TO KEYWORD -- USE isPublic
+    declare queryName: string;
+    // declare schema: string; -- NOT ALLOWING -- USE schemaName
+    declare schemaName: string;
+    // declare table: string; -- NOT ALLOWING -- USE queryName
 }
 
 export class QueryColumn extends Record({
@@ -65,6 +67,7 @@ export class QueryColumn extends Record({
     // mvEnabled: undefined,
     name: undefined,
     // nullable: undefined,
+    phiProtected: undefined,
     protected: undefined,
     rangeURI: undefined,
     readOnly: undefined,
@@ -89,68 +92,71 @@ export class QueryColumn extends Record({
     removeFromViews: false,
     sorts: undefined,
     units: undefined,
+    derivationDataScope: undefined,
 }) {
-    align: string;
-    // autoIncrement: boolean;
-    // calculated: boolean;
-    caption: string;
-    conceptURI: string;
-    // defaultScale: string;
-    defaultValue: any;
-    description: string;
-    // dimension: boolean;
-    displayAsLookup: boolean;
-    // excludeFromShifting: boolean;
-    // ext: any;
-    // facetingBehaviorType: string;
-    fieldKey: string;
-    fieldKeyArray: string[];
-    // fieldKeyPath: string;
-    format: string;
-    // friendlyType: string;
-    hidden: boolean;
-    inputType: string;
-    // isAutoIncrement: boolean; // DUPLICATE
-    // isHidden: boolean; // DUPLICATE
-    isKeyField: boolean;
-    // isMvEnabled: boolean;
-    // isNullable: boolean;
-    // isReadOnly: boolean;
-    // isSelectable: boolean; // DUPLICATE
-    // isUserEditable: boolean; // DUPLICATE
-    // isVersionField: boolean;
-    jsonType: string;
-    // keyField: boolean;
-    lookup: QueryLookup;
-    // measure: boolean;
-    multiValue: boolean;
-    // mvEnabled: boolean;
-    name: string;
-    // nullable: boolean;
-    'protected': boolean;
-    rangeURI: string;
-    readOnly: boolean;
-    // recommendedVariable: boolean;
-    required: boolean;
-    // selectable: boolean;
-    shortCaption: string;
-    addToDisplayView: boolean;
-    shownInDetailsView: boolean;
-    shownInInsertView: boolean;
-    shownInUpdateView: boolean;
-    sortable: boolean;
-    // sqlType: string;
-    type: string;
-    userEditable: boolean;
-    // versionField: boolean;
+    declare align: string;
+    // declare autoIncrement: boolean;
+    // declare calculated: boolean;
+    declare caption: string;
+    declare conceptURI: string;
+    // declare defaultScale: string;
+    declare defaultValue: any;
+    declare description: string;
+    // declare dimension: boolean;
+    declare displayAsLookup: boolean;
+    // declare excludeFromShifting: boolean;
+    // declare ext: any;
+    // declare facetingBehaviorType: string;
+    declare fieldKey: string;
+    declare fieldKeyArray: string[];
+    // declare fieldKeyPath: string;
+    declare format: string;
+    // declare friendlyType: string;
+    declare hidden: boolean;
+    declare inputType: string;
+    // declare isAutoIncrement: boolean; // DUPLICATE
+    // declare isHidden: boolean; // DUPLICATE
+    declare isKeyField: boolean;
+    // declare isMvEnabled: boolean;
+    // declare isNullable: boolean;
+    // declare isReadOnly: boolean;
+    // declare isSelectable: boolean; // DUPLICATE
+    // declare isUserEditable: boolean; // DUPLICATE
+    // declare isVersionField: boolean;
+    declare jsonType: string;
+    // declare keyField: boolean;
+    declare lookup: QueryLookup;
+    // declare measure: boolean;
+    declare multiValue: boolean;
+    // declare mvEnabled: boolean;
+    declare name: string;
+    // declare nullable: boolean;
+    declare phiProtected: boolean;
+    declare 'protected': boolean;
+    declare rangeURI: string;
+    declare readOnly: boolean;
+    // declare recommendedVariable: boolean;
+    declare required: boolean;
+    // declare selectable: boolean;
+    declare shortCaption: string;
+    declare addToDisplayView: boolean;
+    declare shownInDetailsView: boolean;
+    declare shownInInsertView: boolean;
+    declare shownInUpdateView: boolean;
+    declare sortable: boolean;
+    // declare sqlType: string;
+    declare type: string;
+    declare userEditable: boolean;
+    // declare versionField: boolean;
 
-    cell: Function;
-    columnRenderer: string;
-    detailRenderer: string;
-    inputRenderer: string;
-    sorts: '+' | '-';
-    removeFromViews: boolean; // strips this column from all ViewInfo definitions
-    units: string;
+    declare cell: Function;
+    declare columnRenderer: string;
+    declare detailRenderer: string;
+    declare inputRenderer: string;
+    declare sorts: '+' | '-';
+    declare removeFromViews: boolean; // strips this column from all ViewInfo definitions
+    declare units: string;
+    declare derivationDataScope: string;
 
     static create(rawColumn): QueryColumn {
         if (rawColumn && rawColumn.lookup !== undefined) {
@@ -224,6 +230,22 @@ export class QueryColumn extends Record({
             this.shownInUpdateView === true &&
             this.userEditable === true &&
             this.fieldKeyArray.length === 1
+        );
+    }
+
+    get isUniqueIdColumn(): boolean {
+        return this.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
+    }
+
+    isImportColumn(importName: string): boolean {
+        if (!importName) return false;
+
+        const lcName = importName.toLowerCase();
+        return (
+            this.caption?.toLowerCase() === lcName ||
+            this.caption?.replace(' ', '').toLowerCase() === lcName ||
+            this.name?.toLowerCase() === lcName ||
+            this.fieldKey?.toLowerCase() === lcName
         );
     }
 

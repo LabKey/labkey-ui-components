@@ -75,6 +75,7 @@ interface State {
     labels: any;
 }
 
+// TODO: Merge this functionality with resolveDetailEditRenderer()
 export class QueryFormInputs extends React.Component<QueryFormInputsProps, State> {
     static defaultProps: Partial<QueryFormInputsProps> = {
         checkRequiredFields: true,
@@ -135,9 +136,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             }));
         }
 
-        if (onQSChange) {
-            onQSChange(name, value, items);
-        }
+        onQSChange?.(name, value, items);
     };
 
     onToggleDisable = (disabled: boolean): void => {
@@ -146,9 +145,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         } else {
             this._fieldEnabledCount++;
         }
-        if (this.props.onFieldsEnabledChange) {
-            this.props.onFieldsEnabledChange(this._fieldEnabledCount);
-        }
+        this.props.onFieldsEnabledChange?.(this._fieldEnabledCount);
     };
 
     renderLabelField = (col: QueryColumn): ReactNode => {
@@ -183,7 +180,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             showQuerySelectPreviewOptions,
         } = this.props;
 
-        const filter = columnFilter ? columnFilter : insertColumnFilter;
+        const filter = columnFilter ?? insertColumnFilter;
         const columns = queryInfo ? queryInfo.columns : queryColumns;
 
         // CONSIDER: separately establishing the set of columns and allow
@@ -192,7 +189,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             return columns
                 .filter(filter)
                 .valueSeq()
-                .map((col: QueryColumn, i: number) => {
+                .map((col, i) => {
                     const shouldDisableField =
                         initiallyDisableFields || disabledFields.contains(col.name.toLowerCase());
                     if (!shouldDisableField) {
@@ -240,7 +237,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         if (col.displayAsLookup !== false) {
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
-                            const id = col.fieldKey + i + (componentKey ? componentKey : '');
+                            const id = col.fieldKey + i + (componentKey ?? '');
 
                             return (
                                 <React.Fragment key={i}>

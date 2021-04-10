@@ -1,23 +1,25 @@
 import React from 'react';
-import { OrderedMap } from 'immutable';
+import { List, OrderedMap } from 'immutable';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
 import { getFormNameFromId } from '../entities/actions';
 import {
-    IParentOption,
     AddEntityButton,
     ColorPickerInput,
     generateId,
     getHelpLink,
     helpLinkNode,
+    IDomainField,
+    IParentOption,
     MetricUnitProps,
     SCHEMAS,
     SelectInput,
+    Container,
 } from '../../../..';
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
-import { DERIVE_SAMPLES_ALIAS_TOPIC, DEFINE_SAMPLE_TYPE_TOPIC } from '../../../util/helpLinks';
+import { DEFINE_SAMPLE_TYPE_TOPIC, DERIVE_SAMPLES_ALIAS_TOPIC, UNIQUE_IDS_TOPIC } from '../../../util/helpLinks';
 import { SampleSetParentAliasRow } from '../../samples/SampleSetParentAliasRow';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
@@ -29,13 +31,22 @@ import { HelpTopicURL } from '../HelpTopicURL';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { SectionHeading } from '../SectionHeading';
 
+import { getValidPublishTargets } from '../assay/actions';
+import { ENTITY_FORM_IDS } from '../entities/constants';
+
+import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
+
+import { getCurrentProductName, isCommunityDistribution } from '../../../app/utils';
+
 import { IParentAlias, SampleTypeModel } from './models';
+import { UniqueIdBanner } from './UniqueIdBanner';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 
 // Splitting these out to clarify where they end-up
 interface OwnProps {
     model: SampleTypeModel;
+    onAddUniqueIdField: (fieldConfig: Partial<IDomainField>) => void;
     parentOptions: IParentOption[];
     updateModel: (newModel: SampleTypeModel) => void;
     onParentAliasChange: (id: string, field: string, newValue: any) => void;
@@ -65,6 +76,7 @@ interface EntityProps {
 
 interface State {
     isValid: boolean;
+    containers: List<Container>;
 }
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
@@ -112,7 +124,19 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
         this.state = {
             isValid: true,
+            containers: undefined,
         };
+    }
+
+    componentDidMount() {
+        getValidPublishTargets()
+            .then(containers => {
+                this.setState({ containers });
+            })
+            .catch(response => {
+                console.error('Unable to load valid study targets for Auto-Link Data to Study input.');
+                this.setState(() => ({ containers: List<Container>() }));
+            });
     }
 
     updateValidStatus = (newModel?: SampleTypeModel) => {
@@ -248,9 +272,22 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         return parentOptions.filter(dataClassOptionFilterFn).length > 0;
     }
 
+    renderUniqueIdHelpText = () => {
+        return (
+            <>
+                Use a Unique ID field to represent barcodes or other ID fields in use in your lab.
+                <br />
+                <br />
+                Learn more about using {helpLinkNode(UNIQUE_IDS_TOPIC, 'barcodes and unique IDs')} in{' '}
+                {getCurrentProductName()}.
+            </>
+        );
+    };
+
     render() {
         const {
             model,
+            onAddUniqueIdField,
             parentOptions,
             nameExpressionInfoUrl,
             nameExpressionPlaceholder,
@@ -266,7 +303,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             appPropertiesOnly,
             metricUnitProps,
         } = this.props;
-        const { isValid } = this.state;
+        const { isValid, containers } = this.state;
 
         const includeMetricUnitProperty = metricUnitProps?.includeMetricUnitProperty,
             metricUnitLabel = metricUnitProps?.metricUnitLabel || 'Metric Unit',
@@ -274,6 +311,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 metricUnitProps?.metricUnitHelpMsg || 'The unit of measurement used for the sample type.',
             metricUnitOptions = metricUnitProps?.metricUnitOptions,
             metricUnitRequired = metricUnitProps?.metricUnitRequired;
+        const allowTimepointProperties = model.domain.get('allowTimepointProperties');
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
         return (
@@ -307,7 +345,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 {this.renderParentAliases(true, includeDataClasses && !useSeparateDataClassesAliasMenu)}
                 {parentOptions && (
                     <Row>
-                        <Col xs={2}></Col>
+                        <Col xs={2} />
                         <Col xs={10}>
                             <span>
                                 <AddEntityButton
@@ -326,7 +364,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 {showDataClass && this.renderParentAliases(false, true)}
                 {showDataClass && (
                     <Row>
-                        <Col xs={2}></Col>
+                        <Col xs={2} />
                         <Col xs={10}>
                             <span>
                                 <AddEntityButton
@@ -338,9 +376,40 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         </Col>
                     </Row>
                 )}
+
+                {allowTimepointProperties && !appPropertiesOnly && (
+                    <Row className="margin-top">
+                        <Col xs={2}>
+                            <DomainFieldLabel
+                                label="Auto-Link Data to Study"
+                                helpTipBody={
+                                    <>
+                                        <p>
+                                            Automatically link Sample Type data rows to the specified target study. Only
+                                            rows that include subject and visit/date information will be linked.
+                                        </p>
+                                        <p>
+                                            The user performing the import must have insert permission in the target
+                                            study and the corresponding dataset.
+                                        </p>
+                                    </>
+                                }
+                            />
+                        </Col>
+                        <Col xs={5}>
+                            <AutoLinkToStudyDropdown
+                                containers={containers}
+                                onChange={this.onFormChange}
+                                autoLinkTarget={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
+                                value={model.autoLinkTargetContainerId}
+                            />
+                        </Col>
+                    </Row>
+                )}
+
+                {(appPropertiesOnly || isCommunityDistribution()) && <SectionHeading title="Storage Settings" />}
                 {appPropertiesOnly && (
                     <>
-                        <SectionHeading title="Appearance Settings" />
                         <Row className="margin-top">
                             <Col xs={2}>
                                 <DomainFieldLabel
@@ -390,6 +459,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                             name="metricUnit"
                                             type="text"
                                             placeholder="Enter a unit"
+                                            required={metricUnitRequired}
                                             value={model.metricUnit}
                                             onChange={(e: React.ChangeEvent<FormControlProps>) => {
                                                 this.onFieldChange(e.target.name, e.target.value);
@@ -400,6 +470,16 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                             </Row>
                         )}
                     </>
+                )}
+                {!isCommunityDistribution() && (
+                    <Row className="margin-top">
+                        <Col xs={2}>
+                            <DomainFieldLabel label="Barcodes" helpTipBody={this.renderUniqueIdHelpText()} />
+                        </Col>
+                        <Col xs={10}>
+                            <UniqueIdBanner model={model} isFieldsPanel={false} onAddField={onAddUniqueIdField} />
+                        </Col>
+                    </Row>
                 )}
             </BasePropertiesPanel>
         );

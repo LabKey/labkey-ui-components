@@ -36,15 +36,15 @@ export class FieldEditProps extends Record({
     value: undefined,
     autoFocus: true,
 }) {
-    caption: string;
-    fieldKey: string;
-    inputPlaceholder: string;
-    inputType: string;
-    minValue: number; // used for number input types
-    step: number; // used for number input types; default is 1
-    key: string;
-    value?: string;
-    autoFocus?: boolean;
+    declare caption: string;
+    declare fieldKey: string;
+    declare inputPlaceholder: string;
+    declare inputType: string;
+    declare minValue: number; // used for number input types
+    declare step: number; // used for number input types; default is 1
+    declare key: string;
+    declare value?: string;
+    declare autoFocus?: boolean;
 
     getFieldEditInputName(): string {
         return 'fieldEditInput_' + this.fieldKey;
@@ -109,7 +109,7 @@ export class FieldEditForm extends React.Component<Props, any> {
 
 interface FieldEditInputProps {
     caption?: string;
-    autoFocus?: boolean
+    autoFocus?: boolean;
     fieldCaption?: string;
     inputPlaceholder?: string;
     inputType?: any;
@@ -146,14 +146,14 @@ class FieldEditInputImpl extends React.Component<FieldEditInputProps, any> {
             defaultValue: value,
             onChange: this.handleChange.bind(this),
             placeholder: inputPlaceholder,
-            type: inputType
+            type: inputType,
         };
 
         switch (inputType) {
             case 'textarea':
                 return <textarea rows={4} {...props} />;
             case 'number':
-                return <input {...props} min={minValue} step={step}/>
+                return <input {...props} min={minValue} step={step} />;
             default:
                 return <input {...props} />;
         }

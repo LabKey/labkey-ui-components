@@ -2,12 +2,12 @@ import { SCHEMAS } from '../../schemas';
 
 import { DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
 
+import { SAMPLE_TYPE_KEY } from '../../app/constants';
+
 import { EntityDataType } from './models';
 
 export const DATA_DELETE_CONFIRMATION_ACTION = 'getDataDeleteConfirmationData.api';
 export const SAMPLE_DELETE_CONFIRMATION_ACTION = 'getMaterialDeleteConfirmationData.api';
-
-export const PARENT_DATA_GRID_PREFIX = 'parent-data';
 
 export const SampleTypeDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
@@ -26,6 +26,8 @@ export const SampleTypeDataType: EntityDataType = {
     inputTypeColumnName: 'Inputs/Materials/First/SampleSet',
     inputTypeValueField: 'lsid',
     insertColumnNamePrefix: 'MaterialInputs/',
+    editTypeAppUrlPrefix: SAMPLE_TYPE_KEY,
+    importFileAction: 'importSamples',
 };
 
 export const DataClassDataType: EntityDataType = {
@@ -45,4 +47,5 @@ export const DataClassDataType: EntityDataType = {
     inputTypeColumnName: 'Inputs/Data/First/DataClass',
     inputTypeValueField: 'rowId',
     insertColumnNamePrefix: 'DataInputs/',
+    importFileAction: 'importData',
 };

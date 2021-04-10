@@ -52,6 +52,8 @@ export const DOMAIN_FIELD_DEFAULT_DISPLAY_VALUE = 'defaultDisplayValue';
 export const DOMAIN_FIELD_ONTOLOGY_SOURCE = 'sourceOntology';
 export const DOMAIN_FIELD_ONTOLOGY_LABEL_COL = 'conceptLabelColumn';
 export const DOMAIN_FIELD_ONTOLOGY_IMPORT_COL = 'conceptImportColumn';
+export const DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT = 'principalConceptCode';
+export const DOMAIN_FIELD_DERIVATION_DATA_SCOPE = 'derivationDataScope';
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
@@ -134,8 +136,12 @@ export const RANGE_URIS = {
 
 export const FLAG_CONCEPT_URI = 'http://www.labkey.org/exp/xml#flag';
 export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#ParticipantId';
+export const VISITID_CONCEPT_URI = 'http://cpas.labkey.com/Study#VisitId';
 export const SAMPLE_TYPE_CONCEPT_URI = 'http://www.labkey.org/exp/xml#sample';
 export const CONCEPT_CODE_CONCEPT_URI = 'http://www.labkey.org/types#conceptCode';
+export const STORAGE_UNIQUE_ID_CONCEPT_URI = 'http://www.labkey.org/types#storageUniqueId';
+export const CREATED_TIMESTAMP_CONCEPT_URI = 'http://www.labkey.org/types#createdTimestamp';
+export const MODIFIED_TIMESTAMP_CONCEPT_URI = 'http://www.labkey.org/types#modifiedTimestamp';
 
 export const UNLIMITED_TEXT_LENGTH = 2147483647; // Integer.MAX_VALUE
 export const MAX_TEXT_LENGTH = 4000;
@@ -183,3 +189,5 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     disableMvEnabled: false,
     hideImportData: false,
 };
+
+export const DERIVATION_DATA_SCOPE_CHILD_ONLY = 'ChildOnly';

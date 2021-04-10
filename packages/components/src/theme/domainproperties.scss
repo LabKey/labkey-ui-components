@@ -52,6 +52,17 @@
   padding: 0
 }
 
+.domain-summary-selection {
+    margin-left: 7px;
+    margin-top: 3px;
+    margin-bottom: 0;
+}
+
+.domain-summary-selectAll {
+    padding-left: 7px;
+    margin: 0;
+}
+
 .domain-row-base-fields {
     padding: 0;
     margin: 0;
@@ -114,6 +125,15 @@
     border-top: none;
     padding: 7px 0 7px;
     margin-bottom: 15px;
+}
+
+.domain-field-toolbar-right-aligned {
+    display: flex;
+}
+
+.domain-toolbar-toggle-summary {
+    display: flex;
+    flex-direction: column;
 }
 
 .domain-field-top-noBuffer {
@@ -539,7 +559,8 @@
 }
 
 .domain-validator-link {
-  cursor: pointer;
+    cursor: pointer;
+    padding-right: 5px;
 }
 
 .domain-validator-filter-row {
@@ -574,6 +595,14 @@
 .domain-validator-modal-apply {
   display: inline-flex;
   float: right;
+}
+
+.domain-annotation-table td {
+    vertical-align: top;
+
+    &.content {
+        padding-top: 5px;
+    }
 }
 
 .domain-color-preview {

@@ -19,6 +19,8 @@ import { List } from 'immutable';
 
 import { Col } from 'react-bootstrap';
 
+import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
+
 import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { TextFieldOptions } from './TextFieldOptions';
@@ -29,15 +31,16 @@ import { LookupFieldOptions } from './LookupFieldOptions';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
-import { OntologyLookupOptions } from './OntologyLookupOptions';
+import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField;
     index: number;
-    onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any;
+    onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => void;
     onMultiChange: (changes: List<IFieldChange>) => void;
-    showingModal: (boolean) => any;
+    showingModal: (boolean) => void;
     appPropertiesOnly?: boolean;
+    serverModuleNames: string[];
     domainIndex: number;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
@@ -201,6 +204,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
             onChange,
             showingModal,
             appPropertiesOnly,
+            serverModuleNames,
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
@@ -211,14 +215,29 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                 <div className="domain-row-container-expand-spacer" />
                 <div className="domain-row-container-expanded">
                     <Col xs={12}>{this.typeDependentOptions()}</Col>
-                    <Col xs={12} lg={10}>
+                    <Col xs={12}>
                         <NameAndLinkingOptions
                             index={index}
                             domainIndex={domainIndex}
                             field={field}
                             onChange={onChange}
+                            appPropertiesOnly={appPropertiesOnly}
+                            serverModuleNames={serverModuleNames}
                         />
                     </Col>
+                    {domainFormDisplayOptions?.derivationDataScopeConfig?.show && (
+                        <Col xs={12} lg={10}>
+                            <DerivationDataScopeFieldOptions
+                                index={index}
+                                domainIndex={domainIndex}
+                                config={domainFormDisplayOptions?.derivationDataScopeConfig}
+                                value={field.derivationDataScope}
+                                label={domainFormDisplayOptions?.derivationDataScopeConfig?.sectionTitle}
+                                onChange={onChange}
+                                lockType={field.lockType}
+                            />
+                        </Col>
+                    )}
                     {!isFieldFullyLocked(field.lockType) && (
                         <Col xs={12}>
                             <ConditionalFormattingAndValidation

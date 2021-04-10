@@ -5,6 +5,7 @@
  */
 const lkModule = process.env.LK_MODULE;
 const webpack = require('webpack');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const constants = require('./constants');
 const path = require('path');
 
@@ -17,18 +18,20 @@ __dirname = lkModule;
 const devServer = {
     host: 'localhost',
     port: constants.watchPort,
-
     // enable the HMR on the server
     hot: true,
-
     headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
         "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
     },
-
     compress: true,
-    overlay: true
+    overlay: true,
+    watchOptions: {
+        // Ignore any packages folders, if we don't ignore packages then we will incorrectly trigger builds in
+        // package folders (e.g. changing a file in the SM Workflow package would incorrectly trigger a build in SM)
+        ignored: process.env.LINK ? undefined : ['**/packages']
+    }
 };
 
 const devServerURL = 'http://' + devServer.host + ':' + devServer.port;
@@ -68,26 +71,25 @@ module.exports = {
 
     resolve: {
         alias: {
-            // Note that for modules that don't have these packages, the aliases are just ignored and don't
-            // seem to cause any problems.
-            '@labkey/components': constants.labkeyUIComponentsPath,
-            '@labkey/freezermanager': constants.freezerManagerPath,
-            '@labkey/workflow': constants.workflowPath,
-
-            // This assures there is only one copy of react and react-dom in the application
+            ...constants.aliases.LABKEY_PACKAGES_DEV,
+            // This assures there is only one copy of react used while doing start-link
             react: path.resolve(__dirname, "../node_modules/react"),
-            'react-dom': require.resolve('@hot-loader/react-dom'),
         },
-
         extensions: constants.extensions.TYPESCRIPT.concat('.scss')
     },
 
     module: {
-        rules: constants.loaders.TYPESCRIPT_LOADERS_DEV.concat(constants.loaders.STYLE_LOADERS_DEV)
+        rules: constants.loaders.TYPESCRIPT_DEV.concat(constants.loaders.STYLE_DEV).concat(constants.loaders.FILES)
+    },
+
+    optimization: {
+        // do not emit compiled assets that include errors
+        emitOnErrors: false,
     },
 
     plugins: [
-        // do not emit compiled assets that include errors
-        new webpack.NoEmitOnErrorsPlugin()
-    ]
+        new webpack.HotModuleReplacementPlugin(), // enable HMR globally
+        // This Plugin type checks our TS code, @babel/preset-typescript does not type check, it only transforms
+        new ForkTsCheckerWebpackPlugin(constants.TS_CHECKER_DEV_CONFIG)
+    ],
 };

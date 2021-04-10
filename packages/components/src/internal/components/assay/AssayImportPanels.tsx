@@ -18,7 +18,7 @@ import { Button } from 'react-bootstrap';
 import { Map, OrderedMap } from 'immutable';
 import { AssayDOM, Utils } from '@labkey/api';
 
-import { IMPORT_DATA_FORM_TYPES } from '../../constants';
+import { IMPORT_DATA_FORM_TYPES, AssayUploadTabs } from '../../constants';
 
 import {
     Alert,
@@ -51,8 +51,6 @@ import {
     WizardNavButtons,
     AssayProtocolModel,
 } from '../../..';
-
-import { AssayUploadTabs } from '../../AssayDefinitionModel';
 
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
@@ -493,7 +491,18 @@ class AssayImportPanelsImpl extends Component<Props, State> {
     };
 
     onFinish = (importAgain: boolean): void => {
-        const { currentStep, onSave, maxInsertRows, beforeFinish, getJobDescription, jobNotificationProvider, assayProtocol, allowAsyncImport, asyncFileSize, asyncRowSize } = this.props;
+        const {
+            currentStep,
+            onSave,
+            maxInsertRows,
+            beforeFinish,
+            getJobDescription,
+            jobNotificationProvider,
+            assayProtocol,
+            allowAsyncImport,
+            asyncFileSize,
+            asyncRowSize,
+        } = this.props;
         const { model } = this.state;
         let data = model.prepareFormData(currentStep, this.getDataGridModel());
 
@@ -519,16 +528,18 @@ class AssayImportPanelsImpl extends Component<Props, State> {
             const errorPrefix = 'There was a problem importing the assay results.';
             uploadAssayRunFiles(data)
                 .then(processedData => {
-                    let backgroundUpload = assayProtocol?.backgroundUpload;
+                    const backgroundUpload = assayProtocol?.backgroundUpload;
                     let forceAsync = false;
                     if (allowAsyncImport && !backgroundUpload && assayProtocol?.allowBackgroundUpload) {
-                        if ((processedData.maxFileSize && processedData.maxFileSize >= asyncFileSize)
-                            || (processedData.maxRowCount && processedData.maxRowCount >= asyncRowSize))
+                        if (
+                            (processedData.maxFileSize && processedData.maxFileSize >= asyncFileSize) ||
+                            (processedData.maxRowCount && processedData.maxRowCount >= asyncRowSize)
+                        )
                             forceAsync = true;
                     }
 
                     const jobDescription = getJobDescription ? getJobDescription(data) : undefined;
-                    importAssayRun({...processedData, forceAsync, jobDescription, jobNotificationProvider})
+                    importAssayRun({ ...processedData, forceAsync, jobDescription, jobNotificationProvider })
                         .then((response: AssayUploadResultModel) => {
                             if (this.props.onDataChange) {
                                 this.props.onDataChange(false);
@@ -662,7 +673,7 @@ class AssayImportPanelsImpl extends Component<Props, State> {
             showUploadTabs,
             showQuerySelectPreviewOptions,
             runDataPanelTitle,
-            allowAsyncImport
+            allowAsyncImport,
         } = this.props;
         const { duplicateFileResponse, model, showRenameModal } = this.state;
 
@@ -709,7 +720,11 @@ class AssayImportPanelsImpl extends Component<Props, State> {
                     allowBulkRemove={allowBulkRemove}
                     allowBulkInsert={allowBulkInsert}
                     allowBulkUpdate={allowBulkUpdate}
-                    maxEditableGridRowMsg={allowAsyncImport ? 'A max of 1,000 rows are allowed. Please use the \'Upload Files\' or \'Copy-and-Paste Data\' tab if you need to import more than 1,000 rows.' : undefined}
+                    maxEditableGridRowMsg={
+                        allowAsyncImport
+                            ? "A max of 1,000 rows are allowed. Please use the 'Upload Files' or 'Copy-and-Paste Data' tab if you need to import more than 1,000 rows."
+                            : undefined
+                    }
                     fileSizeLimits={this.props.fileSizeLimits}
                     maxInsertRows={this.props.maxInsertRows}
                     onGridDataChange={this.props.onDataChange}

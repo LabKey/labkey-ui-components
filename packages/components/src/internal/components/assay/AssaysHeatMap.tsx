@@ -16,19 +16,19 @@ const getAssayUrl = (provider: string, protocol: string, page?: string): AppURL 
     return undefined;
 };
 
-const getCellUrl = (row: { [key: string]: any }) => {
+const getCellUrl = (row: Record<string, any>): AppURL => {
     const protocolName = row.Protocol?.displayValue;
     const providerName = row.Provider.value;
     return getAssayUrl(providerName, protocolName, 'runs');
 };
 
-const getHeaderUrl = (cell: HeatMapCell) => {
+const getHeaderUrl = (cell: HeatMapCell): AppURL => {
     const provider = cell.providerName;
     const protocol = cell.protocolName;
     return getAssayUrl(provider, protocol);
 };
 
-const getTotalUrl = (cell: HeatMapCell) => {
+const getTotalUrl = (cell: HeatMapCell): AppURL => {
     const provider = cell.providerName;
     const protocol = cell.protocolName;
     return getAssayUrl(provider, protocol, 'runs');

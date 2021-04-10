@@ -2,8 +2,8 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
 import { List } from 'immutable';
 
-import { resolveErrorMessage } from '../../../..';
-import { DomainDesign, IDomainField } from '../models';
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, resolveErrorMessage } from '../../../..';
+import { DomainDesign, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
@@ -29,6 +29,8 @@ interface Props {
     appPropertiesOnly?: boolean;
     successBsStyle?: string;
     saveBtnText?: string;
+    testMode?: boolean;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
 }
 
 interface State {
@@ -39,6 +41,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
     static defaultProps = {
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
+        domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'data class' },
     };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
@@ -160,6 +163,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             validatePanel,
             firstState,
             helpTopic,
+            testMode,
+            domainFormDisplayOptions,
         } = this.props;
         const { model } = this.state;
 
@@ -219,6 +224,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                     allowImportExport={true}
+                    testMode={testMode}
+                    domainFormDisplayOptions={domainFormDisplayOptions}
                 />
             </BaseDomainDesigner>
         );

@@ -48,10 +48,10 @@ export class LineageNodeMetadata extends Record({
     aliases: undefined,
     displayType: undefined,
 }) {
-    date?: string;
-    description?: string;
-    aliases?: List<string>;
-    displayType?: string;
+    declare date?: string;
+    declare description?: string;
+    declare aliases?: List<string>;
+    declare displayType?: string;
 
     static create(selectRowsMetadata: Map<any, any>, queryInfo: QueryInfo): LineageNodeMetadata {
         let description;
@@ -81,7 +81,7 @@ export class LineageNodeMetadata extends Record({
 export class LineageLink extends Record({
     lsid: undefined,
 }) {
-    lsid: string;
+    declare lsid: string;
 
     static createList(values?: any): List<LineageLink> {
         const result = values ? values.map(v => new LineageLink(v)) : [];
@@ -218,6 +218,7 @@ export class LineageNode
         schemaName: undefined,
         steps: undefined,
         type: undefined,
+        materialLineageType: undefined,
         url: undefined,
 
         // computed properties
@@ -228,32 +229,33 @@ export class LineageNode
         meta: undefined,
     })
     implements LineageNodeConfig {
-    absolutePath: string;
-    children: List<LineageLink>;
-    container: string;
-    cpasType: string;
-    created: string;
-    createdBy: string;
-    dataFileURL: string;
-    dataInputs: LineageIO[];
-    dataOutputs: LineageIO[];
-    expType: string;
-    id: number;
-    lsid: string;
-    materialInputs: LineageIO[];
-    materialOutputs: LineageIO[];
-    modified: string;
-    modifiedBy: string;
-    name: string;
-    parents: List<LineageLink>;
-    pipelinePath: string;
-    pkFilters: Experiment.LineagePKFilter[];
-    properties: any;
-    queryName: string;
-    schemaName: string;
-    steps: List<LineageRunStep>;
-    type: string;
-    url: string;
+    declare absolutePath: string;
+    declare children: List<LineageLink>;
+    declare container: string;
+    declare cpasType: string;
+    declare created: string;
+    declare createdBy: string;
+    declare dataFileURL: string;
+    declare dataInputs: LineageIO[];
+    declare dataOutputs: LineageIO[];
+    declare expType: string;
+    declare id: number;
+    declare lsid: string;
+    declare materialInputs: LineageIO[];
+    declare materialOutputs: LineageIO[];
+    declare modified: string;
+    declare modifiedBy: string;
+    declare name: string;
+    declare parents: List<LineageLink>;
+    declare pipelinePath: string;
+    declare pkFilters: Experiment.LineagePKFilter[];
+    declare properties: any;
+    declare queryName: string;
+    declare schemaName: string;
+    declare steps: List<LineageRunStep>;
+    declare type: string;
+    declare materialLineageType: string;
+    declare url: string;
 
     // computed properties
     distance: number;
@@ -293,9 +295,9 @@ export class LineageResult extends Record({
     nodes: undefined,
     seed: undefined,
 }) {
-    mergedIn: List<string>;
-    nodes: Map<string, LineageNode>;
-    seed: string;
+    declare mergedIn: List<string>;
+    declare nodes: Map<string, LineageNode>;
+    declare seed: string;
 
     static create(rawLineageResult: any): LineageResult {
         const seed = rawLineageResult.seed;

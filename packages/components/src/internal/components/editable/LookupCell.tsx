@@ -23,6 +23,7 @@ import { cancelEvent } from '../../events';
 import { LookupStore, ValueDescriptor } from '../../models';
 import { KEYS, LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { QueryColumn } from '../../..';
+import { GlobalAppState } from '../../global';
 
 const emptyList = List<ValueDescriptor>();
 
@@ -44,7 +45,7 @@ interface LookupCellState {
     token?: string;
 }
 
-export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellState> {
+export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellState, GlobalAppState> {
     private blurTO: number;
     private changeTO: number;
     private inputEl: RefObject<HTMLInputElement>;

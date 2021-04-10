@@ -24,6 +24,12 @@ export const SAMPLE_SET_DISPLAY_TEXT = 'Sample Type';
 export const MAX_EDITABLE_GRID_ROWS = 1000;
 export const LOOKUP_DEFAULT_SIZE = 25;
 
+export enum AssayUploadTabs {
+    Files = 1,
+    Copy = 2,
+    Grid = 3,
+}
+
 export enum EXPORT_TYPES {
     CSV,
     EXCEL,
@@ -222,6 +228,7 @@ export enum IMPORT_DATA_FORM_TYPES {
 
 export const GRID_EDIT_INDEX = '__editing__';
 export const GRID_SELECTION_INDEX = '__selection__';
+export const GRID_NAME_INDEX = '__name__';
 
 export enum GRID_CHECKBOX_OPTIONS {
     ALL,
@@ -229,8 +236,8 @@ export enum GRID_CHECKBOX_OPTIONS {
     NONE,
 }
 
-export const SM_PIPELINE_JOB_NOTIFICATION_EVENT = 'org.labkey.samplemanagement.notification.SampleManagerPipelineJobNotificationProvider.ImportNotify';
+export const SM_PIPELINE_JOB_NOTIFICATION_EVENT =
+    'org.labkey.samplemanagement.notification.SampleManagerPipelineJobNotificationProvider.ImportNotify';
 export const SM_PIPELINE_JOB_NOTIFICATION_EVENT_START = SM_PIPELINE_JOB_NOTIFICATION_EVENT + '#Start';
 export const SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS = SM_PIPELINE_JOB_NOTIFICATION_EVENT + '#Success';
 export const SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR = SM_PIPELINE_JOB_NOTIFICATION_EVENT + '#Error';
-

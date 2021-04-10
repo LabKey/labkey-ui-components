@@ -1,6 +1,279 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.22.4
+*Released*: 10 April 2021
+* Remove /src/internal/app/index.ts and instead define App in /src/index.ts
+
+### version 2.22.3
+*Released*: 9 April 2021
+* Pass already supplied `containerPath` to `getQueryDetails()` for fetching underlying metadata for `<QuerySelect />`.
+
+### version 2.22.2
+*Released*: 9 April 2021
+* Add showImportDataButton, showInsertNewButton and isFiltered to QueryModel
+
+### version 2.22.1
+*Released*: 6 April 2021
+* Fix for FM enabled check related to LKB experimental feature flag
+    * Change to isFreezerManagementEnabled() helper to check that both the inventory module is enabled in the folder
+    and that if biologics is enabled then the experimental feature flag must be enabled as well
+
+### version 2.22.0
+*Released*: 5 April 2021
+* Add GridAliquotViewSelector
+* Add showSampleAliquotSelector to QueryGridBar and GridPanel
+* Add URL.replaceFilter uti
+* Update EntityDeleteModal to work with QueryModel
+* Group lineage nodes based on materialLineageType
+
+### version 2.21.1
+*Released*: 5 April 2021
+* Issue 42598: FileTree component styling fixes for font family, text color, and node display for wide text
+* Ontology search input - cancel form submit on enter key to prevent page reload
+
+### version 2.21.0
+*Released*: 2 April 2021
+* Add support for uniqueId (barcode) fields
+    * Add Concept URI for unique Id fields.
+    * In EntityInsertPanel, add placeholder text for generated Ids and make them read-only
+    * Add condition on column filter used for bulk insert to remove the unique id fields
+    * Add UniqueIdBanner containing call to action in SampleTypeDesigner properties panel and fields panel for adding uniqueIds
+    * Add `getUniqueIdFields` method to QueryInfo class
+* add `isCommunityDistribution` method
+* add `alert-button` css class for buttons that appear in alert banners
+* Update EntityInsertPanel and FilePreviewGrid to show warnings about fields detected that will be ignored during import,
+either because they are not known or because they are uniqueId fields.
+
+### version 2.20.1
+*Released*: 31 March 2021
+* Handle domain field data type check for created/modified timestamp conceptURI
+
+### version 2.20.0
+*Released*: 31 March 2021
+* Item 8703: Move handleFileImport code into shared components and use in EntityInsertPanel for file importData call
+    * Replace EntityInsertPanel handleFileImport prop with fileImportParameters
+    * Add handleEntityFileImport implementation based on usages in LK modules
+    * Change EntityInsertPanel submitFileHandler to use shared handleEntityFileImport with passed in fileImportParameters
+    * Add EntityDataType importFileAction prop to be used for handleEntityFileImport
+
+### version 2.19.0
+*Released*: 30 March 2021
+* Add maxAllowedPhi attribute to User
+* Add phiProtected attribute to QueryColumn
+* Add styling to Grids for PHI protected columns
+* Convert GridMessages to FC
+
+### version 2.18.0
+*Released*: 30 March 2021
+* Issue 42741: EntityInsertPanel fix to use selected sample type name instead of value (which is lowercase) for navigation
+* Add EntityDataType.editTypeAppUrlPrefix to use for linking to the edit design app URL on the create/import page
+* EntityInsertPanel fix to handle case where parent param is a schema/query but without specific values to add to grid
+* Add createEntityParentKey helper util function
+* SubMenuItem fix for expanded menu with filter issue with item disabled state change
+
+### version 2.17.0
+*Released*: 23 March 2021
+* Add queryModel prop to AssayImportSubMenuItem
+
+### version 2.16.1
+*Released*: 22 March 2021
+* add lookupStoreInvalidate util
+
+### version 2.16.0
+*Released*: 22 March 2021
+* Add 'Auto-Link Data to Study' field in Sample Type properties
+
+### version 2.15.3
+*Released*: 21 March 2021
+* Fix for `selectedState` in `QueryModel` when total rows is less than page size
+
+### version 2.15.2
+*Released*: 18 March 2021
+* Merge release21.3-SNAPSHOT to master.
+* Includes changes from versions 2.6.3 and 2.6.4.
+
+### version 2.15.1
+*Released*: 18 March 2021
+* Fix problem with undefined references in `getDisambiguatedSelectInputOptions`
+
+### version 2.15.0
+*Released*: 16 March 2021
+* Add `<DisabledMenuItem/>`.
+* Update assays model getDefinitionsByTypes to list included/excluded types
+* Add isBiologicsEnables and isFreezerManagerEnabledInBiologics checks
+
+### version 2.14.1
+*Released*: 15 March 2021
+* Update `<EntityInsertPanel/>` component for reuse for media materials.
+
+### version 2.14.0
+*Released*: 11 March 2021
+* Update DomainForm and FileAttachmentForm to ignore reserved fields when inferring fields
+
+### version 2.13.2
+*Released*: 11 March 2021
+* Convert `<SingleParentEntityPanel/>` to use `QueryModel`.
+* Update `<ParentEntityEditPanel/>` to no longer invalidate `QueryGridModel`s for underlying single parent panels.
+
+### version 2.13.1
+*Released*: 11 March 2021
+* Fixes Issue 42438: better handling of lineage metadata loading errors.
+* Lineage: propagate `fetchNodeMetadata` loading errors.
+* display error alert in `<LineageGraph/>`.
+
+### version 2.13.0
+*Released*: 10 March 2021
+* Changes to support webpack aliases from /src and theme/SCSS assets
+    * index.ts and app/index.ts updates to export types separately
+    * add "declare" to various immutable Record properties
+    * remove global.d.ts in favor of GlobalAppState defined and used for ReactN components types directly
+    * remove "const" from usages of const enum
+    * Remove direct reference to `jest` from test utility methods
+
+### version 2.12.0
+*Released*: 9 March 2021
+* Add `editColumns` property to `<Detail/>`, `<DetailEditing/>` for `QueryGridModel` support.
+* Add `editColumns` property to `<DetailPanel/>`, `<EditableDetailPanel/>` for `QueryModel` support.
+
+### version 2.11.1
+*Released*: 8 March 2021
+* Hide 'Derivation Data Scope' column within Designer Summary View. Will be updated when aliquot functionality is no longer an experimental feature
+
+### version 2.11.0
+*Released*: 6 March 2021
+* Package Updates
+
+### version 2.10.2
+*Released*: 5 March 2021
+* Merge release21.3-SNAPSHOT to master.
+* Includes changes from versions 2.6.1 and 2.6.2.
+
+### version 2.10.1
+*Released*: 5 March 2021
+* Don't use const enums, they are not compatible with our new typescript babel build
+
+### version 2.10.0
+*Released*: 4 March 2021
+* Support tagging participant and time point columns in sample types
+* Add two PropDescTypes to include within field Data Type dropdown. The new options render when domain property allowTimepointProperties is true, which is currently the case for only Sample Types
+* Ensure two new Data Type options mentioned above do not render in SampleManagement Sample Types
+
+### version 2.9.0
+*Released*: 4 March 2021
+* Replace `<LookupSelectInput/>` with `<QuerySelect/>` in detail editing.
+* Configures a `QuerySelect` component for detail editing.
+* Support defaults for `detailRenderer` and `titleRenderer` on `DetailDisplay`.
+* No longer publicly export `resolveDetailEditRenderer` or `titleRenderer`.
+* Improve types for our rendering methods.
+
+### version 2.8.0
+*Released*: 3 March 2021
+* Add isSampleAliquotEnabled experimental flag
+* Add "Aliquot Options" to domain row
+* Allow DetailEditing to use custom set of update columns via getUpdateDisplayColumns
+* Hide aliquot fields for insert editable grid and bulk insert form
+
+### version 2.7.0
+*Released*: 1 March 2021
+* Add TabbedGridPanel component
+  * To be used as a replacement for QueryGridPanel's tabbed mode
+* Add "title" field to QueryModel
+
+### version 2.6.4
+*Released*: 16 March 2021
+* Item 8546: Ontology concept picker panel search
+    - FileTree component updates show props to `showLoading` and `showAnimations`
+    - Concept path display update for hover to get full path info for "current path"
+    - Ontology tree panel update for adding search input field and results menu behavior
+    - Ontology tree panel update to allow for loading data into tree and navigating to an alternate path via search or alternate path click in path information tab
+    - Ontology panel header update to show ontology description and concept count in tooltip
+    - search/actions.ts update to allow for a custom category filter array
+
+### version 2.6.3
+*Released*: 10 March 2021
+* Item 8360: Expand the ontology and concept browsers with additional information
+    - Added synonym and path information to the concept information panels
+    - Added selected path and alternate path displays to path information tab & panel
+
+### version 2.6.2
+*Released*: 4 March 2021
+* 42608: Bulk Insert erroneously transposes columns
+
+### version 2.6.1
+*Released*: 2 March 2021
+* Issue 42589: Product Menu attempts to load before application initialized
+* Add and respect `showNotifications` and `showProductNav` props to `<NavigationBar />`
+
+### version 2.6.0
+*Released*: 27 February 2021
+* Item 8583: Ontology concept picker usages in Field Editor for field concept annotation
+    - Add principalConceptCode to DomainField model
+    - Add field editor expanded row input for OntologyConceptAnnotation with button to open the Ontology Concept Browser in modal dialog
+    - Move components related to ontology from /domainproperties to /ontology
+    - Expose OntologyConceptOverviewPanel for use in ontology module
+    - Add OntologyBrowserModal to wrap the browser in a modal with cancel and apply buttons
+    - Factor out OntologyTextDomainFieldSelect from OntologyLookupOptions component
+
+### version 2.5.2
+*Released*: 26 February 2021
+* Issue 42515: Layout issue for NavBar with medium-sized screens
+* ProductMenu: prevent closing menu on non-link click
+* ProductMenu: expand link clickable area
+* ProductNavigationHeader: clickable text to go back
+
+### version 2.5.1
+*Released*: 25 February 2021
+* @labkey/components package bundle optimizations
+    - webpack.config.js: add back in new IgnorePlugin(/^\.\/locale$/, /moment$/)
+    - split initUnitTestMocks() into a separate testHelperMocks.tsx file so it isn't referenced via ./src/index.ts
+    - add localDev.md doc info on using webpack-bundle-analyzer
+
+### version 2.5.0
+*Released*: 24 February 2021
+* Item 8359: Add initial OntologyBrowserPanel and associated files
+
+### version 2.4.0
+*Released*: 24 February 2021
+* Migrates `AssayDesignEmptyAlert`, `BarChartViewer`, and `RecentAssayPanel` to `@labkey/components`.
+* Migration includes chart configurations for assays and samples.
+* No longer need to export `UserMenu` as last external usage was removed.
+* Remove jQuery from `BaseBarChart` as it is no longer necessary.
+
+### version 2.3.1
+*Released*: 24 February 2021
+* Make 'auto-scroll to field' functionality in Summary View also expand given field
+* Display rangeURI values in Summary View for new fields
+
+### version 2.3.0
+*Released*: 23 February 2021
+* Field Editor Summary View
+
+### version 2.2.0
+*Released*: 19 February 2021
+* Item 8335: Add LabKey product navigation icon and menu to NavigationBar.tsx
+    - make the ProductNavigationMenu.tsx component available for use in LKS header.jsp
+    - app/utils.ts addition of hasPremiumModule() helper function
+    - remove UserMenu "Switch to LabKey" option
+    - consolidate styles for Product Navigation menu and Notifications menu (ex. update header text display to match)
+    - add optional containerPath param to createProductUrl() function
+
+### version 2.1.0
+*Released*: 18 February 2021
+* Add SampleCreationTypeModal for choosing aliquots, derivatives, or pooled samples
+* Add RadioGroupInput component for use in (and out of) Formsy forms
+* Separate QueryInfoQuantity component from QueryInfoForm for display of quantity header
+
+### version 2.0.0
+*Released*: 15 February 2021
+* Fix issue in URLResolver causing next to be called twice
+* Add useRouteLeave hook
+* withRouteLeave now uses the useRouteLeave hook
+* BACKWARDS INCOMPATIBLE - RouteLeaveProps renamed RouteLeaveInjectedProps
+* Add WrappedRouteLeaveProps - you can now customize the message shown when users attempt to navigate away from a dirty page
+* Improved typing for withRouteLeave
+* BACKWARDS INCOMPATIBLE - remove confirmLeaveWhenDirty
+
 ### version 1.21.1
 Public API update
 *Released*:
@@ -1275,7 +1548,7 @@ select a schema for the QuerySelect to use.
     - Factor out EntityDetailsForm.tsx from SampleSetDetailsPanel.tsx
     - Factor out DomainPropertiesPanelContext.tsx and CollapsiblePanelHeader.tsx for reuse and put back into AssayPropertiesPanel.tsx and DomainForm.tsx
     - DataClassDesigner.tsx and DataClassPropertiesPanel.tsx
-    - Move AssayProtocolModel to domainproperties/assay/models.ts
+    - Move AssayProtocolModel to domainproperties/assay/models.tsx
 
 ### version 0.24.0
 *Released*: 13 February 2020

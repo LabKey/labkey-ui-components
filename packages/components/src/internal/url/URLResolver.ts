@@ -50,13 +50,8 @@ export namespace URLService {
         const table = getRouteTable(store.getState());
 
         if (table.has(nextRoute)) {
-            if (table.get(nextRoute) === true) {
-                next();
-            } else {
-                replace({
-                    pathname: table.get(nextRoute),
-                    query,
-                });
+            if (table.get(nextRoute) !== true) {
+                replace({ pathname: table.get(nextRoute), query });
             }
         } else {
             let found = false;

@@ -4,6 +4,7 @@ import renderer from 'react-test-renderer';
 import { fromJS } from 'immutable';
 
 import assayDefJSON from '../../../test/data/assayDefinitionModel.json';
+
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
 import { AssayReimportHeader } from './AssayReimportHeader';

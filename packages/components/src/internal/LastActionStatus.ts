@@ -12,8 +12,8 @@ export class LastActionStatus extends Record({
     level: MessageLevel.info,
     message: undefined,
 }) {
-    type: string;
-    date: Date;
-    level: MessageLevel;
-    message: string;
+    declare type: string;
+    declare date: Date;
+    declare level: MessageLevel;
+    declare message: string;
 }

@@ -22,6 +22,7 @@ import { gridInit, reloadQueryGridModel, sort, toggleGridRowSelection, toggleGri
 import { getStateModelId, getStateQueryGridModel } from '../models';
 import { headerCell, headerSelectionCell } from '../renderers';
 import { getBrowserHistory } from '../util/global';
+import { GlobalAppState } from '../global';
 
 import {
     generateId,
@@ -62,7 +63,7 @@ interface QueryGridState {
     unlisten?: any;
 }
 
-export class QueryGrid extends ReactN.Component<QueryGridProps, QueryGridState> {
+export class QueryGrid extends ReactN.Component<QueryGridProps, QueryGridState, GlobalAppState> {
     constructor(props: QueryGridProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
@@ -86,7 +87,7 @@ export class QueryGrid extends ReactN.Component<QueryGridProps, QueryGridState> 
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.initModel(this.props);
         this.initUrlRouteListener();
     }
@@ -102,22 +103,19 @@ export class QueryGrid extends ReactN.Component<QueryGridProps, QueryGridState> 
         }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         this.removeUrlRouteListener();
     }
 
-    removeUrlRouteListener() {
-        const { unlisten } = this.state;
-        if (unlisten) {
-            unlisten();
-        }
-    }
+    removeUrlRouteListener = (): void => {
+        this.state.unlisten?.();
+    };
 
     initUrlRouteListener() {
         // make sure to remove any previous route listeners by calling their unlisten() function
         this.removeUrlRouteListener();
 
-        if (this.props.model && this.props.model.bindURL) {
+        if (this.props.model?.bindURL) {
             const unlisten = getBrowserHistory().listen((location, action) => {
                 // this listener only applies if we are staying on the same route, exit early if we are navigating
                 const originalRoute = getRouteFromLocationHash(this.state.locationHash);

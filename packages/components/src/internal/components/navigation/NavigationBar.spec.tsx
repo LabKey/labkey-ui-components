@@ -15,7 +15,7 @@
  */
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
 import { TEST_USER_GUEST, TEST_USER_READER } from '../../../test/data/users';
@@ -24,9 +24,19 @@ import { ServerNotifications } from '../notifications/ServerNotifications';
 import { markAllNotificationsRead } from '../../../test/data/notificationData';
 import { ServerNotificationModel } from '../notifications/model';
 
+import { ProductNavigation } from '../productnavigation/ProductNavigation';
+
 import { MenuSectionModel, ProductMenuModel } from './model';
 
 import { NavigationBar } from './NavigationBar';
+import { UserMenu } from './UserMenu';
+import { ProductMenu } from './ProductMenu';
+import { SearchBox } from './SearchBox';
+
+beforeEach(() => {
+    LABKEY.devMode = false;
+    LABKEY.moduleContext = { samplemanagement: { hasPremiumModule: false } };
+});
 
 describe('<NavigationBar/>', () => {
     const productMenuModel = new ProductMenuModel({
@@ -57,9 +67,19 @@ describe('<NavigationBar/>', () => {
         expect(tree).toMatchSnapshot();
     });
 
+    function validate(wrapper: ReactWrapper, compCounts?: Record<string, number>) {
+        expect(wrapper.find('.project-name')).toHaveLength(compCounts?.ProjectName ?? 0);
+        expect(wrapper.find(ProductMenu)).toHaveLength(compCounts?.ProductMenu ?? 0);
+        expect(wrapper.find(UserMenu)).toHaveLength(compCounts?.UserMenu ?? 0);
+        expect(wrapper.find(SearchBox)).toHaveLength(compCounts?.SearchBox ?? 0);
+        expect(wrapper.find('.navbar__xs-search-icon')).toHaveLength(compCounts?.SearchBox ?? 0);
+        expect(wrapper.find(ServerNotifications)).toHaveLength(compCounts?.ServerNotifications ?? 0);
+        expect(wrapper.find(ProductNavigation)).toHaveLength(compCounts?.ProductNavigation ?? 0);
+    }
+
     test('with notifications no user', () => {
         const component = mount(<NavigationBar model={productMenuModel} notificationsConfig={notificationsConfig} />);
-        expect(component.find(ServerNotifications)).toHaveLength(0);
+        validate(component, { ProductMenu: 1, ServerNotifications: 0 });
         component.unmount();
     });
 
@@ -67,7 +87,7 @@ describe('<NavigationBar/>', () => {
         const component = mount(
             <NavigationBar model={productMenuModel} user={TEST_USER_GUEST} notificationsConfig={notificationsConfig} />
         );
-        expect(component.find(ServerNotifications)).toHaveLength(0);
+        validate(component, { ProductMenu: 1, UserMenu: 1, ServerNotifications: 0 });
         component.unmount();
     });
 
@@ -75,7 +95,21 @@ describe('<NavigationBar/>', () => {
         const component = mount(
             <NavigationBar model={productMenuModel} user={TEST_USER_READER} notificationsConfig={notificationsConfig} />
         );
-        expect(component.find(ServerNotifications)).toHaveLength(1);
+        validate(component, { ProductMenu: 1, UserMenu: 1, ServerNotifications: 1 });
+        component.unmount();
+    });
+
+    test('show ProductNavigation for devMode', () => {
+        LABKEY.devMode = true;
+        const component = mount(<NavigationBar model={null} />);
+        validate(component, { ProductNavigation: 1 });
+        component.unmount();
+    });
+
+    test('show ProductNavigation for hasPremiumModule', () => {
+        LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
+        const component = mount(<NavigationBar model={null} />);
+        validate(component, { ProductNavigation: 1 });
         component.unmount();
     });
 });

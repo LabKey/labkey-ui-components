@@ -2,15 +2,21 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { AppURL } from '../..';
+import { AppURL } from '../url/AppURL';
 
+export const LKS_PRODUCT_ID = 'LabKeyServer';
+export const BIOLOGICS_PRODUCT_ID = 'biologics';
 export const SAMPLE_MANAGER_PRODUCT_ID = 'sampleManager';
 export const FREEZER_MANAGER_PRODUCT_ID = 'freezerManager';
+
+export const SAMPLE_MANAGER_PRODUCT_NAME = 'Sample Manager';
+export const BIOLOGICS_PRODUCT_NAME = 'Biologics';
+export const LABKEY_SERVER_PRODUCT_NAME = 'LabKey Server';
 
 export const ASSAYS_KEY = 'assays';
 export const ASSAY_DESIGN_KEY = 'assayDesign';
 export const SAMPLES_KEY = 'samples';
-export const SAMPLE_TYPE_KEY = 'sampleSet';
+export const SAMPLE_TYPE_KEY = 'sampleType';
 export const SOURCES_KEY = 'sources';
 export const SOURCE_TYPE_KEY = 'sourceType';
 export const WORKFLOW_KEY = 'workflow';

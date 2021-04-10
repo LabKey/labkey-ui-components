@@ -605,11 +605,11 @@ export class InsertRowsErrorResponse extends Record({
     extraContext: undefined,
     success: false,
 }) {
-    errors: InsertRowError[];
-    errorCount: number;
-    exception: string;
-    extraContext: any;
-    success: boolean;
+    declare errors: InsertRowError[];
+    declare errorCount: number;
+    declare exception: string;
+    declare extraContext: any;
+    declare success: boolean;
 
     getErrorMessage() {
         return this.exception; // TODO make this more user friendly by including row number and excluding techincal details
@@ -630,10 +630,10 @@ export class InsertRowsResponse extends Record({
     error: undefined,
     transactionAuditId: undefined,
 }) {
-    rows: any[];
-    schemaQuery: SchemaQuery;
-    error: InsertRowsErrorResponse;
-    transactionAuditId?: number;
+    declare rows: any[];
+    declare schemaQuery: SchemaQuery;
+    declare error: InsertRowsErrorResponse;
+    declare transactionAuditId?: number;
 
     getFilter(): Filter.IFilter {
         const rowIds = [];

@@ -17,11 +17,15 @@ import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { Ajax, Domain, getServerContext, Query, Security, Utils } from '@labkey/api';
 
-import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL } from '../../..';
+import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL, DomainDetails } from '../../..';
 
 import { processSchemas } from '../../schemas';
 
 import { SimpleResponse } from '../files/models';
+
+import { OntologyModel } from '../ontology/models';
+
+import { isCommunityDistribution } from '../../app/utils';
 
 import {
     decodeLookup,
@@ -34,7 +38,6 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
-    OntologyModel,
     QueryInfoLite,
     updateSampleField,
 } from './models';
@@ -44,7 +47,10 @@ import {
     FLAG_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     PROP_DESC_TYPES,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
     PropDescType,
+    UNIQUE_ID_TYPE,
 } from './PropDescType';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -126,6 +132,33 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
             queryName,
             success: data => {
                 resolve(DomainDesign.create(data.domainDesign ? data.domainDesign : data, undefined));
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+}
+
+/**
+ * @param domainId: Fetch domain details by Id. Priority param over schema and query name.
+ * @param schemaName: Schema of domain.
+ * @param queryName: Query of domain.
+ * @return Promise wrapped Domain API call.
+ */
+export function fetchDomainDetails(domainId: number, schemaName: string, queryName: string): Promise<DomainDetails> {
+    return new Promise((resolve, reject) => {
+        Domain.getDomainDetails({
+            containerPath: LABKEY.container.path,
+            domainId,
+            schemaName,
+            queryName,
+            success: data => {
+                resolve(
+                    DomainDetails.create(
+                        Map<string, any>({ ...data })
+                    )
+                );
             },
             failure: error => {
                 reject(error);
@@ -231,7 +264,15 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
         return false;
     }
 
+    if ((type === VISIT_DATE_TYPE || type === VISIT_ID_TYPE) && !domain.allowTimepointProperties) {
+        return false;
+    }
+
     if (type === ONTOLOGY_LOOKUP_TYPE && ontologies.length === 0) {
+        return false;
+    }
+
+    if (type === UNIQUE_ID_TYPE && (isCommunityDistribution() || domain.domainKindName !== Domain.KINDS.SAMPLE_TYPE)) {
         return false;
     }
 
@@ -942,7 +983,9 @@ export function getOntologyUpdatedFieldName(
 
     // check for a field removal prior to the ontology lookup field
     const propFieldRemoved = removedFieldIndexes
-        ? removedFieldIndexes.some(removedField => removedField.originalIndex === origFieldIndex && removedField.newIndex === undefined)
+        ? removedFieldIndexes.some(
+              removedField => removedField.originalIndex === origFieldIndex && removedField.newIndex === undefined
+          )
         : removedFieldIndexes;
 
     if (removedFieldIndexes) {

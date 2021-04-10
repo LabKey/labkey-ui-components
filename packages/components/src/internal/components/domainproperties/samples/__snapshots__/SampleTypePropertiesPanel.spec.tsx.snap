@@ -90,7 +90,6 @@ exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
         >
           <input
             className="form-control"
-            disabled={false}
             id="entity-name"
             onChange={[Function]}
             placeholder="Enter a name for this sample type"
@@ -252,7 +251,7 @@ exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
     <div
       className="domain-field-section-heading"
     >
-      Appearance Settings
+      Storage Settings
     </div>
     <div
       className="margin-top row"
@@ -402,7 +401,6 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
         >
           <input
             className="form-control"
-            disabled={false}
             id="entity-name"
             onChange={[Function]}
             placeholder="Enter a name for this sample type"
@@ -561,6 +559,11 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
         </span>
       </div>
     </div>
+    <div
+      className="domain-field-section-heading"
+    >
+      Storage Settings
+    </div>
   </div>
 </div>
 `;
@@ -650,7 +653,6 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
         >
           <input
             className="form-control"
-            disabled={false}
             id="entity-name"
             onChange={[Function]}
             placeholder="Enter a name for this sample type"
@@ -861,6 +863,11 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
         </span>
       </div>
     </div>
+    <div
+      className="domain-field-section-heading"
+    >
+      Storage Settings
+    </div>
   </div>
 </div>
 `;
@@ -955,7 +962,6 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
         >
           <input
             className="form-control"
-            disabled={false}
             id="entity-name"
             onChange={[Function]}
             placeholder="Enter a name for this sample type"
@@ -1117,7 +1123,7 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
     <div
       className="domain-field-section-heading"
     >
-      Appearance Settings
+      Storage Settings
     </div>
     <div
       className="margin-top row"
@@ -1321,7 +1327,6 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
         >
           <input
             className="form-control"
-            disabled={false}
             id="entity-name"
             onChange={[Function]}
             placeholder="Enter a name for this sample type"
@@ -1483,7 +1488,7 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
     <div
       className="domain-field-section-heading"
     >
-      Appearance Settings
+      Storage Settings
     </div>
     <div
       className="margin-top row"
@@ -1758,7 +1763,6 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
         >
           <input
             className="form-control"
-            disabled={false}
             id="entity-name"
             onChange={[Function]}
             placeholder="Enter a name for this sample type"
@@ -1916,6 +1920,11 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
           </div>
         </span>
       </div>
+    </div>
+    <div
+      className="domain-field-section-heading"
+    >
+      Storage Settings
     </div>
   </div>
 </div>

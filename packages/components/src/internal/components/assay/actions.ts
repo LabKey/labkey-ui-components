@@ -27,9 +27,10 @@ import {
     QueryGridModel,
     SCHEMAS,
     SchemaQuery,
+    QueryModel,
 } from '../../..';
 
-import { AssayUploadTabs } from '../../AssayDefinitionModel';
+import { AssayUploadTabs } from '../../constants';
 
 import { AssayUploadResultModel } from './models';
 import { IAssayUploadOptions } from './AssayWizardModel';
@@ -104,14 +105,15 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
         const maxRowCount = Array.isArray(data.dataRows) ? data.dataRows.length : undefined;
         if (data.files) {
             data.files.forEach(file => {
-                if (file.size > maxFileSize)
+                if (file.size > maxFileSize) {
                     maxFileSize = file.size;
-            })
+                }
+            });
         }
 
         if (Utils.isEmptyObj(batchFiles) && Utils.isEmptyObj(runFiles)) {
             // No files in the data, so just go ahead and resolve so we run the import.
-            resolve({...data, maxRowCount, maxFileSize});
+            resolve({ ...data, maxRowCount, maxFileSize });
             return;
         }
 
@@ -124,8 +126,9 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
         Object.keys(batchFiles).forEach(columnName => {
             const name = fileCounter === 0 ? 'file' : `file${fileCounter}`;
             const file = batchFiles[columnName];
-            if (file.size > maxFileSize)
+            if (file.size > maxFileSize) {
                 maxFileSize = file.size;
+            }
             fileNameMap[name] = {
                 columnName,
                 origin: 'batch',
@@ -137,8 +140,9 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
         Object.keys(runFiles).forEach(columnName => {
             const name = fileCounter === 0 ? 'file' : `file${fileCounter}`;
             const file = runFiles[columnName];
-            if (file.size > maxFileSize)
+            if (file.size > maxFileSize) {
                 maxFileSize = file.size;
+            }
             fileNameMap[name] = {
                 columnName,
                 origin: 'run',
@@ -189,7 +193,7 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
                         ...runPaths,
                     },
                     maxRowCount,
-                    maxFileSize
+                    maxFileSize,
                 });
             },
             failure: Utils.getCallbackWrapper(error => {
@@ -238,6 +242,32 @@ export function deleteAssayRuns(
             }),
         });
     });
+}
+
+export function getImportItemsForAssayDefinitionsQM(
+    assayStateModel: AssayStateModel,
+    sampleModel?: QueryModel,
+    providerType?: string
+): OrderedMap<AssayDefinitionModel, string> {
+    let targetSQ;
+    const selectionKey = sampleModel?.id;
+
+    if (sampleModel?.queryInfo) {
+        targetSQ = sampleModel.queryInfo.schemaQuery;
+    }
+
+    return assayStateModel.definitions
+        .filter(assay => providerType === undefined || assay.type === providerType)
+        .filter(assay => !targetSQ || assay.hasLookup(targetSQ))
+        .sort(naturalSortByProperty('name'))
+        .reduce((items, assay) => {
+            const href = assay.getImportUrl(
+                selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
+                selectionKey,
+                sampleModel ? List(sampleModel.filters) : undefined
+            );
+            return items.set(assay, href);
+        }, OrderedMap<AssayDefinitionModel, string>());
 }
 
 export function getImportItemsForAssayDefinitions(

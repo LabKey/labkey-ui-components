@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 
+import { LoadingSpinner } from '../../../index';
+
 import { markNotificationsAsRead } from './actions';
 import { ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
-import { LoadingSpinner } from '../../../index';
 
 type Props = ServerNotificationsConfig;
 
@@ -26,10 +27,10 @@ export class ServerNotifications extends React.Component<Props, State> {
     }
 
     markAllRead = (): void => {
-        this.props.markAllNotificationsRead()
+        this.props
+            .markAllNotificationsRead()
             .then(() => {
-                if (this.props.onRead)
-                    this.props.onRead();
+                if (this.props.onRead) this.props.onRead();
             })
             .catch(() => {
                 console.error('Unable to mark all notifications as read');
@@ -39,8 +40,7 @@ export class ServerNotifications extends React.Component<Props, State> {
     onRead = (id: number): void => {
         markNotificationsAsRead([id])
             .then(() => {
-                if (this.props.onRead)
-                    this.props.onRead();
+                if (this.props.onRead) this.props.onRead();
             })
             .catch(() => {
                 console.error('Unable to mark notification ' + id + ' as read');
@@ -73,8 +73,8 @@ export class ServerNotifications extends React.Component<Props, State> {
 
         const numUnread = this.getNumUnread();
         const title = (
-            <h3 className="server-notifications-header">
-                <div className={"navbar-icon-connector" + (numUnread > 0 ? '' : ' notification-all-read')} />
+            <h3 className="navbar-menu-header">
+                <div className={'navbar-icon-connector' + (numUnread > 0 ? ' has-unread' : '')} />
                 Notifications
                 {numUnread > 0 && (
                     <div className="pull-right server-notifications-link" onClick={this.markAllRead}>
@@ -85,10 +85,17 @@ export class ServerNotifications extends React.Component<Props, State> {
         );
         let body;
         if (serverActivity?.isError) {
-            body = <div className="server-notifications-footer server-notifications-error">{serverActivity.errorMessage}</div>;
-        }
-        else if (!serverActivity || !serverActivity.isLoaded) {
-            body = <div className="server-notifications-footer"><LoadingSpinner /></div>;
+            body = (
+                <div className="server-notifications-footer server-notifications-error">
+                    {serverActivity.errorMessage}
+                </div>
+            );
+        } else if (!serverActivity || !serverActivity.isLoaded) {
+            body = (
+                <div className="server-notifications-footer">
+                    <LoadingSpinner />
+                </div>
+            );
         } else {
             body = (
                 <ServerActivityList
@@ -102,10 +109,9 @@ export class ServerNotifications extends React.Component<Props, State> {
 
         const icon = (
             <span>
-                <i className={
-                        'fa ' +
-                        (this.hasAnyInProgress() ? 'fa-spinner fa-pulse' : 'fa-bell') +
-                        ' server-notifications-icon'
+                <i
+                    className={
+                        'fa ' + (this.hasAnyInProgress() ? 'fa-spinner fa-pulse' : 'fa-bell') + ' navbar-header-icon'
                     }
                 />
                 {this.hasAnyUnread() && <span className="badge">{numUnread}</span>}

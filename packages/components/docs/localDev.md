@@ -41,16 +41,17 @@ to reference the new pre-release version in order to view the changes within the
 be able to do this without publishing for quicker development iteration.
 
 In order to use and test the components you are developing or modifying in this repository within another application,
-we currently recommend using `yarn watch` together with the LabKey module's `npm run start-link` command.
-The `watch` command will automatically build a package when the source code changes, and if you have hot reloading
-started for your application, changes made in the components will then get re-built into the application.
+we currently recommend using the LabKey module's `npm run start-link` command. This command will link to the @labkey
+package src code in a way that includes it in the files being watched and built by the HMR command.
+This means that changes made in the @labkey packages will then get re-built into the application alongside the Labkey
+module React code changes.
 
 For example, to test changes in `@labkey/components` within the `my_app` module, you could do:
-* ``yarn watch``
-* edit files within the `package/components` dir
-* wait for recompile triggered by the `watch` to happen
-* use [hot module reload mode](../../build/webpack/README.md#developing-with-hot-module-reloading-hmr) in your module
+* `npm run start-link` in the `my_app` module dir to use
+[hot module reload mode](../../build/webpack/README.md#developing-with-hot-module-reloading-hmr) in your module
 with webpack aliases enabled for package linking
+* edit files within the `package/components` dir
+* see changes reflected in your `appDev` LabKey page/view
 
 ### Package Dependencies
 We track our external dependencies in [this spreadsheet](https://docs.google.com/spreadsheets/d/1W39yHLulzLUaXhp5-IRFuloJC9O94CJnwEHrR_4CcSo/edit#gid=0)
@@ -85,8 +86,8 @@ yarn run storybook
 When changes are made to the source code or .scss files for the components or the stories, the storybook instance will automatically reload.
 
 ### Linting
-**In an effort to maintain consistent formatting, use best practices and catch errors before they reach production, it
-is highly recommended to lint any files you've changed before merging them to master.**
+In an effort to maintain consistent formatting, use best practices and catch errors before they reach production, it
+is highly recommended to lint any files you've changed before merging them to master.
 
 #### Commands
 
@@ -143,6 +144,15 @@ yarn run lint-fix "./src/components/files/*"
 # Recursively all files in a directory and its sub-directories
 yarn run lint-fix "./src/components/**/*"
 ```
+
+### Package Bundle Size
+Periodically we should review the @labkey/components package bundle size to make sure that there
+aren't any inadvertent dependencies or files getting included in the bundle. To do this, we have
+used the `webpack-bundle-analyzer` npm package. See [docs](https://github.com/webpack-contrib/webpack-bundle-analyzer) for more details.
+1. `npm install webpack-bundle-analyzer`
+1. In the `components/webpack.config.js` file, add the following to the top of the page:
+    `const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;`
+1. In that same file, add the following to the `plugins` array: `new BundleAnalyzerPlugin()`
 
 ## Publishing
 

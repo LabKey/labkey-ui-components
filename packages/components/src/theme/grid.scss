@@ -67,6 +67,10 @@
   font-weight: bold;
 }
 
+.phi-protected {
+    background: repeating-linear-gradient(-45deg, #fcf8e3, #fcf8e3 10px, #ffffff 10px, #ffffff 20px);
+}
+
 .grid-header-sort {
   position: absolute;
   right: 0;
@@ -442,4 +446,8 @@ $table-cell-selection-bg-color: #EDF3FF;
 
 .chart-menu-label {
   margin-left: 10px;
+}
+
+.tabbed-grid-panel .nav-tabs {
+    margin-bottom: 30px;
 }

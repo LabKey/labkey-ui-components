@@ -15,9 +15,15 @@
  */
 import { fromJS, List, Map, Record } from 'immutable';
 import { Domain, getServerContext } from '@labkey/api';
-import { immerable } from 'immer';
+import React, { ReactNode } from 'react';
 
-import { caseInsensitive, SCHEMAS } from '../../..';
+import { Checkbox } from 'react-bootstrap';
+
+import { createFormInputId, GridColumn, SCHEMAS, valueIsEmpty } from '../../..';
+
+import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
+
+import { camelCaseToTitleCase } from '../../util/utils';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
@@ -26,6 +32,7 @@ import {
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_NOT_LOCKED,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
+    DOMAIN_FIELD_SELECTED,
     DOMAIN_FILTER_HASANYVALUE,
     INT_RANGE_URI,
     MAX_TEXT_LENGTH,
@@ -33,30 +40,45 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
     UNLIMITED_TEXT_LENGTH,
     USER_RANGE_URI,
 } from './constants';
 import {
     ATTACHMENT_TYPE,
+    CONCEPT_URIS_NOT_USED_IN_TYPES,
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
     FLAG_TYPE,
     INTEGER_TYPE,
     LOOKUP_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
     PARTICIPANT_TYPE,
-    PropDescType,
     PROP_DESC_TYPES,
+    PropDescType,
     READONLY_DESC_TYPES,
     SAMPLE_TYPE,
     TEXT_TYPE,
     USERS_TYPE,
-    ONTOLOGY_LOOKUP_TYPE,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
 } from './PropDescType';
+import {
+    removeFalseyObjKeys,
+    removeNonAppProperties,
+    removeUnusedOntologyProperties,
+    removeUnusedProperties,
+    reorderSummaryColumns,
+} from './propertiesUtil';
 
 export interface IFieldChange {
     id: string;
     value: any;
+}
+
+export interface DomainOnChange {
+    (changes: List<IFieldChange>, index?: number, expand?: boolean): any;
 }
 
 export interface IBannerMessage {
@@ -77,6 +99,12 @@ export interface FieldDetails {
     ontologyLookupIndices: number[];
 }
 
+export interface DomainPropertiesGridColumn {
+    index: string;
+    caption: string;
+    sortable: boolean;
+}
+
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
 
 interface IDomainDesign {
@@ -88,6 +116,7 @@ interface IDomainDesign {
     allowFileLinkProperties: boolean;
     allowAttachmentProperties: boolean;
     allowFlagProperties: boolean;
+    allowTimepointProperties: boolean;
     showDefaultValueSettings: boolean;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
@@ -109,6 +138,7 @@ export class DomainDesign
         allowFileLinkProperties: false,
         allowAttachmentProperties: false,
         allowFlagProperties: true,
+        allowTimepointProperties: false,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
         defaultValueOptions: List<string>(),
@@ -122,25 +152,26 @@ export class DomainDesign
         domainKindName: undefined,
     })
     implements IDomainDesign {
-    name: string;
-    container: string;
-    description: string;
-    domainURI: string;
-    domainId: number;
-    allowFileLinkProperties: boolean;
-    allowAttachmentProperties: boolean;
-    allowFlagProperties: boolean;
-    showDefaultValueSettings: boolean;
-    defaultDefaultValueType: string;
-    defaultValueOptions: List<string>;
-    fields: List<DomainField>;
-    indices: List<DomainIndex>;
-    domainException: DomainException;
-    mandatoryFieldNames: List<string>;
-    reservedFieldNames: List<string>;
-    newDesignFields?: List<DomainField>; // Returns a set of fields to initialize a manually created design
-    instructions: string;
-    domainKindName: string;
+    declare name: string;
+    declare container: string;
+    declare description: string;
+    declare domainURI: string;
+    declare domainId: number;
+    declare allowFileLinkProperties: boolean;
+    declare allowAttachmentProperties: boolean;
+    declare allowFlagProperties: boolean;
+    declare allowTimepointProperties: boolean;
+    declare showDefaultValueSettings: boolean;
+    declare defaultDefaultValueType: string;
+    declare defaultValueOptions: List<string>;
+    declare fields: List<DomainField>;
+    declare indices: List<DomainIndex>;
+    declare domainException: DomainException;
+    declare mandatoryFieldNames: List<string>;
+    declare reservedFieldNames: List<string>;
+    declare newDesignFields?: List<DomainField>; // Returns a set of fields to initialize a manually created design
+    declare instructions: string;
+    declare domainKindName: string;
 
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
@@ -283,6 +314,129 @@ export class DomainDesign
 
         return mapping;
     }
+
+    getGridData(appPropertiesOnly: boolean, hasOntologyModule: boolean): List<any> {
+        return this.fields.map((field, i) => {
+            let fieldSerial = DomainField.serialize(field);
+            const dataType = field.dataType;
+            fieldSerial = removeUnusedProperties(fieldSerial);
+            if (!hasOntologyModule) {
+                fieldSerial = removeUnusedOntologyProperties(fieldSerial);
+            }
+            if (appPropertiesOnly) {
+                fieldSerial = removeNonAppProperties(fieldSerial);
+            }
+
+            fieldSerial['fieldIndex'] = i;
+            // Add back subset of field properties stripped by the serialize
+            fieldSerial['selected'] = field.selected;
+            fieldSerial['visible'] = field.visible;
+
+            return Map(
+                Object.keys(fieldSerial).map(key => {
+                    const rawVal = fieldSerial[key];
+                    const valueType = typeof rawVal;
+                    let value = valueIsEmpty(rawVal) ? '' : rawVal;
+
+                    // Since rangeURI is not set on field creation, pull rangeURI value from dataType
+                    if (key === 'rangeURI' && value === '') {
+                        value = dataType.rangeURI;
+                    }
+
+                    // Make bools render as strings sortable within their column
+                    if (key !== 'visible' && key !== 'selected' && valueType === 'boolean') {
+                        value = rawVal ? 'true' : 'false';
+                    }
+
+                    // Handle property validator and conditional format rendering
+                    if ((key === 'propertyValidators' || key === 'conditionalFormats') && value !== '') {
+                        value = JSON.stringify(value.map(cf => removeFalseyObjKeys(cf)));
+                    }
+
+                    if (key === 'fieldIndex' && value === '') {
+                        value = 0;
+                    }
+                    return [key, value];
+                })
+            );
+        }) as List<Map<string, any>>;
+    }
+
+    getGridColumns(
+        onFieldsChange: DomainOnChange,
+        scrollFunction: (i: number) => void,
+        domainKindName: string,
+        appPropertiesOnly: boolean,
+        hasOntologyModule: boolean
+    ): List<GridColumn | DomainPropertiesGridColumn> {
+        const selectionCol = new GridColumn({
+            index: GRID_SELECTION_INDEX,
+            title: GRID_SELECTION_INDEX,
+            width: 20,
+            cell: (data: any, row: any) => {
+                const domainIndex = row.get('domainIndex');
+                const fieldIndex = row.get('fieldIndex');
+                const selected = row.get('selected');
+                const formInputId = createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, fieldIndex);
+
+                const changes = List.of({ id: formInputId, value: !selected });
+                return (
+                    <>
+                        <Checkbox
+                            className="domain-summary-selection"
+                            id={formInputId}
+                            checked={selected}
+                            onChange={() => {
+                                onFieldsChange(changes, fieldIndex, false);
+                            }}
+                        />
+                    </>
+                );
+            },
+        });
+
+        const nameCol = new GridColumn({
+            index: GRID_NAME_INDEX,
+            title: GRID_NAME_INDEX,
+            raw: { index: 'name', caption: 'Name', sortable: true },
+            cell: (data: any, row: any) => {
+                const text = row.get('name');
+                const fieldIndex = row.get('fieldIndex');
+
+                return (
+                    <>
+                        <a onClick={() => scrollFunction(fieldIndex)} style={{ cursor: 'pointer' }}>
+                            {text}
+                        </a>
+                    </>
+                );
+            },
+        });
+
+        const specialCols = List([selectionCol, nameCol]);
+        const firstField = this.fields.get(0);
+        let columns = DomainField.serialize(firstField);
+
+        delete columns.name;
+        columns = removeUnusedProperties(columns);
+        if (!hasOntologyModule) {
+            columns = removeUnusedOntologyProperties(columns);
+        }
+        if (appPropertiesOnly) {
+            columns = removeNonAppProperties(columns);
+        }
+        if (domainKindName !== 'List') {
+            delete columns.isPrimaryKey;
+        }
+
+        const unsortedColumns = List(
+            Object.keys(columns).map(key => {
+                return { index: key, caption: camelCaseToTitleCase(key), sortable: true };
+            })
+        );
+        const sortedColumns = unsortedColumns.sort(reorderSummaryColumns);
+        return specialCols.concat(sortedColumns) as List<GridColumn | DomainPropertiesGridColumn>;
+    }
 }
 
 interface IDomainIndex {
@@ -296,8 +450,8 @@ export class DomainIndex
         type: undefined,
     })
     implements IDomainIndex {
-    columns: List<string>;
-    type: 'primary' | 'unique';
+    declare columns: List<string>;
+    declare type: 'primary' | 'unique';
 
     static fromJS(rawIndices: IDomainIndex[]): List<DomainIndex> {
         let indices = List<DomainIndex>();
@@ -337,12 +491,12 @@ export class ConditionalFormat
         backgroundColor: undefined,
     })
     implements IConditionalFormat {
-    formatFilter: string;
-    bold: boolean;
-    italic: boolean;
-    strikethrough: boolean;
-    textColor?: string;
-    backgroundColor?: string;
+    declare formatFilter: string;
+    declare bold: boolean;
+    declare italic: boolean;
+    declare strikethrough: boolean;
+    declare textColor?: string;
+    declare backgroundColor?: string;
 
     constructor(values?: { [key: string]: any }) {
         // filter is a reserved work on Records so change to formatFilter and update for HASANYVALUE lacking a filter symbol
@@ -385,7 +539,7 @@ export class PropertyValidatorProperties
         failOnMatch: false,
     })
     implements IPropertyValidatorProperties {
-    failOnMatch: boolean;
+    declare failOnMatch: boolean;
 }
 
 export interface IPropertyValidator {
@@ -411,14 +565,14 @@ export class PropertyValidator
         expression: undefined,
     })
     implements IPropertyValidator {
-    type: string;
-    name: string;
-    properties: PropertyValidatorProperties;
-    errorMessage?: string;
-    description?: string;
-    new: boolean;
-    rowId?: number;
-    expression?: string;
+    declare type: string;
+    declare name: string;
+    declare properties: PropertyValidatorProperties;
+    declare errorMessage?: string;
+    declare description?: string;
+    declare new: boolean;
+    declare rowId?: number;
+    declare expression?: string;
 
     static fromJS(rawPropertyValidator: any[], type: string): List<PropertyValidator> {
         let propValidators = List<PropertyValidator>();
@@ -517,6 +671,7 @@ export interface IDomainField {
     sourceOntology?: string;
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
+    principalConceptCode?: string;
 }
 
 export class DomainField
@@ -542,7 +697,6 @@ export class DomainField
         mvEnabled: false,
         name: undefined,
         PHI: undefined,
-        primaryKey: undefined,
         propertyId: undefined,
         propertyURI: undefined,
         propertyValidators: List<PropertyValidator>(),
@@ -570,59 +724,62 @@ export class DomainField
         sourceOntology: undefined,
         conceptLabelColumn: undefined,
         conceptImportColumn: undefined,
+        principalConceptCode: undefined,
+        derivationDataScope: undefined,
         selected: false,
     })
     implements IDomainField {
-    conceptURI?: string;
-    conditionalFormats: List<ConditionalFormat>;
-    defaultScale?: string;
-    defaultValueType?: string;
-    defaultValue?: string;
-    defaultDisplayValue?: string;
-    description?: string;
-    dimension?: boolean;
-    excludeFromShifting?: boolean;
-    format?: string;
-    hidden?: boolean;
-    importAliases?: string;
-    label?: string;
-    lookupContainer?: string;
-    lookupQuery?: string;
-    lookupSchema?: string;
-    lookupValidator?: PropertyValidator;
-    measure?: boolean;
-    mvEnabled?: boolean;
-    name: string;
-    PHI?: string;
-    primaryKey?: boolean;
-    propertyId?: number;
-    propertyURI: string;
-    propertyValidators: List<PropertyValidator>;
-    rangeValidators: List<PropertyValidator>;
-    rangeURI: string;
-    regexValidators: List<PropertyValidator>;
-    recommendedVariable: boolean;
-    required?: boolean;
-    scale?: number;
-    URL?: string;
-    shownInDetailsView?: boolean;
-    shownInInsertView?: boolean;
-    shownInUpdateView?: boolean;
-    visible: boolean;
-    dataType: PropDescType;
-    lookupQueryValue: string;
-    lookupType: PropDescType;
-    original: Partial<IDomainField>;
-    updatedField: boolean;
-    isPrimaryKey: boolean;
-    lockType: string;
-    wrappedColumnName?: string;
-    disablePhiLevel?: boolean;
-    lockExistingField?: boolean;
-    sourceOntology?: string;
-    conceptLabelColumn?: string;
-    conceptImportColumn?: string;
-    selected: boolean;
+    declare conceptURI?: string;
+    declare conditionalFormats: List<ConditionalFormat>;
+    declare defaultScale?: string;
+    declare defaultValueType?: string;
+    declare defaultValue?: string;
+    declare defaultDisplayValue?: string;
+    declare description?: string;
+    declare dimension?: boolean;
+    declare excludeFromShifting?: boolean;
+    declare format?: string;
+    declare hidden?: boolean;
+    declare importAliases?: string;
+    declare label?: string;
+    declare lookupContainer?: string;
+    declare lookupQuery?: string;
+    declare lookupSchema?: string;
+    declare lookupValidator?: PropertyValidator;
+    declare measure?: boolean;
+    declare mvEnabled?: boolean;
+    declare name: string;
+    declare PHI?: string;
+    declare propertyId?: number;
+    declare propertyURI: string;
+    declare propertyValidators: List<PropertyValidator>;
+    declare rangeValidators: List<PropertyValidator>;
+    declare rangeURI: string;
+    declare regexValidators: List<PropertyValidator>;
+    declare recommendedVariable: boolean;
+    declare required?: boolean;
+    declare scale?: number;
+    declare URL?: string;
+    declare shownInDetailsView?: boolean;
+    declare shownInInsertView?: boolean;
+    declare shownInUpdateView?: boolean;
+    declare visible: boolean;
+    declare dataType: PropDescType;
+    declare lookupQueryValue: string;
+    declare lookupType: PropDescType;
+    declare original: Partial<IDomainField>;
+    declare updatedField: boolean;
+    declare isPrimaryKey: boolean;
+    declare lockType: string;
+    declare wrappedColumnName?: string;
+    declare disablePhiLevel?: boolean;
+    declare lockExistingField?: boolean;
+    declare sourceOntology?: string;
+    declare conceptLabelColumn?: string;
+    declare conceptImportColumn?: string;
+    declare principalConceptCode?: string;
+    declare derivationDataScope?: string;
+    declare selected: boolean;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         const baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
@@ -837,6 +994,10 @@ export class DomainField
         return isFieldSaved(this);
     }
 
+    isUniqueIdField(): boolean {
+        return this.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
+    }
+
     static hasRangeValidation(field: DomainField): boolean {
         return (
             field.dataType === INTEGER_TYPE ||
@@ -848,7 +1009,7 @@ export class DomainField
     }
 
     static hasRegExValidation(field: DomainField): boolean {
-        return field.dataType.isString();
+        return field.dataType.isString() && !field.isUniqueIdField();
     }
 
     static updateDefaultValues(field: DomainField): DomainField {
@@ -904,6 +1065,11 @@ export class DomainField
             period = '. ';
         } else if (this.dataType.isOntologyLookup() && this.sourceOntology) {
             details.push(period + this.sourceOntology);
+            period = '. ';
+        }
+
+        if (this.principalConceptCode) {
+            details.push(period + 'Concept Annotation: ' + this.principalConceptCode);
             period = '. ';
         }
 
@@ -1035,7 +1201,15 @@ export function isPropertyTypeAllowed(type: PropDescType, includeFileType: boole
     if (type === FILE_TYPE) return includeFileType;
 
     // We are excluding the field types below for the App
-    return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ATTACHMENT_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
+    return ![
+        LOOKUP_TYPE,
+        PARTICIPANT_TYPE,
+        FLAG_TYPE,
+        ATTACHMENT_TYPE,
+        ONTOLOGY_LOOKUP_TYPE,
+        VISIT_DATE_TYPE,
+        VISIT_ID_TYPE,
+    ].includes(type);
 }
 
 export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {
@@ -1056,7 +1230,12 @@ export function acceptablePropertyType(type: PropDescType, rangeURI: string): bo
         return true;
     }
 
-    // Catches Multiline text
+    // Original field is a string, we can't convert to a unique Id
+    if (type.isUniqueId() && PropDescType.isString(rangeURI)) {
+        return false;
+    }
+
+    // Original field is a uniqueId, text, or multi-line text, can convert to a string type
     if (type.isString() && PropDescType.isString(rangeURI)) {
         return true;
     }
@@ -1079,7 +1258,9 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
             if (type.rangeURI === rawField.rangeURI && !type.isUser()) {
                 if (
                     !rawField.lookupQuery &&
-                    ((!type.conceptURI && !rawField.conceptURI) || type.conceptURI === rawField.conceptURI)
+                    ((!type.conceptURI && !rawField.conceptURI) ||
+                        type.conceptURI === rawField.conceptURI ||
+                        CONCEPT_URIS_NOT_USED_IN_TYPES.contains(rawField.conceptURI))
                 ) {
                     return true;
                 }
@@ -1124,10 +1305,10 @@ export class ColumnInfoLite
         name: undefined,
     })
     implements IColumnInfoLite {
-    friendlyType?: string;
-    isKeyField?: boolean;
-    jsonType?: string;
-    name?: string;
+    declare friendlyType?: string;
+    declare isKeyField?: boolean;
+    declare jsonType?: string;
+    declare name?: string;
 
     static create(raw: IColumnInfoLite): ColumnInfoLite {
         return new ColumnInfoLite(raw);
@@ -1169,20 +1350,20 @@ export class QueryInfoLite
         viewDataUrl: undefined,
     })
     implements IQueryInfoLite {
-    canEdit?: boolean;
-    canEditSharedViews?: boolean;
-    columns?: List<ColumnInfoLite>;
-    description?: string;
-    hidden?: boolean;
-    inherit?: boolean;
-    isInherited?: boolean;
-    isMetadataOverrideable?: boolean;
-    isUserDefined?: boolean;
-    name?: string;
-    schemaName?: string;
-    snapshot?: false;
-    title?: string;
-    viewDataUrl?: string;
+    declare canEdit?: boolean;
+    declare canEditSharedViews?: boolean;
+    declare columns?: List<ColumnInfoLite>;
+    declare description?: string;
+    declare hidden?: boolean;
+    declare inherit?: boolean;
+    declare isInherited?: boolean;
+    declare isMetadataOverrideable?: boolean;
+    declare isUserDefined?: boolean;
+    declare name?: string;
+    declare schemaName?: string;
+    declare snapshot?: false;
+    declare title?: string;
+    declare viewDataUrl?: string;
 
     static create(raw: IQueryInfoLite, schemaName: string): QueryInfoLite {
         return new QueryInfoLite(
@@ -1257,11 +1438,11 @@ export class DomainException
         errors: List<DomainFieldError>(),
     })
     implements IDomainException {
-    exception: string;
-    success: boolean;
-    severity: string;
-    domainName: string;
-    errors?: List<DomainFieldError>;
+    declare exception: string;
+    declare success: boolean;
+    declare severity: string;
+    declare domainName: string;
+    declare errors?: List<DomainFieldError>;
 
     static create(rawModel: any, severityLevel): DomainException {
         if (rawModel && rawModel.exception) {
@@ -1416,14 +1597,14 @@ export class DomainFieldError
         extraInfo: undefined,
     })
     implements IDomainFieldError {
-    message: string;
-    fieldName: string;
-    propertyId?: number;
-    severity?: string;
-    serverError: boolean;
-    rowIndexes: List<number>;
-    newRowIndexes?: List<number>;
-    extraInfo?: string;
+    declare message: string;
+    declare fieldName: string;
+    declare propertyId?: number;
+    declare severity?: string;
+    declare serverError: boolean;
+    declare rowIndexes: List<number>;
+    declare newRowIndexes?: List<number>;
+    declare extraInfo?: string;
 
     static fromJS(errors: any[], severityLevel: string): List<DomainFieldError> {
         let fieldErrors = List<DomainFieldError>();
@@ -1478,6 +1659,17 @@ export interface IDomainFormDisplayOptions {
     hideAddFieldsButton?: boolean;
     disableMvEnabled?: boolean;
     hideImportData?: boolean;
+    derivationDataScopeConfig?: IDerivationDataScope;
+    domainKindDisplayName?: string;
+    retainReservedFields?: boolean;
+}
+
+export interface IDerivationDataScope {
+    show?: boolean;
+    disable?: boolean;
+    sectionTitle?: string;
+    fieldLabel?: string;
+    helpLinkNode?: ReactNode;
 }
 
 /**
@@ -1493,10 +1685,10 @@ export class DomainDetails extends Record({
     domainKindName: undefined,
     nameReadOnly: false,
 }) {
-    domainDesign: DomainDesign;
-    options: Map<string, any>;
-    domainKindName: string;
-    nameReadOnly?: boolean;
+    declare domainDesign: DomainDesign;
+    declare options: Map<string, any>;
+    declare domainKindName: string;
+    declare nameReadOnly?: boolean;
 
     static create(rawDesign: Map<string, any> = Map(), domainKindType: string = Domain.KINDS.UNKNOWN): DomainDetails {
         let design;
@@ -1521,30 +1713,6 @@ export class DomainDetails extends Record({
 export interface DomainFieldIndexChange {
     originalIndex: number;
     newIndex: number;
-}
-
-export class OntologyModel {
-    [immerable] = true;
-
-    rowId: number;
-    abbreviation: string;
-    name: string;
-
-    constructor(values?: Partial<OntologyModel>) {
-        Object.assign(this, values);
-    }
-
-    static create(raw: any): OntologyModel {
-        return new OntologyModel({
-            rowId: caseInsensitive(raw, 'RowId')?.value,
-            name: caseInsensitive(raw, 'Name')?.value,
-            abbreviation: caseInsensitive(raw, 'Abbreviation')?.value,
-        });
-    }
-
-    getLabel() {
-        return this.name + ' (' + this.abbreviation + ')';
-    }
 }
 
 export interface BulkDeleteConfirmInfo {

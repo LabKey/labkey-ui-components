@@ -9,7 +9,8 @@ import DomainForm from '../DomainForm';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import { initUnitTestMocks, sleep } from '../../../testHelpers';
+import { sleep } from '../../../testHelpers';
+import { initUnitTestMocks } from '../../../testHelperMocks';
 
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';
@@ -21,6 +22,7 @@ const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
+    testMode: true,
 };
 
 beforeAll(() => {

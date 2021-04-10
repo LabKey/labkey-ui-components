@@ -22,11 +22,11 @@ export class SearchResultsModel extends Record({
     isLoaded: false,
     lastUpdate: undefined,
 }) {
-    entities: List<Map<any, any>>;
-    error: string;
-    isLoading: boolean;
-    isLoaded: boolean;
-    lastUpdate: Date;
+    declare entities: List<Map<any, any>>;
+    declare error: string;
+    declare isLoading: boolean;
+    declare isLoaded: boolean;
+    declare lastUpdate: Date;
 
     static create(raw: any): SearchResultsModel {
         return new SearchResultsModel({

@@ -57,7 +57,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
             <div
               className="domain-field-label"
             >
-              <Component
+              <DomainFieldLabel
                 helpTipBody={
                   <React.Fragment>
                     To control how a number value is displayed, provide a string format compatible with the Java class DecimalFormat.
@@ -199,7 +199,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
                     </span>
                   </Component>
                 </span>
-              </Component>
+              </DomainFieldLabel>
             </div>
           </div>
         </Col>

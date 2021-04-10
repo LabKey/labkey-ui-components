@@ -357,7 +357,6 @@ import {
     flattenValuesFromRow,
 } from './public/QueryModel/utils';
 import { useRouteLeave, withRouteLeave } from './internal/util/RouteLeave';
-import * as App from './internal/app';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
 import { CHART_GROUPS } from './internal/components/chart/configs';
 import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
@@ -419,14 +418,152 @@ import {
 import { createMockWithRouterProps } from './test/mockUtils';
 import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
+import { AppModel, LogoutReason } from './internal/app/models';
+import {
+    AppReducers,
+    ProductMenuReducers,
+    RoutingTableReducers,
+    ServerNotificationReducers,
+} from './internal/app/reducers';
+import {
+    CloseEventCode,
+    getDateFormat as getAppDateFormat,
+    getMenuSectionConfigs,
+    hasPremiumModule,
+    initWebSocketListeners,
+    isFreezerManagementEnabled,
+    isSampleAliquotEnabled,
+    isSampleManagerEnabled,
+    userCanDesignLocations,
+    userCanDesignSourceTypes,
+} from './internal/app/utils';
+import {
+    doResetQueryGridState,
+    getUserPermissions,
+    menuInit,
+    menuInvalidate,
+    menuReload,
+    serverNotificationInit,
+    serverNotificationInvalidate,
+    setReloadRequired,
+    updateUserDisplayName,
+} from './internal/app/actions';
+import {
+    TEST_USER_APP_ADMIN,
+    TEST_USER_ASSAY_DESIGNER,
+    TEST_USER_AUTHOR,
+    TEST_USER_EDITOR,
+    TEST_USER_FOLDER_ADMIN,
+    TEST_USER_GUEST,
+    TEST_USER_READER,
+} from './test/data/users';
+import {
+    ASSAY_DESIGN_KEY,
+    ASSAYS_KEY,
+    BIOLOGICS_PRODUCT_ID,
+    BOXES_KEY,
+    FREEZER_MANAGER_PRODUCT_ID,
+    FREEZERS_KEY,
+    HOME_KEY,
+    MANAGE_STORAGE_UNITS_HREF,
+    NEW_ASSAY_DESIGN_HREF,
+    NEW_FREEZER_DESIGN_HREF,
+    NEW_SAMPLE_TYPE_HREF,
+    NEW_SAMPLES_HREF,
+    NEW_SOURCE_TYPE_HREF,
+    NOTIFICATION_TIMEOUT,
+    SAMPLE_MANAGER_PRODUCT_ID,
+    SAMPLE_TYPE_KEY,
+    SAMPLES_KEY,
+    SECURITY_LOGOUT,
+    SECURITY_SERVER_UNAVAILABLE,
+    SECURITY_SESSION_TIMEOUT,
+    SERVER_NOTIFICATION_MAX_ROWS,
+    SET_RELOAD_REQUIRED,
+    SOURCE_TYPE_KEY,
+    SOURCES_KEY,
+    STICKY_HEADER_HEIGHT,
+    UPDATE_USER_DISPLAY_NAME,
+    USER_KEY,
+    USER_PERMISSIONS_REQUEST,
+    USER_PERMISSIONS_SUCCESS,
+    WORKFLOW_HOME_HREF,
+    WORKFLOW_KEY,
+} from './internal/app/constants';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
 enablePatches();
 
+const App = {
+    AppReducers,
+    ProductMenuReducers,
+    RoutingTableReducers,
+    ServerNotificationReducers,
+    CloseEventCode,
+    initWebSocketListeners,
+    isFreezerManagementEnabled,
+    isSampleManagerEnabled,
+    isSampleAliquotEnabled,
+    hasPremiumModule,
+    getDateFormat: getAppDateFormat,
+    getMenuSectionConfigs,
+    getUserPermissions,
+    doResetQueryGridState,
+    menuInit,
+    menuInvalidate,
+    menuReload,
+    serverNotificationInit,
+    serverNotificationInvalidate,
+    setReloadRequired,
+    updateUserDisplayName,
+    userCanDesignLocations,
+    userCanDesignSourceTypes,
+    SECURITY_LOGOUT,
+    SECURITY_SERVER_UNAVAILABLE,
+    SECURITY_SESSION_TIMEOUT,
+    SET_RELOAD_REQUIRED,
+    USER_PERMISSIONS_SUCCESS,
+    USER_PERMISSIONS_REQUEST,
+    UPDATE_USER_DISPLAY_NAME,
+    BIOLOGICS_PRODUCT_ID,
+    SAMPLE_MANAGER_PRODUCT_ID,
+    FREEZER_MANAGER_PRODUCT_ID,
+    ASSAYS_KEY,
+    ASSAY_DESIGN_KEY,
+    SAMPLES_KEY,
+    SAMPLE_TYPE_KEY,
+    SOURCES_KEY,
+    SOURCE_TYPE_KEY,
+    WORKFLOW_KEY,
+    FREEZERS_KEY,
+    BOXES_KEY,
+    HOME_KEY,
+    USER_KEY,
+    NEW_SAMPLES_HREF,
+    NEW_SOURCE_TYPE_HREF,
+    NEW_SAMPLE_TYPE_HREF,
+    NEW_ASSAY_DESIGN_HREF,
+    WORKFLOW_HOME_HREF,
+    NEW_FREEZER_DESIGN_HREF,
+    MANAGE_STORAGE_UNITS_HREF,
+    NOTIFICATION_TIMEOUT,
+    STICKY_HEADER_HEIGHT,
+    SERVER_NOTIFICATION_MAX_ROWS,
+    TEST_USER_GUEST,
+    TEST_USER_READER,
+    TEST_USER_AUTHOR,
+    TEST_USER_EDITOR,
+    TEST_USER_ASSAY_DESIGNER,
+    TEST_USER_FOLDER_ADMIN,
+    TEST_USER_APP_ADMIN,
+};
+
 export {
     // internal application
     App,
+    AppModel,
+    LogoutReason,
     // global state functions
     initQueryGridState,
     initNotificationsState,
@@ -950,4 +1087,10 @@ export type { WithFormStepsProps } from './internal/components/forms/FormStep';
 export type { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
 export type { Location } from './internal/util/URL';
+export type {
+    RoutingTableState,
+    ServerNotificationState,
+    ProductMenuState,
+    AppReducerState,
+} from './internal/app/reducers';
 export type { IAttachment } from './internal/renderers/AttachmentCard';

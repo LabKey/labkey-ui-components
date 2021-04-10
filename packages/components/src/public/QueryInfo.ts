@@ -358,6 +358,14 @@ export class QueryInfo extends Record({
         return [];
     }
 
+    getShowImportDataButton(): boolean {
+        return this.showInsertNewButton && this.importUrl && !this.importUrlDisabled;
+    }
+
+    getShowInsertNewButton(): boolean {
+        return this.showInsertNewButton && this.insertUrl && !this.insertUrlDisabled;
+    }
+
     getInsertQueryInfo(): QueryInfo {
         const updateColumns = this.columns.filter(column => column.shownInInsertView && !column.isFileInput);
         return this.set('columns', updateColumns) as QueryInfo;

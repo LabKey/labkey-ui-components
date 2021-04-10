@@ -8,6 +8,18 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Enable FileColumnRenderer for DetailsPanel
     * ...TODO add the rest
 
+### version 2.22.4
+*Released*: 10 April 2021
+* Remove /src/internal/app/index.ts and instead define App in /src/index.ts
+
+### version 2.22.3
+*Released*: 9 April 2021
+* Pass already supplied `containerPath` to `getQueryDetails()` for fetching underlying metadata for `<QuerySelect />`.
+
+### version 2.22.2
+*Released*: 9 April 2021
+* Add showImportDataButton, showInsertNewButton and isFiltered to QueryModel
+
 ### version 2.22.1
 *Released*: 6 April 2021
 * Fix for FM enabled check related to LKB experimental feature flag

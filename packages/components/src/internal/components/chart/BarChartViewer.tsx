@@ -20,7 +20,9 @@ import {
     User,
 } from '../../..';
 
-import { ASSAYS_KEY, getDateFormat, SAMPLES_KEY } from '../../app';
+import { getDateFormat } from '../../app/utils';
+
+import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 
 import { processChartData } from './utils';
 import { BaseBarChart } from './BaseBarChart';

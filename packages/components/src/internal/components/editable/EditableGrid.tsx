@@ -89,17 +89,19 @@ function inputCellFactory(
         const colIdx = cn - colOffset;
 
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
-        const isForcedEditableCol = columnMetadata ? columnMetadata.forceEditable : false;
-        let isReadonlyRow = false;
+        let isReadonlyRow = false, isReadonlyCell = false;
 
-        if (!isReadonlyCol && !isForcedEditableCol && model && readonlyRows) {
+        if (!isReadonlyCol && model && (readonlyRows || columnMetadata?.isReadOnlyCell)) {
             const keyCols = model.getKeyColumns();
             if (keyCols.size == 1) {
                 const key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
-                isReadonlyRow = key && readonlyRows.contains(key);
+                if (readonlyRows)
+                    isReadonlyRow = key && readonlyRows.contains(key);
+                if (columnMetadata?.isReadOnlyCell)
+                    isReadonlyCell = columnMetadata.isReadOnlyCell(key);
             } else {
                 console.warn(
-                    'Setting readonly rows for models with ' + keyCols.size + ' keys is not currently supported.'
+                    'Setting readonly rows or cells for models with ' + keyCols.size + ' keys is not currently supported.'
                 );
             }
         }
@@ -111,7 +113,7 @@ function inputCellFactory(
                 key={inputCellKey(c.raw, row)}
                 modelId={model.getId()}
                 placeholder={columnMetadata ? columnMetadata.placeholder : undefined}
-                readOnly={isReadonlyCol || isReadonlyRow}
+                readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
                 rowIdx={rn}
                 focused={editorModel ? editorModel.isFocused(colIdx, rn) : false}
                 message={editorModel ? editorModel.getMessage(colIdx, rn) : undefined}
@@ -139,11 +141,11 @@ function inputCellKey(col: QueryColumn, row: any): string {
 export interface EditableColumnMetadata {
     placeholder?: string;
     readOnly?: boolean;
-    forceEditable?: boolean; // enable column cell even if the row is set to read-only
     toolTip?: ReactNode;
     filteredLookupValues?: List<string>;
     filteredLookupKeys?: List<any>;
     caption?: string;
+    isReadOnlyCell?: (rowKey: string) => boolean
 }
 
 export interface BulkAddData {

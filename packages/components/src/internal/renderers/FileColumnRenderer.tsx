@@ -17,6 +17,7 @@ import React, { ReactNode, PureComponent } from 'react';
 
 import { isImage, downloadAttachment } from '../..';
 import { AttachmentCard, IAttachment } from './AttachmentCard';
+import { getIconFontCls } from '../util/utils';
 
 interface Props {
     data?: any;
@@ -51,7 +52,7 @@ export class FileColumnRenderer extends PureComponent<Props> {
         // Attachment URLs will look like images, so we check if the URL is an image.
         // FileLink URLs don't look like images, so you have to check value or displayValue.
         const _isImage = (url && isImage(url)) || (displayValue && isImage(displayValue)) || (value && isImage(value));
-        const attachment = { name, iconFontCls: _isImage ? 'fa fa-file-image-o' : 'fa fa-file-o' } as IAttachment;
+        const attachment = { name, iconFontCls: getIconFontCls(displayValue) } as IAttachment;
 
         return (
             <>

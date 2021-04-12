@@ -471,11 +471,14 @@ export function isNonNegativeFloat(value: number | string): boolean {
     return isFloat(value) && Number(value) >= 0;
 }
 
+function getFileExtensionType(value: string): string {
+    const parts = value.split('.');
+    return parts[parts.length - 1].toLowerCase();
+}
+
 export function isImage(value): boolean {
     const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'ico', 'png', 'svg', 'tif'];
-    const parts = value.split('.');
-    const extensionType = parts[parts.length - 1].toLowerCase();
-
+    const extensionType = getFileExtensionType(value);
     return validImageExtensions.indexOf(extensionType) > -1;
 }
 
@@ -488,4 +491,67 @@ export function downloadAttachment(href: string, openInTab?: boolean, fileName?:
         link.download = fileName;
         link.click();
     }
+}
+
+// copied from platform/api/src/org/labkey/api/attachments/Attachment.java
+const EXTENSION_FONT_CLS_MAP = {
+    '7z': 'fa fa-file-archive-o',
+    audio: 'fa fa-file-audio-o',
+    dll: 'fa fa-file-code-o',
+    doc: 'fa fa-file-word-o',
+    docm: 'fa fa-file-word-o',
+    docx: 'fa fa-file-word-o',
+    dotm: 'fa fa-file-word-o',
+    dotx: 'fa fa-file-word-o',
+    exe: 'fa fa-file-code-o',
+    folder: 'fa fa-folder-o',
+    gz: 'fa fa-file-archive-o',
+    html: 'fa fa-file-code-o',
+    image: 'fa fa-file-image-o',
+    iqy: 'fa fa-file-code-o',
+    jar: 'fa fa-file-archive-o',
+    json: 'fa fa-file-code-o',
+    log: 'fa fa-file-text-o',
+    pdf: 'fa fa-file-pdf-o',
+    potm: 'fa fa-file-powerpoint-o',
+    potx: 'fa fa-file-powerpoint-o',
+    ppsm: 'fa fa-file-powerpoint-o',
+    ppsx: 'fa fa-file-powerpoint-o',
+    ppt: 'fa fa-file-powerpoint-o',
+    pptm: 'fa fa-file-powerpoint-o',
+    pptx: 'fa fa-file-powerpoint-o',
+    prg: 'fa fa-file-code-o',
+    r: 'fa fa-file-code-o',
+    rtf: 'fa fa-file-word-o',
+    sql: 'fa fa-file-code-o',
+    tar: 'fa fa-file-archive-o',
+    text: 'fa fa-file-text-o',
+    tgz: 'fa fa-file-archive-o',
+    tsv: 'fa fa-file-excel-o',
+    txt: 'fa fa-file-text-o',
+    video: 'fa fa-file-video-o',
+    vsd: 'fa fa-file-image-o',
+    wiki: 'fa fa-file-code-o',
+    xar: 'fa fa-file-archive-o',
+    xls: 'fa fa-file-excel-o',
+    xlsb: 'fa fa-file-excel-o',
+    xlsm: 'fa fa-file-excel-o',
+    xlsx: 'fa fa-file-excel-o',
+    xltm: 'fa fa-file-excel-o',
+    xltx: 'fa fa-file-excel-o',
+    xml: 'fa fa-file-code-o',
+    zip: 'fa fa-file-archive-o',
+};
+
+export function getIconFontCls(value: string): string {
+    if (!value) {
+        return undefined;
+    }
+
+    const extensionType = getFileExtensionType(value);
+    if (EXTENSION_FONT_CLS_MAP[extensionType]) {
+        return EXTENSION_FONT_CLS_MAP[extensionType];
+    }
+
+    return isImage(value) ? 'fa fa-file-image-o' : 'fa fa-file-o';
 }

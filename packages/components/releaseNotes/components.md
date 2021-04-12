@@ -7,7 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Refactor AttachmentCard component and related SCSS from LKB ELN
     * Enable FileColumnRenderer for DetailsPanel
     * Move image showModal from FileColumnRenderer.tsx to AttachmentCard.tsx
-    * Handle file field insert/update/delete for DetailEditing.tsx component
+    * Handle file field insert/update/delete for DetailEditing.tsx component and equivalent EditableDetailsPanel.tsx component
     * Don't show file inputType columns in editable grid or add/update bulk forms
 
 ### version 2.22.5

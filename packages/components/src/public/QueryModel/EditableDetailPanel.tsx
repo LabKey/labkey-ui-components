@@ -7,7 +7,18 @@ import { AuditBehaviorTypes } from '@labkey/api';
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
 import { extractChanges } from '../../internal/components/forms/detail/utils';
 
-import { Alert, DetailPanel, QueryColumn, RequiresModelAndActions, resolveErrorMessage, updateRows } from '../..';
+import {
+    Alert,
+    DetailPanel,
+    FileColumnRenderer,
+    FileInput,
+    QueryColumn,
+    RequiresModelAndActions,
+    resolveErrorMessage,
+    updateRows,
+} from '../..';
+
+const EMPTY_FILE_FOR_DELETE = new File([], '');
 
 interface EditableDetailPanelProps extends RequiresModelAndActions {
     appEditable?: boolean;
@@ -29,6 +40,7 @@ interface EditableDetailPanelState {
     editing?: boolean;
     error?: string;
     warning?: string;
+    fileMap: Record<string, File>;
 }
 
 export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps, EditableDetailPanelState> {
@@ -43,6 +55,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         editing: false,
         error: undefined,
         warning: undefined,
+        fileMap: {},
     };
 
     toggleEditing = (): void => {
@@ -66,14 +79,36 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         this.setState(() => ({ warning: undefined }));
     };
 
+    handleFileInputChange = (fileMap: Record<string, File>): void => {
+        this.setState(state => ({
+            fileMap: { ...state.fileMap, ...fileMap },
+        }));
+    };
+
+    fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
+        const updatedFile = this.state.fileMap[col.name];
+        const value = data?.get('value');
+
+        // check to see if an existing file for this column has been removed / changed
+        if (value && updatedFile === undefined) {
+            return <FileColumnRenderer data={data} onRemove={() => this.handleFileInputChange({ [col.name]: null })} />;
+        }
+
+        return (
+            <FileInput key={col.fieldKey} queryColumn={col} showLabel={false} onChange={this.handleFileInputChange} />
+        );
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     handleSubmit = (values: Record<string, any>): void => {
         const { auditBehavior, model, onEditToggle, onUpdate } = this.props;
+        const { fileMap } = this.state;
         const { queryInfo } = model;
         const row = model.getRow();
         const updatedValues = extractChanges(queryInfo, fromJS(model.getRow()), values);
+        const hasFileUpdates = Object.keys(fileMap).length > 0;
 
-        if (Object.keys(updatedValues).length === 0) {
+        if (Object.keys(updatedValues).length === 0 && !hasFileUpdates) {
             this.setState(() => ({
                 canSubmit: false,
                 warning: 'No changes detected. Please update the form and click save.',
@@ -94,7 +129,16 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             }
         });
 
-        updateRows({ schemaQuery: queryInfo.schemaQuery, rows: [updatedValues], auditBehavior })
+        // to support file/attachment columns, we need to pass them in as FormData and updateRows will handle the rest
+        let form;
+        if (hasFileUpdates) {
+            form = new FormData();
+            Object.keys(fileMap).forEach(key => {
+                form.append(key, fileMap[key] ?? EMPTY_FILE_FOR_DELETE);
+            });
+        }
+
+        updateRows({ schemaQuery: queryInfo.schemaQuery, rows: [updatedValues], auditBehavior, form })
             .then(() => {
                 this.setState({ editing: false }, () => {
                     onUpdate?.(); // eslint-disable-line no-unused-expressions
@@ -150,6 +194,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                         editingMode={editing}
                         model={model}
                         queryColumns={queryColumns}
+                        fileInputRenderer={this.fileInputRenderer}
                     />
                 </div>
             </div>

@@ -296,9 +296,13 @@ class Renderers {
 
     static applyDetailRenderer(columnMetadata, rawColumn, metadata) {
         let value = this._check(columnMetadata, rawColumn, 'detailRenderer', metadata);
+        const types = Set.of(rawColumn.type.toLowerCase(), rawColumn.friendlyType.toLowerCase());
+
         if (value === undefined) {
             if (rawColumn.multiValue === true) {
                 value = 'MultiValueDetailRenderer';
+            } else if (types.contains('file')) {
+                value = 'FileColumnRenderer';
             }
         }
 

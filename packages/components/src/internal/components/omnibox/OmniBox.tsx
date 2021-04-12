@@ -20,7 +20,7 @@ import AutosizeInput from 'react-input-autosize';
 import { List } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { naturalSort, QueryColumn } from '../../..';
+import { cancelEvent, naturalSort, QueryColumn } from '../../..';
 
 import { Action, ActionOption, ActionValue, ActionValueCollection } from './actions/Action';
 import { Option } from './Option';
@@ -245,11 +245,6 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             this._blurTimeout = undefined;
         }
     };
-
-    cancelEvent(event) {
-        event.stopPropagation();
-        event.preventDefault();
-    }
 
     completeAction = (lastInputValue?: string, optionAction?: Action): boolean => {
         const { activeAction, inputValue, actionValues, activeValueIndex } = this.state;
@@ -606,14 +601,14 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         // if 'backspace' removal is allowed and there are actionValues present, activate the last actionValue
         if (this.props.backspaceRemoves && this.state.actionValues.length > 0) {
-            this.cancelEvent(event);
+            cancelEvent(event);
             this.removeActionValue(this.state.actionValues.length - 1);
         }
     };
 
     handleClickValue = (value: ActionValue, event): void => {
         this.cancelBlur();
-        this.cancelEvent(event);
+        cancelEvent(event);
         this.activateValue(value);
         this.focus();
     };
@@ -682,27 +677,27 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 }
 
                 if (this.state.inputValue || this.state.activeAction) {
-                    this.cancelEvent(event);
+                    cancelEvent(event);
                     this.selectFocusedOption(false);
                 }
                 break;
             case 13: // enter key
-                this.cancelEvent(event);
+                cancelEvent(event);
                 this.selectFocusedOption();
                 break;
             case 27: // escape
                 if (!this.state.isOpen) return;
-                this.cancelEvent(event);
+                cancelEvent(event);
                 this.setState({
                     isOpen: false,
                 });
                 break;
             case 38: // up
-                this.cancelEvent(event);
+                cancelEvent(event);
                 this.focusPreviousOption();
                 break;
             case 40: // down
-                this.cancelEvent(event);
+                cancelEvent(event);
                 this.focusNextOption();
                 break;
             default:
@@ -725,7 +720,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             return;
         }
 
-        this.cancelEvent(event);
+        cancelEvent(event);
         this.handleInputFocus();
     };
 

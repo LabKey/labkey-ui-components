@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.22.5
-*Released*: 6 April 2021
+*Released*: 12 April 2021
 * Issue 42475: Add file image to data class details page
 
 ### version 2.22.4

@@ -52,7 +52,7 @@ export class FileColumnRenderer extends PureComponent<Props> {
         // Attachment URLs will look like images, so we check if the URL is an image.
         // FileLink URLs don't look like images, so you have to check value or displayValue.
         const _isImage = (url && isImage(url)) || (displayValue && isImage(displayValue)) || (value && isImage(value));
-        const attachment = { name, iconFontCls: getIconFontCls(displayValue) } as IAttachment;
+        const attachment = { name, iconFontCls: getIconFontCls(name) } as IAttachment;
 
         return (
             <>

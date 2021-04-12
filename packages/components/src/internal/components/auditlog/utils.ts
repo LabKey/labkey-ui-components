@@ -6,9 +6,9 @@ import React, { ReactNode } from 'react';
 import { List, Record } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { ASSAYS_KEY, isFreezerManagementEnabled, isSampleManagerEnabled, SAMPLES_KEY, WORKFLOW_KEY } from '../../app';
 import { AppURL } from '../../..';
-import { isBiologicsEnabled } from '../../app/utils';
+import { isBiologicsEnabled, isFreezerManagementEnabled, isSampleManagerEnabled } from '../../app/utils';
+import { ASSAYS_KEY, SAMPLES_KEY, WORKFLOW_KEY } from '../../app/constants';
 
 export type AuditQuery = {
     containerFilter?: Query.ContainerFilter;

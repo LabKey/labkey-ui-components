@@ -47,23 +47,14 @@ const sampleTypeModel = SampleTypeModel.create({
 
 describe('<SampleTypePropertiesPanel/>', () => {
     test('default props', () => {
-        const tree = renderer.create(
-            <SampleTypePropertiesPanel
-                {...BASE_PROPS}
-                model={sampleTypeModel}
-            />
-        );
+        const tree = renderer.create(<SampleTypePropertiesPanel {...BASE_PROPS} model={sampleTypeModel} />);
 
         expect(tree).toMatchSnapshot();
     });
 
     test('appPropertiesOnly', () => {
         const tree = renderer.create(
-            <SampleTypePropertiesPanel
-                {...BASE_PROPS}
-                appPropertiesOnly={true}
-                model={sampleTypeModel}
-            />
+            <SampleTypePropertiesPanel {...BASE_PROPS} appPropertiesOnly={true} model={sampleTypeModel} />
         );
 
         expect(tree).toMatchSnapshot();
@@ -71,11 +62,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
 
     test('nameExpressionInfoUrl', () => {
         const tree = renderer.create(
-            <SampleTypePropertiesPanel
-                {...BASE_PROPS}
-                model={sampleTypeModel}
-                nameExpressionInfoUrl="#anything"
-            />
+            <SampleTypePropertiesPanel {...BASE_PROPS} model={sampleTypeModel} nameExpressionInfoUrl="#anything" />
         );
 
         expect(tree).toMatchSnapshot();
@@ -96,12 +83,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
             })
         );
 
-        const component = (
-            <SampleTypePropertiesPanel
-                {...BASE_PROPS}
-                model={SampleTypeModel.create(data)}
-            />
-        );
+        const component = <SampleTypePropertiesPanel {...BASE_PROPS} model={SampleTypeModel.create(data)} />;
 
         const wrapper = mount(component);
 
@@ -183,11 +165,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
             domainDesign: fromJS({ allowTimepointProperties: true }),
         } as DomainDetails);
         const wrapper = mount(
-            <SampleTypePropertiesPanel
-                {...BASE_PROPS}
-                appPropertiesOnly={false}
-                model={sampleTypeModelWithTimepoint}
-            />
+            <SampleTypePropertiesPanel {...BASE_PROPS} appPropertiesOnly={false} model={sampleTypeModelWithTimepoint} />
         );
 
         // Currently appears only when 'allowTimepointProperties' is true and 'appPropertiesOnly' is false
@@ -206,12 +184,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                 moduleNames: ['api', 'core'],
             },
         };
-        const wrapper = mount(
-            <SampleTypePropertiesPanel
-                {...BASE_PROPS}
-                model={sampleTypeModel}
-            />
-        );
+        const wrapper = mount(<SampleTypePropertiesPanel {...BASE_PROPS} model={sampleTypeModel} />);
 
         await sleep();
 
@@ -225,12 +198,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                 moduleNames: ['premium'],
             },
         };
-        const wrapper = mount(
-            <SampleTypePropertiesPanel
-                {...BASE_PROPS}
-                model={sampleTypeModel}
-            />
-        );
+        const wrapper = mount(<SampleTypePropertiesPanel {...BASE_PROPS} model={sampleTypeModel} />);
 
         await sleep();
 

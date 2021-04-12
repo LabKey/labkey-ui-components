@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { ReactNode } from 'react';
-import { List } from 'immutable';
+import { List, Record } from 'immutable';
 import { Query } from '@labkey/api';
 
 import { ASSAYS_KEY, isFreezerManagementEnabled, isSampleManagerEnabled, SAMPLES_KEY, WORKFLOW_KEY } from '../../app';
@@ -79,7 +79,7 @@ export function getEventDataValueDisplay(d: any, showLink = true): ReactNode {
             display = d;
         } else if (typeof d === 'boolean') {
             display = d ? 'true' : 'false';
-        } else {
+        } else if (d.has && d.get) {  // this is a hacky way to check if immutablejs
             if (d.has('formattedValue')) {
                 display = d.get('formattedValue');
             } else {
@@ -99,6 +99,26 @@ export function getEventDataValueDisplay(d: any, showLink = true): ReactNode {
                     display = React.createElement('a', { href: url }, display);
                 }
             }
+        } else {
+            if (d['formattedValue']) {
+                display = d['formattedValue'];
+            } else {
+                const o = d['displayValue'] ? d['displayValue'] : d['value'];
+                display = o !== null && o !== undefined ? o.toString() : null;
+            }
+
+            if (showLink) {
+                let url: string;
+                if (d['url']) {
+                    display = React.createElement('a', { href: d['url'] }, display);
+                } else {
+                    url = getTimelineEntityUrl(d);
+                }
+
+                if (url) {
+                    display = React.createElement('a', { href: url }, display);
+                }
+            }
         }
     }
 
@@ -108,9 +128,10 @@ export function getEventDataValueDisplay(d: any, showLink = true): ReactNode {
 export function getTimelineEntityUrl(d: any): string {
     let url: AppURL;
 
-    if (d.has('urlType')) {
-        const urlType = d.get('urlType');
-        const value = d.get('value');
+    // Handle immutable or regular object
+    if (d['urlType'] || d.has?.('urlType')) {
+        const urlType = d['urlType'] || d.get?.('urlType');
+        const value = d['value'] || d.get?.('value');
 
         switch (urlType) {
             case SAMPLES_KEY:

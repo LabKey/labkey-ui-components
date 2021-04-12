@@ -26,6 +26,7 @@ import {
     QueryColumn,
     LabelColorRenderer,
     SchemaQuery,
+    FileColumnRenderer,
 } from '../../../..';
 
 import { QuerySelect } from '../QuerySelect';
@@ -199,6 +200,9 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 break;
             case 'labelcolorrenderer':
                 renderer = d => <LabelColorRenderer data={d} />;
+                break;
+            case 'filecolumnrenderer':
+                renderer = d => <FileColumnRenderer data={d} />;
                 break;
             default:
                 break;

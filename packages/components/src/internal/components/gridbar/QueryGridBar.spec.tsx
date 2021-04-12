@@ -1,8 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
+import { List, fromJS } from 'immutable';
 
-import { SchemaQuery, getStateQueryGridModel, gridInit, getQueryGridModel } from '../../..';
-import { sleep } from '../../testHelpers';
+import { SchemaQuery, QueryGridModel } from '../../..';
 import { initUnitTestMocks } from '../../testHelperMocks';
 
 import { QueryGridBar } from './QueryGridBar';
@@ -12,55 +12,100 @@ const SQ = new SchemaQuery({
     queryName: 'Data',
 });
 
+const DATA = {
+    1: { value: 1 },
+    2: { value: 1 },
+    3: { value: 1 },
+    4: { value: 1 },
+    5: { value: 1 },
+    6: { value: 1 },
+    7: { value: 1 },
+    8: { value: 1 },
+    9: { value: 1 },
+    10: { value: 1 },
+    11: { value: 1 },
+    12: { value: 1 },
+    13: { value: 1 },
+    14: { value: 1 },
+    15: { value: 1 },
+    16: { value: 1 },
+    17: { value: 1 },
+    18: { value: 1 },
+    19: { value: 1 },
+    20: { value: 1 },
+    21: { value: 1 },
+    22: { value: 1 },
+    23: { value: 1 },
+    24: { value: 1 },
+    25: { value: 1 },
+    26: { value: 1 },
+    27: { value: 1 },
+    28: { value: 1 },
+    29: { value: 1 },
+    30: { value: 1 },
+    31: { value: 1 },
+    32: { value: 1 },
+    33: { value: 1 },
+    34: { value: 1 },
+};
+
 beforeAll(() => {
     initUnitTestMocks();
 });
 
+const DEFAULT_CONFIG = {
+    schema: SQ.schemaName,
+    query: SQ.queryName,
+    isLoaded: true,
+    isLoading: false,
+    selectedLoaded: true,
+    dataIds: List(Object.keys(DATA)),
+    data: fromJS(DATA),
+    totalRows: Object.keys(DATA).length,
+};
+
 describe('<QueryGridBar/>', () => {
-    test('default props', async () => {
-        const model = getStateQueryGridModel('QueryGridBarDefaultProps', SQ);
-        gridInit(model);
+    test('default props', () => {
+        const model = new QueryGridModel({
+            ...DEFAULT_CONFIG,
+            id: 'QueryGridBarDefaultProps',
+        });
 
-        await sleep();
-
-        const tree = renderer.create(<QueryGridBar model={getQueryGridModel(model.getId())} />);
+        const tree = renderer.create(<QueryGridBar model={model} />);
         expect(tree).toMatchSnapshot();
     });
 
-    test('without charts and views', async () => {
-        const model = getStateQueryGridModel('QueryGridBarWithoutChartsViews', SQ, {
+    test('without charts and views', () => {
+        const model = new QueryGridModel({
+            ...DEFAULT_CONFIG,
+            id: 'QueryGridBarWithoutChartsViews',
             showChartSelector: false,
             showViewSelector: false,
         });
-        gridInit(model);
 
-        await sleep();
-
-        const tree = renderer.create(<QueryGridBar model={getQueryGridModel(model.getId())} />);
+        const tree = renderer.create(<QueryGridBar model={model} />);
         expect(tree).toMatchSnapshot();
     });
 
-    test('without omnibox', async () => {
-        const model = getStateQueryGridModel('QueryGridBarWithoutOmnibox', SQ, {
+    test('without omnibox', () => {
+        const model = new QueryGridModel({
+            ...DEFAULT_CONFIG,
+            id: 'QueryGridBarWithoutOmnibox',
             showSearchBox: false,
         });
-        gridInit(model);
 
-        await sleep();
-
-        const tree = renderer.create(<QueryGridBar model={getQueryGridModel(model.getId())} />);
+        const tree = renderer.create(<QueryGridBar model={model} />);
         expect(tree).toMatchSnapshot();
     });
 
-    test('isPaged', async () => {
-        const model = getStateQueryGridModel('QueryGridBarIsPaged', SQ, {
+    test('isPaged', () => {
+        const model = new QueryGridModel({
+            ...DEFAULT_CONFIG,
+            id: 'QueryGridBarDefaultProps',
             isPaged: true,
         });
-        gridInit(model);
 
-        await sleep();
-
-        const tree = renderer.create(<QueryGridBar model={getQueryGridModel(model.getId())} />);
+        const tree = renderer.create(<QueryGridBar model={model} />);
         expect(tree).toMatchSnapshot();
     });
 });

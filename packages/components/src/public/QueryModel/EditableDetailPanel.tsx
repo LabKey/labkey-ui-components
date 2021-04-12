@@ -82,6 +82,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
     handleFileInputChange = (fileMap: Record<string, File>): void => {
         this.setState(state => ({
             fileMap: { ...state.fileMap, ...fileMap },
+            canSubmit: true,
         }));
     };
 

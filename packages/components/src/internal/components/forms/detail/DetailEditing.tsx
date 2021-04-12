@@ -104,6 +104,7 @@ export class DetailEditing extends Component<Props, State> {
     handleFileInputChange = (fileMap: Record<string, File>): void => {
         this.setState(state => ({
             fileMap: { ...state.fileMap, ...fileMap },
+            canSubmit: true,
         }));
     };
 

@@ -2,13 +2,11 @@ import React from 'react';
 
 import { mount } from 'enzyme';
 
-import { Location, SampleSetSummary, User, waitForLifecycle } from '../../..';
-import { registerDefaultURLMappers } from '../../testHelpers';
+import { Location, AssayTypeSummary, User, waitForLifecycle } from '../../..';
 import { initUnitTestMocks } from '../../testHelperMocks';
 
 beforeAll(() => {
     initUnitTestMocks();
-    registerDefaultURLMappers();
 });
 
 describe('<AssayTypeSummary />', () => {
@@ -26,7 +24,7 @@ describe('<AssayTypeSummary />', () => {
             isAdmin: true,
         });
 
-        const component = mount(<SampleSetSummary location={location} navigate={() => {}} user={user} />);
+        const component = mount(<AssayTypeSummary location={location} navigate={() => {}} user={user} />);
 
         let grid = component.find('.grid-panel');
         expect(grid).toHaveLength(1);

@@ -4,9 +4,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item 8735: Enable files and attachment data types for sample type designer and data class designer
-    * Refactor AttachmentCard component from LKB ELN and use in FileColumnRenderer.tsx
+    * Refactor AttachmentCard component and related SCSS from LKB ELN
     * Enable FileColumnRenderer for DetailsPanel
-    * ...TODO add the rest
+    * Move image showModal from FileColumnRenderer.tsx to AttachmentCard.tsx
+    * Handle file field insert/update/delete for DetailEditing.tsx component
+    * Don't show file inputType columns in editable grid or add/update bulk forms
+
+### version 2.22.5
+*Released*: 12 April 2021
+* Issue 42475: Add file image to data class details page
 
 ### version 2.22.4
 *Released*: 10 April 2021

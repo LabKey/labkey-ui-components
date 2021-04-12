@@ -3,12 +3,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { Location, SampleSetSummary, User, waitForLifecycle } from '../../..';
-import { registerDefaultURLMappers } from '../../testHelpers';
 import { initUnitTestMocks } from '../../testHelperMocks';
 
 beforeAll(() => {
     initUnitTestMocks();
-    registerDefaultURLMappers();
 });
 
 describe('<SampleSetSummary />', () => {

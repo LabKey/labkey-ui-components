@@ -54,7 +54,7 @@ exports[`<QueryGridBar/> default props 1`] = `
               aria-haspopup={true}
               className="dropdown-toggle btn btn-default"
               disabled={false}
-              id="export-drop-querygridbardefaultprops|assay$pgeneral$pamino acids/data"
+              id="export-drop-QueryGridBarDefaultProps"
               onBlur={[Function]}
               onClick={[Function]}
               onFocus={[Function]}
@@ -69,7 +69,7 @@ exports[`<QueryGridBar/> default props 1`] = `
               />
             </button>
             <ul
-              aria-labelledby="export-drop-querygridbardefaultprops|assay$pgeneral$pamino acids/data"
+              aria-labelledby="export-drop-QueryGridBarDefaultProps"
               className="dropdown-menu dropdown-menu-right"
               role="menu"
             >
@@ -162,22 +162,7 @@ exports[`<QueryGridBar/> default props 1`] = `
               aria-labelledby="viewselector-1"
               className="dropdown-menu dropdown-menu-right"
               role="menu"
-            >
-              <li
-                className="active"
-                role="presentation"
-              >
-                <a
-                  href="#"
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                  role="menuitem"
-                  tabIndex="-1"
-                >
-                  Default
-                </a>
-              </li>
-            </ul>
+            />
           </div>
         </span>
       </span>
@@ -358,7 +343,7 @@ exports[`<QueryGridBar/> isPaged 1`] = `
               aria-haspopup={true}
               className="dropdown-toggle btn btn-default"
               disabled={false}
-              id="current-page-drop-querygridbarispaged|assay$pgeneral$pamino acids/data"
+              id="current-page-drop-QueryGridBarDefaultProps"
               onClick={[Function]}
               onKeyDown={[Function]}
               onMouseOut={[Function]}
@@ -373,7 +358,7 @@ exports[`<QueryGridBar/> isPaged 1`] = `
               />
             </button>
             <ul
-              aria-labelledby="current-page-drop-querygridbarispaged|assay$pgeneral$pamino acids/data"
+              aria-labelledby="current-page-drop-QueryGridBarDefaultProps"
               className="dropdown-menu dropdown-menu-right"
               role="menu"
             >
@@ -448,7 +433,7 @@ exports[`<QueryGridBar/> isPaged 1`] = `
               aria-haspopup={true}
               className="dropdown-toggle btn btn-default"
               disabled={false}
-              id="page-size-drop-querygridbarispaged|assay$pgeneral$pamino acids/data"
+              id="page-size-drop-QueryGridBarDefaultProps"
               onClick={[Function]}
               onKeyDown={[Function]}
               onMouseOut={[Function]}
@@ -463,7 +448,7 @@ exports[`<QueryGridBar/> isPaged 1`] = `
               />
             </button>
             <ul
-              aria-labelledby="page-size-drop-querygridbarispaged|assay$pgeneral$pamino acids/data"
+              aria-labelledby="page-size-drop-QueryGridBarDefaultProps"
               className="dropdown-menu dropdown-menu-right"
               role="menu"
             >
@@ -558,7 +543,7 @@ exports[`<QueryGridBar/> isPaged 1`] = `
               aria-haspopup={true}
               className="dropdown-toggle btn btn-default"
               disabled={false}
-              id="export-drop-querygridbarispaged|assay$pgeneral$pamino acids/data"
+              id="export-drop-QueryGridBarDefaultProps"
               onBlur={[Function]}
               onClick={[Function]}
               onFocus={[Function]}
@@ -573,7 +558,7 @@ exports[`<QueryGridBar/> isPaged 1`] = `
               />
             </button>
             <ul
-              aria-labelledby="export-drop-querygridbarispaged|assay$pgeneral$pamino acids/data"
+              aria-labelledby="export-drop-QueryGridBarDefaultProps"
               className="dropdown-menu dropdown-menu-right"
               role="menu"
             >
@@ -666,22 +651,7 @@ exports[`<QueryGridBar/> isPaged 1`] = `
               aria-labelledby="viewselector-5"
               className="dropdown-menu dropdown-menu-right"
               role="menu"
-            >
-              <li
-                className="active"
-                role="presentation"
-              >
-                <a
-                  href="#"
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                  role="menuitem"
-                  tabIndex="-1"
-                >
-                  Default
-                </a>
-              </li>
-            </ul>
+            />
           </div>
         </span>
       </span>
@@ -803,7 +773,7 @@ exports[`<QueryGridBar/> without charts and views 1`] = `
               aria-haspopup={true}
               className="dropdown-toggle btn btn-default"
               disabled={false}
-              id="export-drop-querygridbarwithoutchartsviews|assay$pgeneral$pamino acids/data"
+              id="export-drop-QueryGridBarWithoutChartsViews"
               onBlur={[Function]}
               onClick={[Function]}
               onFocus={[Function]}
@@ -818,7 +788,7 @@ exports[`<QueryGridBar/> without charts and views 1`] = `
               />
             </button>
             <ul
-              aria-labelledby="export-drop-querygridbarwithoutchartsviews|assay$pgeneral$pamino acids/data"
+              aria-labelledby="export-drop-QueryGridBarWithoutChartsViews"
               className="dropdown-menu dropdown-menu-right"
               role="menu"
             >
@@ -1033,7 +1003,7 @@ exports[`<QueryGridBar/> without omnibox 1`] = `
               aria-haspopup={true}
               className="dropdown-toggle btn btn-default"
               disabled={false}
-              id="export-drop-querygridbarwithoutomnibox|assay$pgeneral$pamino acids/data"
+              id="export-drop-QueryGridBarWithoutOmnibox"
               onBlur={[Function]}
               onClick={[Function]}
               onFocus={[Function]}
@@ -1048,7 +1018,7 @@ exports[`<QueryGridBar/> without omnibox 1`] = `
               />
             </button>
             <ul
-              aria-labelledby="export-drop-querygridbarwithoutomnibox|assay$pgeneral$pamino acids/data"
+              aria-labelledby="export-drop-QueryGridBarWithoutOmnibox"
               className="dropdown-menu dropdown-menu-right"
               role="menu"
             >
@@ -1141,22 +1111,7 @@ exports[`<QueryGridBar/> without omnibox 1`] = `
               aria-labelledby="viewselector-3"
               className="dropdown-menu dropdown-menu-right"
               role="menu"
-            >
-              <li
-                className="active"
-                role="presentation"
-              >
-                <a
-                  href="#"
-                  onClick={[Function]}
-                  onKeyDown={[Function]}
-                  role="menuitem"
-                  tabIndex="-1"
-                >
-                  Default
-                </a>
-              </li>
-            </ul>
+            />
           </div>
         </span>
       </span>

@@ -16,14 +16,21 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import { fromJS } from 'immutable';
+import { fromJS, Map } from 'immutable';
 
 import { getStateQueryGridModel } from '../../../models';
 import { getQueryGridModel } from '../../../global';
 
 import sampleDetailsQuery from '../../../../test/data/sampleDetails-getQuery.json';
 import { initUnitTestMocks } from '../../../testHelperMocks';
-import { gridInit, SCHEMAS, SchemaQuery } from '../../../..';
+import {
+    gridInit,
+    SCHEMAS,
+    SchemaQuery,
+    QueryColumn,
+    FileColumnRenderer,
+    FileInput,
+} from '../../../..';
 
 import { DetailEditing } from './DetailEditing';
 
@@ -156,6 +163,33 @@ describe('<DetailEditing/>', () => {
         const saveButton = wrapper.find('.btn-success');
         expect(saveButton.text()).toBe(submitText);
 
+        wrapper.unmount();
+    });
+});
+
+describe('DetailEditing.fileInputRenderer', () => {
+    const column = new QueryColumn({ name: 'test' });
+
+    test('without value', () => {
+        const wrapper = mount(<div>{DetailEditing.fileInputRenderer(column, Map(), undefined, jest.fn)}</div>);
+        expect(wrapper.find(FileColumnRenderer)).toHaveLength(0);
+        expect(wrapper.find(FileInput)).toHaveLength(1);
+        wrapper.unmount();
+    });
+
+    test('with value', () => {
+        const wrapper = mount(
+            <div>{DetailEditing.fileInputRenderer(column, Map({ value: 'test.txt' }), undefined, jest.fn)}</div>
+        );
+        expect(wrapper.find(FileColumnRenderer)).toHaveLength(1);
+        expect(wrapper.find(FileInput)).toHaveLength(0);
+        wrapper.unmount();
+    });
+
+    test('updatedFile', () => {
+        const wrapper = mount(<div>{DetailEditing.fileInputRenderer(column, Map(), new File([], null), jest.fn)}</div>);
+        expect(wrapper.find(FileColumnRenderer)).toHaveLength(0);
+        expect(wrapper.find(FileInput)).toHaveLength(1);
         wrapper.unmount();
     });
 });

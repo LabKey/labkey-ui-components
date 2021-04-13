@@ -17,7 +17,7 @@ import React, { Component, ReactNode } from 'react';
 import { Button, Panel } from 'react-bootstrap';
 import { List } from 'immutable';
 import Formsy from 'formsy-react';
-import { ActionURL, Ajax, AuditBehaviorTypes, Utils } from '@labkey/api';
+import { AuditBehaviorTypes } from '@labkey/api';
 
 import {
     updateRows,
@@ -108,18 +108,25 @@ export class DetailEditing extends Component<Props, State> {
         }));
     };
 
-    fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
-        const updatedFile = this.state.fileMap[col.name];
+    static fileInputRenderer = (
+        col: QueryColumn,
+        data: any,
+        updatedFile: File,
+        onChange: (fileMap: Record<string, File>) => void
+    ): ReactNode => {
         const value = data?.get('value');
 
         // check to see if an existing file for this column has been removed / changed
         if (value && updatedFile === undefined) {
-            return <FileColumnRenderer data={data} onRemove={() => this.handleFileInputChange({ [col.name]: null })} />;
+            return <FileColumnRenderer data={data} onRemove={() => onChange({ [col.name]: null })} />;
         }
 
-        return (
-            <FileInput key={col.fieldKey} queryColumn={col} showLabel={false} onChange={this.handleFileInputChange} />
-        );
+        return <FileInput key={col.fieldKey} queryColumn={col} showLabel={false} onChange={onChange} />;
+    };
+
+    fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
+        const updatedFile = this.state.fileMap[col.name];
+        return DetailEditing.fileInputRenderer(col, data, updatedFile, this.handleFileInputChange);
     };
 
     handleSubmit = values => {

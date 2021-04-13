@@ -10,13 +10,12 @@ import { extractChanges } from '../../internal/components/forms/detail/utils';
 import {
     Alert,
     DetailPanel,
-    FileColumnRenderer,
-    FileInput,
     QueryColumn,
     RequiresModelAndActions,
     resolveErrorMessage,
     updateRows,
 } from '../..';
+import { fileInputRenderer } from '../../internal/components/forms/renderers';
 
 const EMPTY_FILE_FOR_DELETE = new File([], '');
 
@@ -88,16 +87,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
     fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
         const updatedFile = this.state.fileMap[col.name];
-        const value = data?.get('value');
-
-        // check to see if an existing file for this column has been removed / changed
-        if (value && updatedFile === undefined) {
-            return <FileColumnRenderer data={data} onRemove={() => this.handleFileInputChange({ [col.name]: null })} />;
-        }
-
-        return (
-            <FileInput key={col.fieldKey} queryColumn={col} showLabel={false} onChange={this.handleFileInputChange} />
-        );
+        return fileInputRenderer(col, data, updatedFile, this.handleFileInputChange);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

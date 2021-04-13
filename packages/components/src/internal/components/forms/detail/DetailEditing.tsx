@@ -25,13 +25,12 @@ import {
     resolveErrorMessage,
     QueryColumn,
     QueryGridModel,
-    FileColumnRenderer,
-    FileInput,
 } from '../../../..';
 
 import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { extractChanges } from './utils';
+import { fileInputRenderer } from '../renderers';
 
 const EMPTY_FILE_FOR_DELETE = new File([], '');
 
@@ -108,25 +107,9 @@ export class DetailEditing extends Component<Props, State> {
         }));
     };
 
-    static fileInputRenderer = (
-        col: QueryColumn,
-        data: any,
-        updatedFile: File,
-        onChange: (fileMap: Record<string, File>) => void
-    ): ReactNode => {
-        const value = data?.get('value');
-
-        // check to see if an existing file for this column has been removed / changed
-        if (value && updatedFile === undefined) {
-            return <FileColumnRenderer data={data} onRemove={() => onChange({ [col.name]: null })} />;
-        }
-
-        return <FileInput key={col.fieldKey} queryColumn={col} showLabel={false} onChange={onChange} />;
-    };
-
     fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
         const updatedFile = this.state.fileMap[col.name];
-        return DetailEditing.fileInputRenderer(col, data, updatedFile, this.handleFileInputChange);
+        return fileInputRenderer(col, data, updatedFile, this.handleFileInputChange);
     };
 
     handleSubmit = values => {

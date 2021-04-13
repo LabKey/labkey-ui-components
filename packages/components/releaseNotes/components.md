@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 42527: Support 'Is Primary Key' column for Summary View
+
 ### version 2.22.5
 *Released*: 12 April 2021
 * Issue 42475: Add file image to data class details page

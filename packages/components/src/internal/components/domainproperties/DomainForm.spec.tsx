@@ -959,5 +959,20 @@ describe('DomainForm', () => {
         expect(form.find('.domain-field-row').length).toEqual(0);
         expect(form.find('.table-responsive').length).toEqual(1);
         expect(form.find('.domain-field-toolbar').length).toEqual(2);
+        expect(form.text()).not.toContain("Is Primary Key");
+    });
+
+    test('with summaryViewMode isPrimaryKey column', () => {
+        const fields = [];
+        fields.push({ name: 'Field0' });
+        fields.push({ name: 'Field1' });
+        fields.push({ name: 'Field2' });
+
+        // 'Is Primary Key' column should only render on List domains
+        const domain = DomainDesign.create({ fields, domainKindName:'VarList' });
+        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+        form.setState({ summaryViewMode: true });
+
+        expect(form.text()).toContain("Is Primary Key");
     });
 });

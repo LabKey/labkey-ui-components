@@ -425,7 +425,7 @@ export class DomainDesign
         if (appPropertiesOnly) {
             columns = removeNonAppProperties(columns);
         }
-        if (domainKindName !== 'List') {
+        if (domainKindName !== 'VarList' && domainKindName !== 'IntList') {
             delete columns.isPrimaryKey;
         }
 

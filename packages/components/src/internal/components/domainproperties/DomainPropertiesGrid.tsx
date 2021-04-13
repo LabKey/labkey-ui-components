@@ -41,8 +41,6 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         const { domainKindName } = domain;
         const gridData = domain.getGridData(appPropertiesOnly, hasOntologyModule);
 
-        console.log(domain.toJS());
-
         // TODO: Maintain hash of fieldIndex : gridIndex on state in order to make delete and filter run in N rather than N^2 time.
         this.state = {
             gridData,

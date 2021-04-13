@@ -380,8 +380,9 @@ export class EditorModel
         } else {
             if (getInsertColumns) {
                 columns = getInsertColumns();
+            } else {
+                columns = model.getInsertColumns();
             }
-            columns = model.getInsertColumns();
         }
 
         // file input columns are not supported in the editable grid, so remove them

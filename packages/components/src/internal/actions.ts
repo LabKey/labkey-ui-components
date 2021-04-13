@@ -1448,7 +1448,7 @@ export function genCellKey(colIdx: number, rowIdx: number): string {
     return [colIdx, rowIdx].join('-');
 }
 
-function parseCellKey(cellKey: string): { colIdx: number; rowIdx: number } {
+export function parseCellKey(cellKey: string): { colIdx: number; rowIdx: number } {
     const [colIdx, rowIdx] = cellKey.split('-');
 
     return {

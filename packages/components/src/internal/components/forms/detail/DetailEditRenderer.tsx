@@ -214,7 +214,7 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 renderer = d => <LabelColorRenderer data={d} />;
                 break;
             case 'filecolumnrenderer':
-                renderer = d => <FileColumnRenderer data={d} />;
+                renderer = d => <FileColumnRenderer data={d} col={column} />;
                 break;
             default:
                 break;

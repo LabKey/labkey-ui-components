@@ -2,6 +2,7 @@ import React, { FC, memo, useCallback, useState } from 'react';
 import { Dropdown, MenuItem, Modal } from 'react-bootstrap';
 
 import { isLoading, isImage, LoadingSpinner, LoadingState } from '../..';
+import { formatBytes } from '../util/utils';
 
 const now = (): number => new Date().valueOf();
 
@@ -21,13 +22,14 @@ export interface AttachmentCardProps {
 }
 
 interface Props extends AttachmentCardProps {
+    noun?: string;
     attachment: IAttachment;
     imageURL?: string;
     imageCls?: string;
 }
 
 export const AttachmentCard: FC<Props> = memo(props => {
-    const { allowRemove = true, attachment, imageURL, imageCls, onRemove, onDownload } = props;
+    const { noun = 'attachment', allowRemove = true, attachment, imageURL, imageCls, onRemove, onDownload } = props;
     const [showModal, setShowModal] = useState<boolean>();
 
     const _showModal = useCallback(() => {
@@ -91,7 +93,7 @@ export const AttachmentCard: FC<Props> = memo(props => {
                         </Dropdown.Toggle>
                         <Dropdown.Menu className="pull-right">
                             <MenuItem onClick={_onDownload}>Download</MenuItem>
-                            {allowRemove && <MenuItem onClick={_onRemove}>Remove attachment</MenuItem>}
+                            {allowRemove && <MenuItem onClick={_onRemove}>Remove {noun}</MenuItem>}
                         </Dropdown.Menu>
                     </Dropdown>
                 )}
@@ -100,7 +102,7 @@ export const AttachmentCard: FC<Props> = memo(props => {
             <Modal bsSize="large" show={showModal} onHide={_hideModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        <a onClick={_onDownload} style={{ cursor: 'pointer' }}>
+                        <a onClick={_onDownload} style={{ cursor: 'pointer' }} title={'Download ' + noun}>
                             {name}
                         </a>
                     </Modal.Title>

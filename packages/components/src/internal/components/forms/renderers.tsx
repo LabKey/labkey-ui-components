@@ -148,7 +148,7 @@ export function fileInputRenderer(
 
     // check to see if an existing file for this column has been removed / changed
     if (value && updatedFile === undefined) {
-        return <FileColumnRenderer data={data} onRemove={() => onChange({ [col.name]: null })} />;
+        return <FileColumnRenderer col={col} data={data} onRemove={() => onChange({ [col.name]: null })} />;
     }
 
     return <FileInput key={col.fieldKey} queryColumn={col} showLabel={false} onChange={onChange} />;

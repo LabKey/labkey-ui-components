@@ -30,6 +30,9 @@ import {
     isNonNegativeInteger,
     toLowerSafe,
     unorderedEqual,
+    isImage,
+    getIconFontCls,
+    formatBytes,
 } from './utils';
 
 const emptyList = List<string>();
@@ -1157,5 +1160,44 @@ describe('isIntegerInRange', () => {
         expect(isIntegerInRange(5.4, 4, 7)).toBe(false);
         expect(isIntegerInRange(undefined, 4, 7)).toBe(false);
         expect(isIntegerInRange(null, 4, 7)).toBe(false);
+    });
+});
+
+describe('isImage', () => {
+    test('default', () => {
+        expect(isImage('test')).toBeFalsy();
+        expect(isImage('test.txt')).toBeFalsy();
+        expect(isImage('test.jpg')).toBeTruthy();
+        expect(isImage('test.png')).toBeTruthy();
+        expect(isImage('test.PNG')).toBeTruthy();
+    });
+});
+
+describe('getIconFontCls', () => {
+    test('default', () => {
+        expect(getIconFontCls(undefined)).toBe(undefined);
+        expect(getIconFontCls(null)).toBe(undefined);
+        expect(getIconFontCls('test')).toBe('fa fa-file-o');
+        expect(getIconFontCls('test.txt')).toBe('fa fa-file-text-o');
+        expect(getIconFontCls('test.jpg')).toBe('fa fa-file-image-o');
+    });
+});
+
+describe('formatBytes', () => {
+    test('unknown and zero bytes', () => {
+        expect(formatBytes(undefined)).toBe('Size unknown');
+        expect(formatBytes(null)).toBe('Size unknown');
+        expect(formatBytes(0)).toBe('0 Bytes');
+    });
+
+    test('with bytes', () => {
+        expect(formatBytes(1)).toBe('1 Bytes');
+        expect(formatBytes(10000)).toBe('9.77 KB');
+        expect(formatBytes(10000000)).toBe('9.54 MB');
+        expect(formatBytes(10000000000)).toBe('9.31 GB');
+    });
+
+    test('non default decimals', () => {
+        expect(formatBytes(1234, 3)).toBe('1.205 KB');
     });
 });

@@ -137,7 +137,6 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                 });
             })
             .catch(error => {
-                console.error(error);
                 this.setState(() => ({
                     warning: undefined,
                     error: resolveErrorMessage(error, 'data', undefined, 'update'),

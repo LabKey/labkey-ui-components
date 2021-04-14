@@ -22,7 +22,7 @@ export function inferDomainFromFile(
             method: 'POST',
             form,
             success: Utils.getCallbackWrapper((response, request) => {
-                processRequest(response, request, reject);
+                if (processRequest(response, request, reject)) return;
                 resolve(InferDomainResponse.create(response));
             }),
             failure: Utils.getCallbackWrapper(error => {

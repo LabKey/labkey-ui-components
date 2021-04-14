@@ -179,7 +179,6 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                     }
                 })
                 .catch(error => {
-                    console.error(error);
                     this.setState({
                         error: resolveErrorMessage(error, 'data', 'data', 'updating'),
                     });

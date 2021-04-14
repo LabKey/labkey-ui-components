@@ -161,7 +161,6 @@ export class DetailEditing extends Component<Props, State> {
                     );
                 })
                 .catch(error => {
-                    console.error(error);
                     this.setState(() => ({
                         warning: undefined,
                         isSubmitting: false,

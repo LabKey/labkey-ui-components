@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Move image showModal from FileColumnRenderer.tsx to AttachmentCard.tsx
     * Handle file field insert/update/delete for DetailEditing.tsx component and equivalent EditableDetailsPanel.tsx component
     * Don't show file inputType columns in editable grid or add/update bulk forms
+    * Better handling for error messages from virus file detection response
 
 ### version 2.22.5
 *Released*: 12 April 2021

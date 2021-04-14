@@ -29,7 +29,6 @@ import {
     URLResolver,
     ViewInfo,
 } from '../..';
-import { ExtendedXMLHttpRequest } from "@labkey/api/dist/labkey/Utils";
 
 const queryDetailsCache: { [key: string]: Promise<QueryInfo> } = {};
 
@@ -671,7 +670,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
             apiVersion: 13.2,
             form: options.form,
             success: (response, request) => {
-                processRequest(response, request, reject);
+                if (processRequest(response, request, reject)) return;
 
                 resolve(
                     new InsertRowsResponse({
@@ -753,7 +752,7 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
             auditUserComment: options.auditUserComment,
             form: options.form,
             success: (response, request) => {
-                processRequest(response, request, reject);
+                if (processRequest(response, request, reject)) return;
 
                 resolve(
                     Object.assign(
@@ -767,6 +766,7 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
                 );
             },
             failure: error => {
+                console.error(error);
                 reject(
                     Object.assign(
                         {},
@@ -865,11 +865,15 @@ export function importData(config: IImportData): Promise<any> {
     });
 }
 
-export function processRequest(response: any, request: ExtendedXMLHttpRequest, reject: (reason?: any) => void): void {
+export function processRequest(response: any, request: any, reject: (reason?: any) => void): boolean {
     if (!response && request?.responseText) {
         const resp = JSON.parse(request.responseText);
         if (!resp?.success) {
+            console.error(resp);
             reject(resp);
+            return true;
         }
     }
+
+    return false;
 }

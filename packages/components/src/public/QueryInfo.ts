@@ -370,4 +370,11 @@ export class QueryInfo extends Record({
         const updateColumns = this.columns.filter(column => column.shownInInsertView && !column.isFileInput);
         return this.set('columns', updateColumns) as QueryInfo;
     }
+
+    getFileColumnFieldKeys(): string[] {
+        return this.columns
+            .filter(col => col.isFileInput)
+            .map(col => col.fieldKey)
+            .toArray();
+    }
 }

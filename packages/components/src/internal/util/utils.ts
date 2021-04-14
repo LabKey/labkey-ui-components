@@ -497,6 +497,7 @@ export function downloadAttachment(href: string, openInTab?: boolean, fileName?:
 const EXTENSION_FONT_CLS_MAP = {
     '7z': 'fa fa-file-archive-o',
     audio: 'fa fa-file-audio-o',
+    csv: 'fa fa-file-text-o',
     dll: 'fa fa-file-code-o',
     doc: 'fa fa-file-word-o',
     docm: 'fa fa-file-word-o',
@@ -527,7 +528,7 @@ const EXTENSION_FONT_CLS_MAP = {
     tar: 'fa fa-file-archive-o',
     text: 'fa fa-file-text-o',
     tgz: 'fa fa-file-archive-o',
-    tsv: 'fa fa-file-excel-o',
+    tsv: 'fa fa-file-text-o',
     txt: 'fa fa-file-text-o',
     video: 'fa fa-file-video-o',
     vsd: 'fa fa-file-image-o',

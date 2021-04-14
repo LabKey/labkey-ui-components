@@ -18,7 +18,7 @@ import React, { ReactNode, PureComponent } from 'react';
 import { isImage, downloadAttachment, QueryColumn } from '../..';
 import { AttachmentCard, IAttachment } from './AttachmentCard';
 import { getIconFontCls } from '../util/utils';
-import { FILELINK_RANGE_URI } from "../components/domainproperties/constants";
+import { FILELINK_RANGE_URI } from '../components/domainproperties/constants';
 
 interface Props {
     col?: QueryColumn;
@@ -57,17 +57,15 @@ export class FileColumnRenderer extends PureComponent<Props> {
         const attachment = { name, iconFontCls: getIconFontCls(name) } as IAttachment;
 
         return (
-            <>
-                <AttachmentCard
-                    noun={col.rangeURI === FILELINK_RANGE_URI ? 'file' : 'attachment'}
-                    attachment={attachment}
-                    imageURL={_isImage ? url : undefined}
-                    imageCls="attachment-card__img"
-                    onDownload={this.onDownload}
-                    allowRemove={onRemove !== undefined}
-                    onRemove={onRemove}
-                />
-            </>
+            <AttachmentCard
+                noun={col?.rangeURI === FILELINK_RANGE_URI ? 'file' : 'attachment'}
+                attachment={attachment}
+                imageURL={_isImage ? url : undefined}
+                imageCls="attachment-card__img"
+                onDownload={this.onDownload}
+                allowRemove={onRemove !== undefined}
+                onRemove={onRemove}
+            />
         );
     }
 }

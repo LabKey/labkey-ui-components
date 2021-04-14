@@ -32,6 +32,7 @@ import { DefaultGridLoader } from './components/GridLoader';
 import { GRID_EDIT_INDEX } from './constants';
 import { IQueryGridModel } from './QueryGridModel';
 import { getDateTimeFormat, parseDate } from './util/Date';
+import { encodePart } from '../public/SchemaQuery';
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];
@@ -677,7 +678,9 @@ export class EditorModel
         return data.map(valueMap => {
             const returnMap = valueMap.reduce((m, valueMap, key) => {
                 const editorData = EditorModel.getEditorDataFromQueryValueMap(valueMap);
-                if (editorData !== undefined) return m.set(key, editorData);
+                // data maps have keys that are display names/captions. We need to convert to the
+                // encoded keys used in our filters to match up with values from the forms.
+                if (editorData !== undefined) return m.set(encodePart(key), editorData);
                 else return m;
             }, Map<any, any>());
             return updates ? returnMap.merge(updates) : returnMap;

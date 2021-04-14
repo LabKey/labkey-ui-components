@@ -57,7 +57,7 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
     }
 
     render() : ReactNode {
-        const { options } = this.props;
+        const { options, name } = this.props;
         const { selectedValue } = this.state;
         let inputs = [];
 
@@ -69,7 +69,7 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
                             hidden={true}
                             checked={true}
                             type="radio"
-                            name="creationType"
+                            name={name}
                             value={options[0].value}
                             onChange={this.onValueChange}
                         />
@@ -85,7 +85,7 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
                                 checked={selected && !option.disabled}
                                 className={""}
                                 type="radio"
-                                name="creationType"
+                                name={name}
                                 value={option.value}
                                 onChange={this.onValueChange}
                                 disabled={option.disabled}

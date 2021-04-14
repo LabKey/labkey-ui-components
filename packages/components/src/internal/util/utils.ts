@@ -20,6 +20,7 @@ import { hasParameter, toggleParameter } from '../url/ActionURL'; // do not refa
 import { QueryInfo } from '../../public/QueryInfo';
 
 import { parseDate } from './Date';
+import { encodePart } from '../../public/SchemaQuery';
 
 const emptyList = List<string>();
 
@@ -276,21 +277,24 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
     const updateValuesMap = Map<any, any>(updatedValues);
     const updatedData = originalData.map(originalRowMap => {
         return originalRowMap.reduce((m, fieldValueMap, key) => {
+            // Issue 42672: The original data has keys that are names or captions for the columns.  We need to use
+            // the encoded key that will match what's expected for filtering on the server side (e.g., "U g$Sl" instead of "U g/l")
+            const encodedKey = encodePart(key);
             if (fieldValueMap?.has('value')) {
                 if (primaryKeys.indexOf(key) > -1) {
                     return m.set(key, fieldValueMap.get('value'));
                 } else if (
-                    updateValuesMap.has(key) &&
-                    !isSameWithStringCompare(updateValuesMap.get(key), fieldValueMap.get('value'))
+                    updateValuesMap.has(encodedKey) &&
+                    !isSameWithStringCompare(updateValuesMap.get(encodedKey), fieldValueMap.get('value'))
                 ) {
-                    return m.set(key, updateValuesMap.get(key) == undefined ? null : updateValuesMap.get(key));
+                    return m.set(key, updateValuesMap.get(encodedKey) == undefined ? null : updateValuesMap.get(encodedKey));
                 } else {
                     return m;
                 }
             }
             // Handle multi-value select
             else if (List.isList(fieldValueMap)) {
-                let updatedVal = updateValuesMap.get(key);
+                let updatedVal = updateValuesMap.get(encodedKey);
                 if (Array.isArray(updatedVal)) {
                     updatedVal = updatedVal.map(val => {
                         const match = fieldValueMap.find(original => original.get('value') === val);
@@ -301,7 +305,7 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
                     });
 
                     return m.set(key, updatedVal);
-                } else if (updateValuesMap.has(key) && updatedVal === undefined) {
+                } else if (updateValuesMap.has(encodedKey) && updatedVal === undefined) {
                     return m.set(key, []);
                 } else return m;
             } else return m;

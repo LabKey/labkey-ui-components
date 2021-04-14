@@ -103,7 +103,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
                         label={label}
                         labelOverlayProps={{
                             isFormsy: false,
-                            inputId: queryColumn.name,
+                            inputId: queryColumn.fieldKey,
                             addLabelAsterisk,
                         }}
                         showLabel={showLabel}
@@ -118,7 +118,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
                 <div className="col-sm-9 col-xs-12">
                     <input
                         disabled={this.state.isDisabled}
-                        name={name ?? queryColumn.name}
+                        name={name ?? queryColumn.fieldKey}
                         required={queryColumn.required}
                         type="checkbox"
                         value={this.props.formsy ? this.props.getValue() : this.state.checked}

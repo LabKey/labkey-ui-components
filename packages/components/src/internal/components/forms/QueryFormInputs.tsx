@@ -256,7 +256,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         loadOnFocus
                                         maxRows={10}
                                         multiple={multiple}
-                                        name={col.name}
+                                        name={col.fieldKey}
                                         onQSChange={this.onQSChange}
                                         placeholder="Select or type to search..."
                                         preLoad

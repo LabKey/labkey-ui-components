@@ -29,6 +29,7 @@ import {
     URLResolver,
     ViewInfo,
 } from '../..';
+import { ExtendedXMLHttpRequest } from "@labkey/api/dist/labkey/Utils";
 
 const queryDetailsCache: { [key: string]: Promise<QueryInfo> } = {};
 
@@ -669,7 +670,9 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
             auditUserComment,
             apiVersion: 13.2,
             form: options.form,
-            success: response => {
+            success: (response, request) => {
+                processRequest(response, request, reject);
+
                 resolve(
                     new InsertRowsResponse({
                         schemaQuery,
@@ -749,7 +752,9 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
             auditBehavior: options.auditBehavior,
             auditUserComment: options.auditUserComment,
             form: options.form,
-            success: response => {
+            success: (response, request) => {
+                processRequest(response, request, reject);
+
                 resolve(
                     Object.assign(
                         {},
@@ -858,4 +863,13 @@ export function importData(config: IImportData): Promise<any> {
             })
         );
     });
+}
+
+export function processRequest(response: any, request: ExtendedXMLHttpRequest, reject: (reason?: any) => void): void {
+    if (!response && request?.responseText) {
+        const resp = JSON.parse(request.responseText);
+        if (!resp?.success) {
+            reject(resp);
+        }
+    }
 }

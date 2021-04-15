@@ -48,9 +48,11 @@ import {
     caseInsensitive,
     debounce,
     devToolsActive,
+    downloadAttachment,
     generateId,
     getDisambiguatedSelectInputOptions,
     isIntegerInRange,
+    isImage,
     isNonNegativeFloat,
     isNonNegativeInteger,
     toggleDevTools,
@@ -200,11 +202,11 @@ import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { AppendUnits } from './internal/renderers/AppendUnits';
+import { AttachmentCard } from './internal/renderers/AttachmentCard';
 import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
 import { FileColumnRenderer } from './internal/renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './internal/renderers/MultiValueRenderer';
 import { LabelColorRenderer } from './internal/renderers/LabelColorRenderer';
-import { BulkAddUpdateForm } from './internal/components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
 import { resolveDetailFieldValue, resolveRenderer } from './internal/components/forms/renderers';
@@ -635,6 +637,7 @@ export {
     createProductUrl,
     createProductUrlFromParts,
     // renderers
+    AttachmentCard,
     AliasRenderer,
     AppendUnits,
     DefaultRenderer,
@@ -645,7 +648,6 @@ export {
     resolveDetailRenderer,
     resolveRenderer,
     // form related items
-    BulkAddUpdateForm,
     BulkUpdateForm,
     QueryFormInputs,
     LookupSelectInput,
@@ -888,8 +890,10 @@ export {
     blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,
+    downloadAttachment,
     resolveKey,
     isIntegerInRange,
+    isImage,
     isNonNegativeFloat,
     isNonNegativeInteger,
     isLoading,
@@ -1089,3 +1093,4 @@ export type {
     ProductMenuState,
     AppReducerState,
 } from './internal/app/reducers';
+export type { IAttachment } from './internal/renderers/AttachmentCard';

@@ -30,7 +30,7 @@ import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 import emptyEditorGridModel from '../test/data/sampleSet2-emptyEditableGrid.json';
 
-import { addColumns, changeColumn, removeColumn, updateEditorData } from './actions';
+import { addColumns, changeColumn, removeColumn, updateEditorData, genCellKey, parseCellKey } from './actions';
 import { CellMessage, ValueDescriptor } from './models';
 import { resetQueryGridState, updateQueryGridModel } from './global';
 // FIXME, when the editableGridWithData file is read in, the objects are automatically
@@ -424,5 +424,19 @@ describe('removeColumn', () => {
         expect(updatedEditor.cellValues.has('1-0')).toBe(false);
         const updatedGridModel = getQueryGridModel(queryGridModel.getId());
         expect(updatedGridModel.data.find(row => row.has('Description'))).toBeFalsy();
+    });
+});
+
+describe('CellKey', () => {
+    test('genCellKey', () => {
+        expect(genCellKey(0, 0)).toBe('0-0');
+        expect(genCellKey(1, 2)).toBe('1-2');
+    });
+
+    test('parseCellKey', () => {
+        expect(parseCellKey('0-0').colIdx).toBe(0);
+        expect(parseCellKey('0-0').rowIdx).toBe(0);
+        expect(parseCellKey('1-2').colIdx).toBe(1);
+        expect(parseCellKey('1-2').rowIdx).toBe(2);
     });
 });

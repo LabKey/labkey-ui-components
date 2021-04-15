@@ -13,43 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { Modal } from 'react-bootstrap';
+import React, { ReactNode, PureComponent } from 'react';
 
-interface FileColumnRendererProps {
+import { isImage, downloadAttachment, QueryColumn } from '../..';
+
+import { getIconFontCls } from '../util/utils';
+import { FILELINK_RANGE_URI } from '../components/domainproperties/constants';
+
+import { AttachmentCard, IAttachment } from './AttachmentCard';
+
+interface Props {
+    col?: QueryColumn;
     data?: any;
+    onRemove?: (attachment: IAttachment) => void;
 }
 
-interface FileColumnRendererState {
-    showModal?: boolean;
-}
-
-function isImage(value) {
-    const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'png'];
-    const parts = value.split('.');
-    const extensionType = parts[parts.length - 1].toLowerCase();
-
-    return validImageExtensions.indexOf(extensionType) > -1;
-}
-
-export class FileColumnRenderer extends React.Component<FileColumnRendererProps, FileColumnRendererState> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            showModal: false,
-        };
-    }
-
-    onHide = () => {
-        this.setState({ showModal: false });
-    };
-
-    onImageClick = () => {
-        this.setState({ showModal: true });
-    };
-
-    render() {
+export class FileColumnRenderer extends PureComponent<Props> {
+    onDownload = (attachment: IAttachment): void => {
         const { data } = this.props;
+        const url = data?.get('url');
+        if (url) {
+            downloadAttachment(url, true, attachment.name);
+        }
+    };
+
+    render(): ReactNode {
+        const { col, data, onRemove } = this.props;
 
         if (!data) {
             return null;
@@ -58,44 +47,27 @@ export class FileColumnRenderer extends React.Component<FileColumnRendererProps,
         const url = data.get('url');
         const value = data.get('value');
         const displayValue = data.get('displayValue');
+        const name = displayValue || value;
 
-        // Attachment URLs will look like images, so we check if the URL is an image.
-        // FileLink URLs don't look like images, so you have to check value or displayValue.
-        if ((url && isImage(url)) || (displayValue && isImage(displayValue)) || (value && isImage(value))) {
-            const title = displayValue || value;
-            const alt = `${title} image`;
-            return (
-                <>
-                    <img src={url} alt={alt} title={title} onClick={this.onImageClick} className="file-renderer-img" />
-
-                    <Modal bsSize="large" show={this.state.showModal} onHide={this.onHide}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>{title}</Modal.Title>
-                        </Modal.Header>
-
-                        <Modal.Body>
-                            <img src={url} alt={alt} title={title} className="file-renderer-img__modal" />
-                        </Modal.Body>
-                    </Modal>
-                </>
-            );
-        }
-
-        if (!displayValue) {
+        if (!name) {
             return null;
         }
 
-        const content = (
-            <span>
-                {displayValue}&nbsp;
-                <i className="fa fa-file-o" />
-            </span>
+        // Attachment URLs will look like images, so we check if the URL is an image.
+        // FileLink URLs don't look like images, so you have to check value or displayValue.
+        const _isImage = (url && isImage(url)) || (displayValue && isImage(displayValue)) || (value && isImage(value));
+        const attachment = { name, iconFontCls: getIconFontCls(name) } as IAttachment;
+
+        return (
+            <AttachmentCard
+                noun={col?.rangeURI === FILELINK_RANGE_URI ? 'file' : 'attachment'}
+                attachment={attachment}
+                imageURL={_isImage ? url : undefined}
+                imageCls="attachment-card__img"
+                onDownload={this.onDownload}
+                allowRemove={onRemove !== undefined}
+                onRemove={onRemove}
+            />
         );
-
-        if (url) {
-            return <a href={url}>{content}</a>;
-        }
-
-        return content;
     }
 }

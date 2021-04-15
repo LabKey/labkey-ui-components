@@ -369,7 +369,7 @@ describe('PropDescType', () => {
         expect(isPropertyTypeAllowed(FLAG_TYPE, true)).toBeFalsy();
         expect(isPropertyTypeAllowed(FILE_TYPE, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(FILE_TYPE, true)).toBeTruthy();
-        expect(isPropertyTypeAllowed(ATTACHMENT_TYPE, true)).toBeFalsy();
+        expect(isPropertyTypeAllowed(ATTACHMENT_TYPE, true)).toBeTruthy();
         expect(isPropertyTypeAllowed(USERS_TYPE, true)).toBeTruthy();
         expect(isPropertyTypeAllowed(SAMPLE_TYPE, true)).toBeTruthy();
         expect(isPropertyTypeAllowed(PARTICIPANT_TYPE, true)).toBeFalsy();

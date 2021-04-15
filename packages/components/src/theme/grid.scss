@@ -138,15 +138,6 @@
   margin: 20px 0;
 }
 
-.file-renderer-img {
-  max-width: 70px;
-  cursor: pointer;
-}
-
-.file-renderer--img__modal {
-  max-width: 100%;
-}
-
 .grid-testing {
   min-width: 50px;
 }
@@ -425,11 +416,6 @@ $table-cell-selection-bg-color: #EDF3FF;
 // Grid selection banner
 .QueryGrid-right-spacing {
   padding-right: 15px;
-}
-
-// Image Modal for FileColumnRenderer
-.file-renderer-img__modal {
-  max-width: 100%;
 }
 
 .gridbar-buttons {

@@ -2,6 +2,7 @@ import { Ajax, Utils } from '@labkey/api';
 
 import { buildURL } from '../../url/AppURL';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
+import { processRequest } from '../../query/api';
 
 export function inferDomainFromFile(
     file: File,
@@ -20,7 +21,8 @@ export function inferDomainFromFile(
             url: buildURL('property', 'inferDomain'),
             method: 'POST',
             form,
-            success: Utils.getCallbackWrapper(response => {
+            success: Utils.getCallbackWrapper((response, request) => {
+                if (processRequest(response, request, reject)) return;
                 resolve(InferDomainResponse.create(response));
             }),
             failure: Utils.getCallbackWrapper(error => {

@@ -4,7 +4,7 @@ import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.js
 import { DomainField } from '../models';
 
 import { ListModel } from './models';
-import {INT_LIST, VAR_LIST} from "./constants";
+import { INT_LIST, VAR_LIST } from './constants';
 
 // Minimal domain object mock
 const domainDesign = { fields: [{ name: 'PK', isPrimaryKey: true }] };

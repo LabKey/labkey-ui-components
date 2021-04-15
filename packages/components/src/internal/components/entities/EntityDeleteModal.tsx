@@ -48,6 +48,7 @@ export const EntityDeleteModal: React.FC<Props> = props => {
     const noun = ' ' + getNoun(numConfirmed);
     let rowIds;
     let numSelected = 0;
+
     if (model) {
         if (useSelected) {
             if (model.isFiltered()) {
@@ -74,7 +75,6 @@ export const EntityDeleteModal: React.FC<Props> = props => {
         setShowProgress(true);
         beforeDelete?.();
         const noun = ' ' + getNoun(rowsToDelete.length);
-
         const schemaQuery = model ? SchemaQuery.create(model.schema, model.query) : queryModel.schemaQuery;
 
         deleteRows({

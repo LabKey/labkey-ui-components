@@ -128,3 +128,7 @@
 .timeline-comments-icon {
     color: $brand-primary;
 }
+
+.old-audit-value, .new-audit-value {
+    word-break: break-all;
+}

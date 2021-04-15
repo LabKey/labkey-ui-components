@@ -1060,7 +1060,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const uniqueIdFields = [];
         const unknownFields = [];
         const { domainDesign } = domainDetails;
-        let allowedFields = Object.keys(domainDetails.options.get('importAliases')).map(key => key.toLowerCase());
+        let allowedFields = [];
+        if (domainDetails.options.has('importAliases')) {
+            allowedFields = Object.keys(domainDetails.options.get('importAliases')).map(key => key.toLowerCase());
+        }
         if (otherAllowedFields) {
             allowedFields = allowedFields.concat(otherAllowedFields.map(field => field.toLowerCase()));
         }

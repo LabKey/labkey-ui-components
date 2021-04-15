@@ -18,6 +18,8 @@ import { Record } from 'immutable';
 import { DomainDesign, DomainField } from '../models';
 import { DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from '../constants';
 
+import { INT_LIST, VAR_LIST } from './constants';
+
 export interface AdvancedSettingsForm {
     titleColumn?: string;
     discussionSetting?: number;
@@ -120,9 +122,9 @@ export class ListModel extends Record({
 
     getDomainKind(): string {
         if (this.keyType === 'Varchar') {
-            return 'VarList';
+            return VAR_LIST;
         } else if (this.keyType === 'Integer' || this.keyType === 'AutoIncrementInteger') {
-            return 'IntList';
+            return INT_LIST;
         }
 
         return undefined;

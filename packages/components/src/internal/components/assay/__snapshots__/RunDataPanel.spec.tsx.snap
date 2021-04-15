@@ -356,17 +356,6 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                           }
                         }
                       >
-                        File
-                      </th>
-                      <th
-                        className="grid-header-cell"
-                        onClick={[Function]}
-                        style={
-                          Object {
-                            "minWidth": "100px",
-                          }
-                        }
-                      >
                         Text Area
                       </th>
                     </tr>
@@ -376,7 +365,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                       className="grid-empty"
                     >
                       <td
-                        colSpan={9}
+                        colSpan={8}
                       >
                         Start by adding the quantity of assay data rows you want to create.
                       </td>
@@ -723,17 +712,6 @@ exports[`<RunDataPanel/> default props 1`] = `
                           }
                         }
                       >
-                        File
-                      </th>
-                      <th
-                        className="grid-header-cell"
-                        onClick={[Function]}
-                        style={
-                          Object {
-                            "minWidth": "100px",
-                          }
-                        }
-                      >
                         Text Area
                       </th>
                     </tr>
@@ -743,7 +721,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                       className="grid-empty"
                     >
                       <td
-                        colSpan={8}
+                        colSpan={7}
                       >
                         Start by adding the quantity of assay data rows you want to create.
                       </td>

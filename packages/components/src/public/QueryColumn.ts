@@ -265,6 +265,10 @@ export class QueryColumn extends Record({
 
         return fieldKey;
     }
+
+    get isFileInput(): boolean {
+        return this.inputType === 'file';
+    }
 }
 
 export function insertColumnFilter(col: QueryColumn): boolean {

@@ -38,20 +38,13 @@ import { getQueryGridModel, GlobalAppState } from '../../global';
 import { headerSelectionCell } from '../../renderers';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, MAX_EDITABLE_GRID_ROWS } from '../../constants';
-import {
-    Alert,
-    BulkAddUpdateForm,
-    DeleteIcon,
-    Grid,
-    GridColumn,
-    LoadingSpinner,
-    QueryColumn,
-    QueryGridModel,
-} from '../../..';
+import { Alert, DeleteIcon, Grid, GridColumn, LoadingSpinner, QueryColumn, QueryGridModel } from '../../..';
 
 import { blurActiveElement, capitalizeFirstChar, caseInsensitive } from '../../util/utils';
 
 import { EditorModel, ValueDescriptor } from '../../models';
+
+import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { Cell } from './Cell';
@@ -322,18 +315,10 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
     };
 
     getColumns = (): List<QueryColumn> => {
+        const { forUpdate, readOnlyColumns, getInsertColumns, getUpdateColumns } = this.props;
+
         const model = this.getModel(this.props);
-        if (this.props.forUpdate) {
-            if (this.props.getUpdateColumns) {
-                const updateCols = this.props.getUpdateColumns();
-                if (updateCols)
-                    return updateCols;
-            }
-            return model.getUpdateColumns(this.props.readOnlyColumns);
-        } else {
-            if (this.props.getInsertColumns) return this.props.getInsertColumns();
-            return model.getInsertColumns();
-        }
+        return this.getEditorModel().getColumns(model, forUpdate, readOnlyColumns, getInsertColumns, getUpdateColumns);
     };
 
     generateColumns = (): List<GridColumn> => {
@@ -801,7 +786,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                     onHide={this.toggleBulkAdd}
                     onCancel={this.toggleBulkAdd}
                     onSuccess={this.toggleBulkAdd}
-                    queryInfo={model.queryInfo}
+                    queryInfo={model.queryInfo.getInsertQueryInfo()}
                     schemaQuery={model.queryInfo.schemaQuery}
                     header={this.renderBulkCreationHeader()}
                     fieldValues={bulkAddProps?.fieldValues}

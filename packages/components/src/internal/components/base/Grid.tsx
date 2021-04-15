@@ -262,15 +262,15 @@ class GridBody extends PureComponent<GridBodyProps> {
         // "textAlign" property correctly for <td> elements.
         return (
             <tr key={key} className={classNames({ 'grid-row-highlight': highlight })}>
-                {columns.map((column: GridColumn, c: number) =>
-                    column.tableCell ? (
+                {columns.map((column: GridColumn, c: number) => {
+                    return column.tableCell ? (
                         column.cell(row.get(column.index), row, column, r, c)
                     ) : (
                         <td key={column.index} style={{ textAlign: column.align || 'left' } as any}>
                             {column.cell(row.get(column.index), row, column, r, c)}
                         </td>
                     )
-                )}
+                })}
             </tr>
         );
     }

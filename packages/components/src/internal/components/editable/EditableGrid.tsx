@@ -324,7 +324,11 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
     getColumns = (): List<QueryColumn> => {
         const model = this.getModel(this.props);
         if (this.props.forUpdate) {
-            if (this.props.getUpdateColumns) return this.props.getUpdateColumns();
+            if (this.props.getUpdateColumns) {
+                const updateCols = this.props.getUpdateColumns();
+                if (updateCols)
+                    return updateCols;
+            }
             return model.getUpdateColumns(this.props.readOnlyColumns);
         } else {
             if (this.props.getInsertColumns) return this.props.getInsertColumns();

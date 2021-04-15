@@ -80,5 +80,5 @@ describe('getChosenParentData', () => {
         expect(result.entityCount).toBe(0);
     });
 
-    //TODO add jest
+    // TODO add jest
 });

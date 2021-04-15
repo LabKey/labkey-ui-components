@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {Component, FC, memo, ReactNode, useMemo} from 'react';
-import {Button} from 'react-bootstrap';
-import {List, Map, OrderedMap} from 'immutable';
-import {AuditBehaviorTypes, Utils} from '@labkey/api';
+import React, { Component, FC, memo, ReactNode, useMemo } from 'react';
+import { Button } from 'react-bootstrap';
+import { List, Map, OrderedMap } from 'immutable';
+import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 
-import {IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS} from '../../constants';
+import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
-import {addColumns, changeColumn, removeColumn} from '../../actions';
+import { addColumns, changeColumn, removeColumn } from '../../actions';
 
 import {
     AddEntityButton,
@@ -69,17 +69,17 @@ import {
     WizardNavButtons,
 } from '../../..';
 
-import {PlacementType} from '../editable/Controls';
+import { PlacementType } from '../editable/Controls';
 
-import {DATA_IMPORT_TOPIC} from '../../util/helpLinks';
+import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 
-import {BulkAddData} from '../editable/EditableGrid';
+import { BulkAddData } from '../editable/EditableGrid';
 
-import {DERIVATION_DATA_SCOPE_CHILD_ONLY} from '../domainproperties/constants';
+import { DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
 
-import {getCurrentProductName} from '../../app/utils';
+import { getCurrentProductName } from '../../app/utils';
 
-import {fetchDomainDetails} from '../domainproperties/actions';
+import { fetchDomainDetails } from '../domainproperties/actions';
 
 import {
     EntityDataType,
@@ -91,12 +91,12 @@ import {
     IParentOption,
 } from './models';
 
-import {getUniqueIdColumnMetadata} from './utils';
-import {getEntityTypeData, handleEntityFileImport} from './actions';
+import { getUniqueIdColumnMetadata } from './utils';
+import { getEntityTypeData, handleEntityFileImport } from './actions';
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description'];
-const ALIQUOT_NOUN_SINGULAR = "Aliquot";
-const ALIQUOT_NOUN_PLURAL = "Aliquots";
+const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
+const ALIQUOT_NOUN_PLURAL = 'Aliquots';
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
 
@@ -195,7 +195,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             file: undefined,
             useAsync: false,
             fieldsWarningMsg: undefined,
-            creationType: props.creationType
+            creationType: props.creationType,
         };
     }
 
@@ -249,7 +249,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             target,
         } = this.props;
 
-        const {creationType} = this.state;
+        const { creationType } = this.state;
 
         const allowParents = this.allowParents();
 
@@ -362,15 +362,14 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         let columns = OrderedMap<string, QueryColumn>();
 
         allColumns.forEach((column, key) => {
-            if (ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) > -1)
-                columns = columns.set(key, column);
+            if (ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) > -1) columns = columns.set(key, column);
         });
         return columns;
     };
 
     getGridQueryInfo = (): QueryInfo => {
         const { insertModel, originalQueryInfo, creationType } = this.state;
-        const { entityDataType  } = this.props;
+        const { entityDataType } = this.props;
 
         if (originalQueryInfo) {
             const nameIndex = Math.max(
@@ -384,8 +383,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 newColumnIndex,
                 insertModel.getParentColumns(entityDataType.uniqueFieldKey)
             );
-            if (creationType === SampleCreationType.Aliquots)
-                columns = this.getAliquotCreationColumns(columns);
+            if (creationType === SampleCreationType.Aliquots) columns = this.getAliquotCreationColumns(columns);
 
             return originalQueryInfo.merge({ columns }) as QueryInfo;
         }
@@ -634,8 +632,15 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                             'Something went wrong loading the data for this page.  Please try again.'}
                     </Alert>
                 )}
-                {!insertModel.isError && isGrid && hasTargetEntityType && creationType !== SampleCreationType.Aliquots && this.renderParentTypesAndButtons()}
-                {!insertModel.isError && isGrid && creationType === SampleCreationType.Aliquots && this.renderAliquotResetMsg()}
+                {!insertModel.isError &&
+                    isGrid &&
+                    hasTargetEntityType &&
+                    creationType !== SampleCreationType.Aliquots &&
+                    this.renderParentTypesAndButtons()}
+                {!insertModel.isError &&
+                    isGrid &&
+                    creationType === SampleCreationType.Aliquots &&
+                    this.renderAliquotResetMsg()}
             </>
         );
     };
@@ -654,11 +659,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     renderAliquotResetMsg = () => {
         return (
             <Alert bsStyle="info">
-                Parent and source types cannot be changed when creating aliquots. <span className="pull-right" onClick={this.resetCreationType}>
-                        Clear Aliquots and Reset.
-                    </span>
+                Parent and source types cannot be changed when creating aliquots.{' '}
+                <span className="pull-right" onClick={this.resetCreationType}>
+                    Clear Aliquots and Reset.
+                </span>
             </Alert>
-        )
+        );
     };
 
     onRowCountChange = (): void => {
@@ -847,10 +853,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 caption: 'Aliquot ID',
                 readOnly: false,
                 placeholder: '[generated id]',
-                toolTip: `A generated Aliquot ID will be provided for Aliquots that don't have a user-provided ID in the grid.`,
+                toolTip:
+                    "A generated Aliquot ID will be provided for Aliquots that don't have a user-provided ID in the grid.",
             });
-        }
-        else if (!this.isNameRequired()) {
+        } else if (!this.isNameRequired()) {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 readOnly: false,
                 placeholder: '[generated id]',
@@ -874,14 +880,18 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const isLoaded = !!queryGridModel?.isLoaded;
 
         const isAliquotCreation = creationType === SampleCreationType.Aliquots;
-        const gridNounSingularCap = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_SINGULAR) : this.capNounSingular;
+        const gridNounSingularCap = isAliquotCreation
+            ? capitalizeFirstChar(ALIQUOT_NOUN_SINGULAR)
+            : this.capNounSingular;
         const gridNounPluralCap = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_PLURAL) : this.capNounPlural;
         const gridNounPlural = isAliquotCreation ? ALIQUOT_NOUN_PLURAL : nounPlural;
 
         let bulkCreationTypeOptions = creationTypeOptions;
         const selectedType = creationTypeOptions.find(type => type.type === creationType);
         if (selectedType)
-            bulkCreationTypeOptions = bulkCreationTypeOptions.filter(option => option.typeGroup === selectedType.typeGroup);
+            bulkCreationTypeOptions = bulkCreationTypeOptions.filter(
+                option => option.typeGroup === selectedType.typeGroup
+            );
 
         return (
             <>

@@ -7,7 +7,7 @@ export enum SampleCreationType {
 
 export enum SampleCreationTypeGroup {
     samples,
-    aliquots
+    aliquots,
 }
 
 export interface SampleCreationTypeModel {
@@ -16,7 +16,7 @@ export interface SampleCreationTypeModel {
     quantityLabel?: string;
     disabledDescription?: string;
     minParentsPerSample: number;
-    typeGroup: SampleCreationTypeGroup
+    typeGroup: SampleCreationTypeGroup;
     iconSrc?: string;
     iconUrl?: string;
     disabled?: boolean;

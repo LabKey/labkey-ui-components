@@ -16,8 +16,8 @@
 import React from 'react';
 import ReactN from 'reactn';
 import { Panel } from 'react-bootstrap';
-import { List, Map } from "immutable";
-import classNames from "classnames";
+import { List, Map } from 'immutable';
+import classNames from 'classnames';
 
 import { gridInit } from '../../actions';
 
@@ -26,7 +26,7 @@ import {
     getUniqueIdColumnMetadata,
     LoadingSpinner,
     QueryColumn,
-    QueryGridModel
+    QueryGridModel,
 } from '../../..';
 
 import { GlobalAppState } from '../../global';
@@ -92,8 +92,7 @@ export class EditableGridPanel extends ReactN.Component<Props, State, GlobalAppS
 
     getModelsAsList(props: Props): List<QueryGridModel> {
         const { model, models } = props;
-        if (models)
-            return List.isList(models) ? List(models.toArray()) : List<QueryGridModel>([models]);
+        if (models) return List.isList(models) ? List(models.toArray()) : List<QueryGridModel>([models]);
 
         return List<QueryGridModel>([model]);
     }
@@ -123,21 +122,16 @@ export class EditableGridPanel extends ReactN.Component<Props, State, GlobalAppS
             <ul className="nav nav-tabs">
                 {models.map((model, index) => {
                     if (model) {
-                        let tabTitle = model.title
-                            ? model.title
-                            : model.query;
-                        if (getTabTitle)
-                            tabTitle = getTabTitle(index);
+                        let tabTitle = model.title ? model.title : model.query;
+                        if (getTabTitle) tabTitle = getTabTitle(index);
 
                         const classes = classNames({
-                            active: activeModel.getId() === model.getId()
+                            active: activeModel.getId() === model.getId(),
                         });
 
                         return (
                             <li key={index} className={classes}>
-                                <a onClick={() => this.setActiveTab(index)}>
-                                    {tabTitle}
-                                </a>
+                                <a onClick={() => this.setActiveTab(index)}>{tabTitle}</a>
                             </li>
                         );
                     }
@@ -149,8 +143,15 @@ export class EditableGridPanel extends ReactN.Component<Props, State, GlobalAppS
 
     render() {
         const { bsStyle, className, title } = this.props;
-        const { readOnlyColumns, readonlyRows, columnMetadata,
-            getUpdateColumns, getColumnMetadata, getReadOnlyRows, getReadOnlyColumns } = this.props;
+        const {
+            readOnlyColumns,
+            readonlyRows,
+            columnMetadata,
+            getUpdateColumns,
+            getColumnMetadata,
+            getReadOnlyRows,
+            getReadOnlyColumns,
+        } = this.props;
         const { activeTab } = this.state;
 
         const model = this.getModel();
@@ -160,32 +161,31 @@ export class EditableGridPanel extends ReactN.Component<Props, State, GlobalAppS
         }
 
         let activeColumnMetadata = columnMetadata;
-        if (!activeColumnMetadata && getColumnMetadata)
-            activeColumnMetadata = getColumnMetadata(activeTab);
-        if (!activeColumnMetadata)
-            activeColumnMetadata = getUniqueIdColumnMetadata(model.queryInfo);
+        if (!activeColumnMetadata && getColumnMetadata) activeColumnMetadata = getColumnMetadata(activeTab);
+        if (!activeColumnMetadata) activeColumnMetadata = getUniqueIdColumnMetadata(model.queryInfo);
 
         let activeReadOnlyRows = readonlyRows;
-        if (getReadOnlyRows)
-            activeReadOnlyRows = getReadOnlyRows(activeTab);
+        if (getReadOnlyRows) activeReadOnlyRows = getReadOnlyRows(activeTab);
 
         let activeReadOnlyColumns = readOnlyColumns;
-        if (getReadOnlyColumns)
-            activeReadOnlyColumns = getReadOnlyColumns(activeTab);
+        if (getReadOnlyColumns) activeReadOnlyColumns = getReadOnlyColumns(activeTab);
 
         let activeGetUpdateColumnsFn = getUpdateColumns;
         if (getUpdateColumns)
-            activeGetUpdateColumnsFn = () => {return getUpdateColumns(activeTab)};
+            activeGetUpdateColumnsFn = () => {
+                return getUpdateColumns(activeTab);
+            };
 
-        let gridProps = {
+        const gridProps = {
             ...this.props,
             ...{
-                model: model,
+                model,
                 readOnlyColumns: activeReadOnlyColumns,
                 readonlyRows: activeReadOnlyRows,
                 columnMetadata: activeColumnMetadata,
-                getUpdateColumns: activeGetUpdateColumnsFn
-            }};
+                getUpdateColumns: activeGetUpdateColumnsFn,
+            },
+        };
 
         if (!title) {
             return <EditableGrid {...gridProps} />;

@@ -3,13 +3,7 @@ import { List, Map } from 'immutable';
 
 import { getEditorModel } from '../../global';
 
-import {
-    EditableColumnMetadata,
-    QueryColumn,
-    QueryGridModel,
-    SchemaQuery,
-    WizardNavButtons
-} from '../../..';
+import { EditableColumnMetadata, QueryColumn, QueryGridModel, SchemaQuery, WizardNavButtons } from '../../..';
 import { capitalizeFirstChar, getUpdatedDataFromGrid } from '../../util/utils';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
@@ -54,7 +48,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            isSubmitting: false
+            isSubmitting: false,
         };
     }
 
@@ -72,41 +66,42 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     updateDataFromGrid = () => {
         const { onComplete, updateRows, updateAllTabRows } = this.props;
 
-        let gridDataAllTabs = [];
+        const gridDataAllTabs = [];
         this.getModelsAsList(this.props).forEach((model, ind) => {
             const gridData = this.getUpdateDataFromGrid(ind);
             if (gridData && gridData.updatedRows.length > 0) {
                 gridDataAllTabs.push(gridData);
             }
-        })
+        });
 
         if (gridDataAllTabs.length > 0) {
             this.setState(() => ({ isSubmitting: true }));
             if (updateAllTabRows) {
                 updateAllTabRows(gridDataAllTabs).then(responses => {
                     this.setState(() => ({ isSubmitting: false }), onComplete());
-                })
+                });
             } else if (updateRows) {
-                let updatePromises = [];
+                const updatePromises = [];
                 gridDataAllTabs.forEach(data => updatePromises.push(updateRows(data.schemaQuery, data.updateRows)));
-                Promise.all(updatePromises)
-                    .then(responses => {
-                        this.setState(() => ({ isSubmitting: false }), onComplete());
-                    })
+                Promise.all(updatePromises).then(responses => {
+                    this.setState(() => ({ isSubmitting: false }), onComplete());
+                });
             }
-        }
-        else {
+        } else {
             this.setState(() => ({ isSubmitting: false }), onComplete());
         }
-
     };
 
     getUpdateDataFromGrid = (tabIndex: number) => {
         const models = this.getModelsAsList(this.props);
-        const model =  models.get(tabIndex ? tabIndex : 0);
+        const model = models.get(tabIndex ? tabIndex : 0);
         const idField = this.props.getIdField ? this.props.getIdField(tabIndex) : this.props.idField;
-        const readOnlyColumns = this.props.getReadOnlyColumns ? this.props.getReadOnlyColumns(tabIndex) : this.props.readOnlyColumns;
-        const selectionData = this.props.getSelectionData ? this.props.getSelectionData(tabIndex) : this.props.selectionData;
+        const readOnlyColumns = this.props.getReadOnlyColumns
+            ? this.props.getReadOnlyColumns(tabIndex)
+            : this.props.readOnlyColumns;
+        const selectionData = this.props.getSelectionData
+            ? this.props.getSelectionData(tabIndex)
+            : this.props.selectionData;
 
         const editorModel = getEditorModel(model.getId());
         if (!editorModel) {
@@ -123,20 +118,32 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             return {
                 schemaQuery: model.queryInfo.schemaQuery,
                 updatedRows,
-                tabIndex
-            }
+                tabIndex,
+            };
         }
     };
 
     render() {
-        const { model, readOnlyColumns, readOnlyRows, activeTab, onCancel, singularNoun, pluralNoun, columnMetadata,
-            getUpdateColumns, getColumnMetadata, getReadOnlyRows, getReadOnlyColumns, getTabTitle } = this.props;
+        const {
+            model,
+            readOnlyColumns,
+            readOnlyRows,
+            activeTab,
+            onCancel,
+            singularNoun,
+            pluralNoun,
+            columnMetadata,
+            getUpdateColumns,
+            getColumnMetadata,
+            getReadOnlyRows,
+            getReadOnlyColumns,
+            getTabTitle,
+        } = this.props;
         const { isSubmitting } = this.state;
 
         const firstModel = this.getModel();
-        let cMetadata =  columnMetadata;
-        if (!cMetadata && !getColumnMetadata)
-            cMetadata = getUniqueIdColumnMetadata(firstModel.queryInfo);
+        let cMetadata = columnMetadata;
+        if (!cMetadata && !getColumnMetadata) cMetadata = getUniqueIdColumnMetadata(firstModel.queryInfo);
 
         return (
             <>
@@ -171,7 +178,9 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                         'Finish Updating ' +
                         firstModel.data.size +
                         ' ' +
-                        (firstModel.data.size === 1 ? capitalizeFirstChar(singularNoun) : capitalizeFirstChar(pluralNoun))
+                        (firstModel.data.size === 1
+                            ? capitalizeFirstChar(singularNoun)
+                            : capitalizeFirstChar(pluralNoun))
                     }
                 />
             </>

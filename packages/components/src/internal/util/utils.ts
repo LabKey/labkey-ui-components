@@ -349,8 +349,7 @@ export function getUpdatedDataFromGrid(
                         // Incorrect types are handled by API and user feedback created from that response. Don't need
                         // to handle that here.
                     }
-                }
-                else if (Iterable.isIterable(originalValue) && !List.isList(originalValue)) {
+                } else if (Iterable.isIterable(originalValue) && !List.isList(originalValue)) {
                     originalValue = originalValue.get('value');
                 }
 

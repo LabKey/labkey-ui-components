@@ -235,7 +235,10 @@ export class QueryInfo extends Record({
         }, List<string>());
         return this.columns
             .filter(column => {
-                return column.isUpdateColumn || (lowerReadOnlyColumnsList && lowerReadOnlyColumnsList.indexOf(column.fieldKey.toLowerCase()) > -1);
+                return (
+                    column.isUpdateColumn ||
+                    (lowerReadOnlyColumnsList && lowerReadOnlyColumnsList.indexOf(column.fieldKey.toLowerCase()) > -1)
+                );
             })
             .map(column => {
                 if (lowerReadOnlyColumnsList && lowerReadOnlyColumnsList.indexOf(column.fieldKey.toLowerCase()) > -1) {

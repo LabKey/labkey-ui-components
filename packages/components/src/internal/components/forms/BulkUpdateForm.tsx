@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, { ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
@@ -140,8 +140,8 @@ export class BulkUpdateForm extends React.Component<Props, State> {
             <>
                 <div>
                     <p>
-                        Make changes to the selected {noun}. Enable a field to update or remove the value for the selected{' '}
-                        {noun}.
+                        Make changes to the selected {noun}. Enable a field to update or remove the value for the
+                        selected {noun}.
                     </p>
                     {this.getSelectionCount() > 1 && (
                         <p>To update individual {noun} in this selection group, select "Edit with Grid".</p>

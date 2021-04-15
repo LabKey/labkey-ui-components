@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* EditableGrid:
+    * EditableGridPanel and EditableGridPanelForUpdate support multiple models in a tabbed view
+    * Allow setting cell to read only with columnMetadata
+    * Allow getUpdateColumns override
+    * Set caption with columnMetadata
+* Support aliquot creation mode for EntityInsertPanel:
+* Add header props to BulkUpdateForm:
+
 ### version 2.23.1
 *Released*: 15 April 2021
 * Issue 42527: Support 'Is Primary Key' column for Summary View

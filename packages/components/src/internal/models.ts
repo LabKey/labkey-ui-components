@@ -377,9 +377,9 @@ export class EditorModel
     ): List<QueryColumn> {
         let columns;
         if (forUpdate) {
-            if (getUpdateColumns)
-                columns = getUpdateColumns();
-            if (!columns) // getUpdateColumns might return null
+            if (getUpdateColumns) columns = getUpdateColumns();
+            if (!columns)
+                // getUpdateColumns might return null
                 columns = model.getUpdateColumns(readOnlyColumns);
         } else {
             if (getInsertColumns) {

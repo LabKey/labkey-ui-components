@@ -8,6 +8,9 @@ import { DetailPanelHeader } from '../../internal/components/forms/detail/Detail
 import { extractChanges } from '../../internal/components/forms/detail/utils';
 
 import { Alert, DetailPanel, QueryColumn, RequiresModelAndActions, resolveErrorMessage, updateRows } from '../..';
+import { fileInputRenderer } from '../../internal/components/forms/renderers';
+
+const EMPTY_FILE_FOR_DELETE = new File([], '');
 
 interface EditableDetailPanelProps extends RequiresModelAndActions {
     appEditable?: boolean;
@@ -29,6 +32,7 @@ interface EditableDetailPanelState {
     editing?: boolean;
     error?: string;
     warning?: string;
+    fileMap: Record<string, File>;
 }
 
 export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps, EditableDetailPanelState> {
@@ -43,6 +47,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         editing: false,
         error: undefined,
         warning: undefined,
+        fileMap: {},
     };
 
     toggleEditing = (): void => {
@@ -66,14 +71,28 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         this.setState(() => ({ warning: undefined }));
     };
 
+    handleFileInputChange = (fileMap: Record<string, File>): void => {
+        this.setState(state => ({
+            fileMap: { ...state.fileMap, ...fileMap },
+            canSubmit: true,
+        }));
+    };
+
+    fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
+        const updatedFile = this.state.fileMap[col.name];
+        return fileInputRenderer(col, data, updatedFile, this.handleFileInputChange);
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     handleSubmit = (values: Record<string, any>): void => {
         const { auditBehavior, model, onEditToggle, onUpdate } = this.props;
+        const { fileMap } = this.state;
         const { queryInfo } = model;
         const row = model.getRow();
         const updatedValues = extractChanges(queryInfo, fromJS(model.getRow()), values);
+        const hasFileUpdates = Object.keys(fileMap).length > 0;
 
-        if (Object.keys(updatedValues).length === 0) {
+        if (Object.keys(updatedValues).length === 0 && !hasFileUpdates) {
             this.setState(() => ({
                 canSubmit: false,
                 warning: 'No changes detected. Please update the form and click save.',
@@ -94,7 +113,16 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             }
         });
 
-        updateRows({ schemaQuery: queryInfo.schemaQuery, rows: [updatedValues], auditBehavior })
+        // to support file/attachment columns, we need to pass them in as FormData and updateRows will handle the rest
+        let form;
+        if (hasFileUpdates) {
+            form = new FormData();
+            Object.keys(fileMap).forEach(key => {
+                form.append(key, fileMap[key] ?? EMPTY_FILE_FOR_DELETE);
+            });
+        }
+
+        updateRows({ schemaQuery: queryInfo.schemaQuery, rows: [updatedValues], auditBehavior, form })
             .then(() => {
                 this.setState({ editing: false }, () => {
                     onUpdate?.(); // eslint-disable-line no-unused-expressions
@@ -102,7 +130,6 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                 });
             })
             .catch(error => {
-                console.error(error);
                 this.setState(() => ({
                     warning: undefined,
                     error: resolveErrorMessage(error, 'data', undefined, 'update'),
@@ -150,6 +177,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                         editingMode={editing}
                         model={model}
                         queryColumns={queryColumns}
+                        fileInputRenderer={this.fileInputRenderer}
                     />
                 </div>
             </div>

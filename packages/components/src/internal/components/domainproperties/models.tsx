@@ -71,6 +71,7 @@ import {
     removeUnusedProperties,
     reorderSummaryColumns,
 } from './propertiesUtil';
+import { INT_LIST, VAR_LIST } from './list/constants';
 
 export interface IFieldChange {
     id: string;
@@ -425,7 +426,7 @@ export class DomainDesign
         if (appPropertiesOnly) {
             columns = removeNonAppProperties(columns);
         }
-        if (domainKindName !== 'List') {
+        if (domainKindName !== VAR_LIST && domainKindName !== INT_LIST) {
             delete columns.isPrimaryKey;
         }
 

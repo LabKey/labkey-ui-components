@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.23.1
+*Released*: 15 April 2021
+* Issue 42527: Support 'Is Primary Key' column for Summary View
+
 ### version 2.23.0
 *Released*: 15 April 2021
 * Item 8735: Enable files and attachment data types for sample type designer and data class designer

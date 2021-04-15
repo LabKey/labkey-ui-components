@@ -2,6 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { QueryColumn, QueryInfo, SchemaQuery } from '../../..';
+
 import { BulkUpdateForm } from './BulkUpdateForm';
 import { QueryInfoForm } from './QueryInfoForm';
 

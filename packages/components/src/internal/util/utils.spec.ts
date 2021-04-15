@@ -105,12 +105,12 @@ describe('toLowerSafe', () => {
 describe('camelCaseToTitleCase', () => {
     test('function', () => {
         const testStrings = {
-            textACRONYM: "Text ACRONYM",
-            camelCasedText: "Camel Cased Text",
-            CapsCasedText: "Caps Cased Text",
-            CapsCasedTextACRONYM: "Caps Cased Text ACRONYM",
-            ACRONYM: "ACRONYM"
-        }
+            textACRONYM: 'Text ACRONYM',
+            camelCasedText: 'Camel Cased Text',
+            CapsCasedText: 'Caps Cased Text',
+            CapsCasedTextACRONYM: 'Caps Cased Text ACRONYM',
+            ACRONYM: 'ACRONYM',
+        };
 
         for (const [key, value] of Object.entries(testStrings)) {
             expect(camelCaseToTitleCase(key)).toEqual(value);

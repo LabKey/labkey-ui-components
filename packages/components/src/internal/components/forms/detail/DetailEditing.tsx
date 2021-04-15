@@ -19,18 +19,13 @@ import { List } from 'immutable';
 import Formsy from 'formsy-react';
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import {
-    updateRows,
-    Alert,
-    resolveErrorMessage,
-    QueryColumn,
-    QueryGridModel,
-} from '../../../..';
+import { updateRows, Alert, resolveErrorMessage, QueryColumn, QueryGridModel } from '../../../..';
+
+import { fileInputRenderer } from '../renderers';
 
 import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { extractChanges } from './utils';
-import { fileInputRenderer } from '../renderers';
 
 const EMPTY_FILE_FOR_DELETE = new File([], '');
 

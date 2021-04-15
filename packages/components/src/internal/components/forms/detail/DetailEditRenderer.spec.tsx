@@ -17,9 +17,11 @@ import {
     QueryColumn,
     QuerySelect,
 } from '../../../..';
-import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
+
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
 import { AliasInput } from '../input/AliasInput';
+
+import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
 
 describe('titleRenderer', () => {
     test('editable', () => {
@@ -114,11 +116,13 @@ describe('resolveDetailEditRenderer', () => {
 
     test('inputType file, fileInputRenderer defined', () => {
         const col = new QueryColumn({ ...default_props, inputType: 'file' });
-        const wrapper = mount(<Formsy>{resolveDetailEditRenderer(
-            col,
-            undefined,
-            (col, data) => <FileInput key={0} queryColumn={col} onChange={jest.fn} />
-        )(Map())}</Formsy>);
+        const wrapper = mount(
+            <Formsy>
+                {resolveDetailEditRenderer(col, undefined, (col, data) => (
+                    <FileInput key={0} queryColumn={col} onChange={jest.fn} />
+                ))(Map())}
+            </Formsy>
+        );
         validate(wrapper, { fileinput: 1 });
         wrapper.unmount();
     });

@@ -16,9 +16,11 @@
 import React, { ReactNode, PureComponent } from 'react';
 
 import { isImage, downloadAttachment, QueryColumn } from '../..';
-import { AttachmentCard, IAttachment } from './AttachmentCard';
+
 import { getIconFontCls } from '../util/utils';
 import { FILELINK_RANGE_URI } from '../components/domainproperties/constants';
+
+import { AttachmentCard, IAttachment } from './AttachmentCard';
 
 interface Props {
     col?: QueryColumn;

@@ -113,7 +113,13 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
     if (data.size === 0) {
         body = <div>No data available.</div>;
     } else {
-        const fields = processFields(displayColumns, detailRenderer, titleRenderer, { useDatePicker }, fileInputRenderer);
+        const fields = processFields(
+            displayColumns,
+            detailRenderer,
+            titleRenderer,
+            { useDatePicker },
+            fileInputRenderer
+        );
 
         body = (
             <div>

@@ -7,14 +7,7 @@ import { AuditBehaviorTypes } from '@labkey/api';
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
 import { extractChanges } from '../../internal/components/forms/detail/utils';
 
-import {
-    Alert,
-    DetailPanel,
-    QueryColumn,
-    RequiresModelAndActions,
-    resolveErrorMessage,
-    updateRows,
-} from '../..';
+import { Alert, DetailPanel, QueryColumn, RequiresModelAndActions, resolveErrorMessage, updateRows } from '../..';
 import { fileInputRenderer } from '../../internal/components/forms/renderers';
 
 const EMPTY_FILE_FOR_DELETE = new File([], '');

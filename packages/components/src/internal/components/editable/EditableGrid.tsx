@@ -38,23 +38,16 @@ import { getQueryGridModel, GlobalAppState } from '../../global';
 import { headerSelectionCell } from '../../renderers';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, MAX_EDITABLE_GRID_ROWS } from '../../constants';
-import {
-    Alert,
-    DeleteIcon,
-    Grid,
-    GridColumn,
-    LoadingSpinner,
-    QueryColumn,
-    QueryGridModel,
-} from '../../..';
+import { Alert, DeleteIcon, Grid, GridColumn, LoadingSpinner, QueryColumn, QueryGridModel } from '../../..';
 
 import { blurActiveElement, capitalizeFirstChar, caseInsensitive } from '../../util/utils';
 
 import { EditorModel, ValueDescriptor } from '../../models';
 
+import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
+
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { Cell } from './Cell';
-import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,

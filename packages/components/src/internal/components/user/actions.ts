@@ -6,8 +6,9 @@ import { buildURL, caseInsensitive, hasAllPermissions, QueryGridModel, SchemaQue
 
 import { APPLICATION_SECURITY_ROLES } from '../permissions/constants';
 
-import { ChangePasswordModel } from './models';
 import { processRequest } from '../../query/api';
+
+import { ChangePasswordModel } from './models';
 
 export function getUserProperties(userId: number): Promise<any> {
     return new Promise((resolve, reject) => {

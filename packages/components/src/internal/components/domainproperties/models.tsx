@@ -1201,14 +1201,9 @@ export function isPropertyTypeAllowed(type: PropDescType, includeFileType: boole
     if (type === FILE_TYPE) return includeFileType;
 
     // We are excluding the field types below for the App
-    return ![
-        LOOKUP_TYPE,
-        PARTICIPANT_TYPE,
-        FLAG_TYPE,
-        ONTOLOGY_LOOKUP_TYPE,
-        VISIT_DATE_TYPE,
-        VISIT_ID_TYPE,
-    ].includes(type);
+    return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE, VISIT_DATE_TYPE, VISIT_ID_TYPE].includes(
+        type
+    );
 }
 
 export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {

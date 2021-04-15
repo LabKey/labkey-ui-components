@@ -1,5 +1,6 @@
-import { insertColumnFilter, QueryColumn } from './QueryColumn';
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
+
+import { insertColumnFilter, QueryColumn } from './QueryColumn';
 
 describe('QueryColumn: Sample Lookup', () => {
     // prepare stuff we need
@@ -180,14 +181,30 @@ describe('QueryColumn: Sample Lookup', () => {
 
     test('isEditable', () => {
         expect(new QueryColumn({}).isEditable()).toBeFalsy();
-        expect(new QueryColumn({ readOnly: true, userEditable: true, shownInUpdateView: true }).isEditable()).toBeFalsy();
-        expect(new QueryColumn({ readOnly: true, userEditable: true, shownInUpdateView: false }).isEditable()).toBeFalsy();
-        expect(new QueryColumn({ readOnly: true, userEditable: false, shownInUpdateView: true }).isEditable()).toBeFalsy();
-        expect(new QueryColumn({ readOnly: true, userEditable: false, shownInUpdateView: false }).isEditable()).toBeFalsy();
-        expect(new QueryColumn({ readOnly: false, userEditable: true, shownInUpdateView: true }).isEditable()).toBeTruthy();
-        expect(new QueryColumn({ readOnly: false, userEditable: false, shownInUpdateView: true }).isEditable()).toBeFalsy();
-        expect(new QueryColumn({ readOnly: false, userEditable: true, shownInUpdateView: false }).isEditable()).toBeFalsy();
-        expect(new QueryColumn({ readOnly: false, userEditable: false, shownInUpdateView: false }).isEditable()).toBeFalsy();
+        expect(
+            new QueryColumn({ readOnly: true, userEditable: true, shownInUpdateView: true }).isEditable()
+        ).toBeFalsy();
+        expect(
+            new QueryColumn({ readOnly: true, userEditable: true, shownInUpdateView: false }).isEditable()
+        ).toBeFalsy();
+        expect(
+            new QueryColumn({ readOnly: true, userEditable: false, shownInUpdateView: true }).isEditable()
+        ).toBeFalsy();
+        expect(
+            new QueryColumn({ readOnly: true, userEditable: false, shownInUpdateView: false }).isEditable()
+        ).toBeFalsy();
+        expect(
+            new QueryColumn({ readOnly: false, userEditable: true, shownInUpdateView: true }).isEditable()
+        ).toBeTruthy();
+        expect(
+            new QueryColumn({ readOnly: false, userEditable: false, shownInUpdateView: true }).isEditable()
+        ).toBeFalsy();
+        expect(
+            new QueryColumn({ readOnly: false, userEditable: true, shownInUpdateView: false }).isEditable()
+        ).toBeFalsy();
+        expect(
+            new QueryColumn({ readOnly: false, userEditable: false, shownInUpdateView: false }).isEditable()
+        ).toBeFalsy();
     });
 
     test('isLookup', () => {
@@ -204,7 +221,7 @@ describe('QueryColumn: Sample Lookup', () => {
 
     test('isJunctionLookup', () => {
         expect(new QueryColumn({}).isJunctionLookup()).toBeFalsy();
-        expect(new QueryColumn({ lookup: { multiValued: undefined }}).isJunctionLookup()).toBeFalsy();
+        expect(new QueryColumn({ lookup: { multiValued: undefined } }).isJunctionLookup()).toBeFalsy();
         expect(new QueryColumn({ lookup: { multiValued: 'test' } }).isJunctionLookup()).toBeFalsy();
         expect(new QueryColumn({ lookup: { multiValued: 'junction' } }).isJunctionLookup()).toBeTruthy();
     });
@@ -219,16 +236,79 @@ describe('QueryColumn: Sample Lookup', () => {
 
     test('isUpdateColumn', () => {
         expect(new QueryColumn({}).isUpdateColumn).toBeFalsy();
-        expect(new QueryColumn({ removeFromViews: true, shownInUpdateView: true, userEditable: true, fieldKeyArray: ['test'] }).isUpdateColumn).toBeFalsy();
-        expect(new QueryColumn({ removeFromViews: true, shownInUpdateView: true, userEditable: false, fieldKeyArray: ['test'] }).isUpdateColumn).toBeFalsy();
-        expect(new QueryColumn({ removeFromViews: true, shownInUpdateView: false, userEditable: true, fieldKeyArray: ['test'] }).isUpdateColumn).toBeFalsy();
-        expect(new QueryColumn({ removeFromViews: true, shownInUpdateView: false, userEditable: false, fieldKeyArray: ['test'] }).isUpdateColumn).toBeFalsy();
-        expect(new QueryColumn({ removeFromViews: false, shownInUpdateView: true, userEditable: true, fieldKeyArray: ['test'] }).isUpdateColumn).toBeTruthy();
-        expect(new QueryColumn({ removeFromViews: false, shownInUpdateView: true, userEditable: false, fieldKeyArray: ['test'] }).isUpdateColumn).toBeFalsy();
-        expect(new QueryColumn({ removeFromViews: false, shownInUpdateView: false, userEditable: true, fieldKeyArray: ['test'] }).isUpdateColumn).toBeFalsy();
-        expect(new QueryColumn({ removeFromViews: false, shownInUpdateView: false, userEditable: false, fieldKeyArray: ['test'] }).isUpdateColumn).toBeFalsy();
+        expect(
+            new QueryColumn({
+                removeFromViews: true,
+                shownInUpdateView: true,
+                userEditable: true,
+                fieldKeyArray: ['test'],
+            }).isUpdateColumn
+        ).toBeFalsy();
+        expect(
+            new QueryColumn({
+                removeFromViews: true,
+                shownInUpdateView: true,
+                userEditable: false,
+                fieldKeyArray: ['test'],
+            }).isUpdateColumn
+        ).toBeFalsy();
+        expect(
+            new QueryColumn({
+                removeFromViews: true,
+                shownInUpdateView: false,
+                userEditable: true,
+                fieldKeyArray: ['test'],
+            }).isUpdateColumn
+        ).toBeFalsy();
+        expect(
+            new QueryColumn({
+                removeFromViews: true,
+                shownInUpdateView: false,
+                userEditable: false,
+                fieldKeyArray: ['test'],
+            }).isUpdateColumn
+        ).toBeFalsy();
+        expect(
+            new QueryColumn({
+                removeFromViews: false,
+                shownInUpdateView: true,
+                userEditable: true,
+                fieldKeyArray: ['test'],
+            }).isUpdateColumn
+        ).toBeTruthy();
+        expect(
+            new QueryColumn({
+                removeFromViews: false,
+                shownInUpdateView: true,
+                userEditable: false,
+                fieldKeyArray: ['test'],
+            }).isUpdateColumn
+        ).toBeFalsy();
+        expect(
+            new QueryColumn({
+                removeFromViews: false,
+                shownInUpdateView: false,
+                userEditable: true,
+                fieldKeyArray: ['test'],
+            }).isUpdateColumn
+        ).toBeFalsy();
+        expect(
+            new QueryColumn({
+                removeFromViews: false,
+                shownInUpdateView: false,
+                userEditable: false,
+                fieldKeyArray: ['test'],
+            }).isUpdateColumn
+        ).toBeFalsy();
 
-        expect(new QueryColumn({ removeFromViews: false, shownInUpdateView: true, userEditable: true, fieldKeyArray: ['test1', 'test2'] }).isUpdateColumn).toBeFalsy();
+        expect(
+            new QueryColumn({
+                removeFromViews: false,
+                shownInUpdateView: true,
+                userEditable: true,
+                fieldKeyArray: ['test1', 'test2'],
+            }).isUpdateColumn
+        ).toBeFalsy();
     });
 
     test('isUniqueIdColumn', () => {
@@ -246,8 +326,15 @@ describe('QueryColumn: Sample Lookup', () => {
     test('resolveFieldKey', () => {
         expect(new QueryColumn({}).resolveFieldKey()).toBe(undefined);
         expect(new QueryColumn({ name: 'name' }).resolveFieldKey()).toBe('name');
-        expect(new QueryColumn({ name: 'name', lookup: { displayColumn: 'displayColumn'} }).resolveFieldKey()).toBe('name/displayColumn');
-        expect(new QueryColumn({ name: 'name', lookup: { displayColumn: 'displayColumn1/displayColumn2'} }).resolveFieldKey()).toBe('name/displayColumn1$SdisplayColumn2');
+        expect(new QueryColumn({ name: 'name', lookup: { displayColumn: 'displayColumn' } }).resolveFieldKey()).toBe(
+            'name/displayColumn'
+        );
+        expect(
+            new QueryColumn({
+                name: 'name',
+                lookup: { displayColumn: 'displayColumn1/displayColumn2' },
+            }).resolveFieldKey()
+        ).toBe('name/displayColumn1$SdisplayColumn2');
     });
 });
 
@@ -255,15 +342,96 @@ describe('insertColumnFilter', () => {
     test('query column props', () => {
         expect(insertColumnFilter(undefined)).toBeFalsy();
         expect(insertColumnFilter(new QueryColumn())).toBeFalsy();
-        expect(insertColumnFilter(new QueryColumn({ removeFromViews: true, shownInInsertView: true, userEditable: true, fieldKeyArray: ['test'] }))).toBeFalsy();
-        expect(insertColumnFilter(new QueryColumn({ removeFromViews: true, shownInInsertView: true, userEditable: false, fieldKeyArray: ['test'] }))).toBeFalsy();
-        expect(insertColumnFilter(new QueryColumn({ removeFromViews: true, shownInInsertView: false, userEditable: true, fieldKeyArray: ['test'] }))).toBeFalsy();
-        expect(insertColumnFilter(new QueryColumn({ removeFromViews: true, shownInInsertView: false, userEditable: false, fieldKeyArray: ['test'] }))).toBeFalsy();
-        expect(insertColumnFilter(new QueryColumn({ removeFromViews: false, shownInInsertView: true, userEditable: true, fieldKeyArray: ['test'] }))).toBeTruthy();
-        expect(insertColumnFilter(new QueryColumn({ removeFromViews: false, shownInInsertView: true, userEditable: false, fieldKeyArray: ['test'] }))).toBeFalsy();
-        expect(insertColumnFilter(new QueryColumn({ removeFromViews: false, shownInInsertView: false, userEditable: true, fieldKeyArray: ['test'] }))).toBeFalsy();
-        expect(insertColumnFilter(new QueryColumn({ removeFromViews: false, shownInInsertView: false, userEditable: false, fieldKeyArray: ['test'] }))).toBeFalsy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    removeFromViews: true,
+                    shownInInsertView: true,
+                    userEditable: true,
+                    fieldKeyArray: ['test'],
+                })
+            )
+        ).toBeFalsy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    removeFromViews: true,
+                    shownInInsertView: true,
+                    userEditable: false,
+                    fieldKeyArray: ['test'],
+                })
+            )
+        ).toBeFalsy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    removeFromViews: true,
+                    shownInInsertView: false,
+                    userEditable: true,
+                    fieldKeyArray: ['test'],
+                })
+            )
+        ).toBeFalsy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    removeFromViews: true,
+                    shownInInsertView: false,
+                    userEditable: false,
+                    fieldKeyArray: ['test'],
+                })
+            )
+        ).toBeFalsy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    removeFromViews: false,
+                    shownInInsertView: true,
+                    userEditable: true,
+                    fieldKeyArray: ['test'],
+                })
+            )
+        ).toBeTruthy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    removeFromViews: false,
+                    shownInInsertView: true,
+                    userEditable: false,
+                    fieldKeyArray: ['test'],
+                })
+            )
+        ).toBeFalsy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    removeFromViews: false,
+                    shownInInsertView: false,
+                    userEditable: true,
+                    fieldKeyArray: ['test'],
+                })
+            )
+        ).toBeFalsy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    removeFromViews: false,
+                    shownInInsertView: false,
+                    userEditable: false,
+                    fieldKeyArray: ['test'],
+                })
+            )
+        ).toBeFalsy();
 
-        expect(insertColumnFilter(new QueryColumn({ removeFromViews: false, shownInInsertView: true, userEditable: true, fieldKeyArray: ['test1', 'test2'] }))).toBeFalsy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    removeFromViews: false,
+                    shownInInsertView: true,
+                    userEditable: true,
+                    fieldKeyArray: ['test1', 'test2'],
+                })
+            )
+        ).toBeFalsy();
     });
 });

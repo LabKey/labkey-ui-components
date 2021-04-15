@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.23.0
+*Released*: 15 April 2021
 * Item 8735: Enable files and attachment data types for sample type designer and data class designer
     * Refactor AttachmentCard component and related SCSS from LKB ELN
     * Enable FileColumnRenderer for DetailsPanel

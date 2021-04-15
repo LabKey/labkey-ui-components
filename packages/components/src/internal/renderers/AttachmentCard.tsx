@@ -15,17 +15,14 @@ export interface IAttachment {
     size?: number;
 }
 
-export interface AttachmentCardProps {
-    allowRemove?: boolean;
-    onDownload?: (attachment: IAttachment) => void;
-    onRemove?: (attachment: IAttachment) => void;
-}
-
-interface Props extends AttachmentCardProps {
+interface Props {
     noun?: string;
     attachment: IAttachment;
     imageURL?: string;
     imageCls?: string;
+    allowRemove?: boolean;
+    onDownload?: (attachment: IAttachment) => void;
+    onRemove?: (attachment: IAttachment) => void;
 }
 
 export const AttachmentCard: FC<Props> = memo(props => {

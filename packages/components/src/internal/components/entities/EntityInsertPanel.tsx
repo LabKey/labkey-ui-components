@@ -765,11 +765,16 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     renderGridButtons = (): ReactNode => {
-        const { insertModel, isSubmitting } = this.state;
+        const { insertModel, isSubmitting, creationType } = this.state;
         const queryModel = this.getQueryGridModel();
         const editorModel = queryModel ? getEditorModel(queryModel.getId()) : undefined;
         if (insertModel?.isInit) {
-            const noun = insertModel.entityCount === 1 ? this.capNounSingular : this.capNounPlural;
+            const isAliquotCreation = creationType === SampleCreationType.Aliquots;
+
+            const nounSingle = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_SINGULAR) : this.capNounSingular;
+            const nounPlural = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_PLURAL) : this.capNounPlural;
+            const noun = insertModel.entityCount === 1 ? nounSingle : nounPlural;
+
             return (
                 <div className="form-group no-margin-bottom">
                     <div className="pull-left">

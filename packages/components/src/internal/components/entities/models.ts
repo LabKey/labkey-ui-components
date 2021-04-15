@@ -145,7 +145,7 @@ export class EntityParentType extends Record({
                 table: this.isAliquotParent ? QueryColumn.MATERIAL_INPUTS : parentInputType,
             },
             name: parentColName,
-            required: false,
+            required: this.isAliquotParent,
             shownInInsertView: true,
             type: 'Text (String)',
             userEditable: true,

@@ -1,12 +1,13 @@
-import React, { FC, useCallback, RefObject, useRef, useEffect, useState } from 'react';
+import React, { FC, useCallback, RefObject, useRef, useEffect, useState, memo } from 'react';
 import { TreeNode } from 'react-treebeard';
 
-import { naturalSortByProperty, FileTree } from '../../..';
+import { naturalSortByProperty, FileTree, LoadingSpinner } from '../../..';
 
 import { DEFAULT_ROOT_PREFIX } from '../files/FileTree';
 
 import { PathModel } from './models';
 import { fetchChildPaths, fetchParentPaths } from './actions';
+import classNames from 'classnames';
 
 export class OntologyPath {
     id: string;
@@ -18,14 +19,121 @@ export class OntologyPath {
 
 type PathNode = OntologyPath & TreeNode;
 
+// exported for jest testing
+export const FilterIcon = props => {
+    const { node, onClick, filters = new Map<string, PathModel>() } = props;
+    const [filtered, setFiltered ] = useState(filters?.has(node?.data?.code));
+    const clickHandler = useCallback(
+        evt => {
+            evt.stopPropagation();
+            onClick?.(node.data);
+        },
+        [node, onClick]
+    );
+
+    return (
+        <i className={classNames('fa fa-filter', { selected: filters.has(node?.data?.code) })} onClick={clickHandler} />
+    );
+};
+
+interface OntologyTreeHeaderProps {
+    node: any; // Data Object model for this node
+    style: any; // Base Style object describing the base css styling
+    onSelect?: () => void; // Callback for selection
+    customStyles?: any; // Custom styling object that is applied in addition to the base
+    checked?: boolean; // Is check box checked
+    handleCheckbox?: (any) => void; // Callback for checkbox changes
+    checkboxId?: string; // Id to apply to the checkbox
+    emptyDirectoryText?: string; // Text to show if node is a container, but has no contents
+
+    allowMultiSelect?: boolean; // Flag to enable multi-selection of nodes
+    isEmpty: boolean; // Flag indicating if flag is an empty container
+    isLoading: boolean; // Flag indicating child data is being loaded for node
+
+    showNodeIcon: boolean; // Flag to indicate whether an Icon should be shown for the node
+    useFileIconCls?: boolean; // Class to apply to the Icon
+    renderIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
+    filters: Map<string, PathModel>
+    onFilterClick: (node:PathModel) => void
+}
+
+export const OntologyTreeHeader: FC<OntologyTreeHeaderProps> = memo( props => {
+    const {
+        style,
+        onSelect,
+        node,
+        customStyles,
+        emptyDirectoryText,
+        allowMultiSelect,
+        showNodeIcon = true,
+        isEmpty,
+        isLoading,
+        filters,
+        onFilterClick,
+    } = props;
+
+    if (isEmpty) {
+        return <div className="filetree-empty-directory">{emptyDirectoryText}</div>;
+    }
+
+    if (isLoading) {
+        return (
+            <div className="filetree-empty-directory">
+                <LoadingSpinner />
+            </div>
+        );
+    }
+
+    const isDirectory = node?.children !== undefined;
+    const activeColor = node?.active && !allowMultiSelect ? 'lk-text-theme-dark filetree-node-active' : undefined; // $brand-primary and $gray-light
+
+    // Do not always want to toggle directories when clicking a check box
+    // const checkClick = (evt): void => {
+    //     evt.stopPropagation();
+    // };
+
+    return (
+        <span
+            className={
+                'filetree-checkbox-container' +
+                (isDirectory ? '' : ' filetree-leaf-node') +
+                (node.active ? ' active' : '')
+            }
+        >
+            {showNodeIcon && <FilterIcon node={node} filters={filters} onClick={onFilterClick} />}
+            <div style={style.base} onClick={onSelect}>
+                <div className={activeColor}>
+                    <div
+                        className="filetree-resource-row"
+                        style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}
+                        title={node.name}
+                    >
+                        <div
+                            className={classNames({
+                                'filetree-file-name': !isDirectory,
+                                'filetree-directory-name': isDirectory,
+                            })}
+                        >
+                            {node.name}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </span>
+    );
+});
+
 interface OntologyTreeProps {
     root: PathModel;
     onNodeSelection: (path: PathModel) => void;
     alternatePath?: PathModel;
+    showFilterIcon?: boolean;
+    filters?: Map<string, PathModel>;
+    onFilterChange?: (changedNode: PathModel) => void;
 }
 
 export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
-    const { root, onNodeSelection, alternatePath } = props;
+    const { root, onNodeSelection, alternatePath, showFilterIcon = true, filters = new Map(), onFilterChange } = props;
     const [showLoading, setShowLoading] = useState<boolean>(false);
     const fileTreeRef: RefObject<FileTree> = useRef();
 
@@ -60,7 +168,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
                 }
             );
         },
-        [root]
+        [root, filters]
     );
 
     const onSelect = (name: string, path: string, checked: boolean, isDirectory: boolean, node: PathNode): boolean => {
@@ -68,16 +176,25 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
         return true;
     };
 
+    const renderNodeHeader = props => {
+        return (
+            <>
+                <OntologyTreeHeader {...props} filters={filters} onFilterClick={onFilterChange} />
+            </>
+        );
+    };
+
     return (
         <FileTree
             loadData={loadData}
             onFileSelect={onSelect}
             allowMultiSelect={false}
-            showNodeIcon={false}
+            showNodeIcon={showFilterIcon}
             defaultRootName={root.label}
             showLoading={showLoading}
             showAnimations={false}
             ref={fileTreeRef}
+            headerDecorator={renderNodeHeader}
         />
     );
 };

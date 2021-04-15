@@ -1,0 +1,113 @@
+import React, { FC, memo } from 'react';
+
+import { Checkbox } from 'react-bootstrap';
+import classNames from 'classnames';
+import { faFileAlt, faFolder, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+// exported for jest testing
+export const FileNodeIcon = props => {
+    const { isDirectory, useFileIconCls, node } = props;
+    const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
+
+    return (
+        <>
+            {!isDirectory && useFileIconCls && node.data && node.data.iconFontCls ? (
+                <i className={node.data.iconFontCls + ' filetree-folder-icon'} />
+            ) : (
+                <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
+            )}
+        </>
+    );
+};
+
+interface TreeNodeProps {
+    node: any; // Data Object model for this node
+    style: any; // Base Style object describing the base css styling
+    onSelect?: () => void; // Callback for selection
+    customStyles?: any; // Custom styling object that is applied in addition to the base
+    checked?: boolean; // Is check box checked
+    handleCheckbox?: (any) => void; // Callback for checkbox changes
+    checkboxId?: string; // Id to apply to the checkbox
+    emptyDirectoryText?: string; // Text to show if node is a container, but has no contents
+
+    allowMultiSelect?: boolean; // Flag to enable multi-selection of nodes
+    isEmpty: boolean; // Flag indicating if flag is an empty container
+    isLoading: boolean; // Flag indicating child data is being loaded for node
+
+    showNodeIcon: boolean; // Flag to indicate whether an Icon should be shown for the node
+    useFileIconCls?: boolean; // Class to apply to the Icon
+    renderIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
+}
+
+export const Header: FC<TreeNodeProps> = memo(props => {
+    const {
+        style,
+        onSelect,
+        node,
+        customStyles,
+        checked,
+        handleCheckbox,
+        checkboxId,
+        emptyDirectoryText,
+        allowMultiSelect,
+        showNodeIcon = true,
+        isEmpty,
+        isLoading,
+        renderIcon = FileNodeIcon,
+    } = props;
+    const isDirectory = node.children !== undefined;
+    const activeColor = node.active && !allowMultiSelect ? 'lk-text-theme-dark filetree-node-active' : undefined; // $brand-primary and $gray-light
+
+    if (isEmpty) {
+        return <div className="filetree-empty-directory">{emptyDirectoryText}</div>;
+    }
+
+    if (isLoading) {
+        return (
+            <div className="filetree-empty-directory">
+                <LoadingSpinner />
+            </div>
+        );
+    }
+
+    // Do not always want to toggle directories when clicking a check box
+    const checkClick = (evt): void => {
+        evt.stopPropagation();
+    };
+
+    return (
+        <span
+            className={
+                'filetree-checkbox-container' +
+                (isDirectory ? '' : ' filetree-leaf-node') +
+                (node.active ? ' active' : '')
+            }
+        >
+            {handleCheckbox && (
+                <Checkbox id={checkboxId} checked={checked} onChange={handleCheckbox} onClick={checkClick} />
+            )}
+            <div style={style.base} onClick={onSelect}>
+                <div className={activeColor}>
+                    <div
+                        className="filetree-resource-row"
+                        style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}
+                        title={node.name}
+                    >
+                        {showNodeIcon && renderIcon({ ...props, isDirectory })}
+                        <div
+                            className={classNames({
+                                'filetree-file-name': !isDirectory,
+                                'filetree-directory-name': isDirectory,
+                            })}
+                        >
+                            {node.name}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </span>
+    );
+});

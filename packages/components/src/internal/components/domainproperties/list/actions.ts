@@ -16,6 +16,7 @@
 import { ActionURL, Ajax, Utils, Domain, getServerContext } from '@labkey/api';
 
 import { ListModel } from './models';
+import {INT_LIST} from "./constants";
 
 function getListProperties(listId?: number): Promise<ListModel> {
     return new Promise((resolve, reject) => {
@@ -43,7 +44,7 @@ export function fetchListDesign(listId?: number): Promise<ListModel> {
                 Domain.getDomainDetails({
                     containerPath: getServerContext().container.path,
                     domainId: model.domainId,
-                    domainKind: listId === undefined ? 'IntList' : undefined, // NOTE there is also a VarList domain kind but for this purpose either will work
+                    domainKind: listId === undefined ? INT_LIST : undefined, // NOTE there is also a VarList domain kind but for this purpose either will work
                     success: data => {
                         resolve(ListModel.create(data));
                     },

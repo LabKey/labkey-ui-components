@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { OverlayTrigger } from 'react-bootstrap';
 import { List } from 'immutable';
 
@@ -51,6 +51,12 @@ type Props = FieldEditorOverlayProps;
 export class FieldEditorOverlay extends React.PureComponent<Props, State> {
     private fieldEditOverlayTrigger: React.RefObject<any>;
 
+    static getRowId(queryInfo: QueryInfo, row: any): string | number {
+        if (!queryInfo || !row) return undefined;
+        const pkCols: List<QueryColumn> = queryInfo.getPkCols();
+        return pkCols.size > 0 ? row[pkCols.get(0).fieldKey]?.value : undefined;
+    }
+
     static defaultProps = {
         iconAlwaysVisible: true,
         showIconText: true,
@@ -67,17 +73,21 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.init();
     }
 
-    componentDidUpdate(prevProps: Props) {
-        if (prevProps.isLoading && !this.props.isLoading) {
+    componentDidUpdate(prevProps: Props): void {
+        const currentRowId = FieldEditorOverlay.getRowId(this.props.queryInfo, this.props.row);
+        const previousRowId = FieldEditorOverlay.getRowId(prevProps.queryInfo, prevProps.row);
+        const rowIdChanged = currentRowId && previousRowId && currentRowId !== previousRowId;
+
+        if (rowIdChanged || (prevProps.isLoading && !this.props.isLoading)) {
             this.init();
         }
     }
 
-    init() {
+    init(): void {
         const { fieldProps, isLoading, queryInfo, row } = this.props;
 
         if (!isLoading && queryInfo) {
@@ -126,7 +136,7 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
         }
     }
 
-    handleOverlayClose = () => {
+    handleOverlayClose = (): void => {
         document.body.click();
         this.setState({
             error: undefined,
@@ -142,12 +152,6 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
         );
     }
 
-    getRowId(): string | number {
-        const { queryInfo, row } = this.props;
-        const pkCols: List<QueryColumn> = queryInfo.getPkCols();
-        return row[pkCols.get(0).fieldKey].value;
-    }
-
     updateFields = submittedValues => {
         const { containerPath, row, queryInfo, onUpdate, handleUpdateRows } = this.props;
 
@@ -160,7 +164,7 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                 schemaQuery,
                 rows: [
                     {
-                        rowId: this.getRowId(),
+                        rowId: FieldEditorOverlay.getRowId(queryInfo, row),
                         name,
                     },
                 ],
@@ -190,7 +194,7 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
         }
     };
 
-    render() {
+    render(): ReactNode {
         const { canUpdate, showIconText, showValueOnNotAllowed, appendToCurrentNode } = this.props;
         const { error, fields, iconField } = this.state;
 

@@ -100,7 +100,6 @@ export const OntologyTreeHeader: FC<OntologyTreeHeaderProps> = memo( props => {
                 (node.active ? ' active' : '')
             }
         >
-            {showNodeIcon && <FilterIcon node={node} filters={filters} onClick={onFilterClick} />}
             <div style={style.base} onClick={onSelect}>
                 <div className={activeColor}>
                     <div
@@ -119,6 +118,7 @@ export const OntologyTreeHeader: FC<OntologyTreeHeaderProps> = memo( props => {
                     </div>
                 </div>
             </div>
+            {showNodeIcon && <FilterIcon node={node} filters={filters} onClick={onFilterClick} />}
         </span>
     );
 });

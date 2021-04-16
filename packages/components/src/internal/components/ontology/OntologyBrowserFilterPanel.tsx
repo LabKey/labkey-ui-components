@@ -1,4 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import { Filter } from '@labkey/api';
+
 import { OntologyBrowserPanel, OntologyBrowserProps } from './OntologyBrowserPanel';
 import { PathModel } from './models';
 import { fetchPathsForCodes } from './actions';
@@ -6,26 +8,23 @@ import { fetchPathsForCodes } from './actions';
 interface OntologyBrowserFilterPanelProps extends OntologyBrowserProps {
     ontologyId: string;
     filterValue: string;
+    filterType: Filter.IFilterType;
     onFilterChange: (filterValue: string) => void;
 }
 
 export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = memo(props => {
-    const { ontologyId, filterValue, onFilterChange } = props;
-    const [filters, setFilters] = useState<Map<string, PathModel>>(new Map());
+    const { ontologyId, filterValue, onFilterChange, filterType } = props;
+    const [filteredConcepts, setFilteredConcepts] = useState<Map<string, PathModel>>(new Map());
 
     const updateFilters = useCallback(
         async (filterString:string) => {
-            const filterArray = filterString.split(';');
-            //TODO retreive from server
-            // const paths = await fetchPathsForCodes(filterArray);
-            const paths = filterArray.map(code => new PathModel({ code }));
+            const filterArray = filterString?.split(';') || [];
+            const paths = await fetchPathsForCodes(filterArray);
 
-            const filterModels = new Map<string, PathModel>(
-                paths.map(model => [model.code, model])
-            );
-            setFilters(filterModels);
+            const filterModels = new Map<string, PathModel>(paths.map(model => [model.code, model]));
+            setFilteredConcepts(filterModels);
         },
-        [filterValue, filters, setFilters]
+        [filterValue, filteredConcepts, setFilteredConcepts]
     );
 
     useEffect(() => {
@@ -34,17 +33,21 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
 
     const filterChangeHandler = useCallback(
         (model: PathModel) => {
-            if (filters && !filters.delete(model.code)) {
-                filters.set(model.code, model);
+            const newFilter = new Map([...filteredConcepts]);
+            if (!newFilter.delete(model.code)) {
+                if (!filterType?.isMultiValued()) {
+                    newFilter.clear();
+                }
+
+                newFilter.set(model.code, model);
             }
 
-            const newFilter = new Map([...filters]);
-            setFilters(newFilter);
+            setFilteredConcepts(newFilter);
 
-            const newFilterString = [...filters.keys()].join(';');
+            const newFilterString = [...newFilter.keys()].join(';');
             onFilterChange?.(newFilterString);
         },
-        [filters, setFilters, onFilterChange]
+        [filterType, filteredConcepts, setFilteredConcepts, onFilterChange]
     );
 
     return (
@@ -53,7 +56,7 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
                 asPanel={false}
                 hideConceptInfo={true}
                 initOntologyId={ontologyId}
-                filters={filters}
+                filters={filteredConcepts}
                 filterChangeHandler={filterChangeHandler}
             />
         </>

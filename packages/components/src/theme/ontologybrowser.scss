@@ -1,7 +1,15 @@
 .concept-filter-view {
-    padding: 0 0 10px;
-    .show-toggle.collapsed {
-        margin-left: 105px;
+    margin: 0 0 10px;
+    padding: 5px 10px;
+    //border: 1px solid $gray-border;
+
+    &.collapsed {
+        margin: unset;
+        padding: 2px 0 10px;
+        border: unset;
+        .show-toggle {
+            margin-left: 105px;
+        }
     }
 }
 
@@ -34,7 +42,13 @@
         width: max-content;
     }
 
+    .filetree-file-name {
+        margin-right: unset; //Allow filter icon to show next to name
+    }
+
     .filetree-checkbox-container {
+        padding-right: 15px;
+
         &:hover {
             i.fa.fa-filter {
                 //hovering over node div show filter icon in lighter color by default

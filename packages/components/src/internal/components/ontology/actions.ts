@@ -9,7 +9,7 @@ const GET_ONTOLOGY_ACTION = 'getOntology.api';
 const GET_CONCEPT_ACTION = 'getConcept.api';
 const GET_ALTERNATE_CONCEPT_PATHS_ACTION = 'getAlternateConceptPaths.api';
 const GET_PARENT_PATHS_ACTION = 'getConceptParentPaths.api';
-const GET_PATHS_ACTION = 'getPaths.api';
+const GET_PATHS_ACTION = 'getPathsForCodes.api';
 const SHARED_CONTAINER = 'shared';
 
 class Ontology {
@@ -61,24 +61,26 @@ class Ontology {
 
     static getPaths(codes: string[]): Promise<PathModel[]> {
         return new Promise<PathModel[]>((resolve, reject) => {
-            const { container } = getServerContext();
+            const paths = codes.filter(code => !!code).map(code => new PathModel({ code }));
+            resolve(paths);
 
-            Ajax.request({
-                url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_PATHS_ACTION, container?.path),
-                jsonData: { codes },
-                success: Utils.getCallbackWrapper(response => {
-                    const paths = response.paths?.map(path => new PathModel(path));
-                    resolve(paths);
-                }),
-                failure: Utils.getCallbackWrapper(
-                    response => {
-                        console.error(response);
-                        reject(response);
-                    },
-                    null,
-                    false
-                ),
-            });
+            // const { container } = getServerContext();
+            // Ajax.request({
+            //     url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_PATHS_ACTION, container?.path),
+            //     jsonData: { codes },
+            //     success: Utils.getCallbackWrapper(response => {
+            //         const paths = response.paths?.map(path => new PathModel(path));
+            //         resolve(paths);
+            //     }),
+            //     failure: Utils.getCallbackWrapper(
+            //         response => {
+            //             console.error(response);
+            //             reject(response);
+            //         },
+            //         null,
+            //         false
+            //     ),
+            // });
         });
     }
 }

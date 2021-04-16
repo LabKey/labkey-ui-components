@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 42872: Handle field names with special characters in grids and forms better.
 
+### version 2.23.2
+*Released*: 16 April 2021
+* Issue 42932: FieldEditorOverlay fix to recognize change to props by looking at row's RowId
+
 ### version 2.23.1
 *Released*: 15 April 2021
 * Issue 42527: Support 'Is Primary Key' column for Summary View

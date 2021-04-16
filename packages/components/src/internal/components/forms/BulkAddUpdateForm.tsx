@@ -43,12 +43,6 @@ export class BulkAddUpdateForm extends React.Component<Props, any> {
         return title ? title : 'Update ' + selectedRowIndexes.size + ' ' + this.getSelectionNoun();
     }
 
-    getInsertQueryInfo(): QueryInfo {
-        const { model } = this.props;
-        const updateColumns = model.queryInfo.columns.filter(column => column.shownInInsertView);
-        return model.queryInfo.set('columns', updateColumns) as QueryInfo;
-    }
-
     render() {
         const {
             pluralNoun,
@@ -85,7 +79,7 @@ export class BulkAddUpdateForm extends React.Component<Props, any> {
                 columnFilter={columnFilter}
                 onHide={onCancel}
                 onCancel={onCancel}
-                queryInfo={this.getInsertQueryInfo()}
+                queryInfo={model.queryInfo.getInsertQueryInfo()}
                 schemaQuery={model.queryInfo.schemaQuery}
                 title={this.getTitle()}
             />

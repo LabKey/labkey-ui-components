@@ -369,12 +369,25 @@ export class EditorModel
         return this.cellMessages.get(genCellKey(colIdx, rowIdx));
     }
 
-    getColumns(model: QueryGridModel, forUpdate?: boolean, readOnlyColumns?: List<string>): List<QueryColumn> {
+    getColumns(
+        model: QueryGridModel,
+        forUpdate?: boolean,
+        readOnlyColumns?: List<string>,
+        getInsertColumns?: () => List<QueryColumn>
+    ): List<QueryColumn> {
+        let columns;
         if (forUpdate) {
-            return model.getUpdateColumns(readOnlyColumns);
+            columns = model.getUpdateColumns(readOnlyColumns);
         } else {
-            return model.getInsertColumns();
+            if (getInsertColumns) {
+                columns = getInsertColumns();
+            } else {
+                columns = model.getInsertColumns();
+            }
         }
+
+        // file input columns are not supported in the editable grid, so remove them
+        return columns.filter(col => !col.isFileInput);
     }
 
     getRawData(

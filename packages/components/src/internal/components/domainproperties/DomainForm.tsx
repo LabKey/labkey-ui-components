@@ -186,6 +186,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         successBsStyle: 'success',
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
         testMode: false,
+        showFilePropertyType: true,
     };
 
     constructor(props: IDomainFormInput) {

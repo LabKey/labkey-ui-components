@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Checkbox, Input, Textarea } from 'formsy-react-components';
 
 import { LabelOverlay } from '../LabelOverlay';
@@ -47,15 +47,23 @@ export function titleRenderer(col: QueryColumn): React.ReactNode {
     return <LabelOverlay column={col} />;
 }
 
+function detailNonEditableRenderer(col: QueryColumn, data: any): ReactNode {
+    return <div className="field__un-editable">{_defaultRenderer(data)}</div>;
+}
+
 // TODO: Merge this functionality with <QueryFormInputs />
-export function resolveDetailEditRenderer(col: QueryColumn, options?: RenderOptions): Renderer {
+export function resolveDetailEditRenderer(
+    col: QueryColumn,
+    options?: RenderOptions,
+    fileInputRenderer = detailNonEditableRenderer
+): Renderer {
     return data => {
         const editable = col.isEditable();
 
         // If the column cannot be edited, return as soon as possible
         // Render the value with the defaultRenderer and a class that grays it out
         if (!editable) {
-            return <div className="field__un-editable">{_defaultRenderer(data)}</div>;
+            return detailNonEditableRenderer(col, data);
         }
 
         let value = resolveDetailFieldValue(data, false);
@@ -114,6 +122,10 @@ export function resolveDetailEditRenderer(col: QueryColumn, options?: RenderOpti
                     value={value}
                 />
             );
+        }
+
+        if (col.inputType === 'file') {
+            return fileInputRenderer(col, data);
         }
 
         switch (col.jsonType) {
@@ -202,7 +214,7 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 renderer = d => <LabelColorRenderer data={d} />;
                 break;
             case 'filecolumnrenderer':
-                renderer = d => <FileColumnRenderer data={d} />;
+                renderer = d => <FileColumnRenderer data={d} col={column} />;
                 break;
             default:
                 break;

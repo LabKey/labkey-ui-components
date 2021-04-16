@@ -6,6 +6,8 @@ import { buildURL, caseInsensitive, hasAllPermissions, QueryGridModel, SchemaQue
 
 import { APPLICATION_SECURITY_ROLES } from '../permissions/constants';
 
+import { processRequest } from '../../query/api';
+
 import { ChangePasswordModel } from './models';
 
 export function getUserProperties(userId: number): Promise<any> {
@@ -114,8 +116,9 @@ export function updateUserDetails(schemaQuery: SchemaQuery, data: FormData): Pro
             url: ActionURL.buildURL('user', 'updateUserDetails.api', LABKEY.container.path),
             method: 'POST',
             form: data,
-            success: Utils.getCallbackWrapper(result => {
-                resolve(result);
+            success: Utils.getCallbackWrapper((response, request) => {
+                if (processRequest(response, request, reject)) return;
+                resolve(response);
             }),
             failure: Utils.getCallbackWrapper(error => {
                 reject(error);

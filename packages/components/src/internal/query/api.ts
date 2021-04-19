@@ -626,6 +626,7 @@ export interface InsertRowsOptions {
     schemaQuery: SchemaQuery;
     auditBehavior?: AuditBehaviorTypes;
     auditUserComment?: string;
+    form?: FormData;
 }
 
 export class InsertRowsResponse extends Record({
@@ -667,7 +668,10 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
             auditBehavior,
             auditUserComment,
             apiVersion: 13.2,
-            success: response => {
+            form: options.form,
+            success: (response, request) => {
+                if (processRequest(response, request, reject)) return;
+
                 resolve(
                     new InsertRowsResponse({
                         schemaQuery,
@@ -734,6 +738,7 @@ interface IUpdateRowsOptions {
     rows: any[];
     auditBehavior?: AuditBehaviorTypes;
     auditUserComment?: string;
+    form?: FormData;
 }
 
 export function updateRows(options: IUpdateRowsOptions): Promise<any> {
@@ -745,7 +750,10 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
             rows: options.rows,
             auditBehavior: options.auditBehavior,
             auditUserComment: options.auditUserComment,
-            success: response => {
+            form: options.form,
+            success: (response, request) => {
+                if (processRequest(response, request, reject)) return;
+
                 resolve(
                     Object.assign(
                         {},
@@ -758,6 +766,7 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
                 );
             },
             failure: error => {
+                console.error(error);
                 reject(
                     Object.assign(
                         {},
@@ -854,4 +863,17 @@ export function importData(config: IImportData): Promise<any> {
             })
         );
     });
+}
+
+export function processRequest(response: any, request: any, reject: (reason?: any) => void): boolean {
+    if (!response && request?.responseText) {
+        const resp = JSON.parse(request.responseText);
+        if (!resp?.success) {
+            console.error(resp);
+            reject(resp);
+            return true;
+        }
+    }
+
+    return false;
 }

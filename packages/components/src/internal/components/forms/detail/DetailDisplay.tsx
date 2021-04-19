@@ -18,7 +18,11 @@ export interface RenderOptions {
     useDatePicker?: boolean;
 }
 
-export type DetailRenderer = (column: QueryColumn, options?: RenderOptions) => Renderer;
+export type DetailRenderer = (
+    column: QueryColumn,
+    options?: RenderOptions,
+    fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode
+) => Renderer;
 
 export type TitleRenderer = (column: QueryColumn) => ReactNode;
 
@@ -28,14 +32,15 @@ function processFields(
     queryColumns: List<QueryColumn>,
     detailRenderer: DetailRenderer,
     titleRenderer: TitleRenderer,
-    options?: RenderOptions
+    options?: RenderOptions,
+    fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode
 ): Map<string, DetailField> {
     return queryColumns.reduce((fields, c) => {
         const fieldKey = c.fieldKey.toLowerCase();
         let renderer;
 
         if (detailRenderer) {
-            renderer = detailRenderer(c, options);
+            renderer = detailRenderer(c, options, fileInputRenderer);
         }
 
         if (!renderer) {
@@ -84,6 +89,7 @@ export interface DetailDisplaySharedProps extends RenderOptions {
     detailRenderer?: DetailRenderer;
     editingMode?: boolean;
     titleRenderer?: TitleRenderer;
+    fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode;
 }
 
 interface DetailDisplayProps extends DetailDisplaySharedProps {
@@ -92,7 +98,7 @@ interface DetailDisplayProps extends DetailDisplaySharedProps {
 }
 
 export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
-    const { asPanel, data, displayColumns, editingMode, useDatePicker } = props;
+    const { asPanel, data, displayColumns, editingMode, useDatePicker, fileInputRenderer } = props;
 
     const detailRenderer = useMemo(() => {
         return props.detailRenderer ?? (editingMode ? resolveDetailEditRenderer : resolveDetailRenderer);
@@ -107,7 +113,13 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
     if (data.size === 0) {
         body = <div>No data available.</div>;
     } else {
-        const fields = processFields(displayColumns, detailRenderer, titleRenderer, { useDatePicker });
+        const fields = processFields(
+            displayColumns,
+            detailRenderer,
+            titleRenderer,
+            { useDatePicker },
+            fileInputRenderer
+        );
 
         body = (
             <div>

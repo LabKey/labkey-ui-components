@@ -71,6 +71,7 @@ import {
     removeUnusedProperties,
     reorderSummaryColumns,
 } from './propertiesUtil';
+import { INT_LIST, VAR_LIST } from './list/constants';
 
 export interface IFieldChange {
     id: string;
@@ -425,7 +426,7 @@ export class DomainDesign
         if (appPropertiesOnly) {
             columns = removeNonAppProperties(columns);
         }
-        if (domainKindName !== 'List') {
+        if (domainKindName !== VAR_LIST && domainKindName !== INT_LIST) {
             delete columns.isPrimaryKey;
         }
 
@@ -1201,15 +1202,9 @@ export function isPropertyTypeAllowed(type: PropDescType, includeFileType: boole
     if (type === FILE_TYPE) return includeFileType;
 
     // We are excluding the field types below for the App
-    return ![
-        LOOKUP_TYPE,
-        PARTICIPANT_TYPE,
-        FLAG_TYPE,
-        ATTACHMENT_TYPE,
-        ONTOLOGY_LOOKUP_TYPE,
-        VISIT_DATE_TYPE,
-        VISIT_ID_TYPE,
-    ].includes(type);
+    return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE, VISIT_DATE_TYPE, VISIT_ID_TYPE].includes(
+        type
+    );
 }
 
 export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {

@@ -1,6 +1,24 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.23.2
+*Released*: 16 April 2021
+* Issue 42932: FieldEditorOverlay fix to recognize change to props by looking at row's RowId
+
+### version 2.23.1
+*Released*: 15 April 2021
+* Issue 42527: Support 'Is Primary Key' column for Summary View
+
+### version 2.23.0
+*Released*: 15 April 2021
+* Item 8735: Enable files and attachment data types for sample type designer and data class designer
+    * Refactor AttachmentCard component and related SCSS from LKB ELN
+    * Enable FileColumnRenderer for DetailsPanel
+    * Move image showModal from FileColumnRenderer.tsx to AttachmentCard.tsx
+    * Handle file field insert/update/delete for DetailEditing.tsx component and equivalent EditableDetailsPanel.tsx component
+    * Don't show file inputType columns in editable grid or add/update bulk forms
+    * Better handling for error messages from virus file detection response
+
 ### version 2.22.5
 *Released*: 12 April 2021
 * Issue 42475: Add file image to data class details page

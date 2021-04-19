@@ -136,4 +136,43 @@ describe('QueryInfo', () => {
             expect(queryInfo.getIconURL()).toBe('other');
         });
     });
+
+    describe('getInsertQueryInfo', () => {
+        test('shownInInsertView', () => {
+            const queryInfo = QueryInfo.fromJSON({
+                columns: [
+                    { fieldKey: 'test1', shownInInsertView: true },
+                    { fieldKey: 'test2', shownInInsertView: false },
+                ],
+            }).getInsertQueryInfo();
+            expect(queryInfo.columns.size).toBe(1);
+            expect(queryInfo.columns.get('test1')).toBeDefined();
+            expect(queryInfo.columns.get('test2')).toBeUndefined();
+        });
+
+        test('isFileInput', () => {
+            const queryInfo = QueryInfo.fromJSON({
+                columns: [
+                    { fieldKey: 'test1', shownInInsertView: true, inputType: 'text' },
+                    { fieldKey: 'test2', shownInInsertView: true, inputType: 'file' },
+                ],
+            }).getInsertQueryInfo();
+            expect(queryInfo.columns.size).toBe(1);
+            expect(queryInfo.columns.get('test1')).toBeDefined();
+            expect(queryInfo.columns.get('test2')).toBeUndefined();
+        });
+    });
+
+    describe('getFileColumnFieldKeys', () => {
+        test('default', () => {
+            const fieldKeys = QueryInfo.fromJSON({
+                columns: [
+                    { fieldKey: 'test1', shownInInsertView: true, inputType: 'text' },
+                    { fieldKey: 'test2', shownInInsertView: false, inputType: 'text' },
+                    { fieldKey: 'test3', shownInInsertView: true, inputType: 'file' },
+                ],
+            }).getFileColumnFieldKeys();
+            expect(fieldKeys.join(',')).toBe('test3');
+        });
+    });
 });

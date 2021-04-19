@@ -192,7 +192,6 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                 );
             })
             .catch(error => {
-                console.error(error);
                 this.setState({
                     error: resolveErrorMessage(error, 'data', undefined, 'update'),
                     submitting: false,

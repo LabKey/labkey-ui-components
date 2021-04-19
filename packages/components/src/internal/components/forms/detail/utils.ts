@@ -19,7 +19,11 @@ function arrayListIsEqual(valueArr: Array<string | number>, nestedModelList: Lis
     return matched === valueArr.length;
 }
 
-export function extractChanges(queryInfo: QueryInfo, currentData: Map<string, any>, formValues: Record<string, any>): Record<string, any> {
+export function extractChanges(
+    queryInfo: QueryInfo,
+    currentData: Map<string, any>,
+    formValues: Record<string, any>
+): Record<string, any> {
     const changedValues = {};
     // Loop through submitted formValues and check against existing currentData from server
     Object.keys(formValues).forEach(field => {

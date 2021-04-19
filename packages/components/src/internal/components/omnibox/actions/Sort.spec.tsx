@@ -45,7 +45,6 @@ describe("SortAction::parseParam", () => {
             param: '-name',
             value: 'name desc'
         });
-        // verify(values[0], 'Name', '-name', 'name desc');
     });
 
     test("unencoded value, ASC", () => {

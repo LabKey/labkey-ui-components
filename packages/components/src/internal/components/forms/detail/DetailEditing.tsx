@@ -26,6 +26,7 @@ import { fileInputRenderer } from '../renderers';
 import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { extractChanges } from './utils';
+import { DetailRenderer } from './DetailDisplay';
 
 const EMPTY_FILE_FOR_DELETE = new File([], '');
 
@@ -43,6 +44,7 @@ interface Props {
     submitText?: string;
     title?: string;
     useEditIcon: boolean;
+    detailRenderer?: DetailRenderer;
 }
 
 interface State {
@@ -184,6 +186,7 @@ export class DetailEditing extends Component<Props, State> {
             asSubPanel,
             submitText,
             title,
+            detailRenderer,
         } = this.props;
         const { canSubmit, editing, isSubmitting, warning, error } = this.state;
 
@@ -212,6 +215,7 @@ export class DetailEditing extends Component<Props, State> {
                 editingMode={editingMode}
                 queryColumns={queryColumns}
                 queryModel={queryModel}
+                detailRenderer={editingMode ? undefined : detailRenderer}
                 fileInputRenderer={this.fileInputRenderer}
             />
         );

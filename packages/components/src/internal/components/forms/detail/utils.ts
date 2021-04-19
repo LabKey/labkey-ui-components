@@ -1,5 +1,7 @@
-import { QueryInfo } from '../../../..';
 import { List, Map } from 'immutable';
+import { Utils } from '@labkey/api';
+
+import { QueryInfo } from '../../../..';
 
 function arrayListIsEqual(valueArr: Array<string | number>, nestedModelList: List<Map<string, any>>): boolean {
     let matched = 0;
@@ -48,9 +50,18 @@ export function extractChanges(queryInfo: QueryInfo, currentData: Map<string, an
             // A date field needs to be checked specially
             if (column && column.jsonType === 'date') {
                 // Ensure dates have same formatting
+                const newDateStr = formValues[field];
+                const newDate = new Date(newDateStr);
+                const origDate = new Date(currentData.getIn([field, 'value']));
                 // If submitted value is same as existing date down to the minute (issue 40139), do not update
-                const newDateValue = new Date(formValues[field]).setUTCSeconds(0, 0);
-                const origDateValue = new Date(currentData.getIn([field, 'value'])).setUTCSeconds(0, 0);
+                let newDateValue = newDate.setUTCSeconds(0, 0);
+                let origDateValue = origDate.setUTCSeconds(0, 0);
+                // If original date doesn't have timestamp, then only check date to hour
+                if (Utils.isString(newDateStr) && newDateStr.indexOf(':') === -1) {
+                    newDateValue = newDate.setUTCHours(0, 0, 0, 0);
+                    origDateValue = origDate.setUTCHours(0, 0, 0, 0);
+                }
+
                 if (newDateValue === origDateValue) {
                     return false;
                 }

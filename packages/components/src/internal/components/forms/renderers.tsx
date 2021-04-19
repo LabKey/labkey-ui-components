@@ -16,6 +16,7 @@
 import React, { ReactNode, ReactText } from 'react';
 import { List, Map } from 'immutable';
 import { Input } from 'formsy-react-components';
+import { addValidationRule, validationRules } from 'formsy-react';
 
 import { FileColumnRenderer, FileInput, QueryColumn } from '../../..';
 
@@ -79,6 +80,13 @@ const AppendUnitsInputRenderer: InputRenderer = (
 );
 
 export function resolveRenderer(column: QueryColumn): InputRenderer {
+    // 23462: Global Formsy validation rule for numbers
+    if (!validationRules.isNumericWithError) {
+        addValidationRule('isNumericWithError', (values: any, value: string | number) => {
+            return validationRules.isNumeric(values, value) || 'Please enter a number.';
+        });
+    }
+
     if (column?.inputRenderer) {
         switch (column.inputRenderer.toLowerCase()) {
             case 'experimentalias':

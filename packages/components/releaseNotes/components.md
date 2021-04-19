@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD April 2021
+* Item 8735: Misc updates to support DetailEditing shared component in LKB
+    * DetailEditing.tsx - add optional detailRenderer to be used in view/read mode
+    * Export DetailPanelHeader.tsx to use in LKB
+    * Formsy addValidationRule isNumericWithError in resolveRenderer for DetailEditing.tsx usages
+    * form/details/extractChanges check for date validation of with/without timestamp
+
 ### version 2.23.2
 *Released*: 16 April 2021
 * Issue 42932: FieldEditorOverlay fix to recognize change to props by looking at row's RowId

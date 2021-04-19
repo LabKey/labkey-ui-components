@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD April 2021
+### version 2.24.0
+*Released*: 19 April 2021
 * Item 8735: Misc updates to support DetailEditing shared component in LKB
     * DetailEditing.tsx - add optional detailRenderer to be used in view/read mode
     * Export DetailPanelHeader.tsx to use in LKB

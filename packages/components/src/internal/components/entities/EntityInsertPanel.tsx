@@ -892,7 +892,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const gridNounPlural = isAliquotCreation ? ALIQUOT_NOUN_PLURAL : nounPlural;
 
         let bulkCreationTypeOptions = creationTypeOptions;
-        const selectedType = creationTypeOptions.find(type => type.type === creationType);
+        const selectedType = creationTypeOptions?.find(type => type.type === creationType);
         if (selectedType)
             bulkCreationTypeOptions = bulkCreationTypeOptions.filter(
                 option => option.typeGroup === selectedType.typeGroup

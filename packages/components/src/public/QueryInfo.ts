@@ -230,7 +230,7 @@ export class QueryInfo extends Record({
     }
 
     getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
-        const lowerReadOnlyColumnsList = readOnlyColumns.reduce((lowerReadOnlyColumnsList, value) => {
+        const lowerReadOnlyColumnsList = readOnlyColumns?.reduce((lowerReadOnlyColumnsList, value) => {
             return lowerReadOnlyColumnsList.push(value.toLowerCase());
         }, List<string>());
         return this.columns

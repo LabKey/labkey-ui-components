@@ -136,7 +136,7 @@ export class EntityParentType extends Record({
             fieldKeyArray: [parentColName],
             fieldKey: parentColName,
             lookup: {
-                displayColumn : displayColumn,
+                displayColumn,
                 isPublic: true,
                 keyColumn: 'RowId',
                 multiValued: this.isAliquotParent ? undefined : 'junction',

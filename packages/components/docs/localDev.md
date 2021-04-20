@@ -33,6 +33,7 @@ testing and iteration on display updates.
     * We have several examples of stories that use actual data captured
 from the server for various Ajax calls that are required.
 * Test within the application, using a published alpha package version, once display and functionality are as expected from within storybook.
+Alternatively, you can get faster dev iteration by using the `npm run start-link` command from your LabKey module (see details below).
 
 #### Getting @labkey/components packages to the application
 
@@ -176,12 +177,14 @@ merge back to master.
 Steps for package version numbering during feature branch development:
 1. Create your feature branch off of master, i.e. fb_feature_1, and add your changes.
 1. When you are ready to push an alpha version up to Artifactory so you can test it in your application and
-on TeamCity, update the `package.json` version for that package. Ex. if adding a new feature and the current version is `0.1.0`,
+on TeamCity, run the `yarn publish` command from the @labkey/components package root directory. This command
+will then prompt you for a new alpha package version. Ex. if adding a new feature and the current version is `0.1.0`,
 you would use `0.2.0-fb-feature-1.1`.
 1. If you make further edits to your feature branch and need to push new alpha versions, you would just bump the last
 digit in your package version number (e.g., `0.2.0-fb-feature-1.2`, `0.2.0-fb-feature-1.3`, etc.).
 1. Once your feature branch is complete and ready to merge, you do one more package version update to what will be the
-"release" version (i.e. `0.2.0` in this scenario) and then build/publish and complete the merge. Don't forget to update
+"release" version (i.e. `0.2.0` in this scenario). This will again be set during the `yarn publish` command prompt asking
+ you to enter the new package version number. Don't forget to update
 the release notes in your package's `README.md` file for this version number. And don't forget to update your application
 package.json for this new version number (if that applies).
 1. Once merged and the "release" version has been pushed to Artifactory, you can then go to Artifactory and delete your
@@ -197,6 +200,9 @@ yarn publish
 
 This will prompt you for the new version.  Choose a version increment in accordance with [SemVer](https://semver.org/).  This command will
 update the `package.json` file and commit that change.  Then you can do a `git push` to get the update into the remote repository.
+
+Note that for some of our premium npm packages, we are using `npm` to do the build/publish. In those cases, you'll need
+to update the package.json file version number manually before running `npm publish`.
 
 ## Merging changes into master
 

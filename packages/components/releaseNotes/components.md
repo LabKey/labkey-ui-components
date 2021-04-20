@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.24.1
+*Released*: 20 April 2021
 * Issue 42756: Disable bulk update for Submitters+Readers
 
 ### version 2.24.0

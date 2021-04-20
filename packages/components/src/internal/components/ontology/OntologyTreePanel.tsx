@@ -22,7 +22,18 @@ type PathNode = OntologyPath & TreeNode;
 // exported for jest testing
 export const FilterIcon = props => {
     const { node, onClick, filters = new Map<string, PathModel>() } = props;
-    const [filtered, setFiltered ] = useState(filters?.has(node?.data?.code));
+    const [childSelected, setChildSelected] = useState<boolean>([...filters].some(filter => filter?.path?.startsWith(node?.data?.path)));
+
+    useEffect(() => {
+        setChildSelected(
+            [...filters.values()].some(filter => {
+                if (!node?.data || !filter?.path) return false;
+
+                return filter.path.startsWith(node.data.path) && filter.path !== node.data.path;
+            })
+        );
+    },[node, filters]);
+
     const clickHandler = useCallback(
         evt => {
             evt.stopPropagation();
@@ -32,7 +43,7 @@ export const FilterIcon = props => {
     );
 
     return (
-        <i className={classNames('fa fa-filter', { selected: filters.has(node?.data?.code) })} onClick={clickHandler} />
+        <i className={classNames('fa fa-filter', { selected: filters.has(node?.data?.code), 'child-selected': childSelected })} onClick={clickHandler} />
     );
 };
 
@@ -42,8 +53,6 @@ interface OntologyTreeHeaderProps {
     onSelect?: () => void; // Callback for selection
     customStyles?: any; // Custom styling object that is applied in addition to the base
     checked?: boolean; // Is check box checked
-    handleCheckbox?: (any) => void; // Callback for checkbox changes
-    checkboxId?: string; // Id to apply to the checkbox
     emptyDirectoryText?: string; // Text to show if node is a container, but has no contents
 
     allowMultiSelect?: boolean; // Flag to enable multi-selection of nodes
@@ -53,8 +62,8 @@ interface OntologyTreeHeaderProps {
     showNodeIcon: boolean; // Flag to indicate whether an Icon should be shown for the node
     useFileIconCls?: boolean; // Class to apply to the Icon
     renderIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
-    filters: Map<string, PathModel>
-    onFilterClick: (node:PathModel) => void
+    filters: Map<string, PathModel>;
+    onFilterClick: (node: PathModel) => void;
 }
 
 export const OntologyTreeHeader: FC<OntologyTreeHeaderProps> = memo( props => {

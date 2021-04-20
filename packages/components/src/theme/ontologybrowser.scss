@@ -68,6 +68,11 @@
             display: none;
             padding: 0 3px 0;
 
+            &.child-selected {
+                display: unset;
+                color: gray;
+            }
+
             &.selected {
                 // Selected nodes, show filter icon with default color
                 display:block;

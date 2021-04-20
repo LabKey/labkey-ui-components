@@ -48,6 +48,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
         const { creationType, numPerParent } = this.state;
 
         const selectedOption = options.find(option => option.type === creationType);
+        const noun = creationType === SampleCreationType.Aliquots ? 'Aliquot' : 'Sample'
         return (
             <>
                 {this.shouldDisplayOptions() && <hr/>}
@@ -66,7 +67,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                         />
                     </label>
                 </div>
-                Sample details and quantities can be modified on the grid.
+                {noun} details and quantities can be modified on the grid.
             </>
         )
     }

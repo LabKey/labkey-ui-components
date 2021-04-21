@@ -38,7 +38,7 @@ export class QueryColumn extends Record({
     // defaultScale: undefined,
     defaultValue: null,
     description: undefined,
-    // dimension: undefined,
+    dimension: undefined,
     displayAsLookup: undefined,
     // excludeFromShifting: undefined,
     // ext: undefined,
@@ -62,7 +62,7 @@ export class QueryColumn extends Record({
     jsonType: undefined,
     // keyField: undefined,
     lookup: undefined,
-    // measure: undefined,
+    measure: undefined,
     multiValue: false,
     // mvEnabled: undefined,
     name: undefined,
@@ -102,7 +102,7 @@ export class QueryColumn extends Record({
     // declare defaultScale: string;
     declare defaultValue: any;
     declare description: string;
-    // declare dimension: boolean;
+    declare dimension: boolean;
     declare displayAsLookup: boolean;
     // declare excludeFromShifting: boolean;
     // declare ext: any;
@@ -126,7 +126,7 @@ export class QueryColumn extends Record({
     declare jsonType: string;
     // declare keyField: boolean;
     declare lookup: QueryLookup;
-    // declare measure: boolean;
+    declare measure: boolean;
     declare multiValue: boolean;
     // declare mvEnabled: boolean;
     declare name: string;

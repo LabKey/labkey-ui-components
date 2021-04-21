@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 42872: Handle field names with special characters in grids and forms better.
 
+### version 2.24.1
+*Released*: 20 April 2021
+* Issue 42756: Disable bulk update for Submitters+Readers
+
 ### version 2.24.0
 *Released*: 19 April 2021
 * Item 8735: Misc updates to support DetailEditing shared component in LKB
@@ -30,6 +34,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Handle file field insert/update/delete for DetailEditing.tsx component and equivalent EditableDetailsPanel.tsx component
     * Don't show file inputType columns in editable grid or add/update bulk forms
     * Better handling for error messages from virus file detection response
+
+### version 2.22.6
+*Released*: 12 April 2021
+* QueryColumn: expose dimension, measure properties
 
 ### version 2.22.5
 *Released*: 12 April 2021

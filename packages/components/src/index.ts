@@ -227,6 +227,7 @@ import { ColorPickerInput } from './internal/components/forms/input/ColorPickerI
 import { ColorIcon } from './internal/components/base/ColorIcon';
 import { QuerySelect } from './internal/components/forms/QuerySelect';
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
+import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
 import { DetailEditing } from './internal/components/forms/detail/DetailEditing';
 
 import { resolveDetailRenderer } from './internal/components/forms/detail/DetailEditRenderer';
@@ -664,6 +665,7 @@ export {
     FieldEditProps,
     QuerySelect,
     UserSelectInput,
+    DetailPanelHeader,
     DetailEditing,
     handleInputTab,
     handleTabKeyOnTextArea,

@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.22.TBD
+*Released*: TBD
+* Changes to allow data region filtration based on ontology concepts
+  * Added OntologyBrowserFilterPanel to handle FilterDialog injection
+  * Updated OntologyBrowser to optionally hide conceptinfo
+  * Updated OntologyTreePanel to show filter selections
+* Updated FileTree to take header parameter
+* Split FileTree.Header into its own file
+
 ### version 2.22.1
 *Released*: 6 April 2021
 * Fix for FM enabled check related to LKB experimental feature flag

@@ -22,17 +22,18 @@ type PathNode = OntologyPath & TreeNode;
 // exported for jest testing
 export const FilterIcon = props => {
     const { node, onClick, filters = new Map<string, PathModel>() } = props;
-    const [childSelected, setChildSelected] = useState<boolean>([...filters].some(filter => filter?.path?.startsWith(node?.data?.path)));
 
-    useEffect(() => {
-        setChildSelected(
-            [...filters.values()].some(filter => {
-                if (!node?.data || !filter?.path) return false;
-
-                return filter.path.startsWith(node.data.path) && filter.path !== node.data.path;
-            })
-        );
-    },[node, filters]);
+    // TODO should we tag the parent nodes that have children with filters on them, which path if we are working from a concept code
+    // const [childSelected, setChildSelected] = useState<boolean>([...filters].some(filter => filter?.path?.startsWith(node?.data?.path)));
+    // useEffect(() => {
+    //     setChildSelected(
+    //         [...filters.values()].some(filter => {
+    //             if (!node?.data || !filter?.path) return false;
+    //
+    //             return filter.path.startsWith(node.data.path) && filter.path !== node.data.path;
+    //         })
+    //     );
+    // },[node, filters]);
 
     const clickHandler = useCallback(
         evt => {
@@ -43,7 +44,7 @@ export const FilterIcon = props => {
     );
 
     return (
-        <i className={classNames('fa fa-filter', { selected: filters.has(node?.data?.code), 'child-selected': childSelected })} onClick={clickHandler} />
+        <i className={classNames('fa fa-filter', { selected: filters.has(node?.data?.code) })} onClick={clickHandler} />
     );
 };
 

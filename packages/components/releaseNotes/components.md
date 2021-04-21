@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.24.2
+*Released*: 21 April 2021
+* Update audit log events parsing to handle non-ImmutableJS events
+
 ### version 2.24.1
 *Released*: 20 April 2021
 * Issue 42756: Disable bulk update for Submitters+Readers

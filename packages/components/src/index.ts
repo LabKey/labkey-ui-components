@@ -227,6 +227,7 @@ import { ColorPickerInput } from './internal/components/forms/input/ColorPickerI
 import { ColorIcon } from './internal/components/base/ColorIcon';
 import { QuerySelect } from './internal/components/forms/QuerySelect';
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
+import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
 import { DetailEditing } from './internal/components/forms/detail/DetailEditing';
 
 import { resolveDetailRenderer } from './internal/components/forms/detail/DetailEditRenderer';
@@ -397,7 +398,7 @@ import { DataClassModel } from './internal/components/domainproperties/dataclass
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
-import { mountWithServerContext, sleep, waitForLifecycle } from './internal/testHelpers';
+import { mountWithServerContext, sleep, waitForLifecycle, makeQueryInfo } from './internal/testHelpers';
 import { QueryModel } from './public/QueryModel/QueryModel';
 import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
@@ -664,6 +665,7 @@ export {
     FieldEditProps,
     QuerySelect,
     UserSelectInput,
+    DetailPanelHeader,
     DetailEditing,
     handleInputTab,
     handleTabKeyOnTextArea,
@@ -1021,6 +1023,7 @@ export {
     sleep,
     waitForLifecycle,
     createMockWithRouterProps,
+    makeQueryInfo,
     // Ontology
     OntologyBrowserPanel,
     OntologyConceptOverviewPanel,

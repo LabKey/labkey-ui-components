@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.24.3
+*Released*: 22 April 2021
+* immer version bump to 8.0.4 and other yarn.lock updates
+
 ### version 2.24.2
 *Released*: 21 April 2021
 * Update audit log events parsing to handle non-ImmutableJS events

@@ -29,12 +29,12 @@ export interface AssayPropertiesPanelProps {
 export class AssayUploadResultModel {
     [immerable] = true;
 
-    assayId: number;
-    batchId: number;
-    runId: number;
-    success: boolean;
-    successurl?: string;
-    jobId?: number;
+    readonly assayId: number;
+    readonly batchId: number;
+    readonly runId: number;
+    readonly success: boolean;
+    readonly successurl?: string;
+    readonly jobId?: number;
 
     constructor(values?: Partial<AssayUploadResultModel>) {
         Object.assign(this, values);
@@ -44,11 +44,11 @@ export class AssayUploadResultModel {
 export class AssayStateModel {
     [immerable] = true;
 
-    definitions: AssayDefinitionModel[];
-    definitionsError: string;
-    definitionsLoadingState: LoadingState;
-    protocolError: string;
-    protocolLoadingState: LoadingState;
+    readonly definitions: AssayDefinitionModel[];
+    readonly definitionsError: string;
+    readonly definitionsLoadingState: LoadingState;
+    readonly protocolError: string;
+    readonly protocolLoadingState: LoadingState;
 
     constructor(values?: Partial<AssayStateModel>) {
         Object.assign(this, values);

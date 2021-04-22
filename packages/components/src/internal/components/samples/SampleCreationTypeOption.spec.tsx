@@ -1,13 +1,14 @@
 import {SampleCreationTypeOption} from "./SampleCreationTypeOption";
 import {mount} from "enzyme";
 import React from "react";
-import { DERIVATIVE_CREATION, SampleCreationType } from "./models";
+import {DERIVATIVE_CREATION, SampleCreationType, SampleCreationTypeGroup} from "./models";
 
 describe("<SampleCreationTypeOption/>", () => {
 
     test("Show icon with iconUrl", () => {
         const option = {
             type: SampleCreationType.Derivatives,
+            typeGroup: SampleCreationTypeGroup.samples,
             description: "Describe derivatives",
             minParentsPerSample: 1,
             requiresMultipleParents: false,

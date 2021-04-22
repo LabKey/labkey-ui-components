@@ -220,8 +220,7 @@ export function extractEntityTypeOptionFromRow(row: Map<string, any>, lowerCaseV
 export function getChosenParentData(
     model: EntityIdCreationModel,
     parentEntityDataTypes: Map<string, EntityDataType>,
-    allowParents: boolean,
-    creationType: SampleCreationType
+    allowParents: boolean
 ): Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
         const entityParents = EntityIdCreationModel.getEmptyEntityParents(
@@ -249,7 +248,7 @@ export function getChosenParentData(
                     if (
                         validEntityCount >= 1 ||
                         parentRep?.isParentTypeOnly ||
-                        creationType === SampleCreationType.Aliquots
+                        model.creationType === SampleCreationType.Aliquots
                     ) {
                         resolve({
                             entityCount: validEntityCount,
@@ -337,7 +336,7 @@ export function getEntityTypeData(
         const promises: Array<Promise<any>> = [
             getEntityTypeOptions(entityDataType),
             // get all the parent schemaQuery data
-            getChosenParentData(model, parentSchemaQueries, allowParents, model.creationType),
+            getChosenParentData(model, parentSchemaQueries, allowParents),
             ...parentSchemaQueries.map(getEntityTypeOptions).toArray(),
         ];
 

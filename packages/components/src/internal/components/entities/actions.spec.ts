@@ -79,6 +79,4 @@ describe('getChosenParentData', () => {
         expect(result.entityParents.get(DataClassDataType.typeListingSchemaQuery.queryName).size).toBe(0);
         expect(result.entityCount).toBe(0);
     });
-
-    // TODO add jest
 });

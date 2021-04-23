@@ -19,8 +19,9 @@ import { Utils } from '@labkey/api';
 import { hasParameter, toggleParameter } from '../url/ActionURL'; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular loading
 import { QueryInfo } from '../../public/QueryInfo';
 
-import { parseDate } from './Date';
 import { encodePart } from '../../public/SchemaQuery';
+
+import { parseDate } from './Date';
 
 const emptyList = List<string>();
 
@@ -287,7 +288,10 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
                     updateValuesMap.has(encodedKey) &&
                     !isSameWithStringCompare(updateValuesMap.get(encodedKey), fieldValueMap.get('value'))
                 ) {
-                    return m.set(key, updateValuesMap.get(encodedKey) == undefined ? null : updateValuesMap.get(encodedKey));
+                    return m.set(
+                        key,
+                        updateValuesMap.get(encodedKey) == undefined ? null : updateValuesMap.get(encodedKey)
+                    );
                 } else {
                     return m;
                 }
@@ -339,7 +343,7 @@ export function getUpdatedDataFromGrid(
         const originalRow = originalGridData.get(id.toString());
         if (originalRow) {
             const row = editedRow.reduce((row, value, key) => {
-                const originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
+                let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
                 const isDate = queryInfo.getColumn(key)?.jsonType === 'date';
                 // Convert empty cell to null
                 if (value === '') value = null;
@@ -353,6 +357,8 @@ export function getUpdatedDataFromGrid(
                         // Incorrect types are handled by API and user feedback created from that response. Don't need
                         // to handle that here.
                     }
+                } else if (Iterable.isIterable(originalValue) && !List.isList(originalValue)) {
+                    originalValue = originalValue.get('value');
                 }
 
                 // If col is a multi-value column, compare all values for changes

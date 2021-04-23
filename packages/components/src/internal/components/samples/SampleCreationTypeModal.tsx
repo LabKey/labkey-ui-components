@@ -1,15 +1,14 @@
-import React from "react";
-import { Button, FormControl, Modal } from "react-bootstrap";
-import { MAX_EDITABLE_GRID_ROWS } from "../../../index";
-import {
-    SampleCreationTypeOption
-} from "./SampleCreationTypeOption";
-import { SampleCreationType, SampleCreationTypeModel } from "./models";
+import React from 'react';
+import { Button, FormControl, Modal } from 'react-bootstrap';
 
+import { MAX_EDITABLE_GRID_ROWS } from '../../../index';
+
+import { SampleCreationTypeOption } from './SampleCreationTypeOption';
+import { SampleCreationType, SampleCreationTypeModel } from './models';
 
 interface Props {
     show: boolean;
-    options: Array<SampleCreationTypeModel>,
+    options: SampleCreationTypeModel[];
     parentCount: number;
     showIcons: boolean;
     onCancel: () => void;
@@ -23,7 +22,6 @@ interface State {
 }
 
 export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
-
     constructor(props: Props) {
         super(props);
 
@@ -31,7 +29,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
             creationType: props.options.find(option => option.selected)?.type || props.options[0].type,
             numPerParent: 1,
             submitting: false,
-        }
+        };
     }
 
     onCancel = () => {
@@ -43,57 +41,57 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
         this.setState({ [name]: value } as State);
     };
 
-    renderNumPerParent() : React.ReactNode {
+    renderNumPerParent(): React.ReactNode {
         const { parentCount, options } = this.props;
         const { creationType, numPerParent } = this.state;
 
         const selectedOption = options.find(option => option.type === creationType);
+        const noun = creationType === SampleCreationType.Aliquots ? 'Aliquot' : 'Sample';
         return (
             <>
-                {this.shouldDisplayOptions() && <hr/>}
+                {this.shouldDisplayOptions() && <hr />}
                 <div>
                     <label className="creation-type-modal-label">{selectedOption.quantityLabel}</label>
                     <label className="creation-type-modal-label">
                         <FormControl
                             className="creation-per-parent-select"
                             min={1}
-                            max={MAX_EDITABLE_GRID_ROWS/parentCount}
+                            max={MAX_EDITABLE_GRID_ROWS / parentCount}
                             step={1}
-                            name={"numPerParent"}
+                            name="numPerParent"
                             onChange={this.onChange}
                             type="number"
                             value={numPerParent}
                         />
                     </label>
                 </div>
-                Sample details and quantities can be modified on the grid.
+                {noun} details and quantities can be modified on the grid.
             </>
-        )
+        );
     }
 
     onConfirm = () => {
         this.props.onSubmit(this.state.creationType, this.state.numPerParent);
-    }
+    };
 
-    shouldDisplayOptions() : boolean {
+    shouldDisplayOptions(): boolean {
         return this.getOptionsToDisplay().length > 1;
     }
 
-    shouldRenderOption(option: SampleCreationTypeModel) : boolean {
+    shouldRenderOption(option: SampleCreationTypeModel): boolean {
         return this.props.parentCount >= option.minParentsPerSample;
     }
 
-    getOptionsToDisplay() : Array<SampleCreationTypeModel> {
+    getOptionsToDisplay(): SampleCreationTypeModel[] {
         return this.props.options.filter(option => this.shouldRenderOption(option));
     }
 
-    renderOptions() : Array<React.ReactNode> {
+    renderOptions(): React.ReactNode[] {
         const { showIcons, options } = this.props;
         const displayOptions = this.getOptionsToDisplay();
-        if (displayOptions.length < 2)
-            return null;
+        if (displayOptions.length < 2) return null;
 
-        let optionSet = [];
+        const optionSet = [];
         displayOptions.forEach((option, i) => {
             optionSet.push(
                 <SampleCreationTypeOption
@@ -103,18 +101,18 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                     onChoose={this.onChange}
                     showIcon={showIcons}
                 />
-            )
+            );
         });
         return optionSet;
     }
 
-    render() : React.ReactNode {
+    render(): React.ReactNode {
         const { show, parentCount } = this.props;
         const { submitting, numPerParent } = this.state;
 
         const parentNoun = parentCount > 1 ? 'Parents' : 'Parent';
-        const canSubmit = !submitting && (numPerParent > 0);
-        const title = "Create Samples from Selected " + parentNoun;
+        const canSubmit = !submitting && numPerParent > 0;
+        const title = 'Create Samples from Selected ' + parentNoun;
         return (
             <Modal show={show} onHide={this.onCancel}>
                 <Modal.Header closeButton>
@@ -135,7 +133,6 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                     </Button>
                 </Modal.Footer>
             </Modal>
-        )
+        );
     }
 }
-

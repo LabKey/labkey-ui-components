@@ -26,7 +26,7 @@ import mixturesQuery from '../../../../test/data/mixtures-getQuery.json';
 import { initUnitTests, makeQueryInfo, makeTestData } from '../../../testHelpers';
 
 import { FilterAction, getURLSuffix } from './Filter';
-import { ActionOption, Value } from './Action';
+import { ActionOption, ActionValue, Value } from './Action';
 
 let queryInfo: QueryInfo;
 let getColumns: () => List<QueryColumn>;
@@ -163,6 +163,38 @@ describe('FilterAction::completeAction', () => {
                 expectFilter(expectedFilter, value.param);
             }),
         ]);
+    });
+});
+
+describe("FilterAction::actionValueFromFilter", () => {
+    let action;
+    const urlPrefix = undefined;
+
+    beforeEach(() => {
+        // needs to be in beforeEach so it gets instantiated after beforeAll
+        action = new FilterAction(urlPrefix, getColumns);
+    });
+
+    // TODO add tests for various value options
+    test("no label, unencoded column", () => {
+        const filter = Filter.create('colName', '10', Filter.Types.EQUAL);
+        const value: ActionValue = action.actionValueFromFilter(filter);
+        expect(value.displayValue).toBe('colName = 10');
+        expect(value.value).toBe('\"colName\" = 10');
+    });
+
+    test("no label, encoded column", () => {
+        const filter = Filter.create('U mg$SL', '10', Filter.Types.EQUAL);
+        const value: ActionValue = action.actionValueFromFilter(filter);
+        expect(value.displayValue).toBe('U mg/L = 10');
+        expect(value.value).toBe('\"U mg$SL\" = 10');
+    });
+
+    test("with label", () => {
+        const filter = Filter.create('U mgS$L', 'x', Filter.Types.EQUAL);
+        const value: ActionValue = action.actionValueFromFilter(filter, "otherLabel");
+        expect(value.displayValue).toBe('otherLabel = x');
+        expect(value.value).toBe('\"otherLabel\" = x');
     });
 });
 

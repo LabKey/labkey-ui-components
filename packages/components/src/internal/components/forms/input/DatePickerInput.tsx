@@ -175,8 +175,8 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                         wrapperClassName={inputWrapperClassName}
                         className={inputClassName}
                         isClearable={isClearable}
-                        name={name ? name : queryColumn.name}
-                        id={queryColumn.name}
+                        name={name ? name : queryColumn.fieldKey}
+                        id={queryColumn.fieldKey}
                         disabled={isDisabled}
                         selected={selectedDate}
                         onChange={this.onChange}

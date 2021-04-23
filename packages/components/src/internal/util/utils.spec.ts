@@ -332,7 +332,7 @@ describe('getUpdatedData', () => {
             Data: {
                 value: 'data1',
             },
-            AndAgain: {
+            'And/Again': {
                 value: 'again',
             },
             Name: {
@@ -354,7 +354,7 @@ describe('getUpdatedData', () => {
             Data: {
                 value: 'data1',
             },
-            AndAgain: {
+            'And/Again': {
                 value: 'again',
             },
             Name: {
@@ -376,7 +376,7 @@ describe('getUpdatedData', () => {
             Data: {
                 value: 'data1',
             },
-            AndAgain: {
+            'And/Again': {
                 value: 'again',
             },
             Name: {
@@ -398,7 +398,7 @@ describe('getUpdatedData', () => {
             Data: {
                 value: 'data1',
             },
-            AndAgain: {
+            'And/Again': {
                 value: 'again',
             },
             Name: {
@@ -425,7 +425,7 @@ describe('getUpdatedData', () => {
             originalData,
             {
                 Data: 'data1',
-                AndAgain: 'again',
+                'And$SAgain': 'again',
             },
             List<string>(['RowId'])
         );
@@ -438,7 +438,7 @@ describe('getUpdatedData', () => {
             {
                 Value: 'val',
                 Data: 'data1',
-                AndAgain: 'again',
+                'And$SAgain': 'again',
                 Other: 'other3',
             },
             List<string>(['RowId'])
@@ -466,7 +466,7 @@ describe('getUpdatedData', () => {
             {
                 Value: 'val2',
                 Data: 'data2',
-                AndAgain: 'again2',
+                'And$SAgain': 'again2',
                 Other: 'not another',
             },
             List<string>(['RowId'])
@@ -476,28 +476,28 @@ describe('getUpdatedData', () => {
             RowId: 445,
             Value: 'val2',
             Data: 'data2',
-            AndAgain: 'again2',
+            'And/Again': 'again2',
             Other: 'not another',
         });
         expect(updatedData[1]).toStrictEqual({
             RowId: 446,
             Value: 'val2',
             Data: 'data2',
-            AndAgain: 'again2',
+            'And/Again': 'again2',
             Other: 'not another',
         });
         expect(updatedData[2]).toStrictEqual({
             RowId: 447,
             Value: 'val2',
             Data: 'data2',
-            AndAgain: 'again2',
+            'And/Again': 'again2',
             Other: 'not another',
         });
         expect(updatedData[3]).toStrictEqual({
             RowId: 448,
             Value: 'val2',
             Data: 'data2',
-            AndAgain: 'again2',
+            'And/Again': 'again2',
             Other: 'not another',
         });
     });
@@ -507,7 +507,7 @@ describe('getUpdatedData', () => {
             originalData,
             {
                 Value: null,
-                AndAgain: undefined,
+                'And$SAgain': undefined,
                 Other: 'not another',
             },
             List<string>(['RowId'])
@@ -516,23 +516,23 @@ describe('getUpdatedData', () => {
         expect(updatedData[0]).toStrictEqual({
             RowId: 445,
             Value: null,
-            AndAgain: null,
+            'And/Again': null,
             Other: 'not another',
         });
         expect(updatedData[1]).toStrictEqual({
             RowId: 446,
             Value: null,
-            AndAgain: null,
+            'And/Again': null,
             Other: 'not another',
         });
         expect(updatedData[2]).toStrictEqual({
             RowId: 447,
-            AndAgain: null,
+            'And/Again': null,
             Other: 'not another',
         });
         expect(updatedData[3]).toStrictEqual({
             RowId: 448,
-            AndAgain: null,
+            'And/Again': null,
             Other: 'not another',
         });
     });

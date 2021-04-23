@@ -74,7 +74,7 @@ export class DateInput extends DisableableInput<DateInputProps, any> {
             changeDebounceInterval,
             elementWrapperClassName,
             labelClassName,
-            name: name ? name : queryColumn.name,
+            name: name ? name : queryColumn.fieldKey,
             onChange,
             placeholder: datePlaceholder(queryColumn),
             queryColumn,

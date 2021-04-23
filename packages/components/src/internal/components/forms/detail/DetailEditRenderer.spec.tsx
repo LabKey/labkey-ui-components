@@ -58,6 +58,7 @@ describe('resolveDetailEditRenderer', () => {
 
     const default_props = {
         name: 'test',
+        fieldKey: 'test',
         caption: 'test',
         readOnly: false,
         userEditable: true,

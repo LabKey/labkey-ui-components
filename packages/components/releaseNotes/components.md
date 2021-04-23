@@ -11,9 +11,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Support aliquot creation mode for EntityInsertPanel
 * Add header props to BulkUpdateForm
 
-### version TBD
-*Released*: TBD
+### version 2.24.4
+*Released*: 23 April 2021
 * Issue 42872: Handle field names with special characters in grids and forms better.
+* Update export aliases to use SampleID instead of SampleId
 
 ### version 2.24.3
 *Released*: 22 April 2021

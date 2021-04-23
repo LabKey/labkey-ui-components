@@ -1,31 +1,40 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Filter } from '@labkey/api';
 
-import { OntologyBrowserPanel, OntologyBrowserProps } from './OntologyBrowserPanel';
-import { ONTOLOGY_ROOT_CODE_PREFIX, PathModel } from './models';
-import { fetchParentPaths, fetchPathModel } from './actions';
 import { Alert } from '../base/Alert';
 
-interface OntologyBrowserFilterPanelProps extends OntologyBrowserProps {
+import { OntologyBrowserPanel } from './OntologyBrowserPanel';
+import { ONTOLOGY_ROOT_CODE_PREFIX, PathModel } from './models';
+import { fetchParentPaths, fetchPathModel } from './actions';
+
+interface OntologyBrowserFilterPanelProps {
     ontologyId: string;
     filterValue: string;
     filterType: Filter.IFilterType;
     onFilterChange: (filterValue: string) => void;
 }
 
+function isPathFilter(filterType: Filter.IFilterType): boolean {
+    if (!filterType) return false;
+
+    return (
+        filterType.getURLSuffix() === Filter.Types.ONTOLOGY_IN_SUBTREE.getURLSuffix() ||
+        filterType.getURLSuffix() === Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix()
+    );
+}
+
 export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = memo(props => {
-    const { ontologyId, filterType, filterValue, onFilterChange, } = props;
+    const { ontologyId, filterType, filterValue, onFilterChange } = props;
     const [filteredConcepts, setFilteredConcepts] = useState<Map<string, PathModel>>(new Map());
-    const [error, setError] = useState<String>();
+    const [error, setError] = useState<string>();
 
     const updateFilterValues = useCallback(
         async (filterString: string) => {
             const filterArray = filterString?.split(';') || [];
 
             // Look up path model for the path based filters, otherwise parse the code filter
-            const isPathFilter = filterType?.getURLSuffix() === Filter.Types.ONTOLOGY_IN_SUBTREE.getURLSuffix() || filterType?.getURLSuffix() === Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix();
             let paths;
-            if (isPathFilter) {
+            if (isPathFilter(filterType)) {
                 try {
                     paths = filterString ? [await fetchPathModel(filterString)] : [];
                 } catch (e) {
@@ -38,7 +47,7 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
             const filterModels = new Map<string, PathModel>(paths?.map(model => [model.code, model]));
             setFilteredConcepts(filterModels);
         },
-        [error, setError, filterType, setFilteredConcepts]
+        [setError, filterType, setFilteredConcepts]
     );
 
     const filterChangeHandler = useCallback(
@@ -54,13 +63,14 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
 
             setFilteredConcepts(newFilter);
 
-            console.log(filterType.getDisplayText());
-            const isPathFilter = filterType.getURLSuffix() === Filter.Types.ONTOLOGY_IN_SUBTREE.getURLSuffix() || filterType.getURLSuffix() === Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix();
             let newFilterString;
-            if (isPathFilter) {
+            if (isPathFilter(filterType)) {
                 const filterStrings = [];
                 for await (const filterNode of newFilter.values()) {
+                    //Get parent nodes for the selected node's path
                     const parents = await fetchParentPaths(filterNode.path);
+
+                    // concatenate the parent concept codes minus the root
                     filterStrings.push(
                         [...parents]
                             .filter(node => !node.code.startsWith(ONTOLOGY_ROOT_CODE_PREFIX)) // Ignore the root node
@@ -72,18 +82,22 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
             } else {
                 newFilterString = [...newFilter.keys()].join(';');
             }
-            onFilterChange?.(newFilterString);
+            onFilterChange(newFilterString);
         },
         [filterType, filteredConcepts, setFilteredConcepts, onFilterChange]
     );
 
-    useEffect(() => {
-        updateFilterValues(filterValue);
-    }, [filterType, filterValue]);
+    useEffect(
+        () => {
+            updateFilterValues(filterValue);
+        },
+        // Trigger effect if the filterType value changes. This will facilitate switching between Concept code based filters and Path based filters
+        [filterType, filterValue]
+    );
 
     return (
         <>
-            {error && <Alert>{error}</Alert>}
+            <Alert>{error}</Alert>
             <OntologyBrowserPanel
                 asPanel={false}
                 hideConceptInfo={true}

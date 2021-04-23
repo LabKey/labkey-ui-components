@@ -1,13 +1,16 @@
 .concept-filter-view {
     margin: 0 0 10px;
     padding: 5px 10px;
-    //border: 1px solid $gray-border;
+
+    a.show-toggle {
+        cursor: pointer;
+    }
 
     &.collapsed {
         margin: unset;
         padding: 2px 0 10px;
         border: unset;
-        .show-toggle {
+        a.show-toggle {
             margin-left: 105px;
         }
     }

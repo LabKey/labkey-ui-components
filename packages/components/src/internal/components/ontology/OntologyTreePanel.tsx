@@ -5,6 +5,7 @@ import { naturalSortByProperty, FileTree, LoadingSpinner } from '../../..';
 
 import { DEFAULT_ROOT_PREFIX } from '../files/FileTree';
 
+import { TreeNodeProps } from '../files/FileTreeHeader';
 import { PathModel } from './models';
 import { fetchChildPaths, fetchParentPaths } from './actions';
 import classNames from 'classnames';
@@ -48,21 +49,7 @@ export const FilterIcon = props => {
     );
 };
 
-interface OntologyTreeHeaderProps {
-    node: any; // Data Object model for this node
-    style: any; // Base Style object describing the base css styling
-    onSelect?: () => void; // Callback for selection
-    customStyles?: any; // Custom styling object that is applied in addition to the base
-    checked?: boolean; // Is check box checked
-    emptyDirectoryText?: string; // Text to show if node is a container, but has no contents
-
-    allowMultiSelect?: boolean; // Flag to enable multi-selection of nodes
-    isEmpty: boolean; // Flag indicating if flag is an empty container
-    isLoading: boolean; // Flag indicating child data is being loaded for node
-
-    showNodeIcon: boolean; // Flag to indicate whether an Icon should be shown for the node
-    useFileIconCls?: boolean; // Class to apply to the Icon
-    RenderIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
+interface OntologyTreeHeaderProps extends TreeNodeProps {
     filters: Map<string, PathModel>;
     onFilterClick: (node: PathModel) => void;
 }
@@ -96,11 +83,6 @@ export const OntologyTreeHeader: FC<OntologyTreeHeaderProps> = memo( props => {
 
     const isDirectory = node?.children !== undefined;
     const activeColor = node?.active && !allowMultiSelect ? 'lk-text-theme-dark filetree-node-active' : undefined; // $brand-primary and $gray-light
-
-    // Do not always want to toggle directories when clicking a check box
-    // const checkClick = (evt): void => {
-    //     evt.stopPropagation();
-    // };
 
     return (
         <span
@@ -178,6 +160,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
                 }
             );
         },
+        //Needs to trigger for filters to ensure PathModels are loaded and update the FilterDialog values.
         [root, filters]
     );
 
@@ -186,12 +169,9 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
         return true;
     };
 
+    //
     const renderNodeHeader = props => {
-        return (
-            <>
-                <OntologyTreeHeader {...props} filters={filters} onFilterClick={onFilterChange} />
-            </>
-        );
+        return <OntologyTreeHeader {...props} filters={filters} onFilterClick={onFilterChange} />;
     };
 
     return (

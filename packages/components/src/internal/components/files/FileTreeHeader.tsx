@@ -29,7 +29,7 @@ export const FileNodeIcon: FC<FileNodeIconProps> = memo(props => {
     );
 });
 
-interface TreeNodeProps {
+export interface TreeNodeProps {
     node: any; // Data Object model for this node
     style: any; // Base Style object describing the base css styling
     onSelect?: () => void; // Callback for selection

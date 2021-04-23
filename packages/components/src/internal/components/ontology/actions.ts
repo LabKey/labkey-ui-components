@@ -1,7 +1,6 @@
 import { ActionURL, Ajax, getServerContext, Utils } from '@labkey/api';
 
 import { ConceptModel, OntologyModel, PathModel } from './models';
-import * as Path from 'path';
 
 export const ONTOLOGY_MODULE_NAME = 'ontology';
 export const ONTOLOGY_CONTROLLER = 'ontology';

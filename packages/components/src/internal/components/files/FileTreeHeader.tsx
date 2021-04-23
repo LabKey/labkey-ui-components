@@ -7,8 +7,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+interface FileNodeIconProps {
+    isDirectory: boolean;
+    useFileIconCls?: boolean;
+    node: any;
+}
+
 // exported for jest testing
-export const FileNodeIcon = props => {
+export const FileNodeIcon: FC<FileNodeIconProps> = memo(props => {
     const { isDirectory, useFileIconCls, node } = props;
     const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
 
@@ -21,7 +27,7 @@ export const FileNodeIcon = props => {
             )}
         </>
     );
-};
+});
 
 interface TreeNodeProps {
     node: any; // Data Object model for this node
@@ -39,7 +45,7 @@ interface TreeNodeProps {
 
     showNodeIcon: boolean; // Flag to indicate whether an Icon should be shown for the node
     useFileIconCls?: boolean; // Class to apply to the Icon
-    renderIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
+    RenderIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
 }
 
 export const Header: FC<TreeNodeProps> = memo(props => {
@@ -56,7 +62,7 @@ export const Header: FC<TreeNodeProps> = memo(props => {
         showNodeIcon = true,
         isEmpty,
         isLoading,
-        renderIcon = FileNodeIcon,
+        RenderIcon = FileNodeIcon,
     } = props;
     const isDirectory = node.children !== undefined;
     const activeColor = node.active && !allowMultiSelect ? 'lk-text-theme-dark filetree-node-active' : undefined; // $brand-primary and $gray-light
@@ -96,7 +102,7 @@ export const Header: FC<TreeNodeProps> = memo(props => {
                         style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}
                         title={node.name}
                     >
-                        {showNodeIcon && renderIcon({ ...props, isDirectory })}
+                        {showNodeIcon && <RenderIcon {...props} isDirectory={isDirectory} />}
                         <div
                             className={classNames({
                                 'filetree-file-name': !isDirectory,

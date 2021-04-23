@@ -62,7 +62,7 @@ interface OntologyTreeHeaderProps {
 
     showNodeIcon: boolean; // Flag to indicate whether an Icon should be shown for the node
     useFileIconCls?: boolean; // Class to apply to the Icon
-    renderIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
+    RenderIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
     filters: Map<string, PathModel>;
     onFilterClick: (node: PathModel) => void;
 }
@@ -143,7 +143,7 @@ interface OntologyTreeProps {
 }
 
 export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
-    const { root, onNodeSelection, alternatePath, showFilterIcon = true, filters = new Map(), onFilterChange } = props;
+    const { root, onNodeSelection, alternatePath, showFilterIcon = false, filters = new Map(), onFilterChange } = props;
     const [showLoading, setShowLoading] = useState<boolean>(false);
     const fileTreeRef: RefObject<FileTree> = useRef();
 

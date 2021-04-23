@@ -23,7 +23,7 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
             const filterArray = filterString?.split(';') || [];
 
             // Look up path model for the path based filters, otherwise parse the code filter
-            const isPathFilter = filterType.getURLSuffix() === Filter.Types.ONTOLOGY_IN_SUBTREE.getURLSuffix() || filterType.getURLSuffix() === Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix();
+            const isPathFilter = filterType?.getURLSuffix() === Filter.Types.ONTOLOGY_IN_SUBTREE.getURLSuffix() || filterType?.getURLSuffix() === Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix();
             let paths;
             if (isPathFilter) {
                 try {

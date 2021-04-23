@@ -131,8 +131,8 @@ interface OntologyBrowserPanelImplProps {
     setSelectedPath: (path: PathModel, isAlternatePath?: boolean) => void;
     asPanel: boolean;
     hideConceptInfo?: boolean;
-    filters: Map<string, PathModel>;
-    onFilterChange: (changedNode: PathModel) => void;
+    filters?: Map<string, PathModel>;
+    onFilterChange?: (changedNode: PathModel) => void;
 }
 
 // exported for jest testing

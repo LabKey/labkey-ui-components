@@ -1403,10 +1403,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.3.0-fb-ontFilter.1":
-  version "1.3.0-fb-ontFilter.1"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.3.0-fb-ontFilter.1.tgz#829b118304e8ab3ce0b704e3ce9c83a6f7634e33"
-  integrity sha1-gpsRgwToqzzgtwTjzpyDpvdjTjM=
+"@labkey/api@1.3.0-fb-ontFilter.2":
+  version "1.3.0-fb-ontFilter.2"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.3.0-fb-ontFilter.2.tgz#beda815927d041a79bce4b128597a67c06b9d3c0"
+  integrity sha1-vtqBWSfQQaebzksShZemfAa508A=
 
 "@labkey/eslint-config-base@0.0.8":
   version "0.0.8"

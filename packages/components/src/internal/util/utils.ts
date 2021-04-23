@@ -19,8 +19,9 @@ import { Utils } from '@labkey/api';
 import { hasParameter, toggleParameter } from '../url/ActionURL'; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular loading
 import { QueryInfo } from '../../public/QueryInfo';
 
-import { parseDate } from './Date';
 import { encodePart } from '../../public/SchemaQuery';
+
+import { parseDate } from './Date';
 
 const emptyList = List<string>();
 
@@ -287,7 +288,10 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
                     updateValuesMap.has(encodedKey) &&
                     !isSameWithStringCompare(updateValuesMap.get(encodedKey), fieldValueMap.get('value'))
                 ) {
-                    return m.set(key, updateValuesMap.get(encodedKey) == undefined ? null : updateValuesMap.get(encodedKey));
+                    return m.set(
+                        key,
+                        updateValuesMap.get(encodedKey) == undefined ? null : updateValuesMap.get(encodedKey)
+                    );
                 } else {
                     return m;
                 }

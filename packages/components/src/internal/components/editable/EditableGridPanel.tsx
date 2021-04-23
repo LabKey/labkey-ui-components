@@ -182,7 +182,7 @@ export class EditableGridPanel extends ReactN.Component<Props, State, GlobalAppS
             readOnlyColumns: activeReadOnlyColumns,
             readonlyRows: activeReadOnlyRows,
             columnMetadata: activeColumnMetadata,
-            getUpdateColumns: activeGetUpdateColumnsFn
+            getUpdateColumns: activeGetUpdateColumnsFn,
         };
 
         if (!title) {

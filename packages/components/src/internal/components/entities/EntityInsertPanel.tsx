@@ -1211,7 +1211,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                     stepIndex={importOnly ? EntityInsertPanelTabs.First : EntityInsertPanelTabs.Second}
                                 >
                                     {this.renderHeader(false)}
-                                    {(!disableMerge && user.hasUpdatePermission()) && (
+                                    {!disableMerge && user.hasUpdatePermission() && (
                                         <div className="margin-bottom">
                                             <input
                                                 type="checkbox"
@@ -1316,7 +1316,7 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             selectionKey,
             tab: parseInt(tab, 10),
             target,
-            user: user,
+            user,
         };
     }, [location]);
 

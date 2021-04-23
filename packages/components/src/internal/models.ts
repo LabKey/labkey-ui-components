@@ -26,13 +26,14 @@ import {
     ViewInfo,
 } from '..';
 
+import { encodePart } from '../public/SchemaQuery';
+
 import { genCellKey } from './actions';
 import { getQueryColumnRenderers, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './components/GridLoader';
 import { GRID_EDIT_INDEX } from './constants';
 import { IQueryGridModel } from './QueryGridModel';
 import { getDateTimeFormat, parseDate } from './util/Date';
-import { encodePart } from '../public/SchemaQuery';
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];

@@ -39,7 +39,7 @@ export const DEFAULT_SAMPLE_FIELD_CONFIG = {
     lookupSchema: 'exp',
     lookupQuery: 'Materials',
     lookupType: { ...SAMPLE_TYPE },
-    name: 'SampleId',
+    name: 'SampleID',
 } as Partial<IDomainField>;
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {

@@ -21,6 +21,7 @@ import { QueryColumn, QueryInfo } from '../../../..';
 import { parseColumns, resolveFieldKey } from '../utils';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
+import { decodePart } from '../../../../public/SchemaQuery';
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances
@@ -446,7 +447,7 @@ export class FilterAction implements Action {
         let isReadOnly = false;
 
         let value: string, inputValue: string;
-        const displayParts = [columnName, resolveSymbol(filterType)];
+        const displayParts = [decodePart(columnName), resolveSymbol(filterType)];
         const inputDisplayParts = [`"${displayParts[0]}"`, displayParts[1]]; // need to quote column name for input display
 
         if (!filterType.isDataValueRequired()) {

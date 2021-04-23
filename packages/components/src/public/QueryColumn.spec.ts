@@ -325,16 +325,28 @@ describe('QueryColumn: Sample Lookup', () => {
 
     test('resolveFieldKey', () => {
         expect(new QueryColumn({}).resolveFieldKey()).toBe(undefined);
-        expect(new QueryColumn({ name: 'name' }).resolveFieldKey()).toBe('name');
-        expect(new QueryColumn({ name: 'name', lookup: { displayColumn: 'displayColumn' } }).resolveFieldKey()).toBe(
+        expect(new QueryColumn({ fieldKey: 'name', name: 'name' }).resolveFieldKey()).toBe('name');
+        expect(new QueryColumn({ fieldKey: 'name$Sslash', name: 'name/slash' }).resolveFieldKey()).toBe('name$Sslash');
+        expect(new QueryColumn({ fieldKey: 'name', name: 'name', lookup: { displayColumn: 'displayColumn' } }).resolveFieldKey()).toBe(
             'name/displayColumn'
+        );
+        expect(new QueryColumn({ fieldKey: 'name$Sslash', name: 'name/slash', lookup: { displayColumn: 'displayColumn' } }).resolveFieldKey()).toBe(
+            'name$Sslash/displayColumn'
         );
         expect(
             new QueryColumn({
+                fieldKey: 'name',
                 name: 'name',
                 lookup: { displayColumn: 'displayColumn1/displayColumn2' },
             }).resolveFieldKey()
         ).toBe('name/displayColumn1$SdisplayColumn2');
+        expect(
+            new QueryColumn({
+                fieldKey: 'name$Sslash',
+                name: 'name/slash',
+                lookup: { displayColumn: 'displayColumn1/displayColumn2' },
+            }).resolveFieldKey()
+        ).toBe('name$Sslash/displayColumn1$SdisplayColumn2');
     });
 });
 

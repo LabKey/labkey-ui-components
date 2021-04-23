@@ -103,11 +103,11 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
                 onChange={this.onChange}
                 cols={cols}
                 elementWrapperClassName={elementWrapperClassName}
-                id={queryColumn.name}
+                id={queryColumn.fieldKey}
                 label={this.renderLabel()}
                 labelClassName={labelClassName}
                 placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
-                name={name ? name : queryColumn.name}
+                name={name ? name : queryColumn.fieldKey}
                 rowClassName={rowClassName}
                 rows={rows}
                 required={queryColumn.required}

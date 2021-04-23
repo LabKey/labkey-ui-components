@@ -1085,7 +1085,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "conceptURI": "http://www.labkey.org/exp/xml#sample",
           },
         },
-        "name": "SampleId",
+        "name": "SampleID",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
         "required": true,
       }

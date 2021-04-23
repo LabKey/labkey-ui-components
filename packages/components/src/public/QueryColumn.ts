@@ -253,9 +253,9 @@ export class QueryColumn extends Record({
         let fieldKey: string;
 
         if (this.isLookup()) {
-            fieldKey = [this.name, this.lookup.displayColumn.replace(/\//g, '$S')].join('/');
+            fieldKey = [this.fieldKey, this.lookup.displayColumn.replace(/\//g, '$S')].join('/');
         } else {
-            fieldKey = this.name;
+            fieldKey = this.fieldKey;
         }
 
         return fieldKey;

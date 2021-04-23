@@ -166,7 +166,7 @@ export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps>
                 id,
                 label: <LabelOverlay column={queryColumn} inputId={id} isFormsy={false} />,
                 multiple,
-                name: queryColumn.name,
+                name: queryColumn.fieldKey,
                 required: queryColumn.required,
             },
             this.props,

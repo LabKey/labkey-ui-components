@@ -148,10 +148,10 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                 disabled={this.state.isDisabled}
                 changeDebounceInterval={changeDebounceInterval}
                 elementWrapperClassName={elementWrapperClassName}
-                id={queryColumn.name}
+                id={queryColumn.fieldKey}
                 label={this.renderLabel()}
                 labelClassName={labelClassName}
-                name={name ? name : queryColumn.name}
+                name={name ? name : queryColumn.fieldKey}
                 onChange={this.onChange}
                 placeholder={placeholder || `Enter ${queryColumn.caption.toLowerCase()}`}
                 required={queryColumn.required}

@@ -19,6 +19,7 @@ import { parseColumns, resolveFieldKey } from '../utils';
 import { QueryColumn, QuerySort } from '../../../..';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
+import { decodePart } from '../../../../public/SchemaQuery';
 
 export class SortAction implements Action {
     iconCls = 'sort';
@@ -163,7 +164,7 @@ export class SortAction implements Action {
             raw;
 
         return params.map(param => {
-            raw = param.trim();
+            raw = decodePart(param).trim();
 
             if (raw.length > 0) {
                 dir = raw.indexOf('-') === 0 ? 'DESC' : 'ASC';
@@ -184,7 +185,7 @@ export class SortAction implements Action {
         const { dir, fieldKey } = sort;
         return {
             value: `${fieldKey} ${dir === '-' ? 'DESC' : 'ASC'}`,
-            displayValue: label ?? fieldKey,
+            displayValue: label ?? decodePart(fieldKey),
             valueObject: sort,
             action: this,
         };

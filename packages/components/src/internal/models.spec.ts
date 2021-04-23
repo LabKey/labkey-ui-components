@@ -569,7 +569,7 @@ describe('EditorModel', () => {
                         value: 'orange',
                         ignoreMe: 'nothing to see',
                     },
-                    withDisplayValue: {
+                    'withDisplay/Value': {
                         value: 'b',
                         displayValue: 'blue',
                         otherField: 'irrelevant',
@@ -587,7 +587,7 @@ describe('EditorModel', () => {
                         value: 'orangish',
                         ignoreMe: 'nothing to see',
                     },
-                    withDisplayValue: {
+                    'withDisplay/Value': {
                         value: 'b',
                         displayValue: 'black',
                         otherField: 'irrelevant',
@@ -599,18 +599,18 @@ describe('EditorModel', () => {
             });
             const updates = Map<any, any>({
                 withValue: 'purple',
-                withDisplayValue: 'teal',
+                'withDisplay$SValue': 'teal',
             });
             expect(EditorModel.convertQueryDataToEditorData(queryData, updates)).toStrictEqual(
                 Map<string, any>({
                     1: Map<string, any>({
                         withValue: 'purple',
-                        withDisplayValue: 'teal',
+                        withDisplay$SValue: 'teal',
                         doNotChangeMe: 'fred',
                     }),
                     2: Map<string, any>({
                         withValue: 'purple',
-                        withDisplayValue: 'teal',
+                        withDisplay$SValue: 'teal',
                         doNotChangeMe: 'maroon',
                     }),
                 })

@@ -49,7 +49,7 @@ export class AliasInput extends Component<AliasInputProps> {
                 label={col.caption}
                 required={col.required}
                 multiple={true}
-                name={col.name}
+                name={col.fieldKey}
                 noResultsText="Enter alias name(s)"
                 placeholder="Enter alias name(s)"
                 promptTextCreator={(text: string) => `Create alias "${text}"`}

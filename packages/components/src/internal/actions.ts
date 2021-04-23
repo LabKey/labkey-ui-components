@@ -3092,3 +3092,34 @@ export function createQueryGridModelFilteredBySample(
         };
     });
 }
+
+interface IClientSideMetricCountResponse {
+    count: number;
+}
+
+export function incrementClientSideMetricCount(
+    applicationName: string,
+    metricName: string
+): Promise<IClientSideMetricCountResponse> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('core', 'incrementClientSideMetricCount.api'),
+            method: 'POST',
+            jsonData: {
+                applicationName,
+                metricName,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(
+                response => {
+                    console.error(response);
+                    reject(response);
+                },
+                this,
+                true
+            ),
+        });
+    });
+}

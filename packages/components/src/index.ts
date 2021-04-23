@@ -148,6 +148,7 @@ import {
     setSelected,
     setSnapshotSelections,
     unselectAll,
+    incrementClientSideMetricCount,
 } from './internal/actions';
 import { cancelEvent } from './internal/events';
 import {
@@ -908,6 +909,7 @@ export {
     resolveErrorMessage,
     getHelpLink,
     helpLinkNode,
+    incrementClientSideMetricCount,
     SAMPLE_ALIQUOT_TOPIC,
     // devTools functions
     applyDevTools,

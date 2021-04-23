@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 8789: Add util function for incrementClientSideMetricCount()
+
 ### version 2.24.4
 *Released*: 23 April 2021
 * Issue 42872: Handle field names with special characters in grids and forms better.

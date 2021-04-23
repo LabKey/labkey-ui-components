@@ -69,7 +69,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         const gridDataAllTabs = [];
         this.getModelsAsList(this.props).forEach((model, ind) => {
             const gridData = this.getUpdateDataFromGrid(ind);
-            if (gridData && gridData.updatedRows.length > 0) {
+            if (gridData) {
                 gridDataAllTabs.push(gridData);
             }
         });

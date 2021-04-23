@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 2.25.0
+*Released*: 23 April 2021
 * EditableGrid:
     * EditableGridPanel and EditableGridPanelForUpdate support multiple models in a tabbed view
     * Allow setting cell to read only with columnMetadata

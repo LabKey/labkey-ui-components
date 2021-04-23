@@ -16,8 +16,9 @@
 import React, { ReactNode, ReactText } from 'react';
 import { List, Map } from 'immutable';
 import { Input } from 'formsy-react-components';
+import { addValidationRule, validationRules } from 'formsy-react';
 
-import { QueryColumn } from '../../..';
+import { FileColumnRenderer, FileInput, QueryColumn } from '../../..';
 
 import { LabelOverlay } from './LabelOverlay';
 import { AliasInput } from './input/AliasInput';
@@ -79,6 +80,13 @@ const AppendUnitsInputRenderer: InputRenderer = (
 );
 
 export function resolveRenderer(column: QueryColumn): InputRenderer {
+    // 23462: Global Formsy validation rule for numbers
+    if (!validationRules.isNumericWithError) {
+        addValidationRule('isNumericWithError', (values: any, value: string | number) => {
+            return validationRules.isNumeric(values, value) || 'Please enter a number.';
+        });
+    }
+
     if (column?.inputRenderer) {
         switch (column.inputRenderer.toLowerCase()) {
             case 'experimentalias':
@@ -136,4 +144,20 @@ export function resolveDetailFieldValue(
     }
 
     return undefined;
+}
+
+export function fileInputRenderer(
+    col: QueryColumn,
+    data: any,
+    updatedFile: File,
+    onChange: (fileMap: Record<string, File>) => void
+): ReactNode {
+    const value = data?.get('value');
+
+    // check to see if an existing file for this column has been removed / changed
+    if (value && updatedFile === undefined) {
+        return <FileColumnRenderer col={col} data={data} onRemove={() => onChange({ [col.name]: null })} />;
+    }
+
+    return <FileInput key={col.fieldKey} queryColumn={col} showLabel={false} onChange={onChange} />;
 }

@@ -3,12 +3,12 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { ReactNode } from 'react';
-import { List } from 'immutable';
+import { Map } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { ASSAYS_KEY, isFreezerManagementEnabled, isSampleManagerEnabled, SAMPLES_KEY, WORKFLOW_KEY } from '../../app';
 import { AppURL } from '../../..';
-import { isBiologicsEnabled } from '../../app/utils';
+import { isBiologicsEnabled, isFreezerManagementEnabled, isSampleManagerEnabled } from '../../app/utils';
+import { ASSAYS_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 
 export type AuditQuery = {
     containerFilter?: Query.ContainerFilter;
@@ -79,24 +79,35 @@ export function getEventDataValueDisplay(d: any, showLink = true): ReactNode {
             display = d;
         } else if (typeof d === 'boolean') {
             display = d ? 'true' : 'false';
-        } else {
+        } else if (Map.isMap(d)) {
             if (d.has('formattedValue')) {
                 display = d.get('formattedValue');
             } else {
                 const o = d.has('displayValue') ? d.get('displayValue') : d.get('value');
-                display = o !== null && o !== undefined ? o.toString() : null;
+                display = o?.toString() ?? null;
             }
 
             if (showLink) {
-                let url: string;
                 if (d.get('url')) {
                     display = React.createElement('a', { href: d.get('url') }, display);
                 } else {
-                    url = getTimelineEntityUrl(d);
+                    const url = getTimelineEntityUrl(d.toJS());
+                    if (url) {
+                        display = React.createElement('a', { href: url.toHref() }, display);
+                    }
                 }
+            }
+        } else {
+            if (d.formattedValue) {
+                display = d.formattedValue;
+            } else {
+                display = (d.displayValue ?? d.value)?.toString() ?? null;
+            }
 
-                if (url) {
-                    display = React.createElement('a', { href: url }, display);
+            if (showLink) {
+                const href = d.url ?? getTimelineEntityUrl(d)?.toHref();
+                if (href) {
+                    display = React.createElement('a', { href }, display);
                 }
             }
         }
@@ -105,12 +116,11 @@ export function getEventDataValueDisplay(d: any, showLink = true): ReactNode {
     return display;
 }
 
-export function getTimelineEntityUrl(d: any): string {
+export function getTimelineEntityUrl(d: Record<string, any>): AppURL {
     let url: AppURL;
 
-    if (d.has('urlType')) {
-        const urlType = d.get('urlType');
-        const value = d.get('value');
+    if (d) {
+        const { urlType, value } = d;
 
         switch (urlType) {
             case SAMPLES_KEY:
@@ -125,14 +135,12 @@ export function getTimelineEntityUrl(d: any): string {
             case 'workflowTemplate':
                 url = AppURL.create(WORKFLOW_KEY, 'template', value);
                 break;
-            case 'user':
+            case USER_KEY:
                 url = AppURL.create('q', 'core', 'siteusers', value);
                 break;
             case 'assayRun':
-                if (value instanceof List) {
-                    const values: List<any> = d.get('value');
-                    if (values.size > 1)
-                        url = AppURL.create(ASSAYS_KEY, 'general', values.get(0), 'runs', values.get(1));
+                if (Array.isArray(value) && value.length > 1) {
+                    url = AppURL.create(ASSAYS_KEY, 'general', value[0], 'runs', value[1]);
                 }
                 break;
             default:
@@ -140,5 +148,5 @@ export function getTimelineEntityUrl(d: any): string {
         }
     }
 
-    return url?.toHref();
+    return url;
 }

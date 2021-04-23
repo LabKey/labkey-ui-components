@@ -7,3 +7,6 @@ export const CUSTOM_TEMPLATE_TIP = 'Example: ${Key} ${value}';
 export const DISCUSSION_LINKS_TIP =
     'Optionally allow one or more discussion links to be shown on the details view of each list item.';
 export const SEARCH_INDEXING_TIP = 'Controls how this list is indexed for search within LabKey Server.';
+
+export const VAR_LIST = 'VarList';
+export const INT_LIST = 'IntList';

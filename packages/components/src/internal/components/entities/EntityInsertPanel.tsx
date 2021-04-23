@@ -64,6 +64,8 @@ import {
     SampleCreationTypeModel,
     SchemaQuery,
     SelectInput,
+    useServerContext,
+    User,
     withFormSteps,
     WithFormStepsProps,
     WizardNavButtons,
@@ -144,6 +146,7 @@ interface FromLocationProps {
     selectionKey?: string;
     tab?: number;
     target?: any;
+    user?: User;
 }
 
 type Props = FromLocationProps & OwnProps & WithFormStepsProps;
@@ -995,7 +998,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const uniqueIdFields = [];
         const unknownFields = [];
         const { domainDesign } = domainDetails;
-        let allowedFields = Object.keys(domainDetails.options.get('importAliases')).map(key => key.toLowerCase());
+        let allowedFields = [];
+        if (domainDetails.options.has('importAliases')) {
+            allowedFields = Object.keys(domainDetails.options.get('importAliases')).map(key => key.toLowerCase());
+        }
         if (otherAllowedFields) {
             allowedFields = allowedFields.concat(otherAllowedFields.map(field => field.toLowerCase()));
         }
@@ -1076,6 +1082,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             importOnly,
             nounPlural,
             entityDataType,
+            user,
         } = this.props;
         const { error, file, insertModel, isMerge, isSubmitting, originalQueryInfo } = this.state;
 
@@ -1124,7 +1131,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                     stepIndex={importOnly ? EntityInsertPanelTabs.First : EntityInsertPanelTabs.Second}
                                 >
                                     {this.renderHeader(false)}
-                                    {!disableMerge && (
+                                    {(!disableMerge && user.hasUpdatePermission()) && (
                                         <div className="margin-bottom">
                                             <input
                                                 type="checkbox"
@@ -1213,6 +1220,8 @@ export const EntityInsertPanelFormSteps = withFormSteps(EntityInsertPanelImpl, {
 export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(props => {
     const { location, ...entityInsertPanelProps } = props;
 
+    const { user } = useServerContext();
+
     const fromLocationProps = useMemo<FromLocationProps>(() => {
         if (!location) {
             return {};
@@ -1227,6 +1236,7 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             selectionKey,
             tab: parseInt(tab, 10),
             target,
+            user: user,
         };
     }, [location]);
 

@@ -1085,7 +1085,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "conceptURI": "http://www.labkey.org/exp/xml#sample",
           },
         },
-        "name": "SampleId",
+        "name": "SampleID",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
         "required": true,
       }
@@ -3026,6 +3026,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="TODO"
+            showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={true}
             successBsStyle="success"
@@ -3956,6 +3957,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
+                                                        showFilePropertyType={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable

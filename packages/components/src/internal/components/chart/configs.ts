@@ -1,6 +1,6 @@
 import { AppURL, App, SCHEMAS } from '../../..';
 
-import { ASSAYS_KEY, SAMPLES_KEY } from '../../app';
+import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 
 import { ChartConfig, ChartSelector } from './types';
 

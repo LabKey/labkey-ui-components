@@ -30,6 +30,9 @@ import {
     isNonNegativeInteger,
     toLowerSafe,
     unorderedEqual,
+    isImage,
+    getIconFontCls,
+    formatBytes,
 } from './utils';
 
 const emptyList = List<string>();
@@ -102,12 +105,12 @@ describe('toLowerSafe', () => {
 describe('camelCaseToTitleCase', () => {
     test('function', () => {
         const testStrings = {
-            textACRONYM: "Text ACRONYM",
-            camelCasedText: "Camel Cased Text",
-            CapsCasedText: "Caps Cased Text",
-            CapsCasedTextACRONYM: "Caps Cased Text ACRONYM",
-            ACRONYM: "ACRONYM"
-        }
+            textACRONYM: 'Text ACRONYM',
+            camelCasedText: 'Camel Cased Text',
+            CapsCasedText: 'Caps Cased Text',
+            CapsCasedTextACRONYM: 'Caps Cased Text ACRONYM',
+            ACRONYM: 'ACRONYM',
+        };
 
         for (const [key, value] of Object.entries(testStrings)) {
             expect(camelCaseToTitleCase(key)).toEqual(value);
@@ -329,7 +332,7 @@ describe('getUpdatedData', () => {
             Data: {
                 value: 'data1',
             },
-            AndAgain: {
+            'And/Again': {
                 value: 'again',
             },
             Name: {
@@ -351,7 +354,7 @@ describe('getUpdatedData', () => {
             Data: {
                 value: 'data1',
             },
-            AndAgain: {
+            'And/Again': {
                 value: 'again',
             },
             Name: {
@@ -373,7 +376,7 @@ describe('getUpdatedData', () => {
             Data: {
                 value: 'data1',
             },
-            AndAgain: {
+            'And/Again': {
                 value: 'again',
             },
             Name: {
@@ -395,7 +398,7 @@ describe('getUpdatedData', () => {
             Data: {
                 value: 'data1',
             },
-            AndAgain: {
+            'And/Again': {
                 value: 'again',
             },
             Name: {
@@ -422,7 +425,7 @@ describe('getUpdatedData', () => {
             originalData,
             {
                 Data: 'data1',
-                AndAgain: 'again',
+                'And$SAgain': 'again',
             },
             List<string>(['RowId'])
         );
@@ -435,7 +438,7 @@ describe('getUpdatedData', () => {
             {
                 Value: 'val',
                 Data: 'data1',
-                AndAgain: 'again',
+                'And$SAgain': 'again',
                 Other: 'other3',
             },
             List<string>(['RowId'])
@@ -463,7 +466,7 @@ describe('getUpdatedData', () => {
             {
                 Value: 'val2',
                 Data: 'data2',
-                AndAgain: 'again2',
+                'And$SAgain': 'again2',
                 Other: 'not another',
             },
             List<string>(['RowId'])
@@ -473,28 +476,28 @@ describe('getUpdatedData', () => {
             RowId: 445,
             Value: 'val2',
             Data: 'data2',
-            AndAgain: 'again2',
+            'And/Again': 'again2',
             Other: 'not another',
         });
         expect(updatedData[1]).toStrictEqual({
             RowId: 446,
             Value: 'val2',
             Data: 'data2',
-            AndAgain: 'again2',
+            'And/Again': 'again2',
             Other: 'not another',
         });
         expect(updatedData[2]).toStrictEqual({
             RowId: 447,
             Value: 'val2',
             Data: 'data2',
-            AndAgain: 'again2',
+            'And/Again': 'again2',
             Other: 'not another',
         });
         expect(updatedData[3]).toStrictEqual({
             RowId: 448,
             Value: 'val2',
             Data: 'data2',
-            AndAgain: 'again2',
+            'And/Again': 'again2',
             Other: 'not another',
         });
     });
@@ -504,7 +507,7 @@ describe('getUpdatedData', () => {
             originalData,
             {
                 Value: null,
-                AndAgain: undefined,
+                'And$SAgain': undefined,
                 Other: 'not another',
             },
             List<string>(['RowId'])
@@ -513,23 +516,23 @@ describe('getUpdatedData', () => {
         expect(updatedData[0]).toStrictEqual({
             RowId: 445,
             Value: null,
-            AndAgain: null,
+            'And/Again': null,
             Other: 'not another',
         });
         expect(updatedData[1]).toStrictEqual({
             RowId: 446,
             Value: null,
-            AndAgain: null,
+            'And/Again': null,
             Other: 'not another',
         });
         expect(updatedData[2]).toStrictEqual({
             RowId: 447,
-            AndAgain: null,
+            'And/Again': null,
             Other: 'not another',
         });
         expect(updatedData[3]).toStrictEqual({
             RowId: 448,
-            AndAgain: null,
+            'And/Again': null,
             Other: 'not another',
         });
     });
@@ -1157,5 +1160,44 @@ describe('isIntegerInRange', () => {
         expect(isIntegerInRange(5.4, 4, 7)).toBe(false);
         expect(isIntegerInRange(undefined, 4, 7)).toBe(false);
         expect(isIntegerInRange(null, 4, 7)).toBe(false);
+    });
+});
+
+describe('isImage', () => {
+    test('default', () => {
+        expect(isImage('test')).toBeFalsy();
+        expect(isImage('test.txt')).toBeFalsy();
+        expect(isImage('test.jpg')).toBeTruthy();
+        expect(isImage('test.png')).toBeTruthy();
+        expect(isImage('test.PNG')).toBeTruthy();
+    });
+});
+
+describe('getIconFontCls', () => {
+    test('default', () => {
+        expect(getIconFontCls(undefined)).toBe(undefined);
+        expect(getIconFontCls(null)).toBe(undefined);
+        expect(getIconFontCls('test')).toBe('fa fa-file-o');
+        expect(getIconFontCls('test.txt')).toBe('fa fa-file-text-o');
+        expect(getIconFontCls('test.jpg')).toBe('fa fa-file-image-o');
+    });
+});
+
+describe('formatBytes', () => {
+    test('unknown and zero bytes', () => {
+        expect(formatBytes(undefined)).toBe('Size unknown');
+        expect(formatBytes(null)).toBe('Size unknown');
+        expect(formatBytes(0)).toBe('0 Bytes');
+    });
+
+    test('with bytes', () => {
+        expect(formatBytes(1)).toBe('1 Bytes');
+        expect(formatBytes(10000)).toBe('9.77 KB');
+        expect(formatBytes(10000000)).toBe('9.54 MB');
+        expect(formatBytes(10000000000)).toBe('9.31 GB');
+    });
+
+    test('non default decimals', () => {
+        expect(formatBytes(1234, 3)).toBe('1.205 KB');
     });
 });

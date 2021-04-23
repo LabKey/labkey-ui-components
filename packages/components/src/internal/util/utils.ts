@@ -20,6 +20,7 @@ import { hasParameter, toggleParameter } from '../url/ActionURL'; // do not refa
 import { QueryInfo } from '../../public/QueryInfo';
 
 import { parseDate } from './Date';
+import { encodePart } from '../../public/SchemaQuery';
 
 const emptyList = List<string>();
 
@@ -276,21 +277,24 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
     const updateValuesMap = Map<any, any>(updatedValues);
     const updatedData = originalData.map(originalRowMap => {
         return originalRowMap.reduce((m, fieldValueMap, key) => {
+            // Issue 42672: The original data has keys that are names or captions for the columns.  We need to use
+            // the encoded key that will match what's expected for filtering on the server side (e.g., "U g$Sl" instead of "U g/l")
+            const encodedKey = encodePart(key);
             if (fieldValueMap?.has('value')) {
                 if (primaryKeys.indexOf(key) > -1) {
                     return m.set(key, fieldValueMap.get('value'));
                 } else if (
-                    updateValuesMap.has(key) &&
-                    !isSameWithStringCompare(updateValuesMap.get(key), fieldValueMap.get('value'))
+                    updateValuesMap.has(encodedKey) &&
+                    !isSameWithStringCompare(updateValuesMap.get(encodedKey), fieldValueMap.get('value'))
                 ) {
-                    return m.set(key, updateValuesMap.get(key) == undefined ? null : updateValuesMap.get(key));
+                    return m.set(key, updateValuesMap.get(encodedKey) == undefined ? null : updateValuesMap.get(encodedKey));
                 } else {
                     return m;
                 }
             }
             // Handle multi-value select
             else if (List.isList(fieldValueMap)) {
-                let updatedVal = updateValuesMap.get(key);
+                let updatedVal = updateValuesMap.get(encodedKey);
                 if (Array.isArray(updatedVal)) {
                     updatedVal = updatedVal.map(val => {
                         const match = fieldValueMap.find(original => original.get('value') === val);
@@ -301,7 +305,7 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
                     });
 
                     return m.set(key, updatedVal);
-                } else if (updateValuesMap.has(key) && updatedVal === undefined) {
+                } else if (updateValuesMap.has(encodedKey) && updatedVal === undefined) {
                     return m.set(key, []);
                 } else return m;
             } else return m;
@@ -469,4 +473,114 @@ export function isNonNegativeInteger(value: number | string): boolean {
 
 export function isNonNegativeFloat(value: number | string): boolean {
     return isFloat(value) && Number(value) >= 0;
+}
+
+function getFileExtensionType(value: string): string {
+    const parts = value.split('.');
+    return parts[parts.length - 1].toLowerCase();
+}
+
+export function isImage(value): boolean {
+    const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'ico', 'png', 'svg', 'tif'];
+    const extensionType = getFileExtensionType(value);
+    return validImageExtensions.indexOf(extensionType) > -1;
+}
+
+export function downloadAttachment(href: string, openInTab?: boolean, fileName?: string): void {
+    if (openInTab) {
+        window.open(href, '_blank');
+    } else {
+        const link = document.createElement('a');
+        link.href = href;
+        link.download = fileName;
+        link.click();
+    }
+}
+
+// copied from platform/api/src/org/labkey/api/attachments/Attachment.java
+const EXTENSION_FONT_CLS_MAP = {
+    '7z': 'fa fa-file-archive-o',
+    audio: 'fa fa-file-audio-o',
+    csv: 'fa fa-file-text-o',
+    dll: 'fa fa-file-code-o',
+    doc: 'fa fa-file-word-o',
+    docm: 'fa fa-file-word-o',
+    docx: 'fa fa-file-word-o',
+    dotm: 'fa fa-file-word-o',
+    dotx: 'fa fa-file-word-o',
+    exe: 'fa fa-file-code-o',
+    folder: 'fa fa-folder-o',
+    gz: 'fa fa-file-archive-o',
+    html: 'fa fa-file-code-o',
+    image: 'fa fa-file-image-o',
+    iqy: 'fa fa-file-code-o',
+    jar: 'fa fa-file-archive-o',
+    json: 'fa fa-file-code-o',
+    log: 'fa fa-file-text-o',
+    pdf: 'fa fa-file-pdf-o',
+    potm: 'fa fa-file-powerpoint-o',
+    potx: 'fa fa-file-powerpoint-o',
+    ppsm: 'fa fa-file-powerpoint-o',
+    ppsx: 'fa fa-file-powerpoint-o',
+    ppt: 'fa fa-file-powerpoint-o',
+    pptm: 'fa fa-file-powerpoint-o',
+    pptx: 'fa fa-file-powerpoint-o',
+    prg: 'fa fa-file-code-o',
+    r: 'fa fa-file-code-o',
+    rtf: 'fa fa-file-word-o',
+    sql: 'fa fa-file-code-o',
+    tar: 'fa fa-file-archive-o',
+    text: 'fa fa-file-text-o',
+    tgz: 'fa fa-file-archive-o',
+    tsv: 'fa fa-file-text-o',
+    txt: 'fa fa-file-text-o',
+    video: 'fa fa-file-video-o',
+    vsd: 'fa fa-file-image-o',
+    wiki: 'fa fa-file-code-o',
+    xar: 'fa fa-file-archive-o',
+    xls: 'fa fa-file-excel-o',
+    xlsb: 'fa fa-file-excel-o',
+    xlsm: 'fa fa-file-excel-o',
+    xlsx: 'fa fa-file-excel-o',
+    xltm: 'fa fa-file-excel-o',
+    xltx: 'fa fa-file-excel-o',
+    xml: 'fa fa-file-code-o',
+    zip: 'fa fa-file-archive-o',
+};
+
+export function getIconFontCls(value: string): string {
+    if (!value) {
+        return undefined;
+    }
+
+    const extensionType = getFileExtensionType(value);
+    if (EXTENSION_FONT_CLS_MAP[extensionType]) {
+        return EXTENSION_FONT_CLS_MAP[extensionType];
+    }
+
+    return isImage(value) ? 'fa fa-file-image-o' : 'fa fa-file-o';
+}
+
+/**
+ * Formats number of bytes into a human readable string.
+ * Example:
+ * ```
+ * formatBytes(1024);       // 1 KB
+ * formatBytes('1024');     // 1 KB
+ * formatBytes(1234);       // 1.21 KB
+ * formatBytes(1234, 3);    // 1.205 KB
+ * ```
+ * https://stackoverflow.com/a/18650828
+ */
+export function formatBytes(bytes: number, decimals = 2): string {
+    if (bytes === undefined || bytes === null) return 'Size unknown';
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }

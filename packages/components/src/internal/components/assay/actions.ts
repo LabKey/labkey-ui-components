@@ -250,7 +250,7 @@ export function getImportItemsForAssayDefinitionsQM(
     providerType?: string
 ): OrderedMap<AssayDefinitionModel, string> {
     let targetSQ;
-    const selectionKey = sampleModel ? sampleModel.id : undefined;
+    const selectionKey = sampleModel?.id;
 
     if (sampleModel?.queryInfo) {
         targetSQ = sampleModel.queryInfo.schemaQuery;

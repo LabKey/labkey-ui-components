@@ -4,6 +4,7 @@ import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.js
 import { DomainField } from '../models';
 
 import { ListModel } from './models';
+import { INT_LIST, VAR_LIST } from './constants';
 
 // Minimal domain object mock
 const domainDesign = { fields: [{ name: 'PK', isPrimaryKey: true }] };
@@ -60,11 +61,11 @@ describe('ListModel', () => {
     });
 
     test('getDomainKind', () => {
-        expect(ListModel.create({ options: { keyType: 'Varchar' }, domainDesign }).getDomainKind()).toEqual('VarList');
-        expect(ListModel.create({ options: { keyType: 'Integer' }, domainDesign }).getDomainKind()).toEqual('IntList');
+        expect(ListModel.create({ options: { keyType: 'Varchar' }, domainDesign }).getDomainKind()).toEqual(VAR_LIST);
+        expect(ListModel.create({ options: { keyType: 'Integer' }, domainDesign }).getDomainKind()).toEqual(INT_LIST);
         expect(
             ListModel.create({ options: { keyType: 'AutoIncrementInteger' }, domainDesign }).getDomainKind()
-        ).toEqual('IntList');
+        ).toEqual(INT_LIST);
         expect(ListModel.create({ options: { keyType: undefined }, domainDesign }).getDomainKind()).toBeFalsy();
     });
 

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/test",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Configurations and utilities for JavaScript-based testing",
   "main": "dist/test.js",
   "module": "dist/test.js",

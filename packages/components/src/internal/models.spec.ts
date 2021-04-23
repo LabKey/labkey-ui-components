@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map } from 'immutable';
+import { fromJS, List, Map, Set } from 'immutable';
 
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
-import { QueryInfo, QueryGridModel, SchemaQuery } from '..';
+import { QueryInfo, QueryGridModel, SchemaQuery, QueryColumn } from '..';
 
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
 import { resetQueryGridState } from './global';
@@ -24,6 +24,52 @@ import { resetQueryGridState } from './global';
 const schemaQ = new SchemaQuery({
     schemaName: 'samples',
     queryName: 'Sample Set 2',
+});
+
+const COLUMN_CAN_INSERT_AND_UPDATE = new QueryColumn({
+    fieldKey: 'both',
+    fieldKeyArray: ['both'],
+    shownInInsertView: true,
+    shownInUpdateView: true,
+    userEditable: true,
+});
+const COLUMN_CAN_INSERT = new QueryColumn({
+    fieldKey: 'insert',
+    fieldKeyArray: ['insert'],
+    shownInInsertView: true,
+    shownInUpdateView: false,
+    userEditable: true,
+});
+const COLUMN_CAN_UPDATE = new QueryColumn({
+    fieldKey: 'update',
+    fieldKeyArray: ['update'],
+    shownInInsertView: false,
+    shownInUpdateView: true,
+    userEditable: true,
+});
+const COLUMN_CANNOT_INSERT_AND_UPDATE = new QueryColumn({
+    fieldKey: 'neither',
+    fieldKeyArray: ['neither'],
+    shownInInsertView: false,
+    shownInUpdateView: false,
+    userEditable: true,
+});
+const COLUMN_FILE_INPUT = new QueryColumn({
+    fieldKey: 'fileInput',
+    fieldKeyArray: ['fileInput'],
+    shownInInsertView: true,
+    shownInUpdateView: true,
+    userEditable: true,
+    inputType: 'file',
+});
+const QUERY_INFO = QueryInfo.fromJSON({
+    columns: {
+        both: COLUMN_CAN_INSERT_AND_UPDATE,
+        insert: COLUMN_CAN_INSERT,
+        update: COLUMN_CAN_UPDATE,
+        neither: COLUMN_CANNOT_INSERT_AND_UPDATE,
+        fileInput: COLUMN_FILE_INPUT,
+    },
 });
 
 beforeEach(() => {
@@ -523,7 +569,7 @@ describe('EditorModel', () => {
                         value: 'orange',
                         ignoreMe: 'nothing to see',
                     },
-                    withDisplayValue: {
+                    'withDisplay/Value': {
                         value: 'b',
                         displayValue: 'blue',
                         otherField: 'irrelevant',
@@ -541,7 +587,7 @@ describe('EditorModel', () => {
                         value: 'orangish',
                         ignoreMe: 'nothing to see',
                     },
-                    withDisplayValue: {
+                    'withDisplay/Value': {
                         value: 'b',
                         displayValue: 'black',
                         otherField: 'irrelevant',
@@ -553,18 +599,18 @@ describe('EditorModel', () => {
             });
             const updates = Map<any, any>({
                 withValue: 'purple',
-                withDisplayValue: 'teal',
+                'withDisplay$SValue': 'teal',
             });
             expect(EditorModel.convertQueryDataToEditorData(queryData, updates)).toStrictEqual(
                 Map<string, any>({
                     1: Map<string, any>({
                         withValue: 'purple',
-                        withDisplayValue: 'teal',
+                        withDisplay$SValue: 'teal',
                         doNotChangeMe: 'fred',
                     }),
                     2: Map<string, any>({
                         withValue: 'purple',
-                        withDisplayValue: 'teal',
+                        withDisplay$SValue: 'teal',
                         doNotChangeMe: 'maroon',
                     }),
                 })
@@ -634,6 +680,180 @@ describe('EditorModel', () => {
                     }),
                 })
             );
+        });
+    });
+
+    describe('utils', () => {
+        test('getMessage', () => {
+            const model = new EditorModel({
+                cellMessages: fromJS({
+                    '0-0': 'a',
+                    '1-1': 'b',
+                }),
+            });
+            expect(model.getMessage(0, 0)).toBe('a');
+            expect(model.getMessage(1, 0)).toBe(undefined);
+            expect(model.getMessage(0, 1)).toBe(undefined);
+            expect(model.getMessage(1, 1)).toBe('b');
+        });
+
+        test('getColumns without queryInfo', () => {
+            const gridModel = new QueryGridModel({});
+            const editorModel = new EditorModel({});
+            expect(editorModel.getColumns(gridModel).size).toBe(0);
+            expect(editorModel.getColumns(gridModel, true).size).toBe(0);
+        });
+
+        test('getColumns forInsert', () => {
+            const gridModel = new QueryGridModel({ queryInfo: QUERY_INFO });
+            const editorModel = new EditorModel({});
+            const columns = editorModel.getColumns(gridModel);
+            expect(columns.size).toBe(2);
+            expect(columns.get(0)).toBe(COLUMN_CAN_INSERT_AND_UPDATE);
+            expect(columns.get(1)).toBe(COLUMN_CAN_INSERT);
+        });
+
+        test('getColumns forUpdate', () => {
+            const gridModel = new QueryGridModel({ queryInfo: QUERY_INFO });
+            const editorModel = new EditorModel({});
+            const columns = editorModel.getColumns(gridModel, true);
+            expect(columns.size).toBe(2);
+            expect(columns.get(0)).toBe(COLUMN_CAN_INSERT_AND_UPDATE);
+            expect(columns.get(1)).toBe(COLUMN_CAN_UPDATE);
+        });
+
+        test('getColumns readOnlyColumns', () => {
+            const gridModel = new QueryGridModel({ queryInfo: QUERY_INFO });
+            const editorModel = new EditorModel({});
+            const columns = editorModel.getColumns(gridModel, true, List(['neither']));
+            expect(columns.size).toBe(3);
+            expect(columns.get(0)).toBe(COLUMN_CAN_INSERT_AND_UPDATE);
+            expect(columns.get(1)).toBe(COLUMN_CAN_UPDATE);
+            expect(columns.get(2).fieldKey).toBe(COLUMN_CANNOT_INSERT_AND_UPDATE.fieldKey);
+            expect(columns.get(2).readOnly).toBe(true);
+        });
+
+        test('getColumns getInsertColumns', () => {
+            const gridModel = new QueryGridModel({ queryInfo: QUERY_INFO });
+            const editorModel = new EditorModel({});
+            const columns = editorModel.getColumns(gridModel, false, undefined, () => {
+                return List([COLUMN_CANNOT_INSERT_AND_UPDATE, COLUMN_CAN_INSERT]);
+            });
+            expect(columns.size).toBe(2);
+            expect(columns.get(0)).toBe(COLUMN_CANNOT_INSERT_AND_UPDATE);
+            expect(columns.get(1)).toBe(COLUMN_CAN_INSERT);
+        });
+
+        test('getValue', () => {
+            const model = new EditorModel({
+                cellValues: fromJS({
+                    '0-0': List([{ display: 'A', raw: 'a' } as ValueDescriptor]),
+                    '1-1': List([{ display: 'B', raw: 'b' } as ValueDescriptor]),
+                }),
+            });
+            expect(model.getValue(0, 0).size).toBe(1);
+            expect(model.getValue(0, 0).get(0).raw).toBe('a');
+            expect(model.getValue(1, 0).size).toBe(0);
+            expect(model.getValue(0, 1).size).toBe(0);
+            expect(model.getValue(1, 1).size).toBe(1);
+            expect(model.getValue(1, 1).get(0).raw).toBe('b');
+        });
+
+        test('hasFocus', () => {
+            expect(new EditorModel({ focusColIdx: -1, focusRowIdx: -1 }).hasFocus()).toBeFalsy();
+            expect(new EditorModel({ focusColIdx: -1, focusRowIdx: 0 }).hasFocus()).toBeFalsy();
+            expect(new EditorModel({ focusColIdx: 0, focusRowIdx: -1 }).hasFocus()).toBeFalsy();
+            expect(new EditorModel({ focusColIdx: 0, focusRowIdx: 0 }).hasFocus()).toBeTruthy();
+        });
+
+        test('isFocused', () => {
+            const model = new EditorModel({ focusColIdx: 0, focusRowIdx: 0 });
+            expect(model.isFocused(-1, -1)).toBeFalsy();
+            expect(model.isFocused(-1, 0)).toBeFalsy();
+            expect(model.isFocused(0, -1)).toBeFalsy();
+            expect(model.isFocused(0, 0)).toBeTruthy();
+            expect(model.isFocused(0, 1)).toBeFalsy();
+            expect(model.isFocused(1, 0)).toBeFalsy();
+            expect(model.isFocused(1, 1)).toBeFalsy();
+        });
+
+        test('hasSelection', () => {
+            expect(new EditorModel({ selectedColIdx: -1, selectedRowIdx: -1 }).hasSelection()).toBeFalsy();
+            expect(new EditorModel({ selectedColIdx: -1, selectedRowIdx: 0 }).hasSelection()).toBeFalsy();
+            expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: -1 }).hasSelection()).toBeFalsy();
+            expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: 0 }).hasSelection()).toBeTruthy();
+        });
+
+        test('isSelected', () => {
+            const model = new EditorModel({ selectedColIdx: 0, selectedRowIdx: 0 });
+            expect(model.isSelected(-1, -1)).toBeFalsy();
+            expect(model.isSelected(-1, 0)).toBeFalsy();
+            expect(model.isSelected(0, -1)).toBeFalsy();
+            expect(model.isSelected(0, 0)).toBeTruthy();
+            expect(model.isSelected(0, 1)).toBeFalsy();
+            expect(model.isSelected(1, 0)).toBeFalsy();
+            expect(model.isSelected(1, 1)).toBeFalsy();
+        });
+
+        test('hasMultipleSelection', () => {
+            expect(new EditorModel({ selectionCells: Set([]) }).hasMultipleSelection()).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['0-0']) }).hasMultipleSelection()).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['0-0', '1-1']) }).hasMultipleSelection()).toBeTruthy();
+        });
+
+        test('isInBounds', () => {
+            const model = new EditorModel({ colCount: 1, rowCount: 1 });
+            expect(model.isInBounds(-1, -1)).toBeFalsy();
+            expect(model.isInBounds(0, -1)).toBeFalsy();
+            expect(model.isInBounds(-1, 0)).toBeFalsy();
+            expect(model.isInBounds(0, 0)).toBeTruthy();
+            expect(model.isInBounds(0, 1)).toBeFalsy();
+            expect(model.isInBounds(1, 0)).toBeFalsy();
+            expect(model.isInBounds(1, 1)).toBeFalsy();
+        });
+
+        test('inSelection', () => {
+            const model = new EditorModel({ selectionCells: Set(['0-0', '1-1']) });
+            expect(model.inSelection(-1, -1)).toBeFalsy();
+            expect(model.inSelection(0, -1)).toBeFalsy();
+            expect(model.inSelection(-1, 0)).toBeFalsy();
+            expect(model.inSelection(0, 0)).toBeTruthy();
+            expect(model.inSelection(0, 1)).toBeFalsy();
+            expect(model.inSelection(1, 0)).toBeFalsy();
+            expect(model.inSelection(1, 1)).toBeTruthy();
+        });
+
+        test('hasRawValue', () => {
+            const model = new EditorModel({});
+            expect(model.hasRawValue(undefined)).toBeFalsy();
+            expect(model.hasRawValue({} as ValueDescriptor)).toBeFalsy();
+            expect(model.hasRawValue({ raw: undefined } as ValueDescriptor)).toBeFalsy();
+            expect(model.hasRawValue({ raw: '' } as ValueDescriptor)).toBeFalsy();
+            expect(model.hasRawValue({ raw: ' ' } as ValueDescriptor)).toBeFalsy();
+            expect(model.hasRawValue({ raw: ' test' } as ValueDescriptor)).toBeTruthy();
+        });
+
+        test('hasData', () => {
+            let model = new EditorModel({
+                cellValues: fromJS({
+                    '0-0': List([{} as ValueDescriptor]),
+                }),
+            });
+            expect(model.hasData()).toBeFalsy();
+
+            model = new EditorModel({
+                cellValues: fromJS({
+                    '0-0': List([{ raw: ' ' } as ValueDescriptor]),
+                }),
+            });
+            expect(model.hasData()).toBeFalsy();
+
+            model = new EditorModel({
+                cellValues: fromJS({
+                    '0-0': List([{ raw: 'a' } as ValueDescriptor]),
+                }),
+            });
+            expect(model.hasData()).toBeTruthy();
         });
     });
 });

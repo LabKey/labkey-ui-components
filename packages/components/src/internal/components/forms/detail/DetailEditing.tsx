@@ -21,9 +21,14 @@ import { AuditBehaviorTypes } from '@labkey/api';
 
 import { updateRows, Alert, resolveErrorMessage, QueryColumn, QueryGridModel } from '../../../..';
 
+import { fileInputRenderer } from '../renderers';
+
 import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { extractChanges } from './utils';
+import { DetailRenderer } from './DetailDisplay';
+
+const EMPTY_FILE_FOR_DELETE = new File([], '');
 
 interface Props {
     appEditable?: boolean;
@@ -39,6 +44,7 @@ interface Props {
     submitText?: string;
     title?: string;
     useEditIcon: boolean;
+    detailRenderer?: DetailRenderer;
 }
 
 interface State {
@@ -47,6 +53,7 @@ interface State {
     error: ReactNode;
     isSubmitting: boolean;
     warning: string;
+    fileMap: Record<string, File>;
 }
 
 export class DetailEditing extends Component<Props, State> {
@@ -62,6 +69,7 @@ export class DetailEditing extends Component<Props, State> {
         warning: undefined,
         error: undefined,
         isSubmitting: false,
+        fileMap: {},
     };
 
     disableSubmitButton = (): void => {
@@ -89,17 +97,31 @@ export class DetailEditing extends Component<Props, State> {
         }
     };
 
+    handleFileInputChange = (fileMap: Record<string, File>): void => {
+        this.setState(state => ({
+            fileMap: { ...state.fileMap, ...fileMap },
+            canSubmit: true,
+        }));
+    };
+
+    fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
+        const updatedFile = this.state.fileMap[col.name];
+        return fileInputRenderer(col, data, updatedFile, this.handleFileInputChange);
+    };
+
     handleSubmit = values => {
         this.setState(() => ({ isSubmitting: true }));
 
         const { auditBehavior, queryModel, onEditToggle, onUpdate } = this.props;
+        const { fileMap } = this.state;
         const queryData = queryModel.getRow();
         const queryInfo = queryModel.queryInfo;
         const schemaQuery = queryInfo.schemaQuery;
         const updatedValues = extractChanges(queryInfo, queryData, values);
+        const hasFileUpdates = Object.keys(fileMap).length > 0;
 
         // If form contains new values, proceed to update
-        if (Object.keys(updatedValues).length > 0) {
+        if (Object.keys(updatedValues).length > 0 || hasFileUpdates) {
             // iterate the set of pkCols for this QueryInfo -- include value from queryData
             queryInfo.getPkCols().forEach(pkCol => {
                 const pkVal = queryData.getIn([pkCol.fieldKey, 'value']);
@@ -111,9 +133,19 @@ export class DetailEditing extends Component<Props, State> {
                 }
             });
 
+            // to support file/attachment columns, we need to pass them in as FormData and updateRows will handle the rest
+            let form;
+            if (hasFileUpdates) {
+                form = new FormData();
+                Object.keys(fileMap).forEach(key => {
+                    form.append(key, fileMap[key] ?? EMPTY_FILE_FOR_DELETE);
+                });
+            }
+
             return updateRows({
                 schemaQuery,
                 rows: [updatedValues],
+                form,
                 auditBehavior,
             })
                 .then(() => {
@@ -126,7 +158,6 @@ export class DetailEditing extends Component<Props, State> {
                     );
                 })
                 .catch(error => {
-                    console.error(error);
                     this.setState(() => ({
                         warning: undefined,
                         isSubmitting: false,
@@ -155,6 +186,7 @@ export class DetailEditing extends Component<Props, State> {
             asSubPanel,
             submitText,
             title,
+            detailRenderer,
         } = this.props;
         const { canSubmit, editing, isSubmitting, warning, error } = this.state;
 
@@ -183,6 +215,8 @@ export class DetailEditing extends Component<Props, State> {
                 editingMode={editingMode}
                 queryColumns={queryColumns}
                 queryModel={queryModel}
+                detailRenderer={editingMode ? undefined : detailRenderer}
+                fileInputRenderer={this.fileInputRenderer}
             />
         );
 

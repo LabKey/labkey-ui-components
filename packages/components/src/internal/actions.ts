@@ -3098,15 +3098,15 @@ interface IClientSideMetricCountResponse {
 }
 
 export function incrementClientSideMetricCount(
-    metricName: string,
-    applicationName?: string
+    featureArea: string,
+    metricName: string
 ): Promise<IClientSideMetricCountResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('core', 'incrementClientSideMetricCount.api'),
             method: 'POST',
             jsonData: {
-                applicationName,
+                featureArea,
                 metricName,
             },
             success: Utils.getCallbackWrapper(response => {

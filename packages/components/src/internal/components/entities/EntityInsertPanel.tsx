@@ -96,6 +96,9 @@ import {
 import { getUniqueIdColumnMetadata } from './utils';
 import { getEntityTypeData, handleEntityFileImport } from './actions';
 
+const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description'];
+const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
+const ALIQUOT_NOUN_PLURAL = 'Aliquots';
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
 
@@ -160,6 +163,7 @@ interface StateProps {
     originalQueryInfo: QueryInfo;
     useAsync: boolean;
     fieldsWarningMsg: ReactNode;
+    creationType: SampleCreationType;
 }
 
 export class EntityInsertPanelImpl extends Component<Props, StateProps> {
@@ -194,6 +198,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             file: undefined,
             useAsync: false,
             fieldsWarningMsg: undefined,
+            creationType: props.creationType,
         };
     }
 
@@ -239,7 +244,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     init = async (): Promise<void> => {
         const {
             auditBehavior,
-            creationType,
             entityDataType,
             numPerParent,
             parentDataTypes,
@@ -247,6 +251,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             selectionKey,
             target,
         } = this.props;
+
+        const { creationType } = this.state;
+
         const allowParents = this.allowParents();
 
         let { insertModel } = this.state;
@@ -354,8 +361,17 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         return undefined;
     };
 
+    getAliquotCreationColumns = (allColumns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> => {
+        let columns = OrderedMap<string, QueryColumn>();
+
+        allColumns.forEach((column, key) => {
+            if (ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) > -1) columns = columns.set(key, column);
+        });
+        return columns;
+    };
+
     getGridQueryInfo = (): QueryInfo => {
-        const { insertModel, originalQueryInfo } = this.state;
+        const { insertModel, originalQueryInfo, creationType } = this.state;
         const { entityDataType } = this.props;
 
         if (originalQueryInfo) {
@@ -366,17 +382,19 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     .findIndex(column => column.fieldKey === entityDataType.uniqueFieldKey)
             );
             const newColumnIndex = nameIndex + insertModel.getParentCount();
-            const columns = originalQueryInfo.insertColumns(
+            let columns = originalQueryInfo.insertColumns(
                 newColumnIndex,
                 insertModel.getParentColumns(entityDataType.uniqueFieldKey)
             );
+            if (creationType === SampleCreationType.Aliquots) columns = this.getAliquotCreationColumns(columns);
+
             return originalQueryInfo.merge({ columns }) as QueryInfo;
         }
         return undefined;
     };
 
     changeTargetEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption): void => {
-        const { insertModel } = this.state;
+        const { insertModel, creationType } = this.state;
 
         // Clear previous selection model
         this.removeQueryGridModel();
@@ -386,7 +404,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             isError: false,
             errors: undefined,
         }) as EntityIdCreationModel;
-        if (!selectedOption) {
+        if (creationType === SampleCreationType.Aliquots) {
+            updatedModel = updatedModel.merge({
+                entityCount: 0,
+            }) as EntityIdCreationModel;
+        } else if (!selectedOption) {
             updatedModel = updatedModel.merge({
                 entityParents: insertModel.getClearedEntityParents(),
             }) as EntityIdCreationModel;
@@ -398,7 +420,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 insertModel: updatedModel,
             }),
             () => {
-                if (!selectedOption) {
+                if (!selectedOption || creationType === SampleCreationType.Aliquots) {
                     queryGridInvalidate(insertModel.getSchemaQuery(), true);
                 }
                 this.gridInit(updatedModel);
@@ -583,7 +605,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     renderHeader = (isGrid: boolean): ReactNode => {
-        const { insertModel } = this.state;
+        const { insertModel, creationType } = this.state;
 
         if (!insertModel) return null;
 
@@ -613,8 +635,38 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                             'Something went wrong loading the data for this page.  Please try again.'}
                     </Alert>
                 )}
-                {!insertModel.isError && isGrid && hasTargetEntityType && this.renderParentTypesAndButtons()}
+                {!insertModel.isError &&
+                    isGrid &&
+                    hasTargetEntityType &&
+                    creationType !== SampleCreationType.Aliquots &&
+                    this.renderParentTypesAndButtons()}
+                {!insertModel.isError &&
+                    isGrid &&
+                    creationType === SampleCreationType.Aliquots &&
+                    this.renderAliquotResetMsg()}
             </>
+        );
+    };
+
+    resetCreationType = () => {
+        this.setState(
+            () => ({
+                creationType: SampleCreationType.Independents,
+            }),
+            () => {
+                this.changeTargetEntityType(null, null, null);
+            }
+        );
+    };
+
+    renderAliquotResetMsg = () => {
+        return (
+            <Alert bsStyle="info">
+                Parent and source types cannot be changed when creating aliquots.{' '}
+                <span className="pull-right" onClick={this.resetCreationType}>
+                    Clear Aliquots and Reset.
+                </span>
+            </Alert>
         );
     };
 
@@ -716,11 +768,16 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     renderGridButtons = (): ReactNode => {
-        const { insertModel, isSubmitting } = this.state;
+        const { insertModel, isSubmitting, creationType } = this.state;
         const queryModel = this.getQueryGridModel();
         const editorModel = queryModel ? getEditorModel(queryModel.getId()) : undefined;
         if (insertModel?.isInit) {
-            const noun = insertModel.entityCount === 1 ? this.capNounSingular : this.capNounPlural;
+            const isAliquotCreation = creationType === SampleCreationType.Aliquots;
+
+            const nounSingle = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_SINGULAR) : this.capNounSingular;
+            const nounPlural = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_PLURAL) : this.capNounPlural;
+            const noun = insertModel.entityCount === 1 ? nounSingle : nounPlural;
+
             return (
                 <div className="form-group no-margin-bottom">
                     <div className="pull-left">
@@ -797,8 +854,17 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     getGeneratedIdColumnMetadata(): Map<string, EditableColumnMetadata> {
         const { entityDataType, nounSingular, nounPlural } = this.props;
+        const { creationType } = this.state;
         let columnMetadata = getUniqueIdColumnMetadata(this.getGridQueryInfo());
-        if (!this.isNameRequired()) {
+        if (creationType === SampleCreationType.Aliquots) {
+            columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
+                caption: 'Aliquot ID',
+                readOnly: false,
+                placeholder: '[generated id]',
+                toolTip:
+                    "A generated Aliquot ID will be provided for Aliquots that don't have a user-provided ID in the grid.",
+            });
+        } else if (!this.isNameRequired()) {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 readOnly: false,
                 placeholder: '[generated id]',
@@ -813,13 +879,27 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     }
 
     renderCreateFromGrid = (): ReactNode => {
-        const { insertModel } = this.state;
-        const { creationTypeOptions, entityDataType, nounPlural, nounSingular, onBulkAdd } = this.props;
+        const { insertModel, creationType } = this.state;
+        const { creationTypeOptions, nounPlural, nounSingular, onBulkAdd } = this.props;
 
         const columnMetadata = this.getGeneratedIdColumnMetadata();
 
         const queryGridModel = this.getQueryGridModel();
         const isLoaded = !!queryGridModel?.isLoaded;
+
+        const isAliquotCreation = creationType === SampleCreationType.Aliquots;
+        const gridNounSingularCap = isAliquotCreation
+            ? capitalizeFirstChar(ALIQUOT_NOUN_SINGULAR)
+            : this.capNounSingular;
+        const gridNounPluralCap = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_PLURAL) : this.capNounPlural;
+        const gridNounPlural = isAliquotCreation ? ALIQUOT_NOUN_PLURAL : nounPlural;
+
+        let bulkCreationTypeOptions = creationTypeOptions;
+        const selectedType = creationTypeOptions?.find(type => type.type === creationType);
+        if (selectedType)
+            bulkCreationTypeOptions = bulkCreationTypeOptions.filter(
+                option => option.typeGroup === selectedType.typeGroup
+            );
 
         return (
             <>
@@ -832,8 +912,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     {isLoaded && (
                         <EditableGridPanel
                             addControlProps={{
-                                nounSingular: this.capNounSingular,
-                                nounPlural: this.capNounPlural,
+                                nounSingular: gridNounSingularCap,
+                                nounPlural: gridNounPluralCap,
                                 placement: 'top' as PlacementType,
                                 wrapperClass: 'pull-left',
                                 maxCount: MAX_EDITABLE_GRID_ROWS,
@@ -845,21 +925,21 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                             striped
                             bulkAddText="Bulk Insert"
                             bulkAddProps={{
-                                title: `Bulk Creation of ${this.capNounPlural}`,
-                                header: `Add a batch of ${nounPlural} that will share the properties set below.`,
+                                title: `Bulk Creation of ${gridNounPluralCap}`,
+                                header: `Add a batch of ${gridNounPlural} that will share the properties set below.`,
                                 columnFilter: this.columnFilter,
                                 fieldValues: this.getBulkAddFormValues(),
-                                creationTypeOptions,
-                                countText: `New ${nounPlural}`,
+                                creationTypeOptions: bulkCreationTypeOptions,
+                                countText: `New ${gridNounPlural}`,
                             }}
                             onBulkAdd={onBulkAdd}
                             bulkUpdateProps={{ columnFilter: this.columnFilter }}
-                            bulkRemoveText={'Remove ' + this.capNounPlural}
+                            bulkRemoveText={'Remove ' + gridNounPluralCap}
                             columnMetadata={columnMetadata}
                             onRowCountChange={this.onRowCountChange}
                             model={queryGridModel}
                             initialEmptyRowCount={0}
-                            emptyGridMsg={`Start by adding the quantity of ${nounPlural} you want to create.`}
+                            emptyGridMsg={`Start by adding the quantity of ${gridNounPlural} you want to create.`}
                             maxTotalRows={this.props.maxEntities}
                             getInsertColumns={this.getInsertColumns}
                         />
@@ -1131,7 +1211,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                     stepIndex={importOnly ? EntityInsertPanelTabs.First : EntityInsertPanelTabs.Second}
                                 >
                                     {this.renderHeader(false)}
-                                    {(!disableMerge && user.hasUpdatePermission()) && (
+                                    {!disableMerge && user.hasUpdatePermission() && (
                                         <div className="margin-bottom">
                                             <input
                                                 type="checkbox"

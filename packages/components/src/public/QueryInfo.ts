@@ -230,12 +230,18 @@ export class QueryInfo extends Record({
     }
 
     getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
+        const lowerReadOnlyColumnsList = readOnlyColumns?.reduce((lowerReadOnlyColumnsList, value) => {
+            return lowerReadOnlyColumnsList.push(value.toLowerCase());
+        }, List<string>());
         return this.columns
             .filter(column => {
-                return column.isUpdateColumn || (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1);
+                return (
+                    column.isUpdateColumn ||
+                    (lowerReadOnlyColumnsList && lowerReadOnlyColumnsList.indexOf(column.fieldKey.toLowerCase()) > -1)
+                );
             })
             .map(column => {
-                if (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1) {
+                if (lowerReadOnlyColumnsList && lowerReadOnlyColumnsList.indexOf(column.fieldKey.toLowerCase()) > -1) {
                     return column.set('readOnly', true) as QueryColumn;
                 } else {
                     return column;

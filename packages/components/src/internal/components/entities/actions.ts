@@ -78,7 +78,11 @@ export function getDataDeleteConfirmationData(
     return getDeleteConfirmationData(selectionKey, DataClassDataType, rowIds);
 }
 
-function getSelectedParents(schemaQuery: SchemaQuery, filterArray: Filter.IFilter[]): Promise<List<EntityParentType>> {
+function getSelectedParents(
+    schemaQuery: SchemaQuery,
+    filterArray: Filter.IFilter[],
+    isAliquotParent?: boolean
+): Promise<List<EntityParentType>> {
     return new Promise((resolve, reject) => {
         return selectRows({
             schemaName: schemaQuery.schemaName,
@@ -87,7 +91,7 @@ function getSelectedParents(schemaQuery: SchemaQuery, filterArray: Filter.IFilte
             filterArray,
         })
             .then(response => {
-                resolve(resolveEntityParentTypeFromIds(schemaQuery, response));
+                resolve(resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent));
             })
             .catch(reason => {
                 console.error("There was a problem getting the selected parents' data", reason);
@@ -102,25 +106,35 @@ function getSelectedParents(schemaQuery: SchemaQuery, filterArray: Filter.IFilte
  * assumes parents from a single data type.
  * @param initialParents
  * @param selectionKey
+ * @param creationType
  */
-function initParents(initialParents: string[], selectionKey: string): Promise<List<EntityParentType>> {
+function initParents(
+    initialParents: string[],
+    selectionKey: string,
+    creationType?: SampleCreationType
+): Promise<List<EntityParentType>> {
+    const isAliquotParent = creationType === SampleCreationType.Aliquots;
     return new Promise((resolve, reject) => {
         if (selectionKey) {
             const { schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
             const queryGridModel = getQueryGridModel(selectionKey);
 
             if (queryGridModel && queryGridModel.selectedLoaded) {
-                return getSelectedParents(schemaQuery, [
-                    Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN),
-                ])
+                return getSelectedParents(
+                    schemaQuery,
+                    [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)],
+                    isAliquotParent
+                )
                     .then(response => resolve(response))
                     .catch(reason => reject(reason));
             } else {
                 return getSelected(selectionKey)
                     .then(selectionResponse => {
-                        return getSelectedParents(schemaQuery, [
-                            Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),
-                        ])
+                        return getSelectedParents(
+                            schemaQuery,
+                            [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)],
+                            isAliquotParent
+                        )
                             .then(response => resolve(response))
                             .catch(reason => reject(reason));
                     })
@@ -143,12 +157,17 @@ function initParents(initialParents: string[], selectionKey: string): Promise<Li
                             query,
                             value: List<DisplayObject>(),
                             isParentTypeOnly: true, // tell the UI to keep the parent type but not add any default rows to the editable grid
+                            isAliquotParent,
                         }),
                     ])
                 );
             }
 
-            return getSelectedParents(SchemaQuery.create(schema, query), [Filter.create('RowId', value)])
+            return getSelectedParents(
+                SchemaQuery.create(schema, query),
+                [Filter.create('RowId', value)],
+                isAliquotParent
+            )
                 .then(response => resolve(response))
                 .catch(reason => reject(reason));
         } else {
@@ -157,7 +176,11 @@ function initParents(initialParents: string[], selectionKey: string): Promise<Li
     });
 }
 
-function resolveEntityParentTypeFromIds(schemaQuery: SchemaQuery, response: any): List<EntityParentType> {
+function resolveEntityParentTypeFromIds(
+    schemaQuery: SchemaQuery,
+    response: any,
+    isAliquotParent?: boolean
+): List<EntityParentType> {
     const { key, models, orderedModels } = response;
     const rows = fromJS(models[key]);
     let data = List<DisplayObject>();
@@ -177,6 +200,7 @@ function resolveEntityParentTypeFromIds(schemaQuery: SchemaQuery, response: any)
             schema: schemaQuery.getSchema(),
             query: schemaQuery.getQuery(),
             value: data,
+            isAliquotParent,
         }),
     ]);
 }
@@ -208,7 +232,7 @@ export function getChosenParentData(
 
         if (allowParents) {
             const parentSchemaNames = parentEntityDataTypes.keySeq();
-            initParents(model.originalParents, model.selectionKey)
+            initParents(model.originalParents, model.selectionKey, model.creationType)
                 .then(chosenParents => {
                     // if we have an initial parent, we want to start with a row in the grid (entityCount = 1) otherwise we start with none
                     const parentRep = chosenParents.find(
@@ -221,7 +245,11 @@ export function getChosenParentData(
                             : parentRep.value.size * numPerParent
                         : 0;
 
-                    if (validEntityCount >= 1 || parentRep?.isParentTypeOnly) {
+                    if (
+                        validEntityCount >= 1 ||
+                        parentRep?.isParentTypeOnly ||
+                        model.creationType === SampleCreationType.Aliquots
+                    ) {
                         resolve({
                             entityCount: validEntityCount,
                             entityParents: entityParents.set(

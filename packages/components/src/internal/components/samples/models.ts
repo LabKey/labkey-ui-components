@@ -5,12 +5,18 @@ export enum SampleCreationType {
     Aliquots = 'Aliquots',
 }
 
+export enum SampleCreationTypeGroup {
+    samples,
+    aliquots,
+}
+
 export interface SampleCreationTypeModel {
     type: SampleCreationType;
     description?: string;
     quantityLabel?: string;
     disabledDescription?: string;
     minParentsPerSample: number;
+    typeGroup: SampleCreationTypeGroup;
     iconSrc?: string;
     iconUrl?: string;
     disabled?: boolean;
@@ -23,6 +29,7 @@ export const CHILD_SAMPLE_CREATION: SampleCreationTypeModel = {
     minParentsPerSample: 1,
     iconSrc: 'derivatives',
     quantityLabel: 'New samples per parent',
+    typeGroup: SampleCreationTypeGroup.samples,
 };
 
 export const DERIVATIVE_CREATION: SampleCreationTypeModel = {
@@ -32,6 +39,7 @@ export const DERIVATIVE_CREATION: SampleCreationTypeModel = {
     minParentsPerSample: 1,
     iconSrc: 'derivatives',
     quantityLabel: 'Derivatives per parent',
+    typeGroup: SampleCreationTypeGroup.samples,
 };
 
 export const POOLED_SAMPLE_CREATION: SampleCreationTypeModel = {
@@ -40,6 +48,7 @@ export const POOLED_SAMPLE_CREATION: SampleCreationTypeModel = {
     minParentsPerSample: 2,
     iconSrc: 'pooled',
     quantityLabel: 'New samples per parent group',
+    typeGroup: SampleCreationTypeGroup.samples,
 };
 
 export const ALIQUOT_CREATION: SampleCreationTypeModel = {
@@ -48,4 +57,5 @@ export const ALIQUOT_CREATION: SampleCreationTypeModel = {
     minParentsPerSample: 1,
     iconSrc: 'aliquots',
     quantityLabel: 'Aliquots per parent',
+    typeGroup: SampleCreationTypeGroup.aliquots,
 };

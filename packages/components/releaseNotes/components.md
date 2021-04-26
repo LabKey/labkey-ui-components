@@ -5,6 +5,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 8789: Add util function for incrementClientSideMetricCount()
 
+### version 2.25.0
+*Released*: 23 April 2021
+* EditableGrid:
+    * EditableGridPanel and EditableGridPanelForUpdate support multiple models in a tabbed view
+    * Allow setting cell to read only with columnMetadata
+    * Allow getUpdateColumns override
+    * Set caption with columnMetadata
+* Support aliquot creation mode for EntityInsertPanel
+* Add header props to BulkUpdateForm
+
 ### version 2.24.4
 *Released*: 23 April 2021
 * Issue 42872: Handle field names with special characters in grids and forms better.

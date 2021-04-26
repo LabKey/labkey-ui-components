@@ -26,13 +26,14 @@ import {
     ViewInfo,
 } from '..';
 
+import { encodePart } from '../public/SchemaQuery';
+
 import { genCellKey } from './actions';
 import { getQueryColumnRenderers, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './components/GridLoader';
 import { GRID_EDIT_INDEX } from './constants';
 import { IQueryGridModel } from './QueryGridModel';
 import { getDateTimeFormat, parseDate } from './util/Date';
-import { encodePart } from '../public/SchemaQuery';
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];
@@ -373,11 +374,15 @@ export class EditorModel
         model: QueryGridModel,
         forUpdate?: boolean,
         readOnlyColumns?: List<string>,
-        getInsertColumns?: () => List<QueryColumn>
+        getInsertColumns?: () => List<QueryColumn>,
+        getUpdateColumns?: () => List<QueryColumn>
     ): List<QueryColumn> {
         let columns;
         if (forUpdate) {
-            columns = model.getUpdateColumns(readOnlyColumns);
+            if (getUpdateColumns) columns = getUpdateColumns();
+            if (!columns)
+                // getUpdateColumns might return null
+                columns = model.getUpdateColumns(readOnlyColumns);
         } else {
             if (getInsertColumns) {
                 columns = getInsertColumns();
@@ -414,7 +419,7 @@ export class EditorModel
                 if (renderer?.getEditableRawValue) {
                     row = row.set(col.name, renderer.getEditableRawValue(values));
                 } else if (col.isLookup()) {
-                    if (col.isExpInput()) {
+                    if (col.isExpInput() || col.isAliquotParent()) {
                         let sep = '';
                         row = row.set(
                             col.name,

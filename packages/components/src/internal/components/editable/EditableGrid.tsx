@@ -82,16 +82,20 @@ function inputCellFactory(
         const colIdx = cn - colOffset;
 
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
-        let isReadonlyRow = false;
+        let isReadonlyRow = false,
+            isReadonlyCell = false;
 
-        if (!isReadonlyCol && model && readonlyRows) {
+        if (!isReadonlyCol && model && (readonlyRows || columnMetadata?.isReadOnlyCell)) {
             const keyCols = model.getKeyColumns();
             if (keyCols.size == 1) {
                 const key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
-                isReadonlyRow = key && readonlyRows.contains(key);
+                if (readonlyRows) isReadonlyRow = key && readonlyRows.contains(key);
+                if (columnMetadata?.isReadOnlyCell) isReadonlyCell = columnMetadata.isReadOnlyCell(key);
             } else {
                 console.warn(
-                    'Setting readonly rows for models with ' + keyCols.size + ' keys is not currently supported.'
+                    'Setting readonly rows or cells for models with ' +
+                        keyCols.size +
+                        ' keys is not currently supported.'
                 );
             }
         }
@@ -103,7 +107,7 @@ function inputCellFactory(
                 key={inputCellKey(c.raw, row)}
                 modelId={model.getId()}
                 placeholder={columnMetadata ? columnMetadata.placeholder : undefined}
-                readOnly={isReadonlyCol || isReadonlyRow}
+                readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
                 rowIdx={rn}
                 focused={editorModel ? editorModel.isFocused(colIdx, rn) : false}
                 message={editorModel ? editorModel.getMessage(colIdx, rn) : undefined}
@@ -134,6 +138,8 @@ export interface EditableColumnMetadata {
     toolTip?: ReactNode;
     filteredLookupValues?: List<string>;
     filteredLookupKeys?: List<any>;
+    caption?: string;
+    isReadOnlyCell?: (rowKey: string) => boolean;
 }
 
 export interface BulkAddData {
@@ -177,6 +183,7 @@ export interface EditableGridProps {
     rowNumColumn?: GridColumn;
     onCellModify?: () => any;
     getInsertColumns?: () => List<QueryColumn>;
+    getUpdateColumns?: () => List<QueryColumn>;
 }
 
 export interface EditableGridState {
@@ -309,9 +316,10 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
     };
 
     getColumns = (): List<QueryColumn> => {
-        const { forUpdate, readOnlyColumns, getInsertColumns } = this.props;
+        const { forUpdate, readOnlyColumns, getInsertColumns, getUpdateColumns } = this.props;
+
         const model = this.getModel(this.props);
-        return this.getEditorModel().getColumns(model, forUpdate, readOnlyColumns, getInsertColumns);
+        return this.getEditorModel().getColumns(model, forUpdate, readOnlyColumns, getInsertColumns, getUpdateColumns);
     };
 
     generateColumns = (): List<GridColumn> => {
@@ -348,7 +356,14 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         }
         if (!hideCountCol) gridColumns = gridColumns.push(rowNumColumn ? rowNumColumn : COUNT_COL);
 
+        const lowerColumnMetadata = this.props.columnMetadata
+            ? this.props.columnMetadata.reduce((lowerColumnMetadata, value, key) => {
+                  return lowerColumnMetadata.set(key.toLowerCase(), value);
+              }, Map<string, EditableColumnMetadata>())
+            : undefined;
+
         this.getColumns().forEach(qCol => {
+            const metaCaption = lowerColumnMetadata.get(qCol.fieldKey.toLowerCase())?.caption;
             gridColumns = gridColumns.push(
                 new GridColumn({
                     align: qCol.align,
@@ -357,13 +372,13 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                         editorModel,
                         allowBulkRemove || allowBulkUpdate,
                         hideCountCol,
-                        columnMetadata.get(qCol.fieldKey),
+                        lowerColumnMetadata.get(qCol.fieldKey.toLowerCase()),
                         readonlyRows,
                         onCellModify
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,
-                    title: qCol.caption,
+                    title: metaCaption ?? qCol.caption,
                     width: 100,
                 })
             );
@@ -411,9 +426,14 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
 
     renderColumnHeader = (col: GridColumn, metadataKey: string, required?: boolean): ReactNode => {
         const label = col.title;
+        const lowerColumnMetadata = this.props.columnMetadata
+            ? this.props.columnMetadata.reduce((lowerColumnMetadata, value, key) => {
+                  return lowerColumnMetadata.set(key.toLowerCase(), value);
+              }, Map<string, EditableColumnMetadata>())
+            : undefined;
         const metadata =
-            this.props.columnMetadata && this.props.columnMetadata.has(metadataKey)
-                ? this.props.columnMetadata.get(metadataKey)
+            lowerColumnMetadata && lowerColumnMetadata.has(metadataKey.toLowerCase())
+                ? this.props.columnMetadata.get(metadataKey.toLowerCase())
                 : undefined;
         const overlay =
             metadata && metadata.toolTip ? (

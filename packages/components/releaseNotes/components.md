@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.22.TBD
+### version 2.TBD
 *Released*: TBD
 * Changes to allow data region filtration based on ontology concepts
   * Added OntologyBrowserFilterPanel to handle FilterDialog injection
@@ -9,6 +9,16 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Updated OntologyTreePanel to show filter selections
 * Updated FileTree to take header parameter
 * Split FileTree.Header into its own file
+
+### version 2.25.0
+*Released*: 23 April 2021
+* EditableGrid:
+    * EditableGridPanel and EditableGridPanelForUpdate support multiple models in a tabbed view
+    * Allow setting cell to read only with columnMetadata
+    * Allow getUpdateColumns override
+    * Set caption with columnMetadata
+* Support aliquot creation mode for EntityInsertPanel
+* Add header props to BulkUpdateForm
 
 ### version 2.24.4
 *Released*: 23 April 2021

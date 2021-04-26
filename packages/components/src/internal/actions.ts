@@ -3098,8 +3098,8 @@ interface IClientSideMetricCountResponse {
 }
 
 export function incrementClientSideMetricCount(
-    applicationName: string,
-    metricName: string
+    metricName: string,
+    applicationName?: string
 ): Promise<IClientSideMetricCountResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({

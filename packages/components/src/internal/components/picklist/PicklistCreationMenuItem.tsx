@@ -25,7 +25,7 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
                    </>
                )
             },
-            alertClass: 'info'
+            alertClass: 'success'
         });
         setShowModal(false);
     }
@@ -48,7 +48,7 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
     return (
         <>
             <MenuItem onClick={onClick} key={key}>Picklist</MenuItem>
-            <PicklistCreationModal show={showModal} selectionModel={selectionModel} onFinish={onFinish} onCancel={onCancel}/>
+            <PicklistCreationModal useSelection={true} show={showModal} model={selectionModel} onFinish={onFinish} onCancel={onCancel}/>
         </>
     )
 }

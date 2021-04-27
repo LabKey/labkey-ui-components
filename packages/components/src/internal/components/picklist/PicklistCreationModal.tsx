@@ -8,13 +8,14 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 interface Props {
     show: boolean,
-    selectionModel: QueryGridModel,
+    model: QueryGridModel,
+    useSelection?: boolean, // if false, will use the single row from the model
     onCancel: (any) => void,
     onFinish: (name: string, id: number) => void,
 }
 
 export const PicklistCreationModal: FC<Props> = memo(props => {
-    const { show, onCancel, onFinish, selectionModel } = props;
+    const { show, onCancel, onFinish, model, useSelection } = props;
     const [ name, setName ] = useState<string>('');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 
@@ -31,11 +32,10 @@ export const PicklistCreationModal: FC<Props> = memo(props => {
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ picklistError, setPicklistError ] = useState<string>(undefined);
 
-
     const onCreatePicklist = useCallback(async () => {
         setIsSubmitting(true);
         try {
-            const picklist = await createPicklist(name, description, shared, selectionModel);
+            const picklist = await createPicklist(name, description, shared, model, useSelection);
             onFinish(picklist.name, picklist.listId)
         } catch (e) {
             setPicklistError(resolveErrorMessage(e));
@@ -45,10 +45,23 @@ export const PicklistCreationModal: FC<Props> = memo(props => {
         }
     }, [name, description, onFinish]);
 
+    let title;
+    if (useSelection) {
+        if (model.selectedQuantity == 0) {
+            title = 'Create an Empty Picklist';
+        }
+        else {
+            title = <>Create a New Picklist with the {model.selectedQuantity} Selected Sample{model.selectedQuantity === 1 ? '' : 's'}</>;
+        }
+    }
+    else {
+        title = 'Create a New Picklist with this Sample';
+    }
+
     return (
         <Modal show={show} onHide={onCancel}>
             <Modal.Header closeButton>
-                <Modal.Title>Create a New Picklist from {selectionModel.selectedQuantity} Selected Sample{selectionModel.selectedQuantity === 1 ? '' : 's'}</Modal.Title>
+                <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
@@ -58,12 +71,12 @@ export const PicklistCreationModal: FC<Props> = memo(props => {
                     <div className="form-group">
                         <label className="control-label">Name</label>
 
-                        <input className="form-control" value={name} onChange={onNameChange} type="text"/>
+                        <input placeholder="Give this list a name" className="form-control" value={name} onChange={onNameChange} type="text"/>
                     </div>
                     <div className="form-group">
                         <label className="control-label">Description</label>
 
-                        <textarea className="form-control" value={description} onChange={onDescriptionChange}/>
+                        <textarea placeholder="Add a description" className="form-control" value={description} onChange={onDescriptionChange}/>
 
                         <Checkbox checked={shared} onChange={onSharedChanged} >
                             <span>Share this picklist publicly with team members</span>

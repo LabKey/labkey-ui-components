@@ -30,15 +30,23 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
 
     const updateFilterValues = useCallback(
         async (filterString: string) => {
+            setError(null); //clear any existing errors
             const filterArray = filterString?.split(';') || [];
 
             // Look up path model for the path based filters, otherwise parse the code filter
             let paths;
-            if (isPathFilter(filterType)) {
+            const isPathFilterType = isPathFilter(filterType);
+            if (isPathFilterType) {
                 try {
                     paths = filterString ? [await fetchPathModel(filterString)] : [];
                 } catch (e) {
-                    setError('' + e.exception);
+                    if (e.exceptionClass === 'org.labkey.api.view.NotFoundException') {
+                        const article = isPathFilterType ? 'Path ' : 'Code ';
+                        setError(article + ' not found');
+                    }
+                    else {
+                        setError(e.exception);
+                    }
                 }
             } else {
                 paths = filterArray.filter(code => !!code).map(code => new PathModel({ code }));

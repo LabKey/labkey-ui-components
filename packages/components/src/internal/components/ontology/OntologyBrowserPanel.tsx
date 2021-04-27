@@ -65,6 +65,8 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
                 setAlternatePath(path);
             } else {
                 setSelectedPath(path);
+                if (!path.hasChildren)
+                    filterChangeHandler?.(path);
             }
         },
         [conceptCache, setSelectedPath, setAlternatePath]

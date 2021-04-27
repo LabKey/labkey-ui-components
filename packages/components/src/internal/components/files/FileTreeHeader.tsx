@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, } from 'react';
 
 import { Checkbox } from 'react-bootstrap';
 import classNames from 'classnames';
@@ -45,7 +45,7 @@ export interface TreeNodeProps {
 
     showNodeIcon: boolean; // Flag to indicate whether an Icon should be shown for the node
     useFileIconCls?: boolean; // Class to apply to the Icon
-    RenderIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
+    NodeIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
 }
 
 export const Header: FC<TreeNodeProps> = memo(props => {
@@ -62,7 +62,7 @@ export const Header: FC<TreeNodeProps> = memo(props => {
         showNodeIcon = true,
         isEmpty,
         isLoading,
-        RenderIcon = FileNodeIcon,
+        NodeIcon = FileNodeIcon,
     } = props;
     const isDirectory = node.children !== undefined;
     const activeColor = node.active && !allowMultiSelect ? 'lk-text-theme-dark filetree-node-active' : undefined; // $brand-primary and $gray-light
@@ -102,7 +102,7 @@ export const Header: FC<TreeNodeProps> = memo(props => {
                         style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}
                         title={node.name}
                     >
-                        {showNodeIcon && <RenderIcon {...props} isDirectory={isDirectory} />}
+                        {showNodeIcon && <NodeIcon {...props} isDirectory={isDirectory} />}
                         <div
                             className={classNames({
                                 'filetree-file-name': !isDirectory,
@@ -111,9 +111,11 @@ export const Header: FC<TreeNodeProps> = memo(props => {
                         >
                             {node.name}
                         </div>
+                        {props.children}
                     </div>
                 </div>
             </div>
         </span>
     );
 });
+

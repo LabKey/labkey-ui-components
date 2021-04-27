@@ -1,11 +1,11 @@
-import React, { FC, useCallback, RefObject, useRef, useEffect, useState, memo } from 'react';
+import React, { FC, useCallback, RefObject, useRef, useEffect, useState, } from 'react';
 import { TreeNode } from 'react-treebeard';
 
-import { naturalSortByProperty, FileTree, LoadingSpinner } from '../../..';
+import { naturalSortByProperty, FileTree, } from '../../..';
 
 import { DEFAULT_ROOT_PREFIX } from '../files/FileTree';
 
-import { TreeNodeProps } from '../files/FileTreeHeader';
+import { Header, TreeNodeProps } from '../files/FileTreeHeader';
 import { PathModel } from './models';
 import { fetchChildPaths, fetchParentPaths } from './actions';
 import classNames from 'classnames';
@@ -53,67 +53,6 @@ interface OntologyTreeHeaderProps extends TreeNodeProps {
     filters: Map<string, PathModel>;
     onFilterClick: (node: PathModel) => void;
 }
-
-export const OntologyTreeHeader: FC<OntologyTreeHeaderProps> = memo( props => {
-    const {
-        style,
-        onSelect,
-        node,
-        customStyles,
-        emptyDirectoryText,
-        allowMultiSelect,
-        showNodeIcon = true,
-        isEmpty,
-        isLoading,
-        filters,
-        onFilterClick,
-    } = props;
-
-    if (isEmpty) {
-        return <div className="filetree-empty-directory">{emptyDirectoryText}</div>;
-    }
-
-    if (isLoading) {
-        return (
-            <div className="filetree-empty-directory">
-                <LoadingSpinner />
-            </div>
-        );
-    }
-
-    const isDirectory = node?.children !== undefined;
-    const activeColor = node?.active && !allowMultiSelect ? 'lk-text-theme-dark filetree-node-active' : undefined; // $brand-primary and $gray-light
-
-    return (
-        <span
-            className={
-                'filetree-checkbox-container' +
-                (isDirectory ? '' : ' filetree-leaf-node') +
-                (node.active ? ' active' : '')
-            }
-        >
-            <div style={style.base} onClick={onSelect}>
-                <div className={activeColor}>
-                    <div
-                        className="filetree-resource-row"
-                        style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}
-                        title={node.name}
-                    >
-                        <div
-                            className={classNames({
-                                'filetree-file-name': !isDirectory,
-                                'filetree-directory-name': isDirectory,
-                            })}
-                        >
-                            {node.name}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {showNodeIcon && <FilterIcon node={node} filters={filters} onClick={onFilterClick} />}
-        </span>
-    );
-});
 
 interface OntologyTreeProps {
     root: PathModel;
@@ -169,9 +108,11 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
         return true;
     };
 
-    //
     const renderNodeHeader = props => {
-        return <OntologyTreeHeader {...props} filters={filters} onFilterClick={onFilterChange} />;
+        return (
+        <Header {...props} showNodeIcon={false}>
+            {showFilterIcon && <FilterIcon {...props} filters={filters} onClick={onFilterChange} />}
+        </Header>);
     };
 
     return (

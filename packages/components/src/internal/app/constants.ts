@@ -24,6 +24,7 @@ export const FREEZERS_KEY = 'freezers';
 export const BOXES_KEY = 'boxes';
 export const HOME_KEY = 'home';
 export const USER_KEY = 'user';
+export const PICKLIST_KEY = 'samplePicklists';
 
 export const NEW_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new');
 export const NEW_SOURCE_TYPE_HREF = AppURL.create(SOURCE_TYPE_KEY, 'new');

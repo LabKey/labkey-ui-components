@@ -420,6 +420,8 @@ import { createMockWithRouterProps } from './test/mockUtils';
 import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 import { AppModel, LogoutReason } from './internal/app/models';
+import { PicklistCreationModal} from './internal/components/picklist/PicklistCreationModal';
+import { PicklistCreationMenuItem} from './internal/components/picklist/PicklistCreationMenuItem';
 import {
     AppReducers,
     ProductMenuReducers,
@@ -435,8 +437,10 @@ import {
     isFreezerManagementEnabled,
     isSampleAliquotEnabled,
     isSampleManagerEnabled,
+    isSamplePicklistEnabled,
     userCanDesignLocations,
     userCanDesignSourceTypes,
+    userCanManagePicklists,
 } from './internal/app/utils';
 import {
     doResetQueryGridState,
@@ -473,6 +477,7 @@ import {
     NEW_SAMPLES_HREF,
     NEW_SOURCE_TYPE_HREF,
     NOTIFICATION_TIMEOUT,
+    PICKLIST_KEY,
     SAMPLE_MANAGER_PRODUCT_ID,
     SAMPLE_TYPE_KEY,
     SAMPLES_KEY,
@@ -506,6 +511,7 @@ const App = {
     isFreezerManagementEnabled,
     isSampleManagerEnabled,
     isSampleAliquotEnabled,
+    isSamplePicklistEnabled,
     hasPremiumModule,
     getDateFormat: getAppDateFormat,
     getMenuSectionConfigs,
@@ -520,6 +526,7 @@ const App = {
     updateUserDisplayName,
     userCanDesignLocations,
     userCanDesignSourceTypes,
+    userCanManagePicklists,
     SECURITY_LOGOUT,
     SECURITY_SERVER_UNAVAILABLE,
     SECURITY_SESSION_TIMEOUT,
@@ -532,6 +539,7 @@ const App = {
     FREEZER_MANAGER_PRODUCT_ID,
     ASSAYS_KEY,
     ASSAY_DESIGN_KEY,
+    PICKLIST_KEY,
     SAMPLES_KEY,
     SAMPLE_TYPE_KEY,
     SOURCES_KEY,
@@ -700,6 +708,8 @@ export {
     Principal,
     UserProvider,
     // data class and sample type related items
+    PicklistCreationMenuItem,
+    PicklistCreationModal,
     DataClassModel,
     deleteDataClass,
     fetchDataClass,

@@ -115,6 +115,10 @@ export function initWebSocketListeners(
     }
 }
 
+export function userCanManagePicklists(user: User): boolean {
+    return hasAllPermissions(user, ['org.labkey.api.lists.permissions.ManagePicklistsPermission']);
+}
+
 export function userCanDesignSourceTypes(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.DesignDataClass]);
 }
@@ -144,6 +148,10 @@ function isFreezerManagerEnabledInBiologics(): boolean {
 
 export function isSampleAliquotEnabled(): boolean {
     return getServerContext().experimental && getServerContext().experimental['sampleAliquot'] === true;
+}
+
+export function isSamplePicklistEnabled(): boolean {
+    return getServerContext().experimental && getServerContext().experimental['samplePicklist'] === true;
 }
 
 export function hasModule(moduleName: string) {

@@ -60,6 +60,7 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
 
     const filterChangeHandler = useCallback(
         async (model: PathModel) => {
+            setError(null);
             const newFilter = new Map([...filteredConcepts]);
             if (!newFilter.delete(model.code)) {
                 if (!filterType?.isMultiValued()) {
@@ -92,7 +93,7 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
             }
             onFilterChange(newFilterString);
         },
-        [filterType, filteredConcepts, setFilteredConcepts, onFilterChange]
+        [filterType, filteredConcepts, setFilteredConcepts, onFilterChange, setError]
     );
 
     useEffect(

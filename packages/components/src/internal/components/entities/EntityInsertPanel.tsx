@@ -1299,7 +1299,6 @@ export const EntityInsertPanelFormSteps = withFormSteps(EntityInsertPanelImpl, {
 
 export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(props => {
     const { location, ...entityInsertPanelProps } = props;
-
     const { user } = useServerContext();
 
     const fromLocationProps = useMemo<FromLocationProps>(() => {
@@ -1316,11 +1315,10 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             selectionKey,
             tab: parseInt(tab, 10),
             target,
-            user,
         };
     }, [location]);
 
-    return <EntityInsertPanelFormSteps {...entityInsertPanelProps} {...fromLocationProps} />;
+    return <EntityInsertPanelFormSteps {...entityInsertPanelProps} {...fromLocationProps} user={user} />;
 });
 
 EntityInsertPanel.displayName = 'EntityInsertPanel';

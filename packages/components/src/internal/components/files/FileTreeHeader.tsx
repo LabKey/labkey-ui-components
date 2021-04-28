@@ -1,4 +1,4 @@
-import React, { FC, memo, } from 'react';
+import React, { FC, memo, useEffect, useState, } from 'react';
 
 import { Checkbox } from 'react-bootstrap';
 import classNames from 'classnames';
@@ -14,7 +14,8 @@ interface FileNodeIconProps {
 }
 
 // exported for jest testing
-export const FileNodeIcon: FC<FileNodeIconProps> = memo(props => {
+//Not using Pure/memo as node property is mutable
+export const FileNodeIcon: FC<FileNodeIconProps> = props => {
     const { isDirectory, useFileIconCls, node } = props;
     const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
 
@@ -27,7 +28,7 @@ export const FileNodeIcon: FC<FileNodeIconProps> = memo(props => {
             )}
         </>
     );
-});
+};
 
 export interface TreeNodeProps {
     node: any; // Data Object model for this node
@@ -48,7 +49,8 @@ export interface TreeNodeProps {
     NodeIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
 }
 
-export const Header: FC<TreeNodeProps> = memo(props => {
+// Note not using Pure/memo as the node property is mutable
+export const Header: FC<TreeNodeProps> = props => {
     const {
         style,
         onSelect,
@@ -117,5 +119,5 @@ export const Header: FC<TreeNodeProps> = memo(props => {
             </div>
         </span>
     );
-});
+};
 

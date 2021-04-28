@@ -10,3 +10,7 @@ export const SEARCH_INDEXING_TIP = 'Controls how this list is indexed for search
 
 export const VAR_LIST = 'VarList';
 export const INT_LIST = 'IntList';
+export const PICKLIST = 'Picklist';
+
+export const PRIVATE_PICKLIST_CATEGORY = "PrivatePicklist";
+export const PUBLIC_PICKLIST_CATEGORY = "PublicPicklist";

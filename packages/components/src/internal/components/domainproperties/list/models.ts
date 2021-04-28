@@ -18,7 +18,7 @@ import { Record } from 'immutable';
 import { DomainDesign, DomainField } from '../models';
 import { DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from '../constants';
 
-import { INT_LIST, VAR_LIST } from './constants';
+import { INT_LIST, PICKLIST, PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY, VAR_LIST } from './constants';
 
 export interface AdvancedSettingsForm {
     titleColumn?: string;
@@ -69,6 +69,7 @@ export class ListModel extends Record({
     listId: undefined,
     discussionSettingEnum: undefined,
     containerPath: undefined,
+    category: undefined,
 }) {
     declare exception: string;
     declare domain: DomainDesign;
@@ -97,6 +98,7 @@ export class ListModel extends Record({
     declare listId: number;
     declare discussionSettingEnum: string;
     declare containerPath: string;
+    declare category: string;
 
     static create(raw: any, defaultSettings = null): ListModel {
         if (defaultSettings) {
@@ -121,7 +123,10 @@ export class ListModel extends Record({
     }
 
     getDomainKind(): string {
-        if (this.keyType === 'Varchar') {
+        if (this.category === PUBLIC_PICKLIST_CATEGORY || this.category === PRIVATE_PICKLIST_CATEGORY) {
+            return PICKLIST;
+        }
+        else if (this.keyType === 'Varchar') {
             return VAR_LIST;
         } else if (this.keyType === 'Integer' || this.keyType === 'AutoIncrementInteger') {
             return INT_LIST;

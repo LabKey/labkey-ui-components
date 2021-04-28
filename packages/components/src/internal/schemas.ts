@@ -70,6 +70,13 @@ export const DATA_CLASSES = {
     MIXTURES: SchemaQuery.create(DATA_CLASS_SCHEMA, 'Mixtures'),
 };
 
+// INVENTORY
+const INVENTORY_SCHEMA = 'inventory';
+export const INVENTORY = {
+    SCHEMA: INVENTORY_SCHEMA,
+    SAMPLE_ITEMS: SchemaQuery.create(INVENTORY_SCHEMA, 'SampleItems'),
+}
+
 // SAMPLE SETS
 const SAMPLE_SET_SCHEMA = 'samples';
 export const SAMPLE_SETS = {
@@ -95,6 +102,7 @@ export const SCHEMAS = {
     DATA_CLASSES,
     CBMB,
     STUDY_TABLES,
+    INVENTORY
 };
 
 export function fetchSchemas(schemaName?: string): Promise<List<Map<string, SchemaDetails>>> {

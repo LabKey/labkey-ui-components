@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from '
 import { Checkbox, Modal } from 'react-bootstrap';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { QueryGridModel } from '../../QueryGridModel';
-import { createPicklist } from './actions';
+import { addSamplesToPicklist, createPicklist } from './actions';
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
 
@@ -32,10 +32,20 @@ export const PicklistCreationModal: FC<Props> = memo(props => {
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ picklistError, setPicklistError ] = useState<string>(undefined);
 
+    const onHide = useCallback((data: any) => {
+        setPicklistError(undefined);
+        setIsSubmitting(false);
+        onCancel(data);
+    }, []);
+
     const onCreatePicklist = useCallback(async () => {
         setIsSubmitting(true);
         try {
             const picklist = await createPicklist(name, description, shared, model, useSelection);
+            await addSamplesToPicklist(
+                name,
+                useSelection ? model.selectionKey : undefined,
+                useSelection ? undefined : [model.getRow().get("RowId")]);
             onFinish(picklist.name, picklist.listId)
         } catch (e) {
             setPicklistError(resolveErrorMessage(e));
@@ -87,7 +97,7 @@ export const PicklistCreationModal: FC<Props> = memo(props => {
 
             <Modal.Footer>
                 <WizardNavButtons
-                    cancel={onCancel}
+                    cancel={onHide}
                     cancelText={'Cancel'}
                     canFinish={true}
                     containerClassName=""

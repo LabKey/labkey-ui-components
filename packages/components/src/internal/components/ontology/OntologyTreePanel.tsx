@@ -24,18 +24,6 @@ type PathNode = OntologyPath & TreeNode;
 export const FilterIcon = props => {
     const { node, onClick, filters = new Map<string, PathModel>() } = props;
 
-    // TODO should we tag the parent nodes that have children with filters on them, which path if we are working from a concept code
-    // const [childSelected, setChildSelected] = useState<boolean>([...filters].some(filter => filter?.path?.startsWith(node?.data?.path)));
-    // useEffect(() => {
-    //     setChildSelected(
-    //         [...filters.values()].some(filter => {
-    //             if (!node?.data || !filter?.path) return false;
-    //
-    //             return filter.path.startsWith(node.data.path) && filter.path !== node.data.path;
-    //         })
-    //     );
-    // },[node, filters]);
-
     const clickHandler = useCallback(
         evt => {
             evt.stopPropagation();
@@ -120,7 +108,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
             loadData={loadData}
             onFileSelect={onSelect}
             allowMultiSelect={false}
-            showNodeIcon={showFilterIcon}
+            showNodeIcon={false}
             defaultRootName={root.label}
             showLoading={showLoading}
             showAnimations={false}

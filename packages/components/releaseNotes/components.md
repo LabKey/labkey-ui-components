@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Remove isSampleAliquotEnabled experimental flag
+* Allow QueryGridModel export to include extra columns
+
 ### version 2.26.1
 *Released*: 29 April 2021
 * Issue 42844: Sample Type designer update to include metricUnit check in "isValid" check

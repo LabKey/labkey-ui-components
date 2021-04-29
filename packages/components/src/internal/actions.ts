@@ -762,7 +762,10 @@ export function getExportParams(
 
     if (options) {
         if (options.columns) {
-            params['query.columns'] = options.columns;
+            if (advancedOptions['includeColumn'])
+                params['query.columns'] = options.columns + ',' + advancedOptions['includeColumn'].join(',');
+            else
+                params['query.columns'] = options.columns;
         }
 
         if (options.filters) {

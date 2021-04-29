@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.26.2
+*Released*: 29 April 2021
 * Issue 42527: Handle edge case in List Designer Summary View. Summary View mode now hides Field Editor HeaderRenderer content
 
 ### version 2.26.1

@@ -10,6 +10,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Updated FileTree to take header parameter
 * Split FileTree.Header into its own file
 
+### version 2.26.2
+*Released*: 29 April 2021
+* Issue 42527: Handle edge case in List Designer Summary View. Summary View mode now hides Field Editor HeaderRenderer content
+
+### version 2.26.1
+*Released*: 29 April 2021
+* Issue 42844: Sample Type designer update to include metricUnit check in "isValid" check
+
 ### version 2.26.0
 *Released*: 28 April 2021
 * Item 8789: Add util function for incrementClientSideMetricCount()

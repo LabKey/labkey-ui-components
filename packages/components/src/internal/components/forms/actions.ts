@@ -254,7 +254,7 @@ export function formatResults(model: QuerySelectModel, results: Map<string, any>
 
     return results
         .map(result => ({
-            label: result.getIn([model.displayColumn, 'value']),
+            label: result.getIn([model.displayColumn, 'value']) ?? result.getIn([model.valueColumn, 'value']),
             value: result.getIn([model.valueColumn, 'value']),
         }))
         .sortBy(item => item.label, similaritySortFactory(token))

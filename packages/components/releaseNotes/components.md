@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.##.#
-*Released*: # April 2021
+### version 2.26.3
+*Released*: 30 April 2021
 * Issue 43028: QuerySelect - fallback to "valueColumn" as option label
 * Issue 43051: LookupCell menu appears detached from table cell
 

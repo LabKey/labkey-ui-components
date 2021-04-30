@@ -357,7 +357,9 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
                     ref={this.inputEl}
                     type="text"
                 />
-                <div className="cell-lookup-menu" ref={this.menuEl}>{this.renderOptions()}</div>
+                <div className="cell-lookup-menu" ref={this.menuEl}>
+                    {this.renderOptions()}
+                </div>
             </div>
         );
     }

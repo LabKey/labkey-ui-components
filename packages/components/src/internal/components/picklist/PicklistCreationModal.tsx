@@ -41,7 +41,7 @@ export const PicklistCreationModal: FC<Props> = memo(props => {
     const onCreatePicklist = useCallback(async () => {
         setIsSubmitting(true);
         try {
-            const picklist = await createPicklist(name, description, shared, model, useSelection);
+            const picklist = await createPicklist(name, description, shared);
             await addSamplesToPicklist(
                 name,
                 useSelection ? model.selectionKey : undefined,

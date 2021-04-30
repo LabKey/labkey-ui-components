@@ -12,7 +12,7 @@ interface CreatePicklistResponse {
     name: string
 }
 
-export function createPicklist(name: string, description: string, shared: boolean, model: QueryGridModel, useSelection: boolean) : Promise<CreatePicklistResponse> {
+export function createPicklist(name: string, description: string, shared: boolean) : Promise<CreatePicklistResponse> {
     return new Promise((resolve, reject) => {
         Domain.create({
             domainDesign: {
@@ -38,6 +38,7 @@ export function createPicklist(name: string, description: string, shared: boolea
             options: {
                 keyName: 'id',
                 keyType: 'AutoIncrementInteger',
+                description,
                 category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY
             },
             success: (response) => { resolve({name: response.name, domainId: response.domainId}); },

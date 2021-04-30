@@ -55,6 +55,7 @@ import { EditorModel, ValueDescriptor } from '../../models';
 
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { Cell } from './Cell';
+import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
@@ -847,7 +848,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                 <div>
                     {this.renderTopControls()}
                     <div
-                        className="editable-grid__container"
+                        className={EDITABLE_GRID_CONTAINER_CLS}
                         onKeyDown={this.onKeyDown}
                         onMouseDown={this.onMouseDown}
                         onMouseUp={this.onMouseUp}

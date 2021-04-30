@@ -386,7 +386,7 @@ import { IssuesListDefModel } from './internal/components/domainproperties/issue
 import { IssuesListDefDesignerPanels } from './internal/components/domainproperties/issues/IssuesListDefDesignerPanels';
 import { DatasetDesignerPanels } from './internal/components/domainproperties/dataset/DatasetDesignerPanels';
 import { DatasetModel } from './internal/components/domainproperties/dataset/models';
-import { fetchListDesign } from './internal/components/domainproperties/list/actions';
+import { fetchListDesign, getListProperties } from './internal/components/domainproperties/list/actions';
 import { fetchIssuesListDefDesign } from './internal/components/domainproperties/issues/actions';
 import { fetchDatasetDesign } from './internal/components/domainproperties/dataset/actions';
 import {
@@ -421,6 +421,7 @@ import { createMockWithRouterProps } from './test/mockUtils';
 import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 import { AppModel, LogoutReason } from './internal/app/models';
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY} from './internal/components/domainproperties/list/constants';
 import { PicklistCreationModal} from './internal/components/picklist/PicklistCreationModal';
 import { PicklistCreationMenuItem} from './internal/components/picklist/PicklistCreationMenuItem';
 import {
@@ -477,7 +478,7 @@ import {
     NEW_SAMPLE_TYPE_HREF,
     NEW_SAMPLES_HREF,
     NEW_SOURCE_TYPE_HREF,
-    NOTIFICATION_TIMEOUT,
+    NOTIFICATION_TIMEOUT, PICKLIST_HOME_HREF,
     PICKLIST_KEY,
     SAMPLE_MANAGER_PRODUCT_ID,
     SAMPLE_TYPE_KEY,
@@ -554,6 +555,7 @@ const App = {
     NEW_SOURCE_TYPE_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_ASSAY_DESIGN_HREF,
+    PICKLIST_HOME_HREF,
     WORKFLOW_HOME_HREF,
     NEW_FREEZER_DESIGN_HREF,
     MANAGE_STORAGE_UNITS_HREF,
@@ -711,6 +713,8 @@ export {
     // data class and sample type related items
     PicklistCreationMenuItem,
     PicklistCreationModal,
+    PUBLIC_PICKLIST_CATEGORY,
+    PRIVATE_PICKLIST_CATEGORY,
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
@@ -876,6 +880,7 @@ export {
     ListDesignerPanels,
     ListModel,
     fetchListDesign,
+    getListProperties,
     DatasetDesignerPanels,
     DatasetModel,
     fetchDatasetDesign,

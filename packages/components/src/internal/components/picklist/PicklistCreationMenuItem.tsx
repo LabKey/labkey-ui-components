@@ -15,26 +15,19 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
     const { selectionModel, key } = props;
     const [ showModal, setShowModal ] = useState<boolean>(false);
 
-    const onFinish = (name: string, id: number) => {
+    const onFinish = (name: string) => {
         createNotification({
             message: () => {
                return (
                    <>
                        Successfully created "{name}" with {selectionModel.selectedQuantity} sample{selectionModel.selectedQuantity === 1 ? '': 's'}.&nbsp;
-                       <a href={AppURL.create("picklist", id).toHref()}>View picklist.</a>
+                       <a href={AppURL.create("picklist", name).toHref()}>View picklist.</a>
                    </>
                )
             },
             alertClass: 'success'
         });
         setShowModal(false);
-    }
-
-    const onError = (reason: string) => {
-        createNotification({
-            message: resolveErrorMessage(reason),
-            alertClass: 'danger'
-        })
     }
 
     const onCancel = () => {
@@ -48,7 +41,13 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
     return (
         <>
             <MenuItem onClick={onClick} key={key}>Picklist</MenuItem>
-            <PicklistCreationModal useSelection={true} show={showModal} model={selectionModel} onFinish={onFinish} onCancel={onCancel}/>
+            <PicklistCreationModal
+                useSelection={true}
+                show={showModal}
+                model={selectionModel}
+                onFinish={onFinish}
+                onCancel={onCancel}
+            />
         </>
     )
 }

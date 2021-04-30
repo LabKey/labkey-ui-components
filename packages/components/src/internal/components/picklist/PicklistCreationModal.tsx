@@ -11,7 +11,7 @@ interface Props {
     model: QueryGridModel,
     useSelection?: boolean, // if false, will use the single row from the model
     onCancel: (any) => void,
-    onFinish: (name: string, id: number) => void,
+    onFinish: (name: string) => void,
 }
 
 export const PicklistCreationModal: FC<Props> = memo(props => {
@@ -45,8 +45,8 @@ export const PicklistCreationModal: FC<Props> = memo(props => {
             await addSamplesToPicklist(
                 name,
                 useSelection ? model.selectionKey : undefined,
-                useSelection ? undefined : [model.getRow().get("RowId")]);
-            onFinish(picklist.name, picklist.listId)
+                useSelection ? undefined : [model.getRow().getIn(['RowId', 'value'])]);
+            onFinish(picklist.name)
         } catch (e) {
             setPicklistError(resolveErrorMessage(e));
         }

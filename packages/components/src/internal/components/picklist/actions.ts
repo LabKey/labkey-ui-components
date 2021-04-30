@@ -8,7 +8,7 @@ import { getSelected } from '../../actions';
 import { List } from 'immutable';
 
 interface CreatePicklistResponse {
-    listId: number,
+    domainId: number,
     name: string
 }
 
@@ -40,7 +40,7 @@ export function createPicklist(name: string, description: string, shared: boolea
                 keyType: 'AutoIncrementInteger',
                 category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY
             },
-            success: (response) => { resolve({name: response.name, listId: response.domainId}); },
+            success: (response) => { resolve({name: response.name, domainId: response.domainId}); },
             failure: (err) => { reject(err); }
         });
     });

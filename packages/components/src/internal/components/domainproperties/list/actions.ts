@@ -18,7 +18,7 @@ import { ActionURL, Ajax, Utils, Domain, getServerContext } from '@labkey/api';
 import { ListModel } from './models';
 import { INT_LIST } from './constants';
 
-function getListProperties(listId?: number): Promise<ListModel> {
+export function getListProperties(listId?: number): Promise<ListModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('list', 'getListProperties.api'),

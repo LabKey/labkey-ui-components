@@ -293,7 +293,7 @@ $table-cell-selection-bg-color: #EDF3FF;
         box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.05);
         border-radius: 3px;
 
-        position: absolute;
+        position: fixed;
 
         & > li {
           height: 38px;

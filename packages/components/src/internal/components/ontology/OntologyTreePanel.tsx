@@ -5,7 +5,7 @@ import { naturalSortByProperty, FileTree, } from '../../..';
 
 import { DEFAULT_ROOT_PREFIX } from '../files/FileTree';
 
-import { Header, TreeNodeProps } from '../files/FileTreeHeader';
+import { Header } from '../files/FileTreeHeader';
 import { PathModel } from './models';
 import { fetchChildPaths, fetchParentPaths } from './actions';
 import classNames from 'classnames';
@@ -36,11 +36,6 @@ export const FilterIcon = props => {
         <i className={classNames('fa fa-filter', { selected: filters.has(node?.data?.code) })} onClick={clickHandler} />
     );
 };
-
-interface OntologyTreeHeaderProps extends TreeNodeProps {
-    filters: Map<string, PathModel>;
-    onFilterClick: (node: PathModel) => void;
-}
 
 interface OntologyTreeProps {
     root: PathModel;
@@ -98,7 +93,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
 
     const renderNodeHeader = props => {
         return (
-        <Header {...props} showNodeIcon={false}>
+        <Header {...props}>
             {showFilterIcon && <FilterIcon {...props} filters={filters} onClick={onFilterChange} />}
         </Header>);
     };

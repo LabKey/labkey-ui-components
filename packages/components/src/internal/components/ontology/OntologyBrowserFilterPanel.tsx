@@ -40,12 +40,12 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
                 try {
                     paths = filterString ? [await fetchPathModel(filterString)] : [];
                 } catch (e) {
-                    if (e.exceptionClass === 'org.labkey.api.view.NotFoundException') {
+                    if (e?.exceptionClass === 'org.labkey.api.view.NotFoundException') {
                         const article = isPathFilterType ? 'Path ' : 'Code ';
                         setError(article + ' not found');
                     }
                     else {
-                        setError(e.exception);
+                        setError(e?.exception);
                     }
                 }
             } else {
@@ -61,7 +61,7 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
     const filterChangeHandler = useCallback(
         async (model: PathModel) => {
             setError(null);
-            const newFilter = new Map([...filteredConcepts]);
+            const newFilter = new Map<string, PathModel>([...filteredConcepts]);
             if (!newFilter.delete(model.code)) {
                 if (!filterType?.isMultiValued()) {
                     newFilter.clear();

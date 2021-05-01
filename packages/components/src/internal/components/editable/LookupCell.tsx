@@ -25,6 +25,8 @@ import { KEYS, LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '
 import { QueryColumn } from '../../..';
 import { GlobalAppState } from '../../global';
 
+import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
+
 const emptyList = List<ValueDescriptor>();
 
 export interface LookupCellProps {
@@ -49,12 +51,16 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
     private blurTO: number;
     private changeTO: number;
     private inputEl: RefObject<HTMLInputElement>;
+    private menuEl: RefObject<HTMLDivElement>;
+    private wrapperEl: RefObject<HTMLDivElement>;
 
     constructor(props: LookupCellProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.inputEl = createRef<HTMLInputElement>();
+        this.menuEl = createRef<HTMLInputElement>();
+        this.wrapperEl = createRef<HTMLInputElement>();
 
         this.state = {
             activeOptionIdx: -1,
@@ -65,6 +71,14 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
     componentDidMount(): void {
         const { col, filteredLookupValues, filteredLookupKeys } = this.props;
         initLookup(col, LOOKUP_DEFAULT_SIZE, filteredLookupValues, filteredLookupKeys);
+
+        try {
+            this.getContainerElement()?.addEventListener('scroll', this.onContainerScroll);
+            document.addEventListener('scroll', this.onContainerScroll);
+            this.onContainerScroll();
+        } catch (e) {
+            console.error('Failed to attach listeners for LookupCell scrolling.', e);
+        }
     }
 
     UNSAFE_componentWillReceiveProps(nextProps: LookupCellProps): void {
@@ -72,6 +86,15 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
             this.setState({
                 activeOptionIdx: 0,
             });
+        }
+    }
+
+    componentWillUnmount(): void {
+        try {
+            this.getContainerElement()?.removeEventListener('scroll', this.onContainerScroll);
+            document.removeEventListener('scroll', this.onContainerScroll);
+        } catch (e) {
+            console.error('Failed to detach listeners for LookupCell scrolling.', e);
         }
     }
 
@@ -84,18 +107,21 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
             this.inputEl.current.value = '';
         }
 
-        searchLookup(
-            this.props.col,
-            LOOKUP_DEFAULT_SIZE,
-            undefined,
-            this.props.filteredLookupValues,
-            this.props.filteredLookupKeys
-        );
+        this.resetLookup();
 
         this.setState({
             activeOptionIdx: -1,
             token: undefined,
         });
+    };
+
+    // As a part of the fix for #43051 the LookupCell needs to be able to attach scroll event listeners
+    // to the grid container which is declared in EditableGrid. Handing down a React.RefObject would be preferred,
+    // however, this caused sluggish performance for the grid as this "container ref" was constantly updating and needs
+    // to be passed in as a prop to all Cells. In lieu of the ref approach this uses a DOM selector to located the
+    // nearest container element as designated by a CSS class.
+    getContainerElement = (): Element => {
+        return this.wrapperEl.current?.closest(`.${EDITABLE_GRID_CONTAINER_CLS}`);
     };
 
     focusInput = (): void => {
@@ -122,17 +148,20 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
         return this.props.col.isJunctionLookup();
     };
 
+    onContainerScroll = (): void => {
+        // Issue 43051: LookupCell menu manually updated to account for scrolled grid container
+        if (this.menuEl.current && this.wrapperEl.current) {
+            const rect = this.wrapperEl.current.getBoundingClientRect();
+            this.menuEl.current.style.left = `${rect.left + window.scrollX}px`;
+            this.menuEl.current.style.top = `${rect.bottom}px`;
+        }
+    };
+
     onInputBlur = (): void => {
         this.blurTO = window.setTimeout(() => {
             const { colIdx, modelId, rowIdx } = this.props;
             this.props.select(modelId, colIdx, rowIdx);
-            searchLookup(
-                this.props.col,
-                LOOKUP_DEFAULT_SIZE,
-                null,
-                this.props.filteredLookupValues,
-                this.props.filteredLookupKeys
-            );
+            this.resetLookup();
         }, 200);
     };
 
@@ -145,13 +174,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
                 token = this.inputEl.current.value;
             }
 
-            searchLookup(
-                this.props.col,
-                LOOKUP_DEFAULT_SIZE,
-                token,
-                this.props.filteredLookupValues,
-                this.props.filteredLookupKeys
-            );
+            this.searchLookup(token);
 
             this.setState({
                 activeOptionIdx: -1,
@@ -222,6 +245,20 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
         if (onCellModify) onCellModify();
 
         this.focusInput();
+    };
+
+    resetLookup = (): void => {
+        this.searchLookup(undefined);
+    };
+
+    searchLookup = (token: string): void => {
+        searchLookup(
+            this.props.col,
+            LOOKUP_DEFAULT_SIZE,
+            token,
+            this.props.filteredLookupValues,
+            this.props.filteredLookupKeys
+        );
     };
 
     renderOptions(): ReactNode {
@@ -308,7 +345,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
 
     render(): ReactNode {
         return (
-            <div className="cell-lookup">
+            <div className="cell-lookup" ref={this.wrapperEl}>
                 {this.renderValue()}
                 <input
                     autoFocus
@@ -320,7 +357,9 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
                     ref={this.inputEl}
                     type="text"
                 />
-                <div className="cell-lookup-menu">{this.renderOptions()}</div>
+                <div className="cell-lookup-menu" ref={this.menuEl}>
+                    {this.renderOptions()}
+                </div>
             </div>
         );
     }

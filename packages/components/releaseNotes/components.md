@@ -1,14 +1,19 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.TBD
-*Released*: TBD
+### version 2.27.0
+*Released*: 01 May 2021
 * Changes to allow data region filtration based on ontology concepts
   * Added OntologyBrowserFilterPanel to handle FilterDialog injection
   * Updated OntologyBrowser to optionally hide conceptinfo
   * Updated OntologyTreePanel to show filter selections
 * Updated FileTree to take header parameter
 * Split FileTree.Header into its own file
+
+### version 2.26.3
+*Released*: 30 April 2021
+* Issue 43028: QuerySelect - fallback to "valueColumn" as option label
+* Issue 43051: LookupCell menu appears detached from table cell
 
 ### version 2.26.2
 *Released*: 29 April 2021

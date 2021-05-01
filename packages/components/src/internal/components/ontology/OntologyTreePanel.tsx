@@ -1,12 +1,14 @@
-import React, { FC, useCallback, RefObject, useRef, useEffect, useState } from 'react';
+import React, { FC, useCallback, RefObject, useRef, useEffect, useState, } from 'react';
 import { TreeNode } from 'react-treebeard';
 
-import { naturalSortByProperty, FileTree } from '../../..';
+import { naturalSortByProperty, FileTree, } from '../../..';
 
 import { DEFAULT_ROOT_PREFIX } from '../files/FileTree';
 
+import { Header } from '../files/FileTreeHeader';
 import { PathModel } from './models';
 import { fetchChildPaths, fetchParentPaths } from './actions';
+import classNames from 'classnames';
 
 export class OntologyPath {
     id: string;
@@ -18,14 +20,34 @@ export class OntologyPath {
 
 type PathNode = OntologyPath & TreeNode;
 
+// exported for jest testing
+export const FilterIcon = props => {
+    const { node, onClick, filters = new Map<string, PathModel>() } = props;
+
+    const clickHandler = useCallback(
+        evt => {
+            evt.stopPropagation();
+            onClick?.(node.data);
+        },
+        [node, onClick]
+    );
+
+    return (
+        <i className={classNames('fa fa-filter', { selected: filters.has(node?.data?.code) })} onClick={clickHandler} />
+    );
+};
+
 interface OntologyTreeProps {
     root: PathModel;
     onNodeSelection: (path: PathModel) => void;
     alternatePath?: PathModel;
+    showFilterIcon?: boolean;
+    filters?: Map<string, PathModel>;
+    onFilterChange?: (changedNode: PathModel) => void;
 }
 
 export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
-    const { root, onNodeSelection, alternatePath } = props;
+    const { root, onNodeSelection, alternatePath, showFilterIcon = false, filters = new Map(), onFilterChange } = props;
     const [showLoading, setShowLoading] = useState<boolean>(false);
     const fileTreeRef: RefObject<FileTree> = useRef();
 
@@ -60,12 +82,20 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
                 }
             );
         },
-        [root]
+        //Needs to trigger for filters to ensure PathModels are loaded and update the FilterDialog values.
+        [root, filters]
     );
 
     const onSelect = (name: string, path: string, checked: boolean, isDirectory: boolean, node: PathNode): boolean => {
         if (node.active) onNodeSelection(node?.data);
         return true;
+    };
+
+    const renderNodeHeader = props => {
+        return (
+        <Header {...props}>
+            {showFilterIcon && <FilterIcon {...props} filters={filters} onClick={onFilterChange} />}
+        </Header>);
     };
 
     return (
@@ -78,6 +108,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
             showLoading={showLoading}
             showAnimations={false}
             ref={fileTreeRef}
+            headerDecorator={renderNodeHeader}
         />
     );
 };

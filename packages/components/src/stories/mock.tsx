@@ -712,6 +712,15 @@ export function initOnotologyMocks(): void {
         return jsonResponse(getConceptParentPaths, res);
     });
 
+    mock.get(/.*\/ontology\/?.*\/getConceptPathFromFilter.*/, (req, res) => {
+        return jsonResponse({
+            path: "/MOCK/ST1234/C1000/C1234/",
+            code: "MOCK:C1234",
+            label: "Administrative Activity",
+            hasChildren: false
+        }, res);
+    });
+
     mock.get(/.*\/ontology\/?.*\/getConcept.*/, (req, res) => {
         const queryParams = req.url().query;
         return jsonResponse(

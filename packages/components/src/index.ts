@@ -420,6 +420,7 @@ import {
 import { createMockWithRouterProps } from './test/mockUtils';
 import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
+import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
 import { AppModel, LogoutReason } from './internal/app/models';
 import {
     AppReducers,
@@ -1029,6 +1030,7 @@ export {
     // Ontology
     OntologyBrowserPanel,
     OntologyConceptOverviewPanel,
+    OntologyBrowserFilterPanel,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

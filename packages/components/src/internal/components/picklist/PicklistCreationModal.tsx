@@ -53,7 +53,7 @@ export const PicklistCreationModal: FC<Props> = memo(props => {
         finally {
             setIsSubmitting(false);
         }
-    }, [name, description, onFinish]);
+    }, [name, description, onFinish, shared]);
 
     let title;
     if (useSelection) {

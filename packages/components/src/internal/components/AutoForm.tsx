@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { ChangeEvent, FC, useCallback } from 'react';
 
 import { HelpIcon } from './HelpIcon';
 
@@ -106,7 +106,7 @@ const Label: FC<LabelProps> = ({ cls, field, id, wrapperCls }) => {
 
 const TextInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, value }) => {
     const { name, placeholder } = field;
-    const _onChange = useCallback(event => onChange(name, event.target.value), [name]);
+    const _onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => onChange(name, event.target.value), [name]);
     const className = inputClasses.text ?? '';
     const _value = value === null || value === undefined ? '' : value;
     return (
@@ -124,7 +124,7 @@ const TextInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, 
 
 const NumberInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, value }) => {
     const { name, placeholder } = field;
-    const _onChange = useCallback(event => onChange(name, event.target.value), [name]);
+    const _onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => onChange(name, event.target.value), [name]);
     const className = inputClasses.number ?? '';
     const _value = value === null || value === undefined ? '' : value;
     return (
@@ -143,14 +143,20 @@ const NumberInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange
 };
 
 const TextareaInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, value }) => {
-    const _onChange = useCallback(event => onChange(field.name, event.target.value), [field.name]);
+    const _onChange = useCallback(
+        (event: ChangeEvent<HTMLTextAreaElement>) => onChange(field.name, event.target.value),
+        [field.name]
+    );
     const className = inputClasses.textarea ?? '';
     const _value = value === null || value === undefined ? '' : value;
     return <textarea className={className} id={id} name={field.name} value={_value} onChange={_onChange} />;
 };
 
 const CheckboxInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, value }) => {
-    const _onChange = useCallback(event => onChange(field.name, event.target.checked === true), [field.name]);
+    const _onChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => onChange(field.name, event.target.checked === true),
+        [field.name]
+    );
     const className = inputClasses.checkbox ?? '';
     return (
         <input
@@ -167,7 +173,7 @@ const CheckboxInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChan
 const SelectInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, value }) => {
     const { name, options, placeholder } = field;
     const _onChange = useCallback(
-        event => {
+        (event: ChangeEvent<HTMLSelectElement>) => {
             const value_ = event.target.value;
             onChange(name, value_ === '' ? null : value_);
         },
@@ -189,7 +195,7 @@ const SelectInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange
 
 const RadioInput: FC<AutoFormFieldProps> = ({ field, inputClasses, onChange, value }) => {
     const { name, options } = field;
-    const _onChange = useCallback(event => onChange(name, event.target.value), [name]);
+    const _onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => onChange(name, event.target.value), [name]);
     const className = inputClasses.radio ?? '';
     return (
         <div>

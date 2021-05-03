@@ -119,6 +119,10 @@ export function userCanManagePicklists(user: User): boolean {
     return hasAllPermissions(user, ['org.labkey.api.lists.permissions.ManagePicklistsPermission']);
 }
 
+export function userCanDeletePublicPicklists(user: User): boolean {
+    return hasAllPermissions(user, [PermissionTypes.ApplicationAdmin]);
+}
+
 export function userCanDesignSourceTypes(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.DesignDataClass]);
 }

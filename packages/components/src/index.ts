@@ -15,7 +15,7 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
-import { buildURL, createProductUrl, createProductUrlFromParts, AppURL, spliceURL } from './internal/url/AppURL';
+import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceURL } from './internal/url/AppURL';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, User } from './internal/components/base/models/User';
@@ -24,7 +24,7 @@ import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColu
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
 import { InferDomainResponse } from './public/InferDomainResponse';
-import { inferDomainFromFile, getServerFilePreview } from './internal/components/assay/utils';
+import { getServerFilePreview, inferDomainFromFile } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
@@ -32,8 +32,8 @@ import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
 
 import {
-    ServerContextProvider,
     ServerContextConsumer,
+    ServerContextProvider,
     useServerContext,
     useServerContextDispatch,
     withAppUser,
@@ -51,8 +51,8 @@ import {
     downloadAttachment,
     generateId,
     getDisambiguatedSelectInputOptions,
-    isIntegerInRange,
     isImage,
+    isIntegerInRange,
     isNonNegativeFloat,
     isNonNegativeInteger,
     toggleDevTools,
@@ -102,9 +102,9 @@ import { FileTree } from './internal/components/files/FileTree';
 import { Notification } from './internal/components/notifications/Notification';
 import {
     createNotification,
-    withTimeout,
     getPipelineActivityData,
     markAllNotificationsAsRead,
+    withTimeout,
 } from './internal/components/notifications/actions';
 import {
     addNotification,
@@ -118,8 +118,8 @@ import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
     NotificationItemModel,
     Persistence,
-    ServerNotificationModel,
     ServerActivityData,
+    ServerNotificationModel,
 } from './internal/components/notifications/model';
 import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons } from './internal/components/buttons/PaginationButtons';
@@ -142,13 +142,13 @@ import {
     gridInit,
     gridInvalidate,
     gridShowError,
+    incrementClientSideMetricCount,
     queryGridInvalidate,
     replaceSelected,
     schemaGridInvalidate,
     setSelected,
     setSnapshotSelections,
     unselectAll,
-    incrementClientSideMetricCount,
 } from './internal/actions';
 import { cancelEvent } from './internal/events';
 import {
@@ -177,15 +177,15 @@ import {
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
     DataViewInfoTypes,
+    EXPORT_TYPES,
     GRID_CHECKBOX_OPTIONS,
     IMPORT_DATA_FORM_TYPES,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
-    EXPORT_TYPES,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT,
+    SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
-    SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
 } from './internal/constants';
 import { getLocation, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
@@ -288,6 +288,7 @@ import {
     deleteAssayDesign,
     deleteAssayRuns,
     fetchAllAssays,
+    GENERAL_ASSAY_PROVIDER_NAME,
     getBatchPropertiesModel,
     getBatchPropertiesRow,
     getImportItemsForAssayDefinitions,
@@ -297,12 +298,11 @@ import {
     importAssayRun,
     RUN_PROPERTIES_GRID_ID,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
-    GENERAL_ASSAY_PROVIDER_NAME,
 } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import { processChartData } from './internal/components/chart/utils';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
-import { invalidateLineageResults, getImmediateChildLineageFilterValue } from './internal/components/lineage/actions';
+import { getImmediateChildLineageFilterValue, invalidateLineageResults } from './internal/components/lineage/actions';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
@@ -331,11 +331,11 @@ import { SiteUsersGridPanel } from './internal/components/user/SiteUsersGridPane
 import { UserProvider } from './internal/components/user/UserProvider';
 import { FieldEditorOverlay } from './internal/components/forms/FieldEditorOverlay';
 import {
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
@@ -354,9 +354,9 @@ import { SampleTypeModel } from './internal/components/domainproperties/samples/
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
 import {
+    flattenValuesFromRow,
     getQueryModelExportParams,
     runDetailsColumnsForQueryModel,
-    flattenValuesFromRow,
 } from './public/QueryModel/utils';
 import { useRouteLeave, withRouteLeave } from './internal/util/RouteLeave';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
@@ -390,8 +390,8 @@ import { fetchListDesign, getListProperties } from './internal/components/domain
 import { fetchIssuesListDefDesign } from './internal/components/domainproperties/issues/actions';
 import { fetchDatasetDesign } from './internal/components/domainproperties/dataset/actions';
 import {
-    SampleTypeDesigner,
     DEFAULT_SAMPLE_FIELD_CONFIG,
+    SampleTypeDesigner,
 } from './internal/components/domainproperties/samples/SampleTypeDesigner';
 import { ListDesignerPanels } from './internal/components/domainproperties/list/ListDesignerPanels';
 import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
@@ -399,7 +399,7 @@ import { DataClassModel } from './internal/components/domainproperties/dataclass
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
-import { mountWithServerContext, sleep, waitForLifecycle, makeQueryInfo } from './internal/testHelpers';
+import { makeQueryInfo, mountWithServerContext, sleep, waitForLifecycle } from './internal/testHelpers';
 import { QueryModel } from './public/QueryModel/QueryModel';
 import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
@@ -422,9 +422,12 @@ import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBro
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
 import { AppModel, LogoutReason } from './internal/app/models';
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY} from './internal/components/domainproperties/list/constants';
-import { PicklistCreationModal} from './internal/components/picklist/PicklistCreationModal';
-import { PicklistCreationMenuItem} from './internal/components/picklist/PicklistCreationMenuItem';
+import {
+    PRIVATE_PICKLIST_CATEGORY,
+    PUBLIC_PICKLIST_CATEGORY
+} from './internal/components/domainproperties/list/constants';
+import { PicklistCreationModal } from './internal/components/picklist/PicklistCreationModal';
+import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import {
     AppReducers,
     ProductMenuReducers,
@@ -441,6 +444,7 @@ import {
     isSampleAliquotEnabled,
     isSampleManagerEnabled,
     isSamplePicklistEnabled,
+    userCanDeletePublicPicklists,
     userCanDesignLocations,
     userCanDesignSourceTypes,
     userCanManagePicklists,
@@ -479,7 +483,8 @@ import {
     NEW_SAMPLE_TYPE_HREF,
     NEW_SAMPLES_HREF,
     NEW_SOURCE_TYPE_HREF,
-    NOTIFICATION_TIMEOUT, PICKLIST_HOME_HREF,
+    NOTIFICATION_TIMEOUT,
+    PICKLIST_HOME_HREF,
     PICKLIST_KEY,
     SAMPLE_MANAGER_PRODUCT_ID,
     SAMPLE_TYPE_KEY,
@@ -530,6 +535,7 @@ const App = {
     userCanDesignLocations,
     userCanDesignSourceTypes,
     userCanManagePicklists,
+    userCanDeletePublicPicklists,
     SECURITY_LOGOUT,
     SECURITY_SERVER_UNAVAILABLE,
     SECURITY_SESSION_TIMEOUT,

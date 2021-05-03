@@ -139,10 +139,12 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             });
     }
 
-    updateValidStatus = (newModel?: SampleTypeModel) => {
-        const { model, updateModel } = this.props;
+    updateValidStatus = (newModel?: SampleTypeModel): void => {
+        const { model, updateModel, metricUnitProps } = this.props;
         const updatedModel = newModel || model;
-        const isValid = updatedModel && updatedModel.hasValidProperties();
+        const isValid =
+            updatedModel?.hasValidProperties() && updatedModel?.isMetricUnitValid(metricUnitProps?.metricUnitRequired);
+
         this.setState(
             () => ({ isValid }),
             () => {

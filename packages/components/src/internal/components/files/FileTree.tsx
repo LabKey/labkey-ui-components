@@ -1,12 +1,10 @@
-import React, { PureComponent } from 'react';
-import { Treebeard, decorators, TreeTheme, animations } from 'react-treebeard';
-import { Checkbox, Alert } from 'react-bootstrap';
+import React, { PureComponent, } from 'react';
+import { Treebeard, decorators, TreeTheme, animations, } from 'react-treebeard';
+import { Alert } from 'react-bootstrap';
 import { List } from 'immutable';
-import classNames from 'classnames';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Header } from './FileTreeHeader';
 
 const fileTree_color = '#333'; // $text-color
 const customStyle: TreeTheme = {
@@ -103,97 +101,6 @@ const nodeIsEmpty = (id: string): boolean => {
     return id?.endsWith('|' + EMPTY_FILE_NAME);
 };
 
-// exported for jest testing
-export const NodeIcon = props => {
-    const { isDirectory, useFileIconCls, node } = props;
-    const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
-
-    return (
-        <>
-            {!isDirectory && useFileIconCls && node.data && node.data.iconFontCls ? (
-                <i className={node.data.iconFontCls + ' filetree-folder-icon'} />
-            ) : (
-                <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
-            )}
-        </>
-    );
-};
-
-// exported for jest testing
-export const Header = props => {
-    const {
-        style,
-        onSelect,
-        node,
-        customStyles,
-        checked,
-        handleCheckbox,
-        useFileIconCls,
-        emptyDirectoryText,
-        allowMultiSelect,
-        showNodeIcon = true,
-    } = props;
-    const isDirectory = node.children !== undefined;
-    const activeColor = node.active && !allowMultiSelect ? 'lk-text-theme-dark filetree-node-active' : undefined; // $brand-primary and $gray-light
-
-    if (nodeIsEmpty(node.id)) {
-        return <div className="filetree-empty-directory">{emptyDirectoryText}</div>;
-    }
-
-    if (nodeIsLoading(node.id)) {
-        return (
-            <div className="filetree-empty-directory">
-                <LoadingSpinner />
-            </div>
-        );
-    }
-
-    // Do not always want to toggle directories when clicking a check box
-    const checkClick = (evt): void => {
-        evt.stopPropagation();
-    };
-
-    return (
-        <span
-            className={
-                'filetree-checkbox-container' +
-                (isDirectory ? '' : ' filetree-leaf-node') +
-                (node.active ? ' active' : '')
-            }
-        >
-            {handleCheckbox && (
-                <Checkbox
-                    id={CHECK_ID_PREFIX + node.id}
-                    checked={checked}
-                    onChange={handleCheckbox}
-                    onClick={checkClick}
-                />
-            )}
-            <div style={style.base} onClick={onSelect}>
-                <div className={activeColor}>
-                    <div
-                        className="filetree-resource-row"
-                        style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}
-                        title={node.name}
-                    >
-                        {showNodeIcon && (
-                            <NodeIcon useFileIconCls={useFileIconCls} isDirectory={isDirectory} node={node} />
-                        )}
-                        <div
-                            className={classNames({
-                                'filetree-file-name': !isDirectory,
-                                'filetree-directory-name': isDirectory,
-                            })}
-                        >
-                            {node.name}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </span>
-    );
-};
-
 interface FileTreeProps {
     loadData: (directory?: string) => Promise<any>;
     onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => boolean;
@@ -205,6 +112,7 @@ interface FileTreeProps {
     showNodeIcon?: boolean;
     showLoading?: boolean;
     showAnimations?: boolean;
+    headerDecorator?: (any) => React.ReactElement<unknown>;
 }
 
 interface FileTreeState {
@@ -216,7 +124,6 @@ interface FileTreeState {
 }
 
 // TODO add typings for nodes, see https://github.com/storybookjs/react-treebeard/issues/186#issuecomment-502162650
-
 export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     static defaultProps = {
         allowMultiSelect: true,
@@ -225,6 +132,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         defaultRootName: 'root',
         showLoading: false,
         showAnimations: true,
+        headerDecorator: undefined,
     };
 
     constructor(props: FileTreeProps) {
@@ -296,26 +204,36 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         }
     }
 
-    headerDecorator = props => {
-        const { allowMultiSelect, useFileIconCls, emptyDirectoryText, showNodeIcon } = this.props;
+    renderHeaderDecorator = props => {
+        const { allowMultiSelect, useFileIconCls, emptyDirectoryText, showNodeIcon, headerDecorator, } = this.props;
+        const {node} = props;
         const { checked } = this.state;
+        const isLoading = nodeIsLoading(node.id);
+        const isEmpty = nodeIsEmpty(node.id);
 
-        if (allowMultiSelect) {
+        if (headerDecorator) {
+            return headerDecorator({ ...this.props, ...props, checked, isLoading, isEmpty });
+        } else if (allowMultiSelect) {
             return (
                 <Header
                     {...props}
+                    isLoading={isLoading}
+                    isEmpty={isEmpty}
                     useFileIconCls={useFileIconCls}
-                    checked={checked.contains(props.node.id)}
-                    handleCheckbox={this.handleCheckbox}
                     emptyDirectoryText={emptyDirectoryText}
                     allowMultiSelect={allowMultiSelect}
                     showNodeIcon={showNodeIcon}
+                    checked={checked.contains(node.id)}
+                    handleCheckbox={this.handleCheckbox}
+                    checkboxId={CHECK_ID_PREFIX + node.id}
                 />
             );
         } else {
             return (
                 <Header
                     {...props}
+                    isLoading={isLoading}
+                    isEmpty={isEmpty}
                     useFileIconCls={useFileIconCls}
                     emptyDirectoryText={emptyDirectoryText}
                     allowMultiSelect={allowMultiSelect}
@@ -568,7 +486,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                         animations={showAnimations ? animations : false}
                         data={data}
                         onToggle={this.onToggle}
-                        decorators={{ ...decorators, Header: this.headerDecorator }}
+                        decorators={{ ...decorators, Header: this.renderHeaderDecorator }}
                         style={customStyle}
                     />
                 )}

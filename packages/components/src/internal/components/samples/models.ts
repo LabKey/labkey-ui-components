@@ -1,3 +1,5 @@
+import { List } from "immutable";
+
 export enum SampleCreationType {
     Independents = 'New samples',
     Derivatives = 'Derivatives',
@@ -59,3 +61,24 @@ export const ALIQUOT_CREATION: SampleCreationTypeModel = {
     quantityLabel: 'Aliquots per parent',
     typeGroup: SampleCreationTypeGroup.aliquots,
 };
+
+export interface SamplesSelectionProviderProps {
+    selection: List<any>;
+    sampleSet: string;
+    determineAliquot?: boolean;
+    determineStorage?: boolean;
+}
+
+export interface SamplesSelectionResultProps {
+    sampleTypeDomainFields: GroupedSampleFields
+    aliquots: any[];
+    noStorageSamples: any[];
+    selectionInfoError: any;
+    sampleItems: {};
+}
+
+export interface GroupedSampleFields {
+    aliquotFields: string[];
+    metaFields: string[];
+    metricUnit: string
+}

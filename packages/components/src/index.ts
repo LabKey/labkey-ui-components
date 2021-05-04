@@ -259,11 +259,17 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     loadSelectedSamples,
+    getGroupedSampleDisplayColumns,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
+import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
+import { SamplesEditableGridBase } from './internal/components/samples/SamplesEditableGrid';
+import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
+import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
+import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import {
     AssayContextConsumer,
     assayPage,
@@ -709,6 +715,7 @@ export {
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
+    getGroupedSampleDisplayColumns,
     SampleTypeDataType,
     DataClassDataType,
     SampleEmptyAlert,
@@ -716,7 +723,12 @@ export {
     SampleSetSummary,
     SampleCreationType,
     SampleSetDeleteModal,
+    SamplesBulkUpdateFormBase,
+    SamplesEditableGridBase,
+    SampleDetailEditing,
     SampleCreationTypeModal,
+    SamplesSelectionProvider,
+    SampleAliquotDetailHeader,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
@@ -1084,7 +1096,12 @@ export type { PermissionsProviderProps } from './internal/components/permissions
 export type { ISelectInitData } from './internal/components/forms/model';
 export type { QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
 export type { UserProviderProps } from './internal/components/user/UserProvider';
-export type { SampleCreationTypeModel } from './internal/components/samples/models';
+export type {
+    SampleCreationTypeModel,
+    GroupedSampleFields,
+    SamplesSelectionProviderProps,
+    SamplesSelectionResultProps
+} from './internal/components/samples/models';
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/AppURLResolver';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';

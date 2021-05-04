@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, PureComponent, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
-import { fromJS, List } from 'immutable';
+import {fromJS, List, Set} from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
 import {
@@ -15,6 +15,7 @@ import {
     QuerySort,
     Pagination,
     DataViewInfoTypes,
+    EXPORT_TYPES,
 } from '../..';
 import { GRID_SELECTION_INDEX } from '../../internal/constants';
 import { DataViewInfo } from '../../internal/models';
@@ -41,7 +42,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
     allowSorting?: boolean;
     asPanel?: boolean;
-    advancedExportOptions?: { [key: string]: string };
+    advancedExportOptions?: { [key: string]: any };
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     buttonsComponentProps?: ButtonsComponentProps;
     emptyText?: string;
@@ -49,6 +50,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     hideEmptyViewMenu?: boolean;
     onChartClicked?: (chart: DataViewInfo) => boolean;
     onCreateReportClicked?: (type: DataViewInfoTypes) => void;
+    onExport?: { [key: string]: () => any };
     pageSizes?: number[];
     title?: string;
     showButtonBar?: boolean;
@@ -60,6 +62,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showSampleAliquotSelector?: boolean;
     showViewMenu?: boolean;
     showHeader?: boolean;
+    supportedExportTypes?: Set<EXPORT_TYPES>;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
 }
 
@@ -106,6 +109,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             hideEmptyViewMenu,
             onChartClicked,
             onCreateReportClicked,
+            onExport,
             onViewSelect,
             onFilteredViewChange,
             pageSizes,
@@ -115,6 +119,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             showSampleComparisonReports,
             showSampleAliquotSelector,
             showViewMenu,
+            supportedExportTypes,
         } = this.props;
 
         const { hasRows, queryInfo, queryInfoError, rowsError, selectionsError } = model;
@@ -160,7 +165,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                             />
                         )}
 
-                        {canExport && <ExportMenu model={model} advancedOptions={advancedExportOptions} />}
+                        {canExport && <ExportMenu model={model} advancedOptions={advancedExportOptions} supportedTypes={supportedExportTypes} onExport={onExport} />}
 
                         {canSelectView && (
                             <ViewMenu model={model} onViewSelect={onViewSelect} hideEmptyViewMenu={hideEmptyViewMenu} />

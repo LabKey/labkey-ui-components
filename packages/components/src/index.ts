@@ -426,8 +426,10 @@ import {
     PRIVATE_PICKLIST_CATEGORY,
     PUBLIC_PICKLIST_CATEGORY
 } from './internal/components/domainproperties/list/constants';
-import { PicklistCreationModal } from './internal/components/picklist/PicklistCreationModal';
+import { PicklistEditModal } from './internal/components/picklist/PicklistEditModal';
+import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
+import { PicklistModel } from './internal/components/picklist/models';
 import {
     AppReducers,
     ProductMenuReducers,
@@ -719,9 +721,11 @@ export {
     UserProvider,
     // data class and sample type related items
     PicklistCreationMenuItem,
-    PicklistCreationModal,
+    PicklistEditModal,
+    PicklistDeleteConfirm,
     PUBLIC_PICKLIST_CATEGORY,
     PRIVATE_PICKLIST_CATEGORY,
+    PicklistModel,
     DataClassModel,
     deleteDataClass,
     fetchDataClass,

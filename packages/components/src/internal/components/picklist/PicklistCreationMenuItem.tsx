@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
-import { PicklistCreationModal } from './PicklistCreationModal';
+import { PicklistEditModal } from './PicklistEditModal';
 import { createNotification } from '../notifications/actions';
 import { MenuItem } from 'react-bootstrap';
 import { AppURL } from '../../url/AppURL';
 import { QueryGridModel } from '../../QueryGridModel';
-import { resolveErrorMessage } from '../../util/messaging';
+import { PicklistModel } from './models';
 
 interface Props {
     selectionModel: QueryGridModel
@@ -15,13 +15,13 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
     const { selectionModel, key } = props;
     const [ showModal, setShowModal ] = useState<boolean>(false);
 
-    const onFinish = (name: string) => {
+    const onFinish = (picklist: PicklistModel) => {
         createNotification({
             message: () => {
                return (
                    <>
-                       Successfully created "{name}" with {selectionModel.selectedQuantity} sample{selectionModel.selectedQuantity === 1 ? '': 's'}.&nbsp;
-                       <a href={AppURL.create("picklist", name).toHref()}>View picklist.</a>
+                       Successfully created "{picklist.name}" with {selectionModel.selectedQuantity} sample{selectionModel.selectedQuantity === 1 ? '': 's'}.&nbsp;
+                       <a href={AppURL.create("picklist", picklist.name).toHref()}>View picklist.</a>
                    </>
                )
             },
@@ -41,10 +41,10 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
     return (
         <>
             <MenuItem onClick={onClick} key={key}>Picklist</MenuItem>
-            <PicklistCreationModal
+            <PicklistEditModal
                 useSelection={true}
                 show={showModal}
-                model={selectionModel}
+                samplesModel={selectionModel}
                 onFinish={onFinish}
                 onCancel={onCancel}
             />

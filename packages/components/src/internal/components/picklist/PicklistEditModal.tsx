@@ -2,27 +2,30 @@ import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from '
 import { Checkbox, Modal } from 'react-bootstrap';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { QueryGridModel } from '../../QueryGridModel';
-import { addSamplesToPicklist, createPicklist } from './actions';
+import { addSamplesToPicklist, createPicklist, updatePicklist } from './actions';
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
+import { PicklistModel } from './models';
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 interface Props {
     show: boolean,
-    model: QueryGridModel,
-    useSelection?: boolean, // if false, will use the single row from the model
+    samplesModel?: QueryGridModel,
+    picklist?: PicklistModel,
+    useSelection?: boolean, // if false, will use the single row from the samplesModel
     onCancel: (any) => void,
-    onFinish: (name: string) => void,
+    onFinish: (picklist: PicklistModel) => void,
 }
 
-export const PicklistCreationModal: FC<Props> = memo(props => {
-    const { show, onCancel, onFinish, model, useSelection } = props;
-    const [ name, setName ] = useState<string>('');
+export const PicklistEditModal: FC<Props> = memo(props => {
+    const { show, onCancel, onFinish, samplesModel, useSelection, picklist } = props;
+    const [ name, setName ] = useState<string>(picklist ? picklist.name : '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 
-    const [ description, setDescription ] = useState<string>(undefined);
+    const [ description, setDescription ] = useState<string>(picklist ? picklist.Description : '');
     const onDescriptionChange = useCallback((evt: ChangeEvent<HTMLTextAreaElement>) => setDescription(evt.target.value), []);
 
-    const [ shared, setShared ] = useState<boolean>(false);
+    const [ shared, setShared ] = useState<boolean>(picklist ? picklist.isPublic() : false);
     // Using a type for evt here causes difficulties.  It wants a FormEvent<Checkbox> but
     // then it doesn't recognize checked as a valid field on current target.
     const onSharedChanged = useCallback((evt) => {
@@ -32,36 +35,57 @@ export const PicklistCreationModal: FC<Props> = memo(props => {
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ picklistError, setPicklistError ] = useState<string>(undefined);
 
+    const isUpdate = picklist !== undefined;
+    let finishVerb, finishingVerb;
+    if (isUpdate) {
+        finishVerb = "Update";
+        finishingVerb = "Updating";
+    } else {
+        finishVerb = "Create";
+        finishingVerb = "Creating."
+    }
+
     const onHide = useCallback((data: any) => {
         setPicklistError(undefined);
         setIsSubmitting(false);
         onCancel(data);
     }, []);
 
-    const onCreatePicklist = useCallback(async () => {
+    const onSavePicklist = useCallback(async () => {
         setIsSubmitting(true);
         try {
-            const picklist = await createPicklist(name, description, shared);
-            await addSamplesToPicklist(
-                name,
-                useSelection ? model.selectionKey : undefined,
-                useSelection ? undefined : [model.getRow().getIn(['RowId', 'value'])]);
-            onFinish(picklist.name)
+            let updatedList;
+            if (isUpdate) {
+                updatedList = await updatePicklist(new PicklistModel({
+                    name: name,
+                    Description: description,
+                    Category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY
+                }));
+            }
+            else {
+                updatedList = await createPicklist(name, description, shared);
+                await addSamplesToPicklist(
+                    name,
+                    useSelection ? samplesModel.selectionKey : undefined,
+                    useSelection ? undefined : [samplesModel.getRow().getIn(['RowId', 'value'])]);
+            }
+            onFinish(updatedList);
         } catch (e) {
             setPicklistError(resolveErrorMessage(e));
-        }
-        finally {
             setIsSubmitting(false);
         }
     }, [name, description, onFinish, shared]);
 
     let title;
-    if (useSelection) {
-        if (model.selectedQuantity == 0) {
+    if (isUpdate) {
+        title = 'Update Picklist Data';
+    }
+    else if (useSelection) {
+        if (samplesModel.selectedQuantity == 0) {
             title = 'Create an Empty Picklist';
         }
         else {
-            title = <>Create a New Picklist with the {model.selectedQuantity} Selected Sample{model.selectedQuantity === 1 ? '' : 's'}</>;
+            title = <>Create a New Picklist with the {samplesModel.selectedQuantity} Selected Sample{samplesModel.selectedQuantity === 1 ? '' : 's'}</>;
         }
     }
     else {
@@ -102,10 +126,10 @@ export const PicklistCreationModal: FC<Props> = memo(props => {
                     canFinish={true}
                     containerClassName=""
                     isFinishing={isSubmitting}
-                    isFinishingText="Creating Picklist..."
+                    isFinishingText={finishingVerb + " Picklist..."}
                     finish
-                    finishText="Create Picklist"
-                    nextStep={onCreatePicklist}
+                    finishText={finishVerb + " Picklist"}
+                    nextStep={onSavePicklist}
                 />
             </Modal.Footer>
         </Modal>

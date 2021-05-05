@@ -24,15 +24,15 @@ export interface Option<T> {
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface Field<T = any> {
-    defaultValue: T;
-    helpText: string;
-    helpTextHref: string;
+    defaultValue?: T;
+    helpText?: string;
+    helpTextHref?: string;
     label: string;
     name: string;
     // Options are used in Select and Radio fields.
     options?: Array<Option<T>>;
-    placeholder: string;
-    required: boolean;
+    placeholder?: string;
+    required?: boolean;
     type: string;
 }
 

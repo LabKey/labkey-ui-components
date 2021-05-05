@@ -345,6 +345,7 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
 
         const sampleTypeUnit = sampleTypeDomainFields.metricUnit;
 
+        // the current implementation of getConvertedStorageUpdateData uses @labkey/freezermanager, so it cannot be moved to ui-components
         return getConvertedStorageUpdateData(storageRows, sampleItems, sampleTypeUnit, noStorageSamples, selection);
     }
 

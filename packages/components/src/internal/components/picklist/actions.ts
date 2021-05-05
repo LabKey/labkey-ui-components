@@ -1,4 +1,4 @@
-import { Domain } from '@labkey/api';
+import { Ajax, Domain, Utils } from '@labkey/api';
 import { SCHEMAS } from '../../schemas';
 import { PICKLIST, PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { insertRows, InsertRowsResponse } from '../../query/api';
@@ -12,6 +12,7 @@ import { Actions } from '../../../public/QueryModel/withQueryModels';
 import { User } from '../base/models/User';
 import { PicklistModel } from './models';
 import { flattenValuesFromRow } from '../../../public/QueryModel/utils';
+import { buildURL } from '../../url/AppURL';
 
 interface CreatePicklistResponse {
     domainId: number,
@@ -56,10 +57,47 @@ export function createPicklist(name: string, description: string, shared: boolea
 // TODO one of these two is not needed
 export function updatePicklist(picklist: PicklistModel) :Promise<PicklistModel>  {
     return new Promise((resolve, reject) => {
-        resolve(picklist);
+        // resolve(picklist);
         // updateRows({
-        //     schemaQuery:
-        // })
+        //     schemaQuery: SchemaQuery.create("exp", "list"),
+        //     rows: [
+        //         picklist
+        //     ]
+        // }).then(response => {
+        //     resolve(picklist);
+        // }).catch(reason => {
+        //     console.error(reason);
+        //     reject(reason);
+        // });
+        saveDomain(
+            DomainDesign.create({
+                name: picklist.name,
+                // fields: List<DomainField>([DomainField.create(
+                //     {
+                //         name: 'SampleID',
+                //         // rangeURI: 'int',
+                //         required: true,
+                //         lookupContainer: LABKEY.container.path,
+                //         lookupSchema: SCHEMAS.INVENTORY.SAMPLE_ITEMS.schemaName,
+                //         lookupQuery: SCHEMAS.INVENTORY.SAMPLE_ITEMS.queryName,
+                //     }),
+                // ]),
+                // indices: List<DomainIndex>([DomainIndex.fromJS(
+                //     [{
+                //         columns: ['SampleID'],
+                //         type: 'unique',
+                //     }])
+                // ])
+            }),
+            PICKLIST,
+            {
+                keyName: 'id',
+                keyType: 'AutoIncrementInteger',
+                description : picklist.Description,
+                category: picklist.Category,
+            },
+            picklist.name
+        );
         // Domain.save({
         //     domainId: domainId,
         //     domainDesign: {
@@ -178,6 +216,37 @@ export function getPicklistDeleteData(model: QueryModel, actions: Actions, user:
     });
 }
 
-export function deletePicklists() : void {
-    // TODO
+export function deletePicklists(picklists: PicklistModel[], selectionKey?: string) : Promise<any> {
+    return new Promise((resolve, reject) => {
+        let params;
+        if (picklists.length === 1) {
+            params = {
+                listId: picklists[0].listId
+            };
+        } else if (selectionKey) {
+            params = {
+                dataRegionSelectionKey: selectionKey
+            };
+        } else {
+            let listIds = [];
+            picklists.forEach(picklist => {
+                listIds.push(picklist.listId);
+            })
+            params = {
+                listIds
+            }
+        }
+        return Ajax.request({
+            url: buildURL('list', 'deleteListDefinition.api'),
+            method: 'POST',
+            params,
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
+            }),
+        });
+    });
 }

@@ -430,6 +430,7 @@ import { PicklistEditModal } from './internal/components/picklist/PicklistEditMo
 import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { PicklistModel } from './internal/components/picklist/models';
+import { deletePicklists, updatePicklist } from './internal/components/picklist/actions';
 import {
     AppReducers,
     ProductMenuReducers,
@@ -719,13 +720,16 @@ export {
     SecurityRole,
     Principal,
     UserProvider,
-    // data class and sample type related items
+    // sample picklist items
     PicklistCreationMenuItem,
     PicklistEditModal,
     PicklistDeleteConfirm,
     PUBLIC_PICKLIST_CATEGORY,
     PRIVATE_PICKLIST_CATEGORY,
     PicklistModel,
+    deletePicklists,
+    updatePicklist,
+    // data class and sample type related items
     DataClassModel,
     deleteDataClass,
     fetchDataClass,

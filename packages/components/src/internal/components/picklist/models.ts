@@ -1,4 +1,4 @@
-import { immerable } from 'immer';
+import { Draft, immerable, produce } from 'immer';
 import { User } from '../base/models/User';
 import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { userCanDeletePublicPicklists, userCanManagePicklists } from '../../app/utils';
@@ -31,4 +31,12 @@ export class PicklistModel {
     isDeletable(user: User): boolean {
         return (this.isUserList(user) && userCanManagePicklists(user)) || (this.isPublic() && userCanDeletePublicPicklists(user));
     }
+
+    mutate(props: Partial<PicklistModel>): PicklistModel {
+        return produce(this, (draft: Draft<PicklistModel>) => {
+            Object.assign(draft, props);
+        });
+    }
+
+
 }

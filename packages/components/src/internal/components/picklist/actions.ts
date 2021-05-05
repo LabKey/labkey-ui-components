@@ -6,13 +6,13 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { getSelected, getSelectedData } from '../../actions';
 import { List } from 'immutable';
 import { saveDomain } from '../domainproperties/actions';
-import { DomainDesign, DomainField, DomainIndex } from '../domainproperties/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { Actions } from '../../../public/QueryModel/withQueryModels';
 import { User } from '../base/models/User';
 import { PicklistModel } from './models';
 import { flattenValuesFromRow } from '../../../public/QueryModel/utils';
 import { buildURL } from '../../url/AppURL';
+import { fetchListDesign } from '../domainproperties/list/actions';
 
 interface CreatePicklistResponse {
     domainId: number,
@@ -54,97 +54,38 @@ export function createPicklist(name: string, description: string, shared: boolea
     });
 }
 
-// TODO one of these two is not needed
 export function updatePicklist(picklist: PicklistModel) :Promise<PicklistModel>  {
     return new Promise((resolve, reject) => {
-        // resolve(picklist);
-        // updateRows({
-        //     schemaQuery: SchemaQuery.create("exp", "list"),
-        //     rows: [
-        //         picklist
-        //     ]
-        // }).then(response => {
-        //     resolve(picklist);
-        // }).catch(reason => {
-        //     console.error(reason);
-        //     reject(reason);
-        // });
-        saveDomain(
-            DomainDesign.create({
-                name: picklist.name,
-                // fields: List<DomainField>([DomainField.create(
-                //     {
-                //         name: 'SampleID',
-                //         // rangeURI: 'int',
-                //         required: true,
-                //         lookupContainer: LABKEY.container.path,
-                //         lookupSchema: SCHEMAS.INVENTORY.SAMPLE_ITEMS.schemaName,
-                //         lookupQuery: SCHEMAS.INVENTORY.SAMPLE_ITEMS.queryName,
-                //     }),
-                // ]),
-                // indices: List<DomainIndex>([DomainIndex.fromJS(
-                //     [{
-                //         columns: ['SampleID'],
-                //         type: 'unique',
-                //     }])
-                // ])
-            }),
-            PICKLIST,
-            {
-                keyName: 'id',
-                keyType: 'AutoIncrementInteger',
-                description : picklist.Description,
-                category: picklist.Category,
-            },
-            picklist.name
-        );
-        // Domain.save({
-        //     domainId: domainId,
-        //     domainDesign: {
-        //         name: name,
-        //     },
-        //     options: {
-        //         description,
-        //         category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY
-        //     },
-        //     success: (response) => { resolve({name: response.name, domainId: response.domainId})},
-        //     failure: (err) => { reject(err); }
-        // })
+        fetchListDesign(picklist.listId)
+            .then(listDesign => {
+                let domain = listDesign.domain;
+                let options = {
+                    domainId: domain.domainId,
+                    keyName: 'id',
+                    keyType: 'AutoIncrementInteger',
+                    description : picklist.Description,
+                    category: picklist.Category,
+                };
+                if (picklist.name !== domain.get('name')) {
+                    options = Object.assign(options, {name: picklist.name});
+                }
+                saveDomain(
+                    domain,
+                    PICKLIST,
+                    options,
+                    picklist.name
+                ).then(savedDomain => {
+                    resolve(picklist);
+                }).catch(errorDomain => {
+                    console.error(errorDomain.domainException);
+                    reject(errorDomain.domainException);
+                });
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(reason);
+            });
     })
-}
-
-export function savePicklist(name: string, description: string, shared: boolean) : Promise<CreatePicklistResponse> {
-    return new Promise((resolve, reject) => {
-        saveDomain(
-            DomainDesign.create({
-                name: name,
-                fields: List<DomainField>([DomainField.create(
-                    {
-                        name: 'SampleID',
-                        // rangeURI: 'int',
-                        required: true,
-                        lookupContainer: LABKEY.container.path,
-                        lookupSchema: SCHEMAS.INVENTORY.SAMPLE_ITEMS.schemaName,
-                        lookupQuery: SCHEMAS.INVENTORY.SAMPLE_ITEMS.queryName,
-                    }),
-                ]),
-                indices: List<DomainIndex>([DomainIndex.fromJS(
-                    [{
-                        columns: ['SampleID'],
-                        type: 'unique',
-                    }])
-                ])
-            }),
-            PICKLIST,
-            {
-                keyName: 'id',
-                keyType: 'AutoIncrementInteger',
-                description,
-                category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY
-            },
-            name
-        );
-    });
 }
 
 export function addSamplesToPicklist(listName: string, selectionKey?: string, sampleIds?: string[] ) : Promise<InsertRowsResponse> {

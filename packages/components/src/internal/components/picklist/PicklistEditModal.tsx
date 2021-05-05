@@ -58,6 +58,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
             if (isUpdate) {
                 updatedList = await updatePicklist(new PicklistModel({
                     name: name,
+                    listId: picklist.listId,
                     Description: description,
                     Category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY
                 }));

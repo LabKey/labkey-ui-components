@@ -94,6 +94,14 @@ export const STUDY_TABLES = {
     COHORT: SchemaQuery.create(STUDY_SCHEMA, 'Cohort'),
 };
 
+// LIST
+const LIST_METADATA_SCHEMA = 'ListManager';
+export const LIST_METADATA_TABLES = {
+    SCHEMA: LIST_METADATA_SCHEMA,
+    LIST_MANAGER: SchemaQuery.create(LIST_METADATA_SCHEMA, "ListManager"),
+    PICKLISTS: SchemaQuery.create(LIST_METADATA_SCHEMA, "Picklists")
+}
+
 export const SCHEMAS = {
     ASSAY_TABLES,
     EXP_TABLES,
@@ -102,7 +110,8 @@ export const SCHEMAS = {
     DATA_CLASSES,
     CBMB,
     STUDY_TABLES,
-    INVENTORY
+    INVENTORY,
+    LIST_METADATA_TABLES
 };
 
 export function fetchSchemas(schemaName?: string): Promise<List<Map<string, SchemaDetails>>> {

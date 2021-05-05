@@ -264,6 +264,7 @@ import {
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
 import { SamplesEditableGridBase } from './internal/components/samples/SamplesEditableGrid';
+import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
@@ -725,6 +726,7 @@ export {
     SampleSetDeleteModal,
     SamplesBulkUpdateFormBase,
     SamplesEditableGridBase,
+    SampleLineageGraph,
     SampleDetailEditing,
     SampleCreationTypeModal,
     SamplesSelectionProvider,

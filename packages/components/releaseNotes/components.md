@@ -6,12 +6,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Remove isSampleAliquotEnabled experimental flag
 * Allow QueryGridModel export to include extra columns
 * Allow QueryModel to export LABEL
-* Move components/utils from SampleManager to enable aliquot features in Biologics
+* Move/refactor components/utils from SampleManager to enable aliquot features in Biologics
     * SamplesSelectionContextProvider
     * SamplesBulkUpdateForm
     * SamplesEditableGrid
     * SampleDetailEditing
     * SampleAliquotDetailHeader
+    * SampleLineageGraph
     * getGroupedSampleDomainFields, getAliquotSampleIds, getGroupedSampleDisplayColumns utils
 
 ### version 2.26.1

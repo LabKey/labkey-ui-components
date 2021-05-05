@@ -15,6 +15,24 @@ Components, models, actions, and utility functions for LabKey applications and p
     * SampleLineageGraph
     * getGroupedSampleDomainFields, getAliquotSampleIds, getGroupedSampleDisplayColumns utils
 
+### version 2.27.0
+*Released*: 01 May 2021
+* Changes to allow data region filtration based on ontology concepts
+  * Added OntologyBrowserFilterPanel to handle FilterDialog injection
+  * Updated OntologyBrowser to optionally hide conceptinfo
+  * Updated OntologyTreePanel to show filter selections
+* Updated FileTree to take header parameter
+* Split FileTree.Header into its own file
+
+### version 2.26.3
+*Released*: 30 April 2021
+* Issue 43028: QuerySelect - fallback to "valueColumn" as option label
+* Issue 43051: LookupCell menu appears detached from table cell
+
+### version 2.26.2
+*Released*: 29 April 2021
+* Issue 42527: Handle edge case in List Designer Summary View. Summary View mode now hides Field Editor HeaderRenderer content
+
 ### version 2.26.1
 *Released*: 29 April 2021
 * Issue 42844: Sample Type designer update to include metricUnit check in "isValid" check

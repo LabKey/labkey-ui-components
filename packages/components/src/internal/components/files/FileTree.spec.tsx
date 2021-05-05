@@ -8,8 +8,9 @@ import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-i
 
 import { LoadingSpinner } from '../../..';
 
-import { FileTree, NodeIcon, Header, EMPTY_FILE_NAME, LOADING_FILE_NAME } from './FileTree';
+import { FileTree, EMPTY_FILE_NAME, LOADING_FILE_NAME } from './FileTree';
 import { fetchFileTestTree } from './FileTreeTest';
+import { FileNodeIcon, Header } from './FileTreeHeader';
 
 const waitForLoad = jest.fn(component => Promise.resolve(!component.state().loading));
 
@@ -82,7 +83,7 @@ describe('FileTree', () => {
     });
 });
 
-describe('NodeIcon', () => {
+describe('FileNodeIcon', () => {
     const DEFAULT_PROPS = {
         isDirectory: false,
         useFileIconCls: false,
@@ -90,7 +91,7 @@ describe('NodeIcon', () => {
     };
 
     test('default props', () => {
-        const wrapper = mount(<NodeIcon {...DEFAULT_PROPS} />);
+        const wrapper = mount(<FileNodeIcon {...DEFAULT_PROPS} />);
         expect(wrapper.find('i')).toHaveLength(0);
         expect(wrapper.find(FontAwesomeIcon)).toHaveLength(1);
         expect(wrapper.find(FontAwesomeIcon).prop('icon')).toBe(faFileAlt);
@@ -98,7 +99,7 @@ describe('NodeIcon', () => {
     });
 
     test('isDirectory', () => {
-        const wrapper = mount(<NodeIcon {...DEFAULT_PROPS} isDirectory={true} />);
+        const wrapper = mount(<FileNodeIcon {...DEFAULT_PROPS} isDirectory={true} />);
         expect(wrapper.find('i')).toHaveLength(0);
         expect(wrapper.find(FontAwesomeIcon)).toHaveLength(1);
         expect(wrapper.find(FontAwesomeIcon).prop('icon')).toBe(faFolder);
@@ -106,7 +107,7 @@ describe('NodeIcon', () => {
     });
 
     test('isDirectory toggled', () => {
-        const wrapper = mount(<NodeIcon {...DEFAULT_PROPS} isDirectory node={{ toggled: true }} />);
+        const wrapper = mount(<FileNodeIcon {...DEFAULT_PROPS} isDirectory node={{ toggled: true }} />);
         expect(wrapper.find('i')).toHaveLength(0);
         expect(wrapper.find(FontAwesomeIcon)).toHaveLength(1);
         expect(wrapper.find(FontAwesomeIcon).prop('icon')).toBe(faFolderOpen);
@@ -114,13 +115,13 @@ describe('NodeIcon', () => {
     });
 
     test('useFileIconCls and iconFontCls', () => {
-        let wrapper = mount(<NodeIcon {...DEFAULT_PROPS} useFileIconCls />);
+        let wrapper = mount(<FileNodeIcon {...DEFAULT_PROPS} useFileIconCls />);
         expect(wrapper.find('i')).toHaveLength(0);
         expect(wrapper.find(FontAwesomeIcon)).toHaveLength(1);
         expect(wrapper.find(FontAwesomeIcon).prop('className')).toBe('filetree-folder-icon');
         wrapper.unmount();
 
-        wrapper = mount(<NodeIcon {...DEFAULT_PROPS} useFileIconCls node={{ data: { iconFontCls: 'test-cls' } }} />);
+        wrapper = mount(<FileNodeIcon {...DEFAULT_PROPS} useFileIconCls node={{ data: { iconFontCls: 'test-cls' } }} />);
         expect(wrapper.find('i')).toHaveLength(1);
         expect(wrapper.find(FontAwesomeIcon)).toHaveLength(0);
         expect(wrapper.find('i').prop('className')).toBe('test-cls filetree-folder-icon');
@@ -133,6 +134,8 @@ describe('Header', () => {
         node: { id: 'test-id', active: false, children: undefined, name: 'test name' },
         style: { base: {} },
         showNodeIcon: true,
+        isEmpty: false,
+        isLoading: false,
     };
 
     function validate(
@@ -150,7 +153,7 @@ describe('Header', () => {
         expect(wrapper.find('.filetree-checkbox-container')).toHaveLength(rendered ? 1 : 0);
         expect(wrapper.find(Checkbox)).toHaveLength(rendered && hasCheckbox ? 1 : 0);
         expect(wrapper.find('.filetree-resource-row')).toHaveLength(rendered ? 1 : 0);
-        expect(wrapper.find(NodeIcon)).toHaveLength(rendered && showNodeIcon ? 1 : 0);
+        expect(wrapper.find(FileNodeIcon)).toHaveLength(rendered && showNodeIcon ? 1 : 0);
         expect(wrapper.find('.filetree-file-name')).toHaveLength(rendered && !isDirectory ? 1 : 0);
         expect(wrapper.find('.filetree-directory-name')).toHaveLength(rendered && isDirectory ? 1 : 0);
     }
@@ -211,13 +214,13 @@ describe('Header', () => {
     });
 
     test('empty node', () => {
-        const wrapper = mount(<Header {...DEFAULT_PROPS} node={{ id: 'test|' + EMPTY_FILE_NAME }} />);
+        const wrapper = mount(<Header {...DEFAULT_PROPS} isEmpty={true} node={{ id: 'test|' + EMPTY_FILE_NAME }} />);
         validate(wrapper, true);
         wrapper.unmount();
     });
 
     test('loading node', () => {
-        const wrapper = mount(<Header {...DEFAULT_PROPS} node={{ id: 'test|' + LOADING_FILE_NAME }} />);
+        const wrapper = mount(<Header {...DEFAULT_PROPS} isLoading={true} node={{ id: 'test|' + LOADING_FILE_NAME }} />);
         validate(wrapper, true, true);
         wrapper.unmount();
     });

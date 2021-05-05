@@ -3491,11 +3491,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         }
                                         store={
                                           Object {
+                                            "@@observable": [Function],
                                             "dispatch": [Function],
                                             "getState": [Function],
                                             "replaceReducer": [Function],
                                             "subscribe": [Function],
-                                            Symbol(observable): [Function],
                                           }
                                         }
                                       >
@@ -3678,7 +3678,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                 </div>
                                               </div>
                                             </Sticky>
-                                            <ConnectFunction
+                                            <Connect(Droppable)
                                               direction="vertical"
                                               droppableId="domain-form-droppable"
                                               getContainerForClone={[Function]}
@@ -5882,7 +5882,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   </Form>
                                                 </div>
                                               </Droppable>
-                                            </ConnectFunction>
+                                            </Connect(Droppable)>
                                           </div>
                                         </Container>
                                       </Provider>

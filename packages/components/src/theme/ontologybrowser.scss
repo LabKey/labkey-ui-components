@@ -1,4 +1,19 @@
 .ontology-browser-container {
+    padding: 5px 0 0;
+    .filter-panel-row {
+        min-width: 460px;
+        width: 100%;
+
+        .filetree-container {
+            min-height: 200px;
+            height: 25vh;
+        }
+
+        .concept-search-container {
+            padding-bottom: 15px;
+        }
+    }
+
     .left-panel {
         border-right: 1px solid $gray-border;
     }
@@ -11,6 +26,50 @@
         max-width: unset;
         width: max-content;
     }
+
+    .filetree-file-name {
+        margin-right: unset; //Allow filter icon to show next to name
+    }
+
+    .filetree-checkbox-container {
+        padding-right: 15px;
+
+        &:hover {
+            i.fa.fa-filter {
+                //hovering over node div show filter icon in lighter color by default
+                display: block;
+                padding: 0 3px 0;
+                color: $light-gray;
+
+                &:hover, //Hovering over unselected filter icon, show base color
+                &.selected { //Hovering over container with selected icon, show base color instead of lighter
+                    color:unset;
+                }
+            }
+        }
+
+        i.fa.fa-filter {
+            // dont show filter icon by default
+            display: none;
+            padding: 0 3px 0;
+
+            &.child-selected {
+                display: unset;
+                color: gray;
+            }
+
+            &.selected {
+                // Selected nodes, show filter icon with default color
+                display:block;
+
+                &:hover {
+                    // Selected node on hover of icon, show filter icon with lighter color
+                    color: $light-gray
+                }
+            }
+        }
+    }
+
 
     .filetree-container {
         min-height: 300px;

@@ -14,10 +14,20 @@ export interface OntologyBrowserProps {
     initOntologyId?: string;
     asPanel?: boolean;
     onConceptSelect?: (concept: ConceptModel) => void;
+    hideConceptInfo?: boolean;
+    filters?: Map<string, PathModel>;
+    filterChangeHandler?: (filter: PathModel) => void;
 }
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
-    const { initOntologyId, asPanel, onConceptSelect } = props;
+    const {
+        initOntologyId,
+        asPanel,
+        onConceptSelect,
+        hideConceptInfo = false,
+        filters,
+        filterChangeHandler,
+    } = props;
     const [error, setError] = useState<string>();
     const [selectedOntologyId, setSelectedOntologyId] = useState<string>();
     const [ontology, setOntologyModel] = useState<OntologyModel>();
@@ -41,6 +51,10 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
 
     const onSelectedPathChange = useCallback(
         async (path: PathModel, isAlternatePath = false): Promise<void> => {
+            if (path === undefined) {
+                return;
+            }
+
             const { code } = path;
             if (!conceptCache.has(code)) {
                 const concept = await fetchConceptForCode(code);
@@ -51,6 +65,8 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
                 setAlternatePath(path);
             } else {
                 setSelectedPath(path);
+                if (!path.hasChildren)
+                    filterChangeHandler?.(path);
             }
         },
         [conceptCache, setSelectedPath, setAlternatePath]
@@ -96,6 +112,9 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
                     selectedPath={selectedPath}
                     setSelectedPath={onSelectedPathChange}
                     asPanel={asPanel}
+                    hideConceptInfo={hideConceptInfo}
+                    filters={filters}
+                    onFilterChange={filterChangeHandler}
                 />
             )}
         </>
@@ -113,11 +132,14 @@ interface OntologyBrowserPanelImplProps {
     selectedPath?: PathModel;
     setSelectedPath: (path: PathModel, isAlternatePath?: boolean) => void;
     asPanel: boolean;
+    hideConceptInfo?: boolean;
+    filters?: Map<string, PathModel>;
+    onFilterChange?: (changedNode: PathModel) => void;
 }
 
 // exported for jest testing
 export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props => {
-    const { ontology, selectedConcept, alternatePath, selectedPath, setSelectedPath, asPanel } = props;
+    const { ontology, selectedConcept, alternatePath, selectedPath, setSelectedPath, asPanel, hideConceptInfo, filters, onFilterChange } = props;
 
     if (!ontology) {
         return <LoadingSpinner />;
@@ -127,18 +149,20 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
     const root = ontology.getPathModel();
 
     const body = (
-        <Row>
-            <Col xs={6} className="left-panel">
+        <Row className={hideConceptInfo ? 'filter-panel-row' : ''}>
+            <Col xs={hideConceptInfo ? 12 : 6} className={hideConceptInfo ? '' : 'left-panel'}>
                 <OntologyTreeSearchContainer ontology={ontology} searchPathClickHandler={setSelectedPath} />
-                <OntologyTreePanel root={root} onNodeSelection={setSelectedPath} alternatePath={alternatePath} />
+                <OntologyTreePanel root={root} onNodeSelection={setSelectedPath} alternatePath={alternatePath} showFilterIcon={hideConceptInfo} filters={filters} onFilterChange={onFilterChange} />
             </Col>
-            <Col xs={6} className="right-panel">
-                <ConceptInformationTabs
-                    concept={selectedConcept}
-                    selectedPath={selectedPath}
-                    alternatePathClickHandler={setSelectedPath}
-                />
-            </Col>
+            {!hideConceptInfo && (
+                <Col xs={6} className="right-panel">
+                    <ConceptInformationTabs
+                        concept={selectedConcept}
+                        selectedPath={selectedPath}
+                        alternatePathClickHandler={setSelectedPath}
+                    />
+                </Col>
+            )}
         </Row>
     );
 

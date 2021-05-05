@@ -38,15 +38,15 @@ exports[`DomainRow Sample Field 1`] = `
         }
         store={
           Object {
+            "@@observable": [Function],
             "dispatch": [Function],
             "getState": [Function],
             "replaceReducer": [Function],
             "subscribe": [Function],
-            Symbol(observable): [Function],
           }
         }
       >
-        <ConnectFunction
+        <Connect(Droppable)
           direction="vertical"
           droppableId="domain-form-droppable"
           getContainerForClone={[Function]}
@@ -2200,7 +2200,7 @@ exports[`DomainRow Sample Field 1`] = `
               />
             </div>
           </Droppable>
-        </ConnectFunction>
+        </Connect(Droppable)>
       </Provider>
     </App>
   </ErrorBoundary>
@@ -2245,15 +2245,15 @@ exports[`DomainRow client side warning on field 1`] = `
         }
         store={
           Object {
+            "@@observable": [Function],
             "dispatch": [Function],
             "getState": [Function],
             "replaceReducer": [Function],
             "subscribe": [Function],
-            Symbol(observable): [Function],
           }
         }
       >
-        <ConnectFunction
+        <Connect(Droppable)
           direction="vertical"
           droppableId="domain-form-droppable"
           getContainerForClone={[Function]}
@@ -4370,7 +4370,7 @@ exports[`DomainRow client side warning on field 1`] = `
               />
             </div>
           </Droppable>
-        </ConnectFunction>
+        </Connect(Droppable)>
       </Provider>
     </App>
   </ErrorBoundary>
@@ -4415,15 +4415,15 @@ exports[`DomainRow date time field 1`] = `
         }
         store={
           Object {
+            "@@observable": [Function],
             "dispatch": [Function],
             "getState": [Function],
             "replaceReducer": [Function],
             "subscribe": [Function],
-            Symbol(observable): [Function],
           }
         }
       >
-        <ConnectFunction
+        <Connect(Droppable)
           direction="vertical"
           droppableId="domain-form-droppable"
           getContainerForClone={[Function]}
@@ -6680,7 +6680,7 @@ exports[`DomainRow date time field 1`] = `
               />
             </div>
           </Droppable>
-        </ConnectFunction>
+        </Connect(Droppable)>
       </Provider>
     </App>
   </ErrorBoundary>
@@ -6725,15 +6725,15 @@ exports[`DomainRow decimal field 1`] = `
         }
         store={
           Object {
+            "@@observable": [Function],
             "dispatch": [Function],
             "getState": [Function],
             "replaceReducer": [Function],
             "subscribe": [Function],
-            Symbol(observable): [Function],
           }
         }
       >
-        <ConnectFunction
+        <Connect(Droppable)
           direction="vertical"
           droppableId="domain-form-droppable"
           getContainerForClone={[Function]}
@@ -9025,7 +9025,7 @@ exports[`DomainRow decimal field 1`] = `
               />
             </div>
           </Droppable>
-        </ConnectFunction>
+        </Connect(Droppable)>
       </Provider>
     </App>
   </ErrorBoundary>
@@ -9070,15 +9070,15 @@ exports[`DomainRow participant id field 1`] = `
         }
         store={
           Object {
+            "@@observable": [Function],
             "dispatch": [Function],
             "getState": [Function],
             "replaceReducer": [Function],
             "subscribe": [Function],
-            Symbol(observable): [Function],
           }
         }
       >
-        <ConnectFunction
+        <Connect(Droppable)
           direction="vertical"
           droppableId="domain-form-droppable"
           getContainerForClone={[Function]}
@@ -11138,7 +11138,7 @@ exports[`DomainRow participant id field 1`] = `
               />
             </div>
           </Droppable>
-        </ConnectFunction>
+        </Connect(Droppable)>
       </Provider>
     </App>
   </ErrorBoundary>
@@ -11183,15 +11183,15 @@ exports[`DomainRow server side error on reserved field 1`] = `
         }
         store={
           Object {
+            "@@observable": [Function],
             "dispatch": [Function],
             "getState": [Function],
             "replaceReducer": [Function],
             "subscribe": [Function],
-            Symbol(observable): [Function],
           }
         }
       >
-        <ConnectFunction
+        <Connect(Droppable)
           direction="vertical"
           droppableId="domain-form-droppable"
           getContainerForClone={[Function]}
@@ -13197,7 +13197,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
               />
             </div>
           </Droppable>
-        </ConnectFunction>
+        </Connect(Droppable)>
       </Provider>
     </App>
   </ErrorBoundary>
@@ -13242,15 +13242,15 @@ exports[`DomainRow string field test 1`] = `
         }
         store={
           Object {
+            "@@observable": [Function],
             "dispatch": [Function],
             "getState": [Function],
             "replaceReducer": [Function],
             "subscribe": [Function],
-            Symbol(observable): [Function],
           }
         }
       >
-        <ConnectFunction
+        <Connect(Droppable)
           direction="vertical"
           droppableId="domain-form-droppable"
           getContainerForClone={[Function]}
@@ -15620,7 +15620,7 @@ exports[`DomainRow string field test 1`] = `
               />
             </div>
           </Droppable>
-        </ConnectFunction>
+        </Connect(Droppable)>
       </Provider>
     </App>
   </ErrorBoundary>
@@ -15665,15 +15665,15 @@ exports[`DomainRow with empty domain form 1`] = `
         }
         store={
           Object {
+            "@@observable": [Function],
             "dispatch": [Function],
             "getState": [Function],
             "replaceReducer": [Function],
             "subscribe": [Function],
-            Symbol(observable): [Function],
           }
         }
       >
-        <ConnectFunction
+        <Connect(Droppable)
           direction="vertical"
           droppableId="domain-form-droppable"
           getContainerForClone={[Function]}
@@ -18110,7 +18110,7 @@ exports[`DomainRow with empty domain form 1`] = `
               />
             </div>
           </Droppable>
-        </ConnectFunction>
+        </Connect(Droppable)>
       </Provider>
     </App>
   </ErrorBoundary>

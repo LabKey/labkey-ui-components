@@ -1,20 +1,20 @@
-import React, { ReactNode } from 'react'
-import {List, Map, OrderedMap} from "immutable";
+import React, { ReactNode } from 'react';
+import { List, Map, OrderedMap } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import { SamplesSelectionProviderProps, SamplesSelectionResultProps}  from "./models";
 import {BulkUpdateForm, QueryColumn, QueryGridModel, QueryInfo, QueryModel, SchemaQuery} from "../../..";
+import { SamplesSelectionProviderProps, SamplesSelectionResultProps}  from "./models";
 
 interface OwnProps {
-    queryModel?: QueryModel
-    queryGridModel?: QueryGridModel
-    updateRows: (schemaQuery: SchemaQuery, rows: Array<any>) => Promise<void>
-    hasValidMaxSelection: () => any
-    sampleSetLabel: string
-    onCancel: () => any
-    onBulkUpdateError: (message: string) => any
-    onBulkUpdateComplete: (data: any, submitForEdit) => any
-    editSelectionInGrid: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any
+    queryModel?: QueryModel;
+    queryGridModel?: QueryGridModel;
+    updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<void>;
+    hasValidMaxSelection: () => any;
+    sampleSetLabel: string;
+    onCancel: () => any;
+    onBulkUpdateError: (message: string) => any;
+    onBulkUpdateComplete: (data: any, submitForEdit) => any;
+    editSelectionInGrid: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any;
 }
 
 type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultProps;
@@ -23,7 +23,6 @@ type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultPr
 // export const SamplesBulkUpdateForm = connect<any, any, any>(undefined)(SamplesSelectionProvider(SamplesBulkUpdateFormBase));
 
 export class SamplesBulkUpdateFormBase extends React.Component<Props, any> {
-
     getGridSelectionSize = () => {
         const { queryGridModel, queryModel } = this.props;
         return queryGridModel ? queryGridModel.selectedIds.size : queryModel.selections.size;
@@ -35,12 +34,11 @@ export class SamplesBulkUpdateFormBase extends React.Component<Props, any> {
             if (aliquots.length < this.getGridSelectionSize()) {
                 return (
                     <Alert bsStyle="info">
-                        {aliquots.length} aliquot{aliquots.length > 1 ? 's were' : ' was'} among the selections.
-                        Aliquot data is inherited from the original sample and cannot be updated here.
+                        {aliquots.length} aliquot{aliquots.length > 1 ? 's were' : ' was'} among the selections. Aliquot
+                        data is inherited from the original sample and cannot be updated here.
                     </Alert>
                 );
-            }
-            else {
+            } else {
                 return (
                     <Alert bsStyle="info">
                         Aliquot data inherited from the original sample cannot be updated here.
@@ -56,7 +54,6 @@ export class SamplesBulkUpdateFormBase extends React.Component<Props, any> {
         return allAliquots ? 'aliquot' : 'sample';
     };
 
-
     getQueryInfo() {
         const { aliquots, queryGridModel, queryModel, sampleTypeDomainFields } = this.props;
         const originalQueryInfo = queryGridModel?.queryInfo ?? queryModel.queryInfo;
@@ -66,15 +63,15 @@ export class SamplesBulkUpdateFormBase extends React.Component<Props, any> {
         // if all are aliquots, only show pk, aliquot specific and description columns
         if (aliquots && aliquots.length === this.getGridSelectionSize()) {
             originalQueryInfo.columns.forEach((column, key) => {
-                if ("description" === column.fieldKey.toLowerCase()
-                    || sampleTypeDomainFields.aliquotFields.indexOf(column.fieldKey.toLowerCase()) > -1)
+                if ('description' === column.fieldKey.toLowerCase()
+                    sampleTypeDomainFields.aliquotFields.indexOf(column.fieldKey.toLowerCase()) > -1
+                )
                     columns = columns.set(key, column);
             });
             originalQueryInfo.getPkCols().forEach((column, ind) => {
                 columns = columns.set(column.fieldKey, column);
             });
-        }
-        else {
+        } else {
             // if contains samples, skip aliquot fields
             originalQueryInfo.columns.forEach((column, key) => {
                 if (sampleTypeDomainFields.aliquotFields.indexOf(column.fieldKey.toLowerCase()) === -1)
@@ -86,8 +83,17 @@ export class SamplesBulkUpdateFormBase extends React.Component<Props, any> {
     }
 
     render() {
-        const { updateRows, queryGridModel, queryModel, hasValidMaxSelection, sampleSetLabel, onCancel,
-            onBulkUpdateError, onBulkUpdateComplete, editSelectionInGrid, } = this.props;
+        const {
+            updateRows,
+            queryGridModel,
+            queryModel,
+            hasValidMaxSelection,
+            sampleSetLabel,
+            onCancel,
+            onBulkUpdateError,
+            onBulkUpdateComplete,
+            editSelectionInGrid,
+        } = this.props;
 
         const selectedId = queryGridModel ? queryGridModel.selectedIds.toArray() : [...queryModel.selections];
         const sortString = queryGridModel ? queryGridModel.getSorts() : queryModel.sorts.join(',');
@@ -107,7 +113,6 @@ export class SamplesBulkUpdateFormBase extends React.Component<Props, any> {
                 updateRows={updateRows}
                 header={this.getAliquotHeader()}
             />
-        )
+        );
     }
 }
-

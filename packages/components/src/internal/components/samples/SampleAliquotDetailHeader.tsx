@@ -1,15 +1,14 @@
-import React, { PureComponent } from 'react'
-import { List, OrderedMap } from "immutable";
+import React, { PureComponent } from 'react';
+import { List, OrderedMap } from 'immutable';
 
-import { DefaultRenderer, QueryColumn } from "../../..";
+import { DefaultRenderer, QueryColumn } from '../../..';
 
 interface SampleAliquotDetailHeaderProps {
-    row: any
-    aliquotHeaderDisplayColumns: List<QueryColumn>
+    row: any;
+    aliquotHeaderDisplayColumns: List<QueryColumn>;
 }
 
-export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetailHeaderProps, any>  {
-
+export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetailHeaderProps, any> {
     renderAliquotDetailSubHeader(header: string) {
         return (
             <div className="bottom-spacing">
@@ -23,12 +22,10 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
             <tr key={key}>
                 <td>{label}</td>
                 <td>
-                    <DefaultRenderer
-                        data={data}
-                    />
+                    <DefaultRenderer data={data} />
                 </td>
             </tr>
-        )
+        );
     }
 
     render() {
@@ -49,30 +46,30 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
 
         return (
             <>
-                {this.renderAliquotDetailSubHeader("Aliquot data")}
-                <table className={'table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-table'}>
+                {this.renderAliquotDetailSubHeader('Aliquot data')}
+                <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-table">
                     <tbody>
-                    {this.renderDetailRow("Aliquoted from", parent, 'aliquotedfrom')}
-                    {this.renderDetailRow("Aliquoted by", createdBy, 'aliquotedby')}
-                    {this.renderDetailRow("Aliquot date", created, 'aliquoteddate')}
-                    {this.renderDetailRow("Aliquot description", description, 'aliquoteddescription')}
-                    {
-                        aliquotHeaderDisplayColumns.map((aliquotCol, key) => {
-                            return this.renderDetailRow(aliquotCol.caption, newRow.get(aliquotCol.fieldKey.toLowerCase()), key);
-                        })
-                    }
+                        {this.renderDetailRow('Aliquoted from', parent, 'aliquotedfrom')}
+                        {this.renderDetailRow('Aliquoted by', createdBy, 'aliquotedby')}
+                        {this.renderDetailRow('Aliquot date', created, 'aliquoteddate')}
+                        {this.renderDetailRow('Aliquot description', description, 'aliquoteddescription')}
+                        {aliquotHeaderDisplayColumns.map((aliquotCol, key) => {
+                            return this.renderDetailRow(
+                                aliquotCol.caption,
+                                newRow.get(aliquotCol.fieldKey.toLowerCase()),
+                                key
+                            );
+                        })}
                     </tbody>
                 </table>
-                {this.renderAliquotDetailSubHeader("Original Sample Data")}
-                <table className={'table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-meta-table'}>
+                {this.renderAliquotDetailSubHeader('Original Sample Data')}
+                <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-meta-table">
                     <tbody>
-                    {showRootSampleName && this.renderDetailRow("Original sample", root, 'originalsample')}
-                    {this.renderDetailRow("Sample description", rootDescription, 'sampledescription')}
+                        {showRootSampleName && this.renderDetailRow('Original sample', root, 'originalsample')}
+                        {this.renderDetailRow('Sample description', rootDescription, 'sampledescription')}
                     </tbody>
                 </table>
             </>
         );
-    };
-
+    }
 }
-

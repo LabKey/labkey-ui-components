@@ -1,60 +1,56 @@
-import React, { PureComponent, ReactNode } from 'react'
+import React, { PureComponent, ReactNode } from 'react';
 import { Button, Panel, Checkbox, DropdownButton } from 'react-bootstrap';
-import { Map } from "immutable";
+import { Map } from 'immutable';
 
-import {
-    LineageFilter,
-    LineageGraph,
-    LINEAGE_GROUPING_GENERATIONS,
-    VisGraphNode,
-    LINEAGE_DIRECTIONS,
-} from "../../..";
-import { SAMPLE_ALIQUOT_PROTOCOL_LSID } from "../lineage/constants";
+import { LineageFilter, LineageGraph, LINEAGE_GROUPING_GENERATIONS, VisGraphNode, LINEAGE_DIRECTIONS } from '../../..';
+import { SAMPLE_ALIQUOT_PROTOCOL_LSID } from '../lineage/constants';
 
 interface Props {
-    sampleLsid: string
-    goToLineageGrid:() => void
-    onLineageNodeDblClick: (node: VisGraphNode) => void
-    groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>
+    sampleLsid: string;
+    goToLineageGrid: () => void;
+    onLineageNodeDblClick: (node: VisGraphNode) => void;
+    groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>;
 }
 
 interface State {
-    includeDerivative: boolean
-    includeAliquot: boolean
-    includeSources: boolean
+    includeDerivative: boolean;
+    includeAliquot: boolean;
+    includeSources: boolean;
 }
 
-export class SampleLineageGraph extends PureComponent<Props, State>  {
+export class SampleLineageGraph extends PureComponent<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
             includeDerivative: true,
             includeAliquot: true,
-            includeSources: true
+            includeSources: true,
         };
     }
 
     handleCheckboxChange = (evt, key: string) => {
-        let filter = {};
+        const filter = {};
         const check = evt.target.checked;
         filter[key] = check;
 
         if (key === 'includeDerivative' && !check) {
             filter['includeSources'] = false;
         }
-        this.setState(() => (filter));
+        this.setState(() => filter);
     };
 
     isIncludeAll = () => {
         const { includeDerivative, includeAliquot, includeSources } = this.state;
-        return (includeDerivative && includeAliquot && includeSources)
-            || (!includeDerivative && !includeAliquot && !includeSources);
-    }
+        return (
+            (includeDerivative && includeAliquot && includeSources) ||
+            (!includeDerivative && !includeAliquot && !includeSources)
+        );
+    };
 
-    getLineageFilters = () : LineageFilter[] =>  {
+    getLineageFilters = (): LineageFilter[] => {
         const { includeSources, includeDerivative, includeAliquot } = this.state;
 
-        let filters = [];
+        const filters = [];
         const typeValues = includeSources || this.isIncludeAll() ? ['Sample', 'Data'] : ['Sample'];
         filters.push(new LineageFilter('type', typeValues));
 
@@ -62,16 +58,15 @@ export class SampleLineageGraph extends PureComponent<Props, State>  {
             filters.push(new LineageFilter('materialLineageType', ['RootMaterial', 'Derivative', undefined]));
 
         return filters;
-    }
+    };
 
-    getRunProtocolLsid = () : string => {
+    getRunProtocolLsid = (): string => {
         const { includeDerivative, includeAliquot } = this.state;
 
-        if (!includeDerivative && includeAliquot)
-            return SAMPLE_ALIQUOT_PROTOCOL_LSID
+        if (!includeDerivative && includeAliquot) return SAMPLE_ALIQUOT_PROTOCOL_LSID;
 
         return undefined;
-    }
+    };
 
     createItem(key, label, checked, disabled?: boolean): ReactNode {
         return (
@@ -79,8 +74,8 @@ export class SampleLineageGraph extends PureComponent<Props, State>  {
                 <Checkbox
                     checked={checked}
                     disabled={disabled}
-                    className={'dropdown-menu-row'}
-                    onChange={(evt) => this.handleCheckboxChange(evt, key)}
+                    className="dropdown-menu-row"
+                    onChange={evt => this.handleCheckboxChange(evt, key)}
                     id={'checkbox-' + key}
                     name={key}
                 >
@@ -93,7 +88,7 @@ export class SampleLineageGraph extends PureComponent<Props, State>  {
     getFilterMenu(): ReactNode[] {
         const { includeDerivative, includeAliquot, includeSources } = this.state;
 
-        let items = [];
+        const items = [];
 
         items.push(this.createItem('includeDerivative', 'Derivatives ', includeDerivative));
         items.push(this.createItem('includeSources', 'Source Parents ', includeSources, !includeDerivative));
@@ -105,7 +100,7 @@ export class SampleLineageGraph extends PureComponent<Props, State>  {
     renderFilter() {
         return (
             <span className="gridbar-button-spacer">
-                <DropdownButton id={'lineage-type-filter'} pullRight title={'Filter'}>
+                <DropdownButton id="lineage-type-filter" pullRight title="Filter">
                     {this.getFilterMenu()}
                 </DropdownButton>
             </span>
@@ -117,11 +112,13 @@ export class SampleLineageGraph extends PureComponent<Props, State>  {
         return (
             <Panel>
                 <Panel.Body>
-                    <Button bsStyle="success" onClick={goToLineageGrid}>Go to Lineage Grid</Button>
+                    <Button bsStyle="success" onClick={goToLineageGrid}>
+                        Go to Lineage Grid
+                    </Button>
                     {this.renderFilter()}
                     <LineageGraph
                         lsid={sampleLsid}
-                        grouping={{generations: LINEAGE_GROUPING_GENERATIONS.Specific}}
+                        grouping={{ generations: LINEAGE_GROUPING_GENERATIONS.Specific }}
                         filters={this.getLineageFilters()}
                         navigate={onLineageNodeDblClick}
                         groupTitles={groupTitles}
@@ -129,6 +126,6 @@ export class SampleLineageGraph extends PureComponent<Props, State>  {
                     />
                 </Panel.Body>
             </Panel>
-        )
+        );
     }
-}//
+} //

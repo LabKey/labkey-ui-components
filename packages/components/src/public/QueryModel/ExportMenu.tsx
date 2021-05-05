@@ -1,10 +1,11 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
+import { Set } from 'immutable';
+
 import { getQueryModelExportParams, QueryModel, Tip, EXPORT_TYPES } from '../..';
 
 import { exportRows } from '../../internal/actions';
-import { Set } from "immutable";
 
 interface ExportMenuProps {
     // pageSizes is expected to be sorted (ascending)
@@ -19,7 +20,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
         { type: EXPORT_TYPES.CSV, icon: 'fa-file-o', label: 'CSV' },
         { type: EXPORT_TYPES.EXCEL, icon: 'fa-file-excel-o', label: 'Excel' },
         { type: EXPORT_TYPES.TSV, icon: 'fa-file-text-o', label: 'TSV' },
-        { type: EXPORT_TYPES.LABEL, icon: 'fa-tag', label: 'Label', hidden: true }
+        { type: EXPORT_TYPES.LABEL, icon: 'fa-tag', label: 'Label', hidden: true },
         // Note: EXPORT_TYPES and exportRows (used in export function below) also include support for FASTA and GENBANK,
         // but they were never used in the QueryGridPanel version of export. We're explicitly not supporting them in
         // this implementation until we need them.
@@ -31,8 +32,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
         const exportParams = getQueryModelExportParams(model, type, advancedOptions);
         if (onExport && onExport[type]) {
             onExport[type]();
-        } else
-        {
+        } else {
             exportRows(type, exportParams);
         }
     };
@@ -57,17 +57,16 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
                             </MenuItem>
 
                             {ExportMenu.exportOptions.map(option => {
-                                if (option.hidden && !supportedTypes?.includes(option.type))
-                                    return null;
+                                if (option.hidden && !supportedTypes?.includes(option.type)) return null;
 
                                 return (
                                     <MenuItem key={option.type} onClick={() => this.export(option)}>
                                         <div className="export-menu__item">
-                                            <span className={`fa ${option.icon} export-menu-icon`}/>
+                                            <span className={`fa ${option.icon} export-menu-icon`} />
                                             <span>{option.label}</span>
                                         </div>
                                     </MenuItem>
-                                )
+                                );
                             })}
                         </DropdownButton>
                     </Tip>

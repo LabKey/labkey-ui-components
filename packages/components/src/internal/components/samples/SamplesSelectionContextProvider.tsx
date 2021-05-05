@@ -4,14 +4,15 @@
  */
 import React from 'react';
 
-import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from "./models";
+import { LoadingSpinner } from '../../..';
+
+import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import {
     getAliquotSampleIds,
     getGroupedSampleDomainFields,
     getNotInStorageSampleIds,
-    getSampleSelectionStorageData
-} from "./actions";
-import {LoadingSpinner} from "../../..";
+    getSampleSelectionStorageData,
+} from './actions';
 
 const Context = React.createContext<SamplesSelectionResultProps>(undefined);
 const SamplesSelectionContextProvider = Context.Provider;
@@ -23,14 +24,13 @@ type State = SamplesSelectionResultProps;
 
 export const SamplesSelectionProvider = (Component: React.ComponentType) => {
     class SamplesSelectionProviderImpl extends React.Component<Props, State> {
-
         state: Readonly<State> = {
             sampleTypeDomainFields: undefined,
             aliquots: undefined,
             noStorageSamples: undefined,
             selectionInfoError: undefined,
-            sampleItems: undefined
-        }
+            sampleItems: undefined,
+        };
 
         componentDidMount() {
             this.loadSampleTypeDomain();
@@ -47,13 +47,13 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
 
         loadSampleTypeDomain() {
             getGroupedSampleDomainFields(this.props.sampleSet)
-                .then((sampleTypeDomainFields) => {
+                .then(sampleTypeDomainFields => {
                     this.setState(() => ({
-                        sampleTypeDomainFields
+                        sampleTypeDomainFields,
                     }));
                 })
-                .catch((reason) => {
-                    this.setState(() => ({selectionInfoError: reason}));
+                .catch(reason => {
+                    this.setState(() => ({ selectionInfoError: reason }));
                 });
         }
 
@@ -63,15 +63,15 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                 getAliquotSampleIds(selection, sampleSet)
                     .then(aliquots => {
                         this.setState(() => ({
-                            aliquots
+                            aliquots,
                         }));
                     })
                     .catch(error => {
                         this.setState(() => ({
                             aliquots: undefined,
-                            selectionInfoError: error
+                            selectionInfoError: error,
                         }));
-                    })
+                    });
         }
 
         loadStorageData() {
@@ -80,27 +80,27 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                 getNotInStorageSampleIds(selection, sampleSet)
                     .then(samples => {
                         this.setState(() => ({
-                            noStorageSamples: samples
+                            noStorageSamples: samples,
                         }));
                     })
                     .catch(error => {
                         this.setState(() => ({
                             noStorageSamples: undefined,
-                            selectionInfoError: error
+                            selectionInfoError: error,
                         }));
-                    })
+                    });
             getSampleSelectionStorageData(selection)
                 .then(sampleItems => {
                     this.setState(() => ({
-                        sampleItems: sampleItems
+                        sampleItems,
                     }));
                 })
                 .catch(error => {
                     this.setState(() => ({
                         sampleItems: undefined,
-                        selectionInfoError: error
+                        selectionInfoError: error,
                     }));
-                })
+                });
         }
 
         render() {
@@ -109,8 +109,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
 
             let isLoaded = !!sampleTypeDomainFields;
             if (isLoaded && !selectionInfoError) {
-                if ((determineAliquot && !aliquots) || (determineStorage && !noStorageSamples))
-                    isLoaded = false;
+                if ((determineAliquot && !aliquots) || (determineStorage && !noStorageSamples)) isLoaded = false;
             }
 
             if (isLoaded) {
@@ -120,7 +119,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                     </SamplesSelectionContextProvider>
                 );
             } else {
-                return <LoadingSpinner/>;
+                return <LoadingSpinner />;
             }
         }
     }

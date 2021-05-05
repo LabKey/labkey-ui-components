@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, PureComponent, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
-import {fromJS, List, Set} from 'immutable';
+import { fromJS, List, Set } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
 import {
@@ -165,7 +165,14 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                             />
                         )}
 
-                        {canExport && <ExportMenu model={model} advancedOptions={advancedExportOptions} supportedTypes={supportedExportTypes} onExport={onExport} />}
+                        {canExport && (
+                            <ExportMenu
+                                model={model}
+                                advancedOptions={advancedExportOptions}
+                                supportedTypes={supportedExportTypes}
+                                onExport={onExport}
+                            />
+                        )}
 
                         {canSelectView && (
                             <ViewMenu model={model} onViewSelect={onViewSelect} hideEmptyViewMenu={hideEmptyViewMenu} />

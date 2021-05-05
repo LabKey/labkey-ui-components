@@ -1,4 +1,4 @@
-import { List } from "immutable";
+import { List } from 'immutable';
 
 export enum SampleCreationType {
     Independents = 'New samples',
@@ -70,7 +70,7 @@ export interface SamplesSelectionProviderProps {
 }
 
 export interface SamplesSelectionResultProps {
-    sampleTypeDomainFields: GroupedSampleFields
+    sampleTypeDomainFields: GroupedSampleFields;
     aliquots: any[];
     noStorageSamples: any[];
     selectionInfoError: any;
@@ -80,5 +80,5 @@ export interface SamplesSelectionResultProps {
 export interface GroupedSampleFields {
     aliquotFields: string[];
     metaFields: string[];
-    metricUnit: string
+    metricUnit: string;
 }

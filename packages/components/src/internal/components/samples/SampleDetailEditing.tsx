@@ -1,41 +1,38 @@
-import React, { PureComponent } from 'react'
-import { List } from "immutable"
+import React, { PureComponent } from 'react';
+import { List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import {AuditBehaviorTypes} from "@labkey/api";
+import { AuditBehaviorTypes } from '@labkey/api';
 
-import {QueryGridModel} from "../../QueryGridModel";
-import {GroupedSampleFields} from "./models";
-import {getGroupedSampleDisplayColumns, getGroupedSampleDomainFields} from "./actions";
-import {
-    DetailEditing,
-    getActionErrorMessage,
-    LoadingPage,
-    QueryColumn,
-    SampleAliquotDetailHeader
-} from "../../..";
-import {DetailRenderer} from "../forms/detail/DetailDisplay";
+import { QueryGridModel } from '../../QueryGridModel';
+
+import { DetailEditing, getActionErrorMessage, LoadingPage, QueryColumn, SampleAliquotDetailHeader } from '../../..';
+
+import { DetailRenderer } from '../forms/detail/DetailDisplay';
+
+import { GroupedSampleFields } from './models';
+import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields } from './actions';
 
 interface Props {
-    sampleSet: string
-    onUpdate: (skipChangeCount?: boolean) => any
-    canUpdate: (panelName: string) => boolean
-    title: string
-    sampleModel: QueryGridModel
-    auditBehavior: AuditBehaviorTypes
-    onEditToggle?: (panelName: string, isEditing: boolean) => void
-    detailRenderer?: DetailRenderer
+    sampleSet: string;
+    onUpdate: (skipChangeCount?: boolean) => any;
+    canUpdate: (panelName: string) => boolean;
+    title: string;
+    sampleModel: QueryGridModel;
+    auditBehavior: AuditBehaviorTypes;
+    onEditToggle?: (panelName: string, isEditing: boolean) => void;
+    detailRenderer?: DetailRenderer;
 }
 
 interface State {
-    sampleTypeDomainFields: GroupedSampleFields
-    hasError: boolean
+    sampleTypeDomainFields: GroupedSampleFields;
+    hasError: boolean;
 }
 
-export class SampleDetailEditing extends PureComponent<Props, State>  {
+export class SampleDetailEditing extends PureComponent<Props, State> {
     state: Readonly<State> = {
         sampleTypeDomainFields: undefined,
-        hasError: false
+        hasError: false,
     };
 
     componentDidMount(): void {
@@ -46,12 +43,15 @@ export class SampleDetailEditing extends PureComponent<Props, State>  {
         const { sampleSet } = this.props;
 
         if (sampleSet !== prevProps.sampleSet) {
-            this.setState(() => ({
-                sampleTypeDomainFields: undefined,
-                hasError: false
-            }), () => {
-                this.loadSampleType();
-            });
+            this.setState(
+                () => ({
+                    sampleTypeDomainFields: undefined,
+                    hasError: false,
+                }),
+                () => {
+                    this.loadSampleType();
+                }
+            );
         }
     }
 
@@ -59,24 +59,22 @@ export class SampleDetailEditing extends PureComponent<Props, State>  {
         const { sampleSet } = this.props;
 
         getGroupedSampleDomainFields(sampleSet)
-            .then((sampleTypeDomainFields) => {
-                this.setState(() => ({sampleTypeDomainFields, hasError: false}));
+            .then(sampleTypeDomainFields => {
+                this.setState(() => ({ sampleTypeDomainFields, hasError: false }));
             })
-            .catch((reason) => {
-                this.setState(() => ({hasError: true}));
+            .catch(reason => {
+                this.setState(() => ({ hasError: true }));
             });
     }
 
     onEditToggle = (isEditing: boolean) => {
         const { onEditToggle } = this.props;
-        if (onEditToggle)
-            onEditToggle('details', isEditing);
+        if (onEditToggle) onEditToggle('details', isEditing);
     };
 
-    canEdit(panelName: string) : boolean {
+    canEdit(panelName: string): boolean {
         const { canUpdate } = this.props;
-        if (canUpdate)
-            return canUpdate(panelName);
+        if (canUpdate) return canUpdate(panelName);
         return false;
     }
 
@@ -91,11 +89,7 @@ export class SampleDetailEditing extends PureComponent<Props, State>  {
     };
 
     renderAliquotDetailHeader = (row: any, aliquotHeaderDisplayColumns: List<QueryColumn>) => {
-        return (
-            <SampleAliquotDetailHeader
-                row={row}
-                aliquotHeaderDisplayColumns={aliquotHeaderDisplayColumns} />
-        );
+        return <SampleAliquotDetailHeader row={row} aliquotHeaderDisplayColumns={aliquotHeaderDisplayColumns} />;
     };
 
     render() {
@@ -103,7 +97,7 @@ export class SampleDetailEditing extends PureComponent<Props, State>  {
         const { hasError, sampleTypeDomainFields } = this.state;
 
         if (!sampleModel || !sampleModel.isLoaded) {
-            return <LoadingPage title={title}/>
+            return <LoadingPage title={title} />;
         }
 
         const row = sampleModel.getRow();
@@ -112,17 +106,20 @@ export class SampleDetailEditing extends PureComponent<Props, State>  {
         const isAliquot = aliquotedFrom != null;
 
         if (hasError)
-            return <Alert>{getActionErrorMessage("There was a problem loading the sample type details.", 'sample type')}</Alert>
+            return (
+                <Alert>
+                    {getActionErrorMessage('There was a problem loading the sample type details.', 'sample type')}
+                </Alert>
+            );
 
-        if (!sampleTypeDomainFields)
-            return <LoadingPage title={title}/>
+        if (!sampleTypeDomainFields) return <LoadingPage title={title} />;
 
         const { displayColumns, editColumns, aliquotHeaderDisplayColumns } = this.getUpdateDisplayColumns(isAliquot);
         return (
             <DetailEditing
                 queryModel={sampleModel}
                 onUpdate={onUpdate}
-                canUpdate={this.canEdit("details")}
+                canUpdate={this.canEdit('details')}
                 onEditToggle={this.onEditToggle}
                 auditBehavior={auditBehavior}
                 queryColumns={displayColumns}
@@ -130,6 +127,6 @@ export class SampleDetailEditing extends PureComponent<Props, State>  {
                 detailHeader={isAliquot ? this.renderAliquotDetailHeader(row, aliquotHeaderDisplayColumns) : undefined}
                 detailRenderer={detailRenderer}
             />
-        )
+        );
     }
 }

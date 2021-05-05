@@ -2,8 +2,9 @@ import React, { ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import {BulkUpdateForm, QueryColumn, QueryGridModel, QueryInfo, QueryModel, SchemaQuery} from "../../..";
-import { SamplesSelectionProviderProps, SamplesSelectionResultProps}  from "./models";
+import { BulkUpdateForm, QueryColumn, QueryGridModel, QueryInfo, QueryModel, SchemaQuery } from '../../..';
+
+import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 
 interface OwnProps {
     queryModel?: QueryModel;
@@ -63,9 +64,8 @@ export class SamplesBulkUpdateFormBase extends React.Component<Props, any> {
         // if all are aliquots, only show pk, aliquot specific and description columns
         if (aliquots && aliquots.length === this.getGridSelectionSize()) {
             originalQueryInfo.columns.forEach((column, key) => {
-                if ('description' === column.fieldKey.toLowerCase()
-                    sampleTypeDomainFields.aliquotFields.indexOf(column.fieldKey.toLowerCase()) > -1
-                )
+                const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(column.fieldKey.toLowerCase()) > -1;
+                if (column.fieldKey.toLowerCase() === 'description' || isAliquotField)
                     columns = columns.set(key, column);
             });
             originalQueryInfo.getPkCols().forEach((column, ind) => {

@@ -13,10 +13,50 @@ import { PicklistModel } from './models';
 import { flattenValuesFromRow } from '../../../public/QueryModel/utils';
 import { buildURL } from '../../url/AppURL';
 import { fetchListDesign } from '../domainproperties/list/actions';
+import { resolveErrorMessage } from '../../util/messaging';
 
 interface CreatePicklistResponse {
     domainId: number,
     name: string
+}
+
+export function setPicklistDefaultView(name: string): Promise<CreatePicklistResponse> {
+    return new Promise((resolve, reject) => {
+        let jsonData = {
+            schemaName: "lists",
+            queryName: name,
+            views: [{
+                columns:[
+                    {fieldKey: "SampleID/Name"},
+                    {fieldKey: "SampleID/LabelColor"},
+                    {fieldKey: "SampleID/SampleSet"},
+                    {fieldKey: "SampleID/StoredAmount"},
+                    {fieldKey: "SampleID/Units"},
+                    {fieldKey: "SampleID/freezeThawCount"},
+                    {fieldKey: "SampleID/StorageStatus"},
+                    {fieldKey: "SampleID/checkedOutBy"},
+                    {fieldKey: "SampleID/Created"},
+                    {fieldKey: "SampleID/CreatedBy"},
+                    {fieldKey: "SampleID/StorageLocation"},
+                    {fieldKey: "SampleID/StorageRow"},
+                    {fieldKey: "SampleID/StorageCol"},
+                    {fieldKey: "SampleID/isAliquot"},
+                ]
+            }]
+        };
+        return Ajax.request({
+            url: buildURL('query', 'saveQueryViews.api'),
+            method: 'POST',
+            jsonData,
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject("There was a problem creating the default view for the picklist. " + resolveErrorMessage(response));
+            }),
+        });
+    });
 }
 
 export function createPicklist(name: string, description: string, shared: boolean) : Promise<CreatePicklistResponse> {

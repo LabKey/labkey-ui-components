@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from '
 import { Checkbox, Modal } from 'react-bootstrap';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { QueryGridModel } from '../../QueryGridModel';
-import { addSamplesToPicklist, createPicklist, updatePicklist } from './actions';
+import { addSamplesToPicklist, createPicklist, setPicklistDefaultView, updatePicklist } from './actions';
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
 import { PicklistModel } from './models';
@@ -42,7 +42,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         finishingVerb = "Updating";
     } else {
         finishVerb = "Create";
-        finishingVerb = "Creating."
+        finishingVerb = "Creating"
     }
 
     const onHide = useCallback((data: any) => {
@@ -69,6 +69,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                     name,
                     useSelection ? samplesModel.selectionKey : undefined,
                     useSelection ? undefined : [samplesModel.getRow().getIn(['RowId', 'value'])]);
+                await setPicklistDefaultView(name)
             }
             onFinish(updatedList);
         } catch (e) {
@@ -104,7 +105,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
 
                 <form>
                     <div className="form-group">
-                        <label className="control-label">Name</label>
+                        <label className="control-label">Name *</label>
 
                         <input placeholder="Give this list a name" className="form-control" value={name} onChange={onNameChange} type="text"/>
                     </div>
@@ -124,7 +125,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                 <WizardNavButtons
                     cancel={onHide}
                     cancelText={'Cancel'}
-                    canFinish={true}
+                    canFinish={!!name}
                     containerClassName=""
                     isFinishing={isSubmitting}
                     isFinishingText={finishingVerb + " Picklist..."}

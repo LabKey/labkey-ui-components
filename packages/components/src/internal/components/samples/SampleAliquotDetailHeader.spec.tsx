@@ -42,7 +42,7 @@ describe('<SampleAliquotDetailHeader/>', () => {
         CreatedBy: { value: 1005, url: '#/q/core/siteusers/1005', displayValue: 'xyang' },
     });
 
-    test('data model as reader', () => {
+    test('aliquot detail header', () => {
         const component = <SampleAliquotDetailHeader row={dataRow} aliquotHeaderDisplayColumns={aliquotCols} />;
 
         const tree = renderer.create(component);

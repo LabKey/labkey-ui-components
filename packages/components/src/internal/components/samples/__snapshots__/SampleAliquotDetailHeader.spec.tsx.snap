@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SampleAliquotDetailHeader/> aliquot detail header 1`] = `
+Array [
+  <div
+    className="bottom-spacing"
+  >
+    <b>
+      Aliquot data
+    </b>
+  </div>,
+  <table
+    className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-table"
+  >
+    <tbody>
+      <tr>
+        <td>
+          Aliquoted from
+        </td>
+        <td>
+          <a
+            href="#/rd/samples/2"
+          >
+            S-1-1
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Aliquoted by
+        </td>
+        <td>
+          <a
+            href="#/q/core/siteusers/1005"
+          >
+            xyang
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Aliquot date
+        </td>
+        <td>
+          <span
+            className="detail-display"
+          >
+            2021-03-02 14:49
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Aliquot description
+        </td>
+        <td>
+          <span
+            className="detail-display"
+          >
+            this is a sub-aliquot - 3
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Aliquot Specific
+        </td>
+        <td>
+          <span
+            className="detail-display"
+          >
+            ali-1-1 - child4
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  <div
+    className="bottom-spacing"
+  >
+    <b>
+      Original Sample Data
+    </b>
+  </div>,
+  <table
+    className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-meta-table"
+  >
+    <tbody>
+      <tr>
+        <td>
+          Original sample
+        </td>
+        <td>
+          <a
+            href="#/rd/samples/1"
+          >
+            S-1
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Sample description
+        </td>
+        <td>
+          <span
+            className="detail-display"
+          >
+            4
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+]
+`;

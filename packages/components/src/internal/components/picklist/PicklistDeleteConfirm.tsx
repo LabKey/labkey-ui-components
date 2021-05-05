@@ -89,10 +89,18 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
                 ?
             </>
         );
+        let publicMessage = null;
+        if (deletionData.numDeletable == deletionData.numShared) {
+            if (deletionData.numShared === 1)
+                publicMessage = "This is a public picklist that is shared with your team members.";
+            else
+                publicMessage = "These are public picklists that are shared with your team members.";
+        } else {
+            publicMessage = deletionData.numShared + " of the " + deletionData.numDeletable + " lists " + (deletionData.numShared === 1 ? "is a public picklist" : "are public picklists") + " shared with your team members.";
+        }
         return (
             <>
-                {deletionData.numShared === 1 && <Alert bsStyle="warning">This is a public picklist that is shared with your team members.</Alert>}
-                {deletionData.numShared > 1 && <Alert bsStyle="warning">These are public picklists that are shared with your team members.</Alert>}
+                <Alert bsStyle="warning">{publicMessage}</Alert>
                 <span>
                     {restrictionMessage}
                     {rUSure}&nbsp;

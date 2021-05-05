@@ -132,18 +132,18 @@ export function getPicklistDeleteData(model: QueryModel, actions: Actions, user:
                     let deletableLists = [];
                     data.valueSeq().forEach(row => {
                         const picklist = new PicklistModel(flattenValuesFromRow(row.toJS(), row.keySeq().toArray()));
-                        if (picklist.isPublic()) {
-                            numShared++;
-                        }
+
                         if (picklist.isDeletable(user)) {
-                            numDeletable++;
+                            if (picklist.isPublic()) {
+                                numShared++;
+                            }
                             deletableLists.push(picklist);
                         } else {
                             numNotDeletable++;
                         }
                     });
                     resolve({
-                        numDeletable,
+                        numDeletable: deletableLists.length,
                         numNotDeletable,
                         numShared,
                         deletableLists

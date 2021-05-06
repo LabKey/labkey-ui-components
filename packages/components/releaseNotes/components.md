@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Replace usages of LABKEY variable with getServerContext()
+
 ### version 2.27.0
 *Released*: 01 May 2021
 * Changes to allow data region filtration based on ontology concepts

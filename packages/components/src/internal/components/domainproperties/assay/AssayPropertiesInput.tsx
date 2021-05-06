@@ -1,7 +1,7 @@
 import React, { FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
-import { ActionURL } from '@labkey/api';
+import { ActionURL, getServerContext } from '@labkey/api';
 
 import { Container, RemoveEntityButton, AddEntityButton } from '../../../..';
 
@@ -138,7 +138,7 @@ export function PlateTemplatesInput(props: InputProps) {
                 ))}
             </FormControl>
             <a
-                href={ActionURL.buildURL('plate', 'plateTemplateList', LABKEY.container.path)}
+                href={ActionURL.buildURL('plate', 'plateTemplateList', getServerContext().container.path)}
                 className="labkey-text-link"
             >
                 Configure Templates
@@ -465,7 +465,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                         <Col xs={5} lg={4}>
                             <span className="pull-right">
                                 <a
-                                    href={ActionURL.buildURL('assay', 'downloadSampleQCData', LABKEY.container.path, {
+                                    href={ActionURL.buildURL('assay', 'downloadSampleQCData', getServerContext().container.path, {
                                         rowId: model.protocolId,
                                     })}
                                     target="_blank"

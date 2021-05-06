@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 import { Set } from 'immutable';
+import { getServerContext } from '@labkey/api';
+
+export const LABKEY_VIS = getServerContext().vis;
+export const LABKEY_WEBSOCKET = getServerContext().WebSocket;
 
 export const QUERY_GRID_PREFIX = 'labkey-querygrid-';
 export const FASTA_EXPORT_CONTROLLER = 'biologics';

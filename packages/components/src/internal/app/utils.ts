@@ -2,7 +2,6 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { useMemo } from 'react';
 import { List, Map } from 'immutable';
 import { ActionURL, getServerContext, PermissionTypes } from '@labkey/api';
 
@@ -34,6 +33,7 @@ import {
     BIOLOGICS_PRODUCT_NAME,
     LABKEY_SERVER_PRODUCT_NAME,
 } from './constants';
+import { LABKEY_WEBSOCKET } from '../constants';
 
 // Type definition not provided for event codes so here we provide our own
 // Source: https://www.iana.org/assignments/websocket/websocket.xml#close-code-number
@@ -69,19 +69,18 @@ export function initWebSocketListeners(
         }
     }
 
-    // TODO: Make "WebSocket" available from @labkey/api
-    LABKEY.WebSocket.addServerEventListener(CloseEventCode.NORMAL_CLOSURE, _logOutCallback);
-    LABKEY.WebSocket.addServerEventListener(CloseEventCode.UNSUPPORTED_DATA, _logOutCallback);
+    LABKEY_WEBSOCKET.addServerEventListener(CloseEventCode.NORMAL_CLOSURE, _logOutCallback);
+    LABKEY_WEBSOCKET.addServerEventListener(CloseEventCode.UNSUPPORTED_DATA, _logOutCallback);
 
     // register websocket listener for session timeout code
-    LABKEY.WebSocket.addServerEventListener(CloseEventCode.POLICY_VIOLATION, function (evt) {
+    LABKEY_WEBSOCKET.addServerEventListener(CloseEventCode.POLICY_VIOLATION, function (evt) {
         if (evt.wasClean) {
             window.setTimeout(() => store.dispatch({ type: SECURITY_SESSION_TIMEOUT }), 1000);
         }
     });
 
     // register websocket listener for server being shutdown
-    LABKEY.WebSocket.addServerEventListener(CloseEventCode.GOING_AWAY, function (evt) {
+    LABKEY_WEBSOCKET.addServerEventListener(CloseEventCode.GOING_AWAY, function (evt) {
         // Issue 39473: 1001 sent when server is shutdown normally (AND on page reload in FireFox, but that one doesn't have a reason)
         if (evt.wasClean && evt.reason && evt.reason !== '') {
             window.setTimeout(() => store.dispatch({ type: SECURITY_SERVER_UNAVAILABLE }), 1000);
@@ -90,7 +89,7 @@ export function initWebSocketListeners(
 
     if (notificationListeners) {
         notificationListeners.forEach(listener => {
-            LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
+            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
                 // not checking evt.wasClean since we want this event for all user sessions
                 window.setTimeout(() => store.dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE }), 1000);
             });
@@ -99,7 +98,7 @@ export function initWebSocketListeners(
 
     if (menuReloadListeners) {
         menuReloadListeners.forEach(listener => {
-            LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
+            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
                 // not checking evt.wasClean since we want this event for all user sessions
                 window.setTimeout(() => store.dispatch({ type: MENU_RELOAD }), 1000);
             });
@@ -108,7 +107,7 @@ export function initWebSocketListeners(
 
     if (resetQueryGridListeners) {
         resetQueryGridListeners.forEach(listener => {
-            LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
+            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
                 window.setTimeout(() => store.dispatch({ type: SET_RESET_QUERY_GRID_STATE }), 1000);
             });
         });

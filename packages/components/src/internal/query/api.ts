@@ -15,7 +15,7 @@
  */
 import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable';
 import { normalize, schema } from 'normalizr';
-import { AuditBehaviorTypes, Filter, Query, QueryDOM } from '@labkey/api';
+import { AuditBehaviorTypes, Filter, getServerContext, Query, QueryDOM } from '@labkey/api';
 
 import { getQueryMetadata } from '../global';
 import { resolveKeyFromJson } from '../../public/SchemaQuery';
@@ -744,7 +744,7 @@ interface IUpdateRowsOptions {
 export function updateRows(options: IUpdateRowsOptions): Promise<any> {
     return new Promise((resolve, reject) => {
         Query.updateRows({
-            containerPath: options.containerPath ? options.containerPath : LABKEY.container.path,
+            containerPath: options.containerPath ? options.containerPath : getServerContext().container.path,
             schemaName: options.schemaQuery.schemaName,
             queryName: options.schemaQuery.queryName,
             rows: options.rows,

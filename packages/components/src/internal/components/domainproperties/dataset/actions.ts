@@ -185,7 +185,7 @@ export function fetchDatasetDesign(datasetId?: number): Promise<DatasetModel> {
         getDatasetProperties(datasetId)
             .then((model: DatasetModel) => {
                 Domain.getDomainDetails({
-                    containerPath: LABKEY.container.path,
+                    containerPath: getServerContext().container.path,
                     domainId: model.domainId,
                     domainKind: datasetId === undefined ? 'StudyDatasetDate' : undefined, // NOTE there is also a StudyDatasetVisit domain kind but for this purpose either will work
                     success: data => {

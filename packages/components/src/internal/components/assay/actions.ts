@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap } from 'immutable';
-import { ActionURL, Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Assay, AssayDOM, Filter, getServerContext, Utils } from '@labkey/api';
 
 import {
     AssayDefinitionModel,
@@ -153,7 +153,7 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
 
         // N.B. assayFileUpload's success response is not handled well by Utils.getCallbackWrapper.
         Ajax.request({
-            url: ActionURL.buildURL('assay', 'assayFileUpload.view', LABKEY.container.path),
+            url: ActionURL.buildURL('assay', 'assayFileUpload.view', getServerContext().container.path),
             method: 'POST',
             form: formData,
             success: result => {

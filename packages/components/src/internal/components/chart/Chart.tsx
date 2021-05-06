@@ -20,6 +20,7 @@ import { Filter } from '@labkey/api';
 import { DataViewInfo, VisualizationConfigModel } from '../../models';
 import { getVisualizationConfig } from '../../actions';
 import { debounce, generateId, LoadingSpinner } from '../../..';
+import { LABKEY_VIS } from '../../constants';
 
 interface Props {
     chart: DataViewInfo;
@@ -104,7 +105,7 @@ export class Chart extends React.Component<Props, State> {
             }
 
             this.getPlotElement().html('');
-            LABKEY.vis.GenericChartHelper.renderChartSVG(
+            LABKEY_VIS.GenericChartHelper.renderChartSVG(
                 this.state.divId,
                 processedConfig.queryConfig,
                 processedConfig.chartConfig

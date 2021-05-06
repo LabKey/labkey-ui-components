@@ -126,7 +126,7 @@ export function processContainers(payload: any, container?: Container): List<Con
 export function fetchDomain(domainId: number, schemaName: string, queryName: string): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         Domain.getDomainDetails({
-            containerPath: LABKEY.container.path,
+            containerPath: getServerContext().container.path,
             domainId,
             schemaName,
             queryName,
@@ -149,7 +149,7 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
 export function fetchDomainDetails(domainId: number, schemaName: string, queryName: string): Promise<DomainDetails> {
     return new Promise((resolve, reject) => {
         Domain.getDomainDetails({
-            containerPath: LABKEY.container.path,
+            containerPath: getServerContext().container.path,
             domainId,
             schemaName,
             queryName,
@@ -177,7 +177,7 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
             new Promise(resolve => {
                 if (schemaName) {
                     Query.getQueries({
-                        containerPath: containerPath || LABKEY.container.path,
+                        containerPath: containerPath || getServerContext().container.path,
                         schemaName,
                         queryDetailColumns: true,
                         success: data => {
@@ -221,7 +221,7 @@ export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>
             new Promise(resolve => {
                 Query.getSchemas({
                     apiVersion: 17.1,
-                    containerPath: containerPath || LABKEY.container.path,
+                    containerPath: containerPath || getServerContext().container.path,
                     includeHidden: false,
                     success: data => {
                         resolve(handleSchemas(data));
@@ -354,7 +354,7 @@ export function saveDomain(
 
         if (domain.domainId) {
             Domain.save({
-                containerPath: LABKEY.container.path,
+                containerPath: getServerContext().container.path,
                 domainId: domain.domainId,
                 options,
                 domainDesign: DomainDesign.serialize(domain),
@@ -364,7 +364,7 @@ export function saveDomain(
             });
         } else {
             Domain.create({
-                containerPath: LABKEY.container.path,
+                containerPath: getServerContext().container.path,
                 kind,
                 options,
                 domainDesign: DomainDesign.serialize(domain.set('name', name) as DomainDesign),

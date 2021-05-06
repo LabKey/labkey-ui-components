@@ -181,9 +181,10 @@ const SelectInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange
     );
     const _value = value === null || value === undefined ? '' : value;
     const className = inputClasses.select ?? '';
+    const hasPlaceholder = placeholder !== null && placeholder !== undefined;
     return (
         <select className={className} id={id} name={name} value={_value} onChange={_onChange}>
-            {placeholder !== null && <option value="">{placeholder}</option>}
+            {hasPlaceholder && <option value="">{placeholder}</option>}
             {options.map(option => (
                 <option key={option.value} value={option.value}>
                     {option.label}

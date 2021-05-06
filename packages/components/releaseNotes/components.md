@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.28.0
-*Released*: ?? May 2021
+*Released*: 6 May 2021
 * Add FormSchema, Field, Option interfaces
   * These interfaces are used in conjunction with LabKey server classes of the same name to auto-generate forms with
     AutoForm (see below)

@@ -576,6 +576,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             asPanel,
             emptyText,
             model,
+            onExport,
             showButtonBar,
             showOmniBox,
             showHeader,
@@ -617,6 +618,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             {...this.props}
                             onViewSelect={this.onViewSelect}
                             onFilteredViewChange={this.onFilteredViewChange}
+                            onExport={onExport}
                         />
                     )}
 

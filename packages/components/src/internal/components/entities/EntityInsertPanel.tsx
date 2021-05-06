@@ -365,7 +365,15 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         let columns = OrderedMap<string, QueryColumn>();
 
         allColumns.forEach((column, key) => {
-            if (ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) > -1) columns = columns.set(key, column);
+            if (ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) > -1) {
+                let col = column;
+                // Aliquot name can be auto generated, regardless of sample name expression config
+                if (column.fieldKey.toLowerCase() === 'name')
+                    col = col.merge({
+                        required: false
+                    }) as QueryColumn;
+                columns = columns.set(key, col);
+            }
         });
         return columns;
     };

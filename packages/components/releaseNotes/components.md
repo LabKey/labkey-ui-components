@@ -7,6 +7,9 @@ Components, models, actions, and utility functions for LabKey applications and p
     * PicklistCreationMenuItem
     * PicklistEditModal
     * PicklistDeleteConfirm
+* Updated domain designer Lookup/Fields to allow for certain tables (e.g., picklists) being excluded from the choice for lookups
+
+
 
 ### version 2.28.0
 *Released*: 6 May 2021

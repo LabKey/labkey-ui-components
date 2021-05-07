@@ -3,9 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Add picklist-related components
+* Add picklist-related components, models, and actions including:
     * PicklistCreationMenuItem
-    * PicklistCreationModal
+    * PicklistEditModal
+    * PicklistDeleteConfirm
 
 ### version 2.28.0
 *Released*: 6 May 2021

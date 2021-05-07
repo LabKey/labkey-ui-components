@@ -7,6 +7,8 @@ import { ActionURL, getServerContext, PermissionTypes } from '@labkey/api';
 
 import { AppURL, buildURL, imageURL, MenuSectionConfig, hasAllPermissions, User } from '../..';
 
+import { LABKEY_WEBSOCKET } from '../constants';
+
 import {
     ASSAYS_KEY,
     HOME_KEY,
@@ -33,7 +35,6 @@ import {
     BIOLOGICS_PRODUCT_NAME,
     LABKEY_SERVER_PRODUCT_NAME,
 } from './constants';
-import { LABKEY_WEBSOCKET } from '../constants';
 
 // Type definition not provided for event codes so here we provide our own
 // Source: https://www.iana.org/assignments/websocket/websocket.xml#close-code-number

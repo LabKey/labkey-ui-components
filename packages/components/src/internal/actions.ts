@@ -750,9 +750,10 @@ export function getExportParams(
     }
 
     // 32052: Apply default headers (CRSF, etc)
-    for (const i in getServerContext().defaultHeaders) {
-        if (getServerContext().defaultHeaders.hasOwnProperty(i)) {
-            params[i] = getServerContext().defaultHeaders[i];
+    const { defaultHeaders } = getServerContext();
+    for (const i in defaultHeaders) {
+        if (defaultHeaders.hasOwnProperty(i)) {
+            params[i] = defaultHeaders[i];
         }
     }
 

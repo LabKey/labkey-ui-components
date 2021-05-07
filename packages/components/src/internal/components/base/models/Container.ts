@@ -34,4 +34,8 @@ export class Container extends Record(defaultContainer) implements Partial<ICont
     declare sortOrder: number;
     declare title: string;
     declare type: string;
+
+    hasActiveModule(moduleName: string): boolean {
+        return this.activeModules?.indexOf(moduleName) > -1;
+    }
 }

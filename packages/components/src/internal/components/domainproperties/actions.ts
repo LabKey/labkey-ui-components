@@ -15,7 +15,7 @@
  */
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
-import { Ajax, Domain, getServerContext, Query, Security, Utils } from '@labkey/api';
+import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
 
 import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL, DomainDetails } from '../../..';
 
@@ -126,7 +126,6 @@ export function processContainers(payload: any, container?: Container): List<Con
 export function fetchDomain(domainId: number, schemaName: string, queryName: string): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         Domain.getDomainDetails({
-            containerPath: getServerContext().container.path,
             domainId,
             schemaName,
             queryName,
@@ -149,7 +148,6 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
 export function fetchDomainDetails(domainId: number, schemaName: string, queryName: string): Promise<DomainDetails> {
     return new Promise((resolve, reject) => {
         Domain.getDomainDetails({
-            containerPath: getServerContext().container.path,
             domainId,
             schemaName,
             queryName,
@@ -177,7 +175,7 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
             new Promise(resolve => {
                 if (schemaName) {
                     Query.getQueries({
-                        containerPath: containerPath || getServerContext().container.path,
+                        containerPath,
                         schemaName,
                         queryDetailColumns: true,
                         success: data => {
@@ -221,7 +219,7 @@ export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>
             new Promise(resolve => {
                 Query.getSchemas({
                     apiVersion: 17.1,
-                    containerPath: containerPath || getServerContext().container.path,
+                    containerPath,
                     includeHidden: false,
                     success: data => {
                         resolve(handleSchemas(data));
@@ -238,16 +236,12 @@ export function handleSchemas(payload: any): List<SchemaDetails> {
         .toList();
 }
 
-export function hasActiveModule(name: string): boolean {
-    return getServerContext().container.activeModules?.indexOf(name) > -1;
-}
-
 export function getAvailableTypes(domain: DomainDesign): List<PropDescType> {
     return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, [])) as List<PropDescType>;
 }
 
 export async function getAvailableTypesForOntology(domain: DomainDesign): Promise<List<PropDescType>> {
-    const ontologies = await fetchOntologies(getServerContext().container.path);
+    const ontologies = await fetchOntologies();
     return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies)) as List<PropDescType>;
 }
 
@@ -279,7 +273,7 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     return true;
 }
 
-export function fetchOntologies(containerPath: string): Promise<OntologyModel[]> {
+export function fetchOntologies(containerPath?: string): Promise<OntologyModel[]> {
     return cache<OntologyModel[]>('ontologies-cache', containerPath, () => {
         return new Promise((resolve, reject) => {
             Query.selectRows({
@@ -354,7 +348,6 @@ export function saveDomain(
 
         if (domain.domainId) {
             Domain.save({
-                containerPath: getServerContext().container.path,
                 domainId: domain.domainId,
                 options,
                 domainDesign: DomainDesign.serialize(domain),
@@ -364,7 +357,6 @@ export function saveDomain(
             });
         } else {
             Domain.create({
-                containerPath: getServerContext().container.path,
                 kind,
                 options,
                 domainDesign: DomainDesign.serialize(domain.set('name', name) as DomainDesign),

@@ -1,7 +1,7 @@
 import React from 'react';
 import { List } from 'immutable';
 import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
-import { ActionURL, getServerContext } from '@labkey/api';
+import { ActionURL } from '@labkey/api';
 
 import { LabelHelpTip } from '../../..';
 
@@ -191,7 +191,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 params['providerName'] = ActionURL.getParameter('providerName');
             }
 
-            window.location.href = ActionURL.buildURL(controller, action, getServerContext().container.path, params);
+            window.location.href = ActionURL.buildURL(controller, action, undefined, params);
         }
     };
 

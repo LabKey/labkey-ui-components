@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, Record } from 'immutable';
-import { ActionURL, Filter, getServerContext } from '@labkey/api';
+import { ActionURL, Filter } from '@labkey/api';
 
 export function createProductUrlFromParts(
     urlProductId: string,
@@ -94,12 +94,7 @@ export function buildURL(controller: string, action: string, params?: any, optio
 
     const parameters = Object.assign(params ? params : {}, constructedParams);
 
-    return ActionURL.buildURL(
-        controller,
-        action,
-        options && options.container ? options.container : getServerContext().container.path,
-        parameters
-    );
+    return ActionURL.buildURL(controller, action, options?.container, parameters);
 }
 
 export class AppURL extends Record({

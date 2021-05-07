@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
 
 import { SCHEMAS } from '../../../schemas';
 import { deleteEntityType } from '../../entities/actions';
@@ -40,7 +40,6 @@ export function fetchDataClass(queryName?: string, rowId?: number): Promise<Data
 function _fetchDataClass(queryName?: string, domainId?: number): Promise<DataClassModel> {
     return new Promise((resolve, reject) => {
         return Domain.getDomainDetails({
-            containerPath: getServerContext().container.path,
             schemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
             queryName,
             domainId,

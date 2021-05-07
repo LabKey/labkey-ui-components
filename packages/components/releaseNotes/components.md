@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Replace usages of LABKEY variable with getServerContext()
+* Add `Container.hasActiveModule()` utility method.
 
 ### version 2.28.0
 *Released*: 6 May 2021

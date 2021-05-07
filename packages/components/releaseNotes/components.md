@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Replace usages of LABKEY variable with getServerContext()
 
+### version 2.28.0
+*Released*: 6 May 2021
+* Add FormSchema, Field, Option interfaces
+  * These interfaces are used in conjunction with LabKey server classes of the same name to auto-generate forms with
+    AutoForm (see below)
+* Add AutoForm - A component that generates a form for a given FormSchema
+* Add HelpIcon - A component useful for rendering help text
+
 ### version 2.27.0
 *Released*: 01 May 2021
 * Changes to allow data region filtration based on ontology concepts

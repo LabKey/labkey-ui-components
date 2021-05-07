@@ -59,6 +59,19 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
                             {ExportMenu.exportOptions.map(option => {
                                 if (option.hidden && !supportedTypes?.includes(option.type)) return null;
 
+                                if (option.type === EXPORT_TYPES.LABEL) {
+                                    return (
+                                        <>
+                                            <MenuItem header>
+                                                Export and Print {model.selections?.size > 0 ? 'Selected' : ''}
+                                            </MenuItem>
+                                            <MenuItem onClick={() => this.export(option)}>
+                                                <span className={`fa ${option.icon} export-menu-icon`} />
+                                                &nbsp; {option.label}
+                                            </MenuItem>
+                                        </>
+                                    )
+                                }
                                 return (
                                     <MenuItem key={option.type} onClick={() => this.export(option)}>
                                         <div className="export-menu__item">

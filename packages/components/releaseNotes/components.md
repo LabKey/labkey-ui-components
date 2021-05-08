@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.#.#
+*Released*: # May 2021
+* QuerySelect: Pass `selectedItems` to `onQSChange()` event handlers.
+
 ### version 2.29.0
 *Released*: 11 May 2021
 * Replace usages of LABKEY variable with getServerContext()

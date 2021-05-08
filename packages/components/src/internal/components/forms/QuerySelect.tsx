@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { fromJS, List } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import { Option } from 'react-select';
 import { Filter, Utils } from '@labkey/api';
 
@@ -156,8 +156,8 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     loadOnChange?: boolean;
     loadOnFocus?: boolean;
     maxRows?: number;
-    onQSChange?: (name: string, value: string | any[], items: any) => any;
-    onInitValue?: (value: any, selectedValues: List<any>) => any;
+    onQSChange?: (name: string, value: string | any[], items: any, selectedItems: Map<string, any>) => void;
+    onInitValue?: (value: any, selectedValues: List<any>) => void;
     preLoad?: boolean;
     previewOptions?: boolean;
     queryFilters?: List<Filter.IFilter>;
@@ -265,7 +265,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                     selectRef.loadOptions?.(FOCUS_FLAG);
                 }
 
-                onQSChange?.(name, value, selectedOptions);
+                onQSChange?.(name, value, selectedOptions, this.state.model.selectedItems);
             }
         );
     };

@@ -35,6 +35,11 @@ export class Container extends Record(defaultContainer) implements Partial<ICont
     declare title: string;
     declare type: string;
 
+    /**
+     * Verify if the given moduleName parameter is in the array of active modules for this container object.
+     * Note that this check is case-sensitive.
+     * @param moduleName
+     */
     hasActiveModule(moduleName: string): boolean {
         return this.activeModules?.indexOf(moduleName) > -1;
     }

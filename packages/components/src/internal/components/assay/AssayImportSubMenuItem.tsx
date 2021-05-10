@@ -75,7 +75,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
     let selectedCount = -1;
 
     if (queryModel !== undefined) {
-        selectedCount = queryModel.selections.size;
+        selectedCount = queryModel.selections?.size ?? -1;
     } else if (model) {
         selectedCount = model.selectedIds.size;
     }

@@ -116,11 +116,11 @@ export function initWebSocketListeners(
 }
 
 export function userCanManagePicklists(user: User): boolean {
-    return hasAllPermissions(user, ['org.labkey.api.lists.permissions.ManagePicklistsPermission']);
+    return hasAllPermissions(user, [PermissionTypes.ManagePicklists]);
 }
 
 export function userCanDeletePublicPicklists(user: User): boolean {
-    return hasAllPermissions(user, [PermissionTypes.ApplicationAdmin]);
+    return user.isAdmin;
 }
 
 export function userCanDesignSourceTypes(user: User): boolean {

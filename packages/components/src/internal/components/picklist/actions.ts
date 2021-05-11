@@ -41,7 +41,8 @@ export function setPicklistDefaultView(name: string): Promise<CreatePicklistResp
                     {fieldKey: "SampleID/StorageCol"},
                     {fieldKey: "SampleID/isAliquot"},
                 ]
-            }]
+            }],
+            shared: true,
         };
         return Ajax.request({
             url: buildURL('query', 'saveQueryViews.api'),

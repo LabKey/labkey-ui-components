@@ -116,7 +116,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                         <textarea placeholder="Add a description" className="form-control" value={description} onChange={onDescriptionChange}/>
 
                         <Checkbox checked={shared} onChange={onSharedChanged} >
-                            <span>Share this picklist with team members</span>
+                            <span>Share this picklist publicly with team members</span>
                         </Checkbox>
                     </div>
                 </form>

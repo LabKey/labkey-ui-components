@@ -11,7 +11,6 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface Props {
     model: QueryModel,
-    actions: Actions,
     user: User,
     useSelection: boolean,
     onConfirm: (listsToDelete: any[]) => void,
@@ -20,7 +19,7 @@ interface Props {
 
 export const PicklistDeleteConfirm: FC<Props> = memo(props => {
 
-    const { model, actions, onConfirm, onCancel, useSelection, user } = props;
+    const { model, onConfirm, onCancel, useSelection, user } = props;
     const [ errorMessage, setErrorMessage ] = useState(undefined);
     const [ nounAndNumber, setNounAndNumber ] = useState('Picklist');
     const [ deletionData, setDeletionData ]  = useState<PicklistDeletionData>(undefined);
@@ -31,7 +30,7 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
 
     useEffect(() =>  {
         if (useSelection) {
-            getPicklistDeleteData(model, actions, user)
+            getPicklistDeleteData(model, user)
                 .then(data => {
                     setNounAndNumber(data.numDeletable === 1 ? '1 Picklist' : data.numDeletable + ' Picklists');
                     setDeletionData(data);
@@ -53,7 +52,7 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
                 deletableLists: [picklist]
             });
         }
-    }, [model, actions, user]);
+    }, [model, user]);
 
     const onConfirmDelete = useCallback(() => {
         onConfirm(deletionData.deletableLists);
@@ -95,7 +94,7 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
                 publicMessage = "This is a public picklist that is shared with your team members.";
             else
                 publicMessage = "These are public picklists that are shared with your team members.";
-        } else {
+        } else if (deletionData.numShared) {
             publicMessage = deletionData.numShared + " of the " + deletionData.numDeletable + " lists " + (deletionData.numShared === 1 ? "is a public picklist" : "are public picklists") + " shared with your team members.";
         }
         return (

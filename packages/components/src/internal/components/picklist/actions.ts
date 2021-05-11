@@ -1,5 +1,4 @@
 import { Ajax, Domain, Utils } from '@labkey/api';
-import { SCHEMAS } from '../../schemas';
 import { PICKLIST, PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { insertRows, InsertRowsResponse } from '../../query/api';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -7,13 +6,13 @@ import { getSelected, getSelectedData } from '../../actions';
 import { List } from 'immutable';
 import { saveDomain } from '../domainproperties/actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { Actions } from '../../../public/QueryModel/withQueryModels';
 import { User } from '../base/models/User';
 import { PicklistModel } from './models';
 import { flattenValuesFromRow } from '../../../public/QueryModel/utils';
 import { buildURL } from '../../url/AppURL';
 import { fetchListDesign } from '../domainproperties/list/actions';
 import { resolveErrorMessage } from '../../util/messaging';
+import { SCHEMAS } from '../../../index';
 
 interface CreatePicklistResponse {
     domainId: number,
@@ -69,7 +68,6 @@ export function createPicklist(name: string, description: string, shared: boolea
                         name: 'SampleID',
                         rangeURI: 'int',
                         required: true,
-                        lookupContainer: LABKEY.container.path,
                         lookupSchema: SCHEMAS.INVENTORY.SAMPLE_ITEMS.schemaName,
                         lookupQuery: SCHEMAS.INVENTORY.SAMPLE_ITEMS.queryName,
                     },
@@ -99,16 +97,14 @@ export function updatePicklist(picklist: PicklistModel) :Promise<PicklistModel> 
         fetchListDesign(picklist.listId)
             .then(listDesign => {
                 let domain = listDesign.domain;
-                let options = {
+                const options = {
                     domainId: domain.domainId,
+                    name: picklist.name,
                     keyName: 'id',
                     keyType: 'AutoIncrementInteger',
                     description : picklist.Description,
                     category: picklist.Category,
                 };
-                if (picklist.name !== domain.get('name')) {
-                    options = Object.assign(options, {name: picklist.name});
-                }
                 saveDomain(
                     domain,
                     PICKLIST,
@@ -159,14 +155,13 @@ export interface PicklistDeletionData {
     deletableLists: PicklistModel[],
 }
 
-export function getPicklistDeleteData(model: QueryModel, actions: Actions, user: User) : Promise<PicklistDeletionData> {
+export function getPicklistDeleteData(model: QueryModel, user: User) : Promise<PicklistDeletionData> {
     return new Promise((resolve, reject) => {
 
         const columnString = 'Name,listId,category,createdBy';
         getSelectedData(model.schemaName, model.queryName, [...model.selections], columnString, undefined, undefined,'ListId')
             .then(response => {
                     const { data } = response;
-                    let numDeletable = 0;
                     let numNotDeletable = 0;
                     let numShared = 0;
                     let deletableLists = [];

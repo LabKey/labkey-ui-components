@@ -16,6 +16,10 @@ export class PicklistModel {
         Object.assign(this, values);
     }
 
+    isValid(): boolean {
+        return !!this.name;
+    }
+
     isUserList(user: User): boolean {
         return this.CreatedBy === user.id
     }

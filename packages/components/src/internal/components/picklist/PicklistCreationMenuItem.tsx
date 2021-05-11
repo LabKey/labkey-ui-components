@@ -3,27 +3,32 @@ import { PicklistEditModal } from './PicklistEditModal';
 import { createNotification } from '../notifications/actions';
 import { MenuItem } from 'react-bootstrap';
 import { AppURL } from '../../url/AppURL';
-import { QueryGridModel } from '../../QueryGridModel';
 import { PicklistModel } from './models';
+import { PICKLIST_KEY } from '../../app/constants';
+import { Utils } from '@labkey/api';
 
 interface Props {
-    selectionModel: QueryGridModel
-    key: string
+    selectionKey?: string,
+    selectedQuantity?: number,
+    sampleIds?: string[],
+    key: string,
+    itemText: string,
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {
-    const { selectionModel, key } = props;
+    const { sampleIds, selectionKey, selectedQuantity, key, itemText } = props;
     const [ showModal, setShowModal ] = useState<boolean>(false);
 
     const onFinish = (picklist: PicklistModel) => {
+        const count = sampleIds ? sampleIds.length : selectedQuantity;
         createNotification({
             message: () => {
                return (
                    <>
-                       Successfully created "{picklist.name}" with {selectionModel.selectedQuantity} sample{selectionModel.selectedQuantity === 1 ? '': 's'}.&nbsp;
-                       <a href={AppURL.create("picklist", picklist.name).toHref()}>View picklist.</a>
+                       Successfully created "{picklist.name}" with {Utils.pluralize(count, 'sample', 'samples')}.&nbsp;
+                       <a href={AppURL.create(PICKLIST_KEY, picklist.name).toHref()}>View picklist</a>.
                    </>
-               )
+               );
             },
             alertClass: 'success'
         });
@@ -40,11 +45,12 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
 
     return (
         <>
-            <MenuItem onClick={onClick} key={key}>Picklist</MenuItem>
+            <MenuItem onClick={onClick} key={key}>{itemText}</MenuItem>
             <PicklistEditModal
-                useSelection={true}
+                selectionKey={selectionKey}
+                selectedQuantity={selectedQuantity}
+                sampleIds={sampleIds}
                 show={showModal}
-                samplesModel={selectionModel}
                 onFinish={onFinish}
                 onCancel={onCancel}
             />

@@ -1,24 +1,25 @@
 import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from 'react';
 import { Checkbox, Modal } from 'react-bootstrap';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
-import { QueryGridModel } from '../../QueryGridModel';
 import { addSamplesToPicklist, createPicklist, setPicklistDefaultView, updatePicklist } from './actions';
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
 import { PicklistModel } from './models';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
+import { Utils } from '@labkey/api';
 
 interface Props {
     show: boolean,
-    samplesModel?: QueryGridModel,
+    selectionKey?: string, // pass in either selectionKey and selectedQuantity or sampleIds.
+    selectedQuantity?: number,
+    sampleIds?: string[],
     picklist?: PicklistModel,
-    useSelection?: boolean, // if false, will use the single row from the samplesModel
-    onCancel: (any) => void,
+    onCancel: () => void,
     onFinish: (picklist: PicklistModel) => void,
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
-    const { show, onCancel, onFinish, samplesModel, useSelection, picklist } = props;
+    const { show, onCancel, onFinish, selectionKey, selectedQuantity, sampleIds, picklist } = props;
     const [ name, setName ] = useState<string>(picklist ? picklist.name : '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 
@@ -45,10 +46,10 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         finishingVerb = "Creating"
     }
 
-    const onHide = useCallback((data: any) => {
+    const onHide = useCallback(() => {
         setPicklistError(undefined);
         setIsSubmitting(false);
-        onCancel(data);
+        onCancel();
     }, []);
 
     const onSavePicklist = useCallback(async () => {
@@ -65,12 +66,10 @@ export const PicklistEditModal: FC<Props> = memo(props => {
             }
             else {
                 updatedList = await createPicklist(name, description, shared);
-                await addSamplesToPicklist(
-                    name,
-                    useSelection ? samplesModel.selectionKey : undefined,
-                    useSelection ? undefined : [samplesModel.getRow().getIn(['RowId', 'value'])]);
+                await addSamplesToPicklist(name, selectionKey, sampleIds);
                 await setPicklistDefaultView(name)
             }
+            setIsSubmitting(false);
             onFinish(updatedList);
         } catch (e) {
             setPicklistError(resolveErrorMessage(e));
@@ -82,16 +81,18 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     if (isUpdate) {
         title = 'Update Picklist Data';
     }
-    else if (useSelection) {
-        if (samplesModel.selectedQuantity == 0) {
+    else {
+        const count = sampleIds?.length ?? selectedQuantity;
+        if (count === 0) {
             title = 'Create an Empty Picklist';
         }
-        else {
-            title = <>Create a New Picklist with the {samplesModel.selectedQuantity} Selected Sample{samplesModel.selectedQuantity === 1 ? '' : 's'}</>;
+        else if (selectionKey) {
+            title = <>Create a New Picklist with the {Utils.pluralize(selectedQuantity, 'Selected Sample', 'Selected Samples')}</>;
+        } else if (count === 1) {
+            title = 'Create a New Picklist with this Sample';
+        } else {
+            title = 'Create a New Picklist with these Samples';
         }
-    }
-    else {
-        title = 'Create a New Picklist with this Sample';
     }
 
     return (
@@ -115,7 +116,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                         <textarea placeholder="Add a description" className="form-control" value={description} onChange={onDescriptionChange}/>
 
                         <Checkbox checked={shared} onChange={onSharedChanged} >
-                            <span>Share this picklist publicly with team members</span>
+                            <span>Share this picklist with team members</span>
                         </Checkbox>
                     </div>
                 </form>

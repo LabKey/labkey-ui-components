@@ -33,7 +33,7 @@ export class PicklistModel {
     }
 
     isDeletable(user: User): boolean {
-        return (this.isUserList(user) && userCanManagePicklists(user)) || (this.isPublic() && userCanDeletePublicPicklists(user));
+        return this.isUserList(user) || (this.isPublic() && userCanDeletePublicPicklists(user));
     }
 
     mutate(props: Partial<PicklistModel>): PicklistModel {

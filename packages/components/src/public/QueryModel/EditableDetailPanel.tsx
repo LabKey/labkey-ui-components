@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import { AuditBehaviorTypes } from '@labkey/api';
 
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
+import { DetailRenderer } from '../../internal/components/forms/detail/DetailDisplay';
 import { extractChanges } from '../../internal/components/forms/detail/utils';
 
 import { Alert, DetailPanel, QueryColumn, RequiresModelAndActions, resolveErrorMessage, updateRows } from '../..';
@@ -18,6 +19,7 @@ interface EditableDetailPanelProps extends RequiresModelAndActions {
     auditBehavior?: AuditBehaviorTypes;
     cancelText?: string;
     canUpdate: boolean;
+    detailRenderer?: DetailRenderer;
     editColumns?: QueryColumn[];
     onEditToggle?: (editing: boolean) => void;
     onUpdate: () => void;
@@ -141,6 +143,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         const {
             actions,
             appEditable,
+            detailRenderer,
             asSubPanel,
             cancelText,
             canUpdate,
@@ -173,6 +176,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                     <DetailPanel
                         actions={actions}
+                        detailRenderer={detailRenderer}
                         editColumns={editColumns}
                         editingMode={editing}
                         model={model}

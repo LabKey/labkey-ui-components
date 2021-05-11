@@ -26,6 +26,7 @@ import {
     insertColumnFilter,
     naturalSort,
     QueryColumn,
+    QueryConfig,
     QueryGridModel,
     QueryInfo,
     resolveKey,
@@ -3095,6 +3096,33 @@ export function createQueryGridModelFilteredBySample(
             urlPrefix: model.name,
         };
     });
+}
+
+export function createQueryModelFilteredBySample(
+    model: AssayDefinitionModel,
+    value,
+    singleFilter: Filter.IFilterType,
+    whereClausePart: (fieldKey, value) => string,
+    useLsid?: boolean,
+    omitSampleCols?: boolean,
+    singleFilterValue?: any
+): QueryConfig {
+    const sampleColumns = model.getSampleColumnFieldKeys();
+
+    if (sampleColumns.isEmpty()) {
+        return undefined;
+    }
+
+    return {
+        baseFilters: [
+            model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart, useLsid, singleFilterValue),
+        ],
+        // TODO: Confirm isPaged: true,
+        omittedColumns: omitSampleCols ? sampleColumns.toArray() : undefined,
+        schemaQuery: SchemaQuery.create(model.protocolSchemaName, 'Data'),
+        title: model.name,
+        urlPrefix: model.name,
+    };
 }
 
 interface IClientSideMetricCountResponse {

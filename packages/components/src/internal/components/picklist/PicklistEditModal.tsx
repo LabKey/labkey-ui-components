@@ -89,9 +89,9 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         else if (selectionKey) {
             title = <>Create a New Picklist with the {Utils.pluralize(selectedQuantity, 'Selected Sample', 'Selected Samples')}</>;
         } else if (count === 1) {
-            title = 'Create a New Picklist with this Sample';
+            title = 'Create a New Picklist with This Sample';
         } else {
-            title = 'Create a New Picklist with these Samples';
+            title = 'Create a New Picklist with These Samples';
         }
     }
 

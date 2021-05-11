@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ActionURL, Ajax, Utils, Domain, getServerContext } from '@labkey/api';
+import { ActionURL, Ajax, Utils, Domain } from '@labkey/api';
 
 import { ListModel } from './models';
 import { INT_LIST } from './constants';
@@ -42,7 +42,6 @@ export function fetchListDesign(listId?: number): Promise<ListModel> {
             .then((model: ListModel) => {
                 // then we can use the getDomainDetails function to get the ListModel
                 Domain.getDomainDetails({
-                    containerPath: getServerContext().container.path,
                     domainId: model.domainId,
                     domainKind: listId === undefined ? INT_LIST : undefined, // NOTE there is also a VarList domain kind but for this purpose either will work
                     success: data => {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
-import { Ajax, Filter, Query, Utils } from '@labkey/api';
+import { Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
 import $ from 'jquery';
 
 import {
@@ -750,9 +750,10 @@ export function getExportParams(
     }
 
     // 32052: Apply default headers (CRSF, etc)
-    for (const i in LABKEY.defaultHeaders) {
-        if (LABKEY.defaultHeaders.hasOwnProperty(i)) {
-            params[i] = LABKEY.defaultHeaders[i];
+    const { defaultHeaders } = getServerContext();
+    for (const i in defaultHeaders) {
+        if (defaultHeaders.hasOwnProperty(i)) {
+            params[i] = defaultHeaders[i];
         }
     }
 

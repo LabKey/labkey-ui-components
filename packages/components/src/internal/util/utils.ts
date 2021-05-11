@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Iterable, List, Map, Set } from 'immutable';
-import { Utils } from '@labkey/api';
+import { getServerContext, Utils } from '@labkey/api';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL'; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular loading
 import { QueryInfo } from '../../public/QueryInfo';
@@ -118,11 +118,11 @@ export function applyDevTools() {
 const DEV_TOOLS_URL_PARAMETER = 'devTools';
 
 export function devToolsActive(): boolean {
-    return LABKEY.devMode === true && hasParameter(DEV_TOOLS_URL_PARAMETER);
+    return getServerContext().devMode === true && hasParameter(DEV_TOOLS_URL_PARAMETER);
 }
 
 export function toggleDevTools(): void {
-    if (LABKEY.devMode) {
+    if (getServerContext().devMode) {
         toggleParameter(DEV_TOOLS_URL_PARAMETER, 1);
     }
 }

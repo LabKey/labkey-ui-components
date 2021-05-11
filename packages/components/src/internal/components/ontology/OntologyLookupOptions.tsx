@@ -1,7 +1,6 @@
 import React, { PureComponent, ReactNode, FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
-import { getServerContext } from '@labkey/api';
 
 import { DomainField, LabelHelpTip } from '../../..';
 import { helpLinkNode, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
@@ -40,7 +39,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
 
     loadData = async (): Promise<void> => {
         try {
-            const newOntologies = await fetchOntologies(getServerContext().container.path);
+            const newOntologies = await fetchOntologies();
             this.setState(
                 () => ({
                     loading: false,

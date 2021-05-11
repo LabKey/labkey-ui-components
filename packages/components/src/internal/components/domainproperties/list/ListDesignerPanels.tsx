@@ -1,8 +1,8 @@
 import React from 'react';
 import { List } from 'immutable';
-import { ActionURL, Domain } from '@labkey/api';
+import { Domain } from '@labkey/api';
 
-import { importData, Progress, resolveErrorMessage } from '../../../..';
+import { buildURL, importData, Progress, resolveErrorMessage } from '../../../..';
 
 import { DomainDesign, DomainFieldIndexChange, IAppDomainHeader } from '../models';
 import DomainForm from '../DomainForm';
@@ -129,7 +129,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             schemaName: 'lists',
             queryName: savedModel.name,
             file,
-            importUrl: ActionURL.buildURL('list', 'UploadListItems', LABKEY.container.path, {
+            importUrl: buildURL('list', 'UploadListItems', {
                 name: savedModel.name,
             }),
         })

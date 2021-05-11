@@ -744,7 +744,7 @@ interface IUpdateRowsOptions {
 export function updateRows(options: IUpdateRowsOptions): Promise<any> {
     return new Promise((resolve, reject) => {
         Query.updateRows({
-            containerPath: options.containerPath ? options.containerPath : LABKEY.container.path,
+            containerPath: options.containerPath,
             schemaName: options.schemaQuery.schemaName,
             queryName: options.schemaQuery.queryName,
             rows: options.rows,

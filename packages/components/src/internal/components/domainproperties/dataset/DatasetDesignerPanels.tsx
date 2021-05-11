@@ -18,7 +18,7 @@ import React from 'react';
 
 import { List } from 'immutable';
 
-import { ActionURL, Domain, getServerContext } from '@labkey/api';
+import { Domain, getServerContext } from '@labkey/api';
 
 import produce, { Draft } from 'immer';
 
@@ -29,7 +29,7 @@ import { DomainDesign, DomainField, DomainFieldIndexChange } from '../models';
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import DomainForm from '../DomainForm';
 
-import { importData, Progress, resolveErrorMessage } from '../../../..';
+import { buildURL, importData, Progress, resolveErrorMessage } from '../../../..';
 
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_NOT_LOCKED } from '../constants';
 
@@ -365,7 +365,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             schemaName: 'study',
             queryName: savedModel.name,
             file,
-            importUrl: ActionURL.buildURL('study', 'import', getServerContext().container.path, {
+            importUrl: buildURL('study', 'import', {
                 name: savedModel.name,
                 participantId,
                 sequenceNum,

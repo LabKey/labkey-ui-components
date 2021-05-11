@@ -94,12 +94,7 @@ export function buildURL(controller: string, action: string, params?: any, optio
 
     const parameters = Object.assign(params ? params : {}, constructedParams);
 
-    return ActionURL.buildURL(
-        controller,
-        action,
-        options && options.container ? options.container : LABKEY.container.path,
-        parameters
-    );
+    return ActionURL.buildURL(controller, action, options?.container, parameters);
 }
 
 export class AppURL extends Record({

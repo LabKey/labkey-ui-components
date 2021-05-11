@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { debounce, generateId } from '../../..';
+import { LABKEY_VIS } from '../../constants';
 
 import { ChartData } from './types';
 import { getBarChartPlotConfig } from './utils';
@@ -71,7 +72,7 @@ export class BaseBarChart extends Component<Props> {
 
     renderPlot = (): void => {
         this.getPlotElement().innerHTML = '';
-        const plot = new LABKEY.vis.BarPlot(this.getPlotConfig());
+        const plot = new LABKEY_VIS.BarPlot(this.getPlotConfig());
         plot.render();
     };
 

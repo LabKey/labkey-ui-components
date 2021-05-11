@@ -9,7 +9,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     * PicklistDeleteConfirm
 * Updated domain designer Lookup/Fields to allow for certain tables (e.g., picklists) being excluded from the choice for lookups
 
-
+### version 2.29.0
+*Released*: 11 May 2021
+* Replace usages of LABKEY variable with getServerContext()
+* Add `Container.hasActiveModule()` utility method.
 
 ### version 2.28.0
 *Released*: 6 May 2021

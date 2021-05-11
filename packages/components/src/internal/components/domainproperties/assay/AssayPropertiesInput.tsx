@@ -1,9 +1,8 @@
 import React, { FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
-import { ActionURL } from '@labkey/api';
 
-import { Container, RemoveEntityButton, AddEntityButton } from '../../../..';
+import { Container, buildURL, RemoveEntityButton, AddEntityButton } from '../../../..';
 
 import {
     ASSAY_EDIT_PLATE_TEMPLATE_TOPIC,
@@ -137,10 +136,7 @@ export function PlateTemplatesInput(props: InputProps) {
                     </option>
                 ))}
             </FormControl>
-            <a
-                href={ActionURL.buildURL('plate', 'plateTemplateList', LABKEY.container.path)}
-                className="labkey-text-link"
-            >
+            <a className="labkey-text-link" href={buildURL('plate', 'plateTemplateList')}>
                 Configure Templates
             </a>
         </AssayPropertiesInput>
@@ -465,7 +461,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                         <Col xs={5} lg={4}>
                             <span className="pull-right">
                                 <a
-                                    href={ActionURL.buildURL('assay', 'downloadSampleQCData', LABKEY.container.path, {
+                                    href={buildURL('assay', 'downloadSampleQCData', {
                                         rowId: model.protocolId,
                                     })}
                                     target="_blank"

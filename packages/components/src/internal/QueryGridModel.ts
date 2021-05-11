@@ -1,12 +1,11 @@
-import { fromJS, List, Map, OrderedSet, Record } from 'immutable';
-import { Filter, Query, Utils } from '@labkey/api';
+import { List, Map, OrderedSet, Record } from 'immutable';
+import { Filter, getServerContext, Query, Utils } from '@labkey/api';
 
-import { formatDate, formatDateTime, QueryColumn, QueryInfo, resolveKey, SchemaQuery, ViewInfo } from '..';
+import { QueryColumn, QueryInfo, resolveKey, SchemaQuery, ViewInfo } from '..';
 
 import { intersect, toLowerSafe } from './util/utils';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
-import { STORAGE_UNIQUE_ID_CONCEPT_URI } from './components/domainproperties/constants';
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -197,7 +196,7 @@ export class QueryGridModel
     constructor(values?: IQueryGridModel) {
         super(values);
 
-        if (LABKEY.devMode) {
+        if (getServerContext().devMode) {
             // ensure that requiredColumns and omittedColumns do not intersect
             const i = intersect(this.requiredColumns, this.omittedColumns);
             if (i.size > 0) {

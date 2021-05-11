@@ -173,7 +173,7 @@ export function getProductProjectsMap(products?: ProductModel[], projects?: Cont
         products.forEach(product => (map[product.productId] = []));
         for (const project of projects) {
             for (const product of products) {
-                if (project.activeModules.indexOf(product.moduleName) > -1) {
+                if (project.hasActiveModule(product.moduleName)) {
                     map[product.productId].push(project);
                     break;
                 }

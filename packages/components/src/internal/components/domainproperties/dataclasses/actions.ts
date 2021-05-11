@@ -40,7 +40,6 @@ export function fetchDataClass(queryName?: string, rowId?: number): Promise<Data
 function _fetchDataClass(queryName?: string, domainId?: number): Promise<DataClassModel> {
     return new Promise((resolve, reject) => {
         return Domain.getDomainDetails({
-            containerPath: LABKEY.container.path,
             schemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
             queryName,
             domainId,

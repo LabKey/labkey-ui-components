@@ -16,7 +16,7 @@
 import React, { FC, ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
 import ReactSelect, { Option } from 'react-select';
-import { Utils } from '@labkey/api';
+import { getServerContext, Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 
@@ -249,7 +249,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
                 if (reactSelect.state.inputValue) {
                     if (reactSelect.select && Utils.isFunction(reactSelect.select.selectFocusedOption)) {
                         reactSelect.select.selectFocusedOption();
-                    } else if (LABKEY.devMode) {
+                    } else if (getServerContext().devMode) {
                         console.warn(
                             'ReactSelect.Async implementation may have changed. SelectInput "saveOnBlur" no longer working.'
                         );
@@ -260,7 +260,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
                 if (reactSelect.inputValue) {
                     if (Utils.isFunction(reactSelect.createNewOption)) {
                         reactSelect.createNewOption();
-                    } else if (LABKEY.devMode) {
+                    } else if (getServerContext().devMode) {
                         console.warn(
                             'ReactSelect.Creatable implementation may have changed. SelectInput "saveOnBlur" no longer working.'
                         );

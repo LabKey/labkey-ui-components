@@ -17,6 +17,7 @@ import React from 'react';
 import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 import moment from 'moment';
+import { getServerContext } from '@labkey/api';
 
 import { User, getDateFormat } from '../../..';
 
@@ -44,8 +45,8 @@ export class Notification extends ReactN.Component<NotificationProps, any, Globa
     }
 
     renderTrialServicesNotification(props: NotificationItemProps, user: User) {
-        if (LABKEY.moduleContext.trialservices.trialEndDate) {
-            const endDate = moment(LABKEY.moduleContext.trialservices.trialEndDate, getDateFormat());
+        if (getServerContext().moduleContext.trialservices.trialEndDate) {
+            const endDate = moment(getServerContext().moduleContext.trialservices.trialEndDate, getDateFormat());
             const today = moment();
             const secondsDiff = endDate.diff(today, 'seconds');
             let dayDiff = endDate.diff(today, 'days');
@@ -54,13 +55,13 @@ export class Notification extends ReactN.Component<NotificationProps, any, Globa
             let message = '';
             if (dayDiff <= 0) message = 'This LabKey trial site has expired.';
             else message = 'This LabKey trial site will expire in ' + dayDiff + (dayDiff === 1 ? ' day.' : ' days.');
-            if (LABKEY.moduleContext.trialservices.upgradeLink && user && user.isAdmin)
+            if (getServerContext().moduleContext.trialservices.upgradeLink && user && user.isAdmin)
                 return (
                     <span>
                         {message}
                         &nbsp;
-                        <a href={LABKEY.moduleContext.trialservices.upgradeLink} target="_blank">
-                            {LABKEY.moduleContext.trialservices.upgradeLinkText}
+                        <a href={getServerContext().moduleContext.trialservices.upgradeLink} target="_blank">
+                            {getServerContext().moduleContext.trialservices.upgradeLinkText}
                         </a>
                     </span>
                 );
@@ -70,11 +71,7 @@ export class Notification extends ReactN.Component<NotificationProps, any, Globa
     }
 
     createSystemNotification(): void {
-        if (
-            LABKEY.moduleContext &&
-            LABKEY.moduleContext.trialservices &&
-            LABKEY.moduleContext.trialservices.trialEndDate
-        ) {
+        if (getServerContext().moduleContext?.trialservices?.trialEndDate) {
             createNotification({
                 alertClass: 'warning',
                 id: 'trial_ending',

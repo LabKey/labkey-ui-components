@@ -16,6 +16,7 @@
 
 import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 import { Dropdown, Image, MenuItem } from 'react-bootstrap';
+import { getServerContext } from '@labkey/api';
 
 import { User, devToolsActive, toggleDevTools } from '../../..';
 
@@ -75,7 +76,7 @@ export const UserMenu: FC<UserMenuProps> = props => {
                 <div className="navbar-connector" />
                 {menuItems}
                 {extraUserItems}
-                {LABKEY.devMode && (
+                {getServerContext().devMode && (
                     <>
                         <MenuItem divider />
                         <MenuItem header>Dev Tools</MenuItem>

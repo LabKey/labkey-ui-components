@@ -2,12 +2,10 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState }
 import { getPicklistDeleteData, PicklistDeletionData } from './actions';
 import { PicklistModel } from './models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { Actions } from '../../../public/QueryModel/withQueryModels';
 import { User } from '../base/models/User';
 import { Alert } from '../base/Alert';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-
 
 interface Props {
     model: QueryModel,
@@ -16,6 +14,84 @@ interface Props {
     onConfirm: (listsToDelete: any[]) => void,
     onCancel: () => void
 }
+
+interface DeleteConfirmMessageProps {
+    deletionData: PicklistDeletionData,
+    numSelected: number,
+    noun: string,
+}
+
+// exported for jest testing
+export const PicklistDeleteConfirmMessage: FC<DeleteConfirmMessageProps> = memo(props => {
+    const {deletionData, numSelected, noun} = props;
+
+    if (!deletionData)
+        return null;
+
+    let restrictionMessage = null;
+
+    if (deletionData.numDeletable === 0) {
+        if (numSelected > 1) {
+            restrictionMessage =
+                <p>All of the selected picklists were created by other users and cannot be deleted.</p>;
+        } else {
+            restrictionMessage = <p>The selected picklist was created by another user and cannot be deleted.</p>;
+        }
+    } else if (deletionData.numNotDeletable > 0) {
+        restrictionMessage =
+            <p>{deletionData.numNotDeletable} of the {numSelected} selected picklists
+                {deletionData.numNotDeletable === 1 ? ' was created by another user' : ' were created by other users'}
+                and cannot be deleted.</p>;
+    }
+
+    let publicMessage = null;
+    if (deletionData.numDeletable > 0) {
+        if (deletionData.numDeletable == deletionData.numShared) {
+            if (deletionData.numShared === 1) {
+                publicMessage = <p>This is a public picklist that is shared with your team members.</p>;
+            } else {
+                publicMessage = <p>These are public picklists that are shared with your team members.</p>;
+            }
+        } else if (deletionData.numShared) {
+            publicMessage = <p>{deletionData.numShared} of
+                the {deletionData.numDeletable} lists {(deletionData.numShared === 1 ? "is a public picklist" : "are public picklists")} shared
+                with your team members.</p>;
+        }
+    }
+
+    const rUSure = deletionData.numDeletable === 0 ? null : (
+        <>
+            Are you sure you want to delete {deletionData.numDeletable === 1 && deletionData.deletableLists[0]?.name ?
+            <b>"{deletionData.deletableLists[0].name}"</b> :
+            'the selected lists'
+        }
+            ?
+        </>
+    );
+
+
+    return (
+        <>
+            {(publicMessage || restrictionMessage) && (
+                <Alert bsStyle="warning">
+                    {publicMessage}
+                    {restrictionMessage}
+                </Alert>
+            )}
+            <span>
+                {rUSure}&nbsp;
+                {deletionData.numDeletable > 0 &&
+                <>
+                    Samples in the {noun} will not be affected.&nbsp;
+                    <p className={'top-spacing'}>
+                        <strong>Deletion cannot be undone.</strong>
+                        &nbsp;Do you want to proceed?
+                    </p>
+                </>}
+            </span>
+        </>
+    );
+});
 
 export const PicklistDeleteConfirm: FC<Props> = memo(props => {
 
@@ -58,76 +134,22 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
         onConfirm(deletionData.deletableLists);
     }, [deletionData, onConfirm]);
 
-    const getConfirmMessage = useMemo((): ReactNode => {
-        if (!deletionData)
-            return null;
-
-        let restrictionMessage = '';
-
-        if (deletionData.numDeletable === 0) {
-            if (numSelected > 1) {
-                restrictionMessage += 'None of the selected picklists can be deleted.';
-            }
-            else {
-                restrictionMessage += 'The selected picklist cannot be deleted.';
-            }
-        }
-        if (deletionData.numNotDeletable > 0) {
-            if (deletionData.numDeletable > 0) {
-                restrictionMessage += 'Only ' + deletionData.numDeletable + ' of the ' + numSelected + ' selected picklists can be deleted.';
-            }
-            restrictionMessage += " You are not allowed to delete picklists created by other users.  ";
-        }
-        const rUSure = deletionData.numDeletable === 0 ? null : (
-            <>
-                Are you sure you want to delete&nbsp;
-                {deletionData.numDeletable === 1 && deletionData.deletableLists[0]?.name ?
-                    <b>"{deletionData.deletableLists[0].name}"</b> :
-                    'the selected lists'
-                }
-                ?
-            </>
-        );
-        let publicMessage = null;
-        if (deletionData.numDeletable == deletionData.numShared) {
-            if (deletionData.numShared === 1)
-                publicMessage = "This is a public picklist that is shared with your team members.";
-            else
-                publicMessage = "These are public picklists that are shared with your team members.";
-        } else if (deletionData.numShared) {
-            publicMessage = deletionData.numShared + " of the " + deletionData.numDeletable + " lists " + (deletionData.numShared === 1 ? "is a public picklist" : "are public picklists") + " shared with your team members.";
-        }
-        return (
-            <>
-                <Alert bsStyle="warning">{publicMessage}</Alert>
-                <span>
-                    {restrictionMessage}
-                    {rUSure}&nbsp;
-                    {deletionData.numDeletable > 0 &&
-                    <>
-                        Samples in the {lcNoun} will not be affected.&nbsp;
-                        <p className={'top-spacing'}>
-                            <strong>Deletion cannot be undone.</strong>
-                            &nbsp;Do you want to proceed?
-                        </p>
-                    </>}
-                </span>
-            </>
-        );
-    }, [deletionData, lcNoun]);
-
     return (
         <ConfirmModal
             title={"Delete " + nounAndNumber}
             msg={
-                errorMessage ?? getConfirmMessage ?? <LoadingSpinner />
+                errorMessage ??
+                (deletionData
+                    ? <PicklistDeleteConfirmMessage deletionData={deletionData} numSelected={numSelected} noun={lcNoun}/>
+                    : <LoadingSpinner />
+                )
             }
             onConfirm={deletionData?.numDeletable ? onConfirmDelete : undefined}
             onCancel={onCancel}
             confirmVariant='danger'
             confirmButtonText={'Yes, Delete ' + nounAndNumber}
             cancelButtonText='Cancel'
-            submitting={!!errorMessage }
+            submitting={!!errorMessage } // disable submit button if there are errors
         />
     )
 });

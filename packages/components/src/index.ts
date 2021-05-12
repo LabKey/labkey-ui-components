@@ -58,6 +58,8 @@ import {
     toggleDevTools,
     valueIsEmpty,
 } from './internal/util/utils';
+import { AutoForm } from './internal/components/AutoForm';
+import { HelpIcon } from './internal/components/HelpIcon';
 import { getUserProperties, getUserRoleDisplay } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import { getActionErrorMessage, resolveErrorMessage } from './internal/util/messaging';
@@ -1043,6 +1045,8 @@ export {
     OntologyBrowserPanel,
     OntologyConceptOverviewPanel,
     OntologyBrowserFilterPanel,
+    AutoForm,
+    HelpIcon,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
@@ -1119,3 +1123,4 @@ export type {
     AppReducerState,
 } from './internal/app/reducers';
 export type { IAttachment } from './internal/renderers/AttachmentCard';
+export type { Field, FormSchema, Option } from './internal/components/AutoForm';

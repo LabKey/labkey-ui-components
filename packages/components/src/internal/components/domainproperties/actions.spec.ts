@@ -33,7 +33,6 @@ import {
     getDomainPanelHeaderId,
     getDomainPanelStatus,
     getOntologyUpdatedFieldName,
-    hasActiveModule,
     setDomainFields,
     updateDomainException,
     updateOntologyFieldProperties,
@@ -323,14 +322,6 @@ describe('domain properties actions', () => {
         expect(getDomainHeaderName('Test Name', undefined, 'test')).toBe('Test Name');
         expect(getDomainHeaderName('Test Name', 'Test Header Title', 'test')).toBe('Test Header Title');
         expect(getDomainHeaderName('Data Fields')).toBe('Results Fields');
-    });
-
-    test('hasActiveModule', () => {
-        expect(hasActiveModule(undefined)).toBeFalsy();
-        expect(hasActiveModule(null)).toBeFalsy();
-        expect(hasActiveModule('bogus')).toBeFalsy();
-        expect(hasActiveModule('query')).toBeFalsy();
-        expect(hasActiveModule('Query')).toBeTruthy();
     });
 
     test('getAvailableTypes, all optional allowed', () => {

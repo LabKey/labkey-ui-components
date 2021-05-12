@@ -1,4 +1,4 @@
-import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
@@ -11,7 +11,6 @@ import { IssuesListDefModel, IssuesListDefOptionsConfig } from './models';
 export function fetchIssuesListDefDesign(issueDefName?: string): Promise<IssuesListDefModel> {
     return new Promise((resolve, reject) => {
         Domain.getDomainDetails({
-            containerPath: getServerContext().container.path,
             schemaName: 'issues',
             queryName: issueDefName,
             domainKind: issueDefName === undefined ? 'IssueDefinition' : undefined,

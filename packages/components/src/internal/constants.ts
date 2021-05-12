@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 import { Set } from 'immutable';
+import { getServerContext } from '@labkey/api';
+
+// We are currently accessing these vis and WebSocket namespaces off of the global context,
+// but hopefully these can become their own packages or part of this package directly
+export const LABKEY_VIS = getServerContext().vis;
+export const LABKEY_WEBSOCKET = getServerContext().WebSocket;
 
 export const QUERY_GRID_PREFIX = 'labkey-querygrid-';
 export const FASTA_EXPORT_CONTROLLER = 'biologics';

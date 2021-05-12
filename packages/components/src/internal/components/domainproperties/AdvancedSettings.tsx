@@ -191,7 +191,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 params['providerName'] = ActionURL.getParameter('providerName');
             }
 
-            window.location.href = ActionURL.buildURL(controller, action, LABKEY.container.path, params);
+            window.location.href = ActionURL.buildURL(controller, action, undefined, params);
         }
     };
 

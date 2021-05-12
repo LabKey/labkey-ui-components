@@ -6,7 +6,7 @@ import React from 'react';
 import moment from 'moment';
 import { Panel, Row, Col, Button } from 'react-bootstrap';
 import { List, Map } from 'immutable';
-import { Utils } from '@labkey/api';
+import { getServerContext, Utils } from '@labkey/api';
 
 import { SecurityPolicy, SecurityRole, getUserProperties, LoadingSpinner, caseInsensitive } from '../../..';
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
@@ -145,7 +145,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     renderBody() {
         const { onUsersStateChangeComplete, userId } = this.props;
         const { loading, userProperties } = this.state;
-        const isSelf = userId === LABKEY.user.id;
+        const isSelf = userId === getServerContext().user.id;
 
         if (loading) {
             return <LoadingSpinner />;

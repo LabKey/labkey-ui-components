@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedSet } from 'immutable';
-import { ActionURL, Experiment, Filter } from '@labkey/api';
+import { ActionURL, Experiment, Filter, getServerContext } from '@labkey/api';
 
 import { AppURL, createProductUrl } from '../..';
 import { LineageLinkMetadata } from '../components/lineage/types';
@@ -484,7 +484,7 @@ export class URLResolver {
             return _url;
         }
 
-        if (_url !== false && LABKEY.devMode) {
+        if (_url !== false && getServerContext().devMode) {
             console.warn('Unable to map URL:', mapper.url);
         }
 

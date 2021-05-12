@@ -3117,7 +3117,6 @@ export function createQueryModelFilteredBySample(
         baseFilters: [
             model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart, useLsid, singleFilterValue),
         ],
-        // TODO: Confirm isPaged: true,
         omittedColumns: omitSampleCols ? sampleColumns.toArray() : undefined,
         schemaQuery: SchemaQuery.create(model.protocolSchemaName, 'Data'),
         title: model.name,

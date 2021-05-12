@@ -17,7 +17,7 @@ export class PicklistModel {
     }
 
     isValid(): boolean {
-        return !!this.name;
+        return this.name?.trim().length > 0;
     }
 
     isUserList(user: User): boolean {

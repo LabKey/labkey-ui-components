@@ -21,7 +21,7 @@ interface Props {
 export const PicklistEditModal: FC<Props> = memo(props => {
     const { show, onCancel, onFinish, selectionKey, selectedQuantity, sampleIds, picklist } = props;
     const [ name, setName ] = useState<string>(picklist ? picklist.name : '');
-    const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
+    const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value.trim()), []);
 
     const [ description, setDescription ] = useState<string>(picklist ? picklist.Description : '');
     const onDescriptionChange = useCallback((evt: ChangeEvent<HTMLTextAreaElement>) => setDescription(evt.target.value), []);

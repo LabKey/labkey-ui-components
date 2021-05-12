@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Updated domain designer Lookup/Fields to allow for certain tables (e.g., picklists) being excluded from the choice for lookups
 * Add new `getListIdFromDomainId` method
 
+### version 2.29.1
+*Released*: 12 May 2021
+* QuerySelect: Pass `selectedItems` to `onQSChange()` event handlers.
+
 ### version 2.29.0
 *Released*: 11 May 2021
 * Replace usages of LABKEY variable with getServerContext()

@@ -113,7 +113,7 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                                     items = items[0];
                                 }
 
-                                props.onQSChange(props.name, model.rawSelectedValue, items);
+                                props.onQSChange(props.name, model.rawSelectedValue, items, model.selectedItems);
                             }
 
                             // fire listener if given an initial value and a listener function

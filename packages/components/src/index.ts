@@ -388,7 +388,7 @@ import { IssuesListDefModel } from './internal/components/domainproperties/issue
 import { IssuesListDefDesignerPanels } from './internal/components/domainproperties/issues/IssuesListDefDesignerPanels';
 import { DatasetDesignerPanels } from './internal/components/domainproperties/dataset/DatasetDesignerPanels';
 import { DatasetModel } from './internal/components/domainproperties/dataset/models';
-import { fetchListDesign } from './internal/components/domainproperties/list/actions';
+import { fetchListDesign, getListIdFromDomainId, getListProperties } from './internal/components/domainproperties/list/actions';
 import { fetchIssuesListDefDesign } from './internal/components/domainproperties/issues/actions';
 import { fetchDatasetDesign } from './internal/components/domainproperties/dataset/actions';
 import {
@@ -897,6 +897,8 @@ export {
     ListDesignerPanels,
     ListModel,
     fetchListDesign,
+    getListIdFromDomainId,
+    getListProperties,
     DatasetDesignerPanels,
     DatasetModel,
     fetchDatasetDesign,

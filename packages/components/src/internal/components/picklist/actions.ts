@@ -10,12 +10,13 @@ import { User } from '../base/models/User';
 import { PicklistModel } from './models';
 import { flattenValuesFromRow } from '../../../public/QueryModel/utils';
 import { buildURL } from '../../url/AppURL';
-import { fetchListDesign } from '../domainproperties/list/actions';
+import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { SCHEMAS } from '../../../index';
 
 interface CreatePicklistResponse {
     domainId: number,
+    listId: number,
     name: string
 }
 
@@ -87,7 +88,15 @@ export function createPicklist(name: string, description: string, shared: boolea
                 description,
                 category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY
             },
-            success: (response) => { resolve({name: response.name, domainId: response.domainId}); },
+            success: (response) => {
+                getListIdFromDomainId(response.domainId)
+                    .then(listId => {
+                        resolve({listId, name: response.name, domainId: response.domainId});
+                    })
+                    .catch(error => {
+                        reject(error);
+                    })
+            },
             failure: (err) => { reject(err); }
         });
     });

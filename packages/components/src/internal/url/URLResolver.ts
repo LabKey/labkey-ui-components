@@ -459,8 +459,8 @@ export const PICKLIST_MAPPER =
         const url = row.get('url');
         if (url) {
             const params = ActionURL.getParameters(url);
-            if (params.listName) {
-                return AppURL.create('picklist', params.listName);
+            if (params.listId) {
+                return AppURL.create('picklist', params.listId);
             }
         }
         return false;

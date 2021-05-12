@@ -26,7 +26,7 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
                return (
                    <>
                        Successfully created "{picklist.name}" with {Utils.pluralize(count, 'sample', 'samples')}.&nbsp;
-                       <a href={AppURL.create(PICKLIST_KEY, picklist.name).toHref()}>View picklist</a>.
+                       <a href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>View picklist</a>.
                    </>
                );
             },

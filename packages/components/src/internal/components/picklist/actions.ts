@@ -14,13 +14,7 @@ import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list
 import { resolveErrorMessage } from '../../util/messaging';
 import { SCHEMAS } from '../../../index';
 
-interface CreatePicklistResponse {
-    domainId: number,
-    listId: number,
-    name: string
-}
-
-export function setPicklistDefaultView(name: string): Promise<CreatePicklistResponse> {
+export function setPicklistDefaultView(name: string): Promise<string> {
     return new Promise((resolve, reject) => {
         let jsonData = {
             schemaName: "lists",
@@ -50,7 +44,7 @@ export function setPicklistDefaultView(name: string): Promise<CreatePicklistResp
             method: 'POST',
             jsonData,
             success: Utils.getCallbackWrapper(response => {
-                resolve(response);
+                resolve(response.queryName);
             }),
             failure: Utils.getCallbackWrapper(response => {
                 console.error(response);
@@ -60,7 +54,7 @@ export function setPicklistDefaultView(name: string): Promise<CreatePicklistResp
     });
 }
 
-export function createPicklist(name: string, description: string, shared: boolean) : Promise<CreatePicklistResponse> {
+export function createPicklist(name: string, description: string, shared: boolean, selectionKey: string, sampleIds: string[]) : Promise<PicklistModel> {
     return new Promise((resolve, reject) => {
         Domain.create({
             domainDesign: {
@@ -89,13 +83,21 @@ export function createPicklist(name: string, description: string, shared: boolea
                 category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY
             },
             success: (response) => {
-                getListIdFromDomainId(response.domainId)
-                    .then(listId => {
-                        resolve({listId, name: response.name, domainId: response.domainId});
-                    })
-                    .catch(error => {
-                        reject(error);
-                    })
+                Promise.all([
+                    getListIdFromDomainId(response.domainId),
+                    setPicklistDefaultView(name),
+                    addSamplesToPicklist(name, selectionKey, sampleIds),
+                ]).then((responses) => {
+                    const [listId] = responses
+                    resolve(new PicklistModel({
+                        listId,
+                        name,
+                        Description: description,
+                        Category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY
+                    }));
+                }).catch(error => {
+                    reject(error);
+                });
             },
             failure: (err) => { reject(err); }
         });
@@ -137,7 +139,7 @@ export function updatePicklist(picklist: PicklistModel) :Promise<PicklistModel> 
 export function addSamplesToPicklist(listName: string, selectionKey?: string, sampleIds?: string[] ) : Promise<InsertRowsResponse> {
     let rows = List<any>();
     if (selectionKey) {
-        getSelected(selectionKey).then(response => {
+        return getSelected(selectionKey).then(response => {
             response.selected.forEach(id => {
                 rows = rows.push({ SampleID: id});
             });

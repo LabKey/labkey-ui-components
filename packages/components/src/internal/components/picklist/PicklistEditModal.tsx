@@ -66,9 +66,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                 }));
             }
             else {
-                updatedList = await createPicklist(trimmedName, description, shared);
-                await addSamplesToPicklist(trimmedName, selectionKey, sampleIds);
-                await setPicklistDefaultView(trimmedName)
+                updatedList = await createPicklist(trimmedName, description, shared, selectionKey, sampleIds);
             }
             setIsSubmitting(false);
             onFinish(updatedList);

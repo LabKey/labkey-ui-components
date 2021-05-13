@@ -370,7 +370,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 // Aliquot name can be auto generated, regardless of sample name expression config
                 if (column.fieldKey.toLowerCase() === 'name')
                     col = col.merge({
-                        required: false
+                        required: false,
                     }) as QueryColumn;
                 columns = columns.set(key, col);
             }
@@ -825,8 +825,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             const row = allRows.get(0); // for insert, use the first (and only) row data
             row.keySeq().forEach(col => {
                 // If >1 parents selected, skip for Aliquots as a single parent is allowed
-                if (col === 'AliquotedFrom' && row.get(col).size > 1)
-                    return;
+                if (col === 'AliquotedFrom' && row.get(col).size > 1) return;
 
                 // for some reason selectinput errors out if values are supplied as array
                 row.get(col).forEach(val => {

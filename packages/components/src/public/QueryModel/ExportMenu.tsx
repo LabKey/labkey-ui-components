@@ -70,7 +70,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
                                                 &nbsp; {option.label}
                                             </MenuItem>
                                         </>
-                                    )
+                                    );
                                 }
                                 return (
                                     <MenuItem key={option.type} onClick={() => this.export(option)}>

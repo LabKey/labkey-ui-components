@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 2.31.0
+*Released*: 13 May 2021
 * Remove isSampleAliquotEnabled experimental flag
 * Allow QueryGridModel export to include extra columns
 * Allow QueryModel to export LABEL

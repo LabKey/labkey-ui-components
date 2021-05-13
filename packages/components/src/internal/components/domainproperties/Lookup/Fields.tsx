@@ -192,7 +192,8 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
             let infos = List<{ name: string; type: PropDescType }>();
 
             queries.forEach(q => {
-                infos = infos.concat(q.getLookupInfo(this.props.lookupURI)).toList();
+                if (q.isIncludedForLookups)
+                    infos = infos.concat(q.getLookupInfo(this.props.lookupURI)).toList();
             });
 
             this.setState({

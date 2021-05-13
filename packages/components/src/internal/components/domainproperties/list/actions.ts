@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ActionURL, Ajax, Utils, Domain } from '@labkey/api';
+import { ActionURL, Ajax, Utils, Domain, getServerContext } from '@labkey/api';
 
 import { ListModel } from './models';
 import { INT_LIST } from './constants';
 
-function getListProperties(listId?: number): Promise<ListModel> {
+export function getListProperties(listId?: number): Promise<ListModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('list', 'getListProperties.api'),
@@ -57,5 +57,22 @@ export function fetchListDesign(listId?: number): Promise<ListModel> {
                 console.error(error);
                 reject(error);
             });
+    });
+}
+
+export function getListIdFromDomainId(domainId: number): Promise<number> {
+    return new Promise((resolve, reject) => {
+        Domain.getDomainDetails({
+            containerPath: getServerContext().container.path,
+            domainId,
+            success: data => {
+                const newModel = ListModel.create(data);
+                resolve(newModel.listId);
+            },
+            failure: error => {
+                console.error('Unable to retrieve list id for domainId: ' + domainId, error);
+                reject(undefined);
+            },
+        });
     });
 }

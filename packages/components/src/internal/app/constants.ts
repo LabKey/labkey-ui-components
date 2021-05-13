@@ -24,6 +24,7 @@ export const FREEZERS_KEY = 'freezers';
 export const BOXES_KEY = 'boxes';
 export const HOME_KEY = 'home';
 export const USER_KEY = 'user';
+export const PICKLIST_KEY = 'picklist';
 
 export const NEW_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new');
 export const NEW_SOURCE_TYPE_HREF = AppURL.create(SOURCE_TYPE_KEY, 'new');
@@ -34,6 +35,7 @@ export const WORKFLOW_HOME_HREF = AppURL.create(WORKFLOW_KEY)
     .addParam('active.sort', 'DueDate');
 export const NEW_FREEZER_DESIGN_HREF = AppURL.create(FREEZERS_KEY, 'new');
 export const MANAGE_STORAGE_UNITS_HREF = AppURL.create(BOXES_KEY, 'types', 'update');
+export const PICKLIST_HOME_HREF = AppURL.create(PICKLIST_KEY);
 
 export const USER_PERMISSIONS_REQUEST = '/app/USER_PERMISSIONS_REQUEST';
 export const USER_PERMISSIONS_SUCCESS = '/app/USER_PERMISSIONS_SUCCESS';

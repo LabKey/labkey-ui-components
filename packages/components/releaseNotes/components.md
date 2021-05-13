@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.30.0
+*Released*: 13 May 2021
 * Add picklist-related components, models, and actions including:
     * PicklistCreationMenuItem
     * PicklistEditModal

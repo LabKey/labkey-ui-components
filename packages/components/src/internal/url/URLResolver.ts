@@ -454,18 +454,16 @@ const PIPELINE_MAPPER = new ActionMapper('pipeline-status', 'details', row => {
     return false;
 });
 
-export const PICKLIST_MAPPER =
-    new ActionMapper("picklist", "grid", row => {
-        const url = row.get('url');
-        if (url) {
-            const params = ActionURL.getParameters(url);
-            if (params.listId) {
-                return AppURL.create('picklist', params.listId);
-            }
+export const PICKLIST_MAPPER = new ActionMapper('picklist', 'grid', row => {
+    const url = row.get('url');
+    if (url) {
+        const params = ActionURL.getParameters(url);
+        if (params.listId) {
+            return AppURL.create('picklist', params.listId);
         }
-        return false;
-    });
-
+    }
+    return false;
+});
 
 export const URL_MAPPERS = {
     ASSAY_MAPPERS,

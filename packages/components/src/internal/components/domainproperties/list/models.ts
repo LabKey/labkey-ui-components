@@ -125,8 +125,7 @@ export class ListModel extends Record({
     getDomainKind(): string {
         if (this.category === PUBLIC_PICKLIST_CATEGORY || this.category === PRIVATE_PICKLIST_CATEGORY) {
             return PICKLIST;
-        }
-        else if (this.keyType === 'Varchar') {
+        } else if (this.keyType === 'Varchar') {
             return VAR_LIST;
         } else if (this.keyType === 'Integer' || this.keyType === 'AutoIncrementInteger') {
             return INT_LIST;

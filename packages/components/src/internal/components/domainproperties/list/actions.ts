@@ -65,14 +65,14 @@ export function getListIdFromDomainId(domainId: number): Promise<number> {
         Domain.getDomainDetails({
             containerPath: getServerContext().container.path,
             domainId,
-            success: (data) => {
+            success: data => {
                 const newModel = ListModel.create(data);
                 resolve(newModel.listId);
             },
-            failure: (error) => {
-                console.error("Unable to retrieve list id for domainId: " + domainId, error);
+            failure: error => {
+                console.error('Unable to retrieve list id for domainId: ' + domainId, error);
                 reject(undefined);
-            }
+            },
         });
     });
 }

@@ -1,49 +1,57 @@
 import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from 'react';
 import { Checkbox, Modal } from 'react-bootstrap';
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
-import { addSamplesToPicklist, createPicklist, setPicklistDefaultView, updatePicklist } from './actions';
-import { Alert } from '../base/Alert';
-import { resolveErrorMessage } from '../../util/messaging';
-import { PicklistModel } from './models';
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
+
 import { Utils } from '@labkey/api';
 
+import { WizardNavButtons } from '../buttons/WizardNavButtons';
+
+import { Alert } from '../base/Alert';
+import { resolveErrorMessage } from '../../util/messaging';
+
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
+
+import { PicklistModel } from './models';
+import { addSamplesToPicklist, createPicklist, setPicklistDefaultView, updatePicklist } from './actions';
+
 interface Props {
-    show: boolean,
-    selectionKey?: string, // pass in either selectionKey and selectedQuantity or sampleIds.
-    selectedQuantity?: number,
-    sampleIds?: string[],
-    picklist?: PicklistModel,
-    onCancel: () => void,
-    onFinish: (picklist: PicklistModel) => void,
+    show: boolean;
+    selectionKey?: string; // pass in either selectionKey and selectedQuantity or sampleIds.
+    selectedQuantity?: number;
+    sampleIds?: string[];
+    picklist?: PicklistModel;
+    onCancel: () => void;
+    onFinish: (picklist: PicklistModel) => void;
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
     const { show, onCancel, onFinish, selectionKey, selectedQuantity, sampleIds, picklist } = props;
-    const [ name, setName ] = useState<string>(picklist ? picklist.name : '');
+    const [name, setName] = useState<string>(picklist ? picklist.name : '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 
-    const [ description, setDescription ] = useState<string>(picklist ? picklist.Description : '');
-    const onDescriptionChange = useCallback((evt: ChangeEvent<HTMLTextAreaElement>) => setDescription(evt.target.value), []);
+    const [description, setDescription] = useState<string>(picklist ? picklist.Description : '');
+    const onDescriptionChange = useCallback(
+        (evt: ChangeEvent<HTMLTextAreaElement>) => setDescription(evt.target.value),
+        []
+    );
 
-    const [ shared, setShared ] = useState<boolean>(picklist ? picklist.isPublic() : false);
+    const [shared, setShared] = useState<boolean>(picklist ? picklist.isPublic() : false);
     // Using a type for evt here causes difficulties.  It wants a FormEvent<Checkbox> but
     // then it doesn't recognize checked as a valid field on current target.
-    const onSharedChanged = useCallback((evt) => {
+    const onSharedChanged = useCallback(evt => {
         setShared(evt.currentTarget.checked);
     }, []);
 
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ picklistError, setPicklistError ] = useState<string>(undefined);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [picklistError, setPicklistError] = useState<string>(undefined);
 
     const isUpdate = picklist !== undefined;
     let finishVerb, finishingVerb;
     if (isUpdate) {
-        finishVerb = "Update";
-        finishingVerb = "Updating";
+        finishVerb = 'Update';
+        finishingVerb = 'Updating';
     } else {
-        finishVerb = "Create";
-        finishingVerb = "Creating"
+        finishVerb = 'Create';
+        finishingVerb = 'Creating';
     }
 
     const onHide = useCallback(() => {
@@ -58,14 +66,15 @@ export const PicklistEditModal: FC<Props> = memo(props => {
             let updatedList;
             const trimmedName = name.trim();
             if (isUpdate) {
-                updatedList = await updatePicklist(new PicklistModel({
-                    name: trimmedName,
-                    listId: picklist.listId,
-                    Description: description,
-                    Category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY
-                }));
-            }
-            else {
+                updatedList = await updatePicklist(
+                    new PicklistModel({
+                        name: trimmedName,
+                        listId: picklist.listId,
+                        Description: description,
+                        Category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY,
+                    })
+                );
+            } else {
                 updatedList = await createPicklist(trimmedName, description, shared, selectionKey, sampleIds);
             }
             setIsSubmitting(false);
@@ -79,14 +88,17 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     let title;
     if (isUpdate) {
         title = 'Update Picklist Data';
-    }
-    else {
+    } else {
         const count = sampleIds?.length ?? selectedQuantity;
         if (count === 0) {
             title = 'Create an Empty Picklist';
-        }
-        else if (selectionKey) {
-            title = <>Create a New Picklist with the {Utils.pluralize(selectedQuantity, 'Selected Sample', 'Selected Samples')}</>;
+        } else if (selectionKey) {
+            title = (
+                <>
+                    Create a New Picklist with the{' '}
+                    {Utils.pluralize(selectedQuantity, 'Selected Sample', 'Selected Samples')}
+                </>
+            );
         } else if (count === 1) {
             title = 'Create a New Picklist with This Sample';
         } else {
@@ -107,14 +119,25 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                     <div className="form-group">
                         <label className="control-label">Name *</label>
 
-                        <input placeholder="Give this list a name" className="form-control" value={name} onChange={onNameChange} type="text"/>
+                        <input
+                            placeholder="Give this list a name"
+                            className="form-control"
+                            value={name}
+                            onChange={onNameChange}
+                            type="text"
+                        />
                     </div>
                     <div className="form-group">
                         <label className="control-label">Description</label>
 
-                        <textarea placeholder="Add a description" className="form-control" value={description} onChange={onDescriptionChange}/>
+                        <textarea
+                            placeholder="Add a description"
+                            className="form-control"
+                            value={description}
+                            onChange={onDescriptionChange}
+                        />
 
-                        <Checkbox checked={shared} onChange={onSharedChanged} >
+                        <Checkbox checked={shared} onChange={onSharedChanged}>
                             <span>Share this picklist publicly with team members</span>
                         </Checkbox>
                     </div>
@@ -124,16 +147,16 @@ export const PicklistEditModal: FC<Props> = memo(props => {
             <Modal.Footer>
                 <WizardNavButtons
                     cancel={onHide}
-                    cancelText={'Cancel'}
+                    cancelText="Cancel"
                     canFinish={!!name}
                     containerClassName=""
                     isFinishing={isSubmitting}
-                    isFinishingText={finishingVerb + " Picklist..."}
+                    isFinishingText={finishingVerb + ' Picklist...'}
                     finish
-                    finishText={finishVerb + " Picklist"}
+                    finishText={finishVerb + ' Picklist'}
                     nextStep={onSavePicklist}
                 />
             </Modal.Footer>
         </Modal>
-    )
+    );
 });

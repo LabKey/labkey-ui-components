@@ -12,5 +12,5 @@ export const VAR_LIST = 'VarList';
 export const INT_LIST = 'IntList';
 export const PICKLIST = 'Picklist';
 
-export const PRIVATE_PICKLIST_CATEGORY = "PrivatePicklist";
-export const PUBLIC_PICKLIST_CATEGORY = "PublicPicklist";
+export const PRIVATE_PICKLIST_CATEGORY = 'PrivatePicklist';
+export const PUBLIC_PICKLIST_CATEGORY = 'PublicPicklist';

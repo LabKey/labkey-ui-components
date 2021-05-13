@@ -1,4 +1,5 @@
 import { Draft, immerable, produce } from 'immer';
+
 import { User } from '../base/models/User';
 import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { userCanDeletePublicPicklists, userCanManagePicklists } from '../../app/utils';
@@ -21,7 +22,7 @@ export class PicklistModel {
     }
 
     isUserList(user: User): boolean {
-        return this.CreatedBy === user.id
+        return this.CreatedBy === user.id;
     }
 
     isEditable(user: User): boolean {
@@ -41,6 +42,4 @@ export class PicklistModel {
             Object.assign(draft, props);
         });
     }
-
-
 }

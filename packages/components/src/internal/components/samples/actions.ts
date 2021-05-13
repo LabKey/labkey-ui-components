@@ -18,7 +18,18 @@ import { fromJS, List, Map, OrderedMap } from 'immutable';
 
 import { IEntityTypeDetails } from '../entities/models';
 import { deleteEntityType } from '../entities/actions';
-import { buildURL, DomainDetails, getSelection, QueryColumn, SCHEMAS, SchemaQuery, selectRows } from '../../..';
+import {
+    buildURL,
+    DomainDetails,
+    getSelection,
+    QueryColumn,
+    SCHEMAS,
+    SchemaQuery,
+    selectRows,
+    resolveErrorMessage,
+} from '../../..';
+
+import { GroupedSampleFields } from './models';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -147,4 +158,167 @@ export function loadSelectedSamples(location: any, sampleColumn: QueryColumn): P
             ]);
         }
     });
+}
+
+export function getGroupedSampleDomainFields(sampleType: string): Promise<GroupedSampleFields> {
+    return new Promise((resolve, reject) => {
+        getSampleTypeDetails(SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType))
+            .then(sampleTypeDomain => {
+                const metaFields = [],
+                    aliquotFields = [];
+                const metricUnit = sampleTypeDomain.get('options').get('metricUnit');
+
+                sampleTypeDomain.domainDesign.fields.forEach(field => {
+                    if (field.derivationDataScope === 'ChildOnly') aliquotFields.push(field.name.toLowerCase());
+                    else metaFields.push(field.name.toLowerCase());
+                });
+
+                resolve({
+                    aliquotFields,
+                    metaFields,
+                    metricUnit,
+                });
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
+
+export function getAliquotSampleIds(selection: List<any>, sampleType: string): Promise<any[]> {
+    return getFilteredSampleSelection(selection, sampleType, [Filter.create('IsAliquot', true)]);
+}
+
+export function getNotInStorageSampleIds(selection: List<any>, sampleType: string): Promise<any[]> {
+    return getFilteredSampleSelection(selection, sampleType, [Filter.create('StorageStatus', 'Not in storage')]);
+}
+
+export function getFilteredSampleSelection(
+    selection: List<any>,
+    sampleType: string,
+    filters: Filter.IFilter[]
+): Promise<any[]> {
+    if (!selection || selection.isEmpty()) {
+        return new Promise((resolve, reject) => {
+            reject('No data is selected');
+        });
+    }
+
+    const sampleRowIds = [];
+    selection.forEach(sel => sampleRowIds.push(parseInt(sel)));
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+            queryName: sampleType,
+            columns: 'RowId',
+            filterArray: [Filter.create('RowId', sampleRowIds, Filter.Types.IN), ...filters],
+        })
+            .then(response => {
+                const { key, models } = response;
+                const filteredSamples = [];
+                Object.keys(models[key]).forEach(row => {
+                    const sample = models[key][row];
+                    filteredSamples.push(sample.RowId.value);
+                });
+                resolve(filteredSamples);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
+
+export function getSampleSelectionStorageData(selection: List<any>): Promise<{}> {
+    if (!selection || selection.isEmpty()) {
+        return new Promise((resolve, reject) => {
+            reject('No data is selected');
+        });
+    }
+
+    const sampleRowIds = [];
+    selection.forEach(sel => sampleRowIds.push(parseInt(sel)));
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaName: 'inventory',
+            queryName: 'ItemSamples',
+            columns: 'RowId, SampleId, StoredAmount',
+            filterArray: [Filter.create('SampleId', sampleRowIds, Filter.Types.IN)],
+        })
+            .then(response => {
+                const { key, models } = response;
+                const filteredSampleItems = {};
+                Object.keys(models[key]).forEach(row => {
+                    const item = models[key][row];
+                    const rowId = item.RowId.value;
+                    const storedAmount = item.StoredAmount.value;
+                    filteredSampleItems[item.SampleId.value] = {
+                        rowId,
+                        storedAmount,
+                    };
+                });
+                resolve(filteredSampleItems);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
+
+export function getGroupedSampleDisplayColumns(
+    allDisplayColumns: List<QueryColumn>,
+    allUpdateColumns: List<QueryColumn>,
+    sampleTypeDomainFields: GroupedSampleFields,
+    isAliquot: boolean,
+    extraDisplayColumns?: string[]
+): any {
+    const editColumns = List<QueryColumn>().asMutable();
+    const displayColumns = List<QueryColumn>().asMutable();
+    let aliquotHeaderDisplayColumns = List<QueryColumn>();
+
+    allDisplayColumns.forEach(col => {
+        const colName = col.name.toLowerCase();
+        if (isAliquot) {
+            if (sampleTypeDomainFields.metaFields.indexOf(colName) > -1) displayColumns.push(col);
+            // display parent meta for aliquot
+            else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
+                aliquotHeaderDisplayColumns = aliquotHeaderDisplayColumns.push(col);
+            } else {
+                if (sampleTypeDomainFields.metaFields.indexOf(colName) == -1) {
+                    displayColumns.push(col);
+                }
+            }
+        } else {
+            if (sampleTypeDomainFields.aliquotFields.indexOf(colName) === -1) {
+                displayColumns.push(col);
+            }
+        }
+    });
+
+    allUpdateColumns.forEach(col => {
+        const colName = col.name.toLowerCase();
+        if (isAliquot) {
+            if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
+                editColumns.push(col);
+            } else if (colName === 'description') {
+                editColumns.push(col);
+            } else {
+                if (sampleTypeDomainFields.metaFields.indexOf(colName) == -1) {
+                    editColumns.push(col);
+                }
+            }
+        } else {
+            if (sampleTypeDomainFields.aliquotFields.indexOf(colName) === -1) {
+                editColumns.push(col);
+            }
+        }
+    });
+
+    return {
+        displayColumns,
+        editColumns,
+        aliquotHeaderDisplayColumns,
+    };
 }

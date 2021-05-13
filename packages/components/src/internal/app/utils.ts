@@ -150,10 +150,6 @@ function isFreezerManagerEnabledInBiologics(): boolean {
     return getServerContext().moduleContext?.biologics?.isFreezerManagerEnabled === true;
 }
 
-export function isSampleAliquotEnabled(): boolean {
-    return getServerContext().experimental && getServerContext().experimental['sampleAliquot'] === true;
-}
-
 export function isSamplePicklistEnabled(): boolean {
     return getServerContext().experimental && getServerContext().experimental['samplePicklist'] === true;
 }

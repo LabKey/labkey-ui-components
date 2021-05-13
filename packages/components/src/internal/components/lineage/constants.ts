@@ -27,3 +27,6 @@ export const DEFAULT_LINEAGE_OPTIONS: LineageOptions = {
     grouping: DEFAULT_GROUPING_OPTIONS,
     urlResolver: LineageURLResolvers.App,
 };
+
+export const SAMPLE_DERIVATION_PROTOCOL_LSID = 'urn:lsid:labkey.org:Protocol:SampleDerivationProtocol';
+export const SAMPLE_ALIQUOT_PROTOCOL_LSID = 'urn:lsid:labkey.org:Protocol:SampleAliquotProtocol';

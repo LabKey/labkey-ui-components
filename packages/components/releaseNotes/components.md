@@ -1,6 +1,21 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.31.0
+*Released*: 13 May 2021
+* Remove isSampleAliquotEnabled experimental flag
+* Allow QueryGridModel export to include extra columns
+* Allow QueryModel to export LABEL
+* Issue 43070: SM: Aliquot names do not autogenerate when the sample type doesn't have a name expression
+* Move/refactor components/utils from SampleManager to enable aliquot features in Biologics
+    * SamplesSelectionContextProvider
+    * SamplesBulkUpdateForm
+    * SamplesEditableGrid
+    * SampleDetailEditing
+    * SampleAliquotDetailHeader
+    * SampleLineageGraph
+    * getGroupedSampleDomainFields, getAliquotSampleIds, getGroupedSampleDisplayColumns utils
+
 ### version 2.30.0
 *Released*: 13 May 2021
 * Add picklist-related components, models, and actions including:

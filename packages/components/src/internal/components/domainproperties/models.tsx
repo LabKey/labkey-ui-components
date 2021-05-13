@@ -1317,6 +1317,7 @@ interface IQueryInfoLite {
     description?: string;
     hidden?: boolean;
     inherit?: boolean;
+    isIncludedForLookups?: boolean;
     isInherited?: boolean;
     isMetadataOverrideable?: boolean;
     isUserDefined?: boolean;
@@ -1335,6 +1336,7 @@ export class QueryInfoLite
         description: undefined,
         hidden: false,
         inherit: false,
+        isIncludedForLookups: true,
         isInherited: false,
         isMetadataOverrideable: false,
         isUserDefined: false,
@@ -1351,6 +1353,7 @@ export class QueryInfoLite
     declare description?: string;
     declare hidden?: boolean;
     declare inherit?: boolean;
+    declare isIncludedForLookups?: boolean;
     declare isInherited?: boolean;
     declare isMetadataOverrideable?: boolean;
     declare isUserDefined?: boolean;

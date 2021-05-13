@@ -454,11 +454,23 @@ const PIPELINE_MAPPER = new ActionMapper('pipeline-status', 'details', row => {
     return false;
 });
 
+export const PICKLIST_MAPPER = new ActionMapper('picklist', 'grid', row => {
+    const url = row.get('url');
+    if (url) {
+        const params = ActionURL.getParameters(url);
+        if (params.listId) {
+            return AppURL.create('picklist', params.listId);
+        }
+    }
+    return false;
+});
+
 export const URL_MAPPERS = {
     ASSAY_MAPPERS,
     DATA_CLASS_MAPPERS,
     SAMPLE_TYPE_MAPPERS,
     LIST_MAPPERS,
+    PICKLIST_MAPPER,
     DETAILS_QUERY_ROW_MAPPER,
     EXECUTE_QUERY_MAPPER,
     USER_DETAILS_MAPPERS,

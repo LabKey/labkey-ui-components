@@ -19,6 +19,7 @@ interface EditableDetailPanelProps extends RequiresModelAndActions {
     auditBehavior?: AuditBehaviorTypes;
     cancelText?: string;
     canUpdate: boolean;
+    detailHeader?: ReactNode;
     detailRenderer?: DetailRenderer;
     editColumns?: QueryColumn[];
     onEditToggle?: (editing: boolean) => void;
@@ -143,6 +144,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         const {
             actions,
             appEditable,
+            detailHeader,
             detailRenderer,
             asSubPanel,
             cancelText,
@@ -173,6 +175,8 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                 <div className="panel-body">
                     {error && <Alert>{error}</Alert>}
+
+                    {!editing && (detailHeader ?? null)}
 
                     <DetailPanel
                         actions={actions}

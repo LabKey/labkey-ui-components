@@ -1,24 +1,36 @@
 import React, { PureComponent } from 'react';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
 import { QueryGridModel } from '../../QueryGridModel';
 
-import { DetailEditing, getActionErrorMessage, LoadingPage, QueryColumn, SampleAliquotDetailHeader } from '../../..';
+import {
+    Actions,
+    caseInsensitive,
+    DetailEditing,
+    EditableDetailPanel,
+    getActionErrorMessage,
+    LoadingPage,
+    QueryColumn,
+    QueryModel,
+    SampleAliquotDetailHeader,
+} from '../../..';
 
 import { DetailRenderer } from '../forms/detail/DetailDisplay';
 
 import { GroupedSampleFields } from './models';
-import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields } from './actions';
+import { GroupedSampleDisplayColumns, getGroupedSampleDisplayColumns, getGroupedSampleDomainFields } from './actions';
 
 interface Props {
+    actions?: Actions;
     sampleSet: string;
     onUpdate: (skipChangeCount?: boolean) => any;
     canUpdate: (panelName: string) => boolean;
     title: string;
-    sampleModel: QueryGridModel;
+    queryModel?: QueryModel;
+    queryGridModel?: QueryGridModel;
     auditBehavior: AuditBehaviorTypes;
     onEditToggle?: (panelName: string, isEditing: boolean) => void;
     detailRenderer?: DetailRenderer;
@@ -34,6 +46,18 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         sampleTypeDomainFields: undefined,
         hasError: false,
     };
+
+    constructor(props: Props) {
+        super(props);
+
+        if (!props.queryModel && !props.queryGridModel) {
+            throw new Error(
+                'SampleDetailEditing: Requires that either a "queryModel" or "queryGridModel" is provided.'
+            );
+        } else if (props.queryModel && !props.actions) {
+            throw new Error('SampleDetailEditing: If a "queryModel" is specified, then "actions" are required.');
+        }
+    }
 
     componentDidMount(): void {
         this.loadSampleType();
@@ -55,77 +79,109 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         }
     }
 
-    loadSampleType() {
+    loadSampleType = async (): Promise<void> => {
         const { sampleSet } = this.props;
 
-        getGroupedSampleDomainFields(sampleSet)
-            .then(sampleTypeDomainFields => {
-                this.setState(() => ({ sampleTypeDomainFields, hasError: false }));
-            })
-            .catch(reason => {
-                this.setState(() => ({ hasError: true }));
-            });
-    }
-
-    onEditToggle = (isEditing: boolean) => {
-        const { onEditToggle } = this.props;
-        if (onEditToggle) onEditToggle('details', isEditing);
+        try {
+            const sampleTypeDomainFields = await getGroupedSampleDomainFields(sampleSet);
+            this.setState({ sampleTypeDomainFields, hasError: false });
+        } catch (e) {
+            this.setState({ hasError: true });
+        }
     };
 
-    canEdit(panelName: string): boolean {
-        const { canUpdate } = this.props;
-        if (canUpdate) return canUpdate(panelName);
-        return false;
-    }
+    onEditToggle = (isEditing: boolean): void => {
+        this.props.onEditToggle?.('details', isEditing);
+    };
 
-    getUpdateDisplayColumns = (isAliquot: boolean): any => {
-        const { sampleModel } = this.props;
+    canEdit = (): boolean => {
+        this.props.canUpdate?.('details');
+        return false;
+    };
+
+    getRow = (): Record<string, any> => {
+        const { queryGridModel, queryModel } = this.props;
+
+        if (queryModel) {
+            return queryModel.getRow();
+        } else {
+            return queryGridModel.getRow().toJS();
+        }
+    };
+
+    getUpdateDisplayColumns = (isAliquot: boolean): GroupedSampleDisplayColumns => {
+        const { queryGridModel, queryModel } = this.props;
         const { sampleTypeDomainFields } = this.state;
 
-        const allDisplayColumns = sampleModel.getDetailsDisplayColumns();
-        const allUpdateColumns = sampleModel.getUpdateDisplayColumns();
+        let displayColumns: List<QueryColumn>;
+        let updateColumns: List<QueryColumn>;
 
-        return getGroupedSampleDisplayColumns(allDisplayColumns, allUpdateColumns, sampleTypeDomainFields, isAliquot);
-    };
+        if (queryModel) {
+            displayColumns = List(queryModel.detailColumns);
+            updateColumns = List(queryModel.updateColumns);
+        } else {
+            displayColumns = queryGridModel.getDetailsDisplayColumns();
+            updateColumns = queryGridModel.getUpdateDisplayColumns();
+        }
 
-    renderAliquotDetailHeader = (row: any, aliquotHeaderDisplayColumns: List<QueryColumn>) => {
-        return <SampleAliquotDetailHeader row={row} aliquotHeaderDisplayColumns={aliquotHeaderDisplayColumns} />;
+        return getGroupedSampleDisplayColumns(displayColumns, updateColumns, sampleTypeDomainFields, isAliquot);
     };
 
     render() {
-        const { title, onUpdate, sampleModel, auditBehavior, detailRenderer } = this.props;
+        const { actions, title, onUpdate, queryGridModel, queryModel, auditBehavior, detailRenderer } = this.props;
         const { hasError, sampleTypeDomainFields } = this.state;
 
-        if (!sampleModel || !sampleModel.isLoaded) {
+        if (
+            !sampleTypeDomainFields ||
+            (queryModel && queryModel.isLoading) ||
+            (queryGridModel && !queryGridModel.isLoaded)
+        ) {
             return <LoadingPage title={title} />;
         }
 
-        const row = sampleModel.getRow();
-        const aliquotedFrom = row.getIn(['AliquotedFromLSID/Name', 'value']);
-
-        const isAliquot = aliquotedFrom != null;
-
-        if (hasError)
+        if (hasError) {
             return (
                 <Alert>
                     {getActionErrorMessage('There was a problem loading the sample type details.', 'sample type')}
                 </Alert>
             );
+        }
 
-        if (!sampleTypeDomainFields) return <LoadingPage title={title} />;
+        const row = this.getRow();
+        const isAliquot = !!caseInsensitive(row, 'AliquotedFromLSID/Name')?.value;
+        const { aliquotHeaderDisplayColumns, displayColumns, editColumns } = this.getUpdateDisplayColumns(isAliquot);
+        const detailHeader = isAliquot ? (
+            <SampleAliquotDetailHeader aliquotHeaderDisplayColumns={aliquotHeaderDisplayColumns} row={Map(row)} />
+        ) : null;
 
-        const { displayColumns, editColumns, aliquotHeaderDisplayColumns } = this.getUpdateDisplayColumns(isAliquot);
+        if (queryModel) {
+            return (
+                <EditableDetailPanel
+                    actions={actions}
+                    auditBehavior={auditBehavior}
+                    canUpdate={this.canEdit()}
+                    detailHeader={detailHeader}
+                    detailRenderer={detailRenderer}
+                    editColumns={editColumns.toArray()}
+                    model={queryModel}
+                    onEditToggle={this.onEditToggle}
+                    onUpdate={onUpdate}
+                    queryColumns={displayColumns.toArray()}
+                />
+            );
+        }
+
         return (
             <DetailEditing
-                queryModel={sampleModel}
-                onUpdate={onUpdate}
-                canUpdate={this.canEdit('details')}
-                onEditToggle={this.onEditToggle}
                 auditBehavior={auditBehavior}
-                queryColumns={displayColumns}
-                editColumns={editColumns}
-                detailHeader={isAliquot ? this.renderAliquotDetailHeader(row, aliquotHeaderDisplayColumns) : undefined}
+                canUpdate={this.canEdit()}
+                detailHeader={detailHeader}
                 detailRenderer={detailRenderer}
+                editColumns={editColumns}
+                onEditToggle={this.onEditToggle}
+                onUpdate={onUpdate}
+                queryColumns={displayColumns}
+                queryModel={queryGridModel}
             />
         );
     }

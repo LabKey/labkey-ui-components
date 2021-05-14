@@ -267,13 +267,19 @@ export function getSampleSelectionStorageData(selection: List<any>): Promise<{}>
     });
 }
 
+export interface GroupedSampleDisplayColumns {
+    aliquotHeaderDisplayColumns: List<QueryColumn>;
+    displayColumns: List<QueryColumn>;
+    editColumns: List<QueryColumn>;
+}
+
 export function getGroupedSampleDisplayColumns(
     allDisplayColumns: List<QueryColumn>,
     allUpdateColumns: List<QueryColumn>,
     sampleTypeDomainFields: GroupedSampleFields,
     isAliquot: boolean,
     extraDisplayColumns?: string[]
-): any {
+): GroupedSampleDisplayColumns {
     const editColumns = List<QueryColumn>().asMutable();
     const displayColumns = List<QueryColumn>().asMutable();
     let aliquotHeaderDisplayColumns = List<QueryColumn>();
@@ -286,7 +292,7 @@ export function getGroupedSampleDisplayColumns(
             else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
                 aliquotHeaderDisplayColumns = aliquotHeaderDisplayColumns.push(col);
             } else {
-                if (sampleTypeDomainFields.metaFields.indexOf(colName) == -1) {
+                if (sampleTypeDomainFields.metaFields.indexOf(colName) === -1) {
                     displayColumns.push(col);
                 }
             }
@@ -305,7 +311,7 @@ export function getGroupedSampleDisplayColumns(
             } else if (colName === 'description') {
                 editColumns.push(col);
             } else {
-                if (sampleTypeDomainFields.metaFields.indexOf(colName) == -1) {
+                if (sampleTypeDomainFields.metaFields.indexOf(colName) === -1) {
                     editColumns.push(col);
                 }
             }
@@ -317,8 +323,8 @@ export function getGroupedSampleDisplayColumns(
     });
 
     return {
+        aliquotHeaderDisplayColumns,
         displayColumns,
         editColumns,
-        aliquotHeaderDisplayColumns,
     };
 }

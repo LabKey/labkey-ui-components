@@ -43,40 +43,36 @@ export function parentValuesDiffer(
 export function getInitialParentChoices(
     parentTypeOptions: List<IEntityTypeOption>,
     parentDataType: EntityDataType,
-    childModel: QueryGridModel
+    childData: Map<string, any>
 ): List<EntityChoice> {
     let parentValuesByType = Map<string, EntityChoice>();
 
-    if (childModel && childModel.isLoaded) {
-        const row = childModel.getRow();
-
-        if (row.size > 0) {
-            const inputs: List<Map<string, any>> = row.get(parentDataType.inputColumnName);
-            const inputTypes: List<Map<string, any>> = row.get(parentDataType.inputTypeColumnName);
-            if (inputs && inputTypes) {
-                // group the inputs by parent type so we can show each in its own grid.
-                inputTypes.forEach((typeMap, index) => {
-                    // I'm not sure when the type could have more than one value here, but 'value' is an array
-                    const typeValue = typeMap.getIn(['value', 0]);
-                    const typeOption = parentTypeOptions.find(
-                        option => option[parentDataType.inputTypeValueField] === typeValue
-                    );
-                    if (!typeOption) {
-                        console.warn('Unable to find parent type.', typeValue);
-                    } else {
-                        if (!parentValuesByType.has(typeOption.query)) {
-                            parentValuesByType = parentValuesByType.set(typeOption.query, {
-                                type: typeOption,
-                                ids: [],
-                                value: undefined,
-                            });
-                        }
-                        const updatedChoice = parentValuesByType.get(typeOption.query);
-                        updatedChoice.ids.push(inputs.getIn([index, 'value']));
-                        parentValuesByType = parentValuesByType.set(typeOption.query, updatedChoice);
+    if (childData.size > 0) {
+        const inputs: List<Map<string, any>> = childData.get(parentDataType.inputColumnName);
+        const inputTypes: List<Map<string, any>> = childData.get(parentDataType.inputTypeColumnName);
+        if (inputs && inputTypes) {
+            // group the inputs by parent type so we can show each in its own grid.
+            inputTypes.forEach((typeMap, index) => {
+                // I'm not sure when the type could have more than one value here, but 'value' is an array
+                const typeValue = typeMap.getIn(['value', 0]);
+                const typeOption = parentTypeOptions.find(
+                    option => option[parentDataType.inputTypeValueField] === typeValue
+                );
+                if (!typeOption) {
+                    console.warn('Unable to find parent type.', typeValue);
+                } else {
+                    if (!parentValuesByType.has(typeOption.query)) {
+                        parentValuesByType = parentValuesByType.set(typeOption.query, {
+                            type: typeOption,
+                            ids: [],
+                            value: undefined,
+                        });
                     }
-                });
-            }
+                    const updatedChoice = parentValuesByType.get(typeOption.query);
+                    updatedChoice.ids.push(inputs.getIn([index, 'value']));
+                    parentValuesByType = parentValuesByType.set(typeOption.query, updatedChoice);
+                }
+            });
         }
     }
     // having collected the values by type, create a list, sorted by the type label and return that.
@@ -84,14 +80,11 @@ export function getInitialParentChoices(
 }
 
 export function getUpdatedRowForParentChanges(
-    parentDataType: EntityDataType,
     originalParents: List<EntityChoice>,
     currentParents: List<EntityChoice>,
-    childModel: QueryGridModel
+    childData: Map<string, any>,
+    childQueryInfo?: QueryInfo
 ): Record<string, any> {
-    const queryData = childModel.getRow();
-    const queryInfo = childModel.queryInfo;
-
     const definedCurrentParents = currentParents
         .filter(parent => parent.type !== null && parent.type !== undefined)
         .toList();
@@ -99,26 +92,26 @@ export function getUpdatedRowForParentChanges(
     if (definedCurrentParents.isEmpty()) {
         // have no current parents but have original parents, send in empty strings so original parents are removed.
         originalParents.forEach(parentChoice => {
-            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = null;
+            updatedValues[parentChoice.type.entityDataType.insertColumnNamePrefix + parentChoice.type.label] = null;
         });
     } else {
         let definedParents = Set<string>();
         definedCurrentParents.forEach(parentChoice => {
             // Label may seem wrong here, but it is the same as query when extracted from the original query to get
             // the entity types.
-            updatedValues[parentDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value || null;
+            updatedValues[parentChoice.type.entityDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value || null;
             definedParents = definedParents.add(parentChoice.type.label);
         });
         // Issue 40194: for any original parents that have been removed, send null values so they will actually be removed
         originalParents.forEach(parent => {
             if (!definedParents.contains(parent.type.label)) {
-                updatedValues[parentDataType.insertColumnNamePrefix + parent.type.label] = null;
+                updatedValues[parent.type.entityDataType.insertColumnNamePrefix + parent.type.label] = null;
             }
         });
     }
 
-    queryInfo.getPkCols().forEach(pkCol => {
-        const pkVal = queryData.getIn([pkCol.fieldKey, 'value']);
+    childQueryInfo.getPkCols().forEach(pkCol => {
+        const pkVal = childData.getIn([pkCol.fieldKey, 'value']);
 
         if (pkVal !== undefined && pkVal !== null) {
             updatedValues[pkCol.fieldKey] = pkVal;

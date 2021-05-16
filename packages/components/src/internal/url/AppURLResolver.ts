@@ -166,8 +166,8 @@ export class ListResolver implements AppRouteResolver {
             // fetch it
             return new Promise(resolve => {
                 return selectRows({
-                    schemaName: 'ListManager',
-                    queryName: 'ListManager',
+                    schemaName: SCHEMAS.LIST_METADATA_TABLES.SCHEMA,
+                    queryName: SCHEMAS.LIST_METADATA_TABLES.LIST_MANAGER.queryName,
                     columns: 'ListId,Name',
                 }).then(result => {
                     this.fetched = true;

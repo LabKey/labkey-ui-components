@@ -115,6 +115,14 @@ export function initWebSocketListeners(
     }
 }
 
+export function userCanManagePicklists(user: User): boolean {
+    return hasAllPermissions(user, [PermissionTypes.ManagePicklists]);
+}
+
+export function userCanDeletePublicPicklists(user: User): boolean {
+    return user.isAdmin;
+}
+
 export function userCanDesignSourceTypes(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.DesignDataClass]);
 }
@@ -142,8 +150,8 @@ function isFreezerManagerEnabledInBiologics(): boolean {
     return getServerContext().moduleContext?.biologics?.isFreezerManagerEnabled === true;
 }
 
-export function isSampleAliquotEnabled(): boolean {
-    return getServerContext().experimental && getServerContext().experimental['sampleAliquot'] === true;
+export function isSamplePicklistEnabled(): boolean {
+    return getServerContext().experimental && getServerContext().experimental['samplePicklist'] === true;
 }
 
 export function hasModule(moduleName: string) {

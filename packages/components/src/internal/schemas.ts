@@ -70,6 +70,13 @@ export const DATA_CLASSES = {
     MIXTURES: SchemaQuery.create(DATA_CLASS_SCHEMA, 'Mixtures'),
 };
 
+// INVENTORY
+const INVENTORY_SCHEMA = 'inventory';
+export const INVENTORY = {
+    SCHEMA: INVENTORY_SCHEMA,
+    SAMPLE_ITEMS: SchemaQuery.create(INVENTORY_SCHEMA, 'SampleItems'),
+};
+
 // SAMPLE SETS
 const SAMPLE_SET_SCHEMA = 'samples';
 export const SAMPLE_SETS = {
@@ -87,6 +94,14 @@ export const STUDY_TABLES = {
     COHORT: SchemaQuery.create(STUDY_SCHEMA, 'Cohort'),
 };
 
+// LIST
+const LIST_METADATA_SCHEMA = 'ListManager';
+export const LIST_METADATA_TABLES = {
+    SCHEMA: LIST_METADATA_SCHEMA,
+    LIST_MANAGER: SchemaQuery.create(LIST_METADATA_SCHEMA, 'ListManager'),
+    PICKLISTS: SchemaQuery.create(LIST_METADATA_SCHEMA, 'Picklists'),
+};
+
 export const SCHEMAS = {
     ASSAY_TABLES,
     EXP_TABLES,
@@ -95,6 +110,8 @@ export const SCHEMAS = {
     DATA_CLASSES,
     CBMB,
     STUDY_TABLES,
+    INVENTORY,
+    LIST_METADATA_TABLES,
 };
 
 export function fetchSchemas(schemaName?: string): Promise<List<Map<string, SchemaDetails>>> {

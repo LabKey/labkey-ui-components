@@ -763,7 +763,9 @@ export function getExportParams(
 
     if (options) {
         if (options.columns) {
-            params['query.columns'] = options.columns;
+            if (advancedOptions && advancedOptions['includeColumn'])
+                params['query.columns'] = options.columns + ',' + advancedOptions['includeColumn'].join(',');
+            else params['query.columns'] = options.columns;
         }
 
         if (options.filters) {
@@ -1320,10 +1322,11 @@ export function getSelectedData(
     selections?: string[],
     columns?: string,
     sorts?: string,
-    queryParameters?: { [key: string]: any }
+    queryParameters?: { [key: string]: any },
+    keyColumn = 'RowId'
 ): Promise<IGridResponse> {
     const filterArray = [];
-    filterArray.push(Filter.create('RowId', selections, Filter.Types.IN));
+    filterArray.push(Filter.create(keyColumn, selections, Filter.Types.IN));
 
     return new Promise((resolve, reject) =>
         selectRows({

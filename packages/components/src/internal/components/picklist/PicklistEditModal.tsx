@@ -10,7 +10,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
-import { PicklistModel } from './models';
+import { Picklist } from './models';
 import { addSamplesToPicklist, createPicklist, setPicklistDefaultView, updatePicklist } from './actions';
 
 interface Props {
@@ -18,9 +18,9 @@ interface Props {
     selectionKey?: string; // pass in either selectionKey and selectedQuantity or sampleIds.
     selectedQuantity?: number;
     sampleIds?: string[];
-    picklist?: PicklistModel;
+    picklist?: Picklist;
     onCancel: () => void;
-    onFinish: (picklist: PicklistModel) => void;
+    onFinish: (picklist: Picklist) => void;
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
@@ -67,7 +67,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
             const trimmedName = name.trim();
             if (isUpdate) {
                 updatedList = await updatePicklist(
-                    new PicklistModel({
+                    new Picklist({
                         name: trimmedName,
                         listId: picklist.listId,
                         Description: description,

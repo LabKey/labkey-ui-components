@@ -442,7 +442,7 @@ import {
 import { PicklistEditModal } from './internal/components/picklist/PicklistEditModal';
 import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
-import { PicklistModel } from './internal/components/picklist/models';
+import { Picklist } from './internal/components/picklist/models';
 import { ChoosePicklistModal } from './internal/components/picklist/ChoosePicklistModal';
 import { deletePicklists, removeSamplesFromPicklist, updatePicklist } from './internal/components/picklist/actions';
 import {
@@ -739,7 +739,7 @@ export {
     PicklistDeleteConfirm,
     PUBLIC_PICKLIST_CATEGORY,
     PRIVATE_PICKLIST_CATEGORY,
-    PicklistModel,
+    Picklist,
     deletePicklists,
     removeSamplesFromPicklist,
     updatePicklist,

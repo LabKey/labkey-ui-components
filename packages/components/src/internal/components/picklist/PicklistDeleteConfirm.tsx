@@ -6,7 +6,7 @@ import { Alert } from '../base/Alert';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { PicklistModel } from './models';
+import { Picklist } from './models';
 import { getPicklistDeleteData, PicklistDeletionData } from './actions';
 import { getConfirmDeleteMessage } from '../../util/messaging';
 
@@ -131,7 +131,7 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
                 });
         } else {
             setNounAndNumber('This Picklist');
-            const picklist = PicklistModel.create(model.getRow());
+            const picklist = Picklist.create(model.getRow());
             setDeletionData({
                 numDeletable: 1,
                 numNotDeletable: 0,

@@ -3,7 +3,7 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Button, Modal, ModalFooter, ModalTitle } from 'react-bootstrap';
 
-import { PicklistModel, PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../../../index';
+import { Picklist, PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../../../index';
 
 import { PicklistEditModal } from './PicklistEditModal';
 
@@ -18,7 +18,7 @@ describe('PicklistEditModal', () => {
         expect(buttons.at(1).text()).toBe(expectedFinishText);
     }
 
-    function validateForm(wrapper: ReactWrapper, existingList?: PicklistModel) {
+    function validateForm(wrapper: ReactWrapper, existingList?: Picklist) {
         const labels = wrapper.find('label');
         expect(labels).toHaveLength(3);
         expect(labels.at(0).text()).toBe('Name *');
@@ -114,13 +114,13 @@ describe('PicklistEditModal', () => {
     });
 
     test('Update private picklist', () => {
-        const existingList = new PicklistModel({
+        const existingList = new Picklist({
             Category: PRIVATE_PICKLIST_CATEGORY,
             name: 'Existing list',
             Description: 'My test description',
         });
         const wrapper = mount(
-            <PicklistEditModal show={true} picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />
+            <PicklistEditModal show={true} picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()}/>
         );
         validateText(wrapper, 'Update Picklist Data', 'Update Picklist');
         const labels = wrapper.find('label');
@@ -135,13 +135,13 @@ describe('PicklistEditModal', () => {
     });
 
     test('Update public picklist', () => {
-        const existingList = new PicklistModel({
+        const existingList = new Picklist({
             Category: PUBLIC_PICKLIST_CATEGORY,
             name: 'Existing list',
             Description: 'My test description',
         });
         const wrapper = mount(
-            <PicklistEditModal show={true} picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />
+            <PicklistEditModal show={true} picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()}/>
         );
         expect(wrapper.find('input').at(1).prop('checked')).toBe(true);
         wrapper.unmount();

@@ -12,7 +12,7 @@ import { PICKLIST_KEY } from '../../app/constants';
 
 import { PicklistEditModal } from './PicklistEditModal';
 
-import { PicklistModel } from './models';
+import { Picklist } from './models';
 
 interface Props {
     selectionKey?: string;
@@ -26,7 +26,7 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
     const { sampleIds, selectionKey, selectedQuantity, key, itemText } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
-    const onFinish = (picklist: PicklistModel) => {
+    const onFinish = (picklist: Picklist) => {
         const count = sampleIds ? sampleIds.length : selectedQuantity;
         createNotification({
             message: () => {

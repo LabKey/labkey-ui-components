@@ -14,9 +14,9 @@ import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list
 import { resolveErrorMessage } from '../../util/messaging';
 import { SCHEMAS } from '../../../index';
 
-import { PicklistModel } from './models';
+import { Picklist } from './models';
 
-export function getPicklists(): Promise<PicklistModel[]> {
+export function getPicklists(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
         const schemaName = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.schemaName;
         const queryName = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.queryName;
@@ -31,7 +31,7 @@ export function getPicklists(): Promise<PicklistModel[]> {
             const data = models[dataKey];
             const picklists = [];
             orderedModels[dataKey].forEach(id => {
-                picklists.push(PicklistModel.create(data[id]));
+                picklists.push(Picklist.create(data[id]));
             });
             resolve(picklists);
         }).catch(reason => {
@@ -91,7 +91,7 @@ export function createPicklist(
     shared: boolean,
     selectionKey: string,
     sampleIds: string[]
-): Promise<PicklistModel> {
+): Promise<Picklist> {
     return new Promise((resolve, reject) => {
         Domain.create({
             domainDesign: {
@@ -128,7 +128,7 @@ export function createPicklist(
                     .then(responses => {
                         const [listId] = responses;
                         resolve(
-                            new PicklistModel({
+                            new Picklist({
                                 listId,
                                 name,
                                 Description: description,
@@ -147,7 +147,7 @@ export function createPicklist(
     });
 }
 
-export function updatePicklist(picklist: PicklistModel): Promise<PicklistModel> {
+export function updatePicklist(picklist: Picklist): Promise<Picklist> {
     return new Promise((resolve, reject) => {
         fetchListDesign(picklist.listId)
             .then(listDesign => {
@@ -265,7 +265,7 @@ export interface PicklistDeletionData {
     numDeletable: number;
     numNotDeletable: number;
     numShared: number;
-    deletableLists: PicklistModel[];
+    deletableLists: Picklist[];
 }
 
 export function getPicklistDeleteData(model: QueryModel, user: User): Promise<PicklistDeletionData> {
@@ -286,7 +286,7 @@ export function getPicklistDeleteData(model: QueryModel, user: User): Promise<Pi
                 let numShared = 0;
                 const deletableLists = [];
                 data.valueSeq().forEach(row => {
-                    const picklist = PicklistModel.create(row.toJS());
+                    const picklist = Picklist.create(row.toJS());
 
                     if (picklist.isDeletable(user)) {
                         if (picklist.isPublic()) {
@@ -311,7 +311,7 @@ export function getPicklistDeleteData(model: QueryModel, user: User): Promise<Pi
     });
 }
 
-export function deletePicklists(picklists: PicklistModel[], selectionKey?: string): Promise<any> {
+export function deletePicklists(picklists: Picklist[], selectionKey?: string): Promise<any> {
     return new Promise((resolve, reject) => {
         let params;
         if (picklists.length === 1) {
@@ -346,7 +346,7 @@ export function deletePicklists(picklists: PicklistModel[], selectionKey?: strin
     });
 }
 
-export function removeSamplesFromPicklist(picklist: PicklistModel, selectionModel: QueryModel): Promise<number> {
+export function removeSamplesFromPicklist(picklist: Picklist, selectionModel: QueryModel): Promise<number> {
     return new Promise((resolve, reject) => {
         const rows = [];
         selectionModel.selections.forEach((id) => {

@@ -5,7 +5,7 @@ import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { userCanDeletePublicPicklists, userCanManagePicklists } from '../../app/utils';
 import { flattenValuesFromRow } from '../../../public/QueryModel/utils';
 
-export class PicklistModel {
+export class Picklist {
     [immerable] = true;
 
     readonly Category: string;
@@ -17,13 +17,13 @@ export class PicklistModel {
     readonly Description: string;
 
     static create(data: any) {
-        return new PicklistModel({
+        return new Picklist({
             ...flattenValuesFromRow(data, Object.keys(data)),
             CreatedByDisplay: data.CreatedBy?.displayValue,
         });
     }
 
-    constructor(values?: Partial<PicklistModel>) {
+    constructor(values?: Partial<Picklist>) {
         Object.assign(this, values);
     }
 
@@ -47,8 +47,8 @@ export class PicklistModel {
         return this.isUserList(user) || (this.isPublic() && userCanDeletePublicPicklists(user));
     }
 
-    mutate(props: Partial<PicklistModel>): PicklistModel {
-        return produce(this, (draft: Draft<PicklistModel>) => {
+    mutate(props: Partial<Picklist>): Picklist {
+        return produce(this, (draft: Draft<Picklist>) => {
             Object.assign(draft, props);
         });
     }

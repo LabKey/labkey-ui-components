@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, Tab, Tabs } from 'react-bootstrap';
 import classNames from 'classnames';
-import { PicklistModel } from './models';
+import { Picklist } from './models';
 import { formatDate, parseDate } from '../../util/Date';
 import { User } from '../base/models/User';
 import { Utils } from '@labkey/api';
@@ -10,11 +10,11 @@ import { addSamplesToPicklist, getPicklists } from './actions';
 import { resolveErrorMessage } from '../../util/messaging';
 
 interface PicklistListProps {
-    activeItem: PicklistModel;
+    activeItem: Picklist;
     emptyMessage: ReactNode;
     onSelect: (picklist) => void;
     showSharedIcon?: boolean
-    items: PicklistModel[];
+    items: Picklist[];
 }
 
 const PicklistList: FC<PicklistListProps> = memo((props) => {
@@ -38,7 +38,7 @@ const PicklistList: FC<PicklistListProps> = memo((props) => {
 });
 
 interface PicklistDetailsProps {
-    picklist: PicklistModel;
+    picklist: Picklist;
 }
 
 const ItemDetails: FC<PicklistDetailsProps> = memo((props) => {
@@ -81,7 +81,7 @@ const ItemDetails: FC<PicklistDetailsProps> = memo((props) => {
 
 interface ChooseItemModalProps {
     onCancel: () => void;
-    afterAddToPicklist: (item: PicklistModel, numAdded: number) => void;
+    afterAddToPicklist: (item: Picklist, numAdded: number) => void;
     user: User;
     selectionKey: string;
     numSelected: number;
@@ -91,7 +91,7 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
     const {onCancel, afterAddToPicklist, user, selectionKey, numSelected} = props;
     const [search, setSearch] = useState<string>('');
     const [error, setError] = useState<string>(undefined);
-    const [items, setItems] = useState<PicklistModel[]>([]);
+    const [items, setItems] = useState<Picklist[]>([]);
     const [submitting, setSubmitting] = useState<boolean>(false);
 
     useEffect(() => {
@@ -108,7 +108,7 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
     const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value.trim().toLowerCase());
     }, []);
-    const filteredItems = useMemo<PicklistModel[]>(() => {
+    const filteredItems = useMemo<Picklist[]>(() => {
         if (search.trim() !== '') {
             return items.filter(item => item.name.toLowerCase().indexOf(search) > -1);
         }
@@ -132,7 +132,7 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
         return [mine, team];
     }, [filteredItems]);
 
-    const [activeItem, setActiveItem] = useState<PicklistModel>(undefined);
+    const [activeItem, setActiveItem] = useState<Picklist>(undefined);
     const onAddClicked = useCallback(async () => {
         setSubmitting(true);
         try {

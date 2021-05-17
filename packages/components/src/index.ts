@@ -136,7 +136,6 @@ import { EditorModel, getStateModelId, getStateQueryGridModel } from './internal
 import {
     clearSelected,
     createQueryGridModelFilteredBySample,
-    createQueryModelFilteredBySample,
     getSelected,
     getSelectedData,
     getSelection,
@@ -274,6 +273,7 @@ import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDel
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
+import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
 import {
     AssayContextConsumer,
     assayPage,
@@ -302,7 +302,6 @@ import {
     getBatchPropertiesModel,
     getBatchPropertiesRow,
     getImportItemsForAssayDefinitions,
-    getImportItemsForAssayDefinitionsQM,
     getRunDetailsQueryColumns,
     getRunPropertiesModel,
     getRunPropertiesRow,
@@ -752,7 +751,6 @@ export {
     getSampleSet,
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
-    createQueryModelFilteredBySample,
     loadSelectedSamples,
     getGroupedSampleDisplayColumns,
     SampleTypeDataType,
@@ -769,6 +767,7 @@ export {
     SampleCreationTypeModal,
     SamplesSelectionProvider,
     SampleAliquotDetailHeader,
+    SampleAssayDetail,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
@@ -817,7 +816,6 @@ export {
     deleteAssayDesign,
     deleteAssayRuns,
     getImportItemsForAssayDefinitions,
-    getImportItemsForAssayDefinitionsQM,
     getRunDetailsQueryColumns,
     getRunPropertiesModel,
     getRunPropertiesRow,

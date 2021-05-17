@@ -3098,7 +3098,7 @@ export function createQueryGridModelFilteredBySample(
     });
 }
 
-export function createQueryModelFilteredBySample(
+export function createQueryConfigFilteredBySample(
     model: AssayDefinitionModel,
     value,
     singleFilter: Filter.IFilterType,

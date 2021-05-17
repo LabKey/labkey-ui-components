@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+import { capitalizeFirstChar } from './utils';
 
 export function getActionErrorMessage(
     problemStatement: string,
@@ -66,4 +67,13 @@ export function resolveErrorMessage(error: any, noun: string = 'data', nounPlura
         }
     }
     return errorMsg;
+}
+
+export function getConfirmDeleteMessage(verbNoun = 'Deletion'): ReactNode {
+    return (
+        <p className="top-spacing">
+            <strong>{capitalizeFirstChar(verbNoun)} cannot be undone.</strong>
+            &nbsp;Do you want to proceed?
+        </p>
+    );
 }

@@ -8,6 +8,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { PicklistModel } from './models';
 import { getPicklistDeleteData, PicklistDeletionData } from './actions';
+import { getConfirmDeleteMessage } from '../../util/messaging';
 
 interface Props {
     model: QueryModel;
@@ -90,14 +91,11 @@ export const PicklistDeleteConfirmMessage: FC<DeleteConfirmMessageProps> = memo(
                 </Alert>
             )}
             <span>
-                {rUSure}&nbsp;
                 {deletionData.numDeletable > 0 && (
                     <>
+                        {rUSure}&nbsp;
                         Samples in the {noun} will not be affected.&nbsp;
-                        <p className="top-spacing">
-                            <strong>Deletion cannot be undone.</strong>
-                            &nbsp;Do you want to proceed?
-                        </p>
+                        {getConfirmDeleteMessage()}
                     </>
                 )}
             </span>
@@ -133,7 +131,7 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
                 });
         } else {
             setNounAndNumber('This Picklist');
-            const picklist = new PicklistModel(model.getRow(undefined, true));
+            const picklist = PicklistModel.create(model.getRow());
             setDeletionData({
                 numDeletable: 1,
                 numNotDeletable: 0,

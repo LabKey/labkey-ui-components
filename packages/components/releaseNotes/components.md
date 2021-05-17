@@ -1,8 +1,19 @@
 # @labkey/components
+
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+
+*Release*: TBD
+
+* Add support for modifying the items in a picklist
+    * Add ChoosePicklistModal and actions
+    * Add styling (lifted from ELN notebooks stylings) for choice panels in modal.
+
 ### version 2.31.0
+
 *Released*: 13 May 2021
+
 * Remove isSampleAliquotEnabled experimental flag
 * Allow QueryGridModel export to include extra columns
 * Allow QueryModel to export LABEL

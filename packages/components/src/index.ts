@@ -62,7 +62,7 @@ import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
 import { getUserProperties, getUserRoleDisplay } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
-import { getActionErrorMessage, resolveErrorMessage } from './internal/util/messaging';
+import { getActionErrorMessage, getConfirmDeleteMessage, resolveErrorMessage } from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
 import { AddEntityButton } from './internal/components/buttons/AddEntityButton';
 import { RemoveEntityButton } from './internal/components/buttons/RemoveEntityButton';
@@ -443,7 +443,8 @@ import { PicklistEditModal } from './internal/components/picklist/PicklistEditMo
 import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { PicklistModel } from './internal/components/picklist/models';
-import { deletePicklists, updatePicklist } from './internal/components/picklist/actions';
+import { ChoosePicklistModal } from './internal/components/picklist/ChoosePicklistModal';
+import { deletePicklists, removeSamplesFromPicklist, updatePicklist } from './internal/components/picklist/actions';
 import {
     AppReducers,
     ProductMenuReducers,
@@ -732,6 +733,7 @@ export {
     Principal,
     UserProvider,
     // sample picklist items
+    ChoosePicklistModal,
     PicklistCreationMenuItem,
     PicklistEditModal,
     PicklistDeleteConfirm,
@@ -739,6 +741,7 @@ export {
     PRIVATE_PICKLIST_CATEGORY,
     PicklistModel,
     deletePicklists,
+    removeSamplesFromPicklist,
     updatePicklist,
     // data class and sample type related items
     DataClassModel,
@@ -956,6 +959,7 @@ export {
     debounce,
     valueIsEmpty,
     getActionErrorMessage,
+    getConfirmDeleteMessage,
     resolveErrorMessage,
     getHelpLink,
     helpLinkNode,

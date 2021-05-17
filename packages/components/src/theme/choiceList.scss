@@ -1,0 +1,33 @@
+
+.choice-details,
+.choose-items-tabs {
+    margin-top: 20px;
+}
+
+.choice-details__name {
+    font-size: 18px;
+    color: #777777;
+}
+
+.choice-metadata-item {
+    margin: 4px 0;
+}
+
+.choice-metadata-item__name {
+    margin-right: 8px;
+    color: #777777;
+}
+
+.choices-list {
+    height: 401px; // 10 items plus their borders
+    overflow: auto;
+}
+
+.choices-list .list-group-item .fa {
+    margin-right: 6px;
+}
+
+.choices-list__empty-message {
+    margin-top: 16px;
+    font-style: italic;
+}

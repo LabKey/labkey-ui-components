@@ -1,22 +1,45 @@
-import { Ajax, Domain, Utils } from '@labkey/api';
+import { Ajax, Domain, Filter, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
-import { insertRows, InsertRowsResponse } from '../../query/api';
-import { SchemaQuery } from '../../../public/SchemaQuery';
+import { deleteRows, insertRows, InsertRowsResponse, selectRows } from '../../query/api';
+import { resolveKey, SchemaQuery } from '../../../public/SchemaQuery';
 import { getSelected, getSelectedData } from '../../actions';
 import { PICKLIST, PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { saveDomain } from '../domainproperties/actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
-
-import { flattenValuesFromRow } from '../../../public/QueryModel/utils';
 import { buildURL } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { SCHEMAS } from '../../../index';
 
 import { PicklistModel } from './models';
+
+export function getPicklists(): Promise<PicklistModel[]> {
+    return new Promise((resolve, reject) => {
+        const schemaName = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.schemaName;
+        const queryName = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.queryName;
+        selectRows({
+            schemaName,
+            queryName,
+            sort: 'Name',
+            filterArray: [Filter.create('Category', null, Filter.Types.NONBLANK)],
+        }).then(response => {
+            const {models, orderedModels} = response;
+            const dataKey = resolveKey(schemaName, queryName);
+            const data = models[dataKey];
+            const picklists = [];
+            orderedModels[dataKey].forEach(id => {
+                picklists.push(PicklistModel.create(data[id]));
+            });
+            resolve(picklists);
+        }).catch(reason => {
+            console.error(reason);
+            reject(reason);
+        });
+    });
+}
 
 export function setPicklistDefaultView(name: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -26,17 +49,17 @@ export function setPicklistDefaultView(name: string): Promise<string> {
             views: [
                 {
                     columns: [
-                        { fieldKey: 'SampleID/Name' },
-                        { fieldKey: 'SampleID/LabelColor' },
-                        { fieldKey: 'SampleID/SampleSet' },
-                        { fieldKey: 'SampleID/StoredAmount' },
-                        { fieldKey: 'SampleID/Units' },
-                        { fieldKey: 'SampleID/freezeThawCount' },
-                        { fieldKey: 'SampleID/StorageStatus' },
-                        { fieldKey: 'SampleID/checkedOutBy' },
-                        { fieldKey: 'SampleID/Created' },
-                        { fieldKey: 'SampleID/CreatedBy' },
-                        { fieldKey: 'SampleID/StorageLocation' },
+                        {fieldKey: 'SampleID/Name'},
+                        {fieldKey: 'SampleID/LabelColor'},
+                        {fieldKey: 'SampleID/SampleSet'},
+                        {fieldKey: 'SampleID/StoredAmount'},
+                        {fieldKey: 'SampleID/Units'},
+                        {fieldKey: 'SampleID/freezeThawCount'},
+                        {fieldKey: 'SampleID/StorageStatus'},
+                        {fieldKey: 'SampleID/checkedOutBy'},
+                        {fieldKey: 'SampleID/Created'},
+                        {fieldKey: 'SampleID/CreatedBy'},
+                        {fieldKey: 'SampleID/StorageLocation'},
                         { fieldKey: 'SampleID/StorageRow' },
                         { fieldKey: 'SampleID/StorageCol' },
                         { fieldKey: 'SampleID/isAliquot' },
@@ -153,31 +176,89 @@ export function updatePicklist(picklist: PicklistModel): Promise<PicklistModel> 
     });
 }
 
+export function getPicklistSamples(listName): Promise<Set<string>> {
+    return new Promise((resolve, reject) => {
+        const schemaName = 'lists';
+        selectRows({
+            schemaName,
+            queryName: listName,
+        }).then(response => {
+            const {models} = response;
+            const dataKey = resolveKey(schemaName, listName);
+            resolve(new Set(Object.values(models[dataKey]).map((row: any) => row.SampleID.value.toString())));
+        }).catch(reason => {
+            console.error(reason);
+            reject(reason);
+        });
+    });
+}
+
+export function getSamplesNotInList(listName: string, selectionKey?: string, sampleIds?: string[]): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        const newSamples = [];
+        getPicklistSamples(listName)
+            .then(existingSamples => {
+                let rows = List<any>();
+                if (selectionKey) {
+                    getSelected(selectionKey).then(response => {
+                        response.selected.forEach(id => {
+                            if (!existingSamples.has(id)) {
+                                newSamples.push(id);
+                            }
+                        });
+                        resolve(newSamples);
+                    });
+                } else {
+                    sampleIds.forEach(id => {
+                        if (!existingSamples.has(id)) {
+                            newSamples.push(id);
+                        }
+                    });
+                    resolve(newSamples);
+                }
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(reason);
+            })
+        ;
+    });
+}
+
 export function addSamplesToPicklist(
     listName: string,
     selectionKey?: string,
     sampleIds?: string[]
 ): Promise<InsertRowsResponse> {
-    let rows = List<any>();
-    if (selectionKey) {
-        return getSelected(selectionKey).then(response => {
-            response.selected.forEach(id => {
-                rows = rows.push({ SampleID: id });
+    return new Promise((resolve, reject) => {
+        return getSamplesNotInList(listName, selectionKey, sampleIds)
+            .then(sampleIdsToAdd => {
+                let rows = List<any>();
+                sampleIdsToAdd.forEach(id => {
+                    rows = rows.push({SampleID: id});
+                });
+                if (rows.size > 0) {
+                    insertRows({
+                        schemaQuery: SchemaQuery.create('lists', listName),
+                        rows,
+                    })
+                        .then(response => {
+                            resolve(response);
+                        })
+                        .catch(reason => reject(reason));
+                } else {
+                    resolve(new InsertRowsResponse({
+                        rows: [],
+                        schemaQuery: SchemaQuery.create('lists', listName),
+                        error: undefined,
+                        transactionAuditId: undefined,
+                    }));
+                }
+            })
+            .catch(reason => {
+                reject(reason);
             });
-            return insertRows({
-                schemaQuery: SchemaQuery.create('lists', listName),
-                rows,
-            });
-        });
-    } else {
-        sampleIds.forEach(id => {
-            rows = rows.push({ SampleID: id });
-        });
-        return insertRows({
-            schemaQuery: SchemaQuery.create('lists', listName),
-            rows,
-        });
-    }
+    });
 }
 
 export interface PicklistDeletionData {
@@ -205,7 +286,7 @@ export function getPicklistDeleteData(model: QueryModel, user: User): Promise<Pi
                 let numShared = 0;
                 const deletableLists = [];
                 data.valueSeq().forEach(row => {
-                    const picklist = new PicklistModel(flattenValuesFromRow(row.toJS(), row.keySeq().toArray()));
+                    const picklist = PicklistModel.create(row.toJS());
 
                     if (picklist.isDeletable(user)) {
                         if (picklist.isPublic()) {
@@ -263,4 +344,26 @@ export function deletePicklists(picklists: PicklistModel[], selectionKey?: strin
             }),
         });
     });
+}
+
+export function removeSamplesFromPicklist(picklist: PicklistModel, selectionModel: QueryModel): Promise<number> {
+    return new Promise((resolve, reject) => {
+        const rows = [];
+        selectionModel.selections.forEach((id) => {
+            rows.push({id});
+        });
+        if (rows.length === 0) {
+            resolve(0);
+        } else {
+            deleteRows({
+                schemaQuery: selectionModel.schemaQuery,
+                rows
+            }).then((response) => {
+                resolve(response.rows.length);
+            }).catch((reason) => {
+                reject(reason);
+            });
+        }
+    });
+
 }

@@ -27,6 +27,7 @@ interface Props {
     actions?: Actions;
     auditBehavior: AuditBehaviorTypes;
     canUpdate?: boolean;
+    detailEditRenderer?: DetailRenderer;
     detailRenderer?: DetailRenderer;
     onEditToggle?: (isEditing: boolean) => void;
     onUpdate: () => void;
@@ -127,11 +128,12 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
             actions,
             auditBehavior,
             canUpdate,
+            detailEditRenderer,
+            detailRenderer,
             onEditToggle,
             onUpdate,
             queryGridModel,
             queryModel,
-            detailRenderer,
             title,
         } = this.props;
         const { hasError, sampleTypeDomainFields } = this.state;
@@ -165,6 +167,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                     actions={actions}
                     auditBehavior={auditBehavior}
                     canUpdate={canUpdate}
+                    detailEditRenderer={detailEditRenderer}
                     detailHeader={detailHeader}
                     detailRenderer={detailRenderer}
                     editColumns={editColumns.toArray()}
@@ -180,6 +183,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
             <DetailEditing
                 auditBehavior={auditBehavior}
                 canUpdate={canUpdate}
+                detailEditRenderer={detailEditRenderer}
                 detailHeader={detailHeader}
                 detailRenderer={detailRenderer}
                 editColumns={editColumns}

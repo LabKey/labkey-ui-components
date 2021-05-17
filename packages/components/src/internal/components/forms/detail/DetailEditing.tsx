@@ -36,6 +36,8 @@ interface Props {
     auditBehavior?: AuditBehaviorTypes;
     cancelText?: string;
     canUpdate: boolean;
+    detailEditRenderer?: DetailRenderer;
+    detailRenderer?: DetailRenderer;
     editColumns?: List<QueryColumn>;
     onEditToggle?: (editing: boolean) => void;
     onUpdate?: () => void;
@@ -45,7 +47,6 @@ interface Props {
     detailHeader?: ReactNode;
     title?: string;
     useEditIcon: boolean;
-    detailRenderer?: DetailRenderer;
 }
 
 interface State {
@@ -178,6 +179,7 @@ export class DetailEditing extends Component<Props, State> {
     render(): ReactNode {
         const {
             cancelText,
+            detailEditRenderer,
             editColumns,
             queryModel,
             queryColumns,
@@ -213,12 +215,13 @@ export class DetailEditing extends Component<Props, State> {
 
         const detail = (
             <Detail
+                detailEditRenderer={detailEditRenderer}
+                detailRenderer={detailRenderer}
                 editColumns={editColumns}
                 editingMode={editingMode}
+                fileInputRenderer={this.fileInputRenderer}
                 queryColumns={queryColumns}
                 queryModel={queryModel}
-                detailRenderer={editingMode ? undefined : detailRenderer}
-                fileInputRenderer={this.fileInputRenderer}
             />
         );
 

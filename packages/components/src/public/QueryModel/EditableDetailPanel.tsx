@@ -19,6 +19,7 @@ interface EditableDetailPanelProps extends RequiresModelAndActions {
     auditBehavior?: AuditBehaviorTypes;
     cancelText?: string;
     canUpdate: boolean;
+    detailEditRenderer?: DetailRenderer;
     detailHeader?: ReactNode;
     detailRenderer?: DetailRenderer;
     editColumns?: QueryColumn[];
@@ -144,6 +145,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         const {
             actions,
             appEditable,
+            detailEditRenderer,
             detailHeader,
             detailRenderer,
             asSubPanel,
@@ -180,6 +182,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                     <DetailPanel
                         actions={actions}
+                        detailEditRenderer={detailEditRenderer}
                         detailRenderer={detailRenderer}
                         editColumns={editColumns}
                         editingMode={editing}

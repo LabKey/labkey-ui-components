@@ -88,6 +88,7 @@ class DetailField {
 export interface DetailDisplaySharedProps extends RenderOptions {
     asPanel?: boolean;
     detailRenderer?: DetailRenderer;
+    detailEditRenderer?: DetailRenderer;
     editingMode?: boolean;
     titleRenderer?: TitleRenderer;
     fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode;
@@ -102,8 +103,11 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
     const { asPanel, data, displayColumns, editingMode, useDatePicker, fileInputRenderer } = props;
 
     const detailRenderer = useMemo(() => {
-        return props.detailRenderer ?? (editingMode ? resolveDetailEditRenderer : resolveDetailRenderer);
-    }, [props.detailRenderer, editingMode]);
+        if (editingMode) {
+            return props.detailEditRenderer ?? resolveDetailEditRenderer;
+        }
+        return props.detailRenderer ?? resolveDetailRenderer;
+    }, [props.detailRenderer, props.detailEditRenderer, editingMode]);
 
     const titleRenderer = useMemo(() => {
         return props.titleRenderer ?? (editingMode ? defaultTitleRenderer : undefined);

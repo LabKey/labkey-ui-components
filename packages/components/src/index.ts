@@ -261,7 +261,6 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     loadSelectedSamples,
-    getGroupedSampleDisplayColumns,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
@@ -752,7 +751,6 @@ export {
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
-    getGroupedSampleDisplayColumns,
     SampleTypeDataType,
     DataClassDataType,
     SampleEmptyAlert,

@@ -277,8 +277,7 @@ export function getGroupedSampleDisplayColumns(
     allDisplayColumns: List<QueryColumn>,
     allUpdateColumns: List<QueryColumn>,
     sampleTypeDomainFields: GroupedSampleFields,
-    isAliquot: boolean,
-    extraDisplayColumns?: string[]
+    isAliquot: boolean
 ): GroupedSampleDisplayColumns {
     const editColumns = List<QueryColumn>().asMutable();
     const displayColumns = List<QueryColumn>().asMutable();

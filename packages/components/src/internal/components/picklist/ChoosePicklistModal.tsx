@@ -92,6 +92,7 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
     const [search, setSearch] = useState<string>('');
     const [error, setError] = useState<string>(undefined);
     const [items, setItems] = useState<PicklistModel[]>([]);
+    const [submitting, setSubmitting] = useState<boolean>(false);
 
     useEffect(() => {
         getPicklists()
@@ -133,15 +134,18 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
 
     const [activeItem, setActiveItem] = useState<PicklistModel>(undefined);
     const onAddClicked = useCallback(async () => {
+        setSubmitting(true);
         try {
             const insertResponse = await addSamplesToPicklist(activeItem.name, selectionKey);
             setError(undefined);
+            setSubmitting(false);
             afterAddToPicklist(activeItem, insertResponse.rows.length);
         }
         catch (e) {
+            setSubmitting(false);
             setError(resolveErrorMessage(e));
         }
-    }, [activeItem]);
+    }, [activeItem, selectionKey, setSubmitting, setError]);
     const isSearching = !!(search);
     let myEmptyMessage = 'You do not have any picklists ';
     let teamEmptyMessage = 'There are no shared picklists  ';
@@ -228,9 +232,9 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
                         type="button"
                         className="btn btn-success"
                         onClick={onAddClicked}
-                        disabled={activeItem === undefined}
+                        disabled={activeItem === undefined || submitting}
                     >
-                        Add to Picklist
+                        {submitting ? 'Adding to Picklist...' : 'Add to Picklist'}
                     </button>
                 </div>
             </Modal.Footer>

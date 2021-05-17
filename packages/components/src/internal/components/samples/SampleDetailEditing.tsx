@@ -25,26 +25,30 @@ import { GroupedSampleDisplayColumns, getGroupedSampleDisplayColumns, getGrouped
 
 interface Props {
     actions?: Actions;
-    sampleSet: string;
-    onUpdate: (skipChangeCount?: boolean) => any;
-    canUpdate: (panelName: string) => boolean;
-    title: string;
-    queryModel?: QueryModel;
-    queryGridModel?: QueryGridModel;
     auditBehavior: AuditBehaviorTypes;
-    onEditToggle?: (panelName: string, isEditing: boolean) => void;
+    canUpdate?: boolean;
     detailRenderer?: DetailRenderer;
+    onEditToggle?: (isEditing: boolean) => void;
+    onUpdate: () => void;
+    queryGridModel?: QueryGridModel;
+    queryModel?: QueryModel;
+    sampleSet: string;
+    title: string;
 }
 
 interface State {
-    sampleTypeDomainFields: GroupedSampleFields;
     hasError: boolean;
+    sampleTypeDomainFields: GroupedSampleFields;
 }
 
 export class SampleDetailEditing extends PureComponent<Props, State> {
+    static defaultProps = {
+        canUpdate: false,
+    };
+
     state: Readonly<State> = {
-        sampleTypeDomainFields: undefined,
         hasError: false,
+        sampleTypeDomainFields: undefined,
     };
 
     constructor(props: Props) {
@@ -90,15 +94,6 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         }
     };
 
-    onEditToggle = (isEditing: boolean): void => {
-        this.props.onEditToggle?.('details', isEditing);
-    };
-
-    canEdit = (): boolean => {
-        this.props.canUpdate?.('details');
-        return false;
-    };
-
     getRow = (): Record<string, any> => {
         const { queryGridModel, queryModel } = this.props;
 
@@ -128,7 +123,17 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     };
 
     render() {
-        const { actions, title, onUpdate, queryGridModel, queryModel, auditBehavior, detailRenderer } = this.props;
+        const {
+            actions,
+            auditBehavior,
+            canUpdate,
+            onEditToggle,
+            onUpdate,
+            queryGridModel,
+            queryModel,
+            detailRenderer,
+            title,
+        } = this.props;
         const { hasError, sampleTypeDomainFields } = this.state;
 
         if (
@@ -159,12 +164,12 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                 <EditableDetailPanel
                     actions={actions}
                     auditBehavior={auditBehavior}
-                    canUpdate={this.canEdit()}
+                    canUpdate={canUpdate}
                     detailHeader={detailHeader}
                     detailRenderer={detailRenderer}
                     editColumns={editColumns.toArray()}
                     model={queryModel}
-                    onEditToggle={this.onEditToggle}
+                    onEditToggle={onEditToggle}
                     onUpdate={onUpdate}
                     queryColumns={displayColumns.toArray()}
                 />
@@ -174,11 +179,11 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         return (
             <DetailEditing
                 auditBehavior={auditBehavior}
-                canUpdate={this.canEdit()}
+                canUpdate={canUpdate}
                 detailHeader={detailHeader}
                 detailRenderer={detailRenderer}
                 editColumns={editColumns}
-                onEditToggle={this.onEditToggle}
+                onEditToggle={onEditToggle}
                 onUpdate={onUpdate}
                 queryColumns={displayColumns}
                 queryModel={queryGridModel}

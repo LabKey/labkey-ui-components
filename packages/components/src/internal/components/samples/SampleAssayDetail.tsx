@@ -149,6 +149,7 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
             buttonsComponentProps={{ assayModel, sampleModel }}
             loadOnMount={false}
             queryModels={queryModelsWithData}
+            showRowCountOnTabs
             tabOrder={tabOrderWithData}
             title="Assay Results"
         />

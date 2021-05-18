@@ -461,6 +461,9 @@ import {
     ServerNotificationReducers,
 } from './internal/app/reducers';
 import {
+    getSelectedPicklistSamples,
+} from './internal/components/picklist/actions';
+import {
     CloseEventCode,
     getDateFormat as getAppDateFormat,
     getMenuSectionConfigs,
@@ -752,6 +755,7 @@ export {
     PICKLIST_SAMPLE_ID_COLUMN,
     Picklist,
     deletePicklists,
+    getSelectedPicklistSamples,
     removeSamplesFromPicklist,
     updatePicklist,
     // data class and sample type related items

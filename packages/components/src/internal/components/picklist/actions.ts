@@ -4,7 +4,7 @@ import { List } from 'immutable';
 
 import { deleteRows, insertRows, InsertRowsResponse, selectRows } from '../../query/api';
 import { resolveKey, SchemaQuery } from '../../../public/SchemaQuery';
-import { getSelected, getSelectedData } from '../../actions';
+import { getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
 import { PICKLIST, PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { saveDomain } from '../domainproperties/actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -186,6 +186,37 @@ export function getPicklistSamples(listName): Promise<Set<string>> {
             const {models} = response;
             const dataKey = resolveKey(schemaName, listName);
             resolve(new Set(Object.values(models[dataKey]).map((row: any) => row.SampleID.value.toString())));
+        }).catch(reason => {
+            console.error(reason);
+            reject(reason);
+        });
+    });
+}
+
+export function getSelectedPicklistSamples(picklistName: string, selectedIds: string[], saveSnapshot?: boolean, selectionKey?: string): Promise<number[]> {
+    return new Promise((resolve, reject) => {
+        getSelectedData(
+            SCHEMAS.PICKLIST_TABLES.SCHEMA,
+            picklistName,
+            selectedIds,
+            [PICKLIST_SAMPLE_ID_COLUMN, PICKLIST_KEY_COLUMN].join(','),
+            undefined,
+            undefined,
+            PICKLIST_KEY_COLUMN,
+        ).then(response => {
+            const {data} = response;
+            const sampleIds = [];
+            const rowIds = [];
+            data.forEach((row) => {
+                sampleIds.push(row.getIn([PICKLIST_SAMPLE_ID_COLUMN, 'value']));
+                if (saveSnapshot) {
+                    rowIds.push(row.getIn([PICKLIST_KEY_COLUMN, 'value']));
+                }
+            });
+            if (saveSnapshot) {
+                setSnapshotSelections(selectionKey, rowIds);
+            }
+            resolve(sampleIds);
         }).catch(reason => {
             console.error(reason);
             reject(reason);

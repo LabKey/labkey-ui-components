@@ -1278,12 +1278,12 @@ export function getFilterListFromQuery(location: Location): List<Filter.IFilter>
     return undefined;
 }
 
-export function getSelection(location: any): Promise<ISelectionResponse> {
-    if (location && location.query && location.query.selectionKey) {
+export function getSelection(location: any, schemaName?: string, queryName?: string): Promise<ISelectionResponse> {
+    if (location?.query?.selectionKey) {
         const key = location.query.selectionKey;
 
-        return new Promise(resolve => {
-            const { keys, schemaQuery } = SchemaQuery.parseSelectionKey(key);
+        return new Promise((resolve, reject) => {
+            let {keys, schemaQuery} = SchemaQuery.parseSelectionKey(key);
 
             if (keys !== undefined) {
                 return resolve({
@@ -1291,6 +1291,15 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
                     schemaQuery,
                     selected: keys.split(';'),
                 });
+            }
+            if (!schemaQuery) {
+                if (schemaName && queryName) {
+                    schemaQuery = SchemaQuery.create(schemaName, queryName);
+                }
+            }
+
+            if (!schemaQuery) {
+                reject('No schema found for selection with selectionKey ' + location.query.selectionKey + ' schemaName ' + schemaName + ' queryName ' + queryName);
             }
 
             return getSelected(

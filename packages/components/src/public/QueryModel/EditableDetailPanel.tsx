@@ -176,20 +176,22 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                 </div>
 
                 <div className="panel-body">
-                    {error && <Alert>{error}</Alert>}
+                    <div className="detail__editing">
+                        {error && <Alert>{error}</Alert>}
 
-                    {!editing && (detailHeader ?? null)}
+                        {!editing && (detailHeader ?? null)}
 
-                    <DetailPanel
-                        actions={actions}
-                        detailEditRenderer={detailEditRenderer}
-                        detailRenderer={detailRenderer}
-                        editColumns={editColumns}
-                        editingMode={editing}
-                        model={model}
-                        queryColumns={queryColumns}
-                        fileInputRenderer={this.fileInputRenderer}
-                    />
+                        <DetailPanel
+                            actions={actions}
+                            detailEditRenderer={detailEditRenderer}
+                            detailRenderer={detailRenderer}
+                            editColumns={editColumns}
+                            editingMode={editing}
+                            model={model}
+                            queryColumns={queryColumns}
+                            fileInputRenderer={this.fileInputRenderer}
+                        />
+                    </div>
                 </div>
             </div>
         );

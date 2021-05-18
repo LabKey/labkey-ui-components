@@ -40,7 +40,7 @@ export class AliasInput extends Component<AliasInputProps> {
                 allowDisable={allowDisable}
                 initiallyDisabled={initiallyDisabled}
                 onToggleDisable={onToggleDisable}
-                showLabel={!editing}
+                showLabel={true}
                 addLabelText="Press enter to add '{label}'"
                 allowCreate={true}
                 id={this._id}

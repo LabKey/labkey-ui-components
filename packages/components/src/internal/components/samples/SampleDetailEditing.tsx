@@ -138,20 +138,20 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         } = this.props;
         const { hasError, sampleTypeDomainFields } = this.state;
 
-        if (
-            !sampleTypeDomainFields ||
-            (queryModel && queryModel.isLoading) ||
-            (queryGridModel && !queryGridModel.isLoaded)
-        ) {
-            return <LoadingPage title={title} />;
-        }
-
         if (hasError) {
             return (
                 <Alert>
                     {getActionErrorMessage('There was a problem loading the sample type details.', 'sample type')}
                 </Alert>
             );
+        }
+
+        if (
+            !sampleTypeDomainFields ||
+            (queryModel && queryModel.isLoading) ||
+            (queryGridModel && !queryGridModel.isLoaded)
+        ) {
+            return <LoadingPage title={title} />;
         }
 
         const row = this.getRow();

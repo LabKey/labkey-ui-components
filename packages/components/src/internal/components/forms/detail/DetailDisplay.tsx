@@ -6,12 +6,13 @@ import { DefaultRenderer, QueryColumn } from '../../../..';
 
 import { DETAIL_TABLE_CLASSES } from '../constants';
 
+import { decodePart } from '../../../../public/SchemaQuery';
+
 import {
     resolveDetailEditRenderer,
     resolveDetailRenderer,
     titleRenderer as defaultTitleRenderer,
 } from './DetailEditRenderer';
-import { decodePart } from '../../../../public/SchemaQuery';
 
 export type Renderer = (data: any, row?: any) => ReactNode;
 
@@ -144,7 +145,10 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
                                             <tr key={key}>
                                                 <td>{field.titleRenderer}</td>
                                                 <td data-caption={field.title} data-fieldkey={field.fieldKey}>
-                                                    {field.renderer(newRow.get(decodePart(key)) ?? newRow.get(key), row)}
+                                                    {field.renderer(
+                                                        newRow.get(decodePart(key)) ?? newRow.get(key),
+                                                        row
+                                                    )}
                                                 </td>
                                             </tr>
                                         );

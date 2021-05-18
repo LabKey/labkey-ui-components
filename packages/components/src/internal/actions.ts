@@ -3056,11 +3056,13 @@ export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number): v
 }
 
 /**
- * Create a query grid model for this assay's Data grid, filtered to samples for the provided `value`
+ * Create a QueryGridModel for this assay's Data grid, filtered to samples for the provided `value`
  * iff the assay design has one or more sample lookup columns.
  *
  * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
  * provide a filter for the sample column or columns defined in the assay design.
+ *
+ * If you're using a QueryModel see "createQueryConfigFilteredBySample()".
  */
 export function createQueryGridModelFilteredBySample(
     model: AssayDefinitionModel,
@@ -3098,6 +3100,15 @@ export function createQueryGridModelFilteredBySample(
     });
 }
 
+/**
+ * Create a QueryConfig for this assay's Data grid, filtered to samples for the provided `value`
+ * iff the assay design has one or more sample lookup columns.
+ *
+ * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
+ * provide a filter for the sample column or columns defined in the assay design.
+ *
+ * If you're using a QueryGridModel see "createQueryGridModelFilteredBySample()".
+ */
 export function createQueryConfigFilteredBySample(
     model: AssayDefinitionModel,
     value,

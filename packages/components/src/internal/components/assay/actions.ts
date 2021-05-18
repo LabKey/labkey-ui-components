@@ -264,6 +264,8 @@ export function getImportItemsForAssayDefinitionsQM(
             const href = assay.getImportUrl(
                 selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
                 selectionKey,
+                // Check for the existence of the "queryInfo" before getting filters from the model.
+                // This avoids `QueryModel` throwing an error when the "queryInfo" is not yet available.
                 sampleModel?.queryInfo ? List(sampleModel.filters) : undefined
             );
             return items.set(assay, href);

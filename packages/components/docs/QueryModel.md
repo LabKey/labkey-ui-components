@@ -100,7 +100,7 @@ To summarize:
     add a model later via `actions.addModel(queryConfig: QueryConfig)`, this is often done if a schema name or query
     name comes from user input (e.g. from a `<select>` menu).
 
-### [GridPanel](../src/public/QueryModel/GridPanel.tsx#L168)
+### [GridPanel](../src/public/QueryModel/GridPanel.tsx#L199)
 
 A common use case for QueryModel is rendering data into a grid. We provide an easy way to render a grid
 via the `GridPanel` component. `GridPanel` has many props, but the only props you need to pass are a `model` which is
@@ -134,6 +134,14 @@ Which would render something like this:
 
 ![](minimal_grid_panel.png)
 
+#### loadOnMount
+
+By default the `GridPanel` will call the `actions.loadModel(id: string, loadSelections?: boolean)` action
+upon `componentDidMount()`. If you would like to control the loading of the model yourself you can opt-out of this behavior
+by specifying the prop `loadOnMount={false}`.
+
+#### [GridPanelWithModel](../src/public/QueryModel/GridPanel.tsx#L692)
+
 We also provide an implementation called `GridPanelWithModel` that lets you pass in a `queryConfig` prop so you don't
 need to wrap your own component with `withQueryModels`. An example of using `GridPanelWithModel`:
 
@@ -144,14 +152,14 @@ interface MyComponentProps {
 }
 
 function MyComponent(props: MyComponentProps) {
-    const { schemaName, queryName }  = props;
+    const { schemaName, queryName } = props;
     const queryConfig: QueryConfig = { schemaQuery: SchemaQuery.create(schemaName, queryName) };
     return <GridPanelWithModel queryConfig={queryConfig} />;
 }
 ```
 
 
-### [DetailPanel](../src/public/QueryModel/DetailPanel.tsx#L32)
+### [DetailPanel](../src/public/QueryModel/DetailPanel.tsx#L40)
 Another common use case is to render the details of a single row from a SchemaQuery. We provide a component,
 `DetailPanel`, that does this for you. There are two versions of this component: `DetailPanel` and
 `DetailPanelWithModel`. `DetailPanel` expects you to have a `QueryModel` already and will render the details for you.
@@ -165,7 +173,7 @@ attribute of your `QueryConfig` to an array of `Filter` objects that will filter
 data.
 
 #### Examples:
-**[DetailPanelWithModel](../src/public/QueryModel/DetailPanel.tsx#L67)**
+**[DetailPanelWithModel](../src/public/QueryModel/DetailPanel.tsx#L79)**
 ```tsx
 import React, { FC } from 'react';
 import { DetailPanelWithModel, SchemaQuery } from '@labkey/components';

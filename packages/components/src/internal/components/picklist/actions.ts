@@ -14,7 +14,7 @@ import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list
 import { resolveErrorMessage } from '../../util/messaging';
 import { SCHEMAS } from '../../../index';
 
-import { Picklist } from './models';
+import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
 
 export function getPicklists(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
@@ -60,9 +60,9 @@ export function setPicklistDefaultView(name: string): Promise<string> {
                         {fieldKey: 'SampleID/Created'},
                         {fieldKey: 'SampleID/CreatedBy'},
                         {fieldKey: 'SampleID/StorageLocation'},
-                        { fieldKey: 'SampleID/StorageRow' },
-                        { fieldKey: 'SampleID/StorageCol' },
-                        { fieldKey: 'SampleID/isAliquot' },
+                        {fieldKey: 'SampleID/StorageRow'},
+                        {fieldKey: 'SampleID/StorageCol'},
+                        {fieldKey: 'SampleID/isAliquot'},
                     ],
                 },
             ],
@@ -98,7 +98,7 @@ export function createPicklist(
                 name,
                 fields: [
                     {
-                        name: 'SampleID',
+                        name: PICKLIST_SAMPLE_ID_COLUMN,
                         rangeURI: 'int',
                         required: true,
                         lookupSchema: SCHEMAS.INVENTORY.SAMPLE_ITEMS.schemaName,
@@ -107,14 +107,14 @@ export function createPicklist(
                 ],
                 indices: [
                     {
-                        columnNames: ['SampleID'],
+                        columnNames: [PICKLIST_SAMPLE_ID_COLUMN],
                         unique: true,
                     },
                 ],
             },
             kind: PICKLIST,
             options: {
-                keyName: 'id',
+                keyName: PICKLIST_KEY_COLUMN,
                 keyType: 'AutoIncrementInteger',
                 description,
                 category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY,

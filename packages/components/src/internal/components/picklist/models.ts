@@ -5,6 +5,9 @@ import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { userCanDeletePublicPicklists, userCanManagePicklists } from '../../app/utils';
 import { flattenValuesFromRow } from '../../../public/QueryModel/utils';
 
+export const PICKLIST_SAMPLE_ID_COLUMN = 'SampleID';
+export const PICKLIST_KEY_COLUMN = 'id';
+
 export class Picklist {
     [immerable] = true;
 

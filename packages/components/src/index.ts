@@ -258,10 +258,10 @@ import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
     fetchSamples,
+    getGroupedSampleDisplayColumns,
     getSampleSet,
     getSampleTypeDetails,
     loadSelectedSamples,
-    getGroupedSampleDisplayColumns,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
@@ -439,12 +439,21 @@ import {
     PRIVATE_PICKLIST_CATEGORY,
     PUBLIC_PICKLIST_CATEGORY,
 } from './internal/components/domainproperties/list/constants';
+import {
+    PICKLIST_SAMPLE_ID_COLUMN,
+    PICKLIST_KEY_COLUMN,
+} from './internal/components/picklist/models';
 import { PicklistEditModal } from './internal/components/picklist/PicklistEditModal';
 import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { Picklist } from './internal/components/picklist/models';
 import { ChoosePicklistModal } from './internal/components/picklist/ChoosePicklistModal';
-import { deletePicklists, removeSamplesFromPicklist, updatePicklist } from './internal/components/picklist/actions';
+import {
+    deletePicklists,
+    removeSamplesFromPicklist,
+    updatePicklist
+} from './internal/components/picklist/actions';
+
 import {
     AppReducers,
     ProductMenuReducers,
@@ -739,6 +748,8 @@ export {
     PicklistDeleteConfirm,
     PUBLIC_PICKLIST_CATEGORY,
     PRIVATE_PICKLIST_CATEGORY,
+    PICKLIST_KEY_COLUMN,
+    PICKLIST_SAMPLE_ID_COLUMN,
     Picklist,
     deletePicklists,
     removeSamplesFromPicklist,

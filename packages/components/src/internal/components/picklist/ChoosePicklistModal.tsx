@@ -8,6 +8,7 @@ import { Utils } from '@labkey/api';
 import { Alert } from '../base/Alert';
 import { addSamplesToPicklist, getPicklists } from './actions';
 import { resolveErrorMessage } from '../../util/messaging';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -80,7 +81,7 @@ const ItemDetails: FC<PicklistDetailsProps> = memo((props) => {
 
 
 interface ChooseItemModalProps {
-    onCancel: () => void;
+    onCancel: (cancelToCreate?: boolean) => void;
     afterAddToPicklist: (item: Picklist, numAdded: number) => void;
     user: User;
     selectionKey: string;
@@ -93,21 +94,25 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
     const [error, setError] = useState<string>(undefined);
     const [items, setItems] = useState<Picklist[]>([]);
     const [submitting, setSubmitting] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getPicklists()
             .then(picklists => {
                 setItems(picklists);
+                setLoading(false);
             })
             .catch(reason => {
                 setError('There was a problem retrieving the picklist data. ' + resolveErrorMessage(reason));
+                setLoading(false);
             });
 
-    }, [getPicklists, setItems, setError]);
+    }, [getPicklists, setItems, setError, setLoading]);
 
     const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value.trim().toLowerCase());
     }, []);
+
     const filteredItems = useMemo<Picklist[]>(() => {
         if (search.trim() !== '') {
             return items.filter(item => item.name.toLowerCase().indexOf(search) > -1);
@@ -146,17 +151,37 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
             setError(resolveErrorMessage(e));
         }
     }, [activeItem, selectionKey, setSubmitting, setError]);
-    const isSearching = !!(search);
-    let myEmptyMessage = 'You do not have any picklists ';
-    let teamEmptyMessage = 'There are no shared picklists  ';
 
-    let suffix = '';
-    if (isSearching) {
-        suffix = ' matching your search';
+    const closeModal = useCallback(() => {
+        onCancel(false);
+    }, [onCancel]);
+
+    const goToCreateNewList = useCallback(() => {
+        onCancel(true);
+    }, [onCancel]);
+
+    const isSearching = !!(search);
+    let myEmptyMessage: ReactNode = <LoadingSpinner/>;
+    let teamEmptyMessage: ReactNode = <LoadingSpinner/>;
+
+    if (!loading) {
+        myEmptyMessage = 'You do not have any picklists ';
+        teamEmptyMessage = 'There are no shared picklists  ';
+
+        let suffix = '';
+        if (isSearching) {
+            suffix = ' matching your search';
+        }
+        suffix += ' to add ' + (numSelected === 1 ? 'this sample to.' : 'these samples to.');
+        myEmptyMessage += suffix;
+        teamEmptyMessage += suffix;
+        let createNewList = null;
+        if (!isSearching) {
+            createNewList = <>Do you want to <a onClick={goToCreateNewList}>create a new one</a>?</>;
+            myEmptyMessage = <>{myEmptyMessage} {createNewList}</>;
+            teamEmptyMessage = <>{teamEmptyMessage} {createNewList}</>;
+        }
     }
-    suffix += ' to add ' + (numSelected === 1 ? 'this sample to.' : 'these samples to.');
-    myEmptyMessage += suffix;
-    teamEmptyMessage += suffix;
 
     return (
         <Modal show bsSize="large" onHide={close}>
@@ -222,7 +247,7 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
 
             <Modal.Footer>
                 <div className="pull-left">
-                    <button type="button" className="btn btn-default" onClick={onCancel}>
+                    <button type="button" className="btn btn-default" onClick={closeModal}>
                         Cancel
                     </button>
                 </div>

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { List, Map } from 'immutable';
+import { List, fromJS } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
 import { AuditBehaviorTypes } from '@labkey/api';
@@ -99,7 +99,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         const { queryGridModel, queryModel } = this.props;
 
         if (queryModel) {
-            return queryModel.getRow();
+            return queryModel.getRow() ?? {};
         } else {
             return queryGridModel.getRow().toJS();
         }
@@ -158,7 +158,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         const isAliquot = !!caseInsensitive(row, 'AliquotedFromLSID/Name')?.value;
         const { aliquotHeaderDisplayColumns, displayColumns, editColumns } = this.getUpdateDisplayColumns(isAliquot);
         const detailHeader = isAliquot ? (
-            <SampleAliquotDetailHeader aliquotHeaderDisplayColumns={aliquotHeaderDisplayColumns} row={Map(row)} />
+            <SampleAliquotDetailHeader aliquotHeaderDisplayColumns={aliquotHeaderDisplayColumns} row={fromJS(row)} />
         ) : null;
 
         if (queryModel) {

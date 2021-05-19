@@ -18,6 +18,7 @@ export class Picklist {
     readonly name: string;
     readonly listId: number;
     readonly Description: string;
+    readonly ItemCount: number;
 
     static create(data: any) {
         return new Picklist({

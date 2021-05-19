@@ -1,4 +1,4 @@
-import { Ajax, Domain, Filter, Utils } from '@labkey/api';
+import { Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
@@ -176,7 +176,34 @@ export function updatePicklist(picklist: Picklist): Promise<Picklist> {
     });
 }
 
-export function getPicklistSamples(listName): Promise<Set<string>> {
+export interface SampleTypeCount {
+    ItemCount: number,
+    SampleType: string,
+    LabelColor: string
+}
+
+export function getPicklistCountsBySampleType(listName: string): Promise<SampleTypeCount[]> {
+    return new Promise((resolve, reject) => {
+        Query.executeSql({
+            sql: 'SELECT COUNT(*) as ItemCount, \n' +
+                '       SampleId.SampleSet.Name AS SampleType, \n' +
+                '       SampleId.LabelColor\n' +
+                'FROM lists."' + listName + '"\n' +
+                'GROUP BY SampleId.SampleSet.Name, SampleId.LabelColor\n' +
+                'ORDER BY SampleId.SampleSet.Name',
+            schemaName: 'lists',
+            success: ((data) => {
+                resolve(data.rows);
+            }),
+            failure: (reason => {
+                console.error(reason);
+                reject(reason);
+            })
+        });
+    });
+}
+
+export function getPicklistSamples(listName: string): Promise<Set<string>> {
     return new Promise((resolve, reject) => {
         const schemaName = 'lists';
         selectRows({

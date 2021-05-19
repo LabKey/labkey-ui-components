@@ -6,9 +6,10 @@ import { formatDate, parseDate } from '../../util/Date';
 import { User } from '../base/models/User';
 import { Utils } from '@labkey/api';
 import { Alert } from '../base/Alert';
-import { addSamplesToPicklist, getPicklists } from './actions';
+import { addSamplesToPicklist, getPicklistCountsBySampleType, getPicklists, SampleTypeCount } from './actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import { ColorIcon } from '../base/ColorIcon';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -38,11 +39,68 @@ const PicklistList: FC<PicklistListProps> = memo((props) => {
     );
 });
 
+interface PicklistItemsSummaryProps {
+    picklist: Picklist
+}
+
+// TODO refactor for testing
+const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo((props) => {
+    const {picklist} = props;
+    const [countsByType, setCountsByType] = useState<SampleTypeCount[]>(undefined);
+    const [loadingCounts, setLoadingCounts] = useState<boolean>(true);
+
+    useEffect(() => {
+        getPicklistCountsBySampleType(picklist.name)
+            .then(counts => {
+                setCountsByType(counts);
+                setLoadingCounts(false);
+            })
+            .catch(reason => {
+                setCountsByType([]);
+                setLoadingCounts(false);
+            });
+
+    }, [picklist, getPicklistCountsBySampleType, setCountsByType, setLoadingCounts]);
+
+    if (loadingCounts) {
+        return <LoadingSpinner/>;
+    }
+
+    const summaryData = [];
+    if (countsByType.length === 0) {
+        if (picklist.ItemCount === 0) {
+            summaryData.push(<div className="choices-detail__empty-message">This list is empty.</div>);
+        } else {
+            summaryData.push(<div>{picklist.ItemCount} samples</div>);
+        }
+    } else {
+        countsByType.forEach(countData => {
+            summaryData.push((
+                <div className="row picklist-items__row">
+                    <span className={'col-md-1'}>
+                        <ColorIcon useSmall={true} value={countData.LabelColor}/>
+                    </span>
+                    <span
+                        className="col-md-4 picklist-items__sample-type choice-metadata-item__name">{countData.SampleType}</span>
+                    <span className="col-md-4 picklist-items__item-count">{countData.ItemCount}</span>
+                </div>
+            ));
+        });
+    }
+
+    return (
+        <div>
+            <div className={'picklist-items__header'}>Sample Counts</div>
+            {summaryData}
+        </div>
+    );
+});
+
 interface PicklistDetailsProps {
     picklist: Picklist;
 }
 
-const ItemDetails: FC<PicklistDetailsProps> = memo((props) => {
+const PicklistDetails: FC<PicklistDetailsProps> = memo((props) => {
     const {picklist} = props;
 
     return (
@@ -73,7 +131,7 @@ const ItemDetails: FC<PicklistDetailsProps> = memo((props) => {
             </div>
 
             <div className="top-spacing">
-                Sample counts coming soon ....
+                <PicklistItemsSummary picklist={picklist}/>
             </div>
         </div>
     );
@@ -88,6 +146,7 @@ interface ChooseItemModalProps {
     numSelected: number;
 }
 
+// TODO refactor for testing
 export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
     const {onCancel, afterAddToPicklist, user, selectionKey, numSelected} = props;
     const [search, setSearch] = useState<string>('');
@@ -240,7 +299,7 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
                             <div className="choices-list__empty-message">Choose a picklist</div>
                         )}
 
-                        {activeItem !== undefined && <ItemDetails picklist={activeItem}/>}
+                        {activeItem !== undefined && <PicklistDetails picklist={activeItem}/>}
                     </div>
                 </div>
             </Modal.Body>

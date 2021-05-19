@@ -27,7 +27,27 @@
     margin-right: 6px;
 }
 
+.choices-detail__empty-message,
 .choices-list__empty-message {
     margin-top: 16px;
     font-style: italic;
+}
+
+.picklist-items__sample-type {
+    margin-left: 16px;
+}
+
+.picklist-items__item-count {
+    float: right;
+    text-align: right;
+}
+
+.picklist-items__header {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.picklist-items__row {
+    margin-bottom: 5px;
+    width: 75%;
 }

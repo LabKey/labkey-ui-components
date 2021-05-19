@@ -78,7 +78,7 @@ const getSelectedProvider = (providers: AssayProvider[], name: string): AssayPro
     });
 };
 
-const noSpecialtyAssaysWarning = "This server does not have any specialty or custom assays."
+const noSpecialtyAssaysWarning = "This server does not have any specialty or custom assay types."
 
 export const AssayPicker: FC<AssayPickerProps> = memo(props => {
     const { showImport, showContainerSelect, onChange, selectedTab, excludedProviders, hasPremium } = props;

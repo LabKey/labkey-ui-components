@@ -1,4 +1,4 @@
-import React, { FC, memo, useMemo, useCallback, useState } from 'react';
+import React, { FC, memo, useMemo, useCallback } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { Alert, GENERAL_ASSAY_PROVIDER_NAME, getHelpLink } from '../../../index';
@@ -29,6 +29,16 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
         },
         [onChange]
     );
+
+    const noPremiumClass = useMemo(() => {
+        if (children)
+            return "large-margin-top";
+
+        if (warning)
+            return "";
+
+        return "margin-top";
+    }, [children, warning])
 
     return (
         <div>
@@ -75,7 +85,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
             {children}
             {!hasPremium && (
                 <Row>
-                    <Col xs={12} className={children ? "margin-top" : ""}>
+                    <Col xs={12} className={noPremiumClass}>
                         <Alert bsStyle="info">
                             <h1 className="fa fa-star-o"> Premium Feature</h1>
                             <h3>More specialty assays are available with LabKey Server Premium Edition</h3>

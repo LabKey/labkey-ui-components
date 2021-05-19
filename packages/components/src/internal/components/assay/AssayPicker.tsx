@@ -35,6 +35,7 @@ interface AssayPickerProps {
     showImport: boolean;
     showContainerSelect: boolean;
     onChange: (model: AssayPickerSelectionModel) => void;
+    hasPremium: boolean;
     selectedTab?: AssayPickerTabs;
     excludedProviders?: string[];
 }
@@ -77,8 +78,10 @@ const getSelectedProvider = (providers: AssayProvider[], name: string): AssayPro
     });
 };
 
+const noSpecialtyAssaysWarning = "This server does not have any specialty or custom assays."
+
 export const AssayPicker: FC<AssayPickerProps> = memo(props => {
-    const { showImport, showContainerSelect, onChange, selectedTab, excludedProviders } = props;
+    const { showImport, showContainerSelect, onChange, selectedTab, excludedProviders, hasPremium } = props;
 
     const [providers, setProviders] = useState<AssayProvider[]>();
     const [containers, setContainers] = useState<{ [key: string]: string }>();
@@ -103,7 +106,7 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                 draft.container = options.defaultLocation;
             });
         });
-    }, []);
+    }, [excludedProviders]);
 
     useEffect(() => {
         onTabChange((selectedTab ?? AssayPickerTabs.STANDARD_ASSAY_TAB) as any);
@@ -140,7 +143,7 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                     draft.provider = getSelectedProvider(providers, GENERAL_ASSAY_PROVIDER_NAME);
                 });
             } else if (tab === AssayPickerTabs.SPECIALTY_ASSAY_TAB) {
-                if (providers) {
+                if (providers?.length > 0) {
                     if (
                         !assaySelectionModel.provider ||
                         assaySelectionModel.provider.name == GENERAL_ASSAY_PROVIDER_NAME
@@ -204,8 +207,8 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                                 eventKey={AssayPickerTabs.STANDARD_ASSAY_TAB}
                             >
                                 <StandardAssayPanel provider={standardProvider}>
-                                    <div className="margin-top">
-                                        {showContainerSelect && (
+                                    {showContainerSelect && (
+                                        <div className="margin-top">
                                             <Row>
                                                 <Col xs={6}>
                                                     <AssayContainerLocation
@@ -215,8 +218,8 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                                                     />
                                                 </Col>
                                             </Row>
-                                        )}
-                                    </div>
+                                        </div>
+                                    )}
                                 </StandardAssayPanel>
                             </Tab.Pane>
                             <Tab.Pane
@@ -227,9 +230,11 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                                     values={providers}
                                     selected={assaySelectionModel.provider}
                                     onChange={onSelectedProviderChange}
+                                    hasPremium={hasPremium}
+                                    warning={providers?.length > 1 ? undefined : noSpecialtyAssaysWarning}
                                 >
-                                    <div className="margin-top">
-                                        {showContainerSelect && (
+                                    {showContainerSelect && providers?.length > 1 && (
+                                        <div className="margin-top">
                                             <Row>
                                                 <Col xs={6}>
                                                     <AssayContainerLocation
@@ -239,8 +244,8 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                                                     />
                                                 </Col>
                                             </Row>
-                                        )}
-                                    </div>
+                                        </div>
+                                    )}
                                 </SpecialtyAssayPanel>
                             </Tab.Pane>
                             {showImport && (

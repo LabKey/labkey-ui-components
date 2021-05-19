@@ -2,6 +2,7 @@
 
 exports[`AssayPicker AssayPicker 1`] = `
 <Memo()
+  hasPremium={true}
   onChange={
     [MockFunction] {
       "calls": Array [
@@ -25,12 +26,72 @@ exports[`AssayPicker AssayPicker 1`] = `
           Object {
             "container": "",
             "file": undefined,
-            "provider": undefined,
+            "provider": Object {
+              "description": "Imports data from simple Excel or TSV files.",
+              "fileTypes": Array [
+                ".tsv",
+                ".csv",
+                ".xls",
+                ".xlsx",
+                ".txt",
+                ".fna",
+                ".fasta",
+              ],
+              "name": "General",
+            },
+            "tab": "standard",
+          },
+        ],
+        Array [
+          Object {
+            "container": "ea7c355b-0b2e-1039-8359-225b19643884",
+            "file": undefined,
+            "provider": Object {
+              "description": "Imports data from simple Excel or TSV files.",
+              "fileTypes": Array [
+                ".tsv",
+                ".csv",
+                ".xls",
+                ".xlsx",
+                ".txt",
+                ".fna",
+                ".fasta",
+              ],
+              "name": "General",
+            },
+            "tab": "standard",
+          },
+        ],
+        Array [
+          Object {
+            "container": "ea7c355b-0b2e-1039-8359-225b19643884",
+            "file": undefined,
+            "provider": Object {
+              "description": "Imports data from simple Excel or TSV files.",
+              "fileTypes": Array [
+                ".tsv",
+                ".csv",
+                ".xls",
+                ".xlsx",
+                ".txt",
+                ".fna",
+                ".fasta",
+              ],
+              "name": "General",
+            },
             "tab": "import",
           },
         ],
       ],
       "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
         Object {
           "type": "return",
           "value": undefined,
@@ -282,7 +343,23 @@ exports[`AssayPicker AssayPicker 1`] = `
                               id="assay-picker-tabs-pane-standard"
                               role="tabpanel"
                             >
-                              <Memo()>
+                              <Memo()
+                                provider={
+                                  Object {
+                                    "description": "Imports data from simple Excel or TSV files.",
+                                    "fileTypes": Array [
+                                      ".tsv",
+                                      ".csv",
+                                      ".xls",
+                                      ".xlsx",
+                                      ".txt",
+                                      ".fna",
+                                      ".fasta",
+                                    ],
+                                    "name": "General",
+                                  }
+                                }
+                              >
                                 <div>
                                   <Row
                                     bsClass="row"
@@ -340,7 +417,9 @@ exports[`AssayPicker AssayPicker 1`] = `
                                               Supported File Types
                                             </b>
                                           </div>
-                                          <p />
+                                          <p>
+                                            .tsv, .csv, .xls, .xlsx, .txt, .fna, .fasta
+                                          </p>
                                         </div>
                                       </Col>
                                     </div>
@@ -364,8 +443,14 @@ exports[`AssayPicker AssayPicker 1`] = `
                                             className="col-xs-6"
                                           >
                                             <Memo()
+                                              locations={
+                                                Object {
+                                                  "ce3fb429-92f9-1038-8523-225b19648208": "Shared Folder",
+                                                  "ea7c355b-0b2e-1039-8359-225b19643884": "Current Folder (BiologicsAssayTest Project)",
+                                                }
+                                              }
                                               onChange={[Function]}
-                                              selected=""
+                                              selected="ea7c355b-0b2e-1039-8359-225b19643884"
                                             >
                                               <div
                                                 className="margin-bottom"
@@ -381,8 +466,21 @@ exports[`AssayPicker AssayPicker 1`] = `
                                                 className="form-control"
                                                 id="assay-type-select-container"
                                                 onChange={[Function]}
-                                                value=""
-                                              />
+                                                value="ea7c355b-0b2e-1039-8359-225b19643884"
+                                              >
+                                                <option
+                                                  key="ea7c355b-0b2e-1039-8359-225b19643884"
+                                                  value="ea7c355b-0b2e-1039-8359-225b19643884"
+                                                >
+                                                  Current Folder (BiologicsAssayTest Project)
+                                                </option>
+                                                <option
+                                                  key="ce3fb429-92f9-1038-8523-225b19648208"
+                                                  value="ce3fb429-92f9-1038-8523-225b19648208"
+                                                >
+                                                  Shared Folder
+                                                </option>
+                                              </select>
                                             </Memo()>
                                           </div>
                                         </Col>
@@ -432,7 +530,160 @@ exports[`AssayPicker AssayPicker 1`] = `
                               role="tabpanel"
                             >
                               <Memo()
+                                hasPremium={true}
                                 onChange={[Function]}
+                                selected={
+                                  Object {
+                                    "description": "Imports data from simple Excel or TSV files.",
+                                    "fileTypes": Array [
+                                      ".tsv",
+                                      ".csv",
+                                      ".xls",
+                                      ".xlsx",
+                                      ".txt",
+                                      ".fna",
+                                      ".fasta",
+                                    ],
+                                    "name": "General",
+                                  }
+                                }
+                                values={
+                                  Array [
+                                    Object {
+                                      "description": "Imports raw data files from BioTek ELISA Microplate reader.",
+                                      "fileTypes": Array [
+                                        ".xls",
+                                        ".xlsx",
+                                      ],
+                                      "name": "ELISA",
+                                    },
+                                    Object {
+                                      "description": "Imports raw data files from CTL and AID instruments.",
+                                      "fileTypes": Array [
+                                        ".txt",
+                                        ".xls",
+                                        ".xlsx",
+                                      ],
+                                      "name": "ELISpot",
+                                    },
+                                    Object {
+                                      "description": "Import a GEO series matrix-like TSV file of probe/sample values.",
+                                      "fileTypes": Array [
+                                        ".tsv",
+                                      ],
+                                      "name": "Expression Matrix",
+                                    },
+                                    Object {
+                                      "description": "Imports data from simple Excel or TSV files.",
+                                      "fileTypes": Array [
+                                        ".tsv",
+                                        ".csv",
+                                        ".xls",
+                                        ".xlsx",
+                                        ".txt",
+                                        ".fna",
+                                        ".fasta",
+                                      ],
+                                      "name": "General",
+                                    },
+                                    Object {
+                                      "description": "LabKey example file-based assay.",
+                                      "fileTypes": Array [
+                                        ".tsv",
+                                        ".csv",
+                                        ".xls",
+                                        ".xlsx",
+                                        ".txt",
+                                        ".fna",
+                                        ".fasta",
+                                      ],
+                                      "name": "LabKey Example",
+                                    },
+                                    Object {
+                                      "description": "Imports data in the multi-sheet BioPlex Excel file format.",
+                                      "fileTypes": Array [
+                                        ".xls",
+                                        ".xlsx",
+                                      ],
+                                      "name": "Luminex",
+                                    },
+                                    Object {
+                                      "description": "Noblis Simple file-based assay",
+                                      "fileTypes": Array [
+                                        ".tsv",
+                                        ".csv",
+                                        ".xls",
+                                        ".xlsx",
+                                        ".txt",
+                                        ".fna",
+                                        ".fasta",
+                                      ],
+                                      "name": "Noblis Simple",
+                                    },
+                                    Object {
+                                      "description": "Import a matrix-like TSV file of protein sequence/sample values.",
+                                      "fileTypes": Array [
+                                        ".tsv",
+                                      ],
+                                      "name": "Protein Expression Matrix",
+                                    },
+                                    Object {
+                                      "description": "Simple2 file-based assay (used in Biologics testing)",
+                                      "fileTypes": Array [
+                                        ".tsv",
+                                        ".csv",
+                                        ".xls",
+                                        ".xlsx",
+                                        ".txt",
+                                        ".fna",
+                                        ".fasta",
+                                      ],
+                                      "name": "Simple2",
+                                    },
+                                    Object {
+                                      "description": "Imports a specially formatted TSV, CSV or Excel file. Measures neutralization in TZM-bl cells as a function of a reduction in Tat-induced luciferase (Luc) reporter gene expression after a single round of infection. Montefiori, D.C. 2004<a href=\\"#\\" tabindex=\\"-1\\" onClick=\\"return showHelpDiv(this, &#039;NAb&#039;, &#039;\\\\x3Ca href=\\\\&quot;http://www.ncbi.nlm.nih.gov/pubmed/18432938\\\\&quot;\\\\x3EEvaluating neutralizing antibodies against HIV, SIV and SHIV in luciferase reporter gene assays\\\\x3C/a\\\\x3E.  Current Protocols in Immunology, (Coligan, J.E., A.M. Kruisbeek, D.H. Margulies, E.M. Shevach, W. Strober, and R. Coico, eds.), John Wiley &amp; Sons, 12.11.1-12.11.15.&#039;);\\" onMouseOut=\\"return hideHelpDivDelay();\\" onMouseOver=\\"return showHelpDivDelay(this, &#039;NAb&#039;, &#039;\\\\x3Ca href=\\\\&quot;http://www.ncbi.nlm.nih.gov/pubmed/18432938\\\\&quot;\\\\x3EEvaluating neutralizing antibodies against HIV, SIV and SHIV in luciferase reporter gene assays\\\\x3C/a\\\\x3E.  Current Protocols in Immunology, (Coligan, J.E., A.M. Kruisbeek, D.H. Margulies, E.M. Shevach, W. Strober, and R. Coico, eds.), John Wiley &amp; Sons, 12.11.1-12.11.15.&#039;);\\"><span class=\\"labkey-help-pop-up\\">?</span></a>",
+                                      "fileTypes": Array [
+                                        ".xls",
+                                        ".xlsx",
+                                      ],
+                                      "name": "TZM-bl Neutralization (NAb)",
+                                    },
+                                    Object {
+                                      "description": "Imports a specially formatted CSV or XLS file that contains data from multiple plates.  The high-throughput NAb assay differs from the standard NAb assay in that dilutions are assumed to occur across plates, rather than within a single plate.  Both NAb assay types measure neutralization in TZM-bl cells as a function of a reduction in Tat-induced luciferase (Luc) reporter gene expression after a single round of infection. Montefiori, D.C. 2004<a href=\\"#\\" tabindex=\\"-1\\" onClick=\\"return showHelpDiv(this, &#039;NAb&#039;, &#039;\\\\x3Ca href=\\\\&quot;http://www.ncbi.nlm.nih.gov/pubmed/18432938\\\\&quot;\\\\x3EEvaluating neutralizing antibodies against HIV, SIV and SHIV in luciferase reporter gene assays\\\\x3C/a\\\\x3E.  Current Protocols in Immunology, (Coligan, J.E., A.M. Kruisbeek, D.H. Margulies, E.M. Shevach, W. Strober, and R. Coico, eds.), John Wiley &amp; Sons, 12.11.1-12.11.15.&#039;);\\" onMouseOut=\\"return hideHelpDivDelay();\\" onMouseOver=\\"return showHelpDivDelay(this, &#039;NAb&#039;, &#039;\\\\x3Ca href=\\\\&quot;http://www.ncbi.nlm.nih.gov/pubmed/18432938\\\\&quot;\\\\x3EEvaluating neutralizing antibodies against HIV, SIV and SHIV in luciferase reporter gene assays\\\\x3C/a\\\\x3E.  Current Protocols in Immunology, (Coligan, J.E., A.M. Kruisbeek, D.H. Margulies, E.M. Shevach, W. Strober, and R. Coico, eds.), John Wiley &amp; Sons, 12.11.1-12.11.15.&#039;);\\"><span class=\\"labkey-help-pop-up\\">?</span></a>",
+                                      "fileTypes": Array [
+                                        ".csv",
+                                      ],
+                                      "name": "TZM-bl Neutralization (NAb), High-throughput (Cross Plate Dilution)",
+                                    },
+                                    Object {
+                                      "description": "Imports a specially formatted CSV or XLS file that contains data from multiple plates.  This high-throughput NAb assay differs from the standard NAb assay in that samples are identical across plates but with a different virus per plate. Dilutions are assumed to occur within a single plate.  Both NAb assay types measure neutralization in TZM-bl cells as a function of a reduction in Tat-induced luciferase (Luc) reporter gene expression after a single round of infection. Montefiori, D.C. 2004<a href=\\"#\\" tabindex=\\"-1\\" onClick=\\"return showHelpDiv(this, &#039;NAb&#039;, &#039;\\\\x3Ca href=\\\\&quot;http://www.ncbi.nlm.nih.gov/pubmed/18432938\\\\&quot;\\\\x3EEvaluating neutralizing antibodies against HIV, SIV and SHIV in luciferase reporter gene assays\\\\x3C/a\\\\x3E.  Current Protocols in Immunology, (Coligan, J.E., A.M. Kruisbeek, D.H. Margulies, E.M. Shevach, W. Strober, and R. Coico, eds.), John Wiley &amp; Sons, 12.11.1-12.11.15.&#039;);\\" onMouseOut=\\"return hideHelpDivDelay();\\" onMouseOver=\\"return showHelpDivDelay(this, &#039;NAb&#039;, &#039;\\\\x3Ca href=\\\\&quot;http://www.ncbi.nlm.nih.gov/pubmed/18432938\\\\&quot;\\\\x3EEvaluating neutralizing antibodies against HIV, SIV and SHIV in luciferase reporter gene assays\\\\x3C/a\\\\x3E.  Current Protocols in Immunology, (Coligan, J.E., A.M. Kruisbeek, D.H. Margulies, E.M. Shevach, W. Strober, and R. Coico, eds.), John Wiley &amp; Sons, 12.11.1-12.11.15.&#039;);\\"><span class=\\"labkey-help-pop-up\\">?</span></a>",
+                                      "fileTypes": Array [
+                                        ".csv",
+                                      ],
+                                      "name": "TZM-bl Neutralization (NAb), High-throughput (Single Plate Dilution)",
+                                    },
+                                    Object {
+                                      "description": "Imports Guava ViaCount and ExpressPlus cell count and viability data.",
+                                      "fileTypes": Array [
+                                        ".csv",
+                                      ],
+                                      "name": "Viability",
+                                    },
+                                    Object {
+                                      "description": "Viral Load Assay",
+                                      "fileTypes": Array [
+                                        ".tsv",
+                                        ".csv",
+                                        ".xls",
+                                        ".xlsx",
+                                        ".txt",
+                                        ".fna",
+                                        ".fasta",
+                                      ],
+                                      "name": "Viral Loads",
+                                    },
+                                  ]
+                                }
                               >
                                 <div>
                                   <Row
@@ -459,12 +710,98 @@ exports[`AssayPicker AssayPicker 1`] = `
                                           </div>
                                           <div
                                             className="margin-bottom"
-                                          />
+                                          >
+                                            <select
+                                              className="form-control"
+                                              id="specialty-assay-type-select"
+                                              onChange={[Function]}
+                                              value="General"
+                                            >
+                                              <option
+                                                key="ELISA"
+                                                value="ELISA"
+                                              >
+                                                ELISA
+                                              </option>
+                                              <option
+                                                key="ELISpot"
+                                                value="ELISpot"
+                                              >
+                                                ELISpot
+                                              </option>
+                                              <option
+                                                key="Expression Matrix"
+                                                value="Expression Matrix"
+                                              >
+                                                Expression Matrix
+                                              </option>
+                                              <option
+                                                key="LabKey Example"
+                                                value="LabKey Example"
+                                              >
+                                                LabKey Example
+                                              </option>
+                                              <option
+                                                key="Luminex"
+                                                value="Luminex"
+                                              >
+                                                Luminex
+                                              </option>
+                                              <option
+                                                key="Noblis Simple"
+                                                value="Noblis Simple"
+                                              >
+                                                Noblis Simple
+                                              </option>
+                                              <option
+                                                key="Protein Expression Matrix"
+                                                value="Protein Expression Matrix"
+                                              >
+                                                Protein Expression Matrix
+                                              </option>
+                                              <option
+                                                key="Simple2"
+                                                value="Simple2"
+                                              >
+                                                Simple2
+                                              </option>
+                                              <option
+                                                key="TZM-bl Neutralization (NAb)"
+                                                value="TZM-bl Neutralization (NAb)"
+                                              >
+                                                TZM-bl Neutralization (NAb)
+                                              </option>
+                                              <option
+                                                key="TZM-bl Neutralization (NAb), High-throughput (Cross Plate Dilution)"
+                                                value="TZM-bl Neutralization (NAb), High-throughput (Cross Plate Dilution)"
+                                              >
+                                                TZM-bl Neutralization (NAb), High-throughput (Cross Plate Dilution)
+                                              </option>
+                                              <option
+                                                key="TZM-bl Neutralization (NAb), High-throughput (Single Plate Dilution)"
+                                                value="TZM-bl Neutralization (NAb), High-throughput (Single Plate Dilution)"
+                                              >
+                                                TZM-bl Neutralization (NAb), High-throughput (Single Plate Dilution)
+                                              </option>
+                                              <option
+                                                key="Viability"
+                                                value="Viability"
+                                              >
+                                                Viability
+                                              </option>
+                                              <option
+                                                key="Viral Loads"
+                                                value="Viral Loads"
+                                              >
+                                                Viral Loads
+                                              </option>
+                                            </select>
+                                          </div>
                                           <div
                                             className="small-margin-bottom"
                                             dangerouslySetInnerHTML={
                                               Object {
-                                                "__html": undefined,
+                                                "__html": "Imports data from simple Excel or TSV files.",
                                               }
                                             }
                                           />
@@ -494,7 +831,9 @@ exports[`AssayPicker AssayPicker 1`] = `
                                               Supported File Types
                                             </b>
                                           </div>
-                                          <p />
+                                          <p>
+                                            .tsv, .csv, .xls, .xlsx, .txt, .fna, .fasta
+                                          </p>
                                         </div>
                                       </Col>
                                     </div>
@@ -518,8 +857,14 @@ exports[`AssayPicker AssayPicker 1`] = `
                                             className="col-xs-6"
                                           >
                                             <Memo()
+                                              locations={
+                                                Object {
+                                                  "ce3fb429-92f9-1038-8523-225b19648208": "Shared Folder",
+                                                  "ea7c355b-0b2e-1039-8359-225b19643884": "Current Folder (BiologicsAssayTest Project)",
+                                                }
+                                              }
                                               onChange={[Function]}
-                                              selected=""
+                                              selected="ea7c355b-0b2e-1039-8359-225b19643884"
                                             >
                                               <div
                                                 className="margin-bottom"
@@ -535,8 +880,21 @@ exports[`AssayPicker AssayPicker 1`] = `
                                                 className="form-control"
                                                 id="assay-type-select-container"
                                                 onChange={[Function]}
-                                                value=""
-                                              />
+                                                value="ea7c355b-0b2e-1039-8359-225b19643884"
+                                              >
+                                                <option
+                                                  key="ea7c355b-0b2e-1039-8359-225b19643884"
+                                                  value="ea7c355b-0b2e-1039-8359-225b19643884"
+                                                >
+                                                  Current Folder (BiologicsAssayTest Project)
+                                                </option>
+                                                <option
+                                                  key="ce3fb429-92f9-1038-8523-225b19648208"
+                                                  value="ce3fb429-92f9-1038-8523-225b19648208"
+                                                >
+                                                  Shared Folder
+                                                </option>
+                                              </select>
                                             </Memo()>
                                           </div>
                                         </Col>

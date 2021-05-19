@@ -77,11 +77,11 @@ const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo((props) => {
         countsByType.forEach(countData => {
             summaryData.push((
                 <div className="row picklist-items__row">
-                    <span className={'col-md-1'}>
+                    <span className="col-md-1">
                         <ColorIcon useSmall={true} value={countData.LabelColor}/>
                     </span>
                     <span
-                        className="col-md-4 picklist-items__sample-type choice-metadata-item__name">{countData.SampleType}</span>
+                        className="col-md-5 picklist-items__sample-type choice-metadata-item__name">{countData.SampleType}</span>
                     <span className="col-md-4 picklist-items__item-count">{countData.ItemCount}</span>
                 </div>
             ));
@@ -120,10 +120,6 @@ const PicklistDetails: FC<PicklistDetailsProps> = memo((props) => {
                     <span className="choice-metadata-item__value">{formatDate(parseDate(picklist.Created))}</span>
                 </div>
 
-                <div className="choice-metadata-item">
-                    <span className="choice-metadata-item__name">Last Modified:</span>
-                    <span className="choice-metadata-item__value">{formatDate(parseDate(picklist.Created))}</span>
-                </div>
             </div>
 
             <div className="choice-details__description">

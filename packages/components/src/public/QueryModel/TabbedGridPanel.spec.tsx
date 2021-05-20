@@ -22,6 +22,8 @@ let AMINO_ACIDS_DATA: RowsResponse;
 const AMINO_ACIDS_TITLE = 'My Amino Acids';
 const MIXTURES_TITLE = 'Mixtures';
 
+const TABS_SELECTOR = '.nav-tabs li';
+
 beforeAll(() => {
     MIXTURES_QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
     AMINO_ACIDS_QUERY_INFO = makeQueryInfo(aminoAcidsQueryInfo);
@@ -62,7 +64,7 @@ describe('TabbedGridPanel', () => {
     });
 
     const expectTabs = (wrapper: ReactWrapper, activeTab: string): void => {
-        const tabs = wrapper.find('.nav-tabs li');
+        const tabs = wrapper.find(TABS_SELECTOR);
         expect(tabs.length).toEqual(2);
 
         [MIXTURES_TITLE, AMINO_ACIDS_TITLE].forEach((tab, index) => {
@@ -77,12 +79,12 @@ describe('TabbedGridPanel', () => {
     };
 
     const clickTab = (wrapper: ReactWrapper, index: number) => {
-        wrapper.find('.nav-tabs li a').at(index).simulate('click');
+        wrapper.find(`${TABS_SELECTOR} a`).at(index).simulate('click');
     };
 
     test('default render', () => {
         const wrapper = mount(<TabbedGridPanel tabOrder={tabOrder} queryModels={queryModels} actions={actions} />);
-        const tabs = wrapper.find('.nav-tabs li');
+        const tabs = wrapper.find(TABS_SELECTOR);
 
         // Here we test that tab order is honored, and that by default we set the first tab to active
         expect(tabs.length).toEqual(2);
@@ -152,5 +154,22 @@ describe('TabbedGridPanel', () => {
         expectTabs(wrapper, AMINO_ACIDS_TITLE);
         wrapper.setProps({ activeModelId: 'mixtures' });
         expectTabs(wrapper, MIXTURES_TITLE);
+    });
+
+    test('showRowCountOnTabs', () => {
+        const wrapper = mount(
+            <TabbedGridPanel
+                actions={actions}
+                activeModelId="aminoAcids"
+                queryModels={queryModels}
+                showRowCountOnTabs
+                tabOrder={tabOrder}
+            />
+        );
+
+        const tabs = wrapper.find(TABS_SELECTOR);
+        expect(tabs.length).toEqual(2);
+        expect(tabs.at(0).text()).toEqual(`${MIXTURES_TITLE} (${queryModels.mixtures.rowCount})`);
+        expect(tabs.at(1).text()).toEqual(`${AMINO_ACIDS_TITLE} (${queryModels.aminoAcids.rowCount})`);
     });
 });

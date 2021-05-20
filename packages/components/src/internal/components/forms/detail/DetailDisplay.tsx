@@ -6,12 +6,13 @@ import { DefaultRenderer, QueryColumn } from '../../../..';
 
 import { DETAIL_TABLE_CLASSES } from '../constants';
 
+import { decodePart } from '../../../../public/SchemaQuery';
+
 import {
     resolveDetailEditRenderer,
     resolveDetailRenderer,
     titleRenderer as defaultTitleRenderer,
 } from './DetailEditRenderer';
-import { decodePart } from '../../../../public/SchemaQuery';
 
 export type Renderer = (data: any, row?: any) => ReactNode;
 
@@ -88,6 +89,7 @@ class DetailField {
 export interface DetailDisplaySharedProps extends RenderOptions {
     asPanel?: boolean;
     detailRenderer?: DetailRenderer;
+    detailEditRenderer?: DetailRenderer;
     editingMode?: boolean;
     titleRenderer?: TitleRenderer;
     fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode;
@@ -102,8 +104,11 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
     const { asPanel, data, displayColumns, editingMode, useDatePicker, fileInputRenderer } = props;
 
     const detailRenderer = useMemo(() => {
-        return props.detailRenderer ?? (editingMode ? resolveDetailEditRenderer : resolveDetailRenderer);
-    }, [props.detailRenderer, editingMode]);
+        if (editingMode) {
+            return props.detailEditRenderer ?? resolveDetailEditRenderer;
+        }
+        return props.detailRenderer ?? resolveDetailRenderer;
+    }, [props.detailRenderer, props.detailEditRenderer, editingMode]);
 
     const titleRenderer = useMemo(() => {
         return props.titleRenderer ?? (editingMode ? defaultTitleRenderer : undefined);
@@ -140,7 +145,10 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
                                             <tr key={key}>
                                                 <td>{field.titleRenderer}</td>
                                                 <td data-caption={field.title} data-fieldkey={field.fieldKey}>
-                                                    {field.renderer(newRow.get(decodePart(key)) ?? newRow.get(key), row)}
+                                                    {field.renderer(
+                                                        newRow.get(decodePart(key)) ?? newRow.get(key),
+                                                        row
+                                                    )}
                                                 </td>
                                             </tr>
                                         );

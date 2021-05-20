@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import { AuditBehaviorTypes } from '@labkey/api';
 
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
+import { DetailRenderer } from '../../internal/components/forms/detail/DetailDisplay';
 import { extractChanges } from '../../internal/components/forms/detail/utils';
 
 import { Alert, DetailPanel, QueryColumn, RequiresModelAndActions, resolveErrorMessage, updateRows } from '../..';
@@ -18,6 +19,9 @@ interface EditableDetailPanelProps extends RequiresModelAndActions {
     auditBehavior?: AuditBehaviorTypes;
     cancelText?: string;
     canUpdate: boolean;
+    detailEditRenderer?: DetailRenderer;
+    detailHeader?: ReactNode;
+    detailRenderer?: DetailRenderer;
     editColumns?: QueryColumn[];
     onEditToggle?: (editing: boolean) => void;
     onUpdate: () => void;
@@ -141,6 +145,9 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         const {
             actions,
             appEditable,
+            detailEditRenderer,
+            detailHeader,
+            detailRenderer,
             asSubPanel,
             cancelText,
             canUpdate,
@@ -169,16 +176,22 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                 </div>
 
                 <div className="panel-body">
-                    {error && <Alert>{error}</Alert>}
+                    <div className="detail__editing">
+                        {error && <Alert>{error}</Alert>}
 
-                    <DetailPanel
-                        actions={actions}
-                        editColumns={editColumns}
-                        editingMode={editing}
-                        model={model}
-                        queryColumns={queryColumns}
-                        fileInputRenderer={this.fileInputRenderer}
-                    />
+                        {!editing && (detailHeader ?? null)}
+
+                        <DetailPanel
+                            actions={actions}
+                            detailEditRenderer={detailEditRenderer}
+                            detailRenderer={detailRenderer}
+                            editColumns={editColumns}
+                            editingMode={editing}
+                            model={model}
+                            queryColumns={queryColumns}
+                            fileInputRenderer={this.fileInputRenderer}
+                        />
+                    </div>
                 </div>
             </div>
         );

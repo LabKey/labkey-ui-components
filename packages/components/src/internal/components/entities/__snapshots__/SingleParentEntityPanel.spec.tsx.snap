@@ -1510,6 +1510,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             asPanel={false}
             hideEmptyChartSelector={false}
             hideEmptyViewMenu={false}
+            loadOnMount={true}
             model={
               QueryModel {
                 "baseFilters": Array [

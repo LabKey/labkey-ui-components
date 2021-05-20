@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
 import { Checkbox, Modal } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
@@ -11,7 +11,10 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 import { Picklist } from './models';
-import { addSamplesToPicklist, createPicklist, setPicklistDefaultView, updatePicklist } from './actions';
+import { createPicklist, updatePicklist } from './actions';
+import { createNotification } from '../notifications/actions';
+import { AppURL } from '../../url/AppURL';
+import { PICKLIST_KEY } from '../../app/constants';
 
 interface Props {
     show: boolean;
@@ -21,10 +24,11 @@ interface Props {
     picklist?: Picklist;
     onCancel: () => void;
     onFinish: (picklist: Picklist) => void;
+    showNotification?: boolean
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
-    const { show, onCancel, onFinish, selectionKey, selectedQuantity, sampleIds, picklist } = props;
+    const {show, onCancel, onFinish, selectionKey, selectedQuantity, sampleIds, picklist, showNotification} = props;
     const [name, setName] = useState<string>(picklist ? picklist.name : '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 
@@ -60,6 +64,21 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         onCancel();
     }, []);
 
+    const createSuccessNotification = () => {
+        createNotification({
+            message: () => {
+                return (
+                    <>
+                        Successfully created "{picklist.name}"
+                        with {Utils.pluralize(selectedQuantity, 'sample', 'samples')}.&nbsp;
+                        <a href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>View picklist</a>.
+                    </>
+                );
+            },
+            alertClass: 'success',
+        });
+    };
+
     const onSavePicklist = useCallback(async () => {
         setIsSubmitting(true);
         try {
@@ -78,6 +97,10 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                 updatedList = await createPicklist(trimmedName, description, shared, selectionKey, sampleIds);
             }
             setIsSubmitting(false);
+            if (showNotification) {
+                createSuccessNotification();
+            }
+
             onFinish(updatedList);
         } catch (e) {
             setPicklistError(resolveErrorMessage(e));

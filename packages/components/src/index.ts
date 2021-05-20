@@ -447,7 +447,7 @@ import { PicklistEditModal } from './internal/components/picklist/PicklistEditMo
 import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { Picklist } from './internal/components/picklist/models';
-import { ChoosePicklistModal } from './internal/components/picklist/ChoosePicklistModal';
+import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
     deletePicklists,
     removeSamplesFromPicklist,
@@ -745,7 +745,7 @@ export {
     Principal,
     UserProvider,
     // sample picklist items
-    ChoosePicklistModal,
+    AddToPicklistMenuItem,
     PicklistCreationMenuItem,
     PicklistEditModal,
     PicklistDeleteConfirm,

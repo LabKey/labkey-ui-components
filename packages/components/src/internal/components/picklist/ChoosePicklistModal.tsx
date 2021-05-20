@@ -189,7 +189,8 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         afterAddToPicklist,
         user,
         selectionKey,
-        numSelected
+        numSelected,
+        sampleIds
     } = props;
     const [search, setSearch] = useState<string>('');
     const [error, setError] = useState<string>(undefined);
@@ -229,17 +230,17 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
     const onAddClicked = useCallback(async () => {
         setSubmitting(true);
         try {
-            const insertResponse = await addSamplesToPicklist(activeItem.name, selectionKey);
+            const insertResponse = await addSamplesToPicklist(activeItem.name, selectionKey, sampleIds);
             setError(undefined);
             setSubmitting(false);
-            createAddedToPicklistNotification(activeItem, insertResponse.rows.length, numSelected);
+            createAddedToPicklistNotification(activeItem, insertResponse.rows.length, numSelected ?? sampleIds.length);
             afterAddToPicklist();
         }
         catch (e) {
             setSubmitting(false);
             setError(resolveErrorMessage(e));
         }
-    }, [activeItem, selectionKey, setSubmitting, setError]);
+    }, [activeItem, selectionKey, setSubmitting, setError, sampleIds]);
 
     const closeModal = useCallback(() => {
         onCancel(false);
@@ -360,8 +361,9 @@ interface ChoosePicklistModalProps {
     onCancel: (cancelToCreate?: boolean) => void;
     afterAddToPicklist: () => void;
     user: User;
-    selectionKey: string;
-    numSelected: number;
+    selectionKey?: string;
+    numSelected?: number;
+    sampleIds?: string[]
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo((props) => {

@@ -13,6 +13,8 @@ import { PICKLIST_KEY } from '../../app/constants';
 import { PicklistEditModal } from './PicklistEditModal';
 
 import { Picklist } from './models';
+import { isSamplePicklistEnabled, userCanManagePicklists } from '../../app/utils';
+import { User } from '../base/models/User';
 
 interface Props {
     selectionKey?: string;
@@ -20,10 +22,11 @@ interface Props {
     sampleIds?: string[];
     key: string;
     itemText: string;
+    user: User;
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {
-    const { sampleIds, selectionKey, selectedQuantity, key, itemText } = props;
+    const {sampleIds, selectionKey, selectedQuantity, key, itemText, user} = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const onFinish = (picklist: Picklist) => {
@@ -49,6 +52,10 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
     const onClick = () => {
         setShowModal(true);
     };
+
+    if (!userCanManagePicklists(user) || !isSamplePicklistEnabled()) {
+        return null;
+    }
 
     return (
         <>

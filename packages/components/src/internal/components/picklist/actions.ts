@@ -268,8 +268,8 @@ export function getSamplesNotInList(listName: string, selectionKey?: string, sam
                     });
                 } else {
                     sampleIds.forEach(id => {
-                        if (!existingSamples.has(id)) {
-                            newSamples.push(id);
+                        if (!existingSamples.has(id.toString())) {
+                            newSamples.push(id.toString());
                         }
                     });
                     resolve(newSamples);

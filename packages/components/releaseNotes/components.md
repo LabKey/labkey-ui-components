@@ -2,12 +2,12 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version TBD
-
 *Release*: TBD
-
 * Add support for modifying the items in a picklist
-    * Add ChoosePicklistModal and actions
+    * Add AddToPicklistMenuItem that incorporates a new ChoosePicklistModal and actions
     * Add styling (lifted from ELN notebooks stylings) for choice panels in modal.
+* Update `getSelection` so you can pass in a `queryName` and `schemaName` and not have to parse the selection key
+* Add utility method `getCofirmDeleteMessage`
 
 ### version 2.32.0
 *Released*: 19 May 2021

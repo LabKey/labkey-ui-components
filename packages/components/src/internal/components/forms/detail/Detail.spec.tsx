@@ -97,7 +97,9 @@ describe('<Detail/>', () => {
 
     test('column overrides', () => {
         // Arrange
+        const detailEditRenderer = () => () => <span className="column-override-details-edit" />;
         const detailRenderer = () => () => <span className="column-override-details" />;
+        const detailEditRowSelector = 'span.column-override-details-edit';
         const detailRowSelector = 'span.column-override-details';
         const model = getQueryGridModel(MODEL_ID);
         const expectedDetailColumns = model.getDetailsDisplayColumns();
@@ -118,7 +120,9 @@ describe('<Detail/>', () => {
         ).toEqual(4);
 
         // Act
-        const wrapper = mount(<Detail detailRenderer={detailRenderer} queryModel={model} />);
+        const wrapper = mount(
+            <Detail detailRenderer={detailRenderer} detailEditRenderer={detailEditRenderer} queryModel={model} />
+        );
 
         // Assert
         // Not editing -- default columns
@@ -126,11 +130,11 @@ describe('<Detail/>', () => {
 
         // Editing -- default columns
         wrapper.setProps({ editingMode: true });
-        expect(wrapper.find(detailRowSelector)).toHaveLength(expectedUpdateColumns.size);
+        expect(wrapper.find(detailEditRowSelector)).toHaveLength(expectedUpdateColumns.size);
 
         // Editing -- with edit columns
         wrapper.setProps({ editColumns: expectedEditColumns });
-        expect(wrapper.find(detailRowSelector)).toHaveLength(expectedEditColumns.size);
+        expect(wrapper.find(detailEditRowSelector)).toHaveLength(expectedEditColumns.size);
 
         // Not editing -- with query columns
         wrapper.setProps({ editingMode: false, queryColumns: expectedQueryColumns });

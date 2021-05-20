@@ -25,10 +25,11 @@ interface GridTabProps {
     model: QueryModel;
     onSelect: (id: string) => void;
     pullRight: boolean;
+    showRowCount: boolean;
 }
 
-const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight }) => {
-    const { id, queryInfo, title } = model;
+const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, showRowCount }) => {
+    const { id, queryInfo, rowCount, title } = model;
     const className = classNames({
         active: isActive,
         'pull-right': pullRight,
@@ -37,7 +38,10 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight }
 
     return (
         <li className={className}>
-            <a onClick={onClick}>{title || queryInfo?.queryLabel || queryInfo?.name}</a>
+            <a onClick={onClick}>
+                {title || queryInfo?.queryLabel || queryInfo?.name}
+                {showRowCount && <> ({rowCount})</>}
+            </a>
         </li>
     );
 });
@@ -68,6 +72,12 @@ interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      */
     rightTabs?: string[];
     /**
+     * Display the rowCount for each QueryModel as a part of the tab title. In order for this to display properly
+     * for all tabs you'll need to ensure that all models are loaded upon rendering the TabbedGridPanel.
+     * Defaults to false.
+     */
+    showRowCountOnTabs?: boolean;
+    /**
      * Array of model ids representing the order you want the tabs in. This component will only render Tabs and
      * GridPanels for Query Models in the TabOrder array.
      */
@@ -87,6 +97,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         onTabSelect,
         queryModels,
         rightTabs = [],
+        showRowCountOnTabs,
         title,
         tabOrder,
         ...rest
@@ -124,6 +135,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                                 isActive={activeId === modelId}
                                 onSelect={onSelect}
                                 pullRight={rightTabs.indexOf(modelId) > -1}
+                                showRowCount={showRowCountOnTabs}
                             />
                         ))}
                     </ul>

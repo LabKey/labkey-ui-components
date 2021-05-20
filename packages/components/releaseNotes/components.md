@@ -1,5 +1,4 @@
 # @labkey/components
-
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version TBD
@@ -10,10 +9,16 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Add ChoosePicklistModal and actions
     * Add styling (lifted from ELN notebooks stylings) for choice panels in modal.
 
+### version 2.32.0
+*Released*: 19 May 2021
+* Introduce `loadOnMount` flag to `<GridPanel/>` for controlling model loading behavior. Defaults to `true`.
+* Add `showRowCountOnTabs` flag to `<TabbedGridPanel/>` to display model row counts in tab name. Defaults to `false`.
+* Add `createQueryConfigFilteredBySample` method for generating assay/sample `QueryConfig` based on assay model configurations.
+* `SampleAssayDetail` has been converted to support `QueryModel` and ported out of Biologics. This can be reused in the future by other apps.
+* `SampleDetailEditing` updated to support `QueryModel` configurations as well as `QueryGridModel`.
+
 ### version 2.31.0
-
 *Released*: 13 May 2021
-
 * Remove isSampleAliquotEnabled experimental flag
 * Allow QueryGridModel export to include extra columns
 * Allow QueryModel to export LABEL

@@ -48,6 +48,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     emptyText?: string;
     hideEmptyChartMenu?: boolean;
     hideEmptyViewMenu?: boolean;
+    loadOnMount?: boolean;
     onChartClicked?: (chart: DataViewInfo) => boolean;
     onCreateReportClicked?: (type: DataViewInfoTypes) => void;
     onExport?: { [key: string]: () => any };
@@ -202,6 +203,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         asPanel: true,
         hideEmptyChartSelector: false,
         hideEmptyViewMenu: false,
+        loadOnMount: true,
         showPagination: true,
         showButtonBar: true,
         showChartMenu: true,
@@ -237,8 +239,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     }
 
     componentDidMount(): void {
-        const { model, actions, allowSelections } = this.props;
-        actions.loadModel(model.id, allowSelections);
+        const { model, actions, allowSelections, loadOnMount } = this.props;
+        if (loadOnMount) {
+            actions.loadModel(model.id, allowSelections);
+        }
     }
 
     componentDidUpdate(prevProps: Readonly<Props<T>>): void {

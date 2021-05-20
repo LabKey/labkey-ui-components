@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import { ConfirmModal, helpLinkNode } from '../../..';
 
@@ -34,7 +34,7 @@ interface Props {
  * within DeleteConfirmationModal, the jest tests do not render the component fully enough to test
  * different confirmation data scenarios.
  */
-export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any> {
+export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
     static defaultProps = {
         verb: 'deleted',
     };
@@ -109,11 +109,8 @@ export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any>
         };
     }
 
-    onConfirm = () => {
-        const { onConfirm } = this.props;
-        if (onConfirm) {
-            onConfirm(this.props.confirmationData.canDelete, this.props.confirmationData.cannotDelete);
-        }
+    onConfirm = (): void => {
+        this.props.onConfirm?.(this.props.confirmationData.canDelete, this.props.confirmationData.cannotDelete);
     };
 
     render() {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import { ConfirmModal, LoadingSpinner, Alert } from '../../..';
 
@@ -31,15 +31,15 @@ interface Props {
 }
 
 interface State {
+    confirmationData: DeleteConfirmationData;
     error: string;
     isLoading: boolean;
-    confirmationData: DeleteConfirmationData;
 }
 
 /**
  * The higher-order component that wraps DeleteConfirmModalDisplay or displays a loading modal or error modal.
  */
-export class EntityDeleteConfirmModal extends React.Component<Props, State> {
+export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
     // This is used because a user may cancel during the loading phase, in which case we don't want to update state
     private _mounted: boolean;
 
@@ -51,38 +51,39 @@ export class EntityDeleteConfirmModal extends React.Component<Props, State> {
         }
 
         this.state = {
+            confirmationData: undefined,
             error: undefined,
             isLoading: true,
-            confirmationData: undefined,
         };
     }
 
-    UNSAFE_componentWillMount(): void {
+    componentDidMount(): void {
         this._mounted = true;
-        this.init(this.props);
+        this.init();
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         this._mounted = false;
     }
 
-    init(props: Props) {
-        getDeleteConfirmationData(props.selectionKey, props.entityDataType, props.rowIds)
-            .then(confirmationData => {
-                if (this._mounted) {
-                    this.setState(() => ({ isLoading: false, confirmationData }));
-                }
-            })
-            .catch(reason => {
-                console.error('There was a problem retrieving the delete confirmation data.', reason);
-                if (this._mounted) {
-                    this.setState(() => ({
-                        isLoading: false,
-                        error: 'There was a problem retrieving the delete confirmation data.',
-                    }));
-                }
-            });
-    }
+    init = async (): Promise<void> => {
+        const { entityDataType, rowIds, selectionKey } = this.props;
+
+        try {
+            const confirmationData = await getDeleteConfirmationData(selectionKey, entityDataType, rowIds);
+            if (this._mounted) {
+                this.setState({ confirmationData, isLoading: false });
+            }
+        } catch (e) {
+            console.error('There was a problem retrieving the delete confirmation data.', e);
+            if (this._mounted) {
+                this.setState({
+                    error: 'There was a problem retrieving the delete confirmation data.',
+                    isLoading: false,
+                });
+            }
+        }
+    };
 
     render() {
         const { onConfirm, onCancel, entityDataType } = this.props;

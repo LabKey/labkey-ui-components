@@ -115,11 +115,11 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         const count = sampleIds?.length ?? selectedQuantity;
         if (count === 0) {
             title = 'Create an Empty Picklist';
-        } else if (selectionKey) {
+        } else if (selectionKey && count) {
             title = (
                 <>
                     Create a New Picklist with the{' '}
-                    {Utils.pluralize(selectedQuantity, 'Selected Sample', 'Selected Samples')}
+                    {Utils.pluralize(count, 'Selected Sample', 'Selected Samples')}
                 </>
             );
         } else if (count === 1) {

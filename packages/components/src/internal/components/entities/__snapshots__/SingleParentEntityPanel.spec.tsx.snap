@@ -5,30 +5,32 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
   childNounSingular="Sample"
   editing={true}
   index={0}
-  parentDataType={
-    Object {
-      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-      "deleteHelpLinkTopic": "dataClass",
-      "dependencyText": "derived sample dependencies",
-      "descriptionPlural": "parent types",
-      "descriptionSingular": "parent type",
-      "importFileAction": "importData",
-      "inputColumnName": "Inputs/Data/First",
-      "inputTypeColumnName": "Inputs/Data/First/DataClass",
-      "inputTypeValueField": "rowId",
-      "insertColumnNamePrefix": "DataInputs/",
-      "instanceSchemaName": "exp.data",
-      "nounAsParentSingular": "Parent",
-      "nounPlural": "data",
-      "nounSingular": "data",
-      "typeListingSchemaQuery": Immutable.Record {
-        "schemaName": "exp",
-        "queryName": "DataClasses",
-        "viewName": undefined,
+  parentDataTypes={
+    Array [
+      Object {
+        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "deleteHelpLinkTopic": "dataClass",
+        "dependencyText": "derived sample dependencies",
+        "descriptionPlural": "parent types",
+        "descriptionSingular": "parent type",
+        "importFileAction": "importData",
+        "inputColumnName": "Inputs/Data/First",
+        "inputTypeColumnName": "Inputs/Data/First/DataClass",
+        "inputTypeValueField": "rowId",
+        "insertColumnNamePrefix": "DataInputs/",
+        "instanceSchemaName": "exp.data",
+        "nounAsParentSingular": "Parent",
+        "nounPlural": "data",
+        "nounSingular": "data",
+        "typeListingSchemaQuery": Immutable.Record {
+          "schemaName": "exp",
+          "queryName": "DataClasses",
+          "viewName": undefined,
+        },
+        "typeNounSingular": "Data Type",
+        "uniqueFieldKey": "Name",
       },
-      "typeNounSingular": "Data Type",
-      "uniqueFieldKey": "Name",
-    }
+    ]
   }
   parentTypeOptions={
     Immutable.List [
@@ -65,30 +67,32 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
     index={0}
     onTypeChange={[Function]}
     onValueChange={[Function]}
-    parentDataType={
-      Object {
-        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-        "deleteHelpLinkTopic": "dataClass",
-        "dependencyText": "derived sample dependencies",
-        "descriptionPlural": "parent types",
-        "descriptionSingular": "parent type",
-        "importFileAction": "importData",
-        "inputColumnName": "Inputs/Data/First",
-        "inputTypeColumnName": "Inputs/Data/First/DataClass",
-        "inputTypeValueField": "rowId",
-        "insertColumnNamePrefix": "DataInputs/",
-        "instanceSchemaName": "exp.data",
-        "nounAsParentSingular": "Parent",
-        "nounPlural": "data",
-        "nounSingular": "data",
-        "typeListingSchemaQuery": Immutable.Record {
-          "schemaName": "exp",
-          "queryName": "DataClasses",
-          "viewName": undefined,
+    parentDataTypes={
+      Array [
+        Object {
+          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+          "deleteHelpLinkTopic": "dataClass",
+          "dependencyText": "derived sample dependencies",
+          "descriptionPlural": "parent types",
+          "descriptionSingular": "parent type",
+          "importFileAction": "importData",
+          "inputColumnName": "Inputs/Data/First",
+          "inputTypeColumnName": "Inputs/Data/First/DataClass",
+          "inputTypeValueField": "rowId",
+          "insertColumnNamePrefix": "DataInputs/",
+          "instanceSchemaName": "exp.data",
+          "nounAsParentSingular": "Parent",
+          "nounPlural": "data",
+          "nounSingular": "data",
+          "typeListingSchemaQuery": Immutable.Record {
+            "schemaName": "exp",
+            "queryName": "DataClasses",
+            "viewName": undefined,
+          },
+          "typeNounSingular": "Data Type",
+          "uniqueFieldKey": "Name",
         },
-        "typeNounSingular": "Data Type",
-        "uniqueFieldKey": "Name",
-      }
+      ]
     }
     parentTypeOptions={
       Immutable.List [
@@ -139,30 +143,32 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       }
       onTypeChange={[Function]}
       onValueChange={[Function]}
-      parentDataType={
-        Object {
-          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-          "deleteHelpLinkTopic": "dataClass",
-          "dependencyText": "derived sample dependencies",
-          "descriptionPlural": "parent types",
-          "descriptionSingular": "parent type",
-          "importFileAction": "importData",
-          "inputColumnName": "Inputs/Data/First",
-          "inputTypeColumnName": "Inputs/Data/First/DataClass",
-          "inputTypeValueField": "rowId",
-          "insertColumnNamePrefix": "DataInputs/",
-          "instanceSchemaName": "exp.data",
-          "nounAsParentSingular": "Parent",
-          "nounPlural": "data",
-          "nounSingular": "data",
-          "typeListingSchemaQuery": Immutable.Record {
-            "schemaName": "exp",
-            "queryName": "DataClasses",
-            "viewName": undefined,
+      parentDataTypes={
+        Array [
+          Object {
+            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+            "deleteHelpLinkTopic": "dataClass",
+            "dependencyText": "derived sample dependencies",
+            "descriptionPlural": "parent types",
+            "descriptionSingular": "parent type",
+            "importFileAction": "importData",
+            "inputColumnName": "Inputs/Data/First",
+            "inputTypeColumnName": "Inputs/Data/First/DataClass",
+            "inputTypeValueField": "rowId",
+            "insertColumnNamePrefix": "DataInputs/",
+            "instanceSchemaName": "exp.data",
+            "nounAsParentSingular": "Parent",
+            "nounPlural": "data",
+            "nounSingular": "data",
+            "typeListingSchemaQuery": Immutable.Record {
+              "schemaName": "exp",
+              "queryName": "DataClasses",
+              "viewName": undefined,
+            },
+            "typeNounSingular": "Data Type",
+            "uniqueFieldKey": "Name",
           },
-          "typeNounSingular": "Data Type",
-          "uniqueFieldKey": "Name",
-        }
+        ]
       }
       parentTypeOptions={
         Immutable.List [
@@ -227,30 +233,32 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         index={0}
         onTypeChange={[Function]}
         onValueChange={[Function]}
-        parentDataType={
-          Object {
-            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-            "deleteHelpLinkTopic": "dataClass",
-            "dependencyText": "derived sample dependencies",
-            "descriptionPlural": "parent types",
-            "descriptionSingular": "parent type",
-            "importFileAction": "importData",
-            "inputColumnName": "Inputs/Data/First",
-            "inputTypeColumnName": "Inputs/Data/First/DataClass",
-            "inputTypeValueField": "rowId",
-            "insertColumnNamePrefix": "DataInputs/",
-            "instanceSchemaName": "exp.data",
-            "nounAsParentSingular": "Parent",
-            "nounPlural": "data",
-            "nounSingular": "data",
-            "typeListingSchemaQuery": Immutable.Record {
-              "schemaName": "exp",
-              "queryName": "DataClasses",
-              "viewName": undefined,
+        parentDataTypes={
+          Array [
+            Object {
+              "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+              "deleteHelpLinkTopic": "dataClass",
+              "dependencyText": "derived sample dependencies",
+              "descriptionPlural": "parent types",
+              "descriptionSingular": "parent type",
+              "importFileAction": "importData",
+              "inputColumnName": "Inputs/Data/First",
+              "inputTypeColumnName": "Inputs/Data/First/DataClass",
+              "inputTypeValueField": "rowId",
+              "insertColumnNamePrefix": "DataInputs/",
+              "instanceSchemaName": "exp.data",
+              "nounAsParentSingular": "Parent",
+              "nounPlural": "data",
+              "nounSingular": "data",
+              "typeListingSchemaQuery": Immutable.Record {
+                "schemaName": "exp",
+                "queryName": "DataClasses",
+                "viewName": undefined,
+              },
+              "typeNounSingular": "Data Type",
+              "uniqueFieldKey": "Name",
             },
-            "typeNounSingular": "Data Type",
-            "uniqueFieldKey": "Name",
-          }
+          ]
         }
         parentTypeOptions={
           Immutable.List [
@@ -664,30 +672,32 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
   childNounSingular="Sample"
   editing={false}
   index={0}
-  parentDataType={
-    Object {
-      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-      "deleteHelpLinkTopic": "dataClass",
-      "dependencyText": "derived sample dependencies",
-      "descriptionPlural": "parent types",
-      "descriptionSingular": "parent type",
-      "importFileAction": "importData",
-      "inputColumnName": "Inputs/Data/First",
-      "inputTypeColumnName": "Inputs/Data/First/DataClass",
-      "inputTypeValueField": "rowId",
-      "insertColumnNamePrefix": "DataInputs/",
-      "instanceSchemaName": "exp.data",
-      "nounAsParentSingular": "Parent",
-      "nounPlural": "data",
-      "nounSingular": "data",
-      "typeListingSchemaQuery": Immutable.Record {
-        "schemaName": "exp",
-        "queryName": "DataClasses",
-        "viewName": undefined,
+  parentDataTypes={
+    Array [
+      Object {
+        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "deleteHelpLinkTopic": "dataClass",
+        "dependencyText": "derived sample dependencies",
+        "descriptionPlural": "parent types",
+        "descriptionSingular": "parent type",
+        "importFileAction": "importData",
+        "inputColumnName": "Inputs/Data/First",
+        "inputTypeColumnName": "Inputs/Data/First/DataClass",
+        "inputTypeValueField": "rowId",
+        "insertColumnNamePrefix": "DataInputs/",
+        "instanceSchemaName": "exp.data",
+        "nounAsParentSingular": "Parent",
+        "nounPlural": "data",
+        "nounSingular": "data",
+        "typeListingSchemaQuery": Immutable.Record {
+          "schemaName": "exp",
+          "queryName": "DataClasses",
+          "viewName": undefined,
+        },
+        "typeNounSingular": "Data Type",
+        "uniqueFieldKey": "Name",
       },
-      "typeNounSingular": "Data Type",
-      "uniqueFieldKey": "Name",
-    }
+    ]
   }
   parentTypeOptions={
     Immutable.List [
@@ -724,30 +734,32 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
     index={0}
     onTypeChange={[Function]}
     onValueChange={[Function]}
-    parentDataType={
-      Object {
-        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-        "deleteHelpLinkTopic": "dataClass",
-        "dependencyText": "derived sample dependencies",
-        "descriptionPlural": "parent types",
-        "descriptionSingular": "parent type",
-        "importFileAction": "importData",
-        "inputColumnName": "Inputs/Data/First",
-        "inputTypeColumnName": "Inputs/Data/First/DataClass",
-        "inputTypeValueField": "rowId",
-        "insertColumnNamePrefix": "DataInputs/",
-        "instanceSchemaName": "exp.data",
-        "nounAsParentSingular": "Parent",
-        "nounPlural": "data",
-        "nounSingular": "data",
-        "typeListingSchemaQuery": Immutable.Record {
-          "schemaName": "exp",
-          "queryName": "DataClasses",
-          "viewName": undefined,
+    parentDataTypes={
+      Array [
+        Object {
+          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+          "deleteHelpLinkTopic": "dataClass",
+          "dependencyText": "derived sample dependencies",
+          "descriptionPlural": "parent types",
+          "descriptionSingular": "parent type",
+          "importFileAction": "importData",
+          "inputColumnName": "Inputs/Data/First",
+          "inputTypeColumnName": "Inputs/Data/First/DataClass",
+          "inputTypeValueField": "rowId",
+          "insertColumnNamePrefix": "DataInputs/",
+          "instanceSchemaName": "exp.data",
+          "nounAsParentSingular": "Parent",
+          "nounPlural": "data",
+          "nounSingular": "data",
+          "typeListingSchemaQuery": Immutable.Record {
+            "schemaName": "exp",
+            "queryName": "DataClasses",
+            "viewName": undefined,
+          },
+          "typeNounSingular": "Data Type",
+          "uniqueFieldKey": "Name",
         },
-        "typeNounSingular": "Data Type",
-        "uniqueFieldKey": "Name",
-      }
+      ]
     }
     parentTypeOptions={
       Immutable.List [
@@ -798,30 +810,32 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       }
       onTypeChange={[Function]}
       onValueChange={[Function]}
-      parentDataType={
-        Object {
-          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-          "deleteHelpLinkTopic": "dataClass",
-          "dependencyText": "derived sample dependencies",
-          "descriptionPlural": "parent types",
-          "descriptionSingular": "parent type",
-          "importFileAction": "importData",
-          "inputColumnName": "Inputs/Data/First",
-          "inputTypeColumnName": "Inputs/Data/First/DataClass",
-          "inputTypeValueField": "rowId",
-          "insertColumnNamePrefix": "DataInputs/",
-          "instanceSchemaName": "exp.data",
-          "nounAsParentSingular": "Parent",
-          "nounPlural": "data",
-          "nounSingular": "data",
-          "typeListingSchemaQuery": Immutable.Record {
-            "schemaName": "exp",
-            "queryName": "DataClasses",
-            "viewName": undefined,
+      parentDataTypes={
+        Array [
+          Object {
+            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+            "deleteHelpLinkTopic": "dataClass",
+            "dependencyText": "derived sample dependencies",
+            "descriptionPlural": "parent types",
+            "descriptionSingular": "parent type",
+            "importFileAction": "importData",
+            "inputColumnName": "Inputs/Data/First",
+            "inputTypeColumnName": "Inputs/Data/First/DataClass",
+            "inputTypeValueField": "rowId",
+            "insertColumnNamePrefix": "DataInputs/",
+            "instanceSchemaName": "exp.data",
+            "nounAsParentSingular": "Parent",
+            "nounPlural": "data",
+            "nounSingular": "data",
+            "typeListingSchemaQuery": Immutable.Record {
+              "schemaName": "exp",
+              "queryName": "DataClasses",
+              "viewName": undefined,
+            },
+            "typeNounSingular": "Data Type",
+            "uniqueFieldKey": "Name",
           },
-          "typeNounSingular": "Data Type",
-          "uniqueFieldKey": "Name",
-        }
+        ]
       }
       parentTypeOptions={
         Immutable.List [
@@ -886,30 +900,32 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         index={0}
         onTypeChange={[Function]}
         onValueChange={[Function]}
-        parentDataType={
-          Object {
-            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-            "deleteHelpLinkTopic": "dataClass",
-            "dependencyText": "derived sample dependencies",
-            "descriptionPlural": "parent types",
-            "descriptionSingular": "parent type",
-            "importFileAction": "importData",
-            "inputColumnName": "Inputs/Data/First",
-            "inputTypeColumnName": "Inputs/Data/First/DataClass",
-            "inputTypeValueField": "rowId",
-            "insertColumnNamePrefix": "DataInputs/",
-            "instanceSchemaName": "exp.data",
-            "nounAsParentSingular": "Parent",
-            "nounPlural": "data",
-            "nounSingular": "data",
-            "typeListingSchemaQuery": Immutable.Record {
-              "schemaName": "exp",
-              "queryName": "DataClasses",
-              "viewName": undefined,
+        parentDataTypes={
+          Array [
+            Object {
+              "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+              "deleteHelpLinkTopic": "dataClass",
+              "dependencyText": "derived sample dependencies",
+              "descriptionPlural": "parent types",
+              "descriptionSingular": "parent type",
+              "importFileAction": "importData",
+              "inputColumnName": "Inputs/Data/First",
+              "inputTypeColumnName": "Inputs/Data/First/DataClass",
+              "inputTypeValueField": "rowId",
+              "insertColumnNamePrefix": "DataInputs/",
+              "instanceSchemaName": "exp.data",
+              "nounAsParentSingular": "Parent",
+              "nounPlural": "data",
+              "nounSingular": "data",
+              "typeListingSchemaQuery": Immutable.Record {
+                "schemaName": "exp",
+                "queryName": "DataClasses",
+                "viewName": undefined,
+              },
+              "typeNounSingular": "Data Type",
+              "uniqueFieldKey": "Name",
             },
-            "typeNounSingular": "Data Type",
-            "uniqueFieldKey": "Name",
-          }
+          ]
         }
         parentTypeOptions={
           Immutable.List [
@@ -992,33 +1008,35 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
   editing={false}
   index={0}
   onRemoveParentType={[Function]}
-  parentDataType={
-    Object {
-      "appUrlPrefixParts": Array [
-        "sources",
-      ],
-      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-      "deleteHelpLinkTopic": "dataClass",
-      "dependencyText": "derived sample dependencies",
-      "descriptionPlural": "parent types",
-      "descriptionSingular": "parent type",
-      "importFileAction": "importData",
-      "inputColumnName": "Inputs/Data/First",
-      "inputTypeColumnName": "Inputs/Data/First/DataClass",
-      "inputTypeValueField": "rowId",
-      "insertColumnNamePrefix": "DataInputs/",
-      "instanceSchemaName": "exp.data",
-      "nounAsParentSingular": "Parent",
-      "nounPlural": "data",
-      "nounSingular": "data",
-      "typeListingSchemaQuery": Immutable.Record {
-        "schemaName": "exp",
-        "queryName": "DataClasses",
-        "viewName": undefined,
+  parentDataTypes={
+    Array [
+      Object {
+        "appUrlPrefixParts": Array [
+          "sources",
+        ],
+        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "deleteHelpLinkTopic": "dataClass",
+        "dependencyText": "derived sample dependencies",
+        "descriptionPlural": "parent types",
+        "descriptionSingular": "parent type",
+        "importFileAction": "importData",
+        "inputColumnName": "Inputs/Data/First",
+        "inputTypeColumnName": "Inputs/Data/First/DataClass",
+        "inputTypeValueField": "rowId",
+        "insertColumnNamePrefix": "DataInputs/",
+        "instanceSchemaName": "exp.data",
+        "nounAsParentSingular": "Parent",
+        "nounPlural": "data",
+        "nounSingular": "data",
+        "typeListingSchemaQuery": Immutable.Record {
+          "schemaName": "exp",
+          "queryName": "DataClasses",
+          "viewName": undefined,
+        },
+        "typeNounSingular": "Data Type",
+        "uniqueFieldKey": "Name",
       },
-      "typeNounSingular": "Data Type",
-      "uniqueFieldKey": "Name",
-    }
+    ]
   }
   parentLSIDs={
     Array [
@@ -1063,33 +1081,35 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
     onRemoveParentType={[Function]}
     onTypeChange={[Function]}
     onValueChange={[Function]}
-    parentDataType={
-      Object {
-        "appUrlPrefixParts": Array [
-          "sources",
-        ],
-        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-        "deleteHelpLinkTopic": "dataClass",
-        "dependencyText": "derived sample dependencies",
-        "descriptionPlural": "parent types",
-        "descriptionSingular": "parent type",
-        "importFileAction": "importData",
-        "inputColumnName": "Inputs/Data/First",
-        "inputTypeColumnName": "Inputs/Data/First/DataClass",
-        "inputTypeValueField": "rowId",
-        "insertColumnNamePrefix": "DataInputs/",
-        "instanceSchemaName": "exp.data",
-        "nounAsParentSingular": "Parent",
-        "nounPlural": "data",
-        "nounSingular": "data",
-        "typeListingSchemaQuery": Immutable.Record {
-          "schemaName": "exp",
-          "queryName": "DataClasses",
-          "viewName": undefined,
+    parentDataTypes={
+      Array [
+        Object {
+          "appUrlPrefixParts": Array [
+            "sources",
+          ],
+          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+          "deleteHelpLinkTopic": "dataClass",
+          "dependencyText": "derived sample dependencies",
+          "descriptionPlural": "parent types",
+          "descriptionSingular": "parent type",
+          "importFileAction": "importData",
+          "inputColumnName": "Inputs/Data/First",
+          "inputTypeColumnName": "Inputs/Data/First/DataClass",
+          "inputTypeValueField": "rowId",
+          "insertColumnNamePrefix": "DataInputs/",
+          "instanceSchemaName": "exp.data",
+          "nounAsParentSingular": "Parent",
+          "nounPlural": "data",
+          "nounSingular": "data",
+          "typeListingSchemaQuery": Immutable.Record {
+            "schemaName": "exp",
+            "queryName": "DataClasses",
+            "viewName": undefined,
+          },
+          "typeNounSingular": "Data Type",
+          "uniqueFieldKey": "Name",
         },
-        "typeNounSingular": "Data Type",
-        "uniqueFieldKey": "Name",
-      }
+      ]
     }
     parentLSIDs={
       Array [
@@ -1185,33 +1205,35 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       onRemoveParentType={[Function]}
       onTypeChange={[Function]}
       onValueChange={[Function]}
-      parentDataType={
-        Object {
-          "appUrlPrefixParts": Array [
-            "sources",
-          ],
-          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-          "deleteHelpLinkTopic": "dataClass",
-          "dependencyText": "derived sample dependencies",
-          "descriptionPlural": "parent types",
-          "descriptionSingular": "parent type",
-          "importFileAction": "importData",
-          "inputColumnName": "Inputs/Data/First",
-          "inputTypeColumnName": "Inputs/Data/First/DataClass",
-          "inputTypeValueField": "rowId",
-          "insertColumnNamePrefix": "DataInputs/",
-          "instanceSchemaName": "exp.data",
-          "nounAsParentSingular": "Parent",
-          "nounPlural": "data",
-          "nounSingular": "data",
-          "typeListingSchemaQuery": Immutable.Record {
-            "schemaName": "exp",
-            "queryName": "DataClasses",
-            "viewName": undefined,
+      parentDataTypes={
+        Array [
+          Object {
+            "appUrlPrefixParts": Array [
+              "sources",
+            ],
+            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+            "deleteHelpLinkTopic": "dataClass",
+            "dependencyText": "derived sample dependencies",
+            "descriptionPlural": "parent types",
+            "descriptionSingular": "parent type",
+            "importFileAction": "importData",
+            "inputColumnName": "Inputs/Data/First",
+            "inputTypeColumnName": "Inputs/Data/First/DataClass",
+            "inputTypeValueField": "rowId",
+            "insertColumnNamePrefix": "DataInputs/",
+            "instanceSchemaName": "exp.data",
+            "nounAsParentSingular": "Parent",
+            "nounPlural": "data",
+            "nounSingular": "data",
+            "typeListingSchemaQuery": Immutable.Record {
+              "schemaName": "exp",
+              "queryName": "DataClasses",
+              "viewName": undefined,
+            },
+            "typeNounSingular": "Data Type",
+            "uniqueFieldKey": "Name",
           },
-          "typeNounSingular": "Data Type",
-          "uniqueFieldKey": "Name",
-        }
+        ]
       }
       parentLSIDs={
         Array [
@@ -1321,33 +1343,35 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         onRemoveParentType={[Function]}
         onTypeChange={[Function]}
         onValueChange={[Function]}
-        parentDataType={
-          Object {
-            "appUrlPrefixParts": Array [
-              "sources",
-            ],
-            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-            "deleteHelpLinkTopic": "dataClass",
-            "dependencyText": "derived sample dependencies",
-            "descriptionPlural": "parent types",
-            "descriptionSingular": "parent type",
-            "importFileAction": "importData",
-            "inputColumnName": "Inputs/Data/First",
-            "inputTypeColumnName": "Inputs/Data/First/DataClass",
-            "inputTypeValueField": "rowId",
-            "insertColumnNamePrefix": "DataInputs/",
-            "instanceSchemaName": "exp.data",
-            "nounAsParentSingular": "Parent",
-            "nounPlural": "data",
-            "nounSingular": "data",
-            "typeListingSchemaQuery": Immutable.Record {
-              "schemaName": "exp",
-              "queryName": "DataClasses",
-              "viewName": undefined,
+        parentDataTypes={
+          Array [
+            Object {
+              "appUrlPrefixParts": Array [
+                "sources",
+              ],
+              "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+              "deleteHelpLinkTopic": "dataClass",
+              "dependencyText": "derived sample dependencies",
+              "descriptionPlural": "parent types",
+              "descriptionSingular": "parent type",
+              "importFileAction": "importData",
+              "inputColumnName": "Inputs/Data/First",
+              "inputTypeColumnName": "Inputs/Data/First/DataClass",
+              "inputTypeValueField": "rowId",
+              "insertColumnNamePrefix": "DataInputs/",
+              "instanceSchemaName": "exp.data",
+              "nounAsParentSingular": "Parent",
+              "nounPlural": "data",
+              "nounSingular": "data",
+              "typeListingSchemaQuery": Immutable.Record {
+                "schemaName": "exp",
+                "queryName": "DataClasses",
+                "viewName": undefined,
+              },
+              "typeNounSingular": "Data Type",
+              "uniqueFieldKey": "Name",
             },
-            "typeNounSingular": "Data Type",
-            "uniqueFieldKey": "Name",
-          }
+          ]
         }
         parentLSIDs={
           Array [

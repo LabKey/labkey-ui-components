@@ -48,7 +48,7 @@ describe('<SingleParentEntityPanel>', () => {
         const wrapper = mount(
             <SingleParentEntityPanel
                 childNounSingular="Sample"
-                parentDataType={DataClassDataType}
+                parentDataTypes={[DataClassDataType]}
                 parentLSIDs={undefined}
                 parentTypeOptions={parentTypeOptions}
                 parentTypeQueryName={undefined}
@@ -64,7 +64,7 @@ describe('<SingleParentEntityPanel>', () => {
         const wrapper = mount(
             <SingleParentEntityPanel
                 childNounSingular="Sample"
-                parentDataType={DataClassDataType}
+                parentDataTypes={[DataClassDataType]}
                 parentLSIDs={undefined}
                 parentTypeOptions={parentTypeOptions}
                 parentTypeQueryName={undefined}
@@ -80,7 +80,7 @@ describe('<SingleParentEntityPanel>', () => {
         const wrapper = mount(
             <SingleParentEntityPanel
                 childNounSingular="Sample"
-                parentDataType={{ ...DataClassDataType, appUrlPrefixParts: ['sources'] }}
+                parentDataTypes={[{ ...DataClassDataType, appUrlPrefixParts: ['sources'] }]}
                 parentTypeQueryName="Second Source"
                 parentLSIDs={['url:lsid:blah']}
                 parentTypeOptions={parentTypeOptions}

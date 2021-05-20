@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 import { Button, Panel } from 'react-bootstrap';
 
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
@@ -34,7 +34,7 @@ interface Props {
     childName: string;
     childNounSingular: string;
     childQueryInfo: QueryInfo;
-    childData: Map<string, any>;
+    childData: Record<string, any>;
     onUpdate?: () => void;
     onEditToggle?: (editing: boolean) => void;
     parentDataTypes: EntityDataType[];  // Note: the first data type in the array will be used for labels, nouns, etc...

@@ -1,9 +1,8 @@
 import { List, Map, Set } from 'immutable';
 
-import { EditableColumnMetadata, naturalSort, QueryGridModel, QueryInfo, SchemaQuery } from '../../..';
+import { EditableColumnMetadata, naturalSort, QueryInfo, SchemaQuery } from '../../..';
 import { DELIMITER } from '../forms/input/SelectInput';
 
-import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 import { getCurrentProductName } from '../../app/utils';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
@@ -43,18 +42,18 @@ export function parentValuesDiffer(
 export function getInitialParentChoices(
     parentTypeOptions: List<IEntityTypeOption>,
     parentDataType: EntityDataType,
-    childData: Map<string, any>
+    childData: Record<string, any>
 ): List<EntityChoice> {
     let parentValuesByType = Map<string, EntityChoice>();
 
-    if (childData.size > 0) {
-        const inputs: List<Map<string, any>> = childData.get(parentDataType.inputColumnName);
-        const inputTypes: List<Map<string, any>> = childData.get(parentDataType.inputTypeColumnName);
+    if (Object.keys(childData).length > 0) {
+        const inputs: Record<string, any>[] = childData[parentDataType.inputColumnName];
+        const inputTypes: Record<string, any>[] = childData[parentDataType.inputTypeColumnName];
         if (inputs && inputTypes) {
             // group the inputs by parent type so we can show each in its own grid.
             inputTypes.forEach((typeMap, index) => {
                 // I'm not sure when the type could have more than one value here, but 'value' is an array
-                const typeValue = typeMap.getIn(['value', 0]);
+                const typeValue = typeMap['value']?.[0];
                 const typeOption = parentTypeOptions.find(
                     option => option[parentDataType.inputTypeValueField] === typeValue
                 );
@@ -69,7 +68,7 @@ export function getInitialParentChoices(
                         });
                     }
                     const updatedChoice = parentValuesByType.get(typeOption.query);
-                    updatedChoice.ids.push(inputs.getIn([index, 'value']));
+                    updatedChoice.ids.push(inputs[index]?.['value']);
                     parentValuesByType = parentValuesByType.set(typeOption.query, updatedChoice);
                 }
             });
@@ -82,7 +81,7 @@ export function getInitialParentChoices(
 export function getUpdatedRowForParentChanges(
     originalParents: List<EntityChoice>,
     currentParents: List<EntityChoice>,
-    childData: Map<string, any>,
+    childData: Record<string, any>,
     childQueryInfo?: QueryInfo
 ): Record<string, any> {
     const definedCurrentParents = currentParents
@@ -111,7 +110,7 @@ export function getUpdatedRowForParentChanges(
     }
 
     childQueryInfo.getPkCols().forEach(pkCol => {
-        const pkVal = childData.getIn([pkCol.fieldKey, 'value']);
+        const pkVal = childData[pkCol.fieldKey]?.['value'];
 
         if (pkVal !== undefined && pkVal !== null) {
             updatedValues[pkCol.fieldKey] = pkVal;

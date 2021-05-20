@@ -47,8 +47,8 @@ export function getInitialParentChoices(
     let parentValuesByType = Map<string, EntityChoice>();
 
     if (Object.keys(childData).length > 0) {
-        const inputs: Record<string, any>[] = childData[parentDataType.inputColumnName];
-        const inputTypes: Record<string, any>[] = childData[parentDataType.inputTypeColumnName];
+        const inputs: Array<Record<string, any>> = childData[parentDataType.inputColumnName];
+        const inputTypes: Array<Record<string, any>> = childData[parentDataType.inputTypeColumnName];
         if (inputs && inputTypes) {
             // group the inputs by parent type so we can show each in its own grid.
             inputTypes.forEach((typeMap, index) => {
@@ -98,7 +98,8 @@ export function getUpdatedRowForParentChanges(
         definedCurrentParents.forEach(parentChoice => {
             // Label may seem wrong here, but it is the same as query when extracted from the original query to get
             // the entity types.
-            updatedValues[parentChoice.type.entityDataType.insertColumnNamePrefix + parentChoice.type.label] = parentChoice.value || null;
+            updatedValues[parentChoice.type.entityDataType.insertColumnNamePrefix + parentChoice.type.label] =
+                parentChoice.value || null;
             definedParents = definedParents.add(parentChoice.type.label);
         });
         // Issue 40194: for any original parents that have been removed, send null values so they will actually be removed

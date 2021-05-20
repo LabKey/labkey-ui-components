@@ -14,7 +14,8 @@ import {
     getQueryGridModel,
     LoadingSpinner,
     Progress,
-    QueryGridModel, QueryInfo,
+    QueryGridModel,
+    QueryInfo,
     resolveErrorMessage,
     updateRows,
 } from '../../..';
@@ -37,7 +38,7 @@ interface Props {
     childData: Record<string, any>;
     onUpdate?: () => void;
     onEditToggle?: (editing: boolean) => void;
-    parentDataTypes: EntityDataType[];  // Note: the first data type in the array will be used for labels, nouns, etc...
+    parentDataTypes: EntityDataType[]; // Note: the first data type in the array will be used for labels, nouns, etc...
     submitText?: string;
     title: string;
 }
@@ -77,18 +78,21 @@ export class ParentEntityEditPanel extends Component<Props, State> {
     init = async (): Promise<void> => {
         const { parentDataTypes, childData } = this.props;
 
-        let parentTypeOptions= List<IEntityTypeOption>();
+        let parentTypeOptions = List<IEntityTypeOption>();
         let originalParents = List<EntityChoice>();
 
         for (const parentDataType of parentDataTypes) {
-            let {typeListingSchemaQuery} = parentDataType;
+            const { typeListingSchemaQuery } = parentDataType;
 
             try {
                 const options = await getEntityTypeOptions(parentDataType);
-                parentTypeOptions = parentTypeOptions.concat(options.get(typeListingSchemaQuery.queryName)) as List<IEntityTypeOption>;
-                originalParents = originalParents.concat(getInitialParentChoices(parentTypeOptions, parentDataType, childData)) as List<EntityChoice>;
-            }
-            catch (reason) {
+                parentTypeOptions = parentTypeOptions.concat(options.get(typeListingSchemaQuery.queryName)) as List<
+                    IEntityTypeOption
+                >;
+                originalParents = originalParents.concat(
+                    getInitialParentChoices(parentTypeOptions, parentDataType, childData)
+                ) as List<EntityChoice>;
+            } catch (reason) {
                 this.setState({
                     error: getActionErrorMessage(
                         'Unable to load ' + parentDataType.descriptionSingular + ' data.',

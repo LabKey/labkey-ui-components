@@ -50,11 +50,13 @@ interface Props {
 type SingleParentEntityProps = Props & InjectedQueryModels & OwnProps;
 
 const getChosenTypeSchema = (chosenType: string, parentTypeOptions?: List<IEntityTypeOption>): string => {
-    const parentDataType = parentTypeOptions.filter((type) => {
-        return type.label === chosenType;
-    }).first() as IEntityTypeOption;
+    const parentDataType = parentTypeOptions
+        .filter(type => {
+            return type.label === chosenType;
+        })
+        .first() as IEntityTypeOption;
     return parentDataType.schema;
-}
+};
 
 class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
     componentDidMount(): void {
@@ -108,7 +110,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
         let parentSchemaQuery;
         if (chosenType) {
             const schema = getChosenTypeSchema(chosenType, parentTypeOptions);
-            parentSchemaQuery = SchemaQuery.create(schema, chosenType)
+            parentSchemaQuery = SchemaQuery.create(schema, chosenType);
         }
 
         const lcTypeName = chosenType ? chosenType.toLowerCase() : undefined;

@@ -11,7 +11,7 @@ import {
     makeQueryInfo,
     QueryGridModel,
     QueryInfo,
-    SchemaQuery
+    SchemaQuery,
 } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import { initUnitTestMocks } from '../../testHelperMocks';
@@ -27,7 +27,7 @@ describe('<ParentEntityEditPanel>', () => {
     const queryInfo = new QueryInfo({
         schemaName: 'samples',
         queryName: 'example',
-    })
+    });
 
     test('error state', () => {
         const panel = mount(

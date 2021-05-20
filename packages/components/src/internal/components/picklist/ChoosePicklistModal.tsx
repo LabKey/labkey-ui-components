@@ -10,6 +10,9 @@ import { addSamplesToPicklist, getPicklistCountsBySampleType, getPicklists, Samp
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
+import { createNotification } from '../notifications/actions';
+import { AppURL } from '../../url/AppURL';
+import { PICKLIST_KEY } from '../../app/constants';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -39,32 +42,16 @@ const PicklistList: FC<PicklistListProps> = memo((props) => {
     );
 });
 
+interface PicklistItemsSummaryDisplayProps {
+    countsByType: SampleTypeCount[]
+}
+
 interface PicklistItemsSummaryProps {
     picklist: Picklist
 }
 
-// TODO refactor for testing
-const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo((props) => {
-    const {picklist} = props;
-    const [countsByType, setCountsByType] = useState<SampleTypeCount[]>(undefined);
-    const [loadingCounts, setLoadingCounts] = useState<boolean>(true);
-
-    useEffect(() => {
-        getPicklistCountsBySampleType(picklist.name)
-            .then(counts => {
-                setCountsByType(counts);
-                setLoadingCounts(false);
-            })
-            .catch(reason => {
-                setCountsByType([]);
-                setLoadingCounts(false);
-            });
-
-    }, [picklist, getPicklistCountsBySampleType, setCountsByType, setLoadingCounts]);
-
-    if (loadingCounts) {
-        return <LoadingSpinner/>;
-    }
+const PicklistItemsSummaryDisplay: FC<PicklistItemsSummaryDisplayProps & PicklistItemsSummaryProps> = memo((props) => {
+    const {countsByType, picklist} = props;
 
     const summaryData = [];
     if (countsByType.length === 0) {
@@ -94,6 +81,31 @@ const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo((props) => {
             {summaryData}
         </div>
     );
+});
+
+const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo((props) => {
+    const {picklist} = props;
+    const [countsByType, setCountsByType] = useState<SampleTypeCount[]>(undefined);
+    const [loadingCounts, setLoadingCounts] = useState<boolean>(true);
+
+    useEffect(() => {
+        getPicklistCountsBySampleType(picklist.name)
+            .then(counts => {
+                setCountsByType(counts);
+                setLoadingCounts(false);
+            })
+            .catch(reason => {
+                setCountsByType([]);
+                setLoadingCounts(false);
+            });
+
+    }, [picklist, getPicklistCountsBySampleType, setCountsByType, setLoadingCounts]);
+
+    if (loadingCounts) {
+        return <LoadingSpinner/>;
+    }
+
+    return <PicklistItemsSummaryDisplay {...props} countsByType={countsByType}/>;
 });
 
 interface PicklistDetailsProps {
@@ -134,35 +146,55 @@ const PicklistDetails: FC<PicklistDetailsProps> = memo((props) => {
 });
 
 
-interface ChooseItemModalProps {
-    onCancel: (cancelToCreate?: boolean) => void;
-    afterAddToPicklist: (item: Picklist, numAdded: number) => void;
-    user: User;
-    selectionKey: string;
-    numSelected: number;
+function createAddedToPicklistNotification(picklist: Picklist, numAdded: number, numSelected: number): void {
+    let numAddedNotification;
+    if (numAdded == 0) {
+        numAddedNotification = 'No samples added';
+    } else {
+        numAddedNotification = 'Successfully added ' + Utils.pluralize(numAdded, 'sample', 'samples');
+    }
+    let numNotAddedNotification = null;
+    if (numAdded < numSelected) {
+        const notAdded = (numSelected - numAdded);
+        numNotAddedNotification = ' ' + Utils.pluralize(notAdded, 'sample', 'samples');
+        numNotAddedNotification += notAdded === 1 ? ' was ' : ' were ';
+        numNotAddedNotification += 'already in the list.';
+    }
+    createNotification({
+        message: () => {
+            return (
+                <>
+                    {numAddedNotification} to picklist "<a
+                    href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>{picklist.name}</a>".
+                    {numNotAddedNotification}
+                </>
+            );
+        },
+        alertClass: numAdded === 0 ? 'info' : 'success'
+    });
 }
 
-// TODO refactor for testing
-export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
-    const {onCancel, afterAddToPicklist, user, selectionKey, numSelected} = props;
+interface ChoosePicklistModalDisplayProps {
+    picklists: Picklist[],
+    picklistLoadError: ReactNode,
+    loading: boolean
+}
+
+export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePicklistModalDisplayProps> = memo((props) => {
+    const {
+        picklists,
+        loading,
+        picklistLoadError,
+        onCancel,
+        afterAddToPicklist,
+        user,
+        selectionKey,
+        numSelected
+    } = props;
     const [search, setSearch] = useState<string>('');
     const [error, setError] = useState<string>(undefined);
-    const [items, setItems] = useState<Picklist[]>([]);
     const [submitting, setSubmitting] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(true);
 
-    useEffect(() => {
-        getPicklists()
-            .then(picklists => {
-                setItems(picklists);
-                setLoading(false);
-            })
-            .catch(reason => {
-                setError('There was a problem retrieving the picklist data. ' + resolveErrorMessage(reason));
-                setLoading(false);
-            });
-
-    }, [getPicklists, setItems, setError, setLoading]);
 
     const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value.trim().toLowerCase());
@@ -170,11 +202,11 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
 
     const filteredItems = useMemo<Picklist[]>(() => {
         if (search.trim() !== '') {
-            return items.filter(item => item.name.toLowerCase().indexOf(search) > -1);
+            return picklists.filter(item => item.name.toLowerCase().indexOf(search) > -1);
         }
 
-        return items;
-    }, [search, items]);
+        return picklists;
+    }, [search, picklists]);
 
     const [myItems, teamItems] = useMemo(() => {
         const mine = [];
@@ -193,13 +225,15 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
     }, [filteredItems]);
 
     const [activeItem, setActiveItem] = useState<Picklist>(undefined);
+
     const onAddClicked = useCallback(async () => {
         setSubmitting(true);
         try {
             const insertResponse = await addSamplesToPicklist(activeItem.name, selectionKey);
             setError(undefined);
             setSubmitting(false);
-            afterAddToPicklist(activeItem, insertResponse.rows.length);
+            createAddedToPicklistNotification(activeItem, insertResponse.rows.length, numSelected);
+            afterAddToPicklist();
         }
         catch (e) {
             setSubmitting(false);
@@ -247,7 +281,7 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
             </Modal.Header>
 
             <Modal.Body>
-                <Alert bsStyle="danger">{error}</Alert>
+                <Alert bsStyle="danger">{picklistLoadError ?? error}</Alert>
                 <div className="row">
                     <div className={'col-md-12'}>
                         <Alert bsStyle="info">
@@ -319,6 +353,37 @@ export const ChoosePicklistModal: FC<ChooseItemModalProps> = memo((props) => {
                 </div>
             </Modal.Footer>
         </Modal>
+    );
+});
+
+interface ChoosePicklistModalProps {
+    onCancel: (cancelToCreate?: boolean) => void;
+    afterAddToPicklist: () => void;
+    user: User;
+    selectionKey: string;
+    numSelected: number;
+}
+
+export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo((props) => {
+    const [error, setError] = useState<string>(undefined);
+    const [items, setItems] = useState<Picklist[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        getPicklists()
+            .then(picklists => {
+                setItems(picklists);
+                setLoading(false);
+            })
+            .catch(reason => {
+                setError('There was a problem retrieving the picklist data. ' + resolveErrorMessage(reason));
+                setLoading(false);
+            });
+
+    }, [getPicklists, setItems, setError, setLoading]);
+
+    return (
+        <ChoosePicklistModalDisplay {...props} picklists={items} picklistLoadError={error} loading={loading}/>
     );
 });
 

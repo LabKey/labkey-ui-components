@@ -49,7 +49,8 @@ interface Props {
 
 type SingleParentEntityProps = Props & InjectedQueryModels & OwnProps;
 
-const getChosenTypeSchema = (chosenType: string, parentTypeOptions?: List<IEntityTypeOption>): string => {
+const getChosenTypeSchema = (chosenType: string, parentTypeOptions: List<IEntityTypeOption>): string => {
+
     const parentDataType = parentTypeOptions
         .filter(type => {
             return type.label === chosenType;
@@ -108,7 +109,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
         }
 
         let parentSchemaQuery;
-        if (chosenType) {
+        if (chosenType && parentTypeOptions) {
             const schema = getChosenTypeSchema(chosenType, parentTypeOptions);
             parentSchemaQuery = SchemaQuery.create(schema, chosenType);
         }
@@ -148,7 +149,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         />
                     )}
                 </div>
-                {lcTypeName && (
+                {lcTypeName && parentSchemaQuery && (
                     <QuerySelect
                         componentId={'parentEntityValue_' + lcTypeName} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
                         containerClass="row"
@@ -255,8 +256,8 @@ export const SingleParentEntityPanel: FC<Props> = memo(props => {
     const [chosenValue, setChosenValue] = useState<string | string[]>(props.chosenValue);
 
     const queryConfigs: QueryConfigMap = useMemo(() => {
-        // Without a chosenType we cannot determine the underlying SchemaQuery
-        if (!chosenType) {
+        // Without a chosenType or parentTypeOptions we cannot determine the underlying SchemaQuery
+        if (!chosenType || !parentTypeOptions) {
             return {};
         }
 

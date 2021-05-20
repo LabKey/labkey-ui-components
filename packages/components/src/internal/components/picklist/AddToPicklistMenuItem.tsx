@@ -32,11 +32,11 @@ export const AddToPicklistMenuItem: FC<Props> = props => {
     };
 
     const closeCreatePicklist = () => {
-        setShowChoosePicklist(false);
+        setShowCreatePicklist(false);
     };
 
     const afterCreatePicklist = () => {
-        setShowChoosePicklist(false);
+        setShowCreatePicklist(false);
     };
 
     const onClick = () => {
@@ -50,6 +50,8 @@ export const AddToPicklistMenuItem: FC<Props> = props => {
     }
 
     const useSelection = queryModel !== undefined;
+    const id = queryModel?.id;
+    const numSelected = queryModel ? queryModel.selections?.size : sampleIds?.length;
 
     return (
         <>
@@ -71,14 +73,14 @@ export const AddToPicklistMenuItem: FC<Props> = props => {
                 onCancel={closeAddToPicklist}
                 afterAddToPicklist={afterAddToPicklist}
                 user={user}
-                selectionKey={queryModel?.id}
-                numSelected={queryModel?.selections?.size ?? sampleIds.length}
+                selectionKey={id}
+                numSelected={numSelected}
                 sampleIds={sampleIds}
             />
             }
             <PicklistEditModal
-                selectionKey={queryModel?.id}
-                selectedQuantity={queryModel?.selections?.size ?? sampleIds.length}
+                selectionKey={id}
+                selectedQuantity={numSelected}
                 sampleIds={sampleIds}
                 show={showCreatePicklist}
                 onFinish={afterCreatePicklist}

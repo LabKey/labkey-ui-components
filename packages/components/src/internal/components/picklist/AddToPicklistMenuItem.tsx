@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { PicklistEditModal } from './PicklistEditModal';
 import { ChoosePicklistModal } from './ChoosePicklistModal';
@@ -15,35 +15,35 @@ interface Props {
     user: User;
 }
 
-export const AddToPicklistMenuItem: FC<Props> = props => {
+export const AddToPicklistMenuItem: FC<Props> = memo(props => {
     const {sampleIds, key, itemText, user, queryModel} = props;
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
 
-    const closeAddToPicklist = (closeToCreate?: boolean) => {
+    const closeAddToPicklist = useCallback((closeToCreate?: boolean) => {
         setShowChoosePicklist(false);
         if (closeToCreate) {
             setShowCreatePicklist(true);
         }
-    };
+    }, [setShowChoosePicklist]);
 
-    const afterAddToPicklist = () => {
+    const afterAddToPicklist = useCallback(() => {
         setShowChoosePicklist(false);
-    };
+    }, [setShowChoosePicklist]);
 
-    const closeCreatePicklist = () => {
+    const closeCreatePicklist = useCallback(() => {
         setShowCreatePicklist(false);
-    };
+    }, [setShowCreatePicklist]);
 
-    const afterCreatePicklist = () => {
+    const afterCreatePicklist = useCallback(() => {
         setShowCreatePicklist(false);
-    };
+    }, [setShowCreatePicklist]);
 
-    const onClick = () => {
+    const onClick = useCallback(() => {
         if (!queryModel || queryModel.selections.size > 0) {
             setShowChoosePicklist(true);
         }
-    };
+    }, [queryModel]);
 
     if (!userCanManagePicklists(user) || !isSamplePicklistEnabled()) {
         return null;
@@ -88,7 +88,7 @@ export const AddToPicklistMenuItem: FC<Props> = props => {
             />
         </>
     );
-};
+});
 
 AddToPicklistMenuItem.defaultProps = {
     itemText: 'Add to Picklist',

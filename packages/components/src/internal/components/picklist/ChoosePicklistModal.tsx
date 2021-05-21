@@ -22,7 +22,8 @@ interface PicklistListProps {
     items: Picklist[];
 }
 
-const PicklistList: FC<PicklistListProps> = memo((props) => {
+// export for jest testing
+export const PicklistList: FC<PicklistListProps> = memo((props) => {
     const {activeItem, emptyMessage, onSelect, showSharedIcon = false, items} = props;
     return (
         <div className="list-group choices-list">
@@ -50,25 +51,27 @@ interface PicklistItemsSummaryProps {
     picklist: Picklist
 }
 
-const PicklistItemsSummaryDisplay: FC<PicklistItemsSummaryDisplayProps & PicklistItemsSummaryProps> = memo((props) => {
+// export for jest testing
+export const PicklistItemsSummaryDisplay: FC<PicklistItemsSummaryDisplayProps & PicklistItemsSummaryProps> = memo((props) => {
     const {countsByType, picklist} = props;
 
     const summaryData = [];
     if (countsByType.length === 0) {
         if (picklist.ItemCount === 0) {
-            summaryData.push(<div className="choices-detail__empty-message">This list is empty.</div>);
+            summaryData.push(<div key="summary" className="choices-detail__empty-message">This list is empty.</div>);
         } else {
-            summaryData.push(<div>{picklist.ItemCount} samples</div>);
+            summaryData.push(<div key="summary">{picklist.ItemCount} samples</div>);
         }
     } else {
         countsByType.forEach(countData => {
             summaryData.push((
-                <div className="row picklist-items__row">
+                <div key={countData.SampleType} className="row picklist-items__row">
                     <span className="col-md-1">
                         <ColorIcon useSmall={true} value={countData.LabelColor}/>
                     </span>
-                    <span
-                        className="col-md-5 picklist-items__sample-type choice-metadata-item__name">{countData.SampleType}</span>
+                    <span className="col-md-5 picklist-items__sample-type choice-metadata-item__name">
+                        {countData.SampleType}
+                    </span>
                     <span className="col-md-4 picklist-items__item-count">{countData.ItemCount}</span>
                 </div>
             ));
@@ -76,8 +79,8 @@ const PicklistItemsSummaryDisplay: FC<PicklistItemsSummaryDisplayProps & Picklis
     }
 
     return (
-        <div>
-            <div className={'picklist-items__header'}>Sample Counts</div>
+        <div key={'picklist-items-summary'}>
+            <div key="header" className={'picklist-items__header'}>Sample Counts</div>
             {summaryData}
         </div>
     );
@@ -112,7 +115,8 @@ interface PicklistDetailsProps {
     picklist: Picklist;
 }
 
-const PicklistDetails: FC<PicklistDetailsProps> = memo((props) => {
+// export for jest testing
+export const PicklistDetails: FC<PicklistDetailsProps> = memo((props) => {
     const {picklist} = props;
 
     return (
@@ -138,15 +142,22 @@ const PicklistDetails: FC<PicklistDetailsProps> = memo((props) => {
                 {picklist.Description}
             </div>
 
-            <div className="top-spacing">
+            <div className="top-spacing choice-details__summary">
                 <PicklistItemsSummary picklist={picklist}/>
             </div>
         </div>
     );
 });
 
+interface AddedToPicklistNoficationProps {
+    picklist: Picklist,
+    numAdded: number,
+    numSelected: number,
+}
 
-function createAddedToPicklistNotification(picklist: Picklist, numAdded: number, numSelected: number): void {
+// export for jest testing
+export const AddedToPicklistNotification: FC<AddedToPicklistNoficationProps> = (props) => {
+    const {picklist, numAdded, numSelected} = props;
     let numAddedNotification;
     if (numAdded == 0) {
         numAddedNotification = 'No samples added';
@@ -160,19 +171,15 @@ function createAddedToPicklistNotification(picklist: Picklist, numAdded: number,
         numNotAddedNotification += notAdded === 1 ? ' was ' : ' were ';
         numNotAddedNotification += 'already in the list.';
     }
-    createNotification({
-        message: () => {
-            return (
-                <>
-                    {numAddedNotification} to picklist "<a
-                    href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>{picklist.name}</a>".
-                    {numNotAddedNotification}
-                </>
-            );
-        },
-        alertClass: numAdded === 0 ? 'info' : 'success'
-    });
-}
+
+    return (
+        <>
+            {numAddedNotification} to picklist "<a
+            href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>{picklist.name}</a>".
+            {numNotAddedNotification}
+        </>
+    );
+};
 
 interface ChoosePicklistModalDisplayProps {
     picklists: Picklist[],
@@ -180,6 +187,7 @@ interface ChoosePicklistModalDisplayProps {
     loading: boolean
 }
 
+// export for jest testing
 export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePicklistModalDisplayProps> = memo((props) => {
     const {
         picklists,
@@ -195,7 +203,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
     const [search, setSearch] = useState<string>('');
     const [error, setError] = useState<string>(undefined);
     const [submitting, setSubmitting] = useState<boolean>(false);
-
+    const [activeItem, setActiveItem] = useState<Picklist>(undefined);
 
     const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value.trim().toLowerCase());
@@ -225,7 +233,6 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         return [mine, team];
     }, [filteredItems]);
 
-    const [activeItem, setActiveItem] = useState<Picklist>(undefined);
 
     const onAddClicked = useCallback(async () => {
         setSubmitting(true);
@@ -233,7 +240,17 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             const insertResponse = await addSamplesToPicklist(activeItem.name, selectionKey, sampleIds);
             setError(undefined);
             setSubmitting(false);
-            createAddedToPicklistNotification(activeItem, insertResponse.rows.length, numSelected ?? sampleIds.length);
+            createNotification({
+                message: () => (
+                    <AddedToPicklistNotification
+                        picklist={activeItem}
+                        numAdded={insertResponse.rows.length}
+                        numSelected={numSelected}
+                    />
+                ),
+                alertClass: insertResponse.rows.length === 0 ? 'info' : 'success'
+            });
+
             afterAddToPicklist();
         }
         catch (e) {
@@ -362,7 +379,7 @@ interface ChoosePicklistModalProps {
     afterAddToPicklist: () => void;
     user: User;
     selectionKey?: string;
-    numSelected?: number;
+    numSelected: number;
     sampleIds?: string[]
 }
 

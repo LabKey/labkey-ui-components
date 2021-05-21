@@ -4,10 +4,12 @@ import { mount } from 'enzyme';
 import { Modal } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
-import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
+
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+
+import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
 
 describe('AddToPicklistMenuItem', () => {
     const key = 'picklists';
@@ -15,17 +17,12 @@ describe('AddToPicklistMenuItem', () => {
 
     test('with queryModel', () => {
         LABKEY.experimental = {
-            samplePicklist: true
+            samplePicklist: true,
         } as any;
         let queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
         queryModel = queryModel.mutate({selections: new Set(['1', '2'])});
         const wrapper = mount(
-            <AddToPicklistMenuItem
-                itemText={text}
-                queryModel={queryModel}
-                key={key}
-                user={TEST_USER_EDITOR}
-            />
+            <AddToPicklistMenuItem itemText={text} queryModel={queryModel} key={key} user={TEST_USER_EDITOR}/>
         );
         const menuItem = wrapper.find(SelectionMenuItem);
         expect(menuItem).toHaveLength(1);
@@ -42,16 +39,11 @@ describe('AddToPicklistMenuItem', () => {
 
     test('with selectedIds', () => {
         LABKEY.experimental = {
-            samplePicklist: true
+            samplePicklist: true,
         } as any;
 
         const wrapper = mount(
-            <AddToPicklistMenuItem
-                itemText={text}
-                sampleIds={['1']}
-                key={key}
-                user={TEST_USER_EDITOR}
-            />
+            <AddToPicklistMenuItem itemText={text} sampleIds={['1']} key={key} user={TEST_USER_EDITOR}/>
         );
         const menuItem = wrapper.find('MenuItem');
         expect(menuItem).toHaveLength(1);
@@ -65,16 +57,11 @@ describe('AddToPicklistMenuItem', () => {
 
     test('not Editor', () => {
         LABKEY.experimental = {
-            samplePicklist: true
+            samplePicklist: true,
         } as any;
 
         const wrapper = mount(
-            <AddToPicklistMenuItem
-                itemText={text}
-                sampleIds={['1']}
-                key={key}
-                user={TEST_USER_READER}
-            />
+            <AddToPicklistMenuItem itemText={text} sampleIds={['1']} key={key} user={TEST_USER_READER}/>
         );
         expect(wrapper.find('MenuItem')).toHaveLength(0);
         wrapper.unmount();
@@ -82,16 +69,11 @@ describe('AddToPicklistMenuItem', () => {
 
     test('modal open', () => {
         LABKEY.experimental = {
-            samplePicklist: true
+            samplePicklist: true,
         } as any;
 
         const wrapper = mount(
-            <AddToPicklistMenuItem
-                itemText={text}
-                sampleIds={['1']}
-                key={key}
-                user={TEST_USER_EDITOR}
-            />
+            <AddToPicklistMenuItem itemText={text} sampleIds={['1']} key={key} user={TEST_USER_EDITOR}/>
         );
         const menuItem = wrapper.find('MenuItem a');
         expect(menuItem).toHaveLength(1);

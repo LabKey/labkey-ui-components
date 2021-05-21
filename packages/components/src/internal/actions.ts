@@ -1300,7 +1300,14 @@ export function getSelection(location: any, schemaName?: string, queryName?: str
             }
 
             if (!schemaQuery) {
-                reject('No schema found for selection with selectionKey ' + location.query.selectionKey + ' schemaName ' + schemaName + ' queryName ' + queryName);
+                reject(
+                    'No schema found for selection with selectionKey ' +
+                    location.query.selectionKey +
+                    ' schemaName ' +
+                    schemaName +
+                    ' queryName ' +
+                    queryName
+                );
             }
 
             return getSelected(

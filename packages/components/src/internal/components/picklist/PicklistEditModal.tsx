@@ -10,11 +10,12 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
-import { Picklist } from './models';
-import { createPicklist, updatePicklist } from './actions';
 import { createNotification } from '../notifications/actions';
 import { AppURL } from '../../url/AppURL';
 import { PICKLIST_KEY } from '../../app/constants';
+
+import { createPicklist, updatePicklist } from './actions';
+import { Picklist } from './models';
 
 interface Props {
     show: boolean;
@@ -24,7 +25,7 @@ interface Props {
     picklist?: Picklist;
     onCancel: () => void;
     onFinish: (picklist: Picklist) => void;
-    showNotification?: boolean
+    showNotification?: boolean;
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
@@ -69,8 +70,8 @@ export const PicklistEditModal: FC<Props> = memo(props => {
             message: () => {
                 return (
                     <>
-                        Successfully created "{picklist.name}"
-                        with {Utils.pluralize(selectedQuantity, 'sample', 'samples')}.&nbsp;
+                        Successfully created "{picklist.name}" with{' '}
+                        {Utils.pluralize(selectedQuantity, 'sample', 'samples')}.&nbsp;
                         <a href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>View picklist</a>.
                     </>
                 );
@@ -116,12 +117,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         if (count === 0) {
             title = 'Create an Empty Picklist';
         } else if (selectionKey && count) {
-            title = (
-                <>
-                    Create a New Picklist with the{' '}
-                    {Utils.pluralize(count, 'Selected Sample', 'Selected Samples')}
-                </>
-            );
+            title = <>Create a New Picklist with the {Utils.pluralize(count, 'Selected Sample', 'Selected Samples')}</>;
         } else if (count === 1) {
             title = 'Create a New Picklist with This Sample';
         } else {

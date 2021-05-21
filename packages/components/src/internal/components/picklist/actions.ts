@@ -25,19 +25,21 @@ export function getPicklists(): Promise<Picklist[]> {
             queryName,
             sort: 'Name',
             filterArray: [Filter.create('Category', null, Filter.Types.NONBLANK)],
-        }).then(response => {
-            const {models, orderedModels} = response;
-            const dataKey = resolveKey(schemaName, queryName);
-            const data = models[dataKey];
-            const picklists = [];
-            orderedModels[dataKey].forEach(id => {
-                picklists.push(Picklist.create(data[id]));
+        })
+            .then(response => {
+                const {models, orderedModels} = response;
+                const dataKey = resolveKey(schemaName, queryName);
+                const data = models[dataKey];
+                const picklists = [];
+                orderedModels[dataKey].forEach(id => {
+                    picklists.push(Picklist.create(data[id]));
+                });
+                resolve(picklists);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(reason);
             });
-            resolve(picklists);
-        }).catch(reason => {
-            console.error(reason);
-            reject(reason);
-        });
     });
 }
 
@@ -177,28 +179,31 @@ export function updatePicklist(picklist: Picklist): Promise<Picklist> {
 }
 
 export interface SampleTypeCount {
-    ItemCount: number,
-    SampleType: string,
-    LabelColor: string
+    ItemCount: number;
+    SampleType: string;
+    LabelColor: string;
 }
 
 export function getPicklistCountsBySampleType(listName: string): Promise<SampleTypeCount[]> {
     return new Promise((resolve, reject) => {
         Query.executeSql({
-            sql: 'SELECT COUNT(*) as ItemCount, \n' +
+            sql:
+                'SELECT COUNT(*) as ItemCount, \n' +
                 '       SampleId.SampleSet.Name AS SampleType, \n' +
                 '       SampleId.LabelColor\n' +
-                'FROM lists."' + listName + '"\n' +
+                'FROM lists."' +
+                listName +
+                '"\n' +
                 'GROUP BY SampleId.SampleSet.Name, SampleId.LabelColor\n' +
                 'ORDER BY SampleId.SampleSet.Name',
             schemaName: 'lists',
-            success: ((data) => {
+            success: data => {
                 resolve(data.rows);
-            }),
-            failure: (reason => {
+            },
+            failure: reason => {
                 console.error(reason);
                 reject(reason);
-            })
+            },
         });
     });
 }
@@ -209,18 +214,25 @@ export function getPicklistSamples(listName: string): Promise<Set<string>> {
         selectRows({
             schemaName,
             queryName: listName,
-        }).then(response => {
-            const {models} = response;
-            const dataKey = resolveKey(schemaName, listName);
-            resolve(new Set(Object.values(models[dataKey]).map((row: any) => row.SampleID.value.toString())));
-        }).catch(reason => {
-            console.error(reason);
-            reject(reason);
-        });
+        })
+            .then(response => {
+                const {models} = response;
+                const dataKey = resolveKey(schemaName, listName);
+                resolve(new Set(Object.values(models[dataKey]).map((row: any) => row.SampleID.value.toString())));
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(reason);
+            });
     });
 }
 
-export function getSelectedPicklistSamples(picklistName: string, selectedIds: string[], saveSnapshot?: boolean, selectionKey?: string): Promise<number[]> {
+export function getSelectedPicklistSamples(
+    picklistName: string,
+    selectedIds: string[],
+    saveSnapshot?: boolean,
+    selectionKey?: string
+): Promise<number[]> {
     return new Promise((resolve, reject) => {
         getSelectedData(
             SCHEMAS.PICKLIST_TABLES.SCHEMA,
@@ -229,25 +241,27 @@ export function getSelectedPicklistSamples(picklistName: string, selectedIds: st
             [PICKLIST_SAMPLE_ID_COLUMN, PICKLIST_KEY_COLUMN].join(','),
             undefined,
             undefined,
-            PICKLIST_KEY_COLUMN,
-        ).then(response => {
-            const {data} = response;
-            const sampleIds = [];
-            const rowIds = [];
-            data.forEach((row) => {
-                sampleIds.push(row.getIn([PICKLIST_SAMPLE_ID_COLUMN, 'value']));
+            PICKLIST_KEY_COLUMN
+        )
+            .then(response => {
+                const {data} = response;
+                const sampleIds = [];
+                const rowIds = [];
+                data.forEach(row => {
+                    sampleIds.push(row.getIn([PICKLIST_SAMPLE_ID_COLUMN, 'value']));
+                    if (saveSnapshot) {
+                        rowIds.push(row.getIn([PICKLIST_KEY_COLUMN, 'value']));
+                    }
+                });
                 if (saveSnapshot) {
-                    rowIds.push(row.getIn([PICKLIST_KEY_COLUMN, 'value']));
+                    setSnapshotSelections(selectionKey, rowIds);
                 }
+                resolve(sampleIds);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(reason);
             });
-            if (saveSnapshot) {
-                setSnapshotSelections(selectionKey, rowIds);
-            }
-            resolve(sampleIds);
-        }).catch(reason => {
-            console.error(reason);
-            reject(reason);
-        });
     });
 }
 
@@ -256,7 +270,7 @@ export function getSamplesNotInList(listName: string, selectionKey?: string, sam
         const newSamples = [];
         getPicklistSamples(listName)
             .then(existingSamples => {
-                let rows = List<any>();
+                const rows = List<any>();
                 if (selectionKey) {
                     getSelected(selectionKey).then(response => {
                         response.selected.forEach(id => {
@@ -278,8 +292,7 @@ export function getSamplesNotInList(listName: string, selectionKey?: string, sam
             .catch(reason => {
                 console.error(reason);
                 reject(reason);
-            })
-        ;
+            });
     });
 }
 
@@ -305,12 +318,14 @@ export function addSamplesToPicklist(
                         })
                         .catch(reason => reject(reason));
                 } else {
-                    resolve(new InsertRowsResponse({
-                        rows: [],
-                        schemaQuery: SchemaQuery.create('lists', listName),
-                        error: undefined,
-                        transactionAuditId: undefined,
-                    }));
+                    resolve(
+                        new InsertRowsResponse({
+                            rows: [],
+                            schemaQuery: SchemaQuery.create('lists', listName),
+                            error: undefined,
+                            transactionAuditId: undefined,
+                        })
+                    );
                 }
             })
             .catch(reason => {
@@ -407,7 +422,7 @@ export function deletePicklists(picklists: Picklist[], selectionKey?: string): P
 export function removeSamplesFromPicklist(picklist: Picklist, selectionModel: QueryModel): Promise<number> {
     return new Promise((resolve, reject) => {
         const rows = [];
-        selectionModel.selections.forEach((id) => {
+        selectionModel.selections.forEach(id => {
             rows.push({id});
         });
         if (rows.length === 0) {
@@ -415,13 +430,14 @@ export function removeSamplesFromPicklist(picklist: Picklist, selectionModel: Qu
         } else {
             deleteRows({
                 schemaQuery: selectionModel.schemaQuery,
-                rows
-            }).then((response) => {
-                resolve(response.rows.length);
-            }).catch((reason) => {
-                reject(reason);
-            });
+                rows,
+            })
+                .then(response => {
+                    resolve(response.rows.length);
+                })
+                .catch(reason => {
+                    reject(reason);
+                });
         }
     });
-
 }

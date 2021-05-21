@@ -440,19 +440,17 @@ import {
     PRIVATE_PICKLIST_CATEGORY,
     PUBLIC_PICKLIST_CATEGORY,
 } from './internal/components/domainproperties/list/constants';
-import {
-    PICKLIST_SAMPLE_ID_COLUMN,
-    PICKLIST_KEY_COLUMN,
-} from './internal/components/picklist/models';
+import { PICKLIST_SAMPLE_ID_COLUMN, PICKLIST_KEY_COLUMN, Picklist } from './internal/components/picklist/models';
 import { PicklistEditModal } from './internal/components/picklist/PicklistEditModal';
 import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
-import { Picklist } from './internal/components/picklist/models';
+
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
     deletePicklists,
     removeSamplesFromPicklist,
-    updatePicklist
+    updatePicklist,
+    getSelectedPicklistSamples,
 } from './internal/components/picklist/actions';
 
 import {
@@ -461,9 +459,7 @@ import {
     RoutingTableReducers,
     ServerNotificationReducers,
 } from './internal/app/reducers';
-import {
-    getSelectedPicklistSamples,
-} from './internal/components/picklist/actions';
+
 import {
     CloseEventCode,
     getDateFormat as getAppDateFormat,

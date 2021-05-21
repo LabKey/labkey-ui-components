@@ -79,7 +79,7 @@ export const TEST_USER_EDITOR = new User({
         PermissionTypes.Read,
         PermissionTypes.Insert,
         PermissionTypes.Update,
-        PermissionTypes.ManagePicklists
+        PermissionTypes.ManagePicklists,
     ]),
 });
 

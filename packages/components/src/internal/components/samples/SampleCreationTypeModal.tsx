@@ -23,7 +23,6 @@ interface State {
 }
 
 export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
-
     private readonly _maxPerParent;
 
     constructor(props: Props) {
@@ -49,7 +48,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     isValidNumPerParent() {
         const {numPerParent} = this.state;
 
-        return numPerParent >= 1 && (numPerParent <= this._maxPerParent);
+        return numPerParent >= 1 && numPerParent <= this._maxPerParent;
     }
 
     renderNumPerParent(): React.ReactNode {
@@ -65,7 +64,9 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                     <label className="creation-type-modal-label">{selectedOption.quantityLabel}</label>
                     <label className="creation-type-modal-label">
                         <FormControl
-                            className={classNames('creation-per-parent-select', {'has-error': !this.isValidNumPerParent()})}
+                            className={classNames('creation-per-parent-select', {
+                                'has-error': !this.isValidNumPerParent(),
+                            })}
                             min={1}
                             max={this._maxPerParent}
                             step={1}

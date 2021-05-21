@@ -3,8 +3,9 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MenuItem, Modal } from 'react-bootstrap';
 
-import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+
+import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 
 describe('PicklistCreationMenuItem', () => {
     const key = 'picklists';
@@ -14,7 +15,7 @@ describe('PicklistCreationMenuItem', () => {
 
     test('modal hidden', () => {
         LABKEY.experimental = {
-            samplePicklist: true
+            samplePicklist: true,
         } as any;
 
         const wrapper = mount(
@@ -41,7 +42,7 @@ describe('PicklistCreationMenuItem', () => {
 
     test('modal shown', () => {
         LABKEY.experimental = {
-            samplePicklist: true
+            samplePicklist: true,
         } as any;
 
         const wrapper = mount(
@@ -64,7 +65,7 @@ describe('PicklistCreationMenuItem', () => {
 
     test('not Editor', () => {
         LABKEY.experimental = {
-            samplePicklist: true
+            samplePicklist: true,
         } as any;
 
         const wrapper = mount(

@@ -1,11 +1,13 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
-import { PicklistEditModal } from './PicklistEditModal';
-import { ChoosePicklistModal } from './ChoosePicklistModal';
+
 import { User } from '../base/models/User';
 import { isSamplePicklistEnabled, userCanManagePicklists } from '../../app/utils';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+
+import { ChoosePicklistModal } from './ChoosePicklistModal';
+import { PicklistEditModal } from './PicklistEditModal';
 
 interface Props {
     queryModel?: QueryModel;
@@ -20,12 +22,15 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
 
-    const closeAddToPicklist = useCallback((closeToCreate?: boolean) => {
-        setShowChoosePicklist(false);
-        if (closeToCreate) {
-            setShowCreatePicklist(true);
-        }
-    }, [setShowChoosePicklist]);
+    const closeAddToPicklist = useCallback(
+        (closeToCreate?: boolean) => {
+            setShowChoosePicklist(false);
+            if (closeToCreate) {
+                setShowCreatePicklist(true);
+            }
+        },
+        [setShowChoosePicklist]
+    );
 
     const afterAddToPicklist = useCallback(() => {
         setShowChoosePicklist(false);
@@ -55,29 +60,29 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
 
     return (
         <>
-            {useSelection ?
+            {useSelection ? (
                 <SelectionMenuItem
                     id={key}
                     text={itemText}
                     onClick={onClick}
                     queryModel={queryModel}
-                    nounPlural={'samples'}
+                    nounPlural="samples"
                 />
-                :
+            ) : (
                 <MenuItem onClick={onClick} key={key}>
                     {itemText}
                 </MenuItem>
-            }
-            {showChoosePicklist &&
-            <ChoosePicklistModal
-                onCancel={closeAddToPicklist}
-                afterAddToPicklist={afterAddToPicklist}
-                user={user}
-                selectionKey={id}
-                numSelected={numSelected}
-                sampleIds={sampleIds}
-            />
-            }
+            )}
+            {showChoosePicklist && (
+                <ChoosePicklistModal
+                    onCancel={closeAddToPicklist}
+                    afterAddToPicklist={afterAddToPicklist}
+                    user={user}
+                    selectionKey={id}
+                    numSelected={numSelected}
+                    sampleIds={sampleIds}
+                />
+            )}
             <PicklistEditModal
                 selectionKey={id}
                 selectedQuantity={numSelected}
@@ -92,5 +97,5 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
 
 AddToPicklistMenuItem.defaultProps = {
     itemText: 'Add to Picklist',
-    key: 'add-to-picklist-menu-item'
+    key: 'add-to-picklist-menu-item',
 };

@@ -1,16 +1,22 @@
 import React from 'react';
+
+import { mount } from 'enzyme';
+
+import { NavItem } from 'react-bootstrap';
+
+import { TEST_USER_EDITOR } from '../../../test/data/users';
+
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
+
+import { Picklist } from './models';
+
 import {
     AddedToPicklistNotification,
     ChoosePicklistModalDisplay,
     PicklistDetails,
     PicklistItemsSummaryDisplay,
-    PicklistList
+    PicklistList,
 } from './ChoosePicklistModal';
-import { mount } from 'enzyme';
-import { TEST_USER_EDITOR } from '../../../test/data/users';
-import { NavItem } from 'react-bootstrap';
-import { Picklist } from './models';
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -30,7 +36,7 @@ const PUBLIC_EDITOR_PICKLIST = new Picklist({
     CreatedByDisplay: TEST_USER_EDITOR.displayName,
     listId: 15,
     Created: '2021-04-15',
-    Description: 'Editor\'s public picklist'
+    Description: 'Editor\'s public picklist',
 });
 
 const PRIVATE_EDITOR_PICKLIST = new Picklist({
@@ -41,7 +47,7 @@ const PRIVATE_EDITOR_PICKLIST = new Picklist({
     CreatedByDisplay: TEST_USER_EDITOR.displayName,
     listId: 16,
     Created: '2021-04-16',
-    Description: 'Editor\'s private picklist'
+    Description: 'Editor\'s private picklist',
 });
 
 const EMPTY_EDITOR_PICKLIST = new Picklist({
@@ -52,7 +58,7 @@ const EMPTY_EDITOR_PICKLIST = new Picklist({
     CreatedByDisplay: TEST_USER_EDITOR.displayName,
     listId: 17,
     Created: '2021-04-17',
-    Description: 'Empty editor\'s public picklist'
+    Description: 'Empty editor\'s public picklist',
 });
 
 describe('PicklistList', () => {
@@ -141,12 +147,7 @@ describe('PicklistList', () => {
 
 describe('PicklistItemsSummaryDisplay', () => {
     test('empty counts by type', () => {
-        const wrapper = mount(
-            <PicklistItemsSummaryDisplay
-                countsByType={[]}
-                picklist={EMPTY_EDITOR_PICKLIST}
-            />
-        );
+        const wrapper = mount(<PicklistItemsSummaryDisplay countsByType={[]} picklist={EMPTY_EDITOR_PICKLIST}/>);
         const emptyMessage = wrapper.find('.choices-detail__empty-message');
         expect(emptyMessage).toHaveLength(1);
         expect(emptyMessage.text()).toBe('This list is empty.');
@@ -155,12 +156,7 @@ describe('PicklistItemsSummaryDisplay', () => {
     });
 
     test('empty counts by type, non-zero item count', () => {
-        const wrapper = mount(
-            <PicklistItemsSummaryDisplay
-                countsByType={[]}
-                picklist={PUBLIC_EDITOR_PICKLIST}
-            />
-        );
+        const wrapper = mount(<PicklistItemsSummaryDisplay countsByType={[]} picklist={PUBLIC_EDITOR_PICKLIST}/>);
         const emptyMessage = wrapper.find('.choices-detail__empty-message');
         expect(emptyMessage).toHaveLength(0);
         expect(wrapper.text()).toBe('Sample Counts' + PUBLIC_EDITOR_PICKLIST.ItemCount + ' samples');
@@ -168,20 +164,20 @@ describe('PicklistItemsSummaryDisplay', () => {
     });
 
     test('multiple items', () => {
-        const countsByType = [{
-            ItemCount: 42,
-            SampleType: 'Sample Type 1',
-            LabelColor: 'blue'
-        }, {
-            ItemCount: 88,
-            SampleType: 'Sample Type 2',
-            LabelColor: 'red'
-        }];
+        const countsByType = [
+            {
+                ItemCount: 42,
+                SampleType: 'Sample Type 1',
+                LabelColor: 'blue',
+            },
+            {
+                ItemCount: 88,
+                SampleType: 'Sample Type 2',
+                LabelColor: 'red',
+            },
+        ];
         const wrapper = mount(
-            <PicklistItemsSummaryDisplay
-                countsByType={countsByType}
-                picklist={PUBLIC_EDITOR_PICKLIST}
-            />
+            <PicklistItemsSummaryDisplay countsByType={countsByType} picklist={PUBLIC_EDITOR_PICKLIST}/>
         );
         const emptyMessage = wrapper.find('.choices-detail__empty-message');
         expect(emptyMessage).toHaveLength(0);
@@ -200,9 +196,7 @@ describe('PicklistItemsSummaryDisplay', () => {
 
 describe('PicklistDetails', () => {
     test('public picklist', () => {
-        const wrapper = mount(
-            <PicklistDetails picklist={PUBLIC_EDITOR_PICKLIST}/>
-        );
+        const wrapper = mount(<PicklistDetails picklist={PUBLIC_EDITOR_PICKLIST}/>);
         const name = wrapper.find('.choice-details__name');
         expect(name).toHaveLength(1);
         expect(name.text()).toBe(PUBLIC_EDITOR_PICKLIST.name);
@@ -220,9 +214,7 @@ describe('PicklistDetails', () => {
     });
 
     test('private picklist', () => {
-        const wrapper = mount(
-            <PicklistDetails picklist={PRIVATE_EDITOR_PICKLIST}/>
-        );
+        const wrapper = mount(<PicklistDetails picklist={PRIVATE_EDITOR_PICKLIST}/>);
         const name = wrapper.find('.choice-details__name');
         expect(name).toHaveLength(1);
         expect(name.text()).toBe(PRIVATE_EDITOR_PICKLIST.name);
@@ -242,13 +234,11 @@ describe('PicklistDetails', () => {
 describe('AddToPicklistNotification', () => {
     test('no samples added', () => {
         const wrapper = mount(
-            <AddedToPicklistNotification
-                picklist={PUBLIC_EDITOR_PICKLIST}
-                numAdded={0}
-                numSelected={4}
-            />
+            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={0} numSelected={4}/>
         );
-        expect(wrapper.text()).toBe('No samples added to picklist "' + PUBLIC_EDITOR_PICKLIST.name + '". 4 samples were already in the list.');
+        expect(wrapper.text()).toBe(
+            'No samples added to picklist "' + PUBLIC_EDITOR_PICKLIST.name + '". 4 samples were already in the list.'
+        );
         const link = wrapper.find('a');
         expect(link).toHaveLength(1);
         expect(link.text()).toBe(PUBLIC_EDITOR_PICKLIST.name);
@@ -257,11 +247,7 @@ describe('AddToPicklistNotification', () => {
 
     test('all samples added', () => {
         const wrapper = mount(
-            <AddedToPicklistNotification
-                picklist={PUBLIC_EDITOR_PICKLIST}
-                numAdded={4}
-                numSelected={4}
-            />
+            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={4} numSelected={4}/>
         );
         expect(wrapper.text()).toBe('Successfully added 4 samples to picklist "' + PUBLIC_EDITOR_PICKLIST.name + '".');
         wrapper.unmount();
@@ -269,37 +255,37 @@ describe('AddToPicklistNotification', () => {
 
     test('some samples added', () => {
         const wrapper = mount(
-            <AddedToPicklistNotification
-                picklist={PUBLIC_EDITOR_PICKLIST}
-                numAdded={2}
-                numSelected={4}
-            />
+            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={2} numSelected={4}/>
         );
-        expect(wrapper.text()).toBe('Successfully added 2 samples to picklist "' + PUBLIC_EDITOR_PICKLIST.name + '". 2 samples were already in the list.');
+        expect(wrapper.text()).toBe(
+            'Successfully added 2 samples to picklist "' +
+            PUBLIC_EDITOR_PICKLIST.name +
+            '". 2 samples were already in the list.'
+        );
         wrapper.unmount();
     });
 
     test('one sample added', () => {
         const wrapper = mount(
-            <AddedToPicklistNotification
-                picklist={PUBLIC_EDITOR_PICKLIST}
-                numAdded={1}
-                numSelected={4}
-            />
+            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={1} numSelected={4}/>
         );
-        expect(wrapper.text()).toBe('Successfully added 1 sample to picklist "' + PUBLIC_EDITOR_PICKLIST.name + '". 3 samples were already in the list.');
+        expect(wrapper.text()).toBe(
+            'Successfully added 1 sample to picklist "' +
+            PUBLIC_EDITOR_PICKLIST.name +
+            '". 3 samples were already in the list.'
+        );
         wrapper.unmount();
     });
 
     test('one sample not added', () => {
         const wrapper = mount(
-            <AddedToPicklistNotification
-                picklist={PUBLIC_EDITOR_PICKLIST}
-                numAdded={3}
-                numSelected={4}
-            />
+            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={3} numSelected={4}/>
         );
-        expect(wrapper.text()).toBe('Successfully added 3 samples to picklist "' + PUBLIC_EDITOR_PICKLIST.name + '". 1 sample was already in the list.');
+        expect(wrapper.text()).toBe(
+            'Successfully added 3 samples to picklist "' +
+            PUBLIC_EDITOR_PICKLIST.name +
+            '". 1 sample was already in the list.'
+        );
         wrapper.unmount();
     });
 });

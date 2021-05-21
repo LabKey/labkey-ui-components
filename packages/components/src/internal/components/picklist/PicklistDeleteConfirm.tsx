@@ -6,9 +6,10 @@ import { Alert } from '../base/Alert';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { getConfirmDeleteMessage } from '../../util/messaging';
+
 import { Picklist } from './models';
 import { getPicklistDeleteData, PicklistDeletionData } from './actions';
-import { getConfirmDeleteMessage } from '../../util/messaging';
 
 interface Props {
     model: QueryModel;
@@ -93,8 +94,7 @@ export const PicklistDeleteConfirmMessage: FC<DeleteConfirmMessageProps> = memo(
             <span>
                 {deletionData.numDeletable > 0 && (
                     <>
-                        {rUSure}&nbsp;
-                        Samples in the {noun} will not be affected.&nbsp;
+                        {rUSure}&nbsp; Samples in the {noun} will not be affected.&nbsp;
                         {getConfirmDeleteMessage()}
                     </>
                 )}

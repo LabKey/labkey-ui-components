@@ -10,11 +10,13 @@ import { AppURL } from '../../url/AppURL';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
+import { isSamplePicklistEnabled, userCanManagePicklists } from '../../app/utils';
+
+import { User } from '../base/models/User';
+
 import { PicklistEditModal } from './PicklistEditModal';
 
 import { Picklist } from './models';
-import { isSamplePicklistEnabled, userCanManagePicklists } from '../../app/utils';
-import { User } from '../base/models/User';
 
 interface Props {
     selectionKey?: string;

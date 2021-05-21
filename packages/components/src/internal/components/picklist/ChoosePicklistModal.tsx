@@ -1,12 +1,13 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, Tab, Tabs } from 'react-bootstrap';
 import classNames from 'classnames';
-import { Picklist } from './models';
-import { formatDate, parseDate } from '../../util/Date';
-import { User } from '../base/models/User';
+
 import { Utils } from '@labkey/api';
+
+import { User } from '../base/models/User';
+import { formatDate, parseDate } from '../../util/Date';
 import { Alert } from '../base/Alert';
-import { addSamplesToPicklist, getPicklistCountsBySampleType, getPicklists, SampleTypeCount } from './actions';
+
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
@@ -14,16 +15,19 @@ import { createNotification } from '../notifications/actions';
 import { AppURL } from '../../url/AppURL';
 import { PICKLIST_KEY } from '../../app/constants';
 
+import { addSamplesToPicklist, getPicklistCountsBySampleType, getPicklists, SampleTypeCount } from './actions';
+import { Picklist } from './models';
+
 interface PicklistListProps {
     activeItem: Picklist;
     emptyMessage: ReactNode;
     onSelect: (picklist) => void;
-    showSharedIcon?: boolean
+    showSharedIcon?: boolean;
     items: Picklist[];
 }
 
 // export for jest testing
-export const PicklistList: FC<PicklistListProps> = memo((props) => {
+export const PicklistList: FC<PicklistListProps> = memo(props => {
     const {activeItem, emptyMessage, onSelect, showSharedIcon = false, items} = props;
     return (
         <div className="list-group choices-list">
@@ -34,7 +38,7 @@ export const PicklistList: FC<PicklistListProps> = memo((props) => {
                     onClick={onSelect.bind(this, item)}
                     type="button"
                 >
-                    {showSharedIcon && item.isPublic() && (<span className="fa fa-users"/>)}
+                    {showSharedIcon && item.isPublic() && <span className="fa fa-users"/>}
                     {item.name}
                 </button>
             ))}
@@ -44,49 +48,57 @@ export const PicklistList: FC<PicklistListProps> = memo((props) => {
 });
 
 interface PicklistItemsSummaryDisplayProps {
-    countsByType: SampleTypeCount[]
+    countsByType: SampleTypeCount[];
 }
 
 interface PicklistItemsSummaryProps {
-    picklist: Picklist
+    picklist: Picklist;
 }
 
 // export for jest testing
-export const PicklistItemsSummaryDisplay: FC<PicklistItemsSummaryDisplayProps & PicklistItemsSummaryProps> = memo((props) => {
-    const {countsByType, picklist} = props;
+export const PicklistItemsSummaryDisplay: FC<PicklistItemsSummaryDisplayProps & PicklistItemsSummaryProps> = memo(
+    props => {
+        const {countsByType, picklist} = props;
 
-    const summaryData = [];
-    if (countsByType.length === 0) {
-        if (picklist.ItemCount === 0) {
-            summaryData.push(<div key="summary" className="choices-detail__empty-message">This list is empty.</div>);
+        const summaryData = [];
+        if (countsByType.length === 0) {
+            if (picklist.ItemCount === 0) {
+                summaryData.push(
+                    <div key="summary" className="choices-detail__empty-message">
+                        This list is empty.
+                    </div>
+                );
+            } else {
+                summaryData.push(<div key="summary">{picklist.ItemCount} samples</div>);
+            }
         } else {
-            summaryData.push(<div key="summary">{picklist.ItemCount} samples</div>);
+            countsByType.forEach(countData => {
+                summaryData.push(
+                    <div key={countData.SampleType} className="row picklist-items__row">
+                        <span className="col-md-1">
+                            <ColorIcon useSmall={true} value={countData.LabelColor}/>
+                        </span>
+                        <span className="col-md-5 picklist-items__sample-type choice-metadata-item__name">
+                            {countData.SampleType}
+                        </span>
+                        <span className="col-md-4 picklist-items__item-count">{countData.ItemCount}</span>
+                    </div>
+                );
+            });
         }
-    } else {
-        countsByType.forEach(countData => {
-            summaryData.push((
-                <div key={countData.SampleType} className="row picklist-items__row">
-                    <span className="col-md-1">
-                        <ColorIcon useSmall={true} value={countData.LabelColor}/>
-                    </span>
-                    <span className="col-md-5 picklist-items__sample-type choice-metadata-item__name">
-                        {countData.SampleType}
-                    </span>
-                    <span className="col-md-4 picklist-items__item-count">{countData.ItemCount}</span>
+
+        return (
+            <div key="picklist-items-summary">
+                <div key="header" className="picklist-items__header">
+                    Sample Counts
                 </div>
-            ));
-        });
+                {summaryData}
+            </div>
+        );
     }
+);
 
-    return (
-        <div key={'picklist-items-summary'}>
-            <div key="header" className={'picklist-items__header'}>Sample Counts</div>
-            {summaryData}
-        </div>
-    );
-});
-
-const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo((props) => {
+const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo(props => {
     const {picklist} = props;
     const [countsByType, setCountsByType] = useState<SampleTypeCount[]>(undefined);
     const [loadingCounts, setLoadingCounts] = useState<boolean>(true);
@@ -101,7 +113,6 @@ const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo((props) => {
                 setCountsByType([]);
                 setLoadingCounts(false);
             });
-
     }, [picklist, getPicklistCountsBySampleType, setCountsByType, setLoadingCounts]);
 
     if (loadingCounts) {
@@ -116,7 +127,7 @@ interface PicklistDetailsProps {
 }
 
 // export for jest testing
-export const PicklistDetails: FC<PicklistDetailsProps> = memo((props) => {
+export const PicklistDetails: FC<PicklistDetailsProps> = memo(props => {
     const {picklist} = props;
 
     return (
@@ -135,12 +146,9 @@ export const PicklistDetails: FC<PicklistDetailsProps> = memo((props) => {
                     <span className="choice-metadata-item__name">Created:</span>
                     <span className="choice-metadata-item__value">{formatDate(parseDate(picklist.Created))}</span>
                 </div>
-
             </div>
 
-            <div className="choice-details__description">
-                {picklist.Description}
-            </div>
+            <div className="choice-details__description">{picklist.Description}</div>
 
             <div className="top-spacing choice-details__summary">
                 <PicklistItemsSummary picklist={picklist}/>
@@ -150,13 +158,13 @@ export const PicklistDetails: FC<PicklistDetailsProps> = memo((props) => {
 });
 
 interface AddedToPicklistNoficationProps {
-    picklist: Picklist,
-    numAdded: number,
-    numSelected: number,
+    picklist: Picklist;
+    numAdded: number;
+    numSelected: number;
 }
 
 // export for jest testing
-export const AddedToPicklistNotification: FC<AddedToPicklistNoficationProps> = (props) => {
+export const AddedToPicklistNotification: FC<AddedToPicklistNoficationProps> = props => {
     const {picklist, numAdded, numSelected} = props;
     let numAddedNotification;
     if (numAdded == 0) {
@@ -166,7 +174,7 @@ export const AddedToPicklistNotification: FC<AddedToPicklistNoficationProps> = (
     }
     let numNotAddedNotification = null;
     if (numAdded < numSelected) {
-        const notAdded = (numSelected - numAdded);
+        const notAdded = numSelected - numAdded;
         numNotAddedNotification = ' ' + Utils.pluralize(notAdded, 'sample', 'samples');
         numNotAddedNotification += notAdded === 1 ? ' was ' : ' were ';
         numNotAddedNotification += 'already in the list.';
@@ -174,205 +182,216 @@ export const AddedToPicklistNotification: FC<AddedToPicklistNoficationProps> = (
 
     return (
         <>
-            {numAddedNotification} to picklist "<a
-            href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>{picklist.name}</a>".
+            {numAddedNotification} to picklist "
+            <a href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>{picklist.name}</a>".
             {numNotAddedNotification}
         </>
     );
 };
 
 interface ChoosePicklistModalDisplayProps {
-    picklists: Picklist[],
-    picklistLoadError: ReactNode,
-    loading: boolean
+    picklists: Picklist[];
+    picklistLoadError: ReactNode;
+    loading: boolean;
 }
 
 // export for jest testing
-export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePicklistModalDisplayProps> = memo((props) => {
-    const {
-        picklists,
-        loading,
-        picklistLoadError,
-        onCancel,
-        afterAddToPicklist,
-        user,
-        selectionKey,
-        numSelected,
-        sampleIds
-    } = props;
-    const [search, setSearch] = useState<string>('');
-    const [error, setError] = useState<string>(undefined);
-    const [submitting, setSubmitting] = useState<boolean>(false);
-    const [activeItem, setActiveItem] = useState<Picklist>(undefined);
+export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePicklistModalDisplayProps> = memo(
+    props => {
+        const {
+            picklists,
+            loading,
+            picklistLoadError,
+            onCancel,
+            afterAddToPicklist,
+            user,
+            selectionKey,
+            numSelected,
+            sampleIds,
+        } = props;
+        const [search, setSearch] = useState<string>('');
+        const [error, setError] = useState<string>(undefined);
+        const [submitting, setSubmitting] = useState<boolean>(false);
+        const [activeItem, setActiveItem] = useState<Picklist>(undefined);
 
-    const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        setSearch(event.target.value.trim().toLowerCase());
-    }, []);
+        const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+            setSearch(event.target.value.trim().toLowerCase());
+        }, []);
 
-    const filteredItems = useMemo<Picklist[]>(() => {
-        if (search.trim() !== '') {
-            return picklists.filter(item => item.name.toLowerCase().indexOf(search) > -1);
-        }
-
-        return picklists;
-    }, [search, picklists]);
-
-    const [myItems, teamItems] = useMemo(() => {
-        const mine = [];
-        const team = [];
-
-        filteredItems.forEach((item) => {
-            if (item.isUserList(user)) {
-                mine.push(item);
+        const filteredItems = useMemo<Picklist[]>(() => {
+            if (search.trim() !== '') {
+                return picklists.filter(item => item.name.toLowerCase().indexOf(search) > -1);
             }
-            if (item.isPublic()) {
-                team.push(item);
-            }
-        });
 
-        return [mine, team];
-    }, [filteredItems]);
+            return picklists;
+        }, [search, picklists]);
 
+        const [myItems, teamItems] = useMemo(() => {
+            const mine = [];
+            const team = [];
 
-    const onAddClicked = useCallback(async () => {
-        setSubmitting(true);
-        try {
-            const insertResponse = await addSamplesToPicklist(activeItem.name, selectionKey, sampleIds);
-            setError(undefined);
-            setSubmitting(false);
-            createNotification({
-                message: () => (
-                    <AddedToPicklistNotification
-                        picklist={activeItem}
-                        numAdded={insertResponse.rows.length}
-                        numSelected={numSelected}
-                    />
-                ),
-                alertClass: insertResponse.rows.length === 0 ? 'info' : 'success'
+            filteredItems.forEach(item => {
+                if (item.isUserList(user)) {
+                    mine.push(item);
+                }
+                if (item.isPublic()) {
+                    team.push(item);
+                }
             });
 
-            afterAddToPicklist();
-        }
-        catch (e) {
-            setSubmitting(false);
-            setError(resolveErrorMessage(e));
-        }
-    }, [activeItem, selectionKey, setSubmitting, setError, sampleIds]);
+            return [mine, team];
+        }, [filteredItems]);
 
-    const closeModal = useCallback(() => {
-        onCancel(false);
-    }, [onCancel]);
-
-    const goToCreateNewList = useCallback(() => {
-        onCancel(true);
-    }, [onCancel]);
-
-    const isSearching = !!(search);
-    let myEmptyMessage: ReactNode = <LoadingSpinner/>;
-    let teamEmptyMessage: ReactNode = <LoadingSpinner/>;
-
-    if (!loading) {
-        myEmptyMessage = 'You do not have any picklists ';
-        teamEmptyMessage = 'There are no shared picklists  ';
-
-        let suffix = '';
-        if (isSearching) {
-            suffix = ' matching your search';
-        }
-        suffix += ' to add ' + (numSelected === 1 ? 'this sample to.' : 'these samples to.');
-        myEmptyMessage += suffix;
-        teamEmptyMessage += suffix;
-        let createNewList = null;
-        if (!isSearching) {
-            createNewList = <>Do you want to <a onClick={goToCreateNewList}>create a new one</a>?</>;
-            myEmptyMessage = <>{myEmptyMessage} {createNewList}</>;
-            teamEmptyMessage = <>{teamEmptyMessage} {createNewList}</>;
-        }
-    }
-
-    return (
-        <Modal show bsSize="large" onHide={close}>
-            <Modal.Header>
-                <Modal.Title>
-                    Choose a Picklist
-                </Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-                <Alert bsStyle="danger">{picklistLoadError ?? error}</Alert>
-                <div className="row">
-                    <div className={'col-md-12'}>
-                        <Alert bsStyle="info">
-                            Adding {Utils.pluralize(numSelected, 'sample', 'samples')} to selected picklist.
-                        </Alert>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-6">
-                        <input
-                            autoFocus
-                            className="form-control"
-                            onChange={onSearchChange}
-                            placeholder="Find a picklist"
+        const onAddClicked = useCallback(async () => {
+            setSubmitting(true);
+            try {
+                const insertResponse = await addSamplesToPicklist(activeItem.name, selectionKey, sampleIds);
+                setError(undefined);
+                setSubmitting(false);
+                createNotification({
+                    message: () => (
+                        <AddedToPicklistNotification
+                            picklist={activeItem}
+                            numAdded={insertResponse.rows.length}
+                            numSelected={numSelected}
                         />
+                    ),
+                    alertClass: insertResponse.rows.length === 0 ? 'info' : 'success',
+                });
+
+                afterAddToPicklist();
+            }
+            catch (e) {
+                setSubmitting(false);
+                setError(resolveErrorMessage(e));
+            }
+        }, [activeItem, selectionKey, setSubmitting, setError, sampleIds]);
+
+        const closeModal = useCallback(() => {
+            onCancel(false);
+        }, [onCancel]);
+
+        const goToCreateNewList = useCallback(() => {
+            onCancel(true);
+        }, [onCancel]);
+
+        const isSearching = !!search;
+        let myEmptyMessage: ReactNode = <LoadingSpinner/>;
+        let teamEmptyMessage: ReactNode = <LoadingSpinner/>;
+
+        if (!loading) {
+            myEmptyMessage = 'You do not have any picklists ';
+            teamEmptyMessage = 'There are no shared picklists  ';
+
+            let suffix = '';
+            if (isSearching) {
+                suffix = ' matching your search';
+            }
+            suffix += ' to add ' + (numSelected === 1 ? 'this sample to.' : 'these samples to.');
+            myEmptyMessage += suffix;
+            teamEmptyMessage += suffix;
+            let createNewList = null;
+            if (!isSearching) {
+                createNewList = (
+                    <>
+                        Do you want to <a onClick={goToCreateNewList}>create a new one</a>?
+                    </>
+                );
+                myEmptyMessage = (
+                    <>
+                        {myEmptyMessage} {createNewList}
+                    </>
+                );
+                teamEmptyMessage = (
+                    <>
+                        {teamEmptyMessage} {createNewList}
+                    </>
+                );
+            }
+        }
+
+        return (
+            <Modal show bsSize="large" onHide={close}>
+                <Modal.Header>
+                    <Modal.Title>Choose a Picklist</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    <Alert bsStyle="danger">{picklistLoadError ?? error}</Alert>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <Alert bsStyle="info">
+                                Adding {Utils.pluralize(numSelected, 'sample', 'samples')} to selected picklist.
+                            </Alert>
+                        </div>
                     </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-md-6">
-                        <Tabs id="choose-items-tabs" className="choose-items-tabs" animation={false}>
-                            <Tab eventKey={1} title="My Picklists">
-                                <PicklistList
-                                    activeItem={activeItem}
-                                    emptyMessage={myEmptyMessage}
-                                    onSelect={setActiveItem}
-                                    showSharedIcon
-                                    items={myItems}
-                                />
-                            </Tab>
-
-                            <Tab eventKey={2} title="Team Picklists">
-                                <PicklistList
-                                    activeItem={activeItem}
-                                    emptyMessage={teamEmptyMessage}
-                                    onSelect={setActiveItem}
-                                    items={teamItems}
-                                />
-                            </Tab>
-                        </Tabs>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <input
+                                autoFocus
+                                className="form-control"
+                                onChange={onSearchChange}
+                                placeholder="Find a picklist"
+                            />
+                        </div>
                     </div>
 
-                    <div className="col-md-6">
-                        {activeItem === undefined && (
-                            <div className="choices-list__empty-message">Choose a picklist</div>
-                        )}
+                    <div className="row">
+                        <div className="col-md-6">
+                            <Tabs id="choose-items-tabs" className="choose-items-tabs" animation={false}>
+                                <Tab eventKey={1} title="My Picklists">
+                                    <PicklistList
+                                        activeItem={activeItem}
+                                        emptyMessage={myEmptyMessage}
+                                        onSelect={setActiveItem}
+                                        showSharedIcon
+                                        items={myItems}
+                                    />
+                                </Tab>
 
-                        {activeItem !== undefined && <PicklistDetails picklist={activeItem}/>}
+                                <Tab eventKey={2} title="Team Picklists">
+                                    <PicklistList
+                                        activeItem={activeItem}
+                                        emptyMessage={teamEmptyMessage}
+                                        onSelect={setActiveItem}
+                                        items={teamItems}
+                                    />
+                                </Tab>
+                            </Tabs>
+                        </div>
+
+                        <div className="col-md-6">
+                            {activeItem === undefined && (
+                                <div className="choices-list__empty-message">Choose a picklist</div>
+                            )}
+
+                            {activeItem !== undefined && <PicklistDetails picklist={activeItem}/>}
+                        </div>
                     </div>
-                </div>
-            </Modal.Body>
+                </Modal.Body>
 
-            <Modal.Footer>
-                <div className="pull-left">
-                    <button type="button" className="btn btn-default" onClick={closeModal}>
-                        Cancel
-                    </button>
-                </div>
+                <Modal.Footer>
+                    <div className="pull-left">
+                        <button type="button" className="btn btn-default" onClick={closeModal}>
+                            Cancel
+                        </button>
+                    </div>
 
-                <div className="pull-right">
-                    <button
-                        type="button"
-                        className="btn btn-success"
-                        onClick={onAddClicked}
-                        disabled={activeItem === undefined || submitting}
-                    >
-                        {submitting ? 'Adding to Picklist...' : 'Add to Picklist'}
-                    </button>
-                </div>
-            </Modal.Footer>
-        </Modal>
-    );
-});
+                    <div className="pull-right">
+                        <button
+                            type="button"
+                            className="btn btn-success"
+                            onClick={onAddClicked}
+                            disabled={activeItem === undefined || submitting}
+                        >
+                            {submitting ? 'Adding to Picklist...' : 'Add to Picklist'}
+                        </button>
+                    </div>
+                </Modal.Footer>
+            </Modal>
+        );
+    }
+);
 
 interface ChoosePicklistModalProps {
     onCancel: (cancelToCreate?: boolean) => void;
@@ -380,10 +399,10 @@ interface ChoosePicklistModalProps {
     user: User;
     selectionKey?: string;
     numSelected: number;
-    sampleIds?: string[]
+    sampleIds?: string[];
 }
 
-export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo((props) => {
+export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
     const [error, setError] = useState<string>(undefined);
     const [items, setItems] = useState<Picklist[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -398,12 +417,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo((props) =>
                 setError('There was a problem retrieving the picklist data. ' + resolveErrorMessage(reason));
                 setLoading(false);
             });
-
     }, [getPicklists, setItems, setError, setLoading]);
 
-    return (
-        <ChoosePicklistModalDisplay {...props} picklists={items} picklistLoadError={error} loading={loading}/>
-    );
+    return <ChoosePicklistModalDisplay {...props} picklists={items} picklistLoadError={error} loading={loading}/>;
 });
-
-

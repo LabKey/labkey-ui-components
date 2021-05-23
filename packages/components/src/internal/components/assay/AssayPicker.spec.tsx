@@ -1,11 +1,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { AssayPicker, AssayPickerTabs, sleep } from '../../..';
-import { initMocks } from '../../../stories/mock';
+import { AssayPicker, AssayPickerTabs, initNotificationsState, sleep } from '../../..';
+import { initUnitTestMocks } from '../../testHelperMocks';
+import { initAssayPickerOptions } from '../../../stories/mock';
 
 beforeAll(() => {
-    initMocks();
+    initNotificationsState();
+    initUnitTestMocks([initAssayPickerOptions]);
 });
 
 describe('AssayPicker', () => {
@@ -44,7 +46,7 @@ describe('AssayPicker', () => {
         );
 
         const wrapper = mount(component);
-        await sleep();
+        await sleep(1000);
 
         // Verify only two tabs and specialty tab selected
         expect(wrapper.find('.nav-tabs li')).toHaveLength(2);

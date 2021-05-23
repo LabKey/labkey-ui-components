@@ -1,7 +1,7 @@
 import React, { FC, memo, useMemo, useCallback } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { Alert, GENERAL_ASSAY_PROVIDER_NAME, getHelpLink } from '../../../index';
+import { Alert, GENERAL_ASSAY_PROVIDER_NAME, getHelpLink } from '../../../';
 
 import { AssayProvider } from './AssayPicker';
 
@@ -10,11 +10,10 @@ interface SpecialtyAssayPanelProps {
     values: AssayProvider[];
     onChange: (value: string) => void;
     hasPremium: boolean;
-    warning?: string;
 }
 
 export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
-    const { values, selected, onChange, warning, children, hasPremium } = props;
+    const { values, selected, onChange, children, hasPremium } = props;
 
     const options = useMemo(() => {
         return values?.filter(v => v.name !== GENERAL_ASSAY_PROVIDER_NAME)
@@ -23,6 +22,13 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
             });
     }, [values]);
 
+    const warning = useMemo(() => {
+        if( !options || options.length < 1 )
+            return "This server does not have any specialty or custom assay types.";
+
+        return;
+    }, [options])
+
     const onSelectChange = useCallback(
         e => {
             onChange(e.target.value);
@@ -30,7 +36,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
         [onChange]
     );
 
-    const noPremiumClass = useMemo(() => {
+    const premiumInfoClass = useMemo(() => {
         if (children)
             return "large-margin-top";
 
@@ -47,7 +53,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
                     <div className="margin-bottom">
                         <b>Use Instrument Specific Data Format</b>
                     </div>
-                    {selected && options?.length > 0 && (
+                    { selected && options?.length > 0 && (
                         <>
                             <div className="margin-bottom">
                                 <select
@@ -62,14 +68,14 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
 
                             <div className={"small-margin-bottom"} dangerouslySetInnerHTML={{ __html: selected?.description }} />
                         </>
-                    )}
+                    ) }
 
-                    {warning && (
+                    { warning && (
                         <Alert bsStyle="warning">
                             <i className="fa fa-flag" style={{ marginRight: '20px' }} />
                             {warning}
                         </Alert>
-                    )}
+                    ) }
                 </Col>
             </Row>
             {selected && options?.length > 0 &&
@@ -85,7 +91,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
             {children}
             {!hasPremium && (
                 <Row>
-                    <Col xs={12} className={noPremiumClass}>
+                    <Col xs={12} className={premiumInfoClass}>
                         <Alert bsStyle="info">
                             <h1 className="fa fa-star-o"> Premium Feature</h1>
                             <h3>More specialty assays are available with LabKey Server Premium Edition</h3>

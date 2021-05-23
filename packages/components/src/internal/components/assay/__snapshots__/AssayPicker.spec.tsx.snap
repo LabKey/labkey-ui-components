@@ -1119,7 +1119,7 @@ exports[`AssayPicker AssayPicker 1`] = `
                                           >
                                             <p>
                                               <a
-                                                href="/labkey/pipeline/browse.view"
+                                                href="labkey/pipeline/testContainer/browse.view"
                                               >
                                                 Use data pipeline
                                               </a>

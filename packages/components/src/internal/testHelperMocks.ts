@@ -16,19 +16,17 @@ import { initUnitTests } from './testHelpers';
  * to all of the same mock API responses we use in storybook.
  */
 export function initUnitTestMocks(
-    metadata?: Map<string, any>,
-    columnRenderers?: Map<string, any>,
-    includePipeline?: boolean
+    extraMocks?: (() => void)[],
+    metadata?: Map<string, any>
 ): void {
     window['__react-beautiful-dnd-disable-dev-warnings'] = true;
-    initUnitTests(metadata, columnRenderers);
+    initUnitTests(metadata);
     mock.setup();
     initQueryGridMocks();
     initDomainPropertiesMocks();
-    initLineageMocks();
     initUserPropsMocks();
-    if (includePipeline) {
-        initPipelineStatusDetailsMocks();
+    if (extraMocks) {
+        extraMocks.forEach(mock => mock());
     }
     mock.use(proxy);
 }

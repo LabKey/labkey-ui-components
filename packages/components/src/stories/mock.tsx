@@ -287,6 +287,7 @@ export function initMocks() {
     initDomainPropertiesMocks();
     initPipelineStatusDetailsMocks();
     initOnotologyMocks();
+    initAssayPickerOptions();
 
     mock.post(/.*\/query\/?.*\/executeSql.*/, (req, res) => {
         const body = decodeURIComponent(req.body());
@@ -318,8 +319,6 @@ export function initMocks() {
 
     // TODO conditionalize based on queryName
     mock.post(/.*\/query\/?.*\/insertRows.*/, jsonResponse(samplesInsert));
-
-    mock.get(/.*\/assay\/?.*\/getAssayTypeSelectOptions.*/, jsonResponse(getAssayDesignSectionOptions));
 
     mock.get(/.*ConfirmationData.*/, (req, res) => {
         const queryParams = req.url().query;
@@ -676,6 +675,10 @@ export function initUserPropsMocks(): void {
 
 export function initServerNotificationMocks(): void {
     mock.get(/.*\/getUserNotification.*/, jsonResponse(serverNotifications));
+}
+
+export function initAssayPickerOptions(): void {
+    mock.get(/.*\/assay\/?.*\/getAssayTypeSelectOptions.*/, jsonResponse(getAssayDesignSectionOptions));
 }
 
 export function initPipelineStatusDetailsMocks(): void {

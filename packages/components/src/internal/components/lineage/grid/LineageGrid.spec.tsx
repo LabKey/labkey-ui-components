@@ -5,9 +5,10 @@ import { registerDefaultURLMappers, sleep } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../testHelperMocks';
 
 import { LineageGrid } from './LineageGrid';
+import { initLineageMocks } from '../../../../stories/mock';
 
 beforeAll(() => {
-    initUnitTestMocks();
+    initUnitTestMocks([initLineageMocks]);
     registerDefaultURLMappers();
 });
 

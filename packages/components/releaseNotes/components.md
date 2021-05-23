@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Add support for freezer location in TimelineView
+
 ### version 2.32.0
 *Released*: 19 May 2021
 * Introduce `loadOnMount` flag to `<GridPanel/>` for controlling model loading behavior. Defaults to `true`.

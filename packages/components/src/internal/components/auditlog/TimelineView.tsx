@@ -70,7 +70,7 @@ export class TimelineView extends React.Component<Props, any> {
                     isEventCompleted,
                     isConnection
                 )}
-                {this.renderDetailCol(event.summary, event.user, event.entity, event.getComment())}
+                {this.renderDetailCol(event.summary, event.user, event.entity, event.getComment(), event.entitySeparator)}
             </tr>
         );
     }
@@ -163,13 +163,13 @@ export class TimelineView extends React.Component<Props, any> {
         );
     }
 
-    renderDetailCol(summary: string, user: any, entity: any, comment: string) {
+    renderDetailCol(summary: string, user: any, entity: any, comment: string, entitySeparator?: string) {
         const { showUserLinks } = this.props;
         return (
             <td key="tl-detail-col" className="detail-col">
                 <div>
                     {getEventDataValueDisplay(summary)}
-                    {entity != null && <span> - </span>}
+                    {entity != null && <span>{entitySeparator ? entitySeparator : ' - '}</span>}
                     {entity != null && getEventDataValueDisplay(entity)}
                 </div>
                 <div>

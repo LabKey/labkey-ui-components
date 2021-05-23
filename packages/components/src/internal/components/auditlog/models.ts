@@ -58,6 +58,7 @@ export class TimelineEventModel extends Record({
     timestamp: undefined,
     eventTimestamp: undefined,
     entity: undefined,
+    entitySeparator: ' - ',
     metadata: undefined,
     oldData: undefined,
     newData: undefined,
@@ -70,6 +71,7 @@ export class TimelineEventModel extends Record({
     declare timestamp?: Map<string, any>;
     declare eventTimestamp?: any;
     declare entity?: Map<string, any>;
+    declare entitySeparator?: string;
     declare metadata?: List<Map<string, any>>;
     declare oldData?: Map<string, string>;
     declare newData?: Map<string, string>;
@@ -96,6 +98,7 @@ export class TimelineEventModel extends Record({
                 ? new Date(raw['timestamp']['value'] + ' ' + timezoneStr)
                 : new Date(raw['timestamp']['value']);
         fields.entity = fromJS(raw['entity']);
+        fields.entitySeparator = raw['entitySeparator'];
 
         if (raw.metadata) {
             const metaRows = [];
@@ -138,8 +141,8 @@ export class TimelineEventModel extends Record({
         if (App.ASSAYS_KEY === this.eventType) icon = 'assay';
         else if (this.eventType === 'inventory') {
             const summary = this.summary.toLowerCase();
-            if (summary.indexOf('added to') > -1) icon = 'storage_insert';
-            else if (summary.indexOf('discarded') > -1) icon = 'storage_remove';
+            if (summary.indexOf('added to') > -1 || summary.indexOf('added location') > -1) icon = 'storage_insert';
+            else if (summary.indexOf('discarded') > -1 || summary.indexOf('location deleted') > -1) icon = 'storage_remove';
             else if (summary.indexOf('checked in') > -1) icon = 'storage_checkin';
             else if (summary.indexOf('checked out') > -1) icon = 'storage_checkout';
             else if (summary.indexOf('moved') > -1) icon = 'storage_move';

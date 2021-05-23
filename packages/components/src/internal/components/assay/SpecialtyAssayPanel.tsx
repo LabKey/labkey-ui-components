@@ -50,11 +50,11 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
         <div>
             <Row>
                 <Col xs={6}>
-                    <div className="margin-bottom">
-                        <b>Use Instrument Specific Data Format</b>
-                    </div>
                     { selected && options?.length > 0 && (
                         <>
+                            <div className="margin-bottom">
+                                <b>Use Instrument Specific Data Format</b>
+                            </div>
                             <div className="margin-bottom">
                                 <select
                                     id="specialty-assay-type-select"

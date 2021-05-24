@@ -29,20 +29,20 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                 setShowCreatePicklist(true);
             }
         },
-        [setShowChoosePicklist]
+        []
     );
 
     const afterAddToPicklist = useCallback(() => {
         setShowChoosePicklist(false);
-    }, [setShowChoosePicklist]);
+    }, []);
 
     const closeCreatePicklist = useCallback(() => {
         setShowCreatePicklist(false);
-    }, [setShowCreatePicklist]);
+    }, []);
 
     const afterCreatePicklist = useCallback(() => {
         setShowCreatePicklist(false);
-    }, [setShowCreatePicklist]);
+    }, []);
 
     const onClick = useCallback(() => {
         if (!queryModel || queryModel.selections.size > 0) {

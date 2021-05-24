@@ -30,7 +30,8 @@ import { DetailEditing } from './DetailEditing';
 let MODEL_ID;
 
 beforeAll(() => {
-    initUnitTestMocks( undefined,
+    initUnitTestMocks(
+        undefined,
         fromJS({
             schema: {
                 [SCHEMAS.SAMPLE_SETS.SCHEMA]: {

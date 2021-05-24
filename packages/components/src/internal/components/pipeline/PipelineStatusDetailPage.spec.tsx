@@ -7,8 +7,9 @@ import { initUnitTestMocks } from '../../testHelperMocks';
 
 import { initNotificationsState } from '../../..';
 
-import { PipelineStatusDetailPage } from './PipelineStatusDetailPage';
 import { initPipelineStatusDetailsMocks } from '../../../stories/mock';
+
+import { PipelineStatusDetailPage } from './PipelineStatusDetailPage';
 
 beforeAll(() => {
     initUnitTestMocks([initPipelineStatusDetailsMocks]);

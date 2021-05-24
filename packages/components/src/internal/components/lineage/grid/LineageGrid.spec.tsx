@@ -4,8 +4,9 @@ import renderer from 'react-test-renderer';
 import { registerDefaultURLMappers, sleep } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../testHelperMocks';
 
-import { LineageGrid } from './LineageGrid';
 import { initLineageMocks } from '../../../../stories/mock';
+
+import { LineageGrid } from './LineageGrid';
 
 beforeAll(() => {
     initUnitTestMocks([initLineageMocks]);

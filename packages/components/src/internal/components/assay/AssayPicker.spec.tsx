@@ -12,7 +12,9 @@ beforeAll(() => {
 
 describe('AssayPicker', () => {
     test('AssayPicker', async () => {
-        const component = <AssayPicker showImport={true} showContainerSelect={true} onChange={jest.fn()} hasPremium={true}/>;
+        const component = (
+            <AssayPicker showImport={true} showContainerSelect={true} onChange={jest.fn()} hasPremium={true} />
+        );
 
         const wrapper = mount(component);
         await sleep();

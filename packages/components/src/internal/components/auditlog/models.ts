@@ -52,6 +52,7 @@ export class AuditDetailsModel extends Record({
 export class TimelineEventModel extends Record({
     rowId: undefined,
     eventType: undefined,
+    subEventType: undefined,
     summary: undefined,
     user: undefined,
     eventUserId: undefined,
@@ -64,7 +65,8 @@ export class TimelineEventModel extends Record({
     newData: undefined,
 }) {
     declare rowId?: number;
-    declare eventType?: string;
+    declare eventType?: string; // sample, assay, workflow, inventory, etc
+    declare subEventType?: string; // for example, inventory item vs inventory storage location
     declare summary?: string;
     declare user?: Map<string, any>;
     declare eventUserId?: number;
@@ -89,6 +91,7 @@ export class TimelineEventModel extends Record({
         const fields = {} as TimelineEventModel;
         fields.rowId = raw['rowId'];
         fields.eventType = raw['eventType'];
+        fields.subEventType = raw['subEventType'];
         fields.summary = raw['summary'];
         fields.user = fromJS(raw['user']);
         fields.eventUserId = raw['user']['value'];

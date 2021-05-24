@@ -148,6 +148,9 @@ export function getTimelineEntityUrl(d: Record<string, any>): AppURL {
                     url = AppURL.create("freezers", value[0], 'storageView').addParam("locationId", value[1]);
                 }
                 break;
+            case 'inventoryBox':
+                url = AppURL.create("boxes", value);
+                break;
             default:
                 break;
         }

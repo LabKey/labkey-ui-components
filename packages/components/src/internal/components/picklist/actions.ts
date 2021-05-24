@@ -280,12 +280,14 @@ export function getSamplesNotInList(listName: string, selectionKey?: string, sam
                         });
                         resolve(newSamples);
                     });
-                } else {
+                } else if (sampleIds) {
                     sampleIds.forEach(id => {
                         if (!existingSamples.has(id.toString())) {
                             newSamples.push(id.toString());
                         }
                     });
+                    resolve(newSamples);
+                } else {
                     resolve(newSamples);
                 }
             })

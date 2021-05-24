@@ -21,7 +21,7 @@ import { Picklist } from './models';
 interface PicklistListProps {
     activeItem: Picklist;
     emptyMessage: ReactNode;
-    onSelect: (picklist) => void;
+    onSelect: (picklist: Picklist) => void;
     showSharedIcon?: boolean;
     items: Picklist[];
 }
@@ -69,7 +69,7 @@ export const PicklistItemsSummaryDisplay: FC<PicklistItemsSummaryDisplayProps & 
                     </div>
                 );
             } else {
-                summaryData.push(<div key="summary">{picklist.ItemCount} samples</div>);
+                summaryData.push(<div key="summary">{Utils.pluralize(picklist.ItemCount, 'sample', 'samples')}</div>);
             }
         } else {
             countsByType.forEach(countData => {
@@ -157,14 +157,14 @@ export const PicklistDetails: FC<PicklistDetailsProps> = memo(props => {
     );
 });
 
-interface AddedToPicklistNoficationProps {
+interface AddedToPicklistNotificationProps {
     picklist: Picklist;
     numAdded: number;
     numSelected: number;
 }
 
 // export for jest testing
-export const AddedToPicklistNotification: FC<AddedToPicklistNoficationProps> = props => {
+export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> = props => {
     const {picklist, numAdded, numSelected} = props;
     let numAddedNotification;
     if (numAdded == 0) {
@@ -219,7 +219,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         }, []);
 
         const filteredItems = useMemo<Picklist[]>(() => {
-            if (search.trim() !== '') {
+            if (search !== '') {
                 return picklists.filter(item => item.name.toLowerCase().indexOf(search) > -1);
             }
 
@@ -265,7 +265,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 setSubmitting(false);
                 setError(resolveErrorMessage(e));
             }
-        }, [activeItem, selectionKey, setSubmitting, setError, sampleIds]);
+        }, [activeItem, selectionKey, setSubmitting, setError, sampleIds, numSelected]);
 
         const closeModal = useCallback(() => {
             onCancel(false);
@@ -275,6 +275,11 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             onCancel(true);
         }, [onCancel]);
 
+        const createNewListMessage = (
+            <>
+                Do you want to <a onClick={goToCreateNewList}>create a new one</a>?
+            </>
+        );
         const isSearching = !!search;
         let myEmptyMessage: ReactNode = <LoadingSpinner/>;
         let teamEmptyMessage: ReactNode = <LoadingSpinner/>;
@@ -290,21 +295,15 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             suffix += ' to add ' + (numSelected === 1 ? 'this sample to.' : 'these samples to.');
             myEmptyMessage += suffix;
             teamEmptyMessage += suffix;
-            let createNewList = null;
             if (!isSearching) {
-                createNewList = (
-                    <>
-                        Do you want to <a onClick={goToCreateNewList}>create a new one</a>?
-                    </>
-                );
                 myEmptyMessage = (
                     <>
-                        {myEmptyMessage} {createNewList}
+                        {myEmptyMessage} {createNewListMessage}
                     </>
                 );
                 teamEmptyMessage = (
                     <>
-                        {teamEmptyMessage} {createNewList}
+                        {teamEmptyMessage} {createNewListMessage}
                     </>
                 );
             }

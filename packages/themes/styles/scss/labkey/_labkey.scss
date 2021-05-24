@@ -89,6 +89,14 @@ legend {
   }
 }
 
+.content-blur {
+    -webkit-filter: blur(7px) grayscale(25%);
+    -moz-filter: blur(7px) grayscale(25%);
+    -o-filter: blur(7px) grayscale(25%);
+    -ms-filter: blur(7px);
+    filter: blur(7px) grayscale(25%);
+}
+
 .dialog-template-body,
 .wizard-template-body {
   .lk-header-ct {

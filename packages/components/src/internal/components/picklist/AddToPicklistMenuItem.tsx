@@ -90,6 +90,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                 show={showCreatePicklist}
                 onFinish={afterCreatePicklist}
                 onCancel={closeCreatePicklist}
+                showNotification={true}
             />
         </>
     );

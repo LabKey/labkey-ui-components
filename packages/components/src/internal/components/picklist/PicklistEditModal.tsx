@@ -65,7 +65,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         onCancel();
     }, []);
 
-    const createSuccessNotification = () => {
+    const createSuccessNotification = (picklist: Picklist) => {
         createNotification({
             message: () => {
                 return (
@@ -99,7 +99,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
             }
             setIsSubmitting(false);
             if (showNotification) {
-                createSuccessNotification();
+                createSuccessNotification(updatedList);
             }
 
             onFinish(updatedList);

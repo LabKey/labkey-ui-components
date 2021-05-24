@@ -3,8 +3,6 @@ import mock, { proxy } from 'xhr-mock';
 
 import {
     initDomainPropertiesMocks,
-    initLineageMocks,
-    initPipelineStatusDetailsMocks,
     initQueryGridMocks,
     initUserPropsMocks,
 } from '../stories/mock';
@@ -26,7 +24,7 @@ export function initUnitTestMocks(
     initDomainPropertiesMocks();
     initUserPropsMocks();
     if (extraMocks) {
-        extraMocks.forEach(mock => mock());
+        extraMocks.forEach(extraMock => extraMock());
     }
     mock.use(proxy);
 }

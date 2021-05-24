@@ -79,14 +79,13 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         let parentTypeOptions = List<IEntityTypeOption>();
         let originalParents = List<EntityChoice>();
 
-        for (const parentDataType of parentDataTypes) {
-            const { typeListingSchemaQuery } = parentDataType;
-
+        await Promise.all(parentDataTypes.map(async (parentDataType) => {
+            const {typeListingSchemaQuery} = parentDataType;
             try {
                 const options = await getEntityTypeOptions(parentDataType);
                 parentTypeOptions = parentTypeOptions.concat(options.get(typeListingSchemaQuery.queryName)) as List<
                     IEntityTypeOption
-                >;
+                    >;
                 originalParents = originalParents.concat(
                     getInitialParentChoices(parentTypeOptions, parentDataType, childData)
                 ) as List<EntityChoice>;
@@ -99,7 +98,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                     ),
                 });
             }
-        }
+        }));
 
         this.setState({
             currentParents: originalParents,
@@ -246,9 +245,9 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                     <div key={choice.type ? choice.type.label + '-' + index : 'unknown-' + index}>
                         {editing && <hr />}
                         <SingleParentEntityPanel
-                            parentDataTypes={parentDataTypes}
+                            parentDataType={parentDataTypes[0]}
                             parentTypeOptions={this.getParentTypeOptions(index)}
-                            parentTypeQueryName={choice.type ? choice.type.label : undefined}
+                            parentEntityType={choice.type}
                             parentLSIDs={choice.ids}
                             index={index}
                             editing={editing}
@@ -269,7 +268,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                 <SingleParentEntityPanel
                     editing={editing}
                     parentTypeOptions={this.state.parentTypeOptions}
-                    parentDataTypes={parentDataTypes}
+                    parentDataType={parentDataTypes[0]}
                     childNounSingular={childNounSingular}
                     index={0}
                     onChangeParentType={this.changeEntityType}

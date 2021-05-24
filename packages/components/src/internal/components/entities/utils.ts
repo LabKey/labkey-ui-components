@@ -110,7 +110,7 @@ export function getUpdatedRowForParentChanges(
         });
     }
 
-    childQueryInfo.getPkCols().forEach(pkCol => {
+    childQueryInfo?.getPkCols().forEach(pkCol => {
         const pkVal = childData[pkCol.fieldKey]?.['value'];
 
         if (pkVal !== undefined && pkVal !== null) {

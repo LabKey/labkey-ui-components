@@ -8,10 +8,7 @@ import {
     Alert,
     DataClassDataType,
     LoadingSpinner,
-    makeQueryInfo,
-    QueryGridModel,
     QueryInfo,
-    SchemaQuery,
 } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import { initUnitTestMocks } from '../../testHelperMocks';

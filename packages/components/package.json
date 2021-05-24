@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.33.0-smPicklistData.13",
+  "version": "2.33.0-smPicklistData.14",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

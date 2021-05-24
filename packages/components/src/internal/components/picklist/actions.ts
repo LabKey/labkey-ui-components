@@ -196,7 +196,7 @@ export function getPicklistCountsBySampleType(listName: string): Promise<SampleT
                 '"\n' +
                 'GROUP BY SampleId.SampleSet.Name, SampleId.LabelColor\n' +
                 'ORDER BY SampleId.SampleSet.Name',
-            schemaName: 'lists',
+            schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
             success: data => {
                 resolve(data.rows);
             },
@@ -210,7 +210,7 @@ export function getPicklistCountsBySampleType(listName: string): Promise<SampleT
 
 export function getPicklistSamples(listName: string): Promise<Set<string>> {
     return new Promise((resolve, reject) => {
-        const schemaName = 'lists';
+        const schemaName = SCHEMAS.PICKLIST_TABLES.SCHEMA;
         selectRows({
             schemaName,
             queryName: listName,
@@ -267,28 +267,16 @@ export function getSelectedPicklistSamples(
 
 export function getSamplesNotInList(listName: string, selectionKey?: string, sampleIds?: string[]): Promise<string[]> {
     return new Promise((resolve, reject) => {
-        const newSamples = [];
         getPicklistSamples(listName)
             .then(existingSamples => {
-                const rows = List<any>();
                 if (selectionKey) {
                     getSelected(selectionKey).then(response => {
-                        response.selected.forEach(id => {
-                            if (!existingSamples.has(id)) {
-                                newSamples.push(id);
-                            }
-                        });
-                        resolve(newSamples);
+                        resolve(response.selected.filter(id => !existingSamples.has(id.toString())));
                     });
                 } else if (sampleIds) {
-                    sampleIds.forEach(id => {
-                        if (!existingSamples.has(id.toString())) {
-                            newSamples.push(id.toString());
-                        }
-                    });
-                    resolve(newSamples);
+                    resolve(sampleIds.filter(id => !existingSamples.has(id.toString())));
                 } else {
-                    resolve(newSamples);
+                    resolve([]);
                 }
             })
             .catch(reason => {

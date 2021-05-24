@@ -32,18 +32,6 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const onFinish = (picklist: Picklist) => {
-        const count = sampleIds ? sampleIds.length : selectedQuantity;
-        createNotification({
-            message: () => {
-                return (
-                    <>
-                        Successfully created "{picklist.name}" with {Utils.pluralize(count, 'sample', 'samples')}.&nbsp;
-                        <a href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>View picklist</a>.
-                    </>
-                );
-            },
-            alertClass: 'success',
-        });
         setShowModal(false);
     };
 
@@ -67,6 +55,7 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
             <PicklistEditModal
                 selectionKey={selectionKey}
                 selectedQuantity={selectedQuantity}
+                showNotification={true}
                 sampleIds={sampleIds}
                 show={showModal}
                 onFinish={onFinish}

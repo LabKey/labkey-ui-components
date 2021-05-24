@@ -71,7 +71,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                 return (
                     <>
                         Successfully created "{picklist.name}" with{' '}
-                        {Utils.pluralize(selectedQuantity, 'sample', 'samples')}.&nbsp;
+                        {selectedQuantity ? Utils.pluralize(selectedQuantity, 'sample', 'samples') : ' no samples'}.&nbsp;
                         <a href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>View picklist</a>.
                     </>
                 );
@@ -114,15 +114,16 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         title = 'Update Picklist Data';
     } else {
         const count = sampleIds?.length ?? selectedQuantity;
-        if (count === 0) {
-            title = 'Create an Empty Picklist';
-        } else if (selectionKey && count) {
-            title = <>Create a New Picklist with the {Utils.pluralize(count, 'Selected Sample', 'Selected Samples')}</>;
-        } else if (count === 1) {
-            title = 'Create a New Picklist with This Sample';
-        } else {
-            title = 'Create a New Picklist with These Samples';
-        }
+            if (!count) {
+                title = 'Create an Empty Picklist';
+            } else if (selectionKey && count) {
+                title = <>Create a New Picklist with
+                    the {Utils.pluralize(count, 'Selected Sample', 'Selected Samples')}</>;
+            } else if (count === 1) {
+                title = 'Create a New Picklist with This Sample';
+            } else {
+                title = 'Create a New Picklist with These Samples';
+            }
     }
 
     return (

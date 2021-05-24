@@ -51,6 +51,10 @@ export class Picklist {
         return this.isUserList(user) || (this.isPublic() && userCanDeletePublicPicklists(user));
     }
 
+    canRemoveItems(user: User): boolean {
+        return this.isUserList(user) || (this.isPublic() && userCanManagePicklists(user));
+    }
+
     mutate(props: Partial<Picklist>): Picklist {
         return produce(this, (draft: Draft<Picklist>) => {
             Object.assign(draft, props);

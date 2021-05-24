@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Add styling (lifted from ELN notebooks stylings) for choice panels in modal.
 * Update `getSelection` so you can pass in a `queryName` and `schemaName` and not have to parse the selection key
 * Add utility method `getCofirmDeleteMessage`
+* Issue 42843: Sample Creation modal allows more than the max number of rows to be created
 
 ### version 2.32.0
 *Released*: 19 May 2021

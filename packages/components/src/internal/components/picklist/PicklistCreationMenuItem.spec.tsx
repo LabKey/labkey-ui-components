@@ -80,4 +80,26 @@ describe('PicklistCreationMenuItem', () => {
         expect(wrapper.find('MenuItem')).toHaveLength(0);
         wrapper.unmount();
     });
+
+    test('not enabled for Biologics', () => {
+        LABKEY.experimental = {
+            samplePicklist: true,
+        } as any;
+
+        LABKEY.moduleContext = {
+            biologics: {}
+        };
+
+        const wrapper = mount(
+            <PicklistCreationMenuItem
+                itemText={text}
+                selectionKey={selectionKey}
+                selectedQuantity={selectedQuantity}
+                key={key}
+                user={TEST_USER_READER}
+            />
+        );
+        expect(wrapper.find('MenuItem')).toHaveLength(0);
+        wrapper.unmount();
+    });
 });

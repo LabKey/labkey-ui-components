@@ -151,7 +151,7 @@ function isFreezerManagerEnabledInBiologics(): boolean {
 }
 
 export function isSamplePicklistEnabled(): boolean {
-    return getServerContext().experimental?.['samplePicklist'] === true && !isBiologicsEnabled();
+    return !isBiologicsEnabled();
 }
 
 export function hasModule(moduleName: string) {

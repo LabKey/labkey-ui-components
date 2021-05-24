@@ -16,9 +16,6 @@ describe('AddToPicklistMenuItem', () => {
     const text = 'Picklist Testing';
 
     test('with queryModel', () => {
-        LABKEY.experimental = {
-            samplePicklist: true,
-        } as any;
         let queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
         queryModel = queryModel.mutate({selections: new Set(['1', '2'])});
         const wrapper = mount(
@@ -38,10 +35,6 @@ describe('AddToPicklistMenuItem', () => {
     });
 
     test('with selectedIds', () => {
-        LABKEY.experimental = {
-            samplePicklist: true,
-        } as any;
-
         const wrapper = mount(
             <AddToPicklistMenuItem itemText={text} sampleIds={['1']} key={key} user={TEST_USER_EDITOR}/>
         );
@@ -56,10 +49,6 @@ describe('AddToPicklistMenuItem', () => {
     });
 
     test('not Editor', () => {
-        LABKEY.experimental = {
-            samplePicklist: true,
-        } as any;
-
         const wrapper = mount(
             <AddToPicklistMenuItem itemText={text} sampleIds={['1']} key={key} user={TEST_USER_READER}/>
         );
@@ -68,10 +57,6 @@ describe('AddToPicklistMenuItem', () => {
     });
 
     test('modal open', () => {
-        LABKEY.experimental = {
-            samplePicklist: true,
-        } as any;
-
         const wrapper = mount(
             <AddToPicklistMenuItem itemText={text} sampleIds={['1']} key={key} user={TEST_USER_EDITOR}/>
         );

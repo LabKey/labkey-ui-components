@@ -14,10 +14,6 @@ describe('PicklistCreationMenuItem', () => {
     const text = 'Picklist';
 
     test('modal hidden', () => {
-        LABKEY.experimental = {
-            samplePicklist: true,
-        } as any;
-
         const wrapper = mount(
             <PicklistCreationMenuItem
                 itemText={text}
@@ -41,10 +37,6 @@ describe('PicklistCreationMenuItem', () => {
     });
 
     test('modal shown', () => {
-        LABKEY.experimental = {
-            samplePicklist: true,
-        } as any;
-
         const wrapper = mount(
             <PicklistCreationMenuItem
                 itemText={text}
@@ -64,10 +56,6 @@ describe('PicklistCreationMenuItem', () => {
     });
 
     test('not Editor', () => {
-        LABKEY.experimental = {
-            samplePicklist: true,
-        } as any;
-
         const wrapper = mount(
             <PicklistCreationMenuItem
                 itemText={text}
@@ -82,10 +70,6 @@ describe('PicklistCreationMenuItem', () => {
     });
 
     test('not enabled for Biologics', () => {
-        LABKEY.experimental = {
-            samplePicklist: true,
-        } as any;
-
         LABKEY.moduleContext = {
             biologics: {}
         };

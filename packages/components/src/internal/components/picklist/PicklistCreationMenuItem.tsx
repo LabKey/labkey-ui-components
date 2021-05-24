@@ -2,14 +2,6 @@ import React, { FC, useState } from 'react';
 
 import { MenuItem } from 'react-bootstrap';
 
-import { Utils } from '@labkey/api';
-
-import { createNotification } from '../notifications/actions';
-
-import { AppURL } from '../../url/AppURL';
-
-import { PICKLIST_KEY } from '../../app/constants';
-
 import { isSamplePicklistEnabled, userCanManagePicklists } from '../../app/utils';
 
 import { User } from '../base/models/User';

@@ -1,0 +1,57 @@
+
+.choice-details,
+.choose-items-tabs {
+    margin-top: 20px;
+}
+
+.choice-details > div {
+    margin-top: 16px;
+}
+
+.choice-details__name {
+    font-size: 18px;
+    color: $gray-light;
+}
+
+.choice-metadata-item {
+    margin: 4px 0;
+}
+
+.choice-metadata-item__name {
+    margin-right: 8px;
+    color: $gray-light;
+}
+
+.choices-list {
+    height: 401px; // 10 items plus their borders
+    overflow: auto;
+}
+
+.choices-list .list-group-item .fa {
+    margin-right: 6px;
+}
+
+.choices-detail__empty-message,
+.choices-list__empty-message {
+    margin-top: 16px;
+    font-style: italic;
+}
+
+.picklist-items__sample-type {
+    margin-left: 16px;
+}
+
+.picklist-items__item-count {
+    float: right;
+    text-align: right;
+}
+
+.picklist-items__header {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.picklist-items__row {
+    margin-bottom: 5px;
+    width: 75%;
+}

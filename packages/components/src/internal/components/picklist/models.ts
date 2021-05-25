@@ -3,17 +3,31 @@ import { Draft, immerable, produce } from 'immer';
 import { User } from '../base/models/User';
 import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { userCanDeletePublicPicklists, userCanManagePicklists } from '../../app/utils';
+import { flattenValuesFromRow } from '../../../public/QueryModel/utils';
 
-export class PicklistModel {
+export const PICKLIST_SAMPLE_ID_COLUMN = 'SampleID';
+export const PICKLIST_KEY_COLUMN = 'id';
+
+export class Picklist {
     [immerable] = true;
 
     readonly Category: string;
     readonly CreatedBy: number;
+    readonly CreatedByDisplay: string;
+    readonly Created: string;
     readonly name: string;
     readonly listId: number;
     readonly Description: string;
+    readonly ItemCount: number;
 
-    constructor(values?: Partial<PicklistModel>) {
+    static create(data: any) {
+        return new Picklist({
+            ...flattenValuesFromRow(data, Object.keys(data)),
+            CreatedByDisplay: data.CreatedBy?.displayValue,
+        });
+    }
+
+    constructor(values?: Partial<Picklist>) {
         Object.assign(this, values);
     }
 
@@ -37,8 +51,12 @@ export class PicklistModel {
         return this.isUserList(user) || (this.isPublic() && userCanDeletePublicPicklists(user));
     }
 
-    mutate(props: Partial<PicklistModel>): PicklistModel {
-        return produce(this, (draft: Draft<PicklistModel>) => {
+    canRemoveItems(user: User): boolean {
+        return this.isUserList(user) || (this.isPublic() && userCanManagePicklists(user));
+    }
+
+    mutate(props: Partial<Picklist>): Picklist {
+        return produce(this, (draft: Draft<Picklist>) => {
             Object.assign(draft, props);
         });
     }

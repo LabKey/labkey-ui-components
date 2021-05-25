@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 8897: Remove default session event listeners from initWebSocketListeners (and rename it to registerWebSocketListeners)
+
 ### version 2.32.0
 *Released*: 19 May 2021
 * Introduce `loadOnMount` flag to `<GridPanel/>` for controlling model loading behavior. Defaults to `true`.

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.34.0
+*Release*: 25 May 2021
+* Specialty assays moved to premium module. Assay picker now has option to show upsell message.
+* Better handling when no specialty assays available in assay picker, including warning.
+* Upsell message in the assay picker is a candidate to be it's own component should we need further upsell messages.
+
 ### version 2.33.0
 *Release*: 25 May 2021
 * Add support for modifying the items in a picklist

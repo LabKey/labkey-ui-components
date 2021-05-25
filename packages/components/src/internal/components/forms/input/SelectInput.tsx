@@ -96,6 +96,7 @@ export interface SelectInputProps extends DisableableInputProps {
     allowCreate?: boolean;
     autoload?: boolean;
     autoValue?: boolean;
+    autoFocus?: boolean;
     backspaceRemoves?: boolean;
     deleteRemoves?: boolean;
     clearCacheOnChange?: boolean;
@@ -420,6 +421,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     renderSelect(inputProps: any) {
         const {
             addLabelText,
+            autoFocus,
             autoload,
             backspaceRemoves,
             deleteRemoves,
@@ -444,6 +446,8 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
 
         const selectProps = {
             addLabelText,
+            // newer versions of ReactSelect have renamed this to autoFocus
+            autofocus: autoFocus,
             autoload,
             backspaceRemoves,
             deleteRemoves,

@@ -928,6 +928,30 @@ export function getUpdatedVisitedPanelsList(visitedPanels: List<number>, index: 
     return updatedVisitedPanels;
 }
 
+function updateOntologyDomainCols (
+    fieldIndex: number,
+    domainIndex: number,
+    updatedDomain: DomainDesign,
+    origDomain: DomainDesign,
+    removedFieldIndexes: DomainFieldIndexChange[],
+    domainFieldType: string,
+    domainFieldName: string
+): DomainDesign {
+    const id = createFormInputId(domainFieldType, domainIndex, fieldIndex);
+    const [changed, value] = getOntologyUpdatedFieldName(
+        domainFieldName,
+        updatedDomain,
+        origDomain,
+        removedFieldIndexes
+    );
+
+    if (changed) {
+        updatedDomain = updateDomainField(updatedDomain, { id, value });
+    }
+
+    return updatedDomain;
+}
+
 export function updateOntologyFieldProperties(
     fieldIndex: number,
     domainIndex: number,
@@ -940,24 +964,11 @@ export function updateOntologyFieldProperties(
     if (ontField.dataType.isOntologyLookup()) {
         // if the concept field prop is set and the field's name or data type has changed, update it based on the updatedDomain
         if (ontField.conceptImportColumn) {
-            const id = createFormInputId(DOMAIN_FIELD_ONTOLOGY_IMPORT_COL, domainIndex, fieldIndex);
-            const value = getOntologyUpdatedFieldName(
-                ontField.conceptImportColumn,
-                updatedDomain,
-                origDomain,
-                removedFieldIndexes
-            );
-            updatedDomain = updateDomainField(updatedDomain, { id, value });
+            updatedDomain = updateOntologyDomainCols(fieldIndex, domainIndex, updatedDomain, origDomain, removedFieldIndexes, DOMAIN_FIELD_ONTOLOGY_IMPORT_COL, ontField.conceptImportColumn);
         }
+
         if (ontField.conceptLabelColumn) {
-            const id = createFormInputId(DOMAIN_FIELD_ONTOLOGY_LABEL_COL, domainIndex, fieldIndex);
-            const value = getOntologyUpdatedFieldName(
-                ontField.conceptLabelColumn,
-                updatedDomain,
-                origDomain,
-                removedFieldIndexes
-            );
-            updatedDomain = updateDomainField(updatedDomain, { id, value });
+            updatedDomain = updateOntologyDomainCols(fieldIndex, domainIndex, updatedDomain, origDomain, removedFieldIndexes, DOMAIN_FIELD_ONTOLOGY_LABEL_COL, ontField.conceptLabelColumn);
         }
     }
     return updatedDomain;
@@ -970,8 +981,12 @@ export function getOntologyUpdatedFieldName(
     updatedDomain: DomainDesign,
     origDomain: DomainDesign,
     removedFieldIndexes: DomainFieldIndexChange[]
-): string {
+): [boolean, string] {
+    // Check if field name and/or index have changed
     let origFieldIndex = origDomain.findFieldIndexByName(propFieldName);
+    let updateFieldIndex = updatedDomain.findFieldIndexByName(propFieldName);
+    if (origFieldIndex === updateFieldIndex)
+        return [false, propFieldName];
 
     // check for a field removal prior to the ontology lookup field
     const propFieldRemoved = removedFieldIndexes
@@ -992,5 +1007,5 @@ export function getOntologyUpdatedFieldName(
     }
 
     const updatedPropField = updatedDomain.fields.get(origFieldIndex);
-    return !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined;
+    return [true, !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined];
 }

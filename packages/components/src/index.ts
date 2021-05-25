@@ -432,6 +432,8 @@ import {
     SampleCreationType,
 } from './internal/components/samples/models';
 import { createMockWithRouterProps } from './test/mockUtils';
+import { ConceptModel } from './internal/components/ontology/models'
+import { ConceptPicker } from './internal/components/ontology/ConceptPicker';
 import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
@@ -1095,6 +1097,8 @@ export {
     OntologyBrowserPanel,
     OntologyConceptOverviewPanel,
     OntologyBrowserFilterPanel,
+    ConceptPicker,
+    ConceptModel,
     AutoForm,
     HelpIcon,
 };

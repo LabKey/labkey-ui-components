@@ -102,6 +102,11 @@ export const LIST_METADATA_TABLES = {
     PICKLISTS: SchemaQuery.create(LIST_METADATA_SCHEMA, 'Picklists'),
 };
 
+const PICKLIST_SCHEMA = 'lists';
+export const PICKLIST_TABLES = {
+    SCHEMA: PICKLIST_SCHEMA,
+};
+
 export const SCHEMAS = {
     ASSAY_TABLES,
     EXP_TABLES,
@@ -112,6 +117,7 @@ export const SCHEMAS = {
     STUDY_TABLES,
     INVENTORY,
     LIST_METADATA_TABLES,
+    PICKLIST_TABLES,
 };
 
 export function fetchSchemas(schemaName?: string): Promise<List<Map<string, SchemaDetails>>> {

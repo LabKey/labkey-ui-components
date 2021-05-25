@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, FormControl, Modal } from 'react-bootstrap';
+import classNames from 'classnames';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../../index';
 
@@ -22,6 +23,8 @@ interface State {
 }
 
 export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
+    private readonly _maxPerParent;
+
     constructor(props: Props) {
         super(props);
 
@@ -30,6 +33,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
             numPerParent: 1,
             submitting: false,
         };
+        this._maxPerParent = MAX_EDITABLE_GRID_ROWS / props.parentCount;
     }
 
     onCancel = () => {
@@ -37,26 +41,34 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     };
 
     onChange = event => {
-        const { name, value } = event.target;
-        this.setState({ [name]: value } as State);
+        const {name, value} = event.target;
+        this.setState({[name]: value} as State);
     };
 
+    isValidNumPerParent() {
+        const {numPerParent} = this.state;
+
+        return numPerParent >= 1 && numPerParent <= this._maxPerParent;
+    }
+
     renderNumPerParent(): React.ReactNode {
-        const { parentCount, options } = this.props;
-        const { creationType, numPerParent } = this.state;
+        const {parentCount, options} = this.props;
+        const {creationType, numPerParent} = this.state;
 
         const selectedOption = options.find(option => option.type === creationType);
         const noun = creationType === SampleCreationType.Aliquots ? 'Aliquot' : 'Sample';
         return (
             <>
-                {this.shouldDisplayOptions() && <hr />}
+                {this.shouldDisplayOptions() && <hr/>}
                 <div>
                     <label className="creation-type-modal-label">{selectedOption.quantityLabel}</label>
                     <label className="creation-type-modal-label">
                         <FormControl
-                            className="creation-per-parent-select"
+                            className={classNames('creation-per-parent-select', {
+                                'has-error': !this.isValidNumPerParent(),
+                            })}
                             min={1}
-                            max={MAX_EDITABLE_GRID_ROWS / parentCount}
+                            max={this._maxPerParent}
                             step={1}
                             name="numPerParent"
                             onChange={this.onChange}
@@ -87,7 +99,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     }
 
     renderOptions(): React.ReactNode[] {
-        const { showIcons, options } = this.props;
+        const {showIcons} = this.props;
         const displayOptions = this.getOptionsToDisplay();
         if (displayOptions.length < 2) return null;
 
@@ -111,7 +123,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
         const { submitting, numPerParent } = this.state;
 
         const parentNoun = parentCount > 1 ? 'Parents' : 'Parent';
-        const canSubmit = !submitting && numPerParent > 0;
+        const canSubmit = !submitting && this.isValidNumPerParent();
         const title = 'Create Samples from Selected ' + parentNoun;
         return (
             <Modal show={show} onHide={this.onCancel}>

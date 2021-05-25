@@ -3,6 +3,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MenuItem, Modal } from 'react-bootstrap';
 
+import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 
 describe('PicklistCreationMenuItem', () => {
@@ -18,6 +20,7 @@ describe('PicklistCreationMenuItem', () => {
                 selectionKey={selectionKey}
                 selectedQuantity={selectedQuantity}
                 key={key}
+                user={TEST_USER_EDITOR}
             />
         );
         const menuItem = wrapper.find(MenuItem);
@@ -40,6 +43,7 @@ describe('PicklistCreationMenuItem', () => {
                 selectionKey={selectionKey}
                 selectedQuantity={selectedQuantity}
                 key={key}
+                user={TEST_USER_EDITOR}
             />
         );
         const menuItem = wrapper.find('MenuItem a');
@@ -48,6 +52,38 @@ describe('PicklistCreationMenuItem', () => {
         const modal = wrapper.find(Modal);
         expect(modal).toHaveLength(1);
         expect(modal.prop('show')).toBe(true);
+        wrapper.unmount();
+    });
+
+    test('not Editor', () => {
+        const wrapper = mount(
+            <PicklistCreationMenuItem
+                itemText={text}
+                selectionKey={selectionKey}
+                selectedQuantity={selectedQuantity}
+                key={key}
+                user={TEST_USER_READER}
+            />
+        );
+        expect(wrapper.find('MenuItem')).toHaveLength(0);
+        wrapper.unmount();
+    });
+
+    test('not enabled for Biologics', () => {
+        LABKEY.moduleContext = {
+            biologics: {}
+        };
+
+        const wrapper = mount(
+            <PicklistCreationMenuItem
+                itemText={text}
+                selectionKey={selectionKey}
+                selectedQuantity={selectedQuantity}
+                key={key}
+                user={TEST_USER_READER}
+            />
+        );
+        expect(wrapper.find('MenuItem')).toHaveLength(0);
         wrapper.unmount();
     });
 });

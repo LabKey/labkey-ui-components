@@ -101,7 +101,7 @@ export class SchemaQuery extends Record({
 
         return {
             keys,
-            schemaQuery: getSchemaQuery(schemaQueryKey),
+            schemaQuery: schemaQueryKey ? getSchemaQuery(schemaQueryKey) : undefined,
         };
     }
 

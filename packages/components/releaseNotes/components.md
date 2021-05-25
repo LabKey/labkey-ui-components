@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Release*: TBD
+### version 2.33.0
+*Release*: 25 May 2021
 * Add support for modifying the items in a picklist
     * Add AddToPicklistMenuItem that incorporates a new ChoosePicklistModal and actions
     * Add styling (lifted from ELN notebooks stylings) for choice panels in modal.

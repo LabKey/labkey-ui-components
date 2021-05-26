@@ -357,7 +357,7 @@ import {
     getDataDeleteConfirmationData,
     getSampleDeleteConfirmationData,
 } from './internal/components/entities/actions';
-import { DataClassDataType, SampleTypeDataType } from './internal/components/entities/constants';
+import { DataClassDataType, SampleTypeDataType, ParentEntityRequiredColumns } from './internal/components/entities/constants';
 import { createEntityParentKey, getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
@@ -770,6 +770,7 @@ export {
     loadSelectedSamples,
     SampleTypeDataType,
     DataClassDataType,
+    ParentEntityRequiredColumns,
     SampleEmptyAlert,
     SampleTypeEmptyAlert,
     SampleSetSummary,

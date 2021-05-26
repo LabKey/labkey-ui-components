@@ -1,9 +1,9 @@
 # exclude everything by default
 *.*
 
-# white-list files
+# allowed list
 !*.ts
 !*.tsx
 
-# black-list files
+# blocked list
 jest.setup.ts

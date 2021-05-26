@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Release*: TBD
+* Add support for concept picker usage in Insert/Update scenarios
+* Fixed OntologyLookupOptions NO-OP updates marking fields as dirty
+* Add an initial concept for OntologyBrowserModal
+
 ### version 2.33.1
 *Release*: 25 May 2021
 * Update SingleParentEntityPanel to handle multiple data source types

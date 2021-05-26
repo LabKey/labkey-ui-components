@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-###  version 2.??.0
-*Release*: ?? May 2021
+###  version 2.34.0
+*Release*: 26 May 2021
 * Add autoFocus prop to SelectInput
 
 ### version 2.33.1

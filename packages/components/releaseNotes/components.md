@@ -3,22 +3,16 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version TBD
-
 *Released*: TBD
-
 * Don't show multi-value columns as filtering options for Omnibox.
 
 ### version 2.33.1
-
 *Released*: 25 May 2021
-
 * Update SingleParentEntityPanel to handle multiple data source types
 * Update ParentEntityEditPanel to handle multiple data sources and not require a full model
 
 ### version 2.33.0
-
 *Released*: 25 May 2021
-
 * Add support for modifying the items in a picklist
     * Add AddToPicklistMenuItem that incorporates a new ChoosePicklistModal and actions
     * Add styling (lifted from ELN notebooks stylings) for choice panels in modal.

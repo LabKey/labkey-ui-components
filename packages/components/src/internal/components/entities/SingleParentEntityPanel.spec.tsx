@@ -51,7 +51,7 @@ describe('<SingleParentEntityPanel>', () => {
                 parentDataType={DataClassDataType}
                 parentLSIDs={undefined}
                 parentTypeOptions={parentTypeOptions}
-                parentTypeQueryName={undefined}
+                parentEntityType={undefined}
                 index={0}
                 editing={false}
             />
@@ -67,7 +67,7 @@ describe('<SingleParentEntityPanel>', () => {
                 parentDataType={DataClassDataType}
                 parentLSIDs={undefined}
                 parentTypeOptions={parentTypeOptions}
-                parentTypeQueryName={undefined}
+                parentEntityType={undefined}
                 index={0}
                 editing={true}
             />
@@ -81,7 +81,7 @@ describe('<SingleParentEntityPanel>', () => {
             <SingleParentEntityPanel
                 childNounSingular="Sample"
                 parentDataType={{ ...DataClassDataType, appUrlPrefixParts: ['sources'] }}
-                parentTypeQueryName="Second Source"
+                parentEntityType={parentTypeOptions.get(0)}
                 parentLSIDs={['url:lsid:blah']}
                 parentTypeOptions={parentTypeOptions}
                 index={0}

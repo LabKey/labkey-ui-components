@@ -157,6 +157,7 @@ export class EntityParentType extends Record({
 export interface IEntityTypeOption extends Option {
     lsid: string;
     rowId: number;
+    entityDataType: EntityDataType;
 }
 
 export class EntityTypeOption implements IEntityTypeOption {
@@ -164,6 +165,7 @@ export class EntityTypeOption implements IEntityTypeOption {
     lsid: string;
     rowId: number;
     value: any;
+    entityDataType: EntityDataType;
 
     constructor(props?: Partial<EntityTypeOption>) {
         if (props) {

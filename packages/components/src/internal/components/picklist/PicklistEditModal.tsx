@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
 import { Checkbox, Modal } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
@@ -10,21 +10,26 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
-import { PicklistModel } from './models';
-import { addSamplesToPicklist, createPicklist, setPicklistDefaultView, updatePicklist } from './actions';
+import { createNotification } from '../notifications/actions';
+import { AppURL } from '../../url/AppURL';
+import { PICKLIST_KEY } from '../../app/constants';
+
+import { createPicklist, updatePicklist } from './actions';
+import { Picklist } from './models';
 
 interface Props {
     show: boolean;
     selectionKey?: string; // pass in either selectionKey and selectedQuantity or sampleIds.
     selectedQuantity?: number;
     sampleIds?: string[];
-    picklist?: PicklistModel;
+    picklist?: Picklist;
     onCancel: () => void;
-    onFinish: (picklist: PicklistModel) => void;
+    onFinish: (picklist: Picklist) => void;
+    showNotification?: boolean;
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
-    const { show, onCancel, onFinish, selectionKey, selectedQuantity, sampleIds, picklist } = props;
+    const {show, onCancel, onFinish, selectionKey, selectedQuantity, sampleIds, picklist, showNotification} = props;
     const [name, setName] = useState<string>(picklist ? picklist.name : '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 
@@ -60,6 +65,21 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         onCancel();
     }, []);
 
+    const createSuccessNotification = (picklist: Picklist) => {
+        createNotification({
+            message: () => {
+                return (
+                    <>
+                        Successfully created "{picklist.name}" with{' '}
+                        {selectedQuantity ? Utils.pluralize(selectedQuantity, 'sample', 'samples') : ' no samples'}.&nbsp;
+                        <a href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>View picklist</a>.
+                    </>
+                );
+            },
+            alertClass: 'success',
+        });
+    };
+
     const onSavePicklist = useCallback(async () => {
         setIsSubmitting(true);
         try {
@@ -67,7 +87,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
             const trimmedName = name.trim();
             if (isUpdate) {
                 updatedList = await updatePicklist(
-                    new PicklistModel({
+                    new Picklist({
                         name: trimmedName,
                         listId: picklist.listId,
                         Description: description,
@@ -78,6 +98,10 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                 updatedList = await createPicklist(trimmedName, description, shared, selectionKey, sampleIds);
             }
             setIsSubmitting(false);
+            if (showNotification) {
+                createSuccessNotification(updatedList);
+            }
+
             onFinish(updatedList);
         } catch (e) {
             setPicklistError(resolveErrorMessage(e));
@@ -90,20 +114,16 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         title = 'Update Picklist Data';
     } else {
         const count = sampleIds?.length ?? selectedQuantity;
-        if (count === 0) {
-            title = 'Create an Empty Picklist';
-        } else if (selectionKey) {
-            title = (
-                <>
-                    Create a New Picklist with the{' '}
-                    {Utils.pluralize(selectedQuantity, 'Selected Sample', 'Selected Samples')}
-                </>
-            );
-        } else if (count === 1) {
-            title = 'Create a New Picklist with This Sample';
-        } else {
-            title = 'Create a New Picklist with These Samples';
-        }
+            if (!count) {
+                title = 'Create an Empty Picklist';
+            } else if (selectionKey && count) {
+                title = <>Create a New Picklist with
+                    the {Utils.pluralize(count, 'Selected Sample', 'Selected Samples')}</>;
+            } else if (count === 1) {
+                title = 'Create a New Picklist with This Sample';
+            } else {
+                title = 'Create a New Picklist with These Samples';
+            }
     }
 
     return (

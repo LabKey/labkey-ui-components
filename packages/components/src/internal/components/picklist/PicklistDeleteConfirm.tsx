@@ -6,7 +6,9 @@ import { Alert } from '../base/Alert';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { PicklistModel } from './models';
+import { getConfirmDeleteMessage } from '../../util/messaging';
+
+import { Picklist } from './models';
 import { getPicklistDeleteData, PicklistDeletionData } from './actions';
 
 interface Props {
@@ -90,14 +92,10 @@ export const PicklistDeleteConfirmMessage: FC<DeleteConfirmMessageProps> = memo(
                 </Alert>
             )}
             <span>
-                {rUSure}&nbsp;
                 {deletionData.numDeletable > 0 && (
                     <>
-                        Samples in the {noun} will not be affected.&nbsp;
-                        <p className="top-spacing">
-                            <strong>Deletion cannot be undone.</strong>
-                            &nbsp;Do you want to proceed?
-                        </p>
+                        {rUSure}&nbsp; Samples in the {noun} will not be affected.&nbsp;
+                        {getConfirmDeleteMessage()}
                     </>
                 )}
             </span>
@@ -133,7 +131,7 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
                 });
         } else {
             setNounAndNumber('This Picklist');
-            const picklist = new PicklistModel(model.getRow(undefined, true));
+            const picklist = Picklist.create(model.getRow());
             setDeletionData({
                 numDeletable: 1,
                 numNotDeletable: 0,

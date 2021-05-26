@@ -49,3 +49,16 @@ export const DataClassDataType: EntityDataType = {
     insertColumnNamePrefix: 'DataInputs/',
     importFileAction: 'importData',
 };
+
+export const ParentEntityRequiredColumns = SCHEMAS.CBMB.concat(
+    'LSID',
+    'Name',
+    'Description',
+    'AliquotedFromLSID/Name',
+    'RootMaterialLSID/Name',
+    'RootMaterialLSID/Description',
+    'Inputs/Materials/First',
+    'Inputs/Materials/First/SampleSet',
+    'Inputs/Data/First',
+    'Inputs/Data/First/DataClass'
+);

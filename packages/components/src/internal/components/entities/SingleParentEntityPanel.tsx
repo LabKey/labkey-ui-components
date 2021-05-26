@@ -27,8 +27,8 @@ import { DELIMITER } from '../forms/input/SelectInput';
 import { IEntityTypeOption } from './models';
 
 interface OwnProps {
-    chosenType: string;
-    onTypeChange: (chosenType: string) => void;
+    chosenType: IEntityTypeOption;
+    onTypeChange: (chosenType: IEntityTypeOption) => void;
     onValueChange: (chosenValue: string | string[]) => void;
 }
 
@@ -44,7 +44,7 @@ interface Props {
     parentDataType: EntityDataType;
     parentLSIDs?: string[];
     parentTypeOptions?: List<IEntityTypeOption>;
-    parentTypeQueryName?: string;
+    parentEntityType?: IEntityTypeOption;
 }
 
 type SingleParentEntityProps = Props & InjectedQueryModels & OwnProps;
@@ -70,7 +70,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
 
     onChangeParentType = (fieldName: string, chosenType: any, selectedOption: IEntityTypeOption): void => {
         const { index, onChangeParentType, onTypeChange, onValueChange } = this.props;
-        onTypeChange(chosenType);
+        onTypeChange(selectedOption);
         onValueChange(undefined);
         onChangeParentType?.(fieldName, chosenType, selectedOption, index);
     };
@@ -90,7 +90,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
     };
 
     renderParentSelection = (model: QueryModel): ReactNode => {
-        const { chosenType, chosenValue, parentDataType, parentLSIDs, parentTypeOptions, index } = this.props;
+        const { chosenType, chosenValue, parentLSIDs, parentTypeOptions, parentDataType, index } = this.props;
 
         if (model?.isLoading || !parentTypeOptions) {
             return <LoadingSpinner />;
@@ -98,10 +98,12 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
             return <Alert>{model.rowsError || model.queryInfoError}</Alert>;
         }
 
-        const parentSchemaQuery = chosenType
-            ? SchemaQuery.create(parentDataType.instanceSchemaName, chosenType)
-            : undefined;
-        const lcTypeName = chosenType ? chosenType.toLowerCase() : undefined;
+        let parentSchemaQuery;
+        if (chosenType && parentTypeOptions) {
+            parentSchemaQuery = SchemaQuery.create(chosenType.schema, chosenType.query);
+        }
+
+        const lcTypeName = chosenType?.label.toLowerCase();
 
         let value = chosenValue ?? undefined;
         if (!value && model?.hasData && parentLSIDs?.length > 0) {
@@ -136,7 +138,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         />
                     )}
                 </div>
-                {lcTypeName && (
+                {lcTypeName && chosenType && (
                     <QuerySelect
                         componentId={'parentEntityValue_' + lcTypeName} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
                         containerClass="row"
@@ -174,9 +176,9 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                             <td>{parentDataType.typeNounSingular}</td>
                             <td>
                                 {appUrlPrefixParts ? (
-                                    <a href={AppURL.create(...appUrlPrefixParts, chosenType).toHref()}>{chosenType}</a>
+                                    <a href={AppURL.create(...appUrlPrefixParts, chosenType.label).toHref()}>{chosenType.label}</a>
                                 ) : (
-                                    chosenType
+                                    chosenType.label
                                 )}
                             </td>
                         </tr>
@@ -237,13 +239,13 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
 const SingleParentEntityPanelBody = withQueryModels<Props & OwnProps>(SingleParentEntity);
 
 export const SingleParentEntityPanel: FC<Props> = memo(props => {
-    const { parentDataType, parentLSIDs, parentTypeQueryName } = props;
-    const [chosenType, setChosenType] = useState<string>(parentTypeQueryName);
+    const { parentTypeOptions, parentLSIDs, parentEntityType } = props;
+    const [chosenType, setChosenType] = useState<IEntityTypeOption>(parentEntityType);
     const [chosenValue, setChosenValue] = useState<string | string[]>(props.chosenValue);
 
     const queryConfigs: QueryConfigMap = useMemo(() => {
-        // Without a chosenType we cannot determine the underlying SchemaQuery
-        if (!chosenType) {
+        // Without a chosenType or parentTypeOptions we cannot determine the underlying SchemaQuery
+        if (!chosenType || !parentTypeOptions) {
             return {};
         }
 
@@ -251,10 +253,10 @@ export const SingleParentEntityPanel: FC<Props> = memo(props => {
             model: {
                 baseFilters: parentLSIDs?.length > 0 ? [Filter.create('LSID', parentLSIDs, Filter.Types.IN)] : [],
                 bindURL: false,
-                schemaQuery: SchemaQuery.create(parentDataType.instanceSchemaName, chosenType),
+                schemaQuery: SchemaQuery.create(chosenType.schema, chosenType.query),
             },
         };
-    }, [chosenType, parentDataType, parentLSIDs]);
+    }, [chosenType, parentTypeOptions, parentLSIDs]);
 
     return (
         <SingleParentEntityPanelBody

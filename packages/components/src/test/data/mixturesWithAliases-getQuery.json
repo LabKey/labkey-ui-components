@@ -1,0 +1,361 @@
+{
+  "schemaName": [
+    "exp",
+    "data"
+  ],
+  "queryName": "Mixtures",
+  "metaData": {
+    "importTemplates": [
+      {
+        "label": "Download Template",
+        "url": "/labkey/BiologicsAssayTest%20Project/query-exportExcelTemplate.view?schemaName=exp.data&query.queryName=Mixtures&headerType=DisplayFieldKey"
+      }
+    ],
+    "root": "rows",
+    "totalProperty": "rowCount",
+    "description": "Buffer Mixture Solutions",
+    "id": "RowId",
+    "fields": [
+      {
+        "fieldKey": [
+          "RowId"
+        ],
+        "description": "Contains a unique id for this data object",
+        "friendlyType": "Integer",
+        "type": "int",
+        "jsonType": "int",
+        "sqlType": "int identity",
+        "defaultValue": null,
+        "scale": 10,
+        "align": "right",
+        "sortable": true,
+        "width": "",
+        "autoIncrement": true,
+        "hidden": true,
+        "keyField": true,
+        "mvEnabled": false,
+        "nullable": false,
+        "readOnly": true,
+        "userEditable": false,
+        "calculated": false,
+        "versionField": false,
+        "selectable": true,
+        "shownInInsertView": false,
+        "shownInUpdateView": false,
+        "shownInDetailsView": true,
+        "dimension": false,
+        "measure": false,
+        "recommendedVariable": false,
+        "defaultScale": "LINEAR",
+        "phi": "NotPHI",
+        "excludeFromShifting": false,
+        "conceptURI": null,
+        "inputType": "text",
+        "cols": 10,
+        "shortCaption": "Row Id",
+        "facetingBehaviorType": "AUTOMATIC",
+        "caption": "Row Id"
+      },
+      {
+        "fieldKey": [
+          "Name"
+        ],
+        "description": "Contains a short name for this data object\nIf not provided, a unique name will be generated from the expression:\nnull",
+        "friendlyType": "Text (String)",
+        "type": "string",
+        "jsonType": "string",
+        "sqlType": "nvarchar",
+        "defaultValue": null,
+        "scale": 200,
+        "align": "left",
+        "sortable": true,
+        "width": "",
+        "autoIncrement": false,
+        "hidden": false,
+        "keyField": false,
+        "mvEnabled": false,
+        "nullable": true,
+        "readOnly": false,
+        "userEditable": true,
+        "calculated": false,
+        "versionField": false,
+        "selectable": true,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "shownInDetailsView": true,
+        "dimension": false,
+        "measure": false,
+        "recommendedVariable": false,
+        "defaultScale": "LINEAR",
+        "phi": "NotPHI",
+        "excludeFromShifting": false,
+        "conceptURI": null,
+        "inputType": "text",
+        "cols": 40,
+        "shortCaption": "Name",
+        "facetingBehaviorType": "AUTOMATIC",
+        "caption": "Name"
+      },
+      {
+        "fieldKey": [
+          "mixtureTypeId"
+        ],
+        "friendlyType": "Integer",
+        "type": "int",
+        "jsonType": "int",
+        "sqlType": "int",
+        "defaultValue": null,
+        "scale": 4000,
+        "align": "left",
+        "sortable": true,
+        "width": "",
+        "autoIncrement": false,
+        "hidden": false,
+        "keyField": false,
+        "mvEnabled": false,
+        "nullable": true,
+        "readOnly": false,
+        "userEditable": true,
+        "calculated": false,
+        "versionField": false,
+        "selectable": true,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "shownInDetailsView": true,
+        "dimension": false,
+        "measure": false,
+        "recommendedVariable": false,
+        "defaultScale": "LINEAR",
+        "phi": "NotPHI",
+        "excludeFromShifting": false,
+        "conceptURI": null,
+        "displayField": [
+          "mixtureTypeId",
+          "name"
+        ],
+        "displayFieldJsonType": "string",
+        "inputType": "text",
+        "cols": 40,
+        "shortCaption": "Mixture Type",
+        "facetingBehaviorType": "AUTOMATIC",
+        "caption": "Mixture Type",
+        "lookup": {
+          "keyColumn": "rowId",
+          "public": true,
+          "displayColumn": "name",
+          "queryName": "MixtureTypes",
+          "schemaName": [
+            "lists"
+          ]
+        }
+      },
+      {
+        "fieldKey": [
+          "expirationTime"
+        ],
+        "description": "The expiration period in days.",
+        "friendlyType": "Integer",
+        "type": "int",
+        "jsonType": "int",
+        "sqlType": "int",
+        "defaultValue": null,
+        "scale": 4000,
+        "align": "right",
+        "sortable": true,
+        "width": "",
+        "autoIncrement": false,
+        "hidden": false,
+        "keyField": false,
+        "mvEnabled": false,
+        "nullable": true,
+        "readOnly": false,
+        "userEditable": true,
+        "calculated": false,
+        "versionField": false,
+        "selectable": true,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "shownInDetailsView": true,
+        "dimension": false,
+        "measure": false,
+        "recommendedVariable": false,
+        "defaultScale": "LINEAR",
+        "phi": "NotPHI",
+        "excludeFromShifting": false,
+        "conceptURI": null,
+        "inputType": "text",
+        "cols": 40,
+        "shortCaption": "Expiration Time",
+        "facetingBehaviorType": "AUTOMATIC",
+        "caption": "Expiration Time"
+      },
+      {
+        "fieldKey": [
+          "extraTestColumn"
+        ],
+        "description": "An extra column added specifically to test customization of domains.",
+        "friendlyType": "Text (String)",
+        "type": "string",
+        "jsonType": "string",
+        "sqlType": "nvarchar",
+        "defaultValue": null,
+        "scale": 4000,
+        "align": "left",
+        "sortable": true,
+        "width": "",
+        "autoIncrement": false,
+        "hidden": false,
+        "keyField": false,
+        "mvEnabled": false,
+        "nullable": true,
+        "readOnly": false,
+        "userEditable": true,
+        "calculated": false,
+        "versionField": false,
+        "selectable": true,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "shownInDetailsView": true,
+        "dimension": false,
+        "measure": false,
+        "recommendedVariable": false,
+        "defaultScale": "LINEAR",
+        "phi": "NotPHI",
+        "excludeFromShifting": false,
+        "conceptURI": null,
+        "inputType": "text",
+        "cols": 40,
+        "shortCaption": "Extra Test Column",
+        "facetingBehaviorType": "AUTOMATIC",
+        "caption": "Extra Test Column"
+      },
+      {
+        "fieldKey": [
+          "Alias"
+        ],
+        "description": "Contains the list of aliases for this data object",
+        "friendlyType": "Text (String)",
+        "type": "string",
+        "jsonType": "string",
+        "sqlType": "LSIDtype",
+        "defaultValue": null,
+        "scale": 4000,
+        "align": "left",
+        "sortable": false,
+        "width": "",
+        "autoIncrement": false,
+        "hidden": false,
+        "keyField": false,
+        "mvEnabled": false,
+        "nullable": true,
+        "readOnly": false,
+        "userEditable": true,
+        "calculated": false,
+        "versionField": false,
+        "selectable": true,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "shownInDetailsView": true,
+        "dimension": false,
+        "measure": false,
+        "recommendedVariable": false,
+        "defaultScale": "LINEAR",
+        "phi": "NotPHI",
+        "excludeFromShifting": false,
+        "conceptURI": "http://www.labkey.org/exp/xml#alias",
+        "inputType": "text",
+        "cols": 40,
+        "shortCaption": "Alias",
+        "facetingBehaviorType": "ALWAYS_OFF",
+        "caption": "Alias",
+        "lookup": {
+          "schema": "exp",
+          "keyColumn": "RowId",
+          "public": false,
+          "displayColumn": "Alias/Name",
+          "junctionLookup": "Alias",
+          "isPublic": false,
+          "queryName": "Alias",
+          "schemaName": "exp",
+          "multiValued": "junction",
+          "table": "Alias"
+        },
+        "multiValue": true
+      }
+    ],
+    "title": "Mixtures",
+    "importMessage": null
+  },
+  "rows": [
+    {
+      "data": {
+        "RowId": {
+          "value": 41426,
+          "url": "/labkey/BiologicsAssayTest%20Project/experiment-showData.view?rowId=41426"
+        },
+        "expirationTime": {
+          "value": 30
+        },
+        "extraTestColumn": {
+          "value": null
+        },
+        "mixtureTypeId": {
+          "value": 2,
+          "displayValue": "Solution",
+          "url": "/labkey/BiologicsAssayTest%20Project/list-details.view?listId=15&pk=2"
+        },
+        "Name": {
+          "value": "DMEXP",
+          "url": "/labkey/BiologicsAssayTest%20Project/experiment-showData.view?rowId=41426"
+        }
+      }
+    },
+    {
+      "data": {
+        "RowId": {
+          "value": 41425,
+          "url": "/labkey/BiologicsAssayTest%20Project/experiment-showData.view?rowId=41425"
+        },
+        "expirationTime": {
+          "value": 30
+        },
+        "extraTestColumn": {
+          "value": null
+        },
+        "mixtureTypeId": {
+          "value": 2,
+          "displayValue": "Solution",
+          "url": "/labkey/BiologicsAssayTest%20Project/list-details.view?listId=15&pk=2"
+        },
+        "Name": {
+          "value": "TBS",
+          "url": "/labkey/BiologicsAssayTest%20Project/experiment-showData.view?rowId=41425"
+        }
+      }
+    },
+    {
+      "data": {
+        "RowId": {
+          "value": 41424,
+          "url": "/labkey/BiologicsAssayTest%20Project/experiment-showData.view?rowId=41424"
+        },
+        "expirationTime": {
+          "value": 30
+        },
+        "extraTestColumn": {
+          "value": null
+        },
+        "mixtureTypeId": {
+          "value": 2,
+          "displayValue": "Solution",
+          "url": "/labkey/BiologicsAssayTest%20Project/list-details.view?listId=15&pk=2"
+        },
+        "Name": {
+          "value": "PBS",
+          "url": "/labkey/BiologicsAssayTest%20Project/experiment-showData.view?rowId=41424"
+        }
+      }
+    }
+  ],
+  "rowCount": 3
+}

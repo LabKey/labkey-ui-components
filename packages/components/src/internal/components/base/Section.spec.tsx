@@ -20,21 +20,19 @@ import { Section } from './Section';
 
 describe('<Section />', () => {
     test('default properties', () => {
-        const tree = renderer.create(<Section />).toJSON();
+        const tree = renderer.create(<Section />);
         expect(tree).toMatchSnapshot();
     });
 
     test('custom properties', () => {
-        const tree = renderer
-            .create(
-                <Section
-                    caption={<p>Testing Caption</p>}
-                    context={<div>Testing Context</div>}
-                    title="Testing Title"
-                    panelClassName="testing-class-name"
-                />
-            )
-            .toJSON();
+        const tree = renderer.create(
+            <Section
+                caption={<p>Testing Caption</p>}
+                context={<div>Testing Context</div>}
+                title="Testing Title"
+                panelClassName="testing-class-name"
+            />
+        );
         expect(tree).toMatchSnapshot();
     });
 });

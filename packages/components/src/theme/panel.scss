@@ -1,0 +1,41 @@
+.panel-content {
+    @include panel-variant($panel-content-border, $panel-content-text, $panel-content-heading-bg, $panel-content-border);
+
+    & > .panel-heading {
+        border-bottom: 1px solid #ddd;
+        margin: 15px 15px 0 15px;
+        padding: 0;
+
+        & > div {
+            margin-bottom: 8px;
+        }
+
+        &.panel-content-flex {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &.panel-content-large {
+            margin-bottom: 32px;
+        }
+
+        .panel-content-title-container {
+            display: inline-block;
+        }
+
+        .panel-content-title,
+        .panel-content-title-medium {
+            display: inline-block;
+            font-size: 18px;
+        }
+
+        .panel-content-title-large {
+            display: inline-block;
+            font-size: 28px;
+        }
+
+        .panel-content-caption {
+            font-weight: 300;
+        }
+    }
+}

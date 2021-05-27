@@ -59,33 +59,6 @@
     color: darkgray
 }
 
-.section-panel--title-container-large {
-    border-bottom: 2px solid #cccccc;
-    margin-bottom: 30px;
-}
-
-.section-panel--title-large {
-    display: inline-block;
-    font-size: 200%;
-    margin-bottom: 8px;
-}
-
-.section-panel--title-caption-large, .section-panel--title-caption-medium {
-    font-weight: 300;
-    margin-bottom: 8px;
-}
-
-.section-panel--title-container-medium {
-    border-bottom: 2px solid #cccccc;
-    margin-bottom: 15px;
-}
-
-.section-panel--title-medium {
-    display: inline-block;
-    color: $gray;
-    margin-bottom: 8px;
-}
-
 .alert {
     .alert-button {
         padding: 0 12px;

@@ -13,7 +13,7 @@ interface Props {
     selectedEvent?: TimelineEventModel;
     showUserLinks?: boolean;
     selectedEntityConnectionInfo?: TimelineGroupedEventInfo[];
-    getInfoBubbleContent?: (event: TimelineEventModel) => { title: string, content: ReactNode};
+    getInfoBubbleContent?: (event: TimelineEventModel) => { title: string; content: ReactNode };
 }
 
 export class TimelineView extends React.Component<Props, any> {
@@ -185,9 +185,9 @@ export class TimelineView extends React.Component<Props, any> {
         return null;
     }
 
-    renderDetailCol(event : TimelineEventModel) {
+    renderDetailCol(event: TimelineEventModel) {
         const { showUserLinks } = this.props;
-        const { summary, user, entity, entitySeparator} = event;
+        const { summary, user, entity, entitySeparator } = event;
         const comment = event.getComment();
         return (
             <td key="tl-detail-col" className="detail-col">

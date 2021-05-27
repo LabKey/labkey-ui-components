@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 8897: Remove default session event listeners from initWebSocketListeners (and rename it to registerWebSocketListeners)
 
+###  version 2.34.0
+*Release*: 26 May 2021
+* Add autoFocus prop to SelectInput
+
 ### version 2.33.1
 *Release*: 25 May 2021
 * Update SingleParentEntityPanel to handle multiple data source types

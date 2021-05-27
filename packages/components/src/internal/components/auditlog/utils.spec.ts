@@ -92,5 +92,13 @@ describe('utils', () => {
         expect(getTimelineEntityUrl(Map({ urlType: 'assayRun', value: List(['myassay', 44]) }).toJS()).toHref()).toEqual(
             `#/${ASSAYS_KEY}/general/myassay/runs/44`
         );
+
+        expect(getTimelineEntityUrl({ urlType: 'inventoryLocation', value: ['freezer1', 101] }).toHref()).toEqual(
+            `#/freezers/freezer1/storageView?locationId=101`
+        );
+        expect(getTimelineEntityUrl({ urlType: 'inventoryBox', value: 101 }).toHref()).toEqual(
+            `#/boxes/101`
+        );
+
     });
 });

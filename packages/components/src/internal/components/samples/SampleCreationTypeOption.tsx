@@ -1,21 +1,21 @@
-import React, { FC, memo } from "react";
-import classNames from "classnames";
+import React, { FC, memo, useCallback } from 'react';
+import classNames from 'classnames';
 import { SVGIcon, Theme } from "../base/SVGIcon";
 import { SampleCreationTypeModel } from "./models";
 
 interface OptionProps {
     option: SampleCreationTypeModel
     isSelected: boolean
-    onChoose: (option) => void
+    onChoose: (option: SampleCreationTypeModel) => void
     showIcon: boolean
 }
 
 export const SampleCreationTypeOption: FC<OptionProps> = memo(props => {
     const {option, isSelected, onChoose, showIcon} = props;
 
-    const onClick = () => {
+    const onClick = useCallback(() => {
         onChoose(option);
-    };
+    }, [option, onChoose]);
 
     return (
         <div onClick={onClick} className={classNames('creation-type', {'selected': isSelected})}>

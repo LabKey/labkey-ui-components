@@ -4,7 +4,12 @@ import PanelBody from 'react-bootstrap/lib/PanelBody';
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import { Alert, DataClassDataType, LoadingSpinner, QueryGridModel, SchemaQuery } from '../../..';
+import {
+    Alert,
+    DataClassDataType,
+    LoadingSpinner,
+    QueryInfo,
+} from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import { initUnitTestMocks } from '../../testHelperMocks';
 
@@ -16,29 +21,21 @@ beforeAll(() => {
 });
 
 describe('<ParentEntityEditPanel>', () => {
-    const modelId = 'id';
-    const schemaQuery = new SchemaQuery({
+    const queryInfo = new QueryInfo({
         schemaName: 'samples',
         queryName: 'example',
-    });
-    const model = new QueryGridModel({
-        id: modelId,
-        isLoaded: true,
-        isLoading: false,
-        isError: true,
-        schema: schemaQuery.schemaName,
-        query: schemaQuery.queryName,
     });
 
     test('error state', () => {
         const panel = mount(
             <ParentEntityEditPanel
-                childModel={model}
+                childQueryInfo={queryInfo}
+                childData={{}}
                 canUpdate={false}
                 childName="Test"
                 childNounSingular="Testing"
                 title="Test 123"
-                parentDataType={DataClassDataType}
+                parentDataTypes={[DataClassDataType]}
             />
         );
         panel.setState({ error: 'My error message', loading: false });
@@ -54,12 +51,13 @@ describe('<ParentEntityEditPanel>', () => {
     test('loading state', () => {
         const panel = mount(
             <ParentEntityEditPanel
-                childModel={model}
+                childQueryInfo={queryInfo}
+                childData={{}}
                 canUpdate={false}
                 childName="Test"
                 childNounSingular="Testing"
                 title="Test 123"
-                parentDataType={DataClassDataType}
+                parentDataTypes={[DataClassDataType]}
             />
         );
         panel.setState({ loading: true });
@@ -71,12 +69,13 @@ describe('<ParentEntityEditPanel>', () => {
     test('editing, no data', () => {
         const panel = mount(
             <ParentEntityEditPanel
-                childModel={model}
+                childQueryInfo={queryInfo}
+                childData={{}}
                 canUpdate={false}
                 childName="Test"
                 childNounSingular="Testing"
                 title="Test 123"
-                parentDataType={DataClassDataType}
+                parentDataTypes={[DataClassDataType]}
             />
         );
         panel.setState({

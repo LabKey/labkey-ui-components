@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Better handling when no specialty assays available in assay picker, including warning.
 * Upsell message in the assay picker is a candidate to be it's own component should we need further upsell messages.
 
+### version 2.33.1
+*Release*: 25 May 2021
+* Update SingleParentEntityPanel to handle multiple data source types
+* Update ParentEntityEditPanel to handle multiple data sources and not require a full model
+
 ### version 2.33.0
 *Release*: 25 May 2021
 * Add support for modifying the items in a picklist

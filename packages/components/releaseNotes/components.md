@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Don't show multi-value columns as filtering options for Omnibox.
+* Issue 43199: Update SampleCreationTypeModal to expand click area
 
 ###  version 2.34.0
 *Release*: 26 May 2021

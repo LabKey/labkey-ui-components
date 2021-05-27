@@ -5,7 +5,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Alert } from '../base/Alert';
 
 import { PicklistDeleteConfirmMessage } from './PicklistDeleteConfirm';
-import { PicklistModel } from './models';
+import { Picklist } from './models';
 
 describe('PicklistDeleteConfirmMessage', () => {
     function validateText(
@@ -161,7 +161,7 @@ describe('PicklistDeleteConfirmMessage', () => {
                     numDeletable: 1,
                     numNotDeletable: 3,
                     numShared: 1,
-                    deletableLists: [new PicklistModel({ name: 'Public Deletable', listId: 1 })],
+                    deletableLists: [new Picklist({name: 'Public Deletable', listId: 1})],
                 }}
                 numSelected={4}
                 noun="Picklist"
@@ -207,7 +207,7 @@ describe('PicklistDeleteConfirmMessage', () => {
                     numDeletable: 1,
                     numNotDeletable: 1,
                     numShared: 0,
-                    deletableLists: [new PicklistModel({ name: 'Public Deletable', listId: 1 })],
+                    deletableLists: [new Picklist({name: 'Public Deletable', listId: 1})],
                 }}
                 numSelected={2}
                 noun="Picklist"

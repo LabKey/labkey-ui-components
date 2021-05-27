@@ -5,6 +5,24 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * Add support for freezer location in TimelineView
 
+###  version 2.34.0
+*Release*: 26 May 2021
+* Add autoFocus prop to SelectInput
+
+### version 2.33.1
+*Release*: 25 May 2021
+* Update SingleParentEntityPanel to handle multiple data source types
+* Update ParentEntityEditPanel to handle multiple data sources and not require a full model
+
+### version 2.33.0
+*Release*: 25 May 2021
+* Add support for modifying the items in a picklist
+    * Add AddToPicklistMenuItem that incorporates a new ChoosePicklistModal and actions
+    * Add styling (lifted from ELN notebooks stylings) for choice panels in modal.
+* Update `getSelection` so you can pass in a `queryName` and `schemaName` and not have to parse the selection key
+* Add utility method `getCofirmDeleteMessage`
+* Issue 42843: Sample Creation modal allows more than the max number of rows to be created
+
 ### version 2.32.0
 *Released*: 19 May 2021
 * Introduce `loadOnMount` flag to `<GridPanel/>` for controlling model loading behavior. Defaults to `true`.

@@ -2,17 +2,13 @@ import React, { FC, useState } from 'react';
 
 import { MenuItem } from 'react-bootstrap';
 
-import { Utils } from '@labkey/api';
+import { isSamplePicklistEnabled, userCanManagePicklists } from '../../app/utils';
 
-import { createNotification } from '../notifications/actions';
-
-import { AppURL } from '../../url/AppURL';
-
-import { PICKLIST_KEY } from '../../app/constants';
+import { User } from '../base/models/User';
 
 import { PicklistEditModal } from './PicklistEditModal';
 
-import { PicklistModel } from './models';
+import { Picklist } from './models';
 
 interface Props {
     selectionKey?: string;
@@ -20,25 +16,14 @@ interface Props {
     sampleIds?: string[];
     key: string;
     itemText: string;
+    user: User;
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {
-    const { sampleIds, selectionKey, selectedQuantity, key, itemText } = props;
+    const {sampleIds, selectionKey, selectedQuantity, key, itemText, user} = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
-    const onFinish = (picklist: PicklistModel) => {
-        const count = sampleIds ? sampleIds.length : selectedQuantity;
-        createNotification({
-            message: () => {
-                return (
-                    <>
-                        Successfully created "{picklist.name}" with {Utils.pluralize(count, 'sample', 'samples')}.&nbsp;
-                        <a href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>View picklist</a>.
-                    </>
-                );
-            },
-            alertClass: 'success',
-        });
+    const onFinish = (picklist: Picklist) => {
         setShowModal(false);
     };
 
@@ -50,6 +35,10 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
         setShowModal(true);
     };
 
+    if (!userCanManagePicklists(user) || !isSamplePicklistEnabled()) {
+        return null;
+    }
+
     return (
         <>
             <MenuItem onClick={onClick} key={key}>
@@ -58,6 +47,7 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
             <PicklistEditModal
                 selectionKey={selectionKey}
                 selectedQuantity={selectedQuantity}
+                showNotification={true}
                 sampleIds={sampleIds}
                 show={showModal}
                 onFinish={onFinish}

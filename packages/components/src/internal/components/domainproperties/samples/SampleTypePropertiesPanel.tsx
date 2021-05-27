@@ -264,7 +264,6 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
     removeParentAlias = (index: string): void => {
         const { onRemoveParentAlias } = this.props;
         onRemoveParentAlias(index);
-        this.updateValidStatus();
     };
 
     containsDataClassOptions() {

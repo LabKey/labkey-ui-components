@@ -342,7 +342,12 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
     fetchDistinctValues = (columnName: string) => {
         const {getColumns, getSelectDistinctOptions} = this.props;
-        const column = parseColumns(getColumns().filter(column => !column.multiValue).toList(), columnName).first() as QueryColumn;
+        const column = parseColumns(
+            getColumns()
+                .filter(column => !column.multiValue)
+                .toList(),
+            columnName
+        ).first() as QueryColumn;
 
         if (!column) {
             // If we don't have a column there is nothing to fetch.

@@ -166,7 +166,7 @@ describe('FilterAction::completeAction', () => {
     });
 });
 
-describe("FilterAction::actionValueFromFilter", () => {
+describe('FilterAction::actionValueFromFilter', () => {
     let action;
     const urlPrefix = undefined;
 
@@ -176,25 +176,25 @@ describe("FilterAction::actionValueFromFilter", () => {
     });
 
     // TODO add tests for various value options
-    test("no label, unencoded column", () => {
+    test('no label, unencoded column', () => {
         const filter = Filter.create('colName', '10', Filter.Types.EQUAL);
         const value: ActionValue = action.actionValueFromFilter(filter);
         expect(value.displayValue).toBe('colName = 10');
-        expect(value.value).toBe('\"colName\" = 10');
+        expect(value.value).toBe('"colName" = 10');
     });
 
-    test("no label, encoded column", () => {
+    test('no label, encoded column', () => {
         const filter = Filter.create('U mg$SL', '10', Filter.Types.EQUAL);
         const value: ActionValue = action.actionValueFromFilter(filter);
         expect(value.displayValue).toBe('U mg/L = 10');
-        expect(value.value).toBe('\"U mg$SL\" = 10');
+        expect(value.value).toBe('"U mg$SL" = 10');
     });
 
-    test("with label", () => {
+    test('with label', () => {
         const filter = Filter.create('U mgS$L', 'x', Filter.Types.EQUAL);
-        const value: ActionValue = action.actionValueFromFilter(filter, "otherLabel");
+        const value: ActionValue = action.actionValueFromFilter(filter, 'otherLabel');
         expect(value.displayValue).toBe('otherLabel = x');
-        expect(value.value).toBe('\"otherLabel\" = x');
+        expect(value.value).toBe('"otherLabel" = x');
     });
 });
 
@@ -218,11 +218,7 @@ describe('FilterAction::fetchOptions', () => {
                 expect(options.length).toEqual(filteredColumns.size);
 
                 // none should complete the action
-                expect(options.map(o => o.isComplete)).toEqual(
-                    filteredColumns
-                        .map(c => false)
-                        .toArray()
-                );
+                expect(options.map(o => o.isComplete)).toEqual(filteredColumns.map(c => false).toArray());
             }),
 
             // no matches -- should display nothing

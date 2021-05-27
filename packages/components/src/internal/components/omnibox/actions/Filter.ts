@@ -20,8 +20,9 @@ import { QueryColumn, QueryInfo } from '../../../..';
 
 import { parseColumns, resolveFieldKey } from '../utils';
 
-import { Action, ActionOption, ActionValue, Value } from './Action';
 import { decodePart } from '../../../../public/SchemaQuery';
+
+import { Action, ActionOption, ActionValue, Value } from './Action';
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances

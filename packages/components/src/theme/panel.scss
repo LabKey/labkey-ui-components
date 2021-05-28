@@ -2,7 +2,7 @@
     @include panel-variant($panel-content-border, $panel-content-text, $panel-content-heading-bg, $panel-content-border);
 
     & > .panel-heading {
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid $panel-content-border;
         margin: 15px 15px 0 15px;
         padding: 0;
 

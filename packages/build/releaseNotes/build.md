@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 2.#.#
+*Released*: ## June 2021
+* Package updates
+
 ### version 2.1.0
 *Released*: 10 March 2021
 * Changes to support webpack aliases from /src and theme/SCSS assets

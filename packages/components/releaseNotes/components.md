@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Don't show multi-value columns as filtering options for Omnibox.
 * Issue 43199: Update SampleCreationTypeModal to expand click area
 * Issue 42972: Fix validity check after removing parent aliases
+* Issue 43255: Protect against undefined rangeURI
 
 ###  version 2.34.0
 *Release*: 26 May 2021

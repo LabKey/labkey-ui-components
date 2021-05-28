@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.36.0
+*Released*: 28 May 2021
+* Item 8897: Remove default session event listeners from initWebSocketListeners (and rename it to registerWebSocketListeners)
+
 ### version 2.35.0
 *Release*: 27 May 2021
 * Specialty assays moved to premium module. Assay picker now has option to show upsell message.

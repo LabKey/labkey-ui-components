@@ -42,38 +42,6 @@ export class AppModel extends Record({
         return this.reloadRequired || this.hasUserChanged();
     }
 
-    getLogoutTitle(): string {
-        if (this.logoutReason === LogoutReason.SERVER_LOGOUT) {
-            return 'Logged Out';
-        }
-
-        if (this.logoutReason === LogoutReason.SESSION_EXPIRED) {
-            return 'Session Expired';
-        }
-
-        if (this.logoutReason === LogoutReason.SERVER_UNAVAILABLE) {
-            return 'Server Unavailable';
-        }
-
-        return undefined;
-    }
-
-    getLogoutReason(): string {
-        if (this.logoutReason === LogoutReason.SERVER_LOGOUT) {
-            return 'You have been logged out. Please reload the page to continue.';
-        }
-
-        if (this.logoutReason === LogoutReason.SESSION_EXPIRED) {
-            return 'Your session has expired. Please reload the page to continue.';
-        }
-
-        if (this.logoutReason === LogoutReason.SERVER_UNAVAILABLE) {
-            return 'The server is currently unavailable. Please try reloading the page to continue.';
-        }
-
-        return undefined;
-    }
-
     shouldInvalidateQueryGrid(): boolean {
         return this.needsInvalidateQueryGrid;
     }

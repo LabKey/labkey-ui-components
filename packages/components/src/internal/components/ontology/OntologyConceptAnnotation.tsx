@@ -12,6 +12,7 @@ import { OntologyBrowserModal } from './OntologyBrowserModal';
 import { ConceptOverviewModal } from './ConceptOverviewPanel';
 import { ConceptModel } from './models';
 import { fetchConceptForCode } from './actions';
+import classNames from 'classnames';
 
 interface OntologyConceptAnnotationProps {
     id: string;
@@ -51,17 +52,12 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
     const { id, field, successBsStyle, onChange, error, concept } = props;
     const { principalConceptCode, lockType } = field;
     const [showSelectModal, setShowSelectModal] = useState<boolean>();
-    const [showConceptModal, setShowConceptModal] = useState<boolean>();
     const isFieldLocked = useMemo(() => isFieldFullyLocked(lockType), [lockType]);
     const title = 'Select Concept';
 
     const toggleSelectModal = useCallback(() => {
         setShowSelectModal(!showSelectModal);
     }, [showSelectModal, setShowSelectModal]);
-
-    const toggleConceptModal = useCallback(() => {
-        setShowConceptModal(!showConceptModal);
-    }, [showConceptModal, setShowConceptModal]);
 
     const onApply = useCallback(
         (selectedConcept: ConceptModel) => {
@@ -106,14 +102,17 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
                                 )}
                                 <td className="content">
                                     <a
-                                        className="domain-validator-link domain-annotation-item"
-                                        onClick={toggleConceptModal}
+                                        className={classNames("domain-annotation-item", isFieldLocked ? "domain-text-label" : "domain-validator-link")}
+                                        onClick={isFieldLocked ? null : toggleSelectModal}
                                     >
                                         {concept?.getDisplayLabel() ?? principalConceptCode}
                                     </a>
                                 </td>
                             </>
                         )}
+                        <td className="content">
+                            <ConceptOverviewModal concept={concept} error={error} />
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -126,7 +125,6 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
                     successBsStyle={successBsStyle}
                 />
             )}
-            {showConceptModal && <ConceptOverviewModal concept={concept} error={error} onClose={toggleConceptModal} />}
         </>
     );
 });

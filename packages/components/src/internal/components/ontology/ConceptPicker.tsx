@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { OntologyBrowserModal } from './OntologyBrowserModal';
 import { ConceptModel } from './models';
 import { fetchConceptForCode } from './actions';
-import { LoadingSpinner } from '../../../index';
+import { ConceptOverviewModal } from './ConceptOverviewPanel';
 
 interface Props {
     ontologyId: string;
@@ -46,7 +46,11 @@ export const ConceptPicker: FC<Props> = memo( (props:Props) => {
 
     return (
         <>
-            <div className="concept-label-text">{label}</div>
+            {!!label && <div className="concept-label-text">
+                {label}
+                &nbsp;
+                <ConceptOverviewModal concept={concept} />
+            </div>}
             <div>
                 <a className='show-toggle' onClick={togglePicker}>{`Find ${fieldLabel} By Tree`}</a>
                 {showPicker && (

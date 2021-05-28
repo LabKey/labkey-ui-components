@@ -117,7 +117,7 @@ interface ConceptOverviewModalProps {
  * A modal dialog version that will display the same concept overview display panel from ConceptOverviewPanelImpl
  * but in a modal dialog. This component takes in the concept (i.e. ConceptModel) as a prop.
  */
-export const ConceptOverviewModal: FC<ConceptOverviewModalProps> = memo(props => {
+export const ConceptOverviewTooltip: FC<ConceptOverviewModalProps> = memo(props => {
     const { concept, error, } = props;
 
     return (

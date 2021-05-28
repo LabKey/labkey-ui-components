@@ -9,7 +9,7 @@ import { DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT } from '../domainproperties/con
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
 
 import { OntologyBrowserModal } from './OntologyBrowserModal';
-import { ConceptOverviewModal } from './ConceptOverviewPanel';
+import { ConceptOverviewTooltip } from './ConceptOverviewPanel';
 import { ConceptModel } from './models';
 import { fetchConceptForCode } from './actions';
 import classNames from 'classnames';
@@ -111,7 +111,7 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
                             </>
                         )}
                         <td className="content">
-                            <ConceptOverviewModal concept={concept} error={error} />
+                            <ConceptOverviewTooltip concept={concept} error={error} />
                         </td>
                     </tr>
                 </tbody>

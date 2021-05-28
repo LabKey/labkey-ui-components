@@ -5,7 +5,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Alert } from '../../..';
 
 import {
-    ConceptOverviewModal,
+    ConceptOverviewTooltip,
     ConceptOverviewPanelImpl,
     ConceptSynonyms,
     OntologyConceptOverviewPanel,
@@ -119,21 +119,21 @@ describe('ConceptOverviewModal', () => {
     }
 
     test('no concept', () => {
-        const wrapper = mount(<ConceptOverviewModal concept={undefined} onClose={onCloseFn} />);
+        const wrapper = mount(<ConceptOverviewTooltip concept={undefined} onClose={onCloseFn} />);
         validate(wrapper);
         expect(wrapper.find(ConceptOverviewPanelImpl).prop('concept')).toBe(undefined);
         wrapper.unmount();
     });
 
     test('with concept', () => {
-        const wrapper = mount(<ConceptOverviewModal concept={TEST_CONCEPT} onClose={onCloseFn} />);
+        const wrapper = mount(<ConceptOverviewTooltip concept={TEST_CONCEPT} onClose={onCloseFn} />);
         validate(wrapper);
         expect(wrapper.find(ConceptOverviewPanelImpl).prop('concept')).toBe(TEST_CONCEPT);
         wrapper.unmount();
     });
 
     test('error', () => {
-        const wrapper = mount(<ConceptOverviewModal error="test error" concept={TEST_CONCEPT} onClose={onCloseFn} />);
+        const wrapper = mount(<ConceptOverviewTooltip error="test error" concept={TEST_CONCEPT} onClose={onCloseFn} />);
         validate(wrapper, 'test error');
         wrapper.unmount();
     });

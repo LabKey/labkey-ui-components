@@ -8,7 +8,7 @@ import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 import { ConceptModel } from './models';
 import { OntologyConceptAnnotationImpl } from './OntologyConceptAnnotation';
 import { OntologyBrowserModal } from './OntologyBrowserModal';
-import { ConceptOverviewModal } from './ConceptOverviewPanel';
+import { ConceptOverviewTooltip } from './ConceptOverviewPanel';
 
 const DEFAULT_PROPS = {
     id: 'testId',
@@ -97,11 +97,11 @@ describe('OntologyConceptAnnotation', () => {
             />
         );
         validate(wrapper, true);
-        expect(wrapper.find(ConceptOverviewModal)).toHaveLength(0);
+        expect(wrapper.find(ConceptOverviewTooltip)).toHaveLength(0);
         wrapper.find('.domain-annotation-item').simulate('click');
-        expect(wrapper.find(ConceptOverviewModal)).toHaveLength(1);
-        expect(wrapper.find(ConceptOverviewModal).prop('concept')).toBe(TEST_CONCEPT);
-        expect(wrapper.find(ConceptOverviewModal).prop('error')).toBe('test error');
+        expect(wrapper.find(ConceptOverviewTooltip)).toHaveLength(1);
+        expect(wrapper.find(ConceptOverviewTooltip).prop('concept')).toBe(TEST_CONCEPT);
+        expect(wrapper.find(ConceptOverviewTooltip).prop('error')).toBe('test error');
         wrapper.unmount();
     });
 });

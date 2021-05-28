@@ -15,20 +15,24 @@ Array [
     className="g-section"
   >
     <div
-      className="panel panel-default pipeline-job-status-detail"
+      className="panel panel-content pipeline-job-status-detail"
     >
       <div
-        className="panel-body"
+        className="panel-heading panel-content-flex panel-content-medium"
       >
         <div
-          className="section-panel--title-container-medium"
+          className="panel-content-title-container "
         >
           <div
-            className="section-panel--title-medium"
+            className="panel-content-title-medium "
           >
             Status
           </div>
         </div>
+      </div>
+      <div
+        className="panel-body"
+      >
         <table>
           <tbody>
             <tr
@@ -71,20 +75,24 @@ Array [
     className="g-section"
   >
     <div
-      className="panel panel-default pipeline-job-status-log"
+      className="panel panel-content pipeline-job-status-log"
     >
       <div
-        className="panel-body"
+        className="panel-heading panel-content-flex panel-content-medium"
       >
         <div
-          className="section-panel--title-container-medium"
+          className="panel-content-title-container "
         >
           <div
-            className="section-panel--title-medium"
+            className="panel-content-title-medium "
           >
             Log
           </div>
         </div>
+      </div>
+      <div
+        className="panel-body"
+      >
         <table>
           <tbody>
             <tr
@@ -194,20 +202,24 @@ Array [
     className="g-section"
   >
     <div
-      className="panel panel-default pipeline-job-status-detail"
+      className="panel panel-content pipeline-job-status-detail"
     >
       <div
-        className="panel-body"
+        className="panel-heading panel-content-flex panel-content-medium"
       >
         <div
-          className="section-panel--title-container-medium"
+          className="panel-content-title-container "
         >
           <div
-            className="section-panel--title-medium"
+            className="panel-content-title-medium "
           >
             Status
           </div>
         </div>
+      </div>
+      <div
+        className="panel-body"
+      >
         <table>
           <tbody>
             <tr
@@ -250,20 +262,24 @@ Array [
     className="g-section"
   >
     <div
-      className="panel panel-default pipeline-job-status-log"
+      className="panel panel-content pipeline-job-status-log"
     >
       <div
-        className="panel-body"
+        className="panel-heading panel-content-flex panel-content-medium"
       >
         <div
-          className="section-panel--title-container-medium"
+          className="panel-content-title-container "
         >
           <div
-            className="section-panel--title-medium"
+            className="panel-content-title-medium "
           >
             Log
           </div>
         </div>
+      </div>
+      <div
+        className="panel-body"
+      >
         <table>
           <tbody>
             <tr
@@ -328,20 +344,24 @@ Array [
     className="g-section"
   >
     <div
-      className="panel panel-default pipeline-job-status-detail"
+      className="panel panel-content pipeline-job-status-detail"
     >
       <div
-        className="panel-body"
+        className="panel-heading panel-content-flex panel-content-medium"
       >
         <div
-          className="section-panel--title-container-medium"
+          className="panel-content-title-container "
         >
           <div
-            className="section-panel--title-medium"
+            className="panel-content-title-medium "
           >
             Status
           </div>
         </div>
+      </div>
+      <div
+        className="panel-body"
+      >
         <table>
           <tbody>
             <tr
@@ -384,20 +404,24 @@ Array [
     className="g-section"
   >
     <div
-      className="panel panel-default pipeline-job-status-log"
+      className="panel panel-content pipeline-job-status-log"
     >
       <div
-        className="panel-body"
+        className="panel-heading panel-content-flex panel-content-medium"
       >
         <div
-          className="section-panel--title-container-medium"
+          className="panel-content-title-container "
         >
           <div
-            className="section-panel--title-medium"
+            className="panel-content-title-medium "
           >
             Log
           </div>
         </div>
+      </div>
+      <div
+        className="panel-body"
+      >
         <table>
           <tbody>
             <tr

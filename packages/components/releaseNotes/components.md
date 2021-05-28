@@ -1,27 +1,33 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.37.0
+*Released*: 28 May 2021
+* Define new Content Panel variant `panel-content` in `panel.scss`.
+* Update `<Section/>` component to make use of standard `panel-content` layout.
+* Define new Content Tabs styling `content-tabs` in `tabs.scss`.
+
 ### version 2.36.0
 *Released*: 28 May 2021
 * Item 8897: Remove default session event listeners from initWebSocketListeners (and rename it to registerWebSocketListeners)
 
 ### version 2.35.0
-*Release*: 27 May 2021
+*Released*: 27 May 2021
 * Specialty assays moved to premium module. Assay picker now has option to show upsell message.
 * Better handling when no specialty assays available in assay picker, including warning.
 * Upsell message in the assay picker is a candidate to be it's own component should we need further upsell messages.
 
-###  version 2.34.0
-*Release*: 26 May 2021
+### version 2.34.0
+*Released*: 26 May 2021
 * Add autoFocus prop to SelectInput
 
 ### version 2.33.1
-*Release*: 25 May 2021
+*Released*: 25 May 2021
 * Update SingleParentEntityPanel to handle multiple data source types
 * Update ParentEntityEditPanel to handle multiple data sources and not require a full model
 
 ### version 2.33.0
-*Release*: 25 May 2021
+*Released*: 25 May 2021
 * Add support for modifying the items in a picklist
     * Add AddToPicklistMenuItem that incorporates a new ChoosePicklistModal and actions
     * Add styling (lifted from ELN notebooks stylings) for choice panels in modal.

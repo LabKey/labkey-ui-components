@@ -5,35 +5,38 @@ exports[`<Section /> custom properties 1`] = `
   className="g-section"
 >
   <div
-    className="panel panel-default testing-class-name"
+    className="panel panel-content testing-class-name"
   >
     <div
-      className="panel-body"
+      className="panel-heading panel-content-flex panel-content-large"
     >
       <div
-        className="section-panel--title-container-large"
+        className="panel-content-title-container "
       >
         <div
-          className="section-panel--title-large"
+          className="panel-content-title-large "
         >
           Testing Title
         </div>
         <div
-          className="pull-right"
-        >
-          <div>
-            Testing Context
-          </div>
-        </div>
-        <div
-          className="section-panel--title-caption-large"
+          className="panel-content-caption"
         >
           <p>
             Testing Caption
           </p>
         </div>
       </div>
+      <div
+        className="panel-content-context"
+      >
+        <div>
+          Testing Context
+        </div>
+      </div>
     </div>
+    <div
+      className="panel-body"
+    />
   </div>
 </div>
 `;
@@ -43,15 +46,11 @@ exports[`<Section /> default properties 1`] = `
   className="g-section"
 >
   <div
-    className="panel panel-default "
+    className="panel panel-content "
   >
     <div
       className="panel-body"
-    >
-      <div
-        className=""
-      />
-    </div>
+    />
   </div>
 </div>
 `;

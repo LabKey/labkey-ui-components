@@ -3,21 +3,22 @@ $white: #fff;
 
 $gray-base:              #000 !default;
 $gray-darker:            lighten($gray-base, 13.5%) !default; // #222
-$gray-dark:              lighten($gray-base, 20%) !default;   // #333
+$gray-dark:              lighten($gray-base, 20%)   !default; // #333
 $gray:                   lighten($gray-base, 33.5%) !default; // #555
 $gray-light:             lighten($gray-base, 46.7%) !default; // #777
+$gray-lighten:           lighten($gray-base, 60%)   !default; // #999
 $gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee
 
 //TODO: how to set or get these from the app instead or make sure the app can override them?
-$brand-danger: #d9534f;
-$brand-warning: #f0ad4e;
-$brand-primary: #2980b9;
+$brand-danger:    #d9534f;
+$brand-warning:   #f0ad4e;
+$brand-primary:   #2980b9;
 $brand-secondary: #236fa0;
-$brand-success: #5cb85c;
-$border-color: #cccccc;
+$brand-success:   #5cb85c;
+$border-color:    #cccccc;
 
-$blue-highlight: #2980B9;
-$gray-no-highlight: #999999;
+$blue-highlight:       #2980B9;
+$gray-no-highlight:    $gray-lighten;
 $blue-icon-background: #CCE5FF;
 
 $text-color:            $gray-dark !default;
@@ -26,7 +27,8 @@ $link-hover-color:      darken($brand-primary, 15%) !default;
 $font-family-sans-serif:  "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 
 // Domain properties variables
-$gray-border:           #CCC;
+$gray-border:           #cccccc;
+$gray-border-light:     #dddddd;
 $gray-shadow:           #F3F3F4;
 
 $red-border:            rgba(220, 53, 69, 1);
@@ -110,8 +112,13 @@ $omnibox-item-disabled-border-color: darken($omnibox-item-disabled-bg, 10%);
 // Navigation variables
 
 //-- Z-index master list
-$zindex-navbar:            1000 !default;
+$zindex-navbar: 1000 !default;
 
 $footer-height: 40px;
 $header-height: 62px;
 $header-spacing-no-scroll: 104px;
+
+// Panels
+$panel-content-text: $text-color !default;
+$panel-content-border: $gray-border-light !default;
+$panel-content-heading-bg: $white !default;

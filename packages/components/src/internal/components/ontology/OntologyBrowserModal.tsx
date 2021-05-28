@@ -1,9 +1,8 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
 import { OntologyBrowserPanel } from './OntologyBrowserPanel';
 import { ConceptModel } from './models';
-import { fetchConceptForCode } from './actions';
 
 interface OntologyBrowserModalProps {
     title: string;

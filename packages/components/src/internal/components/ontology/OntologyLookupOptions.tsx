@@ -68,9 +68,13 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
         this.onChange(id, selected?.name);
     };
 
+    onOntologyFieldChange = (evt: any): void => {
+        this.onChange(evt.target.id, evt.target.value);
+    };
+
     onFieldChange = (evt: any): void => {
         const val = evt.target.value;
-        let changes = List<IFieldChange>([{id: evt.target.id, value: evt.target.value }]);
+        let changes = List<IFieldChange>([{id: evt.target.id, value: val }]);
 
         const valFieldIdx = this.props.domainFields.findIndex(df => df.name === val);
         if (valFieldIdx > 0) {
@@ -155,7 +159,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                             id={sourceId}
                             key={sourceId}
                             disabled={isFieldFullyLocked(lockType)}
-                            onChange={this.onFieldChange}
+                            onChange={this.onOntologyFieldChange}
                             value={field.sourceOntology}
                         >
                             {loading && (

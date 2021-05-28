@@ -9,7 +9,7 @@ interface Props {
     fieldName: string;
     fieldLabel: string;
     fieldValue?: string;
-    onConceptSelection?: (concept: ConceptModel) => void
+    onConceptSelection: (concept: ConceptModel) => void
 }
 
 export const OntologyConceptPicker: FC<Props> = memo( (props:Props) => {
@@ -43,6 +43,7 @@ export const OntologyConceptPicker: FC<Props> = memo( (props:Props) => {
     );
 
     const label = concept?.label ?? null;
+    const title = `Find ${fieldLabel} By Tree`;
 
     return (
         <>
@@ -52,9 +53,9 @@ export const OntologyConceptPicker: FC<Props> = memo( (props:Props) => {
                 <ConceptOverviewTooltip concept={concept} />
             </div>}
             <div>
-                <a className='show-toggle' onClick={togglePicker}>{`Find ${fieldLabel} By Tree`}</a>
+                <a className='show-toggle' onClick={togglePicker}>{title}</a>
                 {showPicker && (
-                    <OntologyBrowserModal initOntologyId={ontologyId} onApply={onApplyConcept} onCancel={togglePicker} title={"Ontology Browser"} initConcept={concept} />
+                    <OntologyBrowserModal initOntologyId={ontologyId} onApply={onApplyConcept} onCancel={togglePicker} title={title} initConcept={concept} />
                 )}
             </div>
         </>

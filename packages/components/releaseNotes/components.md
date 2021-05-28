@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 8897: Remove default session event listeners from initWebSocketListeners (and rename it to registerWebSocketListeners)
 
+### version 2.35.0
+*Release*: 27 May 2021
+* Specialty assays moved to premium module. Assay picker now has option to show upsell message.
+* Better handling when no specialty assays available in assay picker, including warning.
+* Upsell message in the assay picker is a candidate to be it's own component should we need further upsell messages.
+
 ###  version 2.34.0
 *Release*: 26 May 2021
 * Add autoFocus prop to SelectInput

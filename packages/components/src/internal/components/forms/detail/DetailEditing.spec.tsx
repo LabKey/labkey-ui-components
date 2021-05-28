@@ -31,6 +31,7 @@ let MODEL_ID;
 
 beforeAll(() => {
     initUnitTestMocks(
+        undefined,
         fromJS({
             schema: {
                 [SCHEMAS.SAMPLE_SETS.SCHEMA]: {

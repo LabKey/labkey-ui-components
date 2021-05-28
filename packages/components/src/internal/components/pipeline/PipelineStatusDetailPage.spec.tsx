@@ -7,10 +7,12 @@ import { initUnitTestMocks } from '../../testHelperMocks';
 
 import { initNotificationsState } from '../../..';
 
+import { initPipelineStatusDetailsMocks } from '../../../stories/mock';
+
 import { PipelineStatusDetailPage } from './PipelineStatusDetailPage';
 
 beforeAll(() => {
-    initUnitTestMocks(undefined, undefined, true);
+    initUnitTestMocks([initPipelineStatusDetailsMocks]);
     initNotificationsState();
 });
 

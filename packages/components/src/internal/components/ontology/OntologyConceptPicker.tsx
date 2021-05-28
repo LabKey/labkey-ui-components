@@ -12,7 +12,7 @@ interface Props {
     onConceptSelection?: (concept: ConceptModel) => void
 }
 
-export const ConceptPicker: FC<Props> = memo( (props:Props) => {
+export const OntologyConceptPicker: FC<Props> = memo( (props:Props) => {
     const {ontologyId, fieldLabel, onConceptSelection, fieldValue = '' } = props;
     const [concept, setConcept] = useState<ConceptModel>();
     const [showPicker, setShowPicker] = useState<boolean>(false);

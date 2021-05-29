@@ -78,9 +78,12 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'staging'),
+        publicPath: '',
         filename: 'components.js',
-        library: '@labkey/components',
-        libraryTarget: 'umd'
+        library: {
+            name: '@labkey/components',
+            type: 'umd'
+        },
     },
     plugins: [
         new CopyWebpackPlugin({

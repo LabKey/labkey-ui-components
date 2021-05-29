@@ -37,47 +37,23 @@ module.exports = {
             },
             {
                 test: /\.(woff|woff2)$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 10000,
-                        mimetype: 'application/font-woff',
-                    },
-                },
+                type: 'asset',
             },
             {
                 test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 10000,
-                        mimetype: 'application/octet-stream',
-                    },
-                },
+                type: 'asset',
             },
             {
                 test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                use: 'file-loader'
+                type: 'asset/resource',
             },
             {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 10000,
-                        mimetype: 'image/svg+xml',
-                    },
-                },
+                type: 'asset',
             },
             {
                 test: /\.png(\?v=\d+\.\d+\.\d+)?$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 10000,
-                        mimetype: 'image/png',
-                    }
-                },
+                type: 'asset',
             },
             {
                 test: /\.tsx?$/,

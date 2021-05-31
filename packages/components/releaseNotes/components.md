@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 43131: Files added to Sample Types show a path to "sampleset"
+
 ### version 2.37.0
 *Released*: 28 May 2021
 * Define new Content Panel variant `panel-content` in `panel.scss`.

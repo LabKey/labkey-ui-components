@@ -13,6 +13,7 @@ export interface IAttachment {
     loadingState?: LoadingState;
     name: string;
     size?: number;
+    title?: string;
 }
 
 interface Props {
@@ -51,7 +52,7 @@ export const AttachmentCard: FC<Props> = memo(props => {
         return null;
     }
 
-    const { iconFontCls, loadingState, name, size } = attachment;
+    const { iconFontCls, loadingState, name, title, size } = attachment;
     const isLoaded = !isLoading(loadingState);
     const recentlyCreated = attachment.created ? attachment.created > now() - 30000 : false;
     const _isImage = isImage(attachment.name);
@@ -71,7 +72,7 @@ export const AttachmentCard: FC<Props> = memo(props => {
                         {!_isImage && <i className={`attachment-card__icon_tile ${iconFontCls}`} />}
                     </div>
                     <div className="attachment-card__content">
-                        <div className="attachment-card__name">{name}</div>
+                        <div className="attachment-card__name">{title ?? name}</div>
                         <div className="attachment-card__size">
                             {!isLoaded && <LoadingSpinner msg="Uploading..." />}
                             {isLoaded && recentlyCreated && (
@@ -100,7 +101,7 @@ export const AttachmentCard: FC<Props> = memo(props => {
                 <Modal.Header closeButton>
                     <Modal.Title>
                         <a onClick={_onDownload} style={{ cursor: 'pointer' }} title={'Download ' + noun}>
-                            {name}
+                            {title ?? name}
                         </a>
                     </Modal.Title>
                 </Modal.Header>

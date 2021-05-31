@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.38.0
+*Released*: 31 May 2021
+* Add support for freezer location in TimelineView
+
 ### version 2.37.0
 *Released*: 28 May 2021
 * Define new Content Panel variant `panel-content` in `panel.scss`.

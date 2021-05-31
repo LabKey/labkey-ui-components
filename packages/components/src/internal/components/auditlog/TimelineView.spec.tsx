@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import { TIMELINE_DATA } from '../../../test/data/constants';
 
@@ -72,6 +72,32 @@ describe('<TimelineView />', () => {
             />
         );
 
+        expect(wrapper.find('.timeline-info-icon')).toHaveLength(0);
         expect(wrapper).toMatchSnapshot();
+    });
+
+    test('with getInfoBubbleContent', () => {
+        const getInfoBubbleContent = (event: TimelineEventModel) => {
+            return {
+                title: 'info',
+                content: <span>hello</span>,
+            };
+        };
+        const wrapper = mount(
+            <TimelineView
+                events={events}
+                showRecentFirst={false}
+                selectionDisabled={true}
+                onEventSelection={jest.fn()}
+                selectedEvent={events[7]}
+                showUserLinks={true}
+                selectedEntityConnectionInfo={null}
+                getInfoBubbleContent={getInfoBubbleContent}
+            />
+        );
+
+        expect(wrapper.find('.timeline-info-icon')).toHaveLength(8);
+
+        wrapper.unmount();
     });
 });

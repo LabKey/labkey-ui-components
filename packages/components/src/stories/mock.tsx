@@ -287,6 +287,7 @@ export function initMocks() {
     initDomainPropertiesMocks();
     initPipelineStatusDetailsMocks();
     initOnotologyMocks();
+    initAssayPickerOptions();
 
     mock.post(/.*\/query\/?.*\/executeSql.*/, (req, res) => {
         const body = decodeURIComponent(req.body());
@@ -318,8 +319,6 @@ export function initMocks() {
 
     // TODO conditionalize based on queryName
     mock.post(/.*\/query\/?.*\/insertRows.*/, jsonResponse(samplesInsert));
-
-    mock.get(/.*\/assay\/?.*\/getAssayTypeSelectOptions.*/, jsonResponse(getAssayDesignSectionOptions));
 
     mock.get(/.*ConfirmationData.*/, (req, res) => {
         const queryParams = req.url().query;
@@ -678,6 +677,10 @@ export function initServerNotificationMocks(): void {
     mock.get(/.*\/getUserNotification.*/, jsonResponse(serverNotifications));
 }
 
+export function initAssayPickerOptions(): void {
+    mock.get(/.*\/assay\/?.*\/getAssayTypeSelectOptions.*/, jsonResponse(getAssayDesignSectionOptions));
+}
+
 export function initPipelineStatusDetailsMocks(): void {
     mock.get(/.*\/pipeline-status\/?.*\/statusDetails.*/, (req, res) => {
         const queryParams = req.url().query;
@@ -713,12 +716,15 @@ export function initOnotologyMocks(): void {
     });
 
     mock.get(/.*\/ontology\/?.*\/getConceptPathFromFilter.*/, (req, res) => {
-        return jsonResponse({
-            path: "/MOCK/ST1234/C1000/C1234/",
-            code: "MOCK:C1234",
-            label: "Administrative Activity",
-            hasChildren: false
-        }, res);
+        return jsonResponse(
+            {
+                path: '/MOCK/ST1234/C1000/C1234/',
+                code: 'MOCK:C1234',
+                label: 'Administrative Activity',
+                hasChildren: false,
+            },
+            res
+        );
     });
 
     mock.get(/.*\/ontology\/?.*\/getConcept.*/, (req, res) => {

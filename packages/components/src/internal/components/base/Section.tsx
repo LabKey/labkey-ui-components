@@ -13,50 +13,60 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 
 interface SectionProps {
-    caption?: React.ReactNode;
-    context?: React.ReactNode;
+    caption?: ReactNode;
+    context?: ReactNode;
     panelClassName?: string;
     titleClassName?: string;
     titleContainerClassName?: string;
-    title?: string;
-    titleSize?: string;
+    title?: ReactNode;
+    titleSize?: 'large' | 'medium';
 }
 
-export class Section extends React.PureComponent<SectionProps> {
-    static defaultProps = {
-        titleSize: 'large',
-    };
+export const Section: FC<SectionProps> = props => {
+    const {
+        panelClassName,
+        titleClassName,
+        titleContainerClassName,
+        title,
+        titleSize = 'large',
+        context,
+        caption,
+        children,
+    } = props;
 
-    render() {
-        const {
-            panelClassName,
-            titleClassName,
-            titleContainerClassName,
-            title,
-            titleSize,
-            context,
-            caption,
-            children,
-        } = this.props;
-        const titleContainerCls = titleContainerClassName || 'section-panel--title-container-' + titleSize;
-        return (
-            <div className="g-section">
-                <div className={`panel panel-default ${panelClassName ? panelClassName : ''}`}>
-                    <div className="panel-body">
-                        <div className={title ? titleContainerCls : ''}>
+    const showHeader = !!title || !!caption || !!context;
+
+    return (
+        <div className="g-section">
+            <div className={`panel panel-content ${panelClassName ? panelClassName : ''}`}>
+                {showHeader && (
+                    <div className={`panel-heading panel-content-flex panel-content-${titleSize}`}>
+                        <div
+                            className={`panel-content-title-container ${
+                                titleContainerClassName ? titleContainerClassName : ''
+                            }`}
+                        >
                             {title && (
-                                <div className={titleClassName || 'section-panel--title-' + titleSize}>{title}</div>
+                                <div
+                                    className={`panel-content-title-${titleSize} ${
+                                        titleClassName ? titleClassName : ''
+                                    }`}
+                                >
+                                    {title}
+                                </div>
                             )}
-                            {context && <div className="pull-right">{context}</div>}
-                            {caption && <div className={'section-panel--title-caption-' + titleSize}>{caption}</div>}
+                            {caption && <div className="panel-content-caption">{caption}</div>}
                         </div>
-                        {children}
+                        {context && <div className="panel-content-context">{context}</div>}
                     </div>
-                </div>
+                )}
+                <div className="panel-body">{children}</div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
+
+Section.displayName = 'Section';

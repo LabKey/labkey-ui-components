@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 43131: Files added to Sample Types show a path to "sampleset"
+* Issue 43254: Trailing spaces in field editor field names are not getting trimmed
 
 ### version 2.37.0
 *Released*: 28 May 2021

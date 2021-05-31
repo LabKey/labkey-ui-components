@@ -733,4 +733,15 @@ describe('DomainField', () => {
             'Updated. SRC. Concept Annotation: abc:123. Primary Key. Locked'
         );
     });
+
+    test('serialize, name trim', () => {
+        expect(DomainField.serialize(DomainField.create({})).name).toBe(undefined);
+        expect(DomainField.serialize(DomainField.create({ name: '' })).name).toBe('');
+        expect(DomainField.serialize(DomainField.create({ name: ' ' })).name).toBe('');
+        expect(DomainField.serialize(DomainField.create({ name: 'test1 test2 ' })).name).toBe('test1 test2');
+        expect(DomainField.serialize(DomainField.create({ name: ' test1 test2 ' })).name).toBe('test1 test2');
+        expect(DomainField.serialize(DomainField.create({ name: 'test1 test2' })).name).toBe('test1 test2');
+    });
+
+    // TODO add other test cases for DomainField.serialize code
 });

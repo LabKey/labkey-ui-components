@@ -892,6 +892,9 @@ export class DomainField
     static serialize(df: DomainField, fixCaseSensitivity = true): any {
         const json = df.toJS();
 
+        // Issue 43254: trim field name leading and trailing spaces before saving
+        json.name = df.name?.trim();
+
         if (!(df.dataType.isLookup() || df.dataType.isUser() || df.dataType.isSample())) {
             json.lookupContainer = null;
             json.lookupQuery = null;

@@ -310,8 +310,8 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         }
 
         return (
-            <Modal show bsSize="large" onHide={close}>
-                <Modal.Header>
+            <Modal show bsSize="large" onHide={closeModal}>
+                <Modal.Header closeButton>
                     <Modal.Title>Choose a Picklist</Modal.Title>
                 </Modal.Header>
 

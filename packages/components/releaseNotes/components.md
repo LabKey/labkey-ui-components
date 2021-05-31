@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 43131: Files added to Sample Types show a path to "sampleset"
 * Issue 43254: Trailing spaces in field editor field names are not getting trimmed
+* Check to make sure model has selection before showing choose picklist modal
 
 ### version 2.37.0
 *Released*: 28 May 2021

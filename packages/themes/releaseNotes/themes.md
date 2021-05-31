@@ -1,6 +1,10 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
+### version 1.2.0
+*Released*: 28 May 2021
+* Item 8897: Add CSS class for content-blur
+
 ### version 1.1.1
 *Released*: 22 April 2021
 * Dependabot package updates

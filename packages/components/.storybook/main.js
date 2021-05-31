@@ -1,21 +1,10 @@
 module.exports = {
     core: { builder: 'webpack5' },
-    stories: [
-        // TODO: Re-enable all stories. Currently, running into an https://github.com/storybookjs/storybook/issues/12208
-        '../src/stories/AddEntityButton.stories.tsx',
-        '../src/stories/AssayDesignDeleteConfirmModal.stories.tsx',
-        '../src/stories/HeatMap.stories.tsx',
-    ],
-    // stories: [ '../src/stories/**/*.stories.@(ts|tsx)' ],
+    stories: [ '../src/stories/**/*.stories.@(ts|tsx)' ],
     addons: [ '@storybook/addon-essentials', '@storybook/addon-knobs' ],
     typescript: {
         check: false,
-        // checkOptions: {},
         reactDocgen: false,
-        // reactDocgenTypescriptOptions: {
-        //     shouldExtractLiteralValuesFromEnum: true,
-        //     propFilter: (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
-        // },
     },
     webpackFinal: (config) => {
         // `mode` has a value of 'DEVELOPMENT' or 'PRODUCTION'

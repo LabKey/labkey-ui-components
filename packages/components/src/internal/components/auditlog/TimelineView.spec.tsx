@@ -80,8 +80,8 @@ describe('<TimelineView />', () => {
         const getInfoBubbleContent = (event: TimelineEventModel) => {
             return {
                 title: 'info',
-                content: <span>hello</span>
-            }
+                content: <span>hello</span>,
+            };
         };
         const wrapper = mount(
             <TimelineView

@@ -21,8 +21,8 @@ import { JsonType } from '@labkey/api/dist/labkey/filter/Types';
 
 import { QueryColumn, QueryGridModel, QueryInfo } from '../../../..';
 
-import mixturesQueryInfo from '../../../../test/data/mixtures-getQueryDetails.json';
-import mixturesQuery from '../../../../test/data/mixtures-getQuery.json';
+import mixturesWithAliasesQueryInfo from '../../../../test/data/mixturesWithAliases-getQueryDetails.json';
+import mixturesWithAliasesQuery from '../../../../test/data/mixturesWithAliases-getQuery.json';
 import { initUnitTests, makeQueryInfo, makeTestData } from '../../../testHelpers';
 
 import { FilterAction, getURLSuffix } from './Filter';
@@ -33,8 +33,8 @@ let getColumns: () => List<QueryColumn>;
 
 beforeAll(() => {
     initUnitTests();
-    const mockData = makeTestData(mixturesQuery);
-    queryInfo = makeQueryInfo(mixturesQueryInfo);
+    const mockData = makeTestData(mixturesWithAliasesQuery);
+    queryInfo = makeQueryInfo(mixturesWithAliasesQueryInfo);
     const model = new QueryGridModel({
         queryInfo,
         messages: fromJS(mockData.messages),
@@ -166,7 +166,7 @@ describe('FilterAction::completeAction', () => {
     });
 });
 
-describe("FilterAction::actionValueFromFilter", () => {
+describe('FilterAction::actionValueFromFilter', () => {
     let action;
     const urlPrefix = undefined;
 
@@ -176,25 +176,25 @@ describe("FilterAction::actionValueFromFilter", () => {
     });
 
     // TODO add tests for various value options
-    test("no label, unencoded column", () => {
+    test('no label, unencoded column', () => {
         const filter = Filter.create('colName', '10', Filter.Types.EQUAL);
         const value: ActionValue = action.actionValueFromFilter(filter);
         expect(value.displayValue).toBe('colName = 10');
-        expect(value.value).toBe('\"colName\" = 10');
+        expect(value.value).toBe('"colName" = 10');
     });
 
-    test("no label, encoded column", () => {
+    test('no label, encoded column', () => {
         const filter = Filter.create('U mg$SL', '10', Filter.Types.EQUAL);
         const value: ActionValue = action.actionValueFromFilter(filter);
         expect(value.displayValue).toBe('U mg/L = 10');
-        expect(value.value).toBe('\"U mg$SL\" = 10');
+        expect(value.value).toBe('"U mg$SL" = 10');
     });
 
-    test("with label", () => {
+    test('with label', () => {
         const filter = Filter.create('U mgS$L', 'x', Filter.Types.EQUAL);
-        const value: ActionValue = action.actionValueFromFilter(filter, "otherLabel");
+        const value: ActionValue = action.actionValueFromFilter(filter, 'otherLabel');
         expect(value.displayValue).toBe('otherLabel = x');
-        expect(value.value).toBe('\"otherLabel\" = x');
+        expect(value.value).toBe('"otherLabel" = x');
     });
 });
 
@@ -212,16 +212,13 @@ describe('FilterAction::fetchOptions', () => {
 
     test('column options', () => {
         return Promise.all([
-            // nothing entered -- should display all available columns
+            // nothing entered -- should display all available columns that are not multi-valued
             fetchOptions([], undefined, options => {
-                expect(options.length).toEqual(getColumns().size);
+                const filteredColumns = getColumns().filter(column => !column.multiValue);
+                expect(options.length).toEqual(filteredColumns.size);
 
                 // none should complete the action
-                expect(options.map(o => o.isComplete)).toEqual(
-                    getColumns()
-                        .map(c => false)
-                        .toArray()
-                );
+                expect(options.map(o => o.isComplete)).toEqual(filteredColumns.map(c => false).toArray());
             }),
 
             // no matches -- should display nothing
@@ -255,6 +252,11 @@ describe('FilterAction::fetchOptions', () => {
                 expect(options.length).toEqual(2);
                 expect(options[0].value).toEqual(`"${Filter.Types.ISBLANK.getDisplayText().toLowerCase()}"`);
                 expect(options[1].value).toEqual(`"${Filter.Types.NONBLANK.getDisplayText().toLowerCase()}"`);
+            }),
+
+            fetchOptions(undefined, undefined, options => {
+                expect(options.length).toEqual(5);
+                expect(options.filter(option => option.value == 'Alias')).toHaveLength(0);
             }),
         ]);
     });

@@ -28,8 +28,13 @@
 
 .creation-type {
     padding: 8px;
+
     &.selected {
         background: $blue-bkgrd-selected;
+    }
+
+    &:hover {
+        cursor: pointer;
     }
 }
 

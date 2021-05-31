@@ -45,6 +45,10 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
         this.setState({[name]: value} as State);
     };
 
+    onChooseOption = option => {
+        this.setState({creationType: option.type});
+    };
+
     isValidNumPerParent() {
         const {numPerParent} = this.state;
 
@@ -110,7 +114,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                     key={i}
                     option={option}
                     isSelected={this.state.creationType === option.type}
-                    onChoose={this.onChange}
+                    onChoose={this.onChooseOption}
                     showIcon={showIcons}
                 />
             );

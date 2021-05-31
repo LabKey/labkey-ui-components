@@ -15,9 +15,10 @@ describe('AddToPicklistMenuItem', () => {
     const key = 'picklists';
     const text = 'Picklist Testing';
 
+    let queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+    queryModel = queryModel.mutate({selections: new Set(['1', '2'])});
+
     test('with queryModel', () => {
-        let queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
-        queryModel = queryModel.mutate({selections: new Set(['1', '2'])});
         const wrapper = mount(
             <AddToPicklistMenuItem itemText={text} queryModel={queryModel} key={key} user={TEST_USER_EDITOR}/>
         );
@@ -58,7 +59,13 @@ describe('AddToPicklistMenuItem', () => {
 
     test('modal open', () => {
         const wrapper = mount(
-            <AddToPicklistMenuItem itemText={text} sampleIds={['1']} key={key} user={TEST_USER_EDITOR}/>
+            <AddToPicklistMenuItem
+                itemText={text}
+                sampleIds={['1']}
+                key={key}
+                queryModel={queryModel}
+                user={TEST_USER_EDITOR}
+            />
         );
         const menuItem = wrapper.find('MenuItem a');
         expect(menuItem).toHaveLength(1);

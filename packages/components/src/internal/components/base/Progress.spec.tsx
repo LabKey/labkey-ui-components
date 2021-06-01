@@ -40,7 +40,7 @@ describe('<Progress />', () => {
 
         // Should not be displaying anything until time has passed
         expect(progressBar.find(ProgressBar)).toHaveLength(0);
-        jest.runTimersToTime(400);
+        jest.advanceTimersByTime(400);
         // Force an update of the component so it will rerender
         progressBar.update();
 
@@ -56,7 +56,7 @@ describe('<Progress />', () => {
         const progressBar = mount(<Progress toggle={false} modal={true} />);
         // change the toggle state so it will render
         progressBar.setProps({ toggle: true });
-        jest.runTimersToTime(400);
+        jest.advanceTimersByTime(400);
         // Force an update of the component so it will rerender
         progressBar.update();
 
@@ -76,7 +76,7 @@ describe('<Progress />', () => {
 
         // Should not be displaying anything until time has passed
         expect(progressBar.find(ProgressBar)).toHaveLength(0);
-        jest.runTimersToTime(400);
+        jest.advanceTimersByTime(400);
         // Force an update of the component so it will rerender
         progressBar.update();
 
@@ -95,7 +95,7 @@ describe('<Progress />', () => {
 
         // Should not be displaying anything until time has passed
         expect(progressBar.find(ProgressBar)).toHaveLength(0);
-        jest.runTimersToTime(20);
+        jest.advanceTimersByTime(20);
         // Force an update of the component so it will rerender
         progressBar.update();
 
@@ -106,14 +106,14 @@ describe('<Progress />', () => {
             show: true,
         });
 
-        jest.runTimersToTime(5);
+        jest.advanceTimersByTime(5);
         expect(progressBar.state()).toEqual({
             duration: 20,
             percent: 10,
             show: true,
         });
 
-        jest.runTimersToTime(10);
+        jest.advanceTimersByTime(10);
         expect(progressBar.state()).toEqual({
             duration: 30,
             percent: 15,

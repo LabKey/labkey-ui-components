@@ -1,20 +1,24 @@
 # @labkey/components
-
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.40.0
+*Released*: 1 June 2021
+* Package updates
+* Updated to build using Webpack 5.
+* Switched to using [Webpack Asset Modules](https://webpack.js.org/guides/asset-modules/). Deprecates need for `file-loader` and `url-loader`.
+* Update `immer` to `v9.x` which necessitated some typings updates for our usages of `produces`.
+* Update to use Jest `v27.x`. See [this post](https://jestjs.io/blog/2021/05/25/jest-27) for further details.
+* Storybook updated to `v6.3.x-beta` to support building with Webpack 5.
+
 ### version 2.39.0
-
 *Released*: 31 May 2021
-
 * Don't show multi-value columns as filtering options for Omnibox.
 * Issue 43199: Update SampleCreationTypeModal to expand click area
 * Issue 42972: Fix validity check after removing parent aliases
 * Issue 43255: Protect against undefined rangeURI
 
 ### version 2.38.0
-
 *Released*: 31 May 2021
-
 * Add support for freezer location in TimelineView
 
 ### version 2.37.0

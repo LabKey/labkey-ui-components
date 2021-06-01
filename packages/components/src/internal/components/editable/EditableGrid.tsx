@@ -425,7 +425,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         return gridColumns;
     };
 
-    renderColumnHeader = (col: GridColumn, metadataKey: string, required?: boolean): ReactNode => {
+    renderColumnHeader = (col: GridColumn, metadataKey: string, required?: boolean, format?: string): ReactNode => {
         const label = col.title;
         const lowerColumnMetadata = this.props.columnMetadata
             ? this.props.columnMetadata.reduce((lowerColumnMetadata, value, key) => {
@@ -434,15 +434,16 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             : undefined;
         const metadata =
             lowerColumnMetadata && lowerColumnMetadata.has(metadataKey.toLowerCase())
-                ? this.props.columnMetadata.get(metadataKey.toLowerCase())
+                ? lowerColumnMetadata.get(metadataKey.toLowerCase())
                 : undefined;
         const overlay =
-            metadata && metadata.toolTip ? (
+            metadata?.toolTip || format ? (
                 <OverlayTrigger
                     placement="bottom"
                     overlay={
                         <Popover id={'popover-' + label} bsClass="popover">
-                            {metadata.toolTip}
+                            {metadata?.toolTip}
+                            {format && <div>Display Format: {format}</div>}
                         </Popover>
                     }
                 >
@@ -473,7 +474,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         }
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
             const qColumn = model.queryInfo.getColumn(col.index);
-            return this.renderColumnHeader(col, qColumn.fieldKey, qColumn.required);
+            return this.renderColumnHeader(col, qColumn.fieldKey, qColumn.required, qColumn.format);
         }
         if (col && col.showHeader) {
             return this.renderColumnHeader(col, col.title, false);

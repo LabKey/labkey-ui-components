@@ -5,11 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 43131: Files added to Sample Types show a path to "sampleset"
 * Issue 43254: Trailing spaces in field editor field names are not getting trimmed
+* Issue 37850: Include display format string in form field label help tip and editable grid cell header
 * Check to make sure model has selection before showing choose picklist modal
 
 ### version 2.39.0
 *Released*: 31 May 2021
-
 * Don't show multi-value columns as filtering options for Omnibox.
 * Issue 43199: Update SampleCreationTypeModal to expand click area
 * Issue 42972: Fix validity check after removing parent aliases
@@ -17,7 +17,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.38.0
 *Released*: 31 May 2021
-
 * Add support for freezer location in TimelineView
 
 ### version 2.37.0

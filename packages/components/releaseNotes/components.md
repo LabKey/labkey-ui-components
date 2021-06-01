@@ -7,6 +7,19 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 43254: Trailing spaces in field editor field names are not getting trimmed
 * Check to make sure model has selection before showing choose picklist modal
 
+### version 2.39.0
+*Released*: 31 May 2021
+
+* Don't show multi-value columns as filtering options for Omnibox.
+* Issue 43199: Update SampleCreationTypeModal to expand click area
+* Issue 42972: Fix validity check after removing parent aliases
+* Issue 43255: Protect against undefined rangeURI
+
+### version 2.38.0
+*Released*: 31 May 2021
+
+* Add support for freezer location in TimelineView
+
 ### version 2.37.0
 *Released*: 28 May 2021
 * Define new Content Panel variant `panel-content` in `panel.scss`.

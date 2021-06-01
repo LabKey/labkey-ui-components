@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { getEventDataValueDisplay, LabelHelpTip, SVGIcon } from '../../..';
@@ -13,6 +13,7 @@ interface Props {
     selectedEvent?: TimelineEventModel;
     showUserLinks?: boolean;
     selectedEntityConnectionInfo?: TimelineGroupedEventInfo[];
+    getInfoBubbleContent?: (event: TimelineEventModel) => { title: string; content: ReactNode };
 }
 
 export class TimelineView extends React.Component<Props, any> {
@@ -70,7 +71,7 @@ export class TimelineView extends React.Component<Props, any> {
                     isEventCompleted,
                     isConnection
                 )}
-                {this.renderDetailCol(event.summary, event.user, event.entity, event.getComment())}
+                {this.renderDetailCol(event)}
             </tr>
         );
     }
@@ -163,18 +164,42 @@ export class TimelineView extends React.Component<Props, any> {
         );
     }
 
-    renderDetailCol(summary: string, user: any, entity: any, comment: string) {
+    renderInfoBubble(event: TimelineEventModel) {
+        const { getInfoBubbleContent } = this.props;
+
+        if (getInfoBubbleContent) {
+            const info = getInfoBubbleContent(event);
+            if (info != null) {
+                return (
+                    <LabelHelpTip
+                        iconComponent={<i className="timeline-info-icon fa fa-info-circle" />}
+                        placement="bottom"
+                        title={info.title}
+                    >
+                        <div className="detail-display">{info.content}</div>
+                    </LabelHelpTip>
+                );
+            }
+        }
+
+        return null;
+    }
+
+    renderDetailCol(event: TimelineEventModel) {
         const { showUserLinks } = this.props;
+        const { summary, user, entity, entitySeparator } = event;
+        const comment = event.getComment();
         return (
             <td key="tl-detail-col" className="detail-col">
                 <div>
                     {getEventDataValueDisplay(summary)}
-                    {entity != null && <span> - </span>}
+                    {entity != null && <span>{entitySeparator ? entitySeparator : ' - '}</span>}
                     {entity != null && getEventDataValueDisplay(entity)}
                 </div>
                 <div>
                     <div className="field-text-nowrap">{getEventDataValueDisplay(user, showUserLinks)}</div>{' '}
                     {this.renderComment(comment)}
+                    {this.renderInfoBubble(event)}
                 </div>
             </td>
         );

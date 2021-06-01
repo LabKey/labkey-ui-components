@@ -52,24 +52,28 @@ export class AuditDetailsModel extends Record({
 export class TimelineEventModel extends Record({
     rowId: undefined,
     eventType: undefined,
+    subEventType: undefined,
     summary: undefined,
     user: undefined,
     eventUserId: undefined,
     timestamp: undefined,
     eventTimestamp: undefined,
     entity: undefined,
+    entitySeparator: ' - ',
     metadata: undefined,
     oldData: undefined,
     newData: undefined,
 }) {
     declare rowId?: number;
-    declare eventType?: string;
+    declare eventType?: string; // sample, assay, workflow, inventory, etc
+    declare subEventType?: string; // for example, inventory item vs inventory storage location
     declare summary?: string;
     declare user?: Map<string, any>;
     declare eventUserId?: number;
     declare timestamp?: Map<string, any>;
     declare eventTimestamp?: any;
     declare entity?: Map<string, any>;
+    declare entitySeparator?: string;
     declare metadata?: List<Map<string, any>>;
     declare oldData?: Map<string, string>;
     declare newData?: Map<string, string>;
@@ -87,6 +91,7 @@ export class TimelineEventModel extends Record({
         const fields = {} as TimelineEventModel;
         fields.rowId = raw['rowId'];
         fields.eventType = raw['eventType'];
+        fields.subEventType = raw['subEventType'];
         fields.summary = raw['summary'];
         fields.user = fromJS(raw['user']);
         fields.eventUserId = raw['user']['value'];
@@ -96,6 +101,7 @@ export class TimelineEventModel extends Record({
                 ? new Date(raw['timestamp']['value'] + ' ' + timezoneStr)
                 : new Date(raw['timestamp']['value']);
         fields.entity = fromJS(raw['entity']);
+        fields.entitySeparator = raw['entitySeparator'];
 
         if (raw.metadata) {
             const metaRows = [];
@@ -138,8 +144,9 @@ export class TimelineEventModel extends Record({
         if (App.ASSAYS_KEY === this.eventType) icon = 'assay';
         else if (this.eventType === 'inventory') {
             const summary = this.summary.toLowerCase();
-            if (summary.indexOf('added to') > -1) icon = 'storage_insert';
-            else if (summary.indexOf('discarded') > -1) icon = 'storage_remove';
+            if (summary.indexOf('added to') > -1 || summary.indexOf('added location') > -1) icon = 'storage_insert';
+            else if (summary.indexOf('discarded') > -1 || summary.indexOf('location deleted') > -1)
+                icon = 'storage_remove';
             else if (summary.indexOf('checked in') > -1) icon = 'storage_checkin';
             else if (summary.indexOf('checked out') > -1) icon = 'storage_checkout';
             else if (summary.indexOf('moved') > -1) icon = 'storage_move';

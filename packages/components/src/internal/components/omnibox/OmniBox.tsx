@@ -48,7 +48,7 @@ interface OmniBoxProps {
     className?: string;
     closeOnComplete?: boolean;
     disabled?: boolean;
-    // If all is false it getColumns should return display columns. This prop is a method due to the implementation of
+    // If 'all' is false, getColumns should return display columns. This prop is a method due to the implementation of
     // QueryGridModel, it is the only way to guarantee we are always getting the most current columns.
     getColumns: (all?: boolean) => List<QueryColumn>;
     getSelectDistinctOptions: (column: string) => Query.SelectDistinctOptions;
@@ -341,8 +341,13 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     };
 
     fetchDistinctValues = (columnName: string) => {
-        const { getColumns, getSelectDistinctOptions } = this.props;
-        const column = parseColumns(getColumns(), columnName).first() as QueryColumn;
+        const {getColumns, getSelectDistinctOptions} = this.props;
+        const column = parseColumns(
+            getColumns()
+                .filter(column => !column.multiValue)
+                .toList(),
+            columnName
+        ).first() as QueryColumn;
 
         if (!column) {
             // If we don't have a column there is nothing to fetch.
@@ -351,12 +356,6 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         // resolveFieldKey handles lookups for us.
         const fieldKey = resolveFieldKey(columnName, column);
-
-        if (column.multiValue) {
-            // We don't support multi value columns for the dropdown list because SelectDistinct just returns LSIDs for
-            // every row even if the column has no values.
-            this.setState({ distinctValues: List<any>() });
-        }
 
         if (this.state.distinctValuesFieldKey === fieldKey) {
             // The column has not changed, do not re-fetch.

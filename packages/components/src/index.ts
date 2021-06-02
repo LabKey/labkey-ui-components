@@ -267,6 +267,7 @@ import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/sa
 import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
 import { SamplesEditableGridBase } from './internal/components/samples/SamplesEditableGrid';
 import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
+import { SampleDeleteMenuItem } from './internal/components/samples/SampleDeleteMenuItem';
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
@@ -779,6 +780,7 @@ export {
     SampleCreationType,
     SampleSetDeleteModal,
     SamplesBulkUpdateFormBase,
+    SampleDeleteMenuItem,
     SamplesEditableGridBase,
     SampleLineageGraph,
     SampleDetailEditing,

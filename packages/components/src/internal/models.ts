@@ -455,7 +455,7 @@ export class EditorModel
                     }
                     row = row.set(col.name, dateVal);
                 } else {
-                    row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
+                    row = row.set(col.name, values.size === 1 ? values.first().raw.toString().trim() : undefined);
                 }
             });
             if (forUpdate) {

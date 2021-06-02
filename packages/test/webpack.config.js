@@ -14,14 +14,14 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                loaders: [{
+                use: {
                     loader: 'ts-loader',
                     options: {
                         // this flag and the test regex will make sure that test files do not get bundled
                         // see: https://github.com/TypeStrong/ts-loader/issues/267
                         onlyCompileBundledFiles: true
-                    }
-                }],
+                    },
+                },
                 exclude: /node_modules/
             }
         ]
@@ -35,9 +35,12 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
+        publicPath: '',
         filename: 'test.js',
-        library: '@labkey/test',
-        libraryTarget: 'umd'
+        library: {
+            name: '@labkey/test',
+            type: 'umd'
+        },
     },
     plugins: [
         new CopyWebpackPlugin({

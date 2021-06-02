@@ -16,6 +16,7 @@ module.exports = {
     "setupFilesAfterEnv": [
         "./config/integration.setup.afterenv.js",
     ],
+    "testEnvironment": "jsdom",
     "testPathIgnorePatterns": [
         "/node_modules/",
     ],

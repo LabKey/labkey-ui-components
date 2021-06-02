@@ -35,22 +35,36 @@ module.exports = {
                     }
                 ]
             },
-            { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
-            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader" },
-            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" },
-            { test: /\.png(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/png" },
+            {
+                test: /\.(woff|woff2)$/,
+                type: 'asset',
+            },
+            {
+                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                type: 'asset',
+            },
+            {
+                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                type: 'asset/resource',
+            },
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                type: 'asset',
+            },
+            {
+                test: /\.png(\?v=\d+\.\d+\.\d+)?$/,
+                type: 'asset',
+            },
             {
                 test: /\.tsx?$/,
-                loaders: [{
+                use: {
                     loader: 'ts-loader',
                     options: {
                         // this flag and the test regex will make sure that test files do not get bundled
                         // see: https://github.com/TypeStrong/ts-loader/issues/267
                         onlyCompileBundledFiles: true
-                    }
-                }],
+                    },
+                },
                 exclude: /node_modules/
             }
         ]
@@ -64,9 +78,12 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'staging'),
+        publicPath: '',
         filename: 'components.js',
-        library: '@labkey/components',
-        libraryTarget: 'umd'
+        library: {
+            name: '@labkey/components',
+            type: 'umd'
+        },
     },
     plugins: [
         new CopyWebpackPlugin({

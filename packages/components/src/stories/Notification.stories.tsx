@@ -49,7 +49,8 @@ storiesOf('Notification', module)
         }
     )
     .add('Trial notification', () => {
-        const endDate = text('Trial end date', moment().add(10, 'days').format('YYYY-MM-DD'));
+        const days = 10; // Workaround for https://github.com/storybookjs/storybook/issues/12208
+        const endDate = text('Trial end date', moment().add(days, 'days').format('YYYY-MM-DD'));
         const hasUpgradeLink = boolean('Has upgrade link?', false);
         const upgradeLinkText = text('Upgrade link text', undefined);
         const userIsAdmin = boolean('User is admin?', false);

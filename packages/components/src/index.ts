@@ -95,7 +95,6 @@ import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
 import { FileAttachmentForm } from './public/files/FileAttachmentForm';
 import { DEFAULT_FILE } from './internal/components/files/models';
-import { FileSizeLimitProps } from './public/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
@@ -946,7 +945,6 @@ export {
     fetchIssuesListDefDesign,
     // file / webdav related items
     DEFAULT_FILE,
-    FileSizeLimitProps,
     FilesListing,
     FilesListingForm,
     FileAttachmentEntry,
@@ -1179,3 +1177,4 @@ export type {
 } from './internal/app/reducers';
 export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
+export type { FileSizeLimitProps } from './public/files/models';

@@ -22,15 +22,12 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
 
-    const closeAddToPicklist = useCallback(
-        (closeToCreate?: boolean) => {
-            setShowChoosePicklist(false);
-            if (closeToCreate) {
-                setShowCreatePicklist(true);
-            }
-        },
-        []
-    );
+    const closeAddToPicklist = useCallback((closeToCreate?: boolean) => {
+        setShowChoosePicklist(false);
+        if (closeToCreate) {
+            setShowCreatePicklist(true);
+        }
+    }, []);
 
     const afterAddToPicklist = useCallback(() => {
         setShowChoosePicklist(false);

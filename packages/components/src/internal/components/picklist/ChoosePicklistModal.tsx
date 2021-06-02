@@ -28,17 +28,17 @@ interface PicklistListProps {
 
 // export for jest testing
 export const PicklistList: FC<PicklistListProps> = memo(props => {
-    const {activeItem, emptyMessage, onSelect, showSharedIcon = false, items} = props;
+    const { activeItem, emptyMessage, onSelect, showSharedIcon = false, items } = props;
     return (
         <div className="list-group choices-list">
             {items.map(item => (
                 <button
-                    className={classNames('list-group-item', {active: activeItem?.listId === item.listId})}
+                    className={classNames('list-group-item', { active: activeItem?.listId === item.listId })}
                     key={item.listId}
                     onClick={onSelect.bind(this, item)}
                     type="button"
                 >
-                    {showSharedIcon && item.isPublic() && <span className="fa fa-users"/>}
+                    {showSharedIcon && item.isPublic() && <span className="fa fa-users" />}
                     {item.name}
                 </button>
             ))}
@@ -58,7 +58,7 @@ interface PicklistItemsSummaryProps {
 // export for jest testing
 export const PicklistItemsSummaryDisplay: FC<PicklistItemsSummaryDisplayProps & PicklistItemsSummaryProps> = memo(
     props => {
-        const {countsByType, picklist} = props;
+        const { countsByType, picklist } = props;
 
         const summaryData = [];
         if (countsByType.length === 0) {
@@ -76,7 +76,7 @@ export const PicklistItemsSummaryDisplay: FC<PicklistItemsSummaryDisplayProps & 
                 summaryData.push(
                     <div key={countData.SampleType} className="row picklist-items__row">
                         <span className="col-md-1">
-                            <ColorIcon useSmall={true} value={countData.LabelColor}/>
+                            <ColorIcon useSmall={true} value={countData.LabelColor} />
                         </span>
                         <span className="col-md-5 picklist-items__sample-type choice-metadata-item__name">
                             {countData.SampleType}
@@ -99,7 +99,7 @@ export const PicklistItemsSummaryDisplay: FC<PicklistItemsSummaryDisplayProps & 
 );
 
 const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo(props => {
-    const {picklist} = props;
+    const { picklist } = props;
     const [countsByType, setCountsByType] = useState<SampleTypeCount[]>(undefined);
     const [loadingCounts, setLoadingCounts] = useState<boolean>(true);
 
@@ -116,10 +116,10 @@ const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo(props => {
     }, [picklist, getPicklistCountsBySampleType, setCountsByType, setLoadingCounts]);
 
     if (loadingCounts) {
-        return <LoadingSpinner/>;
+        return <LoadingSpinner />;
     }
 
-    return <PicklistItemsSummaryDisplay {...props} countsByType={countsByType}/>;
+    return <PicklistItemsSummaryDisplay {...props} countsByType={countsByType} />;
 });
 
 interface PicklistDetailsProps {
@@ -128,7 +128,7 @@ interface PicklistDetailsProps {
 
 // export for jest testing
 export const PicklistDetails: FC<PicklistDetailsProps> = memo(props => {
-    const {picklist} = props;
+    const { picklist } = props;
 
     return (
         <div className="choice-details">
@@ -151,7 +151,7 @@ export const PicklistDetails: FC<PicklistDetailsProps> = memo(props => {
             <div className="choice-details__description">{picklist.Description}</div>
 
             <div className="top-spacing choice-details__summary">
-                <PicklistItemsSummary picklist={picklist}/>
+                <PicklistItemsSummary picklist={picklist} />
             </div>
         </div>
     );
@@ -165,7 +165,7 @@ interface AddedToPicklistNotificationProps {
 
 // export for jest testing
 export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> = props => {
-    const {picklist, numAdded, numSelected} = props;
+    const { picklist, numAdded, numSelected } = props;
     let numAddedNotification;
     if (numAdded == 0) {
         numAddedNotification = 'No samples added';
@@ -260,8 +260,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 });
 
                 afterAddToPicklist();
-            }
-            catch (e) {
+            } catch (e) {
                 setSubmitting(false);
                 setError(resolveErrorMessage(e));
             }
@@ -281,8 +280,8 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             </>
         );
         const isSearching = !!search;
-        let myEmptyMessage: ReactNode = <LoadingSpinner/>;
-        let teamEmptyMessage: ReactNode = <LoadingSpinner/>;
+        let myEmptyMessage: ReactNode = <LoadingSpinner />;
+        let teamEmptyMessage: ReactNode = <LoadingSpinner />;
 
         if (!loading) {
             myEmptyMessage = 'You do not have any picklists ';
@@ -364,7 +363,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                                 <div className="choices-list__empty-message">Choose a picklist</div>
                             )}
 
-                            {activeItem !== undefined && <PicklistDetails picklist={activeItem}/>}
+                            {activeItem !== undefined && <PicklistDetails picklist={activeItem} />}
                         </div>
                     </div>
                 </Modal.Body>
@@ -418,5 +417,5 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
             });
     }, [getPicklists, setItems, setError, setLoading]);
 
-    return <ChoosePicklistModalDisplay {...props} picklists={items} picklistLoadError={error} loading={loading}/>;
+    return <ChoosePicklistModalDisplay {...props} picklists={items} picklistLoadError={error} loading={loading} />;
 });

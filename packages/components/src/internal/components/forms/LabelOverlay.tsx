@@ -74,6 +74,12 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
                         {column.fieldKey}
                     </p>
                 )}
+                {column?.format && (
+                    <p>
+                        <strong>Display Format: </strong>
+                        {column.format}
+                    </p>
+                )}
                 {required && (
                     <p>
                         <small>

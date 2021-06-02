@@ -56,7 +56,11 @@ export class FileColumnRenderer extends PureComponent<Props> {
         // Attachment URLs will look like images, so we check if the URL is an image.
         // FileLink URLs don't look like images, so you have to check value or displayValue.
         const _isImage = (url && isImage(url)) || (displayValue && isImage(displayValue)) || (value && isImage(value));
-        const attachment = { name, iconFontCls: getIconFontCls(name) } as IAttachment;
+        const attachment = {
+            name,
+            title: getAttachmentTitleFromName(name),
+            iconFontCls: getIconFontCls(name),
+        } as IAttachment;
 
         return (
             <AttachmentCard
@@ -70,4 +74,12 @@ export class FileColumnRenderer extends PureComponent<Props> {
             />
         );
     }
+}
+
+// exported for jest testing
+export function getAttachmentTitleFromName(name: string): string {
+    if (name.indexOf('/') > -1) {
+        return name.substr(name.lastIndexOf('/') + 1);
+    }
+    return name;
 }

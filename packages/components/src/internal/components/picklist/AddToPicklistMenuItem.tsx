@@ -18,19 +18,16 @@ interface Props {
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {
-    const {sampleIds, key, itemText, user, queryModel} = props;
+    const { sampleIds, key, itemText, user, queryModel } = props;
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
 
-    const closeAddToPicklist = useCallback(
-        (closeToCreate?: boolean) => {
-            setShowChoosePicklist(false);
-            if (closeToCreate) {
-                setShowCreatePicklist(true);
-            }
-        },
-        []
-    );
+    const closeAddToPicklist = useCallback((closeToCreate?: boolean) => {
+        setShowChoosePicklist(false);
+        if (closeToCreate) {
+            setShowCreatePicklist(true);
+        }
+    }, []);
 
     const afterAddToPicklist = useCallback(() => {
         setShowChoosePicklist(false);
@@ -45,7 +42,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
     }, []);
 
     const onClick = useCallback(() => {
-        if (!queryModel || queryModel.selections.size > 0) {
+        if (queryModel?.hasSelections) {
             setShowChoosePicklist(true);
         }
     }, [queryModel]);

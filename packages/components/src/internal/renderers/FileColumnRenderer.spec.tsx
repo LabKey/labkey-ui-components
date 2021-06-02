@@ -6,7 +6,7 @@ import { QueryColumn } from '../..';
 
 import { FILELINK_RANGE_URI } from '../components/domainproperties/constants';
 
-import { FileColumnRenderer } from './FileColumnRenderer';
+import { FileColumnRenderer, getAttachmentTitleFromName } from './FileColumnRenderer';
 import { AttachmentCard } from './AttachmentCard';
 
 const DEFAULT_PROPS = {
@@ -61,5 +61,17 @@ describe('FileColumnRenderer', () => {
         const wrapper = mount(<FileColumnRenderer {...DEFAULT_PROPS} onRemove={jest.fn} />);
         validate(wrapper, true, 'attachment', true);
         wrapper.unmount();
+    });
+});
+
+describe('getAttachmentTitleFromName', () => {
+    test('without dir prefix', () => {
+        expect(getAttachmentTitleFromName('test.tsv')).toBe('test.tsv');
+    });
+
+    test('with dir prefix', () => {
+        expect(getAttachmentTitleFromName('something/test.tsv')).toBe('test.tsv');
+        expect(getAttachmentTitleFromName('sampletype/test.tsv')).toBe('test.tsv');
+        expect(getAttachmentTitleFromName('sampleset/test.tsv')).toBe('test.tsv');
     });
 });

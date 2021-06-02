@@ -3,16 +3,12 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version TBD
-
 *Released*: TBD
-
 * [Issue 43264](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43264) Trim field values
   entered in grid
 
 ### version 2.41.0
-
 *Released*: 2 June 2021
-
 * Issue 43131: Files added to Sample Types show a path to "sampleset"
 * Issue 43254: Trailing spaces in field editor field names are not getting trimmed
 * Issue 37850: Include display format string in form field label help tip and editable grid cell header

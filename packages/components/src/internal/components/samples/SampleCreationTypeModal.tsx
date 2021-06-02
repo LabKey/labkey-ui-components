@@ -16,7 +16,7 @@ interface Props {
     onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
 }
 
-interface State {
+interface State extends Record<string, any> {
     numPerParent: number;
     creationType: SampleCreationType;
     submitting: boolean;
@@ -36,34 +36,34 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
         this._maxPerParent = MAX_EDITABLE_GRID_ROWS / props.parentCount;
     }
 
-    onCancel = () => {
+    onCancel = (): void => {
         this.props.onCancel();
     };
 
-    onChange = event => {
-        const {name, value} = event.target;
-        this.setState({[name]: value} as State);
+    onChange = (event: any): void => {
+        const { name, value } = event.target;
+        this.setState({ [name]: value });
     };
 
     onChooseOption = option => {
         this.setState({creationType: option.type});
     };
 
-    isValidNumPerParent() {
-        const {numPerParent} = this.state;
+    isValidNumPerParent = (): boolean => {
+        const { numPerParent } = this.state;
 
         return numPerParent >= 1 && numPerParent <= this._maxPerParent;
-    }
+    };
 
     renderNumPerParent(): React.ReactNode {
-        const {parentCount, options} = this.props;
-        const {creationType, numPerParent} = this.state;
+        const { options } = this.props;
+        const { creationType, numPerParent } = this.state;
 
         const selectedOption = options.find(option => option.type === creationType);
         const noun = creationType === SampleCreationType.Aliquots ? 'Aliquot' : 'Sample';
         return (
             <>
-                {this.shouldDisplayOptions() && <hr/>}
+                {this.shouldDisplayOptions() && <hr />}
                 <div>
                     <label className="creation-type-modal-label">{selectedOption.quantityLabel}</label>
                     <label className="creation-type-modal-label">
@@ -86,7 +86,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
         );
     }
 
-    onConfirm = () => {
+    onConfirm = (): void => {
         this.props.onSubmit(this.state.creationType, this.state.numPerParent);
     };
 
@@ -103,7 +103,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     }
 
     renderOptions(): React.ReactNode[] {
-        const {showIcons} = this.props;
+        const { showIcons } = this.props;
         const displayOptions = this.getOptionsToDisplay();
         if (displayOptions.length < 2) return null;
 
@@ -124,7 +124,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
 
     render(): React.ReactNode {
         const { show, parentCount } = this.props;
-        const { submitting, numPerParent } = this.state;
+        const { submitting } = this.state;
 
         const parentNoun = parentCount > 1 ? 'Parents' : 'Parent';
         const canSubmit = !submitting && this.isValidNumPerParent();

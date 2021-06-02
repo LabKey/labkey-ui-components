@@ -486,10 +486,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         if (change.type === ChangeType.add || change.type === ChangeType.modify) {
             keyword = actionValues[actionValues.length - 1].action.keyword;
         } else {
-            keyword = this.state.actionValues[change.index].action.keyword;
+            keyword = this.state.actionValues[change.index]?.action.keyword;
         }
 
-        this.omniBoxChangeHandlers[keyword](actionValues, change);
+        if (keyword) {
+            this.omniBoxChangeHandlers[keyword](actionValues, change);
+        }
     };
 
     /**

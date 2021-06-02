@@ -16,7 +16,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Check to make sure model has selection before showing choose picklist modal
 
 ### version 2.40.0
-
 *Released*: 1 June 2021
 * Package updates
 * Updated to build using Webpack 5.

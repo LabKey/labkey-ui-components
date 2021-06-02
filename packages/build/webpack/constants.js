@@ -145,16 +145,15 @@ const TS_CHECKER_DEV_CONFIG = {
 };
 
 module.exports = {
-    labkeyUIComponentsPath: labkeyUIComponentsPath,
-    freezerManagerPath: freezerManagerPath,
-    workflowPath: workflowPath,
-    tsconfigPath: tsconfigPath,
-    watchPort: watchPort,
-    TS_CHECKER_CONFIG: TS_CHECKER_CONFIG,
-    TS_CHECKER_DEV_CONFIG: TS_CHECKER_DEV_CONFIG,
-    context: function(dir) {
-        return path.resolve(dir, '..');
-    },
+    lkModule,
+    labkeyUIComponentsPath,
+    freezerManagerPath,
+    workflowPath,
+    tsconfigPath,
+    watchPort,
+    TS_CHECKER_CONFIG,
+    TS_CHECKER_DEV_CONFIG,
+    context: path.resolve(lkModule, '..'),
     extensions: {
         TYPESCRIPT: [ '.jsx', '.js', '.tsx', '.ts' ]
     },

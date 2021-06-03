@@ -53,19 +53,19 @@ export function getUserPermissionsDisplay(user: User): string[] {
 }
 
 export function getUserRoleDisplay(user: User): string {
-    if (user.permissionsList.contains(PermissionTypes.ApplicationAdmin)) {
+    if (user.isAppAdmin()) {
         return SITE_SECURITY_ROLES.get(PermissionRoles.ApplicationAdmin);
     }
 
-    if (user.permissionsList.contains(PermissionTypes.Admin)) {
+    if (hasAllPermissions(user, [PermissionTypes.Admin])) {
         return 'Administrator';
     }
 
-    if (user.permissionsList.contains(PermissionTypes.Update)) {
+    if (user.hasUpdatePermission()) {
         return APPLICATION_SECURITY_ROLES.get(PermissionRoles.Editor);
     }
 
-    if (user.permissionsList.contains(PermissionTypes.Read)) {
+    if (hasAllPermissions(user, [PermissionTypes.Read])) {
         return APPLICATION_SECURITY_ROLES.get(PermissionRoles.Reader);
     }
 

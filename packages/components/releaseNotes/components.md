@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 8958: LKSM Permissions updates for premium vs hosted only servers
+
 ### version 2.41.0
 *Released*: 2 June 2021
 * Issue 43131: Files added to Sample Types show a path to "sampleset"

@@ -3,17 +3,12 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-const lkModule = process.env.LK_MODULE;
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const constants = require('./constants');
 const path = require('path');
-
 // relative to the <lk_module>/node_modules/@labkey/build/webpack dir
 const entryPoints = require('../../../../src/client/entryPoints');
-
-// set based on the lk module calling this config
-__dirname = lkModule;
 
 const devServer = {
     host: 'localhost',
@@ -55,38 +50,30 @@ for (let i = 0; i < entryPoints.apps.length; i++) {
 }
 
 module.exports = {
-    context: constants.context(__dirname),
-
+    context: constants.context,
     mode: 'development',
-
     devServer: devServer,
-
     entry: entries,
-
     output: {
-        path: constants.outputPath(__dirname),
+        path: constants.outputPath,
         publicPath: devServerURL + '/',
         filename: "[name].js"
     },
-
     resolve: {
         alias: {
             ...constants.aliases.LABKEY_PACKAGES_DEV,
             // This assures there is only one copy of react used while doing start-link
-            react: path.resolve(__dirname, "../node_modules/react"),
+            react: path.resolve('./node_modules/react'),
         },
         extensions: constants.extensions.TYPESCRIPT.concat('.scss')
     },
-
     module: {
         rules: constants.loaders.TYPESCRIPT_DEV.concat(constants.loaders.STYLE_DEV).concat(constants.loaders.FILES)
     },
-
     optimization: {
         // do not emit compiled assets that include errors
         emitOnErrors: false,
     },
-
     plugins: [
         new webpack.HotModuleReplacementPlugin(), // enable HMR globally
         // This Plugin type checks our TS code, @babel/preset-typescript does not type check, it only transforms

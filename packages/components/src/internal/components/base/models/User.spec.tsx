@@ -10,9 +10,15 @@ import {
     TEST_USER_READER,
 } from '../../../../test/data/users';
 
-import { hasAllPermissions } from './User';
+import { hasAllPermissions, hasAnyPermissions } from './User';
 
 describe('hasAllPermissions', () => {
+    test('empty permissions', () => {
+        expect(hasAllPermissions(TEST_USER_APP_ADMIN, undefined)).toBe(false);
+        expect(hasAllPermissions(TEST_USER_APP_ADMIN, null)).toBe(false);
+        expect(hasAllPermissions(TEST_USER_APP_ADMIN, [])).toBe(false);
+    });
+
     test('user without permission', () => {
         expect(hasAllPermissions(TEST_USER_READER, [PermissionTypes.Insert])).toBe(false);
     });
@@ -38,6 +44,41 @@ describe('hasAllPermissions', () => {
         expect(hasAllPermissions(TEST_USER_FOLDER_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(false);
         expect(hasAllPermissions(TEST_USER_APP_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
         expect(hasAllPermissions(TEST_USER_APP_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(true);
+    });
+});
+
+describe('hasAnyPermissions', () => {
+    test('empty permissions', () => {
+        expect(hasAnyPermissions(TEST_USER_APP_ADMIN, undefined)).toBe(false);
+        expect(hasAnyPermissions(TEST_USER_APP_ADMIN, null)).toBe(false);
+        expect(hasAnyPermissions(TEST_USER_APP_ADMIN, [])).toBe(false);
+    });
+
+    test('user without permission', () => {
+        expect(hasAnyPermissions(TEST_USER_READER, [PermissionTypes.Insert])).toBe(false);
+    });
+
+    test('user has some but not all permissions', () => {
+        expect(hasAnyPermissions(TEST_USER_READER, [PermissionTypes.Insert, PermissionTypes.Read])).toBe(true);
+    });
+
+    test('user has only required permission', () => {
+        expect(hasAnyPermissions(TEST_USER_AUTHOR, [PermissionTypes.Insert])).toBe(true);
+    });
+
+    test('user has more permission', () => {
+        expect(hasAnyPermissions(TEST_USER_EDITOR, [PermissionTypes.Insert])).toBe(true);
+    });
+
+    test('user permissions do not intersect', () => {
+        expect(hasAnyPermissions(TEST_USER_ASSAY_DESIGNER, [PermissionTypes.Insert])).toBe(false);
+    });
+
+    test('user permissions admin prop', () => {
+        expect(hasAnyPermissions(TEST_USER_FOLDER_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
+        expect(hasAnyPermissions(TEST_USER_FOLDER_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(false);
+        expect(hasAnyPermissions(TEST_USER_APP_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
+        expect(hasAnyPermissions(TEST_USER_APP_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(true);
     });
 });
 

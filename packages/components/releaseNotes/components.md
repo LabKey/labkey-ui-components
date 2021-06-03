@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.41.?
-*Released*: ? June 2021
+### version 2.41.1
+*Released*: 3 June 2021
 * Fix FileSizeLimitProps export
 
 ### version 2.41.0

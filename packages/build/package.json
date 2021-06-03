@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "3.1.0-fb-remove-build-vars.2",
+  "version": "3.1.0",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

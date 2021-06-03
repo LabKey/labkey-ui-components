@@ -1,7 +1,7 @@
 # @labkey/build
 
 ### version 3.1.0
-*Released*: ? June 2021
+*Released*: 3 June 2021
 * Use current working directory to determine module name and modules directory
     * This removes the need for LK_MODULE and LK_MODULE_CONTAINER build vars
 

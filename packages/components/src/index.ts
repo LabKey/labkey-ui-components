@@ -271,6 +271,7 @@ import { SampleDeleteMenuItem } from './internal/components/samples/SampleDelete
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
+import { SamplesCreateSubMenu } from './internal/components/samples/SamplesCreateSubMenu';
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
@@ -785,6 +786,7 @@ export {
     SampleLineageGraph,
     SampleDetailEditing,
     SampleCreationTypeModal,
+    SamplesCreateSubMenu,
     SamplesSelectionProvider,
     SampleAliquotDetailHeader,
     SampleAssayDetail,

@@ -105,7 +105,7 @@ describe('ConceptOverviewPanelImpl', () => {
     });
 });
 
-describe('ConceptOverviewModal', () => {
+describe('ConceptOverviewToolTip', () => {
     const onCloseFn = jest.fn;
 
     function validate(wrapper: ReactWrapper, errorTxt?: string): void {

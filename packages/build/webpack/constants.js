@@ -234,7 +234,7 @@ module.exports = {
             '@labkey/workflow-scss': workflowPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
         },
     },
-    outputPath: path.resolve('./resources/web/' + lkModule + '/gen'),
+    outputPath: path.resolve('./resources/web/gen'),
     processEntries: function(entryPoints) {
         return entryPoints.apps.reduce((entries, app) => {
             entries[app.name] = app.path + '/app.tsx';
@@ -253,7 +253,7 @@ module.exports = {
                         title: app.title,
                         permission: app.permission,
                         viewTemplate: app.template,
-                        filename: '../../../web/' + lkModule + '/gen/' + app.name + '.lib.xml',
+                        filename: '../../web/gen/' + app.name + '.lib.xml',
                         template: 'node_modules/@labkey/build/webpack/lib.template.xml',
                         minify: minifyTemplateOptions
                     }),
@@ -268,13 +268,13 @@ module.exports = {
                         permission: app.permission,
                         permissionClasses: app.permissionClasses,
                         viewTemplate: app.template,
-                        filename: '../../../views/gen/' + app.name + '.view.xml',
+                        filename: '../../views/gen/' + app.name + '.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml',
                         minify: minifyTemplateOptions
                     }),
                     new HtmlWebpackPlugin({
                         inject: false,
-                        filename: '../../../views/gen/' + app.name + '.html',
+                        filename: '../../views/gen/' + app.name + '.html',
                         template: 'node_modules/@labkey/build/webpack/app.template.html',
                         minify: minifyTemplateOptions
                     }),
@@ -287,7 +287,7 @@ module.exports = {
                         permission: app.permission,
                         permissionClasses: app.permissionClasses,
                         viewTemplate: app.template,
-                        filename: '../../../views/gen/' + app.name + 'Dev.view.xml',
+                        filename: '../../views/gen/' + app.name + 'Dev.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml',
                         minify: minifyTemplateOptions
                     }),
@@ -296,7 +296,7 @@ module.exports = {
                         mode: 'dev',
                         port: watchPort,
                         name: app.name,
-                        filename: '../../../views/gen/' + app.name + 'Dev.html',
+                        filename: '../../views/gen/' + app.name + 'Dev.html',
                         template: 'node_modules/@labkey/build/webpack/app.template.html',
                         minify: minifyTemplateOptions
                     })

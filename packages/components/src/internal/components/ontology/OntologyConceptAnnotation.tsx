@@ -22,7 +22,7 @@ interface OntologyConceptAnnotationProps {
 }
 
 export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = memo(props => {
-    const { field } = props;
+    const { field, id, onChange } = props;
     const { principalConceptCode } = field;
     const [error, setError] = useState<string>();
     const [concept, setConcept] = useState<ConceptModel>();
@@ -32,7 +32,10 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
             setConcept(undefined);
         } else {
             fetchConceptForCode(principalConceptCode)
-                .then(setConcept)
+                .then((concept: ConceptModel): void => {
+                    setConcept(concept);
+                    onChange?.(id, concept);
+                })
                 .catch(() => {
                     setError('Error: unable to get concept information for ' + principalConceptCode + '. ');
                 });
@@ -61,7 +64,7 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
 
     const onApply = useCallback(
         (selectedConcept: ConceptModel) => {
-            onChange(id, selectedConcept?.code);
+            onChange(id, selectedConcept);
             setShowSelectModal(false);
         },
         [onChange, id, setShowSelectModal]
@@ -70,7 +73,7 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
     return (
         <>
             <div className="domain-field-label">
-                <DomainFieldLabel label="Concept Annotation" helpTipBody={getOntologyConceptAnnotationHelpTipBody()} />
+                <DomainFieldLabel label="Ontology Concept" helpTipBody={getOntologyConceptAnnotationHelpTipBody()} />
             </div>
             <table className="domain-annotation-table">
                 <tbody>
@@ -119,10 +122,11 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
             {showSelectModal && (
                 <OntologyBrowserModal
                     title={title}
-                    initOntologyId={field.sourceOntology}
+                    initOntologyId={concept.ontology}
                     onCancel={toggleSelectModal}
                     onApply={onApply}
                     successBsStyle={successBsStyle}
+                    initConcept={concept}
                 />
             )}
         </>

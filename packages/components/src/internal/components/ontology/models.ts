@@ -12,9 +12,11 @@ export class ConceptModel {
     readonly paths: string[];
     readonly description: string;
     readonly synonyms: string[];
+    readonly ontology: string; // Abbreviation code for the parent ontology
 
     constructor(values?: Partial<ConceptModel>) {
         Object.assign(this, values);
+        this.ontology = this.code?.split(':')?.[0];
     }
 
     getDisplayLabel(): string {

@@ -17,7 +17,7 @@ import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
 
-import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL, DomainDetails } from '../../..';
+import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL, DomainDetails, ConceptModel } from '../../..';
 
 import { processSchemas } from '../../schemas';
 
@@ -59,6 +59,7 @@ import {
     DOMAIN_FIELD_LOOKUP_SCHEMA,
     DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
     DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
+    DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
     DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     DOMAIN_FIELD_SAMPLE_TYPE,
@@ -566,6 +567,16 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
                     lookupQueryValue: change.value,
                     lookupType: newField.lookupType.set('rangeURI', rangeURI),
                     rangeURI,
+                }) as DomainField;
+                break;
+            case DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT:
+                const concept = change.value as ConceptModel;
+
+                newField = newField.merge({
+                    // We may be just trying to update the Display, so only mark as dirty if original field is updated or code is different
+                    updatedField: field.updatedField || field.principalConceptCode != concept?.code,
+                    principalConceptCode: concept?.code,
+                    principalConceptDisplay: concept?.getDisplayLabel()
                 }) as DomainField;
                 break;
             default:

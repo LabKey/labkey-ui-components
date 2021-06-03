@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version XXX
 *Released*: XXX
 * Added SampleDeleteMenuItem
-* Moved CreateSamplesSubMenu from SampleManager
+* Moved CreateSamplesSubMenu, getMenuItemsForSection from SampleManager
 
 ### version 2.41.0
 *Released*: 2 June 2021

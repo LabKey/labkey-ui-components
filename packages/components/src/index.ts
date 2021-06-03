@@ -129,6 +129,7 @@ import { ManageDropdownButton } from './internal/components/buttons/ManageDropdo
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
 import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
 import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
+import { getMenuItemsForSection } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
 
@@ -1000,6 +1001,7 @@ export {
     SplitButtonGroup,
     PaginationButtons,
     ToggleButtons,
+    getMenuItemsForSection,
     // application page related items
     LoadingPage,
     NotFound,

@@ -26,14 +26,16 @@ interface SamplesCreateSubMenuProps {
     parentQueryModel?: QueryModel;
     getOptions: (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => List<MenuOption>;
     maxParentPerSample: number;
-    sampleWizardURL: (targetSampleType?: string, parent?: string) => AppURL;
+    sampleWizardURL?: (targetSampleType?: string, parent?: string) => AppURL;
+    getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
     isSelectingSamples: (schemaName: string) => boolean;
 }
 
 export const SamplesCreateSubMenu: FC<SamplesCreateSubMenuProps> = memo((props) => {
     const { menuCurrentChoice, menuText, parentType, parentKey, parentModel, parentQueryModel,
-        navigate, getOptions, maxParentPerSample, sampleWizardURL, isSelectingSamples } = props;
-    const [sampleCreationURL, setSampleCreationURL] = useState<AppURL>();
+        navigate, getOptions, maxParentPerSample, sampleWizardURL, getProductSampleWizardURL, isSelectingSamples } = props;
+
+    const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
     const [selectedOption, setSelectedOption] = useState<string>();
 
     const selectedQuantity = parentModel?.selectedQuantity ?? parentQueryModel?.selections.size ?? 1
@@ -51,10 +53,21 @@ export const SamplesCreateSubMenu: FC<SamplesCreateSubMenuProps> = memo((props) 
     const useOnClick = parentKey !== undefined || (selectingSampleParents && selectedQuantity > 0);
 
     const onSampleCreationMenuSelect = useCallback((key: string) => {
-        let appURL = sampleWizardURL(key, parentKey);
+        let selectionKey : string = null;
         if ((parentModel?.allowSelection && parentModel.selectedIds.size > 0) ||
             parentQueryModel?.hasSelections) {
-            appURL = appURL.addParam('selectionKey', parentModel?.getId() || parentQueryModel?.id);
+            selectionKey = parentModel?.getId() || parentQueryModel?.id;
+        }
+
+        let appURL : string | AppURL = undefined;
+
+        if (sampleWizardURL) {
+            appURL = sampleWizardURL(key, parentKey);
+            if (selectionKey)
+                appURL = appURL.addParam('selectionKey', selectionKey);
+        }
+        else if (getProductSampleWizardURL) {
+            appURL = getProductSampleWizardURL(key, parentKey, selectionKey);
         }
 
         if (useOnClick) {
@@ -71,7 +84,11 @@ export const SamplesCreateSubMenu: FC<SamplesCreateSubMenuProps> = memo((props) 
     }, [setSampleCreationURL, setSelectedOption]);
 
     const onSampleCreationSubmit = useCallback((creationType: SampleCreationType, numPerParent?: number) => {
-        navigate(sampleCreationURL.addParams({creationType, numPerParent}));
+        if (sampleCreationURL instanceof AppURL)
+            navigate(sampleCreationURL.addParams({creationType, numPerParent}));
+        else {
+            navigate(sampleCreationURL + `creationType=${creationType}&numPerParent=${numPerParent}`);
+        }
     }, [navigate, sampleCreationURL]);
 
     const sampleOptions = [DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION];

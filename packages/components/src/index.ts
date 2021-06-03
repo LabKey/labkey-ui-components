@@ -82,7 +82,7 @@ import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
 import { InsufficientPermissionsPage } from './internal/components/permissions/InsufficientPermissionsPage';
 import { BasePermissionsCheckPage } from './internal/components/permissions/BasePermissionsCheckPage';
-import { APPLICATION_SECURITY_ROLES } from './internal/components/permissions/constants';
+import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from './internal/components/permissions/constants';
 import { NotFound } from './internal/components/base/NotFound';
 import { Page } from './internal/components/base/Page';
 import { LoadingPage } from './internal/components/base/LoadingPage';
@@ -735,6 +735,7 @@ export {
     SiteUsersGridPanel,
     InsufficientPermissionsPage,
     APPLICATION_SECURITY_ROLES,
+    SITE_SECURITY_ROLES,
     BasePermissionsCheckPage,
     RequiresPermission,
     hasAllPermissions,

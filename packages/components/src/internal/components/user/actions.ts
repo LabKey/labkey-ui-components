@@ -4,7 +4,7 @@ import { Ajax, PermissionRoles, PermissionTypes, Utils } from '@labkey/api';
 
 import { buildURL, caseInsensitive, hasAllPermissions, QueryGridModel, SchemaQuery, User } from '../../..';
 
-import { APPLICATION_SECURITY_ROLES } from '../permissions/constants';
+import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
 
 import { processRequest } from '../../query/api';
 
@@ -54,12 +54,10 @@ export function getUserPermissionsDisplay(user: User): string[] {
 
 export function getUserRoleDisplay(user: User): string {
     if (user.permissionsList.contains(PermissionTypes.ApplicationAdmin)) {
-        return 'Administrator';
+        return SITE_SECURITY_ROLES.get(PermissionRoles.ApplicationAdmin);
     }
 
     if (user.permissionsList.contains(PermissionTypes.Admin)) {
-        // TODO use the following when Folder Admin added:
-        // return APPLICATION_SECURITY_ROLES.get(PermissionRoles.FolderAdmin);
         return 'Administrator';
     }
 

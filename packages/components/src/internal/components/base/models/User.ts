@@ -92,6 +92,10 @@ export class User extends Record(defaultUser) implements IUserProps {
     isAppAdmin(): boolean {
         return hasAllPermissions(this, [PermissionTypes.ApplicationAdmin], false);
     }
+
+    hasAddUsersPermission(): boolean {
+        return hasAllPermissions(this, ['org.labkey.api.security.permissions.AddUserPermission'], false);
+    }
 }
 
 /**

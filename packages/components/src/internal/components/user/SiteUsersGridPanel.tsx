@@ -17,6 +17,7 @@ import {
     SecurityRole,
     SelectionMenuItem,
     SCHEMAS,
+    User,
 } from '../../..';
 import { QueryGridPanel } from '../QueryGridPanel';
 
@@ -45,18 +46,18 @@ const OMITTED_COLUMNS = List([
 ]);
 
 interface Props {
+    user: User;
     onCreateComplete: (response: any, role: string) => any;
     onUsersStateChangeComplete: (response: any) => any;
-
     policy: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
+    showDetailsPanel?: boolean;
 
     // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
     // note that the createNewUser action will not use this value but it will be passed back to the onCreateComplete
     newUserRoleOptions?: any[];
 
-    // option to disable the delete and reset password UI pieces for this component
-    allowDelete?: boolean;
+    // option to disable the reset password UI pieces for this component
     allowResetPassword?: boolean;
 }
 
@@ -69,7 +70,7 @@ interface State {
 
 export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     static defaultProps = {
-        allowDelete: true,
+        showDetailsPanel: true,
         allowResetPassword: true,
     };
 
@@ -82,7 +83,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                 // if the usersView param has changed, set state to trigger re-render with proper QueryGridModel
                 const usersView = this.getUsersView(ActionURL.getParameters(location.hash).usersView);
                 if (this.state.usersView !== usersView) {
-                    this.setState(state => ({
+                    this.setState(() => ({
                         usersView,
                         selectedUserId: undefined, // clear selected user anytime we change views
                     }));
@@ -118,6 +119,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     }
 
     getUsersModel(): QueryGridModel {
+        const { user } = this.props;
         const { usersView } = this.state;
         const gridId = 'user-management-users-' + usersView;
         let baseFilters = List<Filter.IFilter>([Filter.create('active', usersView === 'active')]);
@@ -127,7 +129,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         }
 
         const model = getStateQueryGridModel(gridId, SCHEMAS.CORE_TABLES.USERS, {
-            containerPath: '/',
+            containerPath: user.hasManageUsersPermission() ? '/' : undefined, // use root container for app admins to get all site users
             omittedColumns: OMITTED_COLUMNS,
             baseFilters,
             bindURL: true,
@@ -137,11 +139,11 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         return getQueryGridModel(model.getId()) || model;
     }
 
-    toggleViewActive = (viewName: string) => {
+    toggleViewActive = (viewName: string): void => {
         replaceParameter(getLocation(), 'usersView', viewName);
     };
 
-    toggleDialog = (name: string, requiresSelection = false) => {
+    toggleDialog = (name: string, requiresSelection = false): void => {
         if (requiresSelection && this.getUsersModel().selectedIds.size === 0) {
             this.setState(() => ({ showDialog: undefined }));
         } else {
@@ -149,13 +151,13 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         }
     };
 
-    onCreateComplete = (response: any, role: string) => {
+    onCreateComplete = (response: any, role: string): void => {
         this.toggleDialog(undefined); // close dialog
         this.onRowSelectionChange(this.getUsersModel(), undefined, false); // clear selected user details
         this.props.onCreateComplete(response, role);
     };
 
-    onUsersStateChangeComplete = (response: any, resetSelection = true) => {
+    onUsersStateChangeComplete = (response: any, resetSelection = true): void => {
         this.toggleDialog(undefined); // close dialog
         if (resetSelection) {
             this.onRowSelectionChange(this.getUsersModel(), undefined, false); // clear selected user details
@@ -164,7 +166,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         this.props.onUsersStateChangeComplete(response);
     };
 
-    onRowSelectionChange = (model, row, checked) => {
+    onRowSelectionChange = (model, row, checked): void => {
         let selectedUserId;
 
         if (checked) {
@@ -180,7 +182,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         this.updateSelectedUserId(selectedUserId);
     };
 
-    updateSelectedUserId(selectedUserId: number) {
+    updateSelectedUserId(selectedUserId: number): void {
         if (this.state.selectedUserId !== selectedUserId) {
             this.setState(() => ({ selectedUserId }));
         }
@@ -191,7 +193,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         return selectedIds.size > 0 ? parseInt(selectedIds.last()) : undefined;
     }
 
-    setLastSelectedId() {
+    setLastSelectedId(): void {
         const model = this.getUsersModel();
 
         // if the model has already loaded selections, we can use that to reselect the last user
@@ -215,15 +217,18 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     }
 
     renderButtons = () => {
+        const { user } = this.props;
         const { usersView } = this.state;
 
         return (
             <>
-                <Button bsStyle="success" onClick={() => this.toggleDialog('create')}>
-                    Create
-                </Button>
+                {user.hasAddUsersPermission() && (
+                    <Button bsStyle="success" onClick={() => this.toggleDialog('create')}>
+                        Create
+                    </Button>
+                )}
                 <ManageDropdownButton id="users-manage-btn">
-                    {usersView === 'active' && (
+                    {user.hasManageUsersPermission() && usersView === 'active' && (
                         <SelectionMenuItem
                             id="deactivate-users-menu-item"
                             text="Deactivate Users"
@@ -232,7 +237,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                             nounPlural="users"
                         />
                     )}
-                    {this.props.allowDelete && (
+                    {user.hasManageUsersPermission() && (
                         <SelectionMenuItem
                             id="delete-users-menu-item"
                             text="Delete Users"
@@ -241,7 +246,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                             nounPlural="users"
                         />
                     )}
-                    {usersView === 'inactive' && (
+                    {user.hasManageUsersPermission() && usersView === 'inactive' && (
                         <SelectionMenuItem
                             id="reactivate-users-menu-item"
                             text="Reactivate Users"
@@ -271,13 +276,13 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { newUserRoleOptions, allowDelete } = this.props;
+        const { newUserRoleOptions, user, showDetailsPanel } = this.props;
         const { selectedUserId, showDialog, usersView } = this.state;
 
         return (
             <>
                 <Row>
-                    <Col xs={12} md={8}>
+                    <Col xs={12} md={(showDetailsPanel ? 8 : 12)}>
                         <QueryGridPanel
                             header={capitalizeFirstChar(usersView) + ' Users'}
                             buttons={this.renderButtons}
@@ -286,21 +291,23 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                             model={this.getUsersModel()}
                         />
                     </Col>
-                    <Col xs={12} md={4}>
-                        <UserDetailsPanel
-                            {...this.props}
-                            userId={selectedUserId}
-                            onUsersStateChangeComplete={this.onUsersStateChangeComplete}
-                        />
-                    </Col>
+                    {showDetailsPanel && (
+                        <Col xs={12} md={4}>
+                            <UserDetailsPanel
+                                {...this.props}
+                                userId={selectedUserId}
+                                onUsersStateChangeComplete={this.onUsersStateChangeComplete}
+                            />
+                        </Col>
+                    )}
                 </Row>
                 <CreateUsersModal
-                    show={showDialog === 'create'}
+                    show={user.hasAddUsersPermission() && showDialog === 'create'}
                     roleOptions={newUserRoleOptions}
                     onComplete={this.onCreateComplete}
                     onCancel={() => this.toggleDialog(undefined)}
                 />
-                {(showDialog === 'reactivate' || showDialog === 'deactivate') && (
+                {user.hasManageUsersPermission() && (showDialog === 'reactivate' || showDialog === 'deactivate') && (
                     <UserActivateChangeConfirmModal
                         userIds={getSelectedUserIds(this.getUsersModel())}
                         reactivate={showDialog === 'reactivate'}
@@ -308,7 +315,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                         onCancel={() => this.toggleDialog(undefined)}
                     />
                 )}
-                {allowDelete && showDialog === 'delete' && (
+                {user.hasManageUsersPermission() && showDialog === 'delete' && (
                     <UserDeleteConfirmModal
                         userIds={getSelectedUserIds(this.getUsersModel())}
                         onComplete={this.onUsersStateChangeComplete}

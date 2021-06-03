@@ -234,9 +234,7 @@ module.exports = {
             '@labkey/workflow-scss': workflowPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
         },
     },
-    outputPath: function(dir) {
-        return path.resolve(dir, '../resources/web/' + lkModule + '/gen');
-    },
+    outputPath: path.resolve('./resources/web/' + lkModule + '/gen'),
     processEntries: function(entryPoints) {
         return entryPoints.apps.reduce((entries, app) => {
             entries[app.name] = app.path + '/app.tsx';

@@ -8,27 +8,20 @@ const constants = require('./constants');
 
 module.exports = {
     context: constants.context,
-
     mode: 'development',
-
     devtool: 'eval',
-
     entry: constants.processEntries(entryPoints),
-
     output: {
-        path: constants.outputPath(__dirname),
+        path: constants.outputPath,
         publicPath: './', // allows context path to resolve in both js/css
         filename: '[name].js'
     },
-
     module: {
         rules: constants.loaders.TYPESCRIPT.concat(constants.loaders.STYLE).concat(constants.loaders.FILES),
     },
-
     resolve: {
         alias: constants.aliases.LABKEY_PACKAGES,
         extensions: constants.extensions.TYPESCRIPT
     },
-
     plugins: constants.processPlugins(entryPoints),
 };

@@ -176,7 +176,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
                 </Modal.Header>
                 <Modal.Body>
                     {this.renderForm()}
-                    <Alert style={{ marginTop: '10px' }}>{error}</Alert>
+                    {error && <Alert style={{ marginTop: '10px' }}>{error}</Alert>}
                 </Modal.Body>
                 <Modal.Footer>{this.renderButtons()}</Modal.Footer>
             </Modal>

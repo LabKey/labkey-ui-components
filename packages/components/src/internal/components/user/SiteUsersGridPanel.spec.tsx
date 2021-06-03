@@ -21,7 +21,7 @@ import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/ac
 import { initQueryGridState } from '../../global';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
-
+import { TEST_USER_APP_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../../test/data/users';
 import { SiteUsersGridPanel } from './SiteUsersGridPanel';
 
 const POLICY = SecurityPolicy.create(policyJSON);
@@ -36,6 +36,7 @@ describe('<SiteUsersGridPanel/>', () => {
     test('active users view', () => {
         const component = (
             <SiteUsersGridPanel
+                user={TEST_USER_APP_ADMIN}
                 onCreateComplete={jest.fn()}
                 onUsersStateChangeComplete={jest.fn()}
                 policy={POLICY}
@@ -59,14 +60,14 @@ describe('<SiteUsersGridPanel/>', () => {
         wrapper.unmount();
     });
 
-    test('without delete', () => {
+    test('without delete or deactivate', () => {
         const component = (
             <SiteUsersGridPanel
+                user={TEST_USER_PROJECT_ADMIN}
                 onCreateComplete={jest.fn()}
                 onUsersStateChangeComplete={jest.fn()}
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
-                allowDelete={false}
             />
         );
 
@@ -77,7 +78,7 @@ describe('<SiteUsersGridPanel/>', () => {
         expect(wrapper.find('.btn-success')).toHaveLength(1);
         expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
         wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
-        expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(1);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Reactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View Inactive Users')).toHaveLength(1);
@@ -89,6 +90,7 @@ describe('<SiteUsersGridPanel/>', () => {
     test('inactive users view', () => {
         const component = (
             <SiteUsersGridPanel
+                user={TEST_USER_APP_ADMIN}
                 onCreateComplete={jest.fn()}
                 onUsersStateChangeComplete={jest.fn()}
                 policy={POLICY}
@@ -117,6 +119,7 @@ describe('<SiteUsersGridPanel/>', () => {
     test('all users view', () => {
         const component = (
             <SiteUsersGridPanel
+                user={TEST_USER_APP_ADMIN}
                 onCreateComplete={jest.fn()}
                 onUsersStateChangeComplete={jest.fn()}
                 policy={POLICY}

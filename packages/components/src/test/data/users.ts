@@ -130,6 +130,35 @@ export const TEST_USER_FOLDER_ADMIN = new User({
     ]),
 });
 
+export const TEST_USER_PROJECT_ADMIN = new User({
+    id: 1005,
+    canDelete: true,
+    canDeleteOwn: true,
+    canInsert: true,
+    canUpdate: true,
+    canUpdateOwn: true,
+    displayName: 'FolderAdminDisplayName',
+    isAdmin: true,
+    isAnalyst: true,
+    isDeveloper: true,
+    isGuest: false,
+    isRootAdmin: false,
+    isSignedIn: true,
+    isSystemAdmin: false,
+    isTrusted: true,
+    permissionsList: List<string>([
+        PermissionTypes.Delete,
+        PermissionTypes.Read,
+        PermissionTypes.DesignDataClass,
+        PermissionTypes.DesignSampleSet,
+        PermissionTypes.DesignAssay,
+        PermissionTypes.Insert,
+        PermissionTypes.Update,
+        PermissionTypes.Admin,
+        'org.labkey.api.security.permissions.AddUserPermission',
+    ]),
+});
+
 export const TEST_USER_APP_ADMIN = new User({
     id: 1005,
     canDelete: true,
@@ -157,5 +186,6 @@ export const TEST_USER_APP_ADMIN = new User({
         PermissionTypes.Admin,
         PermissionTypes.UserManagement,
         PermissionTypes.ApplicationAdmin,
+        'org.labkey.api.security.permissions.AddUserPermission',
     ]),
 });

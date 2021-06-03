@@ -48,7 +48,7 @@ describe('User actions', () => {
     });
 
     test('getUserPermissionsDisplay app admin', () => {
-        const displayStrs = getUserPermissionsDisplay(TEST_USER_FOLDER_ADMIN);
+        const displayStrs = getUserPermissionsDisplay(TEST_USER_APP_ADMIN);
         expect(displayStrs.join(', ')).toBe('Administrator');
     });
 
@@ -67,6 +67,6 @@ describe('User actions', () => {
         expect(getUserRoleDisplay(TEST_USER_EDITOR)).toBe('Editor');
         expect(getUserRoleDisplay(TEST_USER_ASSAY_DESIGNER)).toBe('Reader');
         expect(getUserRoleDisplay(TEST_USER_FOLDER_ADMIN)).toBe('Administrator');
-        expect(getUserRoleDisplay(TEST_USER_APP_ADMIN)).toBe('Administrator');
+        expect(getUserRoleDisplay(TEST_USER_APP_ADMIN)).toBe('Application Administrator');
     });
 });

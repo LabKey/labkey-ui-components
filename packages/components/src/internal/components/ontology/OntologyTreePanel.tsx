@@ -122,7 +122,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
 };
 
 const getTreeNodeForPath = function (fileTree, path: string): any {
-    return fileTree.getDataNode(path, fileTree.state.data);
+    return fileTree?.getDataNode(path, fileTree.state.data);
 };
 
 const toggleParentPaths = function (

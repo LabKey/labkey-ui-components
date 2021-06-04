@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Fixed OntologyLookupOptions NO-OP updates marking fields as dirty
 * Add an initial concept for OntologyBrowserModal
 
+### version 2.41.1
+*Released*: 3 June 2021
+* Fix FileSizeLimitProps export
+
 ### version 2.41.0
 *Released*: 2 June 2021
 * Issue 43131: Files added to Sample Types show a path to "sampleset"

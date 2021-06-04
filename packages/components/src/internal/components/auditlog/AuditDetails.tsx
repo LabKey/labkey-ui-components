@@ -5,9 +5,9 @@
 import React, { Component, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Row, Col } from 'react-bootstrap';
-import { Security, User as IUser } from '@labkey/api';
+import { User as IUser } from '@labkey/api';
 
-import { AppURL, capitalizeFirstChar, Grid, GridColumn, LoadingSpinner, User } from '../../..';
+import { AppURL, capitalizeFirstChar, getUsersWithPermissions, Grid, GridColumn, LoadingSpinner, User } from '../../..';
 
 import { AuditDetailsModel } from './models';
 import { getEventDataValueDisplay } from './utils';
@@ -63,18 +63,14 @@ export class AuditDetails extends Component<Props, State> {
         if (!rowId) return;
 
         if (hasUserField) {
-            Security.getUsers({
-                active: false,
-                containerPath: user.isSystemAdmin ? '/' : undefined,
-                allMembers: true,
-                success: data => {
-                    this.setState({ users: List<IUser>(data.users) });
-                },
-                failure: () => {
+            getUsersWithPermissions()
+                .then(users => {
+                    this.setState({ users });
+                })
+                .catch(() => {
                     console.error('Unable to retrieve user data for display.');
                     this.setState(() => ({ users: List<IUser>() }));
-                },
-            });
+                });
         }
     };
 

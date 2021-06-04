@@ -3,14 +3,19 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-const lkModule = process.env.LK_MODULE;
-const lkModuleContainer = process.env.LK_MODULE_CONTAINER;
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-// Conditionalize the path to use for the @labkey packages based on if the user wants to LINK their labkey-ui-components repo.
+const FREEZER_MANAGER_DIRS = ['inventory', 'packages', 'freezermanager', 'src'];
+const WORKFLOW_DIRS = ['sampleManagement', 'packages', 'workflow', 'src'];
+const cwd = path.resolve('./').split(path.sep);
+const lkModule = cwd[cwd.length - 1];
+
+// Default to the @labkey packages in the node_moules directory.
+// If LINK is set we configure the paths of @labkey modules to point to the source files (see below), which enables
+// hot module reload to work across packages.
 // NOTE: the LABKEY_UI_COMPONENTS_HOME environment variable must be set for this to work.
 let labkeyUIComponentsPath = path.resolve('./node_modules/@labkey/components');
 let freezerManagerPath = path.resolve('./node_modules/@labkey/freezermanager');
@@ -23,21 +28,14 @@ if (process.env.LINK) {
     }
 
     labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + '/packages/components/src';
+    // lastIndexOf just in case someone is weird and has their LKS deployment under a directory named modules.
+    const lkModulesPath = cwd.slice(0, cwd.lastIndexOf('modules') + 1);
+    freezerManagerPath = lkModulesPath.concat(FREEZER_MANAGER_DIRS).join(path.sep);
+    workflowPath = lkModulesPath.concat(WORKFLOW_DIRS).join(path.sep);
 
-    const freezerManagerRelPath = (lkModuleContainer ? '../../../../../../' : '../../../../../') + 'inventory/packages/freezermanager/src';
-    freezerManagerPath = path.resolve(__dirname, freezerManagerRelPath);
-
-    const workflowRelPath = (lkModuleContainer ? '../../../../../../' : '../../../../../') + 'sampleManagement/packages/workflow/src';
-    workflowPath = path.resolve(__dirname, workflowRelPath);
-}
-if (process.env.npm_package_dependencies__labkey_components) {
-    console.log('Using @labkey/components path: ' + labkeyUIComponentsPath);
-}
-if (process.env.npm_package_dependencies__labkey_freezermanager) {
-    console.log('Using @labkey/freezermanager path: ' + freezerManagerPath);
-}
-if (process.env.npm_package_dependencies__labkey_workflow) {
-    console.log('Using @labkey/workflow path: ' + workflowPath);
+    console.log('Using @labkey/components path:', labkeyUIComponentsPath);
+    console.log('Using @labkey/freezermanager path:', freezerManagerPath);
+    console.log('Using @labkey/workflow path:', workflowPath);
 }
 
 const watchPort = process.env.WATCH_PORT || 3001;
@@ -147,16 +145,15 @@ const TS_CHECKER_DEV_CONFIG = {
 };
 
 module.exports = {
-    labkeyUIComponentsPath: labkeyUIComponentsPath,
-    freezerManagerPath: freezerManagerPath,
-    workflowPath: workflowPath,
-    tsconfigPath: tsconfigPath,
-    watchPort: watchPort,
-    TS_CHECKER_CONFIG: TS_CHECKER_CONFIG,
-    TS_CHECKER_DEV_CONFIG: TS_CHECKER_DEV_CONFIG,
-    context: function(dir) {
-        return path.resolve(dir, '..');
-    },
+    lkModule,
+    labkeyUIComponentsPath,
+    freezerManagerPath,
+    workflowPath,
+    tsconfigPath,
+    watchPort,
+    TS_CHECKER_CONFIG,
+    TS_CHECKER_DEV_CONFIG,
+    context: path.resolve(lkModule, '..'),
     extensions: {
         TYPESCRIPT: [ '.jsx', '.js', '.tsx', '.ts' ]
     },
@@ -237,9 +234,7 @@ module.exports = {
             '@labkey/workflow-scss': workflowPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
         },
     },
-    outputPath: function(dir) {
-        return path.resolve(dir, '../resources/web/' + lkModule + '/gen');
-    },
+    outputPath: path.resolve('./resources/web/' + lkModule + '/gen'),
     processEntries: function(entryPoints) {
         return entryPoints.apps.reduce((entries, app) => {
             entries[app.name] = app.path + '/app.tsx';

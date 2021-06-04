@@ -5,6 +5,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 8958: LKSM Permissions updates for premium vs hosted only servers
 
+### version 2.41.2
+*Released*: 4 June 2021
+* [Issue 43264](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43264) Trim field values
+  entered in grid
+* Fix for change of parentTypeOptions type value from an array to a single value (from https://github.com/LabKey/platform/pull/2310)
+
+### version 2.41.1
+*Released*: 3 June 2021
+* Fix FileSizeLimitProps export
+
 ### version 2.41.0
 *Released*: 2 June 2021
 * Issue 43131: Files added to Sample Types show a path to "sampleset"

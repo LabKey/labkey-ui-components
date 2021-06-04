@@ -1077,7 +1077,7 @@ export class DomainField
         }
 
         if (this.principalConceptCode) {
-            details.push(period + 'Ontology Concept: ' + this.principalConceptDisplay);
+            details.push(period + 'Ontology Concept: ' + (this.principalConceptDisplay ?? this.principalConceptCode));
             period = '. ';
         }
 

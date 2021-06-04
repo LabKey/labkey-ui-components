@@ -16,7 +16,6 @@ export class ConceptModel {
 
     constructor(values?: Partial<ConceptModel>) {
         Object.assign(this, values);
-        this.ontology = this.code?.split(':')?.[0];
     }
 
     getDisplayLabel(): string {

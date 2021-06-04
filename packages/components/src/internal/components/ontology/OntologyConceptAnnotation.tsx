@@ -122,7 +122,7 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
             {showSelectModal && (
                 <OntologyBrowserModal
                     title={title}
-                    initOntologyId={concept.ontology}
+                    initOntologyId={concept?.ontology}
                     onCancel={toggleSelectModal}
                     onApply={onApply}
                     successBsStyle={successBsStyle}

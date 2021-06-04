@@ -576,7 +576,7 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
                     // We may be just trying to update the Display, so only mark as dirty if original field is updated or code is different
                     updatedField: field.updatedField || field.principalConceptCode != concept?.code,
                     principalConceptCode: concept?.code,
-                    principalConceptDisplay: concept?.getDisplayLabel()
+                    principalConceptDisplay: concept?.getDisplayLabel() ?? concept?.code  // Default to code if display text isn't found
                 }) as DomainField;
                 break;
             default:
@@ -996,15 +996,14 @@ export function getOntologyUpdatedFieldName(
     // Check if field name and/or index have changed
     let origFieldIndex = origDomain.findFieldIndexByName(propFieldName);
     let updateFieldIndex = updatedDomain.findFieldIndexByName(propFieldName);
-    if (origFieldIndex === updateFieldIndex)
-        return [false, propFieldName];
+    const originalPropField = origDomain.fields.get(origFieldIndex);
 
     // check for a field removal prior to the ontology lookup field
     const propFieldRemoved = removedFieldIndexes
         ? removedFieldIndexes.some(
               removedField => removedField.originalIndex === origFieldIndex && removedField.newIndex === undefined
           )
-        : removedFieldIndexes;
+        : !!removedFieldIndexes;
 
     if (removedFieldIndexes) {
         removedFieldIndexes.sort((a, b) => a.originalIndex - b.originalIndex);
@@ -1018,5 +1017,9 @@ export function getOntologyUpdatedFieldName(
     }
 
     const updatedPropField = updatedDomain.fields.get(origFieldIndex);
-    return [true, !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined];
+    const fieldChanged = propFieldRemoved
+        || origFieldIndex !== updateFieldIndex
+        || originalPropField.rangeURI !== updatedPropField?.rangeURI;
+
+    return [fieldChanged, !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined];
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { DomainField, DomainFieldLabel } from '../../..';
+import { Alert, DomainField, DomainFieldLabel, LabelHelpTip } from '../../..';
 
 import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 
@@ -19,8 +19,8 @@ const DEFAULT_PROPS = {
     concept: undefined,
 };
 
-const TEST_FIELD = new DomainField({ principalConceptCode: 'code:123', sourceOntology: 'ontSource' });
-const TEST_CONCEPT = new ConceptModel({ code: 'a', label: 'b' });
+const TEST_FIELD = new DomainField({ principalConceptCode: 'code:123',  });
+const TEST_CONCEPT = new ConceptModel({ code: 'a', label: 'b', ontology: 'ontSource' });
 
 describe('OntologyConceptAnnotation', () => {
     function validate(wrapper: ReactWrapper, hasCode: boolean, canRemove = true): void {
@@ -28,8 +28,12 @@ describe('OntologyConceptAnnotation', () => {
         expect(wrapper.find('.domain-annotation-table')).toHaveLength(1);
         expect(wrapper.find('.domain-validation-button')).toHaveLength(2);
         expect(getSelectButton(wrapper).text()).toBe('Select Concept');
-        expect(wrapper.find('.domain-text-label')).toHaveLength(!hasCode ? 1 : 0);
-        expect(wrapper.find('.content')).toHaveLength(hasCode && canRemove ? 2 : 1);
+        expect(wrapper.find('.domain-text-label')).toHaveLength( !hasCode || !canRemove ? 1 : 0);
+        if (!hasCode) {
+            expect(wrapper.find('.domain-text-label').text()).toBe('None Set');
+        }
+
+        expect(wrapper.find('.content')).toHaveLength(hasCode && canRemove ? 3 : 2);
         expect(wrapper.find('.domain-annotation-item')).toHaveLength(hasCode ? 1 : 0);
     }
 
@@ -97,11 +101,12 @@ describe('OntologyConceptAnnotation', () => {
             />
         );
         validate(wrapper, true);
-        expect(wrapper.find(ConceptOverviewTooltip)).toHaveLength(0);
-        wrapper.find('.domain-annotation-item').simulate('click');
-        expect(wrapper.find(ConceptOverviewTooltip)).toHaveLength(1);
-        expect(wrapper.find(ConceptOverviewTooltip).prop('concept')).toBe(TEST_CONCEPT);
-        expect(wrapper.find(ConceptOverviewTooltip).prop('error')).toBe('test error');
+        const tooltip = wrapper.find(ConceptOverviewTooltip);
+        expect(tooltip).toHaveLength(1);
+        expect(tooltip.find(LabelHelpTip)).toHaveLength(0);
+        expect(tooltip.prop('concept')).toBe(TEST_CONCEPT);
+        expect(tooltip.prop('error')).toBe('test error');
+        expect(tooltip.find(Alert).text()).toBe('test error');
         wrapper.unmount();
     });
 });

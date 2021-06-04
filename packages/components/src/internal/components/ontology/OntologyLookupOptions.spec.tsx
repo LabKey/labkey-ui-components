@@ -18,6 +18,7 @@ const DEFAULT_PROPS = {
     label: 'Test',
     lockType: undefined,
     onChange: jest.fn(),
+    onMultiChange: jest.fn(),
 };
 
 const field1 = DomainField.create({

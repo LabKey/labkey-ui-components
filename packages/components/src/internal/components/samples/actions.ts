@@ -27,6 +27,7 @@ import {
     SchemaQuery,
     selectRows,
     resolveErrorMessage,
+    getSelectedData,
 } from '../../..';
 
 import { GroupedSampleFields } from './models';
@@ -327,3 +328,33 @@ export function getGroupedSampleDisplayColumns(
         editColumns,
     };
 }
+
+export function getSelectedItemSamples(
+    selectedItemIds: string[]
+): Promise<number[]> {
+    return new Promise((resolve, reject) => {
+        getSelectedData(
+            "Inventory",
+            "Item",
+            selectedItemIds,
+            "RowId, MaterialId",
+            undefined,
+            undefined,
+            undefined
+        )
+            .then(response => {
+                const {data} = response;
+                const sampleIds = [];
+                const rowIds = [];
+                data.forEach(row => {
+                    sampleIds.push(row.getIn(['MaterialId', 'value']));
+                });
+                resolve(sampleIds);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(reason);
+            });
+    });
+}
+

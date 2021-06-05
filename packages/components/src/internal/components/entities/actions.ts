@@ -24,6 +24,7 @@ import {
     IParentOption,
 } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
+import { getSelectedItemSamples } from "../samples/actions";
 
 export interface DeleteConfirmationData {
     canDelete: any[];
@@ -100,6 +101,72 @@ function getSelectedParents(
     });
 }
 
+function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boolean): Promise<List<EntityParentType>> {
+    return new Promise((resolve, reject) => {
+        return getSelectedItemSamples(itemIds)
+            .then(sampleIds => {
+                return selectRows({
+                    schemaName: "exp",
+                    queryName: "materials",
+                    columns: 'LSID,Name,RowId,SampleSet',
+                    filterArray: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+                })
+                    .then(response => {
+                        resolve(resolveSampleParentType(response, isAliquotParent));
+                    })
+                    .catch(reason => {
+                        console.error("There was a problem getting the selected parents' data", reason);
+                        reject(reason);
+                    });
+            })
+            .catch(reason => {
+                console.error("There was a problem getting the selected parents' data", reason);
+                reject(reason);
+            });
+
+    });
+}
+
+function resolveSampleParentType(
+    response: any,
+    isAliquotParent?: boolean
+): List<EntityParentType> {
+    const { key, models, orderedModels } = response;
+    const rows = fromJS(models[key]);
+
+    let groups = {};
+
+    // The transformation done here makes the entities compatible with the editable grid
+    orderedModels[key].forEach(id => {
+        const row = rows.get(id);
+        const displayValue = row.getIn(['Name', 'value']);
+        const sampleType = row.getIn(['SampleSet', 'displayValue']);
+        const value = row.getIn(['RowId', 'value']);
+
+        if (!groups[sampleType])
+            groups[sampleType] = [];
+
+        groups[sampleType].push({
+            displayValue: displayValue,
+            value: value,
+        })
+    });
+
+    let results = [], index = 1;
+    for (let [sampleType, data] of Object.entries(groups)) {
+        results.push(EntityParentType.create({
+            index,
+            schema: 'samples',
+            query: sampleType?.toLowerCase(),
+            value: List<DisplayObject>(data),
+            isAliquotParent,
+        }))
+        index++;
+    }
+
+    return List<EntityParentType>(results);
+}
+
 /**
  * We have either an initialParents array, and determine the schemaQuery from the first id in that list
  * or a selection key and determine the schema query from parsing the selection key.  In any case, this
@@ -107,11 +174,13 @@ function getSelectedParents(
  * @param initialParents
  * @param selectionKey
  * @param creationType
+ * @param isItemSamples
  */
 function initParents(
     initialParents: string[],
     selectionKey: string,
-    creationType?: SampleCreationType
+    creationType?: SampleCreationType,
+    isItemSamples?: boolean,
 ): Promise<List<EntityParentType>> {
     const isAliquotParent = creationType === SampleCreationType.Aliquots;
     return new Promise((resolve, reject) => {
@@ -130,6 +199,11 @@ function initParents(
             } else {
                 return getSelected(selectionKey)
                     .then(selectionResponse => {
+                        if (isItemSamples) {
+                            return getSelectedSampleParentsFromItems(selectionResponse.selected, isAliquotParent)
+                                .then(response => resolve(response))
+                                .catch(reason => reject(reason));
+                        }
                         return getSelectedParents(
                             schemaQuery,
                             [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)],
@@ -225,7 +299,8 @@ export function extractEntityTypeOptionFromRow(
 export function getChosenParentData(
     model: EntityIdCreationModel,
     parentEntityDataTypes: Map<string, EntityDataType>,
-    allowParents: boolean
+    allowParents: boolean,
+    isItemSamples?: boolean
 ): Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
         const entityParents = EntityIdCreationModel.getEmptyEntityParents(
@@ -237,28 +312,35 @@ export function getChosenParentData(
 
         if (allowParents) {
             const parentSchemaNames = parentEntityDataTypes.keySeq();
-            initParents(model.originalParents, model.selectionKey, model.creationType)
+            initParents(model.originalParents, model.selectionKey, model.creationType, isItemSamples)
                 .then(chosenParents => {
                     // if we have an initial parent, we want to start with a row in the grid (entityCount = 1) otherwise we start with none
-                    const parentRep = chosenParents.find(
-                        parent => parent.value !== undefined && parentSchemaNames.contains(parent.schema)
-                    );
+                    let totalParentValueCount = 0, isParentTypeOnly = false, parentEntityDataType;
+                    chosenParents.forEach(chosenParent => {
+                        if  (chosenParent.value !== undefined && parentSchemaNames.contains(chosenParent.schema)) {
+                            totalParentValueCount += chosenParent.value.size;
+                            isParentTypeOnly = chosenParent.isParentTypeOnly;
+                            parentEntityDataType = parentEntityDataTypes.get(chosenParent.schema).typeListingSchemaQuery.queryName;
+                        }
+                    });
+
+
                     const numPerParent = model.numPerParent ?? 1;
-                    const validEntityCount = parentRep
+                    const validEntityCount = totalParentValueCount
                         ? model.creationType === SampleCreationType.PooledSamples
                             ? numPerParent
-                            : parentRep.value.size * numPerParent
+                            : totalParentValueCount * numPerParent
                         : 0;
 
                     if (
                         validEntityCount >= 1 ||
-                        parentRep?.isParentTypeOnly ||
+                        isParentTypeOnly ||
                         model.creationType === SampleCreationType.Aliquots
                     ) {
                         resolve({
                             entityCount: validEntityCount,
                             entityParents: entityParents.set(
-                                parentEntityDataTypes.get(parentRep.schema).typeListingSchemaQuery.queryName,
+                                parentEntityDataType,
                                 chosenParents
                             ),
                         });
@@ -329,19 +411,21 @@ export function getEntityTypeOptions(entityDataType: EntityDataType): Promise<Ma
  * @param parentSchemaQueries map of the possible parents to the entityDataType
  * @param targetQueryName the name of the listing schema query that represents the initial target for creation.
  * @param allowParents are parents of this entity type allowed or not
+ * @param isItemSamples use the selectionKey from inventory.items table to query sample parents
  */
 export function getEntityTypeData(
     model: EntityIdCreationModel,
     entityDataType: EntityDataType,
     parentSchemaQueries: Map<string, EntityDataType>,
     targetQueryName: string,
-    allowParents: boolean
+    allowParents: boolean,
+    isItemSamples?: boolean
 ): Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
         const promises: Array<Promise<any>> = [
             getEntityTypeOptions(entityDataType),
             // get all the parent schemaQuery data
-            getChosenParentData(model, parentSchemaQueries, allowParents),
+            getChosenParentData(model, parentSchemaQueries, allowParents, isItemSamples),
             ...parentSchemaQueries.map(getEntityTypeOptions).toArray(),
         ];
 

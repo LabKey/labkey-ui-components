@@ -438,6 +438,7 @@ import {
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
 } from './internal/components/samples/models';
+import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
@@ -795,6 +796,7 @@ export {
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
     ALIQUOT_CREATION,
+    SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

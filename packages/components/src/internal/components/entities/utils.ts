@@ -52,8 +52,7 @@ export function getInitialParentChoices(
         if (inputs && inputTypes) {
             // group the inputs by parent type so we can show each in its own grid.
             inputTypes.forEach((typeMap, index) => {
-                // I'm not sure when the type could have more than one value here, but 'value' is an array
-                const typeValue = typeMap['value']?.[0];
+                const typeValue = typeMap.value;
                 const typeOption = parentTypeOptions.find(
                     option => option[parentDataType.inputTypeValueField] === typeValue
                 );

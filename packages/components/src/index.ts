@@ -137,6 +137,7 @@ import { EditorModel, getStateModelId, getStateQueryGridModel } from './internal
 import {
     clearSelected,
     createQueryGridModelFilteredBySample,
+    getSnapshotSelections,
     getSelected,
     getSelectedData,
     getSelection,
@@ -259,10 +260,10 @@ import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
     fetchSamples,
-    getGroupedSampleDisplayColumns,
     getSampleSet,
     getSampleTypeDetails,
     loadSelectedSamples,
+    getSelectedItemSamples,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
@@ -633,6 +634,7 @@ export {
     schemaGridInvalidate,
     updateEditorModel,
     // grid functions
+    getSnapshotSelections,
     getSelected,
     getSelectedData,
     getSelection,
@@ -774,6 +776,7 @@ export {
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
+    getSelectedItemSamples,
     SampleTypeDataType,
     DataClassDataType,
     ParentEntityRequiredColumns,

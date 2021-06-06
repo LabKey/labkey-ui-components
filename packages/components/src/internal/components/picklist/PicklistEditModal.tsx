@@ -26,10 +26,11 @@ interface Props {
     onCancel: () => void;
     onFinish: (picklist: Picklist) => void;
     showNotification?: boolean;
+    getPicklistURL?: (picklistId: number) => string;
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
-    const {show, onCancel, onFinish, selectionKey, selectedQuantity, sampleIds, picklist, showNotification} = props;
+    const {show, onCancel, onFinish, selectionKey, selectedQuantity, sampleIds, picklist, showNotification, getPicklistURL} = props;
     const [name, setName] = useState<string>(picklist ? picklist.name : '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 
@@ -65,14 +66,18 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         onCancel();
     }, []);
 
+    const quantity = selectedQuantity ? selectedQuantity : sampleIds?.length;
+
     const createSuccessNotification = (picklist: Picklist) => {
+        const picklistUrl = getPicklistURL ? getPicklistURL(picklist.listId ) : AppURL.create(PICKLIST_KEY, picklist.listId).toHref();
+
         createNotification({
             message: () => {
                 return (
                     <>
                         Successfully created "{picklist.name}" with{' '}
-                        {selectedQuantity ? Utils.pluralize(selectedQuantity, 'sample', 'samples') : ' no samples'}.&nbsp;
-                        <a href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>View picklist</a>.
+                        {quantity ? Utils.pluralize(quantity, 'sample', 'samples') : ' no samples'}.&nbsp;
+                        <a href={picklistUrl}>View picklist</a>.
                     </>
                 );
             },

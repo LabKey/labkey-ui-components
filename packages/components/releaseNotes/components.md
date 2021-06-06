@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Added SampleDeleteMenuItem
 * Moved CreateSamplesSubMenu, getMenuItemsForSection from SampleManager
 * Allow EntityInsertPanel to initialize sample parents from inventory items selection
+* Add getSnapshotSelections action util
 
 ### version 2.41.0
 *Released*: 2 June 2021

@@ -17,10 +17,11 @@ interface Props {
     key: string;
     itemText: string;
     user: User;
+    getPicklistURL?: (picklistId: number) => string;
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {
-    const {sampleIds, selectionKey, selectedQuantity, key, itemText, user} = props;
+    const {sampleIds, selectionKey, selectedQuantity, key, itemText, user, getPicklistURL} = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const onFinish = (picklist: Picklist) => {
@@ -52,6 +53,7 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
                 show={showModal}
                 onFinish={onFinish}
                 onCancel={onCancel}
+                getPicklistURL={getPicklistURL}
             />
         </>
     );

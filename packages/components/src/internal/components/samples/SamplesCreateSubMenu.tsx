@@ -87,7 +87,7 @@ export const SamplesCreateSubMenu: FC<SamplesCreateSubMenuProps> = memo((props) 
         if (sampleCreationURL instanceof AppURL)
             navigate(sampleCreationURL.addParams({creationType, numPerParent}));
         else {
-            navigate(sampleCreationURL + `&creationType=${creationType}&numPerParent=${numPerParent}`);
+            window.location.href = (sampleCreationURL + `&creationType=${creationType}&numPerParent=${numPerParent}`);
         }
     }, [navigate, sampleCreationURL]);
 

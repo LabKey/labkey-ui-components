@@ -72,7 +72,8 @@ interface State {
     unlisten: any;
 }
 
-class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
+// exported for jest testing
+export class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
     static defaultProps = {
         showDetailsPanel: true,
         allowResetPassword: true,

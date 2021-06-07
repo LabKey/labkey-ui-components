@@ -1,21 +1,19 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Utils } from '@labkey/api';
-
-import { List } from 'immutable';
 
 import { ConfirmModal, Alert, resolveErrorMessage } from '../../..';
 
 import { deleteUsers } from './actions';
 
 interface Props {
-    userIds: List<number>;
+    userIds: number[];
     onComplete: (response: any) => any;
     onCancel: () => any;
 }
 
 interface State {
     submitting: boolean;
-    error: React.ReactNode;
+    error: ReactNode;
 }
 
 export class UserDeleteConfirmModal extends React.Component<Props, State> {
@@ -28,7 +26,7 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
         };
     }
 
-    onConfirm = () => {
+    onConfirm = (): void => {
         const { userIds, onComplete } = this.props;
 
         this.setState(() => ({ submitting: true }));
@@ -43,10 +41,10 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
             });
     };
 
-    render() {
+    render(): ReactNode {
         const { onCancel, userIds } = this.props;
         const { error, submitting } = this.state;
-        const userCount = userIds.size;
+        const userCount = userIds.length;
 
         return (
             <ConfirmModal

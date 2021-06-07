@@ -1,5 +1,4 @@
-import React from 'react';
-import { List } from 'immutable';
+import React, { ReactNode } from 'react';
 import { Utils } from '@labkey/api';
 
 import { ConfirmModal, Alert, resolveErrorMessage } from '../../..';
@@ -7,7 +6,7 @@ import { ConfirmModal, Alert, resolveErrorMessage } from '../../..';
 import { updateUsersActiveState } from './actions';
 
 interface Props {
-    userIds: List<number>;
+    userIds: number[];
     reactivate: boolean;
     onComplete: (response: any) => any;
     onCancel: () => any;
@@ -28,7 +27,7 @@ export class UserActivateChangeConfirmModal extends React.Component<Props, State
         };
     }
 
-    onConfirm = () => {
+    onConfirm = (): void => {
         const { userIds, reactivate, onComplete } = this.props;
 
         this.setState(() => ({ submitting: true }));
@@ -43,10 +42,10 @@ export class UserActivateChangeConfirmModal extends React.Component<Props, State
             });
     };
 
-    render() {
+    render(): ReactNode {
         const { onCancel, userIds, reactivate } = this.props;
         const { error, submitting } = this.state;
-        const userCount = userIds.size;
+        const userCount = userIds.length;
         const action = reactivate ? 'Reactivate' : 'Deactivate';
 
         return (

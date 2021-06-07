@@ -2,24 +2,24 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
-import { Button, Row, Col, MenuItem } from 'react-bootstrap';
-import { Filter, ActionURL } from '@labkey/api';
+import { Button, Col, MenuItem, Row } from 'react-bootstrap';
+import { ActionURL, Filter } from '@labkey/api';
 
 import {
     capitalizeFirstChar,
-    getQueryGridModel,
-    getStateQueryGridModel,
+    GridPanel,
+    isLoading,
+    LoadingSpinner,
+    LoadingState,
     ManageDropdownButton,
-    QueryGridModel,
+    SCHEMAS,
     SecurityPolicy,
     SecurityRole,
     SelectionMenuItem,
-    SCHEMAS,
     User,
 } from '../../..';
-import { QueryGridPanel } from '../QueryGridPanel';
 
 import { getLocation, getRouteFromLocationHash, replaceParameter } from '../../util/URL';
 import { getBrowserHistory } from '../../util/global';
@@ -31,8 +31,10 @@ import { getSelectedUserIds } from './actions';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserDetailsPanel } from './UserDetailsPanel';
 import { CreateUsersModal } from './CreateUsersModal';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-const OMITTED_COLUMNS = List([
+const OMITTED_COLUMNS = [
     'phone',
     'im',
     'mobile',
@@ -43,9 +45,9 @@ const OMITTED_COLUMNS = List([
     'lastName',
     'description',
     'expirationDate',
-]);
+];
 
-interface Props {
+interface OwnProps {
     user: User;
     onCreateComplete: (response: any, role: string) => any;
     onUsersStateChangeComplete: (response: any) => any;
@@ -61,6 +63,8 @@ interface Props {
     allowResetPassword?: boolean;
 }
 
+type Props = OwnProps & InjectedQueryModels;
+
 interface State {
     usersView: string; // valid options are 'active', 'inactive', 'all'
     showDialog: string; // valid options are 'create', 'deactivate', 'reactivate', 'delete', undefined
@@ -68,7 +72,7 @@ interface State {
     unlisten: any;
 }
 
-export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
+class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
     static defaultProps = {
         showDetailsPanel: true,
         allowResetPassword: true,
@@ -101,10 +105,16 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
 
     componentDidMount() {
         this.setLastSelectedId();
+        this.initQueryModel(this.state.usersView);
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>) {
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
         this.setLastSelectedId();
+        if (this.state.usersView !== prevState.usersView) {
+            this.initQueryModel(this.state.usersView);
+        } else if (this.props.policy !== prevProps.policy) {
+            this.reloadUsersModel();
+        }
     }
 
     componentWillUnmount() {
@@ -114,37 +124,46 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         }
     }
 
+    initQueryModel(usersView: string) {
+        const { actions, user } = this.props;
+        const baseFilters = usersView === 'all' ? [] : [Filter.create('active', usersView === 'active')];
+
+        actions.addModel(
+            {
+                id: this.getUsersModelId(),
+                containerPath: user.hasManageUsersPermission() ? '/' : undefined, // use root container for app admins to get all site users
+                schemaQuery: SCHEMAS.CORE_TABLES.USERS,
+                baseFilters,
+                omittedColumns: OMITTED_COLUMNS,
+                bindURL: true,
+            },
+            true,
+            true
+        );
+    }
+
     getUsersView(paramVal: string): string {
         return paramVal === 'inactive' || paramVal === 'all' ? paramVal : 'active'; // default to view active users
     }
 
-    getUsersModel(): QueryGridModel {
-        const { user } = this.props;
-        const { usersView } = this.state;
-        const gridId = 'user-management-users-' + usersView;
-        let baseFilters = List<Filter.IFilter>([Filter.create('active', usersView === 'active')]);
+    getUsersModelId(): string {
+        return 'user-management-users-' + this.state.usersView;
+    }
 
-        if (usersView === 'all') {
-            baseFilters = List<Filter.IFilter>();
-        }
-
-        const model = getStateQueryGridModel(gridId, SCHEMAS.CORE_TABLES.USERS, {
-            containerPath: user.hasManageUsersPermission() ? '/' : undefined, // use root container for app admins to get all site users
-            omittedColumns: OMITTED_COLUMNS,
-            baseFilters,
-            bindURL: true,
-            isPaged: true,
-        });
-
-        return getQueryGridModel(model.getId()) || model;
+    getUsersModel(): QueryModel {
+        return this.props.queryModels[this.getUsersModelId()];
     }
 
     toggleViewActive = (viewName: string): void => {
         replaceParameter(getLocation(), 'usersView', viewName);
     };
 
+    closeDialog = (): void => {
+        this.toggleDialog(undefined);
+    };
+
     toggleDialog = (name: string, requiresSelection = false): void => {
-        if (requiresSelection && this.getUsersModel().selectedIds.size === 0) {
+        if (requiresSelection && !this.getUsersModel().hasSelections) {
             this.setState(() => ({ showDialog: undefined }));
         } else {
             this.setState(() => ({ showDialog: name }));
@@ -152,21 +171,26 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     };
 
     onCreateComplete = (response: any, role: string): void => {
-        this.toggleDialog(undefined); // close dialog
+        this.closeDialog();
         this.onRowSelectionChange(this.getUsersModel(), undefined, false); // clear selected user details
         this.props.onCreateComplete(response, role);
+        this.reloadUsersModel();
     };
 
+    reloadUsersModel(): void {
+        this.props.actions.loadModel(this.getUsersModelId(), true);
+    }
+
     onUsersStateChangeComplete = (response: any, resetSelection = true): void => {
-        this.toggleDialog(undefined); // close dialog
+        this.closeDialog();
         if (resetSelection) {
             this.onRowSelectionChange(this.getUsersModel(), undefined, false); // clear selected user details
         }
-
         this.props.onUsersStateChangeComplete(response);
+        this.reloadUsersModel();
     };
 
-    onRowSelectionChange = (model, row, checked): void => {
+    onRowSelectionChange = (model: QueryModel, row, checked): void => {
         let selectedUserId;
 
         if (checked) {
@@ -174,7 +198,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
             // else use the last userId in the selected array
             if (row) {
                 selectedUserId = row.getIn(['UserId', 'value']);
-            } else if (model.selectedIds.size > 0) {
+            } else if (model.hasSelections) {
                 selectedUserId = this.getLastSelectedId();
             }
         }
@@ -189,23 +213,24 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     }
 
     getLastSelectedId(): number {
-        const selectedIds = this.getUsersModel().selectedIds;
-        return selectedIds.size > 0 ? parseInt(selectedIds.last()) : undefined;
+        const selectedIds = this.getUsersModel().selections;
+        return selectedIds.size > 0 ? parseInt(Array.from(selectedIds).pop()) : undefined;
     }
 
     setLastSelectedId(): void {
         const model = this.getUsersModel();
+        if (!model || isLoading(model.selectionsLoadingState)) return;
 
         // if the model has already loaded selections, we can use that to reselect the last user
         // otherwise, query the server for the selection key for this model and use that response (issue 39374)
-        if (model.selectedLoaded) {
+        if (model.selectionsLoadingState === LoadingState.LOADED) {
             this.updateSelectedUserId(this.getLastSelectedId());
         } else {
             getSelected(
-                model.getId(),
-                model.schema,
-                model.query,
-                model.getFilters(),
+                model.id,
+                model.schemaName,
+                model.queryName,
+                List.of(...model.filters),
                 model.containerPath,
                 model.queryParameters
             ).then(response => {
@@ -219,9 +244,10 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     renderButtons = () => {
         const { user } = this.props;
         const { usersView } = this.state;
+        const model = this.getUsersModel();
 
         return (
-            <>
+            <div className="btn-group">
                 {user.hasAddUsersPermission() && (
                     <Button bsStyle="success" onClick={() => this.toggleDialog('create')}>
                         Create
@@ -233,7 +259,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                             id="deactivate-users-menu-item"
                             text="Deactivate Users"
                             onClick={() => this.toggleDialog('deactivate', true)}
-                            model={this.getUsersModel()}
+                            queryModel={model}
                             nounPlural="users"
                         />
                     )}
@@ -242,7 +268,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                             id="delete-users-menu-item"
                             text="Delete Users"
                             onClick={() => this.toggleDialog('delete', true)}
-                            model={this.getUsersModel()}
+                            queryModel={model}
                             nounPlural="users"
                         />
                     )}
@@ -251,7 +277,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                             id="reactivate-users-menu-item"
                             text="Reactivate Users"
                             onClick={() => this.toggleDialog('reactivate', true)}
-                            model={this.getUsersModel()}
+                            queryModel={model}
                             nounPlural="users"
                         />
                     )}
@@ -271,25 +297,31 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                         </MenuItem>
                     )}
                 </ManageDropdownButton>
-            </>
+            </div>
         );
     };
 
-    render() {
-        const { newUserRoleOptions, user, showDetailsPanel } = this.props;
+    render(): ReactNode {
+        const { newUserRoleOptions, user, showDetailsPanel, actions } = this.props;
         const { selectedUserId, showDialog, usersView } = this.state;
+        const model = this.getUsersModel();
+        const modelLoading = !model || isLoading(model?.rowsLoadingState);
 
         return (
             <>
                 <Row>
-                    <Col xs={12} md={(showDetailsPanel ? 8 : 12)}>
-                        <QueryGridPanel
-                            header={capitalizeFirstChar(usersView) + ' Users'}
-                            buttons={this.renderButtons}
-                            onSelectionChange={this.onRowSelectionChange}
-                            highlightLastSelectedRow={true}
-                            model={this.getUsersModel()}
-                        />
+                    <Col xs={12} md={showDetailsPanel ? 8 : 12}>
+                        {modelLoading && <LoadingSpinner />}
+                        {!modelLoading && (
+                            <GridPanel
+                                actions={actions}
+                                model={model}
+                                loadOnMount={false}
+                                title={capitalizeFirstChar(usersView) + ' Users'}
+                                ButtonsComponent={() => this.renderButtons()}
+                                highlightLastSelectedRow
+                            />
+                        )}
                     </Col>
                     {showDetailsPanel && (
                         <Col xs={12} md={4}>
@@ -305,24 +337,26 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                     show={user.hasAddUsersPermission() && showDialog === 'create'}
                     roleOptions={newUserRoleOptions}
                     onComplete={this.onCreateComplete}
-                    onCancel={() => this.toggleDialog(undefined)}
+                    onCancel={this.closeDialog}
                 />
                 {user.hasManageUsersPermission() && (showDialog === 'reactivate' || showDialog === 'deactivate') && (
                     <UserActivateChangeConfirmModal
-                        userIds={getSelectedUserIds(this.getUsersModel())}
+                        userIds={getSelectedUserIds(model)}
                         reactivate={showDialog === 'reactivate'}
                         onComplete={this.onUsersStateChangeComplete}
-                        onCancel={() => this.toggleDialog(undefined)}
+                        onCancel={this.closeDialog}
                     />
                 )}
                 {user.hasManageUsersPermission() && showDialog === 'delete' && (
                     <UserDeleteConfirmModal
-                        userIds={getSelectedUserIds(this.getUsersModel())}
+                        userIds={getSelectedUserIds(model)}
                         onComplete={this.onUsersStateChangeComplete}
-                        onCancel={() => this.toggleDialog(undefined)}
+                        onCancel={this.closeDialog}
                     />
                 )}
             </>
         );
     }
 }
+
+export const SiteUsersGridPanel = withQueryModels(SiteUsersGridPanelImpl);

@@ -502,15 +502,11 @@ export class QueryGridModel
     }
 
     showImportDataButton(): boolean {
-        const query = this.queryInfo;
-
-        return query && query.showInsertNewButton && query.importUrl && !query.importUrlDisabled;
+        return !!this.queryInfo?.getShowImportDataButton();
     }
 
     showInsertNewButton(): boolean {
-        const query = this.queryInfo;
-
-        return query && query.showInsertNewButton && query.insertUrl && !query.insertUrlDisabled;
+        return !!this.queryInfo?.getShowInsertNewButton();
     }
 
     getDataEdit(): List<Map<string, any>> {

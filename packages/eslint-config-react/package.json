@@ -1,6 +1,6 @@
 {
   "name": "@labkey/eslint-config-react",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "shareable eslint config for typescript and react",
   "main": "index.js",
   "files": [
@@ -13,7 +13,7 @@
   "author": "kevink@labkey.com",
   "license": "Apache-2.0",
   "dependencies": {
-    "@labkey/eslint-config-base": "0.0.8",
-    "eslint-plugin-react": "7.19.0"
+    "@labkey/eslint-config-base": "0.0.9",
+    "eslint-plugin-react": "7.24.0"
   }
 }

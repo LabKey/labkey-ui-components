@@ -161,11 +161,12 @@ interface AddedToPicklistNotificationProps {
     picklist: Picklist;
     numAdded: number;
     numSelected: number;
+    getPicklistURL?: (picklistId: number) => string;
 }
 
 // export for jest testing
 export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> = props => {
-    const { picklist, numAdded, numSelected } = props;
+    const { picklist, numAdded, numSelected, getPicklistURL } = props;
     let numAddedNotification;
     if (numAdded == 0) {
         numAddedNotification = 'No samples added';
@@ -180,10 +181,12 @@ export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> =
         numNotAddedNotification += 'already in the list.';
     }
 
+    const picklistUrl = getPicklistURL ? getPicklistURL(picklist.listId ) : AppURL.create(PICKLIST_KEY, picklist.listId).toHref();
+
     return (
         <>
             {numAddedNotification} to picklist "
-            <a href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>{picklist.name}</a>".
+            <a href={picklistUrl}>{picklist.name}</a>".
             {numNotAddedNotification}
         </>
     );
@@ -208,6 +211,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             selectionKey,
             numSelected,
             sampleIds,
+            getPicklistURL,
         } = props;
         const [search, setSearch] = useState<string>('');
         const [error, setError] = useState<string>(undefined);
@@ -254,6 +258,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                             picklist={activeItem}
                             numAdded={insertResponse.rows.length}
                             numSelected={numSelected}
+                            getPicklistURL={getPicklistURL}
                         />
                     ),
                     alertClass: insertResponse.rows.length === 0 ? 'info' : 'success',
@@ -398,6 +403,7 @@ interface ChoosePicklistModalProps {
     selectionKey?: string;
     numSelected: number;
     sampleIds?: string[];
+    getPicklistURL?: (picklistId: number) => string;
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {

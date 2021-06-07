@@ -11,7 +11,6 @@ module.exports = {
   extends: [
     '@labkey/eslint-config-base',
     'plugin:react/recommended',
-    'prettier/react'
   ],
   plugins: ['react'],
   settings: {

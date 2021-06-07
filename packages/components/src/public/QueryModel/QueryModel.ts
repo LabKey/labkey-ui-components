@@ -776,11 +776,11 @@ export class QueryModel {
     }
 
     get showImportDataButton(): boolean {
-        return this.queryInfo?.getShowImportDataButton();
+        return !!this.queryInfo?.getShowImportDataButton();
     }
 
     get showInsertNewButton(): boolean {
-        return this.queryInfo?.getShowInsertNewButton();
+        return !!this.queryInfo?.getShowInsertNewButton();
     }
 
     get isFiltered(): boolean {

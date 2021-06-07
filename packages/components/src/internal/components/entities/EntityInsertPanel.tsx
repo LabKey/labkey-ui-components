@@ -83,6 +83,8 @@ import { getCurrentProductName } from '../../app/utils';
 
 import { fetchDomainDetails } from '../domainproperties/actions';
 
+import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from '../samples/constants';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -95,7 +97,6 @@ import {
 
 import { getUniqueIdColumnMetadata } from './utils';
 import { getEntityTypeData, handleEntityFileImport } from './actions';
-import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from "../samples/constants";
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';

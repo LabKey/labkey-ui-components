@@ -21,7 +21,7 @@ interface Props {
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {
-    const {sampleIds, selectionKey, selectedQuantity, key, itemText, user, getPicklistURL} = props;
+    const { sampleIds, selectionKey, selectedQuantity, key, itemText, user, getPicklistURL } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const onFinish = (picklist: Picklist) => {

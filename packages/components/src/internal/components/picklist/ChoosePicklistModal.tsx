@@ -181,12 +181,13 @@ export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> =
         numNotAddedNotification += 'already in the list.';
     }
 
-    const picklistUrl = getPicklistURL ? getPicklistURL(picklist.listId ) : AppURL.create(PICKLIST_KEY, picklist.listId).toHref();
+    const picklistUrl = getPicklistURL
+        ? getPicklistURL(picklist.listId)
+        : AppURL.create(PICKLIST_KEY, picklist.listId).toHref();
 
     return (
         <>
-            {numAddedNotification} to picklist "
-            <a href={picklistUrl}>{picklist.name}</a>".
+            {numAddedNotification} to picklist "<a href={picklistUrl}>{picklist.name}</a>".
             {numNotAddedNotification}
         </>
     );

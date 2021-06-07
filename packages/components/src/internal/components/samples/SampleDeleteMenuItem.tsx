@@ -1,15 +1,15 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 
-import { AuditBehaviorTypes } from "@labkey/api";
+import { AuditBehaviorTypes } from '@labkey/api';
 
-import { EntityDeleteModal, SampleTypeDataType, QueryModel, SelectionMenuItem } from "../../..";
+import { EntityDeleteModal, SampleTypeDataType, QueryModel, SelectionMenuItem } from '../../..';
 
 interface Props {
     queryModel: QueryModel;
     key?: string;
     itemText?: string;
-    verb?: string
+    verb?: string;
     beforeSampleDelete?: () => any;
     afterSampleDelete?: (rowsToKeep?: any[]) => any;
     auditBehavior?: AuditBehaviorTypes;
@@ -17,7 +17,16 @@ interface Props {
 }
 
 export const SampleDeleteMenuItem: FC<Props> = memo(props => {
-    const { key, itemText, queryModel, verb, beforeSampleDelete, afterSampleDelete, auditBehavior, maxDeleteRows } = props;
+    const {
+        key,
+        itemText,
+        queryModel,
+        verb,
+        beforeSampleDelete,
+        afterSampleDelete,
+        auditBehavior,
+        maxDeleteRows,
+    } = props;
     const [showConfirmDeleteSamples, setShowConfirmDeleteSamples] = useState<boolean>(false);
 
     const onClick = useCallback(() => {
@@ -30,10 +39,9 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
         setShowConfirmDeleteSamples(false);
     }, []);
 
-    const onDeleteComplete = useCallback((rowsToKeep: Array<any>) => {
+    const onDeleteComplete = useCallback((rowsToKeep: any[]) => {
         setShowConfirmDeleteSamples(false);
-        if (afterSampleDelete)
-            afterSampleDelete(rowsToKeep);
+        if (afterSampleDelete) afterSampleDelete(rowsToKeep);
     }, []);
 
     const useSelection = queryModel !== undefined;
@@ -75,5 +83,5 @@ SampleDeleteMenuItem.defaultProps = {
     key: 'delete-samples-menu-item',
     verb: 'deleted and removed from storage',
     maxDeleteRows: 10000,
-    auditBehavior: AuditBehaviorTypes.DETAILED
+    auditBehavior: AuditBehaviorTypes.DETAILED,
 };

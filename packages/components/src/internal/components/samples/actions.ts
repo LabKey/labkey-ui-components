@@ -329,21 +329,11 @@ export function getGroupedSampleDisplayColumns(
     };
 }
 
-export function getSelectedItemSamples(
-    selectedItemIds: string[]
-): Promise<number[]> {
+export function getSelectedItemSamples(selectedItemIds: string[]): Promise<number[]> {
     return new Promise((resolve, reject) => {
-        getSelectedData(
-            "Inventory",
-            "Item",
-            selectedItemIds,
-            "RowId, MaterialId",
-            undefined,
-            undefined,
-            undefined
-        )
+        getSelectedData('Inventory', 'Item', selectedItemIds, 'RowId, MaterialId', undefined, undefined, undefined)
             .then(response => {
-                const {data} = response;
+                const { data } = response;
                 const sampleIds = [];
                 const rowIds = [];
                 data.forEach(row => {
@@ -357,4 +347,3 @@ export function getSelectedItemSamples(
             });
     });
 }
-

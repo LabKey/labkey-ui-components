@@ -30,7 +30,17 @@ interface Props {
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
-    const {show, onCancel, onFinish, selectionKey, selectedQuantity, sampleIds, picklist, showNotification, getPicklistURL} = props;
+    const {
+        show,
+        onCancel,
+        onFinish,
+        selectionKey,
+        selectedQuantity,
+        sampleIds,
+        picklist,
+        showNotification,
+        getPicklistURL,
+    } = props;
     const [name, setName] = useState<string>(picklist ? picklist.name : '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 
@@ -69,7 +79,9 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     const quantity = selectedQuantity ? selectedQuantity : sampleIds?.length;
 
     const createSuccessNotification = (picklist: Picklist) => {
-        const picklistUrl = getPicklistURL ? getPicklistURL(picklist.listId ) : AppURL.create(PICKLIST_KEY, picklist.listId).toHref();
+        const picklistUrl = getPicklistURL
+            ? getPicklistURL(picklist.listId)
+            : AppURL.create(PICKLIST_KEY, picklist.listId).toHref();
 
         createNotification({
             message: () => {
@@ -119,16 +131,15 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         title = 'Update Picklist Data';
     } else {
         const count = sampleIds?.length ?? selectedQuantity;
-            if (!count) {
-                title = 'Create an Empty Picklist';
-            } else if (selectionKey && count) {
-                title = <>Create a New Picklist with
-                    the {Utils.pluralize(count, 'Selected Sample', 'Selected Samples')}</>;
-            } else if (count === 1) {
-                title = 'Create a New Picklist with This Sample';
-            } else {
-                title = 'Create a New Picklist with These Samples';
-            }
+        if (!count) {
+            title = 'Create an Empty Picklist';
+        } else if (selectionKey && count) {
+            title = <>Create a New Picklist with the {Utils.pluralize(count, 'Selected Sample', 'Selected Samples')}</>;
+        } else if (count === 1) {
+            title = 'Create a New Picklist with This Sample';
+        } else {
+            title = 'Create a New Picklist with These Samples';
+        }
     }
 
     return (

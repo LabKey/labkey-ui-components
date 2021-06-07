@@ -1198,10 +1198,7 @@ export function setSnapshotSelections(
  * @param key the selection key for the grid
  * @param containerPath optional path to the container for this grid.  Default is the current container path
  */
-export function getSnapshotSelections(
-    key: string,
-    containerPath?: string
-): Promise<IGetSelectedResponse> {
+export function getSnapshotSelections(key: string, containerPath?: string): Promise<IGetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'getSnapshotSelection.api', undefined, {
@@ -1222,7 +1219,6 @@ export function getSnapshotSelections(
                 true
             ),
         });
-
     });
 }
 
@@ -1317,7 +1313,7 @@ export function getSelection(location: any, schemaName?: string, queryName?: str
         const key = location.query.selectionKey;
 
         return new Promise((resolve, reject) => {
-            let {keys, schemaQuery} = SchemaQuery.parseSelectionKey(key);
+            let { keys, schemaQuery } = SchemaQuery.parseSelectionKey(key);
 
             if (keys !== undefined) {
                 return resolve({
@@ -1335,11 +1331,11 @@ export function getSelection(location: any, schemaName?: string, queryName?: str
             if (!schemaQuery) {
                 reject(
                     'No schema found for selection with selectionKey ' +
-                    location.query.selectionKey +
-                    ' schemaName ' +
-                    schemaName +
-                    ' queryName ' +
-                    queryName
+                        location.query.selectionKey +
+                        ' schemaName ' +
+                        schemaName +
+                        ' queryName ' +
+                        queryName
                 );
             }
 

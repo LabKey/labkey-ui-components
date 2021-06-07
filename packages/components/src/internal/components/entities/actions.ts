@@ -14,6 +14,8 @@ import {
     selectRows,
 } from '../../..';
 
+import { getSelectedItemSamples } from '../samples/actions';
+
 import {
     DisplayObject,
     EntityDataType,
@@ -24,7 +26,6 @@ import {
     IParentOption,
 } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
-import { getSelectedItemSamples } from "../samples/actions";
 
 export interface DeleteConfirmationData {
     canDelete: any[];
@@ -106,8 +107,8 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
         return getSelectedItemSamples(itemIds)
             .then(sampleIds => {
                 return selectRows({
-                    schemaName: "exp",
-                    queryName: "materials",
+                    schemaName: 'exp',
+                    queryName: 'materials',
                     columns: 'LSID,Name,RowId,SampleSet',
                     filterArray: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
                 })
@@ -123,18 +124,14 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
                 console.error("There was a problem getting the selected parents' data", reason);
                 reject(reason);
             });
-
     });
 }
 
-function resolveSampleParentType(
-    response: any,
-    isAliquotParent?: boolean
-): List<EntityParentType> {
+function resolveSampleParentType(response: any, isAliquotParent?: boolean): List<EntityParentType> {
     const { key, models, orderedModels } = response;
     const rows = fromJS(models[key]);
 
-    let groups = {};
+    const groups = {};
 
     // The transformation done here makes the entities compatible with the editable grid
     orderedModels[key].forEach(id => {
@@ -143,24 +140,26 @@ function resolveSampleParentType(
         const sampleType = row.getIn(['SampleSet', 'displayValue']);
         const value = row.getIn(['RowId', 'value']);
 
-        if (!groups[sampleType])
-            groups[sampleType] = [];
+        if (!groups[sampleType]) groups[sampleType] = [];
 
         groups[sampleType].push({
-            displayValue: displayValue,
-            value: value,
-        })
+            displayValue,
+            value,
+        });
     });
 
-    let results = [], index = 1;
-    for (let [sampleType, data] of Object.entries(groups)) {
-        results.push(EntityParentType.create({
-            index,
-            schema: 'samples',
-            query: sampleType?.toLowerCase(),
-            value: List<DisplayObject>(data),
-            isAliquotParent,
-        }))
+    let results = [],
+        index = 1;
+    for (const [sampleType, data] of Object.entries(groups)) {
+        results.push(
+            EntityParentType.create({
+                index,
+                schema: 'samples',
+                query: sampleType?.toLowerCase(),
+                value: List<DisplayObject>(data),
+                isAliquotParent,
+            })
+        );
         index++;
     }
 
@@ -180,7 +179,7 @@ function initParents(
     initialParents: string[],
     selectionKey: string,
     creationType?: SampleCreationType,
-    isItemSamples?: boolean,
+    isItemSamples?: boolean
 ): Promise<List<EntityParentType>> {
     const isAliquotParent = creationType === SampleCreationType.Aliquots;
     return new Promise((resolve, reject) => {
@@ -315,15 +314,17 @@ export function getChosenParentData(
             initParents(model.originalParents, model.selectionKey, model.creationType, isItemSamples)
                 .then(chosenParents => {
                     // if we have an initial parent, we want to start with a row in the grid (entityCount = 1) otherwise we start with none
-                    let totalParentValueCount = 0, isParentTypeOnly = false, parentEntityDataType;
+                    let totalParentValueCount = 0,
+                        isParentTypeOnly = false,
+                        parentEntityDataType;
                     chosenParents.forEach(chosenParent => {
-                        if  (chosenParent.value !== undefined && parentSchemaNames.contains(chosenParent.schema)) {
+                        if (chosenParent.value !== undefined && parentSchemaNames.contains(chosenParent.schema)) {
                             totalParentValueCount += chosenParent.value.size;
                             isParentTypeOnly = chosenParent.isParentTypeOnly;
-                            parentEntityDataType = parentEntityDataTypes.get(chosenParent.schema).typeListingSchemaQuery.queryName;
+                            parentEntityDataType = parentEntityDataTypes.get(chosenParent.schema).typeListingSchemaQuery
+                                .queryName;
                         }
                     });
-
 
                     const numPerParent = model.numPerParent ?? 1;
                     const validEntityCount = totalParentValueCount
@@ -339,10 +340,7 @@ export function getChosenParentData(
                     ) {
                         resolve({
                             entityCount: validEntityCount,
-                            entityParents: entityParents.set(
-                                parentEntityDataType,
-                                chosenParents
-                            ),
+                            entityParents: entityParents.set(parentEntityDataType, chosenParents),
                         });
                     } else {
                         // if we did not find a valid parent, we clear out the parents and selection key from the model as they aren't relevant

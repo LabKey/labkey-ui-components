@@ -1,16 +1,19 @@
-import {List} from "immutable";
+import { List } from 'immutable';
 
-import {MenuSectionModel, MenuItemModel, AppURL, MenuOption} from "../../..";
-import {getMenuItemsForSection} from "./utils";
+import { MenuSectionModel, MenuItemModel, AppURL, MenuOption } from '../../..';
 
-const ITEM_ACTION_FN = () => { return AppURL.create('test') };
+import { getMenuItemsForSection } from './utils';
+
+const ITEM_ACTION_FN = () => {
+    return AppURL.create('test');
+};
 
 const SECTION = new MenuSectionModel({
     items: List([
         new MenuItemModel({ id: 1, key: 'a', label: 'A' }),
         new MenuItemModel({ id: 2, key: 'c', label: 'C' }),
         new MenuItemModel({ id: 3, key: 'b', label: 'B' }),
-    ])
+    ]),
 });
 
 describe('getMenuItemsForSection', () => {
@@ -48,5 +51,5 @@ describe('getMenuItemsForSection', () => {
     test('useOnClick', () => {
         const items = getMenuItemsForSection(SECTION, true, ITEM_ACTION_FN);
         validate(items.get(0), 'A', undefined, true);
-    })
+    });
 });

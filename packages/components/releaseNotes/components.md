@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.42.0
+*Released*: 7 June 2021
+* Introduce hasPermissions, hasAnyPermissions utility methods
+* Update `<RequiresPermission/>` component to be configurable for all options
+
 ### version 2.41.2
 *Released*: 4 June 2021
 * [Issue 43264](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43264) Trim field values

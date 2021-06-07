@@ -18,7 +18,7 @@ import { enableMapSet, enablePatches } from 'immer';
 import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceURL } from './internal/url/AppURL';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
-import { hasAllPermissions, User } from './internal/components/base/models/User';
+import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
 import { getSchemaQuery, resolveKey, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
@@ -737,6 +737,8 @@ export {
     BasePermissionsCheckPage,
     RequiresPermission,
     hasAllPermissions,
+    hasAnyPermissions,
+    hasPermissions,
     fetchContainerSecurityPolicy,
     PermissionAssignments,
     PermissionsPageContextProvider,

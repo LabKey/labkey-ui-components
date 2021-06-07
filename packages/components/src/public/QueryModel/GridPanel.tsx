@@ -65,6 +65,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showHeader?: boolean;
     supportedExportTypes?: Set<EXPORT_TYPES>;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
+    highlightLastSelectedRow?: boolean;
 }
 
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
@@ -203,6 +204,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         asPanel: true,
         hideEmptyChartSelector: false,
         hideEmptyViewMenu: false,
+        highlightLastSelectedRow: false,
         loadOnMount: true,
         showPagination: true,
         showButtonBar: true,
@@ -573,6 +575,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return headerCell(this.sortColumn, column, index, allowSelections, allowSorting, columnCount);
     };
 
+    getHighlightRowIndexes(): List<number> {
+        const { highlightLastSelectedRow, model } = this.props;
+        if (!highlightLastSelectedRow || !model.hasSelections) return undefined;
+
+        const lastSelectedId = Array.from(model.selections).pop();
+        return List<number>([model.orderedRows.indexOf(lastSelectedId)]);
+    }
+
     render(): ReactNode {
         const {
             actions,
@@ -661,6 +671,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                 messages={fromJS(messages)}
                                 columns={this.getGridColumns()}
                                 data={model.gridData}
+                                highlightRowIndexes={this.getHighlightRowIndexes()}
                             />
                         )}
                     </div>

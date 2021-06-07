@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 
-import { MenuOption, MenuSectionModel, naturalSort } from '../../..';
+import {AppURL, MenuOption, MenuSectionModel, naturalSort} from '../../..';
 
 export function getMenuItemsForSection(
     section: MenuSectionModel,
@@ -27,7 +27,10 @@ export function getMenuItemsForSection(
                     config.onClick =
                         useOnClick && itemActionFn ? itemActionFn.bind(this, section, item.key) : undefined;
                 } else if (sampleItemActionFn) {
-                    config.href = useOnClick ? undefined : sampleItemActionFn(item.key);
+                    let href = useOnClick ? undefined : sampleItemActionFn(item.key);
+                    if (href instanceof AppURL)
+                        href = href.toHref();
+                    config.href = href;
                     config.onClick =
                         useOnClick && sampleItemActionFn ? sampleItemActionFn.bind(this, item.key) : undefined;
                 }

@@ -5,7 +5,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 8958: LKSM Permissions updates for premium vs hosted only servers
     * Move SITE_SECURITY_ROLES from SM to shared components and update APPLICATION_SECURITY_ROLES to include Project and Folder Admin roles
-    * Add new ADD_USER_PERMISSION and CAN_SEE_AUDIT_LOG_PERMISSION consts and hasAddUsersPermission helper
     * AuditDetails component fix to use getUsersWithPermissions to resolve userId display names
     * DomainForm refactor to replace extra Security.getModules call with use of new hasModule helper for ontology
     * BasePermissionsCheckPage addition of subTitle and description optional properties

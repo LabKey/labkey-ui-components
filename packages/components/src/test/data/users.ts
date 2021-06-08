@@ -2,7 +2,6 @@ import { List } from 'immutable';
 import { PermissionTypes } from '@labkey/api';
 
 import { User } from '../../internal/components/base/models/User';
-import { ADD_USER_PERMISSION } from '../../internal/components/permissions/constants';
 
 export const TEST_USER_GUEST = new User({
     canDelete: false,
@@ -156,7 +155,7 @@ export const TEST_USER_PROJECT_ADMIN = new User({
         PermissionTypes.Insert,
         PermissionTypes.Update,
         PermissionTypes.Admin,
-        ADD_USER_PERMISSION,
+        PermissionTypes.AddUser,
     ]),
 });
 
@@ -187,6 +186,6 @@ export const TEST_USER_APP_ADMIN = new User({
         PermissionTypes.Admin,
         PermissionTypes.UserManagement,
         PermissionTypes.ApplicationAdmin,
-        ADD_USER_PERMISSION,
+        PermissionTypes.AddUser,
     ]),
 });

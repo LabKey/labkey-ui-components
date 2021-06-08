@@ -1,6 +1,5 @@
 import { List, Record } from 'immutable';
 import { ActionURL, PermissionTypes, UserWithPermissions } from '@labkey/api';
-import { ADD_USER_PERMISSION } from "../../permissions/constants";
 
 interface IUserProps extends UserWithPermissions {
     permissionsList: List<string>;
@@ -95,7 +94,7 @@ export class User extends Record(defaultUser) implements IUserProps {
     }
 
     hasAddUsersPermission(): boolean {
-        return hasAllPermissions(this, [ADD_USER_PERMISSION], false);
+        return hasAllPermissions(this, [PermissionTypes.AddUser], false);
     }
 }
 

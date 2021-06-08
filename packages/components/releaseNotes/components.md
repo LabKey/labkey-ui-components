@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.42.1
+*Released*: 8 June 2021
 * GridPanel.omniBoxChange fix for JS error on removing action text
 
 ### version 2.42.0

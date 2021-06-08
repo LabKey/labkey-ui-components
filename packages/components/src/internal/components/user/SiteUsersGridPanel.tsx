@@ -310,14 +310,13 @@ export class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
         const { newUserRoleOptions, user, showDetailsPanel, actions } = this.props;
         const { selectedUserId, showDialog, usersView } = this.state;
         const model = this.getUsersModel();
-        const modelLoading = !model || isLoading(model?.rowsLoadingState);
 
         return (
             <>
                 <Row>
                     <Col xs={12} md={showDetailsPanel ? 8 : 12}>
-                        {modelLoading && <LoadingSpinner />}
-                        {!modelLoading && (
+                        {!model && <LoadingSpinner />}
+                        {model && (
                             <GridPanel
                                 actions={actions}
                                 model={model}

@@ -119,10 +119,9 @@ module.exports = {
     'no-label-var': 'error',
     'no-shadow-restricted-names': 'error',
     'no-undef-init': 'error',
-    'no-use-before-define': ["error", {
-      "functions": false,
-      "classes": false
-    }],
+    // Conflicts with "@typescript-eslint/no-use-before-define"
+    // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md#how-to-use
+    "no-use-before-define": "off",
 
     // Stylistic Issues (https://eslint.org/docs/rules/#stylistic-issues)
     'new-cap': [

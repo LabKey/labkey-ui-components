@@ -18,7 +18,7 @@ import { enableMapSet, enablePatches } from 'immer';
 import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceURL } from './internal/url/AppURL';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
-import { hasAllPermissions, User } from './internal/components/base/models/User';
+import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
 import { getSchemaQuery, resolveKey, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
@@ -95,7 +95,6 @@ import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
 import { FileAttachmentForm } from './public/files/FileAttachmentForm';
 import { DEFAULT_FILE } from './internal/components/files/models';
-import { FileSizeLimitProps } from './public/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
@@ -738,6 +737,8 @@ export {
     BasePermissionsCheckPage,
     RequiresPermission,
     hasAllPermissions,
+    hasAnyPermissions,
+    hasPermissions,
     fetchContainerSecurityPolicy,
     PermissionAssignments,
     PermissionsPageContextProvider,
@@ -946,7 +947,6 @@ export {
     fetchIssuesListDefDesign,
     // file / webdav related items
     DEFAULT_FILE,
-    FileSizeLimitProps,
     FilesListing,
     FilesListingForm,
     FileAttachmentEntry,
@@ -1179,3 +1179,4 @@ export type {
 } from './internal/app/reducers';
 export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
+export type { FileSizeLimitProps } from './public/files/models';

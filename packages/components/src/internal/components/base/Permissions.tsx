@@ -15,9 +15,18 @@
  */
 import React, { FC, useMemo } from 'react';
 
-import { hasAllPermissions, useServerContext } from '../../..';
+import { hasPermissions, useServerContext } from '../../..';
 
 interface Props {
+    /** Indicates if user.isAdmin should override check */
+    checkIsAdmin?: boolean;
+    /**
+     * Sets which "has permissions" check logic is used.
+     * `all` - Require user to have all of the specified permissions (default).
+     * `any` - Require user to have any of the specified permissions.
+     */
+    permissionCheck?: 'all' | 'any';
+    /** The permission(s) to check against the user. */
     perms: string | string[];
 }
 
@@ -27,13 +36,16 @@ interface Props {
  * importing PermissionTypes. The component uses "useServerContext" to access the current user so it
  * requires access to the "ServerContext".
  */
-export const RequiresPermission: FC<Props> = ({ children, perms }) => {
+export const RequiresPermission: FC<Props> = props => {
+    const { checkIsAdmin, children, permissionCheck, perms } = props;
     const { user } = useServerContext();
 
-    const allow = useMemo<boolean>(() => hasAllPermissions(user, typeof perms === 'string' ? [perms] : perms), [
-        perms,
-        user,
-    ]);
+    const allow = useMemo<boolean>(
+        () => hasPermissions(user, typeof perms === 'string' ? [perms] : perms, checkIsAdmin, permissionCheck),
+        [checkIsAdmin, permissionCheck, perms, user]
+    );
 
     return <>{React.Children.map(children, child => (allow ? child : null))}</>;
 };
+
+RequiresPermission.displayName = 'RequiresPermission';

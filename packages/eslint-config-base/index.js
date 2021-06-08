@@ -15,7 +15,6 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:import/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
     'plugin:prettier/recommended'
   ],
   plugins: ['prettier', 'import', '@typescript-eslint', 'only-warn'],
@@ -116,14 +115,15 @@ module.exports = {
     //strict: ['error', 'global'], // CONSIDER: add '--alwaysStrict' to tsconfig.json
 
     // Variables (https://eslint.org/docs/rules/#variables)
-    'no-shadow': 'warn', // CONSIDER: error?
+    // no-shadow conflicts with typescript no-shadow
+    'no-shadow': 'off', // CONSIDER: error?
+    "@typescript-eslint/no-shadow": ["warn"],
     'no-label-var': 'error',
     'no-shadow-restricted-names': 'error',
     'no-undef-init': 'error',
-    'no-use-before-define': ["error", {
-      "functions": false,
-      "classes": false
-    }],
+    // Conflicts with "@typescript-eslint/no-use-before-define"
+    // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md#how-to-use
+    "no-use-before-define": "off",
 
     // Stylistic Issues (https://eslint.org/docs/rules/#stylistic-issues)
     'new-cap': [

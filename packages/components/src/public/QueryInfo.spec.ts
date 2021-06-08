@@ -175,4 +175,34 @@ describe('QueryInfo', () => {
             expect(fieldKeys.join(',')).toBe('test3');
         });
     });
+
+    describe('getShowImportDataButton', () => {
+        test('respects settings', () => {
+            const qi = QueryInfo.create({
+                importUrl: '#/importUrl',
+                importUrlDisabled: false,
+                showInsertNewButton: true, // yes, "getShowImportDataButton()" respects the "showInsertNewButton" flag
+            });
+
+            expect(qi.getShowImportDataButton()).toBe(true);
+            expect((qi.set('importUrl', undefined) as QueryInfo).getShowImportDataButton()).toBe(false);
+            expect((qi.set('importUrlDisabled', true) as QueryInfo).getShowImportDataButton()).toBe(false);
+            expect((qi.set('showInsertNewButton', false) as QueryInfo).getShowImportDataButton()).toBe(false);
+        });
+    });
+
+    describe('getShowInsertNewButton', () => {
+        test('respects settings', () => {
+            const qi = QueryInfo.create({
+                insertUrl: '#/insertUrl',
+                insertUrlDisabled: false,
+                showInsertNewButton: true,
+            });
+
+            expect(qi.getShowInsertNewButton()).toBe(true);
+            expect((qi.set('insertUrl', undefined) as QueryInfo).getShowInsertNewButton()).toBe(false);
+            expect((qi.set('insertUrlDisabled', true) as QueryInfo).getShowInsertNewButton()).toBe(false);
+            expect((qi.set('showInsertNewButton', false) as QueryInfo).getShowInsertNewButton()).toBe(false);
+        });
+    });
 });

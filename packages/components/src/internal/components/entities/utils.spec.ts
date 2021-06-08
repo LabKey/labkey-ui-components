@@ -185,19 +185,19 @@ describe('getInitialParentChoices', () => {
             'Inputs/Data/First/DataClass': [
                 {
                     displayValue: '321',
-                    value: [321],
+                    value: 321,
                 },
                 {
                     displayValue: '321',
-                    value: [321],
+                    value: 321,
                 },
                 {
                     displayValue: '321',
-                    value: [321],
+                    value: 321,
                 },
                 {
                     displayValue: '322',
-                    value: [322],
+                    value: 322,
                 },
             ],
             Run: {

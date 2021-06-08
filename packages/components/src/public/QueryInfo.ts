@@ -365,11 +365,11 @@ export class QueryInfo extends Record({
     }
 
     getShowImportDataButton(): boolean {
-        return this.showInsertNewButton && this.importUrl && !this.importUrlDisabled;
+        return !!(this.showInsertNewButton && this.importUrl && !this.importUrlDisabled);
     }
 
     getShowInsertNewButton(): boolean {
-        return this.showInsertNewButton && this.insertUrl && !this.insertUrlDisabled;
+        return !!(this.showInsertNewButton && this.insertUrl && !this.insertUrlDisabled);
     }
 
     getInsertQueryInfo(): QueryInfo {

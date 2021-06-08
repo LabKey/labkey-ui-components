@@ -1,5 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version TBD
+*Released*: TBD
+* Update application navigation menu behavior
 
 ### version 2.42.0
 *Released*: 7 June 2021

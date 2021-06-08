@@ -1,17 +1,18 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Security } from '@labkey/api';
 
-import { LoadingSpinner, Alert, Container, naturalSortByProperty } from '../../..';
+import { Alert, Container, LoadingSpinner, naturalSortByProperty, useServerContext } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
-import { getRegisteredProducts, getContainerTabs } from './actions';
-import { PRODUCT_SERVICES_URL } from './constants';
+import { getContainerTabs, getRegisteredProducts } from './actions';
+import { ADMIN_LOOK_AND_FEEL_URL, PRODUCT_SERVICES_URL } from './constants';
 import { ContainerTabModel, ProductModel } from './models';
 import { ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductProjectsDrawer } from './ProductProjectsDrawer';
 import { ProductSectionsDrawer } from './ProductSectionsDrawer';
 import { ProductLKSDrawer } from './ProductLKSDrawer';
 import { ProductNavigationHeader } from './ProductNavigationHeader';
+import { hasPremiumModule } from '../../app/utils';
 
 interface ProductNavigationMenuProps {
     onCloseMenu?: () => void;
@@ -107,6 +108,8 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
     const showLKSDrawer = selectedProductId === LKS_PRODUCT_ID;
     const showSectionsDrawer = selectedProject !== undefined;
     const showProjectsDrawer = !selectedProject && selectedProduct !== undefined;
+    const { user } = useServerContext();
+    const showMenuSettings = hasPremiumModule() && user.isAppAdmin();
 
     return (
         <div
@@ -138,9 +141,18 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
             </ul>
             {selectedProductId === undefined && (
                 <div className="product-navigation-footer">
-                    <a href={PRODUCT_SERVICES_URL} target="_blank" rel="noopener noreferrer">
-                        More LabKey Solutions
-                    </a>
+                    {showMenuSettings &&
+                        <div className="bottom-spacing-less">
+                            <a href={ADMIN_LOOK_AND_FEEL_URL} target="_blank" rel="noopener noreferrer">
+                                Menu Settings
+                            </a>
+                        </div>
+                    }
+                    <div>
+                        <a href={PRODUCT_SERVICES_URL} target="_blank" rel="noopener noreferrer">
+                            More LabKey Solutions
+                        </a>
+                    </div>
                 </div>
             )}
         </div>

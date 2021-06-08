@@ -60,4 +60,61 @@ describe('<RequiresPermission/>', () => {
         // Assert
         expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(true);
     });
+    test('does not have any permissions', () => {
+        // Act
+        const wrapper = mountWithServerContext(
+            <RequiresPermission permissionCheck="any" perms={[PermissionTypes.Update, PermissionTypes.Delete]}>
+                {CONTENT}
+            </RequiresPermission>,
+            { user: TEST_USER_READER }
+        );
+
+        // Assert
+        expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(false);
+    });
+    test('has any permissions', () => {
+        // Act
+        const wrapper = mountWithServerContext(
+            <RequiresPermission
+                permissionCheck="any"
+                perms={[PermissionTypes.Admin, PermissionTypes.Read, PermissionTypes.Insert]}
+            >
+                {CONTENT}
+            </RequiresPermission>,
+            { user: TEST_USER_READER }
+        );
+
+        // Assert
+        expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(true);
+    });
+    test('respects checkIsAdmin', () => {
+        // Arrange
+        const ADMIN_READER = TEST_USER_READER.set('isAdmin', true);
+
+        // Act
+        // "checkIsAdmin" defaults to true
+        let wrapper = mountWithServerContext(
+            <RequiresPermission permissionCheck="any" perms={[PermissionTypes.Update, PermissionTypes.Delete]}>
+                {CONTENT}
+            </RequiresPermission>,
+            { user: ADMIN_READER }
+        );
+
+        // Assert
+        expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(true);
+        wrapper.unmount();
+
+        wrapper = mountWithServerContext(
+            <RequiresPermission
+                checkIsAdmin={false}
+                permissionCheck="any"
+                perms={[PermissionTypes.Update, PermissionTypes.Delete]}
+            >
+                {CONTENT}
+            </RequiresPermission>,
+            { user: ADMIN_READER }
+        );
+
+        expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(false);
+    });
 });

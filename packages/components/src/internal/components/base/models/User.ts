@@ -100,27 +100,51 @@ export class User extends Record(defaultUser) implements IUserProps {
 }
 
 /**
- * Determines if a user has all of the permissions given.  If the user has only some
- * of these permissions, returns false.
- * @param user the user in question
- * @param perms the list of permission strings (See models/constants)
- * @param checkIsAdmin boolean indicating if user.isAdmin should be used as a fallback check
+ * Determines if a user has the permissions given.
+ * @param user User in question
+ * @param perms Array of permission strings (See models/constants)
+ * @param checkIsAdmin Indicates if user.isAdmin should override check. Defaults to true.
+ * @param permissionCheck Sets which "has permissions" check logic is used.
+ *   `all` - Require user to have all of the specified permissions (default).
+ *   `any` - Require user to have any of the specified permissions.
  */
-export function hasAllPermissions(user: User, perms: string[], checkIsAdmin = true): boolean {
-    let allow = false;
-
-    if (perms) {
+export function hasPermissions(
+    user: User,
+    perms: string[],
+    checkIsAdmin = true,
+    permissionCheck: 'all' | 'any' = 'all'
+): boolean {
+    if (checkIsAdmin && user.isAdmin) {
+        return perms?.length > 0;
+    } else if (perms) {
         const allPerms = user.get('permissionsList');
 
-        let hasAll = true;
-        for (let i = 0; i < perms.length; i++) {
-            if (allPerms.indexOf(perms[i]) === -1) {
-                hasAll = false;
-                break;
-            }
+        if (permissionCheck === 'any') {
+            return perms.some(p => allPerms.indexOf(p) > -1);
+        } else {
+            return perms.every(p => allPerms.indexOf(p) > -1);
         }
-        allow = hasAll || (checkIsAdmin && user.isAdmin);
     }
 
-    return allow;
+    return false;
+}
+
+/**
+ * Determines if a user has all of the permissions given. If the user has only some of these permissions, returns false.
+ * @param user User in question
+ * @param perms Array of permission strings (See models/constants)
+ * @param checkIsAdmin Indicates if user.isAdmin should override check
+ */
+export function hasAllPermissions(user: User, perms: string[], checkIsAdmin?: boolean): boolean {
+    return hasPermissions(user, perms, checkIsAdmin, 'all');
+}
+
+/**
+ * Determines if a user has any of the permissions given. If the user has any of the permissions then return true.
+ * @param user User in question
+ * @param perms Array of permission strings (See models/constants)
+ * @param checkIsAdmin Indicates if user.isAdmin should override check
+ */
+export function hasAnyPermissions(user: User, perms: string[], checkIsAdmin?: boolean): boolean {
+    return hasPermissions(user, perms, checkIsAdmin, 'any');
 }

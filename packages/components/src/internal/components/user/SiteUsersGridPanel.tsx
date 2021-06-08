@@ -82,16 +82,19 @@ export class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        // add a URL listener specifically for the usersView param so that we can change the QueryGridPanel data accordingly without a route change
-        const unlisten = getBrowserHistory().listen((location, action) => {
+        // add a URL listener specifically for the usersView param so that we can change the GridPanel data accordingly without a route change
+        const unlisten = getBrowserHistory().listen(location => {
             if (getRouteFromLocationHash(location.hash) === '#/admin/users') {
-                // if the usersView param has changed, set state to trigger re-render with proper QueryGridModel
-                const usersView = this.getUsersView(ActionURL.getParameters(location.hash).usersView);
-                if (this.state.usersView !== usersView) {
+                // if the usersView param is defined and has changed, set state to trigger re-render with proper QueryModel
+                const paramValue = ActionURL.getParameters(location.hash).usersView;
+                const usersView = this.getUsersView(paramValue);
+                if (paramValue && this.state.usersView !== usersView) {
                     this.setState(() => ({
                         usersView,
                         selectedUserId: undefined, // clear selected user anytime we change views
                     }));
+
+                    replaceParameter(getLocation(), 'usersView', undefined);
                 }
             }
         });
@@ -137,6 +140,7 @@ export class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
                 baseFilters,
                 omittedColumns: OMITTED_COLUMNS,
                 bindURL: true,
+                urlPrefix: usersView, // each model needs to have its own urlPrefix for paging to work across models
             },
             true,
             true
@@ -156,7 +160,7 @@ export class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
     }
 
     toggleViewActive = (viewName: string): void => {
-        replaceParameter(getLocation(), 'usersView', viewName);
+        this.setState(() => ({ usersView: viewName }));
     };
 
     closeDialog = (): void => {

@@ -17,18 +17,18 @@ import {
 } from '../../..';
 
 interface SamplesCreateSubMenuProps {
+    getOptions: (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => List<MenuOption>;
+    maxParentPerSample: number;
+    isSelectingSamples: (schemaName: string) => boolean;
+    navigate: (url: string | AppURL) => any;
     menuCurrentChoice?: string;
     menuText?: string;
-    navigate: (url: string | AppURL) => any;
     parentType?: string;
     parentKey?: string;
     parentModel?: QueryGridModel;
     parentQueryModel?: QueryModel;
-    getOptions: (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => List<MenuOption>;
-    maxParentPerSample: number;
     sampleWizardURL?: (targetSampleType?: string, parent?: string) => AppURL;
     getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
-    isSelectingSamples: (schemaName: string) => boolean;
 }
 
 export const SamplesCreateSubMenu: FC<SamplesCreateSubMenuProps> = memo(props => {

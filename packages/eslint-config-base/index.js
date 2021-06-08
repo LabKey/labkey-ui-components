@@ -115,7 +115,9 @@ module.exports = {
     //strict: ['error', 'global'], // CONSIDER: add '--alwaysStrict' to tsconfig.json
 
     // Variables (https://eslint.org/docs/rules/#variables)
-    'no-shadow': 'warn', // CONSIDER: error?
+    // no-shadow conflicts with typescript no-shadow
+    'no-shadow': 'off', // CONSIDER: error?
+    "@typescript-eslint/no-shadow": ["warn"],
     'no-label-var': 'error',
     'no-shadow-restricted-names': 'error',
     'no-undef-init': 'error',

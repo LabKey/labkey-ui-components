@@ -274,3 +274,15 @@
         line-height: 23px;
     }
 }
+
+.popover-concept-overview {
+    max-height: 250px;
+    min-width: 300px;
+    display: block;
+    overflow-y: auto;
+
+    .ontology-concept-overview-container {
+        height: unset;
+        overflow-y: unset;
+    }
+}

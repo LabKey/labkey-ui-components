@@ -602,6 +602,11 @@
 
     &.content {
         padding-top: 5px;
+
+        // Override the hover color for anchors marked as text
+        & a.domain-text-label:hover {
+            color: gray;
+        }
     }
 }
 

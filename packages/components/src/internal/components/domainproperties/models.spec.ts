@@ -722,15 +722,20 @@ describe('DomainField', () => {
 
         field = field.merge({ principalConceptCode: 'abc:123' }) as DomainField;
         expect(field.getDetailsTextArray().join('')).toBe(
-            'Updated. SRC. Concept Annotation: abc:123. Primary Key. Locked'
+            'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
         );
 
         expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
-            'Updated. SRC. Concept Annotation: abc:123. Primary Key. Locked. Additional Info'
+            'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked. Additional Info'
         );
         field = field.merge({ name: '' }) as DomainField;
         expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
-            'Updated. SRC. Concept Annotation: abc:123. Primary Key. Locked'
+            'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
+        );
+
+        field = field.merge({ principalConceptDisplay: 'Concept display text' }) as DomainField;
+        expect(field.getDetailsTextArray().join('')).toBe(
+            'Updated. SRC. Ontology Concept: Concept display text. Primary Key. Locked'
         );
     });
 

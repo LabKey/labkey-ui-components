@@ -29,10 +29,12 @@ interface SamplesCreateSubMenuProps {
     parentQueryModel?: QueryModel;
     sampleWizardURL?: (targetSampleType?: string, parent?: string) => AppURL;
     getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
+    allowPooledSamples?: boolean;
 }
 
 export const SamplesCreateSubMenu: FC<SamplesCreateSubMenuProps> = memo(props => {
     const {
+        allowPooledSamples,
         menuCurrentChoice,
         menuText,
         parentType,
@@ -106,7 +108,8 @@ export const SamplesCreateSubMenu: FC<SamplesCreateSubMenuProps> = memo(props =>
         [navigate, sampleCreationURL]
     );
 
-    const sampleOptions = [DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION];
+    const sampleOptions = [DERIVATIVE_CREATION];
+    if (allowPooledSamples) sampleOptions.push(POOLED_SAMPLE_CREATION);
     if (selectedOption && selectedOption === menuCurrentChoice) sampleOptions.push(ALIQUOT_CREATION);
 
     return (
@@ -134,3 +137,7 @@ export const SamplesCreateSubMenu: FC<SamplesCreateSubMenuProps> = memo(props =>
         </>
     );
 });
+
+SamplesCreateSubMenu.defaultProps = {
+    allowPooledSamples: true
+};

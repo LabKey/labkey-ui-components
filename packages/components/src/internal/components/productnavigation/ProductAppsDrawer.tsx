@@ -13,12 +13,11 @@ export const DEFAULT_ICON_ALT_URL = imageURL('_images', 'mobile-logo-overcast.sv
 
 interface ProductAppsDrawerProps {
     products: ProductModel[];
-    productProjectMap: Record<string, Container[]>;
     onClick: (productId: string, project?: Container) => void;
 }
 
 export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
-    const { products, productProjectMap, onClick } = props;
+    const { products, onClick } = props;
 
     return (
         <>
@@ -39,7 +38,6 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                             PRODUCT_ID_IMG_SRC_MAP[product.productId.toLowerCase()]?.iconUrlAlt ?? DEFAULT_ICON_ALT_URL
                         }
                         title={product.productName}
-                        subtitle={getProductSubtitle(productProjectMap[product.productId])}
                         onClick={() => onClick(product.productId)}
                     />
                 );
@@ -47,16 +45,3 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
         </>
     );
 });
-
-// exported for jest testing
-export function getProductSubtitle(projects: Container[]): string {
-    if (projects?.length === 1) {
-        return projects[0].title;
-    }
-
-    if (!projects || projects.length === 0) {
-        return 'No Projects';
-    }
-
-    return projects.length + ' Projects';
-}

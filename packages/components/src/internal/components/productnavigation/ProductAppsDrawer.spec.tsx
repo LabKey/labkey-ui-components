@@ -1,10 +1,8 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-
-import { Container } from '../../..';
 import { BIOLOGICS_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app/constants';
 
-import { DEFAULT_ICON_ALT_URL, DEFAULT_ICON_URL, getProductSubtitle, ProductAppsDrawer } from './ProductAppsDrawer';
+import { DEFAULT_ICON_ALT_URL, DEFAULT_ICON_URL, ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductAppMenuItem } from './ProductAppMenuItem';
 import { ProductModel } from './models';
 
@@ -59,23 +57,6 @@ describe('ProductAppsDrawer', () => {
         wrapper.unmount();
     });
 
-    test('productProjectMap', () => {
-        const productProjectMap = {
-            [SAMPLE_MANAGER_PRODUCT_ID]: [],
-            [BIOLOGICS_PRODUCT_ID]: [new Container({ title: 'P1' })],
-            other: [new Container({ title: 'P2' }), new Container({ title: 'P3' })],
-        };
-
-        const wrapper = mount(
-            <ProductAppsDrawer {...DEFAULT_PROPS} products={TEST_PRODUCTS} productProjectMap={productProjectMap} />
-        );
-        validate(wrapper, 4);
-        expect(wrapper.find(ProductAppMenuItem).at(1).prop('subtitle')).toBe('No Projects');
-        expect(wrapper.find(ProductAppMenuItem).at(2).prop('subtitle')).toBe('P1');
-        expect(wrapper.find(ProductAppMenuItem).at(3).prop('subtitle')).toBe('2 Projects');
-        wrapper.unmount();
-    });
-
     test('iconUrl and iconUrlAlt', () => {
         const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={TEST_PRODUCTS} />);
         validate(wrapper, 4);
@@ -94,12 +75,5 @@ describe('ProductAppsDrawer', () => {
         );
         expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrlAlt')).toBe(DEFAULT_ICON_ALT_URL);
         wrapper.unmount();
-    });
-
-    test('getProductSubtitle', () => {
-        expect(getProductSubtitle(undefined)).toBe('No Projects');
-        expect(getProductSubtitle([])).toBe('No Projects');
-        expect(getProductSubtitle([new Container({ title: 'P1' })])).toBe('P1');
-        expect(getProductSubtitle([new Container({ title: 'P1' }), new Container({ title: 'P2' })])).toBe('2 Projects');
     });
 });

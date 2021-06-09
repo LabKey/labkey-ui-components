@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext } from '@labkey/api';
 
-import { Container, buildURL } from '../../..';
+import { buildURL } from '../../..';
 
 import { ContainerTabModel } from './models';
 import { LK_DOC_FOLDER_TABS } from './constants';

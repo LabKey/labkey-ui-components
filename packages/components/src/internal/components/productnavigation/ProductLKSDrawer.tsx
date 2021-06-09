@@ -8,27 +8,13 @@ import { LK_DOC_FOLDER_TABS } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductLKSDrawerProps {
-    /**
-     * List of projects which the current user has permissions to so we can use that to decide which container-item
-     * options to show below.
-     */
-    projects: Container[];
+    showHome: boolean;
     tabs: ContainerTabModel[];
 }
 
 export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
-    const { projects, tabs } = props;
-    const { project, container, homeContainer, user } = getServerContext();
-    const showHome = useMemo(() => isProjectAvailable(projects, undefined, 'home'), [projects]);
-    const showProject = useMemo(
-        () =>
-            project !== undefined &&
-            isProjectAvailable(projects, project.id) &&
-            project.name !== homeContainer &&
-            container.path !== '/home',
-        [projects, project, container, homeContainer]
-    );
-    const showContainer = useMemo(() => project !== undefined && project.id !== container.id, [projects, project]);
+    const { tabs, showHome } = props;
+    const { container, homeContainer, user } = getServerContext();
 
     const [transition, setTransition] = useState<boolean>(true);
     useEffect(() => {
@@ -50,18 +36,10 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
                     LabKey Home
                 </a>
             )}
-            {showProject && (
-                <a className="container-item lk-text-theme-dark" href={getProjectBeginUrl(project.path)}>
-                    <i className="fa fa-folder-open-o container-icon" />
-                    {project.title}
-                </a>
-            )}
-            {showContainer && (
-                <a className="container-item lk-text-theme-dark" href={getProjectBeginUrl(container.path)}>
-                    <i className="fa fa-folder-o container-icon" />
-                    {container.title}
-                </a>
-            )}
+            <a className="container-item lk-text-theme-dark" href={getProjectBeginUrl(container.path)}>
+                <i className="fa fa-folder-o container-icon" />
+                {container.title}
+            </a>
             <div className="container-tabs">
                 {visibleTabs.length > 1 &&
                     visibleTabs.map(tab => {

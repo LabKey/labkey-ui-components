@@ -20,9 +20,9 @@ interface ProductNavigationMenuProps {
 export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [products, setProducts] = useState<ProductModel[]>(); // the array of products that have been registered for this LK server
-    const [projects, setProjects] = useState<Container[]>(); // the array of projects which the current user has access to on the LK server
     const [tabs, setTabs] = useState<ContainerTabModel[]>(); // the array of container tabs for the current LK container
     const [selectedProductId, setSelectedProductId] = useState<string>();
+    const [homeVisible, setHomeVisible] = useState<boolean>(false); // is home project visible to this user.
 
     const onSelection = useCallback(
         (productId: string) => {
@@ -34,13 +34,12 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
     useEffect(() => {
         getRegisteredProducts().then(setProducts).catch(setError);
 
-        // TODO replace with query about just the home directory?
         Security.getContainers({
-            containerPath: '/', // use root container to get the projects
+            container: 'home',
             includeSubfolders: false,
             includeEffectivePermissions: false,
             success: data => {
-                setProjects(data.children.map(child => new Container(child)));
+                setHomeVisible(data.userPermissions !== 0);
             },
             failure: errorInfo => {
                 console.error(errorInfo);
@@ -54,7 +53,7 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
     return (
         <ProductNavigationMenuImpl
             error={error}
-            projects={projects}
+            homeVisible={homeVisible}
             tabs={tabs}
             products={products?.sort(naturalSortByProperty('productName'))}
             onCloseMenu={props.onCloseMenu}
@@ -67,7 +66,7 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
 interface ProductNavigationMenuImplProps extends ProductNavigationMenuProps {
     error: string;
     products: ProductModel[];
-    projects: Container[];
+    homeVisible: boolean;
     tabs: ContainerTabModel[];
     selectedProductId: string;
     onSelection: (productId: string) => void;
@@ -78,7 +77,7 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
     const {
         error,
         products,
-        projects,
+        homeVisible,
         tabs,
         onCloseMenu,
         selectedProductId,
@@ -98,8 +97,8 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
     const showProductDrawer = selectedProductId === undefined;
     const showLKSDrawer = selectedProductId === LKS_PRODUCT_ID;
     const showSectionsDrawer = selectedProduct !== undefined;
-    const { user } = useServerContext();
-    const showMenuSettings = hasPremiumModule() && user.isAppAdmin();
+    const { user } = getServerContext();
+    const showMenuSettings = hasPremiumModule() && user.isRootAdmin;
 
     return (
         <div
@@ -117,7 +116,7 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
             />
             <ul className="product-navigation-listing">
                 {showProductDrawer && <ProductAppsDrawer {...props} onClick={onSelection} />}
-                {showLKSDrawer && <ProductLKSDrawer projects={projects} tabs={tabs} />}
+                {showLKSDrawer && <ProductLKSDrawer showHome={homeVisible} tabs={tabs} />}
                 {showSectionsDrawer && (
                     <ProductSectionsDrawer
                         product={selectedProduct}

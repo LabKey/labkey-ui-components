@@ -59,9 +59,16 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
                 // if this is a deeply nested path, let's mask the tree with a loading message while we toggle parents
                 if (parentPaths.length > 5) setShowLoading(true);
 
+                // Create callback in the event tree hasn't fully loaded
+                const toggleParents = () => {
+                    toggleParentPaths(fileTreeRef.current, alternatePath, parentPaths, true, () => {
+                        scrollToActive(toggleParents);
+                    });
+                };
+
                 toggleParentPaths(fileTreeRef.current, alternatePath, parentPaths, true, () => {
                     setShowLoading(false);
-                    scrollToActive();
+                    scrollToActive(toggleParents);
                 });
             });
         }
@@ -77,6 +84,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
                         name: child.label,
                         children: child.hasChildren ? [] : undefined,
                         conceptCode: child.code,
+                        toggled: child.path === alternatePath?.path,
                         data: child,
                     };
                 }
@@ -114,7 +122,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
 };
 
 const getTreeNodeForPath = function (fileTree, path: string): any {
-    return fileTree.getDataNode(path, fileTree.state.data);
+    return fileTree?.getDataNode(path, fileTree.state.data);
 };
 
 const toggleParentPaths = function (
@@ -124,30 +132,31 @@ const toggleParentPaths = function (
     isRoot: boolean,
     callback: () => void
 ): void {
-    const parentPath = isRoot ? DEFAULT_ROOT_PREFIX : parentPaths[0].path;
-    parentPaths.shift();
+    const clone = [...parentPaths];
+    const parentPath = isRoot ? DEFAULT_ROOT_PREFIX : clone[0].path;
+    clone.shift();
 
     const node = getTreeNodeForPath(fileTree, parentPath);
     if (node) {
         fileTree.onToggle(node, true, alternatePath.path === node.id, () => {
-            if (parentPaths.length > 0) {
-                toggleParentPaths(fileTree, alternatePath, parentPaths, false, callback);
+            if (clone.length > 0) {
+                toggleParentPaths(fileTree, alternatePath, clone, false, callback);
             } else {
                 callback();
             }
         });
-    } else if (parentPaths.length > 0) {
-        toggleParentPaths(fileTree, alternatePath, parentPaths, false, callback);
+    } else if (clone.length > 0) {
+        toggleParentPaths(fileTree, alternatePath, clone, false, callback);
     } else {
         callback();
     }
 };
 
-const scrollToActive = function (): void {
+const scrollToActive = function (notReadyCallback?: () => void ): void {
     const activeEl = document.getElementsByClassName('filetree-node-active');
     if (activeEl.length > 0) {
         activeEl[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
-        setTimeout(scrollToActive, 500);
+        setTimeout(notReadyCallback, 500);
     }
 };

@@ -14,7 +14,7 @@ module.exports = {
     output: {
         path: constants.outputPath,
         publicPath: './', // allows context path to resolve in both js/css
-        filename: '[name].js'
+        filename: '[name].[contenthash].js'
     },
     module: {
         rules: constants.loaders.TYPESCRIPT.concat(constants.loaders.STYLE).concat(constants.loaders.FILES),

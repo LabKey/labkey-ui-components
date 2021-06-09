@@ -1,5 +1,13 @@
 # @labkey/build
 
+### version 4.0.0
+*Released*: 9 June 2021
+* Move build output to resources/gen
+    * This is a breaking change because this change requires you to update the path you import your scripts from if you
+      use `LABKEY.requiresScript` or `dependencies.add` in a JSP. Examples:
+        * `LABKEY.requiresScript('<module_name>/gen/<scriptName>', () => {})` -> `LABKEY.requiresScript('gen/<scriptName>', () => {})`
+        * `dependencies.add("<module_name>/gen/<scriptName>");` -> `dependencies.add("gen/<scriptName>");`
+
 ### version 3.1.0
 *Released*: 3 June 2021
 * Use current working directory to determine module name and modules directory

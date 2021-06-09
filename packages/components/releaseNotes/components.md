@@ -4,6 +4,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update application navigation menu behavior
 
+### version 2.43.0
+*Release*: 9 Jun 2021
+* Add support for concept picker usage in Insert/Update scenarios
+* Fixed OntologyLookupOptions NO-OP updates marking fields as dirty
+* Add an initial concept for OntologyBrowserModal
+
 ### version 2.42.1
 *Released*: 8 June 2021
 * GridPanel.omniBoxChange fix for JS error on removing action text

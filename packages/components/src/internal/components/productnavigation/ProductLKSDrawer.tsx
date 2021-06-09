@@ -16,6 +16,7 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
     const { tabs, showHome } = props;
     const { container, homeContainer, user } = getServerContext();
 
+    const showContainer = useMemo(() => container.path != '/home', [container])
     const [transition, setTransition] = useState<boolean>(true);
     useEffect(() => {
         // use setTimeout so that the "left" property will change and trigger the transition
@@ -36,10 +37,12 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
                     LabKey Home
                 </a>
             )}
-            <a className="container-item lk-text-theme-dark" href={getProjectBeginUrl(container.path)}>
-                <i className="fa fa-folder-o container-icon" />
-                {container.title}
-            </a>
+            {showContainer && (
+                <a className="container-item lk-text-theme-dark" href={getProjectBeginUrl(container.path)}>
+                    <i className="fa fa-folder-o container-icon" />
+                    {container.title}
+                </a>
+            )}
             <div className="container-tabs">
                 {visibleTabs.length > 1 &&
                     visibleTabs.map(tab => {
@@ -64,16 +67,6 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
     );
 });
 
-// exported for jest testing
-/**
- * Does a project exist in an array of project containers by either the name or id?
- * @param projects
- * @param id
- * @param name
- */
-export function isProjectAvailable(projects: Container[], id?: string, name?: string): boolean {
-    return projects?.find(project => (id ? project.id === id : project.name === name)) !== undefined;
-}
 
 // exported for jest testing
 export function getProjectBeginUrl(container: string): string {

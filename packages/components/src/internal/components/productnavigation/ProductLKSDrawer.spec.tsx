@@ -4,17 +4,14 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Container } from '../../..';
 import { TEST_USER_FOLDER_ADMIN, TEST_USER_EDITOR } from '../../../test/data/users';
 
-import { isProjectAvailable, getProjectBeginUrl, ProductLKSDrawer } from './ProductLKSDrawer';
+import { getProjectBeginUrl, ProductLKSDrawer } from './ProductLKSDrawer';
 import { ProductClickableItem } from './ProductClickableItem';
 import { ContainerTabModel } from './models';
 
 const DEFAULT_PROPS = {
-    projects: [],
+    showHome: true,
     tabs: [],
 };
-
-const PROJECT_HOME = new Container({ id: 'home', name: 'home' });
-const PROJECT_TEST = new Container({ id: 'test', name: 'test' });
 
 const VISIBLE_TAB_1 = new ContainerTabModel({ id: 'tab1', text: 'Tab 1', disabled: false });
 const VISIBLE_TAB_2 = new ContainerTabModel({ id: 'tab2', text: 'Tab 2', disabled: false });
@@ -22,7 +19,12 @@ const DISABLED_TAB = new ContainerTabModel({ id: 'tab3', text: 'Tab 3', disabled
 
 beforeEach(() => {
     LABKEY.homeContainer = 'home';
-    LABKEY.container = {};
+    LABKEY.project.id = 'test';
+    LABKEY.project.name = 'test';
+    LABKEY.project.title = 'Test project';
+    LABKEY.container.id = 'test';
+    LABKEY.container.path = '/test';
+    LABKEY.container.title = 'Test project';
 });
 
 describe('ProductLKSDrawer', () => {
@@ -37,25 +39,25 @@ describe('ProductLKSDrawer', () => {
         }
     }
 
-    test('no items or tabs, admin', () => {
+    test('home not available, no tabs, admin', () => {
         LABKEY.user = TEST_USER_FOLDER_ADMIN;
-        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} />);
-        validate(wrapper, 0, 0);
+        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={false} />);
+        validate(wrapper, 1, 0);
         expect(wrapper.find('.how-to')).toHaveLength(1);
         wrapper.unmount();
     });
 
-    test('no items or tabs, non admin', () => {
+    test('home not available, no tabs, non admin', () => {
         LABKEY.user = TEST_USER_EDITOR;
-        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} />);
-        validate(wrapper, 0, 0);
+        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={false} />);
+        validate(wrapper, 1, 0);
         expect(wrapper.find('.how-to')).toHaveLength(0);
         wrapper.unmount();
     });
 
     test('no visibleTabs, only 1 not disabled', () => {
         const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} tabs={[VISIBLE_TAB_1, DISABLED_TAB]} />);
-        validate(wrapper, 0, 0);
+        validate(wrapper, 2, 0);
         wrapper.unmount();
     });
 
@@ -63,7 +65,7 @@ describe('ProductLKSDrawer', () => {
         const wrapper = mount(
             <ProductLKSDrawer {...DEFAULT_PROPS} tabs={[VISIBLE_TAB_1, VISIBLE_TAB_2, DISABLED_TAB]} />
         );
-        validate(wrapper, 0, 2);
+        validate(wrapper, 2, 2);
         expect(wrapper.find(ProductClickableItem).at(0).prop('id')).toBe('tab1');
         expect(wrapper.find(ProductClickableItem).at(1).prop('id')).toBe('tab2');
         expect(wrapper.find(ProductClickableItem).at(0).text()).toBe('Tab 1');
@@ -72,10 +74,10 @@ describe('ProductLKSDrawer', () => {
     });
 
     test('showHome', () => {
-        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} projects={[PROJECT_HOME, PROJECT_TEST]} />);
-        validate(wrapper, 1);
-        expect(wrapper.find('.container-item').prop('href')).toBe('/labkey/project/home/begin.view');
-        expect(wrapper.find('.container-item').text()).toBe('LabKey Home');
+        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={true} />);
+        validate(wrapper, 2);
+        expect(wrapper.find('.container-item').first().prop('href')).toBe('/labkey/project/home/begin.view');
+        expect(wrapper.find('.container-item').first().text()).toBe('LabKey Home');
         wrapper.unmount();
     });
 
@@ -86,7 +88,7 @@ describe('ProductLKSDrawer', () => {
         LABKEY.container.id = 'home';
         LABKEY.container.path = '/home';
         LABKEY.container.title = 'Home';
-        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} projects={[PROJECT_HOME, PROJECT_TEST]} />);
+        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={true} />);
         validate(wrapper, 1);
         expect(wrapper.find('.container-item').prop('href')).toBe('/labkey/project/home/begin.view');
         expect(wrapper.find('.container-item').text()).toBe('LabKey Home');
@@ -94,13 +96,8 @@ describe('ProductLKSDrawer', () => {
     });
 
     test('not in home project', () => {
-        LABKEY.project.id = 'test';
-        LABKEY.project.name = 'test';
-        LABKEY.project.title = 'Test project';
-        LABKEY.container.id = 'test';
-        LABKEY.container.path = '/test';
-        LABKEY.container.title = 'Test project';
-        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} projects={[PROJECT_HOME, PROJECT_TEST]} />);
+
+        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={true} />);
         validate(wrapper, 2);
         expect(wrapper.find('.container-item').last().prop('href')).toBe('/labkey/project/test/begin.view');
         expect(wrapper.find('.container-item').last().text()).toBe('Test project');
@@ -114,7 +111,7 @@ describe('ProductLKSDrawer', () => {
         LABKEY.container.id = 'testSub';
         LABKEY.container.path = '/home/testSub';
         LABKEY.container.title = 'Test subfolder';
-        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} projects={[PROJECT_HOME, PROJECT_TEST]} />);
+        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={true} />);
         validate(wrapper, 2);
         expect(wrapper.find('.container-item').last().prop('href')).toBe('/labkey/project/home/testSub/begin.view');
         expect(wrapper.find('.container-item').last().text()).toBe('Test subfolder');
@@ -128,27 +125,16 @@ describe('ProductLKSDrawer', () => {
         LABKEY.container.id = 'testSub';
         LABKEY.container.path = '/test/testSub';
         LABKEY.container.title = 'Test subfolder';
-        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} projects={[PROJECT_HOME, PROJECT_TEST]} />);
-        validate(wrapper, 3);
+        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={true} />);
+        validate(wrapper, 2);
         expect(wrapper.find('.container-item').last().prop('href')).toBe('/labkey/project/test/testSub/begin.view');
         expect(wrapper.find('.container-item').last().text()).toBe('Test subfolder');
         wrapper.unmount();
     });
 
-    test('isProjectAvailable', () => {
-        expect(isProjectAvailable(undefined)).toBeFalsy();
-        expect(isProjectAvailable([])).toBeFalsy();
-        expect(isProjectAvailable([PROJECT_HOME, PROJECT_TEST])).toBeFalsy();
-        expect(isProjectAvailable([PROJECT_HOME, PROJECT_TEST], 'bogus')).toBeFalsy();
-        expect(isProjectAvailable([PROJECT_HOME, PROJECT_TEST], undefined, 'bogus')).toBeFalsy();
-
-        expect(isProjectAvailable([PROJECT_HOME, PROJECT_TEST], 'home')).toBeTruthy();
-        expect(isProjectAvailable([PROJECT_HOME, PROJECT_TEST], 'test')).toBeTruthy();
-        expect(isProjectAvailable([PROJECT_HOME, PROJECT_TEST], undefined, 'home')).toBeTruthy();
-        expect(isProjectAvailable([PROJECT_HOME, PROJECT_TEST], undefined, 'test')).toBeTruthy();
-    });
 
     test('getProjectBeginUrl', () => {
+        LABKEY.container = {}
         expect(getProjectBeginUrl(undefined)).toBe('/labkey/project/begin.view');
         expect(getProjectBeginUrl('test')).toBe('/labkey/project/test/begin.view');
     });

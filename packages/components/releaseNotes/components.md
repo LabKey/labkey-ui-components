@@ -4,6 +4,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update application navigation menu behavior
 
+### version 2.42.1
+*Released*: 8 June 2021
+* GridPanel.omniBoxChange fix for JS error on removing action text
+
 ### version 2.42.0
 *Released*: 7 June 2021
 * Introduce hasPermissions, hasAnyPermissions utility methods

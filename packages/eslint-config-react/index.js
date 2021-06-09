@@ -11,6 +11,7 @@ module.exports = {
   extends: [
     '@labkey/eslint-config-base',
     'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
   ],
   plugins: ['react'],
   settings: {
@@ -68,44 +69,44 @@ module.exports = {
     'react/require-default-props': 'off',
     'react/require-optimization': 'off',
     'react/require-render-return': 'error',
-    //'react/self-closing-comp': 'error', // conflits with prettier
     'react/sort-comp': 'error',
     'react/sort-prop-types': 'off',
     'react/style-prop-object': 'error',
     'react/void-dom-elements-no-children': 'error',
 
     'react/jsx-boolean-value': 'off',
-    //'react/jsx-child-element-spacing': 'error', // conflicts with prettier
-    //'react/jsx-closing-bracket-location': 'error', // conflicts with prettier
-    //'react/jsx-closing-tag-location': 'error', // conflicts with prettier
     'react/jsx-curly-brace-presence': 'error',
-    //'react/jsx-curly-spacing': 'error', // conflicts with prettier
-    //'react/jsx-equals-spacing': 'error', // conflicts with prettier
     'react/jsx-filename-extension': 'off',
-    //'react/jsx-first-prop-new-line': ['error', 'multiline-multiprop'], // conflits with prettier
     'react/jsx-handler-names': 'off',
     //'react/jsx-indent': ['error', 2],
     //'react/jsx-indent-props': ['error', 2],
     'react/jsx-key': 'error',
     'react/jsx-max-depth': 'off',
-    // conflicts with prettier
-    //'react/jsx-max-props-per-line': [
-    //  'error',
-    //  { maximum: 1, when: 'multiline' }
-    //],
     'react/jsx-no-bind': 'warn',
     'react/jsx-no-comment-textnodes': 'error',
     'react/jsx-no-duplicate-props': ['error', { ignoreCase: true }],
     'react/jsx-no-literals': 'off',
     'react/jsx-no-target-blank': 'error',
     'react/jsx-no-undef': 'error',
-    //'react/jsx-one-expression-per-line': ['error', { allow: 'single-child' }], // conflits with prettier
     'react/jsx-pascal-case': ['error', { allowAllCaps: true }],
-    //'react/jsx-props-no-multi-spaces': 'error', // conflits with prettier
     'react/jsx-sort-default-props': 'off',
     'react/jsx-sort-props': 'off',
     'react/jsx-uses-react': 'error',
     'react/jsx-uses-vars': 'error',
-    //'react/jsx-wrap-multilines': 'error' // conflits with prettier
+    // The rules below conflict with prettier
+    //'react/self-closing-comp': 'error',
+    //'react/jsx-child-element-spacing': 'error',
+    //'react/jsx-closing-bracket-location': 'error',
+    //'react/jsx-closing-tag-location': 'error',
+    //'react/jsx-curly-spacing': 'error',
+    //'react/jsx-equals-spacing': 'error',
+    //'react/jsx-first-prop-new-line': ['error', 'multiline-multiprop'],
+    //'react/jsx-one-expression-per-line': ['error', { allow: 'single-child' }],
+    //'react/jsx-max-props-per-line': [
+    //  'error',
+    //  { maximum: 1, when: 'multiline' }
+    //],
+    //'react/jsx-props-no-multi-spaces': 'error',
+    //'react/jsx-wrap-multilines': 'error'
   }
 };

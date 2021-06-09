@@ -113,7 +113,7 @@ export function isFreezerManagementEnabled(): boolean {
     );
 }
 
-export function isProductEnabled(productId: string): boolean {
+export function isProductNavigationEnabled(productId: string): boolean {
     const lcProductId = productId?.toLowerCase();
     if (lcProductId === SAMPLE_MANAGER_PRODUCT_ID.toLowerCase())
         return isSampleManagerEnabled() && (!isBiologicsEnabled() || isSampleManagerNavigationEnabled());

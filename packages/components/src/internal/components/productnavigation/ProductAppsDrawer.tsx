@@ -32,14 +32,13 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
             {products.map(product => {
                 const imgSrc = PRODUCT_ID_IMG_SRC_MAP[product.productId.toLowerCase()];
                 let iconUrl;
-                let iconUrlAlt = DEFAULT_ICON_ALT_URL;
                 if (product.disabled) {
                     iconUrl = imgSrc?.iconUrlDisabled ?? DEFAULT_ICON_URL;
                 }
                 else {
                     iconUrl = imgSrc?.iconUrl ?? DEFAULT_ICON_URL;
-                    iconUrlAlt = imgSrc?.iconUrlAlt ?? DEFAULT_ICON_ALT_URL;
                 }
+                const iconUrlAlt = imgSrc?.iconUrlAlt ?? DEFAULT_ICON_ALT_URL;
                 return (
                     <ProductAppMenuItem
                         key={product.productId}

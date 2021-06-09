@@ -18,7 +18,7 @@ import renderer from 'react-test-renderer';
 import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
-import { TEST_USER_GUEST, TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_APP_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from '../../../test/data/users';
 import { ServerNotifications } from '../notifications/ServerNotifications';
 
 import { markAllNotificationsRead } from '../../../test/data/notificationData';
@@ -99,17 +99,31 @@ describe('<NavigationBar/>', () => {
         component.unmount();
     });
 
-    test('show ProductNavigation for devMode', () => {
-        LABKEY.devMode = true;
-        const component = mount(<NavigationBar model={null} />);
-        validate(component, { ProductNavigation: 1 });
+    test('show ProductNavigation for hasPremiumModule, non-admin', () => {
+        LABKEY.moduleContext = { api: { moduleNames: ['premium'] , applicationMenuDisplayMode: 'ALWAYS' } };
+        const component = mount(<NavigationBar model={productMenuModel} user={TEST_USER_READER} />);
+        validate(component, { ProductMenu: 1, UserMenu: 1, ProductNavigation: 1 });
         component.unmount();
     });
 
-    test('show ProductNavigation for hasPremiumModule', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
-        const component = mount(<NavigationBar model={null} />);
-        validate(component, { ProductNavigation: 1 });
+    test('hide ProductNavigation for non-admin', () => {
+        LABKEY.moduleContext = { api: { moduleNames: ['premium'] , applicationMenuDisplayMode: 'ADMIN' } };
+        const component = mount(<NavigationBar model={productMenuModel} user={TEST_USER_READER} />);
+        validate(component, { ProductMenu: 1, UserMenu: 1, ProductNavigation: 0 });
+        component.unmount();
+    })
+
+    test('show ProductNavigation for hasPremiumModule, admin always', () => {
+        LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ALWAYS' } };
+        const component = mount(<NavigationBar model={productMenuModel} user={TEST_USER_APP_ADMIN} />);
+        validate(component, { ProductMenu: 1, UserMenu: 1, ProductNavigation: 1 });
+        component.unmount();
+    });
+
+    test('show ProductNavigation for hasPremiumModule, admin only', () => {
+        LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ADMIN' } };
+        const component = mount(<NavigationBar model={productMenuModel} user={TEST_USER_APP_ADMIN} />);
+        validate(component, { ProductMenu: 1, UserMenu: 1, ProductNavigation: 1 });
         component.unmount();
     });
 });

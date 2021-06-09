@@ -1,7 +1,7 @@
 import { immerable } from 'immer';
 
 import { AppURL } from '../../..';
-import { isProductEnabled } from '../../app/utils';
+import { isProductNavigationEnabled } from '../../app/utils';
 
 export class ProductModel {
     [immerable] = true;
@@ -15,7 +15,7 @@ export class ProductModel {
     readonly disabled: boolean;
 
     constructor(values?: Partial<ProductModel>) {
-        Object.assign(this, values, {disabled: !isProductEnabled(values?.productId)});
+        Object.assign(this, values, {disabled: !isProductNavigationEnabled(values?.productId)});
     }
 }
 

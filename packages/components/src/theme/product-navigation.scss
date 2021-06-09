@@ -41,6 +41,15 @@
             padding: 15px 0;
             cursor: pointer;
 
+            &.labkey-page-nav-disabled {
+                color: $gray-light;
+                cursor: default;
+                &:hover, &:hover .product-subtitle, &:hover .nav-icon {
+                    color: $gray-light;
+                    background-color: white;
+                }
+            }
+
             .product-icon {
                 float: left;
                 padding-left: 10px;
@@ -164,7 +173,6 @@
 
     .product-navigation-footer {
         border-top: 1px solid $gray-lighter;
-        margin-top: 15px;
         padding: 5px 10px 10px 10px;
     }
 }

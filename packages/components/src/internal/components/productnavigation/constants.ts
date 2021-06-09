@@ -18,10 +18,14 @@ export const PRODUCT_ID_IMG_SRC_MAP = {
     [SAMPLE_MANAGER_PRODUCT_ID.toLowerCase()]: {
         iconUrl: imageURL('sampleManagement/images', 'LK-SampleManager-Badge-COLOR.svg'),
         iconUrlAlt: imageURL('sampleManagement/images', 'LK-SampleManager-Badge-WHITE.svg'),
+        // TODO
+        iconUrlDisabled: imageURL('sampleManagement/images', 'LK-SampleManager-Badge-WHITE.svg'),
     },
     [BIOLOGICS_PRODUCT_ID.toLowerCase()]: {
         iconUrl: imageURL('biologics/images', 'lk-bio-logo-badge-color.svg'),
         iconUrlAlt: imageURL('biologics/images', 'lk-bio-logo-badge.svg'),
+        // TODO
+        iconUrlDisabled: imageURL('biologics/images', 'lk-bio-logo-badge.svg'),
     },
 };
 

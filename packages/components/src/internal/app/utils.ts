@@ -113,6 +113,21 @@ export function isFreezerManagementEnabled(): boolean {
     );
 }
 
+export function isProductEnabled(productId: string): boolean {
+    const lcProductId = productId?.toLowerCase();
+    if (lcProductId === SAMPLE_MANAGER_PRODUCT_ID.toLowerCase())
+        return isSampleManagerEnabled() && (!isBiologicsEnabled() || isSampleManagerNavigationEnabled());
+    else if (lcProductId === BIOLOGICS_PRODUCT_ID.toLowerCase())
+        return isBiologicsEnabled();
+    else if (lcProductId === FREEZER_MANAGER_PRODUCT_ID.toLowerCase())
+        return isFreezerManagementEnabled();
+    return false;
+}
+
+export function isSampleManagerNavigationEnabled(): boolean {
+    return getServerContext().moduleContext?.biologics?.isBiologicsSampleManagerNavEnabled === true
+}
+
 export function isSampleManagerEnabled(): boolean {
     return getServerContext().moduleContext?.samplemanagement !== undefined;
 }

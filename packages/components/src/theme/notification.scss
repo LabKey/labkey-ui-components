@@ -110,3 +110,18 @@
         background: #FA6400;
     }
 }
+
+.clickable-text {
+    cursor: pointer;
+    color: $brand-primary;
+
+    &:hover {
+        text-decoration: underline;
+        color: darken($brand-primary, 15);
+    }
+
+    .fa {
+        // Ensures icon/text alignment when next to each other
+        width: 18px;
+    }
+}

@@ -156,11 +156,6 @@ export function getPasswordRuleInfo(): Promise<any> {
     });
 }
 
-export function getSelectedUserIds(model: QueryModel): number[] {
-    // selectedIds will be strings, need to cast to integers
-    return Array.from(model.selections).map(id => parseInt(id));
-}
-
 export function updateUsersActiveState(userIds: number[], reactivate: boolean): Promise<any> {
     return updateUsersState(userIds, false, reactivate);
 }

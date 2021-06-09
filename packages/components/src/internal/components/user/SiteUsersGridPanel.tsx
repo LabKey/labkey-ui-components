@@ -27,7 +27,6 @@ import { getBrowserHistory } from '../../util/global';
 import { getSelected } from '../../actions';
 
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
-import { getSelectedUserIds } from './actions';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserDetailsPanel } from './UserDetailsPanel';
 import { CreateUsersModal } from './CreateUsersModal';
@@ -195,7 +194,7 @@ export class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
         this.reloadUsersModel();
     };
 
-    onRowSelectionChange = (model: QueryModel, row, checked): void => {
+    onRowSelectionChange = (model: QueryModel, row: any, checked: boolean): void => {
         let selectedUserId;
 
         if (checked) {
@@ -345,7 +344,7 @@ export class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
                 />
                 {user.hasManageUsersPermission() && (showDialog === 'reactivate' || showDialog === 'deactivate') && (
                     <UserActivateChangeConfirmModal
-                        userIds={getSelectedUserIds(model)}
+                        userIds={model.getSelectedIdsAsInts()}
                         reactivate={showDialog === 'reactivate'}
                         onComplete={this.onUsersStateChangeComplete}
                         onCancel={this.closeDialog}
@@ -353,7 +352,7 @@ export class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
                 )}
                 {user.hasManageUsersPermission() && showDialog === 'delete' && (
                     <UserDeleteConfirmModal
-                        userIds={getSelectedUserIds(model)}
+                        userIds={model.getSelectedIdsAsInts()}
                         onComplete={this.onUsersStateChangeComplete}
                         onCancel={this.closeDialog}
                     />

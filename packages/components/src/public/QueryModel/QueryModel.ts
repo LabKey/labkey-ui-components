@@ -695,6 +695,13 @@ export class QueryModel {
     }
 
     /**
+     * Return the selection ids as an array of integers.
+     */
+    getSelectedIdsAsInts(): number[] {
+        return Array.from(this.selections).map(id => parseInt(id));
+    }
+
+    /**
      * Get the row selection state (ALL, SOME, or NONE) for the QueryModel.
      */
     get selectedState(): GRID_CHECKBOX_OPTIONS {

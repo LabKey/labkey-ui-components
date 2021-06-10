@@ -9,9 +9,10 @@ import { DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT } from '../domainproperties/con
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
 
 import { OntologyBrowserModal } from './OntologyBrowserModal';
-import { ConceptOverviewModal } from './ConceptOverviewPanel';
+import { ConceptOverviewTooltip } from './ConceptOverviewPanel';
 import { ConceptModel } from './models';
 import { fetchConceptForCode } from './actions';
+import classNames from 'classnames';
 
 interface OntologyConceptAnnotationProps {
     id: string;
@@ -21,7 +22,7 @@ interface OntologyConceptAnnotationProps {
 }
 
 export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = memo(props => {
-    const { field } = props;
+    const { field, id, onChange } = props;
     const { principalConceptCode } = field;
     const [error, setError] = useState<string>();
     const [concept, setConcept] = useState<ConceptModel>();
@@ -31,7 +32,10 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
             setConcept(undefined);
         } else {
             fetchConceptForCode(principalConceptCode)
-                .then(setConcept)
+                .then((concept: ConceptModel): void => {
+                    setConcept(concept);
+                    onChange?.(id, concept);
+                })
                 .catch(() => {
                     setError('Error: unable to get concept information for ' + principalConceptCode + '. ');
                 });
@@ -51,7 +55,6 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
     const { id, field, successBsStyle, onChange, error, concept } = props;
     const { principalConceptCode, lockType } = field;
     const [showSelectModal, setShowSelectModal] = useState<boolean>();
-    const [showConceptModal, setShowConceptModal] = useState<boolean>();
     const isFieldLocked = useMemo(() => isFieldFullyLocked(lockType), [lockType]);
     const title = 'Select Concept';
 
@@ -59,13 +62,9 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
         setShowSelectModal(!showSelectModal);
     }, [showSelectModal, setShowSelectModal]);
 
-    const toggleConceptModal = useCallback(() => {
-        setShowConceptModal(!showConceptModal);
-    }, [showConceptModal, setShowConceptModal]);
-
     const onApply = useCallback(
         (selectedConcept: ConceptModel) => {
-            onChange(id, selectedConcept?.code);
+            onChange(id, selectedConcept);
             setShowSelectModal(false);
         },
         [onChange, id, setShowSelectModal]
@@ -74,7 +73,7 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
     return (
         <>
             <div className="domain-field-label">
-                <DomainFieldLabel label="Concept Annotation" helpTipBody={getOntologyConceptAnnotationHelpTipBody()} />
+                <DomainFieldLabel label="Ontology Concept" helpTipBody={getOntologyConceptAnnotationHelpTipBody()} />
             </div>
             <table className="domain-annotation-table">
                 <tbody>
@@ -106,27 +105,30 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
                                 )}
                                 <td className="content">
                                     <a
-                                        className="domain-validator-link domain-annotation-item"
-                                        onClick={toggleConceptModal}
+                                        className={classNames("domain-annotation-item", isFieldLocked ? "domain-text-label" : "domain-validator-link")}
+                                        onClick={isFieldLocked ? null : toggleSelectModal}
                                     >
                                         {concept?.getDisplayLabel() ?? principalConceptCode}
                                     </a>
                                 </td>
                             </>
                         )}
+                        <td className="content">
+                            <ConceptOverviewTooltip concept={concept} error={error} />
+                        </td>
                     </tr>
                 </tbody>
             </table>
             {showSelectModal && (
                 <OntologyBrowserModal
                     title={title}
-                    initOntologyId={field.sourceOntology}
+                    initOntologyId={concept?.ontology}
                     onCancel={toggleSelectModal}
                     onApply={onApply}
                     successBsStyle={successBsStyle}
+                    initConcept={concept}
                 />
             )}
-            {showConceptModal && <ConceptOverviewModal concept={concept} error={error} onClose={toggleConceptModal} />}
         </>
     );
 });

@@ -10,22 +10,20 @@ interface OntologyBrowserModalProps {
     successBsStyle?: string;
     onCancel: () => void;
     onApply: (concept: ConceptModel) => void;
+    initConcept?: ConceptModel;
 }
 
 export const OntologyBrowserModal: FC<OntologyBrowserModalProps> = memo(props => {
-    const { title, initOntologyId, successBsStyle, onCancel, onApply } = props;
+    const { title, initOntologyId, successBsStyle, onCancel, onApply, initConcept } = props;
     const [selectedConcept, setSelectedConcept] = useState<ConceptModel>();
 
     const onApplyClick = useCallback(() => {
         onApply(selectedConcept);
     }, [onApply, selectedConcept]);
 
-    const onConceptSelect = useCallback(
-        (concept: ConceptModel) => {
-            setSelectedConcept(concept);
-        },
-        [setSelectedConcept]
-    );
+    const onConceptSelect = useCallback( (concept: ConceptModel) => {
+        setSelectedConcept(concept);
+    }, [setSelectedConcept]);
 
     return (
         <Modal bsSize="large" show={true} onHide={onCancel}>
@@ -37,6 +35,7 @@ export const OntologyBrowserModal: FC<OntologyBrowserModalProps> = memo(props =>
                     asPanel={false}
                     initOntologyId={initOntologyId}
                     onConceptSelect={onConceptSelect}
+                    initConcept={initConcept}
                 />
             </Modal.Body>
             <Modal.Footer>

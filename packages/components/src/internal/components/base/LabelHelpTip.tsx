@@ -11,10 +11,11 @@ interface Props {
     required?: boolean; // will add required message at bottom of help tooltip
     size?: any; // size of help icon, if using default icon
     title?: string;
+    bsStyle?: string; // is placed on the popover container as "popover-<value>"
 }
 
 export const LabelHelpTip: FC<Props> = memo(props => {
-    const { children, title, placement, id, size, customStyle, required, iconComponent } = props;
+    const { children, title, placement, id, size, customStyle, required, iconComponent, bsStyle } = props;
     const targetRef = useRef();
     const [show, setShow] = useState(false);
 
@@ -29,7 +30,7 @@ export const LabelHelpTip: FC<Props> = memo(props => {
                 <FontAwesomeIcon size={size} style={customStyle} className="label-help-icon" icon={faQuestionCircle} />
             )}
             <Overlay target={targetRef.current} show={show} placement={placement}>
-                <Popover id={id} title={title}>
+                <Popover id={id} title={title} bsStyle={bsStyle} >
                     {children}
                     {required && <div className="label-help-required">This field is required.</div>}
                 </Popover>

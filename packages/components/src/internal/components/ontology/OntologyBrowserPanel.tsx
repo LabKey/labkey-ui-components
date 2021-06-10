@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap';
 
 import { Alert, LabelHelpTip, LoadingSpinner } from '../../..';
 
-import { fetchConceptForCode, getOntologyDetails } from './actions';
+import { fetchAlternatePaths, fetchConceptForCode, getOntologyDetails } from './actions';
 import { ConceptModel, OntologyModel, PathModel } from './models';
 import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { OntologyTreePanel } from './OntologyTreePanel';
@@ -17,6 +17,7 @@ export interface OntologyBrowserProps {
     hideConceptInfo?: boolean;
     filters?: Map<string, PathModel>;
     filterChangeHandler?: (filter: PathModel) => void;
+    initConcept?: ConceptModel
 }
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
@@ -27,11 +28,12 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
         hideConceptInfo = false,
         filters,
         filterChangeHandler,
+        initConcept,
     } = props;
     const [error, setError] = useState<string>();
     const [selectedOntologyId, setSelectedOntologyId] = useState<string>();
     const [ontology, setOntologyModel] = useState<OntologyModel>();
-    const [selectedConcept, setSelectedConcept] = useState<ConceptModel>();
+    const [selectedConcept, setSelectedConcept] = useState<ConceptModel>(initConcept);
     const [selectedPath, setSelectedPath] = useState<PathModel>();
     const [alternatePath, setAlternatePath] = useState<PathModel>();
     const [conceptCache, setConceptCache] = useState<Map<string, ConceptModel>>(new Map<string, ConceptModel>());
@@ -79,18 +81,27 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
         [setSelectedOntologyId]
     );
 
+    const setInitialConceptPath = async (code: string) => {
+        if (code != null ) {
+            const paths = await fetchAlternatePaths(code)
+            onSelectedPathChange(paths?.[0], true);
+        }
+    };
+
     useEffect(() => {
         if (ontologyId) {
             getOntologyDetails(ontologyId)
-                .then(setOntologyModel)
-                .catch(() => {
+                .then((ontology: OntologyModel) => {
+                    setOntologyModel(ontology);
+                    setInitialConceptPath(initConcept?.code);
+                }).catch(() => {
                     setError('Error: unable to load ontology concept information for ' + ontologyId + '.');
                     setSelectedOntologyId(undefined);
                 });
         } else {
             setOntologyModel(undefined);
         }
-    }, [setOntologyModel, selectedOntologyId, setSelectedOntologyId, setError]);
+    }, [initConcept, setOntologyModel, selectedOntologyId, setSelectedOntologyId, setError]);
 
     useEffect(() => {
         if (selectedPath?.code) {

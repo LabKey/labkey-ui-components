@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
-import { Alert, naturalSort } from '../../..';
+import { Alert, LabelHelpTip, naturalSort } from '../../..';
 
 import { ConceptModel, PathModel } from './models';
 import { fetchConceptForCode } from './actions';
@@ -43,6 +43,7 @@ export const OntologyConceptOverviewPanel: FC<ConceptOverviewPanelProps> = memo(
 interface ConceptOverviewPanelImplProps {
     concept: ConceptModel;
     selectedPath?: PathModel;
+    conceptNotFoundText?: string;
 }
 
 // exported for jest testing
@@ -67,7 +68,7 @@ export const ConceptSynonyms: FC<{ synonyms: string[] }> = memo(props => {
  * the information about the concept label, code, description, etc.
  */
 export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(props => {
-    const { concept, selectedPath = undefined } = props;
+    const { concept, selectedPath = undefined, conceptNotFoundText = "No concept selected" } = props;
     const [showPath, setShowPath] = useState<boolean>();
 
     const handleShowPath = useCallback((): void => {
@@ -75,7 +76,7 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
     }, [showPath, setShowPath]);
 
     if (!concept) {
-        return <div className="none-selected">No concept selected</div>;
+        return <div className="none-selected">{conceptNotFoundText}</div>;
     }
 
     const { code, label, description, synonyms } = concept;
@@ -110,29 +111,30 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
 interface ConceptOverviewModalProps {
     concept: ConceptModel;
     error?: string;
-    onClose: () => void;
 }
 
 /**
  * A modal dialog version that will display the same concept overview display panel from ConceptOverviewPanelImpl
  * but in a modal dialog. This component takes in the concept (i.e. ConceptModel) as a prop.
  */
-export const ConceptOverviewModal: FC<ConceptOverviewModalProps> = memo(props => {
-    const { onClose, concept, error } = props;
+export const ConceptOverviewTooltip: FC<ConceptOverviewModalProps> = memo(props => {
+    const { concept, error, } = props;
 
     return (
-        <Modal show={true} onHide={onClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>Concept Overview</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Alert>{error}</Alert>
-                {!error && (
+        <>
+            <Alert>{error}</Alert>
+            {!error &&
+                <LabelHelpTip
+                    title="Concept Overview"
+                    placement="bottom"
+                    iconComponent={!!concept && <i className="fa fa-info-circle"/>}
+                    bsStyle="concept-overview"
+                >
                     <div className="ontology-concept-overview-container">
-                        <ConceptOverviewPanelImpl concept={concept} />
+                        <ConceptOverviewPanelImpl concept={concept} conceptNotFoundText={"No information available."}/>
                     </div>
-                )}
-            </Modal.Body>
-        </Modal>
+                </LabelHelpTip>
+            }
+        </>
     );
 });

@@ -45,11 +45,11 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
 
     const onHomeClick = useCallback(() => {
         clickWithStats(getProjectBeginUrl(homeContainer), TO_LKS_HOME_METRIC);
-    }, [clickWithStats]);
+    }, [clickWithStats, homeContainer]);
 
     const onContainerClick = useCallback(() => {
         clickWithStats(getProjectBeginUrl(container.path), TO_LKS_CONTAINER_METRIC);
-    }, [clickWithStats]);
+    }, [clickWithStats, container]);
 
     return (
         <div className={'menu-transition-left' + (transition ? ' transition' : '')}>

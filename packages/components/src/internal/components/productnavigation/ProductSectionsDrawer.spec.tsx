@@ -54,15 +54,14 @@ describe('ProductSectionsDrawer', () => {
     });
 
     test('getProductSectionUrl', () => {
-        expect(getProductSectionUrl('id', 'key', '/test', false)).toBe('/labkey/id/test/app.view#/key');
-        expect(getProductSectionUrl('id', 'key', '/test', true)).toBe('/labkey/id/test/app.view#/key');
+        expect(getProductSectionUrl('id', 'key', '/test')).toBe('/labkey/id/test/app.view#/key');
 
         // note ActionURL.getController() is '' for this jest test
-        expect(getProductSectionUrl('', 'key', '/test', true)).toBe('#/key');
+        expect(getProductSectionUrl('', 'key', '/test')).toBe('#/key');
     });
 
     test('parseProductMenuSectionResponse, no modelSections', () => {
-        const sections = parseProductMenuSectionResponse(List<MenuSectionModel>(), TEST_PRODUCT, TEST_PROJECT, false);
+        const sections = parseProductMenuSectionResponse(List<MenuSectionModel>(), TEST_PRODUCT, TEST_PROJECT);
         expect(sections).toHaveLength(1);
         expect(sections[0].key).toBe('home');
         expect(sections[0].label).toBe('Dashboard');
@@ -78,7 +77,7 @@ describe('ProductSectionsDrawer', () => {
             new MenuSectionModel({ key: 's3', productId: 'a', label: 'S3' }),
         ]);
 
-        const sections = parseProductMenuSectionResponse(modelSections, TEST_PRODUCT, TEST_PROJECT, false);
+        const sections = parseProductMenuSectionResponse(modelSections, TEST_PRODUCT, TEST_PROJECT);
         expect(sections).toHaveLength(4);
         expect(sections[0].key).toBe('home');
         expect(sections[1].key).toBe('s1');
@@ -99,7 +98,7 @@ describe('ProductSectionsDrawer', () => {
             new MenuSectionModel({ key: FREEZERS_KEY, productId: 'a', label: 'Storage' }),
         ]);
 
-        const sections = parseProductMenuSectionResponse(modelSections, TEST_PRODUCT, TEST_PROJECT, false);
+        const sections = parseProductMenuSectionResponse(modelSections, TEST_PRODUCT, TEST_PROJECT);
         expect(sections).toHaveLength(4);
         expect(sections[0].key).toBe('home');
         expect(sections[1].key).toBe('s1');

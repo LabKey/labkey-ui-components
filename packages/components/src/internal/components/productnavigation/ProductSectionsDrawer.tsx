@@ -19,16 +19,14 @@ import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductAppsDrawerProps {
     product: ProductModel;
-    project: Container;
+    container: Container;
     onCloseMenu?: () => void;
 }
 
 export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
-    const { product, project, onCloseMenu } = props;
-    const { container } = getServerContext();
+    const { product, container, onCloseMenu } = props;
     const [error, setError] = useState<string>();
     const [sections, setSections] = useState<ProductSectionModel[]>();
-    const isSameContainer = useMemo(() => container.id === project?.id, [container, project]);
 
     useEffect(() => {
         const model = new ProductMenuModel({
@@ -40,7 +38,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
         model
             .getMenuSections(0)
             .then(modelSections => {
-                setSections(parseProductMenuSectionResponse(modelSections, product, project, isSameContainer));
+                setSections(parseProductMenuSectionResponse(modelSections, product, container));
             })
             .catch(error => {
                 setError('Error: unable to load product sections.');
@@ -95,11 +93,10 @@ export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = mem
 export function getProductSectionUrl(
     productId: string,
     key: string,
-    containerPath: string,
-    isSameContainer: boolean
+    containerPath: string
 ): string {
-    // if the selected project is the current container and the section is for the same product we are already in, then keep the urls as route changes
-    if (isSameContainer && productId.toLowerCase() === ActionURL.getController().toLowerCase()) {
+    // if the section is for the same product we are already in, then keep the urls as route changes
+    if (productId.toLowerCase() === ActionURL.getController().toLowerCase()) {
         return AppURL.create(key).toHref();
     }
 
@@ -109,14 +106,13 @@ export function getProductSectionUrl(
 export function parseProductMenuSectionResponse(
     modelSections: List<MenuSectionModel>,
     product: ProductModel,
-    project: Container,
-    isSameContainer: boolean
+    project: Container
 ): ProductSectionModel[] {
     const menuSections = [
         new ProductSectionModel({
             key: 'home',
             label: 'Dashboard',
-            url: getProductSectionUrl(product.productId, 'home', project.path, isSameContainer),
+            url: getProductSectionUrl(product.productId, 'home', project.path),
         }),
     ];
 
@@ -127,7 +123,7 @@ export function parseProductMenuSectionResponse(
                 new ProductSectionModel({
                     key: modelSection.key,
                     label: modelSection.label,
-                    url: getProductSectionUrl(modelSection.productId, modelSection.key, project.path, isSameContainer),
+                    url: getProductSectionUrl(modelSection.productId, modelSection.key, project.path),
                 })
             );
         });

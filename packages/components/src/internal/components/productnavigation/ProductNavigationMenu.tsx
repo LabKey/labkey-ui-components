@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext, Security } from '@labkey/api';
 
 import { Alert, Container, LoadingSpinner, naturalSortByProperty, useServerContext } from '../../..';
@@ -21,6 +21,7 @@ interface ProductNavigationMenuProps {
 
 export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props => {
     const { disableLKSContainerLink } = props;
+    const { homeContainer } = getServerContext();
     const [error, setError] = useState<string>();
     const [products, setProducts] = useState<ProductModel[]>(); // the array of products that have been registered for this LK server
     const [tabs, setTabs] = useState<ContainerTabModel[]>(); // the array of container tabs for the current LK container
@@ -38,7 +39,7 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
         getRegisteredProducts().then(setProducts).catch(setError);
 
         Security.getContainers({
-            container: 'home',
+            container: homeContainer,
             includeSubfolders: false,
             includeEffectivePermissions: false,
             success: data => {
@@ -99,12 +100,14 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
     }
 
     const selectedProduct = getSelectedProduct(products, selectedProductId);
-    const selectedProject = selectedProduct ? new Container(getServerContext().container) : undefined;
+    const currentContainer = new Container(getServerContext().container);
     const showProductDrawer = selectedProductId === undefined;
     const showLKSDrawer = selectedProductId === LKS_PRODUCT_ID;
     const showSectionsDrawer = selectedProduct !== undefined;
     const { user } = getServerContext();
-    const showMenuSettings = hasPremiumModule() && user.isRootAdmin;
+    const showMenuSettings = useMemo(() => {
+        return hasPremiumModule() && user.isRootAdmin
+    }, [user, hasPremiumModule]);
 
     return (
         <div className={'product-navigation-container' + (showProductDrawer ? ' wider' : '')}>
@@ -125,7 +128,7 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
                 {showSectionsDrawer && (
                     <ProductSectionsDrawer
                         product={selectedProduct}
-                        project={selectedProject}
+                        container={currentContainer}
                         onCloseMenu={onCloseMenu}
                     />
                 )}

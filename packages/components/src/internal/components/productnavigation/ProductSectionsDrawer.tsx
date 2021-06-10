@@ -2,11 +2,25 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { List } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
-import { Container, AppURL, createProductUrl, ProductMenuModel, Alert, MenuSectionModel } from '../../..';
-import { FREEZERS_KEY, WORKFLOW_KEY } from '../../app/constants';
+import {
+    Alert,
+    AppURL,
+    Container,
+    createProductUrl,
+    incrementClientSideMetricCount,
+    MenuSectionModel,
+    ProductMenuModel
+} from '../../..';
+import { FREEZERS_KEY, SAMPLE_MANAGER_PRODUCT_ID, WORKFLOW_KEY } from '../../app/constants';
 
 import { ProductModel, ProductSectionModel } from './models';
-import { PRODUCT_ID_SECTION_QUERY_MAP, SECTION_KEYS_TO_SKIP } from './constants';
+import {
+    APPLICATION_NAVIGATION_METRIC,
+    PRODUCT_ID_SECTION_QUERY_MAP,
+    SECTION_KEYS_TO_SKIP,
+    BIOLOGICS_SECTION_METRIC,
+    SAMPLE_MANAGER_SECTION_METRIC
+} from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductAppsDrawerProps {
@@ -39,18 +53,19 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
             });
     }, [product]);
 
-    return <ProductSectionsDrawerImpl error={error} sections={sections} onCloseMenu={onCloseMenu} />;
+    return <ProductSectionsDrawerImpl error={error} product={product} sections={sections} onCloseMenu={onCloseMenu} />;
 });
 
 interface ProductSectionsDrawerImplProps {
     error: string;
+    product: ProductModel,
     sections: ProductSectionModel[];
     onCloseMenu?: () => void;
 }
 
 // exported for jest testing
 export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props => {
-    const { sections, error, onCloseMenu } = props;
+    const { sections, error, onCloseMenu, product } = props;
 
     const [transition, setTransition] = useState<boolean>(true);
     useEffect(() => {
@@ -59,6 +74,7 @@ export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = mem
     }, []);
 
     const navigate = useCallback((section: ProductSectionModel) => {
+        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, product.navigationMetric);
         window.location.href = section.url.toString();
         onCloseMenu?.();
     }, []);

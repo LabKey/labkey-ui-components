@@ -1,8 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-
-import { Container } from '../../..';
-import { TEST_USER_FOLDER_ADMIN, TEST_USER_EDITOR } from '../../../test/data/users';
+import { TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN } from '../../../test/data/users';
 
 import { getProjectBeginUrl, ProductLKSDrawer } from './ProductLKSDrawer';
 import { ProductClickableItem } from './ProductClickableItem';
@@ -76,31 +74,15 @@ describe('ProductLKSDrawer', () => {
     test('showHome', () => {
         const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={true} />);
         validate(wrapper, 2);
-        expect(wrapper.find('.container-item').first().prop('href')).toBe('/labkey/project/home/begin.view');
         expect(wrapper.find('.container-item').first().text()).toBe('LabKey Home');
+        expect(wrapper.find('.container-item').last().text()).toBe(LABKEY.container.title);
         wrapper.unmount();
     });
 
-    test('in home project', () => {
-        LABKEY.project.id = 'home';
-        LABKEY.project.name = 'home';
-        LABKEY.project.title = 'Home';
-        LABKEY.container.id = 'home';
-        LABKEY.container.path = '/home';
-        LABKEY.container.title = 'Home';
-        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={true} />);
+    test('hideContainer', () => {
+        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} hideLKSContainerLink={true} showHome={true} />);
         validate(wrapper, 1);
-        expect(wrapper.find('.container-item').prop('href')).toBe('/labkey/project/home/begin.view');
-        expect(wrapper.find('.container-item').text()).toBe('LabKey Home');
-        wrapper.unmount();
-    });
-
-    test('not in home project', () => {
-
-        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={true} />);
-        validate(wrapper, 2);
-        expect(wrapper.find('.container-item').last().prop('href')).toBe('/labkey/project/test/begin.view');
-        expect(wrapper.find('.container-item').last().text()).toBe('Test project');
+        expect(wrapper.find('.container-item').first().text()).toBe('LabKey Home');
         wrapper.unmount();
     });
 
@@ -113,7 +95,6 @@ describe('ProductLKSDrawer', () => {
         LABKEY.container.title = 'Test subfolder';
         const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={true} />);
         validate(wrapper, 2);
-        expect(wrapper.find('.container-item').last().prop('href')).toBe('/labkey/project/home/testSub/begin.view');
         expect(wrapper.find('.container-item').last().text()).toBe('Test subfolder');
         wrapper.unmount();
     });
@@ -127,7 +108,6 @@ describe('ProductLKSDrawer', () => {
         LABKEY.container.title = 'Test subfolder';
         const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={true} />);
         validate(wrapper, 2);
-        expect(wrapper.find('.container-item').last().prop('href')).toBe('/labkey/project/test/testSub/begin.view');
         expect(wrapper.find('.container-item').last().text()).toBe('Test subfolder');
         wrapper.unmount();
     });

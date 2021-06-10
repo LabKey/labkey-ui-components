@@ -1,22 +1,27 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext } from '@labkey/api';
 
-import { buildURL } from '../../..';
+import { buildURL, incrementClientSideMetricCount } from '../../..';
 
 import { ContainerTabModel } from './models';
-import { LK_DOC_FOLDER_TABS } from './constants';
+import {
+    APPLICATION_NAVIGATION_METRIC,
+    LK_DOC_FOLDER_TABS,
+    TO_LKS_CONTAINER_METRIC,
+    TO_LKS_HOME_METRIC, TO_LKS_TAB_METRIC
+} from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductLKSDrawerProps {
     showHome: boolean;
+    hideLKSContainerLink?: boolean;
     tabs: ContainerTabModel[];
 }
 
 export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
-    const { tabs, showHome } = props;
+    const { tabs, hideLKSContainerLink, showHome } = props;
     const { container, homeContainer, user } = getServerContext();
 
-    const showContainer = useMemo(() => container.path != '/home', [container])
     const [transition, setTransition] = useState<boolean>(true);
     useEffect(() => {
         // use setTimeout so that the "left" property will change and trigger the transition
@@ -24,21 +29,35 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
     }, []);
 
     const navigate = useCallback((tab: ContainerTabModel) => {
+        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_TAB_METRIC);
         window.location.href = tab.href;
     }, []);
 
     const visibleTabs = tabs.filter(tab => !tab.disabled);
 
+    const clickWithStats = (href: string, name: string) => {
+        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, name)
+        window.location.href = href;
+    };
+
+    const onHomeClick = useCallback(() => {
+        clickWithStats(getProjectBeginUrl(homeContainer), TO_LKS_HOME_METRIC);
+    }, [clickWithStats]);
+
+    const onContainerClick = useCallback(() => {
+        clickWithStats(getProjectBeginUrl(container.path), TO_LKS_CONTAINER_METRIC);
+    }, [clickWithStats]);
+
     return (
         <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
             {showHome && (
-                <a className="container-item lk-text-theme-dark" href={getProjectBeginUrl(homeContainer)}>
+                <a className="container-item lk-text-theme-dark" onClick={onHomeClick}>
                     <i className="fa fa-home container-icon" />
                     LabKey Home
                 </a>
             )}
-            {showContainer && (
-                <a className="container-item lk-text-theme-dark" href={getProjectBeginUrl(container.path)}>
+            {!hideLKSContainerLink && (
+                 <a className="container-item lk-text-theme-dark" onClick={onContainerClick}>
                     <i className="fa fa-folder-o container-icon" />
                     {container.title}
                 </a>

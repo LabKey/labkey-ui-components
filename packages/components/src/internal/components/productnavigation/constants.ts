@@ -40,3 +40,11 @@ export const PRODUCT_ID_IMG_SRC_MAP = {
 export const LK_DOC_FOLDER_TABS = getHelpLink('tabs');
 export const PRODUCT_SERVICES_URL = 'https://www.labkey.com/products-services/';
 export const ADMIN_LOOK_AND_FEEL_URL = ActionURL.buildURL("admin", "lookAndFeelSettings.view", "/");
+
+export const APPLICATION_NAVIGATION_METRIC = 'applicationNavigation';
+export const TO_LKS_HOME_METRIC = 'toHomeProject';
+export const TO_LKS_CONTAINER_METRIC = 'toServerContainer';
+export const TO_LKS_TAB_METRIC = 'toServerContainerTab';
+export const APPLICATION_SECTION_METRIC = 'toApplicationSection';
+export const BIOLOGICS_SECTION_METRIC = 'toBiologicsSection';
+export const SAMPLE_MANAGER_SECTION_METRIC = 'toSampleManagerSection';

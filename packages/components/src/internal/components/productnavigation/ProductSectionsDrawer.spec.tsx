@@ -13,10 +13,6 @@ import {
 import { ProductClickableItem } from './ProductClickableItem';
 import { ProductModel, ProductSectionModel } from './models';
 
-const DEFAULT_PROPS = {
-    error: undefined,
-    sections: [],
-};
 
 const TEST_SECTIONS = [
     new ProductSectionModel({ key: 'a', label: 'A' }),
@@ -26,6 +22,12 @@ const TEST_SECTIONS = [
 
 const TEST_PRODUCT = new ProductModel({ productId: 'a', productName: 'A' });
 const TEST_PROJECT = new Container({ id: '1', path: '/test' });
+
+const DEFAULT_PROPS = {
+    error: undefined,
+    sections: [],
+    product: TEST_PRODUCT
+};
 
 describe('ProductSectionsDrawer', () => {
     function validate(wrapper: ReactWrapper, count: number, hasError = false) {

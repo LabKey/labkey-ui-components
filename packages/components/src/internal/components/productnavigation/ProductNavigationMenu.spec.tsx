@@ -20,6 +20,7 @@ const TEST_PRODUCTS = [
 const DEFAULT_PROPS = {
     error: undefined,
     products: TEST_PRODUCTS,
+    hideLKSContainerLink: false,
     homeVisible: true,
     tabs: [],
     selectedProductId: undefined,

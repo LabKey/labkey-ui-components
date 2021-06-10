@@ -46,7 +46,7 @@
                 cursor: default;
                 &:hover, &:hover .product-subtitle, &:hover .nav-icon {
                     color: $gray-light;
-                    background-color: white;
+                    background-color: $white;
                 }
             }
 

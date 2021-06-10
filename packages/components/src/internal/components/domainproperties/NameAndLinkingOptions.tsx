@@ -7,6 +7,8 @@ import { OntologyConceptAnnotation } from '../ontology/OntologyConceptAnnotation
 
 import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
+import { hasModule } from '../../app/utils';
+
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';
 import {
@@ -19,7 +21,6 @@ import {
 import { DomainField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
-import { hasModule } from '../../app/utils';
 
 interface NameAndLinkingProps {
     index: number;

@@ -26,12 +26,14 @@ import { getBrowserHistory } from '../../util/global';
 
 import { getSelected } from '../../actions';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserDetailsPanel } from './UserDetailsPanel';
 import { CreateUsersModal } from './CreateUsersModal';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 const OMITTED_COLUMNS = [
     'phone',

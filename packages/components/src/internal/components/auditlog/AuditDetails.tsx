@@ -148,7 +148,7 @@ export class AuditDetails extends Component<Props, State> {
 
         const isUpdate = changeDetails.isUpdate();
         const isInsert = changeDetails.isInsert();
-        let usedFields = [];
+        const usedFields = [];
 
         let oldFields, newFields;
         if (changeDetails.oldData) {

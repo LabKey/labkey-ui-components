@@ -44,6 +44,8 @@ import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 
 import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
+import { hasModule } from '../../app/utils';
+
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     EXPAND_TRANSITION,
@@ -100,7 +102,6 @@ import {
     isFieldDeletable,
 } from './propertiesUtil';
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
-import { hasModule } from '../../app/utils';
 
 interface IDomainFormInput {
     allowImportExport?: boolean;

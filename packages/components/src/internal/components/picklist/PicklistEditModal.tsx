@@ -11,7 +11,6 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 import { createNotification } from '../notifications/actions';
-import { SAMPLE_MANAGER_PRODUCT_ID } from '../../app/constants';
 
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
 import { Picklist } from './models';
@@ -193,7 +192,3 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         </Modal>
     );
 });
-
-PicklistEditModal.defaultProps = {
-    picklistProductId: SAMPLE_MANAGER_PRODUCT_ID
-};

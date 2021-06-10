@@ -33,7 +33,7 @@ const DEFAULT_PROPS = {
     isSelectingSamples: (schemaName: string) => { return schemaName?.toLowerCase() === 'samples'; }
 }
 
-describe('SamplesCreateSubMenu', () => {
+describe('CreateSamplesSubMenuBase', () => {
     function validate(wrapper: ReactWrapper, optionCount: number, menuText = 'Create Samples', currentMenuChoice?: string): List<MenuOption> {
         expect(wrapper.find(SampleCreationTypeModal)).toHaveLength(0);
 

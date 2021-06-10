@@ -16,7 +16,7 @@ import {
     SubMenu,
 } from '../../..';
 
-interface SamplesCreateSubMenuProps {
+interface CreateSamplesSubMenuProps {
     getOptions: (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => List<MenuOption>;
     maxParentPerSample: number;
     isSelectingSamples: (schemaName: string) => boolean;
@@ -32,7 +32,7 @@ interface SamplesCreateSubMenuProps {
     allowPooledSamples?: boolean;
 }
 
-export const CreateSamplesSubMenuBase: FC<SamplesCreateSubMenuProps> = memo(props => {
+export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
     const {
         allowPooledSamples,
         menuCurrentChoice,

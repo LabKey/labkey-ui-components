@@ -9,12 +9,13 @@ import { PICKLIST, PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '.
 import { saveDomain } from '../domainproperties/actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
-import { buildURL } from '../../url/AppURL';
+import { AppURL, buildURL, createProductUrlFromParts } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { SCHEMAS } from '../../../index';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
+import { PICKLIST_KEY } from "../../app/constants";
 
 export function getPicklists(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
@@ -430,4 +431,14 @@ export function removeSamplesFromPicklist(picklist: Picklist, selectionModel: Qu
                 });
         }
     });
+}
+
+export function getPicklistUrl(listId: number, picklistProductId?: string, currentProductId?: string) : string {
+    let picklistUrl : string = AppURL.create(PICKLIST_KEY, listId).toHref();
+    if (currentProductId && picklistProductId) {
+        let url = createProductUrlFromParts(picklistProductId, currentProductId, {}, PICKLIST_KEY, listId);
+        picklistUrl = url instanceof AppURL ? url.toHref() : url;
+    }
+
+    return picklistUrl;
 }

@@ -32,7 +32,7 @@ interface SamplesCreateSubMenuProps {
     allowPooledSamples?: boolean;
 }
 
-export const SamplesCreateSubMenu: FC<SamplesCreateSubMenuProps> = memo(props => {
+export const CreateSamplesSubMenuBase: FC<SamplesCreateSubMenuProps> = memo(props => {
     const {
         allowPooledSamples,
         menuCurrentChoice,
@@ -138,6 +138,6 @@ export const SamplesCreateSubMenu: FC<SamplesCreateSubMenuProps> = memo(props =>
     );
 });
 
-SamplesCreateSubMenu.defaultProps = {
+CreateSamplesSubMenuBase.defaultProps = {
     allowPooledSamples: true
 };

@@ -7,7 +7,7 @@ import {
     SubMenu
 } from "../../..";
 
-import {SamplesCreateSubMenu} from "./SamplesCreateSubMenu";
+import { CreateSamplesSubMenuBase } from "./CreateSamplesSubMenuBase";
 
 const sampleOptions = [{
         "key": "Blood",
@@ -48,7 +48,7 @@ describe('SamplesCreateSubMenu', () => {
     }
 
     test('default props', () => {
-        const wrapper = mount(<SamplesCreateSubMenu {...DEFAULT_PROPS} />);
+        const wrapper = mount(<CreateSamplesSubMenuBase {...DEFAULT_PROPS} />);
         const options = validate(wrapper, 2);
 
         expect(options.get(0).name).toBe('Blood');
@@ -60,7 +60,7 @@ describe('SamplesCreateSubMenu', () => {
     });
 
     test('SubMenu props', () => {
-        const wrapper = mount(<SamplesCreateSubMenu {...DEFAULT_PROPS} menuText={'Test1'} menuCurrentChoice={'MixtureBatches'} />);
+        const wrapper = mount(<CreateSamplesSubMenuBase {...DEFAULT_PROPS} menuText={'Test1'} menuCurrentChoice={'MixtureBatches'} />);
         validate(wrapper, 2, 'Test1', 'MixtureBatches');
         wrapper.unmount();
     });

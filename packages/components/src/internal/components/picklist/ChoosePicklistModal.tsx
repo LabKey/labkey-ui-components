@@ -12,10 +12,14 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
 import { createNotification } from '../notifications/actions';
-import { AppURL } from '../../url/AppURL';
-import { PICKLIST_KEY } from '../../app/constants';
 
-import { addSamplesToPicklist, getPicklistCountsBySampleType, getPicklists, SampleTypeCount } from './actions';
+import {
+    addSamplesToPicklist,
+    getPicklistCountsBySampleType,
+    getPicklists,
+    getPicklistUrl,
+    SampleTypeCount
+} from './actions';
 import { Picklist } from './models';
 
 interface PicklistListProps {
@@ -161,12 +165,13 @@ interface AddedToPicklistNotificationProps {
     picklist: Picklist;
     numAdded: number;
     numSelected: number;
-    getPicklistURL?: (picklistId: number) => string;
+    currentProductId?: string;
+    picklistProductId?: string;
 }
 
 // export for jest testing
 export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> = props => {
-    const { picklist, numAdded, numSelected, getPicklistURL } = props;
+    const { picklist, numAdded, numSelected, currentProductId, picklistProductId } = props;
     let numAddedNotification;
     if (numAdded == 0) {
         numAddedNotification = 'No samples added';
@@ -181,13 +186,9 @@ export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> =
         numNotAddedNotification += 'already in the list.';
     }
 
-    const picklistUrl = getPicklistURL
-        ? getPicklistURL(picklist.listId)
-        : AppURL.create(PICKLIST_KEY, picklist.listId).toHref();
-
     return (
         <>
-            {numAddedNotification} to picklist "<a href={picklistUrl}>{picklist.name}</a>".
+            {numAddedNotification} to picklist "<a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>{picklist.name}</a>".
             {numNotAddedNotification}
         </>
     );
@@ -212,7 +213,8 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             selectionKey,
             numSelected,
             sampleIds,
-            getPicklistURL,
+            currentProductId,
+            picklistProductId,
         } = props;
         const [search, setSearch] = useState<string>('');
         const [error, setError] = useState<string>(undefined);
@@ -259,7 +261,8 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                             picklist={activeItem}
                             numAdded={insertResponse.rows.length}
                             numSelected={numSelected}
-                            getPicklistURL={getPicklistURL}
+                            currentProductId={currentProductId}
+                            picklistProductId={picklistProductId}
                         />
                     ),
                     alertClass: insertResponse.rows.length === 0 ? 'info' : 'success',
@@ -404,7 +407,8 @@ interface ChoosePicklistModalProps {
     selectionKey?: string;
     numSelected: number;
     sampleIds?: string[];
-    getPicklistURL?: (picklistId: number) => string;
+    currentProductId?: string;
+    picklistProductId?: string;
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {

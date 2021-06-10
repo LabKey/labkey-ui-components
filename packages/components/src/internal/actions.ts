@@ -1194,7 +1194,7 @@ export function setSnapshotSelections(
 }
 
 /**
- * Set the snapshot selections for a grid
+ * Get the snapshot selections for a grid
  * @param key the selection key for the grid
  * @param containerPath optional path to the container for this grid.  Default is the current container path
  */

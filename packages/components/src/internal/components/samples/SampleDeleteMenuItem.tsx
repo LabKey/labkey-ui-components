@@ -30,7 +30,7 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
     const [showConfirmDeleteSamples, setShowConfirmDeleteSamples] = useState<boolean>(false);
 
     const onClick = useCallback(() => {
-        if (!queryModel || queryModel.selections.size > 0) {
+        if (!queryModel || queryModel.hasSelections) {
             setShowConfirmDeleteSamples(true);
         }
     }, [queryModel]);
@@ -41,14 +41,12 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
 
     const onDeleteComplete = useCallback((rowsToKeep: any[]) => {
         setShowConfirmDeleteSamples(false);
-        if (afterSampleDelete) afterSampleDelete(rowsToKeep);
+        afterSampleDelete?.(rowsToKeep);
     }, []);
-
-    const useSelection = queryModel !== undefined;
 
     return (
         <>
-            {useSelection ? (
+            {queryModel !== undefined ? (
                 <SelectionMenuItem
                     id={key}
                     text={itemText}

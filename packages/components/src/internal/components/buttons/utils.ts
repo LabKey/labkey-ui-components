@@ -5,9 +5,8 @@ import {AppURL, MenuOption, MenuSectionModel, naturalSort} from '../../..';
 export function getMenuItemsForSection(
     section: MenuSectionModel,
     useOnClick: boolean,
-    itemActionFn?: (menuSection: MenuSectionModel, key: string) => any,
-    disabledMsg?: string,
-    sampleItemActionFn?: (key: string) => any
+    itemActionFn?: (key: string, menuSection?: MenuSectionModel) => any,
+    disabledMsg?: string
 ): List<MenuOption> {
     let items = List<MenuOption>();
 
@@ -23,17 +22,15 @@ export function getMenuItemsForSection(
                 };
 
                 if (itemActionFn) {
-                    config.href = useOnClick ? undefined : itemActionFn(section, item.key).toHref();
-                    config.onClick =
-                        useOnClick && itemActionFn ? itemActionFn.bind(this, section, item.key) : undefined;
-                } else if (sampleItemActionFn) {
-                    let href = useOnClick ? undefined : sampleItemActionFn(item.key);
+                    let href = useOnClick ? undefined : itemActionFn(item.key, section);
                     if (href instanceof AppURL)
                         href = href.toHref();
+
                     config.href = href;
                     config.onClick =
-                        useOnClick && sampleItemActionFn ? sampleItemActionFn.bind(this, item.key) : undefined;
+                        useOnClick && itemActionFn ? itemActionFn.bind(this, item.key, section) : undefined;
                 }
+
                 items = items.push(config);
             });
     }

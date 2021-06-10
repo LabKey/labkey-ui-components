@@ -11,10 +11,9 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 import { createNotification } from '../notifications/actions';
-import { AppURL } from '../../url/AppURL';
-import { PICKLIST_KEY } from '../../app/constants';
+import { SAMPLE_MANAGER_PRODUCT_ID } from '../../app/constants';
 
-import { createPicklist, updatePicklist } from './actions';
+import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
 import { Picklist } from './models';
 
 interface Props {
@@ -26,7 +25,8 @@ interface Props {
     onCancel: () => void;
     onFinish: (picklist: Picklist) => void;
     showNotification?: boolean;
-    getPicklistURL?: (picklistId: number) => string;
+    currentProductId?: string;
+    picklistProductId?: string;
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
@@ -39,7 +39,8 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         sampleIds,
         picklist,
         showNotification,
-        getPicklistURL,
+        currentProductId,
+        picklistProductId
     } = props;
     const [name, setName] = useState<string>(picklist ? picklist.name : '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
@@ -79,17 +80,13 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     const quantity = selectedQuantity ? selectedQuantity : sampleIds?.length;
 
     const createSuccessNotification = (picklist: Picklist) => {
-        const picklistUrl = getPicklistURL
-            ? getPicklistURL(picklist.listId)
-            : AppURL.create(PICKLIST_KEY, picklist.listId).toHref();
-
         createNotification({
             message: () => {
                 return (
                     <>
                         Successfully created "{picklist.name}" with{' '}
                         {quantity ? Utils.pluralize(quantity, 'sample', 'samples') : ' no samples'}.&nbsp;
-                        <a href={picklistUrl}>View picklist</a>.
+                        <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>.
                     </>
                 );
             },
@@ -196,3 +193,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         </Modal>
     );
 });
+
+PicklistEditModal.defaultProps = {
+    picklistProductId: SAMPLE_MANAGER_PRODUCT_ID
+};

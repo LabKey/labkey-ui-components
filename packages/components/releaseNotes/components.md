@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version XXX
 *Released*: XXX
 * Added SampleDeleteMenuItem
-* Moved CreateSamplesSubMenu, getMenuItemsForSection from SampleManager
+* Moved CreateSamplesSubMenuBase, getMenuItemsForSection from SampleManager
 * Allow EntityInsertPanel to initialize sample parents from inventory items selection
 * Add getSnapshotSelections action util
 

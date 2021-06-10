@@ -23,12 +23,13 @@ import { ServerNotificationsConfig } from '../notifications/model';
 
 import { ProductNavigation } from '../productnavigation/ProductNavigation';
 
+import { shouldShowProductNavigation } from '../productnavigation/utils';
+
 import { ProductMenu } from './ProductMenu';
 import { SearchBox } from './SearchBox';
 import { UserMenu, UserMenuProps } from './UserMenu';
 import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
-import { shouldShowProductNavigation } from '../productnavigation/utils';
 
 interface NavigationBarProps {
     brand?: ReactNode;

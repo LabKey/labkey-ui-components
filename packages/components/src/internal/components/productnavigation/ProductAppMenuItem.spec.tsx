@@ -28,11 +28,11 @@ describe('ProductAppMenuItem', () => {
     });
 
     test('no subtitle', () => {
-        const wrapper = mount(<ProductAppMenuItem {...DEFAULT_PROPS} subtitle={undefined}/>);
+        const wrapper = mount(<ProductAppMenuItem {...DEFAULT_PROPS} subtitle={undefined} />);
         validate(wrapper);
-        expect(wrapper.find(".product-title").text()).toBe(DEFAULT_PROPS.title);
-        expect(wrapper.find(".no-subtitle")).toHaveLength(1);
-    })
+        expect(wrapper.find('.product-title').text()).toBe(DEFAULT_PROPS.title);
+        expect(wrapper.find('.no-subtitle')).toHaveLength(1);
+    });
 
     test('iconUrlAlt', () => {
         const wrapper = mount(<ProductAppMenuItem {...DEFAULT_PROPS} iconUrlAlt="icon-url-alt-test" />);

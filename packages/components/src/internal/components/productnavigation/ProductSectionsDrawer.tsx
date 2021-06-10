@@ -9,18 +9,12 @@ import {
     createProductUrl,
     incrementClientSideMetricCount,
     MenuSectionModel,
-    ProductMenuModel
+    ProductMenuModel,
 } from '../../..';
-import { FREEZERS_KEY, SAMPLE_MANAGER_PRODUCT_ID, WORKFLOW_KEY } from '../../app/constants';
+import { FREEZERS_KEY, WORKFLOW_KEY } from '../../app/constants';
 
 import { ProductModel, ProductSectionModel } from './models';
-import {
-    APPLICATION_NAVIGATION_METRIC,
-    PRODUCT_ID_SECTION_QUERY_MAP,
-    SECTION_KEYS_TO_SKIP,
-    BIOLOGICS_SECTION_METRIC,
-    SAMPLE_MANAGER_SECTION_METRIC
-} from './constants';
+import { APPLICATION_NAVIGATION_METRIC, PRODUCT_ID_SECTION_QUERY_MAP, SECTION_KEYS_TO_SKIP, } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductAppsDrawerProps {
@@ -58,7 +52,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
 
 interface ProductSectionsDrawerImplProps {
     error: string;
-    product: ProductModel,
+    product: ProductModel;
     sections: ProductSectionModel[];
     onCloseMenu?: () => void;
 }

@@ -36,8 +36,7 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                 if (product.disabled) {
                     iconUrl = imgSrc?.iconUrlDisabled ?? DEFAULT_ICON_URL;
                     iconUrlAlt = imgSrc?.iconUrlDisabled ?? DEFAULT_ICON_URL;
-                }
-                else {
+                } else {
                     iconUrl = imgSrc?.iconUrl ?? DEFAULT_ICON_URL;
                     iconUrlAlt = imgSrc?.iconUrlAlt ?? DEFAULT_ICON_ALT_URL;
                 }
@@ -48,7 +47,7 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                         iconUrl={iconUrl}
                         iconUrlAlt={iconUrlAlt}
                         title={product.productName}
-                        subtitle={product.disabled ? "Application not enabled in this location" : undefined }
+                        subtitle={product.disabled ? 'Application not enabled in this location' : undefined}
                         onClick={() => onClick(product.productId)}
                     />
                 );

@@ -247,15 +247,15 @@ describe('utils', () => {
         expect(isProductNavigationEnabled(FREEZER_MANAGER_PRODUCT_ID)).toBeFalsy();
 
         LABKEY.moduleContext = {
-            samplemanagement: {}
+            samplemanagement: {},
         };
         expect(isProductNavigationEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeTruthy();
 
         LABKEY.moduleContext = {
             samplemanagement: {},
             biologics: {
-                isBiologicsSampleManagerNavEnabled: false
-            }
+                isBiologicsSampleManagerNavEnabled: false,
+            },
         };
         expect(isProductNavigationEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeFalsy();
         expect(isProductNavigationEnabled(BIOLOGICS_PRODUCT_ID)).toBeTruthy();
@@ -263,12 +263,11 @@ describe('utils', () => {
         LABKEY.moduleContext = {
             samplemanagement: {},
             biologics: {
-                isBiologicsSampleManagerNavEnabled: true
-            }
+                isBiologicsSampleManagerNavEnabled: true,
+            },
         };
         expect(isProductNavigationEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeTruthy();
         expect(isProductNavigationEnabled(BIOLOGICS_PRODUCT_ID)).toBeTruthy();
-
     });
 
     test('hasPremiumModule', () => {

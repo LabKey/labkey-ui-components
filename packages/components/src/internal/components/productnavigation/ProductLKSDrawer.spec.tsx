@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
+
 import { TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN } from '../../../test/data/users';
 
 import { getProjectBeginUrl, ProductLKSDrawer } from './ProductLKSDrawer';
@@ -95,10 +96,10 @@ describe('ProductLKSDrawer', () => {
         LABKEY.container.id = 'home';
         LABKEY.container.path = '/home';
         LABKEY.container.title = 'Home';
-        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} disableLKSContainerLink={true} showHome={true}/>);
+        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} disableLKSContainerLink={true} showHome={true} />);
         validate(wrapper, 1);
         expect(wrapper.find('.container-item').first().text()).toBe('LabKey Home');
-        expect(wrapper.find('.container-item').first().prop("onClick")).toBeFalsy();
+        expect(wrapper.find('.container-item').first().prop('onClick')).toBeFalsy();
 
         wrapper.unmount();
     });
@@ -133,9 +134,8 @@ describe('ProductLKSDrawer', () => {
         wrapper.unmount();
     });
 
-
     test('getProjectBeginUrl', () => {
-        LABKEY.container = {}
+        LABKEY.container = {};
         expect(getProjectBeginUrl(undefined)).toBe('/labkey/project/begin.view');
         expect(getProjectBeginUrl('test')).toBe('/labkey/project/test/begin.view');
     });

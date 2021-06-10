@@ -4,7 +4,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Alert, LoadingSpinner } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
-import { getSelectedProduct, ProductNavigationMenuImpl, } from './ProductNavigationMenu';
+import { getSelectedProduct, ProductNavigationMenuImpl } from './ProductNavigationMenu';
 import { ProductNavigationHeader } from './ProductNavigationHeader';
 import { ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductSectionsDrawer } from './ProductSectionsDrawer';
@@ -50,25 +50,19 @@ describe('ProductNavigationMenu', () => {
     });
 
     test('loading', () => {
-        let wrapper = mount(
-            <ProductNavigationMenuImpl {...DEFAULT_PROPS} products={undefined} />
-        );
+        let wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} products={undefined} />);
         validate(wrapper, false);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
         wrapper.unmount();
 
-        wrapper = mount(
-            <ProductNavigationMenuImpl {...DEFAULT_PROPS} tabs={undefined} />
-        );
+        wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} tabs={undefined} />);
         validate(wrapper, false);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
         wrapper.unmount();
     });
 
     test('ProductNavigationHeader props', () => {
-        const wrapper = mount(
-            <ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId="a" />
-        );
+        const wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId="a" />);
         validate(wrapper, true, false, { ProductSectionsDrawer: 1 });
         expect(wrapper.find(ProductNavigationHeader).prop('title')).toBe('A');
         expect(wrapper.find(ProductNavigationHeader).prop('productId')).toBe('a');
@@ -76,41 +70,31 @@ describe('ProductNavigationMenu', () => {
     });
 
     test('showProductDrawer', () => {
-        const wrapper = mount(
-            <ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />
-        );
+        const wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />);
         validate(wrapper, true, true, { ProductAppsDrawer: 1 });
         wrapper.unmount();
     });
 
     test('showLKSDrawer', () => {
-        const wrapper = mount(
-            <ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={LKS_PRODUCT_ID} />
-        );
+        const wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={LKS_PRODUCT_ID} />);
         validate(wrapper, true, false, { ProductLKSDrawer: 1 });
         wrapper.unmount();
     });
 
     test('non-premium footer', () => {
-        let wrapper = mount(
-            <ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined}/>
-        );
+        let wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />);
         expect(wrapper.find('.product-navigation-footer')).toHaveLength(1);
         expect(wrapper.find('.product-navigation-footer').text()).toBe('More LabKey Solutions');
         wrapper.unmount();
 
-        wrapper = mount(
-            <ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId="a"/>
-        );
+        wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId="a" />);
         expect(wrapper.find('.product-navigation-footer')).toHaveLength(0);
         wrapper.unmount();
 
         LABKEY.user = {
-            isRootAdmin: true
-        }
-        wrapper = mount(
-            <ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined}/>
-        );
+            isRootAdmin: true,
+        };
+        wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />);
         expect(wrapper.find('.product-navigation-footer')).toHaveLength(1);
         expect(wrapper.find('.product-navigation-footer').text()).toBe('More LabKey Solutions');
         wrapper.unmount();
@@ -123,42 +107,36 @@ describe('ProductNavigationMenu', () => {
             },
         };
         LABKEY.user = {
-            isRootAdmin: true
-        }
-        let wrapper = mount(
-            <ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined}/>
-        );
+            isRootAdmin: true,
+        };
+        let wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />);
         let footer = wrapper.find('.product-navigation-footer');
         expect(footer).toHaveLength(1);
-        let links = footer.find("a");
+        let links = footer.find('a');
         expect(links).toHaveLength(2);
         expect(links.at(0).text()).toBe('Menu Settings');
         expect(links.at(1).text()).toBe('More LabKey Solutions');
         wrapper.unmount();
 
         LABKEY.user = {
-            isRootAdmin: false
-        }
-        wrapper = mount(
-            <ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />,
-        );
+            isRootAdmin: false,
+        };
+        wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />);
         footer = wrapper.find('.product-navigation-footer');
         expect(footer).toHaveLength(1);
-        links = footer.find("a");
-        expect(footer.find("a")).toHaveLength(1);
+        links = footer.find('a');
+        expect(footer.find('a')).toHaveLength(1);
         expect(links.at(0).text()).toBe('More LabKey Solutions');
         wrapper.unmount();
 
         LABKEY.user = {
-            isAdmin: false
-        }
-        wrapper = mount(
-            <ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />
-        );
+            isAdmin: false,
+        };
+        wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />);
         footer = wrapper.find('.product-navigation-footer');
         expect(footer).toHaveLength(1);
-        links = footer.find("a");
-        expect(footer.find("a")).toHaveLength(1);
+        links = footer.find('a');
+        expect(footer.find('a')).toHaveLength(1);
         expect(links.at(0).text()).toBe('More LabKey Solutions');
         wrapper.unmount();
     });

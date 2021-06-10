@@ -4,6 +4,8 @@ import { getServerContext, Security } from '@labkey/api';
 import { Alert, Container, LoadingSpinner, naturalSortByProperty, useServerContext } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
+import { hasPremiumModule } from '../../app/utils';
+
 import { getContainerTabs, getRegisteredProducts } from './actions';
 import { ADMIN_LOOK_AND_FEEL_URL, PRODUCT_SERVICES_URL } from './constants';
 import { ContainerTabModel, ProductModel } from './models';
@@ -11,7 +13,6 @@ import { ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductSectionsDrawer } from './ProductSectionsDrawer';
 import { ProductLKSDrawer } from './ProductLKSDrawer';
 import { ProductNavigationHeader } from './ProductNavigationHeader';
-import { hasPremiumModule } from '../../app/utils';
 
 interface ProductNavigationMenuProps {
     onCloseMenu?: () => void;
@@ -106,22 +107,21 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
     const showMenuSettings = hasPremiumModule() && user.isRootAdmin;
 
     return (
-        <div
-            className={
-                'product-navigation-container' +
-                (showProductDrawer ? ' wider' : '')
-            }
-        >
+        <div className={'product-navigation-container' + (showProductDrawer ? ' wider' : '')}>
             <ProductNavigationHeader
                 productId={selectedProductId}
-                onClick={() =>
-                    onSelection(undefined)
-                }
+                onClick={() => onSelection(undefined)}
                 title={selectedProduct?.productName}
             />
             <ul className="product-navigation-listing">
                 {showProductDrawer && <ProductAppsDrawer {...props} onClick={onSelection} />}
-                {showLKSDrawer && <ProductLKSDrawer disableLKSContainerLink={disableLKSContainerLink} showHome={homeVisible} tabs={tabs} />}
+                {showLKSDrawer && (
+                    <ProductLKSDrawer
+                        disableLKSContainerLink={disableLKSContainerLink}
+                        showHome={homeVisible}
+                        tabs={tabs}
+                    />
+                )}
                 {showSectionsDrawer && (
                     <ProductSectionsDrawer
                         product={selectedProduct}
@@ -132,13 +132,13 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
             </ul>
             {selectedProductId === undefined && (
                 <div className="product-navigation-footer">
-                    {showMenuSettings &&
+                    {showMenuSettings && (
                         <div className="bottom-spacing-less">
                             <a href={ADMIN_LOOK_AND_FEEL_URL} target="_blank" rel="noopener noreferrer">
                                 Menu Settings
                             </a>
                         </div>
-                    }
+                    )}
                     <div>
                         <a href={PRODUCT_SERVICES_URL} target="_blank" rel="noopener noreferrer">
                             More LabKey Solutions

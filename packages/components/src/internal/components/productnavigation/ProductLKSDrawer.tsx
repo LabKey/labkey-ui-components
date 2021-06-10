@@ -1,6 +1,8 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext } from '@labkey/api';
 
+import classNames from 'classnames';
+
 import { buildURL, incrementClientSideMetricCount } from '../../..';
 
 import { ContainerTabModel } from './models';
@@ -8,10 +10,10 @@ import {
     APPLICATION_NAVIGATION_METRIC,
     LK_DOC_FOLDER_TABS,
     TO_LKS_CONTAINER_METRIC,
-    TO_LKS_HOME_METRIC, TO_LKS_TAB_METRIC
+    TO_LKS_HOME_METRIC,
+    TO_LKS_TAB_METRIC,
 } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
-import classNames from 'classnames';
 
 interface ProductLKSDrawerProps {
     showHome: boolean;
@@ -22,7 +24,7 @@ interface ProductLKSDrawerProps {
 export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
     const { tabs, disableLKSContainerLink, showHome } = props;
     const { container, homeContainer, user } = getServerContext();
-    const isHomeContainer = useMemo(() => container.path === '/home', [container])
+    const isHomeContainer = useMemo(() => container.path === '/home', [container]);
     const [transition, setTransition] = useState<boolean>(true);
     useEffect(() => {
         // use setTimeout so that the "left" property will change and trigger the transition
@@ -37,7 +39,7 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
     const visibleTabs = tabs.filter(tab => !tab.disabled);
 
     const clickWithStats = (href: string, name: string) => {
-        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, name)
+        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, name);
         window.location.href = href;
     };
 
@@ -52,16 +54,25 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
     return (
         <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
             {showHome && (
-                <div className={classNames("container-item ", {'lk-text-theme-dark': !isHomeContainer, clickable: !isHomeContainer})}
-                     onClick={!isHomeContainer ? onHomeClick : undefined}
+                <div
+                    className={classNames('container-item ', {
+                        'lk-text-theme-dark': !isHomeContainer,
+                        clickable: !isHomeContainer,
+                    })}
+                    onClick={!isHomeContainer ? onHomeClick : undefined}
                 >
                     <i className="fa fa-home container-icon" />
                     LabKey Home
                 </div>
             )}
             {!isHomeContainer && (
-                <div className={classNames("container-item", {'lk-text-theme-dark': !disableLKSContainerLink, clickable: !disableLKSContainerLink})}
-                     onClick={disableLKSContainerLink ? undefined : onContainerClick} >
+                <div
+                    className={classNames('container-item', {
+                        'lk-text-theme-dark': !disableLKSContainerLink,
+                        clickable: !disableLKSContainerLink,
+                    })}
+                    onClick={disableLKSContainerLink ? undefined : onContainerClick}
+                >
                     <i className="fa fa-folder-o container-icon" />
                     {container.title}
                 </div>
@@ -89,7 +100,6 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
         </div>
     );
 });
-
 
 // exported for jest testing
 export function getProjectBeginUrl(container: string): string {

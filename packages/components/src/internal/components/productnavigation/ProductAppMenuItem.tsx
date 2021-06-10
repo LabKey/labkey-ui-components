@@ -18,8 +18,8 @@ export const ProductAppMenuItem: FC<ProductAppMenuItemProps> = memo(props => {
 
     return (
         <li
-            className={classNames({'labkey-page-nav': hovered, 'labkey-page-nav-disabled': disabled})}
-            onClick={disabled ? undefined : onClick }
+            className={classNames({ 'labkey-page-nav': hovered, 'labkey-page-nav-disabled': disabled })}
+            onClick={disabled ? undefined : onClick}
             onMouseEnter={onEnter}
             onMouseLeave={onLeave}
         >
@@ -38,7 +38,7 @@ export const ProductAppMenuItem: FC<ProductAppMenuItemProps> = memo(props => {
                     <i className="fa fa-chevron-right" />
                 </div>
             )}
-            <div className={classNames("product-title", {"no-subtitle": subtitle == undefined})}>{title}</div>
+            <div className={classNames('product-title', { 'no-subtitle': subtitle == undefined })}>{title}</div>
             <div className="product-subtitle">{subtitle}</div>
         </li>
     );

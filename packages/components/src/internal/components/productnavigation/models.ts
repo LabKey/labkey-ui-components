@@ -3,6 +3,7 @@ import { immerable } from 'immer';
 import { AppURL } from '../../..';
 import { isProductNavigationEnabled } from '../../app/utils';
 import { BIOLOGICS_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app/constants';
+
 import { APPLICATION_SECTION_METRIC, BIOLOGICS_SECTION_METRIC, SAMPLE_MANAGER_SECTION_METRIC } from './constants';
 
 export class ProductModel {
@@ -17,16 +18,19 @@ export class ProductModel {
     readonly disabled: boolean;
 
     constructor(values?: Partial<ProductModel>) {
-        Object.assign(this, values, {disabled: !isProductNavigationEnabled(values?.productId)});
+        Object.assign(this, values, { disabled: !isProductNavigationEnabled(values?.productId) });
     }
 
     get navigationMetric() {
-        if (this.productId === SAMPLE_MANAGER_PRODUCT_ID)
+        if (this.productId === SAMPLE_MANAGER_PRODUCT_ID) {
             return SAMPLE_MANAGER_SECTION_METRIC;
-        else if (this.productId === BIOLOGICS_PRODUCT_ID)
+        }
+        else if (this.productId === BIOLOGICS_PRODUCT_ID) {
             return BIOLOGICS_SECTION_METRIC;
-        else
+        }
+        else {
             return APPLICATION_SECTION_METRIC;
+        }
     }
 }
 

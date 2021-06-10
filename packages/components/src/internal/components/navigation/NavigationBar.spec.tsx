@@ -100,18 +100,18 @@ describe('<NavigationBar/>', () => {
     });
 
     test('show ProductNavigation for hasPremiumModule, non-admin', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['premium'] , applicationMenuDisplayMode: 'ALWAYS' } };
+        LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ALWAYS' } };
         const component = mount(<NavigationBar model={productMenuModel} user={TEST_USER_READER} />);
         validate(component, { ProductMenu: 1, UserMenu: 1, ProductNavigation: 1 });
         component.unmount();
     });
 
     test('hide ProductNavigation for non-admin', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['premium'] , applicationMenuDisplayMode: 'ADMIN' } };
+        LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ADMIN' } };
         const component = mount(<NavigationBar model={productMenuModel} user={TEST_USER_READER} />);
         validate(component, { ProductMenu: 1, UserMenu: 1, ProductNavigation: 0 });
         component.unmount();
-    })
+    });
 
     test('show ProductNavigation for hasPremiumModule, admin always', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ALWAYS' } };

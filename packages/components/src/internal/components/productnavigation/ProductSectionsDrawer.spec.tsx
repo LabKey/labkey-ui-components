@@ -13,7 +13,6 @@ import {
 import { ProductClickableItem } from './ProductClickableItem';
 import { ProductModel, ProductSectionModel } from './models';
 
-
 const TEST_SECTIONS = [
     new ProductSectionModel({ key: 'a', label: 'A' }),
     new ProductSectionModel({ key: 'b', label: 'B' }),
@@ -26,7 +25,7 @@ const TEST_PROJECT = new Container({ id: '1', path: '/test' });
 const DEFAULT_PROPS = {
     error: undefined,
     sections: [],
-    product: TEST_PRODUCT
+    product: TEST_PRODUCT,
 };
 
 describe('ProductSectionsDrawer', () => {

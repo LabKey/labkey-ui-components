@@ -1,15 +1,17 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
+
 import { BIOLOGICS_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app/constants';
 
 import { DEFAULT_ICON_ALT_URL, DEFAULT_ICON_URL, ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductAppMenuItem } from './ProductAppMenuItem';
 import { ProductModel } from './models';
 import {
-    BIOLOGICS_ALT_PRODUCT_ICON, BIOLOGICS_DISABLED_PRODUCT_ICON,
+    BIOLOGICS_ALT_PRODUCT_ICON,
+    BIOLOGICS_DISABLED_PRODUCT_ICON,
     BIOLOGICS_PRODUCT_ICON,
-    SAMPLE_MANAGER_ALT_PRODUCT_ICON, SAMPLE_MANAGER_DISABLED_PRODUCT_ICON,
-    SAMPLE_MANAGER_PRODUCT_ICON
+    SAMPLE_MANAGER_DISABLED_PRODUCT_ICON,
+    SAMPLE_MANAGER_PRODUCT_ICON,
 } from './constants';
 
 const DEFAULT_PROPS = {
@@ -66,14 +68,14 @@ describe('ProductAppsDrawer', () => {
     test('iconUrl and iconUrlAlt, sm disabled', () => {
         LABKEY.moduleContext = {
             samplemanagement: {},
-            biologics: {}
-        }
+            biologics: {},
+        };
         // create them after setting the module context to properly set the disabled flags
         const products = [
             new ProductModel({ productId: SAMPLE_MANAGER_PRODUCT_ID, productName: 'LKSM Name' }),
             new ProductModel({ productId: BIOLOGICS_PRODUCT_ID, productName: 'LKB Name' }),
             new ProductModel({ productId: 'other', productName: 'Other Name' }),
-        ]
+        ];
         const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={products} />);
         validate(wrapper, 4);
         expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrl')).toBe(
@@ -84,7 +86,7 @@ describe('ProductAppsDrawer', () => {
         );
         expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrl')).toBe(DEFAULT_ICON_URL);
         expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrlAlt')).toBe(
-            '/labkey/sampleManagement/images/' +  SAMPLE_MANAGER_DISABLED_PRODUCT_ICON
+            '/labkey/sampleManagement/images/' + SAMPLE_MANAGER_DISABLED_PRODUCT_ICON
         );
         expect(wrapper.find(ProductAppMenuItem).at(2).prop('iconUrlAlt')).toBe(
             '/labkey/biologics/images/' + BIOLOGICS_ALT_PRODUCT_ICON
@@ -94,7 +96,7 @@ describe('ProductAppsDrawer', () => {
         wrapper.unmount();
     });
 
-    test("iconUrl, only sample manager", () => {
+    test('iconUrl, only sample manager', () => {
         LABKEY.moduleContext = {
             samplemanagement: {},
         };
@@ -103,7 +105,7 @@ describe('ProductAppsDrawer', () => {
             new ProductModel({ productId: SAMPLE_MANAGER_PRODUCT_ID, productName: 'LKSM Name' }),
             new ProductModel({ productId: BIOLOGICS_PRODUCT_ID, productName: 'LKB Name' }),
             new ProductModel({ productId: 'other', productName: 'Other Name' }),
-        ]
+        ];
         const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={products} />);
         validate(wrapper, 4);
         expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrl')).toBe(
@@ -115,19 +117,19 @@ describe('ProductAppsDrawer', () => {
         expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrl')).toBe(DEFAULT_ICON_URL);
     });
 
-    test("iconUrl, all enabled", () => {
+    test('iconUrl, all enabled', () => {
         LABKEY.moduleContext = {
             samplemanagement: {},
             biologics: {
-                isBiologicsSampleManagerNavEnabled: true
-            }
+                isBiologicsSampleManagerNavEnabled: true,
+            },
         };
         // create them after setting the module context to properly set the disabled flags
         const products = [
             new ProductModel({ productId: SAMPLE_MANAGER_PRODUCT_ID, productName: 'LKSM Name' }),
             new ProductModel({ productId: BIOLOGICS_PRODUCT_ID, productName: 'LKB Name' }),
             new ProductModel({ productId: 'other', productName: 'Other Name' }),
-        ]
+        ];
         const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={products} />);
         validate(wrapper, 4);
         expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrl')).toBe(
@@ -138,5 +140,4 @@ describe('ProductAppsDrawer', () => {
         );
         expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrl')).toBe(DEFAULT_ICON_URL);
     });
-
 });

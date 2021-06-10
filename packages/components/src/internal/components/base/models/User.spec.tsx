@@ -6,6 +6,7 @@ import {
     TEST_USER_AUTHOR,
     TEST_USER_EDITOR,
     TEST_USER_FOLDER_ADMIN,
+    TEST_USER_PROJECT_ADMIN,
     TEST_USER_GUEST,
     TEST_USER_READER,
 } from '../../../../test/data/users';
@@ -42,6 +43,8 @@ describe('hasAllPermissions', () => {
     test('user permissions admin prop', () => {
         expect(hasAllPermissions(TEST_USER_FOLDER_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
         expect(hasAllPermissions(TEST_USER_FOLDER_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(false);
+        expect(hasAllPermissions(TEST_USER_PROJECT_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
+        expect(hasAllPermissions(TEST_USER_PROJECT_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(false);
         expect(hasAllPermissions(TEST_USER_APP_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
         expect(hasAllPermissions(TEST_USER_APP_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(true);
     });
@@ -77,6 +80,8 @@ describe('hasAnyPermissions', () => {
     test('user permissions admin prop', () => {
         expect(hasAnyPermissions(TEST_USER_FOLDER_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
         expect(hasAnyPermissions(TEST_USER_FOLDER_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(false);
+        expect(hasAnyPermissions(TEST_USER_PROJECT_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
+        expect(hasAnyPermissions(TEST_USER_PROJECT_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(false);
         expect(hasAnyPermissions(TEST_USER_APP_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
         expect(hasAnyPermissions(TEST_USER_APP_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(true);
     });
@@ -90,6 +95,7 @@ describe('User permissions', () => {
         expect(TEST_USER_EDITOR.hasInsertPermission()).toBeTruthy();
         expect(TEST_USER_ASSAY_DESIGNER.hasInsertPermission()).toBeFalsy();
         expect(TEST_USER_FOLDER_ADMIN.hasInsertPermission()).toBeTruthy();
+        expect(TEST_USER_PROJECT_ADMIN.hasInsertPermission()).toBeTruthy();
         expect(TEST_USER_APP_ADMIN.hasInsertPermission()).toBeTruthy();
     });
 
@@ -100,6 +106,7 @@ describe('User permissions', () => {
         expect(TEST_USER_EDITOR.hasUpdatePermission()).toBeTruthy();
         expect(TEST_USER_ASSAY_DESIGNER.hasUpdatePermission()).toBeFalsy();
         expect(TEST_USER_FOLDER_ADMIN.hasUpdatePermission()).toBeTruthy();
+        expect(TEST_USER_PROJECT_ADMIN.hasUpdatePermission()).toBeTruthy();
         expect(TEST_USER_APP_ADMIN.hasUpdatePermission()).toBeTruthy();
     });
 
@@ -110,6 +117,7 @@ describe('User permissions', () => {
         expect(TEST_USER_EDITOR.hasDeletePermission()).toBeTruthy();
         expect(TEST_USER_ASSAY_DESIGNER.hasDeletePermission()).toBeFalsy();
         expect(TEST_USER_FOLDER_ADMIN.hasDeletePermission()).toBeTruthy();
+        expect(TEST_USER_PROJECT_ADMIN.hasDeletePermission()).toBeTruthy();
         expect(TEST_USER_APP_ADMIN.hasDeletePermission()).toBeTruthy();
     });
 
@@ -120,6 +128,7 @@ describe('User permissions', () => {
         expect(TEST_USER_EDITOR.hasDesignAssaysPermission()).toBeFalsy();
         expect(TEST_USER_ASSAY_DESIGNER.hasDesignAssaysPermission()).toBeTruthy();
         expect(TEST_USER_FOLDER_ADMIN.hasDesignAssaysPermission()).toBeTruthy();
+        expect(TEST_USER_PROJECT_ADMIN.hasDesignAssaysPermission()).toBeTruthy();
         expect(TEST_USER_APP_ADMIN.hasDesignAssaysPermission()).toBeTruthy();
     });
 
@@ -130,6 +139,7 @@ describe('User permissions', () => {
         expect(TEST_USER_EDITOR.hasDesignSampleSetsPermission()).toBeFalsy();
         expect(TEST_USER_ASSAY_DESIGNER.hasDesignSampleSetsPermission()).toBeFalsy();
         expect(TEST_USER_FOLDER_ADMIN.hasDesignSampleSetsPermission()).toBeTruthy();
+        expect(TEST_USER_PROJECT_ADMIN.hasDesignSampleSetsPermission()).toBeTruthy();
         expect(TEST_USER_APP_ADMIN.hasDesignSampleSetsPermission()).toBeTruthy();
     });
 
@@ -140,6 +150,7 @@ describe('User permissions', () => {
         expect(TEST_USER_EDITOR.hasManageUsersPermission()).toBeFalsy();
         expect(TEST_USER_ASSAY_DESIGNER.hasManageUsersPermission()).toBeFalsy();
         expect(TEST_USER_FOLDER_ADMIN.hasManageUsersPermission()).toBeFalsy();
+        expect(TEST_USER_PROJECT_ADMIN.hasManageUsersPermission()).toBeFalsy();
         expect(TEST_USER_APP_ADMIN.hasManageUsersPermission()).toBeTruthy();
     });
 
@@ -150,6 +161,18 @@ describe('User permissions', () => {
         expect(TEST_USER_EDITOR.isAppAdmin()).toBeFalsy();
         expect(TEST_USER_ASSAY_DESIGNER.isAppAdmin()).toBeFalsy();
         expect(TEST_USER_FOLDER_ADMIN.isAppAdmin()).toBeFalsy();
+        expect(TEST_USER_PROJECT_ADMIN.isAppAdmin()).toBeFalsy();
         expect(TEST_USER_APP_ADMIN.isAppAdmin()).toBeTruthy();
+    });
+
+    test('hasAddUsersPermission', () => {
+        expect(TEST_USER_GUEST.hasAddUsersPermission()).toBeFalsy();
+        expect(TEST_USER_READER.hasAddUsersPermission()).toBeFalsy();
+        expect(TEST_USER_AUTHOR.hasAddUsersPermission()).toBeFalsy();
+        expect(TEST_USER_EDITOR.hasAddUsersPermission()).toBeFalsy();
+        expect(TEST_USER_ASSAY_DESIGNER.hasAddUsersPermission()).toBeFalsy();
+        expect(TEST_USER_FOLDER_ADMIN.hasAddUsersPermission()).toBeFalsy();
+        expect(TEST_USER_PROJECT_ADMIN.hasAddUsersPermission()).toBeTruthy();
+        expect(TEST_USER_APP_ADMIN.hasAddUsersPermission()).toBeTruthy();
     });
 });

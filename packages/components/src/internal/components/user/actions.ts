@@ -1,10 +1,10 @@
 import moment from 'moment';
-import { List, Map, OrderedMap } from 'immutable';
+import { Map, OrderedMap } from 'immutable';
 import { Ajax, PermissionRoles, PermissionTypes, Utils } from '@labkey/api';
 
-import { buildURL, caseInsensitive, hasAllPermissions, QueryGridModel, SchemaQuery, User } from '../../..';
+import { buildURL, caseInsensitive, hasAllPermissions, QueryModel, SchemaQuery, User } from '../../..';
 
-import { APPLICATION_SECURITY_ROLES } from '../permissions/constants';
+import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
 
 import { processRequest } from '../../query/api';
 
@@ -53,21 +53,19 @@ export function getUserPermissionsDisplay(user: User): string[] {
 }
 
 export function getUserRoleDisplay(user: User): string {
-    if (user.permissionsList.contains(PermissionTypes.ApplicationAdmin)) {
+    if (user.isAppAdmin()) {
+        return SITE_SECURITY_ROLES.get(PermissionRoles.ApplicationAdmin);
+    }
+
+    if (hasAllPermissions(user, [PermissionTypes.Admin])) {
         return 'Administrator';
     }
 
-    if (user.permissionsList.contains(PermissionTypes.Admin)) {
-        // TODO use the following when Folder Admin added:
-        // return APPLICATION_SECURITY_ROLES.get(PermissionRoles.FolderAdmin);
-        return 'Administrator';
-    }
-
-    if (user.permissionsList.contains(PermissionTypes.Update)) {
+    if (user.hasUpdatePermission()) {
         return APPLICATION_SECURITY_ROLES.get(PermissionRoles.Editor);
     }
 
-    if (user.permissionsList.contains(PermissionTypes.Read)) {
+    if (hasAllPermissions(user, [PermissionTypes.Read])) {
         return APPLICATION_SECURITY_ROLES.get(PermissionRoles.Reader);
     }
 
@@ -158,26 +156,21 @@ export function getPasswordRuleInfo(): Promise<any> {
     });
 }
 
-export function getSelectedUserIds(model: QueryGridModel): List<number> {
-    // selectedIds will be strings, need to cast to integers
-    return model.selectedIds.map(id => parseInt(id)).toList();
-}
-
-export function updateUsersActiveState(userIds: List<number>, reactivate: boolean): Promise<any> {
+export function updateUsersActiveState(userIds: number[], reactivate: boolean): Promise<any> {
     return updateUsersState(userIds, false, reactivate);
 }
 
-export function deleteUsers(userIds: List<number>): Promise<any> {
+export function deleteUsers(userIds: number[]): Promise<any> {
     return updateUsersState(userIds, true, false);
 }
 
-function updateUsersState(userIds: List<number>, isDelete: boolean, isActivate: boolean): Promise<any> {
+function updateUsersState(userIds: number[], isDelete: boolean, isActivate: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('user', 'updateUsersStateApi.api'),
             method: 'POST',
             params: {
-                userId: userIds.toArray(),
+                userId: userIds,
                 delete: isDelete,
                 activate: isActivate,
             },

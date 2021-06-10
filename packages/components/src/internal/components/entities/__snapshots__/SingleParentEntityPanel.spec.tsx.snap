@@ -1573,6 +1573,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             asPanel={false}
             hideEmptyChartSelector={false}
             hideEmptyViewMenu={false}
+            highlightLastSelectedRow={false}
             loadOnMount={true}
             model={
               QueryModel {

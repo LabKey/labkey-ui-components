@@ -89,9 +89,10 @@ export class SecurityRole extends Record({
     static filter(roles: List<SecurityRole>, policy: SecurityPolicy, rolesToShow?: List<string>): List<SecurityRole> {
         return roles
             .filter(role => {
-                return rolesToShow
-                    ? rolesToShow.contains(role.uniqueName)
-                    : policy.relevantRoles.contains(role.uniqueName);
+                return (
+                    policy.relevantRoles.contains(role.uniqueName) &&
+                    (!rolesToShow || rolesToShow.contains(role.uniqueName))
+                );
             })
             .toList();
     }

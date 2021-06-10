@@ -42,10 +42,10 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
     }, []);
 
     const onClick = useCallback(() => {
-        if (queryModel?.hasSelections) {
+        if (queryModel?.hasSelections || sampleIds) {
             setShowChoosePicklist(true);
         }
-    }, [queryModel]);
+    }, [queryModel, sampleIds]);
 
     if (!userCanManagePicklists(user) || !isSamplePicklistEnabled()) {
         return null;

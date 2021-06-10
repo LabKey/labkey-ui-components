@@ -203,7 +203,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     )}
                     {(showDialog === 'reactivate' || showDialog === 'deactivate') && (
                         <UserActivateChangeConfirmModal
-                            userIds={List<number>([userId])}
+                            userIds={[userId]}
                             reactivate={showDialog === 'reactivate'}
                             onComplete={response => this.onUsersStateChangeComplete(response, false)}
                             onCancel={() => this.toggleDialog(undefined)}
@@ -211,7 +211,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     )}
                     {allowDelete && showDialog === 'delete' && (
                         <UserDeleteConfirmModal
-                            userIds={List<number>([userId])}
+                            userIds={[userId]}
                             onComplete={response => this.onUsersStateChangeComplete(response, true)}
                             onCancel={() => this.toggleDialog(undefined)}
                         />

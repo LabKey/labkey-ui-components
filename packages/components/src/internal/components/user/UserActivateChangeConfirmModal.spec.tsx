@@ -15,7 +15,6 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
-import { List } from 'immutable';
 
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 
@@ -23,7 +22,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
     test('reactivate single user selected', () => {
         const component = (
             <UserActivateChangeConfirmModal
-                userIds={List<number>([1])}
+                userIds={[1]}
                 reactivate={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -45,7 +44,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
     test('reactivate multiple users selected', () => {
         const component = (
             <UserActivateChangeConfirmModal
-                userIds={List<number>([1, 2, 3])}
+                userIds={[1, 2, 3]}
                 reactivate={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -67,7 +66,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
     test('reactivate with state', () => {
         const component = (
             <UserActivateChangeConfirmModal
-                userIds={List<number>([1, 2, 3])}
+                userIds={[1, 2, 3]}
                 reactivate={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -91,7 +90,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
     test('deactivate single user selected', () => {
         const component = (
             <UserActivateChangeConfirmModal
-                userIds={List<number>([1])}
+                userIds={[1]}
                 reactivate={false}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -113,7 +112,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
     test('deactivate multiple users selected', () => {
         const component = (
             <UserActivateChangeConfirmModal
-                userIds={List<number>([1, 2, 3])}
+                userIds={[1, 2, 3]}
                 reactivate={false}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -135,7 +134,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
     test('deactivate with state', () => {
         const component = (
             <UserActivateChangeConfirmModal
-                userIds={List<number>([1, 2, 3])}
+                userIds={[1, 2, 3]}
                 reactivate={false}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}

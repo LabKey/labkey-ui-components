@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { Modal } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
@@ -15,19 +15,24 @@ describe('AddToPicklistMenuItem', () => {
     const key = 'picklists';
     const text = 'Picklist Testing';
 
-    let queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
-    queryModel = queryModel.mutate({ selections: new Set(['1', '2']) });
+    let queryModelWithSelections = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+    queryModelWithSelections = queryModelWithSelections.mutate({ selections: new Set(['1', '2']) });
 
     test('with queryModel', () => {
         const wrapper = mount(
-            <AddToPicklistMenuItem itemText={text} queryModel={queryModel} key={key} user={TEST_USER_EDITOR} />
+            <AddToPicklistMenuItem
+                itemText={text}
+                queryModel={queryModelWithSelections}
+                key={key}
+                user={TEST_USER_EDITOR}
+            />
         );
         const menuItem = wrapper.find(SelectionMenuItem);
         expect(menuItem).toHaveLength(1);
         expect(menuItem.text()).toBe(text);
         const memoWrapper = wrapper.find('Memo()');
         expect(memoWrapper).toHaveLength(1);
-        expect(memoWrapper.prop('selectionKey')).toBe(queryModel.id);
+        expect(memoWrapper.prop('selectionKey')).toBe(queryModelWithSelections.id);
         expect(memoWrapper.prop('selectedQuantity')).toBe(2);
         const modal = memoWrapper.find(Modal);
         expect(modal).toHaveLength(1);
@@ -57,23 +62,44 @@ describe('AddToPicklistMenuItem', () => {
         wrapper.unmount();
     });
 
-    test('modal open', () => {
-        const wrapper = mount(
-            <AddToPicklistMenuItem
-                itemText={text}
-                sampleIds={['1']}
-                key={key}
-                queryModel={queryModel}
-                user={TEST_USER_EDITOR}
-            />
-        );
+    function validateMenuItemClick(wrapper: ReactWrapper, shouldOpen: boolean): void {
         const menuItem = wrapper.find('MenuItem a');
         expect(menuItem).toHaveLength(1);
         menuItem.simulate('click');
+
         const modal = wrapper.find(Modal);
-        expect(modal).toHaveLength(2);
-        expect(modal.at(0).prop('show')).toBe(true);
-        expect(modal.at(1).prop('show')).toBe(false);
+        expect(modal).toHaveLength(shouldOpen ? 2 : 1);
+        if (shouldOpen) {
+            expect(modal.at(0).prop('show')).toBe(true);
+            expect(modal.at(1).prop('show')).toBe(false);
+        }
+    }
+
+    test('modal open on click, queryModel selections', () => {
+        const wrapper = mount(
+            <AddToPicklistMenuItem
+                itemText={text}
+                key={key}
+                // queryModel={queryModel}
+                user={TEST_USER_EDITOR}
+            />
+        );
+        validateMenuItemClick(wrapper, false);
+
+        wrapper.setProps({ queryModel: makeTestQueryModel(SchemaQuery.create('test', 'query')) });
+        validateMenuItemClick(wrapper, false);
+
+        wrapper.setProps({ queryModel: queryModelWithSelections });
+        validateMenuItemClick(wrapper, true);
+
+        wrapper.unmount();
+    });
+
+    test('modal open on click, sampleIds', () => {
+        const wrapper = mount(
+            <AddToPicklistMenuItem itemText={text} sampleIds={['1']} key={key} user={TEST_USER_EDITOR} />
+        );
+        validateMenuItemClick(wrapper, true);
         wrapper.unmount();
     });
 });

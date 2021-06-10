@@ -91,15 +91,16 @@ describe('NameAndLinkingOptions', () => {
     });
 
     test('appPropertiesOnly and ontology module', () => {
-        let wrapper = mount(
-            <NameAndLinkingOptions {...DEFAULT_PROPS} serverModuleNames={['ontology']} appPropertiesOnly={true} />
-        );
+        let wrapper = mount(<NameAndLinkingOptions {...DEFAULT_PROPS} appPropertiesOnly={true} />);
         expect(wrapper.find(OntologyConceptAnnotation)).toHaveLength(0);
         wrapper.unmount();
 
-        wrapper = mount(
-            <NameAndLinkingOptions {...DEFAULT_PROPS} serverModuleNames={['ontology']} appPropertiesOnly={false} />
-        );
+        LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['ontology'],
+            },
+        };
+        wrapper = mount(<NameAndLinkingOptions {...DEFAULT_PROPS} appPropertiesOnly={false} />);
         expect(wrapper.find(OntologyConceptAnnotation)).toHaveLength(1);
         wrapper.unmount();
     });

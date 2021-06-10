@@ -142,8 +142,14 @@ describe('SecurityRole model', () => {
 
         // check that we can filter for an explicit list
         expect(SecurityRole.filter(ROLES, POLICY, List<string>()).size).toBe(0);
-        const roleArr = [PermissionRoles.Editor, PermissionRoles.Author, PermissionRoles.Reader];
+        let roleArr = [PermissionRoles.Editor, PermissionRoles.Author, PermissionRoles.Reader];
         expect(SecurityRole.filter(ROLES, POLICY, List<string>(roleArr)).size).toBe(3);
+
+        // check that asking for a role which isn't relevant still won't be returned
+        roleArr = [PermissionRoles.ApplicationAdmin, PermissionRoles.Reader];
+        const validRoles = SecurityRole.filter(ROLES, POLICY, List<string>(roleArr));
+        expect(validRoles.size).toBe(1);
+        expect(validRoles.first().uniqueName).toBe(PermissionRoles.Reader);
     });
 });
 

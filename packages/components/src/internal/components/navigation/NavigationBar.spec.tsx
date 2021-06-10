@@ -35,7 +35,6 @@ import { SearchBox } from './SearchBox';
 
 beforeEach(() => {
     LABKEY.devMode = false;
-    LABKEY.moduleContext = { samplemanagement: { hasPremiumModule: false } };
 });
 
 describe('<NavigationBar/>', () => {

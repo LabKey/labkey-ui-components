@@ -80,7 +80,6 @@ interface IDomainRowProps {
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
     appPropertiesOnly?: boolean;
-    serverModuleNames: string[];
     showFilePropertyType?: boolean;
     domainIndex: number;
     successBsStyle?: string;
@@ -453,7 +452,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             defaultDefaultValueType,
             defaultValueOptions,
             appPropertiesOnly,
-            serverModuleNames,
             successBsStyle,
             domainFormDisplayOptions,
             getDomainFields,
@@ -549,7 +547,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                     onChange={this.onSingleFieldChange}
                                     showingModal={this.showingModal}
                                     appPropertiesOnly={appPropertiesOnly}
-                                    serverModuleNames={serverModuleNames}
                                     successBsStyle={successBsStyle}
                                     domainFormDisplayOptions={domainFormDisplayOptions}
                                 />

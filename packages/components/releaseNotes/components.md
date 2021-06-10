@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.44.0
+*Released*: 10 June 2021
 * Item 8958: LKSM Permissions updates for premium vs hosted only servers
     * Move SITE_SECURITY_ROLES from SM to shared components and update APPLICATION_SECURITY_ROLES to include Project and Folder Admin roles
     * AuditDetails component fix to use getUsersWithPermissions to resolve userId display names
@@ -15,7 +15,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * GridPanel addition of option highlightLastSelectedRow prop to match QueryGridPanel
 
 ### version 2.43.0
-*Release*: 9 Jun 2021
+*Release*: 9 June 2021
 * Add support for concept picker usage in Insert/Update scenarios
 * Fixed OntologyLookupOptions NO-OP updates marking fields as dirty
 * Add an initial concept for OntologyBrowserModal

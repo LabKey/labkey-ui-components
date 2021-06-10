@@ -42,11 +42,11 @@ export function datePlaceholder(col: QueryColumn): string {
 
 export function isDateTimeCol(col: QueryColumn): boolean {
     if (col) {
-        const rangeURI = col.rangeURI.toLowerCase();
+        const rangeURI = col.rangeURI?.toLowerCase();
 
         // attempt to use the rangeURI to figure out if we are working with a dateTime or date object
         // note Created and Modified columns do not include the rangeURI information
-        if (rangeURI.indexOf('datetime') > -1) {
+        if (rangeURI?.indexOf('datetime') > -1) {
             return true;
         }
     }

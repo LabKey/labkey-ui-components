@@ -26,6 +26,7 @@ import {
     insertColumnFilter,
     naturalSort,
     QueryColumn,
+    QueryConfig,
     QueryGridModel,
     QueryInfo,
     resolveKey,
@@ -1278,12 +1279,12 @@ export function getFilterListFromQuery(location: Location): List<Filter.IFilter>
     return undefined;
 }
 
-export function getSelection(location: any): Promise<ISelectionResponse> {
-    if (location && location.query && location.query.selectionKey) {
+export function getSelection(location: any, schemaName?: string, queryName?: string): Promise<ISelectionResponse> {
+    if (location?.query?.selectionKey) {
         const key = location.query.selectionKey;
 
-        return new Promise(resolve => {
-            const { keys, schemaQuery } = SchemaQuery.parseSelectionKey(key);
+        return new Promise((resolve, reject) => {
+            let {keys, schemaQuery} = SchemaQuery.parseSelectionKey(key);
 
             if (keys !== undefined) {
                 return resolve({
@@ -1291,6 +1292,22 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
                     schemaQuery,
                     selected: keys.split(';'),
                 });
+            }
+            if (!schemaQuery) {
+                if (schemaName && queryName) {
+                    schemaQuery = SchemaQuery.create(schemaName, queryName);
+                }
+            }
+
+            if (!schemaQuery) {
+                reject(
+                    'No schema found for selection with selectionKey ' +
+                    location.query.selectionKey +
+                    ' schemaName ' +
+                    schemaName +
+                    ' queryName ' +
+                    queryName
+                );
             }
 
             return getSelected(
@@ -3055,11 +3072,13 @@ export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number): v
 }
 
 /**
- * Create a query grid model for this assay's Data grid, filtered to samples for the provided `value`
+ * Create a QueryGridModel for this assay's Data grid, filtered to samples for the provided `value`
  * iff the assay design has one or more sample lookup columns.
  *
  * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
  * provide a filter for the sample column or columns defined in the assay design.
+ *
+ * If you're using a QueryModel see "createQueryConfigFilteredBySample()".
  */
 export function createQueryGridModelFilteredBySample(
     model: AssayDefinitionModel,
@@ -3095,6 +3114,41 @@ export function createQueryGridModelFilteredBySample(
             urlPrefix: model.name,
         };
     });
+}
+
+/**
+ * Create a QueryConfig for this assay's Data grid, filtered to samples for the provided `value`
+ * iff the assay design has one or more sample lookup columns.
+ *
+ * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
+ * provide a filter for the sample column or columns defined in the assay design.
+ *
+ * If you're using a QueryGridModel see "createQueryGridModelFilteredBySample()".
+ */
+export function createQueryConfigFilteredBySample(
+    model: AssayDefinitionModel,
+    value,
+    singleFilter: Filter.IFilterType,
+    whereClausePart: (fieldKey, value) => string,
+    useLsid?: boolean,
+    omitSampleCols?: boolean,
+    singleFilterValue?: any
+): QueryConfig {
+    const sampleColumns = model.getSampleColumnFieldKeys();
+
+    if (sampleColumns.isEmpty()) {
+        return undefined;
+    }
+
+    return {
+        baseFilters: [
+            model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart, useLsid, singleFilterValue),
+        ],
+        omittedColumns: omitSampleCols ? sampleColumns.toArray() : undefined,
+        schemaQuery: SchemaQuery.create(model.protocolSchemaName, 'Data'),
+        title: model.name,
+        urlPrefix: model.name,
+    };
 }
 
 interface IClientSideMetricCountResponse {

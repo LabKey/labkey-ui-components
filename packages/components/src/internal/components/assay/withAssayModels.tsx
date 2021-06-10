@@ -1,6 +1,6 @@
 import React, { ComponentType, createContext, FC, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
-import { Draft, produce } from 'immer';
+import { produce } from 'immer';
 import { withRouter, WithRouterProps } from 'react-router';
 
 import {
@@ -74,7 +74,7 @@ export function withAssayModels<Props>(
     class ComponentWithAssays extends PureComponent<WrappedProps, State> {
         static defaultProps;
 
-        state: Readonly<State> = produce({}, () => ({
+        state: Readonly<State> = produce<State>({} as State, () => ({
             context: { assayDefinition: undefined, assayProtocol: undefined },
             model: new AssayStateModel(),
         }));
@@ -181,7 +181,7 @@ export function withAssayModels<Props>(
             return new Promise(resolve => {
                 if (this._mounted) {
                     this.setState(
-                        produce((draft: Draft<State>) => {
+                        produce<State>(draft => {
                             Object.assign(draft, newState);
                         }),
                         () => {
@@ -196,7 +196,7 @@ export function withAssayModels<Props>(
             return new Promise(resolve => {
                 if (this._mounted) {
                     this.setState(
-                        produce((draft: Draft<State>) => {
+                        produce<State>(draft => {
                             Object.assign(draft.model, newModel);
                         }),
                         () => {

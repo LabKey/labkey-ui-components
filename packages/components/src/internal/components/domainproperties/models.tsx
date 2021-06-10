@@ -673,6 +673,7 @@ export interface IDomainField {
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
     principalConceptCode?: string;
+    principalConceptDisplay?: string;
 }
 
 export class DomainField
@@ -726,6 +727,7 @@ export class DomainField
         conceptLabelColumn: undefined,
         conceptImportColumn: undefined,
         principalConceptCode: undefined,
+        principalConceptDisplay: undefined,
         derivationDataScope: undefined,
         selected: false,
     })
@@ -779,6 +781,7 @@ export class DomainField
     declare conceptLabelColumn?: string;
     declare conceptImportColumn?: string;
     declare principalConceptCode?: string;
+    declare principalConceptDisplay?: string;
     declare derivationDataScope?: string;
     declare selected: boolean;
 
@@ -892,6 +895,9 @@ export class DomainField
     static serialize(df: DomainField, fixCaseSensitivity = true): any {
         const json = df.toJS();
 
+        // Issue 43254: trim field name leading and trailing spaces before saving
+        json.name = df.name?.trim();
+
         if (!(df.dataType.isLookup() || df.dataType.isUser() || df.dataType.isSample())) {
             json.lookupContainer = null;
             json.lookupQuery = null;
@@ -954,6 +960,7 @@ export class DomainField
         delete json.disablePhiLevel;
         delete json.lockExistingField;
         delete json.selected;
+        delete json.principalConceptDisplay;
 
         return json;
     }
@@ -1070,7 +1077,7 @@ export class DomainField
         }
 
         if (this.principalConceptCode) {
-            details.push(period + 'Concept Annotation: ' + this.principalConceptCode);
+            details.push(period + 'Ontology Concept: ' + (this.principalConceptDisplay ?? this.principalConceptCode));
             period = '. ';
         }
 

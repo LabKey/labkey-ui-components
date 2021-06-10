@@ -47,6 +47,15 @@ describe('AttachmentCard', () => {
         wrapper.unmount();
     });
 
+    test('with title', () => {
+        const attachment = { name: 'dir/name.txt', title: 'name.txt', iconFontCls: 'fa-test' };
+        const wrapper = mount(<AttachmentCard attachment={attachment} />);
+        validate(wrapper);
+        expect(wrapper.find('.attachment-card').prop('title')).toBe(attachment.name);
+        expect(wrapper.find('.attachment-card__name').text()).toBe(attachment.title);
+        wrapper.unmount();
+    });
+
     test('without attachment', () => {
         const wrapper = mount(<AttachmentCard {...DEFAULT_PROPS} attachment={undefined} />);
         validate(wrapper, false);

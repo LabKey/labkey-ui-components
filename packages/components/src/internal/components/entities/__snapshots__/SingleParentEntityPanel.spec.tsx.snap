@@ -1020,6 +1020,16 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       "uniqueFieldKey": "Name",
     }
   }
+  parentEntityType={
+    Object {
+      "label": "Second Source",
+      "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+      "query": "Second Source",
+      "rowId": 322,
+      "schema": "exp.data",
+      "value": "second source",
+    }
+  }
   parentLSIDs={
     Array [
       "url:lsid:blah",
@@ -1053,11 +1063,19 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       },
     ]
   }
-  parentTypeQueryName="Second Source"
 >
   <withRouter(ComponentWithQueryModels)
     childNounSingular="Sample"
-    chosenType="Second Source"
+    chosenType={
+      Object {
+        "label": "Second Source",
+        "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+        "query": "Second Source",
+        "rowId": 322,
+        "schema": "exp.data",
+        "value": "second source",
+      }
+    }
     editing={false}
     index={0}
     onRemoveParentType={[Function]}
@@ -1089,6 +1107,16 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         },
         "typeNounSingular": "Data Type",
         "uniqueFieldKey": "Name",
+      }
+    }
+    parentEntityType={
+      Object {
+        "label": "Second Source",
+        "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+        "query": "Second Source",
+        "rowId": 322,
+        "schema": "exp.data",
+        "value": "second source",
       }
     }
     parentLSIDs={
@@ -1124,7 +1152,6 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         },
       ]
     }
-    parentTypeQueryName="Second Source"
     queryConfigs={
       Object {
         "model": Object {
@@ -1167,7 +1194,16 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
     <ComponentWithQueryModels
       autoLoad={false}
       childNounSingular="Sample"
-      chosenType="Second Source"
+      chosenType={
+        Object {
+          "label": "Second Source",
+          "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+          "query": "Second Source",
+          "rowId": 322,
+          "schema": "exp.data",
+          "value": "second source",
+        }
+      }
       editing={false}
       index={0}
       modelLoader={
@@ -1213,6 +1249,16 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "uniqueFieldKey": "Name",
         }
       }
+      parentEntityType={
+        Object {
+          "label": "Second Source",
+          "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+          "query": "Second Source",
+          "rowId": 322,
+          "schema": "exp.data",
+          "value": "second source",
+        }
+      }
       parentLSIDs={
         Array [
           "url:lsid:blah",
@@ -1246,7 +1292,6 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           },
         ]
       }
-      parentTypeQueryName="Second Source"
       queryConfigs={
         Object {
           "model": Object {
@@ -1315,7 +1360,16 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         }
         autoLoad={false}
         childNounSingular="Sample"
-        chosenType="Second Source"
+        chosenType={
+          Object {
+            "label": "Second Source",
+            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+            "query": "Second Source",
+            "rowId": 322,
+            "schema": "exp.data",
+            "value": "second source",
+          }
+        }
         editing={false}
         index={0}
         onRemoveParentType={[Function]}
@@ -1347,6 +1401,16 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             },
             "typeNounSingular": "Data Type",
             "uniqueFieldKey": "Name",
+          }
+        }
+        parentEntityType={
+          Object {
+            "label": "Second Source",
+            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+            "query": "Second Source",
+            "rowId": 322,
+            "schema": "exp.data",
+            "value": "second source",
           }
         }
         parentLSIDs={
@@ -1382,7 +1446,6 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             },
           ]
         }
-        parentTypeQueryName="Second Source"
         queryModels={
           Object {
             "model": QueryModel {
@@ -1510,6 +1573,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             asPanel={false}
             hideEmptyChartSelector={false}
             hideEmptyViewMenu={false}
+            loadOnMount={true}
             model={
               QueryModel {
                 "baseFilters": Array [

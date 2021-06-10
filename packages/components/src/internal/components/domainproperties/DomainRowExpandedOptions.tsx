@@ -189,6 +189,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         domainFields={domainFields}
                         field={field}
                         onChange={onChange}
+                        onMultiChange={onMultiChange}
                         lockType={field.lockType}
                     />
                 );

@@ -57,37 +57,12 @@ export enum CloseEventCode {
     TLS_HANDSHAKE = 1015,
 }
 
-export function initWebSocketListeners(
+export function registerWebSocketListeners(
     store,
     notificationListeners?: string[],
     menuReloadListeners?: string[],
     resetQueryGridListeners?: string[]
 ): void {
-    // register websocket listener for the case where a user logs out in another tab
-    function _logOutCallback(evt) {
-        if (evt.wasClean && evt.reason === 'org.labkey.api.security.AuthNotify#SessionLogOut') {
-            window.setTimeout(() => store.dispatch({ type: SECURITY_LOGOUT }), 1000);
-        }
-    }
-
-    LABKEY_WEBSOCKET.addServerEventListener(CloseEventCode.NORMAL_CLOSURE, _logOutCallback);
-    LABKEY_WEBSOCKET.addServerEventListener(CloseEventCode.UNSUPPORTED_DATA, _logOutCallback);
-
-    // register websocket listener for session timeout code
-    LABKEY_WEBSOCKET.addServerEventListener(CloseEventCode.POLICY_VIOLATION, function (evt) {
-        if (evt.wasClean) {
-            window.setTimeout(() => store.dispatch({ type: SECURITY_SESSION_TIMEOUT }), 1000);
-        }
-    });
-
-    // register websocket listener for server being shutdown
-    LABKEY_WEBSOCKET.addServerEventListener(CloseEventCode.GOING_AWAY, function (evt) {
-        // Issue 39473: 1001 sent when server is shutdown normally (AND on page reload in FireFox, but that one doesn't have a reason)
-        if (evt.wasClean && evt.reason && evt.reason !== '') {
-            window.setTimeout(() => store.dispatch({ type: SECURITY_SERVER_UNAVAILABLE }), 1000);
-        }
-    });
-
     if (notificationListeners) {
         notificationListeners.forEach(listener => {
             LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
@@ -151,7 +126,7 @@ function isFreezerManagerEnabledInBiologics(): boolean {
 }
 
 export function isSamplePicklistEnabled(): boolean {
-    return getServerContext().experimental && getServerContext().experimental['samplePicklist'] === true;
+    return !isBiologicsEnabled();
 }
 
 export function hasModule(moduleName: string) {

@@ -31,7 +31,7 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
     const updateFilterValues = useCallback(
         async (filterString: string) => {
             setError(null); //clear any existing errors
-            const filterArray = filterString?.split(';') || [];
+            const filterArray = filterString?.split(';') ?? [];
 
             // Look up path model for the path based filters, otherwise parse the code filter
             let paths;
@@ -93,7 +93,7 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
             }
             onFilterChange(newFilterString);
         },
-        [filterType, filteredConcepts, setFilteredConcepts, onFilterChange, setError]
+        [filterValue, filterType, filteredConcepts, setFilteredConcepts, onFilterChange, setError]
     );
 
     useEffect(

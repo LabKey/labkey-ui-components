@@ -1,6 +1,100 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.43.0
+*Release*: 9 Jun 2021
+* Add support for concept picker usage in Insert/Update scenarios
+* Fixed OntologyLookupOptions NO-OP updates marking fields as dirty
+* Add an initial concept for OntologyBrowserModal
+
+### version 2.42.1
+*Released*: 8 June 2021
+* GridPanel.omniBoxChange fix for JS error on removing action text
+
+### version 2.42.0
+*Released*: 7 June 2021
+* Introduce hasPermissions, hasAnyPermissions utility methods
+* Update `<RequiresPermission/>` component to be configurable for all options
+
+### version 2.41.2
+*Released*: 4 June 2021
+* [Issue 43264](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43264) Trim field values
+  entered in grid
+* Fix for change of parentTypeOptions type value from an array to a single value (from https://github.com/LabKey/platform/pull/2310)
+
+### version 2.41.1
+*Released*: 3 June 2021
+* Fix FileSizeLimitProps export
+
+### version 2.41.0
+*Released*: 2 June 2021
+* Issue 43131: Files added to Sample Types show a path to "sampleset"
+* Issue 43254: Trailing spaces in field editor field names are not getting trimmed
+* Issue 37850: Include display format string in form field label help tip and editable grid cell header
+* Check to make sure model has selection before showing choose picklist modal
+
+### version 2.40.0
+*Released*: 1 June 2021
+* Package updates
+* Updated to build using Webpack 5.
+* Switched to using [Webpack Asset Modules](https://webpack.js.org/guides/asset-modules/). Deprecates need for `file-loader` and `url-loader`.
+* Update `immer` to `v9.x` which necessitated some typings updates for our usages of `produces`.
+* Update to use Jest `v27.x`. See [this post](https://jestjs.io/blog/2021/05/25/jest-27) for further details.
+* Storybook updated to `v6.3.x-beta` to support building with Webpack 5.
+
+### version 2.39.0
+*Released*: 31 May 2021
+* Don't show multi-value columns as filtering options for Omnibox.
+* Issue 43199: Update SampleCreationTypeModal to expand click area
+* Issue 42972: Fix validity check after removing parent aliases
+* Issue 43255: Protect against undefined rangeURI
+
+### version 2.38.0
+*Released*: 31 May 2021
+* Add support for freezer location in TimelineView
+
+### version 2.37.0
+*Released*: 28 May 2021
+* Define new Content Panel variant `panel-content` in `panel.scss`.
+* Update `<Section/>` component to make use of standard `panel-content` layout.
+* Define new Content Tabs styling `content-tabs` in `tabs.scss`.
+
+### version 2.36.0
+*Released*: 28 May 2021
+* Item 8897: Remove default session event listeners from initWebSocketListeners (and rename it to registerWebSocketListeners)
+
+### version 2.35.0
+*Released*: 27 May 2021
+* Specialty assays moved to premium module. Assay picker now has option to show upsell message.
+* Better handling when no specialty assays available in assay picker, including warning.
+* Upsell message in the assay picker is a candidate to be it's own component should we need further upsell messages.
+
+### version 2.34.0
+*Released*: 26 May 2021
+* Add autoFocus prop to SelectInput
+
+### version 2.33.1
+*Released*: 25 May 2021
+* Update SingleParentEntityPanel to handle multiple data source types
+* Update ParentEntityEditPanel to handle multiple data sources and not require a full model
+
+### version 2.33.0
+*Released*: 25 May 2021
+* Add support for modifying the items in a picklist
+    * Add AddToPicklistMenuItem that incorporates a new ChoosePicklistModal and actions
+    * Add styling (lifted from ELN notebooks stylings) for choice panels in modal.
+* Update `getSelection` so you can pass in a `queryName` and `schemaName` and not have to parse the selection key
+* Add utility method `getCofirmDeleteMessage`
+* Issue 42843: Sample Creation modal allows more than the max number of rows to be created
+
+### version 2.32.0
+*Released*: 19 May 2021
+* Introduce `loadOnMount` flag to `<GridPanel/>` for controlling model loading behavior. Defaults to `true`.
+* Add `showRowCountOnTabs` flag to `<TabbedGridPanel/>` to display model row counts in tab name. Defaults to `false`.
+* Add `createQueryConfigFilteredBySample` method for generating assay/sample `QueryConfig` based on assay model configurations.
+* `SampleAssayDetail` has been converted to support `QueryModel` and ported out of Biologics. This can be reused in the future by other apps.
+* `SampleDetailEditing` updated to support `QueryModel` configurations as well as `QueryGridModel`.
+
 ### version 2.31.0
 *Released*: 13 May 2021
 * Remove isSampleAliquotEnabled experimental flag

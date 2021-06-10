@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
-import { List, OrderedMap } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 
 import { DefaultRenderer, QueryColumn } from '../../..';
 
 interface SampleAliquotDetailHeaderProps {
-    row: any;
     aliquotHeaderDisplayColumns: List<QueryColumn>;
+    row: Map<string, any>;
 }
 
-export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetailHeaderProps, any> {
+export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetailHeaderProps> {
     renderAliquotDetailSubHeader(header: string) {
         return (
             <div className="bottom-spacing">
@@ -46,7 +46,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
 
         return (
             <>
-                {this.renderAliquotDetailSubHeader('Aliquot data')}
+                {this.renderAliquotDetailSubHeader('Aliquot Data')}
                 <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-table">
                     <tbody>
                         {this.renderDetailRow('Aliquoted from', parent, 'aliquotedfrom')}

@@ -205,7 +205,11 @@ function resolveEntityParentTypeFromIds(
     ]);
 }
 
-export function extractEntityTypeOptionFromRow(row: Map<string, any>, lowerCaseValue = true): IEntityTypeOption {
+export function extractEntityTypeOptionFromRow(
+    row: Map<string, any>,
+    lowerCaseValue = true,
+    entityDataType?: EntityDataType
+): IEntityTypeOption {
     const name = row.getIn(['Name', 'value']);
     return {
         label: name,
@@ -213,6 +217,7 @@ export function extractEntityTypeOptionFromRow(row: Map<string, any>, lowerCaseV
         rowId: row.getIn(['RowId', 'value']),
         value: lowerCaseValue ? name.toLowerCase() : name, // we match values on lower case because (at least) when parsed from an id they are lower case
         query: name,
+        entityDataType,
     };
 }
 
@@ -302,7 +307,7 @@ export function getEntityTypeOptions(entityDataType: EntityDataType): Promise<Ma
                     rows
                         .map(row => {
                             return {
-                                ...extractEntityTypeOptionFromRow(row),
+                                ...extractEntityTypeOptionFromRow(row, true, entityDataType),
                                 schema: instanceSchemaName, // e.g. "samples" or "dataclasses"
                             };
                         })

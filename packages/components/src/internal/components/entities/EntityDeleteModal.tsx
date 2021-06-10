@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
@@ -17,6 +17,10 @@ import {
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDataType } from './models';
 
+function getNoun(entityDataType: EntityDataType, quantity: number): string {
+    return quantity === 1 ? entityDataType.nounSingular : entityDataType.nounPlural;
+}
+
 interface Props {
     model?: QueryGridModel;
     queryModel?: QueryModel;
@@ -30,7 +34,7 @@ interface Props {
     verb?: string;
 }
 
-export const EntityDeleteModal: React.FC<Props> = props => {
+export const EntityDeleteModal: FC<Props> = memo(props => {
     const {
         auditBehavior,
         model,
@@ -42,12 +46,12 @@ export const EntityDeleteModal: React.FC<Props> = props => {
         entityDataType,
         maxSelected,
     } = props;
-    const { nounSingular, nounPlural } = entityDataType;
+    const { nounPlural } = entityDataType;
     const [showProgress, setShowProgress] = useState(false);
     const [numConfirmed, setNumConfirmed] = useState(0);
-    const noun = ' ' + getNoun(numConfirmed);
     let rowIds;
     let numSelected = 0;
+    let selectionKey: string;
 
     if (model) {
         if (useSelected) {
@@ -56,43 +60,49 @@ export const EntityDeleteModal: React.FC<Props> = props => {
                 numSelected = rowIds.length;
             } else {
                 numSelected = model.selectedQuantity;
+                selectionKey = model.getId();
             }
         } else {
             rowIds = [model.dataIds.get(0)];
             numSelected = 1;
         }
     } else if (queryModel) {
-        rowIds = Array.from(queryModel.selections);
-        numSelected = rowIds.length;
+        if (useSelected) {
+            selectionKey = queryModel.id;
+        } else {
+            if (queryModel.hasData) {
+                rowIds = [Object.keys(queryModel.rows)[0]];
+                numSelected = 1;
+            }
+        }
     }
 
-    function getNoun(quantity: number): string {
-        return quantity === 1 ? nounSingular : nounPlural;
-    }
+    const onConfirm = useCallback(
+        async (rowsToDelete: any[], rowsToKeep: any[]) => {
+            setNumConfirmed(rowsToDelete.length);
+            setShowProgress(true);
+            beforeDelete?.();
+            const noun = ' ' + getNoun(entityDataType, rowsToDelete.length);
 
-    function onConfirm(rowsToDelete: any[], rowsToKeep: any[]): void {
-        setNumConfirmed(rowsToDelete.length);
-        setShowProgress(true);
-        beforeDelete?.();
-        const noun = ' ' + getNoun(rowsToDelete.length);
-        const schemaQuery = model ? SchemaQuery.create(model.schema, model.query) : queryModel.schemaQuery;
-
-        deleteRows({
-            schemaQuery,
-            rows: rowsToDelete,
-            auditBehavior,
-        })
-            .then(() => {
+            try {
+                await deleteRows({
+                    auditBehavior,
+                    rows: rowsToDelete,
+                    schemaQuery: queryModel?.schemaQuery ?? SchemaQuery.create(model.schema, model.query),
+                });
                 afterDelete(rowsToKeep);
                 createDeleteSuccessNotification(noun, rowsToDelete.length, undefined);
-            })
-            .catch(error => {
+            } catch (e) {
                 setShowProgress(false);
                 createDeleteErrorNotification(noun);
-            });
-    }
+            }
+        },
+        [auditBehavior, beforeDelete, entityDataType, model, queryModel]
+    );
 
-    if (!model && !queryModel) return null;
+    if (!model && !queryModel) {
+        return null;
+    }
 
     if (useSelected && maxSelected && numSelected > maxSelected) {
         return (
@@ -105,9 +115,6 @@ export const EntityDeleteModal: React.FC<Props> = props => {
             />
         );
     }
-
-    let selectionKey = model && useSelected && !model.isFiltered() ? model.getId() : undefined;
-    if (queryModel) selectionKey = queryModel.id;
 
     return (
         <>
@@ -124,9 +131,9 @@ export const EntityDeleteModal: React.FC<Props> = props => {
             <Progress
                 modal={true}
                 estimate={numConfirmed * 10}
-                title={'Deleting ' + numConfirmed + noun}
+                title={`Deleting ${numConfirmed} ${getNoun(entityDataType, numConfirmed)}`}
                 toggle={showProgress}
             />
         </>
     );
-};
+});

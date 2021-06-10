@@ -1,0 +1,33 @@
+.content-tabs {
+    .nav-tabs {
+        border-bottom: 0;
+        display: flex;
+
+        & > li {
+            flex: auto;
+
+            &:first-child {
+                max-width: 50%;
+            }
+
+            & > a {
+                background-color: inherit;
+                border: 3px solid transparent;
+                color: $gray-lighten;
+                font-weight: bold;
+                text-align: center;
+                text-transform: uppercase;
+                white-space: nowrap;
+            }
+        }
+
+        & > li.active {
+
+            & > a {
+                border: 3px solid transparent;
+                border-bottom: 3px solid $brand-secondary;
+                color: $gray-dark;
+            }
+        }
+    }
+}

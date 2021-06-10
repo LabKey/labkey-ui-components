@@ -18,7 +18,7 @@ import { enableMapSet, enablePatches } from 'immer';
 import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceURL } from './internal/url/AppURL';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
-import { hasAllPermissions, User } from './internal/components/base/models/User';
+import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
 import { getSchemaQuery, resolveKey, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
@@ -62,7 +62,7 @@ import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
 import { getUserProperties, getUserRoleDisplay } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
-import { getActionErrorMessage, resolveErrorMessage } from './internal/util/messaging';
+import { getActionErrorMessage, getConfirmDeleteMessage, resolveErrorMessage } from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
 import { AddEntityButton } from './internal/components/buttons/AddEntityButton';
 import { RemoveEntityButton } from './internal/components/buttons/RemoveEntityButton';
@@ -95,7 +95,6 @@ import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
 import { FileAttachmentForm } from './public/files/FileAttachmentForm';
 import { DEFAULT_FILE } from './internal/components/files/models';
-import { FileSizeLimitProps } from './public/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
@@ -258,10 +257,10 @@ import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
     fetchSamples,
+    getGroupedSampleDisplayColumns,
     getSampleSet,
     getSampleTypeDetails,
     loadSelectedSamples,
-    getGroupedSampleDisplayColumns,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
@@ -273,6 +272,7 @@ import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDel
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
+import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
 import {
     AssayContextConsumer,
     assayPage,
@@ -356,7 +356,11 @@ import {
     getDataDeleteConfirmationData,
     getSampleDeleteConfirmationData,
 } from './internal/components/entities/actions';
-import { DataClassDataType, SampleTypeDataType } from './internal/components/entities/constants';
+import {
+    DataClassDataType,
+    SampleTypeDataType,
+    ParentEntityRequiredColumns,
+} from './internal/components/entities/constants';
 import { createEntityParentKey, getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
@@ -431,6 +435,8 @@ import {
     SampleCreationType,
 } from './internal/components/samples/models';
 import { createMockWithRouterProps } from './test/mockUtils';
+import { ConceptModel } from './internal/components/ontology/models'
+import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
 import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
@@ -439,23 +445,32 @@ import {
     PRIVATE_PICKLIST_CATEGORY,
     PUBLIC_PICKLIST_CATEGORY,
 } from './internal/components/domainproperties/list/constants';
+import { PICKLIST_SAMPLE_ID_COLUMN, PICKLIST_KEY_COLUMN, Picklist } from './internal/components/picklist/models';
 import { PicklistEditModal } from './internal/components/picklist/PicklistEditModal';
 import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
-import { PicklistModel } from './internal/components/picklist/models';
-import { deletePicklists, updatePicklist } from './internal/components/picklist/actions';
+
+import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
+import {
+    deletePicklists,
+    removeSamplesFromPicklist,
+    updatePicklist,
+    getSelectedPicklistSamples,
+} from './internal/components/picklist/actions';
+
 import {
     AppReducers,
     ProductMenuReducers,
     RoutingTableReducers,
     ServerNotificationReducers,
 } from './internal/app/reducers';
+
 import {
     CloseEventCode,
     getDateFormat as getAppDateFormat,
     getMenuSectionConfigs,
     hasPremiumModule,
-    initWebSocketListeners,
+    registerWebSocketListeners,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,
     isSamplePicklistEnabled,
@@ -530,7 +545,7 @@ const App = {
     RoutingTableReducers,
     ServerNotificationReducers,
     CloseEventCode,
-    initWebSocketListeners,
+    registerWebSocketListeners,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,
     isSamplePicklistEnabled,
@@ -724,6 +739,8 @@ export {
     BasePermissionsCheckPage,
     RequiresPermission,
     hasAllPermissions,
+    hasAnyPermissions,
+    hasPermissions,
     fetchContainerSecurityPolicy,
     PermissionAssignments,
     PermissionsPageContextProvider,
@@ -732,13 +749,18 @@ export {
     Principal,
     UserProvider,
     // sample picklist items
+    AddToPicklistMenuItem,
     PicklistCreationMenuItem,
     PicklistEditModal,
     PicklistDeleteConfirm,
     PUBLIC_PICKLIST_CATEGORY,
     PRIVATE_PICKLIST_CATEGORY,
-    PicklistModel,
+    PICKLIST_KEY_COLUMN,
+    PICKLIST_SAMPLE_ID_COLUMN,
+    Picklist,
     deletePicklists,
+    getSelectedPicklistSamples,
+    removeSamplesFromPicklist,
     updatePicklist,
     // data class and sample type related items
     DataClassModel,
@@ -751,9 +773,9 @@ export {
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
-    getGroupedSampleDisplayColumns,
     SampleTypeDataType,
     DataClassDataType,
+    ParentEntityRequiredColumns,
     SampleEmptyAlert,
     SampleTypeEmptyAlert,
     SampleSetSummary,
@@ -766,6 +788,7 @@ export {
     SampleCreationTypeModal,
     SamplesSelectionProvider,
     SampleAliquotDetailHeader,
+    SampleAssayDetail,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
@@ -926,7 +949,6 @@ export {
     fetchIssuesListDefDesign,
     // file / webdav related items
     DEFAULT_FILE,
-    FileSizeLimitProps,
     FilesListing,
     FilesListingForm,
     FileAttachmentEntry,
@@ -956,6 +978,7 @@ export {
     debounce,
     valueIsEmpty,
     getActionErrorMessage,
+    getConfirmDeleteMessage,
     resolveErrorMessage,
     getHelpLink,
     helpLinkNode,
@@ -1079,6 +1102,8 @@ export {
     OntologyBrowserPanel,
     OntologyConceptOverviewPanel,
     OntologyBrowserFilterPanel,
+    OntologyConceptPicker,
+    ConceptModel,
     AutoForm,
     HelpIcon,
 };
@@ -1158,3 +1183,4 @@ export type {
 } from './internal/app/reducers';
 export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
+export type { FileSizeLimitProps } from './public/files/models';

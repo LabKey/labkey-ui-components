@@ -264,7 +264,9 @@ export function getImportItemsForAssayDefinitionsQM(
             const href = assay.getImportUrl(
                 selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
                 selectionKey,
-                sampleModel ? List(sampleModel.filters) : undefined
+                // Check for the existence of the "queryInfo" before getting filters from the model.
+                // This avoids `QueryModel` throwing an error when the "queryInfo" is not yet available.
+                sampleModel?.queryInfo ? List(sampleModel.filters) : undefined
             );
             return items.set(assay, href);
         }, OrderedMap<AssayDefinitionModel, string>());
@@ -276,7 +278,7 @@ export function getImportItemsForAssayDefinitions(
     providerType?: string
 ): OrderedMap<AssayDefinitionModel, string> {
     let targetSQ;
-    const selectionKey = sampleModel ? sampleModel.selectionKey : undefined;
+    const selectionKey = sampleModel?.selectionKey;
 
     if (sampleModel?.queryInfo) {
         targetSQ = sampleModel.queryInfo.schemaQuery;
@@ -290,7 +292,7 @@ export function getImportItemsForAssayDefinitions(
             const href = assay.getImportUrl(
                 selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
                 selectionKey,
-                sampleModel ? sampleModel.getFilters() : undefined
+                sampleModel?.getFilters()
             );
             return items.set(assay, href);
         }, OrderedMap<AssayDefinitionModel, string>());

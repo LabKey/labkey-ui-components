@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert } from '../../..';
+import { Alert, LabelHelpTip } from '../../..';
 
 import {
-    ConceptOverviewModal,
+    ConceptOverviewTooltip,
     ConceptOverviewPanelImpl,
     ConceptSynonyms,
     OntologyConceptOverviewPanel,
@@ -105,36 +105,38 @@ describe('ConceptOverviewPanelImpl', () => {
     });
 });
 
-describe('ConceptOverviewModal', () => {
-    const onCloseFn = jest.fn;
-
-    function validate(wrapper: ReactWrapper, errorTxt?: string): void {
-        expect(wrapper.find(Modal)).toHaveLength(1);
-        expect(wrapper.find(Modal).prop('onHide')).toBe(onCloseFn);
-        expect(wrapper.find(Modal.Header).prop('closeButton')).toBe(true);
+describe('ConceptOverviewToolTip', () => {
+    function validate(wrapper: ReactWrapper, concept?: ConceptModel, errorTxt?: string): void {
+        expect(wrapper.find(LabelHelpTip)).toHaveLength(errorTxt ? 0 : 1);
         expect(wrapper.find(Alert)).toHaveLength(1);
         expect(wrapper.find(Alert).text()).toBe(errorTxt ?? '');
-        expect(wrapper.find('.ontology-concept-overview-container')).toHaveLength(!errorTxt ? 1 : 0);
-        expect(wrapper.find(ConceptOverviewPanelImpl)).toHaveLength(!errorTxt ? 1 : 0);
+        const infoIcon = wrapper.find('.fa-info-circle');
+        expect(infoIcon).toHaveLength(errorTxt ? 0 : (!concept ? 0 : 1));
+
+        if (infoIcon.length > 0) {
+            infoIcon.simulate("mouseover");
+            const over = wrapper.find('.ontology-concept-overview-container')
+            expect(over.find('.ontology-concept-overview-container')).toHaveLength(errorTxt ? 0 : 1);
+            expect(over.find(ConceptOverviewPanelImpl)).toHaveLength( errorTxt ? 0 : 1);
+        }
     }
 
     test('no concept', () => {
-        const wrapper = mount(<ConceptOverviewModal concept={undefined} onClose={onCloseFn} />);
+        const wrapper = mount(<ConceptOverviewTooltip concept={undefined} />);
         validate(wrapper);
-        expect(wrapper.find(ConceptOverviewPanelImpl).prop('concept')).toBe(undefined);
         wrapper.unmount();
     });
 
     test('with concept', () => {
-        const wrapper = mount(<ConceptOverviewModal concept={TEST_CONCEPT} onClose={onCloseFn} />);
-        validate(wrapper);
+        const wrapper = mount(<ConceptOverviewTooltip concept={TEST_CONCEPT} />);
+        validate(wrapper, TEST_CONCEPT);
         expect(wrapper.find(ConceptOverviewPanelImpl).prop('concept')).toBe(TEST_CONCEPT);
         wrapper.unmount();
     });
 
     test('error', () => {
-        const wrapper = mount(<ConceptOverviewModal error="test error" concept={TEST_CONCEPT} onClose={onCloseFn} />);
-        validate(wrapper, 'test error');
+        const wrapper = mount(<ConceptOverviewTooltip error="test error" concept={TEST_CONCEPT} />);
+        validate(wrapper, TEST_CONCEPT, 'test error');
         wrapper.unmount();
     });
 });

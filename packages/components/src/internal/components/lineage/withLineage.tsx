@@ -1,5 +1,5 @@
 import React, { ComponentType, PureComponent, ReactNode } from 'react';
-import { Draft, produce } from 'immer';
+import { produce } from 'immer';
 
 import { LoadingState } from '../../..';
 
@@ -123,7 +123,7 @@ export function withLineage<Props>(
             return new Promise(resolve => {
                 if (this._mounted) {
                     this.setState(
-                        produce((draft: Draft<State>) => {
+                        produce<State>(draft => {
                             draft.lineage = lineage;
                         }),
                         () => {

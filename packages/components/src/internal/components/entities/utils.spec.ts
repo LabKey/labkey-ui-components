@@ -37,21 +37,9 @@ describe('getInitialParentChoices', () => {
             schema: 'exp.data',
         },
     ]);
-    test('no child model', () => {
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, undefined);
-        expect(parentChoices.size).toBe(0);
-    });
 
-    test('child model not loaded', () => {
-        const model = new QueryGridModel({
-            id: modelId,
-            isLoaded: false,
-            isLoading: true,
-            isError: false,
-            schema: schemaQuery.schemaName,
-            query: schemaQuery.queryName,
-        });
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model);
+    test('empty child data', () => {
+        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {});
         expect(parentChoices.size).toBe(0);
     });
 
@@ -151,110 +139,99 @@ describe('getInitialParentChoices', () => {
     });
 
     test('multiple inputs and types', () => {
-        const model = new QueryGridModel({
-            id: modelId,
-            isLoaded: true,
-            isLoading: false,
-            isError: false,
-            schema: schemaQuery.schemaName,
-            query: schemaQuery.queryName,
-            dataIds: List(['1']),
-            data: fromJS({
-                '1': {
-                    LSID: {
-                        value: 'urn:lsid:labkey.com:Sample.252.Examples:E-20200316-10',
-                    },
-                    'Inputs/Materials/First': [],
-                    RowId: {
-                        value: 53703,
-                        url: '/labkey/Sam%20Man/experiment-showMaterial.view?rowId=53703',
-                    },
-                    CreatedBy: {
-                        displayValue: 'Susan',
-                        value: 1005,
-                        url: '/labkey/Sam%20Man/user-details.view?schemaName=core&query.queryName=Users&userId=1005',
-                    },
-                    Modified: {
-                        value: '2020-03-16 15:54:28.037',
-                        formattedValue: '2020-03-16 15:54',
-                    },
-                    Description: {
-                        value: null,
-                    },
-                    'Inputs/Data/First': [
-                        {
-                            displayValue: 'B-50118',
-                            value: 'urn:lsid:labkey.com:Data.Folder-252:a49f277e-301e-1038-a031-328bafaf2618',
-                            url: '/labkey/Sam%20Man/experiment-showData.view?rowId=7067&dataClassId=321',
-                        },
-                        {
-                            displayValue: 'B-50117',
-                            value: 'urn:lsid:labkey.com:Data.Folder-252:a49f277f-301e-1038-a031-328bafaf2618',
-                            url: '/labkey/Sam%20Man/experiment-showData.view?rowId=7068&dataClassId=321',
-                        },
-                        {
-                            displayValue: 'B-50116',
-                            value: 'urn:lsid:labkey.com:Data.Folder-252:a49f2780-301e-1038-a031-328bafaf2618',
-                            url: '/labkey/Sam%20Man/experiment-showData.view?rowId=7069&dataClassId=321',
-                        },
-                        {
-                            displayValue: 'Sec-2',
-                            value: 'urn:lsid:labkey.com:Data.Folder-252:604347b2-3103-1038-91ee-da4874ca890e',
-                            url: '/labkey/Sam%20Man/experiment-showData.view?rowId=57088&dataClassId=322',
-                        },
-                    ],
-                    'Inputs/Data/First/DataClass': [
-                        {
-                            displayValue: '321',
-                            value: [321],
-                        },
-                        {
-                            displayValue: '321',
-                            value: [321],
-                        },
-                        {
-                            displayValue: '321',
-                            value: [321],
-                        },
-                        {
-                            displayValue: '322',
-                            value: [322],
-                        },
-                    ],
-                    Run: {
-                        displayValue: 'Derive sample from B-50116, B-50117, B-50118, Sec-2',
-                        value: 2297,
-                        url: '/labkey/Sam%20Man/experiment-showRunText.view?rowId=2297',
-                    },
-                    IntField: {
-                        value: 3,
-                    },
-                    ModifiedBy: {
-                        displayValue: 'Susan',
-                        value: 1005,
-                        url: '/labkey/Sam%20Man/user-details.view?schemaName=core&query.queryName=Users&userId=1005',
-                    },
-                    Created: {
-                        value: '2020-03-16 11:52:58.540',
-                        formattedValue: '2020-03-16 11:52',
-                    },
-                    Name: {
-                        value: 'E-20200316-10',
-                        url: '/labkey/Sam%20Man/experiment-showMaterial.view?rowId=53703',
-                    },
-                    SampleSet: {
-                        displayValue: 'Examples',
-                        value: 'urn:lsid:labkey.com:SampleSet.Folder-252:Examples',
-                        url: '/labkey/Sam%20Man/experiment-showMaterialSource.view?rowId=205',
-                    },
-                    TextField: {
-                        value: null,
-                    },
-                    'Inputs/Materials/First/SampleSet': [],
+        const data = {
+            LSID: {
+                value: 'urn:lsid:labkey.com:Sample.252.Examples:E-20200316-10',
+            },
+            'Inputs/Materials/First': [],
+            RowId: {
+                value: 53703,
+                url: '/labkey/Sam%20Man/experiment-showMaterial.view?rowId=53703',
+            },
+            CreatedBy: {
+                displayValue: 'Susan',
+                value: 1005,
+                url: '/labkey/Sam%20Man/user-details.view?schemaName=core&query.queryName=Users&userId=1005',
+            },
+            Modified: {
+                value: '2020-03-16 15:54:28.037',
+                formattedValue: '2020-03-16 15:54',
+            },
+            Description: {
+                value: null,
+            },
+            'Inputs/Data/First': [
+                {
+                    displayValue: 'B-50118',
+                    value: 'urn:lsid:labkey.com:Data.Folder-252:a49f277e-301e-1038-a031-328bafaf2618',
+                    url: '/labkey/Sam%20Man/experiment-showData.view?rowId=7067&dataClassId=321',
                 },
-            }),
-        });
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model);
+                {
+                    displayValue: 'B-50117',
+                    value: 'urn:lsid:labkey.com:Data.Folder-252:a49f277f-301e-1038-a031-328bafaf2618',
+                    url: '/labkey/Sam%20Man/experiment-showData.view?rowId=7068&dataClassId=321',
+                },
+                {
+                    displayValue: 'B-50116',
+                    value: 'urn:lsid:labkey.com:Data.Folder-252:a49f2780-301e-1038-a031-328bafaf2618',
+                    url: '/labkey/Sam%20Man/experiment-showData.view?rowId=7069&dataClassId=321',
+                },
+                {
+                    displayValue: 'Sec-2',
+                    value: 'urn:lsid:labkey.com:Data.Folder-252:604347b2-3103-1038-91ee-da4874ca890e',
+                    url: '/labkey/Sam%20Man/experiment-showData.view?rowId=57088&dataClassId=322',
+                },
+            ],
+            'Inputs/Data/First/DataClass': [
+                {
+                    displayValue: '321',
+                    value: 321,
+                },
+                {
+                    displayValue: '321',
+                    value: 321,
+                },
+                {
+                    displayValue: '321',
+                    value: 321,
+                },
+                {
+                    displayValue: '322',
+                    value: 322,
+                },
+            ],
+            Run: {
+                displayValue: 'Derive sample from B-50116, B-50117, B-50118, Sec-2',
+                value: 2297,
+                url: '/labkey/Sam%20Man/experiment-showRunText.view?rowId=2297',
+            },
+            IntField: {
+                value: 3,
+            },
+            ModifiedBy: {
+                displayValue: 'Susan',
+                value: 1005,
+                url: '/labkey/Sam%20Man/user-details.view?schemaName=core&query.queryName=Users&userId=1005',
+            },
+            Created: {
+                value: '2020-03-16 11:52:58.540',
+                formattedValue: '2020-03-16 11:52',
+            },
+            Name: {
+                value: 'E-20200316-10',
+                url: '/labkey/Sam%20Man/experiment-showMaterial.view?rowId=53703',
+            },
+            SampleSet: {
+                displayValue: 'Examples',
+                value: 'urn:lsid:labkey.com:SampleSet.Folder-252:Examples',
+                url: '/labkey/Sam%20Man/experiment-showMaterialSource.view?rowId=205',
+            },
+            TextField: {
+                value: null,
+            },
+            'Inputs/Materials/First/SampleSet': [],
+        };
+        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, data);
         expect(parentChoices.size).toBe(2);
         const firstChoice = parentChoices.get(0);
         expect(firstChoice.type.label).toBe('Second Source');

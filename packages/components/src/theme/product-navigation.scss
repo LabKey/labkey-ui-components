@@ -128,11 +128,11 @@
             .container-icon {
                 padding-right: 5px;
             }
+        }
 
-            &:hover {
-                color: $link-hover-color;
-                cursor: pointer;
-            }
+        .clickable:hover {
+            color: $link-hover-color;
+            cursor: pointer;
         }
 
         .container-tabs {

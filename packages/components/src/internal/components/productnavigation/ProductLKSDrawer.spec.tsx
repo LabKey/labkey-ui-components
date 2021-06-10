@@ -79,14 +79,31 @@ describe('ProductLKSDrawer', () => {
         wrapper.unmount();
     });
 
-    test('hideContainer', () => {
-        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} hideLKSContainerLink={true} showHome={true} />);
-        validate(wrapper, 1);
+    test('disableContainer link', () => {
+        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} disableLKSContainerLink={true} showHome={true} />);
+        validate(wrapper, 2);
         expect(wrapper.find('.container-item').first().text()).toBe('LabKey Home');
+        expect(wrapper.find('.container-item').last().text()).toBe(LABKEY.container.title);
+        expect(wrapper.find('.container-item').last().prop('onClick')).toBeFalsy();
         wrapper.unmount();
     });
 
-    test('in home project subfolder', () => {
+    test('in home project', () => {
+        LABKEY.project.id = 'home';
+        LABKEY.project.name = 'home';
+        LABKEY.project.title = 'Home';
+        LABKEY.container.id = 'home';
+        LABKEY.container.path = '/home';
+        LABKEY.container.title = 'Home';
+        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} disableLKSContainerLink={true} showHome={true}/>);
+        validate(wrapper, 1);
+        expect(wrapper.find('.container-item').first().text()).toBe('LabKey Home');
+        expect(wrapper.find('.container-item').first().prop("onClick")).toBeFalsy();
+
+        wrapper.unmount();
+    });
+
+    test('in home project subfolder link enabled', () => {
         LABKEY.project.id = 'home';
         LABKEY.project.name = 'home';
         LABKEY.project.title = 'Home';
@@ -95,7 +112,10 @@ describe('ProductLKSDrawer', () => {
         LABKEY.container.title = 'Test subfolder';
         const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={true} />);
         validate(wrapper, 2);
+        expect(wrapper.find('.container-item').first().text()).toBe('LabKey Home');
+        expect(wrapper.find('.container-item').first().prop('onClick')).toBeTruthy();
         expect(wrapper.find('.container-item').last().text()).toBe('Test subfolder');
+        expect(wrapper.find('.container-item').last().prop('onClick')).toBeTruthy();
         wrapper.unmount();
     });
 
@@ -109,6 +129,7 @@ describe('ProductLKSDrawer', () => {
         const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} showHome={true} />);
         validate(wrapper, 2);
         expect(wrapper.find('.container-item').last().text()).toBe('Test subfolder');
+        expect(wrapper.find('.container-item').last().prop('onClick')).toBeTruthy();
         wrapper.unmount();
     });
 

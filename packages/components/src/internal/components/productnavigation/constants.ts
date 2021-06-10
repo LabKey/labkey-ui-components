@@ -15,11 +15,11 @@ export const SECTION_KEYS_TO_SKIP = ['user', 'biologicsWorkflow'];
 
 export const SAMPLE_MANAGER_PRODUCT_ICON = 'LK-SampleManager-Badge-COLOR.svg';
 export const SAMPLE_MANAGER_ALT_PRODUCT_ICON = 'LK-SampleManager-Badge-WHITE.svg';
-export const SAMPLE_MANAGER_DISABLED_PRODUCT_ICON = 'LK-SampleManager-Badge-WHITE.svg'; // TODO
+export const SAMPLE_MANAGER_DISABLED_PRODUCT_ICON = 'LK-SampleManager-Badge-GRAY.svg';
 
 export const BIOLOGICS_PRODUCT_ICON = 'lk-bio-logo-badge-color.svg';
 export const BIOLOGICS_ALT_PRODUCT_ICON = 'lk-bio-logo-badge.svg';
-export const BIOLOGICS_DISABLED_PRODUCT_ICON = 'lk-bio-logo-badge.svg' // TODO
+export const BIOLOGICS_DISABLED_PRODUCT_ICON = 'lk-bio-logo-badge-gray.svg';
 
 // mapping from product ids to the image/icon src paths
 export const PRODUCT_ID_IMG_SRC_MAP = {
@@ -32,7 +32,6 @@ export const PRODUCT_ID_IMG_SRC_MAP = {
     [BIOLOGICS_PRODUCT_ID.toLowerCase()]: {
         iconUrl: imageURL('biologics/images', BIOLOGICS_PRODUCT_ICON),
         iconUrlAlt: imageURL('biologics/images', BIOLOGICS_ALT_PRODUCT_ICON),
-        // TODO
         iconUrlDisabled: imageURL('biologics/images', BIOLOGICS_DISABLED_PRODUCT_ICON),
     },
 };

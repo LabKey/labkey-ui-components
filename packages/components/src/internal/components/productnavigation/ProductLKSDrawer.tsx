@@ -11,17 +11,18 @@ import {
     TO_LKS_HOME_METRIC, TO_LKS_TAB_METRIC
 } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
+import classNames from 'classnames';
 
 interface ProductLKSDrawerProps {
     showHome: boolean;
-    hideLKSContainerLink?: boolean;
+    disableLKSContainerLink?: boolean;
     tabs: ContainerTabModel[];
 }
 
 export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
-    const { tabs, hideLKSContainerLink, showHome } = props;
+    const { tabs, disableLKSContainerLink, showHome } = props;
     const { container, homeContainer, user } = getServerContext();
-
+    const isHomeContainer = useMemo(() => container.path === '/home', [container])
     const [transition, setTransition] = useState<boolean>(true);
     useEffect(() => {
         // use setTimeout so that the "left" property will change and trigger the transition
@@ -51,16 +52,19 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
     return (
         <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
             {showHome && (
-                <a className="container-item lk-text-theme-dark" onClick={onHomeClick}>
+                <div className={classNames("container-item ", {'lk-text-theme-dark': !isHomeContainer, clickable: !isHomeContainer})}
+                     onClick={!isHomeContainer ? onHomeClick : undefined}
+                >
                     <i className="fa fa-home container-icon" />
                     LabKey Home
-                </a>
+                </div>
             )}
-            {!hideLKSContainerLink && (
-                 <a className="container-item lk-text-theme-dark" onClick={onContainerClick}>
+            {!isHomeContainer && (
+                <div className={classNames("container-item", {'lk-text-theme-dark': !disableLKSContainerLink, clickable: !disableLKSContainerLink})}
+                     onClick={disableLKSContainerLink ? undefined : onContainerClick} >
                     <i className="fa fa-folder-o container-icon" />
                     {container.title}
-                </a>
+                </div>
             )}
             <div className="container-tabs">
                 {visibleTabs.length > 1 &&

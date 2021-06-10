@@ -15,11 +15,11 @@ import { hasPremiumModule } from '../../app/utils';
 
 interface ProductNavigationMenuProps {
     onCloseMenu?: () => void;
-    hideLKSContainerLink?: boolean;
+    disableLKSContainerLink?: boolean;
 }
 
 export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props => {
-    const { hideLKSContainerLink } = props;
+    const { disableLKSContainerLink } = props;
     const [error, setError] = useState<string>();
     const [products, setProducts] = useState<ProductModel[]>(); // the array of products that have been registered for this LK server
     const [tabs, setTabs] = useState<ContainerTabModel[]>(); // the array of container tabs for the current LK container
@@ -56,7 +56,7 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
         <ProductNavigationMenuImpl
             error={error}
             homeVisible={homeVisible}
-            hideLKSContainerLink={hideLKSContainerLink}
+            disableLKSContainerLink={disableLKSContainerLink}
             tabs={tabs}
             products={products?.sort(naturalSortByProperty('productName'))}
             onCloseMenu={props.onCloseMenu}
@@ -70,7 +70,7 @@ interface ProductNavigationMenuImplProps extends ProductNavigationMenuProps {
     error: string;
     products: ProductModel[];
     homeVisible: boolean;
-    hideLKSContainerLink: boolean;
+    disableLKSContainerLink: boolean;
     tabs: ContainerTabModel[];
     selectedProductId: string;
     onSelection: (productId: string) => void;
@@ -82,7 +82,7 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
         error,
         products,
         homeVisible,
-        hideLKSContainerLink,
+        disableLKSContainerLink,
         tabs,
         onCloseMenu,
         selectedProductId,
@@ -121,7 +121,7 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
             />
             <ul className="product-navigation-listing">
                 {showProductDrawer && <ProductAppsDrawer {...props} onClick={onSelection} />}
-                {showLKSDrawer && <ProductLKSDrawer hideLKSContainerLink={hideLKSContainerLink} showHome={homeVisible} tabs={tabs} />}
+                {showLKSDrawer && <ProductLKSDrawer disableLKSContainerLink={disableLKSContainerLink} showHome={homeVisible} tabs={tabs} />}
                 {showSectionsDrawer && (
                     <ProductSectionsDrawer
                         product={selectedProduct}

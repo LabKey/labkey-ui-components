@@ -84,12 +84,12 @@ describe('ProductAppsDrawer', () => {
         );
         expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrl')).toBe(DEFAULT_ICON_URL);
         expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrlAlt')).toBe(
-            '/labkey/sampleManagement/images/' +  SAMPLE_MANAGER_ALT_PRODUCT_ICON
+            '/labkey/sampleManagement/images/' +  SAMPLE_MANAGER_DISABLED_PRODUCT_ICON
         );
         expect(wrapper.find(ProductAppMenuItem).at(2).prop('iconUrlAlt')).toBe(
             '/labkey/biologics/images/' + BIOLOGICS_ALT_PRODUCT_ICON
         );
-        expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrlAlt')).toBe(DEFAULT_ICON_ALT_URL);
+        expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrlAlt')).toBe(DEFAULT_ICON_URL);
 
         wrapper.unmount();
     });

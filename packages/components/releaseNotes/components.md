@@ -2,7 +2,12 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 ### version TBD
 *Released*: TBD
-* Update application navigation menu behavior
+* Update product navigation menu behavior
+  * Remove ability to navigate to other projects
+  * Make LKS links entries not clickable if already in the current container
+  * Add ability to disable display of menu for non-admins (based on Look & Feel setting from server)
+  * Add usage statistics about navigation to and from LKS
+  * Add use of experimental feature flag to conditionally enable navigation to LKSM from LKB
 
 ### version 2.43.0
 *Release*: 9 Jun 2021

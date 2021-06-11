@@ -8,8 +8,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Allow EntityInsertPanel to initialize sample parents from inventory items selection
 * Add getSnapshotSelections action util
 
+### version 2.44.0
+*Released*: 10 June 2021
+* Item 8958: LKSM Permissions updates for premium vs hosted only servers
+    * Move SITE_SECURITY_ROLES from SM to shared components and update APPLICATION_SECURITY_ROLES to include Project and Folder Admin roles
+    * AuditDetails component fix to use getUsersWithPermissions to resolve userId display names
+    * DomainForm refactor to replace extra Security.getModules call with use of new hasModule helper for ontology
+    * BasePermissionsCheckPage addition of subTitle and description optional properties
+    * SecurityRole.filter fix to always take into account the relevantRoles from policy
+    * SiteUsersGridPanel conversion to QueryModel and GridPanel
+    * SiteUsersGridPanel updates for Project/Folder admin users to only show applicable menu items (i.e. delete/deactivate)
+    * getUserRoleDisplay updates for additional admin roles in SM app
+    * GridPanel addition of option highlightLastSelectedRow prop to match QueryGridPanel
+
 ### version 2.43.0
-*Release*: 9 Jun 2021
+*Release*: 9 June 2021
 * Add support for concept picker usage in Insert/Update scenarios
 * Fixed OntologyLookupOptions NO-OP updates marking fields as dirty
 * Add an initial concept for OntologyBrowserModal

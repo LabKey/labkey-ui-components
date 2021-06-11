@@ -47,7 +47,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         if (queryModel?.hasSelections || sampleIds?.length) {
             setShowChoosePicklist(true);
         }
-    }, [queryModel]);
+    }, [queryModel, sampleIds]);
 
     if (!userCanManagePicklists(user) || !isSamplePicklistEnabled()) {
         return null;

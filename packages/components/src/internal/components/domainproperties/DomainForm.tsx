@@ -19,7 +19,6 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Button, Checkbox, Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Sticky, StickyContainer } from 'react-sticky';
-import { getServerContext, Security } from '@labkey/api';
 
 import {
     AddEntityButton,
@@ -45,13 +44,14 @@ import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 
 import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
+import { hasModule } from '../../app/utils';
+
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     EXPAND_TRANSITION,
     EXPAND_TRANSITION_FAST,
     PHILEVEL_NOT_PHI,
     SEVERITY_LEVEL_ERROR,
-    STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './constants';
 import { LookupProvider } from './Lookup/Context';
 import {
@@ -157,7 +157,6 @@ interface IDomainFormState {
     filePreviewMsg: string;
     bulkDeleteConfirmInfo: BulkDeleteConfirmInfo;
     reservedFieldsMsg: ReactNode;
-    serverModuleNames: string[];
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -211,7 +210,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             summaryViewMode: false,
             search: undefined,
             reservedFieldsMsg: undefined,
-            serverModuleNames: undefined,
         };
 
         this.refsArray = [];
@@ -229,27 +227,15 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             }
         }
 
-        // query to get the set of available modules for the given LabKey server
-        // TODO change this to use hasModule instead
-        Security.getModules({
-            containerPath: getServerContext().container.path,
-            success: async data => {
-                const serverModuleNames = data.modules
-                    .filter(module => module.enabled)
-                    .map(module => module.name.toLowerCase());
-                this.setState({ serverModuleNames });
-
-                // if the Ontology module is available, get the updated set of available data types
-                if (serverModuleNames.indexOf(ONTOLOGY_MODULE_NAME) > -1) {
-                    try {
-                        const availableTypes = await getAvailableTypesForOntology(domain);
-                        this.setState({ availableTypes });
-                    } catch (error) {
-                        console.error('Failed to retrieve available types for Ontology.', error);
-                    }
-                }
-            },
-        });
+        // if the Ontology module is available, get the updated set of available data types
+        if (hasModule(ONTOLOGY_MODULE_NAME)) {
+            try {
+                const availableTypes = await getAvailableTypesForOntology(domain);
+                this.setState({ availableTypes });
+            } catch (error) {
+                console.error('Failed to retrieve available types for Ontology.', error);
+            }
+        }
 
         // TODO since this is called in componentDidUpdate, can it be removed here?
         updateDomainPanelClassList(useTheme, domain);
@@ -1257,7 +1243,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             dragId,
             availableTypes,
             search,
-            serverModuleNames,
         } = this.state;
 
         return (
@@ -1302,7 +1287,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 defaultDefaultValueType={domain.defaultDefaultValueType}
                                                 defaultValueOptions={domain.defaultValueOptions}
                                                 appPropertiesOnly={appPropertiesOnly}
-                                                serverModuleNames={serverModuleNames}
                                                 showFilePropertyType={showFilePropertyType}
                                                 successBsStyle={successBsStyle}
                                                 isDragDisabled={
@@ -1337,7 +1321,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderForm() {
         const { domain, appDomainHeaderRenderer, allowImportExport, appPropertiesOnly } = this.props;
-        const { summaryViewMode, search, selectAll, serverModuleNames } = this.state;
+        const { summaryViewMode, search, selectAll } = this.state;
         const hasFields = domain.fields.size > 0;
         const actions = {
             toggleSelectAll: this.toggleSelectAll,
@@ -1359,7 +1343,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             selectAll={selectAll}
                             actions={actions}
                             appPropertiesOnly={appPropertiesOnly}
-                            hasOntologyModule={serverModuleNames?.indexOf(ONTOLOGY_MODULE_NAME) > -1}
+                            hasOntologyModule={hasModule(ONTOLOGY_MODULE_NAME)}
                         />
                     ) : (
                         this.renderDetailedFieldView()

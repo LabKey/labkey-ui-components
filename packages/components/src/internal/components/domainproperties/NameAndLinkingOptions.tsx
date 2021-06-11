@@ -7,6 +7,8 @@ import { OntologyConceptAnnotation } from '../ontology/OntologyConceptAnnotation
 
 import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
+import { hasModule } from '../../app/utils';
+
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';
 import {
@@ -26,7 +28,6 @@ interface NameAndLinkingProps {
     field: DomainField;
     onChange: (string, any) => void;
     appPropertiesOnly?: boolean;
-    serverModuleNames: string[];
 }
 
 export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
@@ -63,7 +64,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
     };
 
     render(): ReactNode {
-        const { index, field, domainIndex, appPropertiesOnly, serverModuleNames } = this.props;
+        const { index, field, domainIndex, appPropertiesOnly } = this.props;
 
         return (
             <div>
@@ -127,7 +128,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             onChange={this.handleChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
-                        {!appPropertiesOnly && serverModuleNames?.indexOf(ONTOLOGY_MODULE_NAME) > -1 && (
+                        {!appPropertiesOnly && hasModule(ONTOLOGY_MODULE_NAME) && (
                             <OntologyConceptAnnotation
                                 id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
                                 field={field}

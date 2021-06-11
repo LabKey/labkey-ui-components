@@ -74,7 +74,7 @@ export const DATA_CLASSES = {
 const INVENTORY_SCHEMA = 'inventory';
 export const INVENTORY = {
     SCHEMA: INVENTORY_SCHEMA,
-    ITEMS: SchemaQuery.create(INVENTORY_SCHEMA, 'Items'),
+    ITEMS: SchemaQuery.create(INVENTORY_SCHEMA, 'Item'),
     SAMPLE_ITEMS: SchemaQuery.create(INVENTORY_SCHEMA, 'SampleItems'),
 };
 

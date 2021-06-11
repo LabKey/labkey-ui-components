@@ -16,13 +16,18 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { SecurityPolicy } from '../../..';
 import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
 import { initQueryGridState } from '../../global';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
+import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../../test/data/users';
 
-import { SiteUsersGridPanel } from './SiteUsersGridPanel';
+import { SecurityPolicy } from '../permissions/models';
+import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SCHEMAS } from '../../schemas';
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { SiteUsersGridPanelImpl } from './SiteUsersGridPanel';
 
 const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
@@ -33,21 +38,49 @@ beforeAll(() => {
 });
 
 describe('<SiteUsersGridPanel/>', () => {
+    const DEFAULT_PROPS = {
+        user: TEST_USER_APP_ADMIN,
+        onCreateComplete: jest.fn(),
+        onUsersStateChangeComplete: jest.fn(),
+        policy: POLICY,
+        rolesByUniqueName: ROLES_BY_NAME,
+        actions: makeTestActions(),
+        queryModels: {
+            'user-management-users-all': makeTestQueryModel(
+                SCHEMAS.CORE_TABLES.USERS,
+                new QueryInfo(),
+                {},
+                [],
+                0,
+                'user-management-users-all'
+            ),
+            'user-management-users-active': makeTestQueryModel(
+                SCHEMAS.CORE_TABLES.USERS,
+                new QueryInfo(),
+                {},
+                [],
+                0,
+                'user-management-users-active'
+            ),
+            'user-management-users-inactive': makeTestQueryModel(
+                SCHEMAS.CORE_TABLES.USERS,
+                new QueryInfo(),
+                {},
+                [],
+                0,
+                'user-management-users-inactive'
+            ),
+        },
+    };
+
     test('active users view', () => {
-        const component = (
-            <SiteUsersGridPanel
-                onCreateComplete={jest.fn()}
-                onUsersStateChangeComplete={jest.fn()}
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
-            />
-        );
+        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} />;
 
         const wrapper = mount(component);
-        expect(wrapper.find('QueryGridPanel')).toHaveLength(1);
+        expect(wrapper.find('GridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
         expect(wrapper.find('.panel-heading').first().text()).toBe('Active Users');
-        expect(wrapper.find('.btn-success')).toHaveLength(1);
+        expect(wrapper.find('.btn-success')).toHaveLength(1); // create button
         expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
         wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(1);
@@ -59,25 +92,36 @@ describe('<SiteUsersGridPanel/>', () => {
         wrapper.unmount();
     });
 
-    test('without delete', () => {
-        const component = (
-            <SiteUsersGridPanel
-                onCreateComplete={jest.fn()}
-                onUsersStateChangeComplete={jest.fn()}
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
-                allowDelete={false}
-            />
-        );
+    test('without delete or deactivate', () => {
+        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} user={TEST_USER_PROJECT_ADMIN} />;
 
         const wrapper = mount(component);
-        expect(wrapper.find('QueryGridPanel')).toHaveLength(1);
+        expect(wrapper.find('GridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
         expect(wrapper.find('.panel-heading').first().text()).toBe('Active Users');
-        expect(wrapper.find('.btn-success')).toHaveLength(1);
+        expect(wrapper.find('.btn-success')).toHaveLength(1); // create button
         expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
         wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
-        expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(1);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(0);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'Reactivate Users')).toHaveLength(0);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(0);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'View Inactive Users')).toHaveLength(1);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'View Active Users')).toHaveLength(0);
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'View All Users')).toHaveLength(1);
+        wrapper.unmount();
+    });
+
+    test('without create, delete, or deactivate', () => {
+        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} user={TEST_USER_FOLDER_ADMIN} />;
+
+        const wrapper = mount(component);
+        expect(wrapper.find('GridPanel')).toHaveLength(1);
+        expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
+        expect(wrapper.find('.panel-heading').first().text()).toBe('Active Users');
+        expect(wrapper.find('.btn-success')).toHaveLength(0); // create button
+        expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
+        wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
+        expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Reactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View Inactive Users')).toHaveLength(1);
@@ -87,22 +131,15 @@ describe('<SiteUsersGridPanel/>', () => {
     });
 
     test('inactive users view', () => {
-        const component = (
-            <SiteUsersGridPanel
-                onCreateComplete={jest.fn()}
-                onUsersStateChangeComplete={jest.fn()}
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
-            />
-        );
+        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} />;
 
         const wrapper = mount(component);
         wrapper.setState({ usersView: 'inactive' });
 
-        expect(wrapper.find('QueryGridPanel')).toHaveLength(1);
+        expect(wrapper.find('GridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
         expect(wrapper.find('.panel-heading').first().text()).toBe('Inactive Users');
-        expect(wrapper.find('.btn-success')).toHaveLength(1);
+        expect(wrapper.find('.btn-success')).toHaveLength(1); // create button
         expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
         wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(0);
@@ -115,22 +152,15 @@ describe('<SiteUsersGridPanel/>', () => {
     });
 
     test('all users view', () => {
-        const component = (
-            <SiteUsersGridPanel
-                onCreateComplete={jest.fn()}
-                onUsersStateChangeComplete={jest.fn()}
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
-            />
-        );
+        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} />;
 
         const wrapper = mount(component);
         wrapper.setState({ usersView: 'all' });
 
-        expect(wrapper.find('QueryGridPanel')).toHaveLength(1);
+        expect(wrapper.find('GridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
         expect(wrapper.find('.panel-heading').first().text()).toBe('All Users');
-        expect(wrapper.find('.btn-success')).toHaveLength(1);
+        expect(wrapper.find('.btn-success')).toHaveLength(1); // create button
         expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
         wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(0);
@@ -139,6 +169,21 @@ describe('<SiteUsersGridPanel/>', () => {
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View Inactive Users')).toHaveLength(1);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View Active Users')).toHaveLength(1);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'View All Users')).toHaveLength(0);
+        wrapper.unmount();
+    });
+
+    test('showDetailsPanel false', () => {
+        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} showDetailsPanel={false} />;
+        const wrapper = mount(component);
+        expect(wrapper.find('UserDetailsPanel')).toHaveLength(0);
+        wrapper.unmount();
+    });
+
+    test('loading', () => {
+        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} queryModels={{}} />;
+        const wrapper = mount(component);
+        expect(wrapper.find('LoadingSpinner')).toHaveLength(1);
+        expect(wrapper.find('GridPanel')).toHaveLength(0);
         wrapper.unmount();
     });
 });

@@ -140,7 +140,7 @@ storiesOf('NavigationBar', module)
         return <NavigationBar menuSectionConfigs={sectionConfigs} model={model} showSearchBox={false} />;
     })
     .add('With sections', () => {
-        LABKEY.moduleContext.samplemanagement = { hasPremiumModule: true };
+        LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
 
         const fruitGroup = 'Fruit';
         const vegGroup = 'Vegetables';

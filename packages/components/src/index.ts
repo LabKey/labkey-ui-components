@@ -82,7 +82,7 @@ import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
 import { InsufficientPermissionsPage } from './internal/components/permissions/InsufficientPermissionsPage';
 import { BasePermissionsCheckPage } from './internal/components/permissions/BasePermissionsCheckPage';
-import { APPLICATION_SECURITY_ROLES } from './internal/components/permissions/constants';
+import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from './internal/components/permissions/constants';
 import { NotFound } from './internal/components/base/NotFound';
 import { Page } from './internal/components/base/Page';
 import { LoadingPage } from './internal/components/base/LoadingPage';
@@ -435,7 +435,7 @@ import {
     SampleCreationType,
 } from './internal/components/samples/models';
 import { createMockWithRouterProps } from './test/mockUtils';
-import { ConceptModel } from './internal/components/ontology/models'
+import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
 import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
@@ -496,6 +496,7 @@ import {
     TEST_USER_AUTHOR,
     TEST_USER_EDITOR,
     TEST_USER_FOLDER_ADMIN,
+    TEST_USER_PROJECT_ADMIN,
     TEST_USER_GUEST,
     TEST_USER_READER,
 } from './test/data/users';
@@ -604,6 +605,7 @@ const App = {
     TEST_USER_EDITOR,
     TEST_USER_ASSAY_DESIGNER,
     TEST_USER_FOLDER_ADMIN,
+    TEST_USER_PROJECT_ADMIN,
     TEST_USER_APP_ADMIN,
 };
 
@@ -736,6 +738,7 @@ export {
     SiteUsersGridPanel,
     InsufficientPermissionsPage,
     APPLICATION_SECURITY_ROLES,
+    SITE_SECURITY_ROLES,
     BasePermissionsCheckPage,
     RequiresPermission,
     hasAllPermissions,

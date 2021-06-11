@@ -15,15 +15,12 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
-import { List } from 'immutable';
 
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 
 describe('<UserDeleteConfirmModal/>', () => {
     test('single user selected', () => {
-        const component = (
-            <UserDeleteConfirmModal userIds={List<number>([1])} onCancel={jest.fn()} onComplete={jest.fn()} />
-        );
+        const component = <UserDeleteConfirmModal userIds={[1]} onCancel={jest.fn()} onComplete={jest.fn()} />;
 
         const wrapper = mount(component);
         expect(wrapper.find('Alert')).toHaveLength(0);
@@ -37,9 +34,7 @@ describe('<UserDeleteConfirmModal/>', () => {
     });
 
     test('multiple users selected', () => {
-        const component = (
-            <UserDeleteConfirmModal userIds={List<number>([1, 2, 3])} onCancel={jest.fn()} onComplete={jest.fn()} />
-        );
+        const component = <UserDeleteConfirmModal userIds={[1, 2, 3]} onCancel={jest.fn()} onComplete={jest.fn()} />;
 
         const wrapper = mount(component);
         expect(wrapper.find('Alert')).toHaveLength(0);
@@ -53,9 +48,7 @@ describe('<UserDeleteConfirmModal/>', () => {
     });
 
     test('with state', () => {
-        const component = (
-            <UserDeleteConfirmModal userIds={List<number>([1, 2, 3])} onCancel={jest.fn()} onComplete={jest.fn()} />
-        );
+        const component = <UserDeleteConfirmModal userIds={[1, 2, 3]} onCancel={jest.fn()} onComplete={jest.fn()} />;
 
         const wrapper = mount(component);
         wrapper.setState({ submitting: true, error: 'Test Error' });

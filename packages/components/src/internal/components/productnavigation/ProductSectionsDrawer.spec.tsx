@@ -61,7 +61,7 @@ describe('ProductSectionsDrawer', () => {
     });
 
     test('parseProductMenuSectionResponse, no modelSections', () => {
-        const sections = parseProductMenuSectionResponse(List<MenuSectionModel>(), TEST_PRODUCT, TEST_PROJECT);
+        const sections = parseProductMenuSectionResponse(List<MenuSectionModel>(), TEST_PRODUCT, TEST_PROJECT.path);
         expect(sections).toHaveLength(1);
         expect(sections[0].key).toBe('home');
         expect(sections[0].label).toBe('Dashboard');
@@ -77,7 +77,7 @@ describe('ProductSectionsDrawer', () => {
             new MenuSectionModel({ key: 's3', productId: 'a', label: 'S3' }),
         ]);
 
-        const sections = parseProductMenuSectionResponse(modelSections, TEST_PRODUCT, TEST_PROJECT);
+        const sections = parseProductMenuSectionResponse(modelSections, TEST_PRODUCT, TEST_PROJECT.path);
         expect(sections).toHaveLength(4);
         expect(sections[0].key).toBe('home');
         expect(sections[1].key).toBe('s1');
@@ -98,7 +98,7 @@ describe('ProductSectionsDrawer', () => {
             new MenuSectionModel({ key: FREEZERS_KEY, productId: 'a', label: 'Storage' }),
         ]);
 
-        const sections = parseProductMenuSectionResponse(modelSections, TEST_PRODUCT, TEST_PROJECT);
+        const sections = parseProductMenuSectionResponse(modelSections, TEST_PRODUCT, TEST_PROJECT.path);
         expect(sections).toHaveLength(4);
         expect(sections[0].key).toBe('home');
         expect(sections[1].key).toBe('s1');

@@ -100,7 +100,6 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
     }
 
     const selectedProduct = getSelectedProduct(products, selectedProductId);
-    const currentContainer = new Container(getServerContext().container);
     const showProductDrawer = selectedProductId === undefined;
     const showLKSDrawer = selectedProductId === LKS_PRODUCT_ID;
     const showSectionsDrawer = selectedProduct !== undefined;
@@ -128,7 +127,6 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
                 {showSectionsDrawer && (
                     <ProductSectionsDrawer
                         product={selectedProduct}
-                        container={currentContainer}
                         onCloseMenu={onCloseMenu}
                     />
                 )}

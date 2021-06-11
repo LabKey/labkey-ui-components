@@ -19,12 +19,12 @@ import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductAppsDrawerProps {
     product: ProductModel;
-    container: Container;
     onCloseMenu?: () => void;
 }
 
 export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
-    const { product, container, onCloseMenu } = props;
+    const { product, onCloseMenu } = props;
+    const currentContainer = getServerContext().container;
     const [error, setError] = useState<string>();
     const [sections, setSections] = useState<ProductSectionModel[]>();
 
@@ -38,7 +38,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
         model
             .getMenuSections(0)
             .then(modelSections => {
-                setSections(parseProductMenuSectionResponse(modelSections, product, container));
+                setSections(parseProductMenuSectionResponse(modelSections, product, currentContainer.path));
             })
             .catch(error => {
                 setError('Error: unable to load product sections.');
@@ -106,13 +106,13 @@ export function getProductSectionUrl(
 export function parseProductMenuSectionResponse(
     modelSections: List<MenuSectionModel>,
     product: ProductModel,
-    project: Container
+    projectPath: string,
 ): ProductSectionModel[] {
     const menuSections = [
         new ProductSectionModel({
             key: 'home',
             label: 'Dashboard',
-            url: getProductSectionUrl(product.productId, 'home', project.path),
+            url: getProductSectionUrl(product.productId, 'home', projectPath),
         }),
     ];
 
@@ -123,7 +123,7 @@ export function parseProductMenuSectionResponse(
                 new ProductSectionModel({
                     key: modelSection.key,
                     label: modelSection.label,
-                    url: getProductSectionUrl(modelSection.productId, modelSection.key, project.path),
+                    url: getProductSectionUrl(modelSection.productId, modelSection.key, projectPath),
                 })
             );
         });

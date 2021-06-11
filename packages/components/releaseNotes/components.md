@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.45.0
+*Released*: 11 June 2021
+* Added SampleDeleteMenuItem
+* Moved CreateSamplesSubMenuBase, getMenuItemsForSection from SampleManager
+* Allow EntityInsertPanel to initialize sample parents from inventory items selection
+* Add getSnapshotSelections action util
+
 ### version 2.44.0
 *Released*: 10 June 2021
 * Item 8958: LKSM Permissions updates for premium vs hosted only servers

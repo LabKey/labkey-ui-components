@@ -552,7 +552,7 @@ export class EntityIdCreationModel extends Record({
                 parentCols.forEach(parentCol => {
                     const parents: Array<any> = values.get(parentCol);
                     parents.forEach((parent) => {
-                        let singleParentValues = Map<string, any>(values);
+                        let singleParentValues = Map<string, any>();
                         singleParentValues = singleParentValues.set(parentCol, List<any>([parent]));
                         for (let c = 0; c < this.numPerParent; c++) {
                             data = data.push(singleParentValues);

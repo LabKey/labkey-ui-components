@@ -128,6 +128,7 @@ import { ManageDropdownButton } from './internal/components/buttons/ManageDropdo
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
 import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
 import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
+import { getMenuItemsForSection } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
 
@@ -135,6 +136,7 @@ import { EditorModel, getStateModelId, getStateQueryGridModel } from './internal
 import {
     clearSelected,
     createQueryGridModelFilteredBySample,
+    getSnapshotSelections,
     getSelected,
     getSelectedData,
     getSelection,
@@ -257,18 +259,20 @@ import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
     fetchSamples,
-    getGroupedSampleDisplayColumns,
     getSampleSet,
     getSampleTypeDetails,
     loadSelectedSamples,
+    getSelectedItemSamples,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
 import { SamplesEditableGridBase } from './internal/components/samples/SamplesEditableGrid';
 import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
+import { SampleDeleteMenuItem } from './internal/components/samples/SampleDeleteMenuItem';
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
+import { CreateSamplesSubMenuBase } from './internal/components/samples/CreateSamplesSubMenuBase';
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
@@ -434,6 +438,7 @@ import {
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
 } from './internal/components/samples/models';
+import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
@@ -632,6 +637,7 @@ export {
     schemaGridInvalidate,
     updateEditorModel,
     // grid functions
+    getSnapshotSelections,
     getSelected,
     getSelectedData,
     getSelection,
@@ -776,6 +782,7 @@ export {
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
+    getSelectedItemSamples,
     SampleTypeDataType,
     DataClassDataType,
     ParentEntityRequiredColumns,
@@ -785,10 +792,12 @@ export {
     SampleCreationType,
     SampleSetDeleteModal,
     SamplesBulkUpdateFormBase,
+    SampleDeleteMenuItem,
     SamplesEditableGridBase,
     SampleLineageGraph,
     SampleDetailEditing,
     SampleCreationTypeModal,
+    CreateSamplesSubMenuBase,
     SamplesSelectionProvider,
     SampleAliquotDetailHeader,
     SampleAssayDetail,
@@ -796,6 +805,7 @@ export {
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
     ALIQUOT_CREATION,
+    SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
@@ -1001,6 +1011,7 @@ export {
     SplitButtonGroup,
     PaginationButtons,
     ToggleButtons,
+    getMenuItemsForSection,
     // application page related items
     LoadingPage,
     NotFound,

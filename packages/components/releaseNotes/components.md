@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Switch ontology search to use hit id instead of parsing code
+
 ### version 2.44.0
 *Released*: 10 June 2021
 * Item 8958: LKSM Permissions updates for premium vs hosted only servers

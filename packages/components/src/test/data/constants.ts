@@ -395,8 +395,10 @@ export const TIMELINE_DATA = [
 export const TEST_ASSAY_STATE_MODEL = new AssayStateModel({
     definitionsLoadingState: LoadingState.LOADED,
     definitions: [
+        AssayDefinitionModel.create({ id: 3, name: 'NAb 1', type: 'NAb' }),
         AssayDefinitionModel.create({ id: 1, name: 'GPAT 1', type: GENERAL_ASSAY_PROVIDER_NAME }),
         AssayDefinitionModel.create({ id: 2, name: 'GPAT 2', type: GENERAL_ASSAY_PROVIDER_NAME }),
-        AssayDefinitionModel.create({ id: 3, name: 'NAb 1', type: 'NAb' }),
+        AssayDefinitionModel.create({ id: 5, name: 'Luminex', type: 'Luminex' }),
+        AssayDefinitionModel.create({ id: 4, name: 'Protein', type: 'Protein Expression Matrix' }),
     ],
 });

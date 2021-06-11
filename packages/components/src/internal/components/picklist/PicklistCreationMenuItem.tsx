@@ -17,10 +17,12 @@ interface Props {
     key: string;
     itemText: string;
     user: User;
+    currentProductId?: string;
+    picklistProductId?: string;
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {
-    const {sampleIds, selectionKey, selectedQuantity, key, itemText, user} = props;
+    const { key, itemText, user } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const onFinish = (picklist: Picklist) => {
@@ -45,10 +47,8 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
                 {itemText}
             </MenuItem>
             <PicklistEditModal
-                selectionKey={selectionKey}
-                selectedQuantity={selectedQuantity}
+                {...props}
                 showNotification={true}
-                sampleIds={sampleIds}
                 show={showModal}
                 onFinish={onFinish}
                 onCancel={onCancel}

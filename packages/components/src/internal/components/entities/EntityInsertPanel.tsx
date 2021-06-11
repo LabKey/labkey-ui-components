@@ -83,6 +83,8 @@ import { getCurrentProductName } from '../../app/utils';
 
 import { fetchDomainDetails } from '../domainproperties/actions';
 
+import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from '../samples/constants';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -150,6 +152,7 @@ interface FromLocationProps {
     tab?: number;
     target?: any;
     user?: User;
+    isItemSamples?: boolean;
 }
 
 type Props = FromLocationProps & OwnProps & WithFormStepsProps;
@@ -250,6 +253,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             parents,
             selectionKey,
             target,
+            isItemSamples,
         } = this.props;
 
         const { creationType } = this.state;
@@ -289,7 +293,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 entityDataType,
                 parentSchemaQueries,
                 entityDataType.typeListingSchemaQuery.queryName,
-                allowParents
+                allowParents,
+                isItemSamples
             );
 
             this.gridInit(insertModel.merge(partialModel) as EntityIdCreationModel);
@@ -1317,8 +1322,8 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             return {};
         }
 
-        const { creationType, numPerParent, parent, selectionKey, tab, target } = location.query;
-
+        const { creationType, numPerParent, parent, selectionKey, tab, target, selectionKeyType } = location.query;
+        const isItemSamples = selectionKeyType === SAMPLE_INVENTORY_ITEM_SELECTION_KEY;
         return {
             creationType,
             numPerParent,
@@ -1326,6 +1331,7 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             selectionKey,
             tab: parseInt(tab, 10),
             target,
+            isItemSamples,
         };
     }, [location]);
 

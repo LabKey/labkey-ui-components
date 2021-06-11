@@ -1,25 +1,25 @@
 import React from 'react';
-import { List } from "immutable";
+import { List } from 'immutable';
 import { mount, ReactWrapper } from 'enzyme';
-import {
-    MenuOption,
-    SampleCreationTypeModal,
-    SubMenu
-} from "../../..";
 
-import { CreateSamplesSubMenuBase } from "./CreateSamplesSubMenuBase";
+import { MenuOption, SampleCreationTypeModal, SubMenu } from '../../..';
 
-const sampleOptions = [{
-        "key": "Blood",
-        "name": "Blood",
-        "disabled": false,
-        "href": "#/samples/new?target=Blood"
-    }, {
-        "key": "MixtureBatches",
-        "name": "MixtureBatches",
-        "disabled": false,
-        "href": "#/samples/new?target=MixtureBatches"
-    }];
+import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
+
+const sampleOptions = [
+    {
+        key: 'Blood',
+        name: 'Blood',
+        disabled: false,
+        href: '#/samples/new?target=Blood',
+    },
+    {
+        key: 'MixtureBatches',
+        name: 'MixtureBatches',
+        disabled: false,
+        href: '#/samples/new?target=MixtureBatches',
+    },
+];
 
 const getOptions = (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => {
     return List<MenuOption>(sampleOptions);
@@ -30,11 +30,18 @@ const DEFAULT_PROPS = {
     maxParentPerSample: 10,
     getOptions,
     parentType: 'samples',
-    isSelectingSamples: (schemaName: string) => { return schemaName?.toLowerCase() === 'samples'; }
-}
+    isSelectingSamples: (schemaName: string) => {
+        return schemaName?.toLowerCase() === 'samples';
+    },
+};
 
 describe('CreateSamplesSubMenuBase', () => {
-    function validate(wrapper: ReactWrapper, optionCount: number, menuText = 'Create Samples', currentMenuChoice?: string): List<MenuOption> {
+    function validate(
+        wrapper: ReactWrapper,
+        optionCount: number,
+        menuText = 'Create Samples',
+        currentMenuChoice?: string
+    ): List<MenuOption> {
         expect(wrapper.find(SampleCreationTypeModal)).toHaveLength(0);
 
         const submenu = wrapper.find(SubMenu);
@@ -60,7 +67,9 @@ describe('CreateSamplesSubMenuBase', () => {
     });
 
     test('SubMenu props', () => {
-        const wrapper = mount(<CreateSamplesSubMenuBase {...DEFAULT_PROPS} menuText={'Test1'} menuCurrentChoice={'MixtureBatches'} />);
+        const wrapper = mount(
+            <CreateSamplesSubMenuBase {...DEFAULT_PROPS} menuText="Test1" menuCurrentChoice="MixtureBatches" />
+        );
         validate(wrapper, 2, 'Test1', 'MixtureBatches');
         wrapper.unmount();
     });

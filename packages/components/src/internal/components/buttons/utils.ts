@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 
-import {AppURL, MenuOption, MenuSectionModel, naturalSort} from '../../..';
+import { AppURL, MenuOption, MenuSectionModel, naturalSort } from '../../..';
 
 export function getMenuItemsForSection(
     section: MenuSectionModel,
@@ -23,8 +23,7 @@ export function getMenuItemsForSection(
 
                 if (itemActionFn) {
                     let href = useOnClick ? undefined : itemActionFn(item.key, section);
-                    if (href instanceof AppURL)
-                        href = href.toHref();
+                    if (href instanceof AppURL) href = href.toHref();
 
                     config.href = href;
                     config.onClick =

@@ -331,7 +331,15 @@ export function getGroupedSampleDisplayColumns(
 
 export function getSelectedItemSamples(selectedItemIds: string[]): Promise<number[]> {
     return new Promise((resolve, reject) => {
-        getSelectedData(SCHEMAS.INVENTORY.ITEMS.schemaName, SCHEMAS.INVENTORY.ITEMS.queryName, selectedItemIds, 'RowId, MaterialId', undefined, undefined, undefined)
+        getSelectedData(
+            SCHEMAS.INVENTORY.ITEMS.schemaName,
+            SCHEMAS.INVENTORY.ITEMS.queryName,
+            selectedItemIds,
+            'RowId, MaterialId',
+            undefined,
+            undefined,
+            undefined
+        )
             .then(response => {
                 const { data } = response;
                 const sampleIds = [];

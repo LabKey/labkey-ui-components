@@ -39,7 +39,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         picklist,
         showNotification,
         currentProductId,
-        picklistProductId
+        picklistProductId,
     } = props;
     const [name, setName] = useState<string>(picklist ? picklist.name : '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
@@ -85,7 +85,8 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                     <>
                         Successfully created "{picklist.name}" with{' '}
                         {quantity ? Utils.pluralize(quantity, 'sample', 'samples') : ' no samples'}.&nbsp;
-                        <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>.
+                        <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>
+                        .
                     </>
                 );
             },

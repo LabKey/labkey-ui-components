@@ -18,7 +18,7 @@ import {
     getPicklistCountsBySampleType,
     getPicklists,
     getPicklistUrl,
-    SampleTypeCount
+    SampleTypeCount,
 } from './actions';
 import { Picklist } from './models';
 
@@ -188,7 +188,8 @@ export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> =
 
     return (
         <>
-            {numAddedNotification} to picklist "<a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>{picklist.name}</a>".
+            {numAddedNotification} to picklist "
+            <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>{picklist.name}</a>".
             {numNotAddedNotification}
         </>
     );

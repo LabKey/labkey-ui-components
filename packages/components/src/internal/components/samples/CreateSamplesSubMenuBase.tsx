@@ -139,5 +139,5 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 });
 
 CreateSamplesSubMenuBase.defaultProps = {
-    allowPooledSamples: true
+    allowPooledSamples: true,
 };

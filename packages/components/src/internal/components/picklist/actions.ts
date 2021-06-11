@@ -14,8 +14,9 @@ import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list
 import { resolveErrorMessage } from '../../util/messaging';
 import { SCHEMAS } from '../../../index';
 
+import { PICKLIST_KEY } from '../../app/constants';
+
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
-import { PICKLIST_KEY } from "../../app/constants";
 
 export function getPicklists(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
@@ -28,7 +29,7 @@ export function getPicklists(): Promise<Picklist[]> {
             filterArray: [Filter.create('Category', null, Filter.Types.NONBLANK)],
         })
             .then(response => {
-                const {models, orderedModels} = response;
+                const { models, orderedModels } = response;
                 const dataKey = resolveKey(schemaName, queryName);
                 const data = models[dataKey];
                 const picklists = [];
@@ -52,20 +53,20 @@ export function setPicklistDefaultView(name: string): Promise<string> {
             views: [
                 {
                     columns: [
-                        {fieldKey: 'SampleID/Name'},
-                        {fieldKey: 'SampleID/LabelColor'},
-                        {fieldKey: 'SampleID/SampleSet'},
-                        {fieldKey: 'SampleID/StoredAmount'},
-                        {fieldKey: 'SampleID/Units'},
-                        {fieldKey: 'SampleID/freezeThawCount'},
-                        {fieldKey: 'SampleID/StorageStatus'},
-                        {fieldKey: 'SampleID/checkedOutBy'},
-                        {fieldKey: 'SampleID/Created'},
-                        {fieldKey: 'SampleID/CreatedBy'},
-                        {fieldKey: 'SampleID/StorageLocation'},
-                        {fieldKey: 'SampleID/StorageRow'},
-                        {fieldKey: 'SampleID/StorageCol'},
-                        {fieldKey: 'SampleID/isAliquot'},
+                        { fieldKey: 'SampleID/Name' },
+                        { fieldKey: 'SampleID/LabelColor' },
+                        { fieldKey: 'SampleID/SampleSet' },
+                        { fieldKey: 'SampleID/StoredAmount' },
+                        { fieldKey: 'SampleID/Units' },
+                        { fieldKey: 'SampleID/freezeThawCount' },
+                        { fieldKey: 'SampleID/StorageStatus' },
+                        { fieldKey: 'SampleID/checkedOutBy' },
+                        { fieldKey: 'SampleID/Created' },
+                        { fieldKey: 'SampleID/CreatedBy' },
+                        { fieldKey: 'SampleID/StorageLocation' },
+                        { fieldKey: 'SampleID/StorageRow' },
+                        { fieldKey: 'SampleID/StorageCol' },
+                        { fieldKey: 'SampleID/isAliquot' },
                     ],
                 },
             ],
@@ -217,7 +218,7 @@ export function getPicklistSamples(listName: string): Promise<Set<string>> {
             queryName: listName,
         })
             .then(response => {
-                const {models} = response;
+                const { models } = response;
                 const dataKey = resolveKey(schemaName, listName);
                 resolve(new Set(Object.values(models[dataKey]).map((row: any) => row.SampleID.value.toString())));
             })
@@ -245,7 +246,7 @@ export function getSelectedPicklistSamples(
             PICKLIST_KEY_COLUMN
         )
             .then(response => {
-                const {data} = response;
+                const { data } = response;
                 const sampleIds = [];
                 const rowIds = [];
                 data.forEach(row => {
@@ -297,7 +298,7 @@ export function addSamplesToPicklist(
             .then(sampleIdsToAdd => {
                 let rows = List<any>();
                 sampleIdsToAdd.forEach(id => {
-                    rows = rows.push({SampleID: id});
+                    rows = rows.push({ SampleID: id });
                 });
                 if (rows.size > 0) {
                     insertRows({
@@ -414,7 +415,7 @@ export function removeSamplesFromPicklist(picklist: Picklist, selectionModel: Qu
     return new Promise((resolve, reject) => {
         const rows = [];
         selectionModel.selections.forEach(id => {
-            rows.push({id});
+            rows.push({ id });
         });
         if (rows.length === 0) {
             resolve(0);
@@ -433,10 +434,10 @@ export function removeSamplesFromPicklist(picklist: Picklist, selectionModel: Qu
     });
 }
 
-export function getPicklistUrl(listId: number, picklistProductId?: string, currentProductId?: string) : string {
-    let picklistUrl : string = AppURL.create(PICKLIST_KEY, listId).toHref();
+export function getPicklistUrl(listId: number, picklistProductId?: string, currentProductId?: string): string {
+    let picklistUrl: string = AppURL.create(PICKLIST_KEY, listId).toHref();
     if (currentProductId && picklistProductId) {
-        let url = createProductUrlFromParts(picklistProductId, currentProductId, {}, PICKLIST_KEY, listId);
+        const url = createProductUrlFromParts(picklistProductId, currentProductId, {}, PICKLIST_KEY, listId);
         picklistUrl = url instanceof AppURL ? url.toHref() : url;
     }
 

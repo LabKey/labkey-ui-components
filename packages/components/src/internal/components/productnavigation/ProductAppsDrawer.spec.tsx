@@ -81,6 +81,7 @@ describe('ProductAppsDrawer', () => {
         expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrl')).toBe(
             '/labkey/sampleManagement/images/' + SAMPLE_MANAGER_DISABLED_PRODUCT_ICON
         );
+        expect(wrapper.find(ProductAppMenuItem).at(1).text()).toContain("Application not enabled in this location");
         expect(wrapper.find(ProductAppMenuItem).at(2).prop('iconUrl')).toBe(
             '/labkey/biologics/images/' + BIOLOGICS_PRODUCT_ICON
         );

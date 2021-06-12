@@ -670,6 +670,7 @@ export interface IDomainField {
     disablePhiLevel?: boolean;
     lockExistingField?: boolean;
     sourceOntology?: string;
+    conceptSubtree?: string;
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
     principalConceptCode?: string;
@@ -724,6 +725,7 @@ export class DomainField
         disablePhiLevel: false,
         lockExistingField: false,
         sourceOntology: undefined,
+        conceptSubtree: undefined,
         conceptLabelColumn: undefined,
         conceptImportColumn: undefined,
         principalConceptCode: undefined,
@@ -778,6 +780,7 @@ export class DomainField
     declare disablePhiLevel?: boolean;
     declare lockExistingField?: boolean;
     declare sourceOntology?: string;
+    declare conceptSubtree?: string;
     declare conceptLabelColumn?: string;
     declare conceptImportColumn?: string;
     declare principalConceptCode?: string;
@@ -978,7 +981,7 @@ export class DomainField
             return FieldErrors.MISSING_FIELD_NAME;
         }
 
-        // Issue 41829: for an ontology lookup field, only the sourceOntology is required (other two props are optional)
+        // Issue 41829: for an ontology lookup field, only the sourceOntology is required (other ontology props are optional)
         if (this.dataType.isOntologyLookup() && !this.sourceOntology) {
             return FieldErrors.MISSING_ONTOLOGY_PROPERTIES;
         }

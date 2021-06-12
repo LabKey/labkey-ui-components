@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.TBD
+*Released*: TBD
+* Item 8998: Field editor ontology lookup field support for conceptSubtree prop
+
 ### version 2.45.0
 *Released*: 11 June 2021
 * Added SampleDeleteMenuItem

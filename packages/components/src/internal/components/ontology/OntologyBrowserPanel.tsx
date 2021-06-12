@@ -13,18 +13,18 @@ import { OntologyTreeSearchContainer } from './OntologyTreeSearchContainer';
 export interface OntologyBrowserProps {
     initOntologyId?: string;
     asPanel?: boolean;
-    onConceptSelect?: (concept: ConceptModel) => void;
+    onPathSelect?: (path: PathModel, concept: ConceptModel) => void;
     hideConceptInfo?: boolean;
     filters?: Map<string, PathModel>;
     filterChangeHandler?: (filter: PathModel) => void;
-    initConcept?: ConceptModel
+    initConcept?: ConceptModel;
 }
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     const {
         initOntologyId,
         asPanel,
-        onConceptSelect,
+        onPathSelect,
         hideConceptInfo = false,
         filters,
         filterChangeHandler,
@@ -67,8 +67,9 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
                 setAlternatePath(path);
             } else {
                 setSelectedPath(path);
-                if (!path.hasChildren)
+                if (!path.hasChildren) {
                     filterChangeHandler?.(path);
+                }
             }
         },
         [conceptCache, setSelectedPath, setAlternatePath]
@@ -82,8 +83,8 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     );
 
     const setInitialConceptPath = async (code: string) => {
-        if (code != null ) {
-            const paths = await fetchAlternatePaths(code)
+        if (code != null) {
+            const paths = await fetchAlternatePaths(code);
             onSelectedPathChange(paths?.[0], true);
         }
     };
@@ -94,7 +95,8 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
                 .then((ontology: OntologyModel) => {
                     setOntologyModel(ontology);
                     setInitialConceptPath(initConcept?.code);
-                }).catch(() => {
+                })
+                .catch(() => {
                     setError('Error: unable to load ontology concept information for ' + ontologyId + '.');
                     setSelectedOntologyId(undefined);
                 });
@@ -107,9 +109,9 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
         if (selectedPath?.code) {
             const concept = conceptCache.get(selectedPath.code);
             setSelectedConcept(concept);
-            onConceptSelect?.(concept);
+            onPathSelect?.(selectedPath, concept);
         }
-    }, [selectedPath, conceptCache, setSelectedConcept, onConceptSelect]);
+    }, [selectedPath, conceptCache, setSelectedConcept, onPathSelect]);
 
     return (
         <>

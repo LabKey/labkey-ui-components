@@ -605,6 +605,7 @@ function updateDataType(field: DomainField, value: any): DomainField {
             lookupSchema: dataType.lookupSchema,
             lookupQuery: dataType.lookupQuery,
             sourceOntology: undefined,
+            conceptSubtree: undefined,
             conceptLabelColumn: undefined,
             conceptImportColumn: undefined,
         }) as DomainField;

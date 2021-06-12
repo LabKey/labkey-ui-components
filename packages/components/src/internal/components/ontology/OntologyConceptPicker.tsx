@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { OntologyBrowserModal } from './OntologyBrowserModal';
-import { ConceptModel } from './models';
+import { ConceptModel, PathModel } from './models';
 import { fetchConceptForCode } from './actions';
 import { ConceptOverviewTooltip } from './ConceptOverviewPanel';
 
@@ -34,7 +34,7 @@ export const OntologyConceptPicker: FC<Props> = memo( (props:Props) => {
     },[showPicker, setShowPicker]);
 
     const onApplyConcept = useCallback(
-        (selectedConcept: ConceptModel) => {
+        (selectedPath: PathModel, selectedConcept: ConceptModel) => {
             setConcept(selectedConcept);
             setShowPicker(false);
             onConceptSelection(selectedConcept);

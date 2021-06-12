@@ -58,6 +58,7 @@ const GRID_DATA = DomainDesign.create({
             name: 'a',
             rangeURI: INTEGER_TYPE.rangeURI,
             sourceOntology: 'b',
+            conceptSubtree: 'g',
             conceptImportColumn: 'c',
             conceptLabelColumn: 'd',
             principalConceptCode: 'e',
@@ -113,6 +114,7 @@ const gridDataConstWithOntology = [
     {
         ...gridDataConst[0],
         sourceOntology: 'b',
+        conceptSubtree: 'g',
         conceptImportColumn: 'c',
         conceptLabelColumn: 'd',
         principalConceptCode: 'e',

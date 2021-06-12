@@ -63,7 +63,7 @@ describe('OntologyLookupOptions', () => {
         labelOptions: string[]
     ): void {
         expect(wrapper.find(SectionHeading)).toHaveLength(1);
-        expect(wrapper.find('.domain-field-label')).toHaveLength(3);
+        expect(wrapper.find('.domain-field-label')).toHaveLength(4);
 
         const selectInputs = wrapper.find('select');
         expect(selectInputs).toHaveLength(3);

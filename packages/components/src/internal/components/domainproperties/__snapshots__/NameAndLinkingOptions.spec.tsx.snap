@@ -83,6 +83,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "disablePhiLevel": false,
       "lockExistingField": false,
       "sourceOntology": undefined,
+      "conceptSubtree": undefined,
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
       "principalConceptCode": undefined,

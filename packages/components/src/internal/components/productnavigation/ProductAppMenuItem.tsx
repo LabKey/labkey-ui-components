@@ -18,7 +18,7 @@ export const ProductAppMenuItem: FC<ProductAppMenuItemProps> = memo(props => {
 
     return (
         <li
-            className={classNames({ 'labkey-page-nav': hovered, 'labkey-page-nav-disabled': disabled })}
+            className={classNames({ 'labkey-page-nav': hovered && !disabled, 'labkey-page-nav-disabled': disabled })}
             onClick={disabled ? undefined : onClick}
             onMouseEnter={onEnter}
             onMouseLeave={onLeave}

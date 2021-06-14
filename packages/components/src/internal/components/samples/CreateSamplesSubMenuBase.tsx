@@ -61,9 +61,10 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     }, [isSelectingSamples, schemaName]);
 
     let disabledMsg: string;
-    if (selectingSampleParents && selectedQuantity > maxParentPerSample) {
-        disabledMsg = 'At most ' + maxParentPerSample + ' samples can be selected';
+    if (selectedQuantity > maxParentPerSample) {
+        disabledMsg = `At most ${maxParentPerSample} ${selectingSampleParents ? 'samples' : 'items'} can be selected`;
     }
+
     const useOnClick = parentKey !== undefined || (selectingSampleParents && selectedQuantity > 0);
 
     const onSampleCreationMenuSelect = useCallback(

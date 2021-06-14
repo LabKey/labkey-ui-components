@@ -5,6 +5,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Switch ontology search to use hit id instead of parsing code
 
+### version 2.45.1
+*Released*: 14 June 2021
+* Fix CreateSamplesSubMenuBase disabled option for non sample grids
+
+### version 2.45.0
+*Released*: 11 June 2021
+* Added SampleDeleteMenuItem
+* Moved CreateSamplesSubMenuBase, getMenuItemsForSection from SampleManager
+* Allow EntityInsertPanel to initialize sample parents from inventory items selection
+* Add getSnapshotSelections action util
+
 ### version 2.44.0
 *Released*: 10 June 2021
 * Item 8958: LKSM Permissions updates for premium vs hosted only servers

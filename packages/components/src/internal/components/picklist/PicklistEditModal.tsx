@@ -11,10 +11,8 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 import { createNotification } from '../notifications/actions';
-import { AppURL } from '../../url/AppURL';
-import { PICKLIST_KEY } from '../../app/constants';
 
-import { createPicklist, updatePicklist } from './actions';
+import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
 import { Picklist } from './models';
 
 interface Props {
@@ -26,10 +24,23 @@ interface Props {
     onCancel: () => void;
     onFinish: (picklist: Picklist) => void;
     showNotification?: boolean;
+    currentProductId?: string;
+    picklistProductId?: string;
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
-    const {show, onCancel, onFinish, selectionKey, selectedQuantity, sampleIds, picklist, showNotification} = props;
+    const {
+        show,
+        onCancel,
+        onFinish,
+        selectionKey,
+        selectedQuantity,
+        sampleIds,
+        picklist,
+        showNotification,
+        currentProductId,
+        picklistProductId,
+    } = props;
     const [name, setName] = useState<string>(picklist ? picklist.name : '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 
@@ -65,14 +76,17 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         onCancel();
     }, []);
 
+    const quantity = selectedQuantity ? selectedQuantity : sampleIds?.length;
+
     const createSuccessNotification = (picklist: Picklist) => {
         createNotification({
             message: () => {
                 return (
                     <>
                         Successfully created "{picklist.name}" with{' '}
-                        {selectedQuantity ? Utils.pluralize(selectedQuantity, 'sample', 'samples') : ' no samples'}.&nbsp;
-                        <a href={AppURL.create(PICKLIST_KEY, picklist.listId).toHref()}>View picklist</a>.
+                        {quantity ? Utils.pluralize(quantity, 'sample', 'samples') : ' no samples'}.&nbsp;
+                        <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>
+                        .
                     </>
                 );
             },
@@ -114,16 +128,15 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         title = 'Update Picklist Data';
     } else {
         const count = sampleIds?.length ?? selectedQuantity;
-            if (!count) {
-                title = 'Create an Empty Picklist';
-            } else if (selectionKey && count) {
-                title = <>Create a New Picklist with
-                    the {Utils.pluralize(count, 'Selected Sample', 'Selected Samples')}</>;
-            } else if (count === 1) {
-                title = 'Create a New Picklist with This Sample';
-            } else {
-                title = 'Create a New Picklist with These Samples';
-            }
+        if (!count) {
+            title = 'Create an Empty Picklist';
+        } else if (selectionKey && count) {
+            title = <>Create a New Picklist with the {Utils.pluralize(count, 'Selected Sample', 'Selected Samples')}</>;
+        } else if (count === 1) {
+            title = 'Create a New Picklist with This Sample';
+        } else {
+            title = 'Create a New Picklist with These Samples';
+        }
     }
 
     return (

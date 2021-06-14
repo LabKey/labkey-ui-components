@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { List } from 'immutable';
-import { Checkbox } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 
 import { Filter } from '@labkey/api';
 
@@ -17,6 +17,26 @@ describe('<GridAliquotViewSelector/>', () => {
         expect(tree).toBe(null);
     });
 
+    function verifyOptions(wrapper, all?: boolean, samples?: boolean, aliquots?: boolean)
+    {
+        const items = wrapper.find(MenuItem);
+
+        expect(items).toHaveLength(4);
+
+        expect(items.at(0).text()).toBe('Show Samples');
+
+        expect(items.at(1).text()).toBe('Samples and Aliquots');
+        expect(items.at(1).find('li').getDOMNode().getAttribute('class')).toBe(all ? 'active' : '');
+
+        expect(items.at(2).text()).toBe('Samples Only');
+        expect(items.at(2).find('li').getDOMNode().getAttribute('class')).toBe(samples ? 'active' : '');
+
+        expect(items.at(3).text()).toBe('Aliquots Only');
+        expect(items.at(3).find('li').getDOMNode().getAttribute('class')).toBe(aliquots ? 'active' : '');
+
+        const buttons = wrapper.find('.dropdown-toggle');
+        expect(buttons.at(0).text().trim()).toEqual(all ? 'All Samples' : (samples ? 'Samples Only' : 'Aliquots Only'));
+    }
     test('with queryGridModel, no filter', () => {
         const model = new QueryGridModel({
             isLoaded: false,
@@ -27,13 +47,8 @@ describe('<GridAliquotViewSelector/>', () => {
         });
         const component = <GridAliquotViewSelector queryGridModel={model} />;
         const wrapper = mount(component);
-        const checkboxes = wrapper.find(Checkbox);
-        expect(checkboxes).toHaveLength(2);
-        expect(checkboxes.at(0).props().checked).toBe(true);
-        expect(checkboxes.at(1).props().checked).toBe(true);
 
-        const buttons = wrapper.find('.dropdown-toggle');
-        expect(buttons.at(0).text().trim()).toEqual('All Samples');
+        verifyOptions(wrapper, true);
 
         wrapper.unmount();
     });
@@ -49,13 +64,8 @@ describe('<GridAliquotViewSelector/>', () => {
         });
         const component = <GridAliquotViewSelector queryGridModel={model} />;
         const wrapper = mount(component);
-        const checkboxes = wrapper.find(Checkbox);
-        expect(checkboxes).toHaveLength(2);
-        expect(checkboxes.at(0).props().checked).toBe(true);
-        expect(checkboxes.at(1).props().checked).toBe(false);
 
-        const buttons = wrapper.find('.dropdown-toggle');
-        expect(buttons.at(0).text().trim()).toEqual('Samples Only');
+        verifyOptions(wrapper, false, true);
 
         wrapper.unmount();
     });
@@ -71,13 +81,8 @@ describe('<GridAliquotViewSelector/>', () => {
         });
         const component = <GridAliquotViewSelector queryGridModel={model} />;
         const wrapper = mount(component);
-        const checkboxes = wrapper.find(Checkbox);
-        expect(checkboxes).toHaveLength(2);
-        expect(checkboxes.at(0).props().checked).toBe(false);
-        expect(checkboxes.at(1).props().checked).toBe(true);
 
-        const buttons = wrapper.find('.dropdown-toggle');
-        expect(buttons.at(0).text().trim()).toEqual('Aliquots Only');
+        verifyOptions(wrapper, false, false, true);
 
         wrapper.unmount();
     });
@@ -87,13 +92,8 @@ describe('<GridAliquotViewSelector/>', () => {
 
         const component = <GridAliquotViewSelector queryModel={model} />;
         const wrapper = mount(component);
-        const checkboxes = wrapper.find(Checkbox);
-        expect(checkboxes).toHaveLength(2);
-        expect(checkboxes.at(0).props().checked).toBe(true);
-        expect(checkboxes.at(1).props().checked).toBe(true);
 
-        const buttons = wrapper.find('.dropdown-toggle');
-        expect(buttons.at(0).text().trim()).toEqual('All Samples');
+        verifyOptions(wrapper, true,);
 
         wrapper.unmount();
     });
@@ -105,13 +105,8 @@ describe('<GridAliquotViewSelector/>', () => {
         });
         const component = <GridAliquotViewSelector queryModel={model} />;
         const wrapper = mount(component);
-        const checkboxes = wrapper.find(Checkbox);
-        expect(checkboxes).toHaveLength(2);
-        expect(checkboxes.at(0).props().checked).toBe(false);
-        expect(checkboxes.at(1).props().checked).toBe(true);
 
-        const buttons = wrapper.find('.dropdown-toggle');
-        expect(buttons.at(0).text().trim()).toEqual('Aliquots Only');
+        verifyOptions(wrapper, false, false, true);
 
         wrapper.unmount();
     });

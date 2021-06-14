@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Issue 43283: update GridAliquotViewSelector to use dropdown instead of checkboxes
+
 ### version 2.45.1
 *Released*: 14 June 2021
 * Fix CreateSamplesSubMenuBase disabled option for non sample grids

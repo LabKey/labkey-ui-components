@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.45.2
+*Released*: 14 June 2021
 * Switch ontology search to use hit id instead of parsing code
 
 ### version 2.45.1

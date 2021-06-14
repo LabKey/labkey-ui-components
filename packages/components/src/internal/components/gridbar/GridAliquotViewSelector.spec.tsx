@@ -17,8 +17,7 @@ describe('<GridAliquotViewSelector/>', () => {
         expect(tree).toBe(null);
     });
 
-    function verifyOptions(wrapper, all?: boolean, samples?: boolean, aliquots?: boolean)
-    {
+    function verifyOptions(wrapper, all?: boolean, samples?: boolean, aliquots?: boolean) {
         const items = wrapper.find(MenuItem);
 
         expect(items).toHaveLength(4);
@@ -35,7 +34,7 @@ describe('<GridAliquotViewSelector/>', () => {
         expect(items.at(3).find('li').getDOMNode().getAttribute('class')).toBe(aliquots ? 'active' : '');
 
         const buttons = wrapper.find('.dropdown-toggle');
-        expect(buttons.at(0).text().trim()).toEqual(all ? 'All Samples' : (samples ? 'Samples Only' : 'Aliquots Only'));
+        expect(buttons.at(0).text().trim()).toEqual(all ? 'All Samples' : samples ? 'Samples Only' : 'Aliquots Only');
     }
     test('with queryGridModel, no filter', () => {
         const model = new QueryGridModel({
@@ -93,7 +92,7 @@ describe('<GridAliquotViewSelector/>', () => {
         const component = <GridAliquotViewSelector queryModel={model} />;
         const wrapper = mount(component);
 
-        verifyOptions(wrapper, true,);
+        verifyOptions(wrapper, true);
 
         wrapper.unmount();
     });

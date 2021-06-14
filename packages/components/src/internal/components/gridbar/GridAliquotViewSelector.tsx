@@ -49,11 +49,9 @@ export class GridAliquotViewSelector extends Component<Props> {
     updateAliquotFilter(newMode: MODE) {
         const { queryGridModel, updateFilter } = this.props;
 
-        let newFilter : Filter.IFilter;
-        if (newMode === MODE.all || newMode === MODE.none)
-            newFilter = null
-        else
-            newFilter = Filter.create(IS_ALIQUOT_COL, newMode === MODE.aliquots);
+        let newFilter: Filter.IFilter;
+        if (newMode === MODE.all || newMode === MODE.none) newFilter = null;
+        else newFilter = Filter.create(IS_ALIQUOT_COL, newMode === MODE.aliquots);
 
         if (queryGridModel) {
             replaceFilter(queryGridModel, IS_ALIQUOT_COL, newFilter);
@@ -107,10 +105,7 @@ export class GridAliquotViewSelector extends Component<Props> {
 
     createItem(key: string, label: string, targetMode: MODE, active: boolean): ReactNode {
         return (
-            <MenuItem
-                active={active}
-                key={key}
-                onSelect={this.updateAliquotFilter.bind(this, targetMode)}>
+            <MenuItem active={active} key={key} onSelect={this.updateAliquotFilter.bind(this, targetMode)}>
                 {label}
             </MenuItem>
         );

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.45.1
+*Released*: 14 June 2021
+* Fix CreateSamplesSubMenuBase disabled option for non sample grids
+
 ### version 2.45.0
 *Released*: 11 June 2021
 * Added SampleDeleteMenuItem

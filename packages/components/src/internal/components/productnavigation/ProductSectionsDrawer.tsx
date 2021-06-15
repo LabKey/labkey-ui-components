@@ -2,25 +2,31 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { List } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
-import { Container, AppURL, createProductUrl, ProductMenuModel, Alert, MenuSectionModel } from '../../..';
+import {
+    Alert,
+    AppURL,
+    Container,
+    createProductUrl,
+    incrementClientSideMetricCount,
+    MenuSectionModel,
+    ProductMenuModel,
+} from '../../..';
 import { FREEZERS_KEY, WORKFLOW_KEY } from '../../app/constants';
 
 import { ProductModel, ProductSectionModel } from './models';
-import { PRODUCT_ID_SECTION_QUERY_MAP, SECTION_KEYS_TO_SKIP } from './constants';
+import { APPLICATION_NAVIGATION_METRIC, PRODUCT_ID_SECTION_QUERY_MAP, SECTION_KEYS_TO_SKIP, } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductAppsDrawerProps {
     product: ProductModel;
-    project: Container;
     onCloseMenu?: () => void;
 }
 
 export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
-    const { product, project, onCloseMenu } = props;
-    const { container } = getServerContext();
+    const { product, onCloseMenu } = props;
+    const currentContainer = getServerContext().container;
     const [error, setError] = useState<string>();
     const [sections, setSections] = useState<ProductSectionModel[]>();
-    const isSameContainer = useMemo(() => container.id === project?.id, [container, project]);
 
     useEffect(() => {
         const model = new ProductMenuModel({
@@ -32,25 +38,26 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
         model
             .getMenuSections(0)
             .then(modelSections => {
-                setSections(parseProductMenuSectionResponse(modelSections, product, project, isSameContainer));
+                setSections(parseProductMenuSectionResponse(modelSections, product, currentContainer.path));
             })
             .catch(error => {
                 setError('Error: unable to load product sections.');
             });
     }, [product]);
 
-    return <ProductSectionsDrawerImpl error={error} sections={sections} onCloseMenu={onCloseMenu} />;
+    return <ProductSectionsDrawerImpl error={error} product={product} sections={sections} onCloseMenu={onCloseMenu} />;
 });
 
 interface ProductSectionsDrawerImplProps {
     error: string;
+    product: ProductModel;
     sections: ProductSectionModel[];
     onCloseMenu?: () => void;
 }
 
 // exported for jest testing
 export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props => {
-    const { sections, error, onCloseMenu } = props;
+    const { sections, error, onCloseMenu, product } = props;
 
     const [transition, setTransition] = useState<boolean>(true);
     useEffect(() => {
@@ -59,6 +66,7 @@ export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = mem
     }, []);
 
     const navigate = useCallback((section: ProductSectionModel) => {
+        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, product.navigationMetric);
         window.location.href = section.url.toString();
         onCloseMenu?.();
     }, []);
@@ -85,11 +93,10 @@ export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = mem
 export function getProductSectionUrl(
     productId: string,
     key: string,
-    containerPath: string,
-    isSameContainer: boolean
+    containerPath: string
 ): string {
-    // if the selected project is the current container and the section is for the same product we are already in, then keep the urls as route changes
-    if (isSameContainer && productId.toLowerCase() === ActionURL.getController().toLowerCase()) {
+    // if the section is for the same product we are already in, then keep the urls as route changes
+    if (productId.toLowerCase() === ActionURL.getController().toLowerCase()) {
         return AppURL.create(key).toHref();
     }
 
@@ -99,14 +106,13 @@ export function getProductSectionUrl(
 export function parseProductMenuSectionResponse(
     modelSections: List<MenuSectionModel>,
     product: ProductModel,
-    project: Container,
-    isSameContainer: boolean
+    projectPath: string,
 ): ProductSectionModel[] {
     const menuSections = [
         new ProductSectionModel({
             key: 'home',
             label: 'Dashboard',
-            url: getProductSectionUrl(product.productId, 'home', project.path, isSameContainer),
+            url: getProductSectionUrl(product.productId, 'home', projectPath),
         }),
     ];
 
@@ -117,7 +123,7 @@ export function parseProductMenuSectionResponse(
                 new ProductSectionModel({
                     key: modelSection.key,
                     label: modelSection.label,
-                    url: getProductSectionUrl(modelSection.productId, modelSection.key, project.path, isSameContainer),
+                    url: getProductSectionUrl(modelSection.productId, modelSection.key, projectPath),
                 })
             );
         });

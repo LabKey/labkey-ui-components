@@ -41,6 +41,14 @@
             padding: 15px 0;
             cursor: pointer;
 
+            &.labkey-page-nav-disabled {
+                color: $gray-light;
+                cursor: default;
+                &:hover, &:hover .product-subtitle, &:hover .nav-icon {
+                    color: $gray-light;
+                }
+            }
+
             .product-icon {
                 float: left;
                 padding-left: 10px;
@@ -50,6 +58,11 @@
                 font-size: 18px;
                 line-height: 24px;
                 padding-left: 60px;
+            }
+
+            .no-subtitle {
+                margin-top: 5px;
+                margin-bottom: 8px;
             }
 
             .product-subtitle {
@@ -114,10 +127,11 @@
             .container-icon {
                 padding-right: 5px;
             }
+        }
 
-            &:hover {
-                color: $link-hover-color;
-            }
+        .clickable:hover {
+            color: $link-hover-color;
+            cursor: pointer;
         }
 
         .container-tabs {
@@ -159,7 +173,6 @@
 
     .product-navigation-footer {
         border-top: 1px solid $gray-lighter;
-        margin-top: 15px;
         padding: 5px 10px 10px 10px;
     }
 }

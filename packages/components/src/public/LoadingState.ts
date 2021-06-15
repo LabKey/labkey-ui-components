@@ -7,6 +7,12 @@ export enum LoadingState {
     LOADED = 'LOADED',
 }
 
-export const isLoading = (loadingState: LoadingState): boolean => {
-    return loadingState === LoadingState.INITIALIZED || loadingState === LoadingState.LOADING;
+/**
+ * Returns true if any LoadingState(s) are considered to be loading. Falsy values are considered not loading.
+ */
+export const isLoading = (...loadingStates: LoadingState[]): boolean => {
+    return (
+        !!loadingStates &&
+        loadingStates.find(ls => ls === LoadingState.INITIALIZED || ls === LoadingState.LOADING) !== undefined
+    );
 };

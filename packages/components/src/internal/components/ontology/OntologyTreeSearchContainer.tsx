@@ -50,7 +50,7 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
                         setSearchHits(
                             response.hits.map(hit => {
                                 return new ConceptModel({
-                                    code: hit.identifiers,
+                                    code: hit.id.substring(hit.id.indexOf(':') + 1), //Trim off category code from doc id
                                     label: hit.title,
                                     description: hit.summary.split('\n')[1], // format is "<code> <label>\n<description>" see ConceptDocumentProvider
                                 });

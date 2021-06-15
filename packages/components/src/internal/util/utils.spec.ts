@@ -33,6 +33,8 @@ import {
     isImage,
     getIconFontCls,
     formatBytes,
+    parseScientificInt,
+    isInteger,
 } from './utils';
 
 const emptyList = List<string>();
@@ -1067,6 +1069,92 @@ describe('getDisambiguatedSelectInputOptions', () => {
     });
 });
 
+describe('parseScientificInt', () => {
+    test('check numeric input', () => {
+        // empty input
+        expect(parseScientificInt(null)).toBe(undefined);
+        expect(parseScientificInt(undefined)).toBe(undefined);
+        expect(parseScientificInt('')).toBe(undefined);
+        expect(parseScientificInt(' ')).toBe(undefined);
+
+        // not number
+        expect(parseScientificInt(NaN)).toBe(NaN);
+        expect(parseScientificInt('abc')).toBe(NaN);
+        expect(parseScientificInt(NaN)).toBe(NaN);
+        expect(parseScientificInt('abc')).toBe(NaN);
+
+        // integer
+        expect(parseScientificInt('-4e2')).toBe(-400);
+        expect(parseScientificInt(-4e2)).toBe(-400);
+        expect(parseScientificInt('-1')).toBe(-1);
+        expect(parseScientificInt(-1)).toBe(-1);
+        expect(parseScientificInt('123')).toBe(123);
+        expect(parseScientificInt('123.0')).toBe(123);
+        expect(parseScientificInt(123)).toBe(123);
+        expect(parseScientificInt(123.0)).toBe(123);
+        expect(parseScientificInt('4e2')).toBe(400);
+        expect(parseScientificInt(4e2)).toBe(400);
+
+        // zero
+        expect(parseScientificInt('0')).toBe(0);
+        expect(parseScientificInt('0.0')).toBe(0);
+        expect(parseScientificInt(0)).toBe(0);
+        expect(parseScientificInt(0.0)).toBe(0);
+
+        // float
+        expect(parseScientificInt('123.456')).toBe(123);
+        expect(parseScientificInt(0.123)).toBe(0);
+        expect(parseScientificInt(123.456e2)).toBe(12345);
+        expect(parseScientificInt(0.123e2)).toBe(12);
+        expect(parseScientificInt(-123.456e2)).toBe(-12345);
+        expect(parseScientificInt(-0.123e2)).toBe(-12);
+
+    });
+});
+
+describe('isInteger', () => {
+    test('check numeric input', () => {
+        // empty input
+        expect(isInteger(null)).toBe(false);
+        expect(isInteger(undefined)).toBe(false);
+        expect(isInteger('')).toBe(false);
+        expect(isInteger(' ')).toBe(false);
+
+        // not number
+        expect(isInteger(NaN)).toBe(false);
+        expect(isInteger('abc')).toBe(false);
+        expect(isInteger(NaN)).toBe(false);
+        expect(isInteger('abc')).toBe(false);
+
+        // integer
+        expect(isInteger('-4e2')).toBe(true);
+        expect(isInteger(-4e2)).toBe(true);
+        expect(isInteger('-1')).toBe(true);
+        expect(isInteger(-1)).toBe(true);
+        expect(isInteger('123')).toBe(true);
+        expect(isInteger('123.0')).toBe(true);
+        expect(isInteger(123)).toBe(true);
+        expect(isInteger(123.0)).toBe(true);
+        expect(isInteger('4e2')).toBe(true);
+        expect(isInteger(4e2)).toBe(true);
+
+        // zero
+        expect(isInteger('0')).toBe(true);
+        expect(isInteger('0.0')).toBe(true);
+        expect(isInteger(0)).toBe(true);
+        expect(isInteger(0.0)).toBe(true);
+
+        // float
+        expect(isInteger('123.456')).toBe(false);
+        expect(isInteger(0.123)).toBe(false);
+        expect(isInteger(123.456e2)).toBe(false);
+        expect(isInteger(0.123e2)).toBe(false);
+        expect(isInteger(-123.456e2)).toBe(false);
+        expect(isInteger(-0.123e2)).toBe(false);
+
+    });
+});
+
 describe('isNonNegativeInteger and isNonNegativeFloat', () => {
     test('check numeric input', () => {
         // empty input
@@ -1090,8 +1178,6 @@ describe('isNonNegativeInteger and isNonNegativeFloat', () => {
         expect(isNonNegativeFloat(-4e2)).toBe(false);
         expect(isNonNegativeInteger('-1')).toBe(false);
         expect(isNonNegativeInteger(-1)).toBe(false);
-        expect(isNonNegativeInteger('-4e2')).toBe(false);
-        expect(isNonNegativeInteger(-4e2)).toBe(false);
 
         // zero
         expect(isNonNegativeFloat('0')).toBe(true);
@@ -1110,6 +1196,8 @@ describe('isNonNegativeInteger and isNonNegativeFloat', () => {
         expect(isNonNegativeInteger('0.123')).toBe(false);
         expect(isNonNegativeInteger(123.456)).toBe(false);
         expect(isNonNegativeInteger(0.123)).toBe(false);
+        expect(isNonNegativeInteger(123.456e2)).toBe(false);
+        expect(isNonNegativeInteger(0.123e2)).toBe(false);
 
         // positive int
         expect(isNonNegativeFloat('123')).toBe(true);
@@ -1120,6 +1208,8 @@ describe('isNonNegativeInteger and isNonNegativeFloat', () => {
         expect(isNonNegativeInteger('123.0')).toBe(true);
         expect(isNonNegativeInteger(123)).toBe(true);
         expect(isNonNegativeInteger(123.0)).toBe(true);
+        expect(isNonNegativeInteger('4e2')).toBe(true);
+        expect(isNonNegativeInteger(4e2)).toBe(true);
     });
 });
 
@@ -1132,7 +1222,9 @@ describe('isIntegerInRange', () => {
         expect(isIntegerInRange(1, 0, 10)).toBe(true);
         expect(isIntegerInRange(0, 0, 10)).toBe(true);
         expect(isIntegerInRange(10, 10, 10)).toBe(true);
+        expect(isIntegerInRange(1e2, 1, 1000)).toBe(true);
         expect(isIntegerInRange(-10, -11, -9)).toBe(true);
+        expect(isIntegerInRange(-1e1, -11, -9)).toBe(true);
     });
 
     test('check inverted range', () => {
@@ -1160,6 +1252,7 @@ describe('isIntegerInRange', () => {
         expect(isIntegerInRange(5.4, 4, 7)).toBe(false);
         expect(isIntegerInRange(undefined, 4, 7)).toBe(false);
         expect(isIntegerInRange(null, 4, 7)).toBe(false);
+        expect(isIntegerInRange(123e-2, 1, 100)).toBe(false);
     });
 });
 

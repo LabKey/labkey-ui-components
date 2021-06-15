@@ -465,8 +465,10 @@ function isFloat(value: number | string): boolean {
     return !isNaN(Number(value)) && !isNaN(parseFloat(value + ''));
 }
 
-function isInteger(value: number | string): boolean {
-    return !isNaN(Number(value)) && parseInt(value + '') == value && !isNaN(parseInt(value + '', 10));
+export function isInteger(value: number | string): boolean {
+    const intValue = parseScientificInt(value);
+
+    return !isNaN(intValue) && intValue == Number(value);
 }
 
 export function isIntegerInRange(value: number, min: number, max?: number): boolean {
@@ -479,6 +481,23 @@ export function isNonNegativeInteger(value: number | string): boolean {
 
 export function isNonNegativeFloat(value: number | string): boolean {
     return isFloat(value) && Number(value) >= 0;
+}
+
+// works with string that might contain Scientific Notation
+export function parseScientificInt(value: any) : number {
+    if (value == null)
+        return undefined;
+
+    const valueStr : string = String(value).trim();
+    if (!valueStr)
+        return undefined;
+
+    if (isNaN(Number(valueStr)))
+        return NaN;
+
+    const valueLocaleStr = Number(valueStr).toLocaleString('fullwide', {useGrouping:false});
+
+    return parseInt(valueLocaleStr, 10);
 }
 
 function getFileExtensionType(value: string): string {

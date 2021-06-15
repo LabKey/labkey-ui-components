@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version XXX
 *Released*: XXX
 * Issue 43283: update GridAliquotViewSelector to use dropdown instead of checkboxes
+* Issue 43310: SM: Sample names that are numbers only and greater than 7 characters get truncated in file import preview.
 
 ### version 2.45.1
 *Released*: 14 June 2021

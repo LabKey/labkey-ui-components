@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
-### version TBD
-*Released*: TBD
+### version 2.46.0
+*Released*: 14 June 2021
 * Update product navigation menu behavior
   * Remove ability to navigate to other projects
   * Make LKS links entries not clickable if already in the current container

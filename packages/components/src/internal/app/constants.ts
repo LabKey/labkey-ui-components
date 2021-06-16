@@ -4,9 +4,10 @@
  */
 import { AppURL } from '../url/AppURL';
 
+// These ids should match what is used by the MenuProviders in the Java code so we can avoid toLowerCase comparisons.
 export const LKS_PRODUCT_ID = 'LabKeyServer';
-export const BIOLOGICS_PRODUCT_ID = 'biologics';
-export const SAMPLE_MANAGER_PRODUCT_ID = 'sampleManager';
+export const BIOLOGICS_PRODUCT_ID = 'Biologics';
+export const SAMPLE_MANAGER_PRODUCT_ID = 'SampleManager';
 export const FREEZER_MANAGER_PRODUCT_ID = 'freezerManager';
 
 export const SAMPLE_MANAGER_PRODUCT_NAME = 'Sample Manager';

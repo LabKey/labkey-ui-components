@@ -15,15 +15,15 @@
  */
 import React, { FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
-import { getServerContext } from '@labkey/api';
 
 import { User } from '../../..';
-import { hasPremiumModule } from '../../app/utils';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
 
 import { ProductNavigation } from '../productnavigation/ProductNavigation';
+
+import { shouldShowProductNavigation } from '../productnavigation/utils';
 
 import { ProductMenu } from './ProductMenu';
 import { SearchBox } from './SearchBox';
@@ -74,7 +74,7 @@ export const NavigationBar: FC<Props> = memo(props => {
     }, [onSearch]);
 
     const _showNotifications = showNotifications !== false && !!notificationsConfig && user && !user.isGuest;
-    const _showProductNav = (hasPremiumModule() || getServerContext().devMode) && showProductNav !== false;
+    const _showProductNav = shouldShowProductNavigation(user) && showProductNav !== false;
 
     return (
         <nav className="navbar navbar-container test-loc-nav-header">

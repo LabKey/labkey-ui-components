@@ -18,10 +18,12 @@ import {
     hasPremiumModule,
     isBiologicsEnabled,
     isFreezerManagementEnabled,
+    isProductNavigationEnabled,
     isSampleManagerEnabled,
     userCanDesignLocations,
     userCanDesignSourceTypes,
 } from './utils';
+import { BIOLOGICS_PRODUCT_ID, FREEZER_MANAGER_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from './constants';
 
 describe('getMenuSectionConfigs', () => {
     test('sampleManager enabled', () => {
@@ -236,6 +238,36 @@ describe('utils', () => {
             biologics: { isFreezerManagerEnabled: true },
         };
         expect(isFreezerManagementEnabled()).toBeTruthy();
+    });
+
+    test('isProductNavigationEnabled', () => {
+        LABKEY.moduleContext = {};
+        expect(isProductNavigationEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeFalsy();
+        expect(isProductNavigationEnabled(BIOLOGICS_PRODUCT_ID)).toBeFalsy();
+        expect(isProductNavigationEnabled(FREEZER_MANAGER_PRODUCT_ID)).toBeFalsy();
+
+        LABKEY.moduleContext = {
+            samplemanagement: {},
+        };
+        expect(isProductNavigationEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeTruthy();
+
+        LABKEY.moduleContext = {
+            samplemanagement: {},
+            biologics: {
+                isBiologicsSampleManagerNavEnabled: false,
+            },
+        };
+        expect(isProductNavigationEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeFalsy();
+        expect(isProductNavigationEnabled(BIOLOGICS_PRODUCT_ID)).toBeTruthy();
+
+        LABKEY.moduleContext = {
+            samplemanagement: {},
+            biologics: {
+                isBiologicsSampleManagerNavEnabled: true,
+            },
+        };
+        expect(isProductNavigationEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeTruthy();
+        expect(isProductNavigationEnabled(BIOLOGICS_PRODUCT_ID)).toBeTruthy();
     });
 
     test('hasPremiumModule', () => {

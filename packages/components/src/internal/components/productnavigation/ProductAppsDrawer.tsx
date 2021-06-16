@@ -13,12 +13,11 @@ export const DEFAULT_ICON_ALT_URL = imageURL('_images', 'mobile-logo-overcast.sv
 
 interface ProductAppsDrawerProps {
     products: ProductModel[];
-    productProjectMap: Record<string, Container[]>;
     onClick: (productId: string, project?: Container) => void;
 }
 
 export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
-    const { products, productProjectMap, onClick } = props;
+    const { products, onClick } = props;
 
     return (
         <>
@@ -31,15 +30,24 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                 onClick={() => onClick(LKS_PRODUCT_ID)}
             />
             {products.map(product => {
+                const imgSrc = PRODUCT_ID_IMG_SRC_MAP[product.productId.toLowerCase()];
+                let iconUrl;
+                let iconUrlAlt;
+                if (product.disabled) {
+                    iconUrl = imgSrc?.iconUrlDisabled ?? DEFAULT_ICON_URL;
+                    iconUrlAlt = imgSrc?.iconUrlDisabled ?? DEFAULT_ICON_URL;
+                } else {
+                    iconUrl = imgSrc?.iconUrl ?? DEFAULT_ICON_URL;
+                    iconUrlAlt = imgSrc?.iconUrlAlt ?? DEFAULT_ICON_ALT_URL;
+                }
                 return (
                     <ProductAppMenuItem
                         key={product.productId}
-                        iconUrl={PRODUCT_ID_IMG_SRC_MAP[product.productId.toLowerCase()]?.iconUrl ?? DEFAULT_ICON_URL}
-                        iconUrlAlt={
-                            PRODUCT_ID_IMG_SRC_MAP[product.productId.toLowerCase()]?.iconUrlAlt ?? DEFAULT_ICON_ALT_URL
-                        }
+                        disabled={product.disabled}
+                        iconUrl={iconUrl}
+                        iconUrlAlt={iconUrlAlt}
                         title={product.productName}
-                        subtitle={getProductSubtitle(productProjectMap[product.productId])}
+                        subtitle={product.disabled ? 'Application not enabled in this location' : undefined}
                         onClick={() => onClick(product.productId)}
                     />
                 );
@@ -47,16 +55,3 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
         </>
     );
 });
-
-// exported for jest testing
-export function getProductSubtitle(projects: Container[]): string {
-    if (projects?.length === 1) {
-        return projects[0].title;
-    }
-
-    if (!projects || projects.length === 0) {
-        return 'No Projects';
-    }
-
-    return projects.length + ' Projects';
-}

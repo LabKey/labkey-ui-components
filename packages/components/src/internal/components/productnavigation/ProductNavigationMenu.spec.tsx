@@ -1,19 +1,13 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, Container, LoadingSpinner } from '../../..';
+import { Alert, LoadingSpinner } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
-import {
-    getSelectedProject,
-    getSelectedProduct,
-    getProductProjectsMap,
-    ProductNavigationMenuImpl,
-} from './ProductNavigationMenu';
+import { getSelectedProduct, ProductNavigationMenuImpl } from './ProductNavigationMenu';
 import { ProductNavigationHeader } from './ProductNavigationHeader';
 import { ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductSectionsDrawer } from './ProductSectionsDrawer';
-import { ProductProjectsDrawer } from './ProductProjectsDrawer';
 import { ProductLKSDrawer } from './ProductLKSDrawer';
 import { ProductModel } from './models';
 
@@ -23,17 +17,11 @@ const TEST_PRODUCTS = [
     new ProductModel({ productId: 'c', productName: 'C', moduleName: 'modC' }),
 ];
 
-const TEST_PRODUCT_PROJECT_MAP = {
-    a: [],
-    b: [new Container({ title: 'P1' })],
-    c: [new Container({ title: 'P2' }), new Container({ title: 'P3' })],
-};
-
 const DEFAULT_PROPS = {
     error: undefined,
     products: TEST_PRODUCTS,
-    projects: [],
-    productProjectMap: TEST_PRODUCT_PROJECT_MAP,
+    disableLKSContainerLink: false,
+    homeVisible: true,
     tabs: [],
     selectedProductId: undefined,
     selectedProject: undefined,
@@ -51,7 +39,6 @@ describe('ProductNavigationMenu', () => {
 
         expect(wrapper.find(ProductAppsDrawer)).toHaveLength(componentCounts?.ProductAppsDrawer ?? 0);
         expect(wrapper.find(ProductLKSDrawer)).toHaveLength(componentCounts?.ProductLKSDrawer ?? 0);
-        expect(wrapper.find(ProductProjectsDrawer)).toHaveLength(componentCounts?.ProductProjectsDrawer ?? 0);
         expect(wrapper.find(ProductSectionsDrawer)).toHaveLength(componentCounts?.ProductSectionsDrawer ?? 0);
     }
 
@@ -68,11 +55,6 @@ describe('ProductNavigationMenu', () => {
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
         wrapper.unmount();
 
-        wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} projects={undefined} />);
-        validate(wrapper, false);
-        expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
-        wrapper.unmount();
-
         wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} tabs={undefined} />);
         validate(wrapper, false);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
@@ -81,7 +63,7 @@ describe('ProductNavigationMenu', () => {
 
     test('ProductNavigationHeader props', () => {
         const wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId="a" />);
-        validate(wrapper, true, true, { ProductProjectsDrawer: 1 });
+        validate(wrapper, true, false, { ProductSectionsDrawer: 1 });
         expect(wrapper.find(ProductNavigationHeader).prop('title')).toBe('A');
         expect(wrapper.find(ProductNavigationHeader).prop('productId')).toBe('a');
         wrapper.unmount();
@@ -99,42 +81,7 @@ describe('ProductNavigationMenu', () => {
         wrapper.unmount();
     });
 
-    test('product with single project', () => {
-        const wrapper = mount(
-            <ProductNavigationMenuImpl
-                {...DEFAULT_PROPS}
-                selectedProductId="b"
-                selectedProject={TEST_PRODUCT_PROJECT_MAP['b'][0]}
-            />
-        );
-        validate(wrapper, true, false, { ProductSectionsDrawer: 1 });
-        expect(wrapper.find(ProductNavigationHeader).prop('title')).toBe('P1');
-        wrapper.unmount();
-    });
-
-    test('product with multiple projects, none selected', () => {
-        const wrapper = mount(
-            <ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId="c" selectedProject={undefined} />
-        );
-        validate(wrapper, true, false, { ProductProjectsDrawer: 1 });
-        expect(wrapper.find(ProductNavigationHeader).prop('title')).toBe('C');
-        wrapper.unmount();
-    });
-
-    test('product with multiple projects, with one selected', () => {
-        const wrapper = mount(
-            <ProductNavigationMenuImpl
-                {...DEFAULT_PROPS}
-                selectedProductId="c"
-                selectedProject={TEST_PRODUCT_PROJECT_MAP['c'][1]}
-            />
-        );
-        validate(wrapper, true, false, { ProductSectionsDrawer: 1 });
-        expect(wrapper.find(ProductNavigationHeader).prop('title')).toBe('P3');
-        wrapper.unmount();
-    });
-
-    test('footer', () => {
+    test('non-premium footer', () => {
         let wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />);
         expect(wrapper.find('.product-navigation-footer')).toHaveLength(1);
         expect(wrapper.find('.product-navigation-footer').text()).toBe('More LabKey Solutions');
@@ -143,15 +90,55 @@ describe('ProductNavigationMenu', () => {
         wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId="a" />);
         expect(wrapper.find('.product-navigation-footer')).toHaveLength(0);
         wrapper.unmount();
+
+        LABKEY.user = {
+            isRootAdmin: true,
+        };
+        wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />);
+        expect(wrapper.find('.product-navigation-footer')).toHaveLength(1);
+        expect(wrapper.find('.product-navigation-footer').text()).toBe('More LabKey Solutions');
+        wrapper.unmount();
     });
 
-    test('getSelectedProject', () => {
-        const project = TEST_PRODUCT_PROJECT_MAP['b'][0];
-        expect(getSelectedProject(undefined, TEST_PRODUCT_PROJECT_MAP, project)).toBe(project);
-        expect(getSelectedProject('b', TEST_PRODUCT_PROJECT_MAP, undefined)).toBe(project);
-        expect(getSelectedProject('a', TEST_PRODUCT_PROJECT_MAP, undefined)).toBe(undefined);
-        expect(getSelectedProject('c', TEST_PRODUCT_PROJECT_MAP, undefined)).toBe(undefined);
-        expect(getSelectedProject(undefined, TEST_PRODUCT_PROJECT_MAP, undefined)).toBe(undefined);
+    test('premium footer', () => {
+        LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['samplemanagement', 'study', 'premium'],
+            },
+        };
+        LABKEY.user = {
+            isRootAdmin: true,
+        };
+        let wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />);
+        let footer = wrapper.find('.product-navigation-footer');
+        expect(footer).toHaveLength(1);
+        let links = footer.find('a');
+        expect(links).toHaveLength(2);
+        expect(links.at(0).text()).toBe('Menu Settings');
+        expect(links.at(1).text()).toBe('More LabKey Solutions');
+        wrapper.unmount();
+
+        LABKEY.user = {
+            isRootAdmin: false,
+        };
+        wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />);
+        footer = wrapper.find('.product-navigation-footer');
+        expect(footer).toHaveLength(1);
+        links = footer.find('a');
+        expect(footer.find('a')).toHaveLength(1);
+        expect(links.at(0).text()).toBe('More LabKey Solutions');
+        wrapper.unmount();
+
+        LABKEY.user = {
+            isAdmin: false,
+        };
+        wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />);
+        footer = wrapper.find('.product-navigation-footer');
+        expect(footer).toHaveLength(1);
+        links = footer.find('a');
+        expect(footer.find('a')).toHaveLength(1);
+        expect(links.at(0).text()).toBe('More LabKey Solutions');
+        wrapper.unmount();
     });
 
     test('getSelectedProduct', () => {
@@ -162,25 +149,5 @@ describe('ProductNavigationMenu', () => {
         expect(getSelectedProduct(TEST_PRODUCTS, undefined)).toBe(undefined);
         expect(getSelectedProduct(undefined, 'a')).toBe(undefined);
         expect(getSelectedProduct([], 'a')).toBe(undefined);
-    });
-
-    test('getProductProjectsMap', () => {
-        const TEST_PROJECTS = [
-            new Container({ id: 1, activeModules: [] }),
-            new Container({ id: 2, activeModules: ['modA'] }),
-            new Container({ id: 3, activeModules: ['modA', 'modB'] }),
-            new Container({ id: 4, activeModules: ['modB'] }),
-            new Container({ id: 5, activeModules: ['modD'] }),
-        ];
-
-        expect(getProductProjectsMap(undefined, undefined)).toStrictEqual({});
-        expect(getProductProjectsMap(TEST_PRODUCTS, undefined)).toStrictEqual({});
-        expect(getProductProjectsMap(undefined, TEST_PROJECTS)).toStrictEqual({});
-
-        const mapping = getProductProjectsMap(TEST_PRODUCTS, TEST_PROJECTS);
-        expect(mapping['a']).toStrictEqual([TEST_PROJECTS[1], TEST_PROJECTS[2]]);
-        expect(mapping['b']).toStrictEqual([TEST_PROJECTS[3]]);
-        expect(mapping['c']).toStrictEqual([]);
-        expect(mapping['d']).toBe(undefined);
     });
 });

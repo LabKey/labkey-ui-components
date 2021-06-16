@@ -40,9 +40,9 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
     return (
         <>
             <SelectViewInput
+                defaultView={SelectView.Grid}
                 id="sample-type-view-select"
                 onViewSelect={setSelectedView}
-                value={selectedView}
                 views={SAMPLE_TYPE_VIEWS}
             />
             {selectedView === SelectView.Heatmap && <SampleSetHeatMap navigate={navigate} user={user} />}

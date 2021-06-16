@@ -40,7 +40,7 @@ export enum SelectView {
     Heatmap = 'heatmap',
 }
 
-type ViewOption = Option | SelectView;
+type ViewOption = string | Option | SelectView;
 
 const ViewOptions = {
     [SelectView.Cards]: { label: 'Cards', value: SelectView.Cards },
@@ -52,14 +52,15 @@ const isSelectView = (value: ViewOption): value is SelectView => {
     return typeof value === 'string';
 };
 
-interface Props extends Omit<SelectInputProps, 'onChange' | 'options'> {
+interface Props extends Omit<SelectInputProps, 'onChange' | 'options' | 'value'> {
+    defaultView: ViewOption;
     id: string;
     onViewSelect: (view: ViewOption) => void;
     views: ViewOption[];
 }
 
 export const SelectViewInput: FC<Props> = memo(props => {
-    const { id, onViewSelect, value, views, ...selectInputProps } = props;
+    const { defaultView, id, onViewSelect, views, ...selectInputProps } = props;
 
     // When initializing the selectedView this component defers to the value in local storage over the provided value.
     // If a value is set in local storage, then this flag will be toggled resulting in a side-effect to inform
@@ -68,11 +69,11 @@ export const SelectViewInput: FC<Props> = memo(props => {
 
     const [selectedView, setSelectedView] = useState(() => {
         const view = getSelectViewsInLocalStorage()[id];
-        if (view && view !== value) {
+        if (view && view !== defaultView) {
             initFromStorage = true;
             return view;
         }
-        return value;
+        return defaultView;
     });
 
     useEffect(() => {

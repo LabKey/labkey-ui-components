@@ -11,6 +11,7 @@ import {
 
 function getDefaultProps() {
     return {
+        defaultView: SelectView.Grid,
         id: 'test-select-view-input',
         onViewSelect: jest.fn(),
         views: [SelectView.Cards, SelectView.Grid, SelectView.Heatmap],
@@ -36,10 +37,10 @@ describe('SelectViewInput', () => {
         const props = getDefaultProps();
 
         // Act
-        const wrapper = mount(<SelectViewInput {...props} value={SelectView.Grid} />);
+        const wrapper = mount(<SelectViewInput {...props} />);
 
         // Assert
-        expect(getSelectValue(wrapper)).toEqual(SelectView.Grid);
+        expect(getSelectValue(wrapper)).toEqual(props.defaultView);
         expect(getSelectViewsInLocalStorage()[props.id]).toBeUndefined();
 
         // Act - change value
@@ -65,7 +66,7 @@ describe('SelectViewInput', () => {
         const props = getDefaultProps();
 
         // Act
-        const wrapper = mount(<SelectViewInput {...props} value={originalValue} views={views} />);
+        const wrapper = mount(<SelectViewInput {...props} defaultView={originalValue} views={views} />);
 
         // Assert
         expect(getSelectValue(wrapper)).toEqual(originalValue);
@@ -83,7 +84,7 @@ describe('SelectViewInput', () => {
         setSelectViewInLocalStorage(props.id, SelectView.Cards);
 
         // Act
-        const wrapper = mount(<SelectViewInput {...props} value={SelectView.Grid} />);
+        const wrapper = mount(<SelectViewInput {...props} defaultView={SelectView.Grid} />);
 
         // Assert
         expect(getSelectValue(wrapper)).toEqual(SelectView.Cards);

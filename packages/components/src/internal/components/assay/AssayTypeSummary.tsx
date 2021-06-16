@@ -40,9 +40,9 @@ export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
     return (
         <>
             <SelectViewInput
+                defaultView={SelectView.Grid}
                 id="assay-type-view-select"
                 onViewSelect={setSelectedView}
-                value={selectedView}
                 views={ASSAY_VIEWS}
             />
             {selectedView === SelectView.Heatmap && (

@@ -1,4 +1,4 @@
-import React, { PureComponent, ReactNode, FC, memo, useCallback } from 'react';
+import React, { PureComponent, ReactNode, FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
@@ -6,7 +6,7 @@ import { ConceptModel, DomainField, IFieldChange, LabelHelpTip } from '../../..'
 import { helpLinkNode, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
-import { createFormInputId, fetchOntologies } from '../domainproperties/actions';
+import { createFormInputId, fetchOntologies, getIndexFromId } from '../domainproperties/actions';
 import {
     DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
     DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
@@ -19,7 +19,7 @@ import { ITypeDependentProps } from '../domainproperties/models';
 import { SectionHeading } from '../domainproperties/SectionHeading';
 
 import { OntologyModel, PathModel } from './models';
-import { OntologyConceptSelectButton } from "./OntologyConceptSelectButton";
+import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 
 const LEARN_MORE = <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>;
 
@@ -73,7 +73,14 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
     };
 
     onOntologyFieldChange = (evt: any): void => {
-        this.onChange(evt.target.id, evt.target.value);
+        const { domainIndex, onMultiChange } = this.props;
+        const { id, value } = evt.target;
+        let changes = List<IFieldChange>([{ id, value }]);
+        changes = changes.push({
+            id: createFormInputId(DOMAIN_FIELD_ONTOLOGY_SUBTREE_COL, domainIndex, getIndexFromId(id)),
+            value: undefined,
+        });
+        onMultiChange(changes);
     };
 
     onOntologySubtreeChange = (id: string, path: PathModel, concept: ConceptModel): void => {
@@ -82,13 +89,21 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
 
     onFieldChange = (evt: any): void => {
         const val = evt.target.value;
-        let changes = List<IFieldChange>([{id: evt.target.id, value: val }]);
+        let changes = List<IFieldChange>([{ id: evt.target.id, value: val }]);
 
         const valFieldIdx = this.props.domainFields.findIndex(df => df.name === val);
         if (valFieldIdx > 0) {
-            const valFieldInsertId = createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, this.props.domainIndex, valFieldIdx);
-            const valFieldUpdateId = createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, this.props.domainIndex, valFieldIdx);
-            changes = changes.push({id:valFieldInsertId, value:false}, {id:valFieldUpdateId, value: false});
+            const valFieldInsertId = createFormInputId(
+                DOMAIN_FIELD_SHOWNININSERTVIEW,
+                this.props.domainIndex,
+                valFieldIdx
+            );
+            const valFieldUpdateId = createFormInputId(
+                DOMAIN_FIELD_SHOWNINUPDATESVIEW,
+                this.props.domainIndex,
+                valFieldIdx
+            );
+            changes = changes.push({ id: valFieldInsertId, value: false }, { id: valFieldUpdateId, value: false });
         }
 
         this.props.onMultiChange(changes);
@@ -235,7 +250,6 @@ interface OntologyTextDomainFieldSelectProps {
 
 const OntologyTextDomainFieldSelect: FC<OntologyTextDomainFieldSelectProps> = memo(props => {
     const { domainFields, lockType, field, id, value, filterValue, onFieldChange } = props;
-
 
     return (
         <FormControl

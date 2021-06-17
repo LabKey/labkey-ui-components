@@ -1,6 +1,6 @@
 import { ActionURL, Ajax, getServerContext, Utils } from '@labkey/api';
 
-import { ConceptModel, OntologyModel, PathModel } from './models';
+import { ConceptModel, ONTOLOGY_ROOT_CODE_PREFIX, OntologyModel, PathModel } from './models';
 
 export const ONTOLOGY_MODULE_NAME = 'ontology';
 export const ONTOLOGY_CONTROLLER = 'ontology';
@@ -9,7 +9,7 @@ const GET_ONTOLOGY_ACTION = 'getOntology.api';
 const GET_CONCEPT_ACTION = 'getConcept.api';
 const GET_ALTERNATE_CONCEPT_PATHS_ACTION = 'getAlternateConceptPaths.api';
 const GET_PARENT_PATHS_ACTION = 'getConceptParentPaths.api';
-const GET_CONCEPT_PATH_FROM_FILTER_ACTION = 'getConceptPathFromFilter.api';
+const GET_CONCEPT_PATH_FROM_CONCEPT_CODES_ACTION = 'getConceptPathFromConceptCodes.api';
 const SHARED_CONTAINER = 'shared';
 
 class Ontology {
@@ -63,7 +63,11 @@ class Ontology {
         return new Promise<PathModel>((resolve, reject) => {
             const { container } = getServerContext();
             Ajax.request({
-                url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_CONCEPT_PATH_FROM_FILTER_ACTION, container?.path),
+                url: ActionURL.buildURL(
+                    ONTOLOGY_CONTROLLER,
+                    GET_CONCEPT_PATH_FROM_CONCEPT_CODES_ACTION,
+                    container?.path
+                ),
                 jsonData: { path },
                 success: Utils.getCallbackWrapper(response => {
                     resolve(new PathModel(response));
@@ -133,7 +137,7 @@ function getAlternateConceptPaths(conceptCode?: string, container: string = SHAR
     });
 }
 
-function getConceptParentPaths(conceptPath?: string, container: string = SHARED_CONTAINER): Promise<PathModel[]> {
+function getConceptParentPaths(conceptPath: string, container: string = SHARED_CONTAINER): Promise<PathModel[]> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_PARENT_PATHS_ACTION, container, {

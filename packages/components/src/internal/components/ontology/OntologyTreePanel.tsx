@@ -101,9 +101,10 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
 
     const renderNodeHeader = props => {
         return (
-        <Header {...props}>
-            {showFilterIcon && <FilterIcon {...props} filters={filters} onClick={onFilterChange} />}
-        </Header>);
+            <Header {...props}>
+                {showFilterIcon && <FilterIcon {...props} filters={filters} onClick={onFilterChange} />}
+            </Header>
+        );
     };
 
     return (

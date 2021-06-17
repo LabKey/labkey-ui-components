@@ -1,12 +1,18 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Container } from '../../..';
 import { BIOLOGICS_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app/constants';
 
-import { DEFAULT_ICON_ALT_URL, DEFAULT_ICON_URL, getProductSubtitle, ProductAppsDrawer } from './ProductAppsDrawer';
+import { DEFAULT_ICON_ALT_URL, DEFAULT_ICON_URL, ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductAppMenuItem } from './ProductAppMenuItem';
 import { ProductModel } from './models';
+import {
+    BIOLOGICS_ALT_PRODUCT_ICON,
+    BIOLOGICS_DISABLED_PRODUCT_ICON,
+    BIOLOGICS_PRODUCT_ICON,
+    SAMPLE_MANAGER_DISABLED_PRODUCT_ICON,
+    SAMPLE_MANAGER_PRODUCT_ICON,
+} from './constants';
 
 const DEFAULT_PROPS = {
     products: [],
@@ -59,47 +65,80 @@ describe('ProductAppsDrawer', () => {
         wrapper.unmount();
     });
 
-    test('productProjectMap', () => {
-        const productProjectMap = {
-            [SAMPLE_MANAGER_PRODUCT_ID]: [],
-            [BIOLOGICS_PRODUCT_ID]: [new Container({ title: 'P1' })],
-            other: [new Container({ title: 'P2' }), new Container({ title: 'P3' })],
+    test('iconUrl and iconUrlAlt, sm disabled', () => {
+        LABKEY.moduleContext = {
+            samplemanagement: {},
+            biologics: {},
         };
-
-        const wrapper = mount(
-            <ProductAppsDrawer {...DEFAULT_PROPS} products={TEST_PRODUCTS} productProjectMap={productProjectMap} />
-        );
-        validate(wrapper, 4);
-        expect(wrapper.find(ProductAppMenuItem).at(1).prop('subtitle')).toBe('No Projects');
-        expect(wrapper.find(ProductAppMenuItem).at(2).prop('subtitle')).toBe('P1');
-        expect(wrapper.find(ProductAppMenuItem).at(3).prop('subtitle')).toBe('2 Projects');
-        wrapper.unmount();
-    });
-
-    test('iconUrl and iconUrlAlt', () => {
-        const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={TEST_PRODUCTS} />);
+        // create them after setting the module context to properly set the disabled flags
+        const products = [
+            new ProductModel({ productId: SAMPLE_MANAGER_PRODUCT_ID, productName: 'LKSM Name' }),
+            new ProductModel({ productId: BIOLOGICS_PRODUCT_ID, productName: 'LKB Name' }),
+            new ProductModel({ productId: 'other', productName: 'Other Name' }),
+        ];
+        const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={products} />);
         validate(wrapper, 4);
         expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrl')).toBe(
-            '/labkey/sampleManagement/images/LK-SampleManager-Badge-COLOR.svg'
+            '/labkey/sampleManagement/images/' + SAMPLE_MANAGER_DISABLED_PRODUCT_ICON
         );
+        expect(wrapper.find(ProductAppMenuItem).at(1).text()).toContain("Application not enabled in this location");
         expect(wrapper.find(ProductAppMenuItem).at(2).prop('iconUrl')).toBe(
-            '/labkey/biologics/images/lk-bio-logo-badge-color.svg'
+            '/labkey/biologics/images/' + BIOLOGICS_PRODUCT_ICON
         );
         expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrl')).toBe(DEFAULT_ICON_URL);
         expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrlAlt')).toBe(
-            '/labkey/sampleManagement/images/LK-SampleManager-Badge-WHITE.svg'
+            '/labkey/sampleManagement/images/' + SAMPLE_MANAGER_DISABLED_PRODUCT_ICON
         );
         expect(wrapper.find(ProductAppMenuItem).at(2).prop('iconUrlAlt')).toBe(
-            '/labkey/biologics/images/lk-bio-logo-badge.svg'
+            '/labkey/biologics/images/' + BIOLOGICS_ALT_PRODUCT_ICON
         );
-        expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrlAlt')).toBe(DEFAULT_ICON_ALT_URL);
+        expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrlAlt')).toBe(DEFAULT_ICON_URL);
+
         wrapper.unmount();
     });
 
-    test('getProductSubtitle', () => {
-        expect(getProductSubtitle(undefined)).toBe('No Projects');
-        expect(getProductSubtitle([])).toBe('No Projects');
-        expect(getProductSubtitle([new Container({ title: 'P1' })])).toBe('P1');
-        expect(getProductSubtitle([new Container({ title: 'P1' }), new Container({ title: 'P2' })])).toBe('2 Projects');
+    test('iconUrl, only sample manager', () => {
+        LABKEY.moduleContext = {
+            samplemanagement: {},
+        };
+        // create them after setting the module context to properly set the disabled flags
+        const products = [
+            new ProductModel({ productId: SAMPLE_MANAGER_PRODUCT_ID, productName: 'LKSM Name' }),
+            new ProductModel({ productId: BIOLOGICS_PRODUCT_ID, productName: 'LKB Name' }),
+            new ProductModel({ productId: 'other', productName: 'Other Name' }),
+        ];
+        const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={products} />);
+        validate(wrapper, 4);
+        expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrl')).toBe(
+            '/labkey/sampleManagement/images/' + SAMPLE_MANAGER_PRODUCT_ICON
+        );
+        expect(wrapper.find(ProductAppMenuItem).at(2).prop('iconUrl')).toBe(
+            '/labkey/biologics/images/' + BIOLOGICS_DISABLED_PRODUCT_ICON
+        );
+        expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrl')).toBe(DEFAULT_ICON_URL);
+    });
+
+    test('iconUrl, all enabled', () => {
+        LABKEY.moduleContext = {
+            samplemanagement: {},
+            biologics: {
+                isBiologicsSampleManagerNavEnabled: true,
+            },
+        };
+        // create them after setting the module context to properly set the disabled flags
+        const products = [
+            new ProductModel({ productId: SAMPLE_MANAGER_PRODUCT_ID, productName: 'LKSM Name' }),
+            new ProductModel({ productId: BIOLOGICS_PRODUCT_ID, productName: 'LKB Name' }),
+            new ProductModel({ productId: 'other', productName: 'Other Name' }),
+        ];
+        const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={products} />);
+        validate(wrapper, 4);
+        expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrl')).toBe(
+            '/labkey/sampleManagement/images/' + SAMPLE_MANAGER_PRODUCT_ICON
+        );
+        expect(wrapper.find(ProductAppMenuItem).at(2).prop('iconUrl')).toBe(
+            '/labkey/biologics/images/' + BIOLOGICS_PRODUCT_ICON
+        );
+        expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrl')).toBe(DEFAULT_ICON_URL);
     });
 });

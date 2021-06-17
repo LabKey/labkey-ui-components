@@ -110,6 +110,7 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
 
 interface ConceptOverviewModalProps {
     concept: ConceptModel;
+    path?: PathModel;
     error?: string;
 }
 
@@ -118,7 +119,7 @@ interface ConceptOverviewModalProps {
  * but in a modal dialog. This component takes in the concept (i.e. ConceptModel) as a prop.
  */
 export const ConceptOverviewTooltip: FC<ConceptOverviewModalProps> = memo(props => {
-    const { concept, error } = props;
+    const { concept, path, error } = props;
 
     return (
         <>
@@ -131,7 +132,11 @@ export const ConceptOverviewTooltip: FC<ConceptOverviewModalProps> = memo(props 
                     bsStyle="concept-overview"
                 >
                     <div className="ontology-concept-overview-container">
-                        <ConceptOverviewPanelImpl concept={concept} conceptNotFoundText="No information available." />
+                        <ConceptOverviewPanelImpl
+                            conceptNotFoundText="No information available."
+                            concept={concept}
+                            selectedPath={path}
+                        />
                     </div>
                 </LabelHelpTip>
             )}

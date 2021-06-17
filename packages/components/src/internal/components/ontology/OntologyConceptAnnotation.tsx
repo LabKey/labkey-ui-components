@@ -16,26 +16,7 @@ interface OntologyConceptAnnotationProps {
 }
 
 export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = memo(props => {
-    const { field } = props;
-    const [concept, setConcept] = useState<ConceptModel>();
-
-    useEffect(() => {
-        if (field.principalConceptCode) {
-            fetchConceptForCode(field.principalConceptCode).then(setConcept);
-        } else {
-            setConcept(undefined);
-        }
-    }, [field.principalConceptCode, setConcept]);
-
-    return <OntologyConceptAnnotationImpl {...props} concept={concept} />;
-});
-
-interface OntologyConceptAnnotationImplProps extends OntologyConceptAnnotationProps {
-    concept: ConceptModel;
-}
-
-export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProps> = memo(props => {
-    const { field, onChange, concept } = props;
+    const { onChange } = props;
 
     const onApply = useCallback(
         (id: string, path: PathModel, concept: ConceptModel) => {
@@ -52,8 +33,8 @@ export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProp
             <OntologyConceptSelectButton
                 {...props}
                 title="Select Concept"
-                conceptCode={field.principalConceptCode}
-                concept={concept}
+                valueProp="principalConceptCode"
+                valueIsPath={false}
                 onChange={onApply}
             />
         </>

@@ -35,6 +35,10 @@ export class PathModel {
     constructor(values?: Partial<PathModel>) {
         Object.assign(this, values);
     }
+
+    getDisplayLabel(): string {
+        return this.label + ' (' + this.code + ')';
+    }
 }
 
 export class OntologyModel {

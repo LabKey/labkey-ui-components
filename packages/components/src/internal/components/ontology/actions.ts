@@ -170,6 +170,17 @@ export function fetchParentPaths(conceptPath: string): Promise<PathModel[]> {
     return getConceptParentPaths(conceptPath);
 }
 
+/**
+ * Concatenate the parent concept codes minus the root
+ * @param parents
+ */
+export function getParentsConceptCodePath(parents: PathModel[]): string {
+    return [...parents]
+        .filter(node => !node.code.startsWith(ONTOLOGY_ROOT_CODE_PREFIX)) // Ignore the root node
+        .map(node => node.code)
+        .join('/');
+}
+
 const CONCEPT_CACHE = new Map<string, ConceptModel>();
 export async function fetchConceptForCode(code: string): Promise<ConceptModel> {
     if (!CONCEPT_CACHE.has(code)) {

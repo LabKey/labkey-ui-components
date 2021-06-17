@@ -20,6 +20,7 @@ import { SectionHeading } from '../domainproperties/SectionHeading';
 
 import { OntologyModel, PathModel } from './models';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
+import { fetchParentPaths, getParentsConceptCodePath } from "./actions";
 
 const LEARN_MORE = <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>;
 
@@ -83,8 +84,13 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
         onMultiChange(changes);
     };
 
-    onOntologySubtreeChange = (id: string, path: PathModel, concept: ConceptModel): void => {
-        this.onChange(id, path.path);
+    onOntologySubtreeChange = async (id: string, path: PathModel): Promise<void> => {
+        let subtreePath;
+        if (path?.path) {
+            const parents = await fetchParentPaths(path?.path);
+            subtreePath = getParentsConceptCodePath(parents);
+        }
+        this.onChange(id, subtreePath);
     };
 
     onFieldChange = (evt: any): void => {
@@ -203,8 +209,8 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                 id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_SUBTREE_COL, domainIndex, index)}
                                 title="Expected Vocabulary"
                                 field={field}
-                                concept={undefined} // TODO
-                                conceptCode={field.conceptSubtree}
+                                valueProp="conceptSubtree"
+                                valueIsPath={true}
                                 onChange={this.onOntologySubtreeChange}
                                 useFieldSourceOntology
                             />

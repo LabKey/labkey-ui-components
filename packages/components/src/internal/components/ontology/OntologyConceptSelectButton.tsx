@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 
@@ -9,14 +9,15 @@ import { DomainField } from '../domainproperties/models';
 
 import { ConceptOverviewTooltip } from './ConceptOverviewPanel';
 import { ConceptModel, PathModel } from './models';
-import { OntologyBrowserModal } from "./OntologyBrowserModal";
+import { OntologyBrowserModal } from './OntologyBrowserModal';
+import { fetchConceptForCode, fetchPathModel } from './actions';
 
 export interface OntologyConceptSelectButtonProps {
     id: string;
     field: DomainField;
     title?: string;
-    concept: ConceptModel;
-    conceptCode?: string;
+    valueProp: string;
+    valueIsPath: boolean;
     onChange: (id: string, path: PathModel, concept: ConceptModel) => void;
     successBsStyle?: string;
     error?: string;
@@ -24,9 +25,32 @@ export interface OntologyConceptSelectButtonProps {
 }
 
 export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> = memo(props => {
-    const { id, field, title, conceptCode, concept, onChange, error, successBsStyle, useFieldSourceOntology } = props;
+    const { id, field, title, onChange, error, successBsStyle, useFieldSourceOntology, valueProp, valueIsPath } = props;
     const isFieldLocked = useMemo(() => isFieldFullyLocked(field.lockType), [field.lockType]);
     const [showSelectModal, setShowSelectModal] = useState<boolean>();
+    const [concept, setConcept] = useState<ConceptModel>();
+    const [path, setPath] = useState<PathModel>();
+    const fieldValue = useMemo(() => field[valueProp], [field]);
+
+    useEffect(() => {
+        if (valueIsPath) {
+            if (fieldValue) {
+                fetchPathModel(fieldValue).then(setPath);
+            } else {
+                setPath(undefined);
+            }
+        }
+    }, [fieldValue]);
+
+    useEffect(() => {
+        if (!valueIsPath && fieldValue) {
+            fetchConceptForCode(fieldValue).then(setConcept);
+        } else if (path?.code) {
+            fetchConceptForCode(path.code).then(setConcept);
+        } else {
+            setConcept(undefined);
+        }
+    }, [fieldValue, path]);
 
     const toggleSelectModal = useCallback(() => {
         setShowSelectModal(!showSelectModal);
@@ -60,12 +84,12 @@ export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> =
                                 {title}
                             </Button>
                         </td>
-                        {!conceptCode && (
+                        {!fieldValue && (
                             <td className="content">
                                 <span className="domain-text-label">None Set</span>
                             </td>
                         )}
-                        {conceptCode && (
+                        {fieldValue && (
                             <>
                                 {!isFieldLocked && (
                                     <td className="content">
@@ -82,13 +106,13 @@ export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> =
                                         )}
                                         onClick={isFieldLocked ? null : toggleSelectModal}
                                     >
-                                        {concept?.getDisplayLabel() ?? conceptCode}
+                                        {concept ? concept.getDisplayLabel() : path?.getDisplayLabel() ?? fieldValue}
                                     </a>
                                 </td>
                             </>
                         )}
                         <td className="content">
-                            <ConceptOverviewTooltip concept={concept} error={error} />
+                            <ConceptOverviewTooltip concept={concept} path={path} error={error} />
                         </td>
                     </tr>
                 </tbody>
@@ -97,10 +121,11 @@ export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> =
                 <OntologyBrowserModal
                     title={title}
                     initOntologyId={concept?.ontology ?? (useFieldSourceOntology ? field.sourceOntology : undefined)}
+                    initConcept={path ? undefined : concept} // if we have a path, we want the modal to use that instead of the first path from the concept
+                    initPath={path}
                     onCancel={toggleSelectModal}
                     onApply={onApply}
                     successBsStyle={successBsStyle}
-                    initConcept={concept}
                 />
             )}
         </>

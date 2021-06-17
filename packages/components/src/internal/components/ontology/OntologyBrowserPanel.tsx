@@ -11,31 +11,33 @@ import { OntologySelectionPanel } from './OntologySelectionPanel';
 import { OntologyTreeSearchContainer } from './OntologyTreeSearchContainer';
 
 export interface OntologyBrowserProps {
-    initOntologyId?: string;
     asPanel?: boolean;
+    initOntologyId?: string;
+    initConcept?: ConceptModel;
+    initPath?: PathModel;
     onPathSelect?: (path: PathModel, concept: ConceptModel) => void;
     hideConceptInfo?: boolean;
     filters?: Map<string, PathModel>;
     filterChangeHandler?: (filter: PathModel) => void;
-    initConcept?: ConceptModel;
 }
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     const {
-        initOntologyId,
         asPanel,
+        initOntologyId,
+        initConcept,
+        initPath,
         onPathSelect,
         hideConceptInfo = false,
         filters,
         filterChangeHandler,
-        initConcept,
     } = props;
     const [error, setError] = useState<string>();
     const [selectedOntologyId, setSelectedOntologyId] = useState<string>();
     const [ontology, setOntologyModel] = useState<OntologyModel>();
     const [selectedConcept, setSelectedConcept] = useState<ConceptModel>(initConcept);
     const [selectedPath, setSelectedPath] = useState<PathModel>();
-    const [alternatePath, setAlternatePath] = useState<PathModel>();
+    const [alternatePath, setAlternatePath] = useState<PathModel>(initPath);
     const ontologyId = selectedOntologyId ?? (!error ? initOntologyId : undefined);
 
     const onSelectedPathChange = useCallback(
@@ -134,7 +136,17 @@ interface OntologyBrowserPanelImplProps {
 
 // exported for jest testing
 export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props => {
-    const { ontology, selectedConcept, alternatePath, selectedPath, setSelectedPath, asPanel, hideConceptInfo, filters, onFilterChange } = props;
+    const {
+        ontology,
+        selectedConcept,
+        alternatePath,
+        selectedPath,
+        setSelectedPath,
+        asPanel,
+        hideConceptInfo,
+        filters,
+        onFilterChange,
+    } = props;
 
     if (!ontology) {
         return <LoadingSpinner />;
@@ -147,7 +159,14 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
         <Row className={hideConceptInfo ? 'filter-panel-row' : ''}>
             <Col xs={hideConceptInfo ? 12 : 6} className={hideConceptInfo ? '' : 'left-panel'}>
                 <OntologyTreeSearchContainer ontology={ontology} searchPathClickHandler={setSelectedPath} />
-                <OntologyTreePanel root={root} onNodeSelection={setSelectedPath} alternatePath={alternatePath} showFilterIcon={hideConceptInfo} filters={filters} onFilterChange={onFilterChange} />
+                <OntologyTreePanel
+                    root={root}
+                    onNodeSelection={setSelectedPath}
+                    alternatePath={alternatePath}
+                    showFilterIcon={hideConceptInfo}
+                    filters={filters}
+                    onFilterChange={onFilterChange}
+                />
             </Col>
             {!hideConceptInfo && (
                 <Col xs={6} className="right-panel">

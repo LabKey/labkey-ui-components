@@ -7,14 +7,15 @@ import { ConceptModel, PathModel } from './models';
 interface OntologyBrowserModalProps {
     title: string;
     initOntologyId?: string;
+    initConcept?: ConceptModel;
+    initPath?: PathModel;
     successBsStyle?: string;
     onCancel: () => void;
     onApply: (path: PathModel, concept: ConceptModel) => void;
-    initConcept?: ConceptModel;
 }
 
 export const OntologyBrowserModal: FC<OntologyBrowserModalProps> = memo(props => {
-    const { title, initOntologyId, successBsStyle, onCancel, onApply, initConcept } = props;
+    const { title, initOntologyId, successBsStyle, onCancel, onApply, initConcept, initPath } = props;
     const [selectedPath, setSelectedPath] = useState<PathModel>();
     const [selectedConcept, setSelectedConcept] = useState<ConceptModel>();
 
@@ -39,8 +40,9 @@ export const OntologyBrowserModal: FC<OntologyBrowserModalProps> = memo(props =>
                 <OntologyBrowserPanel
                     asPanel={false}
                     initOntologyId={initOntologyId}
-                    onPathSelect={onPathSelect}
                     initConcept={initConcept}
+                    initPath={initPath}
+                    onPathSelect={onPathSelect}
                 />
             </Modal.Body>
             <Modal.Footer>

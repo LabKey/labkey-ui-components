@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, DomainField, DomainFieldLabel, LabelHelpTip } from '../../..';
+import { DomainField, DomainFieldLabel, LabelHelpTip } from '../../..';
 
 import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 
@@ -28,7 +28,7 @@ describe('OntologyConceptAnnotation', () => {
         expect(wrapper.find('.domain-annotation-table')).toHaveLength(1);
         expect(wrapper.find('.domain-validation-button')).toHaveLength(2);
         expect(getSelectButton(wrapper).text()).toBe('Select Concept');
-        expect(wrapper.find('.domain-text-label')).toHaveLength( !hasCode || !canRemove ? 1 : 0);
+        expect(wrapper.find('.domain-text-label')).toHaveLength(!hasCode || !canRemove ? 1 : 0);
         if (!hasCode) {
             expect(wrapper.find('.domain-text-label').text()).toBe('None Set');
         }
@@ -93,20 +93,13 @@ describe('OntologyConceptAnnotation', () => {
 
     test('showConceptModal', () => {
         const wrapper = mount(
-            <OntologyConceptAnnotationImpl
-                {...DEFAULT_PROPS}
-                field={TEST_FIELD}
-                concept={TEST_CONCEPT}
-                error="test error"
-            />
+            <OntologyConceptAnnotationImpl {...DEFAULT_PROPS} field={TEST_FIELD} concept={TEST_CONCEPT} />
         );
         validate(wrapper, true);
         const tooltip = wrapper.find(ConceptOverviewTooltip);
         expect(tooltip).toHaveLength(1);
         expect(tooltip.find(LabelHelpTip)).toHaveLength(0);
         expect(tooltip.prop('concept')).toBe(TEST_CONCEPT);
-        expect(tooltip.prop('error')).toBe('test error');
-        expect(tooltip.find(Alert).text()).toBe('test error');
         wrapper.unmount();
     });
 });

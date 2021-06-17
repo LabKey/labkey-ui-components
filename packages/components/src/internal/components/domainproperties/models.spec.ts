@@ -734,11 +734,6 @@ describe('DomainField', () => {
         expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
         );
-
-        field = field.merge({ principalConceptDisplay: 'Concept display text' }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe(
-            'Updated. SRC. Ontology Concept: Concept display text. Primary Key. Locked'
-        );
     });
 
     test('serialize, name trim', () => {

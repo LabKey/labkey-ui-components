@@ -16,7 +16,7 @@ interface OntologyConceptAnnotationProps {
 }
 
 export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = memo(props => {
-    const { field, onChange } = props;
+    const { field } = props;
     const [concept, setConcept] = useState<ConceptModel>();
 
     useEffect(() => {
@@ -26,6 +26,16 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
             setConcept(undefined);
         }
     }, [field.principalConceptCode, setConcept]);
+
+    return <OntologyConceptAnnotationImpl {...props} concept={concept} />;
+});
+
+interface OntologyConceptAnnotationImplProps extends OntologyConceptAnnotationProps {
+    concept: ConceptModel;
+}
+
+export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProps> = memo(props => {
+    const { field, onChange, concept } = props;
 
     const onApply = useCallback(
         (id: string, path: PathModel, concept: ConceptModel) => {

@@ -6,8 +6,9 @@ import { fromJS, List, Map, OrderedMap } from 'immutable';
 
 import { FileSizeLimitProps, QueryColumn } from '../../..';
 
+import { parseScientificInt } from '../../util/utils';
+
 import { ALL_FILES_LIMIT_KEY } from './models';
-import { parseScientificInt } from "../../util/utils";
 
 // Converts the 2D array returned by inferDomain action into a list of row maps that the grid understands
 export function convertRowDataIntoPreviewData(

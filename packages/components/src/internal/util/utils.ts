@@ -484,18 +484,15 @@ export function isNonNegativeFloat(value: number | string): boolean {
 }
 
 // works with string that might contain Scientific Notation
-export function parseScientificInt(value: any) : number {
-    if (value == null)
-        return undefined;
+export function parseScientificInt(value: any): number {
+    if (value == null) return undefined;
 
-    const valueStr : string = String(value).trim();
-    if (!valueStr)
-        return undefined;
+    const valueStr: string = String(value).trim();
+    if (!valueStr) return undefined;
 
-    if (isNaN(Number(valueStr)))
-        return NaN;
+    if (isNaN(Number(valueStr))) return NaN;
 
-    const valueLocaleStr = Number(valueStr).toLocaleString('fullwide', {useGrouping:false});
+    const valueLocaleStr = Number(valueStr).toLocaleString('fullwide', { useGrouping: false });
 
     return parseInt(valueLocaleStr, 10);
 }

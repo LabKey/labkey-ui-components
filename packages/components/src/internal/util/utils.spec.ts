@@ -427,7 +427,7 @@ describe('getUpdatedData', () => {
             originalData,
             {
                 Data: 'data1',
-                'And$SAgain': 'again',
+                And$SAgain: 'again',
             },
             List<string>(['RowId'])
         );
@@ -440,7 +440,7 @@ describe('getUpdatedData', () => {
             {
                 Value: 'val',
                 Data: 'data1',
-                'And$SAgain': 'again',
+                And$SAgain: 'again',
                 Other: 'other3',
             },
             List<string>(['RowId'])
@@ -468,7 +468,7 @@ describe('getUpdatedData', () => {
             {
                 Value: 'val2',
                 Data: 'data2',
-                'And$SAgain': 'again2',
+                And$SAgain: 'again2',
                 Other: 'not another',
             },
             List<string>(['RowId'])
@@ -509,7 +509,7 @@ describe('getUpdatedData', () => {
             originalData,
             {
                 Value: null,
-                'And$SAgain': undefined,
+                And$SAgain: undefined,
                 Other: 'not another',
             },
             List<string>(['RowId'])
@@ -1108,7 +1108,6 @@ describe('parseScientificInt', () => {
         expect(parseScientificInt(0.123e2)).toBe(12);
         expect(parseScientificInt(-123.456e2)).toBe(-12345);
         expect(parseScientificInt(-0.123e2)).toBe(-12);
-
     });
 });
 
@@ -1151,7 +1150,6 @@ describe('isInteger', () => {
         expect(isInteger(0.123e2)).toBe(false);
         expect(isInteger(-123.456e2)).toBe(false);
         expect(isInteger(-0.123e2)).toBe(false);
-
     });
 });
 

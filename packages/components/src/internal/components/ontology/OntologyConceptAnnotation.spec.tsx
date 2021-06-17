@@ -1,14 +1,12 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { DomainField, DomainFieldLabel, LabelHelpTip } from '../../..';
+import { DomainField, DomainFieldLabel } from '../../..';
 
 import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 
-import { ConceptModel } from './models';
-import { OntologyConceptAnnotationImpl } from './OntologyConceptAnnotation';
+import { OntologyConceptAnnotation } from './OntologyConceptAnnotation';
 import { OntologyBrowserModal } from './OntologyBrowserModal';
-import { ConceptOverviewTooltip } from './ConceptOverviewPanel';
 
 const DEFAULT_PROPS = {
     id: 'testId',
@@ -16,11 +14,9 @@ const DEFAULT_PROPS = {
     onChange: jest.fn,
     successBsStyle: 'success',
     error: undefined,
-    concept: undefined,
 };
 
-const TEST_FIELD = new DomainField({ principalConceptCode: 'code:123',  });
-const TEST_CONCEPT = new ConceptModel({ code: 'a', label: 'b', ontology: 'ontSource' });
+const TEST_FIELD = new DomainField({ principalConceptCode: 'code:123' });
 
 describe('OntologyConceptAnnotation', () => {
     function validate(wrapper: ReactWrapper, hasCode: boolean, canRemove = true): void {
@@ -41,15 +37,15 @@ describe('OntologyConceptAnnotation', () => {
         return wrapper.find('.domain-validation-button').first();
     }
 
-    test('no concept', () => {
-        const wrapper = mount(<OntologyConceptAnnotationImpl {...DEFAULT_PROPS} />);
+    test('no principalConceptCode', () => {
+        const wrapper = mount(<OntologyConceptAnnotation {...DEFAULT_PROPS} />);
         validate(wrapper, false);
         expect(wrapper.find('.domain-text-label').text()).toBe('None Set');
         wrapper.unmount();
     });
 
-    test('principalConceptCode, no concept', () => {
-        const wrapper = mount(<OntologyConceptAnnotationImpl {...DEFAULT_PROPS} field={TEST_FIELD} />);
+    test('principalConceptCode', () => {
+        const wrapper = mount(<OntologyConceptAnnotation {...DEFAULT_PROPS} field={TEST_FIELD} />);
         validate(wrapper, true);
         expect(wrapper.find('.domain-annotation-item').text()).toBe(TEST_FIELD.principalConceptCode);
         expect(wrapper.find('.fa-remove')).toHaveLength(1);
@@ -57,20 +53,9 @@ describe('OntologyConceptAnnotation', () => {
         wrapper.unmount();
     });
 
-    test('principalConceptCode, with concept', () => {
-        const wrapper = mount(
-            <OntologyConceptAnnotationImpl {...DEFAULT_PROPS} field={TEST_FIELD} concept={TEST_CONCEPT} />
-        );
-        validate(wrapper, true);
-        expect(wrapper.find('.domain-annotation-item').text()).toBe(TEST_CONCEPT.getDisplayLabel());
-        expect(wrapper.find('.fa-remove')).toHaveLength(1);
-        expect(getSelectButton(wrapper).prop('disabled')).toBeFalsy();
-        wrapper.unmount();
-    });
-
     test('isFieldLocked and select button props', () => {
         const field = TEST_FIELD.merge({ lockType: DOMAIN_FIELD_FULLY_LOCKED }) as DomainField;
-        const wrapper = mount(<OntologyConceptAnnotationImpl {...DEFAULT_PROPS} field={field} />);
+        const wrapper = mount(<OntologyConceptAnnotation {...DEFAULT_PROPS} field={field} />);
         validate(wrapper, true, false);
         expect(wrapper.find('.fa-remove')).toHaveLength(0);
         expect(getSelectButton(wrapper).prop('disabled')).toBeTruthy();
@@ -80,7 +65,7 @@ describe('OntologyConceptAnnotation', () => {
     });
 
     test('showSelectModal', () => {
-        const wrapper = mount(<OntologyConceptAnnotationImpl {...DEFAULT_PROPS} field={TEST_FIELD} />);
+        const wrapper = mount(<OntologyConceptAnnotation {...DEFAULT_PROPS} field={TEST_FIELD} />);
         validate(wrapper, true);
         expect(wrapper.find(OntologyBrowserModal)).toHaveLength(0);
         getSelectButton(wrapper).simulate('click');

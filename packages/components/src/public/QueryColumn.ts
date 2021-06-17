@@ -15,6 +15,7 @@ export class QueryLookup extends Record({
     multiValued: undefined,
     queryName: undefined,
     schemaName: undefined,
+    containerPath: undefined,
     table: undefined,
 }) {
     declare displayColumn: string;
@@ -27,6 +28,7 @@ export class QueryLookup extends Record({
     // declare schema: string; -- NOT ALLOWING -- USE schemaName
     declare schemaName: string;
     // declare table: string; -- NOT ALLOWING -- USE queryName
+    declare containerPath: string;
 }
 
 export class QueryColumn extends Record({

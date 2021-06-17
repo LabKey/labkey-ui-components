@@ -87,7 +87,6 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
       "principalConceptCode": undefined,
-      "principalConceptDisplay": undefined,
       "derivationDataScope": undefined,
       "selected": false,
     }

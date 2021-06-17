@@ -115,7 +115,6 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
       "principalConceptCode": undefined,
-      "principalConceptDisplay": undefined,
       "derivationDataScope": undefined,
       "selected": false,
     }
@@ -592,7 +591,6 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
       "principalConceptCode": undefined,
-      "principalConceptDisplay": undefined,
       "derivationDataScope": undefined,
       "selected": false,
     }
@@ -893,7 +891,6 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
       "principalConceptCode": undefined,
-      "principalConceptDisplay": undefined,
       "derivationDataScope": undefined,
       "selected": false,
     }

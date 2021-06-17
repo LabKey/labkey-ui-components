@@ -36,31 +36,12 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     const [selectedConcept, setSelectedConcept] = useState<ConceptModel>(initConcept);
     const [selectedPath, setSelectedPath] = useState<PathModel>();
     const [alternatePath, setAlternatePath] = useState<PathModel>();
-    const [conceptCache, setConceptCache] = useState<Map<string, ConceptModel>>(new Map<string, ConceptModel>());
     const ontologyId = selectedOntologyId ?? (!error ? initOntologyId : undefined);
 
-    const cacheConcepts = useCallback(
-        (concepts: ConceptModel[]): void => {
-            concepts.forEach((concept): void => {
-                if (!conceptCache.has(concept.code)) {
-                    conceptCache.set(concept.code, concept);
-                }
-            });
-            setConceptCache(new Map(conceptCache));
-        },
-        [conceptCache, setConceptCache]
-    );
-
     const onSelectedPathChange = useCallback(
-        async (path: PathModel, isAlternatePath = false): Promise<void> => {
+        (path: PathModel, isAlternatePath = false): Promise<void> => {
             if (path === undefined) {
                 return;
-            }
-
-            const { code } = path;
-            if (!conceptCache.has(code)) {
-                const concept = await fetchConceptForCode(code);
-                cacheConcepts([concept]);
             }
 
             if (isAlternatePath) {
@@ -72,7 +53,7 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
                 }
             }
         },
-        [conceptCache, setSelectedPath, setAlternatePath]
+        [setSelectedPath, setAlternatePath]
     );
 
     const onOntologySelection = useCallback(
@@ -82,19 +63,11 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
         [setSelectedOntologyId]
     );
 
-    const setInitialConceptPath = async (code: string) => {
-        if (code != null) {
-            const paths = await fetchAlternatePaths(code);
-            onSelectedPathChange(paths?.[0], true);
-        }
-    };
-
     useEffect(() => {
         if (ontologyId) {
             getOntologyDetails(ontologyId)
                 .then((ontology: OntologyModel) => {
                     setOntologyModel(ontology);
-                    setInitialConceptPath(initConcept?.code);
                 })
                 .catch(() => {
                     setError('Error: unable to load ontology concept information for ' + ontologyId + '.');
@@ -103,15 +76,24 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
         } else {
             setOntologyModel(undefined);
         }
-    }, [initConcept, setOntologyModel, selectedOntologyId, setSelectedOntologyId, setError]);
+    }, [ontologyId, setOntologyModel, setSelectedOntologyId, setError]);
+
+    useEffect(() => {
+        if (initConcept) {
+            fetchAlternatePaths(initConcept.code).then(paths => {
+                onSelectedPathChange(paths?.[0], true);
+            });
+        }
+    }, [initConcept]);
 
     useEffect(() => {
         if (selectedPath?.code) {
-            const concept = conceptCache.get(selectedPath.code);
-            setSelectedConcept(concept);
-            onPathSelect?.(selectedPath, concept);
+            fetchConceptForCode(selectedPath.code).then(concept => {
+                setSelectedConcept(concept);
+                onPathSelect?.(selectedPath, concept);
+            });
         }
-    }, [selectedPath, conceptCache, setSelectedConcept, onPathSelect]);
+    }, [selectedPath, setSelectedConcept, onPathSelect]);
 
     return (
         <>

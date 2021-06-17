@@ -166,8 +166,20 @@ export function fetchParentPaths(conceptPath: string): Promise<PathModel[]> {
     return getConceptParentPaths(conceptPath);
 }
 
-export function fetchConceptForCode(code: string): Promise<ConceptModel> {
-    return Ontology.getConcept(code);
+const CONCEPT_CACHE = new Map<string, ConceptModel>();
+export async function fetchConceptForCode(code: string): Promise<ConceptModel> {
+    if (!CONCEPT_CACHE.has(code)) {
+        const concept = await Ontology.getConcept(code);
+        CONCEPT_CACHE.set(code, concept);
+    }
+
+    return CONCEPT_CACHE.get(code);
+}
+
+export function getConceptForCode(code: string): ConceptModel {
+    if (!code) return undefined;
+    fetchConceptForCode(code);
+    return CONCEPT_CACHE.get(code);
 }
 
 /**

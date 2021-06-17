@@ -571,13 +571,7 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
                 break;
             case DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT:
                 const concept = change.value as ConceptModel;
-
-                newField = newField.merge({
-                    // We may be just trying to update the Display, so only mark as dirty if original field is updated or code is different
-                    updatedField: field.updatedField || field.principalConceptCode != concept?.code,
-                    principalConceptCode: concept?.code,
-                    principalConceptDisplay: concept?.getDisplayLabel() ?? concept?.code  // Default to code if display text isn't found
-                }) as DomainField;
+                newField = newField.merge({ principalConceptCode: concept?.code }) as DomainField;
                 break;
             default:
                 newField = newField.set(type, change.value) as DomainField;

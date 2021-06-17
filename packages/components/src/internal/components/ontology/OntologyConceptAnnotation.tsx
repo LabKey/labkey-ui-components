@@ -1,12 +1,12 @@
-import React, { ReactNode, FC, memo, useState, useEffect, useCallback } from 'react';
+import React, { ReactNode, FC, memo, useCallback, useEffect, useState } from 'react';
 
 import { DomainField, DomainFieldLabel } from '../../..';
 
 import { helpLinkNode, ONTOLOGY_CONCEPT_TOPIC } from '../../util/helpLinks';
 
 import { ConceptModel, PathModel } from './models';
+import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 import { fetchConceptForCode } from './actions';
-import { OntologyConceptSelectButton, OntologyConceptSelectButtonProps } from './OntologyConceptSelectButton';
 
 interface OntologyConceptAnnotationProps {
     id: string;
@@ -16,25 +16,16 @@ interface OntologyConceptAnnotationProps {
 }
 
 export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = memo(props => {
-    const { field, id, onChange } = props;
-    const { principalConceptCode } = field;
-    const [error, setError] = useState<string>();
+    const { field, onChange } = props;
     const [concept, setConcept] = useState<ConceptModel>();
 
     useEffect(() => {
-        if (!principalConceptCode) {
-            setConcept(undefined);
+        if (field.principalConceptCode) {
+            fetchConceptForCode(field.principalConceptCode).then(setConcept);
         } else {
-            fetchConceptForCode(principalConceptCode)
-                .then((concept: ConceptModel): void => {
-                    setConcept(concept);
-                    onChange?.(id, concept);
-                })
-                .catch(() => {
-                    setError('Error: unable to get concept information for ' + principalConceptCode + '. ');
-                });
+            setConcept(undefined);
         }
-    }, [principalConceptCode, setConcept, setError]);
+    }, [field.principalConceptCode, setConcept]);
 
     const onApply = useCallback(
         (id: string, path: PathModel, concept: ConceptModel) => {
@@ -43,19 +34,18 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
         [onChange]
     );
 
-    return <OntologyConceptAnnotationImpl {...props} onChange={onApply} error={error} concept={concept} />;
-});
-
-// exported for jest testing
-export const OntologyConceptAnnotationImpl: FC<OntologyConceptSelectButtonProps> = memo(props => {
-    const { field } = props;
-
     return (
         <>
             <div className="domain-field-label">
                 <DomainFieldLabel label="Ontology Concept" helpTipBody={getOntologyConceptAnnotationHelpTipBody()} />
             </div>
-            <OntologyConceptSelectButton {...props} title="Select Concept" conceptCode={field.principalConceptCode} />
+            <OntologyConceptSelectButton
+                {...props}
+                title="Select Concept"
+                conceptCode={field.principalConceptCode}
+                concept={concept}
+                onChange={onApply}
+            />
         </>
     );
 });

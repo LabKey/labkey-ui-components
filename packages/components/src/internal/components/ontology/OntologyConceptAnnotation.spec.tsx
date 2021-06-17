@@ -90,16 +90,4 @@ describe('OntologyConceptAnnotation', () => {
         expect(wrapper.find(OntologyBrowserModal).prop('successBsStyle')).toBe(DEFAULT_PROPS.successBsStyle);
         wrapper.unmount();
     });
-
-    test('showConceptModal', () => {
-        const wrapper = mount(
-            <OntologyConceptAnnotationImpl {...DEFAULT_PROPS} field={TEST_FIELD} concept={TEST_CONCEPT} />
-        );
-        validate(wrapper, true);
-        const tooltip = wrapper.find(ConceptOverviewTooltip);
-        expect(tooltip).toHaveLength(1);
-        expect(tooltip.find(LabelHelpTip)).toHaveLength(0);
-        expect(tooltip.prop('concept')).toBe(TEST_CONCEPT);
-        wrapper.unmount();
-    });
 });

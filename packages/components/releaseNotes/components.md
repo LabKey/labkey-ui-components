@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * [Issue 43367](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43367) Use proper container path for lookups
 * [Issue 43324](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43324) Trim spaces from text fields before submitting
 
+### version 2.46.1
+*Released*: 18 June 2021
+* Addresses [Issue 43372](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43372) by:
+    * Switch `hideEmptyChartSelector` and `hideEmptyViewSelector` to true by default for `QueryGridModel`.
+    * Switch `hideEmptyChartMenu` and `hideEmptyViewMenu` to true by default for `GridPanel`.
+
 ### version 2.46.0
 *Released*: 14 June 2021
 * Update product navigation menu behavior

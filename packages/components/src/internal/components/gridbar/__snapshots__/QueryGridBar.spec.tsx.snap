@@ -10,36 +10,6 @@ exports[`<QueryGridBar/> default props 1`] = `
     <div
       className="col-xs-12"
     >
-      <span>
-        <div
-          className="dropdown disabled btn-group"
-        >
-          <button
-            aria-expanded={false}
-            aria-haspopup={true}
-            className="dropdown-toggle btn btn-default"
-            disabled={true}
-            id="chartselector-0"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-            type="button"
-          >
-            <span
-              className="fa fa-spinner fa-pulse"
-            />
-             
-            <span
-              className="caret"
-            />
-          </button>
-          <ul
-            aria-labelledby="chartselector-0"
-            className="dropdown-menu"
-            role="menu"
-          />
-        </div>
-      </span>
       <span
         className="paging pull-right text-nowrap"
       >
@@ -133,36 +103,6 @@ exports[`<QueryGridBar/> default props 1`] = `
                 </a>
               </li>
             </ul>
-          </div>
-        </span>
-        <span
-          className="gridbar-button-spacer"
-        >
-          <div
-            className="dropdown disabled btn-group"
-          >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-default"
-              disabled={true}
-              id="viewselector-1"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="button"
-              type="button"
-            >
-              Grid Views
-               
-              <span
-                className="caret"
-              />
-            </button>
-            <ul
-              aria-labelledby="viewselector-1"
-              className="dropdown-menu dropdown-menu-right"
-              role="menu"
-            />
           </div>
         </span>
       </span>
@@ -270,36 +210,6 @@ exports[`<QueryGridBar/> isPaged 1`] = `
     <div
       className="col-xs-12"
     >
-      <span>
-        <div
-          className="dropdown disabled btn-group"
-        >
-          <button
-            aria-expanded={false}
-            aria-haspopup={true}
-            className="dropdown-toggle btn btn-default"
-            disabled={true}
-            id="chartselector-4"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-            type="button"
-          >
-            <span
-              className="fa fa-spinner fa-pulse"
-            />
-             
-            <span
-              className="caret"
-            />
-          </button>
-          <ul
-            aria-labelledby="chartselector-4"
-            className="dropdown-menu"
-            role="menu"
-          />
-        </div>
-      </span>
       <span
         className="paging pull-right text-nowrap"
       >
@@ -624,36 +534,6 @@ exports[`<QueryGridBar/> isPaged 1`] = `
             </ul>
           </div>
         </span>
-        <span
-          className="gridbar-button-spacer"
-        >
-          <div
-            className="dropdown disabled btn-group"
-          >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-default"
-              disabled={true}
-              id="viewselector-5"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="button"
-              type="button"
-            >
-              Grid Views
-               
-              <span
-                className="caret"
-              />
-            </button>
-            <ul
-              aria-labelledby="viewselector-5"
-              className="dropdown-menu dropdown-menu-right"
-              role="menu"
-            />
-          </div>
-        </span>
       </span>
     </div>
   </div>
@@ -959,36 +839,6 @@ exports[`<QueryGridBar/> without omnibox 1`] = `
     <div
       className="col-xs-12"
     >
-      <span>
-        <div
-          className="dropdown disabled btn-group"
-        >
-          <button
-            aria-expanded={false}
-            aria-haspopup={true}
-            className="dropdown-toggle btn btn-default"
-            disabled={true}
-            id="chartselector-2"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="button"
-            type="button"
-          >
-            <span
-              className="fa fa-spinner fa-pulse"
-            />
-             
-            <span
-              className="caret"
-            />
-          </button>
-          <ul
-            aria-labelledby="chartselector-2"
-            className="dropdown-menu"
-            role="menu"
-          />
-        </div>
-      </span>
       <span
         className="paging pull-right text-nowrap"
       >
@@ -1082,36 +932,6 @@ exports[`<QueryGridBar/> without omnibox 1`] = `
                 </a>
               </li>
             </ul>
-          </div>
-        </span>
-        <span
-          className="gridbar-button-spacer"
-        >
-          <div
-            className="dropdown disabled btn-group"
-          >
-            <button
-              aria-expanded={false}
-              aria-haspopup={true}
-              className="dropdown-toggle btn btn-default"
-              disabled={true}
-              id="viewselector-3"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="button"
-              type="button"
-            >
-              Grid Views
-               
-              <span
-                className="caret"
-              />
-            </button>
-            <ul
-              aria-labelledby="viewselector-3"
-              className="dropdown-menu dropdown-menu-right"
-              role="menu"
-            />
           </div>
         </span>
       </span>

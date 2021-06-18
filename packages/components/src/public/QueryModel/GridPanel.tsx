@@ -5,17 +5,17 @@ import { Filter, Query } from '@labkey/api';
 
 import {
     Alert,
+    DataViewInfoTypes,
+    EXPORT_TYPES,
     Grid,
     GRID_CHECKBOX_OPTIONS,
     GridColumn,
     LoadingSpinner,
+    Pagination,
     QueryColumn,
     QueryConfig,
     QueryInfo,
     QuerySort,
-    Pagination,
-    DataViewInfoTypes,
-    EXPORT_TYPES,
 } from '../..';
 import { GRID_SELECTION_INDEX } from '../../internal/constants';
 import { DataViewInfo } from '../../internal/models';
@@ -202,8 +202,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         allowSelections: true,
         allowSorting: true,
         asPanel: true,
-        hideEmptyChartSelector: false,
-        hideEmptyViewMenu: false,
+        hideEmptyChartMenu: true,
+        hideEmptyViewMenu: true,
         highlightLastSelectedRow: false,
         loadOnMount: true,
         showPagination: true,

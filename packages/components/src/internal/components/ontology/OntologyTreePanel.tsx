@@ -25,6 +25,7 @@ type PathNode = OntologyPath & TreeNode;
 // exported for jest testing
 export const FilterIcon = props => {
     const { node, onClick, filters = new Map<string, PathModel>() } = props;
+    const nodeSelected = filters.has(node?.data?.code);
 
     const clickHandler = useCallback(
         evt => {
@@ -35,7 +36,11 @@ export const FilterIcon = props => {
     );
 
     return (
-        <i className={classNames('fa fa-filter', { selected: filters.has(node?.data?.code) })} onClick={clickHandler} />
+        <i
+            className={classNames('fa fa-filter', { selected: nodeSelected })}
+            onClick={clickHandler}
+            title={nodeSelected ? 'Remove filter' : 'Add filter'}
+        />
     );
 };
 

@@ -43,14 +43,20 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
 
         if (searchTerm) {
             const timeOutId = setTimeout(() => {
-                searchUsingIndex({ q: searchTerm, category: CONCEPT_CATEGORY, limit: SEARCH_LIMIT }, undefined, [
-                    CONCEPT_CATEGORY,
-                ])
+                searchUsingIndex(
+                    {
+                        q: '+ontology:' + ontology.abbreviation + ' ' + searchTerm,
+                        category: CONCEPT_CATEGORY,
+                        limit: SEARCH_LIMIT,
+                    },
+                    undefined,
+                    [CONCEPT_CATEGORY]
+                )
                     .then(response => {
                         setSearchHits(
                             response.hits.map(hit => {
                                 return new ConceptModel({
-                                    code: hit.id.substring(hit.id.indexOf(':') + 1), //Trim off category code from doc id
+                                    code: hit.id.substring(hit.id.indexOf(':') + 1), // Trim off category code from doc id
                                     label: hit.title,
                                     description: hit.summary.split('\n')[1], // format is "<code> <label>\n<description>" see ConceptDocumentProvider
                                 });

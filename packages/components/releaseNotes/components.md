@@ -3,6 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * [Issue 43367](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43367) Use proper container path for lookups
+* [Issue 43324](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43324) Trim spaces from text fields before submitting
 
 ### version 2.46.0
 *Released*: 14 June 2021

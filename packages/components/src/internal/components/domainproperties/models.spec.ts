@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { GridColumn } from '../../..';
+import { ConceptModel, GridColumn } from '../../..';
 
 import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
@@ -51,6 +51,7 @@ import {
     SAMPLE_TYPE_CONCEPT_URI,
     STRING_RANGE_URI,
 } from './constants';
+import { CONCEPT_CACHE } from "../ontology/actions";
 
 const GRID_DATA = DomainDesign.create({
     fields: [
@@ -733,6 +734,11 @@ describe('DomainField', () => {
         field = field.merge({ name: '' }) as DomainField;
         expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
+        );
+
+        CONCEPT_CACHE.set('abc:123', new ConceptModel({ code: 'abc:123', label: 'Concept display text' }));
+        expect(field.getDetailsTextArray().join('')).toBe(
+            'Updated. SRC. Ontology Concept: Concept display text (abc:123). Primary Key. Locked'
         );
     });
 

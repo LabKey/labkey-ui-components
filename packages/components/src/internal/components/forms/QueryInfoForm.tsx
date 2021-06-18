@@ -189,7 +189,7 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
                     const col = this.props.queryInfo?.getColumn(key);
                     if (submitForEdit && col?.jsonType === 'date') {
                         filteredData = filteredData.set(key, formatDateTime(data[key], null, col.format));
-                    } else if (col?.jsonType === 'string') {
+                    } else if (col?.jsonType === 'string' && typeof data[key] === 'string') {
                         filteredData = filteredData.set(key, data[key]?.trim());
                     } else {
                         filteredData = filteredData.set(key, data[key]);

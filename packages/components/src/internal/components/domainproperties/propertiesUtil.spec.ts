@@ -7,6 +7,8 @@ import {
     getVisibleFieldCount,
     getVisibleSelectedFieldIndexes,
     removeFalseyObjKeys,
+    removeNonAppProperties,
+    removeUnusedOntologyProperties,
     reorderSummaryColumns,
 } from './propertiesUtil';
 
@@ -94,5 +96,29 @@ describe('domain properties utils', () => {
         const summaryGrid3 = { index: 'defaultValueType', caption: '', sortable: true };
         const summaryGrid4 = { index: 'format', caption: '', sortable: true };
         expect(reorderSummaryColumns(summaryGrid3, summaryGrid4)).toEqual(1);
+    });
+
+    test('removeUnusedOntologyProperties', () => {
+        const result = removeUnusedOntologyProperties(DomainField.serialize(DomainField.create({})));
+        expect(result.hasOwnProperty('conceptURI')).toBeTruthy();
+        expect(result.hasOwnProperty('sourceOntology')).toBeFalsy();
+        expect(result.hasOwnProperty('conceptSubtree')).toBeFalsy();
+        expect(result.hasOwnProperty('conceptImportColumn')).toBeFalsy();
+        expect(result.hasOwnProperty('conceptLabelColumn')).toBeFalsy();
+        expect(result.hasOwnProperty('principalConceptCode')).toBeFalsy();
+    });
+
+    test('removeNonAppProperties', () => {
+        const result = removeNonAppProperties(DomainField.serialize(DomainField.create({})));
+        expect(result.hasOwnProperty('conceptURI')).toBeTruthy();
+        expect(result.hasOwnProperty('lookupContainer')).toBeFalsy();
+        expect(result.hasOwnProperty('lookupSchema')).toBeFalsy();
+        expect(result.hasOwnProperty('lookupQuery')).toBeFalsy();
+        expect(result.hasOwnProperty('sourceOntology')).toBeFalsy();
+        expect(result.hasOwnProperty('conceptSubtree')).toBeFalsy();
+        expect(result.hasOwnProperty('conceptImportColumn')).toBeFalsy();
+        expect(result.hasOwnProperty('conceptLabelColumn')).toBeFalsy();
+        expect(result.hasOwnProperty('principalConceptCode')).toBeFalsy();
+        expect(result.hasOwnProperty('conditionalFormats')).toBeFalsy();
     });
 });

@@ -40,6 +40,7 @@ import {
     downloadJsonFile,
     updateErrorIndexes,
     removeFields,
+    updateDataType,
 } from './actions';
 import { DomainDesign, DomainException, DomainField } from './models';
 import {
@@ -54,6 +55,8 @@ import {
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
     UNIQUE_ID_TYPE,
+    BOOLEAN_TYPE,
+    USERS_TYPE,
 } from './PropDescType';
 import {
     CONCEPT_CODE_CONCEPT_URI,
@@ -614,5 +617,50 @@ describe('domain properties actions', () => {
         });
 
         expect(removeFields(initialDomain, [2, 5, 7])).toEqual(newDomain);
+    });
+
+    test('updateDataType clear ontology props on change', () => {
+        let field = DomainField.create({
+            sourceOntology: 'a',
+            conceptSubtree: 'b',
+            conceptLabelColumn: 'c',
+            conceptImportColumn: 'd',
+        });
+        expect(field.dataType).toBe(TEXT_TYPE);
+        expect(field.sourceOntology).toBe('a');
+        expect(field.conceptSubtree).toBe('b');
+        expect(field.conceptLabelColumn).toBe('c');
+        expect(field.conceptImportColumn).toBe('d');
+
+        field = updateDataType(field, 'boolean');
+        expect(field.dataType).toBe(BOOLEAN_TYPE);
+        expect(field.sourceOntology).toBeUndefined();
+        expect(field.conceptSubtree).toBeUndefined();
+        expect(field.conceptLabelColumn).toBeUndefined();
+        expect(field.conceptImportColumn).toBeUndefined();
+    });
+
+    test('updateDataType isLookup', () => {
+        let field = DomainField.create({});
+        expect(field.dataType).toBe(TEXT_TYPE);
+        expect(field.lookupSchema).toBeUndefined();
+        expect(field.lookupQuery).toBeUndefined();
+
+        field = updateDataType(field, 'users');
+        expect(field.dataType).toBe(USERS_TYPE);
+        expect(field.lookupSchema).toBe('core');
+        expect(field.lookupQuery).toBe('users');
+    });
+
+    test('updateDataType updateDefaultValues', () => {
+        let field = DomainField.create({ measure: false, dimension: true });
+        expect(field.dataType).toBe(TEXT_TYPE);
+        expect(field.measure).toBe(false);
+        expect(field.dimension).toBe(true);
+
+        field = updateDataType(field, 'int');
+        expect(field.dataType).toBe(INTEGER_TYPE);
+        expect(field.measure).toBe(true);
+        expect(field.dimension).toBe(false);
     });
 });

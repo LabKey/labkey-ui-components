@@ -586,7 +586,8 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
     return domain;
 }
 
-function updateDataType(field: DomainField, value: any): DomainField {
+// exported for jest testing
+export function updateDataType(field: DomainField, value: any): DomainField {
     const propType = PROP_DESC_TYPES.find(pt => pt.name === value);
 
     if (propType) {

@@ -1,5 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version 2.46.1
+*Released*: 18 June 2021
+* Addresses [Issue 43372](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43372) by:
+    * Switch `hideEmptyChartSelector` and `hideEmptyViewSelector` to true by default for `QueryGridModel`.
+    * Switch `hideEmptyChartMenu` and `hideEmptyViewMenu` to true by default for `GridPanel`.
+
 ### version 2.46.0
 *Released*: 14 June 2021
 * Update product navigation menu behavior

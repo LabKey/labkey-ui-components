@@ -134,6 +134,13 @@ describe('ConceptOverviewToolTip', () => {
         wrapper.unmount();
     });
 
+    test('with path', () => {
+        const wrapper = mount(<ConceptOverviewTooltip concept={TEST_CONCEPT} path={TEST_PATH} />);
+        validate(wrapper, TEST_CONCEPT);
+        expect(wrapper.find(ConceptOverviewPanelImpl).prop('selectedPath')).toBe(TEST_PATH);
+        wrapper.unmount();
+    });
+
     test('error', () => {
         const wrapper = mount(<ConceptOverviewTooltip error="test error" concept={TEST_CONCEPT} />);
         validate(wrapper, TEST_CONCEPT, 'test error');

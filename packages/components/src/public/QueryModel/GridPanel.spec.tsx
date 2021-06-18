@@ -56,8 +56,12 @@ describe('GridPanel', () => {
     });
 
     const expectChartMenu = (wrapper: GridPanelWrapper, disabledState: boolean): void => {
-        expect(wrapper.find(CHART_MENU_SELECTOR).exists()).toEqual(true);
+        expectChartMenuVisible(wrapper, true);
         expect(wrapper.find(CHART_MENU_SELECTOR).find('.dropdown').at(0).hasClass('disabled')).toEqual(disabledState);
+    };
+
+    const expectChartMenuVisible = (wrapper: GridPanelWrapper, visible: boolean): void => {
+        expect(wrapper.find(CHART_MENU_SELECTOR).exists()).toEqual(visible);
     };
 
     const expectPanelClasses = (wrapper: GridPanelWrapper, classesExist): void => {
@@ -78,7 +82,6 @@ describe('GridPanel', () => {
         // OmniBox should be present, but disabled when we don't have a QueryInfo yet
         expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(true);
-        expectChartMenu(wrapper, true);
     };
 
     const expectNoRows = (wrapper: GridPanelWrapper): void => {
@@ -89,7 +92,6 @@ describe('GridPanel', () => {
         expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(true);
         expect(wrapper.find(TestButtons).exists()).toEqual(expectedButtons);
-        expectChartMenu(wrapper, true);
     };
 
     const expectGrid = (wrapper: GridPanelWrapper): void => {
@@ -106,7 +108,7 @@ describe('GridPanel', () => {
     test('Render GridPanel', () => {
         const { rows, orderedRows, rowCount } = DATA;
 
-        // Model is loading QueryInfo and Rows, should render loading, disabled ChartMenu, no pagination/ViewMenu.
+        // Model is loading QueryInfo and Rows, should render loading, no ChartMenu/Pagination/ViewMenu.
         let model = makeTestQueryModel(SCHEMA_QUERY);
         const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
         expectNoQueryInfo(wrapper);
@@ -115,6 +117,7 @@ describe('GridPanel', () => {
         model = model.mutate({ queryInfoLoadingState: LoadingState.LOADED, queryInfo: QUERY_INFO });
         wrapper.setProps({ model });
         expectNoRows(wrapper);
+        expectChartMenuVisible(wrapper, false);
 
         // Loaded rows and QueryInfo. Should render grid, pagination, ViewMenu, ChartMenu
         model = model.mutate({
@@ -125,7 +128,7 @@ describe('GridPanel', () => {
             charts: [],
             chartsLoadingState: LoadingState.LOADED,
         });
-        wrapper.setProps({ model });
+        wrapper.setProps({ hideEmptyChartMenu: false, model });
 
         // Chart menu should be disabled if no charts are present and showSampleComparisonReports is false.
         expectChartMenu(wrapper, true);
@@ -190,11 +193,11 @@ describe('GridPanel', () => {
 
         // chart menu should not be rendered.
         wrapper.setProps({ showChartMenu: false });
-        expect(wrapper.find(CHART_MENU_SELECTOR).exists()).toEqual(false);
+        expectChartMenuVisible(wrapper, false);
 
         // We should render nothing but an error if we had issues loading the QueryInfo.
         const queryInfoError = 'Error loading query info';
-        model = model = makeTestQueryModel(SCHEMA_QUERY).mutate({ queryInfoError });
+        model = makeTestQueryModel(SCHEMA_QUERY).mutate({ queryInfoError });
         wrapper.setProps({
             model,
             asPanel: true,
@@ -204,6 +207,7 @@ describe('GridPanel', () => {
             showChartMenu: true,
         });
         expectNoQueryInfo(wrapper);
+        expectChartMenu(wrapper, true);
         expectError(wrapper, queryInfoError);
 
         // We still render ChartMenu, ViewMenu, and any custom buttons
@@ -211,6 +215,7 @@ describe('GridPanel', () => {
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO).mutate({ rowsError });
         wrapper.setProps({ model });
         expectNoRows(wrapper);
+        expectChartMenu(wrapper, true);
         expectError(wrapper, rowsError);
 
         // If an error happens when loading selections we render a grid and an error.

@@ -45,7 +45,7 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
             const timeOutId = setTimeout(() => {
                 searchUsingIndex(
                     {
-                        q: '+ontology:' + ontology.abbreviation + ' ' + searchTerm,
+                        q: getOntologySearchTerm(ontology, searchTerm),
                         category: CONCEPT_CATEGORY,
                         limit: SEARCH_LIMIT,
                     },
@@ -177,3 +177,8 @@ export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = mem
         </div>
     );
 });
+
+// exported for jest testing
+export function getOntologySearchTerm(ontology: OntologyModel, searchTerm: string): string {
+    return '+ontology:' + ontology.abbreviation + ' ' + searchTerm;
+}

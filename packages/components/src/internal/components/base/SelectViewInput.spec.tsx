@@ -56,11 +56,11 @@ describe('SelectViewInput', () => {
     test('supports custom options', async () => {
         // Arrange
         const originalValue = 'mariners';
-        const newValue = 'yankees';
+        const newValue = 'twins';
 
         const views = [
             { label: 'Seattle Mariners', value: 'mariners' },
-            { label: 'New York Yankees', value: 'yankees' },
+            { label: 'Minnesota Twins', value: 'twins' },
             SelectView.Heatmap,
         ];
         const props = getDefaultProps();

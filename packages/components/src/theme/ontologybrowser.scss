@@ -34,39 +34,24 @@
     .filetree-checkbox-container {
         padding-right: 15px;
 
-        &:hover {
-            i.fa.fa-filter {
-                //hovering over node div show filter icon in lighter color by default
-                display: block;
-                padding: 0 3px 0;
-                color: $light-gray;
-
-                &:hover, //Hovering over unselected filter icon, show base color
-                &.selected { //Hovering over container with selected icon, show base color instead of lighter
-                    color:unset;
-                }
-            }
-        }
-
+        // by default the filter icons are hidden, until node is active/hovered or filter is selected
         i.fa.fa-filter {
-            // dont show filter icon by default
             display: none;
             padding: 0 3px 0;
+            color: $light-gray;
+        }
+        &.active i.fa.fa-filter, i.fa.fa-filter.selected, &:hover i.fa.fa-filter {
+            display: block;
+        }
 
-            &.child-selected {
-                display: unset;
-                color: gray;
-            }
+        // filter icon color defaults to light gray, until selected
+        i.fa.fa-filter.selected {
+            color: unset;
+        }
 
-            &.selected {
-                // Selected nodes, show filter icon with default color
-                display:block;
-
-                &:hover {
-                    // Selected node on hover of icon, show filter icon with lighter color
-                    color: $light-gray
-                }
-            }
+        // hover over unselected filter icon changes color to unset (black)
+        i.fa.fa-filter:hover {
+            color: unset;
         }
     }
 

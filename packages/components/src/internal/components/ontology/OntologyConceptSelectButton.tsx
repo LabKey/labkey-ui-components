@@ -104,7 +104,7 @@ export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> =
                                             'domain-annotation-item',
                                             isFieldLocked ? 'domain-text-label' : 'domain-validator-link'
                                         )}
-                                        onClick={isFieldLocked ? null : toggleSelectModal}
+                                        onClick={isFieldLocked ? undefined : toggleSelectModal}
                                     >
                                         {concept ? concept.getDisplayLabel() : path?.getDisplayLabel() ?? fieldValue}
                                     </a>

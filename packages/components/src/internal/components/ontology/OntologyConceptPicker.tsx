@@ -1,20 +1,22 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { OntologyBrowserModal } from './OntologyBrowserModal';
 import { ConceptModel, PathModel } from './models';
-import { fetchConceptForCode } from './actions';
+import { fetchConceptForCode, fetchPathModel } from './actions';
 import { ConceptOverviewTooltip } from './ConceptOverviewPanel';
 
 interface Props {
     ontologyId: string;
+    conceptSubtree: string;
     fieldName: string;
     fieldLabel: string;
     fieldValue?: string;
-    onConceptSelection: (concept: ConceptModel) => void
+    onConceptSelection: (concept: ConceptModel) => void;
 }
 
-export const OntologyConceptPicker: FC<Props> = memo( (props:Props) => {
-    const {ontologyId, fieldLabel, onConceptSelection, fieldValue = '' } = props;
+export const OntologyConceptPicker: FC<Props> = memo((props: Props) => {
+    const { ontologyId, conceptSubtree, fieldLabel, onConceptSelection, fieldValue = '' } = props;
     const [concept, setConcept] = useState<ConceptModel>();
+    const [subtreePath, setSubtreePath] = useState<PathModel>();
     const [showPicker, setShowPicker] = useState<boolean>(false);
 
     useEffect(() => {
@@ -23,15 +25,22 @@ export const OntologyConceptPicker: FC<Props> = memo( (props:Props) => {
                 .then(setConcept)
                 .catch(() => {
                     // If concept not found clear existing concept, unfound values are allowed if not recommended
-                    setConcept(null);
-                })
-            ;
+                    setConcept(undefined);
+                });
+        } else {
+            setConcept(undefined);
         }
     }, [fieldValue]);
 
+    useEffect(() => {
+        if (conceptSubtree) {
+            fetchPathModel(conceptSubtree).then(setSubtreePath);
+        }
+    }, [conceptSubtree]);
+
     const togglePicker = useCallback(() => {
         setShowPicker(!showPicker);
-    },[showPicker, setShowPicker]);
+    }, [showPicker, setShowPicker]);
 
     const onApplyConcept = useCallback(
         (selectedPath: PathModel, selectedConcept: ConceptModel) => {
@@ -47,15 +56,26 @@ export const OntologyConceptPicker: FC<Props> = memo( (props:Props) => {
 
     return (
         <>
-            {!!label && <div className="concept-label-text">
-                {label}
-                &nbsp;
-                <ConceptOverviewTooltip concept={concept} />
-            </div>}
+            {!!label && (
+                <div className="concept-label-text">
+                    {label}
+                    &nbsp;
+                    <ConceptOverviewTooltip concept={concept} />
+                </div>
+            )}
             <div>
-                <a className='show-toggle' onClick={togglePicker}>{title}</a>
+                <a className="show-toggle" onClick={togglePicker}>
+                    {title}
+                </a>
                 {showPicker && (
-                    <OntologyBrowserModal initOntologyId={ontologyId} onApply={onApplyConcept} onCancel={togglePicker} title={title} initConcept={concept} />
+                    <OntologyBrowserModal
+                        initOntologyId={ontologyId}
+                        initConcept={concept}
+                        initPath={subtreePath}
+                        onApply={onApplyConcept}
+                        onCancel={togglePicker}
+                        title={title}
+                    />
                 )}
             </div>
         </>

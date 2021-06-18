@@ -25,6 +25,8 @@ import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
 import { camelCaseToTitleCase } from '../../util/utils';
 
+import { getConceptForCode } from '../ontology/actions';
+
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
     DOMAIN_FIELD_DIMENSION,
@@ -72,7 +74,6 @@ import {
     reorderSummaryColumns,
 } from './propertiesUtil';
 import { INT_LIST, VAR_LIST } from './list/constants';
-import { getConceptForCode } from '../ontology/actions';
 
 export interface IFieldChange {
     id: string;

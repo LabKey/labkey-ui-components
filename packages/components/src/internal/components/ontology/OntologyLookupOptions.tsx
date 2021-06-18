@@ -20,7 +20,7 @@ import { SectionHeading } from '../domainproperties/SectionHeading';
 
 import { OntologyModel, PathModel } from './models';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
-import { fetchParentPaths, getParentsConceptCodePath } from "./actions";
+import { fetchParentPaths, getParentsConceptCodePath } from './actions';
 
 const LEARN_MORE = <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>;
 

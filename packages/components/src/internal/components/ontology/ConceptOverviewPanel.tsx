@@ -68,7 +68,7 @@ export const ConceptSynonyms: FC<{ synonyms: string[] }> = memo(props => {
  * the information about the concept label, code, description, etc.
  */
 export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(props => {
-    const { concept, selectedPath = undefined, conceptNotFoundText = "No concept selected" } = props;
+    const { concept, selectedPath = undefined, conceptNotFoundText = 'No concept selected' } = props;
     const [showPath, setShowPath] = useState<boolean>();
 
     const handleShowPath = useCallback((): void => {

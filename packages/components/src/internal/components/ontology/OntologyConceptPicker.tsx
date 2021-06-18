@@ -1,4 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+
 import { OntologyBrowserModal } from './OntologyBrowserModal';
 import { ConceptModel, PathModel } from './models';
 import { fetchConceptForCode, fetchPathModel } from './actions';

@@ -181,7 +181,7 @@ export function getParentsConceptCodePath(parents: PathModel[]): string {
         .join('/');
 }
 
-const CONCEPT_CACHE = new Map<string, ConceptModel>();
+export const CONCEPT_CACHE = new Map<string, ConceptModel>();
 export async function fetchConceptForCode(code: string): Promise<ConceptModel> {
     if (!CONCEPT_CACHE.has(code)) {
         const concept = await Ontology.getConcept(code);

@@ -20,6 +20,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.TBD
 *Released*: TBD
 * Item 8998: Field editor ontology lookup field support for conceptSubtree prop
+    * DomainField props update to remove principalConceptDisplay and add conceptSubtree
+    * DomainField.getPrincipalConceptDIsplay() to use code value to lookup concept model for label display
+    * ConceptOverviewPanel pass through path prop for selectedPath display
+    * Factor getParentsConceptCodePath() out of OntologyBrowserFilterPanel for reuse
+    * OntologyBrowserModal update to support initializing selected concept from initConcept or newly added initPath prop
+    * Factor concept cache out of OntologyBrowserPanel to be used globally for calls to fetchConceptForCode()
+    * Factor OntologyConceptSelectButton out of OntologyConceptAnnotation for reuse with conceptSubtree UI
+    * OntologyConceptPicker update to support loading from a conceptSubtree value or a fieldValue
+    * OntologyLookupOptions update to add UI for selecting conceptSubtree value for source ontology
 
 ### version 2.45.0
 *Released*: 11 June 2021

@@ -17,7 +17,7 @@ import { List } from 'immutable';
 
 import { Domain } from '@labkey/api';
 
-import { QueryColumn } from '../../..';
+import { ConceptModel, IFieldChange, QueryColumn } from '../../..';
 
 import { initUnitTestMocks } from '../../testHelperMocks';
 
@@ -41,6 +41,7 @@ import {
     updateErrorIndexes,
     removeFields,
     updateDataType,
+    updateDomainField,
 } from './actions';
 import { DomainDesign, DomainException, DomainField } from './models';
 import {
@@ -60,6 +61,7 @@ import {
 } from './PropDescType';
 import {
     CONCEPT_CODE_CONCEPT_URI,
+    DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
     DOMAIN_FIELD_PREFIX,
     FIELD_NAME_CHAR_WARNING_INFO,
     FIELD_NAME_CHAR_WARNING_MSG,
@@ -663,4 +665,19 @@ describe('domain properties actions', () => {
         expect(field.measure).toBe(true);
         expect(field.dimension).toBe(false);
     });
+
+    test('updateDomainField principalConceptCode', () => {
+        let domainDesign = DomainDesign.create({
+            fields: [{ name: 'field1', principalConceptCode: undefined }],
+        });
+        expect(domainDesign.fields.get(0).principalConceptCode).toBeUndefined();
+
+        domainDesign = updateDomainField(domainDesign, {
+            id: createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, 0, 0),
+            value: new ConceptModel({ code: 'test-code' }),
+        } as IFieldChange);
+        expect(domainDesign.fields.get(0).principalConceptCode).toBe('test-code');
+    });
+
+    // TODO more test cases for updateDomainField
 });

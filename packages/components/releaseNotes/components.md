@@ -14,6 +14,12 @@ Components, models, actions, and utility functions for LabKey applications and p
     * OntologyConceptPicker update to support loading from a conceptSubtree value or a fieldValue
     * OntologyLookupOptions update to add UI for selecting conceptSubtree value for source ontology
 
+### version 2.47.0
+*Released*: 18 June 2021
+* Add `<ContentGroup/>` and `<ContentGroupLabel/>` components.
+* Update `<SelectInput/>` to respect `valueKey` when processing multiple values.
+* Add reusables styles for `content-form`, `form-step-tabs`, and `clickable-text`.
+
 ### version 2.46.1
 *Released*: 18 June 2021
 * Addresses [Issue 43372](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43372) by:

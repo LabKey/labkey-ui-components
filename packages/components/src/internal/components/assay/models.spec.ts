@@ -29,13 +29,16 @@ describe('AssayStateModel', () => {
         expect(TEST_ASSAY_STATE_MODEL.getByName('NAb 1')?.id).toBe(3);
     });
 
-    test('getDefinitionsByType', () => {
-        expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(['BOGUS'])).toHaveLength(0);
-        expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes([GENERAL_ASSAY_PROVIDER_NAME])).toHaveLength(2);
-        expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(['NAb'])).toHaveLength(1);
-        expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(['nab'])).toHaveLength(1);
-
-        expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(undefined, ['NAb'])).toHaveLength(2);
-        expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(undefined, [GENERAL_ASSAY_PROVIDER_NAME])).toHaveLength(1);
+    describe('getDefinitionsByType', () => {
+        test('included list', () => {
+            expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(['BOGUS'])).toHaveLength(0);
+            expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes([GENERAL_ASSAY_PROVIDER_NAME])).toHaveLength(2);
+            expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(['NAb'])).toHaveLength(1);
+            expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(['nab'])).toHaveLength(1);
+        });
+        test('excluded list', () => {
+            expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(undefined, ['NAb'])).toHaveLength(4);
+            expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(undefined, [GENERAL_ASSAY_PROVIDER_NAME])).toHaveLength(3);
+        });
     });
 });

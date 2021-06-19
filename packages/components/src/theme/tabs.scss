@@ -31,3 +31,34 @@
         }
     }
 }
+
+.form-step-tabs {
+    & > .nav-tabs {
+        border-bottom: 0;
+        display: flex;
+
+        & > li {
+            flex: auto;
+            max-width: 144px;
+            margin-right: 8px;
+
+            & > a {
+                background-color: $white;
+                border: 1px solid #C7C7C7;
+                border-radius: 0;
+                color: $gray-dark;
+                text-align: center;
+                white-space: nowrap;
+            }
+        }
+
+        & > li.active {
+
+            & > a {
+                background-color: $blue-bkgrd-selected;
+                border: 1px solid $brand-primary;
+                color: $brand-primary;
+            }
+        }
+    }
+}

@@ -301,7 +301,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     };
 
     _setOptionsAndValue(options: any): any {
-        const { delimiter, formsy, multiple, joinValues, setValue } = this.props;
+        const { delimiter, formsy, multiple, joinValues, setValue, valueKey } = this.props;
         let selectedOptions;
 
         if (options === undefined || options === null || (Array.isArray(options) && options.length === 0)) {
@@ -320,7 +320,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
             if (multiple) {
                 if (Array.isArray(selectedOptions)) {
                     formValue = selectedOptions.reduce((arr, option) => {
-                        arr.push(option.value);
+                        arr.push(valueKey ? option[valueKey] : option.value);
                         return arr;
                     }, []);
 

@@ -9,7 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 18 June 2021
 * Add `<ContentGroup/>` and `<ContentGroupLabel/>` components.
 * Update `<SelectInput/>` to respect `valueKey` when processing multiple values.
-* Add reusables styles for `content-form`, `form-step-tabs`, and `clickable-text`.
+* Add reusable styles for `content-form`, `form-step-tabs`, and `clickable-text`.
 
 ### version 2.46.1
 *Released*: 18 June 2021

@@ -54,7 +54,7 @@ describe('getImportItemsForAssayDefinitions', () => {
 
     test('providerType filter', () => {
         let items = getImportItemsForAssayDefinitions(TEST_ASSAY_STATE_MODEL, undefined, undefined);
-        expect(items.size).toBe(3);
+        expect(items.size).toBe(5);
         items = getImportItemsForAssayDefinitions(TEST_ASSAY_STATE_MODEL, undefined, GENERAL_ASSAY_PROVIDER_NAME);
         expect(items.size).toBe(2);
         items = getImportItemsForAssayDefinitions(TEST_ASSAY_STATE_MODEL, undefined, 'NAb');

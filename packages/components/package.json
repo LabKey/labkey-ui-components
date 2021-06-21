@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.46.2-crossContainerLookups.3",
+  "version": "2.47.1-crossContainerLookups.3",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

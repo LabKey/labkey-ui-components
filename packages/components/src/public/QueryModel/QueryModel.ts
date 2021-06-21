@@ -4,6 +4,7 @@ import { Filter, Query } from '@labkey/api';
 
 import {
     GRID_CHECKBOX_OPTIONS,
+    isLoading,
     LoadingState,
     naturalSort,
     QueryColumn,
@@ -729,29 +730,21 @@ export class QueryModel {
      * True if either the query info or rows of the QueryModel are still loading.
      */
     get isLoading(): boolean {
-        const { queryInfoLoadingState, rowsLoadingState } = this;
-        return (
-            queryInfoLoadingState === LoadingState.INITIALIZED ||
-            queryInfoLoadingState === LoadingState.LOADING ||
-            rowsLoadingState === LoadingState.INITIALIZED ||
-            rowsLoadingState === LoadingState.LOADING
-        );
+        return isLoading(this.queryInfoLoadingState, this.rowsLoadingState);
     }
 
     /**
      * True if the QueryModel is loading its chart definitions.
      */
     get isLoadingCharts(): boolean {
-        const { chartsLoadingState } = this;
-        return chartsLoadingState === LoadingState.INITIALIZED || chartsLoadingState === LoadingState.LOADING;
+        return isLoading(this.chartsLoadingState);
     }
 
     /**
      * True if the QueryModel is loading its row selections.
      */
     get isLoadingSelections(): boolean {
-        const { selectionsLoadingState } = this;
-        return selectionsLoadingState === LoadingState.INITIALIZED || selectionsLoadingState === LoadingState.LOADING;
+        return isLoading(this.selectionsLoadingState);
     }
 
     /**

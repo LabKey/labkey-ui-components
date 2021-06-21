@@ -50,18 +50,17 @@ export function extractChanges(
             }
         } else if (formValues[field] != currentData.getIn([field, 'value'])) {
             const column = queryInfo.getColumn(field);
-
+            let newValue = formValues[field];
             // A date field needs to be checked specially
-            if (column && column.jsonType === 'date') {
+            if (column?.jsonType === 'date') {
                 // Ensure dates have same formatting
-                const newDateStr = formValues[field];
-                const newDate = new Date(newDateStr);
+                const newDate = new Date(newValue);
                 const origDate = new Date(currentData.getIn([field, 'value']));
                 // If submitted value is same as existing date down to the minute (issue 40139), do not update
                 let newDateValue = newDate.setUTCSeconds(0, 0);
                 let origDateValue = origDate.setUTCSeconds(0, 0);
                 // If original date doesn't have timestamp, then only check date to hour
-                if (Utils.isString(newDateStr) && newDateStr.indexOf(':') === -1) {
+                if (Utils.isString(newValue) && newValue.indexOf(':') === -1) {
                     newDateValue = newDate.setUTCHours(0, 0, 0, 0);
                     origDateValue = origDate.setUTCHours(0, 0, 0, 0);
                 }
@@ -70,8 +69,14 @@ export function extractChanges(
                     return false;
                 }
             }
+            else if (column?.jsonType === 'string') {
+                newValue = newValue?.trim();
+                if (currentData.get(field) === newValue) {
+                    return false;
+                }
+            }
 
-            changedValues[field] = formValues[field];
+            changedValues[field] = newValue;
         }
     });
 

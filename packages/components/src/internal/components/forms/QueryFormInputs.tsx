@@ -265,6 +265,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
                                         displayColumn={col.lookup.displayColumn}
                                         valueColumn={col.lookup.keyColumn}
+                                        containerPath={col.lookup.containerPath}
                                         value={value}
                                     />
                                 </React.Fragment>

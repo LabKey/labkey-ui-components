@@ -93,6 +93,7 @@ import { Tip } from './internal/components/base/Tip';
 import { Grid, GridColumn } from './internal/components/base/Grid';
 import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
+import { ContentGroup, ContentGroupLabel } from './internal/components/base/ContentGroup';
 import { FileAttachmentForm } from './public/files/FileAttachmentForm';
 import { DEFAULT_FILE } from './internal/components/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
@@ -1039,6 +1040,8 @@ export {
     Tip,
     Grid,
     GridColumn,
+    ContentGroup,
+    ContentGroupLabel,
     Section,
     ConfirmModal,
     Cards,

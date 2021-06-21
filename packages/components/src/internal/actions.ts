@@ -42,11 +42,11 @@ import {
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
     GENBANK_EXPORT_CONTROLLER,
+    GRID_EDIT_INDEX,
     KEYS,
     LOOKUP_DEFAULT_SIZE,
     MODIFICATION_TYPES,
     SELECTION_TYPES,
-    GRID_EDIT_INDEX,
 } from './constants';
 import { cancelEvent, getPasteValue, setCopyValue } from './events';
 import {
@@ -1872,6 +1872,7 @@ export function searchLookup(
             schemaName: lookup.schemaName,
             queryName: lookup.queryName,
             columns: [lookup.displayColumn, lookup.keyColumn].join(','),
+            containerPath: lookup.containerPath,
             maxRows,
             includeTotalCount: 'f',
         };

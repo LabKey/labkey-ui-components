@@ -18,15 +18,15 @@ import { Checkbox, Input, Textarea } from 'formsy-react-components';
 
 import { LabelOverlay } from '../LabelOverlay';
 import {
-    DateInput,
-    DatePickerInput,
-    MultiValueRenderer,
     AliasRenderer,
     AppendUnits,
-    QueryColumn,
-    LabelColorRenderer,
-    SchemaQuery,
+    DateInput,
+    DatePickerInput,
     FileColumnRenderer,
+    LabelColorRenderer,
+    MultiValueRenderer,
+    QueryColumn,
+    SchemaQuery,
 } from '../../../..';
 
 import { QuerySelect } from '../QuerySelect';
@@ -104,6 +104,7 @@ export function resolveDetailEditRenderer(
                         schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
                         value={resolveDetailFieldValue(data, true)}
                         valueColumn={col.lookup.keyColumn}
+                        containerPath={col.lookup.containerPath}
                     />
                 );
             }

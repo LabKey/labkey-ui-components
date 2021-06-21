@@ -1,11 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version 2.47.1
+*Released*: 21 June 2021
+* [Issue 43367](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43367) Use proper container path for lookups
+* [Issue 43324](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43324) Trim spaces from text fields before submitting
 
 ### version 2.47.0
 *Released*: 18 June 2021
 * Add `<ContentGroup/>` and `<ContentGroupLabel/>` components.
 * Update `<SelectInput/>` to respect `valueKey` when processing multiple values.
-* Add reusables styles for `content-form`, `form-step-tabs`, and `clickable-text`.
+* Add reusable styles for `content-form`, `form-step-tabs`, and `clickable-text`.
 
 ### version 2.46.1
 *Released*: 18 June 2021

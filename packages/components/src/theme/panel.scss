@@ -37,5 +37,9 @@
         .panel-content-caption {
             font-weight: 300;
         }
+
+        .panel-content-context > a {
+            vertical-align: -200%;
+        }
     }
 }

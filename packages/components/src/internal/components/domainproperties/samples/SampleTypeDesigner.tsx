@@ -87,6 +87,7 @@ interface Props {
     // DomainDesigner props
     containerTop?: number; // This sets the top of the sticky header, default is 0
     useTheme?: boolean;
+    showLinkToStudy?: boolean;
     appPropertiesOnly?: boolean;
     successBsStyle?: string;
     saveBtnText?: string;
@@ -117,6 +118,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         showParentLabelPrefix: true,
         useTheme: false,
         appPropertiesOnly: true,
+        showLinkToStudy: false,
         domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'sample type' },
     };
 
@@ -541,6 +543,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             metricUnitProps,
             testMode,
             domainFormDisplayOptions,
+            showLinkToStudy,
         } = this.props;
         const { error, model, parentOptions, showUniqueIdConfirmation } = this.state;
         const numNewUniqueIdFields = this.getNumNewUniqueIdFields();
@@ -589,6 +592,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     validate={validatePanel === PROPERTIES_PANEL_INDEX}
                     onToggle={this.propertiesToggle}
                     appPropertiesOnly={appPropertiesOnly}
+                    showLinkToStudy={showLinkToStudy}
                     useTheme={useTheme}
                     metricUnitProps={metricUnitProps}
                     onAddUniqueIdField={this.onAddUniqueIdField}
@@ -608,6 +612,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
+                    showStudyPropertyTypes={showLinkToStudy}
                     showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.domainChangeHandler}

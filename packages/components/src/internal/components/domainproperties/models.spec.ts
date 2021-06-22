@@ -359,23 +359,26 @@ describe('PropDescType', () => {
     });
 
     test('isPropertyTypeAllowed', () => {
-        expect(isPropertyTypeAllowed(TEXT_TYPE, true)).toBeTruthy();
-        expect(isPropertyTypeAllowed(LOOKUP_TYPE, true)).toBeFalsy();
-        expect(isPropertyTypeAllowed(MULTILINE_TYPE, true)).toBeTruthy();
-        expect(isPropertyTypeAllowed(BOOLEAN_TYPE, true)).toBeTruthy();
-        expect(isPropertyTypeAllowed(INTEGER_TYPE, true)).toBeTruthy();
-        expect(isPropertyTypeAllowed(DOUBLE_TYPE, true)).toBeTruthy();
-        expect(isPropertyTypeAllowed(DATETIME_TYPE, true)).toBeTruthy();
-        expect(isPropertyTypeAllowed(FLAG_TYPE, true)).toBeFalsy();
-        expect(isPropertyTypeAllowed(FILE_TYPE, false)).toBeFalsy();
-        expect(isPropertyTypeAllowed(FILE_TYPE, true)).toBeTruthy();
-        expect(isPropertyTypeAllowed(ATTACHMENT_TYPE, true)).toBeTruthy();
-        expect(isPropertyTypeAllowed(USERS_TYPE, true)).toBeTruthy();
-        expect(isPropertyTypeAllowed(SAMPLE_TYPE, true)).toBeTruthy();
-        expect(isPropertyTypeAllowed(PARTICIPANT_TYPE, true)).toBeFalsy();
-        expect(isPropertyTypeAllowed(ONTOLOGY_LOOKUP_TYPE, true)).toBeFalsy();
-        expect(isPropertyTypeAllowed(VISIT_DATE_TYPE, true)).toBeFalsy();
-        expect(isPropertyTypeAllowed(VISIT_ID_TYPE, true)).toBeFalsy();
+        expect(isPropertyTypeAllowed(TEXT_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(LOOKUP_TYPE, true, false)).toBeFalsy();
+        expect(isPropertyTypeAllowed(MULTILINE_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(BOOLEAN_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(INTEGER_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(DOUBLE_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(DATETIME_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(FLAG_TYPE, true, false)).toBeFalsy();
+        expect(isPropertyTypeAllowed(FILE_TYPE, false, false)).toBeFalsy();
+        expect(isPropertyTypeAllowed(FILE_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(ATTACHMENT_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(USERS_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(SAMPLE_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(PARTICIPANT_TYPE, true, false)).toBeFalsy();
+        expect(isPropertyTypeAllowed(PARTICIPANT_TYPE, true, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(ONTOLOGY_LOOKUP_TYPE, true, false)).toBeFalsy();
+        expect(isPropertyTypeAllowed(VISIT_DATE_TYPE, true, false)).toBeFalsy();
+        expect(isPropertyTypeAllowed(VISIT_DATE_TYPE, true, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(VISIT_ID_TYPE, true, false)).toBeFalsy();
+        expect(isPropertyTypeAllowed(VISIT_ID_TYPE, true, true)).toBeTruthy();
     });
 
     test('acceptablePropertyType', () => {

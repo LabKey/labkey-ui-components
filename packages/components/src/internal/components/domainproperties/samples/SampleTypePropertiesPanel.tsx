@@ -6,6 +6,7 @@ import { getFormNameFromId } from '../entities/actions';
 import {
     AddEntityButton,
     ColorPickerInput,
+    Container,
     generateId,
     getHelpLink,
     helpLinkNode,
@@ -14,7 +15,6 @@ import {
     MetricUnitProps,
     SCHEMAS,
     SelectInput,
-    Container,
 } from '../../../..';
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 
@@ -53,6 +53,7 @@ interface OwnProps {
     onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
     onRemoveParentAlias: (id: string) => void;
     updateDupeParentAliases?: (id: string) => void;
+    showLinkToStudy?: boolean;
     appPropertiesOnly?: boolean;
     headerText?: string;
     helpTopic?: string;
@@ -302,6 +303,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             sampleAliasCaption,
             dataClassParentageLabel,
             appPropertiesOnly,
+            showLinkToStudy,
             metricUnitProps,
         } = this.props;
         const { isValid, containers } = this.state;
@@ -378,7 +380,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     </Row>
                 )}
 
-                {allowTimepointProperties && !appPropertiesOnly && (
+                {allowTimepointProperties && showLinkToStudy && (
                     <Row className="margin-top">
                         <Col xs={2}>
                             <DomainFieldLabel
@@ -408,7 +410,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     </Row>
                 )}
 
-                {(appPropertiesOnly || isCommunityDistribution()) && <SectionHeading title="Storage Settings" />}
+                {(appPropertiesOnly || !isCommunityDistribution()) && <SectionHeading cls={"top-spacing"} title="Storage Settings" />}
                 {appPropertiesOnly && (
                     <>
                         <Row className="margin-top">

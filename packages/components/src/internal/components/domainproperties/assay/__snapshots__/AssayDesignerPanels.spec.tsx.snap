@@ -1760,6 +1760,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         panelStatus="TODO"
         showFilePropertyType={true}
         showInferFromFile={false}
+        showStudyPropertyTypes={false}
         testMode={true}
         validate={false}
       >
@@ -1887,6 +1888,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
+            showStudyPropertyTypes={false}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -2549,6 +2551,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         panelStatus="TODO"
         showFilePropertyType={true}
         showInferFromFile={false}
+        showStudyPropertyTypes={false}
         testMode={true}
         validate={false}
       >
@@ -2676,6 +2679,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
+            showStudyPropertyTypes={false}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -3338,6 +3342,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         panelStatus="TODO"
         showFilePropertyType={false}
         showInferFromFile={true}
+        showStudyPropertyTypes={false}
         testMode={true}
         validate={false}
       >
@@ -3465,6 +3470,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             showFilePropertyType={false}
             showHeader={true}
             showInferFromFile={true}
+            showStudyPropertyTypes={false}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -8694,6 +8700,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         panelStatus="COMPLETE"
         showFilePropertyType={true}
         showInferFromFile={false}
+        showStudyPropertyTypes={false}
         testMode={true}
         validate={false}
       >
@@ -9056,6 +9063,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
+            showStudyPropertyTypes={false}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -10145,6 +10153,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         panelStatus="COMPLETE"
         showFilePropertyType={false}
         showInferFromFile={false}
+        showStudyPropertyTypes={false}
         testMode={true}
         validate={false}
       >
@@ -10763,6 +10772,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             showFilePropertyType={false}
             showHeader={true}
             showInferFromFile={false}
+            showStudyPropertyTypes={false}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -11719,6 +11729,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={false}
+                                                        showStudyPropertyTypes={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -13873,6 +13884,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={false}
+                                                        showStudyPropertyTypes={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -15973,6 +15985,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={false}
+                                                        showStudyPropertyTypes={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -19966,6 +19979,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         panelStatus="TODO"
         showFilePropertyType={true}
         showInferFromFile={false}
+        showStudyPropertyTypes={true}
         testMode={true}
         validate={false}
       >
@@ -20093,6 +20107,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
+            showStudyPropertyTypes={true}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -20754,6 +20769,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         panelStatus="TODO"
         showFilePropertyType={true}
         showInferFromFile={false}
+        showStudyPropertyTypes={true}
         testMode={true}
         validate={false}
       >
@@ -20881,6 +20897,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
+            showStudyPropertyTypes={true}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -21542,6 +21559,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         panelStatus="TODO"
         showFilePropertyType={false}
         showInferFromFile={true}
+        showStudyPropertyTypes={true}
         testMode={true}
         validate={false}
       >
@@ -21669,6 +21687,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             showFilePropertyType={false}
             showHeader={true}
             showInferFromFile={true}
+            showStudyPropertyTypes={true}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -24301,6 +24320,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         panelStatus="TODO"
         showFilePropertyType={true}
         showInferFromFile={false}
+        showStudyPropertyTypes={true}
         testMode={true}
         validate={false}
       >
@@ -24428,6 +24448,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
+            showStudyPropertyTypes={true}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -25089,6 +25110,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         panelStatus="TODO"
         showFilePropertyType={false}
         showInferFromFile={true}
+        showStudyPropertyTypes={true}
         testMode={true}
         validate={false}
       >
@@ -25216,6 +25238,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             showFilePropertyType={false}
             showHeader={true}
             showInferFromFile={true}
+            showStudyPropertyTypes={true}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -31693,6 +31716,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         panelStatus="COMPLETE"
         showFilePropertyType={false}
         showInferFromFile={false}
+        showStudyPropertyTypes={true}
         testMode={true}
         validate={false}
       >
@@ -32311,6 +32335,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             showFilePropertyType={false}
             showHeader={true}
             showInferFromFile={false}
+            showStudyPropertyTypes={true}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -33267,6 +33292,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={false}
+                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -35579,6 +35605,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={false}
+                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -37837,6 +37864,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={false}
+                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -45577,6 +45605,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         panelStatus="COMPLETE"
         showFilePropertyType={true}
         showInferFromFile={false}
+        showStudyPropertyTypes={true}
         testMode={true}
         validate={false}
       >
@@ -45939,6 +45968,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
+            showStudyPropertyTypes={true}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -47027,6 +47057,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         panelStatus="COMPLETE"
         showFilePropertyType={false}
         showInferFromFile={false}
+        showStudyPropertyTypes={true}
         testMode={true}
         validate={false}
       >
@@ -47645,6 +47676,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             showFilePropertyType={false}
             showHeader={true}
             showInferFromFile={false}
+            showStudyPropertyTypes={true}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -48601,6 +48633,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={false}
+                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -50913,6 +50946,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={false}
+                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -53171,6 +53205,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={false}
+                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable

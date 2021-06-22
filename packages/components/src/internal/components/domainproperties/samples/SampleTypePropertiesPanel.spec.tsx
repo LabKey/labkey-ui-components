@@ -172,7 +172,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
         // That is, only on LKS, and not on LKB or LKSM
         expect(wrapper.text()).toContain('Auto-Link Data to Study');
 
-        wrapper.setProps({ appPropertiesOnly: true });
+        wrapper.setProps({ showLinkToStudy: false });
         expect(wrapper.text()).not.toContain('Auto-Link Data to Study');
 
         wrapper.unmount();

@@ -226,11 +226,6 @@ Array [
             </div>
           </div>
         </form>
-        <div
-          className="domain-field-section-heading"
-        >
-          Storage Settings
-        </div>
       </div>
     </div>
   </div>,
@@ -665,7 +660,7 @@ Array [
           </div>
         </form>
         <div
-          className="domain-field-section-heading"
+          className="domain-field-section-heading top-spacing"
         >
           Storage Settings
         </div>
@@ -1229,6 +1224,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
     onFinish={[Function]}
     onTogglePanel={[Function]}
     setSubmitting={[Function]}
+    showLinkToStudy={false}
     showParentLabelPrefix={true}
     submitting={false}
     testMode={true}
@@ -1499,6 +1495,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         onRemoveParentAlias={[Function]}
         onToggle={[Function]}
         panelStatus="NONE"
+        showLinkToStudy={false}
         updateDupeParentAliases={[Function]}
         updateModel={[Function]}
         useSeparateDataClassesAliasMenu={false}
@@ -1657,6 +1654,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           panelStatus="NONE"
           sampleAliasCaption="Sample Alias"
           sampleTypeCaption="Sample Type"
+          showLinkToStudy={false}
           togglePanel={[Function]}
           updateDupeParentAliases={[Function]}
           updateModel={[Function]}
@@ -1818,6 +1816,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             panelStatus="NONE"
             sampleAliasCaption="Sample Alias"
             sampleTypeCaption="Sample Type"
+            showLinkToStudy={false}
             title="Sample Type Properties"
             titlePrefix="Test Name"
             togglePanel={[Function]}
@@ -2591,10 +2590,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                   </Form>
                                 </EntityDetailsForm>
                                 <SectionHeading
+                                  cls="top-spacing"
                                   title="Storage Settings"
                                 >
                                   <div
-                                    className="domain-field-section-heading"
+                                    className="domain-field-section-heading top-spacing"
                                   >
                                     Storage Settings
                                   </div>
@@ -2891,6 +2891,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         onToggle={[Function]}
         panelStatus="TODO"
         showInferFromFile={true}
+        showStudyPropertyTypes={false}
         testMode={true}
         useTheme={false}
         validate={false}
@@ -3038,6 +3039,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={true}
+            showStudyPropertyTypes={false}
             successBsStyle="success"
             testMode={true}
             useTheme={false}
@@ -3968,6 +3970,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={true}
+                                                        showStudyPropertyTypes={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable

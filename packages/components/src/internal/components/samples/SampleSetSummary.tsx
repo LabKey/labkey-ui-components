@@ -1,21 +1,13 @@
-import React, { FC, memo, useCallback, useEffect, useState, useMemo } from 'react';
+import React, { FC, memo, useMemo, useState } from 'react';
 
 import { Filter } from '@labkey/api';
 
-import { GridPanelWithModel, SCHEMAS, AppURL, SelectInput, User, Location } from '../../..';
+import { GridPanelWithModel, SCHEMAS, AppURL, User, SelectViewInput, SelectView } from '../../..';
 
 import { SampleSetCards } from './SampleSetCards';
 import { SampleSetHeatMap } from './SampleSetHeatMap';
 
-const SELECTION_HEATMAP = 'heatmap';
-const SELECTION_CARDS = 'cards';
-const SELECTION_GRID = 'grid';
-
-const SAMPLESET_VIEW_OPTIONS = [
-    { value: SELECTION_CARDS, label: 'Cards' },
-    { value: SELECTION_GRID, label: 'Grid' },
-    { value: SELECTION_HEATMAP, label: 'Heatmap' },
-];
+const SAMPLE_TYPE_VIEWS = [SelectView.Cards, SelectView.Grid, SelectView.Heatmap];
 
 const SAMPLE_SET_GRID_GRID_ID = 'samplesets-grid-panel';
 
@@ -27,16 +19,14 @@ const SAMPLE_QUERY_CONFIG = {
 };
 
 interface SampleSetSummaryProps {
-    location?: Location;
+    excludedSampleSets?: string[];
     navigate: (url: string | AppURL) => any;
     user: User;
-    excludedSampleSets?: string[];
 }
 
 export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
-    const { location, navigate, user, excludedSampleSets } = props;
-
-    const [selected, setSelected] = useState<string>();
+    const { navigate, user, excludedSampleSets } = props;
+    const [selectedView, setSelectedView] = useState(SelectView.Grid);
 
     const queryConfig = useMemo(() => {
         return {
@@ -47,40 +37,18 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
         };
     }, [excludedSampleSets]);
 
-    useEffect(() => {
-        setSelected(location?.query?.viewAs ?? 'grid');
-    }, [location]);
-
-    const onSelectionChange = useCallback((selected, value) => {
-        setSelected(value);
-    }, []);
-
     return (
         <>
-            <SelectInput
-                key="sample-sets-view-select"
-                name="sample-sets-view-select"
-                placeholder="Select a view..."
-                inputClass="col-xs-4 col-md-2"
-                formsy={false}
-                showLabel={false}
-                multiple={false}
-                required={false}
-                value={selected}
-                valueKey="value"
-                labelKey="label"
-                onChange={onSelectionChange}
-                options={SAMPLESET_VIEW_OPTIONS}
+            <SelectViewInput
+                defaultView={SelectView.Grid}
+                id="sample-type-view-select"
+                onViewSelect={setSelectedView}
+                views={SAMPLE_TYPE_VIEWS}
             />
-            {selected === SELECTION_HEATMAP && <SampleSetHeatMap navigate={navigate} user={user} />}
-            {selected === SELECTION_CARDS && <SampleSetCards excludedSampleSets={excludedSampleSets} />}
-            {(selected === SELECTION_GRID || selected === undefined) && (
-                <GridPanelWithModel
-                    queryConfig={queryConfig}
-                    asPanel={false}
-                    showPagination={true}
-                    showChartMenu={false}
-                />
+            {selectedView === SelectView.Heatmap && <SampleSetHeatMap navigate={navigate} user={user} />}
+            {selectedView === SelectView.Cards && <SampleSetCards excludedSampleSets={excludedSampleSets} />}
+            {selectedView === SelectView.Grid && (
+                <GridPanelWithModel queryConfig={queryConfig} asPanel={false} showPagination showChartMenu={false} />
             )}
         </>
     );

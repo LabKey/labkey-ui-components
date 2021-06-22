@@ -108,6 +108,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         nameExpressionInfoUrl: getHelpLink('sampleIDs'),
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})',
         appPropertiesOnly: false,
+        showLinkToStudy: true,
         helpTopic: DEFINE_SAMPLE_TYPE_TOPIC,
         sampleAliasCaption: 'Sample Alias',
         sampleTypeCaption: 'Sample Type',

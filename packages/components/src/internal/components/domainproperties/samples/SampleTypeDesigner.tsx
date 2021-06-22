@@ -25,7 +25,7 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 
 import { SAMPLE_TYPE, UNIQUE_ID_TYPE } from '../PropDescType';
 
-import { isCommunityDistribution } from '../../../app/utils';
+import { hasModule, isCommunityDistribution } from '../../../app/utils';
 
 import { IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
@@ -547,6 +547,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         } = this.props;
         const { error, model, parentOptions, showUniqueIdConfirmation } = this.state;
         const numNewUniqueIdFields = this.getNumNewUniqueIdFields();
+        const _showLinkToStudy = showLinkToStudy && hasModule("study");
 
         return (
             <BaseDomainDesigner
@@ -592,7 +593,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     validate={validatePanel === PROPERTIES_PANEL_INDEX}
                     onToggle={this.propertiesToggle}
                     appPropertiesOnly={appPropertiesOnly}
-                    showLinkToStudy={showLinkToStudy}
+                    showLinkToStudy={_showLinkToStudy}
                     useTheme={useTheme}
                     metricUnitProps={metricUnitProps}
                     onAddUniqueIdField={this.onAddUniqueIdField}
@@ -612,7 +613,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
-                    showStudyPropertyTypes={showLinkToStudy}
+                    showStudyPropertyTypes={_showLinkToStudy}
                     showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.domainChangeHandler}

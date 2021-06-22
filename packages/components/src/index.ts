@@ -137,10 +137,10 @@ import { EditorModel, getStateModelId, getStateQueryGridModel } from './internal
 import {
     clearSelected,
     createQueryGridModelFilteredBySample,
-    getSnapshotSelections,
     getSelected,
     getSelectedData,
     getSelection,
+    getSnapshotSelections,
     gridExport,
     gridIdInvalidate,
     gridInit,
@@ -262,8 +262,8 @@ import {
     fetchSamples,
     getSampleSet,
     getSampleTypeDetails,
-    loadSelectedSamples,
     getSelectedItemSamples,
+    loadSelectedSamples,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
@@ -363,8 +363,8 @@ import {
 } from './internal/components/entities/actions';
 import {
     DataClassDataType,
-    SampleTypeDataType,
     ParentEntityRequiredColumns,
+    SampleTypeDataType,
 } from './internal/components/entities/constants';
 import { createEntityParentKey, getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
@@ -451,7 +451,7 @@ import {
     PRIVATE_PICKLIST_CATEGORY,
     PUBLIC_PICKLIST_CATEGORY,
 } from './internal/components/domainproperties/list/constants';
-import { PICKLIST_SAMPLE_ID_COLUMN, PICKLIST_KEY_COLUMN, Picklist } from './internal/components/picklist/models';
+import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './internal/components/picklist/models';
 import { PicklistEditModal } from './internal/components/picklist/PicklistEditModal';
 import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
@@ -459,9 +459,9 @@ import { PicklistCreationMenuItem } from './internal/components/picklist/Picklis
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
     deletePicklists,
+    getSelectedPicklistSamples,
     removeSamplesFromPicklist,
     updatePicklist,
-    getSelectedPicklistSamples,
 } from './internal/components/picklist/actions';
 
 import {
@@ -475,11 +475,12 @@ import {
     CloseEventCode,
     getDateFormat as getAppDateFormat,
     getMenuSectionConfigs,
+    hasModule,
     hasPremiumModule,
-    registerWebSocketListeners,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,
     isSamplePicklistEnabled,
+    registerWebSocketListeners,
     userCanDeletePublicPicklists,
     userCanDesignLocations,
     userCanDesignSourceTypes,
@@ -502,8 +503,8 @@ import {
     TEST_USER_AUTHOR,
     TEST_USER_EDITOR,
     TEST_USER_FOLDER_ADMIN,
-    TEST_USER_PROJECT_ADMIN,
     TEST_USER_GUEST,
+    TEST_USER_PROJECT_ADMIN,
     TEST_USER_READER,
 } from './test/data/users';
 import {
@@ -557,6 +558,7 @@ const App = {
     isSampleManagerEnabled,
     isSamplePicklistEnabled,
     hasPremiumModule,
+    hasModule,
     getDateFormat: getAppDateFormat,
     getMenuSectionConfigs,
     getUserPermissions,

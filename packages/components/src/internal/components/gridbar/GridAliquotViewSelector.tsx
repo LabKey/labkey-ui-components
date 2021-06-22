@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 import React, { Component, ReactNode } from 'react';
-import { Checkbox, DropdownButton, MenuItem } from 'react-bootstrap';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
 import { generateId, QueryGridModel, QueryModel } from '../../..';
-import { getCheckedValue } from '../domainproperties/actions';
 import { replaceFilter } from '../../util/URL';
 
 interface Props {
@@ -47,21 +46,12 @@ export class GridAliquotViewSelector extends Component<Props> {
         this.dropId = generateId('aliquotviewselector-');
     }
 
-    handleCheckboxChange = evt => {
-        const check = getCheckedValue(evt);
-        const isAliquot = evt.target.id === 'checkbox-aliquot';
-
-        this.updateAliquotFilter(isAliquot, check);
-    };
-
-    updateAliquotFilter(isAliquot: boolean, check: boolean) {
+    updateAliquotFilter(newMode: MODE) {
         const { queryGridModel, updateFilter } = this.props;
-        const filterMode = this.getAliquotFilterMode();
 
-        let newFilter;
-        if (filterMode == MODE.all || filterMode == MODE.none)
-            newFilter = Filter.create(IS_ALIQUOT_COL, (isAliquot && check) || (!isAliquot && !check));
-        else newFilter = null; // if neither is checked, or if both are checked, clear the filter
+        let newFilter: Filter.IFilter;
+        if (newMode === MODE.all || newMode === MODE.none) newFilter = null;
+        else newFilter = Filter.create(IS_ALIQUOT_COL, newMode === MODE.aliquots);
 
         if (queryGridModel) {
             replaceFilter(queryGridModel, IS_ALIQUOT_COL, newFilter);
@@ -113,19 +103,11 @@ export class GridAliquotViewSelector extends Component<Props> {
         return mode;
     };
 
-    createItem(key, label, checked): ReactNode {
+    createItem(key: string, label: string, targetMode: MODE, active: boolean): ReactNode {
         return (
-            <li key={key}>
-                <Checkbox
-                    checked={checked}
-                    className="dropdown-menu-row"
-                    onChange={this.handleCheckboxChange}
-                    id={'checkbox-' + key}
-                    name={key}
-                >
-                    {label}
-                </Checkbox>
-            </li>
+            <MenuItem active={active} key={key} onSelect={this.updateAliquotFilter.bind(this, targetMode)}>
+                {label}
+            </MenuItem>
         );
     }
 
@@ -137,11 +119,9 @@ export class GridAliquotViewSelector extends Component<Props> {
             </MenuItem>
         );
 
-        const isSampleChecked = filterMode == MODE.all || filterMode == MODE.samples;
-        const isAliquotChecked = filterMode == MODE.all || filterMode == MODE.aliquots;
-
-        items.push(this.createItem('sample', 'Samples', isSampleChecked));
-        items.push(this.createItem('aliquot', 'Aliquots', isAliquotChecked));
+        items.push(this.createItem('all', 'Samples and Aliquots', MODE.all, filterMode == MODE.all));
+        items.push(this.createItem('sample', 'Samples Only', MODE.samples, filterMode == MODE.samples));
+        items.push(this.createItem('aliquot', 'Aliquots Only', MODE.aliquots, filterMode == MODE.aliquots));
 
         return items.asImmutable();
     }

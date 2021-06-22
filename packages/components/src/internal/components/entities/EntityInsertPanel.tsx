@@ -674,11 +674,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     renderAliquotResetMsg = () => {
         return (
-            <Alert bsStyle="info">
+            <Alert bsStyle="info" className="notification-container">
                 Parent and source types cannot be changed when creating aliquots.{' '}
-                <span className="pull-right" onClick={this.resetCreationType}>
+                <a className="pull-right" onClick={this.resetCreationType}>
                     Clear Aliquots and Reset.
-                </span>
+                </a>
             </Alert>
         );
     };

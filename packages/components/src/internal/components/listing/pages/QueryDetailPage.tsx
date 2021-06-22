@@ -47,10 +47,6 @@ class DetailBodyImpl extends PureComponent<BodyProps & InjectedQueryModels> {
             title = potentialValues.find(v => v !== undefined && v !== null);
         }
 
-        if (title === undefined) {
-            title = `<${id}>`;
-        }
-
         return title;
     }
 
@@ -75,7 +71,7 @@ class DetailBodyImpl extends PureComponent<BodyProps & InjectedQueryModels> {
                     <Link to={AppURL.create('q', schemaName).toString()}>{schemaLabel}</Link>
                     <Link to={AppURL.create('q', schemaName, name).toString()}>{plural}</Link>
                 </BreadcrumbCreate>
-                <PageHeader title={title} />
+                {title && <PageHeader title={title} />}
                 <DetailPanel actions={actions} asPanel model={model} />
             </Page>
         );

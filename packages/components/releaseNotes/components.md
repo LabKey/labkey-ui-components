@@ -1,5 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version 2.48.0
+*Released*: 22 June 2021
+* Issue 43283: update GridAliquotViewSelector to use dropdown instead of checkboxes
+* Issue 43310: SM: Sample names that are numbers only and greater than 7 characters get truncated in file import preview.
+* Issue #43347: don't show q.details.xx as QueryDetailPage title
+
 ### version 2.47.1
 *Released*: 21 June 2021
 * [Issue 43367](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43367) Use proper container path for lookups

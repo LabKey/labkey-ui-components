@@ -235,6 +235,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                             useTheme={useTheme}
                             appPropertiesOnly={appPropertiesOnly}
                             showFilePropertyType={showFilePropertyType}
+                            showStudyPropertyTypes={!appPropertiesOnly}
                             successBsStyle={successBsStyle}
                             allowImportExport={true}
                             testMode={testMode}

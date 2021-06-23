@@ -22,6 +22,8 @@ import { DomainDetails, DomainPanelStatus } from '../models';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
+import { UniqueIdBanner } from './UniqueIdBanner';
+import { sleep } from '../../../testHelpers';
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,

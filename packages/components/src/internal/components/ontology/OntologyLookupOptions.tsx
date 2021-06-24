@@ -87,7 +87,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
     onOntologySubtreeChange = async (id: string, path: PathModel): Promise<void> => {
         let subtreePath;
         if (path?.path) {
-            const parents = await fetchParentPaths(path?.path);
+            const parents = await fetchParentPaths(path.path);
             subtreePath = getParentsConceptCodePath(parents);
         }
         this.onChange(id, subtreePath);

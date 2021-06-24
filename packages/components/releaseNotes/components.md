@@ -14,6 +14,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 28 June 2021
 * [Issue 43435](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43435): When in either LKSM or FM show the storage menu
 
+### version 2.##.#
+*Released*: ## June 2021
+* Update typings to allow formatting numeric dates
+* Revise choice list styling
+
 ### version 2.50.0
 *Released*: 25 June 2021
 * Item 8998: Field designer ontology lookup field support for conceptSubtree prop

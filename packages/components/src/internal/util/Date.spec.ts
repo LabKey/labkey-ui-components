@@ -31,7 +31,8 @@ describe('generateNameWithTimestamp', () => {
 });
 
 describe('formatDate', () => {
-    const testDate = new Date(1596750283812); // Aug 6, 2020 14:44 America/Vancouver
+    const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Vancouver
+    const testDate = new Date(datePOSIX);
 
     test('invalid date', () => {
         expect(formatDate(undefined)).toBe(undefined);
@@ -43,15 +44,18 @@ describe('formatDate', () => {
         expect(actualFormat).toEqual(formatDate(testDate, undefined, LABKEY.container.formats.dateFormat));
     });
     test('supports timezone', () => {
+        expect(formatDate(datePOSIX, 'Europe/Athens')).toBe('2020-08-07');
         expect(formatDate(testDate, 'Europe/Athens')).toBe('2020-08-07');
     });
     test('supports custom format', () => {
+        expect(formatDate(datePOSIX, 'America/New_York', 'DDYYYYMM')).toBe('06202008');
         expect(formatDate(testDate, 'America/New_York', 'DDYYYYMM')).toBe('06202008');
     });
 });
 
 describe('formatDateTime', () => {
-    const testDate = new Date(1596750283812); // Aug 6, 2020 14:44 America/Vancouver
+    const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Vancouver
+    const testDate = new Date(datePOSIX);
 
     test('invalid date', () => {
         expect(formatDateTime(undefined)).toBe(undefined);
@@ -62,9 +66,11 @@ describe('formatDateTime', () => {
         expect(actualFormat).toEqual(formatDateTime(testDate, undefined, LABKEY.container.formats.dateTimeFormat));
     });
     test('supports timezone', () => {
+        expect(formatDateTime(datePOSIX, 'Europe/Athens')).toBe('2020-08-07 00:44');
         expect(formatDateTime(testDate, 'Europe/Athens')).toBe('2020-08-07 00:44');
     });
     test('supports custom format', () => {
+        expect(formatDateTime(datePOSIX, 'America/New_York', 'DDYYYYMM')).toBe('06202008');
         expect(formatDateTime(testDate, 'America/New_York', 'DDYYYYMM')).toBe('06202008');
     });
 });

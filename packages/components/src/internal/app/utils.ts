@@ -5,35 +5,32 @@
 import { List, Map } from 'immutable';
 import { ActionURL, getServerContext, PermissionTypes } from '@labkey/api';
 
-import { AppURL, buildURL, imageURL, MenuSectionConfig, hasAllPermissions, User } from '../..';
+import { AppURL, buildURL, hasAllPermissions, imageURL, MenuSectionConfig, User } from '../..';
 
 import { LABKEY_WEBSOCKET } from '../constants';
 
 import {
     ASSAYS_KEY,
-    HOME_KEY,
+    BIOLOGICS_PRODUCT_ID,
+    BIOLOGICS_PRODUCT_NAME,
+    FREEZER_MANAGER_PRODUCT_ID,
     FREEZERS_KEY,
+    HOME_KEY,
+    LABKEY_SERVER_PRODUCT_NAME,
+    MENU_RELOAD,
     NEW_ASSAY_DESIGN_HREF,
     NEW_FREEZER_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_SOURCE_TYPE_HREF,
+    SAMPLE_MANAGER_PRODUCT_ID,
+    SAMPLE_MANAGER_PRODUCT_NAME,
     SAMPLES_KEY,
-    SECURITY_LOGOUT,
-    SECURITY_SERVER_UNAVAILABLE,
-    SECURITY_SESSION_TIMEOUT,
+    SERVER_NOTIFICATIONS_INVALIDATE,
+    SET_RESET_QUERY_GRID_STATE,
     SOURCES_KEY,
     USER_KEY,
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
-    SERVER_NOTIFICATIONS_INVALIDATE,
-    MENU_RELOAD,
-    SET_RESET_QUERY_GRID_STATE,
-    SAMPLE_MANAGER_PRODUCT_ID,
-    FREEZER_MANAGER_PRODUCT_ID,
-    BIOLOGICS_PRODUCT_ID,
-    SAMPLE_MANAGER_PRODUCT_NAME,
-    BIOLOGICS_PRODUCT_NAME,
-    LABKEY_SERVER_PRODUCT_NAME,
 } from './constants';
 
 // Type definition not provided for event codes so here we provide our own
@@ -106,10 +103,10 @@ export function userCanDesignLocations(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.Admin]);
 }
 
-export function isFreezerManagementEnabled(): boolean {
+export function isFreezerManagementEnabled(currentApp?: string): boolean {
     return (
         getServerContext().moduleContext?.inventory !== undefined &&
-        (!isBiologicsEnabled() || isFreezerManagerEnabledInBiologics())
+        (!isBiologicsEnabled() || isFreezerManagerEnabledInBiologics() || (currentApp && currentApp !== BIOLOGICS_PRODUCT_ID))
     );
 }
 
@@ -210,7 +207,7 @@ export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<
         sectionConfigs = sectionConfigs.push(Map<string, MenuSectionConfig>().set(ASSAYS_KEY, assaysMenuConfig));
     }
 
-    if (isFreezerManagementEnabled()) {
+    if (isFreezerManagementEnabled(currentApp)) {
         let locationsMenuConfig = new MenuSectionConfig({
             emptyText: 'No freezers have been defined',
             iconURL: imageURL('_images', 'freezer_menu.svg'),

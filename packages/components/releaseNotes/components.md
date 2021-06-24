@@ -1,5 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version TBD
+*Released*: TBD
+* [Issue 43435](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43435): When in either LKSM or FM show the storage menu
 
 ### version 2.49.0
 *Released*: 22 June 2021

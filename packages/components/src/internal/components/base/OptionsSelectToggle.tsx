@@ -12,7 +12,6 @@ interface Props {
 export class OptionsSelectToggle extends PureComponent<Props> {
     static defaultProps = {
         id: 'view-select-toggle',
-        label: 'View',
     };
 
     onToggle = (evt): void => {
@@ -24,7 +23,9 @@ export class OptionsSelectToggle extends PureComponent<Props> {
         const { options, selected, id, label } = this.props;
         return (
             <div className="margin-bottom">
-                <span className="right-spacing">{label}:</span>
+                {label &&
+                    <span className="right-spacing">{label}:</span>
+                }
                 <div style={{ display: 'inline-block' }}>
                     <select className="form-control" onChange={this.onToggle} value={selected} id={id}>
                         {options.entrySeq().map(([option, label]) => {

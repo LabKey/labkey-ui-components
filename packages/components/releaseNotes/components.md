@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.49.0
+*Released*: 22 June 2021
+* Introduce SelectViewInput component
+    * Supports localStorage persistence of selected view
+    * Replaces OptionsSelectToggle
+
 ### version 2.48.0
 *Released*: 22 June 2021
 * Issue 43283: update GridAliquotViewSelector to use dropdown instead of checkboxes

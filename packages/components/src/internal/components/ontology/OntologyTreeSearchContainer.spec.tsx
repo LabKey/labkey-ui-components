@@ -6,7 +6,7 @@ import { Alert } from '../../..';
 import {
     getOntologySearchTerm,
     OntologySearchResultsMenu,
-    OntologyTreeSearchContainer
+    OntologyTreeSearchContainer,
 } from './OntologyTreeSearchContainer';
 import { ConceptModel, OntologyModel } from './models';
 
@@ -136,6 +136,6 @@ describe('OntologySearchResultsMenu', () => {
 describe('getOntologySearchTerm', () => {
     test('validate', () => {
         const ont = new OntologyModel({ abbreviation: 'abbr' });
-        expect(getOntologySearchTerm(ont, 'test')).toBe('+ontology:abbr test');
+        expect(getOntologySearchTerm(ont, 'test')).toBe('+ontology:abbr AND test');
     });
 });

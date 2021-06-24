@@ -180,5 +180,5 @@ export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = mem
 
 // exported for jest testing
 export function getOntologySearchTerm(ontology: OntologyModel, searchTerm: string): string {
-    return '+ontology:' + ontology.abbreviation + ' ' + searchTerm;
+    return '+ontology:' + ontology.abbreviation + ' AND ' + searchTerm;
 }

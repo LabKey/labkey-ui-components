@@ -55,11 +55,13 @@ export function convertRowDataIntoPreviewData(
     return rows;
 }
 
-// Finds the last extension on the given file name, including the '.'.  If there is no extension returns the empty string.
-// if fileName is undefined, returns undefined.
-export function getFileExtension(fileName: string) {
+// Finds the extension on the given file name, including the '.'. Optionally, returning the type based on the first or
+// last index of '.' in the file name.
+// If there is no extension returns the empty string.
+// If fileName is undefined, returns undefined.
+export function getFileExtension(fileName: string, lastIndex = true): string {
     if (fileName) {
-        const dotIndex = fileName.lastIndexOf('.');
+        const dotIndex = lastIndex ? fileName.lastIndexOf('.') : fileName.indexOf('.');
         return dotIndex >= 0 ? fileName.slice(dotIndex) : '';
     }
     return undefined;
@@ -68,7 +70,13 @@ export function getFileExtension(fileName: string) {
 export function fileMatchesAcceptedFormat(fileName: string, formatExtensionStr: string): Map<string, any> {
     const acceptedFormatArray: string[] = formatExtensionStr.replace(/\s/g, '').split(',');
     const extension = getFileExtension(fileName);
-    const isMatch = extension && extension.length > 0 && acceptedFormatArray.indexOf(extension) >= 0;
+    let isMatch = extension?.length > 0 && acceptedFormatArray.indexOf(extension) >= 0;
+
+    // Issue 42637: some file name extensions may not be based off of the last index of '.' in the file name
+    if (!isMatch) {
+        const altExtension = getFileExtension(fileName, false);
+        isMatch = altExtension?.length > 0 && acceptedFormatArray.indexOf(altExtension) >= 0;
+    }
 
     return fromJS({
         extension,

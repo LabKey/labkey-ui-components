@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD June 2021
+* Issue 42637: Fix for fileMatchesAcceptedFormat() to check for file extensions that might have multiple parts
+
 ### version 2.49.0
 *Released*: 22 June 2021
 * Introduce SelectViewInput component

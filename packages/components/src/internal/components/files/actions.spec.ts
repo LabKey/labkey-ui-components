@@ -148,6 +148,10 @@ describe('getFileExtension', () => {
     test('multiple extensions', () => {
         expect(getFileExtension('find.the.last.one')).toBe('.one');
     });
+
+    test('multiple extensions, find first', () => {
+        expect(getFileExtension('find.the.last.one', false)).toBe('.the.last.one');
+    });
 });
 
 describe('fileMatchesAcceptedFormat', () => {
@@ -179,6 +183,16 @@ describe('fileMatchesAcceptedFormat', () => {
         const response = fileMatchesAcceptedFormat('testing', '.csv, .tsv, .xlsx');
         expect(response.get('extension')).toBe('');
         expect(response.get('isMatch')).toBeFalsy();
+    });
+
+    test('multiple file extension', () => {
+        let response = fileMatchesAcceptedFormat('testing.xar.xml', '.xar.xml');
+        expect(response.get('extension')).toBe('.xml');
+        expect(response.get('isMatch')).toBeTruthy();
+
+        response = fileMatchesAcceptedFormat('testing.xar.xml', '.xml');
+        expect(response.get('extension')).toBe('.xml');
+        expect(response.get('isMatch')).toBeTruthy();
     });
 });
 

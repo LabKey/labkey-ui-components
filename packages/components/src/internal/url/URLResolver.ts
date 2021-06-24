@@ -211,6 +211,9 @@ class LookupMapper implements URLMapper {
                 }
             }
 
+            if (lookup.get('containerPath') && lookup.get('containerPath') !== getServerContext().container.path)
+                return undefined;
+
             const parts = [
                 this.defaultPrefix,
                 lookup.get('schemaName'),

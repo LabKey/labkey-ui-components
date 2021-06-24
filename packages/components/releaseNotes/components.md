@@ -14,11 +14,28 @@ Components, models, actions, and utility functions for LabKey applications and p
     * OntologyConceptPicker update to support loading from a conceptSubtree value or a fieldValue
     * OntologyLookupOptions update to add UI for selecting conceptSubtree value for source ontology
 
+### version 2.49.0
+*Released*: 22 June 2021
+* Introduce SelectViewInput component
+    * Supports localStorage persistence of selected view
+    * Replaces OptionsSelectToggle
+
+### version 2.48.0
+*Released*: 22 June 2021
+* Issue 43283: update GridAliquotViewSelector to use dropdown instead of checkboxes
+* Issue 43310: SM: Sample names that are numbers only and greater than 7 characters get truncated in file import preview.
+* Issue #43347: don't show q.details.xx as QueryDetailPage title
+
+### version 2.47.1
+*Released*: 21 June 2021
+* [Issue 43367](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43367) Use proper container path for lookups
+* [Issue 43324](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43324) Trim spaces from text fields before submitting
+
 ### version 2.47.0
 *Released*: 18 June 2021
 * Add `<ContentGroup/>` and `<ContentGroupLabel/>` components.
 * Update `<SelectInput/>` to respect `valueKey` when processing multiple values.
-* Add reusables styles for `content-form`, `form-step-tabs`, and `clickable-text`.
+* Add reusable styles for `content-form`, `form-step-tabs`, and `clickable-text`.
 
 ### version 2.46.1
 *Released*: 18 June 2021

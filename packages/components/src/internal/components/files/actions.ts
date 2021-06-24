@@ -6,6 +6,8 @@ import { fromJS, List, Map, OrderedMap } from 'immutable';
 
 import { FileSizeLimitProps, QueryColumn } from '../../..';
 
+import { parseScientificInt } from '../../util/utils';
+
 import { ALL_FILES_LIMIT_KEY } from './models';
 
 // Converts the 2D array returned by inferDomain action into a list of row maps that the grid understands
@@ -43,7 +45,7 @@ export function convertRowDataIntoPreviewData(
         headerRow.forEach((column, j) => {
             let value = row.get(j);
             if (integerFieldInds.indexOf(j) > -1 && !isNaN(parseFloat(value)) && isFinite(value))
-                value = parseInt(value, 10);
+                value = parseScientificInt(value);
             m = m.set(column, value);
         });
 

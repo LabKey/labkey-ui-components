@@ -14,6 +14,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     * OntologyConceptPicker update to support loading from a conceptSubtree value or a fieldValue
     * OntologyLookupOptions update to add UI for selecting conceptSubtree value for source ontology
 
+### version 2.49.1
+*Released*: 25 June 2021
+* Issue 42637: Fix for fileMatchesAcceptedFormat() to check for file extensions that might have multiple parts
+
 ### version 2.49.0
 *Released*: 22 June 2021
 * Introduce SelectViewInput component

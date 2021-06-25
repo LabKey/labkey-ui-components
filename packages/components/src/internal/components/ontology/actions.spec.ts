@@ -7,24 +7,26 @@ describe('getParentsConceptCodePath', () => {
     });
 
     test('only root', () => {
-        expect(getParentsConceptCodePath([
-            new PathModel({ code: ONTOLOGY_ROOT_CODE_PREFIX })
-        ])).toBe('');
+        expect(getParentsConceptCodePath([new PathModel({ code: ONTOLOGY_ROOT_CODE_PREFIX })])).toBe('');
     });
 
     test('one parent', () => {
-        expect(getParentsConceptCodePath([
-            new PathModel({ code: ONTOLOGY_ROOT_CODE_PREFIX }),
-            new PathModel({ code: 'a' })
-        ])).toBe('a');
+        expect(
+            getParentsConceptCodePath([
+                new PathModel({ code: ONTOLOGY_ROOT_CODE_PREFIX }),
+                new PathModel({ code: 'a' }),
+            ])
+        ).toBe('a');
     });
 
     test('multiple parent', () => {
-        expect(getParentsConceptCodePath([
-            new PathModel({ code: ONTOLOGY_ROOT_CODE_PREFIX }),
-            new PathModel({ code: 'a' }),
-            new PathModel({ code: 'b' })
-        ])).toBe('a/b');
+        expect(
+            getParentsConceptCodePath([
+                new PathModel({ code: ONTOLOGY_ROOT_CODE_PREFIX }),
+                new PathModel({ code: 'a' }),
+                new PathModel({ code: 'b' }),
+            ])
+        ).toBe('a/b');
     });
 });
 

@@ -17,6 +17,8 @@ import { ConceptModel, GridColumn } from '../../..';
 
 import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
+import { CONCEPT_CACHE } from '../ontology/actions';
+
 import {
     ATTACHMENT_TYPE,
     AUTOINT_TYPE,
@@ -51,7 +53,6 @@ import {
     SAMPLE_TYPE_CONCEPT_URI,
     STRING_RANGE_URI,
 } from './constants';
-import { CONCEPT_CACHE } from "../ontology/actions";
 
 const GRID_DATA = DomainDesign.create({
     fields: [

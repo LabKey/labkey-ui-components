@@ -502,11 +502,23 @@ describe('domain properties actions', () => {
 
         const removedFieldIndexes = [{ originalIndex: 0, newIndex: undefined }];
         expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, undefined)).toStrictEqual([false, 'text']);
-        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, undefined)).toStrictEqual([true, 'textUpdated']);
-        expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, removedFieldIndexes)).toStrictEqual([true, undefined]);
-        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, removedFieldIndexes)).toStrictEqual([true, undefined]);
+        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, undefined)).toStrictEqual([
+            true,
+            'textUpdated',
+        ]);
+        expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, removedFieldIndexes)).toStrictEqual([
+            true,
+            undefined,
+        ]);
+        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, removedFieldIndexes)).toStrictEqual([
+            true,
+            undefined,
+        ]);
         expect(getOntologyUpdatedFieldName('int', origDomain, origDomain, undefined)).toStrictEqual([false, undefined]);
-        expect(getOntologyUpdatedFieldName('int', updatedDomain, origDomain, undefined)).toStrictEqual([true, undefined]);
+        expect(getOntologyUpdatedFieldName('int', updatedDomain, origDomain, undefined)).toStrictEqual([
+            true,
+            undefined,
+        ]);
     });
 
     test('downloadJsonFile', () => {

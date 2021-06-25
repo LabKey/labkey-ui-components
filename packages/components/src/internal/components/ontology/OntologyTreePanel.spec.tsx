@@ -28,7 +28,7 @@ const DEFAULT_FILTER_ICON_PROPS = {
     node: undefined,
     onClick: undefined,
     filters: undefined,
-}
+};
 
 describe('FilterIcon', () => {
     test('default props', () => {
@@ -39,7 +39,7 @@ describe('FilterIcon', () => {
     });
 
     test('node selected', () => {
-        const testnode = {data:{code:'test'}};
+        const testnode = { data: { code: 'test' } };
         const testFilters = new Map<string, PathModel>().set('test', new PathModel());
 
         const wrapper = mount(<FilterIcon node={testnode} filters={testFilters} />);
@@ -50,7 +50,7 @@ describe('FilterIcon', () => {
     });
 
     test('node not selected', () => {
-        const testnode = {data:{code:'test'}};
+        const testnode = { data: { code: 'test' } };
         const testFilters = new Map<string, PathModel>().set('nope', new PathModel());
 
         const wrapper = mount(<FilterIcon node={testnode} filters={testFilters} />);
@@ -61,8 +61,8 @@ describe('FilterIcon', () => {
     });
 
     test('clicked', () => {
-        const testdata = {code:'test'};
-        const testnode = {data:testdata};
+        const testdata = { code: 'test' };
+        const testnode = { data: testdata };
         const onClickHandler = jest.fn();
 
         const wrapper = mount(<FilterIcon node={testnode} onClick={onClickHandler} />);

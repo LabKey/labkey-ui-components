@@ -2,11 +2,13 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 import { DomainField } from '../domainproperties/models';
+
+import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
+
+import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 import { ConceptOverviewTooltip } from './ConceptOverviewPanel';
 import { OntologyBrowserModal } from './OntologyBrowserModal';
-import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 
 const DEFAULT_PROPS = {
     id: 'test-id',
@@ -71,10 +73,12 @@ describe('OntologyConceptSelectButton', () => {
         const wrapper = mount(
             <OntologyConceptSelectButton
                 {...DEFAULT_PROPS}
-                field={new DomainField({
-                    principalConceptCode: 'TEST VALUE',
-                    lockType: DOMAIN_FIELD_FULLY_LOCKED,
-                })}
+                field={
+                    new DomainField({
+                        principalConceptCode: 'TEST VALUE',
+                        lockType: DOMAIN_FIELD_FULLY_LOCKED,
+                    })
+                }
             />
         );
         validate(wrapper, 'TEST VALUE', true);
@@ -85,9 +89,11 @@ describe('OntologyConceptSelectButton', () => {
         const wrapper = mount(
             <OntologyConceptSelectButton
                 {...DEFAULT_PROPS}
-                field={new DomainField({
-                    sourceOntology: 'Test Source'
-                })}
+                field={
+                    new DomainField({
+                        sourceOntology: 'Test Source',
+                    })
+                }
                 successBsStyle="testBs"
             />
         );
@@ -104,9 +110,11 @@ describe('OntologyConceptSelectButton', () => {
         const wrapper = mount(
             <OntologyConceptSelectButton
                 {...DEFAULT_PROPS}
-                field={new DomainField({
-                    sourceOntology: 'Test Source'
-                })}
+                field={
+                    new DomainField({
+                        sourceOntology: 'Test Source',
+                    })
+                }
                 useFieldSourceOntology
             />
         );

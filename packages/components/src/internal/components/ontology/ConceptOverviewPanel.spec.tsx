@@ -111,13 +111,13 @@ describe('ConceptOverviewToolTip', () => {
         expect(wrapper.find(Alert)).toHaveLength(1);
         expect(wrapper.find(Alert).text()).toBe(errorTxt ?? '');
         const infoIcon = wrapper.find('.fa-info-circle');
-        expect(infoIcon).toHaveLength(errorTxt ? 0 : (!concept ? 0 : 1));
+        expect(infoIcon).toHaveLength(errorTxt ? 0 : !concept ? 0 : 1);
 
         if (infoIcon.length > 0) {
-            infoIcon.simulate("mouseover");
-            const over = wrapper.find('.ontology-concept-overview-container')
+            infoIcon.simulate('mouseover');
+            const over = wrapper.find('.ontology-concept-overview-container');
             expect(over.find('.ontology-concept-overview-container')).toHaveLength(errorTxt ? 0 : 1);
-            expect(over.find(ConceptOverviewPanelImpl)).toHaveLength( errorTxt ? 0 : 1);
+            expect(over.find(ConceptOverviewPanelImpl)).toHaveLength(errorTxt ? 0 : 1);
         }
     }
 
@@ -131,6 +131,13 @@ describe('ConceptOverviewToolTip', () => {
         const wrapper = mount(<ConceptOverviewTooltip concept={TEST_CONCEPT} />);
         validate(wrapper, TEST_CONCEPT);
         expect(wrapper.find(ConceptOverviewPanelImpl).prop('concept')).toBe(TEST_CONCEPT);
+        wrapper.unmount();
+    });
+
+    test('with path', () => {
+        const wrapper = mount(<ConceptOverviewTooltip concept={TEST_CONCEPT} path={TEST_PATH} />);
+        validate(wrapper, TEST_CONCEPT);
+        expect(wrapper.find(ConceptOverviewPanelImpl).prop('selectedPath')).toBe(TEST_PATH);
         wrapper.unmount();
     });
 

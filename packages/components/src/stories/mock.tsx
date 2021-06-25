@@ -715,7 +715,7 @@ export function initOnotologyMocks(): void {
         return jsonResponse(getConceptParentPaths, res);
     });
 
-    mock.get(/.*\/ontology\/?.*\/getConceptPathFromFilter.*/, (req, res) => {
+    mock.get(/.*\/ontology\/?.*\/getConceptPathFromConceptCodes.*/, (req, res) => {
         return jsonResponse(
             {
                 path: '/MOCK/ST1234/C1000/C1234/',

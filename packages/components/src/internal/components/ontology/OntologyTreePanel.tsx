@@ -1,14 +1,16 @@
-import React, { FC, useCallback, RefObject, useRef, useEffect, useState, } from 'react';
+import React, { FC, useCallback, RefObject, useRef, useEffect, useState } from 'react';
 import { TreeNode } from 'react-treebeard';
 
-import { naturalSortByProperty, FileTree, } from '../../..';
+import classNames from 'classnames';
+
+import { naturalSortByProperty, FileTree } from '../../..';
 
 import { DEFAULT_ROOT_PREFIX } from '../files/FileTree';
 
 import { Header } from '../files/FileTreeHeader';
+
 import { PathModel } from './models';
 import { fetchChildPaths, fetchParentPaths } from './actions';
-import classNames from 'classnames';
 
 export class OntologyPath {
     id: string;
@@ -23,6 +25,7 @@ type PathNode = OntologyPath & TreeNode;
 // exported for jest testing
 export const FilterIcon = props => {
     const { node, onClick, filters = new Map<string, PathModel>() } = props;
+    const nodeSelected = filters.has(node?.data?.code);
 
     const clickHandler = useCallback(
         evt => {
@@ -33,7 +36,11 @@ export const FilterIcon = props => {
     );
 
     return (
-        <i className={classNames('fa fa-filter', { selected: filters.has(node?.data?.code) })} onClick={clickHandler} />
+        <i
+            className={classNames('fa fa-filter', { selected: nodeSelected })}
+            onClick={clickHandler}
+            title={nodeSelected ? 'Remove filter' : 'Add filter'}
+        />
     );
 };
 
@@ -90,7 +97,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
                 }
             );
         },
-        //Needs to trigger for filters to ensure PathModels are loaded and update the FilterDialog values.
+        // Needs to trigger for filters to ensure PathModels are loaded and update the FilterDialog values.
         [root, filters]
     );
 
@@ -101,9 +108,10 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
 
     const renderNodeHeader = props => {
         return (
-        <Header {...props}>
-            {showFilterIcon && <FilterIcon {...props} filters={filters} onClick={onFilterChange} />}
-        </Header>);
+            <Header {...props}>
+                {showFilterIcon && <FilterIcon {...props} filters={filters} onClick={onFilterChange} />}
+            </Header>
+        );
     };
 
     return (
@@ -152,7 +160,7 @@ const toggleParentPaths = function (
     }
 };
 
-const scrollToActive = function (notReadyCallback?: () => void ): void {
+const scrollToActive = function (notReadyCallback?: () => void): void {
     const activeEl = document.getElementsByClassName('filetree-node-active');
     if (activeEl.length > 0) {
         activeEl[0].scrollIntoView({ behavior: 'smooth', block: 'center' });

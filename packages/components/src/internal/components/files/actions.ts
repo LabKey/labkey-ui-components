@@ -69,13 +69,13 @@ export function getFileExtension(fileName: string, lastIndex = true): string {
 
 export function fileMatchesAcceptedFormat(fileName: string, formatExtensionStr: string): Map<string, any> {
     const acceptedFormatArray: string[] = formatExtensionStr.replace(/\s/g, '').split(',');
-    const extension = getFileExtension(fileName);
+    let extension = getFileExtension(fileName);
     let isMatch = extension?.length > 0 && acceptedFormatArray.indexOf(extension) >= 0;
 
     // Issue 42637: some file name extensions may not be based off of the last index of '.' in the file name
     if (!isMatch) {
-        const altExtension = getFileExtension(fileName, false);
-        isMatch = altExtension?.length > 0 && acceptedFormatArray.indexOf(altExtension) >= 0;
+        extension = getFileExtension(fileName, false);
+        isMatch = extension?.length > 0 && acceptedFormatArray.indexOf(extension) >= 0;
     }
 
     return fromJS({

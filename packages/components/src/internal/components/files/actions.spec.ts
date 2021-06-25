@@ -187,7 +187,7 @@ describe('fileMatchesAcceptedFormat', () => {
 
     test('multiple file extension', () => {
         let response = fileMatchesAcceptedFormat('testing.xar.xml', '.xar.xml');
-        expect(response.get('extension')).toBe('.xml');
+        expect(response.get('extension')).toBe('.xar.xml');
         expect(response.get('isMatch')).toBeTruthy();
 
         response = fileMatchesAcceptedFormat('testing.xar.xml', '.xml');

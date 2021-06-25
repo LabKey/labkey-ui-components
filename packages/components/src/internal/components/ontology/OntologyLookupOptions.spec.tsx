@@ -11,6 +11,7 @@ import { INTEGER_TYPE, ONTOLOGY_LOOKUP_TYPE, TEXT_TYPE } from '../domainproperti
 import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 
 import { OntologyLookupOptions } from './OntologyLookupOptions';
+import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 
 const DEFAULT_PROPS = {
     index: 0,
@@ -63,7 +64,7 @@ describe('OntologyLookupOptions', () => {
         labelOptions: string[]
     ): void {
         expect(wrapper.find(SectionHeading)).toHaveLength(1);
-        expect(wrapper.find('.domain-field-label')).toHaveLength(3);
+        expect(wrapper.find('.domain-field-label')).toHaveLength(4);
 
         const selectInputs = wrapper.find('select');
         expect(selectInputs).toHaveLength(3);
@@ -94,6 +95,11 @@ describe('OntologyLookupOptions', () => {
         labelOptions.forEach(value => {
             expect(options.find({ value })).toHaveLength(1);
         });
+
+        const conceptSelectBtn = wrapper.find(OntologyConceptSelectButton);
+        expect(conceptSelectBtn.prop('valueProp')).toBe('conceptSubtree');
+        expect(conceptSelectBtn.prop('valueIsPath')).toBe(true);
+        expect(conceptSelectBtn.prop('useFieldSourceOntology')).toBe(true);
     }
 
     test('default props', async () => {

@@ -3,7 +3,11 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { Alert } from '../../..';
 
-import { OntologySearchResultsMenu, OntologyTreeSearchContainer } from './OntologyTreeSearchContainer';
+import {
+    getOntologySearchTerm,
+    OntologySearchResultsMenu,
+    OntologyTreeSearchContainer,
+} from './OntologyTreeSearchContainer';
 import { ConceptModel, OntologyModel } from './models';
 
 const TEST_ONTOLOGY = new OntologyModel({
@@ -126,5 +130,12 @@ describe('OntologySearchResultsMenu', () => {
         expect(wrapper.find('.col-xs-10')).toHaveLength(searchHits.length);
         expect(wrapper.find('.col-xs-10').text()).toBe(searchHits[0].label);
         wrapper.unmount();
+    });
+});
+
+describe('getOntologySearchTerm', () => {
+    test('validate', () => {
+        const ont = new OntologyModel({ abbreviation: 'abbr' });
+        expect(getOntologySearchTerm(ont, 'test')).toBe('+ontology:abbr AND test');
     });
 });

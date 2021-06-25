@@ -4,8 +4,8 @@ import { Filter } from '@labkey/api';
 import { Alert } from '../base/Alert';
 
 import { OntologyBrowserPanel } from './OntologyBrowserPanel';
-import { ONTOLOGY_ROOT_CODE_PREFIX, PathModel } from './models';
-import { fetchParentPaths, fetchPathModel } from './actions';
+import { PathModel } from './models';
+import { fetchParentPaths, fetchPathModel, getParentsConceptCodePath } from './actions';
 
 interface OntologyBrowserFilterPanelProps {
     ontologyId: string;
@@ -30,7 +30,7 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
 
     const updateFilterValues = useCallback(
         async (filterString: string) => {
-            setError(null); //clear any existing errors
+            setError(null); // clear any existing errors
             const filterArray = filterString?.split(';') ?? [];
 
             // Look up path model for the path based filters, otherwise parse the code filter
@@ -43,8 +43,7 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
                     if (e?.exceptionClass === 'org.labkey.api.view.NotFoundException') {
                         const article = isPathFilterType ? 'Path ' : 'Code ';
                         setError(article + ' not found');
-                    }
-                    else {
+                    } else {
                         setError(e?.exception);
                     }
                 }
@@ -76,16 +75,9 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
             if (isPathFilter(filterType)) {
                 const filterStrings = [];
                 for await (const filterNode of newFilter.values()) {
-                    //Get parent nodes for the selected node's path
+                    // Get parent nodes for the selected node's path
                     const parents = await fetchParentPaths(filterNode.path);
-
-                    // concatenate the parent concept codes minus the root
-                    filterStrings.push(
-                        [...parents]
-                            .filter(node => !node.code.startsWith(ONTOLOGY_ROOT_CODE_PREFIX)) // Ignore the root node
-                            .map(node => node.code)
-                            .join('/')
-                    );
+                    filterStrings.push(getParentsConceptCodePath(parents));
                 }
                 newFilterString = filterStrings.join(';');
             } else {

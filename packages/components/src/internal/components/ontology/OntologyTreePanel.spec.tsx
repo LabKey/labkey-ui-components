@@ -28,39 +28,41 @@ const DEFAULT_FILTER_ICON_PROPS = {
     node: undefined,
     onClick: undefined,
     filters: undefined,
-}
+};
 
 describe('FilterIcon', () => {
-    test("FilterIcon DefaultProps", () => {
+    test('default props', () => {
         const wrapper = mount(<FilterIcon {...DEFAULT_FILTER_ICON_PROPS} />);
         const icon = wrapper.find('i');
         expect(icon.prop('className')).toBe('fa fa-filter');
         wrapper.unmount();
     });
 
-    test("FilterIcon node selected", () => {
-        const testnode = {data:{code:'test'}};
+    test('node selected', () => {
+        const testnode = { data: { code: 'test' } };
         const testFilters = new Map<string, PathModel>().set('test', new PathModel());
 
         const wrapper = mount(<FilterIcon node={testnode} filters={testFilters} />);
         const icon = wrapper.find('i');
         expect(icon.prop('className')).toBe('fa fa-filter selected');
+        expect(icon.prop('title')).toBe('Remove filter');
         wrapper.unmount();
     });
 
-    test("FilterIcon node not selected", () => {
-        const testnode = {data:{code:'test'}};
+    test('node not selected', () => {
+        const testnode = { data: { code: 'test' } };
         const testFilters = new Map<string, PathModel>().set('nope', new PathModel());
 
         const wrapper = mount(<FilterIcon node={testnode} filters={testFilters} />);
         const icon = wrapper.find('i');
         expect(icon.prop('className')).toBe('fa fa-filter');
+        expect(icon.prop('title')).toBe('Add filter');
         wrapper.unmount();
     });
 
-    test("FilterIcon clicked", () => {
-        const testdata = {code:'test'};
-        const testnode = {data:testdata};
+    test('clicked', () => {
+        const testdata = { code: 'test' };
+        const testnode = { data: testdata };
         const onClickHandler = jest.fn();
 
         const wrapper = mount(<FilterIcon node={testnode} onClick={onClickHandler} />);

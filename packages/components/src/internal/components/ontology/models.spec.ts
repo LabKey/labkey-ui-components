@@ -1,4 +1,4 @@
-import { ConceptModel, OntologyModel } from './models';
+import { ConceptModel, OntologyModel, PathModel } from './models';
 
 describe('OntologyModel', () => {
     test('create', () => {
@@ -30,5 +30,12 @@ describe('ConceptModel', () => {
     test('getDisplayLabel', () => {
         expect(new ConceptModel({}).getDisplayLabel()).toBe('undefined (undefined)');
         expect(new ConceptModel({ code: 'a', label: 'b' }).getDisplayLabel()).toBe('b (a)');
+    });
+});
+
+describe('PathModel', () => {
+    test('getDisplayLabel', () => {
+        expect(new PathModel({}).getDisplayLabel()).toBe('undefined (undefined)');
+        expect(new PathModel({ code: 'a', label: 'b' }).getDisplayLabel()).toBe('b (a)');
     });
 });

@@ -1,12 +1,13 @@
 import { Map, fromJS } from 'immutable';
 
+import { FileSizeLimitProps } from '../../../public/files/models';
+
 import {
     convertRowDataIntoPreviewData,
     fileMatchesAcceptedFormat,
     fileSizeLimitCompare,
     getFileExtension,
 } from './actions';
-import {FileSizeLimitProps} from "../../../public/files/models";
 
 const DATA = fromJS([
     ['str', 'int', 'int-excelupload', 'double', 'date'],

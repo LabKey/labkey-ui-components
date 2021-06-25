@@ -25,6 +25,8 @@ import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
 import { camelCaseToTitleCase } from '../../util/utils';
 
+import { getConceptForCode } from '../ontology/actions';
+
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
     DOMAIN_FIELD_DIMENSION,
@@ -670,10 +672,10 @@ export interface IDomainField {
     disablePhiLevel?: boolean;
     lockExistingField?: boolean;
     sourceOntology?: string;
+    conceptSubtree?: string;
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
     principalConceptCode?: string;
-    principalConceptDisplay?: string;
 }
 
 export class DomainField
@@ -724,10 +726,10 @@ export class DomainField
         disablePhiLevel: false,
         lockExistingField: false,
         sourceOntology: undefined,
+        conceptSubtree: undefined,
         conceptLabelColumn: undefined,
         conceptImportColumn: undefined,
         principalConceptCode: undefined,
-        principalConceptDisplay: undefined,
         derivationDataScope: undefined,
         selected: false,
     })
@@ -778,10 +780,10 @@ export class DomainField
     declare disablePhiLevel?: boolean;
     declare lockExistingField?: boolean;
     declare sourceOntology?: string;
+    declare conceptSubtree?: string;
     declare conceptLabelColumn?: string;
     declare conceptImportColumn?: string;
     declare principalConceptCode?: string;
-    declare principalConceptDisplay?: string;
     declare derivationDataScope?: string;
     declare selected: boolean;
 
@@ -960,7 +962,6 @@ export class DomainField
         delete json.disablePhiLevel;
         delete json.lockExistingField;
         delete json.selected;
-        delete json.principalConceptDisplay;
 
         return json;
     }
@@ -978,7 +979,7 @@ export class DomainField
             return FieldErrors.MISSING_FIELD_NAME;
         }
 
-        // Issue 41829: for an ontology lookup field, only the sourceOntology is required (other two props are optional)
+        // Issue 41829: for an ontology lookup field, only the sourceOntology is required (other ontology props are optional)
         if (this.dataType.isOntologyLookup() && !this.sourceOntology) {
             return FieldErrors.MISSING_ONTOLOGY_PROPERTIES;
         }
@@ -1044,6 +1045,11 @@ export class DomainField
         }
     }
 
+    getPrincipalConceptDisplay(): string {
+        const concept = getConceptForCode(this.principalConceptCode);
+        return concept?.getDisplayLabel() ?? this.principalConceptCode;
+    }
+
     getDetailsTextArray(fieldDetailsInfo?: { [key: string]: string }): any[] {
         const details = [];
         let period = '';
@@ -1077,7 +1083,7 @@ export class DomainField
         }
 
         if (this.principalConceptCode) {
-            details.push(period + 'Ontology Concept: ' + (this.principalConceptDisplay ?? this.principalConceptCode));
+            details.push(period + 'Ontology Concept: ' + this.getPrincipalConceptDisplay());
             period = '. ';
         }
 

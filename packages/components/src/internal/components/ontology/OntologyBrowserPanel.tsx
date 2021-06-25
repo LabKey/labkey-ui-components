@@ -11,67 +11,48 @@ import { OntologySelectionPanel } from './OntologySelectionPanel';
 import { OntologyTreeSearchContainer } from './OntologyTreeSearchContainer';
 
 export interface OntologyBrowserProps {
-    initOntologyId?: string;
     asPanel?: boolean;
-    onConceptSelect?: (concept: ConceptModel) => void;
+    initOntologyId?: string;
+    initConcept?: ConceptModel;
+    initPath?: PathModel;
+    onPathSelect?: (path: PathModel, concept: ConceptModel) => void;
     hideConceptInfo?: boolean;
     filters?: Map<string, PathModel>;
     filterChangeHandler?: (filter: PathModel) => void;
-    initConcept?: ConceptModel
 }
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     const {
-        initOntologyId,
         asPanel,
-        onConceptSelect,
+        initOntologyId,
+        initConcept,
+        initPath,
+        onPathSelect,
         hideConceptInfo = false,
         filters,
         filterChangeHandler,
-        initConcept,
     } = props;
     const [error, setError] = useState<string>();
     const [selectedOntologyId, setSelectedOntologyId] = useState<string>();
     const [ontology, setOntologyModel] = useState<OntologyModel>();
     const [selectedConcept, setSelectedConcept] = useState<ConceptModel>(initConcept);
     const [selectedPath, setSelectedPath] = useState<PathModel>();
-    const [alternatePath, setAlternatePath] = useState<PathModel>();
-    const [conceptCache, setConceptCache] = useState<Map<string, ConceptModel>>(new Map<string, ConceptModel>());
+    const [alternatePath, setAlternatePath] = useState<PathModel>(initPath);
     const ontologyId = selectedOntologyId ?? (!error ? initOntologyId : undefined);
 
-    const cacheConcepts = useCallback(
-        (concepts: ConceptModel[]): void => {
-            concepts.forEach((concept): void => {
-                if (!conceptCache.has(concept.code)) {
-                    conceptCache.set(concept.code, concept);
-                }
-            });
-            setConceptCache(new Map(conceptCache));
-        },
-        [conceptCache, setConceptCache]
-    );
-
     const onSelectedPathChange = useCallback(
-        async (path: PathModel, isAlternatePath = false): Promise<void> => {
+        (path: PathModel, isAlternatePath = false): Promise<void> => {
             if (path === undefined) {
                 return;
-            }
-
-            const { code } = path;
-            if (!conceptCache.has(code)) {
-                const concept = await fetchConceptForCode(code);
-                cacheConcepts([concept]);
             }
 
             if (isAlternatePath) {
                 setAlternatePath(path);
             } else {
                 setSelectedPath(path);
-                if (!path.hasChildren)
-                    filterChangeHandler?.(path);
             }
         },
-        [conceptCache, setSelectedPath, setAlternatePath]
+        [setSelectedPath, setAlternatePath]
     );
 
     const onOntologySelection = useCallback(
@@ -81,35 +62,37 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
         [setSelectedOntologyId]
     );
 
-    const setInitialConceptPath = async (code: string) => {
-        if (code != null ) {
-            const paths = await fetchAlternatePaths(code)
-            onSelectedPathChange(paths?.[0], true);
-        }
-    };
-
     useEffect(() => {
         if (ontologyId) {
             getOntologyDetails(ontologyId)
                 .then((ontology: OntologyModel) => {
                     setOntologyModel(ontology);
-                    setInitialConceptPath(initConcept?.code);
-                }).catch(() => {
+                })
+                .catch(() => {
                     setError('Error: unable to load ontology concept information for ' + ontologyId + '.');
                     setSelectedOntologyId(undefined);
                 });
         } else {
             setOntologyModel(undefined);
         }
-    }, [initConcept, setOntologyModel, selectedOntologyId, setSelectedOntologyId, setError]);
+    }, [ontologyId, setOntologyModel, setSelectedOntologyId, setError]);
+
+    useEffect(() => {
+        if (initConcept) {
+            fetchAlternatePaths(initConcept.code).then(paths => {
+                onSelectedPathChange(paths?.[0], true);
+            });
+        }
+    }, [initConcept]);
 
     useEffect(() => {
         if (selectedPath?.code) {
-            const concept = conceptCache.get(selectedPath.code);
-            setSelectedConcept(concept);
-            onConceptSelect?.(concept);
+            fetchConceptForCode(selectedPath.code).then(concept => {
+                setSelectedConcept(concept);
+                onPathSelect?.(selectedPath, concept);
+            });
         }
-    }, [selectedPath, conceptCache, setSelectedConcept, onConceptSelect]);
+    }, [selectedPath, setSelectedConcept, onPathSelect]);
 
     return (
         <>
@@ -150,7 +133,17 @@ interface OntologyBrowserPanelImplProps {
 
 // exported for jest testing
 export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props => {
-    const { ontology, selectedConcept, alternatePath, selectedPath, setSelectedPath, asPanel, hideConceptInfo, filters, onFilterChange } = props;
+    const {
+        ontology,
+        selectedConcept,
+        alternatePath,
+        selectedPath,
+        setSelectedPath,
+        asPanel,
+        hideConceptInfo,
+        filters,
+        onFilterChange,
+    } = props;
 
     if (!ontology) {
         return <LoadingSpinner />;
@@ -163,7 +156,14 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
         <Row className={hideConceptInfo ? 'filter-panel-row' : ''}>
             <Col xs={hideConceptInfo ? 12 : 6} className={hideConceptInfo ? '' : 'left-panel'}>
                 <OntologyTreeSearchContainer ontology={ontology} searchPathClickHandler={setSelectedPath} />
-                <OntologyTreePanel root={root} onNodeSelection={setSelectedPath} alternatePath={alternatePath} showFilterIcon={hideConceptInfo} filters={filters} onFilterChange={onFilterChange} />
+                <OntologyTreePanel
+                    root={root}
+                    onNodeSelection={setSelectedPath}
+                    alternatePath={alternatePath}
+                    showFilterIcon={hideConceptInfo}
+                    filters={filters}
+                    onFilterChange={onFilterChange}
+                />
             </Col>
             {!hideConceptInfo && (
                 <Col xs={6} className="right-panel">

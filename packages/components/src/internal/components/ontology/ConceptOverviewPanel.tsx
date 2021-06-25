@@ -68,7 +68,7 @@ export const ConceptSynonyms: FC<{ synonyms: string[] }> = memo(props => {
  * the information about the concept label, code, description, etc.
  */
 export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(props => {
-    const { concept, selectedPath = undefined, conceptNotFoundText = "No concept selected" } = props;
+    const { concept, selectedPath = undefined, conceptNotFoundText = 'No concept selected' } = props;
     const [showPath, setShowPath] = useState<boolean>();
 
     const handleShowPath = useCallback((): void => {
@@ -110,6 +110,7 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
 
 interface ConceptOverviewModalProps {
     concept: ConceptModel;
+    path?: PathModel;
     error?: string;
 }
 
@@ -118,23 +119,27 @@ interface ConceptOverviewModalProps {
  * but in a modal dialog. This component takes in the concept (i.e. ConceptModel) as a prop.
  */
 export const ConceptOverviewTooltip: FC<ConceptOverviewModalProps> = memo(props => {
-    const { concept, error, } = props;
+    const { concept, path, error } = props;
 
     return (
         <>
             <Alert>{error}</Alert>
-            {!error &&
+            {!error && (
                 <LabelHelpTip
                     title="Concept Overview"
                     placement="bottom"
-                    iconComponent={!!concept && <i className="fa fa-info-circle"/>}
+                    iconComponent={!!concept && <i className="fa fa-info-circle" />}
                     bsStyle="concept-overview"
                 >
                     <div className="ontology-concept-overview-container">
-                        <ConceptOverviewPanelImpl concept={concept} conceptNotFoundText={"No information available."}/>
+                        <ConceptOverviewPanelImpl
+                            conceptNotFoundText="No information available."
+                            concept={concept}
+                            selectedPath={path}
+                        />
                     </div>
                 </LabelHelpTip>
-            }
+            )}
         </>
     );
 });

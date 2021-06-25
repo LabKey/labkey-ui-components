@@ -1,23 +1,28 @@
-import React, { PureComponent, ReactNode, FC, memo, useCallback } from 'react';
+import React, { PureComponent, ReactNode, FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { DomainField, IFieldChange, LabelHelpTip } from '../../..';
+import { ConceptModel, DomainField, IFieldChange, LabelHelpTip } from '../../..';
 import { helpLinkNode, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
-import { createFormInputId, fetchOntologies } from '../domainproperties/actions';
+import { createFormInputId, fetchOntologies, getIndexFromId } from '../domainproperties/actions';
 import {
     DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
     DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
     DOMAIN_FIELD_ONTOLOGY_SOURCE,
+    DOMAIN_FIELD_ONTOLOGY_SUBTREE_COL,
     DOMAIN_FIELD_SHOWNININSERTVIEW,
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
 } from '../domainproperties/constants';
 import { ITypeDependentProps } from '../domainproperties/models';
 import { SectionHeading } from '../domainproperties/SectionHeading';
 
-import { OntologyModel } from './models';
+import { OntologyModel, PathModel } from './models';
+import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
+import { fetchParentPaths, getParentsConceptCodePath } from './actions';
+
+const LEARN_MORE = <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>;
 
 interface Props extends ITypeDependentProps {
     field: DomainField;
@@ -69,18 +74,42 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
     };
 
     onOntologyFieldChange = (evt: any): void => {
-        this.onChange(evt.target.id, evt.target.value);
+        const { domainIndex, onMultiChange } = this.props;
+        const { id, value } = evt.target;
+        let changes = List<IFieldChange>([{ id, value }]);
+        changes = changes.push({
+            id: createFormInputId(DOMAIN_FIELD_ONTOLOGY_SUBTREE_COL, domainIndex, getIndexFromId(id)),
+            value: undefined,
+        });
+        onMultiChange(changes);
+    };
+
+    onOntologySubtreeChange = async (id: string, path: PathModel): Promise<void> => {
+        let subtreePath;
+        if (path?.path) {
+            const parents = await fetchParentPaths(path.path);
+            subtreePath = getParentsConceptCodePath(parents);
+        }
+        this.onChange(id, subtreePath);
     };
 
     onFieldChange = (evt: any): void => {
         const val = evt.target.value;
-        let changes = List<IFieldChange>([{id: evt.target.id, value: val }]);
+        let changes = List<IFieldChange>([{ id: evt.target.id, value: val }]);
 
         const valFieldIdx = this.props.domainFields.findIndex(df => df.name === val);
         if (valFieldIdx > 0) {
-            const valFieldInsertId = createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, this.props.domainIndex, valFieldIdx);
-            const valFieldUpdateId = createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, this.props.domainIndex, valFieldIdx);
-            changes = changes.push({id:valFieldInsertId, value:false}, {id:valFieldUpdateId, value: false});
+            const valFieldInsertId = createFormInputId(
+                DOMAIN_FIELD_SHOWNININSERTVIEW,
+                this.props.domainIndex,
+                valFieldIdx
+            );
+            const valFieldUpdateId = createFormInputId(
+                DOMAIN_FIELD_SHOWNINUPDATESVIEW,
+                this.props.domainIndex,
+                valFieldIdx
+            );
+            changes = changes.push({ id: valFieldInsertId, value: false }, { id: valFieldUpdateId, value: false });
         }
 
         this.props.onMultiChange(changes);
@@ -99,11 +128,6 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
         const { index, label, lockType, domainIndex, field, domainFields } = this.props;
         const { loading, ontologies } = this.state;
         const sourceId = this.getSourceInputId();
-        const labelColId = createFormInputId(DOMAIN_FIELD_ONTOLOGY_LABEL_COL, domainIndex, index);
-        const importColId = createFormInputId(DOMAIN_FIELD_ONTOLOGY_IMPORT_COL, domainIndex, index);
-        const learnMore = (
-            <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>
-        );
 
         return (
             <div>
@@ -113,20 +137,18 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={3}>
+                    <Col xs={5}>
                         <div className="domain-field-label">
                             Choose an Ontology
-                            <LabelHelpTip title="Experimental Feature">
+                            <LabelHelpTip title="Choose an Ontology">
                                 <>
-                                    <p>
-                                        <i>
-                                            This is currently an experimental feature and is not officially supported.
-                                            By using this feature you acknowledge that these functions may change,
-                                            possibly affecting your data.
-                                        </i>
-                                    </p>
                                     <p>Choose which ontology to use to lookup concept codes and preferred names.</p>
-                                    {learnMore}
+                                    <p>
+                                        Optionally, you may use the "Expected Vocabulary" option to select a concept
+                                        hierarchy which will be used to guide users to a concept hierarchy subtree of
+                                        interest during data entry for this field.
+                                    </p>
+                                    {LEARN_MORE}
                                 </>
                             </LabelHelpTip>
                         </div>
@@ -134,26 +156,26 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                     <Col xs={3}>
                         <div className="domain-field-label">
                             Choose an Import Field
-                            <LabelHelpTip title="Experimental Feature">
+                            <LabelHelpTip title="Choose an Import Field">
                                 <p>
                                     Choose which text field to use when looking up a code against the selected ontology.
                                 </p>
-                                {learnMore}
+                                {LEARN_MORE}
                             </LabelHelpTip>
                         </div>
                     </Col>
                     <Col xs={3}>
                         <div className="domain-field-label">
                             Choose a Label Field
-                            <LabelHelpTip title="Experimental Feature">
+                            <LabelHelpTip title="Choose a Label Field">
                                 <p>Choose which text field to store the preferred name of the concept.</p>
-                                {learnMore}
+                                {LEARN_MORE}
                             </LabelHelpTip>
                         </div>
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={3}>
+                    <Col xs={5}>
                         <FormControl
                             componentClass="select"
                             id={sourceId}
@@ -182,13 +204,24 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                     );
                                 })}
                         </FormControl>
+                        <div className="domain-field-label">
+                            <OntologyConceptSelectButton
+                                id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_SUBTREE_COL, domainIndex, index)}
+                                title="Expected Vocabulary"
+                                field={field}
+                                valueProp="conceptSubtree"
+                                valueIsPath={true}
+                                onChange={this.onOntologySubtreeChange}
+                                useFieldSourceOntology
+                            />
+                        </div>
                     </Col>
                     <Col xs={3}>
                         <OntologyTextDomainFieldSelect
                             field={field}
                             domainFields={domainFields}
                             lockType={lockType}
-                            id={importColId}
+                            id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_IMPORT_COL, domainIndex, index)}
                             value={field.conceptImportColumn}
                             filterValue={field.conceptLabelColumn}
                             onFieldChange={this.onFieldChange}
@@ -199,7 +232,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                             field={field}
                             domainFields={domainFields}
                             lockType={lockType}
-                            id={labelColId}
+                            id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_LABEL_COL, domainIndex, index)}
                             value={field.conceptLabelColumn}
                             filterValue={field.conceptImportColumn}
                             onFieldChange={this.onFieldChange}
@@ -223,7 +256,6 @@ interface OntologyTextDomainFieldSelectProps {
 
 const OntologyTextDomainFieldSelect: FC<OntologyTextDomainFieldSelectProps> = memo(props => {
     const { domainFields, lockType, field, id, value, filterValue, onFieldChange } = props;
-
 
     return (
         <FormControl

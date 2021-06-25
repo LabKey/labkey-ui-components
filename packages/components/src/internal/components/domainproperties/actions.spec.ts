@@ -17,7 +17,7 @@ import { List } from 'immutable';
 
 import { Domain } from '@labkey/api';
 
-import { QueryColumn } from '../../..';
+import { ConceptModel, IFieldChange, QueryColumn } from '../../..';
 
 import { initUnitTestMocks } from '../../testHelperMocks';
 
@@ -40,6 +40,8 @@ import {
     downloadJsonFile,
     updateErrorIndexes,
     removeFields,
+    updateDataType,
+    updateDomainField,
 } from './actions';
 import { DomainDesign, DomainException, DomainField } from './models';
 import {
@@ -54,9 +56,12 @@ import {
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
     UNIQUE_ID_TYPE,
+    BOOLEAN_TYPE,
+    USERS_TYPE,
 } from './PropDescType';
 import {
     CONCEPT_CODE_CONCEPT_URI,
+    DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
     DOMAIN_FIELD_PREFIX,
     FIELD_NAME_CHAR_WARNING_INFO,
     FIELD_NAME_CHAR_WARNING_MSG,
@@ -497,11 +502,23 @@ describe('domain properties actions', () => {
 
         const removedFieldIndexes = [{ originalIndex: 0, newIndex: undefined }];
         expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, undefined)).toStrictEqual([false, 'text']);
-        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, undefined)).toStrictEqual([true, 'textUpdated']);
-        expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, removedFieldIndexes)).toStrictEqual([true, undefined]);
-        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, removedFieldIndexes)).toStrictEqual([true, undefined]);
+        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, undefined)).toStrictEqual([
+            true,
+            'textUpdated',
+        ]);
+        expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, removedFieldIndexes)).toStrictEqual([
+            true,
+            undefined,
+        ]);
+        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, removedFieldIndexes)).toStrictEqual([
+            true,
+            undefined,
+        ]);
         expect(getOntologyUpdatedFieldName('int', origDomain, origDomain, undefined)).toStrictEqual([false, undefined]);
-        expect(getOntologyUpdatedFieldName('int', updatedDomain, origDomain, undefined)).toStrictEqual([true, undefined]);
+        expect(getOntologyUpdatedFieldName('int', updatedDomain, origDomain, undefined)).toStrictEqual([
+            true,
+            undefined,
+        ]);
     });
 
     test('downloadJsonFile', () => {
@@ -615,4 +632,64 @@ describe('domain properties actions', () => {
 
         expect(removeFields(initialDomain, [2, 5, 7])).toEqual(newDomain);
     });
+
+    test('updateDataType clear ontology props on change', () => {
+        let field = DomainField.create({
+            sourceOntology: 'a',
+            conceptSubtree: 'b',
+            conceptLabelColumn: 'c',
+            conceptImportColumn: 'd',
+        });
+        expect(field.dataType).toBe(TEXT_TYPE);
+        expect(field.sourceOntology).toBe('a');
+        expect(field.conceptSubtree).toBe('b');
+        expect(field.conceptLabelColumn).toBe('c');
+        expect(field.conceptImportColumn).toBe('d');
+
+        field = updateDataType(field, 'boolean');
+        expect(field.dataType).toBe(BOOLEAN_TYPE);
+        expect(field.sourceOntology).toBeUndefined();
+        expect(field.conceptSubtree).toBeUndefined();
+        expect(field.conceptLabelColumn).toBeUndefined();
+        expect(field.conceptImportColumn).toBeUndefined();
+    });
+
+    test('updateDataType isLookup', () => {
+        let field = DomainField.create({});
+        expect(field.dataType).toBe(TEXT_TYPE);
+        expect(field.lookupSchema).toBeUndefined();
+        expect(field.lookupQuery).toBeUndefined();
+
+        field = updateDataType(field, 'users');
+        expect(field.dataType).toBe(USERS_TYPE);
+        expect(field.lookupSchema).toBe('core');
+        expect(field.lookupQuery).toBe('users');
+    });
+
+    test('updateDataType updateDefaultValues', () => {
+        let field = DomainField.create({ measure: false, dimension: true });
+        expect(field.dataType).toBe(TEXT_TYPE);
+        expect(field.measure).toBe(false);
+        expect(field.dimension).toBe(true);
+
+        field = updateDataType(field, 'int');
+        expect(field.dataType).toBe(INTEGER_TYPE);
+        expect(field.measure).toBe(true);
+        expect(field.dimension).toBe(false);
+    });
+
+    test('updateDomainField principalConceptCode', () => {
+        let domainDesign = DomainDesign.create({
+            fields: [{ name: 'field1', principalConceptCode: undefined }],
+        });
+        expect(domainDesign.fields.get(0).principalConceptCode).toBeUndefined();
+
+        domainDesign = updateDomainField(domainDesign, {
+            id: createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, 0, 0),
+            value: new ConceptModel({ code: 'test-code' }),
+        } as IFieldChange);
+        expect(domainDesign.fields.get(0).principalConceptCode).toBe('test-code');
+    });
+
+    // TODO more test cases for updateDomainField
 });

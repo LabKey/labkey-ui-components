@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { GridColumn } from '../../..';
+import { ConceptModel, GridColumn } from '../../..';
 
 import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
+
+import { CONCEPT_CACHE } from '../ontology/actions';
 
 import {
     ATTACHMENT_TYPE,
@@ -58,6 +60,7 @@ const GRID_DATA = DomainDesign.create({
             name: 'a',
             rangeURI: INTEGER_TYPE.rangeURI,
             sourceOntology: 'b',
+            conceptSubtree: 'g',
             conceptImportColumn: 'c',
             conceptLabelColumn: 'd',
             principalConceptCode: 'e',
@@ -113,6 +116,7 @@ const gridDataConstWithOntology = [
     {
         ...gridDataConst[0],
         sourceOntology: 'b',
+        conceptSubtree: 'g',
         conceptImportColumn: 'c',
         conceptLabelColumn: 'd',
         principalConceptCode: 'e',
@@ -733,9 +737,9 @@ describe('DomainField', () => {
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
         );
 
-        field = field.merge({ principalConceptDisplay: 'Concept display text' }) as DomainField;
+        CONCEPT_CACHE.set('abc:123', new ConceptModel({ code: 'abc:123', label: 'Concept display text' }));
         expect(field.getDetailsTextArray().join('')).toBe(
-            'Updated. SRC. Ontology Concept: Concept display text. Primary Key. Locked'
+            'Updated. SRC. Ontology Concept: Concept display text (abc:123). Primary Key. Locked'
         );
     });
 

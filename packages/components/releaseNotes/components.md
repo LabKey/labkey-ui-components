@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.TBD
-*Released*: TBD
+### version 2.50.0
+*Released*: 25 June 2021
 * Item 8998: Field designer ontology lookup field support for conceptSubtree prop
     * DomainField props update to remove principalConceptDisplay and add conceptSubtree
     * DomainField.getPrincipalConceptDIsplay() to use code value to lookup concept model for label display

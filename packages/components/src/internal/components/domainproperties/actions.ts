@@ -571,13 +571,7 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
                 break;
             case DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT:
                 const concept = change.value as ConceptModel;
-
-                newField = newField.merge({
-                    // We may be just trying to update the Display, so only mark as dirty if original field is updated or code is different
-                    updatedField: field.updatedField || field.principalConceptCode != concept?.code,
-                    principalConceptCode: concept?.code,
-                    principalConceptDisplay: concept?.getDisplayLabel() ?? concept?.code  // Default to code if display text isn't found
-                }) as DomainField;
+                newField = newField.merge({ principalConceptCode: concept?.code }) as DomainField;
                 break;
             default:
                 newField = newField.set(type, change.value) as DomainField;
@@ -592,7 +586,8 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
     return domain;
 }
 
-function updateDataType(field: DomainField, value: any): DomainField {
+// exported for jest testing
+export function updateDataType(field: DomainField, value: any): DomainField {
     const propType = PROP_DESC_TYPES.find(pt => pt.name === value);
 
     if (propType) {
@@ -605,6 +600,7 @@ function updateDataType(field: DomainField, value: any): DomainField {
             lookupSchema: dataType.lookupSchema,
             lookupQuery: dataType.lookupQuery,
             sourceOntology: undefined,
+            conceptSubtree: undefined,
             conceptLabelColumn: undefined,
             conceptImportColumn: undefined,
         }) as DomainField;

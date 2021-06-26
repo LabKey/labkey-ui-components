@@ -133,6 +133,7 @@ export function reorderSummaryColumns(a: DomainPropertiesGridColumn, b: DomainPr
         'defaultScale',
         // Ontology options
         'sourceOntology',
+        'conceptSubtree',
         'conceptImportColumn',
         'conceptLabelColumn',
         'principalConceptCode',
@@ -178,6 +179,7 @@ export function removeUnusedProperties(obj) {
 
 export function removeUnusedOntologyProperties(obj) {
     delete obj.sourceOntology;
+    delete obj.conceptSubtree;
     delete obj.conceptImportColumn;
     delete obj.conceptLabelColumn;
     delete obj.principalConceptCode;
@@ -192,6 +194,7 @@ export function removeNonAppProperties(obj) {
     // these props are always removed for appPropertiesOnly and then also conditionally removed for
     // containers that don't have the Ontology module enabled (see removeUnusedOntologyProperties)
     delete obj.sourceOntology;
+    delete obj.conceptSubtree;
     delete obj.conceptImportColumn;
     delete obj.conceptLabelColumn;
     delete obj.principalConceptCode;

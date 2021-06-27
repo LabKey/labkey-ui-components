@@ -764,8 +764,13 @@ export function getExportParams(
 
     if (options) {
         if (options.columns) {
-            if (advancedOptions && advancedOptions['includeColumn'])
-                params['query.columns'] = options.columns + ',' + advancedOptions['includeColumn'].join(',');
+            if (advancedOptions && advancedOptions['includeColumn']) {
+                const includeColsStr = advancedOptions['includeColumn'].join(',');
+                if (advancedOptions['includeColumnToBeginning'])
+                    params['query.columns'] = includeColsStr + ',' + options.columns;
+                else
+                    params['query.columns'] = options.columns + ',' + includeColsStr;
+            }
             else params['query.columns'] = options.columns;
         }
 
@@ -825,7 +830,7 @@ export function gridExport(model: QueryGridModel, type: EXPORT_TYPES, advancedOp
     const showRows = allowSelection && selectedState !== GRID_CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
     const options: ExportOptions = {
         filters: model.getFilters(),
-        columns: model.getExportColumnsString(),
+        columns: model.getExportColumnsString(advancedOptions?.['excludeColumn']),
         sorts: model.getSorts(),
         showRows,
         selectionKey: model.getId(),

@@ -501,6 +501,16 @@ export class QueryModel {
         return this.displayColumns.map(column => column.fieldKey).join(',');
     }
 
+    getExportColumnString(excludeColumns?: string[]): string {
+        let excludeColumnsLower = [];
+        if (excludeColumns) {
+            excludeColumnsLower = excludeColumns.map(col => col.toLowerCase());
+        }
+        return this.displayColumns
+            .filter((c => !excludeColumnsLower.includes(c.fieldKey.toLowerCase())))
+            .map(column => column.fieldKey).join(',');
+    }
+
     /**
      * Comma-delimited string of sorts from the [[QueryInfo]] sorts property. If the view has defined sorts, they
      * will be concatenated with the sorts property.

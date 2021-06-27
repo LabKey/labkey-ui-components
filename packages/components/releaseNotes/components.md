@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Issue 43000: FM: Position value in Export from Storage Location Grid is encoded value instead of display value
+    * Allow QueryGridModel and QueryModel to specify excludeColumn and includeColumnToBeginning advancedExportOptions
+
 ### version 2.50.0
 *Released*: 25 June 2021
 * Item 8998: Field designer ontology lookup field support for conceptSubtree prop

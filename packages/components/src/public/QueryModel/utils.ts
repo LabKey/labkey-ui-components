@@ -149,7 +149,7 @@ export function getQueryModelExportParams(
     const showRows = hasSelections ? 'SELECTED' : 'ALL';
     const exportOptions: ExportOptions = {
         filters: List(filters),
-        columns: exportColumnString,
+        columns: model.getExportColumnString(advancedOptions?.['excludeColumn']),
         sorts: sortString,
         selectionKey: id,
         showRows,

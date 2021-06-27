@@ -323,9 +323,14 @@ export class QueryGridModel
         return rows;
     }
 
-    getExportColumnsString(): string {
+    getExportColumnsString(excludeColumns?: string[]): string {
         // does not include required columns -- app only
+        let excludeColumnsLower = [];
+        if (excludeColumns) {
+            excludeColumnsLower = excludeColumns.map(col => col.toLowerCase());
+        }
         return this.getDisplayColumns()
+            .filter((c => !excludeColumnsLower.includes(c.fieldKey.toLowerCase())))
             .map(c => c.fieldKey)
             .join(',');
     }

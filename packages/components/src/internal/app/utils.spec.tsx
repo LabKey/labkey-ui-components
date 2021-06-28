@@ -235,6 +235,13 @@ describe('utils', () => {
         LABKEY.moduleContext = {
             inventory: {},
             samplemanagement: {},
+            biologics: { isFreezerManagerEnabled: false },
+        };
+        expect(isFreezerManagementEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeTruthy();
+
+        LABKEY.moduleContext = {
+            inventory: {},
+            samplemanagement: {},
             biologics: { isFreezerManagerEnabled: true },
         };
         expect(isFreezerManagementEnabled()).toBeTruthy();

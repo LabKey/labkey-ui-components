@@ -1,5 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version 2.50.3
+*Released*: 29 June 2021
+* [Issue 43299](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43299) Ignore required property on checkbox inputs
+
 ### version 2.50.2
 *Released*: 29 June 2021
 * Parameterize support for showing study field types

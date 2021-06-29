@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
-### version TBD
-*Released*: TBD
+### version 2.50.2
+*Released*: 29 June 2021
 * Parameterize support for showing study field types
 * [Issue 43459](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43459) Don't show file upload area if no target type is chosen.
 

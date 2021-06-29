@@ -17,14 +17,13 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { fromJS, Map } from 'immutable';
-
-import { sleep } from '../../../testHelpers';
 import { ENTITY_FORM_IDS } from '../entities/constants';
 import { DomainDetails, DomainPanelStatus } from '../models';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
+import { sleep } from '../../../testHelpers';
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,
@@ -165,14 +164,13 @@ describe('<SampleTypePropertiesPanel/>', () => {
             domainDesign: fromJS({ allowTimepointProperties: true }),
         } as DomainDetails);
         const wrapper = mount(
-            <SampleTypePropertiesPanel {...BASE_PROPS} appPropertiesOnly={false} model={sampleTypeModelWithTimepoint} />
+            <SampleTypePropertiesPanel {...BASE_PROPS} showLinkToStudy={true} appPropertiesOnly={false} model={sampleTypeModelWithTimepoint} />
         );
 
-        // Currently appears only when 'allowTimepointProperties' is true and 'appPropertiesOnly' is false
-        // That is, only on LKS, and not on LKB or LKSM
+        // Currently appears only when 'allowTimepointProperties' is true and 'showLinkToStudy' is true
         expect(wrapper.text()).toContain('Auto-Link Data to Study');
 
-        wrapper.setProps({ appPropertiesOnly: true });
+        wrapper.setProps({ showLinkToStudy: false });
         expect(wrapper.text()).not.toContain('Auto-Link Data to Study');
 
         wrapper.unmount();

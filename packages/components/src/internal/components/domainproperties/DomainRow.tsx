@@ -53,11 +53,11 @@ import {
 import { PropDescType } from './PropDescType';
 import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
 import {
+    isFieldDeletable,
     isFieldFullyLocked,
     isFieldPartiallyLocked,
     isLegalName,
     isPrimaryKeyFieldLocked,
-    isFieldDeletable,
 } from './propertiesUtil';
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
@@ -80,6 +80,7 @@ interface IDomainRowProps {
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
     appPropertiesOnly?: boolean;
+    showStudyPropertyTypes?: boolean;
     showFilePropertyType?: boolean;
     domainIndex: number;
     successBsStyle?: string;
@@ -343,6 +344,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             field,
             availableTypes,
             appPropertiesOnly,
+            showStudyPropertyTypes,
             showFilePropertyType,
             domainIndex,
             domainFormDisplayOptions,
@@ -378,7 +380,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         {isPrimaryKeyFieldLocked(field.lockType) ? (
                             <option value={field.dataType.name}>{field.dataType.display}</option>
                         ) : (
-                            resolveAvailableTypes(field, availableTypes, appPropertiesOnly, showFilePropertyType).map(
+                            resolveAvailableTypes(field, availableTypes, appPropertiesOnly, showStudyPropertyTypes, showFilePropertyType).map(
                                 (type, i) => (
                                     <option key={i} value={type.name}>
                                         {type.display}

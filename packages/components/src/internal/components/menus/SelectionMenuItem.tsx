@@ -16,7 +16,7 @@
 import React, { PureComponent } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import { QueryModel, QueryGridModel } from '../../..';
+import { QueryGridModel, QueryModel } from '../../..';
 
 interface Props {
     id: string;
@@ -56,7 +56,7 @@ export class SelectionMenuItem extends PureComponent<Props> {
 
     render() {
         const { id, text, onClick, disabledMsg, maxSelection, maxSelectionDisabledMsg, nounPlural } = this.props;
-        const { disabled, tooFewSelected, tooManySelected } = this;
+        const { disabled, tooFewSelected } = this;
         const item = (
             <MenuItem onClick={onClick} disabled={disabled}>
                 {text}

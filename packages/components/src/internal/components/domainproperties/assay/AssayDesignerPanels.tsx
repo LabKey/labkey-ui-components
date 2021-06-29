@@ -235,6 +235,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                             useTheme={useTheme}
                             appPropertiesOnly={appPropertiesOnly}
                             showFilePropertyType={showFilePropertyType}
+                            showStudyPropertyTypes={!appPropertiesOnly} // currently we showStudyPropertyTypes only when appPropertiesOnly is false (in LKSM). TODO to refactor/rename appPropertiesOnly.
                             successBsStyle={successBsStyle}
                             allowImportExport={true}
                             testMode={testMode}

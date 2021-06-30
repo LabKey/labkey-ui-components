@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.##.#
-*Released*: ## June 2021
+### version 2.51.0
+*Released*: 30 June 2021
 * Update typings to allow formatting numeric dates
 * Revise choice list styling
 * Introduce `handleRequestFailure` utility method for handling Ajax failures

@@ -4,10 +4,9 @@ import renderer from 'react-test-renderer';
 
 import { sleep } from '../../testHelpers';
 import { initUnitTestMocks } from '../../testHelperMocks';
+import { initPipelineStatusDetailsMocks } from '../../mock';
 
 import { initNotificationsState } from '../../..';
-
-import { initPipelineStatusDetailsMocks } from '../../../stories/mock';
 
 import { PipelineStatusDetailPage } from './PipelineStatusDetailPage';
 

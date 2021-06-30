@@ -74,17 +74,17 @@ export function parseDate(dateStr: string, dateFormat?: string): Date {
     return null;
 }
 
-function _formatDate(date: Date, dateFormat: string, timezone?: string): string {
+function _formatDate(date: Date | number, dateFormat: string, timezone?: string): string {
     if (!date) return undefined;
     const _date = moment(timezone ? momentTZ(date).tz(timezone) : date);
     return _date.formatWithJDF(dateFormat);
 }
 
-export function formatDate(date: Date, timezone?: string, dateFormat?: string): string {
+export function formatDate(date: Date | number, timezone?: string, dateFormat?: string): string {
     return _formatDate(date, dateFormat ?? getDateFormat(), timezone);
 }
 
-export function formatDateTime(date: Date, timezone?: string, dateFormat?: string): string {
+export function formatDateTime(date: Date | number, timezone?: string, dateFormat?: string): string {
     return _formatDate(date, dateFormat ?? getDateTimeFormat(), timezone);
 }
 

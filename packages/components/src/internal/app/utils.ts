@@ -229,24 +229,18 @@ export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<
     }
 
     if (isSampleManagerEnabled()) {
-        let workflowAndUserSectionConfig = Map<string, MenuSectionConfig>();
-        workflowAndUserSectionConfig = workflowAndUserSectionConfig.set(
-            WORKFLOW_KEY,
-            new MenuSectionConfig({
-                iconURL: imageURL('_images', 'workflow.svg'),
-                maxColumns: 1,
-                maxItemsPerColumn: 3,
-                seeAllURL: smAppBase + AppURL.create('workflow').addParam('viewAs', 'heatmap').toHref(),
-                headerURL: smAppBase + WORKFLOW_HOME_HREF.toHref(),
+        sectionConfigs = sectionConfigs.push(
+            Map({
+                [WORKFLOW_KEY]: new MenuSectionConfig({
+                    headerURL: smAppBase + WORKFLOW_HOME_HREF.toHref(),
+                    iconURL: imageURL('_images', 'workflow.svg'),
+                    seeAllURL: smAppBase + AppURL.create(WORKFLOW_KEY).toHref(),
+                }),
+                [USER_KEY]: new MenuSectionConfig({
+                    iconCls: 'fas fa-user-circle ',
+                }),
             })
         );
-        workflowAndUserSectionConfig = workflowAndUserSectionConfig.set(
-            USER_KEY,
-            new MenuSectionConfig({
-                iconCls: 'fas fa-user-circle ',
-            })
-        );
-        sectionConfigs = sectionConfigs.push(workflowAndUserSectionConfig);
     } else {
         const userSectionConfig = new MenuSectionConfig({
             iconCls: 'fas fa-user-circle ',

@@ -41,13 +41,12 @@ import {
     SAMPLE_TYPE_CONCEPT_URI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
-    STRING_RANGE_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
+    STRING_RANGE_URI,
     UNLIMITED_TEXT_LENGTH,
     USER_RANGE_URI,
 } from './constants';
 import {
-    ATTACHMENT_TYPE,
     CONCEPT_URIS_NOT_USED_IN_TYPES,
     DATETIME_TYPE,
     DOUBLE_TYPE,
@@ -56,15 +55,13 @@ import {
     INTEGER_TYPE,
     LOOKUP_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
-    PARTICIPANT_TYPE,
     PROP_DESC_TYPES,
     PropDescType,
     READONLY_DESC_TYPES,
     SAMPLE_TYPE,
+    STUDY_PROPERTY_TYPES,
     TEXT_TYPE,
     USERS_TYPE,
-    VISIT_DATE_TYPE,
-    VISIT_ID_TYPE,
 } from './PropDescType';
 import {
     removeFalseyObjKeys,
@@ -1173,13 +1170,13 @@ export function resolveAvailableTypes(
     field: DomainField,
     availableTypes: List<PropDescType>,
     appPropertiesOnly?: boolean,
-    showFilePropertyType?: boolean
-): List<PropDescType> {
+    showStudyPropertyTypes?: boolean,
+    showFilePropertyType?: boolean): List<PropDescType> {
     // field has not been saved -- display all property types allowed by app
     // Issue 40795: need to check wrappedColumnName for alias field in query metadata editor and resolve the datatype fields
     if (field.isNew() && field.wrappedColumnName == undefined) {
         return appPropertiesOnly
-            ? (availableTypes.filter(type => isPropertyTypeAllowed(type, showFilePropertyType)) as List<PropDescType>)
+            ? (availableTypes.filter(type => isPropertyTypeAllowed(type, showFilePropertyType, showStudyPropertyTypes)) as List<PropDescType>)
             : availableTypes;
     }
 
@@ -1195,7 +1192,7 @@ export function resolveAvailableTypes(
             if (!acceptablePropertyType(type, rangeURI)) return false;
 
             if (appPropertiesOnly) {
-                return isPropertyTypeAllowed(type, showFilePropertyType);
+                return isPropertyTypeAllowed(type, showFilePropertyType, showStudyPropertyTypes);
             }
 
             return true;
@@ -1210,14 +1207,14 @@ export function resolveAvailableTypes(
     return filteredTypes;
 }
 
-export function isPropertyTypeAllowed(type: PropDescType, includeFileType: boolean): boolean {
+export function isPropertyTypeAllowed(type: PropDescType, includeFileType: boolean, includeStudyPropertyTypes: boolean): boolean {
     // We allow file type for some domains based on the parameter
     if (type === FILE_TYPE) return includeFileType;
 
+    if (STUDY_PROPERTY_TYPES.includes(type)) return includeStudyPropertyTypes;
+
     // We are excluding the field types below for the App
-    return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE, VISIT_DATE_TYPE, VISIT_ID_TYPE].includes(
-        type
-    );
+    return ![LOOKUP_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
 }
 
 export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {

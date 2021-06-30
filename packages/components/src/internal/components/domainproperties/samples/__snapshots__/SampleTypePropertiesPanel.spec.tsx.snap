@@ -249,7 +249,7 @@ exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
       </div>
     </div>
     <div
-      className="domain-field-section-heading"
+      className="domain-field-section-heading top-spacing"
     >
       Storage Settings
     </div>
@@ -559,11 +559,6 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
         </span>
       </div>
     </div>
-    <div
-      className="domain-field-section-heading"
-    >
-      Storage Settings
-    </div>
   </div>
 </div>
 `;
@@ -863,11 +858,6 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
         </span>
       </div>
     </div>
-    <div
-      className="domain-field-section-heading"
-    >
-      Storage Settings
-    </div>
   </div>
 </div>
 `;
@@ -1121,7 +1111,7 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
       </div>
     </div>
     <div
-      className="domain-field-section-heading"
+      className="domain-field-section-heading top-spacing"
     >
       Storage Settings
     </div>
@@ -1486,7 +1476,7 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
       </div>
     </div>
     <div
-      className="domain-field-section-heading"
+      className="domain-field-section-heading top-spacing"
     >
       Storage Settings
     </div>
@@ -1920,11 +1910,6 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
           </div>
         </span>
       </div>
-    </div>
-    <div
-      className="domain-field-section-heading"
-    >
-      Storage Settings
     </div>
   </div>
 </div>

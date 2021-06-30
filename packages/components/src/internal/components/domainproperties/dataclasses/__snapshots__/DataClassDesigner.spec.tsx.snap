@@ -4784,6 +4784,7 @@ exports[`DataClassDesigner initModel 1`] = `
             showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={true}
+            showStudyPropertyTypes={true}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -5675,6 +5676,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={true}
+                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -8015,6 +8017,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={true}
+                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -10255,6 +10258,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={true}
+                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable

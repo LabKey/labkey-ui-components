@@ -119,7 +119,9 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
                     <input
                         disabled={this.state.isDisabled}
                         name={name ?? queryColumn.fieldKey}
-                        required={queryColumn.required}
+                        // Issue 43299: Ignore "required" property for boolean columns as this will
+                        // cause any false value (i.e. unchecked) to prevent submission.
+                        // required={queryColumn.required}
                         type="checkbox"
                         value={this.props.formsy ? this.props.getValue() : this.state.checked}
                         checked={this.state.checked}

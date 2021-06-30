@@ -137,7 +137,9 @@ export function resolveDetailEditRenderer(
                 return (
                     <Checkbox
                         name={col.name}
-                        required={col.required}
+                        // Issue 43299: Ignore "required" property for boolean columns as this will
+                        // cause any false value (i.e. unchecked) to prevent submission.
+                        // required={col.required}
                         validatePristine={true}
                         value={value && value.toString().toLowerCase() === 'true'}
                     />

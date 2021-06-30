@@ -25,7 +25,7 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 
 import { SAMPLE_TYPE, UNIQUE_ID_TYPE } from '../PropDescType';
 
-import { isCommunityDistribution } from '../../../app/utils';
+import { hasModule, isCommunityDistribution } from '../../../app/utils';
 
 import { IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
@@ -87,6 +87,7 @@ interface Props {
     // DomainDesigner props
     containerTop?: number; // This sets the top of the sticky header, default is 0
     useTheme?: boolean;
+    showLinkToStudy?: boolean;
     appPropertiesOnly?: boolean;
     successBsStyle?: string;
     saveBtnText?: string;
@@ -117,6 +118,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         showParentLabelPrefix: true,
         useTheme: false,
         appPropertiesOnly: true,
+        showLinkToStudy: false,
         domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'sample type' },
     };
 
@@ -541,9 +543,13 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             metricUnitProps,
             testMode,
             domainFormDisplayOptions,
+            showLinkToStudy,
         } = this.props;
         const { error, model, parentOptions, showUniqueIdConfirmation } = this.state;
         const numNewUniqueIdFields = this.getNumNewUniqueIdFields();
+        // For non-premium LKSM the showLinkToStudy will be true, but the study module will not be present.
+        // We also don't want to always show the link to study even if the study module is available (the LKB case).
+        const _showLinkToStudy = showLinkToStudy && hasModule("study");
 
         return (
             <BaseDomainDesigner
@@ -589,6 +595,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     validate={validatePanel === PROPERTIES_PANEL_INDEX}
                     onToggle={this.propertiesToggle}
                     appPropertiesOnly={appPropertiesOnly}
+                    showLinkToStudy={_showLinkToStudy}
                     useTheme={useTheme}
                     metricUnitProps={metricUnitProps}
                     onAddUniqueIdField={this.onAddUniqueIdField}
@@ -608,6 +615,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
+                    showStudyPropertyTypes={_showLinkToStudy}
                     showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.domainChangeHandler}

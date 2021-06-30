@@ -22,12 +22,12 @@ import { Sticky, StickyContainer } from 'react-sticky';
 
 import {
     AddEntityButton,
-    ConfirmModal,
-    InferDomainResponse,
-    FileAttachmentForm,
     Alert,
-    valueIsEmpty,
+    ConfirmModal,
+    FileAttachmentForm,
+    InferDomainResponse,
     QueryColumn,
+    valueIsEmpty,
 } from '../../..';
 
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
@@ -58,38 +58,38 @@ import {
     addDomainField,
     clearAllClientValidationErrors,
     downloadJsonFile,
+    getAvailableTypes,
+    getAvailableTypesForOntology,
     getDomainAlertClasses,
     getDomainHeaderName,
     getDomainPanelClass,
     getDomainPanelHeaderId,
     getIndexFromId,
     getMaxPhiLevel,
+    getNameFromId,
     handleDomainUpdates,
     mergeDomainFields,
     processJsonImport,
+    removeFields,
     setDomainFields,
     updateDomainPanelClassList,
-    getAvailableTypes,
-    getAvailableTypesForOntology,
     updateOntologyFieldProperties,
-    removeFields,
-    getNameFromId,
 } from './actions';
 import { DomainRow } from './DomainRow';
 import {
+    BulkDeleteConfirmInfo,
     DomainDesign,
     DomainException,
     DomainField,
     DomainFieldError,
+    DomainFieldIndexChange,
     DomainPanelStatus,
+    FieldDetails,
     HeaderRenderer,
     IAppDomainHeader,
     IDomainField,
     IDomainFormDisplayOptions,
     IFieldChange,
-    DomainFieldIndexChange,
-    FieldDetails,
-    BulkDeleteConfirmInfo,
 } from './models';
 import { PropDescType } from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
@@ -130,6 +130,7 @@ interface IDomainFormInput {
     showFilePropertyType?: boolean; // Flag to indicate if the File property type should be allowed
     showHeader?: boolean;
     showInferFromFile?: boolean;
+    showStudyPropertyTypes?: boolean;
     successBsStyle?: string;
     todoIconHelpMsg?: string;
     useTheme?: boolean;
@@ -181,6 +182,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         initCollapsed: false,
         isNew: false,
         appPropertiesOnly: false, // TODO: convert them into more options in the IDomainFormDisplayOptions interface
+        showStudyPropertyTypes: true,
         domainIndex: 0,
         successBsStyle: 'success',
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
@@ -1234,6 +1236,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
+            showStudyPropertyTypes,
         } = this.props;
         const {
             expandedRowIndex,
@@ -1287,6 +1290,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 defaultDefaultValueType={domain.defaultDefaultValueType}
                                                 defaultValueOptions={domain.defaultValueOptions}
                                                 appPropertiesOnly={appPropertiesOnly}
+                                                showStudyPropertyTypes={showStudyPropertyTypes}
                                                 showFilePropertyType={showFilePropertyType}
                                                 successBsStyle={successBsStyle}
                                                 isDragDisabled={

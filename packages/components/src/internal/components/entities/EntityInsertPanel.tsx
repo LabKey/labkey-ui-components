@@ -64,8 +64,8 @@ import {
     SampleCreationTypeModel,
     SchemaQuery,
     SelectInput,
-    useServerContext,
     User,
+    useServerContext,
     withFormSteps,
     WithFormStepsProps,
     WizardNavButtons,
@@ -1227,7 +1227,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                     stepIndex={importOnly ? EntityInsertPanelTabs.First : EntityInsertPanelTabs.Second}
                                 >
                                     {this.renderHeader(false)}
-                                    {!disableMerge && user.hasUpdatePermission() && (
+                                    {!disableMerge && user.hasUpdatePermission() && entityTypeName && (
                                         <div className="margin-bottom">
                                             <input
                                                 type="checkbox"
@@ -1260,6 +1260,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                             </LabelHelpTip>
                                         </div>
                                     )}
+                                    {entityTypeName &&
                                     <FileAttachmentForm
                                         showLabel={false}
                                         acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx"
@@ -1282,6 +1283,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                             </>
                                         }
                                     />
+                                    }
                                 </FormStep>
                             </div>
                         </div>

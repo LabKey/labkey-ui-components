@@ -1,6 +1,6 @@
 import React, { FC, memo, useMemo } from 'react';
 
-import { Filter } from '@labkey/api';
+import {Filter, Query} from '@labkey/api';
 
 import { Cards, caseInsensitive, naturalSort, LoadingSpinner, SampleTypeEmptyAlert, SCHEMAS } from '../../..';
 
@@ -102,6 +102,7 @@ export const SampleSetCards: FC<SampleSetCardsProps> = memo(({ excludedSampleSet
                 baseFilters: excludedSampleSets
                     ? [Filter.create('Name', excludedSampleSets, Filter.Types.NOT_IN)]
                     : undefined,
+                containerFilter: Query.containerFilter.currentPlusProjectAndShared,
             },
         }),
         [excludedSampleSets, modelId]

@@ -5,7 +5,7 @@
 import { createContext } from 'react';
 import { Draft, produce } from 'immer';
 import { fromJS, Map, OrderedSet } from 'immutable';
-import { Experiment, Filter, getServerContext } from '@labkey/api';
+import {Experiment, Filter, getServerContext, Query} from '@labkey/api';
 
 import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../../..';
 
@@ -257,6 +257,7 @@ export function loadSampleStats(lineageResult: LineageResult): Promise<any> {
     return selectRows({
         schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
         queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
+        containerFilter: Query.containerFilter.currentPlusProjectAndShared,
     }).then(sampleSets => computeSampleCounts(lineageResult, sampleSets));
 }
 

@@ -1,6 +1,6 @@
 import React, { FC, memo, useMemo, useState } from 'react';
 
-import { Filter } from '@labkey/api';
+import {Filter, Query} from '@labkey/api';
 
 import { GridPanelWithModel, SCHEMAS, AppURL, User, SelectViewInput, SelectView } from '../../..';
 
@@ -16,6 +16,7 @@ const SAMPLE_QUERY_CONFIG = {
     isPaged: true,
     id: SAMPLE_SET_GRID_GRID_ID,
     schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
+    containerFilter: Query.containerFilter.currentPlusProjectAndShared,
 };
 
 interface SampleSetSummaryProps {

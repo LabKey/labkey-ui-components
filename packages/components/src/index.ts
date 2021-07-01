@@ -60,7 +60,7 @@ import {
 } from './internal/util/utils';
 import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
-import { getUserProperties, getUserRoleDisplay } from './internal/components/user/actions';
+import { getUserProperties, getUserRoleDisplay, getUserSharedContainerPermissions } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import { getActionErrorMessage, getConfirmDeleteMessage, resolveErrorMessage } from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
@@ -190,6 +190,7 @@ import {
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
+    SHARED_CONTAINER_PATH
 } from './internal/constants';
 import { getLocation, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
@@ -741,6 +742,7 @@ export {
     getUsersWithPermissions,
     getUserProperties,
     getUserRoleDisplay,
+    getUserSharedContainerPermissions,
     UserDetailHeader,
     UserProfile,
     ChangePasswordModal,
@@ -910,6 +912,7 @@ export {
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
+    SHARED_CONTAINER_PATH,
     NotificationItemModel,
     Notification,
     ServerNotificationModel,

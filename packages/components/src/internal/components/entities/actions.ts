@@ -1,4 +1,4 @@
-import { ActionURL, Ajax, Filter, Utils } from '@labkey/api';
+import {ActionURL, Ajax, Filter, Query, Utils} from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
 import {
@@ -91,6 +91,7 @@ function getSelectedParents(
             queryName: schemaQuery.queryName,
             columns: 'LSID,Name,RowId',
             filterArray,
+            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(response => {
                 resolve(resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent));
@@ -111,6 +112,7 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
                     queryName: 'materials',
                     columns: 'LSID,Name,RowId,SampleSet',
                     filterArray: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+                    containerFilter: Query.containerFilter.currentPlusProjectAndShared,
                 })
                     .then(response => {
                         resolve(resolveSampleParentType(response, isAliquotParent));
@@ -378,6 +380,7 @@ export function getEntityTypeOptions(entityDataType: EntityDataType): Promise<Ma
             queryName: typeListingSchemaQuery.queryName,
             columns: 'LSID,Name,RowId',
             filterArray,
+            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(result => {
                 const rows = fromJS(result.models[result.key]);

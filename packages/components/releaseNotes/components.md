@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.51.1
+*Released*: 01 July 2021
+* getMenuSectionConfigs() update for WF. Do not limit menu options. Update "see all" URL.
+
 ### version 2.51.0
 *Released*: 30 June 2021
 * Update typings to allow formatting numeric dates

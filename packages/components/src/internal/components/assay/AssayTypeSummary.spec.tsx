@@ -3,7 +3,8 @@ import ReactSelect from 'react-select';
 
 import { mount } from 'enzyme';
 
-import { AssayTypeSummary, waitForLifecycle } from '../../..';
+import { AssayTypeSummary } from '../../..';
+import { waitForLifecycle } from '../../testHelpers';
 import { initUnitTestMocks } from '../../testHelperMocks';
 
 beforeAll(() => {

@@ -422,7 +422,7 @@ import { DataClassModel } from './internal/components/domainproperties/dataclass
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
-import { makeQueryInfo, mountWithServerContext, sleep, waitForLifecycle } from './internal/testHelpers';
+import { makeQueryInfo, mountWithServerContextOptions, sleep } from './internal/testHelpers';
 import { QueryModel } from './public/QueryModel/QueryModel';
 import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
@@ -1115,11 +1115,10 @@ export {
     PipelineJobsPage,
     PipelineStatusDetailPage,
     // Test Helpers
-    mountWithServerContext,
     sleep,
-    waitForLifecycle,
     createMockWithRouterProps,
     makeQueryInfo,
+    mountWithServerContextOptions,
     // Ontology
     OntologyBrowserPanel,
     OntologyConceptOverviewPanel,

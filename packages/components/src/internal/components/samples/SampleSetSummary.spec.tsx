@@ -2,7 +2,8 @@ import React from 'react';
 import ReactSelect from 'react-select';
 import { mount } from 'enzyme';
 
-import { SampleSetSummary, waitForLifecycle } from '../../..';
+import { SampleSetSummary } from '../../..';
+import { waitForLifecycle } from '../../testHelpers';
 import { initUnitTestMocks } from '../../testHelperMocks';
 import { TEST_USER_APP_ADMIN } from '../../../test/data/users';
 

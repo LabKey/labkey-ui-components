@@ -2,7 +2,8 @@ import React from 'react';
 import ReactSelect from 'react-select';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { SelectView, SelectViewInput, waitForLifecycle } from '../../..';
+import { SelectView, SelectViewInput } from '../../..';
+import { waitForLifecycle } from '../../testHelpers';
 
 import {
     clearSelectViewsInLocalStorage,

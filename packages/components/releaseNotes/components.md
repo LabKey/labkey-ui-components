@@ -3,7 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version XXX
 *Released*: XXX
-* TODO
+* add getUserSharedContainerPermissions util
+* use currentPlusProjectAndShared for sample type container filters
 
 ### version 2.51.1
 *Released*: 01 July 2021

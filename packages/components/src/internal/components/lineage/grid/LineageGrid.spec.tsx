@@ -3,8 +3,7 @@ import renderer from 'react-test-renderer';
 
 import { registerDefaultURLMappers, sleep } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../testHelperMocks';
-
-import { initLineageMocks } from '../../../../stories/mock';
+import { initLineageMocks } from '../../../mock';
 
 import { LineageGrid } from './LineageGrid';
 

@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 
 import { AssayPicker, AssayPickerTabs, initNotificationsState, sleep } from '../../..';
 import { initUnitTestMocks } from '../../testHelperMocks';
-import { initAssayPickerOptions } from '../../../stories/mock';
+import { initAssayPickerOptions } from '../../mock';
 
 beforeAll(() => {
     initNotificationsState();

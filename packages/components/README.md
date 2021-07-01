@@ -68,7 +68,6 @@ For doing development of LabKey UI Components, you should be familiar with the f
 * [Immer](https://immerjs.github.io/immer/docs/introduction) - for immutability of normal JavaScript objects, arrays, Sets, and Maps.
 * [Jest](https://jestjs.io/docs/en/getting-started.html) - for unit testing of components
 * [Enzyme](https://airbnb.io/enzyme/) - testing utility library
-* [Storybook](https://storybook.js.org/) - for use in manual testing and exploration of features outside of an application
 
 Note that we are currently not using the latest versions of Bootstrap, React-Bootstrap and Typescript because there
 have been some significant changes between our current version and the latest version of these libraries, so when looking for docs,

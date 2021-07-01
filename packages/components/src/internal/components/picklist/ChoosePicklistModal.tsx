@@ -138,7 +138,7 @@ export const PicklistDetails: FC<PicklistDetailsProps> = memo(props => {
         <div className="choice-details">
             <div className="choice-details__name">{picklist.name}</div>
 
-            <div className="choice-details__metadata">
+            <div className="choice-details-section choice-details__metadata">
                 {picklist.isPublic() && (
                     <div className="choice-metadata-item">
                         <span className="choice-metadata-item__name">Created by:</span>
@@ -146,15 +146,15 @@ export const PicklistDetails: FC<PicklistDetailsProps> = memo(props => {
                     </div>
                 )}
 
-                <div className="choice-metadata-item">
+                <div className="choice-details-section choice-metadata-item">
                     <span className="choice-metadata-item__name">Created:</span>
                     <span className="choice-metadata-item__value">{formatDate(parseDate(picklist.Created))}</span>
                 </div>
             </div>
 
-            <div className="choice-details__description">{picklist.Description}</div>
+            <div className="choice-details-section choice-details__description">{picklist.Description}</div>
 
-            <div className="top-spacing choice-details__summary">
+            <div className="choice-details-section top-spacing choice-details__summary">
                 <PicklistItemsSummary picklist={picklist} />
             </div>
         </div>
@@ -344,7 +344,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                         </div>
                     </div>
 
-                    <div className="row">
+                    <div className="row choices-container">
                         <div className="col-md-6">
                             <Tabs id="choose-items-tabs" className="choose-items-tabs" animation={false}>
                                 <Tab eventKey={1} title="My Picklists">

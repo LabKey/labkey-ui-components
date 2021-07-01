@@ -6,8 +6,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * add getUserSharedContainerPermissions util
 * use currentPlusProjectAndShared for sample type container filters
 
+### version 2.52.0
+*Released*: 1 July 2021
+* Introduce mountWithServerContextOptions test utility method.
+* Stop exporting mountWithServerContext, waitForLifecycle as these do not work external to the package.
+
 ### version 2.51.1
-*Released*: 01 July 2021
+*Released*: 1 July 2021
 * getMenuSectionConfigs() update for WF. Do not limit menu options. Update "see all" URL.
 
 ### version 2.51.0

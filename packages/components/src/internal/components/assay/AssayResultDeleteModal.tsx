@@ -45,12 +45,10 @@ export const AssayResultDeleteModal: FC<Props> = props => {
 
     if (maxToDelete && numToDelete > maxToDelete) {
         return (
-            <ConfirmModal
-                cancelButtonText="Dismiss"
-                msg={`You cannot delete more than ${maxToDelete} individual assay results at a time. Please select fewer results and try again.`}
-                onCancel={onCancel}
-                title="Cannot Delete Assay Results"
-            />
+            <ConfirmModal cancelButtonText="Dismiss" onCancel={onCancel} title="Cannot Delete Assay Results">
+                You cannot delete more than {maxToDelete} individual assay results at a time. Please select fewer
+                results and try again.
+            </ConfirmModal>
         );
     }
 
@@ -60,18 +58,17 @@ export const AssayResultDeleteModal: FC<Props> = props => {
                 <ConfirmModal
                     cancelButtonText="Cancel"
                     confirmButtonText="Yes, Delete"
-                    msg={
-                        <span>
-                            The {numToDelete > 1 ? numToDelete : ''} selected {noun} will be permanently deleted.&nbsp;
-                            <p className="top-spacing">
-                                <strong>Deletion cannot be undone.</strong> Do you want to proceed?
-                            </p>
-                        </span>
-                    }
                     onCancel={onCancel}
                     onConfirm={onConfirm}
                     title={`Permanently delete ${numToDelete}${noun}?`}
-                />
+                >
+                    <span>
+                        The {numToDelete > 1 ? numToDelete : ''} selected {noun} will be permanently deleted.
+                        <p className="top-spacing">
+                            <strong>Deletion cannot be undone.</strong> Do you want to proceed?
+                        </p>
+                    </span>
+                </ConfirmModal>
             )}
             <Progress
                 estimate={numToDelete * 10}

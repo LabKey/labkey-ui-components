@@ -83,6 +83,41 @@ export const makeTestData = (getQueryResponse): RowsResponse => {
 
 /**
  * Use this if you're testing a component that requires a wrapping <ServerContextProvider/> to provide context.
+ * This utility method provides the `MountRenderProps` that can be supplied to enzyme's mount() method. The specified
+ * `initialContext` will be provided to the wrapped component under test. Additionally, with these options supplied
+ * the returned mounted component will still be the component under test (as opposed to <ServerContextProvider />).
+ * Example:
+ * ```ts
+ * import { mount } from 'enzyme';
+ * import { mountWithServerContextOptions } from '@labkey/components';
+ *
+ * describe('a test suite', () => {
+ *     test('test with default context', () => {
+ *         const wrapper = mount(<MyReactComponent />, mountWithServerContextOptions());
+ *     });
+ *     test('test with specified context, () => {
+ *         const wrapper = mount(<MyReactComponent />, mountWithServerContextOptions({
+ *             user: MY_TEST_USER,
+ *         }));
+ *     });
+ * });
+ * ```
+ * @param initialContext The server context to be provided by the wrapping <ServerContextProvider/>
+ * @param options Pass through for mount's rendering options
+ */
+export const mountWithServerContextOptions = (
+    initialContext: any = {},
+    options?: MountRendererProps
+): MountRendererProps => {
+    return {
+        wrappingComponent: ServerContextProvider,
+        wrappingComponentProps: { initialContext },
+        ...options,
+    };
+};
+
+/**
+ * Use this if you're testing a component that requires a wrapping <ServerContextProvider/> to provide context.
  * This test method wraps enzyme's mount() method and provides the wrapping component with "initialContext".
  * With this the returned mounted component will still be the component under test
  * (as opposed to <ServerContextProvider />).
@@ -95,11 +130,8 @@ export const mountWithServerContext = (
     initialContext: any,
     options?: MountRendererProps
 ): ReactWrapper => {
-    return mount(node, {
-        wrappingComponent: ServerContextProvider,
-        wrappingComponentProps: { initialContext },
-        ...options,
-    });
+    // NOTE: For internal package use only. Do not export externally as it will not work for external usages.
+    return mount(node, mountWithServerContextOptions(initialContext, options));
 };
 
 /**
@@ -127,6 +159,7 @@ export const sleep = (ms = 0): Promise<void> => {
  * @param wrapper: enzyme ReactWrapper
  */
 export const waitForLifecycle = (wrapper: ReactWrapper): Promise<undefined> => {
+    // NOTE: For internal package use only. Do not export externally as it will not work for external usages.
     // Wrap in react-dom/utils act so we don't get errors in our test logs
     return act(async () => {
         await sleep();

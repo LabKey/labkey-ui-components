@@ -48,7 +48,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
 
         expect(configs.hasIn([3, 'workflow'])).toBeTruthy();
-        expect(configs.getIn([3, 'workflow', 'seeAllURL'])).toEqual('#/workflow?viewAs=heatmap');
+        expect(configs.getIn([3, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
 
         expect(configs.hasIn([3, 'user'])).toBeTruthy();
     });
@@ -96,7 +96,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([3, 'freezers', 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
 
         expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
-        expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('#/workflow?viewAs=heatmap');
+        expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
 
         expect(configs.hasIn([4, 'user'])).toBeTruthy();
     });
@@ -134,7 +134,7 @@ describe('getMenuSectionConfigs', () => {
 
         expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
         expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual(
-            '/labkey/samplemanager/app.view#/workflow?viewAs=heatmap'
+            '/labkey/samplemanager/app.view#/workflow'
         );
 
         expect(configs.hasIn([4, 'user'])).toBeTruthy();

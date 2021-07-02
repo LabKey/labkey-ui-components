@@ -39,6 +39,7 @@ export class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
                     placeholder={placeholder}
                     inputClass="" // This attr is necessary for proper styling
                     valueKey="name"
+                    labelKey="name"
                     key="name"
                     formsy={false}
                     multiple={false}

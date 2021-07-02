@@ -1733,6 +1733,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   },
                                                 ]
                                               }
+                                              required={true}
                                               selectOption={[Function]}
                                               selectProps={
                                                 Object {
@@ -1895,6 +1896,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     onBlur={[Function]}
                                                     onChange={[Function]}
                                                     onFocus={[Function]}
+                                                    required={true}
                                                     spellCheck="false"
                                                     tabIndex="0"
                                                     type="text"
@@ -1918,6 +1920,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                         onBlur={[Function]}
                                                         onChange={[Function]}
                                                         onFocus={[Function]}
+                                                        required={true}
                                                         spellCheck="false"
                                                         style={
                                                           Object {

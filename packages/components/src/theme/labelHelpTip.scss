@@ -19,3 +19,19 @@
 .label-weight-normal {
   font-weight: normal;
 }
+
+// This attempts to reverts the styles of react-select to v1.
+// Going to get input on the current styles before attempting to go any further...
+//.select-input__multi-value {
+//    .select-input__multi-value__label,
+//    .select-input__multi-value__remove {
+//        color: #08c;
+//        background-color: #f2f9fc;
+//        border: 1px solid #c9e6f2;
+//    }
+//
+//    .select-input__multi-value__remove:hover {
+//        color: #08c;
+//        background-color: #ddeff7;
+//    }
+//}

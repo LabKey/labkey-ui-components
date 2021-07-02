@@ -153,6 +153,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                             multiple={false}
                             required={false}
                             name="closestParticipantIdField"
+                            labelKey="name"
                             valueKey="name"
                             clearable={true}
                         />
@@ -175,6 +176,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                             multiple={false}
                             required={false}
                             name="closestTimepointField"
+                            labelKey="name"
                             valueKey="name"
                             clearable={true}
                         />

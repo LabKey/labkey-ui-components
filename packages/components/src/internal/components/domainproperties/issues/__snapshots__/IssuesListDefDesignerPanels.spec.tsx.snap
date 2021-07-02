@@ -169,6 +169,7 @@ Array [
                                 onBlur={[Function]}
                                 onChange={[Function]}
                                 onFocus={[Function]}
+                                required={false}
                                 spellCheck="false"
                                 style={
                                   Object {
@@ -236,6 +237,7 @@ Array [
                       <input
                         name="commentSortDirection"
                         type="hidden"
+                        value="ASC"
                       />
                     </div>
                   </div>

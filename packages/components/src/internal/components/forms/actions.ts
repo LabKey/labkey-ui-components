@@ -216,7 +216,7 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
     }
 
     // Include PKs plus useful-to-search-over columns and append the grid view's column list
-    const requiredColumns = model.queryInfo.pkCols.concat(['Name', 'Description', 'Alias']);
+    const requiredColumns = model.queryInfo.pkCols.concat([displayColumn, valueColumn, 'Name', 'Description', 'Alias']);
     const columns = model.queryInfo
         .getDisplayColumns(schemaQuery.viewName)
         .map(c => c.fieldKey)

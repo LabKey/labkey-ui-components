@@ -3,7 +3,7 @@ import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap'
 
 import { getServerContext } from '@labkey/api';
 
-import { helpLinkNode, initQueryGridState, LabelHelpTip, Option, SelectInput } from '../../../..';
+import { helpLinkNode, initQueryGridState, LabelHelpTip, SelectInputOption, SelectInput } from '../../../..';
 
 import { DATASET_PROPERTIES_TOPIC } from '../../../util/helpLinks';
 
@@ -120,8 +120,8 @@ interface AdvancedSettingsProps {
 
 interface AdvancedSettingsState extends DatasetAdvancedSettingsForm {
     modalOpen?: boolean;
-    availableCohorts?: Option | Option[];
-    visitDateColumns?: Option | Option[];
+    availableCohorts?: SelectInputOption | SelectInputOption[];
+    visitDateColumns?: SelectInputOption | SelectInputOption[];
     dataSharing?: string;
 }
 

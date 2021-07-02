@@ -6,7 +6,7 @@ import React, { FC, useCallback } from 'react';
 
 import { getUsersWithPermissions } from '../actions';
 
-import { Option, SelectInput, SelectInputProps } from './SelectInput';
+import { SelectInputOption, SelectInput, SelectInputProps } from './SelectInput';
 
 interface UserSelectInputProps extends SelectInputProps {
     // specify whether this Select should correspond with a NotifyList on the server
@@ -18,9 +18,9 @@ interface UserSelectInputProps extends SelectInputProps {
 export const UserSelectInput: FC<UserSelectInputProps> = props => {
     const { notifyList, permissions, useEmail, ...selectInputProps } = props;
 
-    const loadOptions = useCallback((): Promise<Option[]> => {
+    const loadOptions = useCallback((): Promise<SelectInputOption[]> => {
         return new Promise(async resolve => {
-            let options: Option[] = [];
+            let options: SelectInputOption[] = [];
 
             try {
                 const users = await getUsersWithPermissions(permissions);

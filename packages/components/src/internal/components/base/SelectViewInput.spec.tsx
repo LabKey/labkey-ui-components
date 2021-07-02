@@ -1,9 +1,8 @@
 import React from 'react';
-import ReactSelect from 'react-select';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { SelectView, SelectViewInput } from '../../..';
-import { waitForLifecycle } from '../../testHelpers';
+import { selectOptionByText } from '../forms/input/SelectInputTestUtils';
 
 import {
     clearSelectViewsInLocalStorage,
@@ -24,10 +23,6 @@ function getSelectValue(wrapper: ReactWrapper): any {
     return wrapper.find('input[name="select-view-input"]').prop('value');
 }
 
-function setSelectValue(wrapper: ReactWrapper, value: any): void {
-    (wrapper.find(ReactSelect).instance() as any).selectValue({ value });
-}
-
 describe('SelectViewInput', () => {
     beforeEach(() => {
         clearSelectViewsInLocalStorage();
@@ -46,8 +41,7 @@ describe('SelectViewInput', () => {
         expect(getSelectViewsInLocalStorage()[props.id]).toBeUndefined();
 
         // Act - change value
-        setSelectValue(wrapper, expectedValue);
-        await waitForLifecycle(wrapper);
+        await selectOptionByText(wrapper, expectedValue);
 
         // Assert
         expect(props.onViewSelect).toHaveBeenCalledTimes(1);
@@ -74,8 +68,7 @@ describe('SelectViewInput', () => {
         expect(getSelectValue(wrapper)).toEqual(originalValue);
 
         // Act - change value
-        setSelectValue(wrapper, newValue);
-        await waitForLifecycle(wrapper);
+        await selectOptionByText(wrapper, newValue);
 
         expect(getSelectValue(wrapper)).toEqual(newValue);
     });

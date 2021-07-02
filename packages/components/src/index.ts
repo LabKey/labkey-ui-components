@@ -265,6 +265,8 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
+    getEditSharedSampleTypeUrl,
+    getDeleteSharedSampleTypeUrl,
     loadSelectedSamples,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
@@ -280,6 +282,7 @@ import { SampleCreationTypeModal } from './internal/components/samples/SampleCre
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
+import { SharedSampleTypeEditConfirmModal } from './internal/components/samples/SharedSampleTypeEditConfirmModal';
 import {
     AssayContextConsumer,
     assayPage,
@@ -789,6 +792,8 @@ export {
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
     getSelectedItemSamples,
+    getEditSharedSampleTypeUrl,
+    getDeleteSharedSampleTypeUrl,
     SampleTypeDataType,
     DataClassDataType,
     ParentEntityRequiredColumns,
@@ -807,6 +812,7 @@ export {
     SamplesSelectionProvider,
     SampleAliquotDetailHeader,
     SampleAssayDetail,
+    SharedSampleTypeEditConfirmModal,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,

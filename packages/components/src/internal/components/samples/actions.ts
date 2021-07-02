@@ -28,6 +28,7 @@ import {
     selectRows,
     resolveErrorMessage,
     getSelectedData,
+    SHARED_CONTAINER_PATH,
 } from '../../..';
 
 import { GroupedSampleFields } from './models';
@@ -354,4 +355,18 @@ export function getSelectedItemSamples(selectedItemIds: string[]): Promise<numbe
                 reject(reason);
             });
     });
+}
+
+export function getEditSharedSampleTypeUrl(typeId: number): string {
+    return ActionURL.buildURL('experiment', 'editSampleType', SHARED_CONTAINER_PATH, {
+        RowId: typeId,
+        returnUrl: window.location.pathname + (window.location.hash ? window.location.hash : '')
+    }).toString();
+}
+
+export function getDeleteSharedSampleTypeUrl(typeId: number): string {
+    return ActionURL.buildURL('experiment', 'deleteSampleTypes', SHARED_CONTAINER_PATH, {
+        singleObjectRowId: typeId,
+        returnUrl: window.location.pathname + (window.location.hash ? window.location.hash : '')
+    }).toString();
 }

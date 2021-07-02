@@ -23,7 +23,7 @@ import {
     generateId,
     insertRows,
     InsertRowsResponse,
-    Option,
+    SelectInputOption,
     QueryColumn,
     QueryGridModel,
     QueryInfo,
@@ -58,9 +58,9 @@ export interface IDerivePayload {
 // capturing the schema name (e.g., samples) and query name (e.g., SampleSet1)
 // that can be used to retrieve the set of fields defined for that type and/or
 // the list of values (e.g., S-123, S-234) that can be chosen as actual parents.
-// Needs(?) to extend Option for use in ReactSelects, but otherwise very much
+// Needs(?) to extend SelectInputOption for use in ReactSelects, but otherwise very much
 // a duplicate of EntityParentType (modulo the value being a DisplayObject vs TValue)
-export interface IParentOption extends Option {
+export interface IParentOption extends SelectInputOption {
     query?: string;
     schema?: string;
 }
@@ -154,7 +154,7 @@ export class EntityParentType extends Record({
 }
 
 // represents a chosen entity type (e.g., Sample Set 1)
-export interface IEntityTypeOption extends Option {
+export interface IEntityTypeOption extends SelectInputOption {
     lsid: string;
     rowId: number;
     entityDataType: EntityDataType;

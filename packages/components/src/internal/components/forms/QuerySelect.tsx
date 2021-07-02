@@ -19,7 +19,7 @@ import { Filter, Utils } from '@labkey/api';
 
 import { QueryColumn, SchemaQuery } from '../../..';
 
-import { DELIMITER, FilterOption, Option, SelectInput } from './input/SelectInput';
+import { DELIMITER, FilterOption, SelectInputOption, SelectInput } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
 import { initSelect } from './actions';
 import { FOCUS_FLAG } from './constants';
@@ -63,7 +63,7 @@ function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
 
 // 33775: Provide a default no-op filter to a React Select to prevent "normal" filtering on the input when fetching
 // async query results. They have already been filtered.
-function noopFilterOptions(options: Option[]): Option[] {
+function noopFilterOptions(options: SelectInputOption[]): SelectInputOption[] {
     return options;
 }
 

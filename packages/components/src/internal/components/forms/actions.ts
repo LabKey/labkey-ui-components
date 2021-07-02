@@ -21,7 +21,7 @@ import {
     ISelectRowsResult,
     LoadingState,
     naturalSort,
-    Option,
+    SelectInputOption,
     QueryInfo,
     QuerySelectOwnProps,
     searchRows,
@@ -108,7 +108,7 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                             const model = initQuerySelectModel(componentId, newProps, queryInfo);
 
                             if (props.fireQSChangeOnInit && Utils.isFunction(props.onQSChange)) {
-                                let items: Option | Option[] = formatResults(model, model.selectedItems);
+                                let items: SelectInputOption | SelectInputOption[] = formatResults(model, model.selectedItems);
 
                                 // mimic ReactSelect in that it will return a single option if multiple is not true
                                 if (props.multiple === false) {
@@ -249,7 +249,7 @@ export function saveSearchResults(
     }) as QuerySelectModel;
 }
 
-export function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): Option[] {
+export function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): SelectInputOption[] {
     if (!model.queryInfo || !results) {
         return [];
     }
@@ -273,7 +273,7 @@ export function formatSavedResults(
     model: QuerySelectModel,
     results?: Map<string, Map<string, any>>,
     token?: string
-): Option[] {
+): SelectInputOption[] {
     const { queryInfo, selectedItems, searchResults } = model;
 
     if (!queryInfo) {

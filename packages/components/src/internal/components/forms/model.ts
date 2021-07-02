@@ -18,7 +18,7 @@ import { Filter } from '@labkey/api';
 
 import { ISelectRowsResult, QueryInfo, SchemaQuery } from '../../..';
 
-import { DELIMITER, Option } from './input/SelectInput';
+import { DELIMITER, SelectInputOption } from './input/SelectInput';
 import * as actions from './actions';
 
 export interface QuerySelectModelProps {
@@ -86,11 +86,11 @@ export class QuerySelectModel
         super(values);
     }
 
-    formatSavedResults(data?: Map<string, Map<string, any>>, token?: string): Option[] {
+    formatSavedResults(data?: Map<string, Map<string, any>>, token?: string): SelectInputOption[] {
         return actions.formatSavedResults(this, data, token);
     }
 
-    getSelectedOptions(): Option | Option[] {
+    getSelectedOptions(): SelectInputOption | SelectInputOption[] {
         const options = actions.formatResults(this, this.selectedItems);
 
         if (this.multiple) {

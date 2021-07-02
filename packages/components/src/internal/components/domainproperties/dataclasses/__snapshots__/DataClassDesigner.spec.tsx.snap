@@ -3948,6 +3948,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         selectProps={
                                                           Object {
                                                             "aria-live": "polite",
+                                                            "autoFocus": undefined,
                                                             "backspaceRemovesValue": true,
                                                             "blurInputOnSelect": false,
                                                             "captureMenuScroll": false,
@@ -4072,6 +4073,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                               selectProps={
                                                                 Object {
                                                                   "aria-live": "polite",
+                                                                  "autoFocus": undefined,
                                                                   "backspaceRemovesValue": true,
                                                                   "blurInputOnSelect": false,
                                                                   "captureMenuScroll": false,
@@ -4210,6 +4212,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                               selectProps={
                                                                 Object {
                                                                   "aria-live": "polite",
+                                                                  "autoFocus": undefined,
                                                                   "backspaceRemovesValue": true,
                                                                   "blurInputOnSelect": false,
                                                                   "captureMenuScroll": false,
@@ -4345,6 +4348,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     selectProps={
                                                                       Object {
                                                                         "aria-live": "polite",
+                                                                        "autoFocus": undefined,
                                                                         "backspaceRemovesValue": true,
                                                                         "blurInputOnSelect": false,
                                                                         "captureMenuScroll": false,
@@ -4467,6 +4471,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           selectProps={
                                                                             Object {
                                                                               "aria-live": "polite",
+                                                                              "autoFocus": undefined,
                                                                               "backspaceRemovesValue": true,
                                                                               "blurInputOnSelect": false,
                                                                               "captureMenuScroll": false,
@@ -4600,6 +4605,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           selectProps={
                                                                             Object {
                                                                               "aria-live": "polite",
+                                                                              "autoFocus": undefined,
                                                                               "backspaceRemovesValue": true,
                                                                               "blurInputOnSelect": false,
                                                                               "captureMenuScroll": false,
@@ -4713,6 +4719,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             selectProps={
                                                                               Object {
                                                                                 "aria-live": "polite",
+                                                                                "autoFocus": undefined,
                                                                                 "backspaceRemovesValue": true,
                                                                                 "blurInputOnSelect": false,
                                                                                 "captureMenuScroll": false,
@@ -4923,6 +4930,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     selectProps={
                                                                       Object {
                                                                         "aria-live": "polite",
+                                                                        "autoFocus": undefined,
                                                                         "backspaceRemovesValue": true,
                                                                         "blurInputOnSelect": false,
                                                                         "captureMenuScroll": false,
@@ -5040,6 +5048,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           selectProps={
                                                                             Object {
                                                                               "aria-live": "polite",
+                                                                              "autoFocus": undefined,
                                                                               "backspaceRemovesValue": true,
                                                                               "blurInputOnSelect": false,
                                                                               "captureMenuScroll": false,
@@ -5168,6 +5177,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           selectProps={
                                                                             Object {
                                                                               "aria-live": "polite",
+                                                                              "autoFocus": undefined,
                                                                               "backspaceRemovesValue": true,
                                                                               "blurInputOnSelect": false,
                                                                               "captureMenuScroll": false,
@@ -5604,6 +5614,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         selectProps={
                                                           Object {
                                                             "aria-live": "polite",
+                                                            "autoFocus": undefined,
                                                             "backspaceRemovesValue": true,
                                                             "blurInputOnSelect": false,
                                                             "captureMenuScroll": false,
@@ -5728,6 +5739,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                               selectProps={
                                                                 Object {
                                                                   "aria-live": "polite",
+                                                                  "autoFocus": undefined,
                                                                   "backspaceRemovesValue": true,
                                                                   "blurInputOnSelect": false,
                                                                   "captureMenuScroll": false,
@@ -5866,6 +5878,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                               selectProps={
                                                                 Object {
                                                                   "aria-live": "polite",
+                                                                  "autoFocus": undefined,
                                                                   "backspaceRemovesValue": true,
                                                                   "blurInputOnSelect": false,
                                                                   "captureMenuScroll": false,
@@ -6001,6 +6014,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     selectProps={
                                                                       Object {
                                                                         "aria-live": "polite",
+                                                                        "autoFocus": undefined,
                                                                         "backspaceRemovesValue": true,
                                                                         "blurInputOnSelect": false,
                                                                         "captureMenuScroll": false,
@@ -6123,6 +6137,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           selectProps={
                                                                             Object {
                                                                               "aria-live": "polite",
+                                                                              "autoFocus": undefined,
                                                                               "backspaceRemovesValue": true,
                                                                               "blurInputOnSelect": false,
                                                                               "captureMenuScroll": false,
@@ -6256,6 +6271,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           selectProps={
                                                                             Object {
                                                                               "aria-live": "polite",
+                                                                              "autoFocus": undefined,
                                                                               "backspaceRemovesValue": true,
                                                                               "blurInputOnSelect": false,
                                                                               "captureMenuScroll": false,
@@ -6369,6 +6385,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             selectProps={
                                                                               Object {
                                                                                 "aria-live": "polite",
+                                                                                "autoFocus": undefined,
                                                                                 "backspaceRemovesValue": true,
                                                                                 "blurInputOnSelect": false,
                                                                                 "captureMenuScroll": false,
@@ -6579,6 +6596,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     selectProps={
                                                                       Object {
                                                                         "aria-live": "polite",
+                                                                        "autoFocus": undefined,
                                                                         "backspaceRemovesValue": true,
                                                                         "blurInputOnSelect": false,
                                                                         "captureMenuScroll": false,
@@ -6696,6 +6714,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           selectProps={
                                                                             Object {
                                                                               "aria-live": "polite",
+                                                                              "autoFocus": undefined,
                                                                               "backspaceRemovesValue": true,
                                                                               "blurInputOnSelect": false,
                                                                               "captureMenuScroll": false,
@@ -6824,6 +6843,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           selectProps={
                                                                             Object {
                                                                               "aria-live": "polite",
+                                                                              "autoFocus": undefined,
                                                                               "backspaceRemovesValue": true,
                                                                               "blurInputOnSelect": false,
                                                                               "captureMenuScroll": false,

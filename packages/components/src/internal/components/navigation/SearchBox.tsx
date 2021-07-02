@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from 'react';
+import { InputGroup } from 'react-bootstrap';
+import { FindByIdsDropdown } from '../samples/FindByIdsDropdown';
 
 interface Props {
     onSearch: (value: string) => void;
     placeholder?: string;
+    showFindByIds?: boolean;
+    onFindByIds?: () => void;
+    findNounPlural?: string;
 }
 
-export const SearchBox: FC<Props> = memo(({ onSearch, placeholder }) => {
+export const SearchBox: FC<Props> = memo(props => {
+    const { onSearch, placeholder, showFindByIds, onFindByIds, findNounPlural } = props;
+
     const [searchValue, setSearchValue] = useState('');
 
     const onChange = useCallback(
@@ -45,14 +52,21 @@ export const SearchBox: FC<Props> = memo(({ onSearch, placeholder }) => {
         <form className="navbar__search-form" onSubmit={onSubmit}>
             <div className="form-group">
                 <i className="fa fa-search navbar__search-icon" />
-                <input
-                    className="navbar__search-input"
-                    onChange={onChange}
-                    placeholder={placeholder ?? 'Enter Search Terms'}
-                    size={34}
-                    type="text"
-                    value={searchValue}
-                />
+                <InputGroup className="navbar__input-group">
+                    <input
+                        className="form-control navbar__search-input"
+                        onChange={onChange}
+                        placeholder={placeholder ?? 'Enter Search Terms'}
+                        size={34}
+                        type="text"
+                        value={searchValue}
+                    />
+                    {showFindByIds &&
+                    <InputGroup.Button>
+                        <FindByIdsDropdown title={''} onFindByIds={onFindByIds} nounPlural={findNounPlural}/>
+                    </InputGroup.Button>
+                    }
+                </InputGroup>
             </div>
         </form>
     );

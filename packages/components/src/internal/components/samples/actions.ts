@@ -21,16 +21,17 @@ import { deleteEntityType } from '../entities/actions';
 import {
     buildURL,
     DomainDetails,
+    getSelectedData,
     getSelection,
     QueryColumn,
-    SCHEMAS,
-    SchemaQuery,
-    selectRows,
     resolveErrorMessage,
-    getSelectedData,
+    SchemaQuery,
+    SCHEMAS,
+    selectRows,
 } from '../../..';
 
 import { GroupedSampleFields } from './models';
+import { FindFieldType } from './constants';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -353,5 +354,38 @@ export function getSelectedItemSamples(selectedItemIds: string[]): Promise<numbe
                 console.error(reason);
                 reject(reason);
             });
+    });
+}
+
+export function getFindSamplesQueryId(fieldType: FindFieldType, ids: string[]) : Promise<string> {
+    let jsonData;
+    if (fieldType == FindFieldType.name) {
+        jsonData = {
+            sampleIds: ids
+        }
+    } else {
+        jsonData = {
+            uniqueIds: ids
+        }
+    }
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL("experiment", "saveOrderedSamplesQuery.api"),
+            method: 'POST',
+            jsonData,
+            success: Utils.getCallbackWrapper((response) => {
+                if (response.success) {
+                    const data = response.data;
+                    resolve(data);
+                } else {
+                    console.error("Unable to create session query");
+                    reject("There was a problem creating the query for the samples. Please try again.");
+                }
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                console.error("There was a problem creating the query for the samples.", error);
+                reject(resolveErrorMessage(error, "query", "queries", "creating"));
+            })
+        });
     });
 }

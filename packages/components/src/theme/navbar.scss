@@ -363,13 +363,31 @@
     top: 8px;
     margin-left: 5px;
     color: $gray-light;
+    z-index: 10; // TODO may not be needed if not using form-control
   }
 
   .navbar__search-input {
     padding: 7px 4px 7px 22px;
     border-radius: 4px;
     border-style: none;
+    height: 31px;
   }
+
+  .navbar__input-group {
+      width: 320px;
+  }
+  .navbar__find-samples-button {
+      border: none;
+  }
+}
+
+.navbar__xs-find-dropdown {
+    padding-top: 0;
+    background: none;
+    border: none;
+    &:active, &:hover {
+        background: none;
+    }
 }
 
 .navbar__xs-search-icon {

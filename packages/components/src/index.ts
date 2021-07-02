@@ -440,7 +440,7 @@ import {
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
 } from './internal/components/samples/models';
-import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from './internal/components/samples/constants';
+import { FindFieldType, SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
@@ -810,6 +810,7 @@ export {
     POOLED_SAMPLE_CREATION,
     ALIQUOT_CREATION,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
+    FindFieldType,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

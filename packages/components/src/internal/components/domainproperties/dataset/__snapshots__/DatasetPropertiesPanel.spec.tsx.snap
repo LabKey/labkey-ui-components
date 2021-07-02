@@ -575,6 +575,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                                 onBlur={[Function]}
                                 onChange={[Function]}
                                 onFocus={[Function]}
+                                required={false}
                                 spellCheck="false"
                                 style={
                                   Object {
@@ -1264,6 +1265,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                                 onBlur={[Function]}
                                 onChange={[Function]}
                                 onFocus={[Function]}
+                                required={false}
                                 spellCheck="false"
                                 style={
                                   Object {

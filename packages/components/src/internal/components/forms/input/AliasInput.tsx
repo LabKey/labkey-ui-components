@@ -1,50 +1,42 @@
-import React, { Component } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 
 import { generateId, QueryColumn, SelectInput } from '../../../..';
 
-interface AliasInputProps {
+interface Props {
+    allowDisable?: boolean;
     col: QueryColumn;
     editing?: boolean;
-    value?: string | Array<Record<string, any>>;
-    allowDisable?: boolean;
     initiallyDisabled: boolean;
     onToggleDisable?: (disabled: boolean) => void;
+    value?: string | Array<Record<string, any>>;
 }
 
-export class AliasInput extends Component<AliasInputProps> {
-    _id: string;
+export const AliasInput: FC<Props> = memo(props => {
+    const { allowDisable, col, editing, initiallyDisabled, onToggleDisable, value } = props;
+    const id = useMemo(() => generateId(), []);
+    const promptTextCreator = useCallback((text: string) => `Create alias "${text}"`, []);
 
-    constructor(props: AliasInputProps) {
-        super(props);
+    return (
+        <SelectInput
+            allowCreate
+            allowDisable={allowDisable}
+            id={id}
+            initiallyDisabled={initiallyDisabled}
+            inputClass={editing ? 'col-sm-12' : undefined}
+            joinValues
+            label={col.caption}
+            multiple
+            name={col.fieldKey}
+            noResultsText="Enter alias name(s)"
+            onToggleDisable={onToggleDisable}
+            placeholder="Enter alias name(s)"
+            promptTextCreator={promptTextCreator}
+            required={col.required}
+            saveOnBlur
+            showLabel
+            value={value}
+        />
+    );
+});
 
-        this._id = generateId();
-    }
-
-    promptTextCreator = (text: string): string => `Create alias "${text}"`;
-
-    render() {
-        const { allowDisable, col, editing, value, initiallyDisabled, onToggleDisable } = this.props;
-
-        return (
-            <SelectInput
-                allowDisable={allowDisable}
-                initiallyDisabled={initiallyDisabled}
-                onToggleDisable={onToggleDisable}
-                showLabel={true}
-                allowCreate={true}
-                id={this._id}
-                inputClass={editing ? 'col-sm-12' : undefined}
-                joinValues={true}
-                label={col.caption}
-                required={col.required}
-                multiple={true}
-                name={col.fieldKey}
-                noResultsText="Enter alias name(s)"
-                placeholder="Enter alias name(s)"
-                promptTextCreator={this.promptTextCreator}
-                saveOnBlur={true}
-                value={value}
-            />
-        );
-    }
-}
+AliasInput.displayName = 'AliasInput';

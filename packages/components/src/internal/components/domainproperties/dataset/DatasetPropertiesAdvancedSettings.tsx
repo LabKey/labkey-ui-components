@@ -24,13 +24,26 @@ interface DatasetSettingsSelectProps {
     selectedValue?: any;
     selectOptions: any;
     onSelectChange: (name, formValue, selected) => void;
+    labelKey?: string;
+    valueKey?: string;
     disabled?: boolean;
     clearable?: boolean;
 }
 
 export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSelectProps> {
     render() {
-        const { name, label, helpTip, selectedValue, selectOptions, onSelectChange, disabled, clearable } = this.props;
+        const {
+            name,
+            label,
+            helpTip,
+            selectedValue,
+            selectOptions,
+            onSelectChange,
+            labelKey,
+            valueKey,
+            disabled,
+            clearable,
+        } = this.props;
 
         return (
             <Row className="margin-top">
@@ -50,6 +63,8 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
                         multiple={false}
                         required={false}
                         name={name}
+                        labelKey={labelKey}
+                        valueKey={valueKey}
                         disabled={disabled}
                         clearable={clearable}
                     />

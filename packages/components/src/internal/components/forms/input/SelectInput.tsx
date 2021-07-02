@@ -80,7 +80,7 @@ function initOptions(props: SelectInputProps): any {
     const { value } = props;
     let options;
 
-    if (value !== undefined && value !== null) {
+    if (value !== undefined && value !== null && value !== '') {
         if (Array.isArray(value)) {
             options = [];
             value.forEach(v => {
@@ -127,7 +127,7 @@ export interface SelectInputProps {
     disabled?: boolean;
     filterOptions?: FilterOption;
     formsy?: boolean;
-    // ignoreCase?: boolean;  -- REMOVED
+    // ignoreCase?: boolean;  -- REMOVED. Use createFilter() instead.
     initiallyDisabled?: boolean;
     inputClass?: string;
     isLoading?: boolean;
@@ -135,6 +135,7 @@ export interface SelectInputProps {
     //   the values when false.
     joinValues?: boolean;
     labelClass?: string;
+    labelKey?: string; // no longer directly supported. Uses getOptionLabel() if "labelKey" is provided
     loadOptions?: any; // no way to currently require one or the other, options/loadOptions
     multiple?: boolean;
     name?: string;
@@ -283,7 +284,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
 
         this.change = true;
 
-        if (clearCacheOnChange) {
+        if (clearCacheOnChange && this.isAsync()) {
             this.setState(state => ({ asyncKey: state.asyncKey + 1 }));
         }
 
@@ -421,8 +422,16 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         return null;
     };
 
-    Input = inputProps => <components.Input {...inputProps} />;
-    // Input = inputProps => <components.Input {...inputProps} id={this.getId()} />; // TODO: Configure id on the input
+    getOptionLabel = (option: SelectInputOption): string => option[this.props.labelKey];
+
+    getOptionValue = (option: SelectInputOption): any => option[this.props.valueKey];
+
+    Input = inputProps => (
+        // Marking input as "required" is not natively supported by react-select post-v1. Here we can mark
+        // the underlying input as required, however, this is not the value input but rather the user visible
+        // input so we manually check if a value is set.
+        <components.Input {...inputProps} required={!!this.props.required && !this.state.selectedOptions} />
+    );
 
     noOptionsMessage = (): string => this.props.noResultsText;
 
@@ -437,6 +446,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             disabled,
             filterOptions,
             isLoading,
+            labelKey,
             loadOptions,
             multiple,
             name,
@@ -444,6 +454,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             options,
             placeholder,
             promptTextCreator,
+            valueKey,
         } = this.props;
 
         const components: any = { Input: this.Input };
@@ -452,7 +463,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             components.Option = optionRenderer;
         }
 
-        const selectProps = {
+        const selectProps: any = {
             autoFocus,
             backspaceRemovesValue,
             blurInputOnSelect: false, // TODO: This seems to have no effect
@@ -460,13 +471,15 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             components,
             delimiter,
             filterOption: filterOptions, // TODO: Rename to filterOption() and determine if "value" is still a property
+            getOptionLabel: labelKey && labelKey !== 'label' ? this.getOptionLabel : undefined,
+            getOptionValue: valueKey && valueKey !== 'value' ? this.getOptionValue : undefined,
             id: this.getId(),
             // ignoreCase, TODO: Removed. See `createFilter()`. Default option is "ignoreCase" set to true.
             // inputProps: { id: this.getId() },
             isClearable: clearable,
             isDisabled: disabled || this.state.isDisabled,
             isLoading,
-            isMulti: multiple, // TODO: Rename "multiple" to "isMulti" on SelectInput props
+            isMulti: multiple,
             name,
             noOptionsMessage: this.noOptionsMessage,
             onBlur: this.handleBlur,
@@ -476,7 +489,6 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             placeholder,
             promptTextCreator,
             ref: 'reactSelect',
-            // required, // TODO: No longer supported by ReactSelect. Consider keeping prop for field display. See how this acts on forms.
             value: this.state.selectedOptions,
         };
 

@@ -483,6 +483,7 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
                         onBlur={[Function]}
                         onChange={[Function]}
                         onFocus={[Function]}
+                        required={false}
                         spellCheck="false"
                         style={
                           Object {
@@ -643,6 +644,7 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
                         onBlur={[Function]}
                         onChange={[Function]}
                         onFocus={[Function]}
+                        required={false}
                         spellCheck="false"
                         style={
                           Object {

@@ -1630,6 +1630,7 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
                         onBlur={[Function]}
                         onChange={[Function]}
                         onFocus={[Function]}
+                        required={true}
                         spellCheck="false"
                         style={
                           Object {

@@ -230,6 +230,7 @@ export class AssignedToGroupInput extends PureComponent<AssignmentOptionsInputPr
                             placeholder="All Project Users"
                             inputClass="col-xs-12"
                             valueKey="userId"
+                            labelKey="displayName"
                             onChange={this.onChange}
                             value={model.assignedToGroup ? model.assignedToGroup : undefined}
                             formsy={false}
@@ -271,6 +272,7 @@ export class DefaultUserAssignmentInput extends PureComponent<AssignmentOptionsI
                             placeholder="Unassigned"
                             inputClass="col-xs-12"
                             valueKey="userId"
+                            labelKey="displayName"
                             onChange={this.onChange}
                             value={model.assignedToUser}
                             formsy={false}

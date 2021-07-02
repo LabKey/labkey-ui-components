@@ -721,6 +721,7 @@ Array [
                             onBlur={[Function]}
                             onChange={[Function]}
                             onFocus={[Function]}
+                            required={false}
                             spellCheck="false"
                             style={
                               Object {
@@ -881,6 +882,7 @@ Array [
                             onBlur={[Function]}
                             onChange={[Function]}
                             onFocus={[Function]}
+                            required={false}
                             spellCheck="false"
                             style={
                               Object {
@@ -4715,6 +4717,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             onChange={[Function]}
                                                                             onFocus={[Function]}
                                                                             options={Array []}
+                                                                            required={false}
                                                                             selectOption={[Function]}
                                                                             selectProps={
                                                                               Object {
@@ -4852,6 +4855,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   onBlur={[Function]}
                                                                                   onChange={[Function]}
                                                                                   onFocus={[Function]}
+                                                                                  required={false}
                                                                                   spellCheck="false"
                                                                                   tabIndex="0"
                                                                                   type="text"
@@ -4875,6 +4879,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       onBlur={[Function]}
                                                                                       onChange={[Function]}
                                                                                       onFocus={[Function]}
+                                                                                      required={false}
                                                                                       spellCheck="false"
                                                                                       style={
                                                                                         Object {
@@ -6381,6 +6386,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             onChange={[Function]}
                                                                             onFocus={[Function]}
                                                                             options={Array []}
+                                                                            required={false}
                                                                             selectOption={[Function]}
                                                                             selectProps={
                                                                               Object {
@@ -6518,6 +6524,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   onBlur={[Function]}
                                                                                   onChange={[Function]}
                                                                                   onFocus={[Function]}
+                                                                                  required={false}
                                                                                   spellCheck="false"
                                                                                   tabIndex="0"
                                                                                   type="text"
@@ -6541,6 +6548,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       onBlur={[Function]}
                                                                                       onChange={[Function]}
                                                                                       onFocus={[Function]}
+                                                                                      required={false}
                                                                                       spellCheck="false"
                                                                                       style={
                                                                                         Object {

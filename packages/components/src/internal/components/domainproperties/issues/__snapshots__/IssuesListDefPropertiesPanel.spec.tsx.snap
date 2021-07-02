@@ -143,6 +143,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                             onBlur={[Function]}
                             onChange={[Function]}
                             onFocus={[Function]}
+                            required={false}
                             spellCheck="false"
                             style={
                               Object {
@@ -210,6 +211,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   <input
                     name="commentSortDirection"
                     type="hidden"
+                    value="ASC"
                   />
                 </div>
               </div>

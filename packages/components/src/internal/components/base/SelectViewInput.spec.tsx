@@ -41,7 +41,7 @@ describe('SelectViewInput', () => {
         expect(getSelectViewsInLocalStorage()[props.id]).toBeUndefined();
 
         // Act - change value
-        await selectOptionByText(wrapper, expectedValue);
+        await selectOptionByText(wrapper, 'Heatmap');
 
         // Assert
         expect(props.onViewSelect).toHaveBeenCalledTimes(1);
@@ -51,26 +51,21 @@ describe('SelectViewInput', () => {
 
     test('supports custom options', async () => {
         // Arrange
-        const originalValue = 'mariners';
-        const newValue = 'twins';
-
-        const views = [
-            { label: 'Seattle Mariners', value: 'mariners' },
-            { label: 'Minnesota Twins', value: 'twins' },
-            SelectView.Heatmap,
-        ];
+        const option1 = { label: 'Seattle Mariners', value: 'mariners' };
+        const option2 = { label: 'Minnesota Twins', value: 'twins' };
+        const views = [option1, option2, SelectView.Heatmap];
         const props = getDefaultProps();
 
         // Act
-        const wrapper = mount(<SelectViewInput {...props} defaultView={originalValue} views={views} />);
+        const wrapper = mount(<SelectViewInput {...props} defaultView={option1.value} views={views} />);
 
         // Assert
-        expect(getSelectValue(wrapper)).toEqual(originalValue);
+        expect(getSelectValue(wrapper)).toEqual(option1.value);
 
         // Act - change value
-        await selectOptionByText(wrapper, newValue);
+        await selectOptionByText(wrapper, option2.label);
 
-        expect(getSelectValue(wrapper)).toEqual(newValue);
+        expect(getSelectValue(wrapper)).toEqual(option2.value);
     });
 
     test('localStorage -- pre-existing value', () => {

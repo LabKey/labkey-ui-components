@@ -376,16 +376,18 @@
   .navbar__input-group {
       width: 320px;
   }
-  .navbar__find-samples-button {
+  .navbar__find-and-search-button {
       border: none;
   }
 }
 
 .navbar__xs-find-dropdown {
-    padding-top: 0;
+    padding: 0;
     background: none;
     border: none;
-    &:active, &:hover {
+    &:active,
+    &:active:focus,
+    &:hover {
         background: none;
     }
 }

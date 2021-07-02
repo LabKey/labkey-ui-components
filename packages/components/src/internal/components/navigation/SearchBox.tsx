@@ -15,7 +15,7 @@
  */
 import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from 'react';
 import { InputGroup } from 'react-bootstrap';
-import { FindByIdsDropdown } from '../samples/FindByIdsDropdown';
+import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 
 interface Props {
     onSearch: (value: string) => void;
@@ -63,7 +63,7 @@ export const SearchBox: FC<Props> = memo(props => {
                     />
                     {showFindByIds &&
                     <InputGroup.Button>
-                        <FindByIdsDropdown title={''} onFindByIds={onFindByIds} nounPlural={findNounPlural}/>
+                        <FindAndSearchDropdown title={''} onFindByIds={onFindByIds} findNounPlural={findNounPlural}/>
                     </InputGroup.Button>
                     }
                 </InputGroup>

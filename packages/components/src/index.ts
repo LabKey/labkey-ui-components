@@ -261,6 +261,7 @@ import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
     fetchSamples,
+    getFindSamplesByIdQueryName,
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
@@ -331,6 +332,7 @@ import { EntityTypeDeleteConfirmModal } from './internal/components/entities/Ent
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './internal/components/navigation/HeaderWrapper';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
+import { FindByIdsModal } from './internal/components/navigation/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
 import { SubNav } from './internal/components/navigation/SubNav';
@@ -437,10 +439,15 @@ import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
+    FindField,
     POOLED_SAMPLE_CREATION,
-    SampleCreationType,
+    SampleCreationType
 } from './internal/components/samples/models';
-import { FindFieldType, SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from './internal/components/samples/constants';
+import {
+    SAMPLE_ID_FIND_FIELD,
+    SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
+    UNIQUE_ID_FIND_FIELD
+} from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
@@ -779,6 +786,9 @@ export {
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
+    FindField,
+    UNIQUE_ID_FIND_FIELD,
+    SAMPLE_ID_FIND_FIELD,
     SampleTypeModel,
     deleteSampleSet,
     fetchSamples,
@@ -810,7 +820,7 @@ export {
     POOLED_SAMPLE_CREATION,
     ALIQUOT_CREATION,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
-    FindFieldType,
+    getFindSamplesByIdQueryName,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
@@ -903,6 +913,7 @@ export {
     HeaderWrapper,
     NavigationBar,
     ProductNavigationMenu,
+    FindByIdsModal,
     SubNav,
     Breadcrumb,
     BreadcrumbCreate,

@@ -259,13 +259,14 @@ import { SearchResultsPanel } from './internal/components/search/SearchResultsPa
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
+    clearFindIds,
     deleteSampleSet,
     fetchSamples,
     getFindSamplesByIdQueryName,
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
-    loadSelectedSamples,
+    loadSelectedSamples
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
@@ -787,6 +788,7 @@ export {
     deleteDataClass,
     fetchDataClass,
     FindField,
+    clearFindIds,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_ID_FIND_FIELD,
     SampleTypeModel,

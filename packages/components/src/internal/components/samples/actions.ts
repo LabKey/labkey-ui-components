@@ -391,3 +391,8 @@ export function getFindSamplesByIdQueryName(previousQueryName?: string) : Promis
         }
     });
 }
+
+export function clearFindIds(): void {
+    sessionStorage.removeItem(UNIQUE_ID_FIND_FIELD.storageKey);
+    sessionStorage.removeItem(SAMPLE_ID_FIND_FIELD.storageKey);
+}

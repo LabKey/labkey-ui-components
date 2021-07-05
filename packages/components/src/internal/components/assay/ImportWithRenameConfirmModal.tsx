@@ -10,34 +10,28 @@ interface Props {
     folderType?: string;
 }
 
-export class ImportWithRenameConfirmModal extends React.Component<Props, any> {
+export class ImportWithRenameConfirmModal extends React.Component<Props> {
     render() {
-        const { onConfirm, onCancel } = this.props;
+        const { folderType, newName, onConfirm, onCancel, originalName } = this.props;
 
         return (
             <ConfirmModal
                 title="Rename duplicate file?"
-                msg={
-                    <>
-                        <p>
-                            A file named <span className="import-rename-filename">{this.props.originalName}</span>{' '}
-                            already exists in this {this.props.folderType} folder.
-                        </p>
-                        <p>
-                            To import this file, either give it a new name or it will be renamed to the following on
-                            import:
-                        </p>
-                        <p>
-                            <span className="import-rename-filename">{this.props.newName}</span>
-                        </p>
-                    </>
-                }
                 onConfirm={onConfirm}
                 onCancel={onCancel}
                 confirmVariant="success"
                 confirmButtonText="Import and Rename"
                 cancelButtonText="Cancel"
-            />
+            >
+                <p>
+                    A file named <span className="import-rename-filename">{originalName}</span> already exists in
+                    this {folderType} folder.
+                </p>
+                <p>To import this file, either give it a new name or it will be renamed to the following on import:</p>
+                <p>
+                    <span className="import-rename-filename">{newName}</span>
+                </p>
+            </ConfirmModal>
         );
     }
 }

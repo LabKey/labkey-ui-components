@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import classNames from 'classnames';
 
 interface Props {
     show?: boolean;
     title?: string;
-    msg: any;
-    onConfirm?: (any) => void;
-    onCancel?: (any) => void;
+    onConfirm?: () => void;
+    onCancel?: () => void;
     confirmButtonText?: string;
     cancelButtonText?: string;
     confirmVariant?: string;
     submitting?: boolean;
 }
 
-export class ConfirmModal extends React.PureComponent<Props, any> {
+export class ConfirmModal extends React.PureComponent<Props> {
     static defaultProps = {
         show: true,
         title: 'Confirm',
@@ -38,11 +37,11 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
         confirmVariant: 'danger',
     };
 
-    render() {
+    render(): ReactNode {
         const {
+            children,
             show,
             title,
-            msg,
             onConfirm,
             onCancel,
             confirmButtonText,
@@ -60,7 +59,7 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
 
-                <Modal.Body>{msg}</Modal.Body>
+                <Modal.Body>{children}</Modal.Body>
 
                 <Modal.Footer>
                     {onCancel && (

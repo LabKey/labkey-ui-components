@@ -90,12 +90,9 @@ export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
 
         if (this.state.isLoading) {
             return (
-                <ConfirmModal
-                    title="Loading confirmation data"
-                    msg={<LoadingSpinner />}
-                    onCancel={onCancel}
-                    cancelButtonText="Cancel"
-                />
+                <ConfirmModal title="Loading confirmation data" onCancel={onCancel} cancelButtonText="Cancel">
+                    <LoadingSpinner />
+                </ConfirmModal>
             );
         }
 
@@ -104,10 +101,11 @@ export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
                 <ConfirmModal
                     title="Deletion Error"
                     onCancel={onCancel}
-                    msg={<Alert>{this.state.error}</Alert>}
                     onConfirm={undefined}
                     cancelButtonText="Dismiss"
-                />
+                >
+                    <Alert>{this.state.error}</Alert>
+                </ConfirmModal>
             );
         }
 

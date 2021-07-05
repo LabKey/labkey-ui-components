@@ -51,32 +51,29 @@ export class UserActivateChangeConfirmModal extends React.Component<Props, State
         return (
             <ConfirmModal
                 title={action + ' ' + Utils.pluralBasic(userCount, 'User') + '?'}
-                msg={
-                    <>
-                        {!reactivate && (
-                            <p>
-                                Deactivated users will <b>no longer be able to login</b>. However, their information
-                                will be preserved for display purposes, and their group memberships and role assignments
-                                will be preserved in case they are reactivated at a later time.
-                            </p>
-                        )}
-                        {reactivate && (
-                            <p>
-                                Reactivated users will be able to <b>login normally</b>, and all their previous group
-                                memberships and role assignments will apply.
-                            </p>
-                        )}
-                        <p>{Utils.pluralBasic(userCount, 'user')} will be updated. Do you want to proceed?</p>
-                        {error && <Alert>{error}</Alert>}
-                    </>
-                }
                 onConfirm={this.onConfirm}
                 onCancel={onCancel}
                 confirmVariant={reactivate ? 'success' : 'danger'}
                 confirmButtonText={'Yes, ' + action}
                 cancelButtonText="Cancel"
                 submitting={submitting}
-            />
+            >
+                {!reactivate && (
+                    <p>
+                        Deactivated users will <b>no longer be able to login</b>. However, their information will be
+                        preserved for display purposes, and their group memberships and role assignments will be
+                        preserved in case they are reactivated at a later time.
+                    </p>
+                )}
+                {reactivate && (
+                    <p>
+                        Reactivated users will be able to <b>login normally</b>, and all their previous group
+                        memberships and role assignments will apply.
+                    </p>
+                )}
+                <p>{Utils.pluralBasic(userCount, 'user')} will be updated. Do you want to proceed?</p>
+                {error && <Alert>{error}</Alert>}
+            </ConfirmModal>
         );
     }
 }

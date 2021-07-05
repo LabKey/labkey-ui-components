@@ -24,22 +24,20 @@ export class AssayDesignDeleteConfirmModal extends React.Component<Props, any> {
         return (
             <ConfirmModal
                 title="Permanently delete assay design?"
-                msg={
-                    <span>
-                        {assayDesignName}
-                        {runsMsg} will be permanently deleted.&nbsp;
-                        <p className="top-spacing">
-                            <strong>Deletion cannot be undone.</strong>
-                            &nbsp;Do you want to proceed?
-                        </p>
-                    </span>
-                }
                 onConfirm={onConfirm}
                 onCancel={onCancel}
                 confirmVariant="danger"
                 confirmButtonText="Yes, Delete"
                 cancelButtonText="Cancel"
-            />
+            >
+                <span>
+                    {assayDesignName}
+                    {runsMsg} will be permanently deleted.
+                    <p className="top-spacing">
+                        <strong>Deletion cannot be undone.</strong> Do you want to proceed?
+                    </p>
+                </span>
+            </ConfirmModal>
         );
     }
 }

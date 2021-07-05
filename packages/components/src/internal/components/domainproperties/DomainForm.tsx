@@ -130,7 +130,6 @@ interface IDomainFormInput {
     showFilePropertyType?: boolean; // Flag to indicate if the File property type should be allowed
     showHeader?: boolean;
     showInferFromFile?: boolean;
-    showStudyPropertyTypes?: boolean;
     successBsStyle?: string;
     todoIconHelpMsg?: string;
     useTheme?: boolean;
@@ -182,7 +181,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         initCollapsed: false,
         isNew: false,
         appPropertiesOnly: false, // TODO: convert them into more options in the IDomainFormDisplayOptions interface
-        showStudyPropertyTypes: true,
         domainIndex: 0,
         successBsStyle: 'success',
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
@@ -1244,7 +1242,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
-            showStudyPropertyTypes,
         } = this.props;
         const {
             expandedRowIndex,
@@ -1298,7 +1295,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 defaultDefaultValueType={domain.defaultDefaultValueType}
                                                 defaultValueOptions={domain.defaultValueOptions}
                                                 appPropertiesOnly={appPropertiesOnly}
-                                                showStudyPropertyTypes={showStudyPropertyTypes}
                                                 showFilePropertyType={showFilePropertyType}
                                                 successBsStyle={successBsStyle}
                                                 isDragDisabled={

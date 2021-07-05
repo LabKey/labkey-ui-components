@@ -80,7 +80,6 @@ interface IDomainRowProps {
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
     appPropertiesOnly?: boolean;
-    showStudyPropertyTypes?: boolean;
     showFilePropertyType?: boolean;
     domainIndex: number;
     successBsStyle?: string;
@@ -344,7 +343,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             field,
             availableTypes,
             appPropertiesOnly,
-            showStudyPropertyTypes,
             showFilePropertyType,
             domainIndex,
             domainFormDisplayOptions,
@@ -380,7 +378,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         {isPrimaryKeyFieldLocked(field.lockType) ? (
                             <option value={field.dataType.name}>{field.dataType.display}</option>
                         ) : (
-                            resolveAvailableTypes(field, availableTypes, appPropertiesOnly, showStudyPropertyTypes, showFilePropertyType).map(
+                            resolveAvailableTypes(field, availableTypes, appPropertiesOnly, !domainFormDisplayOptions.hideStudyPropertyTypes, showFilePropertyType).map(
                                 (type, i) => (
                                     <option key={i} value={type.name}>
                                         {type.display}

@@ -189,6 +189,7 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideAddFieldsButton: false,
     disableMvEnabled: false,
     hideImportData: false,
+    hideStudyPropertyTypes: false,
 };
 
 export const DERIVATION_DATA_SCOPE_CHILD_ONLY = 'ChildOnly';

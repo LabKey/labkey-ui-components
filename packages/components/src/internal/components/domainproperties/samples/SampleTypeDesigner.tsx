@@ -549,7 +549,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const numNewUniqueIdFields = this.getNumNewUniqueIdFields();
         // For non-premium LKSM the showLinkToStudy will be true, but the study module will not be present.
         // We also don't want to always show the link to study even if the study module is available (the LKB case).
-        const _showLinkToStudy = showLinkToStudy && hasModule("study");
+        const _showLinkToStudy = showLinkToStudy && hasModule('study');
 
         return (
             <BaseDomainDesigner
@@ -615,7 +615,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
-                    showStudyPropertyTypes={_showLinkToStudy}
                     showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.domainChangeHandler}
@@ -625,7 +624,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     successBsStyle={successBsStyle}
                     allowImportExport={true}
                     testMode={testMode}
-                    domainFormDisplayOptions={domainFormDisplayOptions}
+                    domainFormDisplayOptions={{
+                        ...domainFormDisplayOptions,
+                        hideStudyPropertyTypes: !_showLinkToStudy,
+                    }}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}
                 {showUniqueIdConfirmation && (

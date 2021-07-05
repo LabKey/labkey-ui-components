@@ -203,7 +203,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                     // allow empty domain to be inferred from a file for Data Fields in General assay
                     const showInferFromFile =
                         protocolModel.providerName === 'General' && domain.isNameSuffixMatch('Data');
-                    const showFilePropertyType = domain.isNameSuffixMatch('Batch') || domain.isNameSuffixMatch('Run');
+                    const hideFilePropertyType = !domain.isNameSuffixMatch('Batch') && !domain.isNameSuffixMatch('Run');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
 
                     return (
@@ -234,13 +234,13 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                             modelDomains={protocolModel.domains}
                             useTheme={useTheme}
                             appPropertiesOnly={appPropertiesOnly}
-                            showFilePropertyType={showFilePropertyType}
                             successBsStyle={successBsStyle}
                             allowImportExport={true}
                             testMode={testMode}
                             domainFormDisplayOptions={{
                                 ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
                                 domainKindDisplayName: 'assay design',
+                                hideFilePropertyType,
                                 hideStudyPropertyTypes: appPropertiesOnly, // currently we hideStudyPropertyTypes only when appPropertiesOnly is true (in LKSM). TODO to refactor/rename appPropertiesOnly.
                             }}
                         >

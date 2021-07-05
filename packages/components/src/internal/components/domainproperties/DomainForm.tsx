@@ -127,7 +127,6 @@ interface IDomainFormInput {
     onToggle?: (collapsed: boolean, callback?: () => any) => any;
     panelStatus?: DomainPanelStatus;
     setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
-    showFilePropertyType?: boolean; // Flag to indicate if the File property type should be allowed
     showHeader?: boolean;
     showInferFromFile?: boolean;
     successBsStyle?: string;
@@ -185,7 +184,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         successBsStyle: 'success',
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
         testMode: false,
-        showFilePropertyType: true,
     };
 
     constructor(props: IDomainFormInput) {
@@ -1238,7 +1236,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             helpNoun,
             appPropertiesOnly,
             containerTop,
-            showFilePropertyType,
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
@@ -1295,7 +1292,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 defaultDefaultValueType={domain.defaultDefaultValueType}
                                                 defaultValueOptions={domain.defaultValueOptions}
                                                 appPropertiesOnly={appPropertiesOnly}
-                                                showFilePropertyType={showFilePropertyType}
                                                 successBsStyle={successBsStyle}
                                                 isDragDisabled={
                                                     !valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled

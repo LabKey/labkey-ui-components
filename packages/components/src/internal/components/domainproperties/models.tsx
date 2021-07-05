@@ -1212,11 +1212,10 @@ export function resolveAvailableTypes(
 
 export function isPropertyTypeAllowed(
     type: PropDescType,
-    includeFileType: boolean,
+    showFilePropertyType: boolean,
     showStudyPropertyTypes: boolean
 ): boolean {
-    // We allow file type for some domains based on the parameter
-    if (type === FILE_TYPE) return includeFileType;
+    if (type === FILE_TYPE) return showFilePropertyType;
 
     if (STUDY_PROPERTY_TYPES.includes(type)) return showStudyPropertyTypes;
 
@@ -1677,6 +1676,7 @@ export interface IDomainFormDisplayOptions {
     derivationDataScopeConfig?: IDerivationDataScope;
     domainKindDisplayName?: string;
     retainReservedFields?: boolean;
+    hideFilePropertyType?: boolean;
     hideStudyPropertyTypes?: boolean;
 }
 

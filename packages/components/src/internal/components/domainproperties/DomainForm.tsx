@@ -524,38 +524,34 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             return (
                 <ConfirmModal
                     title="Cannot Delete Required Fields"
-                    msg={
-                        <div>
-                            {' '}
-                            <p> None of the selected fields can be deleted. </p>{' '}
-                        </div>
-                    }
                     onCancel={this.onConfirmBulkCancel}
                     cancelButtonText="Close"
-                />
+                >
+                    <div>
+                        <p> None of the selected fields can be deleted. </p>
+                    </div>
+                </ConfirmModal>
             );
         }
 
         return (
             <ConfirmModal
                 title="Confirm Delete Selected Fields"
-                msg={
-                    <div>
-                        <p> {howManyDeleted} will be deleted. </p>
-                        <p> {undeletableWarning} </p>
-                        <p>
-                            {' '}
-                            Are you sure you want to delete {thisFieldPlural}? All of the related field data will also
-                            be deleted.{' '}
-                        </p>
-                    </div>
-                }
                 onConfirm={this.onBulkDeleteConfirm}
                 onCancel={this.onConfirmBulkCancel}
                 confirmVariant="danger"
                 confirmButtonText="Yes, Delete Fields"
                 cancelButtonText="Cancel"
-            />
+            >
+                <div>
+                    <p>{howManyDeleted} will be deleted.</p>
+                    <p>{undeletableWarning}</p>
+                    <p>
+                        Are you sure you want to delete {thisFieldPlural}? All of the related field data will also be
+                        deleted.
+                    </p>
+                </div>
+            </ConfirmModal>
         );
     };
 
@@ -875,23 +871,18 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     renderFieldRemoveConfirm(): ReactNode {
         const { confirmDeleteRowIndex } = this.state;
         const field = this.props.domain.fields.get(confirmDeleteRowIndex);
-
+        const fieldName = field && field.name && field.name.trim().length > 0 ? <b>{field.name}</b> : 'this field';
         return (
             <ConfirmModal
                 title="Confirm Remove Field"
-                msg={
-                    <div>
-                        Are you sure you want to remove{' '}
-                        {field && field.name && field.name.trim().length > 0 ? <b>{field.name}</b> : 'this field'}? All
-                        of its data will be deleted as well.
-                    </div>
-                }
                 onConfirm={() => this.onDeleteConfirm(confirmDeleteRowIndex)}
                 onCancel={this.onConfirmCancel}
                 confirmVariant="danger"
                 confirmButtonText="Yes, Remove Field"
                 cancelButtonText="Cancel"
-            />
+            >
+                <div>Are you sure you want to remove {fieldName}? All of its data will be deleted as well.</div>
+            </ConfirmModal>
         );
     }
 

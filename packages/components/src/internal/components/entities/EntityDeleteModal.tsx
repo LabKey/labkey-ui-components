@@ -109,10 +109,12 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
             <ConfirmModal
                 title={'Cannot Delete ' + capitalizeFirstChar(nounPlural)}
                 onCancel={onCancel}
-                msg={`You cannot delete more than ${maxSelected} individual ${nounPlural} at a time. Please select fewer ${nounPlural} and try again.`}
                 onConfirm={undefined}
                 cancelButtonText="Dismiss"
-            />
+            >
+                You cannot delete more than {maxSelected} individual {nounPlural} at a time. Please select fewer
+                {nounPlural} and try again.
+            </ConfirmModal>
         );
     }
 

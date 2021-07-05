@@ -24,15 +24,12 @@ export class SharedSampleTypeAdminConfirmModal extends React.Component<Props, an
             <ConfirmModal
                 cancelButtonText="Cancel"
                 confirmButtonText="Yes, Proceed to LabKey Server"
-                msg={
-                    <span>
-                        {`Shared sample type '${sampleTypeLabel}' can only be ${verb} in LabKey Server. Do you want to proceed?`}
-                    </span>
-                }
                 onCancel={onCancel}
                 onConfirm={this.onConfirm}
                 title={'You are about to leave the application, continue?'}
-            />
+            >
+                {`Shared sample type '${sampleTypeLabel}' can only be ${verb} in LabKey Server. Do you want to proceed?`}
+            </ConfirmModal>
         )
     }
 }

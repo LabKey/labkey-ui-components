@@ -206,6 +206,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
                     domainFormDisplayOptions={{
                         isDragDisabled: model.domain.isSharedDomain(),
                         hideAddFieldsButton: model.domain.isSharedDomain(),
+                        hideImportExport: true,
                     }}
                     testMode={testMode}
                 />

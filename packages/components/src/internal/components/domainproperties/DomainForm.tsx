@@ -104,7 +104,6 @@ import {
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 
 interface IDomainFormInput {
-    allowImportExport?: boolean;
     appDomainHeaderRenderer?: HeaderRenderer;
     appPropertiesOnly?: boolean; // Flag to indicate if LKS specific types should be shown (false) or not (true)
     collapsible?: boolean;
@@ -799,11 +798,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderAddFieldOption(): ReactNode {
-        const { domain, domainFormDisplayOptions, allowImportExport } = this.props;
+        const { domain, domainFormDisplayOptions } = this.props;
         const hasFields = domain.fields.size > 0;
 
         if (!domainFormDisplayOptions.hideAddFieldsButton) {
-            if (!hasFields && (this.shouldShowInferFromFile() || allowImportExport)) {
+            if (!hasFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport())) {
                 return (
                     <div className="margin-top domain-form-manual-section">
                         <p>Or</p>
@@ -951,6 +950,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return showInferFromFile && domain.fields.size === 0;
     }
 
+    shouldShowImportExport(): boolean {
+        return !this.props.domainFormDisplayOptions.hideImportExport;
+    }
+
     handleFilePreviewLoad = (response: InferDomainResponse, file: File): void => {
         const { domain, setFileImportData, domainFormDisplayOptions } = this.props;
         const retainReservedFields = domainFormDisplayOptions?.retainReservedFields;
@@ -1036,21 +1039,23 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderEmptyDomain(): ReactNode {
-        const { allowImportExport, domain, index } = this.props;
+        const { domain, index } = this.props;
         const shouldShowInferFromFile = this.shouldShowInferFromFile();
-        if (shouldShowInferFromFile || allowImportExport) {
+        const shouldShowImportExport = this.shouldShowImportExport();
+
+        if (shouldShowInferFromFile || shouldShowImportExport) {
             let acceptedFormats = [];
             if (shouldShowInferFromFile) {
                 acceptedFormats = acceptedFormats.concat(['.csv', '.tsv', '.txt', '.xls', '.xlsx']);
             }
-            if (allowImportExport) {
+            if (shouldShowImportExport) {
                 acceptedFormats = acceptedFormats.concat(['.json']);
             }
 
             let label;
-            if (allowImportExport && shouldShowInferFromFile) {
+            if (shouldShowImportExport && shouldShowInferFromFile) {
                 label = 'Import or infer fields from file';
-            } else if (allowImportExport) {
+            } else if (shouldShowImportExport) {
                 label = 'Import fields from file';
             } else {
                 label = 'Infer fields from file';
@@ -1155,7 +1160,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderToolbar(): ReactNode {
-        const { domain, domainIndex, allowImportExport, domainFormDisplayOptions, testMode } = this.props;
+        const { domain, domainIndex, domainFormDisplayOptions, testMode } = this.props;
         const { visibleSelection, summaryViewMode } = this.state;
         const { fields } = domain;
         const disableExport = fields.size < 1 || fields.filter((field: DomainField) => field.visible).size < 1;
@@ -1180,7 +1185,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     >
                         <i className="fa fa-trash domain-toolbar-export-btn-icon" /> Delete
                     </ActionButton>
-                    {allowImportExport && (
+                    {this.shouldShowImportExport() && (
                         <ActionButton
                             containerClass="container--toolbar-button"
                             buttonClass="domain-toolbar-export-btn"
@@ -1324,7 +1329,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderForm(): ReactNode {
-        const { domain, appDomainHeaderRenderer, allowImportExport, appPropertiesOnly } = this.props;
+        const { domain, appDomainHeaderRenderer, appPropertiesOnly } = this.props;
         const { summaryViewMode, search, selectAll } = this.state;
         const hasFields = domain.fields.size > 0;
         const actions = {
@@ -1335,7 +1340,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return (
             <>
-                {(hasFields || !(this.shouldShowInferFromFile() || allowImportExport)) && this.renderToolbar()}
+                {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) && this.renderToolbar()}
                 {this.renderPanelHeaderContent()}
                 {appDomainHeaderRenderer && !summaryViewMode && this.renderAppDomainHeader()}
 
@@ -1377,7 +1382,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             fieldsAdditionalRenderer,
             domainFormDisplayOptions,
             todoIconHelpMsg,
-            allowImportExport,
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file, bulkDeleteConfirmInfo } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
@@ -1386,7 +1390,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1 ? 's' : '') + ' Defined'
                 : undefined;
         const hasFields = domain.fields.size > 0;
-        const styleToolbar = !hasFields && (this.shouldShowInferFromFile() || allowImportExport);
+        const styleToolbar =
+            !hasFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport());
 
         return (
             <>

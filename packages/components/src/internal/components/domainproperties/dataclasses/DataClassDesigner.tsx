@@ -223,7 +223,6 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
-                    allowImportExport={true}
                     testMode={testMode}
                     domainFormDisplayOptions={domainFormDisplayOptions}
                 />

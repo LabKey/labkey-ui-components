@@ -622,7 +622,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
-                    allowImportExport={true}
                     testMode={testMode}
                     domainFormDisplayOptions={{
                         ...domainFormDisplayOptions,

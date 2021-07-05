@@ -305,7 +305,6 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                     appDomainHeaderRenderer={model.isNew() && model.domain.fields.size > 0 && this.headerRenderer}
-                    allowImportExport={true}
                     testMode={testMode}
                 />
                 <Progress

@@ -774,11 +774,11 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('using allowImportExport', () => {
+    test('using default false for hideImportExport', () => {
         const domain = DomainDesign.create({});
 
         const form = mount(
-            <DomainForm domain={domain} onChange={jest.fn()} allowImportExport={true} testMode={true} />
+            <DomainForm domain={domain} onChange={jest.fn()} testMode={true} />
         );
 
         expect(form.find('.domain-form-manual-section').length).toEqual(1);
@@ -789,11 +789,13 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('not using allowImportExport', () => {
+    test('using hideImportExport', () => {
         const domain = DomainDesign.create({});
 
         const form = mount(
-            <DomainForm domain={domain} onChange={jest.fn()} allowImportExport={false} testMode={true} />
+            <DomainForm domain={domain} onChange={jest.fn()} domainFormDisplayOptions={{
+                hideImportExport: true,
+            }} testMode={true} />
         );
 
         expect(form.find('.domain-form-manual-section').length).toEqual(0);
@@ -804,7 +806,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('using allowImportExport, field view', () => {
+    test('using default for hideImportExport, field view', () => {
         const fields = [];
         fields.push({
             name: 'key',
@@ -814,7 +816,7 @@ describe('DomainForm', () => {
         });
 
         const domain = DomainDesign.create({
-            name: 'allowImportExport field view',
+            name: 'default hideImportExport false field view',
             description: 'basic list domain form',
             domainURI: 'test',
             domainId: 1,
@@ -829,7 +831,6 @@ describe('DomainForm', () => {
                 domainFormDisplayOptions={{
                     hideRequired: true,
                 }}
-                allowImportExport={true}
                 testMode={true}
             />
         );
@@ -844,7 +845,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('not using allowImportExport, field view', () => {
+    test('using hideImportExport, field view', () => {
         const fields = [];
         fields.push({
             name: 'key',
@@ -854,7 +855,7 @@ describe('DomainForm', () => {
         });
 
         const domain = DomainDesign.create({
-            name: 'allowImportExport field view',
+            name: 'hideImportExport field view',
             description: 'basic list domain form',
             domainURI: 'test',
             domainId: 1,
@@ -868,8 +869,8 @@ describe('DomainForm', () => {
                 onChange={jest.fn()}
                 domainFormDisplayOptions={{
                     hideRequired: true,
+                    hideImportExport: true,
                 }}
-                allowImportExport={false}
                 testMode={true}
             />
         );

@@ -1678,6 +1678,7 @@ export interface IDomainFormDisplayOptions {
     retainReservedFields?: boolean;
     hideFilePropertyType?: boolean;
     hideStudyPropertyTypes?: boolean;
+    hideImportExport?: boolean;
 }
 
 export interface IDerivationDataScope {

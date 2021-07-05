@@ -26,7 +26,9 @@ export const BOXES_KEY = 'boxes';
 export const HOME_KEY = 'home';
 export const USER_KEY = 'user';
 export const PICKLIST_KEY = 'picklist';
+export const FIND_SAMPLES_KEY = 'findSamples';
 
+export const FIND_SAMPLES_HREF = AppURL.create(FIND_SAMPLES_KEY);
 export const NEW_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new');
 export const NEW_SOURCE_TYPE_HREF = AppURL.create(SOURCE_TYPE_KEY, 'new');
 export const NEW_SAMPLE_TYPE_HREF = AppURL.create(SAMPLE_TYPE_KEY, 'new');

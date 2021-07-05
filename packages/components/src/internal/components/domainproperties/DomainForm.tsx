@@ -105,7 +105,7 @@ import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 
 interface IDomainFormInput {
     appDomainHeaderRenderer?: HeaderRenderer;
-    appPropertiesOnly?: boolean; // Flag to indicate if LKS specific types should be shown (false) or not (true)
+    appPropertiesOnly?: boolean; // Flag to indicate if LKS specific properties/features should be excluded, default to false
     collapsible?: boolean;
     containerTop?: number; // This sets the top of the sticky header, default is 0
     controlledCollapse?: boolean;
@@ -177,7 +177,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         showHeader: true,
         initCollapsed: false,
         isNew: false,
-        appPropertiesOnly: false, // TODO: convert them into more options in the IDomainFormDisplayOptions interface
+        appPropertiesOnly: false,
         domainIndex: 0,
         successBsStyle: 'success',
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
@@ -477,7 +477,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const updatedDomain = domain.merge({
             fields: toggledFields,
         }) as DomainDesign;
-        this.onDomainChange(updatedDomain, true);
+        this.onDomainChange(updatedDomain, false);
         this.setState(state => ({ selectAll: !state.selectAll, visibleSelection: newVisibleSelection }));
     };
 
@@ -487,7 +487,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             return field.set('selected', false);
         });
         const updatedDomain = domain.merge({ fields }) as DomainDesign;
-        this.onDomainChange(updatedDomain, true);
+        this.onDomainChange(updatedDomain, false);
         this.setState({ selectAll: false, visibleSelection: new Set() });
     };
 
@@ -616,7 +616,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     applyAddField = (config?: Partial<IDomainField>): void => {
         const newConfig = config ? { ...config } : undefined;
         const newDomain = addDomainField(this.props.domain, newConfig);
-        this.onDomainChange(newDomain);
+        this.onDomainChange(newDomain, true);
         this.setState({ selectAll: false, visibleFieldsCount: getVisibleFieldCount(newDomain) });
         this.collapseRow();
     };
@@ -624,10 +624,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean): void => {
         const { domain } = this.props;
         const { visibleFieldsCount } = this.state;
-        this.onDomainChange(handleDomainUpdates(domain, changes));
-
         const firstChange = changes.get(0);
-        if (getNameFromId(firstChange?.id) === 'selected') {
+        const rowSelectedChange = getNameFromId(firstChange?.id) === 'selected';
+
+        this.onDomainChange(handleDomainUpdates(domain, changes), !rowSelectedChange);
+
+        if (rowSelectedChange) {
             this.setState(state => {
                 const visibleSelection = applySetOperation(state.visibleSelection, index, firstChange.value);
                 const selectAll = visibleFieldsCount !== 0 && visibleSelection.size === visibleFieldsCount;
@@ -668,7 +670,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         this.setState(() => ({ dragId: idIndex }));
 
-        this.onDomainChange(domain);
+        this.onDomainChange(domain, false);
 
         // remove focus for any current element so that it doesn't "jump" after drag end
         blurActiveElement();

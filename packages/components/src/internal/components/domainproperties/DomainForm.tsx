@@ -1339,7 +1339,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return (
             <>
-                {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) && this.renderToolbar()}
+                {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) &&
+                    this.renderToolbar()}
                 {this.renderPanelHeaderContent()}
                 {appDomainHeaderRenderer && !summaryViewMode && this.renderAppDomainHeader()}
 
@@ -1389,8 +1390,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1 ? 's' : '') + ' Defined'
                 : undefined;
         const hasFields = domain.fields.size > 0;
-        const styleToolbar =
-            !hasFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport());
+        const styleToolbar = !hasFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport());
 
         return (
             <>

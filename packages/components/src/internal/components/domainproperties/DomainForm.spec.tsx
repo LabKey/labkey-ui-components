@@ -89,7 +89,14 @@ describe('DomainForm', () => {
     test('with empty domain form', async () => {
         const domain = DomainDesign.create({});
 
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} domainFormDisplayOptions={{hideImportExport: true, hideInferFromFile: true}} testMode={true} />);
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+                domainFormDisplayOptions={{ hideImportExport: true, hideInferFromFile: true }}
+                testMode={true}
+            />
+        );
         await sleep();
 
         // Empty panel
@@ -175,7 +182,14 @@ describe('DomainForm', () => {
             fields: [],
             indices: [],
         });
-        const form = mount(<DomainForm domain={domain} domainFormDisplayOptions={{hideInferFromFile: true}} onChange={jest.fn()} testMode={true} />);
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                domainFormDisplayOptions={{ hideInferFromFile: true }}
+                onChange={jest.fn()}
+                testMode={true}
+            />
+        );
         await sleep();
 
         expect(form).toMatchSnapshot();
@@ -495,7 +509,12 @@ describe('DomainForm', () => {
     test('with hideInferFromFile false', async () => {
         const domain = DomainDesign.create({});
         const form = mount(
-            <DomainForm domain={domain} domainFormDisplayOptions={{hideInferFromFile: false}} onChange={jest.fn()} testMode={true} />
+            <DomainForm
+                domain={domain}
+                domainFormDisplayOptions={{ hideInferFromFile: false }}
+                onChange={jest.fn()}
+                testMode={true}
+            />
         );
         await sleep();
 
@@ -617,7 +636,14 @@ describe('DomainForm', () => {
             }) as DomainDesign;
         };
 
-        const form = mount(<DomainForm domain={domain} onChange={changeHandler} domainFormDisplayOptions={{hideImportExport: true, hideInferFromFile: true}} testMode={true} />);
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                onChange={changeHandler}
+                domainFormDisplayOptions={{ hideImportExport: true, hideInferFromFile: true }}
+                testMode={true}
+            />
+        );
         await sleep();
 
         // Add new row
@@ -786,9 +812,7 @@ describe('DomainForm', () => {
     test('using default false for hideImportExport', () => {
         const domain = DomainDesign.create({});
 
-        const form = mount(
-            <DomainForm domain={domain} onChange={jest.fn()} testMode={true} />
-        );
+        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
 
         expect(form.find('.domain-form-manual-section').length).toEqual(1);
         expect(form.find('.file-form-formats').text()).toContain('.json');
@@ -802,10 +826,15 @@ describe('DomainForm', () => {
         const domain = DomainDesign.create({});
 
         const form = mount(
-            <DomainForm domain={domain} onChange={jest.fn()} domainFormDisplayOptions={{
-                hideInferFromFile: true,
-                hideImportExport: true,
-            }} testMode={true} />
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+                domainFormDisplayOptions={{
+                    hideInferFromFile: true,
+                    hideImportExport: true,
+                }}
+                testMode={true}
+            />
         );
 
         expect(form.find('.domain-form-manual-section').length).toEqual(0);

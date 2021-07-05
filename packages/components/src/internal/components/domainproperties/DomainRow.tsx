@@ -337,14 +337,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     renderBaseFields() {
-        const {
-            index,
-            field,
-            availableTypes,
-            appPropertiesOnly,
-            domainIndex,
-            domainFormDisplayOptions,
-        } = this.props;
+        const { index, field, availableTypes, appPropertiesOnly, domainIndex, domainFormDisplayOptions } = this.props;
 
         return (
             <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)} ref={this[`${this.props.index}_ref`]}>

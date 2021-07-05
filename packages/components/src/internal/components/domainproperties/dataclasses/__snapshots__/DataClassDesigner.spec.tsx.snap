@@ -1361,6 +1361,7 @@ exports[`DataClassDesigner initModel 1`] = `
         "disableMvEnabled": false,
         "domainKindDisplayName": "data class",
         "hideAddFieldsButton": false,
+        "hideConditionalFormatting": false,
         "hideFilePropertyType": false,
         "hideImportData": false,
         "hideImportExport": false,
@@ -4442,6 +4443,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "data class",
             "hideAddFieldsButton": false,
+            "hideConditionalFormatting": false,
             "hideFilePropertyType": false,
             "hideImportData": false,
             "hideImportExport": false,
@@ -4768,6 +4770,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "data class",
                 "hideAddFieldsButton": false,
+                "hideConditionalFormatting": false,
                 "hideFilePropertyType": false,
                 "hideImportData": false,
                 "hideImportExport": false,
@@ -5558,6 +5561,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "data class",
                                                             "hideAddFieldsButton": false,
+                                                            "hideConditionalFormatting": false,
                                                             "hideFilePropertyType": false,
                                                             "hideImportData": false,
                                                             "hideImportExport": false,
@@ -5774,6 +5778,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "data class",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideConditionalFormatting": false,
                                                                             "hideFilePropertyType": false,
                                                                             "hideImportData": false,
                                                                             "hideImportExport": false,
@@ -6384,6 +6389,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "data class",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideConditionalFormatting": false,
                                                                               "hideFilePropertyType": false,
                                                                               "hideImportData": false,
                                                                               "hideImportExport": false,
@@ -7321,6 +7327,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "data class",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideConditionalFormatting": false,
                                                                                         "hideFilePropertyType": false,
                                                                                         "hideImportData": false,
                                                                                         "hideImportExport": false,
@@ -7431,7 +7438,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
-                                                                                    hideConditionalFormatting={false}
                                                                                     index={0}
                                                                                     onChange={[Function]}
                                                                                     showingModal={[Function]}
@@ -7920,6 +7926,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "data class",
                                                             "hideAddFieldsButton": false,
+                                                            "hideConditionalFormatting": false,
                                                             "hideFilePropertyType": false,
                                                             "hideImportData": false,
                                                             "hideImportExport": false,
@@ -8125,6 +8132,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "data class",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideConditionalFormatting": false,
                                                                             "hideFilePropertyType": false,
                                                                             "hideImportData": false,
                                                                             "hideImportExport": false,
@@ -8718,6 +8726,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "data class",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideConditionalFormatting": false,
                                                                               "hideFilePropertyType": false,
                                                                               "hideImportData": false,
                                                                               "hideImportExport": false,
@@ -9583,6 +9592,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "data class",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideConditionalFormatting": false,
                                                                                         "hideFilePropertyType": false,
                                                                                         "hideImportData": false,
                                                                                         "hideImportExport": false,
@@ -9682,7 +9692,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
-                                                                                    hideConditionalFormatting={false}
                                                                                     index={1}
                                                                                     onChange={[Function]}
                                                                                     showingModal={[Function]}
@@ -10171,6 +10180,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "data class",
                                                             "hideAddFieldsButton": false,
+                                                            "hideConditionalFormatting": false,
                                                             "hideFilePropertyType": false,
                                                             "hideImportData": false,
                                                             "hideImportExport": false,
@@ -10376,6 +10386,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "data class",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideConditionalFormatting": false,
                                                                             "hideFilePropertyType": false,
                                                                             "hideImportData": false,
                                                                             "hideImportExport": false,
@@ -10951,6 +10962,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "data class",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideConditionalFormatting": false,
                                                                               "hideFilePropertyType": false,
                                                                               "hideImportData": false,
                                                                               "hideImportExport": false,
@@ -11778,6 +11790,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "data class",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideConditionalFormatting": false,
                                                                                         "hideFilePropertyType": false,
                                                                                         "hideImportData": false,
                                                                                         "hideImportExport": false,
@@ -11877,7 +11890,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
-                                                                                    hideConditionalFormatting={false}
                                                                                     index={2}
                                                                                     onChange={[Function]}
                                                                                     showingModal={[Function]}

@@ -1091,6 +1091,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "disableMvEnabled": false,
         "domainKindDisplayName": "sample type",
         "hideAddFieldsButton": false,
+        "hideConditionalFormatting": false,
         "hideFilePropertyType": false,
         "hideImportData": false,
         "hideImportExport": false,
@@ -2876,6 +2877,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "sample type",
             "hideAddFieldsButton": false,
+            "hideConditionalFormatting": false,
             "hideFilePropertyType": false,
             "hideImportData": false,
             "hideImportExport": false,
@@ -3022,6 +3024,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "sample type",
                 "hideAddFieldsButton": false,
+                "hideConditionalFormatting": false,
                 "hideFilePropertyType": false,
                 "hideImportData": false,
                 "hideImportExport": false,
@@ -3862,6 +3865,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "sample type",
                                                             "hideAddFieldsButton": false,
+                                                            "hideConditionalFormatting": false,
                                                             "hideFilePropertyType": false,
                                                             "hideImportData": false,
                                                             "hideImportExport": false,
@@ -4061,6 +4065,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "sample type",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideConditionalFormatting": false,
                                                                             "hideFilePropertyType": false,
                                                                             "hideImportData": false,
                                                                             "hideImportExport": false,
@@ -4680,6 +4685,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "sample type",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideConditionalFormatting": false,
                                                                               "hideFilePropertyType": false,
                                                                               "hideImportData": false,
                                                                               "hideImportExport": false,
@@ -5595,6 +5601,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "sample type",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideConditionalFormatting": false,
                                                                                         "hideFilePropertyType": false,
                                                                                         "hideImportData": false,
                                                                                         "hideImportExport": false,
@@ -5694,7 +5701,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
-                                                                                    hideConditionalFormatting={true}
                                                                                     index={0}
                                                                                     onChange={[Function]}
                                                                                     showingModal={[Function]}
@@ -5718,12 +5724,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                             >
                                                                                               <SectionHeading
                                                                                                 cls="domain-field-section-hdr"
-                                                                                                title="Validation Options"
+                                                                                                title="Conditional Formatting and Validation Options"
                                                                                               >
                                                                                                 <div
                                                                                                   className="domain-field-section-heading domain-field-section-hdr"
                                                                                                 >
-                                                                                                  Validation Options
+                                                                                                  Conditional Formatting and Validation Options
                                                                                                 </div>
                                                                                               </SectionHeading>
                                                                                             </div>
@@ -5745,6 +5751,146 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                             <div
                                                                                               className="col-xs-12"
                                                                                             >
+                                                                                              <div
+                                                                                                className="domain-validation-group"
+                                                                                              >
+                                                                                                <div
+                                                                                                  className="domain-field-label domain-no-wrap"
+                                                                                                >
+                                                                                                  <DomainFieldLabel
+                                                                                                    helpTipBody={
+                                                                                                      <React.Fragment>
+                                                                                                        <p>
+                                                                                                          Conditional formats allow targeted display formatting for values that meet defined conditions.
+                                                                                                        </p>
+                                                                                                        <p>
+                                                                                                          Learn more about using 
+                                                                                                          <a
+                                                                                                            href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
+                                                                                                            target="_blank"
+                                                                                                          >
+                                                                                                            Conditional Formats
+                                                                                                          </a>
+                                                                                                          .
+                                                                                                        </p>
+                                                                                                      </React.Fragment>
+                                                                                                    }
+                                                                                                    label="Create Conditional Format Criteria"
+                                                                                                  >
+                                                                                                    Create Conditional Format 
+                                                                                                    <span
+                                                                                                      className="domain-no-wrap"
+                                                                                                    >
+                                                                                                      Criteria
+                                                                                                      <Component
+                                                                                                        customStyle={Object {}}
+                                                                                                        id="tooltip"
+                                                                                                        size="1x"
+                                                                                                        title="Create Conditional Format Criteria"
+                                                                                                      >
+                                                                                                        <span
+                                                                                                          className="label-help-target"
+                                                                                                          onMouseOut={[Function]}
+                                                                                                          onMouseOver={[Function]}
+                                                                                                        >
+                                                                                                          <FontAwesomeIcon
+                                                                                                            border={false}
+                                                                                                            className="label-help-icon"
+                                                                                                            fixedWidth={false}
+                                                                                                            flip={null}
+                                                                                                            icon={
+                                                                                                              Object {
+                                                                                                                "icon": Array [
+                                                                                                                  512,
+                                                                                                                  512,
+                                                                                                                  Array [],
+                                                                                                                  "f059",
+                                                                                                                  "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                                                                                ],
+                                                                                                                "iconName": "question-circle",
+                                                                                                                "prefix": "fas",
+                                                                                                              }
+                                                                                                            }
+                                                                                                            inverse={false}
+                                                                                                            listItem={false}
+                                                                                                            mask={null}
+                                                                                                            pull={null}
+                                                                                                            pulse={false}
+                                                                                                            rotation={null}
+                                                                                                            size="1x"
+                                                                                                            spin={false}
+                                                                                                            style={Object {}}
+                                                                                                            swapOpacity={false}
+                                                                                                            symbol={false}
+                                                                                                            title=""
+                                                                                                            transform={null}
+                                                                                                          >
+                                                                                                            <svg
+                                                                                                              aria-hidden="true"
+                                                                                                              className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                                                                                              data-icon="question-circle"
+                                                                                                              data-prefix="fas"
+                                                                                                              focusable="false"
+                                                                                                              role="img"
+                                                                                                              style={Object {}}
+                                                                                                              viewBox="0 0 512 512"
+                                                                                                              xmlns="http://www.w3.org/2000/svg"
+                                                                                                            >
+                                                                                                              <path
+                                                                                                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                                                                fill="currentColor"
+                                                                                                                style={Object {}}
+                                                                                                              />
+                                                                                                            </svg>
+                                                                                                          </FontAwesomeIcon>
+                                                                                                          <Overlay
+                                                                                                            animation={[Function]}
+                                                                                                            placement="right"
+                                                                                                            rootClose={false}
+                                                                                                            show={false}
+                                                                                                          >
+                                                                                                            <Overlay
+                                                                                                              placement="right"
+                                                                                                              rootClose={false}
+                                                                                                              show={false}
+                                                                                                              transition={[Function]}
+                                                                                                            />
+                                                                                                          </Overlay>
+                                                                                                        </span>
+                                                                                                      </Component>
+                                                                                                    </span>
+                                                                                                  </DomainFieldLabel>
+                                                                                                </div>
+                                                                                                <div>
+                                                                                                  <Button
+                                                                                                    active={false}
+                                                                                                    block={false}
+                                                                                                    bsClass="btn"
+                                                                                                    bsStyle="default"
+                                                                                                    className="domain-validation-button"
+                                                                                                    disabled={false}
+                                                                                                    id="domainpropertiesrow-conditionalFormat-0-0"
+                                                                                                    name="domainpropertiesrow-conditionalFormat"
+                                                                                                    onClick={[Function]}
+                                                                                                  >
+                                                                                                    <button
+                                                                                                      className="domain-validation-button btn btn-default"
+                                                                                                      disabled={false}
+                                                                                                      id="domainpropertiesrow-conditionalFormat-0-0"
+                                                                                                      name="domainpropertiesrow-conditionalFormat"
+                                                                                                      onClick={[Function]}
+                                                                                                      type="button"
+                                                                                                    >
+                                                                                                      Add Format
+                                                                                                    </button>
+                                                                                                  </Button>
+                                                                                                  <span
+                                                                                                    className="domain-text-label"
+                                                                                                  >
+                                                                                                    None Set
+                                                                                                  </span>
+                                                                                                </div>
+                                                                                              </div>
                                                                                               <div
                                                                                                 className="domain-validation-group"
                                                                                               >

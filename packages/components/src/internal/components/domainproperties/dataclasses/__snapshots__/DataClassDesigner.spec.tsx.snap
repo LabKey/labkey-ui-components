@@ -1363,6 +1363,7 @@ exports[`DataClassDesigner initModel 1`] = `
         "hideAddFieldsButton": false,
         "hideImportData": false,
         "hideRequired": false,
+        "hideStudyPropertyTypes": false,
         "hideTextOptions": false,
         "hideValidators": false,
         "isDragDisabled": false,
@@ -4442,6 +4443,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "hideAddFieldsButton": false,
             "hideImportData": false,
             "hideRequired": false,
+            "hideStudyPropertyTypes": false,
             "hideTextOptions": false,
             "hideValidators": false,
             "isDragDisabled": false,
@@ -4766,6 +4768,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
+                "hideStudyPropertyTypes": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
@@ -4784,7 +4787,6 @@ exports[`DataClassDesigner initModel 1`] = `
             showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={true}
-            showStudyPropertyTypes={true}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -5555,6 +5557,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
+                                                            "hideStudyPropertyTypes": false,
                                                             "hideTextOptions": false,
                                                             "hideValidators": false,
                                                             "isDragDisabled": false,
@@ -5676,7 +5679,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={true}
-                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -5770,6 +5772,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
+                                                                            "hideStudyPropertyTypes": false,
                                                                             "hideTextOptions": false,
                                                                             "hideValidators": false,
                                                                             "isDragDisabled": false,
@@ -6377,6 +6380,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
+                                                                              "hideStudyPropertyTypes": false,
                                                                               "hideTextOptions": false,
                                                                               "hideValidators": false,
                                                                               "isDragDisabled": false,
@@ -7311,6 +7315,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
+                                                                                        "hideStudyPropertyTypes": false,
                                                                                         "hideTextOptions": false,
                                                                                         "hideValidators": false,
                                                                                         "isDragDisabled": false,
@@ -7907,6 +7912,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
+                                                            "hideStudyPropertyTypes": false,
                                                             "hideTextOptions": false,
                                                             "hideValidators": false,
                                                             "isDragDisabled": false,
@@ -8017,7 +8023,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={true}
-                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -8111,6 +8116,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
+                                                                            "hideStudyPropertyTypes": false,
                                                                             "hideTextOptions": false,
                                                                             "hideValidators": false,
                                                                             "isDragDisabled": false,
@@ -8701,6 +8707,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
+                                                                              "hideStudyPropertyTypes": false,
                                                                               "hideTextOptions": false,
                                                                               "hideValidators": false,
                                                                               "isDragDisabled": false,
@@ -9563,6 +9570,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
+                                                                                        "hideStudyPropertyTypes": false,
                                                                                         "hideTextOptions": false,
                                                                                         "hideValidators": false,
                                                                                         "isDragDisabled": false,
@@ -10148,6 +10156,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
+                                                            "hideStudyPropertyTypes": false,
                                                             "hideTextOptions": false,
                                                             "hideValidators": false,
                                                             "isDragDisabled": false,
@@ -10258,7 +10267,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
                                                         showFilePropertyType={true}
-                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -10352,6 +10360,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
+                                                                            "hideStudyPropertyTypes": false,
                                                                             "hideTextOptions": false,
                                                                             "hideValidators": false,
                                                                             "isDragDisabled": false,
@@ -10924,6 +10933,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
+                                                                              "hideStudyPropertyTypes": false,
                                                                               "hideTextOptions": false,
                                                                               "hideValidators": false,
                                                                               "isDragDisabled": false,
@@ -11748,6 +11758,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
+                                                                                        "hideStudyPropertyTypes": false,
                                                                                         "hideTextOptions": false,
                                                                                         "hideValidators": false,
                                                                                         "isDragDisabled": false,

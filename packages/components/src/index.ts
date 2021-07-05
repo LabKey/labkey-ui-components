@@ -440,7 +440,6 @@ import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
-    FindField,
     POOLED_SAMPLE_CREATION,
     SampleCreationType
 } from './internal/components/samples/models';
@@ -464,6 +463,7 @@ import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './inte
 import { PicklistEditModal } from './internal/components/picklist/PicklistEditModal';
 import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
+import { PicklistButton } from './internal/components/picklist/PicklistButton';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
@@ -771,6 +771,7 @@ export {
     UserProvider,
     // sample picklist items
     AddToPicklistMenuItem,
+    PicklistButton,
     PicklistCreationMenuItem,
     PicklistEditModal,
     PicklistDeleteConfirm,
@@ -787,7 +788,6 @@ export {
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
-    FindField,
     clearFindIds,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_ID_FIND_FIELD,
@@ -1219,3 +1219,4 @@ export type {
 export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
+export type { FindField } from './internal/components/samples/models';

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.??.0
-*Released*: ? July 2021
+### version 2.53.0
+*Released*: 5 July 2021
 * Remove msg prop from ConfirmModal, uses children prop instead
 
 ### version 2.52.0

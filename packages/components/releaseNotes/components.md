@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version XXX
 *Released*: XXX
-* add SharedSampleTypeEditConfirmModal
+* add SharedSampleTypeAdminConfirmModal
 * add getUserSharedContainerPermissions, getEditSharedSampleTypeUrl and getDeleteSharedSampleTypeUrl util
 * use currentPlusProjectAndShared for sample type container filters
 

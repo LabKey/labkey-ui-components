@@ -1,14 +1,14 @@
 import React from 'react';
 import { mount } from "enzyme";
-import { SharedSampleTypeEditConfirmModal}  from "./SharedSampleTypeEditConfirmModal";
+import { SharedSampleTypeAdminConfirmModal}  from "./SharedSampleTypeAdminConfirmModal";
 
 
-describe("<SharedSampleTypeEditConfirmModal/>", () => {
+describe("<SharedSampleTypeAdminConfirmModal/>", () => {
 
     test("isEdit true", () => {
         const sampleTypeName = 'sharedType';
         const wrapper = mount(
-            <SharedSampleTypeEditConfirmModal
+            <SharedSampleTypeAdminConfirmModal
                 sampleTypeId={100}
                 sampleTypeLabel={sampleTypeName}
                 onCancel={jest.fn()}
@@ -23,7 +23,7 @@ describe("<SharedSampleTypeEditConfirmModal/>", () => {
     test("isEdit false", () => {
         const sampleTypeName = 'sharedType-1';
         const wrapper = mount(
-            <SharedSampleTypeEditConfirmModal
+            <SharedSampleTypeAdminConfirmModal
                 sampleTypeId={100}
                 sampleTypeLabel={sampleTypeName}
                 onCancel={jest.fn()}

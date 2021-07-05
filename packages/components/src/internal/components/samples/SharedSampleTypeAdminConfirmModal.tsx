@@ -9,7 +9,7 @@ interface Props {
     isEdit: boolean
 }
 
-export class SharedSampleTypeEditConfirmModal extends React.Component<Props, any> {
+export class SharedSampleTypeAdminConfirmModal extends React.Component<Props, any> {
 
     onConfirm = () => {
         const { sampleTypeId, isEdit } = this.props;

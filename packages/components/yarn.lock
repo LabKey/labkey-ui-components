@@ -700,10 +700,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.6.0":
-  version "1.6.0"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.6.0.tgz#11480fceb1abab528bb10c85686df3a6ec11fbca"
-  integrity sha1-EUgPzrGrq1KLsQyFaG3zpuwR+8o=
+"@labkey/api@1.6.2-fb-smSharedSamples":
+  version "1.6.2-fb-smSharedSamples"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.6.2-fb-smSharedSamples.tgz#96ef3963c3b92bec496124f26e323b1a021c2d60"
+  integrity sha1-lu85Y8O5K+xJYSTybjI7GgIcLWA=
 
 "@labkey/eslint-config-base@0.0.8":
   version "0.0.8"

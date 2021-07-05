@@ -282,7 +282,7 @@ import { SampleCreationTypeModal } from './internal/components/samples/SampleCre
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
-import { SharedSampleTypeEditConfirmModal } from './internal/components/samples/SharedSampleTypeEditConfirmModal';
+import { SharedSampleTypeAdminConfirmModal } from './internal/components/samples/SharedSampleTypeAdminConfirmModal';
 import {
     AssayContextConsumer,
     assayPage,
@@ -812,7 +812,7 @@ export {
     SamplesSelectionProvider,
     SampleAliquotDetailHeader,
     SampleAssayDetail,
-    SharedSampleTypeEditConfirmModal,
+    SharedSampleTypeAdminConfirmModal,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,

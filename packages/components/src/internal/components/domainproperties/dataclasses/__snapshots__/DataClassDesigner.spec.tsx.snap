@@ -4463,7 +4463,6 @@ exports[`DataClassDesigner initModel 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="COMPLETE"
-        showInferFromFile={true}
         testMode={true}
         validate={false}
       >
@@ -4792,7 +4791,6 @@ exports[`DataClassDesigner initModel 1`] = `
             onToggle={[Function]}
             panelStatus="COMPLETE"
             showHeader={true}
-            showInferFromFile={true}
             successBsStyle="success"
             testMode={true}
             validate={false}

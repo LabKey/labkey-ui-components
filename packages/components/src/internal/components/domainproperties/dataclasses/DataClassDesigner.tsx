@@ -214,7 +214,6 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     panelStatus={
                         model.isNew ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'
                     }
-                    showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.onDomainChange}
                     onToggle={(collapsed, callback) => {

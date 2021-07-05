@@ -127,7 +127,6 @@ interface IDomainFormInput {
     panelStatus?: DomainPanelStatus;
     setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     showHeader?: boolean;
-    showInferFromFile?: boolean;
     successBsStyle?: string;
     todoIconHelpMsg?: string;
     useTheme?: boolean;
@@ -946,8 +945,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     shouldShowInferFromFile(): boolean {
-        const { domain, showInferFromFile } = this.props;
-        return showInferFromFile && domain.fields.size === 0;
+        const { domain, domainFormDisplayOptions } = this.props;
+        return !domainFormDisplayOptions.hideInferFromFile && domain.fields.size === 0;
     }
 
     shouldShowImportExport(): boolean {

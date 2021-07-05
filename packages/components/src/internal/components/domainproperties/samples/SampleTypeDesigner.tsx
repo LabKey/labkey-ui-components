@@ -615,7 +615,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
-                    showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.domainChangeHandler}
                     onToggle={this.formToggle}

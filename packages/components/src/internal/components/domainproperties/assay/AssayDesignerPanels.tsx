@@ -207,8 +207,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                     }
 
                     // allow empty domain to be inferred from a file for Data Fields in General assay
-                    const showInferFromFile =
-                        protocolModel.providerName === 'General' && domain.isNameSuffixMatch('Data');
+                    const hideInferFromFile = protocolModel.providerName !== 'General' || !domain.isNameSuffixMatch('Data');
                     const hideFilePropertyType = !domain.isNameSuffixMatch('Batch') && !domain.isNameSuffixMatch('Run');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
 
@@ -227,7 +226,6 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                                     ? getDomainPanelStatus(i + 1, currentPanelIndex, visitedPanels, firstState)
                                     : 'COMPLETE'
                             }
-                            showInferFromFile={showInferFromFile}
                             containerTop={containerTop}
                             helpTopic={null} // null so that we don't show the "learn more about this tool" link for these domains
                             onChange={(updatedDomain, dirty) => {
@@ -246,6 +244,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                                 ...domainFormDisplayOptions,
                                 domainKindDisplayName: 'assay design',
                                 hideFilePropertyType,
+                                hideInferFromFile,
                             }}
                         >
                             <div>{domain.description}</div>

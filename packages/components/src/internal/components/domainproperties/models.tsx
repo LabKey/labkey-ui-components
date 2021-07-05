@@ -1680,6 +1680,7 @@ export interface IDomainFormDisplayOptions {
     hideStudyPropertyTypes?: boolean;
     hideImportExport?: boolean;
     hideConditionalFormatting?: boolean;
+    hideInferFromFile?: boolean;
 }
 
 export interface IDerivationDataScope {

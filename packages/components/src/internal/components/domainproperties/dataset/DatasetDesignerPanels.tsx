@@ -530,7 +530,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
-                    showInferFromFile={true}
                     containerTop={containerTop}
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(1, collapsed, callback);

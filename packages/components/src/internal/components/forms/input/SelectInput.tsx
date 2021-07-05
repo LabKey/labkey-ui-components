@@ -154,6 +154,7 @@ export interface SelectInputProps {
     selectedOptions?: any; // Option | Option[];
     showLabel?: boolean;
     valueKey?: string;
+    valueRenderer?: any;
 
     id?: any;
     label?: ReactNode;
@@ -455,12 +456,21 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             placeholder,
             promptTextCreator,
             valueKey,
+            valueRenderer,
         } = this.props;
 
         const components: any = { Input: this.Input };
 
         if (optionRenderer) {
             components.Option = optionRenderer;
+        }
+
+        if (valueRenderer) {
+            if (multiple) {
+                components.MultiValue = valueRenderer;
+            } else {
+                components.SingleValue = valueRenderer;
+            }
         }
 
         const selectProps: any = {

@@ -484,10 +484,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             const updatedModel = exception
                 ? (model.set('exception', exception) as SampleTypeModel)
                 : (model.merge({
-                      // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
-                      domain: domain.merge({ domainException: response.domainException }) as DomainDesign,
-                      exception: undefined,
-                  }) as SampleTypeModel);
+                    // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
+                    domain: domain.merge({ domainException: response.domainException }) as DomainDesign,
+                    exception: undefined,
+                }) as SampleTypeModel);
 
             setSubmitting(false, () => {
                 this.setState(() => ({ model: updatedModel }));
@@ -549,7 +549,18 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const numNewUniqueIdFields = this.getNumNewUniqueIdFields();
         // For non-premium LKSM the showLinkToStudy will be true, but the study module will not be present.
         // We also don't want to always show the link to study even if the study module is available (the LKB case).
-        const _showLinkToStudy = showLinkToStudy && hasModule("study");
+        const _showLinkToStudy = showLinkToStudy && hasModule('study');
+        const confirmModalMessage =
+            'You have added ' +
+            numNewUniqueIdFields +
+            ' ' +
+            UNIQUE_ID_TYPE.display +
+            ' field' +
+            (numNewUniqueIdFields !== 1 ? 's' : '') +
+            ' to this Sample Type. ' +
+            'Values for ' +
+            (numNewUniqueIdFields !== 1 ? 'these fields' : 'this field') +
+            ' will be created for all existing samples.';
 
         return (
             <BaseDomainDesigner
@@ -631,24 +642,14 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 {showUniqueIdConfirmation && (
                     <ConfirmModal
                         title={'Updating Sample Type with Unique ID field' + (numNewUniqueIdFields !== 1 ? 's' : '')}
-                        msg={
-                            'You have added ' +
-                            numNewUniqueIdFields +
-                            ' ' +
-                            UNIQUE_ID_TYPE.display +
-                            ' field' +
-                            (numNewUniqueIdFields !== 1 ? 's' : '') +
-                            ' to this Sample Type. ' +
-                            'Values for ' +
-                            (numNewUniqueIdFields !== 1 ? 'these fields' : 'this field') +
-                            ' will be created for all existing samples.'
-                        }
                         onCancel={this.onUniqueIdCancel}
                         onConfirm={this.onUniqueIdConfirm}
                         confirmButtonText="Finish Updating Sample Type"
                         confirmVariant="success"
                         cancelButtonText="Cancel"
-                    />
+                    >
+                        {confirmModalMessage}
+                    </ConfirmModal>
                 )}
             </BaseDomainDesigner>
         );

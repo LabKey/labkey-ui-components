@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * add getUserSharedContainerPermissions, getEditSharedSampleTypeUrl and getDeleteSharedSampleTypeUrl util
 * use currentPlusProjectAndShared for sample type container filters
 
+### version 2.53.0
+*Released*: 5 July 2021
+* Remove msg prop from ConfirmModal, uses children prop instead
+
 ### version 2.52.0
 *Released*: 1 July 2021
 * Introduce mountWithServerContextOptions test utility method.

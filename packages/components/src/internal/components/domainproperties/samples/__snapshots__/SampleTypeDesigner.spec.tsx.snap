@@ -1091,6 +1091,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "disableMvEnabled": false,
         "domainKindDisplayName": "sample type",
         "hideAddFieldsButton": false,
+        "hideFilePropertyType": false,
         "hideImportData": false,
         "hideRequired": false,
         "hideStudyPropertyTypes": false,
@@ -2875,6 +2876,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "sample type",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": false,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": true,
@@ -3020,6 +3022,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "sample type",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": true,
@@ -3038,7 +3041,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="TODO"
-            showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={true}
             successBsStyle="success"
@@ -3859,6 +3861,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "sample type",
                                                             "hideAddFieldsButton": false,
+                                                            "hideFilePropertyType": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": true,
@@ -3971,7 +3974,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -4057,6 +4059,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "sample type",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideFilePropertyType": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": true,
@@ -4674,6 +4677,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "sample type",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideFilePropertyType": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": true,
@@ -5587,6 +5591,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "sample type",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideFilePropertyType": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": true,

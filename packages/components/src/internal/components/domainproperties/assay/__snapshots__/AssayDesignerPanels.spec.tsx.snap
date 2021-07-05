@@ -1672,6 +1672,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": false,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": true,
@@ -1759,7 +1760,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="TODO"
-        showFilePropertyType={true}
         showInferFromFile={false}
         testMode={true}
         validate={false}
@@ -1798,6 +1798,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": true,
@@ -1886,7 +1887,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="TODO"
-            showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
@@ -2463,6 +2463,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": false,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": true,
@@ -2550,7 +2551,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="TODO"
-        showFilePropertyType={true}
         showInferFromFile={false}
         testMode={true}
         validate={false}
@@ -2589,6 +2589,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": true,
@@ -2677,7 +2678,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="TODO"
-            showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
@@ -3254,6 +3254,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": true,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": true,
@@ -3341,7 +3342,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="TODO"
-        showFilePropertyType={false}
         showInferFromFile={true}
         testMode={true}
         validate={false}
@@ -3380,6 +3380,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": true,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": true,
@@ -3468,7 +3469,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="TODO"
-            showFilePropertyType={false}
             showHeader={true}
             showInferFromFile={true}
             successBsStyle="success"
@@ -8377,6 +8377,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": false,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": true,
@@ -8699,7 +8700,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="COMPLETE"
-        showFilePropertyType={true}
         showInferFromFile={false}
         testMode={true}
         validate={false}
@@ -8738,6 +8738,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": true,
@@ -9061,7 +9062,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="COMPLETE"
-            showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
@@ -9830,6 +9830,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": true,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": true,
@@ -10152,7 +10153,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="COMPLETE"
-        showFilePropertyType={false}
         showInferFromFile={false}
         testMode={true}
         validate={false}
@@ -10447,6 +10447,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": true,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": true,
@@ -10770,7 +10771,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="COMPLETE"
-            showFilePropertyType={false}
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
@@ -11617,6 +11617,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
+                                                            "hideFilePropertyType": true,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": true,
@@ -11729,7 +11730,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -11815,6 +11815,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideFilePropertyType": true,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": true,
@@ -12432,6 +12433,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideFilePropertyType": true,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": true,
@@ -13345,6 +13347,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": true,
@@ -13775,6 +13778,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
+                                                            "hideFilePropertyType": true,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": true,
@@ -13887,7 +13891,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -13973,6 +13976,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideFilePropertyType": true,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": true,
@@ -14590,6 +14594,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideFilePropertyType": true,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": true,
@@ -15449,6 +15454,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": true,
@@ -15879,6 +15885,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
+                                                            "hideFilePropertyType": true,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": true,
@@ -15991,7 +15998,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -16077,6 +16083,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideFilePropertyType": true,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": true,
@@ -16694,6 +16701,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideFilePropertyType": true,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": true,
@@ -17518,6 +17526,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": true,
@@ -19900,6 +19909,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": false,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
@@ -19987,7 +19997,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="TODO"
-        showFilePropertyType={true}
         showInferFromFile={false}
         testMode={true}
         validate={false}
@@ -20026,6 +20035,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
@@ -20114,7 +20124,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="TODO"
-            showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
@@ -20690,6 +20699,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": false,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
@@ -20777,7 +20787,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="TODO"
-        showFilePropertyType={true}
         showInferFromFile={false}
         testMode={true}
         validate={false}
@@ -20816,6 +20825,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
@@ -20904,7 +20914,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="TODO"
-            showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
@@ -21480,6 +21489,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": true,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
@@ -21567,7 +21577,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="TODO"
-        showFilePropertyType={false}
         showInferFromFile={true}
         testMode={true}
         validate={false}
@@ -21606,6 +21615,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": true,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
@@ -21694,7 +21704,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="TODO"
-            showFilePropertyType={false}
             showHeader={true}
             showInferFromFile={true}
             successBsStyle="success"
@@ -24241,6 +24250,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": false,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
@@ -24328,7 +24338,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="TODO"
-        showFilePropertyType={true}
         showInferFromFile={false}
         testMode={true}
         validate={false}
@@ -24367,6 +24376,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
@@ -24455,7 +24465,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="TODO"
-            showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
@@ -25031,6 +25040,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": true,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
@@ -25118,7 +25128,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="TODO"
-        showFilePropertyType={false}
         showInferFromFile={true}
         testMode={true}
         validate={false}
@@ -25157,6 +25166,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": true,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
@@ -25245,7 +25255,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="TODO"
-            showFilePropertyType={false}
             showHeader={true}
             showInferFromFile={true}
             successBsStyle="success"
@@ -31402,6 +31411,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": true,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
@@ -31724,7 +31734,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="COMPLETE"
-        showFilePropertyType={false}
         showInferFromFile={false}
         testMode={true}
         validate={false}
@@ -32019,6 +32028,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": true,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
@@ -32342,7 +32352,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="COMPLETE"
-            showFilePropertyType={false}
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
@@ -33189,6 +33198,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
+                                                            "hideFilePropertyType": true,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": undefined,
@@ -33301,7 +33311,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -33387,6 +33396,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideFilePropertyType": true,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": undefined,
@@ -34022,6 +34032,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideFilePropertyType": true,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": undefined,
@@ -34935,6 +34946,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": undefined,
@@ -35505,6 +35517,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
+                                                            "hideFilePropertyType": true,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": undefined,
@@ -35617,7 +35630,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -35703,6 +35715,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideFilePropertyType": true,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": undefined,
@@ -36338,6 +36351,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideFilePropertyType": true,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": undefined,
@@ -37197,6 +37211,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": undefined,
@@ -37767,6 +37782,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
+                                                            "hideFilePropertyType": true,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": undefined,
@@ -37879,7 +37895,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -37965,6 +37980,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideFilePropertyType": true,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": undefined,
@@ -38600,6 +38616,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideFilePropertyType": true,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": undefined,
@@ -39424,6 +39441,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": undefined,
@@ -45300,6 +45318,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": false,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
@@ -45622,7 +45641,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="COMPLETE"
-        showFilePropertyType={true}
         showInferFromFile={false}
         testMode={true}
         validate={false}
@@ -45661,6 +45679,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
@@ -45984,7 +46003,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="COMPLETE"
-            showFilePropertyType={true}
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
@@ -46752,6 +46770,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "assay design",
             "hideAddFieldsButton": false,
+            "hideFilePropertyType": true,
             "hideImportData": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
@@ -47074,7 +47093,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="COMPLETE"
-        showFilePropertyType={false}
         showInferFromFile={false}
         testMode={true}
         validate={false}
@@ -47369,6 +47387,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
+                "hideFilePropertyType": true,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
@@ -47692,7 +47711,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="COMPLETE"
-            showFilePropertyType={false}
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
@@ -48539,6 +48557,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
+                                                            "hideFilePropertyType": true,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": undefined,
@@ -48651,7 +48670,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -48737,6 +48755,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideFilePropertyType": true,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": undefined,
@@ -49372,6 +49391,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideFilePropertyType": true,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": undefined,
@@ -50285,6 +50305,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": undefined,
@@ -50855,6 +50876,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
+                                                            "hideFilePropertyType": true,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": undefined,
@@ -50967,7 +50989,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -51053,6 +51074,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideFilePropertyType": true,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": undefined,
@@ -51688,6 +51710,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideFilePropertyType": true,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": undefined,
@@ -52547,6 +52570,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": undefined,
@@ -53117,6 +53141,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
+                                                            "hideFilePropertyType": true,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": undefined,
@@ -53229,7 +53254,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -53315,6 +53339,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideFilePropertyType": true,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": undefined,
@@ -53950,6 +53975,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideFilePropertyType": true,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": undefined,
@@ -54774,6 +54800,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": undefined,

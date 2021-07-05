@@ -271,6 +271,7 @@ exports[`DomainRow Sample Field 1`] = `
                   Object {
                     "disableMvEnabled": false,
                     "hideAddFieldsButton": false,
+                    "hideFilePropertyType": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideStudyPropertyTypes": false,
@@ -465,6 +466,7 @@ exports[`DomainRow Sample Field 1`] = `
                                   Object {
                                     "disableMvEnabled": false,
                                     "hideAddFieldsButton": false,
+                                    "hideFilePropertyType": false,
                                     "hideImportData": false,
                                     "hideRequired": false,
                                     "hideStudyPropertyTypes": false,
@@ -1054,6 +1056,7 @@ exports[`DomainRow Sample Field 1`] = `
                                     Object {
                                       "disableMvEnabled": false,
                                       "hideAddFieldsButton": false,
+                                      "hideFilePropertyType": false,
                                       "hideImportData": false,
                                       "hideRequired": false,
                                       "hideStudyPropertyTypes": false,
@@ -1897,6 +1900,7 @@ exports[`DomainRow Sample Field 1`] = `
                                               Object {
                                                 "disableMvEnabled": false,
                                                 "hideAddFieldsButton": false,
+                                                "hideFilePropertyType": false,
                                                 "hideImportData": false,
                                                 "hideRequired": false,
                                                 "hideStudyPropertyTypes": false,
@@ -2487,6 +2491,7 @@ exports[`DomainRow client side warning on field 1`] = `
                   Object {
                     "disableMvEnabled": false,
                     "hideAddFieldsButton": false,
+                    "hideFilePropertyType": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideStudyPropertyTypes": false,
@@ -2693,6 +2698,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                   Object {
                                     "disableMvEnabled": false,
                                     "hideAddFieldsButton": false,
+                                    "hideFilePropertyType": false,
                                     "hideImportData": false,
                                     "hideRequired": false,
                                     "hideStudyPropertyTypes": false,
@@ -3477,6 +3483,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                     Object {
                                       "disableMvEnabled": false,
                                       "hideAddFieldsButton": false,
+                                      "hideFilePropertyType": false,
                                       "hideImportData": false,
                                       "hideRequired": false,
                                       "hideStudyPropertyTypes": false,
@@ -4076,6 +4083,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                               Object {
                                                 "disableMvEnabled": false,
                                                 "hideAddFieldsButton": false,
+                                                "hideFilePropertyType": false,
                                                 "hideImportData": false,
                                                 "hideRequired": false,
                                                 "hideStudyPropertyTypes": false,
@@ -4666,6 +4674,7 @@ exports[`DomainRow date time field 1`] = `
                   Object {
                     "disableMvEnabled": false,
                     "hideAddFieldsButton": false,
+                    "hideFilePropertyType": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideStudyPropertyTypes": false,
@@ -4860,6 +4869,7 @@ exports[`DomainRow date time field 1`] = `
                                   Object {
                                     "disableMvEnabled": false,
                                     "hideAddFieldsButton": false,
+                                    "hideFilePropertyType": false,
                                     "hideImportData": false,
                                     "hideRequired": false,
                                     "hideStudyPropertyTypes": false,
@@ -5435,6 +5445,7 @@ exports[`DomainRow date time field 1`] = `
                                     Object {
                                       "disableMvEnabled": false,
                                       "hideAddFieldsButton": false,
+                                      "hideFilePropertyType": false,
                                       "hideImportData": false,
                                       "hideRequired": false,
                                       "hideStudyPropertyTypes": false,
@@ -6255,6 +6266,7 @@ exports[`DomainRow date time field 1`] = `
                                               Object {
                                                 "disableMvEnabled": false,
                                                 "hideAddFieldsButton": false,
+                                                "hideFilePropertyType": false,
                                                 "hideImportData": false,
                                                 "hideRequired": false,
                                                 "hideStudyPropertyTypes": false,
@@ -6985,6 +6997,7 @@ exports[`DomainRow decimal field 1`] = `
                   Object {
                     "disableMvEnabled": false,
                     "hideAddFieldsButton": false,
+                    "hideFilePropertyType": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideStudyPropertyTypes": false,
@@ -7179,6 +7192,7 @@ exports[`DomainRow decimal field 1`] = `
                                   Object {
                                     "disableMvEnabled": false,
                                     "hideAddFieldsButton": false,
+                                    "hideFilePropertyType": false,
                                     "hideImportData": false,
                                     "hideRequired": false,
                                     "hideStudyPropertyTypes": false,
@@ -7754,6 +7768,7 @@ exports[`DomainRow decimal field 1`] = `
                                     Object {
                                       "disableMvEnabled": false,
                                       "hideAddFieldsButton": false,
+                                      "hideFilePropertyType": false,
                                       "hideImportData": false,
                                       "hideRequired": false,
                                       "hideStudyPropertyTypes": false,
@@ -8609,6 +8624,7 @@ exports[`DomainRow decimal field 1`] = `
                                               Object {
                                                 "disableMvEnabled": false,
                                                 "hideAddFieldsButton": false,
+                                                "hideFilePropertyType": false,
                                                 "hideImportData": false,
                                                 "hideRequired": false,
                                                 "hideStudyPropertyTypes": false,
@@ -9339,6 +9355,7 @@ exports[`DomainRow participant id field 1`] = `
                   Object {
                     "disableMvEnabled": false,
                     "hideAddFieldsButton": false,
+                    "hideFilePropertyType": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideStudyPropertyTypes": false,
@@ -9533,6 +9550,7 @@ exports[`DomainRow participant id field 1`] = `
                                   Object {
                                     "disableMvEnabled": false,
                                     "hideAddFieldsButton": false,
+                                    "hideFilePropertyType": false,
                                     "hideImportData": false,
                                     "hideRequired": false,
                                     "hideStudyPropertyTypes": false,
@@ -10132,6 +10150,7 @@ exports[`DomainRow participant id field 1`] = `
                                     Object {
                                       "disableMvEnabled": false,
                                       "hideAddFieldsButton": false,
+                                      "hideFilePropertyType": false,
                                       "hideImportData": false,
                                       "hideRequired": false,
                                       "hideStudyPropertyTypes": false,
@@ -10731,6 +10750,7 @@ exports[`DomainRow participant id field 1`] = `
                                               Object {
                                                 "disableMvEnabled": false,
                                                 "hideAddFieldsButton": false,
+                                                "hideFilePropertyType": false,
                                                 "hideImportData": false,
                                                 "hideRequired": false,
                                                 "hideStudyPropertyTypes": false,
@@ -11461,6 +11481,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                   Object {
                     "disableMvEnabled": false,
                     "hideAddFieldsButton": false,
+                    "hideFilePropertyType": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideStudyPropertyTypes": false,
@@ -11667,6 +11688,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   Object {
                                     "disableMvEnabled": false,
                                     "hideAddFieldsButton": false,
+                                    "hideFilePropertyType": false,
                                     "hideImportData": false,
                                     "hideRequired": false,
                                     "hideStudyPropertyTypes": false,
@@ -12340,6 +12362,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     Object {
                                       "disableMvEnabled": false,
                                       "hideAddFieldsButton": false,
+                                      "hideFilePropertyType": false,
                                       "hideImportData": false,
                                       "hideRequired": false,
                                       "hideStudyPropertyTypes": false,
@@ -12939,6 +12962,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                               Object {
                                                 "disableMvEnabled": false,
                                                 "hideAddFieldsButton": false,
+                                                "hideFilePropertyType": false,
                                                 "hideImportData": false,
                                                 "hideRequired": false,
                                                 "hideStudyPropertyTypes": false,
@@ -13529,6 +13553,7 @@ exports[`DomainRow string field test 1`] = `
                   Object {
                     "disableMvEnabled": false,
                     "hideAddFieldsButton": false,
+                    "hideFilePropertyType": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideStudyPropertyTypes": false,
@@ -13723,6 +13748,7 @@ exports[`DomainRow string field test 1`] = `
                                   Object {
                                     "disableMvEnabled": false,
                                     "hideAddFieldsButton": false,
+                                    "hideFilePropertyType": false,
                                     "hideImportData": false,
                                     "hideRequired": false,
                                     "hideStudyPropertyTypes": false,
@@ -14322,6 +14348,7 @@ exports[`DomainRow string field test 1`] = `
                                     Object {
                                       "disableMvEnabled": false,
                                       "hideAddFieldsButton": false,
+                                      "hideFilePropertyType": false,
                                       "hideImportData": false,
                                       "hideRequired": false,
                                       "hideStudyPropertyTypes": false,
@@ -15231,6 +15258,7 @@ exports[`DomainRow string field test 1`] = `
                                               Object {
                                                 "disableMvEnabled": false,
                                                 "hideAddFieldsButton": false,
+                                                "hideFilePropertyType": false,
                                                 "hideImportData": false,
                                                 "hideRequired": false,
                                                 "hideStudyPropertyTypes": false,
@@ -15961,6 +15989,7 @@ exports[`DomainRow with empty domain form 1`] = `
                   Object {
                     "disableMvEnabled": false,
                     "hideAddFieldsButton": false,
+                    "hideFilePropertyType": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideStudyPropertyTypes": false,
@@ -16155,6 +16184,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   Object {
                                     "disableMvEnabled": false,
                                     "hideAddFieldsButton": false,
+                                    "hideFilePropertyType": false,
                                     "hideImportData": false,
                                     "hideRequired": false,
                                     "hideStudyPropertyTypes": false,
@@ -16821,6 +16851,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                     Object {
                                       "disableMvEnabled": false,
                                       "hideAddFieldsButton": false,
+                                      "hideFilePropertyType": false,
                                       "hideImportData": false,
                                       "hideRequired": false,
                                       "hideStudyPropertyTypes": false,
@@ -17730,6 +17761,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                               Object {
                                                 "disableMvEnabled": false,
                                                 "hideAddFieldsButton": false,
+                                                "hideFilePropertyType": false,
                                                 "hideImportData": false,
                                                 "hideRequired": false,
                                                 "hideStudyPropertyTypes": false,

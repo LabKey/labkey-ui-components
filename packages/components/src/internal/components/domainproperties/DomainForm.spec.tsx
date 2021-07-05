@@ -87,7 +87,7 @@ describe('DomainForm', () => {
     test('with empty domain form', async () => {
         const domain = DomainDesign.create({});
 
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
+        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} domainFormDisplayOptions={{hideImportExport: true}} testMode={true} />);
         await sleep();
 
         // Empty panel
@@ -609,7 +609,7 @@ describe('DomainForm', () => {
             }) as DomainDesign;
         };
 
-        const form = mount(<DomainForm domain={domain} onChange={changeHandler} testMode={true} />);
+        const form = mount(<DomainForm domain={domain} onChange={changeHandler} domainFormDisplayOptions={{hideImportExport: true}} testMode={true} />);
         await sleep();
 
         // Add new row

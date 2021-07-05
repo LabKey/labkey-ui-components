@@ -1363,6 +1363,7 @@ exports[`DataClassDesigner initModel 1`] = `
         "hideAddFieldsButton": false,
         "hideFilePropertyType": false,
         "hideImportData": false,
+        "hideImportExport": false,
         "hideRequired": false,
         "hideStudyPropertyTypes": false,
         "hideTextOptions": false,
@@ -4141,7 +4142,6 @@ exports[`DataClassDesigner initModel 1`] = `
         </DataClassPropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
-        allowImportExport={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
@@ -4444,6 +4444,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": false,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": false,
             "hideTextOptions": false,
@@ -4466,7 +4467,6 @@ exports[`DataClassDesigner initModel 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={false}
             controlledCollapse={true}
             domain={
@@ -4770,6 +4770,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": false,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": false,
                 "hideTextOptions": false,
@@ -5559,6 +5560,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": false,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": false,
                                                             "hideTextOptions": false,
@@ -5774,6 +5776,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": false,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": false,
                                                                             "hideTextOptions": false,
@@ -6383,6 +6386,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": false,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": false,
                                                                               "hideTextOptions": false,
@@ -7319,6 +7323,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": false,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": false,
                                                                                         "hideTextOptions": false,
@@ -7917,6 +7922,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": false,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": false,
                                                             "hideTextOptions": false,
@@ -8121,6 +8127,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": false,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": false,
                                                                             "hideTextOptions": false,
@@ -8713,6 +8720,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": false,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": false,
                                                                               "hideTextOptions": false,
@@ -9577,6 +9585,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": false,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": false,
                                                                                         "hideTextOptions": false,
@@ -10164,6 +10173,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": false,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": false,
                                                             "hideTextOptions": false,
@@ -10368,6 +10378,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": false,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": false,
                                                                             "hideTextOptions": false,
@@ -10942,6 +10953,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": false,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": false,
                                                                               "hideTextOptions": false,
@@ -11768,6 +11780,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": false,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": false,
                                                                                         "hideTextOptions": false,

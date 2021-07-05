@@ -1640,7 +1640,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         </AssayPropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
-        allowImportExport={true}
         appPropertiesOnly={true}
         controlledCollapse={true}
         domain={
@@ -1674,6 +1673,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": false,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": true,
             "hideTextOptions": false,
@@ -1766,7 +1766,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={true}
             controlledCollapse={true}
             domain={
@@ -1800,6 +1799,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": false,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": true,
                 "hideTextOptions": false,
@@ -2431,7 +2431,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         </LookupProvider>
       </DomainForm>
       <DomainForm
-        allowImportExport={true}
         appPropertiesOnly={true}
         controlledCollapse={true}
         domain={
@@ -2465,6 +2464,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": false,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": true,
             "hideTextOptions": false,
@@ -2557,7 +2557,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={true}
             controlledCollapse={true}
             domain={
@@ -2591,6 +2590,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": false,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": true,
                 "hideTextOptions": false,
@@ -3222,7 +3222,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         </LookupProvider>
       </DomainForm>
       <DomainForm
-        allowImportExport={true}
         appPropertiesOnly={true}
         controlledCollapse={true}
         domain={
@@ -3256,6 +3255,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": true,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": true,
             "hideTextOptions": false,
@@ -3348,7 +3348,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={true}
             controlledCollapse={true}
             domain={
@@ -3382,6 +3381,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": true,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": true,
                 "hideTextOptions": false,
@@ -8345,7 +8345,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         </AssayPropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
-        allowImportExport={true}
         appPropertiesOnly={true}
         controlledCollapse={true}
         domain={
@@ -8379,6 +8378,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": false,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": true,
             "hideTextOptions": false,
@@ -8706,7 +8706,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={true}
             controlledCollapse={true}
             domain={
@@ -8740,6 +8739,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": false,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": true,
                 "hideTextOptions": false,
@@ -9542,7 +9542,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         </LookupProvider>
       </DomainForm>
       <DomainForm
-        allowImportExport={true}
         appPropertiesOnly={true}
         controlledCollapse={true}
         domain={
@@ -9832,6 +9831,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": true,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": true,
             "hideTextOptions": false,
@@ -10159,7 +10159,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={true}
             controlledCollapse={true}
             domain={
@@ -10449,6 +10448,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": true,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": true,
                 "hideTextOptions": false,
@@ -11619,6 +11619,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": true,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": true,
                                                             "hideTextOptions": false,
@@ -11817,6 +11818,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": true,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": true,
                                                                             "hideTextOptions": false,
@@ -12435,6 +12437,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": true,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": true,
                                                                               "hideTextOptions": false,
@@ -13349,6 +13352,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": true,
                                                                                         "hideTextOptions": false,
@@ -13780,6 +13784,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": true,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": true,
                                                             "hideTextOptions": false,
@@ -13978,6 +13983,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": true,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": true,
                                                                             "hideTextOptions": false,
@@ -14596,6 +14602,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": true,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": true,
                                                                               "hideTextOptions": false,
@@ -15456,6 +15463,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": true,
                                                                                         "hideTextOptions": false,
@@ -15887,6 +15895,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": true,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": true,
                                                             "hideTextOptions": false,
@@ -16085,6 +16094,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": true,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": true,
                                                                             "hideTextOptions": false,
@@ -16703,6 +16713,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": true,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": true,
                                                                               "hideTextOptions": false,
@@ -17528,6 +17539,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": true,
                                                                                         "hideTextOptions": false,
@@ -19878,7 +19890,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
         </AssayPropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
-        allowImportExport={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
@@ -19911,6 +19922,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": false,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
             "hideTextOptions": false,
@@ -20003,7 +20015,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={false}
             controlledCollapse={true}
             domain={
@@ -20037,6 +20048,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": false,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
                 "hideTextOptions": false,
@@ -20668,7 +20680,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
         </LookupProvider>
       </DomainForm>
       <DomainForm
-        allowImportExport={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
@@ -20701,6 +20712,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": false,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
             "hideTextOptions": false,
@@ -20793,7 +20805,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={false}
             controlledCollapse={true}
             domain={
@@ -20827,6 +20838,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": false,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
                 "hideTextOptions": false,
@@ -21458,7 +21470,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
         </LookupProvider>
       </DomainForm>
       <DomainForm
-        allowImportExport={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
@@ -21491,6 +21502,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": true,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
             "hideTextOptions": false,
@@ -21583,7 +21595,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={false}
             controlledCollapse={true}
             domain={
@@ -21617,6 +21628,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": true,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
                 "hideTextOptions": false,
@@ -24219,7 +24231,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         </AssayPropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
-        allowImportExport={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
@@ -24252,6 +24263,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": false,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
             "hideTextOptions": false,
@@ -24344,7 +24356,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={false}
             controlledCollapse={true}
             domain={
@@ -24378,6 +24389,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": false,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
                 "hideTextOptions": false,
@@ -25009,7 +25021,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         </LookupProvider>
       </DomainForm>
       <DomainForm
-        allowImportExport={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
@@ -25042,6 +25053,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": true,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
             "hideTextOptions": false,
@@ -25134,7 +25146,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={false}
             controlledCollapse={true}
             domain={
@@ -25168,6 +25179,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": true,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
                 "hideTextOptions": false,
@@ -31124,7 +31136,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         </AssayPropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
-        allowImportExport={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
@@ -31413,6 +31424,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": true,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
             "hideTextOptions": false,
@@ -31740,7 +31752,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={false}
             controlledCollapse={true}
             domain={
@@ -32030,6 +32041,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": true,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
                 "hideTextOptions": false,
@@ -33200,6 +33212,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": true,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": undefined,
                                                             "hideTextOptions": false,
@@ -33398,6 +33411,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": true,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": undefined,
                                                                             "hideTextOptions": false,
@@ -34034,6 +34048,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": true,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": undefined,
                                                                               "hideTextOptions": false,
@@ -34948,6 +34963,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": undefined,
                                                                                         "hideTextOptions": false,
@@ -35519,6 +35535,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": true,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": undefined,
                                                             "hideTextOptions": false,
@@ -35717,6 +35734,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": true,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": undefined,
                                                                             "hideTextOptions": false,
@@ -36353,6 +36371,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": true,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": undefined,
                                                                               "hideTextOptions": false,
@@ -37213,6 +37232,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": undefined,
                                                                                         "hideTextOptions": false,
@@ -37784,6 +37804,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": true,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": undefined,
                                                             "hideTextOptions": false,
@@ -37982,6 +38003,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": true,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": undefined,
                                                                             "hideTextOptions": false,
@@ -38618,6 +38640,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": true,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": undefined,
                                                                               "hideTextOptions": false,
@@ -39443,6 +39466,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": undefined,
                                                                                         "hideTextOptions": false,
@@ -45287,7 +45311,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
         </AssayPropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
-        allowImportExport={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
@@ -45320,6 +45343,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": false,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
             "hideTextOptions": false,
@@ -45647,7 +45671,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={false}
             controlledCollapse={true}
             domain={
@@ -45681,6 +45704,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": false,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
                 "hideTextOptions": false,
@@ -46483,7 +46507,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
         </LookupProvider>
       </DomainForm>
       <DomainForm
-        allowImportExport={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
@@ -46772,6 +46795,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": true,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": undefined,
             "hideTextOptions": false,
@@ -47099,7 +47123,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={false}
             controlledCollapse={true}
             domain={
@@ -47389,6 +47412,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": true,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": undefined,
                 "hideTextOptions": false,
@@ -48559,6 +48583,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": true,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": undefined,
                                                             "hideTextOptions": false,
@@ -48757,6 +48782,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": true,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": undefined,
                                                                             "hideTextOptions": false,
@@ -49393,6 +49419,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": true,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": undefined,
                                                                               "hideTextOptions": false,
@@ -50307,6 +50334,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": undefined,
                                                                                         "hideTextOptions": false,
@@ -50878,6 +50906,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": true,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": undefined,
                                                             "hideTextOptions": false,
@@ -51076,6 +51105,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": true,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": undefined,
                                                                             "hideTextOptions": false,
@@ -51712,6 +51742,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": true,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": undefined,
                                                                               "hideTextOptions": false,
@@ -52572,6 +52603,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": undefined,
                                                                                         "hideTextOptions": false,
@@ -53143,6 +53175,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": true,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": undefined,
                                                             "hideTextOptions": false,
@@ -53341,6 +53374,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": true,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": undefined,
                                                                             "hideTextOptions": false,
@@ -53977,6 +54011,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": true,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": undefined,
                                                                               "hideTextOptions": false,
@@ -54802,6 +54837,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": true,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": undefined,
                                                                                         "hideTextOptions": false,

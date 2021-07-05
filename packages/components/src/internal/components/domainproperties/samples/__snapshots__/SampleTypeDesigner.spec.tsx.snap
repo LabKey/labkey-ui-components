@@ -1093,6 +1093,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "hideAddFieldsButton": false,
         "hideFilePropertyType": false,
         "hideImportData": false,
+        "hideImportExport": false,
         "hideRequired": false,
         "hideStudyPropertyTypes": false,
         "hideTextOptions": false,
@@ -2755,7 +2756,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         </SampleTypePropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
-        allowImportExport={true}
         appDomainHeaderRenderer={[Function]}
         appPropertiesOnly={true}
         controlledCollapse={true}
@@ -2878,6 +2878,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "hideAddFieldsButton": false,
             "hideFilePropertyType": false,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
             "hideStudyPropertyTypes": true,
             "hideTextOptions": false,
@@ -2901,7 +2902,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appDomainHeaderRenderer={[Function]}
             appPropertiesOnly={true}
             controlledCollapse={true}
@@ -3024,6 +3024,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "hideAddFieldsButton": false,
                 "hideFilePropertyType": false,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
                 "hideStudyPropertyTypes": true,
                 "hideTextOptions": false,
@@ -3863,6 +3864,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "hideAddFieldsButton": false,
                                                             "hideFilePropertyType": false,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
                                                             "hideStudyPropertyTypes": true,
                                                             "hideTextOptions": false,
@@ -4061,6 +4063,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "hideAddFieldsButton": false,
                                                                             "hideFilePropertyType": false,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
                                                                             "hideStudyPropertyTypes": true,
                                                                             "hideTextOptions": false,
@@ -4679,6 +4682,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "hideAddFieldsButton": false,
                                                                               "hideFilePropertyType": false,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
                                                                               "hideStudyPropertyTypes": true,
                                                                               "hideTextOptions": false,
@@ -5593,6 +5597,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideFilePropertyType": false,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
                                                                                         "hideStudyPropertyTypes": true,
                                                                                         "hideTextOptions": false,

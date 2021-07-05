@@ -192,6 +192,7 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideFilePropertyType: false,
     hideStudyPropertyTypes: false,
     hideImportExport: false,
+    hideConditionalFormatting: false,
 };
 
 export const DERIVATION_DATA_SCOPE_CHILD_ONLY = 'ChildOnly';

@@ -244,7 +244,6 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                 field={field}
                                 onChange={onChange}
                                 showingModal={showingModal}
-                                hideConditionalFormatting={appPropertiesOnly}
                                 successBsStyle={successBsStyle}
                                 domainFormDisplayOptions={domainFormDisplayOptions}
                             />

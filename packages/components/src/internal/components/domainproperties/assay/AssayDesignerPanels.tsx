@@ -1,7 +1,7 @@
 import React from 'react';
 import { Map } from 'immutable';
 
-import { DomainDesign, HeaderRenderer } from '../models';
+import { DomainDesign, HeaderRenderer, IDomainFormDisplayOptions } from '../models';
 
 import { getDomainPanelStatus } from '../actions';
 
@@ -23,6 +23,7 @@ interface Props {
     hideEmptyBatchDomain?: boolean;
     containerTop?: number; // This sets the top of the sticky header, default is 0
     appPropertiesOnly?: boolean;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
     appDomainHeaders?: Map<string, HeaderRenderer>;
     appIsValidMsg?: (model: AssayProtocolModel) => string;
     useTheme?: boolean;
@@ -37,6 +38,10 @@ interface State {
 
 class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     panelCount = 1; // start at 1 for the AssayPropertiesPanel, will updated count after domains are defined in constructor
+
+    static defaultProps = {
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
@@ -149,6 +154,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
     render() {
         const {
             appPropertiesOnly,
+            domainFormDisplayOptions,
             containerTop,
             useTheme,
             successBsStyle,
@@ -237,10 +243,9 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                             successBsStyle={successBsStyle}
                             testMode={testMode}
                             domainFormDisplayOptions={{
-                                ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+                                ...domainFormDisplayOptions,
                                 domainKindDisplayName: 'assay design',
                                 hideFilePropertyType,
-                                hideStudyPropertyTypes: appPropertiesOnly, // currently we hideStudyPropertyTypes only when appPropertiesOnly is true (in LKSM). TODO to refactor/rename appPropertiesOnly.
                             }}
                         >
                             <div>{domain.description}</div>

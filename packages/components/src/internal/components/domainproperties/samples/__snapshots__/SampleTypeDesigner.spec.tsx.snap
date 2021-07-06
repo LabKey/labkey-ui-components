@@ -936,6 +936,12 @@ Array [
 
 exports[`SampleTypeDesigner initModel with name URL props 1`] = `
 <ComponentWithBaseDomainDesigner
+  appPropertiesOnly={true}
+  domainFormDisplayOptions={
+    Object {
+      "hideConditionalFormatting": true,
+    }
+  }
   initModel={
     Immutable.Record {
       "domainDesign": Immutable.Record {
@@ -1088,15 +1094,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
     }
     domainFormDisplayOptions={
       Object {
-        "disableMvEnabled": false,
-        "domainKindDisplayName": "sample type",
-        "hideAddFieldsButton": false,
-        "hideImportData": false,
-        "hideRequired": false,
-        "hideTextOptions": false,
-        "hideValidators": false,
-        "isDragDisabled": false,
-        "phiLevelDisabled": false,
+        "hideConditionalFormatting": true,
       }
     }
     firstState={true}
@@ -2753,7 +2751,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         </SampleTypePropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
-        allowImportExport={true}
         appDomainHeaderRenderer={[Function]}
         appPropertiesOnly={true}
         controlledCollapse={true}
@@ -2871,15 +2868,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         }
         domainFormDisplayOptions={
           Object {
-            "disableMvEnabled": false,
-            "domainKindDisplayName": "sample type",
-            "hideAddFieldsButton": false,
-            "hideImportData": false,
-            "hideRequired": false,
-            "hideTextOptions": false,
-            "hideValidators": false,
-            "isDragDisabled": false,
-            "phiLevelDisabled": false,
+            "hideConditionalFormatting": true,
+            "hideStudyPropertyTypes": true,
           }
         }
         domainIndex={0}
@@ -2890,15 +2880,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="TODO"
-        showInferFromFile={true}
-        showStudyPropertyTypes={false}
         testMode={true}
         useTheme={false}
         validate={false}
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appDomainHeaderRenderer={[Function]}
             appPropertiesOnly={true}
             controlledCollapse={true}
@@ -3016,15 +3003,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             }
             domainFormDisplayOptions={
               Object {
-                "disableMvEnabled": false,
-                "domainKindDisplayName": "sample type",
-                "hideAddFieldsButton": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
+                "hideConditionalFormatting": true,
+                "hideStudyPropertyTypes": true,
               }
             }
             domainIndex={0}
@@ -3036,10 +3016,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="TODO"
-            showFilePropertyType={true}
             showHeader={true}
-            showInferFromFile={true}
-            showStudyPropertyTypes={false}
             successBsStyle="success"
             testMode={true}
             useTheme={false}
@@ -3855,15 +3832,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         defaultValueOptions={Immutable.List []}
                                                         domainFormDisplayOptions={
                                                           Object {
-                                                            "disableMvEnabled": false,
-                                                            "domainKindDisplayName": "sample type",
-                                                            "hideAddFieldsButton": false,
-                                                            "hideImportData": false,
-                                                            "hideRequired": false,
-                                                            "hideTextOptions": false,
-                                                            "hideValidators": false,
-                                                            "isDragDisabled": false,
-                                                            "phiLevelDisabled": false,
+                                                            "hideConditionalFormatting": true,
+                                                            "hideStudyPropertyTypes": true,
                                                           }
                                                         }
                                                         domainId={null}
@@ -3962,28 +3932,23 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         getDomainFields={[Function]}
                                                         helpNoun="field designer"
                                                         index={0}
-                                                        isDragDisabled={false}
                                                         key="domain-row-key-0"
                                                         maxPhiLevel="NotPHI"
                                                         onChange={[Function]}
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={true}
-                                                        showStudyPropertyTypes={false}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
                                                           draggableId="domainpropertiesrow-domaindrag-0-0"
                                                           index={0}
-                                                          isDragDisabled={false}
                                                         >
                                                           <PrivateDraggable
                                                             canDragInteractiveElements={false}
                                                             draggableId="domainpropertiesrow-domaindrag-0-0"
                                                             index={0}
                                                             isClone={false}
-                                                            isDragDisabled={false}
                                                             isEnabled={true}
                                                             shouldRespectForcePress={false}
                                                           >
@@ -3992,7 +3957,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                               draggableId="domainpropertiesrow-domaindrag-0-0"
                                                               index={0}
                                                               isClone={false}
-                                                              isDragDisabled={false}
                                                               isEnabled={true}
                                                               shouldRespectForcePress={false}
                                                             >
@@ -4002,7 +3966,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                 dropAnimationFinished={[Function]}
                                                                 index={0}
                                                                 isClone={false}
-                                                                isDragDisabled={false}
                                                                 isEnabled={true}
                                                                 mapped={
                                                                   Object {
@@ -4053,15 +4016,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                         defaultValueOptions={Immutable.List []}
                                                                         domainFormDisplayOptions={
                                                                           Object {
-                                                                            "disableMvEnabled": false,
-                                                                            "domainKindDisplayName": "sample type",
-                                                                            "hideAddFieldsButton": false,
-                                                                            "hideImportData": false,
-                                                                            "hideRequired": false,
-                                                                            "hideTextOptions": false,
-                                                                            "hideValidators": false,
-                                                                            "isDragDisabled": false,
-                                                                            "phiLevelDisabled": false,
+                                                                            "hideConditionalFormatting": true,
+                                                                            "hideStudyPropertyTypes": true,
                                                                           }
                                                                         }
                                                                         domainId={null}
@@ -4451,52 +4407,52 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                       value="string"
                                                                                     >
                                                                                       <option
-                                                                                        key="0"
-                                                                                        value="string"
-                                                                                      >
-                                                                                        Text
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="1"
-                                                                                        value="multiLine"
-                                                                                      >
-                                                                                        Multi-Line Text
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="2"
+                                                                                        key="boolean"
                                                                                         value="boolean"
                                                                                       >
                                                                                         Boolean
                                                                                       </option>
                                                                                       <option
-                                                                                        key="3"
-                                                                                        value="int"
-                                                                                      >
-                                                                                        Integer
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="4"
-                                                                                        value="double"
-                                                                                      >
-                                                                                        Decimal (floating point)
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="5"
+                                                                                        key="dateTime"
                                                                                         value="dateTime"
                                                                                       >
                                                                                         Date Time
                                                                                       </option>
                                                                                       <option
-                                                                                        key="6"
-                                                                                        value="users"
+                                                                                        key="double"
+                                                                                        value="double"
                                                                                       >
-                                                                                        User
+                                                                                        Decimal (floating point)
                                                                                       </option>
                                                                                       <option
-                                                                                        key="7"
+                                                                                        key="int"
+                                                                                        value="int"
+                                                                                      >
+                                                                                        Integer
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="multiLine"
+                                                                                        value="multiLine"
+                                                                                      >
+                                                                                        Multi-Line Text
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="sample"
                                                                                         value="sample"
                                                                                       >
                                                                                         Sample
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="string"
+                                                                                        value="string"
+                                                                                      >
+                                                                                        Text
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="users"
+                                                                                        value="users"
+                                                                                      >
+                                                                                        User
                                                                                       </option>
                                                                                     </select>
                                                                                   </FormControl>
@@ -4669,15 +4625,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                           appPropertiesOnly={true}
                                                                           domainFormDisplayOptions={
                                                                             Object {
-                                                                              "disableMvEnabled": false,
-                                                                              "domainKindDisplayName": "sample type",
-                                                                              "hideAddFieldsButton": false,
-                                                                              "hideImportData": false,
-                                                                              "hideRequired": false,
-                                                                              "hideTextOptions": false,
-                                                                              "hideValidators": false,
-                                                                              "isDragDisabled": false,
-                                                                              "phiLevelDisabled": false,
+                                                                              "hideConditionalFormatting": true,
+                                                                              "hideStudyPropertyTypes": true,
                                                                             }
                                                                           }
                                                                           domainIndex={0}
@@ -5581,15 +5530,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   <ConditionalFormattingAndValidation
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
-                                                                                        "disableMvEnabled": false,
-                                                                                        "domainKindDisplayName": "sample type",
-                                                                                        "hideAddFieldsButton": false,
-                                                                                        "hideImportData": false,
-                                                                                        "hideRequired": false,
-                                                                                        "hideTextOptions": false,
-                                                                                        "hideValidators": false,
-                                                                                        "isDragDisabled": false,
-                                                                                        "phiLevelDisabled": false,
+                                                                                        "hideConditionalFormatting": true,
+                                                                                        "hideStudyPropertyTypes": true,
                                                                                       }
                                                                                     }
                                                                                     domainIndex={0}
@@ -5680,7 +5622,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
-                                                                                    hideConditionalFormatting={true}
                                                                                     index={0}
                                                                                     onChange={[Function]}
                                                                                     showingModal={[Function]}

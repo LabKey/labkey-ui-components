@@ -117,7 +117,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         helpTopic: SAMPLE_SET_HELP_TOPIC,
         showParentLabelPrefix: true,
         useTheme: false,
-        appPropertiesOnly: true,
         showLinkToStudy: false,
         domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'sample type' },
     };
@@ -484,10 +483,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             const updatedModel = exception
                 ? (model.set('exception', exception) as SampleTypeModel)
                 : (model.merge({
-                    // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
-                    domain: domain.merge({ domainException: response.domainException }) as DomainDesign,
-                    exception: undefined,
-                }) as SampleTypeModel);
+                      // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
+                      domain: domain.merge({ domainException: response.domainException }) as DomainDesign,
+                      exception: undefined,
+                  }) as SampleTypeModel);
 
             setSubmitting(false, () => {
                 this.setState(() => ({ model: updatedModel }));
@@ -626,17 +625,17 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
-                    showStudyPropertyTypes={_showLinkToStudy}
-                    showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.domainChangeHandler}
                     onToggle={this.formToggle}
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
-                    allowImportExport={true}
                     testMode={testMode}
-                    domainFormDisplayOptions={domainFormDisplayOptions}
+                    domainFormDisplayOptions={{
+                        ...domainFormDisplayOptions,
+                        hideStudyPropertyTypes: !_showLinkToStudy,
+                    }}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}
                 {showUniqueIdConfirmation && (

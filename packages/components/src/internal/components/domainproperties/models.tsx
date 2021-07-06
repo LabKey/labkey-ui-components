@@ -1171,12 +1171,15 @@ export function resolveAvailableTypes(
     availableTypes: List<PropDescType>,
     appPropertiesOnly?: boolean,
     showStudyPropertyTypes?: boolean,
-    showFilePropertyType?: boolean): List<PropDescType> {
+    showFilePropertyType?: boolean
+): List<PropDescType> {
     // field has not been saved -- display all property types allowed by app
     // Issue 40795: need to check wrappedColumnName for alias field in query metadata editor and resolve the datatype fields
     if (field.isNew() && field.wrappedColumnName == undefined) {
         return appPropertiesOnly
-            ? (availableTypes.filter(type => isPropertyTypeAllowed(type, showFilePropertyType, showStudyPropertyTypes)) as List<PropDescType>)
+            ? (availableTypes.filter(type =>
+                  isPropertyTypeAllowed(type, showFilePropertyType, showStudyPropertyTypes)
+              ) as List<PropDescType>)
             : availableTypes;
     }
 
@@ -1207,11 +1210,14 @@ export function resolveAvailableTypes(
     return filteredTypes;
 }
 
-export function isPropertyTypeAllowed(type: PropDescType, includeFileType: boolean, includeStudyPropertyTypes: boolean): boolean {
-    // We allow file type for some domains based on the parameter
-    if (type === FILE_TYPE) return includeFileType;
+export function isPropertyTypeAllowed(
+    type: PropDescType,
+    showFilePropertyType: boolean,
+    showStudyPropertyTypes: boolean
+): boolean {
+    if (type === FILE_TYPE) return showFilePropertyType;
 
-    if (STUDY_PROPERTY_TYPES.includes(type)) return includeStudyPropertyTypes;
+    if (STUDY_PROPERTY_TYPES.includes(type)) return showStudyPropertyTypes;
 
     // We are excluding the field types below for the App
     return ![LOOKUP_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
@@ -1670,6 +1676,11 @@ export interface IDomainFormDisplayOptions {
     derivationDataScopeConfig?: IDerivationDataScope;
     domainKindDisplayName?: string;
     retainReservedFields?: boolean;
+    hideFilePropertyType?: boolean;
+    hideStudyPropertyTypes?: boolean;
+    hideImportExport?: boolean;
+    hideConditionalFormatting?: boolean;
+    hideInferFromFile?: boolean;
 }
 
 export interface IDerivationDataScope {

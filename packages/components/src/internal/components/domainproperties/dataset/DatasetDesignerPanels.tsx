@@ -530,7 +530,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
-                    showInferFromFile={true}
                     containerTop={containerTop}
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(1, collapsed, callback);
@@ -544,7 +543,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                         hideImportData: model.definitionIsShared, // Shared (Dataspace) study does not have permission to import data. See study-importAction.validatePermission
                         retainReservedFields: true, // reserved fields are used for mapping the participant and visit columns.
                     }}
-                    allowImportExport={true}
                     testMode={testMode}
                 />
                 <Progress

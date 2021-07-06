@@ -1361,8 +1361,12 @@ exports[`DataClassDesigner initModel 1`] = `
         "disableMvEnabled": false,
         "domainKindDisplayName": "data class",
         "hideAddFieldsButton": false,
+        "hideConditionalFormatting": false,
+        "hideFilePropertyType": false,
         "hideImportData": false,
+        "hideImportExport": false,
         "hideRequired": false,
+        "hideStudyPropertyTypes": false,
         "hideTextOptions": false,
         "hideValidators": false,
         "isDragDisabled": false,
@@ -4139,7 +4143,6 @@ exports[`DataClassDesigner initModel 1`] = `
         </DataClassPropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
-        allowImportExport={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
@@ -4440,8 +4443,12 @@ exports[`DataClassDesigner initModel 1`] = `
             "disableMvEnabled": false,
             "domainKindDisplayName": "data class",
             "hideAddFieldsButton": false,
+            "hideConditionalFormatting": false,
+            "hideFilePropertyType": false,
             "hideImportData": false,
+            "hideImportExport": false,
             "hideRequired": false,
+            "hideStudyPropertyTypes": false,
             "hideTextOptions": false,
             "hideValidators": false,
             "isDragDisabled": false,
@@ -4456,13 +4463,11 @@ exports[`DataClassDesigner initModel 1`] = `
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="COMPLETE"
-        showInferFromFile={true}
         testMode={true}
         validate={false}
       >
         <LookupProvider>
           <DomainFormImpl
-            allowImportExport={true}
             appPropertiesOnly={false}
             controlledCollapse={true}
             domain={
@@ -4764,8 +4769,12 @@ exports[`DataClassDesigner initModel 1`] = `
                 "disableMvEnabled": false,
                 "domainKindDisplayName": "data class",
                 "hideAddFieldsButton": false,
+                "hideConditionalFormatting": false,
+                "hideFilePropertyType": false,
                 "hideImportData": false,
+                "hideImportExport": false,
                 "hideRequired": false,
+                "hideStudyPropertyTypes": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
@@ -4781,10 +4790,7 @@ exports[`DataClassDesigner initModel 1`] = `
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="COMPLETE"
-            showFilePropertyType={true}
             showHeader={true}
-            showInferFromFile={true}
-            showStudyPropertyTypes={true}
             successBsStyle="success"
             testMode={true}
             validate={false}
@@ -5553,8 +5559,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "data class",
                                                             "hideAddFieldsButton": false,
+                                                            "hideConditionalFormatting": false,
+                                                            "hideFilePropertyType": false,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
+                                                            "hideStudyPropertyTypes": false,
                                                             "hideTextOptions": false,
                                                             "hideValidators": false,
                                                             "isDragDisabled": false,
@@ -5675,8 +5685,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={true}
-                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -5768,8 +5776,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "data class",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideConditionalFormatting": false,
+                                                                            "hideFilePropertyType": false,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
+                                                                            "hideStudyPropertyTypes": false,
                                                                             "hideTextOptions": false,
                                                                             "hideValidators": false,
                                                                             "isDragDisabled": false,
@@ -6174,34 +6186,34 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       value="string"
                                                                                     >
                                                                                       <option
-                                                                                        key="0"
-                                                                                        value="string"
-                                                                                      >
-                                                                                        Text
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="1"
-                                                                                        value="multiLine"
-                                                                                      >
-                                                                                        Multi-Line Text
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="2"
+                                                                                        key="flag"
                                                                                         value="flag"
                                                                                       >
                                                                                         Flag
                                                                                       </option>
                                                                                       <option
-                                                                                        key="3"
+                                                                                        key="lookup"
+                                                                                        value="lookup"
+                                                                                      >
+                                                                                        Lookup
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="multiLine"
+                                                                                        value="multiLine"
+                                                                                      >
+                                                                                        Multi-Line Text
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="ParticipantId"
                                                                                         value="ParticipantId"
                                                                                       >
                                                                                         Subject/Participant
                                                                                       </option>
                                                                                       <option
-                                                                                        key="4"
-                                                                                        value="lookup"
+                                                                                        key="string"
+                                                                                        value="string"
                                                                                       >
-                                                                                        Lookup
+                                                                                        Text
                                                                                       </option>
                                                                                     </select>
                                                                                   </FormControl>
@@ -6375,8 +6387,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "data class",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideConditionalFormatting": false,
+                                                                              "hideFilePropertyType": false,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
+                                                                              "hideStudyPropertyTypes": false,
                                                                               "hideTextOptions": false,
                                                                               "hideValidators": false,
                                                                               "isDragDisabled": false,
@@ -7309,8 +7325,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "data class",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideConditionalFormatting": false,
+                                                                                        "hideFilePropertyType": false,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
+                                                                                        "hideStudyPropertyTypes": false,
                                                                                         "hideTextOptions": false,
                                                                                         "hideValidators": false,
                                                                                         "isDragDisabled": false,
@@ -7416,7 +7436,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
-                                                                                    hideConditionalFormatting={false}
                                                                                     index={0}
                                                                                     onChange={[Function]}
                                                                                     showingModal={[Function]}
@@ -7905,8 +7924,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "data class",
                                                             "hideAddFieldsButton": false,
+                                                            "hideConditionalFormatting": false,
+                                                            "hideFilePropertyType": false,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
+                                                            "hideStudyPropertyTypes": false,
                                                             "hideTextOptions": false,
                                                             "hideValidators": false,
                                                             "isDragDisabled": false,
@@ -8016,8 +8039,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={true}
-                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -8109,8 +8130,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "data class",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideConditionalFormatting": false,
+                                                                            "hideFilePropertyType": false,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
+                                                                            "hideStudyPropertyTypes": false,
                                                                             "hideTextOptions": false,
                                                                             "hideValidators": false,
                                                                             "isDragDisabled": false,
@@ -8504,28 +8529,28 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       value="int"
                                                                                     >
                                                                                       <option
-                                                                                        key="0"
+                                                                                        key="int"
                                                                                         value="int"
                                                                                       >
                                                                                         Integer
                                                                                       </option>
                                                                                       <option
-                                                                                        key="1"
-                                                                                        value="users"
-                                                                                      >
-                                                                                        User
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="2"
+                                                                                        key="lookup"
                                                                                         value="lookup"
                                                                                       >
                                                                                         Lookup
                                                                                       </option>
                                                                                       <option
-                                                                                        key="3"
+                                                                                        key="sample"
                                                                                         value="sample"
                                                                                       >
                                                                                         Sample
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="users"
+                                                                                        value="users"
+                                                                                      >
+                                                                                        User
                                                                                       </option>
                                                                                     </select>
                                                                                   </FormControl>
@@ -8699,8 +8724,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "data class",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideConditionalFormatting": false,
+                                                                              "hideFilePropertyType": false,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
+                                                                              "hideStudyPropertyTypes": false,
                                                                               "hideTextOptions": false,
                                                                               "hideValidators": false,
                                                                               "isDragDisabled": false,
@@ -9561,8 +9590,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "data class",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideConditionalFormatting": false,
+                                                                                        "hideFilePropertyType": false,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
+                                                                                        "hideStudyPropertyTypes": false,
                                                                                         "hideTextOptions": false,
                                                                                         "hideValidators": false,
                                                                                         "isDragDisabled": false,
@@ -9657,7 +9690,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
-                                                                                    hideConditionalFormatting={false}
                                                                                     index={1}
                                                                                     onChange={[Function]}
                                                                                     showingModal={[Function]}
@@ -10146,8 +10178,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "disableMvEnabled": false,
                                                             "domainKindDisplayName": "data class",
                                                             "hideAddFieldsButton": false,
+                                                            "hideConditionalFormatting": false,
+                                                            "hideFilePropertyType": false,
                                                             "hideImportData": false,
+                                                            "hideImportExport": false,
                                                             "hideRequired": false,
+                                                            "hideStudyPropertyTypes": false,
                                                             "hideTextOptions": false,
                                                             "hideValidators": false,
                                                             "isDragDisabled": false,
@@ -10257,8 +10293,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
                                                         showDefaultValueSettings={false}
-                                                        showFilePropertyType={true}
-                                                        showStudyPropertyTypes={true}
                                                         successBsStyle="success"
                                                       >
                                                         <PublicDraggable
@@ -10350,8 +10384,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "disableMvEnabled": false,
                                                                             "domainKindDisplayName": "data class",
                                                                             "hideAddFieldsButton": false,
+                                                                            "hideConditionalFormatting": false,
+                                                                            "hideFilePropertyType": false,
                                                                             "hideImportData": false,
+                                                                            "hideImportExport": false,
                                                                             "hideRequired": false,
+                                                                            "hideStudyPropertyTypes": false,
                                                                             "hideTextOptions": false,
                                                                             "hideValidators": false,
                                                                             "isDragDisabled": false,
@@ -10745,7 +10783,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       value="dateTime"
                                                                                     >
                                                                                       <option
-                                                                                        key="0"
+                                                                                        key="dateTime"
                                                                                         value="dateTime"
                                                                                       >
                                                                                         Date Time
@@ -10922,8 +10960,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "disableMvEnabled": false,
                                                                               "domainKindDisplayName": "data class",
                                                                               "hideAddFieldsButton": false,
+                                                                              "hideConditionalFormatting": false,
+                                                                              "hideFilePropertyType": false,
                                                                               "hideImportData": false,
+                                                                              "hideImportExport": false,
                                                                               "hideRequired": false,
+                                                                              "hideStudyPropertyTypes": false,
                                                                               "hideTextOptions": false,
                                                                               "hideValidators": false,
                                                                               "isDragDisabled": false,
@@ -11746,8 +11788,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "disableMvEnabled": false,
                                                                                         "domainKindDisplayName": "data class",
                                                                                         "hideAddFieldsButton": false,
+                                                                                        "hideConditionalFormatting": false,
+                                                                                        "hideFilePropertyType": false,
                                                                                         "hideImportData": false,
+                                                                                        "hideImportExport": false,
                                                                                         "hideRequired": false,
+                                                                                        "hideStudyPropertyTypes": false,
                                                                                         "hideTextOptions": false,
                                                                                         "hideValidators": false,
                                                                                         "isDragDisabled": false,
@@ -11842,7 +11888,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
-                                                                                    hideConditionalFormatting={false}
                                                                                     index={2}
                                                                                     onChange={[Function]}
                                                                                     showingModal={[Function]}

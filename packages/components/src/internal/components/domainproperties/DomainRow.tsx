@@ -23,7 +23,7 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { DeleteIcon, DragDropHandle, FieldExpansionToggle, LabelHelpTip } from '../../..';
+import { DeleteIcon, DragDropHandle, FieldExpansionToggle, LabelHelpTip, naturalSortByProperty } from '../../..';
 
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -80,8 +80,6 @@ interface IDomainRowProps {
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
     appPropertiesOnly?: boolean;
-    showStudyPropertyTypes?: boolean;
-    showFilePropertyType?: boolean;
     domainIndex: number;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
@@ -339,16 +337,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     renderBaseFields() {
-        const {
-            index,
-            field,
-            availableTypes,
-            appPropertiesOnly,
-            showStudyPropertyTypes,
-            showFilePropertyType,
-            domainIndex,
-            domainFormDisplayOptions,
-        } = this.props;
+        const { index, field, availableTypes, appPropertiesOnly, domainIndex, domainFormDisplayOptions } = this.props;
 
         return (
             <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)} ref={this[`${this.props.index}_ref`]}>
@@ -380,13 +369,19 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         {isPrimaryKeyFieldLocked(field.lockType) ? (
                             <option value={field.dataType.name}>{field.dataType.display}</option>
                         ) : (
-                            resolveAvailableTypes(field, availableTypes, appPropertiesOnly, showStudyPropertyTypes, showFilePropertyType).map(
-                                (type, i) => (
-                                    <option key={i} value={type.name}>
+                            resolveAvailableTypes(
+                                field,
+                                availableTypes,
+                                appPropertiesOnly,
+                                !domainFormDisplayOptions.hideStudyPropertyTypes,
+                                !domainFormDisplayOptions.hideFilePropertyType
+                            )
+                                .sort(naturalSortByProperty('display'))
+                                .map(type => (
+                                    <option key={type.name} value={type.name}>
                                         {type.display}
                                     </option>
-                                )
-                            )
+                                ))
                         )}
                     </FormControl>
                 </Col>

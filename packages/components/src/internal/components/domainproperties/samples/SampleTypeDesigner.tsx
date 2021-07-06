@@ -483,10 +483,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             const updatedModel = exception
                 ? (model.set('exception', exception) as SampleTypeModel)
                 : (model.merge({
-                    // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
-                    domain: domain.merge({ domainException: response.domainException }) as DomainDesign,
-                    exception: undefined,
-                }) as SampleTypeModel);
+                      // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
+                      domain: domain.merge({ domainException: response.domainException }) as DomainDesign,
+                      exception: undefined,
+                  }) as SampleTypeModel);
 
             setSubmitting(false, () => {
                 this.setState(() => ({ model: updatedModel }));

@@ -6186,34 +6186,34 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       value="string"
                                                                                     >
                                                                                       <option
-                                                                                        key="0"
-                                                                                        value="string"
-                                                                                      >
-                                                                                        Text
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="1"
-                                                                                        value="multiLine"
-                                                                                      >
-                                                                                        Multi-Line Text
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="2"
+                                                                                        key="flag"
                                                                                         value="flag"
                                                                                       >
                                                                                         Flag
                                                                                       </option>
                                                                                       <option
-                                                                                        key="3"
+                                                                                        key="lookup"
+                                                                                        value="lookup"
+                                                                                      >
+                                                                                        Lookup
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="multiLine"
+                                                                                        value="multiLine"
+                                                                                      >
+                                                                                        Multi-Line Text
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="ParticipantId"
                                                                                         value="ParticipantId"
                                                                                       >
                                                                                         Subject/Participant
                                                                                       </option>
                                                                                       <option
-                                                                                        key="4"
-                                                                                        value="lookup"
+                                                                                        key="string"
+                                                                                        value="string"
                                                                                       >
-                                                                                        Lookup
+                                                                                        Text
                                                                                       </option>
                                                                                     </select>
                                                                                   </FormControl>
@@ -8529,28 +8529,28 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       value="int"
                                                                                     >
                                                                                       <option
-                                                                                        key="0"
+                                                                                        key="int"
                                                                                         value="int"
                                                                                       >
                                                                                         Integer
                                                                                       </option>
                                                                                       <option
-                                                                                        key="1"
-                                                                                        value="users"
-                                                                                      >
-                                                                                        User
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="2"
+                                                                                        key="lookup"
                                                                                         value="lookup"
                                                                                       >
                                                                                         Lookup
                                                                                       </option>
                                                                                       <option
-                                                                                        key="3"
+                                                                                        key="sample"
                                                                                         value="sample"
                                                                                       >
                                                                                         Sample
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="users"
+                                                                                        value="users"
+                                                                                      >
+                                                                                        User
                                                                                       </option>
                                                                                     </select>
                                                                                   </FormControl>
@@ -10783,7 +10783,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       value="dateTime"
                                                                                     >
                                                                                       <option
-                                                                                        key="0"
+                                                                                        key="dateTime"
                                                                                         value="dateTime"
                                                                                       >
                                                                                         Date Time

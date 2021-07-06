@@ -865,28 +865,28 @@ exports[`DomainRow Sample Field 1`] = `
                                               value="sample"
                                             >
                                               <option
-                                                key="0"
+                                                key="int"
                                                 value="int"
                                               >
                                                 Integer
                                               </option>
                                               <option
-                                                key="1"
-                                                value="users"
-                                              >
-                                                User
-                                              </option>
-                                              <option
-                                                key="2"
+                                                key="lookup"
                                                 value="lookup"
                                               >
                                                 Lookup
                                               </option>
                                               <option
-                                                key="3"
+                                                key="sample"
                                                 value="sample"
                                               >
                                                 Sample
+                                              </option>
+                                              <option
+                                                key="users"
+                                                value="users"
+                                              >
+                                                User
                                               </option>
                                             </select>
                                           </FormControl>
@@ -3105,106 +3105,106 @@ exports[`DomainRow client side warning on field 1`] = `
                                               value="attachment"
                                             >
                                               <option
-                                                key="0"
-                                                value="string"
-                                              >
-                                                Text
-                                              </option>
-                                              <option
-                                                key="1"
-                                                value="multiLine"
-                                              >
-                                                Multi-Line Text
-                                              </option>
-                                              <option
-                                                key="2"
-                                                value="boolean"
-                                              >
-                                                Boolean
-                                              </option>
-                                              <option
-                                                key="3"
-                                                value="int"
-                                              >
-                                                Integer
-                                              </option>
-                                              <option
-                                                key="4"
-                                                value="double"
-                                              >
-                                                Decimal (floating point)
-                                              </option>
-                                              <option
-                                                key="5"
-                                                value="dateTime"
-                                              >
-                                                Date Time
-                                              </option>
-                                              <option
-                                                key="6"
-                                                value="flag"
-                                              >
-                                                Flag
-                                              </option>
-                                              <option
-                                                key="7"
-                                                value="fileLink"
-                                              >
-                                                File
-                                              </option>
-                                              <option
-                                                key="8"
+                                                key="attachment"
                                                 value="attachment"
                                               >
                                                 Attachment
                                               </option>
                                               <option
-                                                key="9"
-                                                value="users"
+                                                key="boolean"
+                                                value="boolean"
                                               >
-                                                User
+                                                Boolean
                                               </option>
                                               <option
-                                                key="10"
-                                                value="ParticipantId"
+                                                key="dateTime"
+                                                value="dateTime"
                                               >
-                                                Subject/Participant
+                                                Date Time
                                               </option>
                                               <option
-                                                key="11"
+                                                key="double"
+                                                value="double"
+                                              >
+                                                Decimal (floating point)
+                                              </option>
+                                              <option
+                                                key="fileLink"
+                                                value="fileLink"
+                                              >
+                                                File
+                                              </option>
+                                              <option
+                                                key="flag"
+                                                value="flag"
+                                              >
+                                                Flag
+                                              </option>
+                                              <option
+                                                key="int"
+                                                value="int"
+                                              >
+                                                Integer
+                                              </option>
+                                              <option
+                                                key="lookup"
                                                 value="lookup"
                                               >
                                                 Lookup
                                               </option>
                                               <option
-                                                key="12"
-                                                value="sample"
+                                                key="multiLine"
+                                                value="multiLine"
                                               >
-                                                Sample
+                                                Multi-Line Text
                                               </option>
                                               <option
-                                                key="13"
+                                                key="ontologyLookup"
                                                 value="ontologyLookup"
                                               >
                                                 Ontology Lookup
                                               </option>
                                               <option
-                                                key="14"
+                                                key="sample"
+                                                value="sample"
+                                              >
+                                                Sample
+                                              </option>
+                                              <option
+                                                key="ParticipantId"
+                                                value="ParticipantId"
+                                              >
+                                                Subject/Participant
+                                              </option>
+                                              <option
+                                                key="string"
+                                                value="string"
+                                              >
+                                                Text
+                                              </option>
+                                              <option
+                                                key="uniqueId"
+                                                value="uniqueId"
+                                              >
+                                                Unique ID
+                                              </option>
+                                              <option
+                                                key="users"
+                                                value="users"
+                                              >
+                                                User
+                                              </option>
+                                              <option
+                                                key="visitDate"
                                                 value="visitDate"
                                               >
                                                 Visit Date
                                               </option>
                                               <option
-                                                key="15"
+                                                key="visitId"
                                                 value="visitId"
                                               >
                                                 Visit ID
-                                              </option>
-                                              <option
-                                                key="16"
-                                                value="uniqueId"
-                                              >
-                                                Unique ID
                                               </option>
                                             </select>
                                           </FormControl>
@@ -5284,13 +5284,13 @@ exports[`DomainRow date time field 1`] = `
                                               value="dateTime"
                                             >
                                               <option
-                                                key="0"
+                                                key="dateTime"
                                                 value="dateTime"
                                               >
                                                 Date Time
                                               </option>
                                               <option
-                                                key="1"
+                                                key="visitDate"
                                                 value="visitDate"
                                               >
                                                 Visit Date
@@ -7615,13 +7615,13 @@ exports[`DomainRow decimal field 1`] = `
                                               value="double"
                                             >
                                               <option
-                                                key="0"
+                                                key="double"
                                                 value="double"
                                               >
                                                 Decimal (floating point)
                                               </option>
                                               <option
-                                                key="1"
+                                                key="visitId"
                                                 value="visitId"
                                               >
                                                 Visit ID
@@ -9981,40 +9981,40 @@ exports[`DomainRow participant id field 1`] = `
                                               value="ParticipantId"
                                             >
                                               <option
-                                                key="0"
-                                                value="string"
-                                              >
-                                                Text
-                                              </option>
-                                              <option
-                                                key="1"
-                                                value="multiLine"
-                                              >
-                                                Multi-Line Text
-                                              </option>
-                                              <option
-                                                key="2"
+                                                key="flag"
                                                 value="flag"
                                               >
                                                 Flag
                                               </option>
                                               <option
-                                                key="3"
-                                                value="ParticipantId"
-                                              >
-                                                Subject/Participant
-                                              </option>
-                                              <option
-                                                key="4"
+                                                key="lookup"
                                                 value="lookup"
                                               >
                                                 Lookup
                                               </option>
                                               <option
-                                                key="5"
+                                                key="multiLine"
+                                                value="multiLine"
+                                              >
+                                                Multi-Line Text
+                                              </option>
+                                              <option
+                                                key="ontologyLookup"
                                                 value="ontologyLookup"
                                               >
                                                 Ontology Lookup
+                                              </option>
+                                              <option
+                                                key="ParticipantId"
+                                                value="ParticipantId"
+                                              >
+                                                Subject/Participant
+                                              </option>
+                                              <option
+                                                key="string"
+                                                value="string"
+                                              >
+                                                Text
                                               </option>
                                             </select>
                                           </FormControl>
@@ -12127,106 +12127,106 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                               value="attachment"
                                             >
                                               <option
-                                                key="0"
-                                                value="string"
-                                              >
-                                                Text
-                                              </option>
-                                              <option
-                                                key="1"
-                                                value="multiLine"
-                                              >
-                                                Multi-Line Text
-                                              </option>
-                                              <option
-                                                key="2"
-                                                value="boolean"
-                                              >
-                                                Boolean
-                                              </option>
-                                              <option
-                                                key="3"
-                                                value="int"
-                                              >
-                                                Integer
-                                              </option>
-                                              <option
-                                                key="4"
-                                                value="double"
-                                              >
-                                                Decimal (floating point)
-                                              </option>
-                                              <option
-                                                key="5"
-                                                value="dateTime"
-                                              >
-                                                Date Time
-                                              </option>
-                                              <option
-                                                key="6"
-                                                value="flag"
-                                              >
-                                                Flag
-                                              </option>
-                                              <option
-                                                key="7"
-                                                value="fileLink"
-                                              >
-                                                File
-                                              </option>
-                                              <option
-                                                key="8"
+                                                key="attachment"
                                                 value="attachment"
                                               >
                                                 Attachment
                                               </option>
                                               <option
-                                                key="9"
-                                                value="users"
+                                                key="boolean"
+                                                value="boolean"
                                               >
-                                                User
+                                                Boolean
                                               </option>
                                               <option
-                                                key="10"
-                                                value="ParticipantId"
+                                                key="dateTime"
+                                                value="dateTime"
                                               >
-                                                Subject/Participant
+                                                Date Time
                                               </option>
                                               <option
-                                                key="11"
+                                                key="double"
+                                                value="double"
+                                              >
+                                                Decimal (floating point)
+                                              </option>
+                                              <option
+                                                key="fileLink"
+                                                value="fileLink"
+                                              >
+                                                File
+                                              </option>
+                                              <option
+                                                key="flag"
+                                                value="flag"
+                                              >
+                                                Flag
+                                              </option>
+                                              <option
+                                                key="int"
+                                                value="int"
+                                              >
+                                                Integer
+                                              </option>
+                                              <option
+                                                key="lookup"
                                                 value="lookup"
                                               >
                                                 Lookup
                                               </option>
                                               <option
-                                                key="12"
-                                                value="sample"
+                                                key="multiLine"
+                                                value="multiLine"
                                               >
-                                                Sample
+                                                Multi-Line Text
                                               </option>
                                               <option
-                                                key="13"
+                                                key="ontologyLookup"
                                                 value="ontologyLookup"
                                               >
                                                 Ontology Lookup
                                               </option>
                                               <option
-                                                key="14"
+                                                key="sample"
+                                                value="sample"
+                                              >
+                                                Sample
+                                              </option>
+                                              <option
+                                                key="ParticipantId"
+                                                value="ParticipantId"
+                                              >
+                                                Subject/Participant
+                                              </option>
+                                              <option
+                                                key="string"
+                                                value="string"
+                                              >
+                                                Text
+                                              </option>
+                                              <option
+                                                key="uniqueId"
+                                                value="uniqueId"
+                                              >
+                                                Unique ID
+                                              </option>
+                                              <option
+                                                key="users"
+                                                value="users"
+                                              >
+                                                User
+                                              </option>
+                                              <option
+                                                key="visitDate"
                                                 value="visitDate"
                                               >
                                                 Visit Date
                                               </option>
                                               <option
-                                                key="15"
+                                                key="visitId"
                                                 value="visitId"
                                               >
                                                 Visit ID
-                                              </option>
-                                              <option
-                                                key="16"
-                                                value="uniqueId"
-                                              >
-                                                Unique ID
                                               </option>
                                             </select>
                                           </FormControl>
@@ -14195,40 +14195,40 @@ exports[`DomainRow string field test 1`] = `
                                               value="string"
                                             >
                                               <option
-                                                key="0"
-                                                value="string"
-                                              >
-                                                Text
-                                              </option>
-                                              <option
-                                                key="1"
-                                                value="multiLine"
-                                              >
-                                                Multi-Line Text
-                                              </option>
-                                              <option
-                                                key="2"
+                                                key="flag"
                                                 value="flag"
                                               >
                                                 Flag
                                               </option>
                                               <option
-                                                key="3"
-                                                value="ParticipantId"
-                                              >
-                                                Subject/Participant
-                                              </option>
-                                              <option
-                                                key="4"
+                                                key="lookup"
                                                 value="lookup"
                                               >
                                                 Lookup
                                               </option>
                                               <option
-                                                key="5"
+                                                key="multiLine"
+                                                value="multiLine"
+                                              >
+                                                Multi-Line Text
+                                              </option>
+                                              <option
+                                                key="ontologyLookup"
                                                 value="ontologyLookup"
                                               >
                                                 Ontology Lookup
+                                              </option>
+                                              <option
+                                                key="ParticipantId"
+                                                value="ParticipantId"
+                                              >
+                                                Subject/Participant
+                                              </option>
+                                              <option
+                                                key="string"
+                                                value="string"
+                                              >
+                                                Text
                                               </option>
                                             </select>
                                           </FormControl>
@@ -16638,106 +16638,106 @@ exports[`DomainRow with empty domain form 1`] = `
                                               value="string"
                                             >
                                               <option
-                                                key="0"
-                                                value="string"
-                                              >
-                                                Text
-                                              </option>
-                                              <option
-                                                key="1"
-                                                value="multiLine"
-                                              >
-                                                Multi-Line Text
-                                              </option>
-                                              <option
-                                                key="2"
-                                                value="boolean"
-                                              >
-                                                Boolean
-                                              </option>
-                                              <option
-                                                key="3"
-                                                value="int"
-                                              >
-                                                Integer
-                                              </option>
-                                              <option
-                                                key="4"
-                                                value="double"
-                                              >
-                                                Decimal (floating point)
-                                              </option>
-                                              <option
-                                                key="5"
-                                                value="dateTime"
-                                              >
-                                                Date Time
-                                              </option>
-                                              <option
-                                                key="6"
-                                                value="flag"
-                                              >
-                                                Flag
-                                              </option>
-                                              <option
-                                                key="7"
-                                                value="fileLink"
-                                              >
-                                                File
-                                              </option>
-                                              <option
-                                                key="8"
+                                                key="attachment"
                                                 value="attachment"
                                               >
                                                 Attachment
                                               </option>
                                               <option
-                                                key="9"
-                                                value="users"
+                                                key="boolean"
+                                                value="boolean"
                                               >
-                                                User
+                                                Boolean
                                               </option>
                                               <option
-                                                key="10"
-                                                value="ParticipantId"
+                                                key="dateTime"
+                                                value="dateTime"
                                               >
-                                                Subject/Participant
+                                                Date Time
                                               </option>
                                               <option
-                                                key="11"
+                                                key="double"
+                                                value="double"
+                                              >
+                                                Decimal (floating point)
+                                              </option>
+                                              <option
+                                                key="fileLink"
+                                                value="fileLink"
+                                              >
+                                                File
+                                              </option>
+                                              <option
+                                                key="flag"
+                                                value="flag"
+                                              >
+                                                Flag
+                                              </option>
+                                              <option
+                                                key="int"
+                                                value="int"
+                                              >
+                                                Integer
+                                              </option>
+                                              <option
+                                                key="lookup"
                                                 value="lookup"
                                               >
                                                 Lookup
                                               </option>
                                               <option
-                                                key="12"
-                                                value="sample"
+                                                key="multiLine"
+                                                value="multiLine"
                                               >
-                                                Sample
+                                                Multi-Line Text
                                               </option>
                                               <option
-                                                key="13"
+                                                key="ontologyLookup"
                                                 value="ontologyLookup"
                                               >
                                                 Ontology Lookup
                                               </option>
                                               <option
-                                                key="14"
+                                                key="sample"
+                                                value="sample"
+                                              >
+                                                Sample
+                                              </option>
+                                              <option
+                                                key="ParticipantId"
+                                                value="ParticipantId"
+                                              >
+                                                Subject/Participant
+                                              </option>
+                                              <option
+                                                key="string"
+                                                value="string"
+                                              >
+                                                Text
+                                              </option>
+                                              <option
+                                                key="uniqueId"
+                                                value="uniqueId"
+                                              >
+                                                Unique ID
+                                              </option>
+                                              <option
+                                                key="users"
+                                                value="users"
+                                              >
+                                                User
+                                              </option>
+                                              <option
+                                                key="visitDate"
                                                 value="visitDate"
                                               >
                                                 Visit Date
                                               </option>
                                               <option
-                                                key="15"
+                                                key="visitId"
                                                 value="visitId"
                                               >
                                                 Visit ID
-                                              </option>
-                                              <option
-                                                key="16"
-                                                value="uniqueId"
-                                              >
-                                                Unique ID
                                               </option>
                                             </select>
                                           </FormControl>

@@ -4407,52 +4407,52 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                       value="string"
                                                                                     >
                                                                                       <option
-                                                                                        key="0"
-                                                                                        value="string"
-                                                                                      >
-                                                                                        Text
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="1"
-                                                                                        value="multiLine"
-                                                                                      >
-                                                                                        Multi-Line Text
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="2"
+                                                                                        key="boolean"
                                                                                         value="boolean"
                                                                                       >
                                                                                         Boolean
                                                                                       </option>
                                                                                       <option
-                                                                                        key="3"
-                                                                                        value="int"
-                                                                                      >
-                                                                                        Integer
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="4"
-                                                                                        value="double"
-                                                                                      >
-                                                                                        Decimal (floating point)
-                                                                                      </option>
-                                                                                      <option
-                                                                                        key="5"
+                                                                                        key="dateTime"
                                                                                         value="dateTime"
                                                                                       >
                                                                                         Date Time
                                                                                       </option>
                                                                                       <option
-                                                                                        key="6"
-                                                                                        value="users"
+                                                                                        key="double"
+                                                                                        value="double"
                                                                                       >
-                                                                                        User
+                                                                                        Decimal (floating point)
                                                                                       </option>
                                                                                       <option
-                                                                                        key="7"
+                                                                                        key="int"
+                                                                                        value="int"
+                                                                                      >
+                                                                                        Integer
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="multiLine"
+                                                                                        value="multiLine"
+                                                                                      >
+                                                                                        Multi-Line Text
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="sample"
                                                                                         value="sample"
                                                                                       >
                                                                                         Sample
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="string"
+                                                                                        value="string"
+                                                                                      >
+                                                                                        Text
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="users"
+                                                                                        value="users"
+                                                                                      >
+                                                                                        User
                                                                                       </option>
                                                                                     </select>
                                                                                   </FormControl>

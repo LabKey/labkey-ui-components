@@ -23,7 +23,7 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { DeleteIcon, DragDropHandle, FieldExpansionToggle, LabelHelpTip } from '../../..';
+import { DeleteIcon, DragDropHandle, FieldExpansionToggle, LabelHelpTip, naturalSortByProperty } from '../../..';
 
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -375,11 +375,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 appPropertiesOnly,
                                 !domainFormDisplayOptions.hideStudyPropertyTypes,
                                 !domainFormDisplayOptions.hideFilePropertyType
-                            ).map((type, i) => (
-                                <option key={i} value={type.name}>
-                                    {type.display}
-                                </option>
-                            ))
+                            )
+                                .sort(naturalSortByProperty('display'))
+                                .map(type => (
+                                    <option key={type.name} value={type.name}>
+                                        {type.display}
+                                    </option>
+                                ))
                         )}
                     </FormControl>
                 </Col>

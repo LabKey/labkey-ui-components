@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add FindByIdsDropdown and FindByIdsModal components
 * Add PicklistButton
 
+### version 2.53.0
+*Released*: 5 July 2021
+* Remove msg prop from ConfirmModal, uses children prop instead
+
 ### version 2.52.0
 *Released*: 1 July 2021
 * Introduce mountWithServerContextOptions test utility method.

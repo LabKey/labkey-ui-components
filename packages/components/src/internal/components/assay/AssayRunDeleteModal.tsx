@@ -56,20 +56,18 @@ export const AssayRunDeleteModal: FC<Props> = props => {
                 <ConfirmModal
                     cancelButtonText="Cancel"
                     confirmButtonText="Yes, Delete"
-                    msg={
-                        <span>
-                            The entirety of the {numToDelete > 1 ? numToDelete : ''} selected {noun} and any of{' '}
-                            {numToDelete === 1 ? 'its' : 'their'} previously replaced versions will be permanently
-                            deleted.&nbsp;
-                            <p className="top-spacing">
-                                <strong>Deletion cannot be undone.</strong> Do you want to proceed?
-                            </p>
-                        </span>
-                    }
                     onCancel={onCancel}
                     onConfirm={onConfirm}
                     title={'Permanently delete ' + numToDelete + noun + '?'}
-                />
+                >
+                    <span>
+                        The entirety of the {numToDelete > 1 ? numToDelete : ''} selected {noun} and any of{' '}
+                        {numToDelete === 1 ? 'its' : 'their'} previously replaced versions will be permanently deleted.
+                        <p className="top-spacing">
+                            <strong>Deletion cannot be undone.</strong> Do you want to proceed?
+                        </p>
+                    </span>
+                </ConfirmModal>
             )}
             <Progress
                 estimate={numToDelete * 10}

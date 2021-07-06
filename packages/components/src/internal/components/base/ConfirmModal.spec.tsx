@@ -8,7 +8,7 @@ import { ConfirmModal } from './ConfirmModal';
 describe('<ConfirmModal/>', () => {
     test('default props', () => {
         const msg = 'Testing confirm modal message';
-        const modal = mount(<ConfirmModal msg={msg} />);
+        const modal = mount(<ConfirmModal>{msg}</ConfirmModal>);
 
         expect(modal.find(Modal)).toHaveLength(1);
         expect(modal.find('.modal-title').text()).toBe('Confirm');
@@ -16,13 +16,12 @@ describe('<ConfirmModal/>', () => {
         expect(modal.find('.close')).toHaveLength(0);
         expect(modal.find('.btn')).toHaveLength(0);
         expect(modal.find('.btn-danger')).toHaveLength(0);
-        modal.unmount();
     });
 
     test('with callback functions', () => {
         const title = 'Callback Title';
         const msg = 'Callback confirm modal message';
-        const modal = mount(<ConfirmModal title={title} msg={msg} onConfirm={jest.fn()} onCancel={jest.fn()} />);
+        const modal = mount(<ConfirmModal title={title} onConfirm={jest.fn()} onCancel={jest.fn()}>{msg}</ConfirmModal>);
 
         expect(modal.find(Modal)).toHaveLength(1);
         expect(modal.find('.modal-title').text()).toBe(title);
@@ -31,18 +30,16 @@ describe('<ConfirmModal/>', () => {
         expect(modal.find('.btn')).toHaveLength(2);
         expect(modal.find('.btn-danger')).toHaveLength(1);
         expect(modal.find('.btn-danger').prop('disabled')).toBe(false);
-        modal.unmount();
     });
 
     test('submitting', () => {
         const msg = 'Submitting confirm modal message';
-        const modal = mount(<ConfirmModal msg={msg} onConfirm={jest.fn()} onCancel={jest.fn()} submitting={true} />);
+        const modal = mount(<ConfirmModal onConfirm={jest.fn()} onCancel={jest.fn()} submitting={true}>{msg}</ConfirmModal>);
 
         expect(modal.find(Modal)).toHaveLength(1);
         expect(modal.find('.close')).toHaveLength(1);
         expect(modal.find('.btn')).toHaveLength(2);
         expect(modal.find('.btn-danger')).toHaveLength(1);
         expect(modal.find('.btn-danger').prop('disabled')).toBe(true);
-        modal.unmount();
     });
 });

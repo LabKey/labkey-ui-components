@@ -119,13 +119,14 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
         return (
             <ConfirmModal
                 title={confirmProps.title}
-                msg={confirmProps.message}
                 onConfirm={confirmProps.canDelete ? this.onConfirm : undefined}
                 onCancel={onCancel}
                 confirmVariant="danger"
                 confirmButtonText={confirmProps.canDelete ? 'Yes, Delete' : undefined}
                 cancelButtonText={confirmProps.canDelete ? 'Cancel' : 'Dismiss'}
-            />
+            >
+                {confirmProps.message}
+            </ConfirmModal>
         );
     }
 }

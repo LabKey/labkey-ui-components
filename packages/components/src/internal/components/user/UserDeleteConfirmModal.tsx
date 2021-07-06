@@ -49,31 +49,28 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
         return (
             <ConfirmModal
                 title={'Delete ' + Utils.pluralBasic(userCount, 'User') + '?'}
-                msg={
-                    <>
-                        <p>
-                            Generally, <b>deactivation of a user is recommended</b>. Deactivated users may not login,
-                            but their information will be preserved in case they are reactivated at a later time.
-                        </p>
-                        <p>
-                            Deletion of a user is <b>permanent and cannot be undone</b>. Deleted users:
-                            <ul>
-                                <li>will no longer be displayed with actions taken or data uploaded by them</li>
-                                <li>will be removed from groups and permissions settings</li>
-                                <li>cannot be reactivated</li>
-                            </ul>
-                        </p>
-                        <p>{Utils.pluralBasic(userCount, 'user')} will be deleted. Do you want to proceed?</p>
-                        {error && <Alert>{error}</Alert>}
-                    </>
-                }
                 onConfirm={this.onConfirm}
                 onCancel={onCancel}
                 confirmVariant="danger"
                 confirmButtonText="Yes, Permanently Delete"
                 cancelButtonText="Cancel"
                 submitting={submitting}
-            />
+            >
+                <p>
+                    Generally, <b>deactivation of a user is recommended</b>. Deactivated users may not login, but their
+                    information will be preserved in case they are reactivated at a later time.
+                </p>
+                <p>
+                    Deletion of a user is <b>permanent and cannot be undone</b>. Deleted users:
+                    <ul>
+                        <li>will no longer be displayed with actions taken or data uploaded by them</li>
+                        <li>will be removed from groups and permissions settings</li>
+                        <li>cannot be reactivated</li>
+                    </ul>
+                </p>
+                <p>{Utils.pluralBasic(userCount, 'user')} will be deleted. Do you want to proceed?</p>
+                {error && <Alert>{error}</Alert>}
+            </ConfirmModal>
         );
     }
 }

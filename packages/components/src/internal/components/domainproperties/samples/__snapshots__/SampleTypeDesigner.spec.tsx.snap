@@ -936,6 +936,7 @@ Array [
 
 exports[`SampleTypeDesigner initModel with name URL props 1`] = `
 <ComponentWithBaseDomainDesigner
+  appPropertiesOnly={true}
   domainFormDisplayOptions={
     Object {
       "hideConditionalFormatting": true,

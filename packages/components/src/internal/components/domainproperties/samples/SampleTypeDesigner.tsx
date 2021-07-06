@@ -117,7 +117,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         helpTopic: SAMPLE_SET_HELP_TOPIC,
         showParentLabelPrefix: true,
         useTheme: false,
-        appPropertiesOnly: true,
         showLinkToStudy: false,
         domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'sample type' },
     };

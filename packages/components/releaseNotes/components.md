@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Move misc DomainForm properties into domainFormDisplayOptions
     * hideConditionalFormatting, showInferFromFile, allowImportExport, showFilePropertyType, showStudyPropertyTypes
     * Fix for domain form dirty state on row selection change
+    * Sort domain field type select input options by display text
 
 ### version 2.53.0
 *Released*: 5 July 2021

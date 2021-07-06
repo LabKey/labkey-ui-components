@@ -107,7 +107,7 @@ export const SamplesNotFoundMsg: FC<{missingIds: {[key: string]: string[]}}> = m
                 <span className="find-samples-warning"><i className="fa fa-exclamation-circle"/> </span>
                 <span>
                     Couldn't locate {allIds.length} samples{' '}
-                    <a onClick={toggleShowIdAlert}>
+                    <a className="find-samples-warning-toggle" onClick={toggleShowIdAlert}>
                         {showIds ?
                             <>Hide <i className="fa fa-caret-down" aria-hidden="true"/></>:
                             <>Show all <i className="fa fa-caret-right" aria-hidden="true"/></>}

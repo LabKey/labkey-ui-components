@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add option to SearchBox to show a dropdown for searching by Ids
 * Add FindByIdsDropdown and FindByIdsModal components
 * Add PicklistButton
+* Slight update of styling in navbar
 
 ### version 2.53.0
 *Released*: 5 July 2021

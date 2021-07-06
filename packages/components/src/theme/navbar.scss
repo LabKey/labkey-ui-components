@@ -349,6 +349,10 @@
 #user-menu-dropdown {
   box-shadow: none;
   text-decoration: none;
+
+    & .caret {
+        color: $white;
+    }
 }
 
 .user-name {
@@ -389,6 +393,9 @@
     &:active:focus,
     &:hover {
         background: none;
+    }
+    & .caret {
+        color: $white;
     }
 }
 

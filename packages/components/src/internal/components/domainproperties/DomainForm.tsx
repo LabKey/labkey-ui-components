@@ -798,7 +798,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { domain, domainFormDisplayOptions } = this.props;
         const hasFields = domain.fields.size > 0;
 
-        if (!domainFormDisplayOptions.hideAddFieldsButton) {
+        if (!domainFormDisplayOptions?.hideAddFieldsButton) {
             if (!hasFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport())) {
                 return (
                     <div className="margin-top domain-form-manual-section">
@@ -926,7 +926,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             <Col xs={4}>
                                 <b>Data Type *</b>
                             </Col>
-                            <Col xs={2}>{!domainFormDisplayOptions.hideRequired && <b>Required</b>}</Col>
+                            <Col xs={2}>{!domainFormDisplayOptions?.hideRequired && <b>Required</b>}</Col>
                         </Col>
                         <Col xs={6}>
                             <b>Details</b>
@@ -939,11 +939,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     shouldShowInferFromFile(): boolean {
         const { domain, domainFormDisplayOptions } = this.props;
-        return !domainFormDisplayOptions.hideInferFromFile && domain.fields.size === 0;
+        return !domainFormDisplayOptions?.hideInferFromFile && domain.fields.size === 0;
     }
 
     shouldShowImportExport(): boolean {
-        return !this.props.domainFormDisplayOptions.hideImportExport;
+        return !this.props.domainFormDisplayOptions?.hideImportExport;
     }
 
     handleFilePreviewLoad = (response: InferDomainResponse, file: File): void => {
@@ -1161,7 +1161,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return (
             <Row className="domain-field-toolbar">
                 <Col xs={4}>
-                    {!domainFormDisplayOptions.hideAddFieldsButton && (
+                    {!domainFormDisplayOptions?.hideAddFieldsButton && (
                         <AddEntityButton
                             entity="Field"
                             containerClass="container--toolbar-button"
@@ -1420,7 +1420,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
                         {fieldsAdditionalRenderer && fieldsAdditionalRenderer()}
 
-                        {filePreviewData && !domainFormDisplayOptions.hideImportData && (
+                        {filePreviewData && !domainFormDisplayOptions?.hideImportData && (
                             <ImportDataFilePreview
                                 noun={helpNoun}
                                 filePreviewData={filePreviewData}

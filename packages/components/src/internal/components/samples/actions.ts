@@ -367,6 +367,6 @@ export function getEditSharedSampleTypeUrl(typeId: number): string {
 export function getDeleteSharedSampleTypeUrl(typeId: number): string {
     return ActionURL.buildURL('experiment', 'deleteSampleTypes', SHARED_CONTAINER_PATH, {
         singleObjectRowId: typeId,
-        returnUrl: window.location.pathname + (window.location.hash ? window.location.hash : '')
+        returnUrl: window.location.pathname + ('#/samples')
     }).toString();
 }

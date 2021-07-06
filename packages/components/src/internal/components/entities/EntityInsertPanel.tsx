@@ -1192,8 +1192,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         const isGridStep = this.isGridStep();
         const entityTypeName = insertModel.getTargetEntityTypeLabel();
+        const isFromSharedContainer = insertModel.isFromSharedContainer();
+
         const editEntityTypeDetailsLink =
-            entityTypeName && entityDataType?.editTypeAppUrlPrefix
+            entityTypeName && entityDataType?.editTypeAppUrlPrefix && !isFromSharedContainer
                 ? AppURL.create(entityDataType.editTypeAppUrlPrefix, entityTypeName)
                 : undefined;
 

@@ -59,6 +59,9 @@ describe('SampleTypeDesigner', () => {
         const form = (
             <SampleTypeDesigner
                 {...BASE_PROPS}
+                domainFormDisplayOptions={{
+                    hideConditionalFormatting: true,
+                }}
                 initModel={DomainDetails.create(
                     Map<string, any>({
                         domainDesign: {

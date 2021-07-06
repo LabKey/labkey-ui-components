@@ -259,10 +259,10 @@ import { SearchResultsPanel } from './internal/components/search/SearchResultsPa
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
-    clearFindIds,
+    clearIdsToFind,
     deleteSampleSet,
     fetchSamples,
-    getFindSamplesByIdQueryName,
+    getFindSamplesByIdData,
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
@@ -281,6 +281,7 @@ import { SampleCreationTypeModal } from './internal/components/samples/SampleCre
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
+import { FindSamplesByIdHeaderPanel } from './internal/components/samples/FindSamplesByIdHeaderPanel';
 import {
     AssayContextConsumer,
     assayPage,
@@ -792,7 +793,7 @@ export {
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
-    clearFindIds,
+    clearIdsToFind,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_ID_FIND_FIELD,
     SampleTypeModel,
@@ -803,6 +804,7 @@ export {
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
     getSelectedItemSamples,
+    FindSamplesByIdHeaderPanel,
     SampleTypeDataType,
     DataClassDataType,
     ParentEntityRequiredColumns,
@@ -826,7 +828,7 @@ export {
     POOLED_SAMPLE_CREATION,
     ALIQUOT_CREATION,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
-    getFindSamplesByIdQueryName,
+    getFindSamplesByIdData,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

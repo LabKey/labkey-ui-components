@@ -90,5 +90,5 @@ export interface FindField {
     helpText?: string;
     helpTextTitle?: string;
     label: string;
-    storageKey: string;
+    storageKeyPrefix: string;
 }

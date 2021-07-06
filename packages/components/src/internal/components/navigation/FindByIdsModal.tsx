@@ -5,7 +5,7 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { FindField } from '../samples/models';
 import { capitalizeFirstChar } from '../../util/utils';
 import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from '../samples/constants';
-import { clearFindIds } from '../samples/actions';
+import { clearIdsToFind, saveIdsToFind } from '../samples/actions';
 
 // exported for Jest testing
 export const FindFieldOption: FC<{field: FindField, checked: boolean, onFieldChange: (field: FindField) => void}> = memo(({field, checked, onFieldChange}) => {
@@ -72,16 +72,18 @@ export const FindByIdsModal: FC<Props> = memo(props => {
         if (ids.length > 0) {
             setSubmitting(true);
             if (!addToExistingIds) {
-                clearFindIds();
+                clearIdsToFind();
             }
-            const existingIds = sessionStorage.getItem(fieldType.storageKey);
-            // deduplicate
-            if (existingIds) {
-                const existing = existingIds.split("\n");
-                sessionStorage.setItem(fieldType.storageKey, existing.concat(ids.filter(id => !existing.includes(id))).join("\n"));
-            } else {
-                sessionStorage.setItem(fieldType.storageKey, ids.join("\n"));
-            }
+            saveIdsToFind(fieldType, ids)
+            // // TODO possibly use JSON map to maintain ordering of groups.
+            // const existingIds = sessionStorage.getItem(fieldType.storageKey);
+            // // deduplicate
+            // if (existingIds) {
+            //     const existing = existingIds.split("\n");
+            //     sessionStorage.setItem(fieldType.storageKey, existing.concat(ids.filter(id => !existing.includes(id))).join("\n"));
+            // } else {
+            //     sessionStorage.setItem(fieldType.storageKey, ids.join("\n"));
+            // }
             setSubmitting(false);
             onFind();
         }

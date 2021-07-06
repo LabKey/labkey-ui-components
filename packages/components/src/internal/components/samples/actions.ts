@@ -21,6 +21,7 @@ import { deleteEntityType } from '../entities/actions';
 import {
     buildURL,
     DomainDetails,
+    FindField,
     getSelectedData,
     getSelection,
     QueryColumn,
@@ -33,6 +34,7 @@ import {
 } from '../../..';
 
 import { GroupedSampleFields } from './models';
+import { FIND_IDS_SESSION_STORAGE_KEY } from './constants';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -358,23 +360,79 @@ export function getSelectedItemSamples(selectedItemIds: string[]): Promise<numbe
     });
 }
 
-export function getFindSamplesByIdQueryName(previousQueryName?: string) : Promise<string> {
+function getSamplesIdsNotFound(queryName: string, orderedIds: string[]) : Promise<string[]> {
+    return new Promise( (resolve, reject) => {
+        Query.selectDistinctRows({
+                schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+                queryName,
+                column: 'Ordinal',
+                sort: 'Ordinal',
+                success: result => {
+                    const ordinals = result.values
+                    let index = 0;
+                    let oIndex = 0;
+                    let missingIds = [];
+                    // find the gaps in the ordinals values as these correspond to ids we could not find
+                    while (index < orderedIds.length) {
+                        if (oIndex >= ordinals.length || ordinals[oIndex] !== index + 1) {
+                            missingIds.push(orderedIds[index])
+                        } else {
+                            oIndex++;
+                        }
+                        index++;
+                    }
+                    resolve(missingIds);
+                },
+                failure: reason => {
+                    console.error("There was a problem determining the missing Ids", reason);
+                    reject(reason);
+                }
+            });
+    });
+}
+
+export interface FindSamplesByIdsResponse {
+    queryName: string,
+    missingIds?: { [key: string]: string[] },
+}
+
+export function getFindSamplesByIdData(staleQueryName?: string) : Promise<FindSamplesByIdsResponse> {
     return new Promise((resolve, reject) => {
         // TODO should we pass the previousQueryName so it can be removed from the session?
-        const sampleIds = sessionStorage.getItem(SAMPLE_ID_FIND_FIELD.storageKey)?.split("\n");
-        const uniqueIds = sessionStorage.getItem(UNIQUE_ID_FIND_FIELD.storageKey)?.split("\n");
-        if (sampleIds || uniqueIds) {
+        const ids = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY));
+        if (ids) {
             Ajax.request({
                 url: ActionURL.buildURL("experiment", "saveOrderedSamplesQuery.api"),
                 method: 'POST',
                 jsonData: {
-                    sampleIds,
-                    uniqueIds
+                    ids
                 },
                 success: Utils.getCallbackWrapper((response) => {
                     if (response.success) {
-                        const data = response.data;
-                        resolve(data);
+                        const queryName = response.data;
+                        getSamplesIdsNotFound(queryName, ids).then(notFound => {
+                            let missingIds =  {
+                                [UNIQUE_ID_FIND_FIELD.label]: notFound
+                                    .filter(id => id.startsWith(UNIQUE_ID_FIND_FIELD.storageKeyPrefix))
+                                    .map(id => id.substring(UNIQUE_ID_FIND_FIELD.storageKeyPrefix.length)),
+                                [SAMPLE_ID_FIND_FIELD.label]: notFound
+                                    .filter(id => id.startsWith(SAMPLE_ID_FIND_FIELD.storageKeyPrefix))
+                                    .map(id => id.substring(SAMPLE_ID_FIND_FIELD.storageKeyPrefix.length))
+                            }
+                            resolve({
+                                queryName,
+                                missingIds
+                            });
+                        }).catch(() => {
+                            resolve({
+                                queryName,
+                                missingIds: {
+                                    [UNIQUE_ID_FIND_FIELD.label]: ["unique-1"],
+                                    [SAMPLE_ID_FIND_FIELD.label]: ['Sample-1']
+                                }
+                            })
+                        });
+
                     } else {
                         console.error("Unable to create session query");
                         reject("There was a problem creating the query for the samples. Please try again.");
@@ -392,7 +450,40 @@ export function getFindSamplesByIdQueryName(previousQueryName?: string) : Promis
     });
 }
 
-export function clearFindIds(): void {
-    sessionStorage.removeItem(UNIQUE_ID_FIND_FIELD.storageKey);
-    sessionStorage.removeItem(SAMPLE_ID_FIND_FIELD.storageKey);
+export function saveIdsToFind(fieldType: FindField, ids: string[]): void {
+    const existingIds: string[] = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY));
+    // list of ids deduplicated and prefixed with the field type's storage prefix
+    const prefixedIds = [];
+    ids.map(id => fieldType.storageKeyPrefix + id).forEach(pid => {
+        if (!prefixedIds.includes(pid)) {
+            prefixedIds.push(pid);
+        }
+    })
+    // deduplicate
+    if (existingIds) {
+        // const existing = existingIds.split("\n");
+        sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY,
+            JSON.stringify(existingIds.concat(prefixedIds.filter(id => !existingIds.includes(id))))
+        );
+    } else {
+        sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY, JSON.stringify(prefixedIds));
+    }
+}
+
+export function getFindIdCountsByTypeMessage() : string {
+    const findIds: string[] = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY))
+    let numIdsMsg = '';
+    const numSampleIds = findIds.filter(id => id.startsWith(SAMPLE_ID_FIND_FIELD.storageKeyPrefix)).length;
+    const numUniqueIds = findIds.filter(id => id.startsWith(UNIQUE_ID_FIND_FIELD.storageKeyPrefix)).length;
+    if (numSampleIds) {
+        numIdsMsg += Utils.pluralize(numSampleIds, SAMPLE_ID_FIND_FIELD.nounSingular, SAMPLE_ID_FIND_FIELD.nounPlural);
+    }
+    if (numUniqueIds) {
+        numIdsMsg += (numIdsMsg ? ' and ' : '') + Utils.pluralize(numUniqueIds, UNIQUE_ID_FIND_FIELD.nounSingular, UNIQUE_ID_FIND_FIELD.nounPlural);
+    }
+    return numIdsMsg;
+}
+
+export function clearIdsToFind(): void {
+    sessionStorage.removeItem(FIND_IDS_SESSION_STORAGE_KEY);
 }

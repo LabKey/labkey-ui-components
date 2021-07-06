@@ -16,6 +16,7 @@ import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeDesigner } from './SampleTypeDesigner';
 
 const BASE_PROPS = {
+    appPropertiesOnly: true,
     initModel: undefined,
     onComplete: jest.fn(),
     onCancel: jest.fn(),
@@ -59,6 +60,9 @@ describe('SampleTypeDesigner', () => {
         const form = (
             <SampleTypeDesigner
                 {...BASE_PROPS}
+                domainFormDisplayOptions={{
+                    hideConditionalFormatting: true,
+                }}
                 initModel={DomainDetails.create(
                     Map<string, any>({
                         domainDesign: {

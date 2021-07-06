@@ -1,7 +1,7 @@
 import React from 'react';
 import { Map } from 'immutable';
 
-import { DomainDesign, HeaderRenderer } from '../models';
+import { DomainDesign, HeaderRenderer, IDomainFormDisplayOptions } from '../models';
 
 import { getDomainPanelStatus } from '../actions';
 
@@ -23,6 +23,7 @@ interface Props {
     hideEmptyBatchDomain?: boolean;
     containerTop?: number; // This sets the top of the sticky header, default is 0
     appPropertiesOnly?: boolean;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
     appDomainHeaders?: Map<string, HeaderRenderer>;
     appIsValidMsg?: (model: AssayProtocolModel) => string;
     useTheme?: boolean;
@@ -37,6 +38,10 @@ interface State {
 
 class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     panelCount = 1; // start at 1 for the AssayPropertiesPanel, will updated count after domains are defined in constructor
+
+    static defaultProps = {
+        domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
@@ -149,6 +154,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
     render() {
         const {
             appPropertiesOnly,
+            domainFormDisplayOptions,
             containerTop,
             useTheme,
             successBsStyle,
@@ -201,9 +207,9 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                     }
 
                     // allow empty domain to be inferred from a file for Data Fields in General assay
-                    const showInferFromFile =
-                        protocolModel.providerName === 'General' && domain.isNameSuffixMatch('Data');
-                    const showFilePropertyType = domain.isNameSuffixMatch('Batch') || domain.isNameSuffixMatch('Run');
+                    const hideInferFromFile =
+                        protocolModel.providerName !== 'General' || !domain.isNameSuffixMatch('Data');
+                    const hideFilePropertyType = !domain.isNameSuffixMatch('Batch') && !domain.isNameSuffixMatch('Run');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
 
                     return (
@@ -221,7 +227,6 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                                     ? getDomainPanelStatus(i + 1, currentPanelIndex, visitedPanels, firstState)
                                     : 'COMPLETE'
                             }
-                            showInferFromFile={showInferFromFile}
                             containerTop={containerTop}
                             helpTopic={null} // null so that we don't show the "learn more about this tool" link for these domains
                             onChange={(updatedDomain, dirty) => {
@@ -234,14 +239,13 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                             modelDomains={protocolModel.domains}
                             useTheme={useTheme}
                             appPropertiesOnly={appPropertiesOnly}
-                            showFilePropertyType={showFilePropertyType}
-                            showStudyPropertyTypes={!appPropertiesOnly} // currently we showStudyPropertyTypes only when appPropertiesOnly is false (in LKSM). TODO to refactor/rename appPropertiesOnly.
                             successBsStyle={successBsStyle}
-                            allowImportExport={true}
                             testMode={testMode}
                             domainFormDisplayOptions={{
-                                ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+                                ...domainFormDisplayOptions,
                                 domainKindDisplayName: 'assay design',
+                                hideFilePropertyType,
+                                hideInferFromFile,
                             }}
                         >
                             <div>{domain.description}</div>

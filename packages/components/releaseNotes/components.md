@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.54.0
+*Released*: 6 July 2021
+* Move misc DomainForm properties into domainFormDisplayOptions
+    * hideConditionalFormatting, showInferFromFile, allowImportExport, showFilePropertyType, showStudyPropertyTypes
+    * Fix for domain form dirty state on row selection change
+    * Sort domain field type select input options by display text
+
 ### version 2.53.0
 *Released*: 5 July 2021
 * Remove msg prop from ConfirmModal, uses children prop instead

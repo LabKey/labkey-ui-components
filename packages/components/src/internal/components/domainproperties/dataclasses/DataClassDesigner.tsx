@@ -214,7 +214,6 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     panelStatus={
                         model.isNew ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'
                     }
-                    showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.onDomainChange}
                     onToggle={(collapsed, callback) => {
@@ -223,7 +222,6 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
-                    allowImportExport={true}
                     testMode={testMode}
                     domainFormDisplayOptions={domainFormDisplayOptions}
                 />

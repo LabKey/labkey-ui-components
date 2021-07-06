@@ -104,9 +104,8 @@ import {
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 
 interface IDomainFormInput {
-    allowImportExport?: boolean;
     appDomainHeaderRenderer?: HeaderRenderer;
-    appPropertiesOnly?: boolean; // Flag to indicate if LKS specific types should be shown (false) or not (true)
+    appPropertiesOnly?: boolean; // Flag to indicate if LKS specific properties/features should be excluded, default to false
     collapsible?: boolean;
     containerTop?: number; // This sets the top of the sticky header, default is 0
     controlledCollapse?: boolean;
@@ -127,10 +126,7 @@ interface IDomainFormInput {
     onToggle?: (collapsed: boolean, callback?: () => any) => any;
     panelStatus?: DomainPanelStatus;
     setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
-    showFilePropertyType?: boolean; // Flag to indicate if the File property type should be allowed
     showHeader?: boolean;
-    showInferFromFile?: boolean;
-    showStudyPropertyTypes?: boolean;
     successBsStyle?: string;
     todoIconHelpMsg?: string;
     useTheme?: boolean;
@@ -161,7 +157,7 @@ interface IDomainFormState {
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
-    render() {
+    render(): ReactNode {
         return (
             <LookupProvider>
                 <DomainFormImpl {...this.props} />
@@ -181,13 +177,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         showHeader: true,
         initCollapsed: false,
         isNew: false,
-        appPropertiesOnly: false, // TODO: convert them into more options in the IDomainFormDisplayOptions interface
-        showStudyPropertyTypes: true,
+        appPropertiesOnly: false,
         domainIndex: 0,
         successBsStyle: 'success',
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
         testMode: false,
-        showFilePropertyType: true,
     };
 
     constructor(props: IDomainFormInput) {
@@ -247,7 +241,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         updateDomainPanelClassList(prevProps.useTheme, this.props.domain);
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>, nextContext: any): void {
+    UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>): void {
         const { controlledCollapse, initCollapsed, validate, onChange } = this.props;
 
         // if controlled collapsible, allow the prop change to update the collapsed state
@@ -265,7 +259,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     validateDomain = (domain: DomainDesign): DomainDesign => {
         const invalidFields = domain.getInvalidFields();
-        let newDomain = domain;
+        let newDomain;
         if (invalidFields.size > 0) {
             const exception = DomainException.clientValidationExceptions(
                 'Missing required field properties.',
@@ -360,7 +354,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         expandedRowIndex === index ? this.collapseRow() : this.expandRow(index);
     };
 
-    onDomainChange(updatedDomain: DomainDesign, dirty?: boolean, rowIndexChanges?: DomainFieldIndexChange[]) {
+    onDomainChange(updatedDomain: DomainDesign, dirty?: boolean, rowIndexChanges?: DomainFieldIndexChange[]): void {
         const { controlledCollapse, domain, domainIndex } = this.props;
         const { ontologyLookupIndices } = this.state.fieldDetails;
 
@@ -420,7 +414,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.props.onChange?.(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChanges);
     }
 
-    clearFilePreviewData = () => {
+    clearFilePreviewData = (): void => {
         const { filePreviewData, file } = this.state;
         const fieldCount = this.props.domain.fields.size;
 
@@ -431,7 +425,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         });
     };
 
-    onDeleteConfirm(index: number) {
+    onDeleteConfirm(index: number): void {
         const rowIndexChange = { originalIndex: index, newIndex: undefined } as DomainFieldIndexChange;
         const updatedDomain = removeFields(this.props.domain, [index]);
         const visibleFieldsCount = getVisibleFieldCount(updatedDomain);
@@ -454,17 +448,19 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     }
 
-    initNewDesign = () => {
+    initNewDesign = (): void => {
         const { domain } = this.props;
         const { newDesignFields } = domain;
 
         if (newDesignFields) {
             newDesignFields.forEach(this.applyAddField);
             this.setState(() => ({ expandedRowIndex: 0 }));
-        } else this.applyAddField();
+        } else {
+            this.applyAddField();
+        }
     };
 
-    toggleSelectAll = () => {
+    toggleSelectAll = (): void => {
         const { domain } = this.props;
         const { selectAll, visibleSelection } = this.state;
 
@@ -481,21 +477,21 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const updatedDomain = domain.merge({
             fields: toggledFields,
         }) as DomainDesign;
-        this.onDomainChange(updatedDomain, true);
+        this.onDomainChange(updatedDomain, false);
         this.setState(state => ({ selectAll: !state.selectAll, visibleSelection: newVisibleSelection }));
     };
 
-    clearAllSelection = () => {
+    clearAllSelection = (): void => {
         const { domain } = this.props;
         const fields = domain.fields.map(field => {
             return field.set('selected', false);
         });
         const updatedDomain = domain.merge({ fields }) as DomainDesign;
-        this.onDomainChange(updatedDomain, true);
+        this.onDomainChange(updatedDomain, false);
         this.setState({ selectAll: false, visibleSelection: new Set() });
     };
 
-    onExportFields = () => {
+    onExportFields = (): void => {
         const { domain } = this.props;
         const { visibleSelection } = this.state;
         const fields = domain.fields;
@@ -510,7 +506,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         downloadJsonFile(fieldsJson, generateNameWithTimestamp('Fields') + '.fields.json');
     };
 
-    renderBulkFieldDeleteConfirm = () => {
+    renderBulkFieldDeleteConfirm = (): ReactNode => {
         const { domain } = this.props;
         const { bulkDeleteConfirmInfo } = this.state;
         const undeletableNames = bulkDeleteConfirmInfo.undeletableFields.map(i => {
@@ -559,7 +555,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     };
 
-    onBulkDeleteClick = () => {
+    onBulkDeleteClick = (): void => {
         const { domain } = this.props;
         const { visibleSelection } = this.state;
         const fields = domain.fields;
@@ -584,7 +580,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.setState({ bulkDeleteConfirmInfo });
     };
 
-    onBulkDeleteConfirm = () => {
+    onBulkDeleteConfirm = (): void => {
         const { domain } = this.props;
         const { deletableSelectedFields } = this.state.bulkDeleteConfirmInfo;
         const updatedDomain = removeFields(domain, deletableSelectedFields);
@@ -609,25 +605,27 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     };
 
-    onAddField = () => {
+    onAddField = (): void => {
         this.applyAddField();
     };
 
-    applyAddField = (config?: Partial<IDomainField>) => {
+    applyAddField = (config?: Partial<IDomainField>): void => {
         const newConfig = config ? { ...config } : undefined;
         const newDomain = addDomainField(this.props.domain, newConfig);
-        this.onDomainChange(newDomain);
+        this.onDomainChange(newDomain, true);
         this.setState({ selectAll: false, visibleFieldsCount: getVisibleFieldCount(newDomain) });
         this.collapseRow();
     };
 
-    onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean) => {
+    onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean): void => {
         const { domain } = this.props;
         const { visibleFieldsCount } = this.state;
-        this.onDomainChange(handleDomainUpdates(domain, changes));
-
         const firstChange = changes.get(0);
-        if (getNameFromId(firstChange?.id) === 'selected') {
+        const rowSelectedChange = getNameFromId(firstChange?.id) === 'selected';
+
+        this.onDomainChange(handleDomainUpdates(domain, changes), !rowSelectedChange);
+
+        if (rowSelectedChange) {
             this.setState(state => {
                 const visibleSelection = applySetOperation(state.visibleSelection, index, firstChange.value);
                 const selectAll = visibleFieldsCount !== 0 && visibleSelection.size === visibleFieldsCount;
@@ -653,28 +651,28 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
-    onConfirmCancel = () => {
+    onConfirmCancel = (): void => {
         this.setState(() => ({ confirmDeleteRowIndex: undefined }));
     };
 
-    onConfirmBulkCancel = () => {
+    onConfirmBulkCancel = (): void => {
         this.setState(() => ({ bulkDeleteConfirmInfo: undefined }));
     };
 
-    onBeforeDragStart = initial => {
+    onBeforeDragStart = (initial): void => {
         const { domain } = this.props;
         const id = initial.draggableId;
         const idIndex = id ? getIndexFromId(id) : undefined;
 
         this.setState(() => ({ dragId: idIndex }));
 
-        this.onDomainChange(domain);
+        this.onDomainChange(domain, false);
 
         // remove focus for any current element so that it doesn't "jump" after drag end
         blurActiveElement();
     };
 
-    onDragEnd = result => {
+    onDragEnd = (result): void => {
         const { domain } = this.props;
 
         let destIndex = result.source.index; // default behavior go back to original spot if out of bounds
@@ -771,7 +769,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.fastExpand(expanded);
     };
 
-    setNewIndexOnError = (oldIndex: number, newIndex: number, fieldErrors: List<DomainFieldError>) => {
+    setNewIndexOnError = (
+        oldIndex: number,
+        newIndex: number,
+        fieldErrors: List<DomainFieldError>
+    ): List<DomainFieldError> => {
         const updatedErrorList = fieldErrors.map(fieldError => {
             let newRowIndexes;
             if (fieldError.newRowIndexes === undefined) {
@@ -792,12 +794,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return updatedErrorList as List<DomainFieldError>;
     };
 
-    renderAddFieldOption() {
-        const { domain, domainFormDisplayOptions, allowImportExport } = this.props;
+    renderAddFieldOption(): ReactNode {
+        const { domain, domainFormDisplayOptions } = this.props;
         const hasFields = domain.fields.size > 0;
 
-        if (!domainFormDisplayOptions.hideAddFieldsButton) {
-            if (!hasFields && (this.shouldShowInferFromFile() || allowImportExport)) {
+        if (!domainFormDisplayOptions?.hideAddFieldsButton) {
+            if (!hasFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport())) {
                 return (
                     <div className="margin-top domain-form-manual-section">
                         <p>Or</p>
@@ -821,6 +823,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 );
             }
         }
+
+        return null;
     }
 
     getFieldError(domain: DomainDesign, index: number): DomainFieldError {
@@ -864,7 +868,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return newStyle;
     };
 
-    renderFieldRemoveConfirm() {
+    renderFieldRemoveConfirm(): ReactNode {
         const { confirmDeleteRowIndex } = this.state;
         const field = this.props.domain.fields.get(confirmDeleteRowIndex);
         const fieldName = field && field.name && field.name.trim().length > 0 ? <b>{field.name}</b> : 'this field';
@@ -882,7 +886,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     }
 
-    renderRowHeaders() {
+    renderRowHeaders(): ReactNode {
         const { domainFormDisplayOptions } = this.props;
         const { visibleSelection, selectAll, visibleFieldsCount, reservedFieldsMsg } = this.state;
         const fieldPlural = visibleSelection.size !== 1 ? 'fields' : 'field';
@@ -922,7 +926,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             <Col xs={4}>
                                 <b>Data Type *</b>
                             </Col>
-                            <Col xs={2}>{!domainFormDisplayOptions.hideRequired && <b>Required</b>}</Col>
+                            <Col xs={2}>{!domainFormDisplayOptions?.hideRequired && <b>Required</b>}</Col>
                         </Col>
                         <Col xs={6}>
                             <b>Details</b>
@@ -934,11 +938,15 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     shouldShowInferFromFile(): boolean {
-        const { domain, showInferFromFile } = this.props;
-        return showInferFromFile && domain.fields.size === 0;
+        const { domain, domainFormDisplayOptions } = this.props;
+        return !domainFormDisplayOptions?.hideInferFromFile && domain.fields.size === 0;
     }
 
-    handleFilePreviewLoad = (response: InferDomainResponse, file: File) => {
+    shouldShowImportExport(): boolean {
+        return !this.props.domainFormDisplayOptions?.hideImportExport;
+    }
+
+    handleFilePreviewLoad = (response: InferDomainResponse, file: File): void => {
         const { domain, setFileImportData, domainFormDisplayOptions } = this.props;
         const retainReservedFields = domainFormDisplayOptions?.retainReservedFields;
 
@@ -1022,22 +1030,24 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         });
     };
 
-    renderEmptyDomain() {
-        const { allowImportExport, domain, index } = this.props;
+    renderEmptyDomain(): ReactNode {
+        const { domain, index } = this.props;
         const shouldShowInferFromFile = this.shouldShowInferFromFile();
-        if (shouldShowInferFromFile || allowImportExport) {
+        const shouldShowImportExport = this.shouldShowImportExport();
+
+        if (shouldShowInferFromFile || shouldShowImportExport) {
             let acceptedFormats = [];
             if (shouldShowInferFromFile) {
                 acceptedFormats = acceptedFormats.concat(['.csv', '.tsv', '.txt', '.xls', '.xlsx']);
             }
-            if (allowImportExport) {
+            if (shouldShowImportExport) {
                 acceptedFormats = acceptedFormats.concat(['.json']);
             }
 
             let label;
-            if (allowImportExport && shouldShowInferFromFile) {
+            if (shouldShowImportExport && shouldShowInferFromFile) {
                 label = 'Import or infer fields from file';
-            } else if (allowImportExport) {
+            } else if (shouldShowImportExport) {
                 label = 'Import fields from file';
             } else {
                 label = 'Infer fields from file';
@@ -1077,11 +1087,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     }
 
-    onToggleSummaryView = () => {
+    onToggleSummaryView = (): void => {
         this.setState(state => ({ summaryViewMode: !state.summaryViewMode }));
     };
 
-    onSearch = evt => {
+    onSearch = (evt): void => {
         const { value } = evt.target;
         this.updateFilteredFields(value);
     };
@@ -1098,7 +1108,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return domain.set('fields', filteredFields) as DomainDesign;
     };
 
-    updateFilteredFields = (value?: string) => {
+    updateFilteredFields = (value?: string): void => {
         const { domain } = this.props;
         const filteredDomain = this.getFilteredFields(domain, value);
         const visibleFieldsCount = getVisibleFieldCount(filteredDomain);
@@ -1126,7 +1136,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return this.props.domain.fields;
     };
 
-    renderPanelHeaderContent() {
+    renderPanelHeaderContent(): ReactNode {
         const { helpTopic } = this.props;
 
         return (
@@ -1141,8 +1151,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     }
 
-    renderToolbar() {
-        const { domain, domainIndex, allowImportExport, domainFormDisplayOptions, testMode } = this.props;
+    renderToolbar(): ReactNode {
+        const { domain, domainIndex, domainFormDisplayOptions, testMode } = this.props;
         const { visibleSelection, summaryViewMode } = this.state;
         const { fields } = domain;
         const disableExport = fields.size < 1 || fields.filter((field: DomainField) => field.visible).size < 1;
@@ -1151,7 +1161,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return (
             <Row className="domain-field-toolbar">
                 <Col xs={4}>
-                    {!domainFormDisplayOptions.hideAddFieldsButton && (
+                    {!domainFormDisplayOptions?.hideAddFieldsButton && (
                         <AddEntityButton
                             entity="Field"
                             containerClass="container--toolbar-button"
@@ -1167,7 +1177,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     >
                         <i className="fa fa-trash domain-toolbar-export-btn-icon" /> Delete
                     </ActionButton>
-                    {allowImportExport && (
+                    {this.shouldShowImportExport() && (
                         <ActionButton
                             containerClass="container--toolbar-button"
                             buttonClass="domain-toolbar-export-btn"
@@ -1217,17 +1227,15 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         });
     };
 
-    renderDetailedFieldView = () => {
+    renderDetailedFieldView = (): ReactNode => {
         const {
             domain,
             helpNoun,
             appPropertiesOnly,
             containerTop,
-            showFilePropertyType,
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
-            showStudyPropertyTypes,
         } = this.props;
         const {
             expandedRowIndex,
@@ -1281,8 +1289,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 defaultDefaultValueType={domain.defaultDefaultValueType}
                                                 defaultValueOptions={domain.defaultValueOptions}
                                                 appPropertiesOnly={appPropertiesOnly}
-                                                showStudyPropertyTypes={showStudyPropertyTypes}
-                                                showFilePropertyType={showFilePropertyType}
                                                 successBsStyle={successBsStyle}
                                                 isDragDisabled={
                                                     !valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled
@@ -1301,7 +1307,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     };
 
-    renderAppDomainHeader = () => {
+    renderAppDomainHeader = (): ReactNode => {
         const { appDomainHeaderRenderer, modelDomains, domain, domainIndex } = this.props;
         const config = {
             domain,
@@ -1314,8 +1320,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return appDomainHeaderRenderer(config);
     };
 
-    renderForm() {
-        const { domain, appDomainHeaderRenderer, allowImportExport, appPropertiesOnly } = this.props;
+    renderForm(): ReactNode {
+        const { domain, appDomainHeaderRenderer, appPropertiesOnly } = this.props;
         const { summaryViewMode, search, selectAll } = this.state;
         const hasFields = domain.fields.size > 0;
         const actions = {
@@ -1326,7 +1332,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return (
             <>
-                {(hasFields || !(this.shouldShowInferFromFile() || allowImportExport)) && this.renderToolbar()}
+                {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) &&
+                    this.renderToolbar()}
                 {this.renderPanelHeaderContent()}
                 {appDomainHeaderRenderer && !summaryViewMode && this.renderAppDomainHeader()}
 
@@ -1352,7 +1359,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     }
 
-    render() {
+    render(): ReactNode {
         const {
             children,
             domain,
@@ -1368,7 +1375,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             fieldsAdditionalRenderer,
             domainFormDisplayOptions,
             todoIconHelpMsg,
-            allowImportExport,
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file, bulkDeleteConfirmInfo } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
@@ -1377,7 +1383,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1 ? 's' : '') + ' Defined'
                 : undefined;
         const hasFields = domain.fields.size > 0;
-        const styleToolbar = !hasFields && (this.shouldShowInferFromFile() || allowImportExport);
+        const styleToolbar = !hasFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport());
 
         return (
             <>
@@ -1414,7 +1420,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
                         {fieldsAdditionalRenderer && fieldsAdditionalRenderer()}
 
-                        {filePreviewData && !domainFormDisplayOptions.hideImportData && (
+                        {filePreviewData && !domainFormDisplayOptions?.hideImportData && (
                             <ImportDataFilePreview
                                 noun={helpNoun}
                                 filePreviewData={filePreviewData}

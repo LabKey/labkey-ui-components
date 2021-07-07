@@ -11,9 +11,15 @@ interface Props {
     className?: string
 }
 
-export const FindAndSearchDropdown: FC<Props> = memo((
-    {title = '', findNounPlural = 'samples', onFindByIds, className, onSearch}
-) => {
+export const FindAndSearchDropdown: FC<Props> = memo((props) => {
+
+    const {
+        title = '',
+        findNounPlural = 'samples',
+        onFindByIds,
+        className,
+        onSearch,
+    } = props;
 
     const [showFindModal, setShowFindModal] = useState<boolean>(false);
 

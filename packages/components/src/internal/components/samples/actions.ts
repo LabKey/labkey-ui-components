@@ -391,14 +391,8 @@ function getSamplesIdsNotFound(queryName: string, orderedIds: string[]) : Promis
     });
 }
 
-export interface FindSamplesByIdsResponse {
-    queryName: string,
-    missingIds?: { [key: string]: string[] },
-}
-
-export function getFindSamplesByIdData(staleQueryName?: string) : Promise<FindSamplesByIdsResponse> {
+export function getFindSamplesByIdData(staleQueryName?: string) : Promise<{ queryName: string, missingIds?: { [key: string]: string[] } }> {
     return new Promise((resolve, reject) => {
-        // TODO should we pass the previousQueryName so it can be removed from the session?
         const ids = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY));
         if (ids) {
             Ajax.request({
@@ -472,6 +466,10 @@ export function saveIdsToFind(fieldType: FindField, ids: string[]): void {
 
 export function getFindIdCountsByTypeMessage() : string {
     const findIds: string[] = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY))
+    if (!findIds) {
+        return undefined;
+    }
+
     let numIdsMsg = '';
     const numSampleIds = findIds.filter(id => id.startsWith(SAMPLE_ID_FIND_FIELD.storageKeyPrefix)).length;
     const numUniqueIds = findIds.filter(id => id.startsWith(UNIQUE_ID_FIND_FIELD.storageKeyPrefix)).length;

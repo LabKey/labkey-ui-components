@@ -68,7 +68,7 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo((props) => 
             </div>
             {hasSamples && (
                 <Alert bsStyle={"info"}>
-                    Save these samples as a group for later use by adding them to a picklist.
+                    Work with the selected samples in the grid now or save them to a picklist for later use.
                 </Alert>)
             }
             <FindByIdsModal

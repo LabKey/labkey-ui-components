@@ -5,7 +5,7 @@
 import { createContext } from 'react';
 import { Draft, produce } from 'immer';
 import { fromJS, Map, OrderedSet } from 'immutable';
-import {Experiment, Filter, getServerContext, Query} from '@labkey/api';
+import { Experiment, Filter, getServerContext, Query } from '@labkey/api';
 
 import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../../..';
 

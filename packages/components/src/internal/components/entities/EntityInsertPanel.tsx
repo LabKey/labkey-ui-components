@@ -1262,30 +1262,30 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                             </LabelHelpTip>
                                         </div>
                                     )}
-                                    {entityTypeName &&
-                                    <FileAttachmentForm
-                                        showLabel={false}
-                                        acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx"
-                                        allowMultiple={false}
-                                        allowDirectories={false}
-                                        previewGridProps={{
-                                            previewCount: 3,
-                                            onPreviewLoad: this.onPreviewLoad,
-                                            warningMsg: this.state.fieldsWarningMsg,
-                                        }}
-                                        onFileChange={this.handleFileChange}
-                                        onFileRemoval={this.handleFileRemoval}
-                                        templateUrl={this.getTemplateUrl()}
-                                        sizeLimits={fileSizeLimits}
-                                        sizeLimitsHelpText={
-                                            <>
-                                                We recommend dividing your data into smaller files that meet this limit.
-                                                See our {helpLinkNode(DATA_IMPORT_TOPIC, 'help article')} for best
-                                                practices on data import.
-                                            </>
-                                        }
-                                    />
-                                    }
+                                    {entityTypeName && (
+                                        <FileAttachmentForm
+                                            showLabel={false}
+                                            acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx"
+                                            allowMultiple={false}
+                                            allowDirectories={false}
+                                            previewGridProps={{
+                                                previewCount: 3,
+                                                onPreviewLoad: this.onPreviewLoad,
+                                                warningMsg: this.state.fieldsWarningMsg,
+                                            }}
+                                            onFileChange={this.handleFileChange}
+                                            onFileRemoval={this.handleFileRemoval}
+                                            templateUrl={this.getTemplateUrl()}
+                                            sizeLimits={fileSizeLimits}
+                                            sizeLimitsHelpText={
+                                                <>
+                                                    We recommend dividing your data into smaller files that meet this
+                                                    limit. See our {helpLinkNode(DATA_IMPORT_TOPIC, 'help article')} for
+                                                    best practices on data import.
+                                                </>
+                                            }
+                                        />
+                                    )}
                                 </FormStep>
                             </div>
                         </div>

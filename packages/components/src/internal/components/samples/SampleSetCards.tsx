@@ -1,6 +1,6 @@
 import React, { FC, memo, useMemo } from 'react';
 
-import {Filter, Query} from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { Cards, caseInsensitive, naturalSort, LoadingSpinner, SampleTypeEmptyAlert, SCHEMAS } from '../../..';
 

@@ -1,6 +1,6 @@
 import React, { FC, memo, useMemo, useState } from 'react';
 
-import {Filter, Query} from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { GridPanelWithModel, SCHEMAS, AppURL, User, SelectViewInput, SelectView } from '../../..';
 

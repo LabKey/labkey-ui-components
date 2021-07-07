@@ -1,15 +1,8 @@
 import moment from 'moment';
 import { Map, OrderedMap } from 'immutable';
-import {Ajax, PermissionRoles, PermissionTypes, Security, Utils} from '@labkey/api';
+import { Ajax, PermissionRoles, PermissionTypes, Security, Utils } from '@labkey/api';
 
-import {
-    buildURL,
-    caseInsensitive,
-    hasAllPermissions,
-    SchemaQuery,
-    SHARED_CONTAINER_PATH,
-    User
-} from '../../..';
+import { buildURL, caseInsensitive, hasAllPermissions, SchemaQuery, SHARED_CONTAINER_PATH, User } from '../../..';
 
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
 
@@ -210,7 +203,7 @@ export function resetPassword(email: string): Promise<any> {
     });
 }
 
-export function getUserSharedContainerPermissions() : Promise<string[]> {
+export function getUserSharedContainerPermissions(): Promise<string[]> {
     return new Promise((resolve, reject) => {
         Security.getUserPermissions({
             containerPath: SHARED_CONTAINER_PATH,

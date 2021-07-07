@@ -1,4 +1,4 @@
-import {ActionURL, Ajax, Filter, Query, Utils} from '@labkey/api';
+import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
 import {
@@ -294,7 +294,7 @@ export function extractEntityTypeOptionFromRow(
         value: lowerCaseValue ? name.toLowerCase() : name, // we match values on lower case because (at least) when parsed from an id they are lower case
         query: name,
         entityDataType,
-        isFromSharedContainer: row.getIn(['Folder/Path', 'value']) === SHARED_CONTAINER_PATH
+        isFromSharedContainer: row.getIn(['Folder/Path', 'value']) === SHARED_CONTAINER_PATH,
     };
 }
 

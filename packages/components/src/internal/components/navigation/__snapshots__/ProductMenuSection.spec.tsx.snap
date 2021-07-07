@@ -162,6 +162,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
           "orderNum": undefined,
           "requiresLogin": false,
           "hasActiveJob": false,
+          "fromSharedContainer": false,
         },
         Immutable.Record {
           "id": 2,
@@ -171,6 +172,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
           "orderNum": undefined,
           "requiresLogin": false,
           "hasActiveJob": true,
+          "fromSharedContainer": false,
         },
         Immutable.Record {
           "id": 3,
@@ -180,6 +182,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
           "orderNum": undefined,
           "requiresLogin": false,
           "hasActiveJob": false,
+          "fromSharedContainer": false,
         },
         Immutable.Record {
           "id": 4,
@@ -189,6 +192,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
           "orderNum": undefined,
           "requiresLogin": false,
           "hasActiveJob": false,
+          "fromSharedContainer": false,
         },
       ],
       "totalCount": 0,
@@ -457,6 +461,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
           "orderNum": undefined,
           "requiresLogin": false,
           "hasActiveJob": false,
+          "fromSharedContainer": false,
         },
         Immutable.Record {
           "id": 12,
@@ -466,6 +471,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
           "orderNum": undefined,
           "requiresLogin": false,
           "hasActiveJob": false,
+          "fromSharedContainer": false,
         },
         Immutable.Record {
           "id": 13,
@@ -475,6 +481,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
           "orderNum": undefined,
           "requiresLogin": false,
           "hasActiveJob": false,
+          "fromSharedContainer": false,
         },
         Immutable.Record {
           "id": 14,
@@ -484,6 +491,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
           "orderNum": undefined,
           "requiresLogin": false,
           "hasActiveJob": false,
+          "fromSharedContainer": false,
         },
         Immutable.Record {
           "id": 15,
@@ -493,6 +501,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
           "orderNum": undefined,
           "requiresLogin": false,
           "hasActiveJob": false,
+          "fromSharedContainer": false,
         },
       ],
       "totalCount": 0,

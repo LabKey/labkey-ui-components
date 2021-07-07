@@ -61,7 +61,11 @@ import {
 } from './internal/util/utils';
 import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
-import { getUserProperties, getUserRoleDisplay } from './internal/components/user/actions';
+import {
+    getUserProperties,
+    getUserRoleDisplay,
+    getUserSharedContainerPermissions,
+} from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import { getActionErrorMessage, getConfirmDeleteMessage, resolveErrorMessage } from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
@@ -191,6 +195,7 @@ import {
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
+    SHARED_CONTAINER_PATH,
 } from './internal/constants';
 import { getLocation, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
@@ -264,6 +269,8 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
+    getEditSharedSampleTypeUrl,
+    getDeleteSharedSampleTypeUrl,
     loadSelectedSamples,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
@@ -279,6 +286,7 @@ import { SampleCreationTypeModal } from './internal/components/samples/SampleCre
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
+import { SharedSampleTypeAdminConfirmModal } from './internal/components/samples/SharedSampleTypeAdminConfirmModal';
 import {
     AssayContextConsumer,
     assayPage,
@@ -742,6 +750,7 @@ export {
     getUsersWithPermissions,
     getUserProperties,
     getUserRoleDisplay,
+    getUserSharedContainerPermissions,
     UserDetailHeader,
     UserProfile,
     ChangePasswordModal,
@@ -787,6 +796,8 @@ export {
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
     getSelectedItemSamples,
+    getEditSharedSampleTypeUrl,
+    getDeleteSharedSampleTypeUrl,
     SampleTypeDataType,
     DataClassDataType,
     ParentEntityRequiredColumns,
@@ -805,6 +816,7 @@ export {
     SamplesSelectionProvider,
     SampleAliquotDetailHeader,
     SampleAssayDetail,
+    SharedSampleTypeAdminConfirmModal,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
@@ -911,6 +923,7 @@ export {
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
+    SHARED_CONTAINER_PATH,
     NotificationItemModel,
     Notification,
     ServerNotificationModel,

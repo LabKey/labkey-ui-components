@@ -65,6 +65,7 @@ export class MenuItemModel extends Record({
     orderNum: undefined,
     requiresLogin: false,
     hasActiveJob: false,
+    fromSharedContainer: false,
 }) {
     declare id: number;
     declare key: string;
@@ -73,6 +74,7 @@ export class MenuItemModel extends Record({
     declare orderNum: number;
     declare requiresLogin: boolean;
     declare hasActiveJob: boolean;
+    declare fromSharedContainer: boolean;
 
     static create(rawData, sectionKey: string, currentProductId?: string): MenuItemModel {
         if (rawData) {

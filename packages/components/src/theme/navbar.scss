@@ -389,7 +389,9 @@
     padding: 0;
     background: none;
     border: none;
-    &:active,
+    &.btn-default:active,
+    &.btn-default:active:hover,
+    &.btn-default:active:focus,
     &:active:focus,
     &:hover {
         background: none;

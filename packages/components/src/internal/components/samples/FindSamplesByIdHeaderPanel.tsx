@@ -59,11 +59,11 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo((props) => 
             {foundSamplesMsg}
             <SamplesNotFoundMsg missingIds={missingIds}/>
             <div className="bottom-spacing">
-                <Button bsClass={'btn btn-default'} onClick={onAddMoreSamples}>
+                <Button className="button-right-spacing" bsClass={'btn btn-default'} onClick={onAddMoreSamples}>
                     Add {hasSamples ? 'More' : ''} Samples
                 </Button>
                 <Button bsClass={'btn btn-default'} onClick={onClearSamples} disabled={!hasSamples}>
-                    Clear Samples
+                    Reset
                 </Button>
             </div>
             {hasSamples && (

@@ -477,6 +477,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             autoFocus,
             backspaceRemovesValue,
             blurInputOnSelect: false, // TODO: This seems to have no effect
+            className: 'select-input-container',
             classNamePrefix: 'select-input',
             components,
             delimiter,

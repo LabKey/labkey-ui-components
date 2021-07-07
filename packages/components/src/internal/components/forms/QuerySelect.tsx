@@ -70,13 +70,37 @@ function noopFilterOptions(options: SelectInputOption[]): SelectInputOption[] {
 const PreviewOption: FC<any> = props => {
     const { model, ...optionProps } = props;
     const { allResults, queryInfo } = model;
-    const { innerProps, label, value } = optionProps;
+    const {
+        className,
+        cx,
+        getStyles,
+        innerProps,
+        innerRef,
+        isDisabled,
+        isFocused,
+        isSelected,
+        label,
+        value,
+    } = optionProps;
 
     if (queryInfo && allResults.size) {
         const item = allResults.find(result => value === result.getIn([model.valueColumn, 'value']));
 
         return (
-            <div className="wizard--select-option" {...innerProps}>
+            <div
+                className={cx(
+                    {
+                        option: true,
+                        'option--is-disabled': isDisabled,
+                        'option--is-focused': isFocused,
+                        'option--is-selected': isSelected,
+                    },
+                    className
+                )}
+                ref={innerRef}
+                style={getStyles('option', props)}
+                {...innerProps}
+            >
                 {queryInfo.getDisplayColumns(model.schemaQuery.viewName).map((column, i) => {
                     if (item !== undefined) {
                         let text = resolveDetailFieldValue(item.get(column.name));

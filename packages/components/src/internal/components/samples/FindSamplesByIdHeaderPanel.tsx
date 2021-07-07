@@ -62,13 +62,13 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo((props) => 
                 <Button className="button-right-spacing" bsClass={'btn btn-default'} onClick={onAddMoreSamples}>
                     Add {hasSamples ? 'More' : ''} Samples
                 </Button>
-                <Button bsClass={'btn btn-default'} onClick={onClearSamples} disabled={!hasSamples}>
+                <Button bsClass={'btn btn-default'} onClick={onClearSamples} disabled={!numIdsMsg}>
                     Reset
                 </Button>
             </div>
             {hasSamples && (
                 <Alert bsStyle={"info"}>
-                    To save these samples as a group for later use, be sure to create or add to a picklist.
+                    Save these samples as a group for later use by adding them to a picklist.
                 </Alert>)
             }
             <FindByIdsModal

@@ -460,3 +460,11 @@
         border-color: transparent transparent $gray-lighter transparent;
     }
 }
+
+.navbar-item.visible-xs.pull-right > .dropdown.open > .btn-default.dropdown-toggle,
+.navbar-item.visible-xs.pull-right > .dropdown.open > .btn-default.dropdown-toggle:focus,
+.navbar-item.visible-xs.pull-right > .btn-group.open.dropdown-toggle,
+.navbar-item.visible-xs.pull-right > .btn-group.open.dropdown-toggle:active {
+    background-color: transparent !important;
+    box-shadow: none;
+}

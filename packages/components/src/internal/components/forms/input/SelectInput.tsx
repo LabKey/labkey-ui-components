@@ -477,7 +477,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             autoFocus,
             backspaceRemovesValue,
             blurInputOnSelect: false, // TODO: This seems to have no effect
-            className: 'select-input-container',
+            className: 'select-input',
             classNamePrefix: 'select-input',
             components,
             delimiter,
@@ -531,7 +531,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         const { containerClass, inputClass, afterInputElement } = this.props;
 
         return (
-            <div className={containerClass}>
+            <div className={`select-input-container ${containerClass}`}>
                 {this.renderLabel()}
                 <div className={inputClass}>
                     {this.renderSelect()}

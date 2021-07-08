@@ -417,13 +417,10 @@ export function getFindSamplesByIdData(staleQueryName?: string) : Promise<{ quer
                                 queryName,
                                 missingIds
                             });
-                        }).catch(() => {
+                        }).catch((reason) => {
+                            console.error("Problem retrieving data about samples not found", reason);
                             resolve({
                                 queryName,
-                                missingIds: {
-                                    [UNIQUE_ID_FIND_FIELD.label]: ["unique-1"],
-                                    [SAMPLE_ID_FIND_FIELD.label]: ['Sample-1']
-                                }
                             })
                         });
 

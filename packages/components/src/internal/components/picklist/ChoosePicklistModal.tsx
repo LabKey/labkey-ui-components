@@ -277,10 +277,12 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         }, [activeItem, selectionKey, setSubmitting, setError, sampleIds, numSelected]);
 
         const closeModal = useCallback(() => {
+            setError(undefined);
             onCancel(false);
         }, [onCancel]);
 
         const goToCreateNewList = useCallback(() => {
+            setError(undefined);
             onCancel(true);
         }, [onCancel]);
 

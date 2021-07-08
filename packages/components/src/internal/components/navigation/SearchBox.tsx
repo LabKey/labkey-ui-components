@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from 'react';
-import { InputGroup } from 'react-bootstrap';
 import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 
 interface Props {
@@ -52,7 +51,7 @@ export const SearchBox: FC<Props> = memo(props => {
         <form className="navbar__search-form" onSubmit={onSubmit}>
             <div className="form-group">
                 <i className="fa fa-search navbar__search-icon" />
-                <InputGroup className="navbar__input-group">
+                <span className={"navbar__input-group " + (showFindByIds ? 'input-group': '')}>
                     <input
                         className="form-control navbar__search-input"
                         onChange={onChange}
@@ -62,11 +61,11 @@ export const SearchBox: FC<Props> = memo(props => {
                         value={searchValue}
                     />
                     {showFindByIds &&
-                    <InputGroup.Button>
+                    <span className="input-group-btn">
                         <FindAndSearchDropdown title={''} onFindByIds={onFindByIds} findNounPlural={findNounPlural}/>
-                    </InputGroup.Button>
+                    </span>
                     }
-                </InputGroup>
+                </span>
             </div>
         </form>
     );

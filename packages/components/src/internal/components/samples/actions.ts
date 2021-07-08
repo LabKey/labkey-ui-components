@@ -453,33 +453,14 @@ export function saveIdsToFind(fieldType: FindField, ids: string[]): void {
             prefixedIds.push(pid);
         }
     })
-    // deduplicate
+    // deduplicate from existing ids
     if (existingIds) {
-        // const existing = existingIds.split("\n");
         sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY,
             JSON.stringify(existingIds.concat(prefixedIds.filter(id => !existingIds.includes(id))))
         );
     } else {
         sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY, JSON.stringify(prefixedIds));
     }
-}
-
-export function getFindIdCountsByTypeMessage() : string {
-    const findIds: string[] = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY))
-    if (!findIds) {
-        return undefined;
-    }
-
-    let numIdsMsg = '';
-    const numSampleIds = findIds.filter(id => id.startsWith(SAMPLE_ID_FIND_FIELD.storageKeyPrefix)).length;
-    const numUniqueIds = findIds.filter(id => id.startsWith(UNIQUE_ID_FIND_FIELD.storageKeyPrefix)).length;
-    if (numSampleIds) {
-        numIdsMsg += Utils.pluralize(numSampleIds, SAMPLE_ID_FIND_FIELD.nounSingular, SAMPLE_ID_FIND_FIELD.nounPlural);
-    }
-    if (numUniqueIds) {
-        numIdsMsg += (numIdsMsg ? ' and ' : '') + Utils.pluralize(numUniqueIds, UNIQUE_ID_FIND_FIELD.nounSingular, UNIQUE_ID_FIND_FIELD.nounPlural);
-    }
-    return numIdsMsg;
 }
 
 export function clearIdsToFind(): void {

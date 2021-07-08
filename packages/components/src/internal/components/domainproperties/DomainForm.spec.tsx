@@ -52,7 +52,7 @@ beforeAll(() => {
 });
 
 interface Props {
-    showInferFromFile?: boolean;
+    hideInferFromFile?: boolean;
     testMode?: boolean;
 }
 
@@ -75,7 +75,9 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
         return (
             <DomainForm
                 domain={this.state.domain}
-                showInferFromFile={this.props.showInferFromFile}
+                domainFormDisplayOptions={{
+                    hideInferFromFile: this.props.hideInferFromFile,
+                }}
                 onChange={this.onChange}
                 testMode={this.props.testMode}
             />
@@ -87,7 +89,14 @@ describe('DomainForm', () => {
     test('with empty domain form', async () => {
         const domain = DomainDesign.create({});
 
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+                domainFormDisplayOptions={{ hideImportExport: true, hideInferFromFile: true }}
+                testMode={true}
+            />
+        );
         await sleep();
 
         // Empty panel
@@ -150,6 +159,9 @@ describe('DomainForm', () => {
                 domain={domain}
                 helpNoun="assay"
                 helpTopic="assays"
+                domainFormDisplayOptions={{
+                    hideInferFromFile: true,
+                }}
                 showHeader={false}
                 onChange={jest.fn()}
                 testMode={true}
@@ -170,7 +182,14 @@ describe('DomainForm', () => {
             fields: [],
             indices: [],
         });
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                domainFormDisplayOptions={{ hideInferFromFile: true }}
+                onChange={jest.fn()}
+                testMode={true}
+            />
+        );
         await sleep();
 
         expect(form).toMatchSnapshot();
@@ -471,6 +490,9 @@ describe('DomainForm', () => {
         const form = mount(
             <DomainForm
                 domain={domain}
+                domainFormDisplayOptions={{
+                    hideInferFromFile: true,
+                }}
                 collapsible={false}
                 initCollapsed={true}
                 headerPrefix="Foo" // this text should be removed from the panel header display text
@@ -484,10 +506,15 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('with showInferFromFile', async () => {
+    test('with hideInferFromFile false', async () => {
         const domain = DomainDesign.create({});
         const form = mount(
-            <DomainForm domain={domain} showInferFromFile={true} onChange={jest.fn()} testMode={true} />
+            <DomainForm
+                domain={domain}
+                domainFormDisplayOptions={{ hideInferFromFile: false }}
+                onChange={jest.fn()}
+                testMode={true}
+            />
         );
         await sleep();
 
@@ -495,8 +522,8 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('test showInferFromFile click domain-form-manual-btn', async () => {
-        const component = <DomainFormContainer showInferFromFile={true} testMode={true} />;
+    test('test hideInferFromFile false click domain-form-manual-btn', async () => {
+        const component = <DomainFormContainer hideInferFromFile={false} testMode={true} />;
         const wrapper = mount(component);
         await sleep();
 
@@ -609,7 +636,14 @@ describe('DomainForm', () => {
             }) as DomainDesign;
         };
 
-        const form = mount(<DomainForm domain={domain} onChange={changeHandler} testMode={true} />);
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                onChange={changeHandler}
+                domainFormDisplayOptions={{ hideImportExport: true, hideInferFromFile: true }}
+                testMode={true}
+            />
+        );
         await sleep();
 
         // Add new row
@@ -760,6 +794,7 @@ describe('DomainForm', () => {
                 onChange={jest.fn()}
                 domainFormDisplayOptions={{
                     hideAddFieldsButton: true,
+                    hideInferFromFile: true,
                 }}
                 testMode={true}
             />
@@ -774,12 +809,10 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('using allowImportExport', () => {
+    test('using default false for hideImportExport', () => {
         const domain = DomainDesign.create({});
 
-        const form = mount(
-            <DomainForm domain={domain} onChange={jest.fn()} allowImportExport={true} testMode={true} />
-        );
+        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
 
         expect(form.find('.domain-form-manual-section').length).toEqual(1);
         expect(form.find('.file-form-formats').text()).toContain('.json');
@@ -789,11 +822,19 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('not using allowImportExport', () => {
+    test('using hideImportExport', () => {
         const domain = DomainDesign.create({});
 
         const form = mount(
-            <DomainForm domain={domain} onChange={jest.fn()} allowImportExport={false} testMode={true} />
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+                domainFormDisplayOptions={{
+                    hideInferFromFile: true,
+                    hideImportExport: true,
+                }}
+                testMode={true}
+            />
         );
 
         expect(form.find('.domain-form-manual-section').length).toEqual(0);
@@ -804,7 +845,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('using allowImportExport, field view', () => {
+    test('using default for hideImportExport, field view', () => {
         const fields = [];
         fields.push({
             name: 'key',
@@ -814,7 +855,7 @@ describe('DomainForm', () => {
         });
 
         const domain = DomainDesign.create({
-            name: 'allowImportExport field view',
+            name: 'default hideImportExport false field view',
             description: 'basic list domain form',
             domainURI: 'test',
             domainId: 1,
@@ -829,7 +870,6 @@ describe('DomainForm', () => {
                 domainFormDisplayOptions={{
                     hideRequired: true,
                 }}
-                allowImportExport={true}
                 testMode={true}
             />
         );
@@ -844,7 +884,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('not using allowImportExport, field view', () => {
+    test('using hideImportExport, field view', () => {
         const fields = [];
         fields.push({
             name: 'key',
@@ -854,7 +894,7 @@ describe('DomainForm', () => {
         });
 
         const domain = DomainDesign.create({
-            name: 'allowImportExport field view',
+            name: 'hideImportExport field view',
             description: 'basic list domain form',
             domainURI: 'test',
             domainId: 1,
@@ -868,8 +908,8 @@ describe('DomainForm', () => {
                 onChange={jest.fn()}
                 domainFormDisplayOptions={{
                     hideRequired: true,
+                    hideImportExport: true,
                 }}
-                allowImportExport={false}
                 testMode={true}
             />
         );

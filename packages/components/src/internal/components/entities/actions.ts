@@ -1,4 +1,4 @@
-import { ActionURL, Ajax, Filter, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
 import {
@@ -12,6 +12,7 @@ import {
     SampleCreationType,
     SchemaQuery,
     selectRows,
+    SHARED_CONTAINER_PATH,
 } from '../../..';
 
 import { getSelectedItemSamples } from '../samples/actions';
@@ -91,6 +92,7 @@ function getSelectedParents(
             queryName: schemaQuery.queryName,
             columns: 'LSID,Name,RowId',
             filterArray,
+            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(response => {
                 resolve(resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent));
@@ -111,6 +113,7 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
                     queryName: 'materials',
                     columns: 'LSID,Name,RowId,SampleSet',
                     filterArray: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+                    containerFilter: Query.containerFilter.currentPlusProjectAndShared,
                 })
                     .then(response => {
                         resolve(resolveSampleParentType(response, isAliquotParent));
@@ -291,6 +294,7 @@ export function extractEntityTypeOptionFromRow(
         value: lowerCaseValue ? name.toLowerCase() : name, // we match values on lower case because (at least) when parsed from an id they are lower case
         query: name,
         entityDataType,
+        isFromSharedContainer: row.getIn(['Folder/Path', 'value']) === SHARED_CONTAINER_PATH,
     };
 }
 
@@ -376,8 +380,9 @@ export function getEntityTypeOptions(entityDataType: EntityDataType): Promise<Ma
         selectRows({
             schemaName: typeListingSchemaQuery.schemaName,
             queryName: typeListingSchemaQuery.queryName,
-            columns: 'LSID,Name,RowId',
+            columns: 'LSID,Name,RowId,Folder/Path',
             filterArray,
+            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(result => {
                 const rows = fromJS(result.models[result.key]);

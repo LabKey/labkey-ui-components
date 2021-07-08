@@ -166,6 +166,7 @@ export class EntityTypeOption implements IEntityTypeOption {
     rowId: number;
     value: any;
     entityDataType: EntityDataType;
+    isFromSharedContainer?: boolean;
 
     constructor(props?: Partial<EntityTypeOption>) {
         if (props) {
@@ -390,6 +391,10 @@ export class EntityIdCreationModel extends Record({
         return this.hasTargetEntityType() ? this.targetEntityType.label : undefined;
     }
 
+    isFromSharedContainer(): boolean {
+        return this.hasTargetEntityType() ? this.targetEntityType.isFromSharedContainer : false;
+    }
+
     getParentCount(): number {
         return this.entityParents.reduce((count: number, parentList) => {
             return count + parentList.filter(parent => parent.query !== undefined).count();
@@ -602,4 +607,5 @@ export interface EntityDataType {
     filterArray?: Filter.IFilter[]; // A list of filters to use when selecting the set of values
     editTypeAppUrlPrefix?: string; // the app url route prefix for the edit design page for the given data type
     importFileAction: string; // the action in the 'experiment' controller to use for file import for the given data type
+    isFromSharedContainer?: boolean // if the data type is defined in /Shared project
 }

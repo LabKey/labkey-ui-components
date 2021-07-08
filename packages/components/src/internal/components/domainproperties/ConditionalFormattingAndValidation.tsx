@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
@@ -31,7 +31,6 @@ interface ConditionalFormattingAndValidationProps {
     field: DomainField;
     onChange: (string, any) => any;
     showingModal: (boolean) => any;
-    hideConditionalFormatting?: boolean;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
 }
@@ -180,9 +179,9 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<
         );
     };
 
-    renderConditionalFormats = () => {
-        const { field, index, hideConditionalFormatting, domainIndex } = this.props;
-        if (hideConditionalFormatting) return null;
+    renderConditionalFormats = (): ReactNode => {
+        const { field, index, domainFormDisplayOptions, domainIndex } = this.props;
+        if (domainFormDisplayOptions.hideConditionalFormatting) return null;
 
         const count = field.conditionalFormats ? field.conditionalFormats.size : 0;
 
@@ -220,14 +219,14 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<
     };
 
     render() {
-        const { index, field, hideConditionalFormatting, successBsStyle } = this.props;
+        const { index, field, domainFormDisplayOptions, successBsStyle } = this.props;
         const { showCondFormat, showRegex, showRange } = this.state;
 
         const CondFormatModal = ValidatorModal(ConditionalFormatOptions);
         const RangeValidator = ValidatorModal(RangeValidationOptions);
         const RegexValidator = ValidatorModal(RegexValidationOptions);
 
-        const showCondFormatSection = !hideConditionalFormatting;
+        const showCondFormatSection = !domainFormDisplayOptions.hideConditionalFormatting;
         const showRegexSection = DomainField.hasRegExValidation(field);
         const showRangeSection = DomainField.hasRangeValidation(field);
         const showValidation = showRegexSection || showRangeSection;

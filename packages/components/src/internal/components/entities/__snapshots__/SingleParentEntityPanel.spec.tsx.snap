@@ -294,7 +294,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
               formsy={false}
               inputClass="col-sm-6"
               label="Data Type 1"
-              labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
+              labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--type-select"
               name="entityType0"
               onChange={[Function]}
               options={
@@ -340,7 +340,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                 initiallyDisabled={false}
                 inputClass="col-sm-6"
                 label="Data Type 1"
-                labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
+                labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--type-select"
                 name="entityType0"
                 onChange={[Function]}
                 options={
@@ -378,7 +378,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                 valueKey="value"
               >
                 <div
-                  className=""
+                  className="select-input-container "
                 >
                   <FieldLabel
                     fieldName="entityType0"
@@ -391,7 +391,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                         "inputId": "entityType0",
                         "isFormsy": false,
                         "label": "Data Type 1",
-                        "labelClass": "col-sm-3 col-xs-12 entity-insert--parent-label",
+                        "labelClass": "col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--type-select",
                         "required": true,
                       }
                     }
@@ -411,11 +411,11 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                       inputId="entityType0"
                       isFormsy={false}
                       label="Data Type 1"
-                      labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
+                      labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--type-select"
                       required={true}
                     >
                       <label
-                        className="col-sm-3 col-xs-12 entity-insert--parent-label text__truncate-and-wrap"
+                        className="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--type-select text__truncate-and-wrap"
                         htmlFor="entityType0"
                       >
                         <span>
@@ -477,6 +477,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                   >
                     <StateManager
                       blurInputOnSelect={false}
+                      className="select-input"
                       classNamePrefix="select-input"
                       components={
                         Object {
@@ -529,6 +530,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                         backspaceRemovesValue={true}
                         blurInputOnSelect={false}
                         captureMenuScroll={false}
+                        className="select-input"
                         classNamePrefix="select-input"
                         closeMenuOnScroll={false}
                         closeMenuOnSelect={true}
@@ -607,6 +609,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                         value={null}
                       >
                         <SelectContainer
+                          className="select-input"
                           clearValue={[Function]}
                           cx={[Function]}
                           getStyles={[Function]}
@@ -658,6 +661,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                               "backspaceRemovesValue": true,
                               "blurInputOnSelect": false,
                               "captureMenuScroll": false,
+                              "className": "select-input",
                               "classNamePrefix": "select-input",
                               "closeMenuOnScroll": false,
                               "closeMenuOnSelect": true,
@@ -768,7 +772,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                           <EmotionCssPropInternal
                             __EMOTION_LABEL_PLEASE_DO_NOT_USE__="SelectContainer"
                             __EMOTION_TYPE_PLEASE_DO_NOT_USE__="div"
-                            className=""
+                            className="select-input"
                             css={
                               Object {
                                 "boxSizing": "border-box",
@@ -782,7 +786,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                             onKeyDown={[Function]}
                           >
                             <div
-                              className=" css-2b097c-container"
+                              className="select-input css-2b097c-container"
                               id="selectinput-0"
                               onKeyDown={[Function]}
                             >
@@ -835,6 +839,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     "backspaceRemovesValue": true,
                                     "blurInputOnSelect": false,
                                     "captureMenuScroll": false,
+                                    "className": "select-input",
                                     "classNamePrefix": "select-input",
                                     "closeMenuOnScroll": false,
                                     "closeMenuOnSelect": true,
@@ -1026,6 +1031,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     "backspaceRemovesValue": true,
                                     "blurInputOnSelect": false,
                                     "captureMenuScroll": false,
+                                    "className": "select-input",
                                     "classNamePrefix": "select-input",
                                     "closeMenuOnScroll": false,
                                     "closeMenuOnSelect": true,
@@ -1214,6 +1220,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           "backspaceRemovesValue": true,
                                           "blurInputOnSelect": false,
                                           "captureMenuScroll": false,
+                                          "className": "select-input",
                                           "classNamePrefix": "select-input",
                                           "closeMenuOnScroll": false,
                                           "closeMenuOnSelect": true,
@@ -1389,6 +1396,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "backspaceRemovesValue": true,
                                                 "blurInputOnSelect": false,
                                                 "captureMenuScroll": false,
+                                                "className": "select-input",
                                                 "classNamePrefix": "select-input",
                                                 "closeMenuOnScroll": false,
                                                 "closeMenuOnSelect": true,
@@ -1575,6 +1583,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "backspaceRemovesValue": true,
                                                 "blurInputOnSelect": false,
                                                 "captureMenuScroll": false,
+                                                "className": "select-input",
                                                 "classNamePrefix": "select-input",
                                                 "closeMenuOnScroll": false,
                                                 "closeMenuOnSelect": true,
@@ -1742,6 +1751,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "backspaceRemovesValue": true,
                                                   "blurInputOnSelect": false,
                                                   "captureMenuScroll": false,
+                                                  "className": "select-input",
                                                   "classNamePrefix": "select-input",
                                                   "closeMenuOnScroll": false,
                                                   "closeMenuOnSelect": true,
@@ -2007,6 +2017,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           "backspaceRemovesValue": true,
                                           "blurInputOnSelect": false,
                                           "captureMenuScroll": false,
+                                          "className": "select-input",
                                           "classNamePrefix": "select-input",
                                           "closeMenuOnScroll": false,
                                           "closeMenuOnSelect": true,
@@ -2177,6 +2188,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "backspaceRemovesValue": true,
                                                 "blurInputOnSelect": false,
                                                 "captureMenuScroll": false,
+                                                "className": "select-input",
                                                 "classNamePrefix": "select-input",
                                                 "closeMenuOnScroll": false,
                                                 "closeMenuOnSelect": true,
@@ -2358,6 +2370,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "backspaceRemovesValue": true,
                                                 "blurInputOnSelect": false,
                                                 "captureMenuScroll": false,
+                                                "className": "select-input",
                                                 "classNamePrefix": "select-input",
                                                 "closeMenuOnScroll": false,
                                                 "closeMenuOnSelect": true,

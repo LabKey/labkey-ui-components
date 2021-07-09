@@ -55,13 +55,13 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
     className="col-xs-5"
   >
     <div
-      className="form-group row"
+      className="select-input-container form-group row"
     >
       <div
         className="sampleset-insert--parent-select"
       >
         <div
-          className=" css-2b097c-container"
+          className="select-input css-2b097c-container"
           id="selectinput-4"
           onKeyDown={[Function]}
         >
@@ -254,13 +254,13 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
     className="col-xs-5"
   >
     <div
-      className="form-group row"
+      className="select-input-container form-group row"
     >
       <div
         className="sampleset-insert--parent-select"
       >
         <div
-          className=" css-2b097c-container"
+          className="select-input css-2b097c-container"
           id="selectinput-2"
           onKeyDown={[Function]}
         >

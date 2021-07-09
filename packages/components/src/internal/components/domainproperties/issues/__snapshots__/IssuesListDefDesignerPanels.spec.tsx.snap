@@ -119,13 +119,13 @@ Array [
                 className="col-lg-8 col-xs-9"
               >
                 <div
-                  className="form-group row"
+                  className="select-input-container form-group row"
                 >
                   <div
                     className="col-xs-12"
                   >
                     <div
-                      className=" css-2b097c-container"
+                      className="select-input css-2b097c-container"
                       id="selectinput-0"
                       onKeyDown={[Function]}
                     >

@@ -259,13 +259,13 @@ exports[`<PermissionsRole/> showing only a single type and a selected and disabl
       </div>
     </div>
     <div
-      className="form-group row"
+      className="select-input-container form-group row"
     >
       <div
         className="col-xs-12"
       >
         <div
-          className=" css-2b097c-container"
+          className="select-input css-2b097c-container"
           id="selectinput-2"
           onKeyDown={[Function]}
         >
@@ -551,13 +551,13 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
       </div>
     </div>
     <div
-      className="form-group row"
+      className="select-input-container form-group row"
     >
       <div
         className="col-xs-12"
       >
         <div
-          className=" css-2b097c-container"
+          className="select-input css-2b097c-container"
           id="selectinput-1"
           onKeyDown={[Function]}
         >
@@ -775,13 +775,13 @@ exports[`<PermissionsRole/> without assignments 1`] = `
       </div>
     </div>
     <div
-      className="form-group row"
+      className="select-input-container form-group row"
     >
       <div
         className="col-xs-12"
       >
         <div
-          className=" css-2b097c-container"
+          className="select-input css-2b097c-container"
           id="selectinput-0"
           onKeyDown={[Function]}
         >

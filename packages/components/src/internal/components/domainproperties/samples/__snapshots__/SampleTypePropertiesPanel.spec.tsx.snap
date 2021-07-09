@@ -1580,13 +1580,13 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
         className="col-xs-3"
       >
         <div
-          className="sampleset-metric-unit-select-container"
+          className="select-input-container sampleset-metric-unit-select-container"
         >
           <div
             className="sampleset-metric-unit-select"
           >
             <div
-              className=" css-2b097c-container"
+              className="select-input css-2b097c-container"
               id="selectinput-0"
               onKeyDown={[Function]}
             >

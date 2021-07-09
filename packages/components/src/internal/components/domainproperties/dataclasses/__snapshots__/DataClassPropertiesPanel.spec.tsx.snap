@@ -433,13 +433,13 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
         className="col-xs-10"
       >
         <div
-          className="form-group row"
+          className="select-input-container form-group row"
         >
           <div
             className="col-sm-9 col-xs-12"
           >
             <div
-              className="select-input--is-disabled css-14jk2my-container"
+              className="select-input select-input--is-disabled css-14jk2my-container"
               id="selectinput-0"
               onKeyDown={[Function]}
             >
@@ -594,13 +594,13 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
         className="col-xs-10"
       >
         <div
-          className="form-group row"
+          className="select-input-container form-group row"
         >
           <div
             className="col-sm-9 col-xs-12"
           >
             <div
-              className="select-input--is-disabled css-14jk2my-container"
+              className="select-input select-input--is-disabled css-14jk2my-container"
               id="selectinput-1"
               onKeyDown={[Function]}
             >

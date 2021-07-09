@@ -350,6 +350,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                 labelClass: this.props.labelClass,
                 isLoading: false,
                 label,
+                multiple: this.props.multiple,
                 name: this.props.name || this.props.componentId + '-error',
                 placeholder: 'Error: ' + error.message,
                 required,
@@ -371,7 +372,6 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                     clearCacheOnChange: loadOnChange,
                     description,
                     filterOptions,
-                    // ignoreCase: false,
                     loadOptions: this.loadOptions,
                     onChange: this.onChange,
                     onFocus: this.onFocus,
@@ -384,9 +384,6 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
 
             return <SelectInput {...inputProps} />;
         } else if (showLoading) {
-            // This <Input/> is used as a placeholder for fields while the model
-            // is initialized. The intent is to allow normal required validation to work
-            // even while QuerySelects are being initialized
             const inputProps = {
                 allowDisable,
                 containerClass: this.props.containerClass,
@@ -398,6 +395,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                 onToggleDisable,
                 formsy,
                 label,
+                multiple: this.props.multiple,
                 name: this.props.name || this.props.componentId + '-loader',
                 placeholder: 'Loading...',
                 required,

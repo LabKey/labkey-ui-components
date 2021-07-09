@@ -118,11 +118,11 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         containerClass=""
                         inputClass="col-sm-6"
                         label={parentDataType.typeNounSingular + ' ' + (index + 1)}
-                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
+                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--type-select"
                         name={lcTypeName ? lcTypeName : 'entityType' + index}
                         placeholder={'Select a ' + parentDataType.typeNounSingular + ' ...'}
                         onChange={this.onChangeParentType}
-                        options={parentTypeOptions.toArray()}
+                        options={parentTypeOptions?.toArray()}
                         required
                         value={lcTypeName}
                     />
@@ -143,7 +143,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         formsy={false}
                         inputClass="col-sm-6"
                         label={capitalizeFirstChar(parentDataType.nounSingular) + ' IDs'}
-                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
+                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--parent-select"
                         loadOnChange // set to true so we'll reload to eliminate the last selected value from the list.
                         multiple
                         name={'parentEntityValue_' + lcTypeName}

@@ -101,8 +101,6 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
             parentSchemaQuery = SchemaQuery.create(chosenType.schema, chosenType.query);
         }
 
-        const lcTypeName = chosenType?.label.toLowerCase();
-
         let value = chosenValue ?? undefined;
         if (!value && model?.hasData && parentLSIDs?.length > 0) {
             value = Object.values(model.rows)
@@ -119,12 +117,12 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         inputClass="col-sm-6"
                         label={parentDataType.typeNounSingular + ' ' + (index + 1)}
                         labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--type-select"
-                        name={lcTypeName ? lcTypeName : 'entityType' + index}
+                        name={'entityType' + index}
                         placeholder={'Select a ' + parentDataType.typeNounSingular + ' ...'}
                         onChange={this.onChangeParentType}
                         options={parentTypeOptions?.toArray()}
                         required
-                        value={lcTypeName}
+                        value={chosenType}
                     />
 
                     {this.props.onRemoveParentType && (
@@ -136,9 +134,9 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         />
                     )}
                 </div>
-                {lcTypeName && chosenType && (
+                {chosenType && (
                     <QuerySelect
-                        componentId={'parentEntityValue_' + lcTypeName} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
+                        componentId={'parentEntityValue_' + chosenType.label} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
                         containerClass="row"
                         formsy={false}
                         inputClass="col-sm-6"
@@ -146,7 +144,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--parent-select"
                         loadOnChange // set to true so we'll reload to eliminate the last selected value from the list.
                         multiple
-                        name={'parentEntityValue_' + lcTypeName}
+                        name={'parentEntityValue_' + chosenType.label}
                         onInitValue={this.onInitValue}
                         onQSChange={this.onChangeParentValue}
                         preLoad

@@ -68,7 +68,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
     }, [error]);
 
     const _onFind = useCallback(() => {
-        const ids = idString.split("\n").filter(id => id.trim().length > 0);
+        const ids = idString.split("\n").map(id => id.trim()).filter(id => id.length > 0);
         if (ids.length > 0) {
             setSubmitting(true);
             if (!addToExistingIds) {

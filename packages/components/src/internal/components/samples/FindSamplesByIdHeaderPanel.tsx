@@ -112,12 +112,12 @@ export const SamplesNotFoundMsg: FC<{missingIds: {[key: string]: string[]}}> = m
         setShowIds(!showIds);
     }, [showIds]);
 
-    let allIds = [];
+    let count = 0;
     Object.values(missingIds).forEach(ids => {
-        allIds = allIds.concat(ids);
+        count += ids.length;
     });
 
-    if (allIds.length === 0)
+    if (count === 0)
         return null;
 
     return (
@@ -125,7 +125,7 @@ export const SamplesNotFoundMsg: FC<{missingIds: {[key: string]: string[]}}> = m
             <div className="bottom-spacing">
                 <span className="find-samples-warning"><i className="fa fa-exclamation-circle"/> </span>
                 <span>
-                    Couldn't locate {Utils.pluralize(allIds.length, 'sample', 'samples')}{' '}
+                    Couldn't locate {Utils.pluralize(count, 'sample', 'samples')}{' '}
                     <a className="find-samples-warning-toggle" onClick={toggleShowIdAlert}>
                         {showIds ?
                             <>Hide <i className="fa fa-caret-down" aria-hidden="true"/></>:
@@ -135,7 +135,11 @@ export const SamplesNotFoundMsg: FC<{missingIds: {[key: string]: string[]}}> = m
             </div>
             {showIds && (
                 <Alert bsStyle="warning">
-                    {allIds.join(", ")}
+                    {Object.keys(missingIds).map(key => {
+                        if (missingIds[key].length > 0) {
+                            return <p>{key + ": " + missingIds[key].join(", ")}</p>
+                        }
+                    })}
                 </Alert>
             )}
         </>

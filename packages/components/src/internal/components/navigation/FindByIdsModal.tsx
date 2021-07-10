@@ -6,6 +6,7 @@ import { FindField } from '../samples/models';
 import { capitalizeFirstChar } from '../../util/utils';
 import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from '../samples/constants';
 import { clearIdsToFind, saveIdsToFind } from '../samples/actions';
+import { incrementClientSideMetricCount } from '../../actions';
 
 // exported for Jest testing
 export const FindFieldOption: FC<{field: FindField, checked: boolean, onFieldChange: (field: FindField) => void}> = memo(({field, checked, onFieldChange}) => {
@@ -70,6 +71,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
     const _onFind = useCallback(() => {
         const ids = idString.split("\n").map(id => id.trim()).filter(id => id.length > 0);
         if (ids.length > 0) {
+            incrementClientSideMetricCount("find" + capitalizeFirstChar(nounPlural) + "ById", "find" + capitalizeFirstChar(fieldType.name))
             setSubmitting(true);
             if (!addToExistingIds) {
                 clearIdsToFind();

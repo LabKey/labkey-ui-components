@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add FindByIdsDropdown and FindByIdsModal components
 * Add PicklistButton
 * Slight update of styling in navbar
+* Add optional parameter to picklist components for recording metric counts for actions taken
 
 ### version 2.55.0
 *Released*: 7 July 2021

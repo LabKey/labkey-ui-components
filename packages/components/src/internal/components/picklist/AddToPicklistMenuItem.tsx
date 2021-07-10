@@ -17,10 +17,11 @@ interface Props {
     user: User;
     currentProductId?: string;
     picklistProductId?: string;
+    metricFeatureArea?: string;
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {
-    const { sampleIds, key, itemText, user, queryModel, currentProductId, picklistProductId } = props;
+    const { sampleIds, key, itemText, user, queryModel, currentProductId, picklistProductId, metricFeatureArea } = props;
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
 
@@ -82,6 +83,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     sampleIds={sampleIds}
                     currentProductId={currentProductId}
                     picklistProductId={picklistProductId}
+                    metricFeatureArea={metricFeatureArea}
                 />
             )}
             <PicklistEditModal
@@ -92,6 +94,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                 onFinish={afterCreatePicklist}
                 onCancel={closeCreatePicklist}
                 showNotification={true}
+                metricFeatureArea={metricFeatureArea}
             />
         </>
     );

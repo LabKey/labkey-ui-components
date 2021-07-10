@@ -8,10 +8,11 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 interface Props {
     model: QueryModel
     user: User
+    metricFeatureArea?: string
 }
 
 export const PicklistButton: FC<Props> = memo(props => {
-    const { model, user } = props;
+    const { model, user, metricFeatureArea } = props;
 
     return (
         <>
@@ -25,8 +26,9 @@ export const PicklistButton: FC<Props> = memo(props => {
                     selectedQuantity={model?.selections?.size}
                     key={'picklist'}
                     user={user}
+                    metricFeatureArea={metricFeatureArea}
                 />
-                <AddToPicklistMenuItem queryModel={model} user={user} />
+                <AddToPicklistMenuItem queryModel={model} user={user} metricFeatureArea={metricFeatureArea}/>
             </DropdownButton>
 
         </>

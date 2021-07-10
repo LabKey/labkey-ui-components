@@ -14,6 +14,7 @@ import { createNotification } from '../notifications/actions';
 
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
 import { Picklist } from './models';
+import { incrementClientSideMetricCount } from '../../actions';
 
 interface Props {
     show: boolean;
@@ -26,6 +27,7 @@ interface Props {
     showNotification?: boolean;
     currentProductId?: string;
     picklistProductId?: string;
+    metricFeatureArea?: string;
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
@@ -40,6 +42,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         showNotification,
         currentProductId,
         picklistProductId,
+        metricFeatureArea,
     } = props;
     const [name, setName] = useState<string>(picklist ? picklist.name : '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
@@ -108,8 +111,10 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                         Category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY,
                     })
                 );
+                incrementClientSideMetricCount(metricFeatureArea, "addToPicklist");
             } else {
                 updatedList = await createPicklist(trimmedName, description, shared, selectionKey, sampleIds);
+                incrementClientSideMetricCount(metricFeatureArea, "createPicklist");
             }
             setIsSubmitting(false);
             if (showNotification) {

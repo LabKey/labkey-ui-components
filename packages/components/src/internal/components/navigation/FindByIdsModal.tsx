@@ -50,7 +50,12 @@ export const FindByIdsModal: FC<Props> = memo(props => {
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<string>(undefined);
 
+    const reset = () => {
+        setIdString(undefined);
+        setFieldType(UNIQUE_ID_FIND_FIELD);
+    }
     const closeModal = useCallback(() => {
+        reset();
         onCancel();
     }, [onCancel])
 
@@ -78,6 +83,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
             }
             saveIdsToFind(fieldType, ids)
             setSubmitting(false);
+            reset();
             onFind();
         }
     }, [idString, onFind, fieldType]);

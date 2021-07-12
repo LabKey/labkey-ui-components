@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* getLineageFilterValue
+
 ### version 2.55.0
 *Released*: 7 July 2021
 * add SharedSampleTypeAdminConfirmModal

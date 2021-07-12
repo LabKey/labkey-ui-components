@@ -2,6 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Filter } from '@labkey/api';
 
 import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { OntologyBrowserPanel } from './OntologyBrowserPanel';
 import { PathModel } from './models';
@@ -9,6 +10,7 @@ import { fetchParentPaths, fetchPathModel, getParentsConceptCodePath } from './a
 
 interface OntologyBrowserFilterPanelProps {
     ontologyId: string;
+    conceptSubtree: string;
     filterValue: string;
     filterType: Filter.IFilterType;
     onFilterChange: (filterValue: string) => void;
@@ -24,7 +26,8 @@ function isPathFilter(filterType: Filter.IFilterType): boolean {
 }
 
 export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = memo(props => {
-    const { ontologyId, filterType, filterValue, onFilterChange } = props;
+    const { ontologyId, conceptSubtree, filterType, filterValue, onFilterChange } = props;
+    const [subtreePath, setSubtreePath] = useState<PathModel>();
     const [filteredConcepts, setFilteredConcepts] = useState<Map<string, PathModel>>(new Map());
     const [error, setError] = useState<string>();
 
@@ -96,6 +99,21 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
         [filterType, filterValue]
     );
 
+    useEffect(() => {
+        if (conceptSubtree) {
+            fetchPathModel(conceptSubtree)
+                .then(setSubtreePath)
+                .catch(() => {
+                    // set to null to complete rendering of OntologyBrowserPanel (note: fetchPathModel will console.error)
+                    setSubtreePath(null);
+                });
+        }
+    }, [conceptSubtree]);
+
+    if (conceptSubtree && subtreePath === undefined) {
+        return <LoadingSpinner />;
+    }
+
     return (
         <>
             <Alert>{error}</Alert>
@@ -103,6 +121,7 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
                 asPanel={false}
                 hideConceptInfo={true}
                 initOntologyId={ontologyId}
+                initPath={subtreePath}
                 filters={filteredConcepts}
                 filterChangeHandler={filterChangeHandler}
             />

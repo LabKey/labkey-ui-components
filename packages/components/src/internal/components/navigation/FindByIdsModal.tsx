@@ -1,6 +1,5 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Modal } from 'react-bootstrap';
-import { Alert } from '../base/Alert';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { FindField } from '../samples/models';
 import { capitalizeFirstChar } from '../../util/utils';
@@ -48,7 +47,6 @@ export const FindByIdsModal: FC<Props> = memo(props => {
     const [fieldType, setFieldType] = useState<FindField>(UNIQUE_ID_FIND_FIELD);
     const [idString, setIdString] = useState<string>(undefined);
     const [submitting, setSubmitting] = useState<boolean>(false);
-    const [error, setError] = useState<string>(undefined);
 
     const reset = () => {
         setIdString(undefined);
@@ -61,22 +59,16 @@ export const FindByIdsModal: FC<Props> = memo(props => {
 
     const onFieldTypeChange = useCallback((field: FindField) => {
         setFieldType(field);
-        if (error) {
-            setError(undefined);
-        }
-    }, [error]);
+    }, []);
 
     const onIdTextChange = useCallback((event: any) => {
         setIdString(event.target.value);
-        if (error) {
-            setError(undefined);
-        }
-    }, [error]);
+    }, []);
 
     const _onFind = useCallback(() => {
         const ids = idString.split("\n").map(id => id.trim()).filter(id => id.length > 0);
         if (ids.length > 0) {
-            incrementClientSideMetricCount("find" + capitalizeFirstChar(nounPlural) + "ById", "find" + capitalizeFirstChar(fieldType.name))
+            incrementClientSideMetricCount("find" + capitalizeFirstChar(nounPlural) + "ById", "findIds");
             setSubmitting(true);
             if (!addToExistingIds) {
                 clearIdsToFind();
@@ -100,12 +92,6 @@ export const FindByIdsModal: FC<Props> = memo(props => {
                 </p>
                 <FindFieldOption field={UNIQUE_ID_FIND_FIELD} checked={fieldType.name === UNIQUE_ID_FIND_FIELD.name} onFieldChange={onFieldTypeChange}/>
                 <FindFieldOption field={SAMPLE_ID_FIND_FIELD} checked={fieldType.name === SAMPLE_ID_FIND_FIELD.name} onFieldChange={onFieldTypeChange}/>
-                <Alert bsStyle={error ? "danger" : "info"}>
-                    {error ?
-                        error :
-                        <>Scan or paste {fieldType.nounPlural} below, providing one per line.</>
-                    }
-                </Alert>
                 <textarea
                     placeholder={`List ${fieldType.nounPlural} here`}
                     rows={8}

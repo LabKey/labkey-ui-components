@@ -6,7 +6,7 @@ import { capitalizeFirstChar } from '../../util/utils';
 
 interface Props {
     title: ReactNode
-    findNounPlural: string
+    findNounPlural?: string
     onSearch?: (form: any) => void
     onFindByIds?: () => void
     className?: string
@@ -54,12 +54,14 @@ export const FindAndSearchDropdown: FC<Props> = memo((props) => {
                     </MenuItem>
                 )}
             </DropdownButton>
+            {!!onFindByIds &&
             <FindByIdsModal
                 show={showFindModal}
                 onCancel={onHideFindModal}
                 onFind={onFind}
                 nounPlural={findNounPlural}
             />
+            }
         </>
     )
 })

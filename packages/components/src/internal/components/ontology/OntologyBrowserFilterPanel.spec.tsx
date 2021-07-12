@@ -7,13 +7,12 @@ import { Alert } from '../base/Alert';
 import { waitForLifecycle } from '../../testHelpers';
 import { PathModel } from './models';
 
-const onFilterChange = jest.fn();
-
 const DEFAULT_PROPS = {
     ontologyId: 'TestOntology',
+    conceptSubtree: undefined,
     filterValue: undefined,
     filterType: undefined,
-    onFilterChange
+    onFilterChange: jest.fn,
 };
 
 jest.mock('./actions.ts', () => {
@@ -38,7 +37,7 @@ const InSubtreeStub = {getURLSuffix: () => 'concept:insubtree'} as Filter.IFilte
 const NotInSubtreeStub = {getURLSuffix: () => 'concept:notinsubtree'} as Filter.IFilterType;
 
 describe('OntologyBrowserFilterPanel', () => {
-    const validate = (wrapper: ReactWrapper) => {
+    const validate = (wrapper: ReactWrapper): void => {
         expect(wrapper.find(Alert)).toHaveLength(2);
         expect(wrapper.find(Alert).first().text()).toBe('');
         expect(wrapper.find(OntologyBrowserPanel)).toHaveLength(1);
@@ -56,11 +55,11 @@ describe('OntologyBrowserFilterPanel', () => {
     test('Concept filter value changed', async () => {
         const changeHandler = jest.fn();
         const props = {
-            ontologyId: 'TestOntology',
+            ...DEFAULT_PROPS,
             filterValue: 'Test:Code',
             filterType: EqStub,
             onFilterChange: changeHandler,
-        }
+        };
 
         const wrapper = mount(<OntologyBrowserFilterPanel {...props} />);
         validate(wrapper);
@@ -89,11 +88,11 @@ describe('OntologyBrowserFilterPanel', () => {
     test('Concept filter type changed', async () => {
         const changeHandler = jest.fn();
         const props = {
-            ontologyId: 'TestOntology',
+            ...DEFAULT_PROPS,
             filterValue: 'Test:Code',
             filterType: EqStub,
             onFilterChange: changeHandler,
-        }
+        };
 
         const wrapper = mount(<OntologyBrowserFilterPanel {...props} />);
         validate(wrapper);

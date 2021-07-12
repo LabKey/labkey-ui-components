@@ -10,7 +10,7 @@ import { fetchParentPaths, fetchPathModel, getParentsConceptCodePath } from './a
 
 interface OntologyBrowserFilterPanelProps {
     ontologyId: string;
-    conceptSubtree: string;
+    conceptSubtree?: string;
     filterValue: string;
     filterType: Filter.IFilterType;
     onFilterChange: (filterValue: string) => void;

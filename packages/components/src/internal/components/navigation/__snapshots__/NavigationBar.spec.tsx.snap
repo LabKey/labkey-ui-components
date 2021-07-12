@@ -77,14 +77,18 @@ exports[`<NavigationBar/> with search box 1`] = `
               <i
                 className="fa fa-search navbar__search-icon"
               />
-              <input
-                className="navbar__search-input"
-                onChange={[Function]}
-                placeholder="Enter Search Terms"
-                size={34}
-                type="text"
-                value=""
-              />
+              <span
+                className="navbar__input-group "
+              >
+                <input
+                  className="form-control navbar__search-input"
+                  onChange={[Function]}
+                  placeholder="Enter Search Terms"
+                  size={34}
+                  type="text"
+                  value=""
+                />
+              </span>
             </div>
           </form>
         </div>

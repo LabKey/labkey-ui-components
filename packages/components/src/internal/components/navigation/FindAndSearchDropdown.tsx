@@ -1,6 +1,7 @@
 import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { FindByIdsModal } from './FindByIdsModal';
+import { capitalizeFirstChar } from '../../util/utils';
 
 
 interface Props {
@@ -49,7 +50,7 @@ export const FindAndSearchDropdown: FC<Props> = memo((props) => {
                 )}
                 {!!onFindByIds && (
                     <MenuItem key={'find'} onClick={onShowFind}>
-                        <i className="fa fa-barcode"/> Find {findNounPlural}
+                        <i className="fa fa-barcode"/> Find {capitalizeFirstChar(findNounPlural)}
                     </MenuItem>
                 )}
             </DropdownButton>

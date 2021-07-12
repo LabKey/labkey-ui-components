@@ -19,15 +19,16 @@ import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 interface Props {
     onSearch: (value: string) => void;
     placeholder?: string;
-    showFindByIds?: boolean;
     onFindByIds?: () => void;
     findNounPlural?: string;
 }
 
 export const SearchBox: FC<Props> = memo(props => {
-    const { onSearch, placeholder, showFindByIds, onFindByIds, findNounPlural } = props;
+    const { onSearch, placeholder, onFindByIds, findNounPlural } = props;
 
     const [searchValue, setSearchValue] = useState('');
+
+    const showFindByIds = !!onFindByIds;
 
     const onChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {

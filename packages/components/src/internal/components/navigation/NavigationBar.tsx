@@ -45,7 +45,6 @@ interface NavigationBarProps {
     showNotifications?: boolean;
     showProductNav?: boolean;
     showSearchBox?: boolean;
-    showFindByIds?: boolean;
     user?: User;
 }
 
@@ -65,7 +64,6 @@ export const NavigationBar: FC<Props> = memo(props => {
         onSignOut,
         projectName,
         searchPlaceholder,
-        showFindByIds,
         showNavMenu,
         showNotifications,
         showProductNav,
@@ -125,12 +123,12 @@ export const NavigationBar: FC<Props> = memo(props => {
                             </div>
                         )}
                         <div className="navbar-item pull-right hidden-xs">
-                            {showSearchBox && <SearchBox onSearch={onSearch} placeholder={searchPlaceholder} onFindByIds={onFindByIds} showFindByIds={showFindByIds} findNounPlural={"samples"} />}
+                            {showSearchBox && <SearchBox onSearch={onSearch} placeholder={searchPlaceholder} onFindByIds={onFindByIds}  findNounPlural={"samples"} />}
                         </div>
                         <div className="navbar-item pull-right visible-xs">
                             {showSearchBox && (
                                 <>
-                                    {showFindByIds ?
+                                    {!!onFindByIds ?
                                         <FindAndSearchDropdown
                                             className={"navbar__xs-find-dropdown"}
                                             title={<i className="fa fa-search navbar__xs-search-icon" />}

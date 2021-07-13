@@ -1,6 +1,6 @@
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Button } from 'react-bootstrap';
 import { Alert } from '../base/Alert';
@@ -12,6 +12,7 @@ import { Utils } from '@labkey/api';
 interface HeaderPanelProps {
     loadingState: LoadingState,
     listModel: QueryModel,
+    error?: ReactNode,
     missingIds: {[key: string]: string[]}
     onFindSamples: () => void,
     onClearSamples: () => void,
@@ -39,7 +40,7 @@ export function getFindIdCountsByTypeMessage() : string {
 export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo((props) => {
     const [showFindModal, setShowFindModal] = useState<boolean>(false);
 
-    const { loadingState, listModel, onFindSamples, onClearSamples, missingIds } = props;
+    const { loadingState, listModel, onFindSamples, onClearSamples, missingIds, error } = props;
 
     const numIdsMsg = getFindIdCountsByTypeMessage();
 
@@ -76,6 +77,7 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo((props) => 
 
     return (
         <Section title={"Find Samples in Bulk"} panelClassName={'find-samples-header-panel'}>
+            <Alert>{error}</Alert>
             {foundSamplesMsg}
             <SamplesNotFoundMsg missingIds={missingIds}/>
             <div className="bottom-spacing">

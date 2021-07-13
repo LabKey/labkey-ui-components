@@ -1,15 +1,13 @@
 import React from 'react';
 import { FIND_IDS_SESSION_STORAGE_KEY, SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from './constants';
-import {
-    FindSamplesByIdHeaderPanel,
-    getFindIdCountsByTypeMessage,
-    SamplesNotFoundMsg
-} from './FindSamplesByIdHeaderPanel';
+import { FindSamplesByIdHeaderPanel, getFindIdCountsByTypeMessage } from './FindSamplesByIdHeaderPanel';
 import { mount } from 'enzyme';
 import { LoadingState } from '../../../public/LoadingState';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryInfo } from '../../../public/QueryInfo';
+import { FindByIdsModal } from '../navigation/FindByIdsModal';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from 'react-bootstrap';
 
 
@@ -72,14 +70,14 @@ describe("FindSamplesByIdHeaderPanel", () => {
             />);
         const section = wrapper.find("Section");
         expect(section.prop("title")).toBe("Find Samples in Bulk");
-        expect(wrapper.find("LoadingSpinner")).toHaveLength(1);
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
         const buttons = wrapper.find("button");
         expect(buttons).toHaveLength(2);
         expect(buttons.at(0).text()).toBe("Add Samples");
         expect(buttons.at(0).prop("disabled")).toBe(false);
         expect(buttons.at(1).text()).toBe("Reset");
         expect(buttons.at(1).prop("disabled")).toBe(true);
-        expect(wrapper.find("Alert")).toHaveLength(0);
+        expect(wrapper.find(Alert)).toHaveLength(0);
         expect(wrapper.find(".find-samples-warning")).toHaveLength(0);
     });
 
@@ -93,7 +91,7 @@ describe("FindSamplesByIdHeaderPanel", () => {
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
             />);
-        expect(wrapper.find("LoadingSpinner")).toHaveLength(0);
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         expect(wrapper.find(".find-samples-success")).toHaveLength(0);
         const buttons = wrapper.find("button");
         expect(buttons).toHaveLength(2);
@@ -111,7 +109,7 @@ describe("FindSamplesByIdHeaderPanel", () => {
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
             />);
-        expect(wrapper.find("LoadingSpinner")).toHaveLength(1);
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
     });
 
     test("no ids", () => {
@@ -129,11 +127,33 @@ describe("FindSamplesByIdHeaderPanel", () => {
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
             />);
-        expect(wrapper.find("LoadingSpinner")).toHaveLength(0);
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         expect(wrapper.find(".find-samples-success")).toHaveLength(0);
-        expect(wrapper.find("Alert")).toHaveLength(0);
+        expect(wrapper.find(Alert)).toHaveLength(0);
         expect(wrapper.find("button").at(0).text()).toBe("Add Samples");
         expect(wrapper.find(".find-samples-warning")).toHaveLength(0);
+    });
+
+    test("with error", () => {
+        const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'),
+            new QueryInfo(),
+            {},
+            [],
+            0);
+
+        const wrapper = mount(
+            <FindSamplesByIdHeaderPanel
+                loadingState={LoadingState.LOADED}
+                listModel={queryModel}
+                missingIds={{}}
+                onFindSamples={jest.fn()}
+                onClearSamples={jest.fn()}
+                error={<div>We have a problem here.</div>}
+            />);
+
+        const alert = wrapper.find(Alert);
+        expect(alert).toHaveLength(1);
+        expect(alert.text()).toBe("We have a problem here.");
     });
 
     test("found multiple samples", () => {
@@ -155,15 +175,18 @@ describe("FindSamplesByIdHeaderPanel", () => {
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
             />);
-        expect(wrapper.find("LoadingSpinner")).toHaveLength(0);
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         const foundMsg = wrapper.find({id: 'found-samples-message'});
         expect(foundMsg).toHaveLength(1);
         expect(foundMsg.text()).toBe("Found 2 samples matching 1 Sample ID and 1 Barcode.");
-        expect(wrapper.find("button").at(0).text()).toBe("Add More Samples");
-        expect(wrapper.find("button").at(1).text()).toBe("Reset");
-        expect(wrapper.find("button").at(1).prop("disabled")).toBe(false);
-        expect(wrapper.find("Alert")).toHaveLength(2);
+
+        const buttons = wrapper.find("button");
+        expect(buttons.at(0).text()).toBe("Add More Samples");
+        expect(buttons.at(1).text()).toBe("Reset");
+        expect(buttons.at(1).prop("disabled")).toBe(false);
+        expect(wrapper.find(Alert)).toHaveLength(1);
         expect(wrapper.find(".find-samples-warning")).toHaveLength(1);
+        expect(wrapper.find(FindByIdsModal)).toHaveLength(1);
     });
 });
 
@@ -171,7 +194,7 @@ describe("SamplesNotFoundMsg", () => {
     test("no missingIds", () => {
         const wrapper = mount(<SamplesNotFoundMsg missingIds={undefined}/>);
         expect(wrapper.find(".find-samples-warning")).toHaveLength(0);
-        expect(wrapper.find("Alert")).toHaveLength(0);
+        expect(wrapper.find(Alert)).toHaveLength(0);
     });
 
     test("one empty array", () => {
@@ -181,7 +204,7 @@ describe("SamplesNotFoundMsg", () => {
             }}
         />);
         expect(wrapper.find(".find-samples-warning")).toHaveLength(0);
-        expect(wrapper.find("Alert")).toHaveLength(0);
+        expect(wrapper.find(Alert)).toHaveLength(0);
     });
 
     test("multiple empty arrays", () => {
@@ -192,7 +215,7 @@ describe("SamplesNotFoundMsg", () => {
             }}
         />);
         expect(wrapper.find(".find-samples-warning")).toHaveLength(0);
-        expect(wrapper.find("Alert")).toHaveLength(0);
+        expect(wrapper.find(Alert)).toHaveLength(0);
     });
 
     test("single sample", () => {

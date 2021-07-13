@@ -389,7 +389,7 @@ export function getPageNumberChangeURL(location: Location, seed: string, pageNum
     return url;
 }
 
-export function getLineageFilterValue(lsid: string, depth: number|string): string {
+export function getLineageFilterValue(lsid: string, depth: number | string): string {
     const filterVals = [lsid, depth];
     return '{json:' + JSON.stringify(filterVals) + '}';
 }

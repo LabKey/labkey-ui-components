@@ -17,7 +17,8 @@ interface HeaderPanelProps {
     onClearSamples: () => void,
 }
 
-function getFindIdCountsByTypeMessage() : string {
+// exported for jest testing
+export function getFindIdCountsByTypeMessage() : string {
     const findIds: string[] = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY))
     if (!findIds) {
         return undefined;
@@ -66,7 +67,7 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo((props) => 
         foundSamplesMsg = (
             <div className="bottom-spacing">
                 <i className="fa fa-check-circle find-samples-success"/>{' '}
-                <span>Found {Utils.pluralize(listModel.rowCount, 'sample', 'samples')} matching {numIdsMsg}.</span>
+                <span id={"found-samples-message"}>Found {Utils.pluralize(listModel.rowCount, 'sample', 'samples')} matching {numIdsMsg}.</span>
             </div>
         );
     }
@@ -79,7 +80,7 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo((props) => 
             <SamplesNotFoundMsg missingIds={missingIds}/>
             <div className="bottom-spacing">
                 <Button className="button-right-spacing" bsClass={'btn btn-default'} onClick={onAddMoreSamples}>
-                    Add {hasSamples ? 'More' : ''} Samples
+                    Add {hasSamples ? 'More ' : ''}Samples
                 </Button>
                 <Button bsClass={'btn btn-default'} onClick={onClearSamples} disabled={!numIdsMsg}>
                     Reset
@@ -125,7 +126,7 @@ export const SamplesNotFoundMsg: FC<{missingIds: {[key: string]: string[]}}> = m
             <div className="bottom-spacing">
                 <span className="find-samples-warning"><i className="fa fa-exclamation-circle"/> </span>
                 <span>
-                    Couldn't locate {Utils.pluralize(count, 'sample', 'samples')}{' '}
+                    Couldn't locate {Utils.pluralize(count, 'sample', 'samples')}{'. '}
                     <a className="find-samples-warning-toggle" onClick={toggleShowIdAlert}>
                         {showIds ?
                             <>Hide <i className="fa fa-caret-down" aria-hidden="true"/></>:
@@ -135,9 +136,9 @@ export const SamplesNotFoundMsg: FC<{missingIds: {[key: string]: string[]}}> = m
             </div>
             {showIds && (
                 <Alert bsStyle="warning">
-                    {Object.keys(missingIds).map(key => {
+                    {Object.keys(missingIds).map((key, index) => {
                         if (missingIds[key].length > 0) {
-                            return <p>{key + ": " + missingIds[key].join(", ")}</p>
+                            return <p key={index}>{key + ": " + missingIds[key].join(", ")}</p>
                         }
                     })}
                 </Alert>

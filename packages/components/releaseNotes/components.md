@@ -28,6 +28,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 14 July 2021
 * Issue 43530: Filter dialog for ontology lookup field does not open to intended Vocabulary scope
 
+### version 2.??.0
+*Released* ? July 2021
+* Rename DateInput to QueryDateInput
+* Add DateInput component
+    * This component is just a DateInput, it has no special knowledge of QueryColumns
+* Add EditInlineField
+    * This is a component that renders a field with a name and value, and optionally lets a user edit the field in place
+* Add useEnterEscape hook
+    * A custom hook that makes it easier to intercept the enter and escape keys, useful for fields that save/cancel
+    on enter/escape
+* Add useUsersWithPermissions hook
+    * A custom hook that uses the getUsersWithPermissions action to load users
+* Add Key enum
+    * An enum useful for intercepting keys in event handlers
+
 ### version 2.55.0
 *Released*: 7 July 2021
 * add SharedSampleTypeAdminConfirmModal

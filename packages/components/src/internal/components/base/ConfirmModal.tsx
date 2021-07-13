@@ -33,7 +33,7 @@ export class ConfirmModal extends React.PureComponent<Props> {
         show: true,
         title: 'Confirm',
         confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
+        cancelButtonText: 'No', // TODO: 100% of usages override this value, 90% of usages have this set to "Cancel", change the default.
         confirmVariant: 'danger',
     };
 

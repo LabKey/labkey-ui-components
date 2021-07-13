@@ -20,7 +20,7 @@ import { LabelOverlay } from '../LabelOverlay';
 import {
     AliasRenderer,
     AppendUnits,
-    DateInput,
+    QueryDateInput,
     DatePickerInput,
     FileColumnRenderer,
     LabelColorRenderer,
@@ -159,7 +159,7 @@ export function resolveDetailEditRenderer(
                     );
                 } else if (typeof value === 'string') {
                     return (
-                        <DateInput
+                        <QueryDateInput
                             showLabel={false}
                             elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
                             name={col.name}

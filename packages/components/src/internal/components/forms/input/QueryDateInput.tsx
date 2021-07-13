@@ -22,7 +22,7 @@ import { QueryColumn } from '../../../..';
 import { TextInput, TextInputProps } from './TextInput';
 import { DisableableInput, DisableableInputProps } from './DisableableInput';
 
-interface DateInputProps extends DisableableInputProps {
+interface QueryDateInputProps extends DisableableInputProps {
     changeDebounceInterval?: number;
     elementWrapperClassName?: any[] | string;
     label?: any;
@@ -38,7 +38,7 @@ interface DateInputProps extends DisableableInputProps {
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
 }
 
-export class DateInput extends DisableableInput<DateInputProps, any> {
+export class QueryDateInput extends DisableableInput<QueryDateInputProps, any> {
     static defaultProps = {
         allowDisable: false,
         initiallyDisabled: false,

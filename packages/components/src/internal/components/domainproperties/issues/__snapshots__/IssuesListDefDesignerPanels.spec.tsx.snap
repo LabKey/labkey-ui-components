@@ -146,7 +146,7 @@ Array [
                           <div
                             className="select-input__single-value css-1uccc91-singleValue"
                           >
-                            ASC
+                            Oldest first
                           </div>
                           <div
                             className="css-b8ldur-Input"

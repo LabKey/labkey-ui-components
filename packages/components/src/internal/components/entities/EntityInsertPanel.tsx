@@ -653,7 +653,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                         onChange={this.changeTargetEntityType}
                         options={insertModel.entityTypeOptions.toArray()}
                         required
-                        value={hasTargetEntityType ? insertModel.targetEntityType.label.toLowerCase() : undefined}
+                        value={hasTargetEntityType ? insertModel.targetEntityType : undefined}
                     />
                 )}
                 {insertModel.isError && (

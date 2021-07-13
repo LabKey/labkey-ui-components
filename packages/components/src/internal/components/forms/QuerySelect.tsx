@@ -22,7 +22,6 @@ import { QueryColumn, SchemaQuery } from '../../..';
 import { DELIMITER, FilterOption, SelectInputOption, SelectInput } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
 import { initSelect } from './actions';
-import { FOCUS_FLAG } from './constants';
 import { QuerySelectModel } from './model';
 
 function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {

@@ -330,6 +330,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                 allowDisable={false}
                                 autoValue={true}
                                 clearCacheOnChange={true}
+                                clearable={true}
                                 containerClass=""
                                 defaultOptions={true}
                                 delimiter=","
@@ -458,6 +459,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                       defaultValue={null}
                                       delimiter=","
                                       id="selectinput-0"
+                                      isClearable={true}
                                       isDisabled={false}
                                       name="entityType0"
                                       noOptionsMessage={[Function]}
@@ -489,6 +491,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                         getOptionValue={[Function]}
                                         id="selectinput-0"
                                         inputValue=""
+                                        isClearable={true}
                                         isDisabled={false}
                                         isLoading={false}
                                         isMulti={false}
@@ -564,7 +567,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                               "getOptionValue": [Function],
                                               "id": "selectinput-0",
                                               "inputValue": "",
-                                              "isClearable": undefined,
+                                              "isClearable": true,
                                               "isDisabled": false,
                                               "isLoading": false,
                                               "isMulti": false,
@@ -690,7 +693,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                                     "getOptionValue": [Function],
                                                     "id": "selectinput-0",
                                                     "inputValue": "",
-                                                    "isClearable": undefined,
+                                                    "isClearable": true,
                                                     "isDisabled": false,
                                                     "isLoading": false,
                                                     "isMulti": false,
@@ -830,7 +833,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                                     "getOptionValue": [Function],
                                                     "id": "selectinput-0",
                                                     "inputValue": "",
-                                                    "isClearable": undefined,
+                                                    "isClearable": true,
                                                     "isDisabled": false,
                                                     "isLoading": false,
                                                     "isMulti": false,
@@ -967,7 +970,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                                           "getOptionValue": [Function],
                                                           "id": "selectinput-0",
                                                           "inputValue": "",
-                                                          "isClearable": undefined,
+                                                          "isClearable": true,
                                                           "isDisabled": false,
                                                           "isLoading": false,
                                                           "isMulti": false,
@@ -1091,7 +1094,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                                                 "getOptionValue": [Function],
                                                                 "id": "selectinput-0",
                                                                 "inputValue": "",
-                                                                "isClearable": undefined,
+                                                                "isClearable": true,
                                                                 "isDisabled": false,
                                                                 "isLoading": false,
                                                                 "isMulti": false,
@@ -1226,7 +1229,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                                                 "getOptionValue": [Function],
                                                                 "id": "selectinput-0",
                                                                 "inputValue": "",
-                                                                "isClearable": undefined,
+                                                                "isClearable": true,
                                                                 "isDisabled": false,
                                                                 "isLoading": false,
                                                                 "isMulti": false,
@@ -1342,7 +1345,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                                                   "getOptionValue": [Function],
                                                                   "id": "selectinput-0",
                                                                   "inputValue": "",
-                                                                  "isClearable": undefined,
+                                                                  "isClearable": true,
                                                                   "isDisabled": false,
                                                                   "isLoading": false,
                                                                   "isMulti": false,
@@ -1556,7 +1559,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                                           "getOptionValue": [Function],
                                                           "id": "selectinput-0",
                                                           "inputValue": "",
-                                                          "isClearable": undefined,
+                                                          "isClearable": true,
                                                           "isDisabled": false,
                                                           "isLoading": false,
                                                           "isMulti": false,
@@ -1675,7 +1678,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                                                 "getOptionValue": [Function],
                                                                 "id": "selectinput-0",
                                                                 "inputValue": "",
-                                                                "isClearable": undefined,
+                                                                "isClearable": true,
                                                                 "isDisabled": false,
                                                                 "isLoading": false,
                                                                 "isMulti": false,
@@ -1805,7 +1808,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                                                 "getOptionValue": [Function],
                                                                 "id": "selectinput-0",
                                                                 "inputValue": "",
-                                                                "isClearable": undefined,
+                                                                "isClearable": true,
                                                                 "isDisabled": false,
                                                                 "isLoading": false,
                                                                 "isMulti": false,

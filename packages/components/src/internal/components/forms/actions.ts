@@ -195,8 +195,8 @@ function initValueColumn(queryInfo: QueryInfo, column?: string): string {
 export function fetchSearchResults(model: QuerySelectModel, input: any): Promise<ISelectRowsResult> {
     const { addExactFilter, displayColumn, maxRows, queryFilters, schemaQuery, selectedItems, valueColumn } = model;
 
-    let allFilters = [],
-        filterVal = input === FOCUS_FLAG ? '' : input.trim();
+    let allFilters = [];
+    const filterVal = input.trim();
 
     // fetch additional options and exclude previously selected so user can see more
     if (model.multiple) {

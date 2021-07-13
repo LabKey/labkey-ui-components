@@ -3832,6 +3832,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                               allowDisable={false}
                                               autoValue={true}
                                               clearCacheOnChange={true}
+                                              clearable={true}
                                               containerClass="form-group row"
                                               defaultOptions={true}
                                               delimiter=","
@@ -3867,6 +3868,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                     defaultValue={null}
                                                     delimiter=","
                                                     id="selectinput-2"
+                                                    isClearable={true}
                                                     isDisabled={true}
                                                     name="entity-category"
                                                     noOptionsMessage={[Function]}
@@ -3898,6 +3900,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       getOptionValue={[Function]}
                                                       id="selectinput-2"
                                                       inputValue=""
+                                                      isClearable={true}
                                                       isDisabled={true}
                                                       isLoading={false}
                                                       isMulti={false}
@@ -3973,7 +3976,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "getOptionValue": [Function],
                                                             "id": "selectinput-2",
                                                             "inputValue": "",
-                                                            "isClearable": undefined,
+                                                            "isClearable": true,
                                                             "isDisabled": true,
                                                             "isLoading": false,
                                                             "isMulti": false,
@@ -4099,7 +4102,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "getOptionValue": [Function],
                                                                   "id": "selectinput-2",
                                                                   "inputValue": "",
-                                                                  "isClearable": undefined,
+                                                                  "isClearable": true,
                                                                   "isDisabled": true,
                                                                   "isLoading": false,
                                                                   "isMulti": false,
@@ -4239,7 +4242,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "getOptionValue": [Function],
                                                                   "id": "selectinput-2",
                                                                   "inputValue": "",
-                                                                  "isClearable": undefined,
+                                                                  "isClearable": true,
                                                                   "isDisabled": true,
                                                                   "isLoading": false,
                                                                   "isMulti": false,
@@ -4376,7 +4379,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "getOptionValue": [Function],
                                                                         "id": "selectinput-2",
                                                                         "inputValue": "",
-                                                                        "isClearable": undefined,
+                                                                        "isClearable": true,
                                                                         "isDisabled": true,
                                                                         "isLoading": false,
                                                                         "isMulti": false,
@@ -4500,7 +4503,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "getOptionValue": [Function],
                                                                               "id": "selectinput-2",
                                                                               "inputValue": "",
-                                                                              "isClearable": undefined,
+                                                                              "isClearable": true,
                                                                               "isDisabled": true,
                                                                               "isLoading": false,
                                                                               "isMulti": false,
@@ -4635,7 +4638,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "getOptionValue": [Function],
                                                                               "id": "selectinput-2",
                                                                               "inputValue": "",
-                                                                              "isClearable": undefined,
+                                                                              "isClearable": true,
                                                                               "isDisabled": true,
                                                                               "isLoading": false,
                                                                               "isMulti": false,
@@ -4751,7 +4754,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "getOptionValue": [Function],
                                                                                 "id": "selectinput-2",
                                                                                 "inputValue": "",
-                                                                                "isClearable": undefined,
+                                                                                "isClearable": true,
                                                                                 "isDisabled": true,
                                                                                 "isLoading": false,
                                                                                 "isMulti": false,
@@ -4965,7 +4968,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "getOptionValue": [Function],
                                                                         "id": "selectinput-2",
                                                                         "inputValue": "",
-                                                                        "isClearable": undefined,
+                                                                        "isClearable": true,
                                                                         "isDisabled": true,
                                                                         "isLoading": false,
                                                                         "isMulti": false,
@@ -5084,7 +5087,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "getOptionValue": [Function],
                                                                               "id": "selectinput-2",
                                                                               "inputValue": "",
-                                                                              "isClearable": undefined,
+                                                                              "isClearable": true,
                                                                               "isDisabled": true,
                                                                               "isLoading": false,
                                                                               "isMulti": false,
@@ -5214,7 +5217,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "getOptionValue": [Function],
                                                                               "id": "selectinput-2",
                                                                               "inputValue": "",
-                                                                              "isClearable": undefined,
+                                                                              "isClearable": true,
                                                                               "isDisabled": true,
                                                                               "isLoading": false,
                                                                               "isMulti": false,
@@ -5514,6 +5517,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                               allowDisable={false}
                                               autoValue={true}
                                               clearCacheOnChange={true}
+                                              clearable={true}
                                               containerClass="form-group row"
                                               defaultOptions={true}
                                               delimiter=","
@@ -5549,6 +5553,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                     defaultValue={null}
                                                     delimiter=","
                                                     id="selectinput-3"
+                                                    isClearable={true}
                                                     isDisabled={true}
                                                     name="entity-sampleSet"
                                                     noOptionsMessage={[Function]}
@@ -5580,6 +5585,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       getOptionValue={[Function]}
                                                       id="selectinput-3"
                                                       inputValue=""
+                                                      isClearable={true}
                                                       isDisabled={true}
                                                       isLoading={false}
                                                       isMulti={false}
@@ -5655,7 +5661,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "getOptionValue": [Function],
                                                             "id": "selectinput-3",
                                                             "inputValue": "",
-                                                            "isClearable": undefined,
+                                                            "isClearable": true,
                                                             "isDisabled": true,
                                                             "isLoading": false,
                                                             "isMulti": false,
@@ -5781,7 +5787,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "getOptionValue": [Function],
                                                                   "id": "selectinput-3",
                                                                   "inputValue": "",
-                                                                  "isClearable": undefined,
+                                                                  "isClearable": true,
                                                                   "isDisabled": true,
                                                                   "isLoading": false,
                                                                   "isMulti": false,
@@ -5921,7 +5927,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "getOptionValue": [Function],
                                                                   "id": "selectinput-3",
                                                                   "inputValue": "",
-                                                                  "isClearable": undefined,
+                                                                  "isClearable": true,
                                                                   "isDisabled": true,
                                                                   "isLoading": false,
                                                                   "isMulti": false,
@@ -6058,7 +6064,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "getOptionValue": [Function],
                                                                         "id": "selectinput-3",
                                                                         "inputValue": "",
-                                                                        "isClearable": undefined,
+                                                                        "isClearable": true,
                                                                         "isDisabled": true,
                                                                         "isLoading": false,
                                                                         "isMulti": false,
@@ -6182,7 +6188,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "getOptionValue": [Function],
                                                                               "id": "selectinput-3",
                                                                               "inputValue": "",
-                                                                              "isClearable": undefined,
+                                                                              "isClearable": true,
                                                                               "isDisabled": true,
                                                                               "isLoading": false,
                                                                               "isMulti": false,
@@ -6317,7 +6323,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "getOptionValue": [Function],
                                                                               "id": "selectinput-3",
                                                                               "inputValue": "",
-                                                                              "isClearable": undefined,
+                                                                              "isClearable": true,
                                                                               "isDisabled": true,
                                                                               "isLoading": false,
                                                                               "isMulti": false,
@@ -6433,7 +6439,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "getOptionValue": [Function],
                                                                                 "id": "selectinput-3",
                                                                                 "inputValue": "",
-                                                                                "isClearable": undefined,
+                                                                                "isClearable": true,
                                                                                 "isDisabled": true,
                                                                                 "isLoading": false,
                                                                                 "isMulti": false,
@@ -6647,7 +6653,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "getOptionValue": [Function],
                                                                         "id": "selectinput-3",
                                                                         "inputValue": "",
-                                                                        "isClearable": undefined,
+                                                                        "isClearable": true,
                                                                         "isDisabled": true,
                                                                         "isLoading": false,
                                                                         "isMulti": false,
@@ -6766,7 +6772,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "getOptionValue": [Function],
                                                                               "id": "selectinput-3",
                                                                               "inputValue": "",
-                                                                              "isClearable": undefined,
+                                                                              "isClearable": true,
                                                                               "isDisabled": true,
                                                                               "isLoading": false,
                                                                               "isMulti": false,
@@ -6896,7 +6902,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "getOptionValue": [Function],
                                                                               "id": "selectinput-3",
                                                                               "inputValue": "",
-                                                                              "isClearable": undefined,
+                                                                              "isClearable": true,
                                                                               "isDisabled": true,
                                                                               "isLoading": false,
                                                                               "isMulti": false,

@@ -76,6 +76,11 @@ function equalValues(a: any, b: any): boolean {
     return true;
 }
 
+// ReactSelect no longer supports primitive string as "value"
+function initOptionFromString(value: string, valueKey: string, options?: any[]): any {
+    return options?.find(o => o[valueKey] === value) ?? { label: value, [valueKey]: value };
+}
+
 function initOptions(props: SelectInputProps): any {
     const { value } = props;
     let options;
@@ -86,18 +91,14 @@ function initOptions(props: SelectInputProps): any {
             value.forEach(v => {
                 if (v !== undefined && v !== null) {
                     if (typeof v === 'string') {
-                        options.push({
-                            label: v,
-                            [props.valueKey]: v,
-                        });
+                        options.push(initOptionFromString(v, props.valueKey, props.options));
                     } else {
                         options.push(v);
                     }
                 }
             });
         } else if (typeof value === 'string') {
-            // ReactSelect no longer supports primitive string as "value"
-            options = { label: value, [props.valueKey]: value };
+            options = initOptionFromString(value, props.valueKey, props.options);
         } else {
             options = value;
         }
@@ -184,6 +185,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         allowCreate: false,
         allowDisable: false,
         autoValue: true,
+        clearable: true,
         clearCacheOnChange: true,
         containerClass: 'form-group row',
         defaultOptions: true,
@@ -217,23 +219,15 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         reactSelect: any;
     };
 
-    UNSAFE_componentWillReceiveProps(nextProps: SelectInputProps): void {
-        // Issue 36478, Issue 38631: reset the reactSelect input cache object on prop change
-        // We need to do this fairly aggressively and this may not catch all cases, but this is the best
-        // bet yet.  It can happen, probably because of bad timing between loading and refreshing the display
-        // here, that the cache value for the key LOAD_ON_FOCUS (from QuerySelect) will get set to an empty
-        // list of options.  Once that is stashed in the ReactSelect cache, it's pretty much impossible to get
-        // rid of it through normal component update operations, so we do this surgery here.
-        // this.refs.reactSelect._cache = {};
-
-        if (!this.change && !equalValues(this.props.value, nextProps.value)) {
-            if (nextProps.autoValue) {
+    componentDidUpdate(prevProps: SelectInputProps): void {
+        if (!this.change && !equalValues(this.props.value, prevProps.value)) {
+            if (this.props.autoValue) {
                 // This allows for "late-bound" value
-                this._setOptionsAndValue(initOptions(nextProps));
+                this._setOptionsAndValue(initOptions(this.props));
             } else {
                 this.setState({
-                    selectedOptions: nextProps.selectedOptions,
-                    originalOptions: nextProps.selectedOptions,
+                    selectedOptions: this.props.selectedOptions,
+                    originalOptions: this.props.selectedOptions,
                 });
             }
         }
@@ -280,7 +274,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         onBlur?.(event);
     };
 
-    handleChange = (selectedOptions: any, actionMeta: any): void => {
+    handleChange = (selectedOptions: any): void => {
         const { clearCacheOnChange, name, onChange } = this.props;
 
         this.change = true;
@@ -485,8 +479,6 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             getOptionLabel: labelKey && labelKey !== 'label' ? this.getOptionLabel : undefined,
             getOptionValue: valueKey && valueKey !== 'value' ? this.getOptionValue : undefined,
             id: this.getId(),
-            // ignoreCase, TODO: Removed. See `createFilter()`. Default option is "ignoreCase" set to true.
-            // inputProps: { id: this.getId() },
             isClearable: clearable,
             isDisabled: disabled || this.state.isDisabled,
             isLoading,

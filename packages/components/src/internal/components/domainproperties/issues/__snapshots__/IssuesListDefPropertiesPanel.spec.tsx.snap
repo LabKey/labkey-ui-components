@@ -120,7 +120,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                       <div
                         className="select-input__single-value css-1uccc91-singleValue"
                       >
-                        ASC
+                        Oldest first
                       </div>
                       <div
                         className="css-b8ldur-Input"

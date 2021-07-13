@@ -21,6 +21,7 @@ import {
     SampleTypeCount,
 } from './actions';
 import { Picklist } from './models';
+import { incrementClientSideMetricCount } from '../../actions';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -216,6 +217,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             sampleIds,
             currentProductId,
             picklistProductId,
+            metricFeatureArea,
         } = props;
         const [search, setSearch] = useState<string>('');
         const [error, setError] = useState<string>(undefined);
@@ -256,6 +258,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 const insertResponse = await addSamplesToPicklist(activeItem.name, selectionKey, sampleIds);
                 setError(undefined);
                 setSubmitting(false);
+                incrementClientSideMetricCount(metricFeatureArea, "addSamplesToPicklist");
                 createNotification({
                     message: () => (
                         <AddedToPicklistNotification
@@ -277,10 +280,12 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         }, [activeItem, selectionKey, setSubmitting, setError, sampleIds, numSelected]);
 
         const closeModal = useCallback(() => {
+            setError(undefined);
             onCancel(false);
         }, [onCancel]);
 
         const goToCreateNewList = useCallback(() => {
+            setError(undefined);
             onCancel(true);
         }, [onCancel]);
 
@@ -410,6 +415,7 @@ interface ChoosePicklistModalProps {
     sampleIds?: string[];
     currentProductId?: string;
     picklistProductId?: string;
+    metricFeatureArea?: string;
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {

@@ -1,5 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version TBD
+*Released*: TBD
+* Add option to SearchBox to show a dropdown for searching by Ids
+* Add FindByIdsDropdown and FindByIdsModal components
+* Add PicklistButton
+* Slight update of styling in navbar
+* Add optional parameter to picklist components for recording metric counts for actions taken
 
 ### version 2.55.0
 *Released*: 7 July 2021

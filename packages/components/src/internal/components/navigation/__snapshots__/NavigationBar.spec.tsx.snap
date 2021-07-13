@@ -38,6 +38,182 @@ exports[`<NavigationBar/> default props 1`] = `
 </nav>
 `;
 
+exports[`<NavigationBar/> with findByIds 1`] = `
+<nav
+  className="navbar navbar-container test-loc-nav-header"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="navbar-left col-md-5 col-sm-4 col-xs-7"
+      >
+        <span
+          className="navbar-item pull-left"
+        />
+        <span
+          className="navbar-item-padded"
+        />
+      </div>
+      <div
+        className="navbar-right col-md-7 col-sm-8 col-xs-5"
+      >
+        <div
+          className="navbar-item pull-right"
+        />
+        <div
+          className="navbar-item pull-right hidden-xs"
+        >
+          <form
+            className="navbar__search-form"
+            onSubmit={[Function]}
+          >
+            <div
+              className="form-group"
+            >
+              <i
+                className="fa fa-search navbar__search-icon"
+              />
+              <span
+                className="navbar__input-group input-group"
+              >
+                <input
+                  className="form-control navbar__search-input"
+                  onChange={[Function]}
+                  placeholder="Enter Search Terms"
+                  size={34}
+                  type="text"
+                  value=""
+                />
+                <span
+                  className="input-group-btn"
+                >
+                  <div
+                    className="dropdown btn-group"
+                  >
+                    <button
+                      aria-expanded={false}
+                      aria-haspopup={true}
+                      className="navbar__find-and-search-button undefined dropdown-toggle btn btn-default"
+                      disabled={false}
+                      id="find-and-search-menu"
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      role="button"
+                      type="button"
+                    >
+                       
+                      <span
+                        className="caret"
+                      />
+                    </button>
+                    <ul
+                      aria-labelledby="find-and-search-menu"
+                      className="dropdown-menu"
+                      role="menu"
+                    >
+                      <li
+                        className=""
+                        role="presentation"
+                      >
+                        <a
+                          href="#"
+                          onClick={[Function]}
+                          onKeyDown={[Function]}
+                          role="menuitem"
+                          tabIndex="-1"
+                        >
+                          <i
+                            className="fa fa-barcode"
+                          />
+                           Find 
+                          Samples
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </span>
+              </span>
+            </div>
+          </form>
+        </div>
+        <div
+          className="navbar-item pull-right visible-xs"
+        >
+          <div
+            className="dropdown btn-group"
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="navbar__find-and-search-button navbar__xs-find-dropdown dropdown-toggle btn btn-default"
+              disabled={false}
+              id="find-and-search-menu"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+              type="button"
+            >
+              <i
+                className="fa fa-search navbar__xs-search-icon"
+              />
+               
+              <span
+                className="caret"
+              />
+            </button>
+            <ul
+              aria-labelledby="find-and-search-menu"
+              className="dropdown-menu"
+              role="menu"
+            >
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <i
+                    className="fa fa-search"
+                  />
+                   Search
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <i
+                    className="fa fa-barcode"
+                  />
+                   Find 
+                  Samples
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+`;
+
 exports[`<NavigationBar/> with search box 1`] = `
 <nav
   className="navbar navbar-container test-loc-nav-header"
@@ -77,14 +253,18 @@ exports[`<NavigationBar/> with search box 1`] = `
               <i
                 className="fa fa-search navbar__search-icon"
               />
-              <input
-                className="navbar__search-input"
-                onChange={[Function]}
-                placeholder="Enter Search Terms"
-                size={34}
-                type="text"
-                value=""
-              />
+              <span
+                className="navbar__input-group "
+              >
+                <input
+                  className="form-control navbar__search-input"
+                  onChange={[Function]}
+                  placeholder="Enter Search Terms"
+                  size={34}
+                  type="text"
+                  value=""
+                />
+              </span>
             </div>
           </form>
         </div>
@@ -96,6 +276,44 @@ exports[`<NavigationBar/> with search box 1`] = `
             onClick={[Function]}
           />
         </div>
+      </div>
+    </div>
+  </div>
+</nav>
+`;
+
+exports[`<NavigationBar/> without search but with findByIds 1`] = `
+<nav
+  className="navbar navbar-container test-loc-nav-header"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="navbar-left col-md-5 col-sm-4 col-xs-7"
+      >
+        <span
+          className="navbar-item pull-left"
+        />
+        <span
+          className="navbar-item-padded"
+        />
+      </div>
+      <div
+        className="navbar-right col-md-7 col-sm-8 col-xs-5"
+      >
+        <div
+          className="navbar-item pull-right"
+        />
+        <div
+          className="navbar-item pull-right hidden-xs"
+        />
+        <div
+          className="navbar-item pull-right visible-xs"
+        />
       </div>
     </div>
   </div>

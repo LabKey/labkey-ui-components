@@ -19,6 +19,7 @@ interface Props {
     user: User;
     currentProductId?: string;
     picklistProductId?: string;
+    metricFeatureArea?: string;
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {

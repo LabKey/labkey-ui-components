@@ -59,3 +59,33 @@
         display: block;
     }
 }
+
+.find-by-ids-field-label {
+    font-weight: normal;
+    display: block;
+
+    & > input {
+        margin-right: 8px;
+    }
+}
+
+.find-samples-header-panel {
+    & .panel-heading.panel-content-flex.panel-content-large {
+        margin-bottom: 0;
+    }
+    & .panel-body {
+        padding-bottom: 0;
+    }
+}
+
+.find-samples-success {
+    color: $brand-success;
+}
+
+.find-samples-warning {
+    color: $brand-warning
+}
+
+.find-samples-warning-toggle {
+    cursor: pointer
+}

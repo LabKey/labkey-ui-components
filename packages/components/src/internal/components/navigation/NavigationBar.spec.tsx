@@ -66,6 +66,18 @@ describe('<NavigationBar/>', () => {
         expect(tree).toMatchSnapshot();
     });
 
+    test('with findByIds', () => {
+        const component = <NavigationBar model={null} showSearchBox={true} onFindByIds={jest.fn} />
+        const tree = renderer.create(component);
+        expect(tree).toMatchSnapshot();
+    });
+
+    test('without search but with findByIds', () => {
+        const component = <NavigationBar model={null} showSearchBox={false} onFindByIds={jest.fn} />
+        const tree = renderer.create(component);
+        expect(tree).toMatchSnapshot();
+    });
+
     function validate(wrapper: ReactWrapper, compCounts?: Record<string, number>) {
         expect(wrapper.find('.project-name')).toHaveLength(compCounts?.ProjectName ?? 0);
         expect(wrapper.find(ProductMenu)).toHaveLength(compCounts?.ProductMenu ?? 0);

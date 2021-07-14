@@ -3,6 +3,7 @@ import { FindByIdsModal, FindFieldOption } from './FindByIdsModal';
 import { mount } from 'enzyme';
 import { FindField } from '../samples/models';
 import { UNIQUE_ID_FIND_FIELD } from '../samples/constants';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 const TEST_FIELD: FindField = {
     nounSingular: "Test",
@@ -23,17 +24,17 @@ const TEST_FIELD_WITH_HELP: FindField = {
 };
 
 describe("FindFieldOption", () => {
-    test("field without help text", () => {
+    test("field without help text, checked", () => {
         const wrapper = mount(<FindFieldOption field={TEST_FIELD} checked={true} onFieldChange={jest.fn()}/>);
         expect(wrapper.find("label").text()).toBe(TEST_FIELD.label)
         const input = wrapper.find("input");
         expect(input.prop("name")).toBe(TEST_FIELD.name);
         expect(input.prop("value")).toBe(TEST_FIELD.name);
         expect(input.prop("checked")).toBe(true);
-        expect(wrapper.find("LabelHelpTip")).toHaveLength(0);
+        expect(wrapper.find(LabelHelpTip)).toHaveLength(0);
     });
 
-    test("field with help text", () => {
+    test("field with help text, not checked", () => {
         const wrapper = mount(<FindFieldOption field={TEST_FIELD_WITH_HELP} checked={false} onFieldChange={jest.fn()}/>);
 
         expect(wrapper.find("label").text()).toBe(TEST_FIELD_WITH_HELP.label)
@@ -41,7 +42,7 @@ describe("FindFieldOption", () => {
         expect(input.prop("name")).toBe(TEST_FIELD_WITH_HELP.name);
         expect(input.prop("value")).toBe(TEST_FIELD_WITH_HELP.name);
         expect(input.prop("checked")).toBe(false);
-        expect(wrapper.find({id: "tooltip"})).toHaveLength(1);
+        expect(wrapper.find(LabelHelpTip)).toHaveLength(1);
     });
 });
 

@@ -123,23 +123,32 @@ export const NavigationBar: FC<Props> = memo(props => {
                             </div>
                         )}
                         <div className="navbar-item pull-right hidden-xs">
-                            {showSearchBox && <SearchBox onSearch={onSearch} placeholder={searchPlaceholder} onFindByIds={onFindByIds}  findNounPlural={"samples"} />}
+                            {showSearchBox && (
+                                <SearchBox
+                                    onSearch={onSearch}
+                                    placeholder={searchPlaceholder}
+                                    onFindByIds={onFindByIds}
+                                    findNounPlural="samples"
+                                />
+                            )}
                         </div>
                         <div className="navbar-item pull-right visible-xs">
                             {showSearchBox && (
                                 <>
-                                    {!!onFindByIds ?
+                                    {onFindByIds ? (
                                         <FindAndSearchDropdown
-                                            className={"navbar__xs-find-dropdown"}
+                                            className="navbar__xs-find-dropdown"
                                             title={<i className="fa fa-search navbar__xs-search-icon" />}
-                                            findNounPlural={"samples"}
+                                            findNounPlural="samples"
                                             onSearch={onSearchIconClick}
                                             onFindByIds={onFindByIds}
                                         />
-                                        :
-                                        <i className="fa fa-search navbar__xs-search-icon" onClick={onSearchIconClick}/>
-                                    }
-
+                                    ) : (
+                                        <i
+                                            className="fa fa-search navbar__xs-search-icon"
+                                            onClick={onSearchIconClick}
+                                        />
+                                    )}
                                 </>
                             )}
                         </div>

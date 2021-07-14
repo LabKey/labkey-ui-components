@@ -67,13 +67,13 @@ describe('<NavigationBar/>', () => {
     });
 
     test('with findByIds', () => {
-        const component = <NavigationBar model={null} showSearchBox={true} onFindByIds={jest.fn} />
+        const component = <NavigationBar model={null} showSearchBox={true} onFindByIds={jest.fn} />;
         const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 
     test('without search but with findByIds', () => {
-        const component = <NavigationBar model={null} showSearchBox={false} onFindByIds={jest.fn} />
+        const component = <NavigationBar model={null} showSearchBox={false} onFindByIds={jest.fn} />;
         const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });

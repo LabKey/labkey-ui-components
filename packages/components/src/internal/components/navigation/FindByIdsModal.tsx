@@ -1,5 +1,6 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Modal } from 'react-bootstrap';
+
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { FindField } from '../samples/models';
 import { capitalizeFirstChar } from '../../util/utils';
@@ -8,37 +9,37 @@ import { clearIdsToFind, saveIdsToFind } from '../samples/actions';
 import { incrementClientSideMetricCount } from '../../actions';
 
 // exported for Jest testing
-export const FindFieldOption: FC<{field: FindField, checked: boolean, onFieldChange: (field: FindField) => void}> = memo(({field, checked, onFieldChange}) => {
-
-    const onChange = useCallback((event: any) => {
-        onFieldChange(field)
-    }, [onFieldChange]);
+export const FindFieldOption: FC<{
+    field: FindField;
+    checked: boolean;
+    onFieldChange: (field: FindField) => void;
+}> = memo(({ field, checked, onFieldChange }) => {
+    const onChange = useCallback(
+        (event: any) => {
+            onFieldChange(field);
+        },
+        [onFieldChange]
+    );
 
     return (
         <label key={field.name} className="find-by-ids-field-label">
-            <input
-                name={field.name}
-                type="radio"
-                onChange={onChange}
-                value={field.name}
-                checked={checked}
-            />
+            <input name={field.name} type="radio" onChange={onChange} value={field.name} checked={checked} />
             {field.label}
-            {field.helpText &&
+            {field.helpText && (
                 <LabelHelpTip placement="right" title={field.helpTextTitle}>
                     {field.helpText}
                 </LabelHelpTip>
-            }
+            )}
         </label>
     );
 });
 
 interface Props {
-    show: boolean
-    onCancel: () => void
-    onFind: () => void
-    nounPlural: string
-    addToExistingIds?: boolean // when false the existing ids will first be cleared before calling onFind.
+    show: boolean;
+    onCancel: () => void;
+    onFind: () => void;
+    nounPlural: string;
+    addToExistingIds?: boolean; // when false the existing ids will first be cleared before calling onFind.
 }
 
 export const FindByIdsModal: FC<Props> = memo(props => {
@@ -51,11 +52,11 @@ export const FindByIdsModal: FC<Props> = memo(props => {
     const reset = () => {
         setIdString(undefined);
         setFieldType(UNIQUE_ID_FIND_FIELD);
-    }
+    };
     const closeModal = useCallback(() => {
         reset();
         onCancel();
-    }, [onCancel])
+    }, [onCancel]);
 
     const onFieldTypeChange = useCallback((field: FindField) => {
         setFieldType(field);
@@ -66,20 +67,22 @@ export const FindByIdsModal: FC<Props> = memo(props => {
     }, []);
 
     const _onFind = useCallback(() => {
-        const ids = idString.split("\n").map(id => id.trim()).filter(id => id.length > 0);
+        const ids = idString
+            .split('\n')
+            .map(id => id.trim())
+            .filter(id => id.length > 0);
         if (ids.length > 0) {
-            incrementClientSideMetricCount("find" + capitalizeFirstChar(nounPlural) + "ById", "findIds");
+            incrementClientSideMetricCount('find' + capitalizeFirstChar(nounPlural) + 'ById', 'findIds');
             setSubmitting(true);
             if (!addToExistingIds) {
                 clearIdsToFind();
             }
-            saveIdsToFind(fieldType, ids)
+            saveIdsToFind(fieldType, ids);
             setSubmitting(false);
             reset();
             onFind();
         }
     }, [idString, onFind, fieldType]);
-
 
     return (
         <Modal show={show} onHide={closeModal}>
@@ -87,11 +90,17 @@ export const FindByIdsModal: FC<Props> = memo(props => {
                 <Modal.Title>Find {capitalizeFirstChar(nounPlural)}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>
-                Find {nounPlural} using:
-                </p>
-                <FindFieldOption field={UNIQUE_ID_FIND_FIELD} checked={fieldType.name === UNIQUE_ID_FIND_FIELD.name} onFieldChange={onFieldTypeChange}/>
-                <FindFieldOption field={SAMPLE_ID_FIND_FIELD} checked={fieldType.name === SAMPLE_ID_FIND_FIELD.name} onFieldChange={onFieldTypeChange}/>
+                <p>Find {nounPlural} using:</p>
+                <FindFieldOption
+                    field={UNIQUE_ID_FIND_FIELD}
+                    checked={fieldType.name === UNIQUE_ID_FIND_FIELD.name}
+                    onFieldChange={onFieldTypeChange}
+                />
+                <FindFieldOption
+                    field={SAMPLE_ID_FIND_FIELD}
+                    checked={fieldType.name === SAMPLE_ID_FIND_FIELD.name}
+                    onFieldChange={onFieldTypeChange}
+                />
                 <textarea
                     placeholder={`List ${fieldType.nounPlural} here`}
                     rows={8}

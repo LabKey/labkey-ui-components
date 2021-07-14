@@ -646,13 +646,13 @@ export function handleRequestFailure(reject: (error: any) => void, logMsg?: stri
  * @param ordinals the 1-based ordinal list, possibly with gaps
  * @param orderedValues The ordered values to extract the missing values from
  */
-export function findMissingValues(ordinals: number[], orderedValues: any[]) : any[] {
+export function findMissingValues(ordinals: number[], orderedValues: any[]): any[] {
     let index = 0;
     let oIndex = 0;
-    let missingValues = [];
+    const missingValues = [];
     while (index < orderedValues.length) {
         if (oIndex >= ordinals.length || ordinals[oIndex] !== index + 1) {
-            missingValues.push(orderedValues[index])
+            missingValues.push(orderedValues[index]);
         } else {
             oIndex++;
         }

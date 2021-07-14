@@ -12,9 +12,10 @@ import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainpr
 
 import { createNotification } from '../notifications/actions';
 
+import { incrementClientSideMetricCount } from '../../actions';
+
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
 import { Picklist } from './models';
-import { incrementClientSideMetricCount } from '../../actions';
 
 interface Props {
     show: boolean;
@@ -111,10 +112,10 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                         Category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY,
                     })
                 );
-                incrementClientSideMetricCount(metricFeatureArea, "addToPicklist");
+                incrementClientSideMetricCount(metricFeatureArea, 'addToPicklist');
             } else {
                 updatedList = await createPicklist(trimmedName, description, shared, selectionKey, sampleIds);
-                incrementClientSideMetricCount(metricFeatureArea, "createPicklist");
+                incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
             }
             setIsSubmitting(false);
             if (showNotification) {

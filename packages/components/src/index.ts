@@ -191,11 +191,11 @@ import {
     IMPORT_DATA_FORM_TYPES,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
+    SHARED_CONTAINER_PATH,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
-    SHARED_CONTAINER_PATH,
 } from './internal/constants';
 import { getLocation, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
@@ -267,12 +267,12 @@ import {
     clearIdsToFind,
     deleteSampleSet,
     fetchSamples,
+    getDeleteSharedSampleTypeUrl,
+    getEditSharedSampleTypeUrl,
     getFindSamplesByIdData,
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
-    getEditSharedSampleTypeUrl,
-    getDeleteSharedSampleTypeUrl,
     loadSelectedSamples,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
@@ -450,12 +450,12 @@ import {
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
-    SampleCreationType
+    SampleCreationType,
 } from './internal/components/samples/models';
 import {
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
-    UNIQUE_ID_FIND_FIELD
+    UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';

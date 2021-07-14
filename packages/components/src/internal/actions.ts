@@ -3190,8 +3190,9 @@ export function incrementClientSideMetricCount(
     metricName: string
 ): Promise<IClientSideMetricCountResponse> {
     return new Promise((resolve, reject) => {
-        if (!featureArea || !metricName)
+        if (!featureArea || !metricName) {
             resolve(undefined);
+        }
         else {
             return Ajax.request({
                 url: buildURL('core', 'incrementClientSideMetricCount.api'),

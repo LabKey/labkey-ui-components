@@ -13,6 +13,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
 import { createNotification } from '../notifications/actions';
 
+import { incrementClientSideMetricCount } from '../../actions';
+
 import {
     addSamplesToPicklist,
     getPicklistCountsBySampleType,
@@ -21,7 +23,6 @@ import {
     SampleTypeCount,
 } from './actions';
 import { Picklist } from './models';
-import { incrementClientSideMetricCount } from '../../actions';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -258,7 +259,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 const insertResponse = await addSamplesToPicklist(activeItem.name, selectionKey, sampleIds);
                 setError(undefined);
                 setSubmitting(false);
-                incrementClientSideMetricCount(metricFeatureArea, "addSamplesToPicklist");
+                incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
                 createNotification({
                     message: () => (
                         <AddedToPicklistNotification

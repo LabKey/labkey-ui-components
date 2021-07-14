@@ -36,6 +36,7 @@ import {
 
 import { GroupedSampleFields } from './models';
 import { FIND_IDS_SESSION_STORAGE_KEY } from './constants';
+import { findMissingValues } from '../../util/utils';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -383,20 +384,8 @@ function getSamplesIdsNotFound(queryName: string, orderedIds: string[]) : Promis
                 column: 'Ordinal',
                 sort: 'Ordinal',
                 success: result => {
-                    const ordinals = result.values
-                    let index = 0;
-                    let oIndex = 0;
-                    let missingIds = [];
                     // find the gaps in the ordinals values as these correspond to ids we could not find
-                    while (index < orderedIds.length) {
-                        if (oIndex >= ordinals.length || ordinals[oIndex] !== index + 1) {
-                            missingIds.push(orderedIds[index])
-                        } else {
-                            oIndex++;
-                        }
-                        index++;
-                    }
-                    resolve(missingIds);
+                    resolve(findMissingValues(result.values, orderedIds));
                 },
                 failure: reason => {
                     console.error("There was a problem determining the missing Ids", reason);
@@ -406,7 +395,7 @@ function getSamplesIdsNotFound(queryName: string, orderedIds: string[]) : Promis
     });
 }
 
-export function getFindSamplesByIdData(staleQueryName?: string) : Promise<{ queryName: string, missingIds?: { [key: string]: string[] } }> {
+export function getFindSamplesByIdData() : Promise<{ queryName: string, missingIds?: { [key: string]: string[] } }> {
     return new Promise((resolve, reject) => {
         const ids = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY));
         if (ids) {

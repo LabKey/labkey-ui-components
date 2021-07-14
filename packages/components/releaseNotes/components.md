@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.55.1
+*Released*: 14 July 2021
 * Issue 43530: Filter dialog for ontology lookup field does not open to intended Vocabulary scope
 
 ### version 2.55.0

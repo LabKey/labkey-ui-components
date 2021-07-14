@@ -218,6 +218,10 @@ import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
 import { FileColumnRenderer } from './internal/renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './internal/renderers/MultiValueRenderer';
 import { LabelColorRenderer } from './internal/renderers/LabelColorRenderer';
+import {
+    SampleTypeImportAliasRenderer,
+    SourceTypeImportAliasRenderer,
+} from './internal/renderers/SampleTypeImportAliasRenderer';
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
 import { resolveDetailFieldValue, resolveRenderer } from './internal/components/forms/renderers';
@@ -713,6 +717,8 @@ export {
     LabelColorRenderer,
     MultiValueRenderer,
     StorageStatusRenderer,
+    SampleTypeImportAliasRenderer,
+    SourceTypeImportAliasRenderer,
     resolveDetailRenderer,
     resolveRenderer,
     // form related items

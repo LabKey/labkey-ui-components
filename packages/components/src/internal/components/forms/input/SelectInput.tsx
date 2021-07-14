@@ -76,9 +76,10 @@ function equalValues(a: any, b: any): boolean {
     return true;
 }
 
-// ReactSelect no longer supports primitive string as "value"
-function initOptionFromString(value: string, valueKey: string, options?: any[]): any {
-    return options?.find(o => o[valueKey] === value) ?? { label: value, [valueKey]: value };
+// ReactSelect no longer supports primitives as "value"
+function initOptionFromPrimitive(value: string | number, props: SelectInputProps): any {
+    const { labelKey = 'label', options, valueKey } = props;
+    return options?.find(o => o[valueKey] === value) ?? { [labelKey]: value, [valueKey]: value };
 }
 
 function initOptions(props: SelectInputProps): any {
@@ -90,15 +91,15 @@ function initOptions(props: SelectInputProps): any {
             options = [];
             value.forEach(v => {
                 if (v !== undefined && v !== null) {
-                    if (typeof v === 'string') {
-                        options.push(initOptionFromString(v, props.valueKey, props.options));
+                    if (typeof v === 'string' || typeof v === 'number') {
+                        options.push(initOptionFromPrimitive(v, props));
                     } else {
                         options.push(v);
                     }
                 }
             });
-        } else if (typeof value === 'string') {
-            options = initOptionFromString(value, props.valueKey, props.options);
+        } else if (typeof value === 'string' || typeof value === 'number') {
+            options = initOptionFromPrimitive(value, props);
         } else {
             options = value;
         }

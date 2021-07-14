@@ -30,7 +30,7 @@ export const FindAndSearchDropdown: FC<Props> = memo((props) => {
 
     const onHideFindModal = useCallback(() => {
         setShowFindModal(false);
-    }, [setShowFindModal]);
+    }, []);
 
     const onFind = useCallback(() => {
         setShowFindModal(false);

@@ -82,3 +82,13 @@ export interface GroupedSampleFields {
     metaFields: string[];
     metricUnit: string;
 }
+
+export interface FindField {
+    nounSingular: string;
+    nounPlural: string;
+    name: string;
+    helpText?: string;
+    helpTextTitle?: string;
+    label: string;
+    storageKeyPrefix: string;
+}

@@ -21,7 +21,11 @@ describe('<ConfirmModal/>', () => {
     test('with callback functions', () => {
         const title = 'Callback Title';
         const msg = 'Callback confirm modal message';
-        const modal = mount(<ConfirmModal title={title} onConfirm={jest.fn()} onCancel={jest.fn()}>{msg}</ConfirmModal>);
+        const modal = mount(
+            <ConfirmModal title={title} onConfirm={jest.fn()} onCancel={jest.fn()}>
+                {msg}
+            </ConfirmModal>
+        );
 
         expect(modal.find(Modal)).toHaveLength(1);
         expect(modal.find('.modal-title').text()).toBe(title);
@@ -34,7 +38,11 @@ describe('<ConfirmModal/>', () => {
 
     test('submitting', () => {
         const msg = 'Submitting confirm modal message';
-        const modal = mount(<ConfirmModal onConfirm={jest.fn()} onCancel={jest.fn()} submitting={true}>{msg}</ConfirmModal>);
+        const modal = mount(
+            <ConfirmModal onConfirm={jest.fn()} onCancel={jest.fn()} submitting={true}>
+                {msg}
+            </ConfirmModal>
+        );
 
         expect(modal.find(Modal)).toHaveLength(1);
         expect(modal.find('.close')).toHaveLength(1);

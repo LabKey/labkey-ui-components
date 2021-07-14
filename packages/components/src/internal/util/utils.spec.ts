@@ -20,22 +20,23 @@ import { QueryColumn, QueryInfo } from '../../index';
 import {
     camelCaseToTitleCase,
     caseInsensitive,
+    findMissingValues,
+    formatBytes,
     getCommonDataValues,
     getDisambiguatedSelectInputOptions,
+    getIconFontCls,
     getUpdatedData,
     getUpdatedDataFromGrid,
+    handleRequestFailure,
     intersect,
+    isImage,
+    isInteger,
     isIntegerInRange,
     isNonNegativeFloat,
     isNonNegativeInteger,
+    parseScientificInt,
     toLowerSafe,
     unorderedEqual,
-    isImage,
-    getIconFontCls,
-    formatBytes,
-    parseScientificInt,
-    isInteger,
-    handleRequestFailure,
 } from './utils';
 
 const emptyList = List<string>();
@@ -1306,5 +1307,33 @@ describe('handleRequestFailure', () => {
         const reject = jest.fn();
         handleRequestFailure(reject)(badResponse as any, undefined);
         expect(reject).toHaveBeenCalledWith(expect.objectContaining({ error: 'This is bad', status: 500 }));
+    });
+});
+
+describe('findMissingValues', () => {
+    test('no gaps', () => {
+        expect(findMissingValues([], [])).toStrictEqual([]);
+        expect(findMissingValues([1], ['a'])).toStrictEqual([]);
+        expect(findMissingValues([1, 2, 3], ['a', 'b', 'c'])).toStrictEqual([]);
+    });
+
+    test('gap at beginning', () => {
+        expect(findMissingValues([3], ['a', 'b', 'c'])).toStrictEqual(['a', 'b']);
+        expect(findMissingValues([2, 3, 4], ['a', 'b', 'c', 'd'])).toStrictEqual(['a']);
+    });
+
+    test('gap at end', () => {
+        expect(findMissingValues([1, 2], ['a', 'b', 'c'])).toStrictEqual(['c']);
+        expect(findMissingValues([1], ['a', 'b', 'c', 'd'])).toStrictEqual(['b', 'c', 'd']);
+    });
+
+    test('gap in middle', () => {
+        expect(findMissingValues([1, 2, 4, 6], ['a', 'b', 'c', 'd', 'e', 'f'])).toStrictEqual(['c', 'e']);
+        expect(findMissingValues([1, 6], ['a', 'b', 'c', 'd', 'e', 'f'])).toStrictEqual(['b', 'c', 'd', 'e']);
+    });
+
+    test('gaps everywhere', () => {
+        expect(findMissingValues([2, 4, 6], ['a', 'b', 'c', 'd', 'e', 'f'])).toStrictEqual(['a', 'c', 'e']);
+        expect(findMissingValues([3], ['a', 'b', 'c', 'd', 'e', 'f'])).toStrictEqual(['a', 'b', 'd', 'e', 'f']);
     });
 });

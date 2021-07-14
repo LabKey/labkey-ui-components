@@ -73,7 +73,7 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo((props) => 
         );
     }
 
-    let hasSamples = !listModel?.isLoading && listModel?.rowCount > 0;
+    const hasSamples = !listModel?.isLoading && listModel?.rowCount > 0;
 
     return (
         <Section title={"Find Samples in Bulk"} panelClassName={'find-samples-header-panel'}>

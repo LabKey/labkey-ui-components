@@ -523,7 +523,9 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             ref: 'reactSelect',
             styles: customStyles,
             theme: customTheme,
-            value: this.state.selectedOptions,
+            // ReactSelect only supports null for clearing the value (as opposed to undefined).
+            // See https://stackoverflow.com/a/50417171.
+            value: this.state.selectedOptions ?? null,
         };
 
         if (Array.isArray(selectProps.value) && selectProps.value.length === 0) {

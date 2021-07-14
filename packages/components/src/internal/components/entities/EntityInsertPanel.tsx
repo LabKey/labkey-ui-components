@@ -36,7 +36,6 @@ import {
     FileSizeLimitProps,
     FormStep,
     FormTabs,
-    generateId,
     getActionErrorMessage,
     getEditorModel,
     getQueryDetails,
@@ -636,7 +635,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         if (!insertModel) return null;
 
-        const id = generateId('targetEntityType-');
         const hasTargetEntityType = insertModel.hasTargetEntityType();
 
         return (
@@ -647,8 +645,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                         inputClass="col-sm-5"
                         label={this.capTypeTextSingular}
                         labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
-                        name={id}
-                        id={id}
                         placeholder={'Select a ' + this.capTypeTextSingular + '...'}
                         onChange={this.changeTargetEntityType}
                         options={insertModel.entityTypeOptions.toArray()}
@@ -910,7 +906,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel, creationType } = this.state;
-        const { creationTypeOptions, nounPlural, nounSingular, onBulkAdd } = this.props;
+        const { creationTypeOptions, nounPlural, onBulkAdd } = this.props;
 
         const columnMetadata = this.getGeneratedIdColumnMetadata();
 

@@ -476,6 +476,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                         }
                                       }
                                       theme={[Function]}
+                                      value={null}
                                     >
                                       <Select
                                         aria-live="polite"

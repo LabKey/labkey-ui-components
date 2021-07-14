@@ -535,6 +535,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                         }
                       }
                       theme={[Function]}
+                      value={null}
                     >
                       <Select
                         aria-live="polite"

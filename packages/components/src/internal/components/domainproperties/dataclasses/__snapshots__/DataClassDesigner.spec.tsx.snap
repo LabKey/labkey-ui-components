@@ -3885,6 +3885,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       }
                                                     }
                                                     theme={[Function]}
+                                                    value={null}
                                                   >
                                                     <Select
                                                       aria-live="polite"
@@ -5647,6 +5648,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       }
                                                     }
                                                     theme={[Function]}
+                                                    value={null}
                                                   >
                                                     <Select
                                                       aria-live="polite"

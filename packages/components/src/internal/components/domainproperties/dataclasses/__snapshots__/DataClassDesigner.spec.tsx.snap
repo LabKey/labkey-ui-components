@@ -3799,7 +3799,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                           componentId="entity-category"
                                           delimiter=","
                                           displayColumn="Value"
-                                          filterOptions={[Function]}
+                                          filterOption={[Function]}
                                           fireQSChangeOnInit={false}
                                           formsy={false}
                                           loadOnChange={true}
@@ -3876,6 +3876,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                     onChange={[Function]}
                                                     onFocus={[Function]}
                                                     placeholder="Loading..."
+                                                    styles={
+                                                      Object {
+                                                        "menu": [Function],
+                                                        "multiValue": [Function],
+                                                        "multiValueLabel": [Function],
+                                                        "multiValueRemove": [Function],
+                                                      }
+                                                    }
+                                                    theme={[Function]}
                                                   >
                                                     <Select
                                                       aria-live="polite"
@@ -3929,9 +3938,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       pageSize={5}
                                                       placeholder="Loading..."
                                                       screenReaderStatus={[Function]}
-                                                      styles={Object {}}
+                                                      styles={
+                                                        Object {
+                                                          "menu": [Function],
+                                                          "multiValue": [Function],
+                                                          "multiValueLabel": [Function],
+                                                          "multiValueRemove": [Function],
+                                                        }
+                                                      }
                                                       tabIndex="0"
                                                       tabSelectsValue={true}
+                                                      theme={[Function]}
                                                       value={null}
                                                     >
                                                       <SelectContainer
@@ -4006,9 +4023,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "placeholder": "Loading...",
                                                             "promptTextCreator": undefined,
                                                             "screenReaderStatus": [Function],
-                                                            "styles": Object {},
+                                                            "styles": Object {
+                                                              "menu": [Function],
+                                                              "multiValue": [Function],
+                                                              "multiValueLabel": [Function],
+                                                              "multiValueRemove": [Function],
+                                                            },
                                                             "tabIndex": "0",
                                                             "tabSelectsValue": true,
+                                                            "theme": [Function],
                                                             "value": null,
                                                           }
                                                         }
@@ -4017,7 +4040,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           Object {
                                                             "borderRadius": 4,
                                                             "colors": Object {
-                                                              "danger": "#DE350B",
+                                                              "danger": "#D9534F",
                                                               "dangerLight": "#FFBDAD",
                                                               "neutral0": "hsl(0, 0%, 100%)",
                                                               "neutral10": "hsl(0, 0%, 90%)",
@@ -4030,10 +4053,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                               "neutral70": "hsl(0, 0%, 30%)",
                                                               "neutral80": "hsl(0, 0%, 20%)",
                                                               "neutral90": "hsl(0, 0%, 10%)",
-                                                              "primary": "#2684FF",
-                                                              "primary25": "#DEEBFF",
-                                                              "primary50": "#B2D4FF",
-                                                              "primary75": "#4C9AFF",
+                                                              "primary": "#2980B9",
+                                                              "primary25": "rgba(41, 128, 185, 0.1)",
+                                                              "primary50": "#F2F9FC",
+                                                              "primary75": "#009BF9",
                                                             },
                                                             "spacing": Object {
                                                               "baseUnit": 4,
@@ -4132,9 +4155,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "placeholder": "Loading...",
                                                                   "promptTextCreator": undefined,
                                                                   "screenReaderStatus": [Function],
-                                                                  "styles": Object {},
+                                                                  "styles": Object {
+                                                                    "menu": [Function],
+                                                                    "multiValue": [Function],
+                                                                    "multiValueLabel": [Function],
+                                                                    "multiValueRemove": [Function],
+                                                                  },
                                                                   "tabIndex": "0",
                                                                   "tabSelectsValue": true,
+                                                                  "theme": [Function],
                                                                   "value": null,
                                                                 }
                                                               }
@@ -4144,7 +4173,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                 Object {
                                                                   "borderRadius": 4,
                                                                   "colors": Object {
-                                                                    "danger": "#DE350B",
+                                                                    "danger": "#D9534F",
                                                                     "dangerLight": "#FFBDAD",
                                                                     "neutral0": "hsl(0, 0%, 100%)",
                                                                     "neutral10": "hsl(0, 0%, 90%)",
@@ -4157,10 +4186,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     "neutral70": "hsl(0, 0%, 30%)",
                                                                     "neutral80": "hsl(0, 0%, 20%)",
                                                                     "neutral90": "hsl(0, 0%, 10%)",
-                                                                    "primary": "#2684FF",
-                                                                    "primary25": "#DEEBFF",
-                                                                    "primary50": "#B2D4FF",
-                                                                    "primary75": "#4C9AFF",
+                                                                    "primary": "#2980B9",
+                                                                    "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                    "primary50": "#F2F9FC",
+                                                                    "primary75": "#009BF9",
                                                                   },
                                                                   "spacing": Object {
                                                                     "baseUnit": 4,
@@ -4272,9 +4301,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "placeholder": "Loading...",
                                                                   "promptTextCreator": undefined,
                                                                   "screenReaderStatus": [Function],
-                                                                  "styles": Object {},
+                                                                  "styles": Object {
+                                                                    "menu": [Function],
+                                                                    "multiValue": [Function],
+                                                                    "multiValueLabel": [Function],
+                                                                    "multiValueRemove": [Function],
+                                                                  },
                                                                   "tabIndex": "0",
                                                                   "tabSelectsValue": true,
+                                                                  "theme": [Function],
                                                                   "value": null,
                                                                 }
                                                               }
@@ -4283,7 +4318,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                 Object {
                                                                   "borderRadius": 4,
                                                                   "colors": Object {
-                                                                    "danger": "#DE350B",
+                                                                    "danger": "#D9534F",
                                                                     "dangerLight": "#FFBDAD",
                                                                     "neutral0": "hsl(0, 0%, 100%)",
                                                                     "neutral10": "hsl(0, 0%, 90%)",
@@ -4296,10 +4331,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     "neutral70": "hsl(0, 0%, 30%)",
                                                                     "neutral80": "hsl(0, 0%, 20%)",
                                                                     "neutral90": "hsl(0, 0%, 10%)",
-                                                                    "primary": "#2684FF",
-                                                                    "primary25": "#DEEBFF",
-                                                                    "primary50": "#B2D4FF",
-                                                                    "primary75": "#4C9AFF",
+                                                                    "primary": "#2980B9",
+                                                                    "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                    "primary50": "#F2F9FC",
+                                                                    "primary75": "#009BF9",
                                                                   },
                                                                   "spacing": Object {
                                                                     "baseUnit": 4,
@@ -4409,9 +4444,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "placeholder": "Loading...",
                                                                         "promptTextCreator": undefined,
                                                                         "screenReaderStatus": [Function],
-                                                                        "styles": Object {},
+                                                                        "styles": Object {
+                                                                          "menu": [Function],
+                                                                          "multiValue": [Function],
+                                                                          "multiValueLabel": [Function],
+                                                                          "multiValueRemove": [Function],
+                                                                        },
                                                                         "tabIndex": "0",
                                                                         "tabSelectsValue": true,
+                                                                        "theme": [Function],
                                                                         "value": null,
                                                                       }
                                                                     }
@@ -4420,7 +4461,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       Object {
                                                                         "borderRadius": 4,
                                                                         "colors": Object {
-                                                                          "danger": "#DE350B",
+                                                                          "danger": "#D9534F",
                                                                           "dangerLight": "#FFBDAD",
                                                                           "neutral0": "hsl(0, 0%, 100%)",
                                                                           "neutral10": "hsl(0, 0%, 90%)",
@@ -4433,10 +4474,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           "neutral70": "hsl(0, 0%, 30%)",
                                                                           "neutral80": "hsl(0, 0%, 20%)",
                                                                           "neutral90": "hsl(0, 0%, 10%)",
-                                                                          "primary": "#2684FF",
-                                                                          "primary25": "#DEEBFF",
-                                                                          "primary50": "#B2D4FF",
-                                                                          "primary75": "#4C9AFF",
+                                                                          "primary": "#2980B9",
+                                                                          "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                          "primary50": "#F2F9FC",
+                                                                          "primary75": "#009BF9",
                                                                         },
                                                                         "spacing": Object {
                                                                           "baseUnit": 4,
@@ -4533,9 +4574,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "placeholder": "Loading...",
                                                                               "promptTextCreator": undefined,
                                                                               "screenReaderStatus": [Function],
-                                                                              "styles": Object {},
+                                                                              "styles": Object {
+                                                                                "menu": [Function],
+                                                                                "multiValue": [Function],
+                                                                                "multiValueLabel": [Function],
+                                                                                "multiValueRemove": [Function],
+                                                                              },
                                                                               "tabIndex": "0",
                                                                               "tabSelectsValue": true,
+                                                                              "theme": [Function],
                                                                               "value": null,
                                                                             }
                                                                           }
@@ -4544,7 +4591,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             Object {
                                                                               "borderRadius": 4,
                                                                               "colors": Object {
-                                                                                "danger": "#DE350B",
+                                                                                "danger": "#D9534F",
                                                                                 "dangerLight": "#FFBDAD",
                                                                                 "neutral0": "hsl(0, 0%, 100%)",
                                                                                 "neutral10": "hsl(0, 0%, 90%)",
@@ -4557,10 +4604,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "neutral70": "hsl(0, 0%, 30%)",
                                                                                 "neutral80": "hsl(0, 0%, 20%)",
                                                                                 "neutral90": "hsl(0, 0%, 10%)",
-                                                                                "primary": "#2684FF",
-                                                                                "primary25": "#DEEBFF",
-                                                                                "primary50": "#B2D4FF",
-                                                                                "primary75": "#4C9AFF",
+                                                                                "primary": "#2980B9",
+                                                                                "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                                "primary50": "#F2F9FC",
+                                                                                "primary75": "#009BF9",
                                                                               },
                                                                               "spacing": Object {
                                                                                 "baseUnit": 4,
@@ -4668,9 +4715,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "placeholder": "Loading...",
                                                                               "promptTextCreator": undefined,
                                                                               "screenReaderStatus": [Function],
-                                                                              "styles": Object {},
+                                                                              "styles": Object {
+                                                                                "menu": [Function],
+                                                                                "multiValue": [Function],
+                                                                                "multiValueLabel": [Function],
+                                                                                "multiValueRemove": [Function],
+                                                                              },
                                                                               "tabIndex": "0",
                                                                               "tabSelectsValue": true,
+                                                                              "theme": [Function],
                                                                               "value": null,
                                                                             }
                                                                           }
@@ -4681,7 +4734,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             Object {
                                                                               "borderRadius": 4,
                                                                               "colors": Object {
-                                                                                "danger": "#DE350B",
+                                                                                "danger": "#D9534F",
                                                                                 "dangerLight": "#FFBDAD",
                                                                                 "neutral0": "hsl(0, 0%, 100%)",
                                                                                 "neutral10": "hsl(0, 0%, 90%)",
@@ -4694,10 +4747,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "neutral70": "hsl(0, 0%, 30%)",
                                                                                 "neutral80": "hsl(0, 0%, 20%)",
                                                                                 "neutral90": "hsl(0, 0%, 10%)",
-                                                                                "primary": "#2684FF",
-                                                                                "primary25": "#DEEBFF",
-                                                                                "primary50": "#B2D4FF",
-                                                                                "primary75": "#4C9AFF",
+                                                                                "primary": "#2980B9",
+                                                                                "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                                "primary50": "#F2F9FC",
+                                                                                "primary75": "#009BF9",
                                                                               },
                                                                               "spacing": Object {
                                                                                 "baseUnit": 4,
@@ -4784,9 +4837,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "placeholder": "Loading...",
                                                                                 "promptTextCreator": undefined,
                                                                                 "screenReaderStatus": [Function],
-                                                                                "styles": Object {},
+                                                                                "styles": Object {
+                                                                                  "menu": [Function],
+                                                                                  "multiValue": [Function],
+                                                                                  "multiValueLabel": [Function],
+                                                                                  "multiValueRemove": [Function],
+                                                                                },
                                                                                 "tabIndex": "0",
                                                                                 "tabSelectsValue": true,
+                                                                                "theme": [Function],
                                                                                 "value": null,
                                                                               }
                                                                             }
@@ -4797,7 +4856,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               Object {
                                                                                 "borderRadius": 4,
                                                                                 "colors": Object {
-                                                                                  "danger": "#DE350B",
+                                                                                  "danger": "#D9534F",
                                                                                   "dangerLight": "#FFBDAD",
                                                                                   "neutral0": "hsl(0, 0%, 100%)",
                                                                                   "neutral10": "hsl(0, 0%, 90%)",
@@ -4810,10 +4869,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "neutral70": "hsl(0, 0%, 30%)",
                                                                                   "neutral80": "hsl(0, 0%, 20%)",
                                                                                   "neutral90": "hsl(0, 0%, 10%)",
-                                                                                  "primary": "#2684FF",
-                                                                                  "primary25": "#DEEBFF",
-                                                                                  "primary50": "#B2D4FF",
-                                                                                  "primary75": "#4C9AFF",
+                                                                                  "primary": "#2980B9",
+                                                                                  "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                                  "primary50": "#F2F9FC",
+                                                                                  "primary75": "#009BF9",
                                                                                 },
                                                                                 "spacing": Object {
                                                                                   "baseUnit": 4,
@@ -4998,9 +5057,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "placeholder": "Loading...",
                                                                         "promptTextCreator": undefined,
                                                                         "screenReaderStatus": [Function],
-                                                                        "styles": Object {},
+                                                                        "styles": Object {
+                                                                          "menu": [Function],
+                                                                          "multiValue": [Function],
+                                                                          "multiValueLabel": [Function],
+                                                                          "multiValueRemove": [Function],
+                                                                        },
                                                                         "tabIndex": "0",
                                                                         "tabSelectsValue": true,
+                                                                        "theme": [Function],
                                                                         "value": null,
                                                                       }
                                                                     }
@@ -5009,7 +5074,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       Object {
                                                                         "borderRadius": 4,
                                                                         "colors": Object {
-                                                                          "danger": "#DE350B",
+                                                                          "danger": "#D9534F",
                                                                           "dangerLight": "#FFBDAD",
                                                                           "neutral0": "hsl(0, 0%, 100%)",
                                                                           "neutral10": "hsl(0, 0%, 90%)",
@@ -5022,10 +5087,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           "neutral70": "hsl(0, 0%, 30%)",
                                                                           "neutral80": "hsl(0, 0%, 20%)",
                                                                           "neutral90": "hsl(0, 0%, 10%)",
-                                                                          "primary": "#2684FF",
-                                                                          "primary25": "#DEEBFF",
-                                                                          "primary50": "#B2D4FF",
-                                                                          "primary75": "#4C9AFF",
+                                                                          "primary": "#2980B9",
+                                                                          "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                          "primary50": "#F2F9FC",
+                                                                          "primary75": "#009BF9",
                                                                         },
                                                                         "spacing": Object {
                                                                           "baseUnit": 4,
@@ -5117,9 +5182,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "placeholder": "Loading...",
                                                                               "promptTextCreator": undefined,
                                                                               "screenReaderStatus": [Function],
-                                                                              "styles": Object {},
+                                                                              "styles": Object {
+                                                                                "menu": [Function],
+                                                                                "multiValue": [Function],
+                                                                                "multiValueLabel": [Function],
+                                                                                "multiValueRemove": [Function],
+                                                                              },
                                                                               "tabIndex": "0",
                                                                               "tabSelectsValue": true,
+                                                                              "theme": [Function],
                                                                               "value": null,
                                                                             }
                                                                           }
@@ -5128,7 +5199,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             Object {
                                                                               "borderRadius": 4,
                                                                               "colors": Object {
-                                                                                "danger": "#DE350B",
+                                                                                "danger": "#D9534F",
                                                                                 "dangerLight": "#FFBDAD",
                                                                                 "neutral0": "hsl(0, 0%, 100%)",
                                                                                 "neutral10": "hsl(0, 0%, 90%)",
@@ -5141,10 +5212,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "neutral70": "hsl(0, 0%, 30%)",
                                                                                 "neutral80": "hsl(0, 0%, 20%)",
                                                                                 "neutral90": "hsl(0, 0%, 10%)",
-                                                                                "primary": "#2684FF",
-                                                                                "primary25": "#DEEBFF",
-                                                                                "primary50": "#B2D4FF",
-                                                                                "primary75": "#4C9AFF",
+                                                                                "primary": "#2980B9",
+                                                                                "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                                "primary50": "#F2F9FC",
+                                                                                "primary75": "#009BF9",
                                                                               },
                                                                               "spacing": Object {
                                                                                 "baseUnit": 4,
@@ -5247,9 +5318,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "placeholder": "Loading...",
                                                                               "promptTextCreator": undefined,
                                                                               "screenReaderStatus": [Function],
-                                                                              "styles": Object {},
+                                                                              "styles": Object {
+                                                                                "menu": [Function],
+                                                                                "multiValue": [Function],
+                                                                                "multiValueLabel": [Function],
+                                                                                "multiValueRemove": [Function],
+                                                                              },
                                                                               "tabIndex": "0",
                                                                               "tabSelectsValue": true,
+                                                                              "theme": [Function],
                                                                               "value": null,
                                                                             }
                                                                           }
@@ -5258,7 +5335,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             Object {
                                                                               "borderRadius": 4,
                                                                               "colors": Object {
-                                                                                "danger": "#DE350B",
+                                                                                "danger": "#D9534F",
                                                                                 "dangerLight": "#FFBDAD",
                                                                                 "neutral0": "hsl(0, 0%, 100%)",
                                                                                 "neutral10": "hsl(0, 0%, 90%)",
@@ -5271,10 +5348,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "neutral70": "hsl(0, 0%, 30%)",
                                                                                 "neutral80": "hsl(0, 0%, 20%)",
                                                                                 "neutral90": "hsl(0, 0%, 10%)",
-                                                                                "primary": "#2684FF",
-                                                                                "primary25": "#DEEBFF",
-                                                                                "primary50": "#B2D4FF",
-                                                                                "primary75": "#4C9AFF",
+                                                                                "primary": "#2980B9",
+                                                                                "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                                "primary50": "#F2F9FC",
+                                                                                "primary75": "#009BF9",
                                                                               },
                                                                               "spacing": Object {
                                                                                 "baseUnit": 4,
@@ -5485,7 +5562,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                         <QuerySelect
                                           componentId="entity-sampleSet"
                                           delimiter=","
-                                          filterOptions={[Function]}
+                                          filterOption={[Function]}
                                           fireQSChangeOnInit={false}
                                           formsy={false}
                                           loadOnChange={true}
@@ -5561,6 +5638,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                     onChange={[Function]}
                                                     onFocus={[Function]}
                                                     placeholder="Loading..."
+                                                    styles={
+                                                      Object {
+                                                        "menu": [Function],
+                                                        "multiValue": [Function],
+                                                        "multiValueLabel": [Function],
+                                                        "multiValueRemove": [Function],
+                                                      }
+                                                    }
+                                                    theme={[Function]}
                                                   >
                                                     <Select
                                                       aria-live="polite"
@@ -5614,9 +5700,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       pageSize={5}
                                                       placeholder="Loading..."
                                                       screenReaderStatus={[Function]}
-                                                      styles={Object {}}
+                                                      styles={
+                                                        Object {
+                                                          "menu": [Function],
+                                                          "multiValue": [Function],
+                                                          "multiValueLabel": [Function],
+                                                          "multiValueRemove": [Function],
+                                                        }
+                                                      }
                                                       tabIndex="0"
                                                       tabSelectsValue={true}
+                                                      theme={[Function]}
                                                       value={null}
                                                     >
                                                       <SelectContainer
@@ -5691,9 +5785,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "placeholder": "Loading...",
                                                             "promptTextCreator": undefined,
                                                             "screenReaderStatus": [Function],
-                                                            "styles": Object {},
+                                                            "styles": Object {
+                                                              "menu": [Function],
+                                                              "multiValue": [Function],
+                                                              "multiValueLabel": [Function],
+                                                              "multiValueRemove": [Function],
+                                                            },
                                                             "tabIndex": "0",
                                                             "tabSelectsValue": true,
+                                                            "theme": [Function],
                                                             "value": null,
                                                           }
                                                         }
@@ -5702,7 +5802,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           Object {
                                                             "borderRadius": 4,
                                                             "colors": Object {
-                                                              "danger": "#DE350B",
+                                                              "danger": "#D9534F",
                                                               "dangerLight": "#FFBDAD",
                                                               "neutral0": "hsl(0, 0%, 100%)",
                                                               "neutral10": "hsl(0, 0%, 90%)",
@@ -5715,10 +5815,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                               "neutral70": "hsl(0, 0%, 30%)",
                                                               "neutral80": "hsl(0, 0%, 20%)",
                                                               "neutral90": "hsl(0, 0%, 10%)",
-                                                              "primary": "#2684FF",
-                                                              "primary25": "#DEEBFF",
-                                                              "primary50": "#B2D4FF",
-                                                              "primary75": "#4C9AFF",
+                                                              "primary": "#2980B9",
+                                                              "primary25": "rgba(41, 128, 185, 0.1)",
+                                                              "primary50": "#F2F9FC",
+                                                              "primary75": "#009BF9",
                                                             },
                                                             "spacing": Object {
                                                               "baseUnit": 4,
@@ -5817,9 +5917,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "placeholder": "Loading...",
                                                                   "promptTextCreator": undefined,
                                                                   "screenReaderStatus": [Function],
-                                                                  "styles": Object {},
+                                                                  "styles": Object {
+                                                                    "menu": [Function],
+                                                                    "multiValue": [Function],
+                                                                    "multiValueLabel": [Function],
+                                                                    "multiValueRemove": [Function],
+                                                                  },
                                                                   "tabIndex": "0",
                                                                   "tabSelectsValue": true,
+                                                                  "theme": [Function],
                                                                   "value": null,
                                                                 }
                                                               }
@@ -5829,7 +5935,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                 Object {
                                                                   "borderRadius": 4,
                                                                   "colors": Object {
-                                                                    "danger": "#DE350B",
+                                                                    "danger": "#D9534F",
                                                                     "dangerLight": "#FFBDAD",
                                                                     "neutral0": "hsl(0, 0%, 100%)",
                                                                     "neutral10": "hsl(0, 0%, 90%)",
@@ -5842,10 +5948,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     "neutral70": "hsl(0, 0%, 30%)",
                                                                     "neutral80": "hsl(0, 0%, 20%)",
                                                                     "neutral90": "hsl(0, 0%, 10%)",
-                                                                    "primary": "#2684FF",
-                                                                    "primary25": "#DEEBFF",
-                                                                    "primary50": "#B2D4FF",
-                                                                    "primary75": "#4C9AFF",
+                                                                    "primary": "#2980B9",
+                                                                    "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                    "primary50": "#F2F9FC",
+                                                                    "primary75": "#009BF9",
                                                                   },
                                                                   "spacing": Object {
                                                                     "baseUnit": 4,
@@ -5957,9 +6063,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "placeholder": "Loading...",
                                                                   "promptTextCreator": undefined,
                                                                   "screenReaderStatus": [Function],
-                                                                  "styles": Object {},
+                                                                  "styles": Object {
+                                                                    "menu": [Function],
+                                                                    "multiValue": [Function],
+                                                                    "multiValueLabel": [Function],
+                                                                    "multiValueRemove": [Function],
+                                                                  },
                                                                   "tabIndex": "0",
                                                                   "tabSelectsValue": true,
+                                                                  "theme": [Function],
                                                                   "value": null,
                                                                 }
                                                               }
@@ -5968,7 +6080,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                 Object {
                                                                   "borderRadius": 4,
                                                                   "colors": Object {
-                                                                    "danger": "#DE350B",
+                                                                    "danger": "#D9534F",
                                                                     "dangerLight": "#FFBDAD",
                                                                     "neutral0": "hsl(0, 0%, 100%)",
                                                                     "neutral10": "hsl(0, 0%, 90%)",
@@ -5981,10 +6093,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     "neutral70": "hsl(0, 0%, 30%)",
                                                                     "neutral80": "hsl(0, 0%, 20%)",
                                                                     "neutral90": "hsl(0, 0%, 10%)",
-                                                                    "primary": "#2684FF",
-                                                                    "primary25": "#DEEBFF",
-                                                                    "primary50": "#B2D4FF",
-                                                                    "primary75": "#4C9AFF",
+                                                                    "primary": "#2980B9",
+                                                                    "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                    "primary50": "#F2F9FC",
+                                                                    "primary75": "#009BF9",
                                                                   },
                                                                   "spacing": Object {
                                                                     "baseUnit": 4,
@@ -6094,9 +6206,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "placeholder": "Loading...",
                                                                         "promptTextCreator": undefined,
                                                                         "screenReaderStatus": [Function],
-                                                                        "styles": Object {},
+                                                                        "styles": Object {
+                                                                          "menu": [Function],
+                                                                          "multiValue": [Function],
+                                                                          "multiValueLabel": [Function],
+                                                                          "multiValueRemove": [Function],
+                                                                        },
                                                                         "tabIndex": "0",
                                                                         "tabSelectsValue": true,
+                                                                        "theme": [Function],
                                                                         "value": null,
                                                                       }
                                                                     }
@@ -6105,7 +6223,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       Object {
                                                                         "borderRadius": 4,
                                                                         "colors": Object {
-                                                                          "danger": "#DE350B",
+                                                                          "danger": "#D9534F",
                                                                           "dangerLight": "#FFBDAD",
                                                                           "neutral0": "hsl(0, 0%, 100%)",
                                                                           "neutral10": "hsl(0, 0%, 90%)",
@@ -6118,10 +6236,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           "neutral70": "hsl(0, 0%, 30%)",
                                                                           "neutral80": "hsl(0, 0%, 20%)",
                                                                           "neutral90": "hsl(0, 0%, 10%)",
-                                                                          "primary": "#2684FF",
-                                                                          "primary25": "#DEEBFF",
-                                                                          "primary50": "#B2D4FF",
-                                                                          "primary75": "#4C9AFF",
+                                                                          "primary": "#2980B9",
+                                                                          "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                          "primary50": "#F2F9FC",
+                                                                          "primary75": "#009BF9",
                                                                         },
                                                                         "spacing": Object {
                                                                           "baseUnit": 4,
@@ -6218,9 +6336,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "placeholder": "Loading...",
                                                                               "promptTextCreator": undefined,
                                                                               "screenReaderStatus": [Function],
-                                                                              "styles": Object {},
+                                                                              "styles": Object {
+                                                                                "menu": [Function],
+                                                                                "multiValue": [Function],
+                                                                                "multiValueLabel": [Function],
+                                                                                "multiValueRemove": [Function],
+                                                                              },
                                                                               "tabIndex": "0",
                                                                               "tabSelectsValue": true,
+                                                                              "theme": [Function],
                                                                               "value": null,
                                                                             }
                                                                           }
@@ -6229,7 +6353,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             Object {
                                                                               "borderRadius": 4,
                                                                               "colors": Object {
-                                                                                "danger": "#DE350B",
+                                                                                "danger": "#D9534F",
                                                                                 "dangerLight": "#FFBDAD",
                                                                                 "neutral0": "hsl(0, 0%, 100%)",
                                                                                 "neutral10": "hsl(0, 0%, 90%)",
@@ -6242,10 +6366,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "neutral70": "hsl(0, 0%, 30%)",
                                                                                 "neutral80": "hsl(0, 0%, 20%)",
                                                                                 "neutral90": "hsl(0, 0%, 10%)",
-                                                                                "primary": "#2684FF",
-                                                                                "primary25": "#DEEBFF",
-                                                                                "primary50": "#B2D4FF",
-                                                                                "primary75": "#4C9AFF",
+                                                                                "primary": "#2980B9",
+                                                                                "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                                "primary50": "#F2F9FC",
+                                                                                "primary75": "#009BF9",
                                                                               },
                                                                               "spacing": Object {
                                                                                 "baseUnit": 4,
@@ -6353,9 +6477,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "placeholder": "Loading...",
                                                                               "promptTextCreator": undefined,
                                                                               "screenReaderStatus": [Function],
-                                                                              "styles": Object {},
+                                                                              "styles": Object {
+                                                                                "menu": [Function],
+                                                                                "multiValue": [Function],
+                                                                                "multiValueLabel": [Function],
+                                                                                "multiValueRemove": [Function],
+                                                                              },
                                                                               "tabIndex": "0",
                                                                               "tabSelectsValue": true,
+                                                                              "theme": [Function],
                                                                               "value": null,
                                                                             }
                                                                           }
@@ -6366,7 +6496,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             Object {
                                                                               "borderRadius": 4,
                                                                               "colors": Object {
-                                                                                "danger": "#DE350B",
+                                                                                "danger": "#D9534F",
                                                                                 "dangerLight": "#FFBDAD",
                                                                                 "neutral0": "hsl(0, 0%, 100%)",
                                                                                 "neutral10": "hsl(0, 0%, 90%)",
@@ -6379,10 +6509,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "neutral70": "hsl(0, 0%, 30%)",
                                                                                 "neutral80": "hsl(0, 0%, 20%)",
                                                                                 "neutral90": "hsl(0, 0%, 10%)",
-                                                                                "primary": "#2684FF",
-                                                                                "primary25": "#DEEBFF",
-                                                                                "primary50": "#B2D4FF",
-                                                                                "primary75": "#4C9AFF",
+                                                                                "primary": "#2980B9",
+                                                                                "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                                "primary50": "#F2F9FC",
+                                                                                "primary75": "#009BF9",
                                                                               },
                                                                               "spacing": Object {
                                                                                 "baseUnit": 4,
@@ -6469,9 +6599,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "placeholder": "Loading...",
                                                                                 "promptTextCreator": undefined,
                                                                                 "screenReaderStatus": [Function],
-                                                                                "styles": Object {},
+                                                                                "styles": Object {
+                                                                                  "menu": [Function],
+                                                                                  "multiValue": [Function],
+                                                                                  "multiValueLabel": [Function],
+                                                                                  "multiValueRemove": [Function],
+                                                                                },
                                                                                 "tabIndex": "0",
                                                                                 "tabSelectsValue": true,
+                                                                                "theme": [Function],
                                                                                 "value": null,
                                                                               }
                                                                             }
@@ -6482,7 +6618,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               Object {
                                                                                 "borderRadius": 4,
                                                                                 "colors": Object {
-                                                                                  "danger": "#DE350B",
+                                                                                  "danger": "#D9534F",
                                                                                   "dangerLight": "#FFBDAD",
                                                                                   "neutral0": "hsl(0, 0%, 100%)",
                                                                                   "neutral10": "hsl(0, 0%, 90%)",
@@ -6495,10 +6631,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "neutral70": "hsl(0, 0%, 30%)",
                                                                                   "neutral80": "hsl(0, 0%, 20%)",
                                                                                   "neutral90": "hsl(0, 0%, 10%)",
-                                                                                  "primary": "#2684FF",
-                                                                                  "primary25": "#DEEBFF",
-                                                                                  "primary50": "#B2D4FF",
-                                                                                  "primary75": "#4C9AFF",
+                                                                                  "primary": "#2980B9",
+                                                                                  "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                                  "primary50": "#F2F9FC",
+                                                                                  "primary75": "#009BF9",
                                                                                 },
                                                                                 "spacing": Object {
                                                                                   "baseUnit": 4,
@@ -6683,9 +6819,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "placeholder": "Loading...",
                                                                         "promptTextCreator": undefined,
                                                                         "screenReaderStatus": [Function],
-                                                                        "styles": Object {},
+                                                                        "styles": Object {
+                                                                          "menu": [Function],
+                                                                          "multiValue": [Function],
+                                                                          "multiValueLabel": [Function],
+                                                                          "multiValueRemove": [Function],
+                                                                        },
                                                                         "tabIndex": "0",
                                                                         "tabSelectsValue": true,
+                                                                        "theme": [Function],
                                                                         "value": null,
                                                                       }
                                                                     }
@@ -6694,7 +6836,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       Object {
                                                                         "borderRadius": 4,
                                                                         "colors": Object {
-                                                                          "danger": "#DE350B",
+                                                                          "danger": "#D9534F",
                                                                           "dangerLight": "#FFBDAD",
                                                                           "neutral0": "hsl(0, 0%, 100%)",
                                                                           "neutral10": "hsl(0, 0%, 90%)",
@@ -6707,10 +6849,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           "neutral70": "hsl(0, 0%, 30%)",
                                                                           "neutral80": "hsl(0, 0%, 20%)",
                                                                           "neutral90": "hsl(0, 0%, 10%)",
-                                                                          "primary": "#2684FF",
-                                                                          "primary25": "#DEEBFF",
-                                                                          "primary50": "#B2D4FF",
-                                                                          "primary75": "#4C9AFF",
+                                                                          "primary": "#2980B9",
+                                                                          "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                          "primary50": "#F2F9FC",
+                                                                          "primary75": "#009BF9",
                                                                         },
                                                                         "spacing": Object {
                                                                           "baseUnit": 4,
@@ -6802,9 +6944,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "placeholder": "Loading...",
                                                                               "promptTextCreator": undefined,
                                                                               "screenReaderStatus": [Function],
-                                                                              "styles": Object {},
+                                                                              "styles": Object {
+                                                                                "menu": [Function],
+                                                                                "multiValue": [Function],
+                                                                                "multiValueLabel": [Function],
+                                                                                "multiValueRemove": [Function],
+                                                                              },
                                                                               "tabIndex": "0",
                                                                               "tabSelectsValue": true,
+                                                                              "theme": [Function],
                                                                               "value": null,
                                                                             }
                                                                           }
@@ -6813,7 +6961,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             Object {
                                                                               "borderRadius": 4,
                                                                               "colors": Object {
-                                                                                "danger": "#DE350B",
+                                                                                "danger": "#D9534F",
                                                                                 "dangerLight": "#FFBDAD",
                                                                                 "neutral0": "hsl(0, 0%, 100%)",
                                                                                 "neutral10": "hsl(0, 0%, 90%)",
@@ -6826,10 +6974,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "neutral70": "hsl(0, 0%, 30%)",
                                                                                 "neutral80": "hsl(0, 0%, 20%)",
                                                                                 "neutral90": "hsl(0, 0%, 10%)",
-                                                                                "primary": "#2684FF",
-                                                                                "primary25": "#DEEBFF",
-                                                                                "primary50": "#B2D4FF",
-                                                                                "primary75": "#4C9AFF",
+                                                                                "primary": "#2980B9",
+                                                                                "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                                "primary50": "#F2F9FC",
+                                                                                "primary75": "#009BF9",
                                                                               },
                                                                               "spacing": Object {
                                                                                 "baseUnit": 4,
@@ -6932,9 +7080,15 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "placeholder": "Loading...",
                                                                               "promptTextCreator": undefined,
                                                                               "screenReaderStatus": [Function],
-                                                                              "styles": Object {},
+                                                                              "styles": Object {
+                                                                                "menu": [Function],
+                                                                                "multiValue": [Function],
+                                                                                "multiValueLabel": [Function],
+                                                                                "multiValueRemove": [Function],
+                                                                              },
                                                                               "tabIndex": "0",
                                                                               "tabSelectsValue": true,
+                                                                              "theme": [Function],
                                                                               "value": null,
                                                                             }
                                                                           }
@@ -6943,7 +7097,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             Object {
                                                                               "borderRadius": 4,
                                                                               "colors": Object {
-                                                                                "danger": "#DE350B",
+                                                                                "danger": "#D9534F",
                                                                                 "dangerLight": "#FFBDAD",
                                                                                 "neutral0": "hsl(0, 0%, 100%)",
                                                                                 "neutral10": "hsl(0, 0%, 90%)",
@@ -6956,10 +7110,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "neutral70": "hsl(0, 0%, 30%)",
                                                                                 "neutral80": "hsl(0, 0%, 20%)",
                                                                                 "neutral90": "hsl(0, 0%, 10%)",
-                                                                                "primary": "#2684FF",
-                                                                                "primary25": "#DEEBFF",
-                                                                                "primary50": "#B2D4FF",
-                                                                                "primary75": "#4C9AFF",
+                                                                                "primary": "#2980B9",
+                                                                                "primary25": "rgba(41, 128, 185, 0.1)",
+                                                                                "primary50": "#F2F9FC",
+                                                                                "primary75": "#009BF9",
                                                                               },
                                                                               "spacing": Object {
                                                                                 "baseUnit": 4,

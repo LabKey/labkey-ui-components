@@ -25,6 +25,34 @@ import { FieldLabel } from '../FieldLabel';
 
 import { generateId, QueryColumn } from '../../../..';
 
+const customStyles = {
+    // ReactSelect v1 had a zIndex value of "1000" where as ReactSelect v4.3.1 has a value of "2"
+    // which results in layout conflicts in our apps. This reverts to the v1 value.
+    menu: provided => ({ ...provided, zIndex: 1000 }),
+    multiValue: styles => ({ ...styles, backgroundColor: '#F2F9FC' }),
+    multiValueLabel: styles => ({ ...styles, color: '#08C' }),
+    multiValueRemove: styles => ({
+        ...styles,
+        color: '#08C',
+        ':hover': {
+            backgroundColor: '#2980B9',
+            color: 'white',
+        },
+    }),
+};
+
+const customTheme = theme => ({
+    ...theme,
+    colors: {
+        ...theme.colors,
+        danger: '#D9534F',
+        primary: '#2980B9',
+        primary75: '#009BF9',
+        primary50: '#F2F9FC',
+        primary25: 'rgba(41, 128, 185, 0.1)',
+    },
+});
+
 // Molded from @types/react-select/src/filter.d.ts
 export interface SelectInputOption {
     data?: any;
@@ -120,15 +148,17 @@ export interface SelectInputProps {
     // backspaceRemoves?: boolean;  -- RENAMED: backspaceRemovesValue
     backspaceRemovesValue?: boolean;
     cacheOptions?: boolean;
-    clearCacheOnChange?: boolean;
     clearable?: boolean;
+    clearCacheOnChange?: boolean;
     containerClass?: string;
     defaultOptions?: boolean | readonly any[];
     delimiter?: string;
     description?: string;
     disabled?: boolean;
-    filterOptions?: FilterOption;
+    filterOption?: FilterOption;
+    // filterOptions?: FilterOption;  -- RENAMED: filterOption
     formsy?: boolean;
+    id?: any;
     // ignoreCase?: boolean;  -- REMOVED. Use createFilter() instead.
     initiallyDisabled?: boolean;
     inputClass?: string;
@@ -136,8 +166,9 @@ export interface SelectInputProps {
     // FIXME: this is named incorrectly. I would expect that if this is true it would join the values, nope, it joins
     //   the values when false.
     joinValues?: boolean;
+    label?: ReactNode;
     labelClass?: string;
-    labelKey?: string; // no longer directly supported. Uses getOptionLabel() if "labelKey" is provided
+    labelKey?: string;
     loadOptions?: any; // no way to currently require one or the other, options/loadOptions
     multiple?: boolean;
     name?: string;
@@ -153,14 +184,11 @@ export interface SelectInputProps {
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     required?: boolean;
     saveOnBlur?: boolean;
-    selectedOptions?: any; // Option | Option[];
+    selectedOptions?: any;
     showLabel?: boolean;
+    value?: any;
     valueKey?: string;
     valueRenderer?: any;
-
-    id?: any;
-    label?: ReactNode;
-    value?: any;
 
     // from formsy-react
     getErrorMessage?: Function;
@@ -440,7 +468,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             defaultOptions,
             delimiter,
             disabled,
-            filterOptions,
+            filterOption,
             isLoading,
             labelKey,
             loadOptions,
@@ -476,7 +504,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             classNamePrefix: 'select-input',
             components,
             delimiter,
-            filterOption: filterOptions, // TODO: Rename to filterOption() and determine if "value" is still a property
+            filterOption,
             getOptionLabel: labelKey && labelKey !== 'label' ? this.getOptionLabel : undefined,
             getOptionValue: valueKey && valueKey !== 'value' ? this.getOptionValue : undefined,
             id: this.getId(),
@@ -493,6 +521,8 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             placeholder,
             promptTextCreator,
             ref: 'reactSelect',
+            styles: customStyles,
+            theme: customTheme,
             value: this.state.selectedOptions,
         };
 

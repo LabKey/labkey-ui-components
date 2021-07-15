@@ -375,7 +375,6 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                 placeholder="Select a Data Type ..."
                 required={true}
                 saveOnBlur={false}
-                showLabel={true}
                 valueKey="value"
               >
                 <div

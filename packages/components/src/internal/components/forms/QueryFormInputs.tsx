@@ -243,28 +243,30 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}
                                     <QuerySelect
+                                        addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
-                                        onToggleDisable={this.onToggleDisable}
-                                        initiallyDisabled={shouldDisableField}
                                         componentId={id}
+                                        containerPath={col.lookup.containerPath}
+                                        displayColumn={col.lookup.displayColumn}
                                         fireQSChangeOnInit={fireQSChangeOnInit}
+                                        formsy
+                                        initiallyDisabled={shouldDisableField}
                                         joinValues={joinValues}
                                         label={col.caption}
-                                        addLabelAsterisk={showAsteriskSymbol}
-                                        renderFieldLabel={renderFieldLabel}
                                         loadOnFocus
                                         maxRows={10}
                                         multiple={multiple}
                                         name={col.fieldKey}
                                         onQSChange={this.onQSChange}
+                                        onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."
                                         previewOptions={showQuerySelectPreviewOptions}
+                                        renderFieldLabel={renderFieldLabel}
                                         required={col.required}
                                         schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
-                                        displayColumn={col.lookup.displayColumn}
-                                        valueColumn={col.lookup.keyColumn}
-                                        containerPath={col.lookup.containerPath}
+                                        showLabel
                                         value={value}
+                                        valueColumn={col.lookup.keyColumn}
                                     />
                                 </React.Fragment>
                             );

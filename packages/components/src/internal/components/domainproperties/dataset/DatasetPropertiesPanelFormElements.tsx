@@ -144,13 +144,11 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                         <SelectInput
                             allowCreate
                             containerClass=""
-                            formsy={false}
                             inputClass=""
                             name="category"
                             onChange={onCategoryChange}
                             options={availableCategories}
                             placeholder="Select dataset category"
-                            showLabel={false}
                             value={model.category}
                         />
                     </Col>

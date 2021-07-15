@@ -44,10 +44,6 @@ export class AddRoleAssignmentInput extends React.PureComponent<Props, any> {
                 valueKey="userId"
                 labelKey="displayName"
                 onChange={this.onChange}
-                formsy={false}
-                showLabel={false}
-                multiple={false}
-                required={false}
             />
         );
     }

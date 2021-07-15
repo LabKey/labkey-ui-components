@@ -115,8 +115,6 @@ export class DataClassPropertiesPanelImpl extends PureComponent<
                         componentId={FORM_IDS.SAMPLE_TYPE_ID}
                         name={FORM_IDS.SAMPLE_TYPE_ID}
                         schemaQuery={SCHEMAS.EXP_TABLES.SAMPLE_SETS}
-                        formsy={false}
-                        showLabel={false}
                         onQSChange={this.onChange}
                         value={model.sampleSet}
                     />
@@ -140,8 +138,6 @@ export class DataClassPropertiesPanelImpl extends PureComponent<
                         schemaQuery={SCHEMAS.EXP_TABLES.DATA_CLASS_CATEGORY_TYPE}
                         displayColumn="Value"
                         valueColumn="Value"
-                        formsy={false}
-                        showLabel={false}
                         onQSChange={this.onChange}
                         value={model.category}
                     />

@@ -91,7 +91,9 @@ export function resolveDetailEditRenderer(
                 return (
                     <QuerySelect
                         componentId={col.fieldKey}
+                        containerPath={col.lookup.containerPath}
                         displayColumn={col.lookup.displayColumn}
+                        formsy
                         inputClass="col-sm-12"
                         joinValues={joinValues}
                         label={col.caption}
@@ -103,7 +105,6 @@ export function resolveDetailEditRenderer(
                         schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
                         value={resolveDetailFieldValue(data, true)}
                         valueColumn={col.lookup.keyColumn}
-                        containerPath={col.lookup.containerPath}
                     />
                 );
             }

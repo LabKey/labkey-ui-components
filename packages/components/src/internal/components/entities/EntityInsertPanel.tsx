@@ -546,7 +546,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 return (
                     <div className="form-group row" key={key}>
                         <SelectInput
-                            formsy={false}
                             containerClass=""
                             inputClass="col-sm-5"
                             label={capNounSingular + ' ' + index + ' Type'}
@@ -641,7 +640,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             <>
                 {insertModel.isInit && (
                     <SelectInput
-                        formsy={false}
                         inputClass="col-sm-5"
                         label={this.capTypeTextSingular}
                         labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"

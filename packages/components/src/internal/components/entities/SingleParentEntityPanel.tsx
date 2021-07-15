@@ -112,7 +112,6 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
             <div className="bottom-spacing" key={'parent-selections-' + index}>
                 <div className="form-group row">
                     <SelectInput
-                        formsy={false}
                         containerClass=""
                         inputClass="col-sm-6"
                         label={parentDataType.typeNounSingular + ' ' + (index + 1)}
@@ -138,7 +137,6 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                     <QuerySelect
                         componentId={'parentEntityValue_' + chosenType.label} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
                         containerClass="row"
-                        formsy={false}
                         inputClass="col-sm-6"
                         label={capitalizeFirstChar(parentDataType.nounSingular) + ' IDs'}
                         labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--parent-select"
@@ -147,7 +145,6 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         onInitValue={this.onInitValue}
                         onQSChange={this.onChangeParentValue}
                         schemaQuery={parentSchemaQuery}
-                        showLabel
                         showLoading
                         value={value}
                         valueColumn="Name"

@@ -188,11 +188,7 @@ export class CommentSortDirectionDropDown extends PureComponent<IssuesListDefBas
                         inputClass="col-xs-12"
                         valueKey="id"
                         onChange={this.onChange}
-                        value={model.commentSortDirection ? model.commentSortDirection : 'ASC'}
-                        formsy={false}
-                        showLabel={true}
-                        multiple={false}
-                        required={false}
+                        value={model.commentSortDirection ?? 'ASC'}
                         clearable={false}
                     />
                 </Col>
@@ -233,10 +229,6 @@ export class AssignedToGroupInput extends PureComponent<AssignmentOptionsInputPr
                             labelKey="displayName"
                             onChange={this.onChange}
                             value={model.assignedToGroup ? model.assignedToGroup : undefined}
-                            formsy={false}
-                            showLabel={false}
-                            multiple={false}
-                            required={false}
                         />
                     )}
                 </Col>
@@ -275,10 +267,6 @@ export class DefaultUserAssignmentInput extends PureComponent<AssignmentOptionsI
                             labelKey="displayName"
                             onChange={this.onChange}
                             value={model.assignedToUser}
-                            formsy={false}
-                            showLabel={false}
-                            multiple={false}
-                            required={false}
                         />
                     )}
                 </Col>

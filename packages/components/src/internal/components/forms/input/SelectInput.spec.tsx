@@ -31,13 +31,6 @@ describe('SelectInput', () => {
         };
     }
 
-    function setSelectInput(component, value): void {
-        const input = component.find('input');
-        input.getDOMNode().setAttribute('value', value);
-        input.simulate('change', { currentTarget: input });
-        input.simulate('blur');
-    }
-
     test('Should apply css classes', () => {
         const containerCls = 'container-class-test';
         const inputCls = 'input-class-test';

@@ -247,10 +247,6 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
                     name="audit-log-query-select"
                     placeholder="Select an audit event type..."
                     inputClass="col-xs-6"
-                    formsy={false}
-                    showLabel={false}
-                    multiple={false}
-                    required={false}
                     value={this.state.selected}
                     onChange={this.onSelectionChange}
                     options={auditQueries}

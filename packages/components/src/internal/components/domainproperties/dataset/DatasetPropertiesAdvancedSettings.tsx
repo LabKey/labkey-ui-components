@@ -59,9 +59,6 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
                         inputClass=""
                         containerClass=""
                         labelClass=""
-                        formsy={false}
-                        multiple={false}
-                        required={false}
                         name={name}
                         labelKey={labelKey}
                         valueKey={valueKey}

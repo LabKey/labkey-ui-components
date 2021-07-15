@@ -41,9 +41,6 @@ export class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
                     valueKey="name"
                     labelKey="name"
                     key="name"
-                    formsy={false}
-                    multiple={false}
-                    required={false}
                     disabled={disabled}
                     onChange={onSelectChange}
                     value={titleColumn}

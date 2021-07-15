@@ -98,13 +98,9 @@ export const SelectViewInput: FC<Props> = memo(props => {
     return (
         <SelectInput
             clearable={false}
-            formsy={false}
             inputClass="col-xs-4 col-md-2"
-            multiple={false}
             name="select-view-input"
             placeholder="Select a view..."
-            required={false}
-            showLabel={false}
             {...selectInputProps}
             id={id}
             onChange={onChange}

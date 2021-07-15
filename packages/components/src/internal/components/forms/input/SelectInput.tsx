@@ -223,7 +223,6 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         inputClass: 'col-sm-9 col-xs-12',
         labelClass: 'control-label col-sm-3 text-left col-xs-12',
         saveOnBlur: false,
-        showLabel: true,
         valueKey: 'value',
     };
 
@@ -402,7 +401,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         } = this.props;
         const { isDisabled } = this.state;
 
-        if (showLabel && label !== undefined) {
+        if (showLabel !== false && label !== undefined) {
             if (Utils.isString(label)) {
                 let description = this.props.description;
                 if (!description) {
@@ -582,7 +581,7 @@ export const SelectInput: FC<SelectInputProps> = props => {
 };
 
 SelectInput.defaultProps = {
-    formsy: true,
+    formsy: false,
 };
 
 SelectInput.displayName = 'SelectInput';

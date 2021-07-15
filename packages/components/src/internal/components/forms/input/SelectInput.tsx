@@ -106,11 +106,11 @@ function equalValues(a: any, b: any): boolean {
 
 // ReactSelect no longer supports primitives as "value"
 function initOptionFromPrimitive(value: string | number, props: SelectInputProps): any {
-    const { labelKey = 'label', options, valueKey } = props;
+    const { labelKey = 'label', options, valueKey = 'value' } = props;
     return options?.find(o => o[valueKey] === value) ?? { [labelKey]: value, [valueKey]: value };
 }
 
-function initOptions(props: SelectInputProps): any {
+export function initOptions(props: SelectInputProps): any {
     const { value } = props;
     let options;
 
@@ -248,11 +248,11 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
     };
 
     componentDidUpdate(prevProps: SelectInputProps): void {
-        if (!this.change && !equalValues(this.props.value, prevProps.value)) {
-            if (this.props.autoValue) {
+        if (!this.change) {
+            if (this.props.autoValue && !equalValues(this.props.value, prevProps.value)) {
                 // This allows for "late-bound" value
                 this._setOptionsAndValue(initOptions(this.props));
-            } else {
+            } else if (this.props.selectedOptions !== prevProps.selectedOptions) {
                 this.setState({
                     selectedOptions: this.props.selectedOptions,
                     originalOptions: this.props.selectedOptions,

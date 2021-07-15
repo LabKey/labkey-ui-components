@@ -1,5 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version TBD
+*Released*: TBD
+* Item 9204: Sample type parent import alias inclusion in download template and display in details panel
+    * Add SampleTypeImportAliasRenderer and SourceTypeImportAliasRenderer to be used for sample type details panel rendering
+    * EntityInsertPanel update to get importAliases for target sample type to add to getTemplateUrl() params
+
 ### version 2.56.0
 *Released*: 14 July 2021
 * Add option to SearchBox to show a dropdown for searching by Ids
@@ -7,12 +14,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add PicklistButton
 * Slight update of styling in navbar
 * Add optional parameter to picklist components for recording metric counts for actions taken
-
-### version TBD
-*Released*: TBD
-* Item 9204: Sample type parent import alias inclusion in download template and display in details panel
-    * Add SampleTypeImportAliasRenderer and SourceTypeImportAliasRenderer to be used for sample type details panel rendering
-    * EntityInsertPanel update to get importAliases for target sample type to add to getTemplateUrl() params
 
 ### version 2.55.1
 *Released*: 14 July 2021

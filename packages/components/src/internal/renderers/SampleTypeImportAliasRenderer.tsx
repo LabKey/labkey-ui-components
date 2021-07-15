@@ -39,7 +39,8 @@ interface RendererProps extends Props {
     type: string;
 }
 
-const ImportAliasRenderer: FC<RendererProps> = memo(props => {
+// export for jest testing
+export const ImportAliasRenderer: FC<RendererProps> = memo(props => {
     const { type, data } = props;
     const aliasMap = data?.get('displayValue');
 

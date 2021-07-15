@@ -201,6 +201,22 @@ describe('resolveDetailRenderer', () => {
         wrapper.unmount();
     });
 
+    test('sampletypeimportaliasrenderer', () => {
+        const wrapper = mount(
+            <div>{resolveDetailRenderer(new QueryColumn({ detailRenderer: 'SampleTypeImportAliasRenderer' }))(Map())}</div>
+        );
+        validate(wrapper, { sampletypeimportaliasrenderer: 1 });
+        wrapper.unmount();
+    });
+
+    test('sourcetypeimportaliasrenderer', () => {
+        const wrapper = mount(
+            <div>{resolveDetailRenderer(new QueryColumn({ detailRenderer: 'SourceTypeImportAliasRenderer' }))(Map())}</div>
+        );
+        validate(wrapper, { sourcetypeimportaliasrenderer: 1 });
+        wrapper.unmount();
+    });
+
     test('bogus renderer', () => {
         expect(resolveDetailRenderer(new QueryColumn({ detailRenderer: 'BogusRenderer' }))).toBeUndefined();
     });

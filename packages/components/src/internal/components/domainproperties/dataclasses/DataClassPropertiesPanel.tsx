@@ -117,8 +117,6 @@ export class DataClassPropertiesPanelImpl extends PureComponent<
                         schemaQuery={SCHEMAS.EXP_TABLES.SAMPLE_SETS}
                         formsy={false}
                         showLabel={false}
-                        preLoad={true}
-                        loadOnChange={true}
                         onQSChange={this.onChange}
                         value={model.sampleSet}
                     />
@@ -144,8 +142,6 @@ export class DataClassPropertiesPanelImpl extends PureComponent<
                         valueColumn="Value"
                         formsy={false}
                         showLabel={false}
-                        preLoad={true}
-                        loadOnChange={true}
                         onQSChange={this.onChange}
                         value={model.category}
                     />

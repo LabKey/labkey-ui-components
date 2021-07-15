@@ -6,6 +6,11 @@ import { List } from 'immutable';
 
 import renderer from 'react-test-renderer';
 
+import {
+    SELECT_INPUT_DISABLED_SELECTOR,
+    SELECT_INPUT_PLACEHOLDER_SELECTOR,
+    SELECT_INPUT_SINGLE_VALUE_SELECTOR,
+} from '../../forms/input/SelectInputTestUtils';
 import { DEFAULT_LIST_SETTINGS } from '../../../../test/data/constants';
 import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.json';
 
@@ -50,8 +55,8 @@ describe('AdvancedSettings', () => {
             <DisplayTitle model={populatedExistingModel} onSelectChange={jest.fn()} titleColumn="Name" />
         );
 
-        expect(displayTitle.find('div.select-input__single-value').text()).toEqual('Name');
-        expect(displayTitle.exists('div.select-input--is-disabled')).toBeFalsy();
+        expect(displayTitle.find(SELECT_INPUT_SINGLE_VALUE_SELECTOR).text()).toEqual('Name');
+        expect(displayTitle.exists(SELECT_INPUT_DISABLED_SELECTOR)).toBeFalsy();
         displayTitle.unmount();
     });
 
@@ -60,8 +65,8 @@ describe('AdvancedSettings', () => {
             <DisplayTitle model={emptyNewModel} onSelectChange={jest.fn()} titleColumn={null} />
         );
 
-        expect(displayTitle.find('div.select-input__placeholder').text()).toEqual('No fields have been defined yet');
-        expect(displayTitle.exists('div.select-input--is-disabled')).toBeTruthy();
+        expect(displayTitle.find(SELECT_INPUT_PLACEHOLDER_SELECTOR).text()).toEqual('No fields have been defined yet');
+        expect(displayTitle.exists(SELECT_INPUT_DISABLED_SELECTOR)).toBeTruthy();
         displayTitle.unmount();
     });
 
@@ -72,8 +77,8 @@ describe('AdvancedSettings', () => {
             <DisplayTitle model={newModelWithOneField} onSelectChange={jest.fn()} titleColumn={null} />
         );
 
-        expect(displayTitle.find('div.select-input__placeholder').text()).toEqual('Auto');
-        expect(displayTitle.exists('div.select-input--is-disabled')).toBeFalsy();
+        expect(displayTitle.find(SELECT_INPUT_PLACEHOLDER_SELECTOR).text()).toEqual('Auto');
+        expect(displayTitle.exists(SELECT_INPUT_DISABLED_SELECTOR)).toBeFalsy();
         displayTitle.unmount();
     });
 

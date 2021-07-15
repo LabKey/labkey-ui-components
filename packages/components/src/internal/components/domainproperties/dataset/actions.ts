@@ -17,9 +17,8 @@
 import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
 
 import { fromJS, List } from 'immutable';
-// import { Option } from 'react-select';
 
-import { DomainDesign, DomainField, selectRows } from '../../../..';
+import { DomainDesign, DomainField, SelectInputOption, selectRows } from '../../../..';
 
 import { DatasetModel } from './models';
 import {
@@ -34,9 +33,7 @@ import {
     VISIT_DATE_TIP,
 } from './constants';
 
-type Option = any;
-
-export function fetchCategories(): Promise<List<Option>> {
+export function fetchCategories(): Promise<List<SelectInputOption>> {
     return new Promise((resolve, reject) => {
         selectRows({
             saveInSession: true,
@@ -45,7 +42,7 @@ export function fetchCategories(): Promise<List<Option>> {
         })
             .then(data => {
                 const models = fromJS(data.models[data.key]);
-                let categories = List<Option>();
+                let categories = List<SelectInputOption>();
 
                 data.orderedModels[data.key].forEach(modelKey => {
                     const row = models.get(modelKey);
@@ -63,8 +60,8 @@ export function fetchCategories(): Promise<List<Option>> {
     });
 }
 
-export function getVisitDateColumns(domain: DomainDesign): List<Option> {
-    let visitDateColumns = List<Option>();
+export function getVisitDateColumns(domain: DomainDesign): List<SelectInputOption> {
+    let visitDateColumns = List<SelectInputOption>();
 
     // date field is a built in field for a dataset for a date based study
     visitDateColumns = visitDateColumns.push({ value: 'date', label: 'date' });
@@ -78,8 +75,8 @@ export function getVisitDateColumns(domain: DomainDesign): List<Option> {
     return visitDateColumns;
 }
 
-export function getAdditionalKeyFields(domain: DomainDesign): List<Option> {
-    let additionalKeyFields = List<Option>();
+export function getAdditionalKeyFields(domain: DomainDesign): List<SelectInputOption> {
+    let additionalKeyFields = List<SelectInputOption>();
 
     // In a date-based or continuous study, an additional third key option is to use the Time (from Date/Time) portion of a datestamp field
     // where multiple measurements happen on a given day or visit (tracking primate weight for example), the time portion of the date field can be used as an additional key
@@ -94,7 +91,7 @@ export function getAdditionalKeyFields(domain: DomainDesign): List<Option> {
     return additionalKeyFields;
 }
 
-export function fetchCohorts(): Promise<List<Option>> {
+export function fetchCohorts(): Promise<List<SelectInputOption>> {
     return new Promise((resolve, reject) => {
         selectRows({
             schemaName: 'study',
@@ -102,7 +99,7 @@ export function fetchCohorts(): Promise<List<Option>> {
         })
             .then(data => {
                 const models = fromJS(data.models[data.key]);
-                let cohorts = List<Option>();
+                let cohorts = List<SelectInputOption>();
 
                 data.orderedModels[data.key].forEach(modelKey => {
                     const row = models.get(modelKey);

@@ -60,8 +60,8 @@ function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
     return rawSelectedValue;
 }
 
-// 33775: Provide a default no-op filter to a React Select to prevent "normal" filtering on the input when fetching
-// async query results. They have already been filtered.
+// Issue 33775: Provide a default no-op filter to a React Select to prevent "normal" filtering on the input
+// when fetching async query results. They have already been filtered.
 const noopFilterOptions = options => options;
 
 const PreviewOption: FC<any> = props => {
@@ -137,9 +137,11 @@ type InheritedSelectInputProps = Omit<
     | 'allowCreate'
     | 'autoValue'
     | 'cacheOptions'
+    | 'defaultOptions' // utilized by QuerySelect to support "preLoad" and "loadOnFocus" behaviors.
+    | 'isLoading' // utilized by QuerySelect to support "loadOnFocus" behavior.
     | 'labelKey'
     | 'loadOptions'
-    | 'onChange' // -- overridden by QuerySelect. See onQSChange().
+    | 'onChange' // overridden by QuerySelect. See onQSChange().
     | 'optionRenderer'
     | 'options'
     | 'valueKey'
@@ -151,7 +153,6 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     containerPath?: string;
     displayColumn?: string;
     fireQSChangeOnInit?: boolean;
-    loadOnChange?: boolean; // TODO: Hook "loadOnChange" to "clearCacheOnChange". May/may not fully overlap.
     loadOnFocus?: boolean;
     maxRows?: number;
     onQSChange?: (name: string, value: string | any[], items: any, selectedItems: Map<string, any>) => void;
@@ -165,31 +166,31 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
 }
 
 interface State {
+    defaultOptions: boolean | SelectInputOption[];
     error: any;
     focused: boolean;
+    isLoading: boolean;
     model: QuerySelectModel;
 }
-
-const INITIAL_STATE: State = { error: undefined, focused: false, model: undefined };
 
 export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
     static defaultProps = {
         delimiter: DELIMITER,
         filterOption: noopFilterOptions,
         fireQSChangeOnInit: false,
-        loadOnChange: false,
         loadOnFocus: false,
-        preLoad: false,
+        preLoad: true,
         previewOptions: false,
         showLoading: true,
     };
 
-    private _deferredLoad: () => void;
-    private readonly _loadOnFocusEnabled = false;
     private _mounted: boolean;
     private querySelectTimer: number;
 
-    state: Readonly<State> = INITIAL_STATE;
+    constructor(props: QuerySelectOwnProps) {
+        super(props);
+        this.state = this.getInitialState(props);
+    }
 
     componentDidMount(): void {
         this._mounted = true;
@@ -203,7 +204,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
     }
 
     initModel = async (): Promise<void> => {
-        this.setState(INITIAL_STATE);
+        this.setState(this.getInitialState(this.props));
 
         try {
             const model = await initSelect(this.props);
@@ -213,63 +214,47 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         }
     };
 
+    getInitialState = (props: QuerySelectOwnProps): State => {
+        return {
+            // See note in onFocus() regarding support for "loadOnFocus"
+            defaultOptions: props.preLoad !== false ? true : props.loadOnFocus ? [] : true,
+            error: undefined,
+            focused: false,
+            isLoading: undefined,
+            model: undefined,
+        };
+    };
+
     componentWillUnmount(): void {
         this._mounted = false;
         clearTimeout(this.querySelectTimer);
     }
 
-    loadOnFocus = (): boolean => {
-        // TODO: Works relatively well, however, the loading "..." still appears on the select until it is focused.
-        // Determine if there is a way to prevent it from displaying that symbol (passing "isLoading: false" does not work).
-        return this._loadOnFocusEnabled && !this.state.focused && (this.props.loadOnFocus || this.state.model.preLoad);
-    };
-
-    loadOptions = (input: string): Promise<any> => {
-        if (this.loadOnFocus()) {
-            return new Promise((resolve): void => {
-                this._deferredLoad = async (): Promise<void> => {
-                    resolve(await this._loadOptions(input));
-                };
-            });
-        }
-
-        return this._loadOptions(input);
-    };
-
-    _loadOptions = (input: string): Promise<any> => {
+    loadOptions = (input: string): Promise<SelectInputOption[]> => {
         clearTimeout(this.querySelectTimer);
 
         return new Promise((resolve): void => {
             const { model } = this.state;
 
-            const token = model.parseSearch(input);
+            this.querySelectTimer = window.setTimeout(() => {
+                this.querySelectTimer = undefined;
+                model.search(input).then(data => {
+                    const { model } = this.state;
 
-            if (token !== false) {
-                this.querySelectTimer = window.setTimeout(() => {
-                    this.querySelectTimer = undefined;
-                    const v = token === true ? input : token;
-                    model.search(v).then(data => {
-                        const { model } = this.state;
+                    // prevent stale state updates of ReactSelect
+                    if (this._mounted !== true) {
+                        return;
+                    }
 
-                        // prevent stale state updates of ReactSelect
-                        // -- yes, a cancelable promise would work as well
-                        if (this._mounted !== true) {
-                            return;
-                        }
+                    const models = fromJS(data.models[data.key]);
 
-                        const key = data.key,
-                            models = fromJS(data.models[key]);
+                    resolve(model.formatSavedResults(models, input));
 
-                        resolve(model.formatSavedResults(models, v));
-
-                        this.setState(() => ({
-                            model: model.saveSearchResults(models),
-                        }));
-                    });
-                }, 250);
-            } else {
-                resolve(model.formatSavedResults());
-            }
+                    this.setState(() => ({
+                        model: model.saveSearchResults(models),
+                    }));
+                });
+            }, 250);
         });
     };
 
@@ -286,15 +271,20 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         return <PreviewOption {...props} model={this.state.model} />;
     };
 
-    onFocus = (): void => {
-        if (this.loadOnFocus()) {
-            this.setState(
-                () => ({ focused: true }),
-                () => {
-                    this._deferredLoad?.();
-                    this._deferredLoad = undefined;
-                }
-            );
+    onFocus = async (): Promise<void> => {
+        // NK: To support loading the select upon focus (a.k.a. "loadOnFocus") we have to explicitly utilize
+        // the "defaultOptions" and "isLoading" properties of ReactSelect. These properties, in tandem with
+        // "loadOptions", allow for an asynchronous ReactSelect to defer requesting the initial options until
+        // desired. This follows the pattern outlined here:
+        // https://github.com/JedWatson/react-select/issues/1525#issuecomment-744157380
+        if (this.props.loadOnFocus && !this.state.focused) {
+            // Set and forget "focused" state so "loadOnFocus" only occurs on the initial focus.
+            this.setState({ focused: true, isLoading: true });
+
+            const defaultOptions = await this.loadOptions('');
+
+            // ReactSelect respects "isLoading" with a value of {undefined} differently from a value of {false}.
+            this.setState({ defaultOptions, isLoading: undefined });
         }
     };
 
@@ -309,14 +299,13 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             inputClass,
             label,
             labelClass,
-            loadOnChange,
             multiple,
             onToggleDisable,
             previewOptions,
             required,
             showLoading,
         } = this.props;
-        const { error, model } = this.state;
+        const { defaultOptions, error, isLoading, model } = this.state;
 
         if (error) {
             const inputProps = {
@@ -348,10 +337,11 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                 this.props,
                 {
                     allowCreate: false,
-                    autoValue: false, // QuerySelect will directly control value of ReactSelect via selectedOptions
+                    autoValue: false, // QuerySelect directly controls value of ReactSelect via selectedOptions
                     cacheOptions: true,
-                    clearCacheOnChange: loadOnChange,
+                    defaultOptions,
                     filterOption,
+                    isLoading,
                     loadOptions: this.loadOptions,
                     onChange: this.onChange,
                     onFocus: this.onFocus,

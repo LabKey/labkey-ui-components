@@ -16,7 +16,7 @@
 import React, { ReactNode } from 'react';
 import { Col, Checkbox, Radio, Row } from 'react-bootstrap';
 
-import CreatableSelect from 'react-select/creatable';
+import { SelectInput } from '../../forms/input/SelectInput';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
@@ -141,11 +141,16 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     </Col>
 
                     <Col xs={7}>
-                        <CreatableSelect
+                        <SelectInput
+                            allowCreate
+                            containerClass=""
+                            formsy={false}
+                            inputClass=""
                             name="category"
                             onChange={onCategoryChange}
                             options={availableCategories}
                             placeholder="Select dataset category"
+                            showLabel={false}
                             value={model.category}
                         />
                     </Col>

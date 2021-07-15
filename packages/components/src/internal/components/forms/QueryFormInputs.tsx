@@ -252,14 +252,12 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         label={col.caption}
                                         addLabelAsterisk={showAsteriskSymbol}
                                         renderFieldLabel={renderFieldLabel}
-                                        loadOnChange
                                         loadOnFocus
                                         maxRows={10}
                                         multiple={multiple}
                                         name={col.fieldKey}
                                         onQSChange={this.onQSChange}
                                         placeholder="Select or type to search..."
-                                        preLoad
                                         previewOptions={showQuerySelectPreviewOptions}
                                         required={col.required}
                                         schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}

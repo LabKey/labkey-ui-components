@@ -3,7 +3,10 @@ import { waitForLifecycle } from '../../../testHelpers';
 export const SELECT_INPUT_CSS_PREFIX = 'select-input';
 export const SELECT_INPUT_CONTROL_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}__control`;
 export const SELECT_INPUT_DROPDOWN_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}__dropdown-indicator`;
+export const SELECT_INPUT_DISABLED_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}--is-disabled`;
 export const SELECT_INPUT_OPTION_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}__option`;
+export const SELECT_INPUT_PLACEHOLDER_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}__placeholder`;
+export const SELECT_INPUT_SINGLE_VALUE_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}__single-value`;
 
 export async function selectOptionByIndex(component: any, index: number): Promise<void> {
     toggleSelectInputMenu(component);

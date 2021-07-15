@@ -30,7 +30,6 @@ export interface QuerySelectModelProps {
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
-    preLoad: boolean;
     queryFilters: List<Filter.IFilter>;
     queryInfo: QueryInfo;
     rawSelectedValue: any;
@@ -52,7 +51,6 @@ export class QuerySelectModel
         isInit: false,
         maxRows: 20,
         multiple: false,
-        preLoad: false,
         queryFilters: undefined,
         queryInfo: undefined,
         rawSelectedValue: undefined,
@@ -72,7 +70,6 @@ export class QuerySelectModel
     declare isInit: boolean;
     declare maxRows: number;
     declare multiple: boolean;
-    declare preLoad: boolean;
     declare queryFilters: List<Filter.IFilter>;
     declare queryInfo: QueryInfo;
     declare rawSelectedValue: any;
@@ -104,10 +101,6 @@ export class QuerySelectModel
         }
 
         return undefined;
-    }
-
-    parseSearch(input: any): boolean | string {
-        return actions.selectShouldSearch(this, input);
     }
 
     saveSearchResults(data: Map<string, Map<string, any>>) {

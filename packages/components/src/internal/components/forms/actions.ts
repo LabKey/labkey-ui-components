@@ -321,23 +321,6 @@ export function setSelection(model: QuerySelectModel, rawSelectedValue: any): Qu
     }) as QuerySelectModel;
 }
 
-export function selectShouldSearch(model: QuerySelectModel, input: any): boolean | string {
-    const { delimiter, preLoad, rawSelectedValue, selectedQuery } = model;
-
-    // TODO: This only returns "true"/'' now -- is it even needed with the new loadOptions configuraton?
-    if (input === '' && preLoad) {
-        return true;
-    } else if (selectedQuery) {
-        const processed = Array.isArray(input) ? input.join(delimiter) : input.toString();
-
-        if (processed === selectedQuery || processed === rawSelectedValue) {
-            return '';
-        }
-    }
-
-    return true;
-}
-
 // "selectedQuery" should match against displayColumn as that is what the user is typing against
 export function parseSelectedQuery(model: QuerySelectModelProps, data: Map<string, Map<string, any>>): any {
     return data.map(result => result.getIn([model.displayColumn, 'value'])).join(model.delimiter);

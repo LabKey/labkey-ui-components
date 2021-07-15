@@ -95,13 +95,10 @@ export function resolveDetailEditRenderer(
                         inputClass="col-sm-12"
                         joinValues={joinValues}
                         label={col.caption}
-                        loadOnChange
-                        loadOnFocus
                         maxRows={10}
                         multiple={multiple}
                         name={col.name}
                         placeholder="Select or type to search..."
-                        preLoad
                         required={col.required}
                         schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
                         value={resolveDetailFieldValue(data, true)}

@@ -24,8 +24,8 @@ export class ImportWithRenameConfirmModal extends React.Component<Props> {
                 cancelButtonText="Cancel"
             >
                 <p>
-                    A file named <span className="import-rename-filename">{originalName}</span> already exists in
-                    this {folderType} folder.
+                    A file named <span className="import-rename-filename">{originalName}</span> already exists in this{' '}
+                    {folderType} folder.
                 </p>
                 <p>To import this file, either give it a new name or it will be renamed to the following on import:</p>
                 <p>

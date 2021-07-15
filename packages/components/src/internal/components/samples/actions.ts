@@ -21,17 +21,23 @@ import { deleteEntityType } from '../entities/actions';
 import {
     buildURL,
     DomainDetails,
+    FindField,
+    getSelectedData,
     getSelection,
     QueryColumn,
-    SCHEMAS,
-    SchemaQuery,
-    selectRows,
     resolveErrorMessage,
-    getSelectedData,
+    SAMPLE_ID_FIND_FIELD,
+    SchemaQuery,
+    SCHEMAS,
+    selectRows,
     SHARED_CONTAINER_PATH,
+    UNIQUE_ID_FIND_FIELD,
 } from '../../..';
 
+import { findMissingValues } from '../../util/utils';
+
 import { GroupedSampleFields } from './models';
+import { FIND_IDS_SESSION_STORAGE_KEY } from './constants';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -369,4 +375,98 @@ export function getDeleteSharedSampleTypeUrl(typeId: number): string {
         singleObjectRowId: typeId,
         returnUrl: window.location.pathname + '#/samples',
     }).toString();
+}
+
+function getSamplesIdsNotFound(queryName: string, orderedIds: string[]): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        Query.selectDistinctRows({
+            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+            queryName,
+            column: 'Ordinal',
+            sort: 'Ordinal',
+            success: result => {
+                // find the gaps in the ordinals values as these correspond to ids we could not find
+                resolve(findMissingValues(result.values, orderedIds));
+            },
+            failure: reason => {
+                console.error('There was a problem determining the missing Ids', reason);
+                reject(reason);
+            },
+        });
+    });
+}
+
+export function getFindSamplesByIdData(): Promise<{ queryName: string; missingIds?: { [key: string]: string[] } }> {
+    return new Promise((resolve, reject) => {
+        const ids = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY));
+        if (ids) {
+            Ajax.request({
+                url: ActionURL.buildURL('experiment', 'saveOrderedSamplesQuery.api'),
+                method: 'POST',
+                jsonData: {
+                    ids,
+                },
+                success: Utils.getCallbackWrapper(response => {
+                    if (response.success) {
+                        const queryName = response.data;
+                        getSamplesIdsNotFound(queryName, ids)
+                            .then(notFound => {
+                                const missingIds = {
+                                    [UNIQUE_ID_FIND_FIELD.label]: notFound
+                                        .filter(id => id.startsWith(UNIQUE_ID_FIND_FIELD.storageKeyPrefix))
+                                        .map(id => id.substring(UNIQUE_ID_FIND_FIELD.storageKeyPrefix.length)),
+                                    [SAMPLE_ID_FIND_FIELD.label]: notFound
+                                        .filter(id => id.startsWith(SAMPLE_ID_FIND_FIELD.storageKeyPrefix))
+                                        .map(id => id.substring(SAMPLE_ID_FIND_FIELD.storageKeyPrefix.length)),
+                                };
+                                resolve({
+                                    queryName,
+                                    missingIds,
+                                });
+                            })
+                            .catch(reason => {
+                                console.error('Problem retrieving data about samples not found', reason);
+                                resolve({
+                                    queryName,
+                                });
+                            });
+                    } else {
+                        console.error('Unable to create session query');
+                        reject('There was a problem creating the query for the samples. Please try again.');
+                    }
+                }),
+                failure: Utils.getCallbackWrapper(error => {
+                    console.error('There was a problem creating the query for the samples.', error);
+                    reject('There was a problem creating the query for the samples. Please try again.');
+                }),
+            });
+        } else {
+            // we have no ids in storage so we have no query to create
+            resolve(undefined);
+        }
+    });
+}
+
+export function saveIdsToFind(fieldType: FindField, ids: string[]): void {
+    const existingIds: string[] = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY));
+    // list of ids deduplicated and prefixed with the field type's storage prefix
+    const prefixedIds = [];
+    ids.map(id => fieldType.storageKeyPrefix + id).forEach(pid => {
+        if (!prefixedIds.includes(pid)) {
+            prefixedIds.push(pid);
+        }
+    });
+    // deduplicate from existing ids
+    if (existingIds) {
+        sessionStorage.setItem(
+            FIND_IDS_SESSION_STORAGE_KEY,
+            JSON.stringify(existingIds.concat(prefixedIds.filter(id => !existingIds.includes(id))))
+        );
+    } else {
+        sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY, JSON.stringify(prefixedIds));
+    }
+}
+
+export function clearIdsToFind(): void {
+    sessionStorage.removeItem(FIND_IDS_SESSION_STORAGE_KEY);
 }

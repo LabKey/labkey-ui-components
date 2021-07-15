@@ -30,6 +30,7 @@ import { SearchBox } from './SearchBox';
 import { UserMenu, UserMenuProps } from './UserMenu';
 import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
+import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -37,6 +38,7 @@ interface NavigationBarProps {
     model: ProductMenuModel;
     notificationsConfig?: ServerNotificationsConfig;
     onSearch?: (form: any) => void;
+    onFindByIds?: () => void;
     projectName?: string;
     searchPlaceholder?: string;
     showNavMenu?: boolean;
@@ -57,6 +59,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         model,
         notificationsConfig,
         onSearch,
+        onFindByIds,
         onSignIn,
         onSignOut,
         projectName,
@@ -120,11 +123,33 @@ export const NavigationBar: FC<Props> = memo(props => {
                             </div>
                         )}
                         <div className="navbar-item pull-right hidden-xs">
-                            {showSearchBox && <SearchBox onSearch={onSearch} placeholder={searchPlaceholder} />}
+                            {showSearchBox && (
+                                <SearchBox
+                                    onSearch={onSearch}
+                                    placeholder={searchPlaceholder}
+                                    onFindByIds={onFindByIds}
+                                    findNounPlural="samples"
+                                />
+                            )}
                         </div>
                         <div className="navbar-item pull-right visible-xs">
                             {showSearchBox && (
-                                <i className="fa fa-search navbar__xs-search-icon" onClick={onSearchIconClick} />
+                                <>
+                                    {onFindByIds ? (
+                                        <FindAndSearchDropdown
+                                            className="navbar__xs-find-dropdown"
+                                            title={<i className="fa fa-search navbar__xs-search-icon" />}
+                                            findNounPlural="samples"
+                                            onSearch={onSearchIconClick}
+                                            onFindByIds={onFindByIds}
+                                        />
+                                    ) : (
+                                        <i
+                                            className="fa fa-search navbar__xs-search-icon"
+                                            onClick={onSearchIconClick}
+                                        />
+                                    )}
+                                </>
                             )}
                         </div>
                     </div>

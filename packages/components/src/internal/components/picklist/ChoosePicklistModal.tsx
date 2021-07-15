@@ -13,6 +13,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
 import { createNotification } from '../notifications/actions';
 
+import { incrementClientSideMetricCount } from '../../actions';
+
 import {
     addSamplesToPicklist,
     getPicklistCountsBySampleType,
@@ -216,6 +218,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             sampleIds,
             currentProductId,
             picklistProductId,
+            metricFeatureArea,
         } = props;
         const [search, setSearch] = useState<string>('');
         const [error, setError] = useState<string>(undefined);
@@ -256,6 +259,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 const insertResponse = await addSamplesToPicklist(activeItem.name, selectionKey, sampleIds);
                 setError(undefined);
                 setSubmitting(false);
+                incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
                 createNotification({
                     message: () => (
                         <AddedToPicklistNotification
@@ -277,10 +281,12 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         }, [activeItem, selectionKey, setSubmitting, setError, sampleIds, numSelected]);
 
         const closeModal = useCallback(() => {
+            setError(undefined);
             onCancel(false);
         }, [onCancel]);
 
         const goToCreateNewList = useCallback(() => {
+            setError(undefined);
             onCancel(true);
         }, [onCancel]);
 
@@ -410,6 +416,7 @@ interface ChoosePicklistModalProps {
     sampleIds?: string[];
     currentProductId?: string;
     picklistProductId?: string;
+    metricFeatureArea?: string;
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {

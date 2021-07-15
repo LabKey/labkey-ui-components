@@ -191,11 +191,11 @@ import {
     IMPORT_DATA_FORM_TYPES,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
+    SHARED_CONTAINER_PATH,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
-    SHARED_CONTAINER_PATH,
 } from './internal/constants';
 import { getLocation, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
@@ -264,13 +264,15 @@ import { SearchResultsPanel } from './internal/components/search/SearchResultsPa
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
+    clearIdsToFind,
     deleteSampleSet,
     fetchSamples,
+    getDeleteSharedSampleTypeUrl,
+    getEditSharedSampleTypeUrl,
+    getFindSamplesByIdData,
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
-    getEditSharedSampleTypeUrl,
-    getDeleteSharedSampleTypeUrl,
     loadSelectedSamples,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
@@ -286,6 +288,7 @@ import { SampleCreationTypeModal } from './internal/components/samples/SampleCre
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
+import { FindSamplesByIdHeaderPanel } from './internal/components/samples/FindSamplesByIdHeaderPanel';
 import { SharedSampleTypeAdminConfirmModal } from './internal/components/samples/SharedSampleTypeAdminConfirmModal';
 import {
     AssayContextConsumer,
@@ -343,6 +346,7 @@ import { EntityTypeDeleteConfirmModal } from './internal/components/entities/Ent
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './internal/components/navigation/HeaderWrapper';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
+import { FindByIdsModal } from './internal/components/navigation/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
 import { SubNav } from './internal/components/navigation/SubNav';
@@ -452,7 +456,11 @@ import {
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
 } from './internal/components/samples/models';
-import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from './internal/components/samples/constants';
+import {
+    SAMPLE_ID_FIND_FIELD,
+    SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
+    UNIQUE_ID_FIND_FIELD,
+} from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
@@ -468,6 +476,7 @@ import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './inte
 import { PicklistEditModal } from './internal/components/picklist/PicklistEditModal';
 import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
+import { PicklistButton } from './internal/components/picklist/PicklistButton';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
@@ -525,6 +534,8 @@ import {
     ASSAYS_KEY,
     BIOLOGICS_PRODUCT_ID,
     BOXES_KEY,
+    FIND_SAMPLES_HREF,
+    FIND_SAMPLES_KEY,
     FREEZER_MANAGER_PRODUCT_ID,
     FREEZERS_KEY,
     HOME_KEY,
@@ -599,6 +610,7 @@ const App = {
     FREEZER_MANAGER_PRODUCT_ID,
     ASSAYS_KEY,
     ASSAY_DESIGN_KEY,
+    FIND_SAMPLES_KEY,
     PICKLIST_KEY,
     SAMPLES_KEY,
     SAMPLE_TYPE_KEY,
@@ -613,6 +625,7 @@ const App = {
     NEW_SOURCE_TYPE_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_ASSAY_DESIGN_HREF,
+    FIND_SAMPLES_HREF,
     PICKLIST_HOME_HREF,
     WORKFLOW_HOME_HREF,
     NEW_FREEZER_DESIGN_HREF,
@@ -776,6 +789,7 @@ export {
     UserProvider,
     // sample picklist items
     AddToPicklistMenuItem,
+    PicklistButton,
     PicklistCreationMenuItem,
     PicklistEditModal,
     PicklistDeleteConfirm,
@@ -792,6 +806,9 @@ export {
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
+    clearIdsToFind,
+    UNIQUE_ID_FIND_FIELD,
+    SAMPLE_ID_FIND_FIELD,
     SampleTypeModel,
     deleteSampleSet,
     fetchSamples,
@@ -800,6 +817,7 @@ export {
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
     getSelectedItemSamples,
+    FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,
     getDeleteSharedSampleTypeUrl,
     SampleTypeDataType,
@@ -826,6 +844,7 @@ export {
     POOLED_SAMPLE_CREATION,
     ALIQUOT_CREATION,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
+    getFindSamplesByIdData,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
@@ -919,6 +938,7 @@ export {
     HeaderWrapper,
     NavigationBar,
     ProductNavigationMenu,
+    FindByIdsModal,
     SubNav,
     Breadcrumb,
     BreadcrumbCreate,
@@ -1223,3 +1243,4 @@ export type {
 export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
+export type { FindField } from './internal/components/samples/models';

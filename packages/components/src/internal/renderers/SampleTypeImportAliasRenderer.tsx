@@ -45,11 +45,12 @@ const ImportAliasRenderer: FC<RendererProps> = memo(props => {
 
     return (
         <>
-            {aliasMap?.keySeq().map(key => {
+            {aliasMap?.keySeq().map((key, index) => {
                 return (
-                    <div key={key}>
-                        <a href={AppURL.create(type, aliasMap.get(key)).toHref()}>{key}</a>
-                    </div>
+                    <>
+                        {index > 0 && <span>, </span>}
+                        <a key={key} href={AppURL.create(type, aliasMap.get(key)).toHref()}>{key}</a>
+                    </>
                 );
             })}
         </>

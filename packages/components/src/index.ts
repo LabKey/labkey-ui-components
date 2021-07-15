@@ -1267,3 +1267,4 @@ export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
 export type { FindField } from './internal/components/samples/models';
+export type { UsersLoader } from './internal/components/forms/actions';

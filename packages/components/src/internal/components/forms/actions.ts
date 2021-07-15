@@ -374,7 +374,8 @@ export function handleTabKeyOnTextArea(evt: ITargetElementEvent): void {
 }
 
 /**
- * Retrieve users in current container with a given set of permissions.  If no permission is specified, defaults to Read permission
+ * Retrieve users in current container with a given set of permissions.  If no permission is specified, defaults to Read
+ * permission
  * @param permissions the PermissionType or array of PermissionType values that all users must have.
  */
 export function getUsersWithPermissions(permissions: string | string[] = PermissionTypes.Read): Promise<List<User>> {
@@ -402,13 +403,18 @@ export function getUsersWithPermissions(permissions: string | string[] = Permiss
     });
 }
 
+export type UsersLoader = (permissions: string | string[]) => Promise<List<User>>;
+
 interface UsersState {
     error: string;
     loadingState: LoadingState;
     users: User[];
 }
 
-export function useUsersWithPermissions(permissions: string | string[] = PermissionTypes.Read): UsersState {
+export function useUsersWithPermissions(
+    permissions: string | string[] = PermissionTypes.Read,
+    loader: UsersLoader = getUsersWithPermissions
+): UsersState {
     const [users, setUsers_] = useState<User[]>(undefined);
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [error, setError] = useState<string>(undefined);
@@ -416,7 +422,7 @@ export function useUsersWithPermissions(permissions: string | string[] = Permiss
         setLoadingState(LoadingState.LOADING);
 
         try {
-            const users_ = await getUsersWithPermissions(permissions);
+            const users_ = await loader(permissions);
             setUsers_(users_.toJS());
         } catch (e) {
             setError(e);

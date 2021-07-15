@@ -3,7 +3,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { Set } from 'immutable';
 
-import { getQueryModelExportParams, QueryModel, Tip, EXPORT_TYPES } from '../..';
+import { EXPORT_TYPES, getQueryModelExportParams, QueryModel, Tip } from '../..';
 
 import { exportRows } from '../../internal/actions';
 
@@ -51,7 +51,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
                             pullRight
                             title={<span className="fa fa-download" />}
                         >
-                            <MenuItem header>
+                            <MenuItem key="export_header" header>
                                 Export
                                 {hasSelections ? ' Selected' : ''}
                             </MenuItem>
@@ -66,7 +66,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
                                                 Export and Print {model.selections?.size > 0 ? 'Selected' : ''}
                                             </MenuItem>
                                             <MenuItem key={option.type} onClick={() => this.export(option)}>
-                                                <span className={`fa ${option.icon} export-menu-icon`}/>
+                                                <span className={`fa ${option.icon} export-menu-icon`} />
                                                 &nbsp; {option.label}
                                             </MenuItem>
                                         </>

@@ -638,3 +638,25 @@ export function handleRequestFailure(reject: (error: any) => void, logMsg?: stri
         true
     );
 }
+
+/**
+ * Given an array of 1-based ordinals, which may have gaps in them (e.g., [1, 3, 4, 6]) and an
+ * array of ordered values, extract the ordered values that correspond to the gaps in
+ * the ordinals (e.g., values[1], values[4]).
+ * @param ordinals the 1-based ordinal list, possibly with gaps
+ * @param orderedValues The ordered values to extract the missing values from
+ */
+export function findMissingValues(ordinals: number[], orderedValues: any[]): any[] {
+    let index = 0;
+    let oIndex = 0;
+    const missingValues = [];
+    while (index < orderedValues.length) {
+        if (oIndex >= ordinals.length || ordinals[oIndex] !== index + 1) {
+            missingValues.push(orderedValues[index]);
+        } else {
+            oIndex++;
+        }
+        index++;
+    }
+    return missingValues;
+}

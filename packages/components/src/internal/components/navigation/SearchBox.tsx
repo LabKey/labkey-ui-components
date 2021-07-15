@@ -15,13 +15,21 @@
  */
 import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from 'react';
 
+import { FindAndSearchDropdown } from './FindAndSearchDropdown';
+
 interface Props {
     onSearch: (value: string) => void;
     placeholder?: string;
+    onFindByIds?: () => void;
+    findNounPlural?: string;
 }
 
-export const SearchBox: FC<Props> = memo(({ onSearch, placeholder }) => {
+export const SearchBox: FC<Props> = memo(props => {
+    const { onSearch, placeholder, onFindByIds, findNounPlural } = props;
+
     const [searchValue, setSearchValue] = useState('');
+
+    const showFindByIds = !!onFindByIds;
 
     const onChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
@@ -45,14 +53,21 @@ export const SearchBox: FC<Props> = memo(({ onSearch, placeholder }) => {
         <form className="navbar__search-form" onSubmit={onSubmit}>
             <div className="form-group">
                 <i className="fa fa-search navbar__search-icon" />
-                <input
-                    className="navbar__search-input"
-                    onChange={onChange}
-                    placeholder={placeholder ?? 'Enter Search Terms'}
-                    size={34}
-                    type="text"
-                    value={searchValue}
-                />
+                <span className={'navbar__input-group ' + (showFindByIds ? 'input-group' : '')}>
+                    <input
+                        className="form-control navbar__search-input"
+                        onChange={onChange}
+                        placeholder={placeholder ?? 'Enter Search Terms'}
+                        size={34}
+                        type="text"
+                        value={searchValue}
+                    />
+                    {showFindByIds && (
+                        <span className="input-group-btn">
+                            <FindAndSearchDropdown title="" onFindByIds={onFindByIds} findNounPlural={findNounPlural} />
+                        </span>
+                    )}
+                </span>
             </div>
         </form>
     );

@@ -3190,24 +3190,29 @@ export function incrementClientSideMetricCount(
     metricName: string
 ): Promise<IClientSideMetricCountResponse> {
     return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('core', 'incrementClientSideMetricCount.api'),
-            method: 'POST',
-            jsonData: {
-                featureArea,
-                metricName,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper(
-                response => {
-                    console.error(response);
-                    reject(response);
+        if (!featureArea || !metricName) {
+            resolve(undefined);
+        }
+        else {
+            return Ajax.request({
+                url: buildURL('core', 'incrementClientSideMetricCount.api'),
+                method: 'POST',
+                jsonData: {
+                    featureArea,
+                    metricName,
                 },
-                this,
-                true
-            ),
-        });
+                success: Utils.getCallbackWrapper(response => {
+                    resolve(response);
+                }),
+                failure: Utils.getCallbackWrapper(
+                    response => {
+                        console.error(response);
+                        reject(response);
+                    },
+                    this,
+                    true
+                ),
+            });
+        }
     });
 }

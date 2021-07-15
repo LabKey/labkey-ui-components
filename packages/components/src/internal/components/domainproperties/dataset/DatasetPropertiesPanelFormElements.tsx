@@ -146,6 +146,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                             containerClass=""
                             inputClass=""
                             name="category"
+                            noResultsText="No categories exist yet"
                             onChange={onCategoryChange}
                             options={availableCategories}
                             placeholder="Select dataset category"

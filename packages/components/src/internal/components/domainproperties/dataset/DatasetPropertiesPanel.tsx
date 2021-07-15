@@ -103,14 +103,10 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
         this.onChange(id, value);
     };
 
-    onCategoryChange = category => {
+    onCategoryChange = (_, category): void => {
         const { model } = this.props;
         const newModel = produce(model, (draft: Draft<DatasetModel>) => {
-            if (category && category.value) {
-                draft.category = category.value;
-            } else {
-                draft.category = undefined;
-            }
+            draft.category = category ?? undefined;
         });
 
         this.updateValidStatus(newModel);

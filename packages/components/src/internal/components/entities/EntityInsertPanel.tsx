@@ -41,6 +41,7 @@ import {
     getEditorModel,
     getQueryDetails,
     getQueryGridModel,
+    getSampleTypeDetails,
     getStateQueryGridModel,
     gridInit,
     gridShowError,
@@ -62,6 +63,7 @@ import {
     resolveErrorMessage,
     SampleCreationType,
     SampleCreationTypeModel,
+    SampleTypeModel,
     SchemaQuery,
     SelectInput,
     User,
@@ -129,7 +131,7 @@ interface OwnProps {
     disableMerge?: boolean;
     entityDataType: EntityDataType;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
-    getFileTemplateUrl?: (queryInfo: QueryInfo) => string;
+    getFileTemplateUrl?: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string;
     fileImportParameters: Record<string, any>;
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
@@ -164,6 +166,7 @@ interface StateProps {
     isMerge: boolean;
     isSubmitting: boolean;
     originalQueryInfo: QueryInfo;
+    importAliases: Record<string, string>;
     useAsync: boolean;
     fieldsWarningMsg: ReactNode;
     creationType: SampleCreationType;
@@ -195,6 +198,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         this.state = {
             insertModel: undefined,
             originalQueryInfo: undefined,
+            importAliases: undefined,
             isSubmitting: false,
             error: undefined,
             isMerge: false,
@@ -311,6 +315,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     gridInit = (insertModel: EntityIdCreationModel): void => {
         const schemaQuery = insertModel.getSchemaQuery();
         if (schemaQuery) {
+            getSampleTypeDetails(schemaQuery)
+                .then(domainDetails => {
+                    const sampleTypeModel = SampleTypeModel.create(domainDetails);
+                    this.setState(() => ({ importAliases: sampleTypeModel.importAliases?.toJS() }));
+                });
+
             getQueryDetails(schemaQuery.toJS())
                 .then(originalQueryInfo => {
                     this.setState(
@@ -430,6 +440,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         this.setState(
             () => ({
                 originalQueryInfo: undefined,
+                importAliases: undefined,
                 insertModel: updatedModel,
             }),
             () => {
@@ -1039,10 +1050,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         }
     };
 
-    getTemplateUrl = (): any => {
+    getTemplateUrl = (): string => {
         const { getFileTemplateUrl } = this.props;
-        const { originalQueryInfo } = this.state;
-        if (getFileTemplateUrl && originalQueryInfo) return getFileTemplateUrl(originalQueryInfo);
+        const { originalQueryInfo, importAliases } = this.state;
+        if (getFileTemplateUrl && originalQueryInfo) {
+            return getFileTemplateUrl(originalQueryInfo, importAliases);
+        }
 
         return originalQueryInfo &&
             Utils.isArray(originalQueryInfo.importTemplates) &&

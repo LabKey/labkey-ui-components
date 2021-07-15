@@ -643,6 +643,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                         inputClass="col-sm-5"
                         label={this.capTypeTextSingular}
                         labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
+                        name="targetEntityType"
                         placeholder={'Select a ' + this.capTypeTextSingular + '...'}
                         onChange={this.changeTargetEntityType}
                         options={insertModel.entityTypeOptions.toArray()}

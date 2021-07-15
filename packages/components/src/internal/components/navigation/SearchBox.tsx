@@ -20,7 +20,7 @@ import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 interface Props {
     onSearch: (value: string) => void;
     placeholder?: string;
-    onFindByIds?: () => void;
+    onFindByIds?: (sessionKey: string) => void;
     findNounPlural?: string;
 }
 

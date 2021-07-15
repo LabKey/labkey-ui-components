@@ -197,7 +197,7 @@ import {
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
 } from './internal/constants';
-import { getLocation, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
+import { getLocation, pushParameter, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
 import { getHelpLink, helpLinkNode, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
 import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './internal/url/AppURLResolver';
@@ -264,7 +264,6 @@ import { SearchResultsPanel } from './internal/components/search/SearchResultsPa
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
-    clearIdsToFind,
     deleteSampleSet,
     fetchSamples,
     getDeleteSharedSampleTypeUrl,
@@ -453,6 +452,7 @@ import {
     SampleCreationType,
 } from './internal/components/samples/models';
 import {
+    FIND_BY_IDS_QUERY_PARAM,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     UNIQUE_ID_FIND_FIELD,
@@ -706,6 +706,7 @@ export {
     ListResolver,
     SamplesResolver,
     getLocation,
+    pushParameter,
     replaceParameter,
     replaceParameters,
     resetParameters,
@@ -802,7 +803,7 @@ export {
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
-    clearIdsToFind,
+    FIND_BY_IDS_QUERY_PARAM,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_ID_FIND_FIELD,
     SampleTypeModel,

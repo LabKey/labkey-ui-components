@@ -1,12 +1,14 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { FindField } from '../samples/models';
 import { capitalizeFirstChar } from '../../util/utils';
 import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from '../samples/constants';
-import { clearIdsToFind, saveIdsToFind } from '../samples/actions';
+import { saveIdsToFind } from '../samples/actions';
 import { incrementClientSideMetricCount } from '../../actions';
+import { resolveErrorMessage } from '../../util/messaging';
+import { Alert } from '../base/Alert';
 
 // exported for Jest testing
 export const FindFieldOption: FC<{
@@ -37,21 +39,23 @@ export const FindFieldOption: FC<{
 interface Props {
     show: boolean;
     onCancel: () => void;
-    onFind: () => void;
+    onFind: (sessionKey: string) => void;
     nounPlural: string;
-    addToExistingIds?: boolean; // when false the existing ids will first be cleared before calling onFind.
+    sessionKey?: string; // when defined, ids entered will be added to the existing ones in session
 }
 
 export const FindByIdsModal: FC<Props> = memo(props => {
-    const { show, onCancel, onFind, nounPlural, addToExistingIds } = props;
+    const { show, onCancel, onFind, nounPlural, sessionKey } = props;
 
     const [fieldType, setFieldType] = useState<FindField>(UNIQUE_ID_FIND_FIELD);
     const [idString, setIdString] = useState<string>(undefined);
     const [submitting, setSubmitting] = useState<boolean>(false);
+    const [error, setError] = useState<ReactNode>(undefined);
 
     const reset = () => {
         setIdString(undefined);
         setFieldType(UNIQUE_ID_FIND_FIELD);
+        setError(undefined);
     };
     const closeModal = useCallback(() => {
         reset();
@@ -66,21 +70,23 @@ export const FindByIdsModal: FC<Props> = memo(props => {
         setIdString(event.target.value);
     }, []);
 
-    const _onFind = useCallback(() => {
+    const _onFind = useCallback(async () => {
         const ids = idString
             .split('\n')
             .map(id => id.trim())
             .filter(id => id.length > 0);
         if (ids.length > 0) {
-            incrementClientSideMetricCount('find' + capitalizeFirstChar(nounPlural) + 'ById', 'findIds');
+            incrementClientSideMetricCount('find' + capitalizeFirstChar(nounPlural) + 'ById', 'findCount');
             setSubmitting(true);
-            if (!addToExistingIds) {
-                clearIdsToFind();
+            try {
+                const _sessionKey = await saveIdsToFind(fieldType, ids, sessionKey);
+                setSubmitting(false);
+                reset();
+                onFind(_sessionKey);
+            } catch(e) {
+                setSubmitting(false);
+                setError(resolveErrorMessage(e));
             }
-            saveIdsToFind(fieldType, ids);
-            setSubmitting(false);
-            reset();
-            onFind();
         }
     }, [idString, onFind, fieldType]);
 
@@ -90,6 +96,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
                 <Modal.Title>Find {capitalizeFirstChar(nounPlural)}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <Alert>{error}</Alert>
                 <p>Find {nounPlural} using:</p>
                 <FindFieldOption
                     field={UNIQUE_ID_FIND_FIELD}

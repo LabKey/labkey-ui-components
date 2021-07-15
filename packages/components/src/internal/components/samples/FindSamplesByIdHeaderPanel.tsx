@@ -12,20 +12,21 @@ import { Alert } from '../base/Alert';
 import { FindByIdsModal } from '../navigation/FindByIdsModal';
 import { Section } from '../base/Section';
 
-import { FIND_IDS_SESSION_STORAGE_KEY, SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from './constants';
+import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from './constants';
 
 interface HeaderPanelProps {
     loadingState: LoadingState;
     listModel: QueryModel;
     error?: ReactNode;
     missingIds: { [key: string]: string[] };
-    onFindSamples: () => void;
+    ids: string[];
+    onFindSamples: (sessionKey: string) => void;
     onClearSamples: () => void;
+    sessionKey: string;
 }
 
 // exported for jest testing
-export function getFindIdCountsByTypeMessage(): string {
-    const findIds: string[] = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY));
+export function getFindIdCountsByTypeMessage(findIds: string[]): string {
     if (!findIds) {
         return undefined;
     }
@@ -47,9 +48,9 @@ export function getFindIdCountsByTypeMessage(): string {
 export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
     const [showFindModal, setShowFindModal] = useState<boolean>(false);
 
-    const { loadingState, listModel, onFindSamples, onClearSamples, missingIds, error } = props;
+    const { loadingState, listModel, onFindSamples, onClearSamples, missingIds, sessionKey, error, ids } = props;
 
-    const numIdsMsg = getFindIdCountsByTypeMessage();
+    const numIdsMsg = getFindIdCountsByTypeMessage(ids);
 
     const onAddMoreSamples = useCallback(() => {
         setShowFindModal(true);
@@ -59,9 +60,9 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
         setShowFindModal(false);
     }, []);
 
-    const onFind = useCallback(() => {
+    const onFind = useCallback((sessionKey) => {
         setShowFindModal(false);
-        onFindSamples();
+        onFindSamples(sessionKey);
     }, [onFindSamples]);
 
     let foundSamplesMsg;
@@ -109,7 +110,7 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
                 onCancel={onCancelAdd}
                 onFind={onFind}
                 nounPlural="samples"
-                addToExistingIds={true}
+                sessionKey={sessionKey}
             />
         </Section>
     );

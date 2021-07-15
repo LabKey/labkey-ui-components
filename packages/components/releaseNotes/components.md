@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Item 9204: ...
+* Item 9204: Sample type parent import alias inclusion in download template and display in details panel
     * Add SampleTypeImportAliasRenderer and SourceTypeImportAliasRenderer to be used for sample type details panel rendering
     * EntityInsertPanel update to get importAliases for target sample type to add to getTemplateUrl() params
 

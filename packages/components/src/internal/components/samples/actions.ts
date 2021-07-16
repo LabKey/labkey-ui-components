@@ -430,12 +430,12 @@ export function getFindSamplesByIdData(sessionKey: string): Promise<{ queryName:
                         });
                 } else {
                     console.error('Unable to create session query');
-                    reject('There was a problem creating the query for the samples. Your session may have expired.');
+                    reject('There was a problem retrieving the samples. Your session may have expired.');
                 }
             }),
             failure: Utils.getCallbackWrapper(error => {
                 console.error('There was a problem creating the query for the samples.', error);
-                reject("There was a problem creating the query for the samples. Please try again using the 'Find Samples' option from the Search menu.");
+                reject("There was a problem retrieving the samples. Please try again using the 'Find Samples' option from the Search menu.");
             }),
         });
 

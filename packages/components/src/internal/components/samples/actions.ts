@@ -435,7 +435,7 @@ export function getFindSamplesByIdData(sessionKey: string): Promise<{ queryName:
             }),
             failure: Utils.getCallbackWrapper(error => {
                 console.error('There was a problem creating the query for the samples.', error);
-                reject('There was a problem creating the query for the samples. Please try again.');
+                reject("There was a problem creating the query for the samples. Please try again using the 'Find Samples' option from the Search menu.");
             }),
         });
 

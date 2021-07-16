@@ -46,6 +46,8 @@ export function getFindIdCountsByTypeMessage(findIds: string[]): string {
 }
 
 export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
+    const title = "Find Samples in Bulk";
+    const panelClassName = "find-samples-header-panel";
     const [showFindModal, setShowFindModal] = useState<boolean>(false);
 
     const { loadingState, listModel, onFindSamples, onClearSamples, missingIds, sessionKey, error, ids } = props;
@@ -85,11 +87,18 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
         );
     }
 
+    if (error) {
+        return (
+            <Section title={title} panelClassName={panelClassName}>
+                <Alert>{error}</Alert>
+            </Section>
+        );
+    }
+
     const hasSamples = !listModel?.isLoading && listModel?.rowCount > 0;
 
     return (
-        <Section title="Find Samples in Bulk" panelClassName="find-samples-header-panel">
-            <Alert>{error}</Alert>
+        <Section title={title} panelClassName={panelClassName}>
             {foundSamplesMsg}
             <SamplesNotFoundMsg missingIds={missingIds} />
             <div className="bottom-spacing">

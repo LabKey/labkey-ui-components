@@ -2,7 +2,7 @@ import React from 'react';
 
 import { mount } from 'enzyme';
 
-import { Alert } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 
 import { LoadingState } from '../../../public/LoadingState';
 
@@ -155,6 +155,8 @@ describe('FindSamplesByIdHeaderPanel', () => {
         const alert = wrapper.find(Alert);
         expect(alert).toHaveLength(1);
         expect(alert.text()).toBe('We have a problem here.');
+        expect(wrapper.exists(SamplesNotFoundMsg)).toBe(false);
+        expect(wrapper.exists(Button)).toBe(false);
     });
 
     test('found multiple samples', () => {

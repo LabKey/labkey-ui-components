@@ -26,10 +26,13 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
         setShowFindModal(false);
     }, []);
 
-    const onFind = useCallback((sessionKey: string) => {
-        setShowFindModal(false);
-        onFindByIds(sessionKey);
-    }, [onFindByIds]);
+    const onFind = useCallback(
+        (sessionKey: string) => {
+            setShowFindModal(false);
+            onFindByIds(sessionKey);
+        },
+        [onFindByIds]
+    );
 
     return (
         <>

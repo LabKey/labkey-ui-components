@@ -83,7 +83,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
                 setSubmitting(false);
                 reset();
                 onFind(_sessionKey);
-            } catch(e) {
+            } catch (e) {
                 setSubmitting(false);
                 setError(resolveErrorMessage(e));
             }

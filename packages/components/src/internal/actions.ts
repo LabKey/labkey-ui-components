@@ -3192,8 +3192,7 @@ export function incrementClientSideMetricCount(
     return new Promise((resolve, reject) => {
         if (!featureArea || !metricName || getServerContext().user.isGuest) {
             resolve(undefined);
-        }
-        else {
+        } else {
             return Ajax.request({
                 url: buildURL('core', 'incrementClientSideMetricCount.api'),
                 method: 'POST',

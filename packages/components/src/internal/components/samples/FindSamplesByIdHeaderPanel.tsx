@@ -23,7 +23,7 @@ interface HeaderPanelProps {
     onFindSamples: (sessionKey: string) => void;
     onClearSamples: () => void;
     sessionKey: string;
-    workWithSamplesMsg?: ReactNode
+    workWithSamplesMsg?: ReactNode;
 }
 
 // exported for jest testing
@@ -47,11 +47,21 @@ export function getFindIdCountsByTypeMessage(findIds: string[]): string {
 }
 
 export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
-    const title = "Find Samples in Bulk";
-    const panelClassName = "find-samples-header-panel";
+    const title = 'Find Samples in Bulk';
+    const panelClassName = 'find-samples-header-panel';
     const [showFindModal, setShowFindModal] = useState<boolean>(false);
 
-    const { loadingState, listModel, onFindSamples, onClearSamples, missingIds, sessionKey, error, ids, workWithSamplesMsg } = props;
+    const {
+        loadingState,
+        listModel,
+        onFindSamples,
+        onClearSamples,
+        missingIds,
+        sessionKey,
+        error,
+        ids,
+        workWithSamplesMsg,
+    } = props;
 
     const numIdsMsg = getFindIdCountsByTypeMessage(ids);
 
@@ -63,10 +73,13 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
         setShowFindModal(false);
     }, []);
 
-    const onFind = useCallback((sessionKey) => {
-        setShowFindModal(false);
-        onFindSamples(sessionKey);
-    }, [onFindSamples]);
+    const onFind = useCallback(
+        sessionKey => {
+            setShowFindModal(false);
+            onFindSamples(sessionKey);
+        },
+        [onFindSamples]
+    );
 
     let foundSamplesMsg;
     if (isLoading(loadingState) || (listModel?.isLoading && !listModel.queryInfoError)) {
@@ -110,11 +123,7 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
                     Reset
                 </Button>
             </div>
-            {hasSamples && (
-                <Alert bsStyle="info">
-                    {workWithSamplesMsg}
-                </Alert>
-            )}
+            {hasSamples && <Alert bsStyle="info">{workWithSamplesMsg}</Alert>}
             <FindByIdsModal
                 show={showFindModal}
                 onCancel={onCancelAdd}
@@ -127,8 +136,8 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
 });
 
 FindSamplesByIdHeaderPanel.defaultProps = {
-    workWithSamplesMsg: 'Work with the selected samples in the grid now or save them to a picklist for later use.'
-}
+    workWithSamplesMsg: 'Work with the selected samples in the grid now or save them to a picklist for later use.',
+};
 
 export const SamplesNotFoundMsg: FC<{ missingIds: { [key: string]: string[] } }> = memo(({ missingIds }) => {
     if (!missingIds) return null;

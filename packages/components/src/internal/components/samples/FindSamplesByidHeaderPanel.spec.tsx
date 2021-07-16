@@ -15,12 +15,11 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import {
     FindSamplesByIdHeaderPanel,
     getFindIdCountsByTypeMessage,
-    SamplesNotFoundMsg
+    SamplesNotFoundMsg,
 } from './FindSamplesByIdHeaderPanel';
 import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from './constants';
 
 describe('getFindIdCountsByTypeMessage', () => {
-
     test('no data', () => {
         expect(getFindIdCountsByTypeMessage([])).toBeFalsy();
         expect(getFindIdCountsByTypeMessage(undefined)).toBeFalsy();
@@ -47,7 +46,9 @@ describe('getFindIdCountsByTypeMessage', () => {
     });
 
     test('both sampleIds and uniqueIds', () => {
-        expect(getFindIdCountsByTypeMessage(['u:U-2', 's:S-3', 'u:B', 'u:0000041', 's:X-88'])).toBe('2 Sample IDs and 3 Barcodes');
+        expect(getFindIdCountsByTypeMessage(['u:U-2', 's:S-3', 'u:B', 'u:0000041', 's:X-88'])).toBe(
+            '2 Sample IDs and 3 Barcodes'
+        );
     });
 });
 
@@ -88,7 +89,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
                 ids={['u:U-2']}
-                sessionKey={'test'}
+                sessionKey="test"
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
@@ -109,7 +110,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
                 ids={['u:U-2']}
-                sessionKey={'test'}
+                sessionKey="test"
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
@@ -126,7 +127,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
                 ids={[]}
-                sessionKey={'test'}
+                sessionKey="test"
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
@@ -148,7 +149,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
                 onClearSamples={jest.fn()}
                 error={<div>We have a problem here.</div>}
                 ids={[]}
-                sessionKey={'test'}
+                sessionKey="test"
             />
         );
 
@@ -178,7 +179,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
                 ids={['u:U-2', 's:B-52']}
-                sessionKey={'test'}
+                sessionKey="test"
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
@@ -195,7 +196,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
         expect(wrapper.find(FindByIdsModal)).toHaveLength(1);
     });
 
-    test("custom workWithSamplesMsg", () => {
+    test('custom workWithSamplesMsg', () => {
         const queryModel = makeTestQueryModel(
             SchemaQuery.create('test', 'query'),
             new QueryInfo(),
@@ -212,7 +213,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
                 ids={['u:U-2', 's:B-52']}
-                sessionKey={'test'}
+                sessionKey="test"
                 workWithSamplesMsg={msg}
             />
         );

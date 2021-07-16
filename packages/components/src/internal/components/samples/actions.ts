@@ -394,13 +394,15 @@ function getSamplesIdsNotFound(queryName: string, orderedIds: string[]): Promise
     });
 }
 
-export function getFindSamplesByIdData(sessionKey: string): Promise<{ queryName: string; ids: string[], missingIds?: { [key: string]: string[] } }> {
+export function getFindSamplesByIdData(
+    sessionKey: string
+): Promise<{ queryName: string; ids: string[]; missingIds?: { [key: string]: string[] } }> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('experiment', 'saveOrderedSamplesQuery.api'),
             method: 'POST',
             jsonData: {
-                sessionKey
+                sessionKey,
             },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
@@ -425,7 +427,7 @@ export function getFindSamplesByIdData(sessionKey: string): Promise<{ queryName:
                             console.error('Problem retrieving data about samples not found', reason);
                             resolve({
                                 queryName,
-                                ids
+                                ids,
                             });
                         });
                 } else {
@@ -435,10 +437,11 @@ export function getFindSamplesByIdData(sessionKey: string): Promise<{ queryName:
             }),
             failure: Utils.getCallbackWrapper(error => {
                 console.error('There was a problem creating the query for the samples.', error);
-                reject("There was a problem retrieving the samples. Please try again using the 'Find Samples' option from the Search menu.");
+                reject(
+                    "There was a problem retrieving the samples. Please try again using the 'Find Samples' option from the Search menu."
+                );
             }),
         });
-
     });
 }
 
@@ -469,9 +472,8 @@ export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: s
                     console.error('There was a problem saving the ids.', error);
                     reject('There was a problem saving the ids. Your session may have expired.');
                 }),
-            })
-        }
-        else {
+            });
+        } else {
             resolve(undefined);
         }
     });

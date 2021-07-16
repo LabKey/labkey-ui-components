@@ -194,6 +194,31 @@ describe('FindSamplesByIdHeaderPanel', () => {
         expect(wrapper.find('.find-samples-warning')).toHaveLength(1);
         expect(wrapper.find(FindByIdsModal)).toHaveLength(1);
     });
+
+    test("custom workWithSamplesMsg", () => {
+        const queryModel = makeTestQueryModel(
+            SchemaQuery.create('test', 'query'),
+            new QueryInfo(),
+            { 1: {}, 2: {} },
+            ['1', '2'],
+            2
+        );
+        const msg = 'Work with your samples here';
+        const wrapper = mount(
+            <FindSamplesByIdHeaderPanel
+                loadingState={LoadingState.LOADED}
+                listModel={queryModel}
+                missingIds={undefined}
+                onFindSamples={jest.fn()}
+                onClearSamples={jest.fn()}
+                ids={['u:U-2', 's:B-52']}
+                sessionKey={'test'}
+                workWithSamplesMsg={msg}
+            />
+        );
+        const alert = wrapper.find(Alert);
+        expect(alert.text()).toBe(msg);
+    });
 });
 
 describe('SamplesNotFoundMsg', () => {

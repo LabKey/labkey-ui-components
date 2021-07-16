@@ -5,7 +5,7 @@ import { fromJS } from 'immutable';
 import { ImportAliasRenderer } from './ImportAliasRenderer';
 
 const DEFAULT_PROPS = {
-    type: 'TestType',
+    appRouteMap: { 'materialInputs/': 'samples' },
     data: undefined,
 };
 
@@ -27,13 +27,13 @@ describe('ImportAliasRenderer', () => {
                 {...DEFAULT_PROPS}
                 data={fromJS({
                     displayValue: {
-                        key1: 'value1',
+                        key1: 'materialInputs/value1',
                     },
                 })}
             />
         );
         validate(wrapper, 1);
-        expect(wrapper.find('a').prop('href')).toBe('#/TestType/value1');
+        expect(wrapper.find('a').prop('href')).toBe('#/samples/value1');
         expect(wrapper.find('a').text()).toBe('key1');
         wrapper.unmount();
     });
@@ -44,17 +44,39 @@ describe('ImportAliasRenderer', () => {
                 {...DEFAULT_PROPS}
                 data={fromJS({
                     displayValue: {
-                        key1: 'value1',
-                        key2: 'value2',
+                        key1: 'materialInputs/value1',
+                        key2: 'materialInputs/value2',
                     },
                 })}
             />
         );
         validate(wrapper, 2);
-        expect(wrapper.find('a').first().prop('href')).toBe('#/TestType/value1');
+        expect(wrapper.find('a').first().prop('href')).toBe('#/samples/value1');
         expect(wrapper.find('a').first().text()).toBe('key1');
-        expect(wrapper.find('a').last().prop('href')).toBe('#/TestType/value2');
+        expect(wrapper.find('a').last().prop('href')).toBe('#/samples/value2');
         expect(wrapper.find('a').last().text()).toBe('key2');
+        wrapper.unmount();
+    });
+
+    test('with multiple appRouteMap entries', () => {
+        const wrapper = mount(
+            <ImportAliasRenderer
+                {...DEFAULT_PROPS}
+                appRouteMap={{ 'materialInputs/': 'samples', 'dataInputs/': 'registry' }}
+                data={fromJS({
+                    displayValue: {
+                        key1: 'materialInputs/value1',
+                        key2: 'materialInputs/value2',
+                        key3: 'dataInputs/value3',
+                    },
+                })}
+            />
+        );
+        validate(wrapper, 3);
+        expect(wrapper.find('a').first().prop('href')).toBe('#/samples/value1');
+        expect(wrapper.find('a').first().text()).toBe('key1');
+        expect(wrapper.find('a').last().prop('href')).toBe('#/registry/value3');
+        expect(wrapper.find('a').last().text()).toBe('key3');
         wrapper.unmount();
     });
 });

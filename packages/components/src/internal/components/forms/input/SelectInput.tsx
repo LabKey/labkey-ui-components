@@ -53,6 +53,31 @@ const customTheme = theme => ({
     },
 });
 
+// Allows users to declare custom option rendering components without needing to redefine the base custom component
+// wrapper. This is taken from the guide at https://react-select.com/styles#cx-and-custom-components.
+const CustomOption = props => {
+    const { className, cx, children, getStyles, innerProps, innerRef, isDisabled, isFocused, isSelected } = props;
+
+    return (
+        <div
+            className={cx(
+                {
+                    option: true,
+                    'option--is-disabled': isDisabled,
+                    'option--is-focused': isFocused,
+                    'option--is-selected': isSelected,
+                },
+                className
+            )}
+            ref={innerRef}
+            style={getStyles('option', props)}
+            {...innerProps}
+        >
+            {children}
+        </div>
+    );
+};
+
 // Molded from @types/react-select/src/filter.d.ts
 export interface SelectInputOption {
     data?: any;
@@ -412,6 +437,8 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         <components.Input {...inputProps} required={!!this.props.required && !inputProps.selectProps?.value} />
     );
 
+    Option = optionProps => <CustomOption {...optionProps}>{this.props.optionRenderer(optionProps)}</CustomOption>;
+
     noOptionsMessage = (): string => this.props.noResultsText;
 
     renderSelect = (): ReactNode => {
@@ -439,7 +466,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         const components: any = { Input: this.Input };
 
         if (optionRenderer) {
-            components.Option = optionRenderer;
+            components.Option = this.Option;
         }
 
         if (valueRenderer) {

@@ -65,39 +65,14 @@ function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
 const noopFilterOptions = options => options;
 
 const PreviewOption: FC<any> = props => {
-    const { model, ...optionProps } = props;
+    const { model, label, value } = props;
     const { allResults, queryInfo } = model;
-    const {
-        className,
-        cx,
-        getStyles,
-        innerProps,
-        innerRef,
-        isDisabled,
-        isFocused,
-        isSelected,
-        label,
-        value,
-    } = optionProps;
 
     if (queryInfo && allResults.size) {
         const item = allResults.find(result => value === result.getIn([model.valueColumn, 'value']));
 
         return (
-            <div
-                className={cx(
-                    {
-                        option: true,
-                        'option--is-disabled': isDisabled,
-                        'option--is-focused': isFocused,
-                        'option--is-selected': isSelected,
-                    },
-                    className
-                )}
-                ref={innerRef}
-                style={getStyles('option', props)}
-                {...innerProps}
-            >
+            <>
                 {queryInfo.getDisplayColumns(model.schemaQuery.viewName).map((column, i) => {
                     if (item !== undefined) {
                         let text = resolveDetailFieldValue(item.get(column.name));
@@ -119,7 +94,7 @@ const PreviewOption: FC<any> = props => {
                         </div>
                     );
                 })}
-            </div>
+            </>
         );
     }
 
@@ -268,7 +243,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
     };
 
     optionRenderer = (props): ReactNode => {
-        return <PreviewOption {...props} model={this.state.model} />;
+        return <PreviewOption label={props.label} model={this.state.model} value={props.value} />;
     };
 
     onFocus = async (): Promise<void> => {

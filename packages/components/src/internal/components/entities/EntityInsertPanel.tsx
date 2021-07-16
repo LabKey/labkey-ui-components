@@ -317,11 +317,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const schemaQuery = insertModel.getSchemaQuery();
         if (schemaQuery) {
             // only query for the importAliases for Sample Types (i.e. not sources)
-            if (insertModel.entityDataType === SampleTypeDataType) {
+            if (insertModel.entityDataType.insertColumnNamePrefix === SampleTypeDataType.insertColumnNamePrefix) {
                 getSampleTypeDetails(schemaQuery)
                     .then(domainDetails => {
                         const sampleTypeModel = SampleTypeModel.create(domainDetails);
-                        console.log('sampleTypeModel', sampleTypeModel.importAliases?.toJS());
                         this.setState(() => ({ importAliases: sampleTypeModel.importAliases?.toJS() }));
                     });
             }

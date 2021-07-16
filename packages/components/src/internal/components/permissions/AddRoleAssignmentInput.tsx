@@ -2,7 +2,7 @@
  * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { List } from 'immutable';
 
 import { SelectInput } from '../../..';
@@ -12,21 +12,18 @@ import { Principal, SecurityRole } from './models';
 interface Props {
     role: SecurityRole;
     principals: List<Principal>;
-    onSelect: (selected: Principal) => any;
+    onSelect: (selected: Principal) => void;
     placeholder?: string;
 }
 
-export class AddRoleAssignmentInput extends React.PureComponent<Props, any> {
+export class AddRoleAssignmentInput extends PureComponent<Props> {
     static defaultProps = {
         placeholder: 'Add member or group...',
     };
 
-    onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
-        if (selected && this.props.onSelect) {
+    onChange = (name: string, formValue: any, selected: Principal): void => {
+        if (selected) {
             this.props.onSelect(selected);
-
-            // setting the react-select value back to null will clear it but leave it as focused
-            ref.setValue(null);
         }
     };
 
@@ -36,6 +33,7 @@ export class AddRoleAssignmentInput extends React.PureComponent<Props, any> {
 
         return (
             <SelectInput
+                autoValue={false}
                 name={name}
                 key={name + ':' + role.uniqueName}
                 options={principals.toArray()}
@@ -44,6 +42,7 @@ export class AddRoleAssignmentInput extends React.PureComponent<Props, any> {
                 valueKey="userId"
                 labelKey="displayName"
                 onChange={this.onChange}
+                selectedOptions={null}
             />
         );
     }

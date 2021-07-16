@@ -19,7 +19,8 @@ import { mount, shallow } from 'enzyme';
 import { FieldLabel } from '../FieldLabel';
 
 import { SelectInputImpl, SelectInputProps } from './SelectInput';
-import { setSelectInputText } from './SelectInputTestUtils';
+import { blurSelectInputInput, setSelectInputText } from './SelectInputTestUtils';
+import { waitForLifecycle } from '../../../testHelpers';
 
 describe('SelectInput', () => {
     function getFormsyProps(): Partial<SelectInputProps> {
@@ -53,24 +54,26 @@ describe('SelectInput', () => {
         expect(component.state().selectedOptions).toHaveProperty('value', expectedInputValue);
     });
 
-    test('Should saveOnBlur - async', () => {
+    test('Should saveOnBlur - async', async () => {
         const selectProps = {
             ...getFormsyProps(),
-            loadOptions: (input, callback) => {
-                callback([
-                    { value: 'one', label: 'One' },
-                    { value: 'two', label: 'Two' },
-                ]);
-            },
+            filterOption: jest.fn((option, rawValue: string) => option.label === rawValue),
+            loadOptions: jest.fn(async () => [
+                { value: 'one', label: 'One' },
+                { value: 'two', label: 'Two' },
+            ]),
             multiple: true,
             saveOnBlur: true,
         };
 
         const component = mount<SelectInputImpl>(<SelectInputImpl {...selectProps} />);
-        setSelectInputText(component, 'Two', true);
+        setSelectInputText(component, 'Two');
+        await waitForLifecycle(component);
+        blurSelectInputInput(component);
 
         expect(selectProps.setValue).toHaveBeenCalledTimes(1);
         expect(component.state().selectedOptions).toHaveLength(1);
+        expect(component.state().selectedOptions[0].value).toEqual('two');
     });
 
     function validateFieldLabel(component: any, hasFieldLabel: boolean, labelText?: string): void {

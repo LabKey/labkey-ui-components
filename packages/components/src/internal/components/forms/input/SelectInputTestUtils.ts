@@ -46,12 +46,16 @@ export async function selectOptionByText(component: any, text: string): Promise<
     await waitForLifecycle(component);
 }
 
+export function blurSelectInputInput(component: any): void {
+    component.find('input').simulate('blur');
+}
+
 export function setSelectInputText(component: any, value: string, blur = false) {
     const input = component.find('input');
     input.getDOMNode().setAttribute('value', value);
     input.simulate('change', { currentTarget: input });
     if (blur) {
-        input.simulate('blur');
+        blurSelectInputInput(component);
     }
 }
 

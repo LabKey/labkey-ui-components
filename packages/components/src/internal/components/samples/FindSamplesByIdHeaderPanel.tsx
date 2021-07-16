@@ -23,6 +23,7 @@ interface HeaderPanelProps {
     onFindSamples: (sessionKey: string) => void;
     onClearSamples: () => void;
     sessionKey: string;
+    workWithSamplesMsg?: ReactNode
 }
 
 // exported for jest testing
@@ -50,7 +51,7 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
     const panelClassName = "find-samples-header-panel";
     const [showFindModal, setShowFindModal] = useState<boolean>(false);
 
-    const { loadingState, listModel, onFindSamples, onClearSamples, missingIds, sessionKey, error, ids } = props;
+    const { loadingState, listModel, onFindSamples, onClearSamples, missingIds, sessionKey, error, ids, workWithSamplesMsg } = props;
 
     const numIdsMsg = getFindIdCountsByTypeMessage(ids);
 
@@ -111,7 +112,7 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
             </div>
             {hasSamples && (
                 <Alert bsStyle="info">
-                    Work with the selected samples in the grid now or save them to a picklist for later use.
+                    {workWithSamplesMsg}
                 </Alert>
             )}
             <FindByIdsModal
@@ -124,6 +125,10 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
         </Section>
     );
 });
+
+FindSamplesByIdHeaderPanel.defaultProps = {
+    workWithSamplesMsg: 'Work with the selected samples in the grid now or save them to a picklist for later use.'
+}
 
 export const SamplesNotFoundMsg: FC<{ missingIds: { [key: string]: string[] } }> = memo(({ missingIds }) => {
     if (!missingIds) return null;

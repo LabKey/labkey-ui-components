@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { fromJS } from 'immutable';
 
-import { ImportAliasRenderer } from './SampleTypeImportAliasRenderer';
+import { ImportAliasRenderer } from './ImportAliasRenderer';
 
 const DEFAULT_PROPS = {
     type: 'TestType',

@@ -63,6 +63,7 @@ import {
     resolveErrorMessage,
     SampleCreationType,
     SampleCreationTypeModel,
+    SampleTypeDataType,
     SampleTypeModel,
     SchemaQuery,
     SelectInput,
@@ -315,11 +316,15 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     gridInit = (insertModel: EntityIdCreationModel): void => {
         const schemaQuery = insertModel.getSchemaQuery();
         if (schemaQuery) {
-            getSampleTypeDetails(schemaQuery)
-                .then(domainDetails => {
-                    const sampleTypeModel = SampleTypeModel.create(domainDetails);
-                    this.setState(() => ({ importAliases: sampleTypeModel.importAliases?.toJS() }));
-                });
+            // only query for the importAliases for Sample Types (i.e. not sources)
+            if (insertModel.entityDataType === SampleTypeDataType) {
+                getSampleTypeDetails(schemaQuery)
+                    .then(domainDetails => {
+                        const sampleTypeModel = SampleTypeModel.create(domainDetails);
+                        console.log('sampleTypeModel', sampleTypeModel.importAliases?.toJS());
+                        this.setState(() => ({ importAliases: sampleTypeModel.importAliases?.toJS() }));
+                    });
+            }
 
             getQueryDetails(schemaQuery.toJS())
                 .then(originalQueryInfo => {

@@ -18,6 +18,7 @@ import { Map } from 'immutable';
 
 import { AppURL } from '../url/AppURL';
 import { SAMPLES_KEY, SOURCES_KEY } from '../app/constants';
+import { SAMPLE_SET_IMPORT_PREFIX, DATA_CLASS_IMPORT_PREFIX } from '../components/domainproperties/samples/SampleTypeDesigner';
 
 interface Props {
     data: Map<any, any>;
@@ -25,32 +26,38 @@ interface Props {
 
 export class SampleTypeImportAliasRenderer extends PureComponent<Props> {
     render(): ReactNode {
-        return <ImportAliasRenderer type={SAMPLES_KEY} data={this.props.data} />;
+        return <ImportAliasRenderer appRouteMap={{ [SAMPLE_SET_IMPORT_PREFIX]: SAMPLES_KEY }} data={this.props.data} />;
     }
 }
 
 export class SourceTypeImportAliasRenderer extends PureComponent<Props> {
     render(): ReactNode {
-        return <ImportAliasRenderer type={SOURCES_KEY} data={this.props.data} />;
+        return <ImportAliasRenderer appRouteMap={{ [DATA_CLASS_IMPORT_PREFIX]: SOURCES_KEY }} data={this.props.data} />;
     }
 }
 
 interface RendererProps extends Props {
-    type: string;
+    appRouteMap: Record<string, string>; // map from the import alias key to the app route for LKSM and LKB
 }
 
 // export for jest testing
 export const ImportAliasRenderer: FC<RendererProps> = memo(props => {
-    const { type, data } = props;
+    const { appRouteMap, data } = props;
     const aliasMap = data?.get('displayValue');
 
     return (
         <>
             {aliasMap?.keySeq().map((key, index) => {
+                const tokens = aliasMap.get(key).split('/');
+                const route = appRouteMap[tokens[0] + '/'];
+                if (tokens.length < 2 || !route) return null;
+
                 return (
                     <>
                         {index > 0 && <span>, </span>}
-                        <a key={key} href={AppURL.create(type, aliasMap.get(key)).toHref()}>{key}</a>
+                        <a key={key} href={AppURL.create(route, tokens[1]).toHref()}>
+                            {key}
+                        </a>
                     </>
                 );
             })}

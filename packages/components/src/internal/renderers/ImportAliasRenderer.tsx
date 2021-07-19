@@ -18,7 +18,10 @@ import { Map } from 'immutable';
 
 import { AppURL } from '../url/AppURL';
 import { SAMPLES_KEY, SOURCES_KEY } from '../app/constants';
-import { SAMPLE_SET_IMPORT_PREFIX, DATA_CLASS_IMPORT_PREFIX } from '../components/domainproperties/samples/SampleTypeDesigner';
+import {
+    SAMPLE_SET_IMPORT_PREFIX,
+    DATA_CLASS_IMPORT_PREFIX,
+} from '../components/domainproperties/samples/SampleTypeDesigner';
 
 interface Props {
     data: Map<any, any>;
@@ -47,18 +50,19 @@ export const ImportAliasRenderer: FC<RendererProps> = memo(props => {
 
     return (
         <>
-            {aliasMap?.keySeq().map((key, index) => {
+            {aliasMap?.keySeq().map((key) => {
                 const tokens = aliasMap.get(key).split('/');
                 const route = appRouteMap[tokens[0] + '/'];
                 if (tokens.length < 2 || !route) return null;
 
                 return (
-                    <>
-                        {index > 0 && <span>, </span>}
-                        <a key={key} href={AppURL.create(route, tokens[1]).toHref()}>
-                            {key}
-                        </a>
-                    </>
+                    <div>
+                        {key} (Alias for:&nbsp;
+                            <a key={key} href={AppURL.create(route, tokens[1]).toHref()}>
+                                {tokens[1]}
+                            </a>
+                        )
+                    </div>
                 );
             })}
         </>

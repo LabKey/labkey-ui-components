@@ -203,7 +203,9 @@ describe('resolveDetailRenderer', () => {
 
     test('sampletypeimportaliasrenderer', () => {
         const wrapper = mount(
-            <div>{resolveDetailRenderer(new QueryColumn({ detailRenderer: 'SampleTypeImportAliasRenderer' }))(Map())}</div>
+            <div>
+                {resolveDetailRenderer(new QueryColumn({ detailRenderer: 'SampleTypeImportAliasRenderer' }))(Map())}
+            </div>
         );
         validate(wrapper, { sampletypeimportaliasrenderer: 1 });
         wrapper.unmount();
@@ -211,7 +213,9 @@ describe('resolveDetailRenderer', () => {
 
     test('sourcetypeimportaliasrenderer', () => {
         const wrapper = mount(
-            <div>{resolveDetailRenderer(new QueryColumn({ detailRenderer: 'SourceTypeImportAliasRenderer' }))(Map())}</div>
+            <div>
+                {resolveDetailRenderer(new QueryColumn({ detailRenderer: 'SourceTypeImportAliasRenderer' }))(Map())}
+            </div>
         );
         validate(wrapper, { sourcetypeimportaliasrenderer: 1 });
         wrapper.unmount();

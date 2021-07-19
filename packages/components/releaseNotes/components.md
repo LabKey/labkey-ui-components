@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 2.56.1
+*Released*: 19 July 2021
 * Added getLineageFilterValue to support linage queries to a given depth.
 
 ### version 2.56.0

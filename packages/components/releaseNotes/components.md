@@ -3,6 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Use `<a>` instead of `<div>` so right clicks work in product menu.
+* [Issue 43502](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43502): change `isDataInput` and `isMaterialInput` to assure the field is a lookup as well as having the expected prefix
 
 ### version 2.56.0
 *Released*: 14 July 2021

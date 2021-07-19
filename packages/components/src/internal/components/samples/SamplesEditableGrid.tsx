@@ -311,7 +311,6 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
                     } else {
                         queryGridInvalidate(sampleSchemaQuery);
                         invalidateLineageResults();
-                        schemaGridInvalidate('auditlog');
                     }
                 }
 

@@ -77,7 +77,7 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
                 {visibleTabs.length > 1 &&
                     visibleTabs.map(tab => {
                         return (
-                            <ProductClickableItem href={tab.href} key={tab.id} id={tab.id} onClick={() => navigateToTab(tab)}>
+                            <ProductClickableItem href={tab.href} key={tab.id} id={tab.id} onClick={() => navigateToTab()}>
                                 {tab.text}
                             </ProductClickableItem>
                         );

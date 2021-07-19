@@ -108,7 +108,10 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                             const model = initQuerySelectModel(componentId, newProps, queryInfo);
 
                             if (props.fireQSChangeOnInit && Utils.isFunction(props.onQSChange)) {
-                                let items: SelectInputOption | SelectInputOption[] = formatResults(model, model.selectedItems);
+                                let items: SelectInputOption | SelectInputOption[] = formatResults(
+                                    model,
+                                    model.selectedItems
+                                );
 
                                 // mimic ReactSelect in that it will return a single option if multiple is not true
                                 if (props.multiple === false) {

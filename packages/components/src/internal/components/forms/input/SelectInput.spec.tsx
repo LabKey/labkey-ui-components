@@ -18,9 +18,10 @@ import { mount, shallow } from 'enzyme';
 
 import { FieldLabel } from '../FieldLabel';
 
+import { waitForLifecycle } from '../../../testHelpers';
+
 import { SelectInputImpl, SelectInputProps } from './SelectInput';
 import { blurSelectInputInput, setSelectInputText } from './SelectInputTestUtils';
-import { waitForLifecycle } from '../../../testHelpers';
 
 describe('SelectInput', () => {
     function getFormsyProps(): Partial<SelectInputProps> {

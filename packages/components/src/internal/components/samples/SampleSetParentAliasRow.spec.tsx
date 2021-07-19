@@ -5,8 +5,9 @@ import { mount } from 'enzyme';
 import { IParentOption } from '../../..';
 import { IParentAlias } from '../domainproperties/samples/models';
 
-import { SampleSetParentAliasRow } from './SampleSetParentAliasRow';
 import { SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
+
+import { SampleSetParentAliasRow } from './SampleSetParentAliasRow';
 
 describe('<SampleSetParentAliasRow/>', () => {
     test('Ignore empty values', () => {

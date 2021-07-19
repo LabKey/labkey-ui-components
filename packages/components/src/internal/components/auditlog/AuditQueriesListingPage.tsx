@@ -48,7 +48,7 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
         this.state = {
             selected: props.params.query,
             selectedRowId: undefined,
-            auditQueries: getAuditQueries()
+            auditQueries: getAuditQueries(),
         };
     }
 

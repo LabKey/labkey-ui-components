@@ -356,7 +356,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                     labelOverlayProps={
                                       Object {
                                         "addLabelAsterisk": undefined,
-                                        "description": "Select  a Data Type 1",
+                                        "description": "Select a Data Type 1",
                                         "inputId": "entityType0",
                                         "isFormsy": false,
                                         "label": "Data Type 1",
@@ -376,7 +376,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                     <LabelOverlay
                                       addLabelAsterisk={false}
                                       canMouseOverTooltip={false}
-                                      description="Select  a Data Type 1"
+                                      description="Select a Data Type 1"
                                       inputId="entityType0"
                                       isFormsy={false}
                                       label="Data Type 1"
@@ -405,7 +405,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                                   <strong>
                                                     Description: 
                                                   </strong>
-                                                  Select  a Data Type 1
+                                                  Select a Data Type 1
                                                 </p>
                                                 <p>
                                                   <small>

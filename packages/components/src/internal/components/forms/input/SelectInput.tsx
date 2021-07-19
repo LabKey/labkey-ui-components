@@ -89,16 +89,16 @@ export interface SelectInputOption {
 // Copied from @types/react-select/src/Select.d.ts
 export type FilterOption = ((option: SelectInputOption, rawInput: string) => boolean) | null;
 
-// DO NOT CHANGE DELIMITER -- at least in react-select 1.0.0-rc.10
-// any other delimiter value will break the "multiple" configuration parameter
 export const DELIMITER = ',';
 
-// ReactSelect no longer supports primitives as "value"
 function initOptionFromPrimitive(value: string | number, props: SelectInputProps): any {
     const { labelKey = 'label', options, valueKey = 'value' } = props;
     return options?.find(o => o[valueKey] === value) ?? { [labelKey]: value, [valueKey]: value };
 }
 
+// Used to initialize the selected options in `state` when `autoValue` is enabled.
+// This will accept a primitive value (e.g. 5) and resolve it to an option (e.g. { label: 'Awesome', value: 5 })
+// if the option is available. Supports mapping single or multiple values.
 export function initOptions(props: SelectInputProps): any {
     const { value } = props;
     let options;
@@ -152,7 +152,7 @@ export interface SelectInputProps {
     label?: ReactNode;
     labelClass?: string;
     labelKey?: string;
-    loadOptions?: Function; // (input: string) => Promise<SelectInputOption[]>;
+    loadOptions?: (input: string) => Promise<SelectInputOption[]>;
     multiple?: boolean;
     name?: string;
     noResultsText?: string;
@@ -372,7 +372,9 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     renderLabel = (): ReactNode => {
         const {
             allowDisable,
+            description,
             label,
+            labelClass,
             multiple,
             name,
             required,
@@ -384,17 +386,10 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
 
         if (showLabel !== false && label !== undefined) {
             if (Utils.isString(label)) {
-                let description = this.props.description;
-                if (!description) {
-                    description = 'Select ' + (multiple ? ' one or more values for ' : ' a ') + label;
-                }
+                const description_ = description ?? `Select ${multiple ? 'one or more values for' : 'a'} ${label}`;
 
                 if (renderFieldLabel) {
-                    return (
-                        <label className="control-label col-sm-3 text-left col-xs-12">
-                            {renderFieldLabel(undefined, label, description)}
-                        </label>
-                    );
+                    return <label className={labelClass}>{renderFieldLabel(undefined, label, description_)}</label>;
                 }
 
                 return (
@@ -403,7 +398,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
                         fieldName={name}
                         labelOverlayProps={{
                             inputId: name,
-                            description,
+                            description: description_,
                             label,
                             addLabelAsterisk,
                             isFormsy: false,

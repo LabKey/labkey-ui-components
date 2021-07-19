@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Save findIds to HTTP session instead of browser session for less exposure
 * don't request to `incrementClientSideMetricCount` if user is a guest
 
+### version 2.56.1
+*Released*: 19 July 2021
+* Added getLineageFilterValue to support linage queries to a given depth.
+
 ### version 2.56.0
 *Released*: 14 July 2021
 * Add option to SearchBox to show a dropdown for searching by Ids

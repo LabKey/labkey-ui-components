@@ -640,6 +640,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             <>
                 {insertModel.isInit && (
                     <SelectInput
+                        autoValue={false}
                         inputClass="col-sm-5"
                         label={this.capTypeTextSingular}
                         labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
@@ -648,7 +649,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                         onChange={this.changeTargetEntityType}
                         options={insertModel.entityTypeOptions.toArray()}
                         required
-                        value={hasTargetEntityType ? insertModel.targetEntityType : undefined}
+                        selectedOptions={hasTargetEntityType ? insertModel.targetEntityType : undefined}
                     />
                 )}
                 {insertModel.isError && (

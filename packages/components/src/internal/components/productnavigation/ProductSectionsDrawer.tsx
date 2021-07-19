@@ -1,11 +1,10 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { List } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
 import {
     Alert,
     AppURL,
-    Container,
     createProductUrl,
     incrementClientSideMetricCount,
     MenuSectionModel,
@@ -67,7 +66,6 @@ export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = mem
 
     const navigate = useCallback((section: ProductSectionModel) => {
         incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, product.navigationMetric);
-        window.location.href = section.url.toString();
         onCloseMenu?.();
     }, []);
 
@@ -79,7 +77,7 @@ export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = mem
         <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
             {sections?.map(section => {
                 return (
-                    <ProductClickableItem key={section.key} id={section.key} onClick={() => navigate(section)}>
+                    <ProductClickableItem href={section.url.toString()} key={section.key} id={section.key} onClick={() => navigate(section)}>
                         {section.label}
                     </ProductClickableItem>
                 );

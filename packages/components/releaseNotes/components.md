@@ -1,5 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version TBD
+*Released*: TBD
+* Use `<a>` instead of `<div>` so right clicks work in product menu.
+
 ### version 2.56.0
 *Released*: 14 July 2021
 * Add option to SearchBox to show a dropdown for searching by Ids

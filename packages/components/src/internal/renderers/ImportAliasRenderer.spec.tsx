@@ -11,6 +11,7 @@ const DEFAULT_PROPS = {
 
 describe('ImportAliasRenderer', () => {
     function validate(wrapper: ReactWrapper, aliasCount = 0): void {
+        expect(wrapper.find('div')).toHaveLength(aliasCount);
         expect(wrapper.find('a')).toHaveLength(aliasCount);
     }
 
@@ -32,6 +33,7 @@ describe('ImportAliasRenderer', () => {
             />
         );
         validate(wrapper, 1);
+        expect(wrapper.find('div').text()).toBe('key1 (Alias for: value1)');
         expect(wrapper.find('a').prop('href')).toBe('#/samples/value1');
         expect(wrapper.find('a').text()).toBe('value1');
         wrapper.unmount();
@@ -50,8 +52,10 @@ describe('ImportAliasRenderer', () => {
             />
         );
         validate(wrapper, 2);
+        expect(wrapper.find('div').first().text()).toBe('key1 (Alias for: value1)');
         expect(wrapper.find('a').first().prop('href')).toBe('#/samples/value1');
         expect(wrapper.find('a').first().text()).toBe('value1');
+        expect(wrapper.find('div').last().text()).toBe('key2 (Alias for: value2)');
         expect(wrapper.find('a').last().prop('href')).toBe('#/samples/value2');
         expect(wrapper.find('a').last().text()).toBe('value2');
         wrapper.unmount();
@@ -72,8 +76,10 @@ describe('ImportAliasRenderer', () => {
             />
         );
         validate(wrapper, 3);
+        expect(wrapper.find('div').first().text()).toBe('key1 (Alias for: value1)');
         expect(wrapper.find('a').first().prop('href')).toBe('#/samples/value1');
         expect(wrapper.find('a').first().text()).toBe('value1');
+        expect(wrapper.find('div').last().text()).toBe('key3 (Alias for: value3)');
         expect(wrapper.find('a').last().prop('href')).toBe('#/registry/value3');
         expect(wrapper.find('a').last().text()).toBe('value3');
         wrapper.unmount();

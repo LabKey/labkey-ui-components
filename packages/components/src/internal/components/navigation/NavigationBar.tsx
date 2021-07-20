@@ -38,7 +38,7 @@ interface NavigationBarProps {
     model: ProductMenuModel;
     notificationsConfig?: ServerNotificationsConfig;
     onSearch?: (form: any) => void;
-    onFindByIds?: () => void;
+    onFindByIds?: (sessionkey: string) => void;
     projectName?: string;
     searchPlaceholder?: string;
     showNavMenu?: boolean;

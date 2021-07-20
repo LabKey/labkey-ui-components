@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * [Issue 43502](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43502): change `isDataInput` and `isMaterialInput` to assure the field is a lookup as well as having the expected prefix
 * [Issue 43531](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43531) Don't trim off leading 0s from input values in file import preview grid
 * [Issue 43594](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43594) Show only names of parent samples and sources in dropdown
+* [Issue 43418](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43418) Add some styling in DetailDisplay to make next not overflow the box
 
 ### version 2.56.2
 *Released*: 20 July 2021

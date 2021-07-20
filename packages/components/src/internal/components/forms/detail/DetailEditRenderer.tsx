@@ -26,7 +26,6 @@ import {
     LabelColorRenderer,
     MultiValueRenderer,
     QueryColumn,
-    SchemaQuery,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
 } from '../../../..';
@@ -102,7 +101,7 @@ export function resolveDetailEditRenderer(
                         name={col.name}
                         placeholder="Select or type to search..."
                         required={col.required}
-                        schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
+                        schemaQuery={col.lookup.schemaQuery}
                         value={resolveDetailFieldValue(data, true)}
                         valueColumn={col.lookup.keyColumn}
                     />

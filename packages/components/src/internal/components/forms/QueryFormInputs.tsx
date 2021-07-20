@@ -20,7 +20,7 @@ import { Utils } from '@labkey/api';
 
 import { initLookup } from '../../actions';
 
-import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo, SchemaQuery } from '../../..';
+import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo } from '../../..';
 
 import { resolveRenderer } from './renderers';
 import { QuerySelect } from './QuerySelect';
@@ -263,7 +263,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         previewOptions={showQuerySelectPreviewOptions}
                                         renderFieldLabel={renderFieldLabel}
                                         required={col.required}
-                                        schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
+                                        schemaQuery={col.lookup.schemaQuery}
                                         showLabel
                                         value={value}
                                         valueColumn={col.lookup.keyColumn}

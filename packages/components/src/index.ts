@@ -287,6 +287,7 @@ import { CreateSamplesSubMenuBase } from './internal/components/samples/CreateSa
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
+import { SampleAliquotViewSelector, ALIQUOT_FILTER_MODE } from './internal/components/samples/SampleAliquotViewSelector';
 import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
 import { FindSamplesByIdHeaderPanel } from './internal/components/samples/FindSamplesByIdHeaderPanel';
 import { SharedSampleTypeAdminConfirmModal } from './internal/components/samples/SharedSampleTypeAdminConfirmModal';
@@ -837,6 +838,8 @@ export {
     CreateSamplesSubMenuBase,
     SamplesSelectionProvider,
     SampleAliquotDetailHeader,
+    SampleAliquotViewSelector,
+    ALIQUOT_FILTER_MODE,
     SampleAssayDetail,
     SharedSampleTypeAdminConfirmModal,
     CHILD_SAMPLE_CREATION,

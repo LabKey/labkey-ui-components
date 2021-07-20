@@ -84,17 +84,22 @@ describe('useUsersWithPermissions', () => {
     }
 
     const TestComponent: FC<TestComponentProps> = ({ permissions, loader }) => {
-        const usersState = useUsersWithPermissions(permissions, loader);
+        const { error, loadingState, users } = useUsersWithPermissions(permissions, loader);
         return (
             <div>
-                {usersState.loadingState !== LoadingState.LOADED && <LoadingSpinner />}
-                {usersState.loadingState === LoadingState.LOADED && (
+                {loadingState !== LoadingState.LOADED && <LoadingSpinner />}
+                {loadingState === LoadingState.LOADED && users !== undefined && (
                     <div className="users-list">
-                        {usersState.users.map(user => (
+                        {users.map(user => (
                             <div className="users-list__user" key={user.id}>
                                 {user.displayName}
                             </div>
                         ))}
+                    </div>
+                )}
+                {loadingState === LoadingState.LOADED && error !== undefined && (
+                    <div className="users-error">
+                        {error}
                     </div>
                 )}
             </div>
@@ -102,6 +107,7 @@ describe('useUsersWithPermissions', () => {
     };
 
     test('state', async () => {
+        const error = 'There was a problem retrieving users with the given permissions';
         const loader = jest.fn(async () => List<User>([TEST_USER_EDITOR, TEST_USER_READER]));
         const wrapper = mount(<TestComponent permissions={[PermissionTypes.Read]} loader={loader} />);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
@@ -109,13 +115,22 @@ describe('useUsersWithPermissions', () => {
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
         expect(wrapper.find('.users-list__user').at(0).text()).toEqual(TEST_USER_EDITOR.displayName);
         expect(wrapper.find('.users-list__user').at(1).text()).toEqual(TEST_USER_READER.displayName);
+        wrapper.setProps({
+            loader: () => {
+                throw error;
+            },
+        });
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.users-error').text()).toEqual(error);
     });
 
     test('reload permissions', async () => {
         const loader = jest.fn(async () => List<User>([TEST_USER_EDITOR, TEST_USER_READER]));
         const wrapper = mount(<TestComponent permissions={[PermissionTypes.Read]} loader={loader} />);
+        await waitForLifecycle(wrapper);
         expect(loader).toHaveBeenCalledWith([PermissionTypes.Read]);
         wrapper.setProps({ permissions: [PermissionTypes.Delete, PermissionTypes.Update]});
+        await waitForLifecycle(wrapper);
         expect(loader).toHaveBeenCalledWith([PermissionTypes.Delete, PermissionTypes.Update]);
     });
 });

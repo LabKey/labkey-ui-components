@@ -429,7 +429,7 @@ export function useUsersWithPermissions(
         } finally {
             setLoadingState(LoadingState.LOADED);
         }
-    }, [permissions]);
+    }, [loader, permissions]);
 
     useEffect(() => {
         load();

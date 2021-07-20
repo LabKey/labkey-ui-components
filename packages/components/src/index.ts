@@ -328,7 +328,11 @@ import {
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import { processChartData } from './internal/components/chart/utils';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
-import { getImmediateChildLineageFilterValue, invalidateLineageResults } from './internal/components/lineage/actions';
+import {
+    getImmediateChildLineageFilterValue,
+    getLineageFilterValue,
+    invalidateLineageResults,
+} from './internal/components/lineage/actions';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
@@ -925,6 +929,7 @@ export {
     SampleTypeLineageCounts,
     invalidateLineageResults,
     getImmediateChildLineageFilterValue,
+    getLineageFilterValue,
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,

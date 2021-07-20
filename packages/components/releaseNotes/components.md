@@ -1,9 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
 ### version TBD
 *Released*: TBD
 * Use `<a>` instead of `<div>` so right clicks work in product menu.
 * [Issue 43502](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43502): change `isDataInput` and `isMaterialInput` to assure the field is a lookup as well as having the expected prefix
+
+### version 2.56.1
+*Released*: 19 July 2021
+* Added getLineageFilterValue to support linage queries to a given depth.
 
 ### version 2.56.0
 *Released*: 14 July 2021

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.57.0
+*Released*: 20 July 2021
 * Item 9204: Sample type parent import alias inclusion in download template and display in details panel
     * Add SampleTypeImportAliasRenderer and SourceTypeImportAliasRenderer to be used for sample type details panel rendering
     * EntityInsertPanel update to get importAliases for target sample type to add to getTemplateUrl() params

@@ -54,15 +54,17 @@ export const ImportAliasRenderer: FC<RendererProps> = memo(props => {
                 ?.keySeq()
                 .sort()
                 .map(key => {
-                    const tokens = aliasMap.get(key).split('/');
-                    const route = appRouteMap[tokens[0] + '/'];
-                    if (tokens.length < 2 || !route) return null;
+                    const splitIndex = aliasMap.get(key).indexOf('/');
+                    if (splitIndex === -1) return null;
+
+                    const route = appRouteMap[aliasMap.get(key).substring(0, splitIndex+1)];
+                    const value = aliasMap.get(key).substring(splitIndex+1);
 
                     return (
                         <div>
                             {key} (Alias for:&nbsp;
-                            <a key={key} href={AppURL.create(route, tokens[1]).toHref()}>
-                                {tokens[1]}
+                            <a key={key} href={AppURL.create(route, value).toHref()}>
+                                {value}
                             </a>
                             )
                         </div>

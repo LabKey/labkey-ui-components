@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Add SampleTypeImportAliasRenderer and SourceTypeImportAliasRenderer to be used for sample type details panel rendering
     * EntityInsertPanel update to get importAliases for target sample type to add to getTemplateUrl() params
 
+### version 2.56.1
+*Released*: 19 July 2021
+* Added getLineageFilterValue to support linage queries to a given depth.
+
 ### version 2.56.0
 *Released*: 14 July 2021
 * Add option to SearchBox to show a dropdown for searching by Ids

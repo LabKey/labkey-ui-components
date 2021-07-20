@@ -163,20 +163,20 @@ describe('QueryColumn: Sample Lookup', () => {
     test('isDataInput', () => {
         expect(new QueryColumn({}).isDataInput()).toBeFalsy();
         expect(new QueryColumn({ name: 'test' }).isDataInput()).toBeFalsy();
-        expect(new QueryColumn({ name: 'DataInputs' }).isDataInput()).toBeTruthy();
+        expect(new QueryColumn({ name: 'DataInputs', lookup:  "lookHere"}).isDataInput()).toBeTruthy();
     });
 
     test('isMaterialInput', () => {
         expect(new QueryColumn({}).isMaterialInput()).toBeFalsy();
         expect(new QueryColumn({ name: 'test' }).isMaterialInput()).toBeFalsy();
-        expect(new QueryColumn({ name: 'MaterialInputs' }).isMaterialInput()).toBeTruthy();
+        expect(new QueryColumn({ name: 'MaterialInputs', lookup: "lookHere"}).isMaterialInput()).toBeTruthy();
     });
 
     test('isExpInput', () => {
         expect(new QueryColumn({}).isExpInput()).toBeFalsy();
         expect(new QueryColumn({ name: 'test' }).isExpInput()).toBeFalsy();
-        expect(new QueryColumn({ name: 'DataInputs' }).isExpInput()).toBeTruthy();
-        expect(new QueryColumn({ name: 'MaterialInputs' }).isExpInput()).toBeTruthy();
+        expect(new QueryColumn({ name: 'DataInputs', lookup: "lookHere" }).isExpInput()).toBeTruthy();
+        expect(new QueryColumn({ name: 'MaterialInputs', lookup: "lookHere" }).isExpInput()).toBeTruthy();
     });
 
     test('isEditable', () => {

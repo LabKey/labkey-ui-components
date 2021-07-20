@@ -30,6 +30,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               </span>
             </td>
             <td
+              className="text__truncate"
               data-caption="Flag"
               data-fieldkey="flag"
             >
@@ -49,6 +50,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               </span>
             </td>
             <td
+              className="text__truncate"
               data-caption="For set 3"
               data-fieldkey="for set 3"
             >
@@ -68,6 +70,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               </span>
             </td>
             <td
+              className="text__truncate"
               data-caption="Again for set 3"
               data-fieldkey="again for set 3"
             >
@@ -87,6 +90,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               </span>
             </td>
             <td
+              className="text__truncate"
               data-caption="Another"
               data-fieldkey="another"
             >
@@ -106,6 +110,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               </span>
             </td>
             <td
+              className="text__truncate"
               data-caption="Lookup Field Caption"
               data-fieldkey="lookupfield"
             >
@@ -164,6 +169,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               </span>
             </td>
             <td
+              className="text__truncate"
               data-caption="Flag"
               data-fieldkey="flag"
             >
@@ -183,6 +189,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               </span>
             </td>
             <td
+              className="text__truncate"
               data-caption="For set 3"
               data-fieldkey="for set 3"
             >
@@ -202,6 +209,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               </span>
             </td>
             <td
+              className="text__truncate"
               data-caption="Again for set 3"
               data-fieldkey="again for set 3"
             >
@@ -221,6 +229,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               </span>
             </td>
             <td
+              className="text__truncate"
               data-caption="Another"
               data-fieldkey="another"
             >
@@ -240,6 +249,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               </span>
             </td>
             <td
+              className="text__truncate"
               data-caption="Lookup Field Caption"
               data-fieldkey="lookupfield"
             >

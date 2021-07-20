@@ -2,7 +2,7 @@ import React from 'react';
 
 import { mount } from 'enzyme';
 
-import { Alert } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 
 import { LoadingState } from '../../../public/LoadingState';
 
@@ -15,58 +15,44 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import {
     FindSamplesByIdHeaderPanel,
     getFindIdCountsByTypeMessage,
-    SamplesNotFoundMsg
+    SamplesNotFoundMsg,
 } from './FindSamplesByIdHeaderPanel';
-import { FIND_IDS_SESSION_STORAGE_KEY, SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from './constants';
+import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from './constants';
 
 describe('getFindIdCountsByTypeMessage', () => {
-    beforeEach(() => {
-        sessionStorage.clear();
-    });
-
     test('no data', () => {
-        expect(getFindIdCountsByTypeMessage()).toBeFalsy();
+        expect(getFindIdCountsByTypeMessage([])).toBeFalsy();
+        expect(getFindIdCountsByTypeMessage(undefined)).toBeFalsy();
     });
 
     test('data but with unknown prefix', () => {
-        sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY, JSON.stringify(['x:id1', 'y:id2']));
-        expect(getFindIdCountsByTypeMessage()).toBeFalsy();
+        expect(getFindIdCountsByTypeMessage(['x:id1', 'y:id2'])).toBeFalsy();
     });
 
     test('one sampleId', () => {
-        sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY, JSON.stringify(['s:S-1']));
-        expect(getFindIdCountsByTypeMessage()).toBe('1 Sample ID');
+        expect(getFindIdCountsByTypeMessage(['s:S-1'])).toBe('1 Sample ID');
     });
 
     test('multiple sampleIds', () => {
-        sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY, JSON.stringify(['s:S-1', 's:B-52']));
-        expect(getFindIdCountsByTypeMessage()).toBe('2 Sample IDs');
+        expect(getFindIdCountsByTypeMessage(['s:S-1', 's:B-52'])).toBe('2 Sample IDs');
     });
 
     test('one uniqueId', () => {
-        sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY, JSON.stringify(['u:U-2']));
-        expect(getFindIdCountsByTypeMessage()).toBe('1 Barcode');
+        expect(getFindIdCountsByTypeMessage(['u:U-2'])).toBe('1 Barcode');
     });
 
     test('multiple uniqueId', () => {
-        sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY, JSON.stringify(['u:U-2', 'u:U-3', 'u:0000041', 'u:88']));
-        expect(getFindIdCountsByTypeMessage()).toBe('4 Barcodes');
+        expect(getFindIdCountsByTypeMessage(['u:U-2', 'u:U-3', 'u:0000041', 'u:88'])).toBe('4 Barcodes');
     });
 
     test('both sampleIds and uniqueIds', () => {
-        sessionStorage.setItem(
-            FIND_IDS_SESSION_STORAGE_KEY,
-            JSON.stringify(['u:U-2', 's:S-3', 'u:B', 'u:0000041', 's:X-88'])
+        expect(getFindIdCountsByTypeMessage(['u:U-2', 's:S-3', 'u:B', 'u:0000041', 's:X-88'])).toBe(
+            '2 Sample IDs and 3 Barcodes'
         );
-        expect(getFindIdCountsByTypeMessage()).toBe('2 Sample IDs and 3 Barcodes');
     });
 });
 
 describe('FindSamplesByIdHeaderPanel', () => {
-    beforeEach(() => {
-        sessionStorage.clear();
-    });
-
     test('loading', () => {
         const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
 
@@ -77,6 +63,8 @@ describe('FindSamplesByIdHeaderPanel', () => {
                 missingIds={{}}
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
+                ids={undefined}
+                sessionKey={undefined}
             />
         );
         const section = wrapper.find('Section');
@@ -93,7 +81,6 @@ describe('FindSamplesByIdHeaderPanel', () => {
     });
 
     test('no list model', () => {
-        sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY, JSON.stringify(['u:U-2']));
         const wrapper = mount(
             <FindSamplesByIdHeaderPanel
                 loadingState={LoadingState.LOADED}
@@ -101,6 +88,8 @@ describe('FindSamplesByIdHeaderPanel', () => {
                 missingIds={{}}
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
+                ids={['u:U-2']}
+                sessionKey="test"
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
@@ -120,6 +109,8 @@ describe('FindSamplesByIdHeaderPanel', () => {
                 missingIds={{}}
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
+                ids={['u:U-2']}
+                sessionKey="test"
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
@@ -135,6 +126,8 @@ describe('FindSamplesByIdHeaderPanel', () => {
                 missingIds={{}}
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
+                ids={[]}
+                sessionKey="test"
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
@@ -155,17 +148,19 @@ describe('FindSamplesByIdHeaderPanel', () => {
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
                 error={<div>We have a problem here.</div>}
+                ids={[]}
+                sessionKey="test"
             />
         );
 
         const alert = wrapper.find(Alert);
         expect(alert).toHaveLength(1);
         expect(alert.text()).toBe('We have a problem here.');
+        expect(wrapper.exists(SamplesNotFoundMsg)).toBe(false);
+        expect(wrapper.exists(Button)).toBe(false);
     });
 
     test('found multiple samples', () => {
-        sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY, JSON.stringify(['u:U-2', 's:B-52']));
-
         const queryModel = makeTestQueryModel(
             SchemaQuery.create('test', 'query'),
             new QueryInfo(),
@@ -183,6 +178,8 @@ describe('FindSamplesByIdHeaderPanel', () => {
                 }}
                 onFindSamples={jest.fn()}
                 onClearSamples={jest.fn()}
+                ids={['u:U-2', 's:B-52']}
+                sessionKey="test"
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
@@ -197,6 +194,31 @@ describe('FindSamplesByIdHeaderPanel', () => {
         expect(wrapper.find(Alert)).toHaveLength(1);
         expect(wrapper.find('.find-samples-warning')).toHaveLength(1);
         expect(wrapper.find(FindByIdsModal)).toHaveLength(1);
+    });
+
+    test('custom workWithSamplesMsg', () => {
+        const queryModel = makeTestQueryModel(
+            SchemaQuery.create('test', 'query'),
+            new QueryInfo(),
+            { 1: {}, 2: {} },
+            ['1', '2'],
+            2
+        );
+        const msg = 'Work with your samples here';
+        const wrapper = mount(
+            <FindSamplesByIdHeaderPanel
+                loadingState={LoadingState.LOADED}
+                listModel={queryModel}
+                missingIds={undefined}
+                onFindSamples={jest.fn()}
+                onClearSamples={jest.fn()}
+                ids={['u:U-2', 's:B-52']}
+                sessionKey="test"
+                workWithSamplesMsg={msg}
+            />
+        );
+        const alert = wrapper.find(Alert);
+        expect(alert.text()).toBe(msg);
     });
 });
 

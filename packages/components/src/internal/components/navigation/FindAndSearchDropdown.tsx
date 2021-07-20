@@ -9,7 +9,7 @@ interface Props {
     title: ReactNode;
     findNounPlural?: string;
     onSearch?: (form: any) => void;
-    onFindByIds?: () => void;
+    onFindByIds?: (sessionKey: string) => void;
     className?: string;
 }
 
@@ -26,10 +26,13 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
         setShowFindModal(false);
     }, []);
 
-    const onFind = useCallback(() => {
-        setShowFindModal(false);
-        onFindByIds();
-    }, [onFindByIds]);
+    const onFind = useCallback(
+        (sessionKey: string) => {
+            setShowFindModal(false);
+            onFindByIds(sessionKey);
+        },
+        [onFindByIds]
+    );
 
     return (
         <>

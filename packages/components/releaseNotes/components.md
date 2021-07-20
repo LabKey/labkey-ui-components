@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
-### vesrion TBD
-*Released*: TBD
+### vesrion 2.56.2
+*Released*: 20 July 2021
 * Save findIds to HTTP session instead of browser session for less exposure
 * don't request to `incrementClientSideMetricCount` if user is a guest
 

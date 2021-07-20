@@ -12,20 +12,22 @@ import { Alert } from '../base/Alert';
 import { FindByIdsModal } from '../navigation/FindByIdsModal';
 import { Section } from '../base/Section';
 
-import { FIND_IDS_SESSION_STORAGE_KEY, SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from './constants';
+import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from './constants';
 
 interface HeaderPanelProps {
     loadingState: LoadingState;
     listModel: QueryModel;
     error?: ReactNode;
     missingIds: { [key: string]: string[] };
-    onFindSamples: () => void;
+    ids: string[];
+    onFindSamples: (sessionKey: string) => void;
     onClearSamples: () => void;
+    sessionKey: string;
+    workWithSamplesMsg?: ReactNode;
 }
 
 // exported for jest testing
-export function getFindIdCountsByTypeMessage(): string {
-    const findIds: string[] = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY));
+export function getFindIdCountsByTypeMessage(findIds: string[]): string {
     if (!findIds) {
         return undefined;
     }
@@ -45,11 +47,23 @@ export function getFindIdCountsByTypeMessage(): string {
 }
 
 export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
+    const title = 'Find Samples in Bulk';
+    const panelClassName = 'find-samples-header-panel';
     const [showFindModal, setShowFindModal] = useState<boolean>(false);
 
-    const { loadingState, listModel, onFindSamples, onClearSamples, missingIds, error } = props;
+    const {
+        loadingState,
+        listModel,
+        onFindSamples,
+        onClearSamples,
+        missingIds,
+        sessionKey,
+        error,
+        ids,
+        workWithSamplesMsg,
+    } = props;
 
-    const numIdsMsg = getFindIdCountsByTypeMessage();
+    const numIdsMsg = getFindIdCountsByTypeMessage(ids);
 
     const onAddMoreSamples = useCallback(() => {
         setShowFindModal(true);
@@ -59,10 +73,13 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
         setShowFindModal(false);
     }, []);
 
-    const onFind = useCallback(() => {
-        setShowFindModal(false);
-        onFindSamples();
-    }, [onFindSamples]);
+    const onFind = useCallback(
+        sessionKey => {
+            setShowFindModal(false);
+            onFindSamples(sessionKey);
+        },
+        [onFindSamples]
+    );
 
     let foundSamplesMsg;
     if (isLoading(loadingState) || (listModel?.isLoading && !listModel.queryInfoError)) {
@@ -84,11 +101,18 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
         );
     }
 
+    if (error) {
+        return (
+            <Section title={title} panelClassName={panelClassName}>
+                <Alert>{error}</Alert>
+            </Section>
+        );
+    }
+
     const hasSamples = !listModel?.isLoading && listModel?.rowCount > 0;
 
     return (
-        <Section title="Find Samples in Bulk" panelClassName="find-samples-header-panel">
-            <Alert>{error}</Alert>
+        <Section title={title} panelClassName={panelClassName}>
             {foundSamplesMsg}
             <SamplesNotFoundMsg missingIds={missingIds} />
             <div className="bottom-spacing">
@@ -99,21 +123,21 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
                     Reset
                 </Button>
             </div>
-            {hasSamples && (
-                <Alert bsStyle="info">
-                    Work with the selected samples in the grid now or save them to a picklist for later use.
-                </Alert>
-            )}
+            {hasSamples && <Alert bsStyle="info">{workWithSamplesMsg}</Alert>}
             <FindByIdsModal
                 show={showFindModal}
                 onCancel={onCancelAdd}
                 onFind={onFind}
                 nounPlural="samples"
-                addToExistingIds={true}
+                sessionKey={sessionKey}
             />
         </Section>
     );
 });
+
+FindSamplesByIdHeaderPanel.defaultProps = {
+    workWithSamplesMsg: 'Work with the selected samples in the grid now or save them to a picklist for later use.',
+};
 
 export const SamplesNotFoundMsg: FC<{ missingIds: { [key: string]: string[] } }> = memo(({ missingIds }) => {
     if (!missingIds) return null;

@@ -15,7 +15,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * A custom hook that uses the getUsersWithPermissions action to load users
 * Add Key enum
     * An enum useful for intercepting keys in event handlers
-* Add SimpleFileAttachmentContainer
+* Add FileAttachmentArea
     * This component looks like our FileAttachmentContainer, but only takes a single prop, `onAttach`. This component
       stores no state, and does not render files.
 

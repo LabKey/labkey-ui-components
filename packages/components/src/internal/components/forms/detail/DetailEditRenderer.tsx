@@ -27,6 +27,8 @@ import {
     MultiValueRenderer,
     QueryColumn,
     SchemaQuery,
+    SampleTypeImportAliasRenderer,
+    SourceTypeImportAliasRenderer,
 } from '../../../..';
 
 import { QuerySelect } from '../QuerySelect';
@@ -218,6 +220,12 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 break;
             case 'filecolumnrenderer':
                 renderer = d => <FileColumnRenderer data={d} col={column} />;
+                break;
+            case 'sampletypeimportaliasrenderer':
+                renderer = d => <SampleTypeImportAliasRenderer data={d} />;
+                break;
+            case 'sourcetypeimportaliasrenderer':
+                renderer = d => <SourceTypeImportAliasRenderer data={d} />;
                 break;
             default:
                 break;

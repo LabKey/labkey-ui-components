@@ -9,7 +9,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * [Issue 43594](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43594) Show only names of parent samples and sources in dropdown
 * [Issue 43418](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=43418) Add some styling in DetailDisplay to make next not overflow the box
 
-### version 2.56.2
+### version 2.57.0
+*Released*: 20 July 2021
+* Item 9204: Sample type parent import alias inclusion in download template and display in details panel
+    * Add SampleTypeImportAliasRenderer and SourceTypeImportAliasRenderer to be used for sample type details panel rendering
+    * EntityInsertPanel update to get importAliases for target sample type to add to getTemplateUrl() params
+
+### vesrion 2.56.2
 *Released*: 20 July 2021
 * Save findIds to HTTP session instead of browser session for less exposure
 * don't request to `incrementClientSideMetricCount` if user is a guest

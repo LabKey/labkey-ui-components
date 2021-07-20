@@ -14,7 +14,10 @@ export enum ALIQUOT_FILTER_MODE {
 interface Props {
     aliquotFilterMode: ALIQUOT_FILTER_MODE
     updateAliquotFilter: (newMode?: ALIQUOT_FILTER_MODE) => any
-    selectorHeader?: string
+    headerLabel?: string
+    samplesLabel?: string
+    aliquotsLabel?: string
+    allLabel?: string
 }
 
 export class SampleAliquotViewSelector extends Component<Props> {
@@ -22,7 +25,10 @@ export class SampleAliquotViewSelector extends Component<Props> {
 
     static defaultProps = {
         aliquotFilterMode: ALIQUOT_FILTER_MODE.all,
-        selectorHeader: 'Show Samples'
+        headerLabel: 'Show Samples',
+        samplesLabel: 'Samples Only',
+        aliquotsLabel: 'Aliquots Only',
+        allLabel: 'Samples and Aliquots'
     };
 
     constructor(props: Props) {
@@ -32,11 +38,12 @@ export class SampleAliquotViewSelector extends Component<Props> {
     }
 
     getTitle(mode: ALIQUOT_FILTER_MODE) {
+        const { samplesLabel, aliquotsLabel } = this.props;
         switch (mode) {
             case ALIQUOT_FILTER_MODE.samples:
-                return 'Samples Only';
+                return samplesLabel;
             case ALIQUOT_FILTER_MODE.aliquots:
-                return 'Aliquots Only';
+                return aliquotsLabel;
             case ALIQUOT_FILTER_MODE.none:
                 return 'None';
             default:
@@ -54,18 +61,18 @@ export class SampleAliquotViewSelector extends Component<Props> {
     };
 
     createMenuItems(filterMode: ALIQUOT_FILTER_MODE): List<ReactNode> {
-        const { selectorHeader } = this.props;
+        const { headerLabel, samplesLabel, aliquotsLabel, allLabel } = this.props;
 
         const items = List<ReactNode>().asMutable();
         items.push(
             <MenuItem header key="aliquot-selector-header">
-                {selectorHeader}
+                {headerLabel}
             </MenuItem>
         );
 
-        items.push(this.createItem('all', 'Samples and Aliquots', ALIQUOT_FILTER_MODE.all, filterMode == ALIQUOT_FILTER_MODE.all));
-        items.push(this.createItem('sample', 'Samples Only', ALIQUOT_FILTER_MODE.samples, filterMode == ALIQUOT_FILTER_MODE.samples));
-        items.push(this.createItem('aliquot', 'Aliquots Only', ALIQUOT_FILTER_MODE.aliquots, filterMode == ALIQUOT_FILTER_MODE.aliquots));
+        items.push(this.createItem('all', allLabel, ALIQUOT_FILTER_MODE.all, filterMode == ALIQUOT_FILTER_MODE.all));
+        items.push(this.createItem('sample', samplesLabel, ALIQUOT_FILTER_MODE.samples, filterMode == ALIQUOT_FILTER_MODE.samples));
+        items.push(this.createItem('aliquot', aliquotsLabel, ALIQUOT_FILTER_MODE.aliquots, filterMode == ALIQUOT_FILTER_MODE.aliquots));
 
         return items.asImmutable();
     }

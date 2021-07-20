@@ -64,4 +64,26 @@ describe('<SampleAliquotViewSelector/>', () => {
         wrapper.unmount();
     });
 
+    test('customized labels', () => {
+        const component = <SampleAliquotViewSelector
+            updateAliquotFilter={jest.fn()}
+            headerLabel={'Show Jobs with Samples'}
+            samplesLabel={'Parent Sample Only'}
+            allLabel={'Parent Sample and Aliquots'}
+        />;
+        const wrapper = mount(component);
+
+        const items = wrapper.find(MenuItem);
+
+        expect(items).toHaveLength(4);
+
+        expect(items.at(0).text()).toBe('Show Jobs with Samples');
+
+        expect(items.at(1).text()).toBe('Parent Sample and Aliquots');
+        expect(items.at(2).text()).toBe('Parent Samples Only');
+        expect(items.at(3).text()).toBe('Aliquots Only');
+
+        wrapper.unmount();
+    });
+
 });

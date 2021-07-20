@@ -57,8 +57,8 @@ export const ImportAliasRenderer: FC<RendererProps> = memo(props => {
                     const splitIndex = aliasMap.get(key).indexOf('/');
                     if (splitIndex === -1) return null;
 
-                    const route = appRouteMap[aliasMap.get(key).substring(0, splitIndex+1)];
-                    const value = aliasMap.get(key).substring(splitIndex+1);
+                    const route = appRouteMap[aliasMap.get(key).substring(0, splitIndex + 1)];
+                    const value = aliasMap.get(key).substring(splitIndex + 1);
 
                     return (
                         <div>

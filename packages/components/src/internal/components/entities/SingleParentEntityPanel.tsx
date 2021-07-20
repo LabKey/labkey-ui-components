@@ -151,7 +151,6 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         onInitValue={this.onInitValue}
                         preLoad
                         loadOnChange // set to true so we'll reload to eliminate the last selected value from the list.
-                        previewOptions
                         multiple
                         schemaQuery={parentSchemaQuery}
                         showLabel

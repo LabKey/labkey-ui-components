@@ -6,7 +6,12 @@ interface SimpleFileAttachmentContainerProps {
     onAttach: (files: File[]) => void;
 }
 
-export const SimpleFileAttachmentContainer: FC<SimpleFileAttachmentContainerProps> = memo(({ onAttach }) => {
+/**
+ * This component looks like the FileAttachmentContainer, but does significantly less. It only renders the file drop
+ * area/input, it does not render attached files. This is useful if you render attached files separately from your
+ * attachment area, such as in cases where files are automatically uploaded.
+ */
+export const FileAttachmentArea: FC<SimpleFileAttachmentContainerProps> = memo(({ onAttach }) => {
     const [highlight, setHighlight] = useState<boolean>(false);
     const onChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
         cancelEvent(evt);
@@ -32,7 +37,7 @@ export const SimpleFileAttachmentContainer: FC<SimpleFileAttachmentContainerProp
     );
 
     return (
-        <div className="job-attachments" onDrop={onDrop}>
+        <div className="file-attachment-area" onDrop={onDrop}>
             <div className="file-upload--container">
                 <label
                     className={`file-upload--label ${highlight ? 'file-upload__is-hover' : ''}`}

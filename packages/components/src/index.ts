@@ -579,7 +579,7 @@ import {
 import { Key, useEnterEscape } from './public/useEnterEscape';
 import { DateInput } from './internal/components/DateInput';
 import { EditInlineField } from './internal/components/EditInlineField';
-import { SimpleFileAttachmentContainer } from './internal/components/files/SimpleFileAttachmentContainer';
+import { FileAttachmentArea } from './internal/components/files/FileAttachmentArea';
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
 enablePatches();
@@ -1187,7 +1187,7 @@ export {
     useEnterEscape,
     DateInput,
     EditInlineField,
-    SimpleFileAttachmentContainer,
+    FileAttachmentArea,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

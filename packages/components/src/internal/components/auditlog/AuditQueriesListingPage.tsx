@@ -147,13 +147,17 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
 
         const { queryModels, actions } = this.props;
         const id = 'audit-log-querymodel-' + selected;
+
+        // only bind first model to URL so that it can pick up any filters passed from the caller
+        const isFirstModel = Object.keys(queryModels).length === 0;
+
         if (!queryModels[id]) {
             actions.addModel(
                 {
                     id,
                     schemaQuery: SchemaQuery.create('auditLog', selected),
                     containerFilter: this.containerFilter,
-                    bindURL: true,
+                    bindURL: isFirstModel,
                 },
                 true,
                 true

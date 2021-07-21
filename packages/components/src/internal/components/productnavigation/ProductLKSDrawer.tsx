@@ -31,7 +31,7 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
         setTimeout(() => setTransition(false), 10);
     }, []);
 
-    const navigateToTab = useCallback(() => {
+    const onTabClick = useCallback(() => {
         incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_TAB_METRIC);
     }, []);
 
@@ -77,7 +77,7 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
                 {visibleTabs.length > 1 &&
                     visibleTabs.map(tab => {
                         return (
-                            <ProductClickableItem href={tab.href} key={tab.id} id={tab.id} onClick={() => navigateToTab()}>
+                            <ProductClickableItem href={tab.href} key={tab.id} id={tab.id} onClick={() => onTabClick()}>
                                 {tab.text}
                             </ProductClickableItem>
                         );

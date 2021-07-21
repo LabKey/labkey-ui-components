@@ -80,7 +80,7 @@ describe('<SampleAliquotViewSelector/>', () => {
         expect(items.at(0).text()).toBe('Show Jobs with Samples');
 
         expect(items.at(1).text()).toBe('Parent Sample and Aliquots');
-        expect(items.at(2).text()).toBe('Parent Samples Only');
+        expect(items.at(2).text()).toBe('Parent Sample Only');
         expect(items.at(3).text()).toBe('Aliquots Only');
 
         wrapper.unmount();

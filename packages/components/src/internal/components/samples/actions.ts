@@ -37,7 +37,6 @@ import {
 import { findMissingValues } from '../../util/utils';
 
 import { GroupedSampleFields } from './models';
-import { FIND_IDS_SESSION_STORAGE_KEY } from './constants';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -350,7 +349,6 @@ export function getSelectedItemSamples(selectedItemIds: string[]): Promise<numbe
             .then(response => {
                 const { data } = response;
                 const sampleIds = [];
-                const rowIds = [];
                 data.forEach(row => {
                     sampleIds.push(row.getIn(['MaterialId', 'value']));
                 });
@@ -396,59 +394,58 @@ function getSamplesIdsNotFound(queryName: string, orderedIds: string[]): Promise
     });
 }
 
-export function getFindSamplesByIdData(): Promise<{ queryName: string; missingIds?: { [key: string]: string[] } }> {
+export function getFindSamplesByIdData(
+    sessionKey: string
+): Promise<{ queryName: string; ids: string[]; missingIds?: { [key: string]: string[] } }> {
     return new Promise((resolve, reject) => {
-        const ids = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY));
-        if (ids) {
-            Ajax.request({
-                url: ActionURL.buildURL('experiment', 'saveOrderedSamplesQuery.api'),
-                method: 'POST',
-                jsonData: {
-                    ids,
-                },
-                success: Utils.getCallbackWrapper(response => {
-                    if (response.success) {
-                        const queryName = response.data;
-                        getSamplesIdsNotFound(queryName, ids)
-                            .then(notFound => {
-                                const missingIds = {
-                                    [UNIQUE_ID_FIND_FIELD.label]: notFound
-                                        .filter(id => id.startsWith(UNIQUE_ID_FIND_FIELD.storageKeyPrefix))
-                                        .map(id => id.substring(UNIQUE_ID_FIND_FIELD.storageKeyPrefix.length)),
-                                    [SAMPLE_ID_FIND_FIELD.label]: notFound
-                                        .filter(id => id.startsWith(SAMPLE_ID_FIND_FIELD.storageKeyPrefix))
-                                        .map(id => id.substring(SAMPLE_ID_FIND_FIELD.storageKeyPrefix.length)),
-                                };
-                                resolve({
-                                    queryName,
-                                    missingIds,
-                                });
-                            })
-                            .catch(reason => {
-                                console.error('Problem retrieving data about samples not found', reason);
-                                resolve({
-                                    queryName,
-                                });
+        Ajax.request({
+            url: ActionURL.buildURL('experiment', 'saveOrderedSamplesQuery.api'),
+            method: 'POST',
+            jsonData: {
+                sessionKey,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                if (response.success) {
+                    const { queryName, ids } = response.data;
+                    getSamplesIdsNotFound(queryName, ids)
+                        .then(notFound => {
+                            const missingIds = {
+                                [UNIQUE_ID_FIND_FIELD.label]: notFound
+                                    .filter(id => id.startsWith(UNIQUE_ID_FIND_FIELD.storageKeyPrefix))
+                                    .map(id => id.substring(UNIQUE_ID_FIND_FIELD.storageKeyPrefix.length)),
+                                [SAMPLE_ID_FIND_FIELD.label]: notFound
+                                    .filter(id => id.startsWith(SAMPLE_ID_FIND_FIELD.storageKeyPrefix))
+                                    .map(id => id.substring(SAMPLE_ID_FIND_FIELD.storageKeyPrefix.length)),
+                            };
+                            resolve({
+                                queryName,
+                                ids,
+                                missingIds,
                             });
-                    } else {
-                        console.error('Unable to create session query');
-                        reject('There was a problem creating the query for the samples. Please try again.');
-                    }
-                }),
-                failure: Utils.getCallbackWrapper(error => {
-                    console.error('There was a problem creating the query for the samples.', error);
-                    reject('There was a problem creating the query for the samples. Please try again.');
-                }),
-            });
-        } else {
-            // we have no ids in storage so we have no query to create
-            resolve(undefined);
-        }
+                        })
+                        .catch(reason => {
+                            console.error('Problem retrieving data about samples not found', reason);
+                            resolve({
+                                queryName,
+                                ids,
+                            });
+                        });
+                } else {
+                    console.error('Unable to create session query');
+                    reject('There was a problem retrieving the samples. Your session may have expired.');
+                }
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error('There was a problem creating the query for the samples.', error);
+                reject(
+                    "There was a problem retrieving the samples. Please try again using the 'Find Samples' option from the Search menu."
+                );
+            }),
+        });
     });
 }
 
-export function saveIdsToFind(fieldType: FindField, ids: string[]): void {
-    const existingIds: string[] = JSON.parse(sessionStorage.getItem(FIND_IDS_SESSION_STORAGE_KEY));
+export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: string): Promise<string> {
     // list of ids deduplicated and prefixed with the field type's storage prefix
     const prefixedIds = [];
     ids.map(id => fieldType.storageKeyPrefix + id).forEach(pid => {
@@ -456,17 +453,28 @@ export function saveIdsToFind(fieldType: FindField, ids: string[]): void {
             prefixedIds.push(pid);
         }
     });
-    // deduplicate from existing ids
-    if (existingIds) {
-        sessionStorage.setItem(
-            FIND_IDS_SESSION_STORAGE_KEY,
-            JSON.stringify(existingIds.concat(prefixedIds.filter(id => !existingIds.includes(id))))
-        );
-    } else {
-        sessionStorage.setItem(FIND_IDS_SESSION_STORAGE_KEY, JSON.stringify(prefixedIds));
-    }
-}
 
-export function clearIdsToFind(): void {
-    sessionStorage.removeItem(FIND_IDS_SESSION_STORAGE_KEY);
+    return new Promise((resolve, reject) => {
+        if (prefixedIds.length > 0) {
+            Ajax.request({
+                url: ActionURL.buildURL('experiment', 'saveFindIds.api'),
+                method: 'POST',
+                jsonData: {
+                    ids: prefixedIds,
+                    sessionKey,
+                },
+                success: Utils.getCallbackWrapper(response => {
+                    if (response.success) {
+                        resolve(response.data);
+                    }
+                }),
+                failure: Utils.getCallbackWrapper(error => {
+                    console.error('There was a problem saving the ids.', error);
+                    reject('There was a problem saving the ids. Your session may have expired.');
+                }),
+            });
+        } else {
+            resolve(undefined);
+        }
+    });
 }

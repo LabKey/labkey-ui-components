@@ -1,6 +1,24 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.58.0
+*Released* 20 July 2021
+* Rename DateInput to QueryDateInput
+* Add DateInput component
+    * This component is just a DateInput, it has no special knowledge of QueryColumns
+* Add EditInlineField
+    * This is a component that renders a field with a name and value, and optionally lets a user edit the field in place
+* Add useEnterEscape hook
+    * A custom hook that makes it easier to intercept the enter and escape keys, useful for fields that save/cancel
+      on enter/escape
+* Add useUsersWithPermissions hook
+    * A custom hook that uses the getUsersWithPermissions action to load users
+* Add Key enum
+    * An enum useful for intercepting keys in event handlers
+* Add FileAttachmentArea
+    * This component looks like our FileAttachmentContainer, but only takes a single prop, `onAttach`. This component
+      stores no state, and does not render files.
+
 ### version 2.57.0
 *Released*: 20 July 2021
 * Item 9204: Sample type parent import alias inclusion in download template and display in details panel

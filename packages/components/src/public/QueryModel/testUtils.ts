@@ -1,4 +1,4 @@
-import { Actions, LoadingState, QueryInfo, QueryModel } from '../..';
+import { Actions, LoadingState, QueryInfo, QueryModel, SchemaQuery } from '../..';
 
 /**
  * @ignore
@@ -12,7 +12,7 @@ import { Actions, LoadingState, QueryInfo, QueryModel } from '../..';
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const makeTestQueryModel = (
-    schemaQuery,
+    schemaQuery: SchemaQuery,
     queryInfo?: QueryInfo,
     rows?: any,
     orderedRows?: any,

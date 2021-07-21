@@ -47,3 +47,46 @@
     display: inline-block;
     white-space: nowrap;
 }
+
+.date-input {
+    div.form-control {
+        border: 0;
+        display: inline-block;
+        padding: 0;
+    }
+
+    input.form-control:first-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+}
+
+.edit-inline-field {
+    padding-top: 10px;
+}
+
+.edit-inline-field__label {
+    color: #777777;
+    cursor: auto;
+    font-size: 14px;
+    padding-right: 5px;
+}
+
+.edit-inline-field__placeholder {
+    color: #777777;
+}
+
+.edit-inline-field__toggle {
+    cursor: pointer;
+
+    .fa-pencil {
+        color: #D3D3D3;
+        padding-left: 5px;
+    }
+
+    &:hover {
+        .fa-pencil {
+            color: #333333;
+        }
+    }
+}

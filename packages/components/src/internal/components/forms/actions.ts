@@ -31,7 +31,6 @@ import {
 import { getUsers, setUsers } from '../../global';
 
 import { similaritySortFactory } from '../../util/similaritySortFactory';
-import { FOCUS_FLAG } from './constants';
 
 import { QuerySelectModel, QuerySelectModelProps } from './model';
 

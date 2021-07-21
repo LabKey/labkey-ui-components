@@ -37,7 +37,7 @@ describe('EntityInsertPanel.getWarningFieldList', () => {
 });
 
 describe('EntityInsertPanel.getInferredFieldWarnings', () => {
-    const lookup = {containerPath: "/Look", keyColumn: "Name", displayColumn: "Name", query: 'LookHere'};
+    const lookup = { containerPath: '/Look', keyColumn: 'Name', displayColumn: 'Name', query: 'LookHere' };
     const knownColumn = QueryColumn.create({
         name: 'known',
     });
@@ -236,8 +236,8 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
                             QueryColumn.create({ name: 'parentA' }),
                             QueryColumn.create({ name: 'parentB' }),
                             QueryColumn.create({ name: 'parentc' }),
-                            QueryColumn.create({ name: 'materialInputs/X', lookup}),
-                            QueryColumn.create({ name: 'dataInputs/Y', lookup}),
+                            QueryColumn.create({ name: 'materialInputs/X', lookup }),
+                            QueryColumn.create({ name: 'dataInputs/Y', lookup }),
                         ]),
                         reservedFields: List<QueryColumn>(),
                     }),
@@ -259,7 +259,7 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
                         fields: List<QueryColumn>([
                             QueryColumn.create({ name: 'known' }),
                             QueryColumn.create({ name: 'alsoAllowed' }),
-                            QueryColumn.create({ name: 'materialInputs/X', lookup}),
+                            QueryColumn.create({ name: 'materialInputs/X', lookup }),
                             QueryColumn.create({ name: 'dataInputs/Y', lookup }),
                         ]),
                         reservedFields: List<QueryColumn>(),

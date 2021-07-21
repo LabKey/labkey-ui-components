@@ -175,7 +175,9 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                             <td>{parentDataType.typeNounSingular}</td>
                             <td>
                                 {appUrlPrefixParts ? (
-                                    <a href={AppURL.create(...appUrlPrefixParts, chosenType.label).toHref()}>{chosenType.label}</a>
+                                    <a href={AppURL.create(...appUrlPrefixParts, chosenType.label).toHref()}>
+                                        {chosenType.label}
+                                    </a>
                                 ) : (
                                     chosenType.label
                                 )}

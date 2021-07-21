@@ -14,9 +14,9 @@ import { ProductClickableItem } from './ProductClickableItem';
 import { ProductModel, ProductSectionModel } from './models';
 
 const TEST_SECTIONS = [
-    new ProductSectionModel({ key: 'a', label: 'A', url: "http://sectionA" }),
-    new ProductSectionModel({ key: 'b', label: 'B', url: "http://sectionB" }),
-    new ProductSectionModel({ key: 'c', label: 'C', url: "http://sectionC" }),
+    new ProductSectionModel({ key: 'a', label: 'A', url: 'http://sectionA' }),
+    new ProductSectionModel({ key: 'b', label: 'B', url: 'http://sectionB' }),
+    new ProductSectionModel({ key: 'c', label: 'C', url: 'http://sectionC' }),
 ];
 
 const TEST_PRODUCT = new ProductModel({ productId: 'a', productName: 'A' });

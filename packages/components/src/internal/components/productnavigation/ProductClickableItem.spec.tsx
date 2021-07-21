@@ -6,7 +6,7 @@ import { ProductClickableItem } from './ProductClickableItem';
 const DEFAULT_PROPS = {
     id: 'test-id',
     onClick: jest.fn,
-    href: 'http://go.here'
+    href: 'http://go.here',
 };
 
 describe('ProductClickableItem', () => {

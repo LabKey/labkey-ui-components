@@ -13,7 +13,7 @@ import {
 import { FREEZERS_KEY, WORKFLOW_KEY } from '../../app/constants';
 
 import { ProductModel, ProductSectionModel } from './models';
-import { APPLICATION_NAVIGATION_METRIC, PRODUCT_ID_SECTION_QUERY_MAP, SECTION_KEYS_TO_SKIP, } from './constants';
+import { APPLICATION_NAVIGATION_METRIC, PRODUCT_ID_SECTION_QUERY_MAP, SECTION_KEYS_TO_SKIP } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductAppsDrawerProps {
@@ -77,7 +77,12 @@ export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = mem
         <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
             {sections?.map(section => {
                 return (
-                    <ProductClickableItem href={section.url.toString()} key={section.key} id={section.key} onClick={() => navigate(section)}>
+                    <ProductClickableItem
+                        href={section.url.toString()}
+                        key={section.key}
+                        id={section.key}
+                        onClick={() => navigate(section)}
+                    >
                         {section.label}
                     </ProductClickableItem>
                 );
@@ -88,11 +93,7 @@ export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = mem
 
 // function below are exported for jest testing
 
-export function getProductSectionUrl(
-    productId: string,
-    key: string,
-    containerPath: string
-): string {
+export function getProductSectionUrl(productId: string, key: string, containerPath: string): string {
     // if the section is for the same product we are already in, then keep the urls as route changes
     if (productId.toLowerCase() === ActionURL.getController().toLowerCase()) {
         return AppURL.create(key).toHref();
@@ -104,7 +105,7 @@ export function getProductSectionUrl(
 export function parseProductMenuSectionResponse(
     modelSections: List<MenuSectionModel>,
     product: ProductModel,
-    projectPath: string,
+    projectPath: string
 ): ProductSectionModel[] {
     const menuSections = [
         new ProductSectionModel({

@@ -16,6 +16,7 @@
 import { Filter, PermissionTypes, Security, User, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 import { useCallback, useEffect, useState } from 'react';
+
 import {
     getQueryDetails,
     ISelectRowsResult,

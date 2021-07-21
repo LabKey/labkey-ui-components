@@ -143,8 +143,8 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
 interface State {
     defaultOptions: boolean | SelectInputOption[];
     error: any;
-    focused: boolean;
     isLoading: boolean;
+    loadOnFocusLock: boolean;
     model: QuerySelectModel;
 }
 
@@ -194,8 +194,8 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             // See note in onFocus() regarding support for "loadOnFocus"
             defaultOptions: props.preLoad !== false ? true : props.loadOnFocus ? [] : true,
             error: undefined,
-            focused: false,
             isLoading: undefined,
+            loadOnFocusLock: false,
             model: undefined,
         };
     };
@@ -205,8 +205,17 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         clearTimeout(this.querySelectTimer);
     }
 
+    shouldLoadOnFocus = (): boolean => {
+        return this.props.loadOnFocus && !this.state.loadOnFocusLock;
+    };
+
     loadOptions = (input: string): Promise<SelectInputOption[]> => {
         clearTimeout(this.querySelectTimer);
+
+        // If loadOptions occurs prior to call to "onFocus" then there is no need to "loadOnFocus".
+        if (this.shouldLoadOnFocus()) {
+            this.setState({ loadOnFocusLock: true });
+        }
 
         return new Promise((resolve): void => {
             const { model } = this.state;
@@ -252,9 +261,9 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         // "loadOptions", allow for an asynchronous ReactSelect to defer requesting the initial options until
         // desired. This follows the pattern outlined here:
         // https://github.com/JedWatson/react-select/issues/1525#issuecomment-744157380
-        if (this.props.loadOnFocus && !this.state.focused) {
-            // Set and forget "focused" state so "loadOnFocus" only occurs on the initial focus.
-            this.setState({ focused: true, isLoading: true });
+        if (this.shouldLoadOnFocus()) {
+            // Set and forget "loadOnFocusLock" state so "loadOnFocus" only occurs on the initial focus.
+            this.setState({ loadOnFocusLock: true, isLoading: true });
 
             const defaultOptions = await this.loadOptions('');
 

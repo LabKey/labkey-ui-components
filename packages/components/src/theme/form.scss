@@ -47,6 +47,10 @@
     text-overflow: ellipsis;
 }
 
+.text__wrap {
+    word-wrap: anywhere;
+}
+
 // Display tooltips on disabled buttons
 // this is borrowed from here https://github.com/pastaclub/react-bootstrap-tooltip-button
 .disabled-button-with-tooltip {

@@ -144,7 +144,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
                                         return (
                                             <tr key={key}>
                                                 <td>{field.titleRenderer}</td>
-                                                <td className="text__truncate" data-caption={field.title} data-fieldkey={field.fieldKey}>
+                                                <td className="text__wrap" data-caption={field.title} data-fieldkey={field.fieldKey}>
                                                     {field.renderer(
                                                         newRow.get(decodePart(key)) ?? newRow.get(key),
                                                         row

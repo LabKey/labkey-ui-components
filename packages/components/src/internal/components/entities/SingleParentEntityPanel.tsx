@@ -151,7 +151,6 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         onInitValue={this.onInitValue}
                         preLoad
                         loadOnChange // set to true so we'll reload to eliminate the last selected value from the list.
-                        previewOptions
                         multiple
                         schemaQuery={parentSchemaQuery}
                         showLabel
@@ -176,7 +175,9 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                             <td>{parentDataType.typeNounSingular}</td>
                             <td>
                                 {appUrlPrefixParts ? (
-                                    <a href={AppURL.create(...appUrlPrefixParts, chosenType.label).toHref()}>{chosenType.label}</a>
+                                    <a href={AppURL.create(...appUrlPrefixParts, chosenType.label).toHref()}>
+                                        {chosenType.label}
+                                    </a>
                                 ) : (
                                     chosenType.label
                                 )}

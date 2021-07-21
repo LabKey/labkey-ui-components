@@ -31,57 +31,53 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
         setTimeout(() => setTransition(false), 10);
     }, []);
 
-    const navigate = useCallback((tab: ContainerTabModel) => {
+    const onTabClick = useCallback(() => {
         incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_TAB_METRIC);
-        window.location.href = tab.href;
     }, []);
 
     const visibleTabs = tabs.filter(tab => !tab.disabled);
 
-    const clickWithStats = (href: string, name: string) => {
-        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, name);
-        window.location.href = href;
-    };
-
     const onHomeClick = useCallback(() => {
-        clickWithStats(getProjectBeginUrl(homeContainer), TO_LKS_HOME_METRIC);
-    }, [clickWithStats, homeContainer]);
+        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_HOME_METRIC);
+    }, []);
 
     const onContainerClick = useCallback(() => {
-        clickWithStats(getProjectBeginUrl(container.path), TO_LKS_CONTAINER_METRIC);
-    }, [clickWithStats, container]);
+        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_CONTAINER_METRIC);
+    }, []);
 
     return (
         <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
             {showHome && (
-                <div
+                <a
                     className={classNames('container-item ', {
                         'lk-text-theme-dark': !isHomeContainer,
                         clickable: !isHomeContainer,
                     })}
                     onClick={!isHomeContainer ? onHomeClick : undefined}
+                    href={getProjectBeginUrl(homeContainer)}
                 >
                     <i className="fa fa-home container-icon" />
                     LabKey Home
-                </div>
+                </a>
             )}
             {!isHomeContainer && (
-                <div
+                <a
                     className={classNames('container-item', {
                         'lk-text-theme-dark': !disableLKSContainerLink,
                         clickable: !disableLKSContainerLink,
                     })}
                     onClick={disableLKSContainerLink ? undefined : onContainerClick}
+                    href={getProjectBeginUrl(container.path)}
                 >
                     <i className="fa fa-folder-o container-icon" />
                     {container.title}
-                </div>
+                </a>
             )}
             <div className="container-tabs">
                 {visibleTabs.length > 1 &&
                     visibleTabs.map(tab => {
                         return (
-                            <ProductClickableItem key={tab.id} id={tab.id} onClick={() => navigate(tab)}>
+                            <ProductClickableItem href={tab.href} key={tab.id} id={tab.id} onClick={() => onTabClick()}>
                                 {tab.text}
                             </ProductClickableItem>
                         );

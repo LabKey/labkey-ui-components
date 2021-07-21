@@ -19,7 +19,7 @@ import { Filter } from '@labkey/api';
 
 import { QueryGridModel, QueryModel } from '../../..';
 import { replaceFilter } from '../../util/URL';
-import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from "../samples/SampleAliquotViewSelector";
+import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from '../samples/SampleAliquotViewSelector';
 
 interface Props {
     queryGridModel?: QueryGridModel;
@@ -30,7 +30,6 @@ interface Props {
 const IS_ALIQUOT_COL = 'IsAliquot';
 
 export class GridAliquotViewSelector extends Component<Props> {
-
     updateAliquotFilter = (newMode: ALIQUOT_FILTER_MODE) => {
         const { queryGridModel, updateFilter } = this.props;
 
@@ -59,14 +58,20 @@ export class GridAliquotViewSelector extends Component<Props> {
                         mode = ALIQUOT_FILTER_MODE.none;
                     } else if (filterType == Filter.Types.EQUAL) {
                         if (value === '') return;
-                        mode = value === 'true' || value === true ? ALIQUOT_FILTER_MODE.aliquots : ALIQUOT_FILTER_MODE.samples;
+                        mode =
+                            value === 'true' || value === true
+                                ? ALIQUOT_FILTER_MODE.aliquots
+                                : ALIQUOT_FILTER_MODE.samples;
                     } else if (
                         filterType == Filter.Types.NOT_EQUAL ||
                         filterType == Filter.Types.NEQ ||
                         filterType == Filter.Types.NEQ_OR_NULL
                     ) {
                         if (value === '') return;
-                        mode = value === 'true' || value === true ? ALIQUOT_FILTER_MODE.samples : ALIQUOT_FILTER_MODE.aliquots;
+                        mode =
+                            value === 'true' || value === true
+                                ? ALIQUOT_FILTER_MODE.samples
+                                : ALIQUOT_FILTER_MODE.aliquots;
                     }
                 }
             });

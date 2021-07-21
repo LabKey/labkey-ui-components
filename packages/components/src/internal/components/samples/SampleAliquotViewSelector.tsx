@@ -5,19 +5,19 @@ import { List } from 'immutable';
 import { generateId } from '../../..';
 
 export enum ALIQUOT_FILTER_MODE {
-    all='all',
-    samples='samples',
-    aliquots='aliquots',
-    none='none', // when using omni filter with 'is blank'
+    all = 'all',
+    samples = 'samples',
+    aliquots = 'aliquots',
+    none = 'none', // when using omni filter with 'is blank'
 }
 
 interface Props {
-    aliquotFilterMode: ALIQUOT_FILTER_MODE
-    updateAliquotFilter: (newMode?: ALIQUOT_FILTER_MODE) => any
-    headerLabel?: string
-    samplesLabel?: string
-    aliquotsLabel?: string
-    allLabel?: string
+    aliquotFilterMode: ALIQUOT_FILTER_MODE;
+    updateAliquotFilter: (newMode?: ALIQUOT_FILTER_MODE) => any;
+    headerLabel?: string;
+    samplesLabel?: string;
+    aliquotsLabel?: string;
+    allLabel?: string;
 }
 
 export class SampleAliquotViewSelector extends Component<Props> {
@@ -28,7 +28,7 @@ export class SampleAliquotViewSelector extends Component<Props> {
         headerLabel: 'Show Samples',
         samplesLabel: 'Samples Only',
         aliquotsLabel: 'Aliquots Only',
-        allLabel: 'Samples and Aliquots'
+        allLabel: 'Samples and Aliquots',
     };
 
     constructor(props: Props) {
@@ -71,8 +71,22 @@ export class SampleAliquotViewSelector extends Component<Props> {
         );
 
         items.push(this.createItem('all', allLabel, ALIQUOT_FILTER_MODE.all, filterMode == ALIQUOT_FILTER_MODE.all));
-        items.push(this.createItem('sample', samplesLabel, ALIQUOT_FILTER_MODE.samples, filterMode == ALIQUOT_FILTER_MODE.samples));
-        items.push(this.createItem('aliquot', aliquotsLabel, ALIQUOT_FILTER_MODE.aliquots, filterMode == ALIQUOT_FILTER_MODE.aliquots));
+        items.push(
+            this.createItem(
+                'sample',
+                samplesLabel,
+                ALIQUOT_FILTER_MODE.samples,
+                filterMode == ALIQUOT_FILTER_MODE.samples
+            )
+        );
+        items.push(
+            this.createItem(
+                'aliquot',
+                aliquotsLabel,
+                ALIQUOT_FILTER_MODE.aliquots,
+                filterMode == ALIQUOT_FILTER_MODE.aliquots
+            )
+        );
 
         return items.asImmutable();
     }

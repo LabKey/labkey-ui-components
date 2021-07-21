@@ -7,7 +7,6 @@ import { ALIQUOT_FILTER_MODE } from '../../..';
 import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 
 describe('<SampleAliquotViewSelector/>', () => {
-
     function verifyOptions(wrapper, all?: boolean, samples?: boolean, aliquots?: boolean) {
         const items = wrapper.find(MenuItem);
 
@@ -38,7 +37,9 @@ describe('<SampleAliquotViewSelector/>', () => {
     });
 
     test('aliquotFilterMode: all', () => {
-        const component = <SampleAliquotViewSelector updateAliquotFilter={jest.fn()} aliquotFilterMode={ALIQUOT_FILTER_MODE.all} />;
+        const component = (
+            <SampleAliquotViewSelector updateAliquotFilter={jest.fn()} aliquotFilterMode={ALIQUOT_FILTER_MODE.all} />
+        );
         const wrapper = mount(component);
 
         verifyOptions(wrapper, true);
@@ -47,7 +48,12 @@ describe('<SampleAliquotViewSelector/>', () => {
     });
 
     test('aliquotFilterMode: samples', () => {
-        const component = <SampleAliquotViewSelector updateAliquotFilter={jest.fn()} aliquotFilterMode={ALIQUOT_FILTER_MODE.samples} />;
+        const component = (
+            <SampleAliquotViewSelector
+                updateAliquotFilter={jest.fn()}
+                aliquotFilterMode={ALIQUOT_FILTER_MODE.samples}
+            />
+        );
         const wrapper = mount(component);
 
         verifyOptions(wrapper, false, true);
@@ -56,7 +62,12 @@ describe('<SampleAliquotViewSelector/>', () => {
     });
 
     test('aliquotFilterMode: aliquots', () => {
-        const component = <SampleAliquotViewSelector updateAliquotFilter={jest.fn()} aliquotFilterMode={ALIQUOT_FILTER_MODE.aliquots} />;
+        const component = (
+            <SampleAliquotViewSelector
+                updateAliquotFilter={jest.fn()}
+                aliquotFilterMode={ALIQUOT_FILTER_MODE.aliquots}
+            />
+        );
         const wrapper = mount(component);
 
         verifyOptions(wrapper, false, false, true);
@@ -65,12 +76,14 @@ describe('<SampleAliquotViewSelector/>', () => {
     });
 
     test('customized labels', () => {
-        const component = <SampleAliquotViewSelector
-            updateAliquotFilter={jest.fn()}
-            headerLabel={'Show Jobs with Samples'}
-            samplesLabel={'Parent Sample Only'}
-            allLabel={'Parent Sample and Aliquots'}
-        />;
+        const component = (
+            <SampleAliquotViewSelector
+                updateAliquotFilter={jest.fn()}
+                headerLabel="Show Jobs with Samples"
+                samplesLabel="Parent Sample Only"
+                allLabel="Parent Sample and Aliquots"
+            />
+        );
         const wrapper = mount(component);
 
         const items = wrapper.find(MenuItem);
@@ -85,5 +98,4 @@ describe('<SampleAliquotViewSelector/>', () => {
 
         wrapper.unmount();
     });
-
 });

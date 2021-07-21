@@ -197,7 +197,7 @@ import {
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
 } from './internal/constants';
-import { getLocation, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
+import { getLocation, pushParameter, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
 import { getHelpLink, helpLinkNode, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
 import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './internal/url/AppURLResolver';
@@ -218,6 +218,11 @@ import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
 import { FileColumnRenderer } from './internal/renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './internal/renderers/MultiValueRenderer';
 import { LabelColorRenderer } from './internal/renderers/LabelColorRenderer';
+import {
+    ImportAliasRenderer,
+    SampleTypeImportAliasRenderer,
+    SourceTypeImportAliasRenderer,
+} from './internal/renderers/ImportAliasRenderer';
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
 import { resolveDetailFieldValue, resolveRenderer } from './internal/components/forms/renderers';
@@ -229,7 +234,7 @@ import {
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput } from './internal/components/forms/input/SelectInput';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
-import { DateInput } from './internal/components/forms/input/DateInput';
+import { QueryDateInput } from './internal/components/forms/input/QueryDateInput';
 import { FileInput } from './internal/components/forms/input/FileInput';
 import { TextInput } from './internal/components/forms/input/TextInput';
 import { TextAreaInput } from './internal/components/forms/input/TextAreaInput';
@@ -243,7 +248,12 @@ import { DetailEditing } from './internal/components/forms/detail/DetailEditing'
 
 import { resolveDetailRenderer } from './internal/components/forms/detail/DetailEditRenderer';
 import { Detail } from './internal/components/forms/detail/Detail';
-import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './internal/components/forms/actions';
+import {
+    getUsersWithPermissions,
+    handleInputTab,
+    handleTabKeyOnTextArea,
+    useUsersWithPermissions,
+} from './internal/components/forms/actions';
 import { FormStep, FormTabs, withFormSteps } from './internal/components/forms/FormStep';
 import { SchemaListing } from './internal/components/listing/SchemaListing';
 import { QueriesListing } from './internal/components/listing/QueriesListing';
@@ -264,7 +274,6 @@ import { SearchResultsPanel } from './internal/components/search/SearchResultsPa
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
-    clearIdsToFind,
     deleteSampleSet,
     fetchSamples,
     getDeleteSharedSampleTypeUrl,
@@ -458,6 +467,7 @@ import {
     SampleCreationType,
 } from './internal/components/samples/models';
 import {
+    FIND_BY_IDS_QUERY_PARAM,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     UNIQUE_ID_FIND_FIELD,
@@ -567,7 +577,10 @@ import {
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
 } from './internal/app/constants';
-
+import { Key, useEnterEscape } from './public/useEnterEscape';
+import { DateInput } from './internal/components/DateInput';
+import { EditInlineField } from './internal/components/EditInlineField';
+import { FileAttachmentArea } from './internal/components/files/FileAttachmentArea';
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
 enablePatches();
@@ -711,6 +724,7 @@ export {
     ListResolver,
     SamplesResolver,
     getLocation,
+    pushParameter,
     replaceParameter,
     replaceParameters,
     resetParameters,
@@ -731,6 +745,9 @@ export {
     LabelColorRenderer,
     MultiValueRenderer,
     StorageStatusRenderer,
+    ImportAliasRenderer,
+    SampleTypeImportAliasRenderer,
+    SourceTypeImportAliasRenderer,
     resolveDetailRenderer,
     resolveRenderer,
     // form related items
@@ -739,7 +756,7 @@ export {
     LookupSelectInput,
     SelectInput,
     DatePickerInput,
-    DateInput,
+    QueryDateInput,
     FieldEditorOverlay,
     FileInput,
     TextAreaInput,
@@ -766,6 +783,7 @@ export {
     FormSection,
     // user/permissions related items
     getUsersWithPermissions,
+    useUsersWithPermissions,
     getUserProperties,
     getUserRoleDisplay,
     getUserSharedContainerPermissions,
@@ -807,7 +825,7 @@ export {
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
-    clearIdsToFind,
+    FIND_BY_IDS_QUERY_PARAM,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_ID_FIND_FIELD,
     SampleTypeModel,
@@ -1168,6 +1186,11 @@ export {
     ConceptModel,
     AutoForm,
     HelpIcon,
+    Key,
+    useEnterEscape,
+    DateInput,
+    EditInlineField,
+    FileAttachmentArea,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
@@ -1247,3 +1270,4 @@ export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
 export type { FindField } from './internal/components/samples/models';
+export type { UsersLoader } from './internal/components/forms/actions';

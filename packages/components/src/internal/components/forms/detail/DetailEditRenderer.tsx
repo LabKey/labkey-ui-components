@@ -20,13 +20,15 @@ import { LabelOverlay } from '../LabelOverlay';
 import {
     AliasRenderer,
     AppendUnits,
-    DateInput,
+    QueryDateInput,
     DatePickerInput,
     FileColumnRenderer,
     LabelColorRenderer,
     MultiValueRenderer,
     QueryColumn,
     SchemaQuery,
+    SampleTypeImportAliasRenderer,
+    SourceTypeImportAliasRenderer,
 } from '../../../..';
 
 import { QuerySelect } from '../QuerySelect';
@@ -157,7 +159,7 @@ export function resolveDetailEditRenderer(
                     );
                 } else if (typeof value === 'string') {
                     return (
-                        <DateInput
+                        <QueryDateInput
                             showLabel={false}
                             elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
                             name={col.name}
@@ -218,6 +220,12 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 break;
             case 'filecolumnrenderer':
                 renderer = d => <FileColumnRenderer data={d} col={column} />;
+                break;
+            case 'sampletypeimportaliasrenderer':
+                renderer = d => <SampleTypeImportAliasRenderer data={d} />;
+                break;
+            case 'sourcetypeimportaliasrenderer':
+                renderer = d => <SourceTypeImportAliasRenderer data={d} />;
                 break;
             default:
                 break;

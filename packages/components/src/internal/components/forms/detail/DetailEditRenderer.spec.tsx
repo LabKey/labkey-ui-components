@@ -7,7 +7,7 @@ import { Checkbox, Input, Textarea } from 'formsy-react-components';
 import {
     AliasRenderer,
     AppendUnits,
-    DateInput,
+    QueryDateInput,
     DatePickerInput,
     FileColumnRenderer,
     FileInput,
@@ -51,7 +51,7 @@ describe('resolveDetailEditRenderer', () => {
         expect(wrapper.find(Textarea)).toHaveLength(count['textarea'] ?? 0);
         expect(wrapper.find(Checkbox)).toHaveLength(count['checkbox'] ?? 0);
         expect(wrapper.find(DatePickerInput)).toHaveLength(count['datepickerinput'] ?? 0);
-        expect(wrapper.find(DateInput)).toHaveLength(count['dateinput'] ?? 0);
+        expect(wrapper.find(QueryDateInput)).toHaveLength(count['dateinput'] ?? 0);
         expect(wrapper.find(FileInput)).toHaveLength(count['fileinput'] ?? 0);
         expect(wrapper.find(Input)).toHaveLength(count['input'] ?? 0);
     }
@@ -198,6 +198,26 @@ describe('resolveDetailRenderer', () => {
             <div>{resolveDetailRenderer(new QueryColumn({ detailRenderer: 'FileColumnRenderer' }))(Map())}</div>
         );
         validate(wrapper, { filecolumnrenderer: 1 });
+        wrapper.unmount();
+    });
+
+    test('sampletypeimportaliasrenderer', () => {
+        const wrapper = mount(
+            <div>
+                {resolveDetailRenderer(new QueryColumn({ detailRenderer: 'SampleTypeImportAliasRenderer' }))(Map())}
+            </div>
+        );
+        validate(wrapper, { sampletypeimportaliasrenderer: 1 });
+        wrapper.unmount();
+    });
+
+    test('sourcetypeimportaliasrenderer', () => {
+        const wrapper = mount(
+            <div>
+                {resolveDetailRenderer(new QueryColumn({ detailRenderer: 'SourceTypeImportAliasRenderer' }))(Map())}
+            </div>
+        );
+        validate(wrapper, { sourcetypeimportaliasrenderer: 1 });
         wrapper.unmount();
     });
 

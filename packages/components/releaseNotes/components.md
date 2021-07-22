@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.59.1
 *Released*: 21 July 2021
 * Fix issue with onChange callback in FileAttachmentArea
+* Update eslint-config-react dependency
 
 ### version 2.59.0
 *Released*: 22 July 2021

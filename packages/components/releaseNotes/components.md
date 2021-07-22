@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.59.1
+*Released*: 21 July 2021
+* Fix issue with onChange callback in FileAttachmentArea
+* Update eslint-config-react dependency
+
 ### version 2.59.0
 *Released*: 22 July 2021
 * Added SampleAliquotViewSelector component, ALIQUOT_FILTER_MODE enum

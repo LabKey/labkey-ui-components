@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 2.59.0
+*Released*: 22 July 2021
 * Added SampleAliquotViewSelector component, ALIQUOT_FILTER_MODE enum
 
 ### version 2.58.1

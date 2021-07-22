@@ -48,6 +48,7 @@ import {
     caseInsensitive,
     debounce,
     devToolsActive,
+    lpActive,
     downloadAttachment,
     generateId,
     getDisambiguatedSelectInputOptions,
@@ -1052,6 +1053,7 @@ export {
     // devTools functions
     applyDevTools,
     devToolsActive,
+    lpActive,
     toggleDevTools,
     // buttons and menus
     MultiMenuButton,

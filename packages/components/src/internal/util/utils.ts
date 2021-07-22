@@ -127,6 +127,23 @@ export function toggleDevTools(): void {
     }
 }
 
+const LP_ENABLED = '__LP__';
+
+export function lpActive(): boolean {
+    return getServerContext().devMode === true && localStorage.getItem(LP_ENABLED) !== null;
+}
+
+export function toggleLP(): void {
+    if (getServerContext().devMode) {
+        if (lpActive()) {
+            localStorage.removeItem(LP_ENABLED);
+        } else {
+            localStorage.setItem(LP_ENABLED, 'enabled');
+        }
+        window.location.reload();
+    }
+}
+
 let DOM_COUNT = 0;
 const DOM_PREFIX = 'labkey-app-';
 

@@ -982,7 +982,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         if (reservedFields.size && !retainReservedFields) {
             this.setState({
                 reservedFieldsMsg:
-                    'Reserved fields found in your file are not shown below. ' +
+                    'Fields with reserved names or prefixes found in your file are not shown below. ' +
                     'These fields are already used by LabKey' +
                     (domainFormDisplayOptions?.domainKindDisplayName
                         ? ' to support this ' + domainFormDisplayOptions.domainKindDisplayName

@@ -6,6 +6,7 @@ import { ProductClickableItem } from './ProductClickableItem';
 const DEFAULT_PROPS = {
     id: 'test-id',
     onClick: jest.fn,
+    href: 'http://go.here',
 };
 
 describe('ProductClickableItem', () => {
@@ -27,13 +28,13 @@ describe('ProductClickableItem', () => {
     test('hovered', () => {
         const wrapper = mount(<ProductClickableItem {...DEFAULT_PROPS} />);
         validate(wrapper);
-        expect(wrapper.find('div').prop('className')).not.toContain('labkey-page-nav');
+        expect(wrapper.find('a').prop('className')).not.toContain('labkey-page-nav');
 
-        wrapper.find('div').simulate('mouseenter');
-        expect(wrapper.find('div').prop('className')).toContain('labkey-page-nav');
+        wrapper.find('a').simulate('mouseenter');
+        expect(wrapper.find('a').prop('className')).toContain('labkey-page-nav');
 
-        wrapper.find('div').simulate('mouseleave');
-        expect(wrapper.find('div').prop('className')).not.toContain('labkey-page-nav');
+        wrapper.find('a').simulate('mouseleave');
+        expect(wrapper.find('a').prop('className')).not.toContain('labkey-page-nav');
 
         wrapper.unmount();
     });

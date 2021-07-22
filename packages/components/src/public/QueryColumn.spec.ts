@@ -163,20 +163,20 @@ describe('QueryColumn: Sample Lookup', () => {
     test('isDataInput', () => {
         expect(new QueryColumn({}).isDataInput()).toBeFalsy();
         expect(new QueryColumn({ name: 'test' }).isDataInput()).toBeFalsy();
-        expect(new QueryColumn({ name: 'DataInputs' }).isDataInput()).toBeTruthy();
+        expect(new QueryColumn({ name: 'DataInputs', lookup: 'lookHere' }).isDataInput()).toBeTruthy();
     });
 
     test('isMaterialInput', () => {
         expect(new QueryColumn({}).isMaterialInput()).toBeFalsy();
         expect(new QueryColumn({ name: 'test' }).isMaterialInput()).toBeFalsy();
-        expect(new QueryColumn({ name: 'MaterialInputs' }).isMaterialInput()).toBeTruthy();
+        expect(new QueryColumn({ name: 'MaterialInputs', lookup: 'lookHere' }).isMaterialInput()).toBeTruthy();
     });
 
     test('isExpInput', () => {
         expect(new QueryColumn({}).isExpInput()).toBeFalsy();
         expect(new QueryColumn({ name: 'test' }).isExpInput()).toBeFalsy();
-        expect(new QueryColumn({ name: 'DataInputs' }).isExpInput()).toBeTruthy();
-        expect(new QueryColumn({ name: 'MaterialInputs' }).isExpInput()).toBeTruthy();
+        expect(new QueryColumn({ name: 'DataInputs', lookup: 'lookHere' }).isExpInput()).toBeTruthy();
+        expect(new QueryColumn({ name: 'MaterialInputs', lookup: 'lookHere' }).isExpInput()).toBeTruthy();
     });
 
     test('isEditable', () => {
@@ -327,12 +327,20 @@ describe('QueryColumn: Sample Lookup', () => {
         expect(new QueryColumn({}).resolveFieldKey()).toBe(undefined);
         expect(new QueryColumn({ fieldKey: 'name', name: 'name' }).resolveFieldKey()).toBe('name');
         expect(new QueryColumn({ fieldKey: 'name$Sslash', name: 'name/slash' }).resolveFieldKey()).toBe('name$Sslash');
-        expect(new QueryColumn({ fieldKey: 'name', name: 'name', lookup: { displayColumn: 'displayColumn' } }).resolveFieldKey()).toBe(
-            'name/displayColumn'
-        );
-        expect(new QueryColumn({ fieldKey: 'name$Sslash', name: 'name/slash', lookup: { displayColumn: 'displayColumn' } }).resolveFieldKey()).toBe(
-            'name$Sslash/displayColumn'
-        );
+        expect(
+            new QueryColumn({
+                fieldKey: 'name',
+                name: 'name',
+                lookup: { displayColumn: 'displayColumn' },
+            }).resolveFieldKey()
+        ).toBe('name/displayColumn');
+        expect(
+            new QueryColumn({
+                fieldKey: 'name$Sslash',
+                name: 'name/slash',
+                lookup: { displayColumn: 'displayColumn' },
+            }).resolveFieldKey()
+        ).toBe('name$Sslash/displayColumn');
         expect(
             new QueryColumn({
                 fieldKey: 'name',

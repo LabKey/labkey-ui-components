@@ -13,10 +13,13 @@ interface SimpleFileAttachmentContainerProps {
  */
 export const FileAttachmentArea: FC<SimpleFileAttachmentContainerProps> = memo(({ onAttach }) => {
     const [highlight, setHighlight] = useState<boolean>(false);
-    const onChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-        cancelEvent(evt);
-        onAttach(Array.from(evt.target.files));
-    }, []);
+    const onChange = useCallback(
+        (evt: ChangeEvent<HTMLInputElement>) => {
+            cancelEvent(evt);
+            onAttach(Array.from(evt.target.files));
+        },
+        [onAttach]
+    );
     const onDrag = useCallback((evt: DragEvent) => {
         cancelEvent(evt);
         setHighlight(true);

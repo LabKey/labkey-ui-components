@@ -218,6 +218,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     };
 
     private readonly _id: string;
+    private CHANGE_LOCK: boolean = false;
 
     constructor(props: SelectInputProps) {
         super(props);
@@ -237,6 +238,15 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     refs: {
         reactSelect: any;
     };
+
+    componentDidUpdate(prevProps: SelectInputProps): void {
+        if (!this.CHANGE_LOCK && this.props.autoValue && prevProps.value !== this.props.value) {
+            const selectedOptions = initOptions(this.props);
+            this.setState({ originalOptions: selectedOptions, selectedOptions });
+        }
+
+        this.CHANGE_LOCK = false;
+    }
 
     toggleDisabled = (): void => {
         this.setState(
@@ -278,6 +288,8 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     handleChange = (selectedOptions: any): void => {
         const { clearCacheOnChange, name, onChange } = this.props;
 
+        this.CHANGE_LOCK = true;
+
         if (clearCacheOnChange && this.isAsync()) {
             this.setState(state => ({ asyncKey: state.asyncKey + 1 }));
         }
@@ -318,7 +330,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     };
 
     _setOptionsAndValue(options: any): any {
-        const { delimiter, formsy, multiple, joinValues, setValue, valueKey } = this.props;
+        const { autoValue, delimiter, formsy, joinValues, multiple, setValue, valueKey } = this.props;
         let selectedOptions;
 
         if (options === undefined || options === null || (Array.isArray(options) && options.length === 0)) {
@@ -327,7 +339,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             selectedOptions = options;
         }
 
-        if (this.props.autoValue) {
+        if (autoValue) {
             this.setState({ selectedOptions });
         }
 

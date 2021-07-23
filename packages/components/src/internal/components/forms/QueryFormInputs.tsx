@@ -25,7 +25,7 @@ import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo, SchemaQuer
 import { resolveRenderer } from './renderers';
 import { QuerySelect } from './QuerySelect';
 import { TextInput } from './input/TextInput';
-import { DateInput } from './input/DateInput';
+import { QueryDateInput } from './input/QueryDateInput';
 import { CheckboxInput } from './input/CheckboxInput';
 import { TextAreaInput } from './input/TextAreaInput';
 import { FileInput } from './input/FileInput';
@@ -315,7 +315,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     renderFieldLabel={renderFieldLabel}
                                 />
                             ) : (
-                                <DateInput
+                                <QueryDateInput
                                     key={i}
                                     queryColumn={col}
                                     value={value}

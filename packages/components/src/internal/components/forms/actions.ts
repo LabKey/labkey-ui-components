@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Filter, PermissionTypes, Security, User, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
+import { useCallback, useEffect, useState } from 'react';
 import { Option } from 'react-select';
-import { Filter, Security, PermissionTypes, User, Utils } from '@labkey/api';
-
-import { getUsers, setUsers } from '../../global';
 import {
     getQueryDetails,
     ISelectRowsResult,
+    LoadingState,
     naturalSort,
     QueryInfo,
     QuerySelectOwnProps,
@@ -28,10 +28,12 @@ import {
     selectRows,
 } from '../../..';
 
+import { getUsers, setUsers } from '../../global';
+
 import { similaritySortFactory } from '../../util/similaritySortFactory';
+import { FOCUS_FLAG } from './constants';
 
 import { QuerySelectModel, QuerySelectModelProps } from './model';
-import { FOCUS_FLAG } from './constants';
 
 const emptyMap = Map<string, any>();
 
@@ -372,7 +374,8 @@ export function handleTabKeyOnTextArea(evt: ITargetElementEvent): void {
 }
 
 /**
- * Retrieve users in current container with a given set of permissions.  If no permission is specified, defaults to Read permission
+ * Retrieve users in current container with a given set of permissions.  If no permission is specified, defaults to Read
+ * permission
  * @param permissions the PermissionType or array of PermissionType values that all users must have.
  */
 export function getUsersWithPermissions(permissions: string | string[] = PermissionTypes.Read): Promise<List<User>> {
@@ -398,4 +401,39 @@ export function getUsersWithPermissions(permissions: string | string[] = Permiss
             },
         });
     });
+}
+
+export type UsersLoader = (permissions: string | string[]) => Promise<List<User>>;
+
+interface UsersState {
+    error: string;
+    loadingState: LoadingState;
+    users: User[];
+}
+
+export function useUsersWithPermissions(
+    permissions: string | string[] = PermissionTypes.Read,
+    loader: UsersLoader = getUsersWithPermissions
+): UsersState {
+    const [users, setUsers_] = useState<User[]>(undefined);
+    const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const [error, setError] = useState<string>(undefined);
+    const load = useCallback(async () => {
+        setLoadingState(LoadingState.LOADING);
+
+        try {
+            const users_ = await loader(permissions);
+            setUsers_(users_.toJS());
+        } catch (e) {
+            setError(e);
+        } finally {
+            setLoadingState(LoadingState.LOADED);
+        }
+    }, [loader, permissions]);
+
+    useEffect(() => {
+        load();
+    }, [load]);
+
+    return { error, loadingState, users };
 }

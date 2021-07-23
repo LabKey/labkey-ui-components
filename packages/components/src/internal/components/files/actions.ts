@@ -44,7 +44,15 @@ export function convertRowDataIntoPreviewData(
         let m = OrderedMap<string, any>();
         headerRow.forEach((column, j) => {
             let value = row.get(j);
-            if (integerFieldInds.indexOf(j) > -1 && !isNaN(parseFloat(value)) && isFinite(value))
+            // Issue 43531: We only want to do the integer conversion if the value is an integer.  If the value is a string that
+            // looks like an integer (e.g., 000304), we want to retain the leading 0s at least in the preview.  The 0's will get
+            // lopped off if the domain field is actually numeric.
+            if (
+                integerFieldInds.indexOf(j) > -1 &&
+                !isNaN(parseFloat(value)) &&
+                isFinite(value) &&
+                value.toString().endsWith('.0')
+            )
                 value = parseScientificInt(value);
             m = m.set(column, value);
         });

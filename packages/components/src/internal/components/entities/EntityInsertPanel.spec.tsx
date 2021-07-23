@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { List, Map, OrderedMap } from 'immutable';
 
 import { QueryColumn } from '../../../public/QueryColumn';
-import { DomainDesign, DomainDetails } from '../domainproperties/models';
+import { DomainDetails } from '../domainproperties/models';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
@@ -37,6 +37,7 @@ describe('EntityInsertPanel.getWarningFieldList', () => {
 });
 
 describe('EntityInsertPanel.getInferredFieldWarnings', () => {
+    const lookup = { containerPath: '/Look', keyColumn: 'Name', displayColumn: 'Name', query: 'LookHere' };
     const knownColumn = QueryColumn.create({
         name: 'known',
     });
@@ -235,8 +236,8 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
                             QueryColumn.create({ name: 'parentA' }),
                             QueryColumn.create({ name: 'parentB' }),
                             QueryColumn.create({ name: 'parentc' }),
-                            QueryColumn.create({ name: 'materialInputs/X' }),
-                            QueryColumn.create({ name: 'dataInputs/Y' }),
+                            QueryColumn.create({ name: 'materialInputs/X', lookup }),
+                            QueryColumn.create({ name: 'dataInputs/Y', lookup }),
                         ]),
                         reservedFields: List<QueryColumn>(),
                     }),
@@ -258,8 +259,8 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
                         fields: List<QueryColumn>([
                             QueryColumn.create({ name: 'known' }),
                             QueryColumn.create({ name: 'alsoAllowed' }),
-                            QueryColumn.create({ name: 'materialInputs/X' }),
-                            QueryColumn.create({ name: 'dataInputs/Y' }),
+                            QueryColumn.create({ name: 'materialInputs/X', lookup }),
+                            QueryColumn.create({ name: 'dataInputs/Y', lookup }),
                         ]),
                         reservedFields: List<QueryColumn>(),
                     }),

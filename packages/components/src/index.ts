@@ -142,6 +142,7 @@ import { EditorModel, getStateModelId, getStateQueryGridModel } from './internal
 import {
     clearSelected,
     createQueryGridModelFilteredBySample,
+    createQueryConfigFilteredBySample,
     getSelected,
     getSelectedData,
     getSelection,
@@ -837,6 +838,7 @@ export {
     getSampleSet,
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
+    createQueryConfigFilteredBySample,
     loadSelectedSamples,
     getSelectedItemSamples,
     FindSamplesByIdHeaderPanel,

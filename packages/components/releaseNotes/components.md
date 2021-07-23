@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* export createQueryConfigFilteredBySample
+
 ### version 2.59.1
 *Released*: 21 July 2021
 * Fix issue with onChange callback in FileAttachmentArea

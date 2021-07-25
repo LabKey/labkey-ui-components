@@ -28,12 +28,8 @@ import {
     dismissNotifications,
     FileSizeLimitProps,
     getActionErrorMessage,
-    getBatchPropertiesModel,
-    getBatchPropertiesRow,
     getQueryDetails,
     getQueryGridModel,
-    getRunPropertiesModel,
-    getRunPropertiesRow,
     getStateQueryGridModel,
     gridInit,
     importAssayRun,
@@ -52,6 +48,7 @@ import {
     AssayProtocolModel,
 } from '../../..';
 
+import { getRunPropertiesModel, getRunPropertiesRow, getBatchPropertiesModel, getBatchPropertiesRow } from './actions';
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 import { RunDataPanel } from './RunDataPanel';

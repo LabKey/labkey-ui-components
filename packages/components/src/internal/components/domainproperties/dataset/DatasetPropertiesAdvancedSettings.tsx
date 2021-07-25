@@ -85,17 +85,8 @@ interface DatasetSettingsInputProps {
 
 export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInputProps> {
     render() {
-        const {
-            name,
-            label,
-            helpTip,
-            value,
-            placeholder,
-            onValueChange,
-            disabled,
-            showInAdvancedSettings,
-            required,
-        } = this.props;
+        const { name, label, helpTip, value, placeholder, onValueChange, disabled, showInAdvancedSettings, required } =
+            this.props;
 
         return (
             <Row className="margin-top">

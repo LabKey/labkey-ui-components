@@ -218,7 +218,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     };
 
     private readonly _id: string;
-    private CHANGE_LOCK: boolean = false;
+    private CHANGE_LOCK = false;
 
     constructor(props: SelectInputProps) {
         super(props);

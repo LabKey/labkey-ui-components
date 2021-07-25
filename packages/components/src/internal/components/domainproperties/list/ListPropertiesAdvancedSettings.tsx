@@ -237,13 +237,8 @@ interface SeparateDocumentIndexFieldsProps {
 
 export class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIndexFieldsProps> {
     render() {
-        const {
-            onRadioChange,
-            onInputChange,
-            eachItemTitleTemplate,
-            eachItemBodySetting,
-            eachItemBodyTemplate,
-        } = this.props;
+        const { onRadioChange, onInputChange, eachItemTitleTemplate, eachItemBodySetting, eachItemBodyTemplate } =
+            this.props;
 
         return (
             <div className="list__advanced-settings-modal__single-doc-fields">

@@ -60,7 +60,8 @@ export class QuerySelectModel
         selectedItems: Map<string, any>(),
         valueColumn: undefined,
     })
-    implements QuerySelectModelProps {
+    implements QuerySelectModelProps
+{
     declare addExactFilter: boolean;
     declare allResults: Map<string, Map<string, any>>;
     declare containerPath: string;

@@ -1183,15 +1183,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     render() {
-        const {
-            canEditEntityTypeDetails,
-            disableMerge,
-            fileSizeLimits,
-            importOnly,
-            nounPlural,
-            entityDataType,
-            user,
-        } = this.props;
+        const { canEditEntityTypeDetails, disableMerge, fileSizeLimits, importOnly, nounPlural, entityDataType, user } =
+            this.props;
         const { error, file, insertModel, isMerge, isSubmitting, originalQueryInfo } = this.state;
 
         if (!insertModel) {

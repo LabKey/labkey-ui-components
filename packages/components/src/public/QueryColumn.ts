@@ -181,7 +181,11 @@ export class QueryColumn extends Record({
     }
 
     isDataInput(): boolean {
-        return this.name && this.name.toLowerCase().indexOf(QueryColumn.DATA_INPUTS.toLowerCase()) !== -1;
+        return (
+            this.name &&
+            this.name.toLowerCase().indexOf(QueryColumn.DATA_INPUTS.toLowerCase()) !== -1 &&
+            this.isLookup()
+        );
     }
 
     isAliquotParent(): boolean {
@@ -224,7 +228,11 @@ export class QueryColumn extends Record({
     }
 
     isMaterialInput(): boolean {
-        return this.name && this.name.toLowerCase().indexOf(QueryColumn.MATERIAL_INPUTS.toLowerCase()) !== -1;
+        return (
+            this.name &&
+            this.name.toLowerCase().indexOf(QueryColumn.MATERIAL_INPUTS.toLowerCase()) !== -1 &&
+            this.isLookup()
+        );
     }
 
     get isDetailColumn(): boolean {

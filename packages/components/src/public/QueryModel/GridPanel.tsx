@@ -45,6 +45,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     advancedExportOptions?: { [key: string]: any };
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     buttonsComponentProps?: ButtonsComponentProps;
+    ButtonsComponentRight?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     emptyText?: string;
     hideEmptyChartMenu?: boolean;
     hideEmptyViewMenu?: boolean;
@@ -107,6 +108,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             actions,
             advancedExportOptions,
             ButtonsComponent,
+            ButtonsComponentRight,
             hideEmptyChartMenu,
             hideEmptyViewMenu,
             onChartClicked,
@@ -182,6 +184,10 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 
                         {showSampleAliquotSelector && (
                             <GridAliquotViewSelector queryModel={model} updateFilter={onFilteredViewChange} />
+                        )}
+
+                        {ButtonsComponentRight !== undefined && (
+                            <ButtonsComponentRight {...buttonsComponentProps} model={model} actions={actions} />
                         )}
                     </div>
                 </div>

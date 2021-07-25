@@ -234,7 +234,7 @@ import {
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput } from './internal/components/forms/input/SelectInput';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
-import { DateInput } from './internal/components/forms/input/DateInput';
+import { QueryDateInput } from './internal/components/forms/input/QueryDateInput';
 import { FileInput } from './internal/components/forms/input/FileInput';
 import { TextInput } from './internal/components/forms/input/TextInput';
 import { TextAreaInput } from './internal/components/forms/input/TextAreaInput';
@@ -248,7 +248,12 @@ import { DetailEditing } from './internal/components/forms/detail/DetailEditing'
 
 import { resolveDetailRenderer } from './internal/components/forms/detail/DetailEditRenderer';
 import { Detail } from './internal/components/forms/detail/Detail';
-import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './internal/components/forms/actions';
+import {
+    getUsersWithPermissions,
+    handleInputTab,
+    handleTabKeyOnTextArea,
+    useUsersWithPermissions,
+} from './internal/components/forms/actions';
 import { FormStep, FormTabs, withFormSteps } from './internal/components/forms/FormStep';
 import { SchemaListing } from './internal/components/listing/SchemaListing';
 import { QueriesListing } from './internal/components/listing/QueriesListing';
@@ -291,6 +296,10 @@ import { CreateSamplesSubMenuBase } from './internal/components/samples/CreateSa
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
+import {
+    SampleAliquotViewSelector,
+    ALIQUOT_FILTER_MODE,
+} from './internal/components/samples/SampleAliquotViewSelector';
 import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
 import { FindSamplesByIdHeaderPanel } from './internal/components/samples/FindSamplesByIdHeaderPanel';
 import { SharedSampleTypeAdminConfirmModal } from './internal/components/samples/SharedSampleTypeAdminConfirmModal';
@@ -571,7 +580,10 @@ import {
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
 } from './internal/app/constants';
-
+import { Key, useEnterEscape } from './public/useEnterEscape';
+import { DateInput } from './internal/components/DateInput';
+import { EditInlineField } from './internal/components/EditInlineField';
+import { FileAttachmentArea } from './internal/components/files/FileAttachmentArea';
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
 enablePatches();
@@ -747,7 +759,7 @@ export {
     LookupSelectInput,
     SelectInput,
     DatePickerInput,
-    DateInput,
+    QueryDateInput,
     FieldEditorOverlay,
     FileInput,
     TextAreaInput,
@@ -774,6 +786,7 @@ export {
     FormSection,
     // user/permissions related items
     getUsersWithPermissions,
+    useUsersWithPermissions,
     getUserProperties,
     getUserRoleDisplay,
     getUserSharedContainerPermissions,
@@ -846,6 +859,8 @@ export {
     CreateSamplesSubMenuBase,
     SamplesSelectionProvider,
     SampleAliquotDetailHeader,
+    SampleAliquotViewSelector,
+    ALIQUOT_FILTER_MODE,
     SampleAssayDetail,
     SharedSampleTypeAdminConfirmModal,
     CHILD_SAMPLE_CREATION,
@@ -1174,6 +1189,11 @@ export {
     ConceptModel,
     AutoForm,
     HelpIcon,
+    Key,
+    useEnterEscape,
+    DateInput,
+    EditInlineField,
+    FileAttachmentArea,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
@@ -1253,3 +1273,4 @@ export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
 export type { FindField } from './internal/components/samples/models';
+export type { UsersLoader } from './internal/components/forms/actions';

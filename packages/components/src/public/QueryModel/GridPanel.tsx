@@ -29,6 +29,7 @@ import { Change, ChangeType, OmniBox } from '../../internal/components/omnibox/O
 
 import { GridAliquotViewSelector } from '../../internal/components/gridbar/GridAliquotViewSelector';
 
+import { QueryModel } from './QueryModel';
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ViewMenu } from './ViewMenu';
 import { ExportMenu } from './ExportMenu';
@@ -47,6 +48,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     buttonsComponentProps?: ButtonsComponentProps;
     ButtonsComponentRight?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     emptyText?: string;
+    getEmptyText?: (model: QueryModel) => string
     hideEmptyChartMenu?: boolean;
     hideEmptyViewMenu?: boolean;
     loadOnMount?: boolean;
@@ -595,6 +597,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             allowSelections,
             asPanel,
             emptyText,
+            getEmptyText,
             model,
             onExport,
             showButtonBar,
@@ -623,6 +626,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         } else if (selectionsAreLoading) {
             loadingMessage = 'Loading selections...';
         }
+
+        const gridEmptyText = getEmptyText?.(model) ?? emptyText;
 
         return (
             <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
@@ -672,7 +677,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                 showHeader={showHeader}
                                 calcWidths
                                 condensed
-                                emptyText={emptyText}
+                                emptyText={gridEmptyText}
                                 gridId={id}
                                 messages={fromJS(messages)}
                                 columns={this.getGridColumns()}

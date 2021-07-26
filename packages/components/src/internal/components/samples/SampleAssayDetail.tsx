@@ -154,6 +154,16 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
         return { queryModelsWithData: models, tabOrderWithData };
     }, [allLoaded, queryModels, showAliquotViewSelector, activeSampleAliquotType]);
 
+    const getEmptyText = useCallback((activeModel) => {
+        if (!activeSampleAliquotType || activeSampleAliquotType == ALIQUOT_FILTER_MODE.all || activeModel.hasRows)
+            return undefined;
+
+        return activeSampleAliquotType == ALIQUOT_FILTER_MODE.aliquots ?
+            'No assay results available for aliquots of this sample.'
+            : "Assay results are available for this sample's aliquots, but not available for this sample."
+
+    }, [activeSampleAliquotType]);
+
     if (allModels.length === 0) {
         return (
             <AssayResultPanel>
@@ -193,6 +203,7 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
             ButtonsComponent={SampleAssayDetailButtons}
             buttonsComponentProps={{ assayModel, sampleModel, onSampleAliquotTypeChange, activeSampleAliquotType }}
             ButtonsComponentRight={showAliquotViewSelector ? SampleAssayDetailButtonsRight : undefined}
+            getEmptyText={getEmptyText}
             loadOnMount={false}
             queryModels={queryModelsWithData}
             showRowCountOnTabs
@@ -217,7 +228,6 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
 
         getSampleAliquots(sampleId)
             .then((aliquots) => {
-                console.log(aliquots);
                 setAliquotIds(aliquots);
             })
             .catch(reason => {
@@ -265,7 +275,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             .reduce((_configs, assay) => {
                 const _queryConfig = createQueryConfigFilteredBySample(
                     assay,
-                    sampleIds,
+                    sampleIds && sampleIds.length > 0 ? sampleIds : [-1],
                     Filter.Types.IN,
                     (fieldKey, sampleIds) => `${fieldKey} IN (${sampleIds.join(',')})`,
                     false,

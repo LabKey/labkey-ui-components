@@ -20,6 +20,7 @@ import { IEntityTypeDetails } from '../entities/models';
 import { deleteEntityType } from '../entities/actions';
 import {
     buildURL,
+    caseInsensitive,
     DomainDetails,
     FindField,
     getSelectedData,
@@ -490,7 +491,11 @@ export function getSampleAliquots(sampleId: number | string): Promise<number[]> 
                 ')',
             schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
             success: result => {
-                resolve(result.rows);
+                let aliquotIds = [];
+                result.rows.forEach(row => {
+                    aliquotIds.push(caseInsensitive(row, 'RowId'))
+                })
+                resolve(aliquotIds);
             },
             failure: reason => {
                 console.error(reason);

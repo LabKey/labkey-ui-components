@@ -243,7 +243,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     }, []);
 
     const sampleIds = useMemo(() => {
-        if (!showAliquotViewSelector)
+        if (!showAliquotViewSelector || !aliquotIds)
             return [sampleId];
 
         if (activeSampleAliquotType == ALIQUOT_FILTER_MODE.all)

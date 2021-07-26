@@ -1,7 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Option } from 'react-select';
 
-import { SelectInput, SelectInputProps } from '../../..';
+import { SelectInput, SelectInputOption, SelectInputProps } from '../../..';
 
 const SELECT_VIEWS = '__select_views__';
 
@@ -40,7 +39,7 @@ export enum SelectView {
     Heatmap = 'heatmap',
 }
 
-type ViewOption = string | Option | SelectView;
+type ViewOption = string | SelectInputOption | SelectView;
 
 const ViewOptions = {
     [SelectView.Cards]: { label: 'Cards', value: SelectView.Cards },
@@ -99,13 +98,9 @@ export const SelectViewInput: FC<Props> = memo(props => {
     return (
         <SelectInput
             clearable={false}
-            formsy={false}
             inputClass="col-xs-4 col-md-2"
-            multiple={false}
             name="select-view-input"
             placeholder="Select a view..."
-            required={false}
-            showLabel={false}
             {...selectInputProps}
             id={id}
             onChange={onChange}

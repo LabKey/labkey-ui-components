@@ -13,76 +13,117 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, ReactNode } from 'react';
+import React, { Component, FC, FocusEvent, ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
-import ReactSelect, { Option } from 'react-select';
+import ReactSelect, { components } from 'react-select';
+import AsyncSelect from 'react-select/async';
+import AsyncCreatableSelect from 'react-select/async-creatable';
+import CreatableSelect from 'react-select/creatable';
 import { getServerContext, Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 
 import { generateId, QueryColumn } from '../../../..';
 
-import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
-
-// DO NOT CHANGE DELIMITER -- at least in react-select 1.0.0-rc.10
-// any other delimiter value will break the "multiple" configuration parameter
-export const DELIMITER = ',';
-
-function equalValues(a: any, b: any): boolean {
-    if (a === null || b === null) {
-        if ((a === null && b !== null) || (a !== null && b === null)) {
-            return false;
-        }
-        return true; // both null
-    }
-
-    if (typeof a !== typeof b) {
-        return false;
-    } else if (!Array.isArray(a) && typeof a !== 'object') {
-        // string, number, boolean
-        return a === b;
-    }
-
-    if (Array.isArray(a)) {
-        if (a.length !== b.length) {
-            return false;
+const customStyles = {
+    // ReactSelect v1 had a zIndex value of "1000" where as ReactSelect v4.3.1 has a value of "2"
+    // which results in layout conflicts in our apps. This reverts to the v1 value.
+    menu: provided => ({ ...provided, zIndex: 1000 }),
+    multiValue: (styles, state) => ({ ...styles, backgroundColor: state.isDisabled ? '#E1E1E1' : '#F2F9FC' }),
+    multiValueLabel: (styles, state) => ({ ...styles, color: state.isDisabled ? '#555' : '#08C' }),
+    multiValueRemove: (styles, state) => {
+        // Don't display the remove symbol for each option when the select is disabled.
+        if (state.isDisabled) {
+            return { ...styles, display: 'none' };
         }
 
-        // can assume equal length
-        for (let i = 0; i < a.length; i++) {
-            if (!equalValues(a[i], b[i])) {
-                return false;
-            }
-        }
-    } else if (typeof a === 'object') {
-        // can assume ReactSelectOption
-        if (!equalValues(a.value, b.value) || !equalValues(a.label, b.label)) {
-            return false;
-        }
-    }
+        return {
+            ...styles,
+            color: '#08C',
+            ':hover': {
+                backgroundColor: '#2980B9',
+                color: 'white',
+            },
+        };
+    },
+};
 
-    return true;
+const customTheme = theme => ({
+    ...theme,
+    colors: {
+        ...theme.colors,
+        danger: '#D9534F',
+        primary: '#2980B9',
+        primary75: '#009BF9',
+        primary50: '#F2F9FC',
+        primary25: 'rgba(41, 128, 185, 0.1)',
+    },
+});
+
+// Allows users to declare custom option rendering components without needing to redefine the base custom component
+// wrapper. This is taken from the guide at https://react-select.com/styles#cx-and-custom-components.
+const CustomOption = props => {
+    const { className, cx, children, getStyles, innerProps, innerRef, isDisabled, isFocused, isSelected } = props;
+
+    return (
+        <div
+            className={cx(
+                {
+                    option: true,
+                    'option--is-disabled': isDisabled,
+                    'option--is-focused': isFocused,
+                    'option--is-selected': isSelected,
+                },
+                className
+            )}
+            ref={innerRef}
+            style={getStyles('option', props)}
+            {...innerProps}
+        >
+            {children}
+        </div>
+    );
+};
+
+// Molded from @types/react-select/src/filter.d.ts
+export interface SelectInputOption {
+    data?: any;
+    label?: string;
+    value?: any;
+    [key: string]: any;
 }
 
-function initOptions(props: SelectInputProps): any {
+// Copied from @types/react-select/src/Select.d.ts
+export type FilterOption = ((option: SelectInputOption, rawInput: string) => boolean) | null;
+
+export const DELIMITER = ',';
+
+function initOptionFromPrimitive(value: string | number, props: SelectInputProps): any {
+    const { labelKey = 'label', options, valueKey = 'value' } = props;
+    return options?.find(o => o[valueKey] === value) ?? { [labelKey]: value, [valueKey]: value };
+}
+
+// Used to initialize the selected options in `state` when `autoValue` is enabled.
+// This will accept a primitive value (e.g. 5) and resolve it to an option (e.g. { label: 'Awesome', value: 5 })
+// if the option is available. Supports mapping single or multiple values.
+export function initOptions(props: SelectInputProps): any {
     const { value } = props;
     let options;
 
-    if (value !== undefined && value !== null) {
+    if (value !== undefined && value !== null && value !== '') {
         if (Array.isArray(value)) {
             options = [];
             value.forEach(v => {
                 if (v !== undefined && v !== null) {
-                    if (typeof v === 'string') {
-                        options.push({
-                            label: v,
-                            [props.valueKey]: v,
-                        });
+                    if (typeof v === 'string' || typeof v === 'number') {
+                        options.push(initOptionFromPrimitive(v, props));
                     } else {
                         options.push(v);
                     }
                 }
             });
+        } else if (typeof value === 'string' || typeof value === 'number') {
+            options = initOptionFromPrimitive(value, props);
         } else {
             options = value;
         }
@@ -91,53 +132,53 @@ function initOptions(props: SelectInputProps): any {
     return options;
 }
 
-export interface SelectInputProps extends DisableableInputProps {
-    addLabelText?: string;
+export interface SelectInputProps {
+    addLabelAsterisk?: boolean;
     allowCreate?: boolean;
-    autoload?: boolean;
-    autoValue?: boolean;
+    allowDisable?: boolean;
     autoFocus?: boolean;
-    backspaceRemoves?: boolean;
-    deleteRemoves?: boolean;
-    clearCacheOnChange?: boolean;
+    autoValue?: boolean;
+    backspaceRemovesValue?: boolean;
+    cacheOptions?: boolean;
     clearable?: boolean;
+    clearCacheOnChange?: boolean;
     containerClass?: string;
+    defaultOptions?: boolean | readonly any[];
     delimiter?: string;
     description?: string;
     disabled?: boolean;
-    filterOptions?: (options, filterString, values) => any; // from ReactSelect
+    filterOption?: FilterOption;
     formsy?: boolean;
-    ignoreCase?: boolean;
+    id?: any;
+    initiallyDisabled?: boolean;
     inputClass?: string;
     isLoading?: boolean;
     // FIXME: this is named incorrectly. I would expect that if this is true it would join the values, nope, it joins
     //   the values when false.
     joinValues?: boolean;
+    label?: ReactNode;
     labelClass?: string;
     labelKey?: string;
-    loadOptions?: any; // no way to currently require one or the other, options/loadOptions
+    loadOptions?: (input: string) => Promise<SelectInputOption[]>;
     multiple?: boolean;
     name?: string;
     noResultsText?: string;
-    onBlur?: (event) => any;
-    onFocus?: (event, selectRef) => void;
+    onBlur?: (event: FocusEvent<HTMLElement>) => void;
+    onChange?: Function; // this is getting confused with formsy on change, need to separate
+    onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
+    onToggleDisable?: (disabled: boolean) => void;
+    optionRenderer?: any;
     options?: any[];
-    placeholder?: string;
+    placeholder?: ReactNode;
     promptTextCreator?: (filterText: string) => string;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     required?: boolean;
     saveOnBlur?: boolean;
-    selectedOptions?: Option | Option[];
+    selectedOptions?: any;
     showLabel?: boolean;
-    addLabelAsterisk?: boolean;
-    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-    valueKey?: string;
-    onChange?: Function; // this is getting confused with formsy on change, need to separate
-    optionRenderer?: any;
-    afterInputElement?: React.ReactNode; // this can be used to render an element to the right of the input
-
-    id?: any;
-    label?: React.ReactNode;
     value?: any;
+    valueKey?: string;
+    valueRenderer?: any;
 
     // from formsy-react
     getErrorMessage?: Function;
@@ -147,44 +188,50 @@ export interface SelectInputProps extends DisableableInputProps {
     validations?: any;
 }
 
-export interface SelectInputState extends DisableableInputState {
-    selectedOptions?: any;
-    originalOptions?: any;
+interface State {
+    // This state property is used in conjunction with the prop "clearCacheOnChange" which when true
+    // is intended to clear the underlying asynchronous React Select's cache.
+    // See https://github.com/JedWatson/react-select/issues/1879
+    asyncKey: number;
+    initialLoad: boolean;
+    isDisabled: boolean;
+    originalOptions: SelectInputOption[];
+    selectedOptions: SelectInputOption[];
 }
 
 // Implementation exported only for tests
-export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectInputState> {
+export class SelectInputImpl extends Component<SelectInputProps, State> {
     static defaultProps = {
-        ...DisableableInput.defaultProps,
-        ...{
-            allowCreate: false,
-            autoload: true,
-            autoValue: true,
-            clearCacheOnChange: true,
-            containerClass: 'form-group row',
-            delimiter: DELIMITER,
-            inputClass: 'col-sm-9 col-xs-12',
-            labelClass: 'control-label col-sm-3 text-left col-xs-12',
-            labelKey: 'label',
-            saveOnBlur: false,
-            showLabel: true,
-            valueKey: 'value',
-        },
+        allowCreate: false,
+        allowDisable: false,
+        autoValue: true,
+        clearable: true,
+        clearCacheOnChange: true,
+        containerClass: 'form-group row',
+        defaultOptions: true,
+        delimiter: DELIMITER,
+        initiallyDisabled: false,
+        inputClass: 'col-sm-9 col-xs-12',
+        labelClass: 'control-label col-sm-3 text-left col-xs-12',
+        saveOnBlur: false,
+        valueKey: 'value',
     };
 
-    _id: string;
-    change = false; // indicates if the initial value has been changed or not
+    private readonly _id: string;
+    private CHANGE_LOCK = false;
 
     constructor(props: SelectInputProps) {
         super(props);
 
         this._id = generateId('selectinput-');
-        const originalOptions = props.autoValue === true ? initOptions(props) : props.selectedOptions;
+        const selectedOptions = props.autoValue === true ? initOptions(props) : undefined;
 
         this.state = {
-            selectedOptions: originalOptions,
-            originalOptions,
-            isDisabled: props.initiallyDisabled,
+            asyncKey: 0,
+            initialLoad: true,
+            isDisabled: !!props.initiallyDisabled,
+            originalOptions: selectedOptions,
+            selectedOptions,
         };
     }
 
@@ -192,40 +239,21 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         reactSelect: any;
     };
 
-    UNSAFE_componentWillReceiveProps(nextProps: SelectInputProps): void {
-        // Issue 36478, Issue 38631: reset the reactSelect input cache object on prop change
-        // We need to do this fairly aggressively and this may not catch all cases, but this is the best
-        // bet yet.  It can happen, probably because of bad timing between loading and refreshing the display
-        // here, that the cache value for the key LOAD_ON_FOCUS (from QuerySelect) will get set to an empty
-        // list of options.  Once that is stashed in the ReactSelect cache, it's pretty much impossible to get
-        // rid of it through normal component update operations, so we do this surgery here.
-        this.refs.reactSelect._cache = {};
-
-        if (!this.change && !equalValues(this.props.value, nextProps.value)) {
-            if (nextProps.autoValue) {
-                // This allows for "late-bound" value
-                this._setOptionsAndValue(initOptions(nextProps));
-            } else {
-                this.setState({
-                    selectedOptions: nextProps.selectedOptions,
-                    originalOptions: nextProps.selectedOptions,
-                });
-            }
+    componentDidUpdate(prevProps: SelectInputProps): void {
+        if (!this.CHANGE_LOCK && this.props.autoValue && prevProps.value !== this.props.value) {
+            const selectedOptions = initOptions(this.props);
+            this.setState({ originalOptions: selectedOptions, selectedOptions });
         }
 
-        this.change = false;
+        this.CHANGE_LOCK = false;
     }
 
     toggleDisabled = (): void => {
-        const { selectedOptions } = this.state;
-
         this.setState(
-            state => {
-                return {
-                    isDisabled: !state.isDisabled,
-                    selectedOptions: state.isDisabled ? selectedOptions : state.originalOptions,
-                };
-            },
+            state => ({
+                isDisabled: !state.isDisabled,
+                selectedOptions: state.isDisabled ? state.selectedOptions : state.originalOptions,
+            }),
             () => {
                 this.props.onToggleDisable?.(this.state.isDisabled);
             }
@@ -236,53 +264,36 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         return this.props.id ?? this._id;
     };
 
-    handleBlur = (event: any): void => {
+    handleBlur = (event: FocusEvent<HTMLElement>): void => {
         const { onBlur, saveOnBlur } = this.props;
 
-        // 33774: fields should be able to preserve input onBlur
+        // Issue 33774: fields should be able to preserve input onBlur
         if (saveOnBlur) {
-            // determine which ReactSelect version we are using
-            // then get the associated inputValue
-            const { reactSelect } = this.refs;
+            const select = this.refs.reactSelect?.select?.select;
 
-            if (this.isAsync()) {
-                // <ReactSelect.Async/> || <ReactSelect.AsyncCreatable/>
-                if (reactSelect.state.inputValue) {
-                    if (reactSelect.select && Utils.isFunction(reactSelect.select.selectFocusedOption)) {
-                        reactSelect.select.selectFocusedOption();
-                    } else if (getServerContext().devMode) {
-                        console.warn(
-                            'ReactSelect.Async implementation may have changed. SelectInput "saveOnBlur" no longer working.'
-                        );
-                    }
+            if (select?.selectOption) {
+                if (select?.state?.focusedOption) {
+                    select.selectOption(select.state.focusedOption);
                 }
-            } else if (this.isCreatable()) {
-                // <ReactSelect.Creatable/>
-                if (reactSelect.inputValue) {
-                    if (Utils.isFunction(reactSelect.createNewOption)) {
-                        reactSelect.createNewOption();
-                    } else if (getServerContext().devMode) {
-                        console.warn(
-                            'ReactSelect.Creatable implementation may have changed. SelectInput "saveOnBlur" no longer working.'
-                        );
-                    }
-                }
+            } else if (getServerContext().devMode) {
+                console.warn(
+                    'ReactSelect implementation may have changed. SelectInput "saveOnBlur" no longer working.'
+                );
             }
         }
 
         onBlur?.(event);
     };
 
-    handleChange = (selectedOptions): void => {
+    handleChange = (selectedOptions: any): void => {
         const { clearCacheOnChange, name, onChange } = this.props;
 
-        this.change = true;
+        this.CHANGE_LOCK = true;
 
-        if (clearCacheOnChange) {
-            this.refs.reactSelect._cache = {};
+        if (clearCacheOnChange && this.isAsync()) {
+            this.setState(state => ({ asyncKey: state.asyncKey + 1 }));
         }
 
-        // set the formsy value from the selected options
         const formValue = this._setOptionsAndValue(selectedOptions);
 
         onChange?.(name, formValue, selectedOptions, this.refs.reactSelect);
@@ -293,15 +304,33 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     };
 
     isAsync = (): boolean => {
-        return Utils.isFunction(this.props.loadOptions);
+        return !!this.props.loadOptions;
     };
 
     isCreatable = (): boolean => {
         return this.props.allowCreate === true;
     };
 
+    loadOptions = async (input: string): Promise<SelectInputOption[]> => {
+        // We don't support the older callback-based variant
+        const options = await this.props.loadOptions(input);
+
+        // If "autoValue" is enabled, then this will ensure the "selectedOptions" are mapped
+        // from the specified "value" once the initial "loadOptions" call has been made.
+        if (this.state.initialLoad && this.props.autoValue) {
+            const selectedOptions = initOptions({ ...this.props, options });
+            this.setState({
+                initialLoad: false,
+                originalOptions: selectedOptions,
+                selectedOptions,
+            });
+        }
+
+        return options;
+    };
+
     _setOptionsAndValue(options: any): any {
-        const { delimiter, formsy, multiple, joinValues, setValue, valueKey } = this.props;
+        const { autoValue, delimiter, formsy, joinValues, multiple, setValue, valueKey } = this.props;
         let selectedOptions;
 
         if (options === undefined || options === null || (Array.isArray(options) && options.length === 0)) {
@@ -310,9 +339,9 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
             selectedOptions = options;
         }
 
-        this.setState({
-            selectedOptions,
-        });
+        if (autoValue) {
+            this.setState({ selectedOptions });
+        }
 
         let formValue;
 
@@ -336,8 +365,8 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
             }
         }
 
-        if (formsy && Utils.isFunction(setValue)) {
-            setValue(formValue);
+        if (formsy) {
+            setValue?.(formValue);
         }
 
         return formValue;
@@ -361,10 +390,12 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         return null;
     }
 
-    renderLabel(inputProps: any) {
+    renderLabel = (): ReactNode => {
         const {
             allowDisable,
+            description,
             label,
+            labelClass,
             multiple,
             name,
             required,
@@ -374,28 +405,21 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         } = this.props;
         const { isDisabled } = this.state;
 
-        if (showLabel && label !== undefined) {
+        if (showLabel !== false && label !== undefined) {
             if (Utils.isString(label)) {
-                let description = this.props.description;
-                if (!description) {
-                    description = 'Select ' + (multiple ? ' one or more values for ' : ' a ') + label;
-                }
+                const description_ = description ?? `Select ${multiple ? 'one or more values for' : 'a'} ${label}`;
 
                 if (renderFieldLabel) {
-                    return (
-                        <label className="control-label col-sm-3 text-left col-xs-12">
-                            {renderFieldLabel(undefined, label, description)}
-                        </label>
-                    );
+                    return <label className={labelClass}>{renderFieldLabel(undefined, label, description_)}</label>;
                 }
 
                 return (
                     <FieldLabel
-                        id={inputProps.id}
+                        id={this.getId()}
                         fieldName={name}
                         labelOverlayProps={{
                             inputId: name,
-                            description,
+                            description: description_,
                             label,
                             addLabelAsterisk,
                             isFormsy: false,
@@ -416,68 +440,94 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         }
 
         return null;
-    }
+    };
 
-    renderSelect(inputProps: any) {
+    getOptionLabel = (option: SelectInputOption): string => option[this.props.labelKey];
+
+    getOptionValue = (option: SelectInputOption): any => option[this.props.valueKey];
+
+    Input = inputProps => (
+        // Marking input as "required" is not natively supported by react-select post-v1. Here we can mark
+        // the underlying input as required, however, this is not the value input but rather the user visible
+        // input so we manually check if a value is set.
+        <components.Input {...inputProps} required={!!this.props.required && !inputProps.selectProps?.value} />
+    );
+
+    Option = optionProps => <CustomOption {...optionProps}>{this.props.optionRenderer(optionProps)}</CustomOption>;
+
+    noOptionsMessage = (): string => this.props.noResultsText;
+
+    renderSelect = (): ReactNode => {
         const {
-            addLabelText,
             autoFocus,
-            autoload,
-            backspaceRemoves,
-            deleteRemoves,
+            backspaceRemovesValue,
+            cacheOptions,
             clearable,
+            defaultOptions,
             delimiter,
             disabled,
-            filterOptions,
-            ignoreCase,
+            filterOption,
             isLoading,
             labelKey,
-            loadOptions,
             multiple,
             name,
-            noResultsText,
             optionRenderer,
             options,
             placeholder,
             promptTextCreator,
-            required,
             valueKey,
+            valueRenderer,
         } = this.props;
 
-        const selectProps = {
-            addLabelText,
-            // newer versions of ReactSelect have renamed this to autoFocus
-            autofocus: autoFocus,
-            autoload,
-            backspaceRemoves,
-            deleteRemoves,
-            clearable,
+        const components: any = { Input: this.Input };
+
+        if (optionRenderer) {
+            components.Option = this.Option;
+        }
+
+        if (valueRenderer) {
+            if (multiple) {
+                components.MultiValue = valueRenderer;
+            } else {
+                components.SingleValue = valueRenderer;
+            }
+        }
+
+        const selectProps: any = {
+            autoFocus,
+            backspaceRemovesValue,
+            blurInputOnSelect: false,
+            className: 'select-input',
+            classNamePrefix: 'select-input',
+            components,
             delimiter,
-            disabled: disabled || this.state.isDisabled,
-            filterOptions,
-            ignoreCase,
-            inputProps,
+            filterOption,
+            getOptionLabel: labelKey && labelKey !== 'label' ? this.getOptionLabel : undefined,
+            getOptionValue: valueKey && valueKey !== 'value' ? this.getOptionValue : undefined,
+            id: this.getId(),
+            isClearable: clearable,
+            isDisabled: disabled || this.state.isDisabled,
             isLoading,
-            labelKey,
-            multi: multiple,
+            isMulti: multiple,
             name,
-            noResultsText,
+            noOptionsMessage: this.noOptionsMessage,
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
-            optionRenderer,
             options,
             placeholder,
             promptTextCreator,
             ref: 'reactSelect',
-            required,
-            value: this.state.selectedOptions,
-            valueKey,
+            styles: customStyles,
+            theme: customTheme,
+            // ReactSelect only supports null for clearing the value (as opposed to undefined).
+            // See https://stackoverflow.com/a/50417171.
+            value: (this.props.autoValue ? this.state.selectedOptions : this.props.selectedOptions) ?? null,
         };
 
         if (Array.isArray(selectProps.value) && selectProps.value.length === 0) {
-            selectProps.value = undefined;
-        } else if (!selectProps.multi && Array.isArray(selectProps.value)) {
+            selectProps.value = null;
+        } else if (!selectProps.isMulti && Array.isArray(selectProps.value)) {
             console.warn(
                 'SelectInput: value is of type "array" but this component is NOT in "multiple" mode.' +
                     ' Consider either putting in "multiple" mode or fix value to not be an array.'
@@ -485,38 +535,36 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         }
 
         if (this.isAsync()) {
-            const asyncProps = Object.assign(selectProps, {
-                cache: false, // Issue 38631 and Issue 36478 we say no to the cache so it will get cleared of all intermittent results.
-                loadOptions,
-            });
+            const asyncProps = {
+                ...selectProps,
+                cacheOptions,
+                defaultOptions,
+                key: this.state.asyncKey,
+                loadOptions: this.loadOptions,
+            };
 
             if (this.isCreatable()) {
-                return <ReactSelect.AsyncCreatable {...asyncProps} />;
+                return <AsyncCreatableSelect {...asyncProps} />;
             }
 
-            return <ReactSelect.Async {...asyncProps} />;
+            return <AsyncSelect {...asyncProps} />;
         } else if (this.isCreatable()) {
-            return <ReactSelect.Creatable {...selectProps} />;
+            return <CreatableSelect {...selectProps} />;
         }
 
         return <ReactSelect {...selectProps} />;
-    }
+    };
 
     render() {
-        const { containerClass, inputClass, afterInputElement } = this.props;
-
-        const inputProps = {
-            id: this.getId(),
-        };
+        const { containerClass, inputClass } = this.props;
 
         return (
-            <div className={containerClass}>
-                {this.renderLabel(inputProps)}
+            <div className={`select-input-container ${containerClass}`}>
+                {this.renderLabel()}
                 <div className={inputClass}>
-                    {this.renderSelect(inputProps)}
+                    {this.renderSelect()}
                     {this.renderError()}
                 </div>
-                {afterInputElement}
             </div>
         );
     }
@@ -536,7 +584,7 @@ export const SelectInput: FC<SelectInputProps> = props => {
 };
 
 SelectInput.defaultProps = {
-    formsy: true,
+    formsy: false,
 };
 
 SelectInput.displayName = 'SelectInput';

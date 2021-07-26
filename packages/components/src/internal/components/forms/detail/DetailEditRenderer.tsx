@@ -26,7 +26,6 @@ import {
     LabelColorRenderer,
     MultiValueRenderer,
     QueryColumn,
-    SchemaQuery,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
 } from '../../../..';
@@ -91,22 +90,20 @@ export function resolveDetailEditRenderer(
                 return (
                     <QuerySelect
                         componentId={col.fieldKey}
+                        containerPath={col.lookup.containerPath}
                         displayColumn={col.lookup.displayColumn}
+                        formsy
                         inputClass="col-sm-12"
                         joinValues={joinValues}
                         label={col.caption}
-                        loadOnChange
-                        loadOnFocus
                         maxRows={10}
                         multiple={multiple}
                         name={col.name}
                         placeholder="Select or type to search..."
-                        preLoad
                         required={col.required}
-                        schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
+                        schemaQuery={col.lookup.schemaQuery}
                         value={resolveDetailFieldValue(data, true)}
                         valueColumn={col.lookup.keyColumn}
-                        containerPath={col.lookup.containerPath}
                     />
                 );
             }

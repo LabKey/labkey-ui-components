@@ -149,13 +149,9 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                             inputClass=""
                             containerClass=""
                             labelClass=""
-                            formsy={false}
-                            multiple={false}
-                            required={false}
                             name="closestParticipantIdField"
                             labelKey="name"
                             valueKey="name"
-                            clearable={true}
                         />
                     </Col>
                     <Col lg={6} xs={5} />
@@ -172,13 +168,9 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                             inputClass=""
                             containerClass=""
                             labelClass=""
-                            formsy={false}
-                            multiple={false}
-                            required={false}
                             name="closestTimepointField"
                             labelKey="name"
                             valueKey="name"
-                            clearable={true}
                         />
                     </Col>
                     <Col lg={6} xs={5} />

@@ -15,7 +15,6 @@
  */
 import { AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
 import { List, Map, OrderedMap, Record } from 'immutable';
-import { Option } from 'react-select';
 
 import { getEditorModel } from '../../global';
 import { gridShowError } from '../../actions';
@@ -24,6 +23,7 @@ import {
     generateId,
     insertRows,
     InsertRowsResponse,
+    SelectInputOption,
     QueryColumn,
     QueryGridModel,
     QueryInfo,
@@ -58,9 +58,9 @@ export interface IDerivePayload {
 // capturing the schema name (e.g., samples) and query name (e.g., SampleSet1)
 // that can be used to retrieve the set of fields defined for that type and/or
 // the list of values (e.g., S-123, S-234) that can be chosen as actual parents.
-// Needs(?) to extend Option for use in ReactSelects, but otherwise very much
+// Needs(?) to extend SelectInputOption for use in ReactSelects, but otherwise very much
 // a duplicate of EntityParentType (modulo the value being a DisplayObject vs TValue)
-export interface IParentOption extends Option {
+export interface IParentOption extends SelectInputOption {
     query?: string;
     schema?: string;
 }
@@ -94,8 +94,7 @@ export class EntityParentType extends Record({
 
     createColumnName() {
         const parentInputType = this.getInputType();
-        if (parentInputType === QueryColumn.ALIQUOTED_FROM)
-            return QueryColumn.ALIQUOTED_FROM;
+        if (parentInputType === QueryColumn.ALIQUOTED_FROM) return QueryColumn.ALIQUOTED_FROM;
 
         const formattedQueryName = capitalizeFirstChar(this.query);
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
@@ -104,8 +103,7 @@ export class EntityParentType extends Record({
     }
 
     getInputType(): string {
-        if (this.schema === SCHEMAS.DATA_CLASSES.SCHEMA)
-            return QueryColumn.DATA_INPUTS;
+        if (this.schema === SCHEMAS.DATA_CLASSES.SCHEMA) return QueryColumn.DATA_INPUTS;
         return this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM : QueryColumn.MATERIAL_INPUTS;
     }
 
@@ -115,7 +113,9 @@ export class EntityParentType extends Record({
         const formattedQueryName = capitalizeFirstChar(this.query);
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
         // capitalized here and we lower it where needed
-        const parentColName = this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM : [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
+        const parentColName = this.isAliquotParent
+            ? QueryColumn.ALIQUOTED_FROM
+            : [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
         // Issue 40233: SM app allows for two types of parents, sources and samples, and its confusing if both use
         // the "Parents" suffix in the editable grid header
         const captionSuffix = this.schema !== SCHEMAS.DATA_CLASSES.SCHEMA ? ' Parents' : '';
@@ -132,7 +132,9 @@ export class EntityParentType extends Record({
 
         return QueryColumn.create({
             caption: this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM : formattedQueryName + captionSuffix,
-            description: this.isAliquotParent ? 'The parent sample of the aliquot' : 'Contains optional parent entity for this ' + formattedQueryName,
+            description: this.isAliquotParent
+                ? 'The parent sample of the aliquot'
+                : 'Contains optional parent entity for this ' + formattedQueryName,
             fieldKeyArray: [parentColName],
             fieldKey: parentColName,
             lookup: {
@@ -154,7 +156,7 @@ export class EntityParentType extends Record({
 }
 
 // represents a chosen entity type (e.g., Sample Set 1)
-export interface IEntityTypeOption extends Option {
+export interface IEntityTypeOption extends SelectInputOption {
     lsid: string;
     rowId: number;
     entityDataType: EntityDataType;
@@ -518,7 +520,7 @@ export class EntityIdCreationModel extends Record({
 
     getGridValues(queryInfo: QueryInfo, separateParents?: boolean): Map<any, any> {
         let data = List<Map<string, any>>();
-        let parentCols = [];
+        const parentCols = [];
         let values = Map<string, any>();
 
         if (this.entityCount > 0) {
@@ -536,14 +538,9 @@ export class EntityIdCreationModel extends Record({
                             parentList.find(parent => parent.schema === sq.schemaName && parent.query === sq.queryName)
                         );
                     }, undefined);
-
-                }
-                else if (col.isAliquotParent() && this.creationType === SampleCreationType.Aliquots) {
+                } else if (col.isAliquotParent() && this.creationType === SampleCreationType.Aliquots) {
                     selected = this.entityParents.reduce((found, parentList) => {
-                        return (
-                            found ||
-                            parentList.find(parent => parent.isAliquotParent)
-                        );
+                        return found || parentList.find(parent => parent.isAliquotParent);
                     }, undefined);
                 }
 
@@ -555,17 +552,16 @@ export class EntityIdCreationModel extends Record({
 
             if (separateParents && this.creationType && this.creationType != SampleCreationType.PooledSamples) {
                 parentCols.forEach(parentCol => {
-                    const parents: Array<any> = values.get(parentCol);
-                    parents.forEach((parent) => {
+                    const parents: any[] = values.get(parentCol);
+                    parents.forEach(parent => {
                         let singleParentValues = Map<string, any>();
                         singleParentValues = singleParentValues.set(parentCol, List<any>([parent]));
                         for (let c = 0; c < this.numPerParent; c++) {
                             data = data.push(singleParentValues);
                         }
                     });
-                })
-            }
-            else {
+                });
+            } else {
                 for (let c = 0; c < this.numPerParent; c++) {
                     data = data.push(values);
                 }
@@ -607,5 +603,5 @@ export interface EntityDataType {
     filterArray?: Filter.IFilter[]; // A list of filters to use when selecting the set of values
     editTypeAppUrlPrefix?: string; // the app url route prefix for the edit design page for the given data type
     importFileAction: string; // the action in the 'experiment' controller to use for file import for the given data type
-    isFromSharedContainer?: boolean // if the data type is defined in /Shared project
+    isFromSharedContainer?: boolean; // if the data type is defined in /Shared project
 }

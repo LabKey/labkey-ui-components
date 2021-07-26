@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 import { List, Map, Record } from 'immutable';
-import { Option } from 'react-select';
 import { Filter } from '@labkey/api';
 
 import { ISelectRowsResult, QueryInfo, SchemaQuery } from '../../..';
 
-import { DELIMITER } from './input/SelectInput';
+import { DELIMITER, SelectInputOption } from './input/SelectInput';
 import * as actions from './actions';
 
 export interface QuerySelectModelProps {
@@ -31,7 +30,6 @@ export interface QuerySelectModelProps {
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
-    preLoad: boolean;
     queryFilters: List<Filter.IFilter>;
     queryInfo: QueryInfo;
     rawSelectedValue: any;
@@ -53,7 +51,6 @@ export class QuerySelectModel
         isInit: false,
         maxRows: 20,
         multiple: false,
-        preLoad: false,
         queryFilters: undefined,
         queryInfo: undefined,
         rawSelectedValue: undefined,
@@ -63,7 +60,8 @@ export class QuerySelectModel
         selectedItems: Map<string, any>(),
         valueColumn: undefined,
     })
-    implements QuerySelectModelProps {
+    implements QuerySelectModelProps
+{
     declare addExactFilter: boolean;
     declare allResults: Map<string, Map<string, any>>;
     declare containerPath: string;
@@ -73,7 +71,6 @@ export class QuerySelectModel
     declare isInit: boolean;
     declare maxRows: number;
     declare multiple: boolean;
-    declare preLoad: boolean;
     declare queryFilters: List<Filter.IFilter>;
     declare queryInfo: QueryInfo;
     declare rawSelectedValue: any;
@@ -87,11 +84,11 @@ export class QuerySelectModel
         super(values);
     }
 
-    formatSavedResults(data?: Map<string, Map<string, any>>, token?: string): Option[] {
+    formatSavedResults(data?: Map<string, Map<string, any>>, token?: string): SelectInputOption[] {
         return actions.formatSavedResults(this, data, token);
     }
 
-    getSelectedOptions(): Option | Option[] {
+    getSelectedOptions(): SelectInputOption | SelectInputOption[] {
         const options = actions.formatResults(this, this.selectedItems);
 
         if (this.multiple) {
@@ -105,10 +102,6 @@ export class QuerySelectModel
         }
 
         return undefined;
-    }
-
-    parseSearch(input: any): boolean | string {
-        return actions.selectShouldSearch(this, input);
     }
 
     saveSearchResults(data: Map<string, Map<string, any>>) {

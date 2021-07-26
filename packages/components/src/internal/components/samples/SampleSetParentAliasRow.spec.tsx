@@ -5,6 +5,8 @@ import { mount } from 'enzyme';
 import { IParentOption } from '../../..';
 import { IParentAlias } from '../domainproperties/samples/models';
 
+import { SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
+
 import { SampleSetParentAliasRow } from './SampleSetParentAliasRow';
 
 describe('<SampleSetParentAliasRow/>', () => {
@@ -57,7 +59,7 @@ describe('<SampleSetParentAliasRow/>', () => {
 
         expect(wrapper.find('.has-error input[name="alias"]')).toHaveLength(1);
         expect(aliasInput.props().value).toBe(parentAlias.alias);
-        expect(wrapper.find('.has-error .Select-control')).toHaveLength(1);
+        expect(wrapper.find(`.has-error ${SELECT_INPUT_CONTROL_SELECTOR}`)).toHaveLength(1);
     });
 
     test('With values', () => {
@@ -67,13 +69,13 @@ describe('<SampleSetParentAliasRow/>', () => {
             ignoreAliasError: false,
             ignoreSelectError: false,
             parentValue: { value: 'materialInputs/test', label: 'Test Label' },
-        } as IParentAlias;
+        };
         const option: IParentOption = {
             label: 'test',
             query: 'sampleset',
             schema: 'exp',
             value: 'materialInputs/test',
-        } as IParentOption;
+        };
 
         const component = (
             <SampleSetParentAliasRow
@@ -85,7 +87,7 @@ describe('<SampleSetParentAliasRow/>', () => {
             />
         );
 
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
 
         const wrapper = mount(component);
@@ -101,13 +103,13 @@ describe('<SampleSetParentAliasRow/>', () => {
             ignoreAliasError: false,
             ignoreSelectError: false,
             parentValue: { value: 'materialInputs/test', label: 'Test Label' },
-        } as IParentAlias;
+        };
         const option: IParentOption = {
             label: 'test',
             query: 'sampleset',
             schema: 'exp',
             value: 'materialInputs/notFound',
-        } as IParentOption;
+        };
 
         const component = (
             <SampleSetParentAliasRow
@@ -119,12 +121,12 @@ describe('<SampleSetParentAliasRow/>', () => {
             />
         );
 
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
 
         const wrapper = mount(component);
         expect(wrapper.find('input[name="alias"]').props().value).toBe(parentAlias.alias);
-        expect(wrapper.find('input[role="combobox"]').props().value).toBe('');
+        expect(wrapper.find('input[name="parentValue"]').props().value).toBe(parentAlias.parentValue.value);
     });
 
     test('Simulate delete behavior', () => {
@@ -134,19 +136,19 @@ describe('<SampleSetParentAliasRow/>', () => {
             ignoreAliasError: false,
             ignoreSelectError: false,
             parentValue: { value: 'materialInputs/option2', label: 'Test Label' },
-        } as IParentAlias;
+        };
         const option1: IParentOption = {
             label: 'option1',
             query: 'sampleset',
             schema: 'exp',
             value: 'materialInputs/option1',
-        } as IParentOption;
+        };
         const option2: IParentOption = {
             label: 'option2',
             query: 'sampleset',
             schema: 'exp',
             value: 'materialInputs/option2',
-        } as IParentOption;
+        };
 
         const mockRemove = jest.fn();
 
@@ -177,19 +179,19 @@ describe('<SampleSetParentAliasRow/>', () => {
             parentValue: { value: 'materialInputs/option2', label: 'Test Label' },
             ignoreAliasError: false,
             ignoreSelectError: false,
-        } as IParentAlias;
+        };
         const option1: IParentOption = {
             label: 'option1',
             query: 'sampleset',
             schema: 'exp',
             value: 'materialInputs/option1',
-        } as IParentOption;
+        };
         const option2: IParentOption = {
             label: 'option2',
             query: 'sampleset',
             schema: 'exp',
             value: 'materialInputs/option2',
-        } as IParentOption;
+        };
 
         const mockChange = jest.fn();
 

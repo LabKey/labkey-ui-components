@@ -1236,7 +1236,7 @@ export type {
     IParentOption,
     MaterialOutput,
 } from './internal/components/entities/models';
-export type { SelectInputProps } from './internal/components/forms/input/SelectInput';
+export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
 export type { PermissionsProviderProps } from './internal/components/permissions/models';
 export type { ISelectInitData } from './internal/components/forms/model';
 export type { QuerySelectOwnProps } from './internal/components/forms/QuerySelect';

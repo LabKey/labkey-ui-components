@@ -82,13 +82,13 @@ export class SampleTypeModel extends Record({
      * Check if IParentAlias is invalid
      * @param alias
      */
-    parentAliasInvalid(alias: IParentAlias): boolean {
+    parentAliasInvalid(alias: Partial<IParentAlias>): boolean {
         if (!alias) return true;
 
         const aliasValueInvalid = !alias.alias || alias.alias.trim() === '';
         const parentValueInvalid = !alias.parentValue || !alias.parentValue.value;
 
-        return aliasValueInvalid || parentValueInvalid || alias.isDupe;
+        return !!(aliasValueInvalid || parentValueInvalid || alias.isDupe);
     }
 
     hasValidProperties(): boolean {

@@ -478,3 +478,24 @@ export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: s
         }
     });
 }
+
+export function getSampleAliquots(sampleId: number | string): Promise<number[]> {
+    return new Promise((resolve, reject) => {
+        Query.executeSql({
+            sql:
+                'SELECT m.RowId\n' +
+                'FROM exp.materials m \n' +
+                'WHERE m.RootMaterialLSID = (SELECT lsid FROM exp.materials mi WHERE mi.RowId = ' +
+                sampleId +
+                ')',
+            schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
+            success: result => {
+                resolve(result.rows);
+            },
+            failure: reason => {
+                console.error(reason);
+                reject(reason);
+            },
+        });
+    });
+}

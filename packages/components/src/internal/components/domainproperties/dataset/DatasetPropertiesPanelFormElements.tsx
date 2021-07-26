@@ -16,7 +16,7 @@
 import React, { ReactNode } from 'react';
 import { Col, Checkbox, Radio, Row } from 'react-bootstrap';
 
-import { Creatable, Option } from 'react-select';
+import { SelectInput } from '../../forms/input/SelectInput';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
@@ -34,6 +34,8 @@ import { DatasetSettingsInput, DatasetSettingsSelect } from './DatasetProperties
 
 import '../../../../theme/dataset.scss';
 import { TIME_KEY_FIELD_KEY } from './constants';
+
+type Option = any;
 
 interface BasicPropertiesInputsProps {
     model: DatasetModel;
@@ -139,12 +141,16 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     </Col>
 
                     <Col xs={7}>
-                        <Creatable
+                        <SelectInput
+                            allowCreate
+                            containerClass=""
+                            inputClass=""
                             name="category"
-                            placeholder="Select dataset category"
+                            noResultsText="No categories exist yet"
                             onChange={onCategoryChange}
-                            value={model.category}
                             options={availableCategories}
+                            placeholder="Select dataset category"
+                            value={model.category}
                         />
                     </Col>
 
@@ -284,8 +290,6 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                         label="Additional Key Field"
                         selectOptions={additionalKeyFields.toArray()}
                         onSelectChange={onSelectChange}
-                        labelKey="label"
-                        valueKey="value"
                         selectedValue={keyPropertyName}
                         disabled={!showAdditionalKeyField || model.isFromAssay()}
                         helpTip={this.getHelpTipForAdditionalField()}

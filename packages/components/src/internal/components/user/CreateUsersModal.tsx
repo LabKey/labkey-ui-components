@@ -113,14 +113,12 @@ export class CreateUsersModal extends React.Component<Props, State> {
                     <>
                         <div className="create-users-label-top create-users-label-bottom">Role:</div>
                         <SelectInput
-                            formsy={false}
                             containerClass="form-group row"
                             inputClass="col-sm-12"
                             name="create-users-role"
                             key="create-users-role-selection"
                             placeholder="Select role..."
                             value={this.getSelectedRole()}
-                            multiple={false}
                             options={this.props.roleOptions}
                             valueKey="id"
                             onChange={this.handleRole}

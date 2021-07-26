@@ -2,65 +2,46 @@
  * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import { getUsersWithPermissions } from '../actions';
 
 import { SelectInput, SelectInputProps } from './SelectInput';
 
-interface UserSelectInputProps extends SelectInputProps {
+interface UserSelectInputProps extends Omit<SelectInputProps, 'delimiter' | 'loadOptions'> {
     // specify whether this Select should correspond with a NotifyList on the server
     notifyList?: boolean;
     permissions?: string | string[];
     useEmail?: boolean;
 }
 
-export class UserSelectInput extends PureComponent<UserSelectInputProps> {
-    static defaultProps = {
-        cache: false,
-        notifyList: false,
-        useEmail: false,
-    };
+export const UserSelectInput: FC<UserSelectInputProps> = props => {
+    const { notifyList, permissions, useEmail, ...selectInputProps } = props;
 
-    loadOptions = (value, cb): void => {
-        const { useEmail } = this.props;
-        getUsersWithPermissions(this.props.permissions)
-            .then(users => {
-                cb(null, {
-                    complete: true,
-                    options: users
-                        .map(v => {
-                            if (this.props.notifyList) {
-                                return {
-                                    label: v.displayName,
-                                    value: v.displayName,
-                                };
-                            }
+    const loadOptions = useCallback(async () => {
+        let options_;
 
-                            return {
-                                label: v.displayName,
-                                value: useEmail ? v.email : v.userId,
-                            };
-                        })
-                        .toArray(),
-                });
-            })
-            .catch(error => {
-                console.error(error);
-                cb(null, { complete: true, options: [] });
-            });
-    };
+        try {
+            const users = await getUsersWithPermissions(permissions);
+            options_ = users
+                .map(v => ({
+                    label: v.displayName,
+                    value: notifyList ? v.displayName : useEmail ? v.email : v.userId,
+                }))
+                .toArray();
+        } catch (error) {
+            console.error(error);
+        }
 
-    render(): ReactNode {
-        const inputProps = Object.assign(
-            {
-                loadOptions: this.loadOptions,
-                delimiter: this.props.notifyList ? ';' : ',',
-            },
-            UserSelectInput.defaultProps,
-            this.props
-        );
+        return options_;
+    }, [notifyList, permissions, useEmail]);
 
-        return <SelectInput {...inputProps} />;
-    }
-}
+    return <SelectInput {...selectInputProps} delimiter={notifyList ? ';' : ','} loadOptions={loadOptions} />;
+};
+
+UserSelectInput.defaultProps = {
+    notifyList: false,
+    useEmail: false,
+};
+
+UserSelectInput.displayName = 'UserSelectInput';

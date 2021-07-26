@@ -7,31 +7,23 @@ import { fromJS, List, Map } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { Query } from '@labkey/api';
 
-import {
-    getSelected,
-    getStateQueryGridModel,
-    QueryGridModel,
-    resetParameters,
-    SchemaQuery,
-    User,
-    getQueryGridModel,
-    QueryGridPanel,
-    Alert,
-    LoadingSpinner,
-    Page,
-    PageHeader,
-    SelectInput,
-} from '../../..';
+import { resetParameters, SchemaQuery, User, Alert, LoadingSpinner, Page, PageHeader, SelectInput } from '../../..';
+
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { GridPanel } from '../../../public/QueryModel/GridPanel';
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 import { AuditDetails } from './AuditDetails';
 import { AuditDetailsModel } from './models';
 import { getAuditDetail } from './actions';
 import { AuditQuery, getAuditQueries } from './utils';
 
-interface Props {
+interface OwnProps {
     params: any;
     user: User;
 }
+
+type Props = OwnProps & InjectedQueryModels;
 
 interface State {
     selected: string;
@@ -41,7 +33,7 @@ interface State {
     error?: ReactNode;
 }
 
-export class AuditQueriesListingPage extends PureComponent<Props, State> {
+class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -73,40 +65,19 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
     setLastSelectedId = async (): Promise<void> => {
         if (!this.hasDetailView()) return;
 
-        const model = this.getQueryGridModel();
+        const model = this.getQueryModel();
+        if (!model) return;
 
         // if the model has already loaded selections, we can use that to reselect the last row
-        // otherwise, query the server for the selection key for this model and use that response (issue 39374)
-        if (model.selectedLoaded) {
+        if (!model.isLoadingSelections) {
             this.updateSelectedRowId(this.getLastSelectedId());
-        } else {
-            const response = await getSelected(
-                model.getId(),
-                model.schema,
-                model.query,
-                model.getFilters(),
-                model.containerPath,
-                model.queryParameters
-            );
-            const selectedId = response.selected.length > 0 ? parseInt(response.selected.slice(-1)[0], 10) : undefined;
-            this.updateSelectedRowId(selectedId);
         }
     };
 
     getLastSelectedId = (): number => {
-        const model = this.getQueryGridModel();
-        const selectedIds = model.selectedIds;
-        return selectedIds.size > 0 ? parseInt(selectedIds.last()) : undefined;
-    };
-
-    onRowSelectionChange = (model, row, checked): void => {
-        let selectedRowId;
-
-        if (checked) {
-            selectedRowId = this.getLastSelectedId();
-        }
-
-        this.updateSelectedRowId(selectedRowId);
+        const model = this.getQueryModel();
+        const selectedIds = model.selections;
+        return selectedIds.size > 0 ? parseInt(Array.from(selectedIds).pop()) : undefined;
     };
 
     updateSelectedRowId = (selectedRowId: number): void => {
@@ -145,17 +116,32 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
         return this.state.selected && this.selectedQuery?.hasDetail === true;
     }
 
-    getQueryGridModel = (): QueryGridModel => {
+    getQueryModel = (): QueryModel => {
         const { selected } = this.state;
         if (!selected) {
             return null;
         }
 
-        const model = getStateQueryGridModel('audit-log-' + selected, SchemaQuery.create('auditLog', selected), () => ({
-            containerFilter: this.containerFilter,
-            isPaged: true,
-        }));
-        return getQueryGridModel(model.getId()) || model;
+        const { queryModels, actions } = this.props;
+        const id = 'audit-log-querymodel-' + selected;
+
+        // only bind first model to URL so that it can pick up any filters passed from the caller
+        const isFirstModel = Object.keys(queryModels).length === 0;
+
+        if (!queryModels[id]) {
+            actions.addModel(
+                {
+                    id,
+                    schemaQuery: SchemaQuery.create('auditLog', selected),
+                    containerFilter: this.containerFilter,
+                    bindURL: isFirstModel,
+                },
+                true,
+                true
+            );
+        }
+
+        return queryModels[id];
     };
 
     renderSingleGrid = (): ReactNode => {
@@ -164,10 +150,10 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
             return null;
         }
 
-        const model = this.getQueryGridModel();
+        const model = this.getQueryModel();
         if (!model) return null;
 
-        return <QueryGridPanel model={model} />;
+        return <GridPanel model={model} actions={this.props.actions} />;
     };
 
     renderDetailsPanel = (): ReactNode => {
@@ -198,17 +184,13 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
             return null;
         }
 
-        const model = this.getQueryGridModel();
+        const model = this.getQueryModel();
         if (!model) return null;
 
         return (
             <Row>
                 <Col xs={12} md={8}>
-                    <QueryGridPanel
-                        onSelectionChange={this.onRowSelectionChange}
-                        highlightLastSelectedRow={true}
-                        model={model}
-                    />
+                    <GridPanel actions={this.props.actions} model={model} highlightLastSelectedRow={true} />
                 </Col>
                 <Col xs={12} md={4}>
                     {this.renderDetailsPanel()}
@@ -256,3 +238,5 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
         );
     };
 }
+
+export const AuditQueriesListingPage = withQueryModels(AuditQueriesListingPageImpl);

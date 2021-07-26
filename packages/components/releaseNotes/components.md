@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.60.1
+*Released*: 26 July 2021
+* AuditQueriesListingPage component conversion to QueryModel
+* Remove some unused exports from index.ts: getQueryGridModelsForGridId, getRunPropertiesModel, getRunPropertiesRow, getBatchPropertiesModel, getBatchPropertiesRow
+
 ### version 2.60.0
 *Released*: 25 July 2021
 * SelectInput:

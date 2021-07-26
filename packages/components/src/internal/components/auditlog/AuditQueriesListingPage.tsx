@@ -8,7 +8,6 @@ import { Col, Row } from 'react-bootstrap';
 import { Query } from '@labkey/api';
 
 import {
-    getSelected,
     resetParameters,
     SchemaQuery,
     User,
@@ -17,7 +16,6 @@ import {
     Page,
     PageHeader,
     SelectInput,
-    isLoading,
 } from '../../..';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -80,20 +78,8 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
         if (!model) return;
 
         // if the model has already loaded selections, we can use that to reselect the last row
-        // otherwise, query the server for the selection key for this model and use that response (issue 39374)
         if (!model.isLoadingSelections) {
             this.updateSelectedRowId(this.getLastSelectedId());
-        } else if (!isLoading(model.queryInfoLoadingState)) {
-            const response = await getSelected(
-                model.id,
-                model.schemaName,
-                model.queryName,
-                List(model?.filters),
-                model.containerPath,
-                model.queryParameters
-            );
-            const selectedId = response.selected.length > 0 ? parseInt(response.selected.slice(-1)[0], 10) : undefined;
-            this.updateSelectedRowId(selectedId);
         }
     };
 

@@ -7,16 +7,7 @@ import { fromJS, List, Map } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { Query } from '@labkey/api';
 
-import {
-    resetParameters,
-    SchemaQuery,
-    User,
-    Alert,
-    LoadingSpinner,
-    Page,
-    PageHeader,
-    SelectInput,
-} from '../../..';
+import { resetParameters, SchemaQuery, User, Alert, LoadingSpinner, Page, PageHeader, SelectInput } from '../../..';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';

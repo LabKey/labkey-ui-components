@@ -99,8 +99,8 @@ export const NavigationBar: FC<Props> = memo(props => {
                         )}
                     </div>
                     <div className="navbar-right col-md-7 col-sm-8 col-xs-5">
-                        <div className="navbar-item pull-right">
-                            {!!user && (
+                        {!!user && (
+                            <div className="navbar-item pull-right">
                                 <UserMenu
                                     extraDevItems={extraDevItems}
                                     extraUserItems={extraUserItems}
@@ -110,8 +110,8 @@ export const NavigationBar: FC<Props> = memo(props => {
                                     signOutUrl={signOutUrl}
                                     user={user}
                                 />
-                            )}
-                        </div>
+                            </div>
+                        )}
                         {_showNotifications && (
                             <div className="navbar-item pull-right navbar-item-notification">
                                 <ServerNotifications {...notificationsConfig} />
@@ -122,19 +122,17 @@ export const NavigationBar: FC<Props> = memo(props => {
                                 <ProductNavigation />
                             </div>
                         )}
-                        <div className="navbar-item pull-right hidden-xs">
-                            {showSearchBox && (
-                                <SearchBox
-                                    onSearch={onSearch}
-                                    placeholder={searchPlaceholder}
-                                    onFindByIds={onFindByIds}
-                                    findNounPlural="samples"
-                                />
-                            )}
-                        </div>
-                        <div className="navbar-item pull-right visible-xs">
-                            {showSearchBox && (
-                                <>
+                        {showSearchBox && (
+                            <div className="navbar-item pull-right">
+                                <div className="hidden-sm hidden-xs">
+                                    <SearchBox
+                                        onSearch={onSearch}
+                                        placeholder={searchPlaceholder}
+                                        onFindByIds={onFindByIds}
+                                        findNounPlural="samples"
+                                    />
+                                </div>
+                                <div className="visible-sm visible-xs">
                                     {onFindByIds ? (
                                         <FindAndSearchDropdown
                                             className="navbar__xs-find-dropdown"
@@ -149,9 +147,9 @@ export const NavigationBar: FC<Props> = memo(props => {
                                             onClick={onSearchIconClick}
                                         />
                                     )}
-                                </>
-                            )}
-                        </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

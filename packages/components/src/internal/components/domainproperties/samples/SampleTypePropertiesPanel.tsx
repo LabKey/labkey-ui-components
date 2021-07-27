@@ -411,7 +411,9 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     </Row>
                 )}
 
-                {(appPropertiesOnly || !isCommunityDistribution()) && <SectionHeading cls={"top-spacing"} title="Storage Settings" />}
+                {(appPropertiesOnly || !isCommunityDistribution()) && (
+                    <SectionHeading cls="top-spacing" title="Storage Settings" />
+                )}
                 {appPropertiesOnly && (
                     <>
                         <Row className="margin-top">
@@ -442,7 +444,6 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                 <Col xs={3}>
                                     {metricUnitOptions ? (
                                         <SelectInput
-                                            formsy={false}
                                             containerClass="sampleset-metric-unit-select-container"
                                             inputClass="sampleset-metric-unit-select"
                                             name="metricUnit"

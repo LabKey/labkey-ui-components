@@ -3,9 +3,7 @@ import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap'
 
 import { getServerContext } from '@labkey/api';
 
-import { Option } from 'react-select';
-
-import { helpLinkNode, initQueryGridState, LabelHelpTip, SelectInput } from '../../../..';
+import { helpLinkNode, initQueryGridState, LabelHelpTip, SelectInputOption, SelectInput } from '../../../..';
 
 import { DATASET_PROPERTIES_TOPIC } from '../../../util/helpLinks';
 
@@ -61,9 +59,6 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
                         inputClass=""
                         containerClass=""
                         labelClass=""
-                        formsy={false}
-                        multiple={false}
-                        required={false}
                         name={name}
                         labelKey={labelKey}
                         valueKey={valueKey}
@@ -90,17 +85,8 @@ interface DatasetSettingsInputProps {
 
 export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInputProps> {
     render() {
-        const {
-            name,
-            label,
-            helpTip,
-            value,
-            placeholder,
-            onValueChange,
-            disabled,
-            showInAdvancedSettings,
-            required,
-        } = this.props;
+        const { name, label, helpTip, value, placeholder, onValueChange, disabled, showInAdvancedSettings, required } =
+            this.props;
 
         return (
             <Row className="margin-top">
@@ -137,8 +123,8 @@ interface AdvancedSettingsProps {
 
 interface AdvancedSettingsState extends DatasetAdvancedSettingsForm {
     modalOpen?: boolean;
-    availableCohorts?: Option | Option[];
-    visitDateColumns?: Option | Option[];
+    availableCohorts?: SelectInputOption | SelectInputOption[];
+    visitDateColumns?: SelectInputOption | SelectInputOption[];
     dataSharing?: string;
 }
 

@@ -164,7 +164,6 @@ import { cancelEvent } from './internal/events';
 import {
     getEditorModel,
     getQueryGridModel,
-    getQueryGridModelsForGridId,
     initQueryGridState,
     invalidateUsers,
     lookupStoreInvalidate,
@@ -329,12 +328,8 @@ import {
     deleteAssayRuns,
     fetchAllAssays,
     GENERAL_ASSAY_PROVIDER_NAME,
-    getBatchPropertiesModel,
-    getBatchPropertiesRow,
     getImportItemsForAssayDefinitions,
     getRunDetailsQueryColumns,
-    getRunPropertiesModel,
-    getRunPropertiesRow,
     importAssayRun,
     RUN_PROPERTIES_GRID_ID,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
@@ -672,7 +667,6 @@ export {
     getStateQueryGridModel,
     getStateModelId,
     getQueryGridModel,
-    getQueryGridModelsForGridId,
     getEditorModel,
     lookupStoreInvalidate,
     removeQueryGridModel,
@@ -916,10 +910,6 @@ export {
     deleteAssayRuns,
     getImportItemsForAssayDefinitions,
     getRunDetailsQueryColumns,
-    getRunPropertiesModel,
-    getRunPropertiesRow,
-    getBatchPropertiesModel,
-    getBatchPropertiesRow,
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
@@ -1248,7 +1238,7 @@ export type {
     IParentOption,
     MaterialOutput,
 } from './internal/components/entities/models';
-export type { SelectInputProps } from './internal/components/forms/input/SelectInput';
+export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
 export type { PermissionsProviderProps } from './internal/components/permissions/models';
 export type { ISelectInitData } from './internal/components/forms/model';
 export type { QuerySelectOwnProps } from './internal/components/forms/QuerySelect';

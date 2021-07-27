@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { FC, PureComponent, ReactNode } from 'react';
 import { fromJS, List, Map } from 'immutable';
-import { Option } from 'react-select';
 import { Filter, Utils } from '@labkey/api';
 
-import { QueryColumn, SchemaQuery } from '../../..';
+import { SchemaQuery } from '../../..';
 
-import { DELIMITER, SelectInput } from './input/SelectInput';
+import { DELIMITER, SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
 import { initSelect } from './actions';
-import { FOCUS_FLAG } from './constants';
 import { QuerySelectModel } from './model';
 
 function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
@@ -62,22 +60,19 @@ function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
     return rawSelectedValue;
 }
 
-// 33775: Provide a default no-op filter to a React Select to prevent "normal" filtering on the input when fetching
-// async query results. They have already been filtered.
-function noopFilterOptions(options: Option[]): Option[] {
-    return options;
-}
+// Issue 33775: Provide a default no-op filter to a React Select to prevent "normal" filtering on the input
+// when fetching async query results. They have already been filtered.
+const noopFilterOptions = options => options;
 
-function renderPreviewOption(option: Option, model: QuerySelectModel): React.ReactNode {
+const PreviewOption: FC<any> = props => {
+    const { model, label, value } = props;
     const { allResults, queryInfo } = model;
 
     if (queryInfo && allResults.size) {
-        const item = allResults.find(result => {
-            return option.value === result.getIn([model.valueColumn, 'value']);
-        });
+        const item = allResults.find(result => value === result.getIn([model.valueColumn, 'value']));
 
         return (
-            <div className="wizard--select-option">
+            <>
                 {queryInfo.getDisplayColumns(model.schemaQuery.viewName).map((column, i) => {
                     if (item !== undefined) {
                         let text = resolveDetailFieldValue(item.get(column.name));
@@ -95,16 +90,16 @@ function renderPreviewOption(option: Option, model: QuerySelectModel): React.Rea
 
                     return (
                         <div key={i} className="text__truncate">
-                            <span>{option.label}</span>
+                            <span>{label}</span>
                         </div>
                     );
                 })}
-            </div>
+            </>
         );
     }
 
     return null;
-}
+};
 
 /**
  * This is a subset of SelectInputProps that are passed through to the SelectInput. Mainly, this set should
@@ -112,48 +107,27 @@ function renderPreviewOption(option: Option, model: QuerySelectModel): React.Rea
  * purposes (e.g. "options" are populated from the QuerySelect's model and thus are not allowed to
  * be specified by the user).
  */
-interface InheritedSelectInputProps {
-    addLabelText?: string;
-    allowCreate?: boolean;
-    allowDisable?: boolean;
-    onToggleDisable?: (disabled: boolean) => void;
-    backspaceRemoves?: boolean;
-    clearCacheOnChange?: boolean;
-    clearable?: boolean;
-    delimiter?: string;
-    description?: string;
-    disabled?: boolean;
-    filterOptions?: (options: Option[], inputValue: string, currentValue: Option[]) => any; // from ReactSelect
-    formsy?: boolean;
-    initiallyDisabled?: boolean;
-    inputClass?: string;
-    joinValues?: boolean;
-    label?: React.ReactNode;
-    labelClass?: string;
-    multiple?: boolean;
-    name?: string;
-    noResultsText?: string;
-    placeholder?: string;
-    required?: boolean;
-    saveOnBlur?: boolean;
-    showLabel?: boolean;
-    addLabelAsterisk?: boolean;
-    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-    validations?: any;
-    value?: any;
-}
+type InheritedSelectInputProps = Omit<
+    SelectInputProps,
+    | 'allowCreate'
+    | 'autoValue'
+    | 'cacheOptions'
+    | 'defaultOptions' // utilized by QuerySelect to support "preLoad" and "loadOnFocus" behaviors.
+    | 'isLoading' // utilized by QuerySelect to support "loadOnFocus" behavior.
+    | 'labelKey'
+    | 'loadOptions'
+    | 'onChange' // overridden by QuerySelect. See onQSChange().
+    | 'optionRenderer'
+    | 'options'
+    | 'valueKey'
+>;
 
 export interface QuerySelectOwnProps extends InheritedSelectInputProps {
-    // required
     componentId: string;
-    schemaQuery: SchemaQuery;
-
-    // optional
-    containerClass?: string; // The css class used by SelectInput, has nothing to do with LK containers.
-    containerPath?: string; // The path to the LK container that the queries should be scoped to.
+    /** The path to the LK container that the queries should be scoped to. */
+    containerPath?: string;
     displayColumn?: string;
     fireQSChangeOnInit?: boolean;
-    loadOnChange?: boolean;
     loadOnFocus?: boolean;
     maxRows?: number;
     onQSChange?: (name: string, value: string | any[], items: any, selectedItems: Map<string, any>) => void;
@@ -161,52 +135,69 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     preLoad?: boolean;
     previewOptions?: boolean;
     queryFilters?: List<Filter.IFilter>;
+    schemaQuery: SchemaQuery;
     showLoading?: boolean;
     valueColumn?: string;
 }
 
 interface State {
-    model: QuerySelectModel;
+    defaultOptions: boolean | SelectInputOption[];
     error: any;
+    isLoading: boolean;
+    loadOnFocusLock: boolean;
+    model: QuerySelectModel;
 }
 
-export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
+export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
     static defaultProps = {
         delimiter: DELIMITER,
-        filterOptions: noopFilterOptions,
+        filterOption: noopFilterOptions,
         fireQSChangeOnInit: false,
-        loadOnChange: false,
         loadOnFocus: false,
-        preLoad: false,
+        preLoad: true,
         previewOptions: false,
         showLoading: true,
     };
 
-    _mounted: boolean;
-    querySelectTimer: number;
+    private _mounted: boolean;
+    private querySelectTimer: number;
 
-    state: Readonly<State> = { error: undefined, model: undefined };
+    constructor(props: QuerySelectOwnProps) {
+        super(props);
+        this.state = this.getInitialState(props);
+    }
 
     componentDidMount(): void {
         this._mounted = true;
-        this.initModel(this.props);
+        this.initModel();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: QuerySelectOwnProps): void {
-        if (nextProps.componentId !== this.props.componentId) {
-            this.initModel(nextProps);
+    componentDidUpdate(prevProps: QuerySelectOwnProps): void {
+        if (prevProps.componentId !== this.props.componentId) {
+            this.initModel();
         }
     }
 
-    initModel = (props: QuerySelectOwnProps): void => {
-        initSelect(props).then(
-            model => {
-                this.setState(() => ({ error: undefined, model }));
-            },
-            reason => {
-                this.setState(() => ({ error: reason }));
-            }
-        );
+    initModel = async (): Promise<void> => {
+        this.setState(this.getInitialState(this.props));
+
+        try {
+            const model = await initSelect(this.props);
+            this.setState({ model });
+        } catch (error) {
+            this.setState({ error });
+        }
+    };
+
+    getInitialState = (props: QuerySelectOwnProps): State => {
+        return {
+            // See note in onFocus() regarding support for "loadOnFocus"
+            defaultOptions: props.preLoad !== false ? true : props.loadOnFocus ? [] : true,
+            error: undefined,
+            isLoading: undefined,
+            loadOnFocusLock: false,
+            model: undefined,
+        };
     };
 
     componentWillUnmount(): void {
@@ -214,89 +205,91 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
         clearTimeout(this.querySelectTimer);
     }
 
-    loadOptions = (input: string, callback): void => {
-        const { model } = this.state;
+    shouldLoadOnFocus = (): boolean => {
+        return this.props.loadOnFocus && !this.state.loadOnFocusLock;
+    };
 
-        const token = model.parseSearch(input);
+    loadOptions = (input: string): Promise<SelectInputOption[]> => {
         clearTimeout(this.querySelectTimer);
 
-        if (token !== false) {
+        // If loadOptions occurs prior to call to "onFocus" then there is no need to "loadOnFocus".
+        if (this.shouldLoadOnFocus()) {
+            this.setState({ loadOnFocusLock: true });
+        }
+
+        return new Promise((resolve): void => {
+            const { model } = this.state;
+
             this.querySelectTimer = window.setTimeout(() => {
                 this.querySelectTimer = undefined;
-                const v = token === true ? input : token;
-                model.search(v).then(data => {
+                model.search(input).then(data => {
                     const { model } = this.state;
 
                     // prevent stale state updates of ReactSelect
-                    // -- yes, a cancelable promise would work as well
                     if (this._mounted !== true) {
                         return;
                     }
 
-                    const key = data.key,
-                        models = fromJS(data.models[key]);
+                    const models = fromJS(data.models[data.key]);
 
-                    callback(null, {
-                        options: model.formatSavedResults(models, v),
-                    });
+                    resolve(model.formatSavedResults(models, input));
 
                     this.setState(() => ({
                         model: model.saveSearchResults(models),
                     }));
                 });
             }, 250);
-        } else {
-            callback(null, {
-                options: model.formatSavedResults(),
-            });
-        }
+        });
     };
 
-    onChange = (name: string, value: any, selectedOptions, selectRef: any): void => {
-        const { loadOnChange, onQSChange } = this.props;
-        const { model } = this.state;
-
+    onChange = (name: string, value: any, selectedOptions): void => {
         this.setState(
-            () => ({
-                model: model.setSelection(value),
-            }),
+            state => ({ model: state.model.setSelection(value) }),
             () => {
-                if (loadOnChange) {
-                    selectRef.loadOptions?.(FOCUS_FLAG);
-                }
-
-                onQSChange?.(name, value, selectedOptions, this.state.model.selectedItems);
+                this.props.onQSChange?.(name, value, selectedOptions, this.state.model.selectedItems);
             }
         );
     };
 
-    optionRenderer = (option): ReactNode => {
-        const { model } = this.state;
-        return renderPreviewOption(option, model);
+    optionRenderer = (props): ReactNode => {
+        return <PreviewOption label={props.label} model={this.state.model} value={props.value} />;
     };
 
-    onFocus = (event: Event, selectRef: any): void => {
-        const { loadOnFocus } = this.props;
-        const { model } = this.state;
+    onFocus = async (): Promise<void> => {
+        // NK: To support loading the select upon focus (a.k.a. "loadOnFocus") we have to explicitly utilize
+        // the "defaultOptions" and "isLoading" properties of ReactSelect. These properties, in tandem with
+        // "loadOptions", allow for an asynchronous ReactSelect to defer requesting the initial options until
+        // desired. This follows the pattern outlined here:
+        // https://github.com/JedWatson/react-select/issues/1525#issuecomment-744157380
+        if (this.shouldLoadOnFocus()) {
+            // Set and forget "loadOnFocusLock" state so "loadOnFocus" only occurs on the initial focus.
+            this.setState({ loadOnFocusLock: true, isLoading: true });
 
-        if (model.preLoad || loadOnFocus) {
-            selectRef.loadOptions?.(FOCUS_FLAG);
+            const defaultOptions = await this.loadOptions('');
+
+            // ReactSelect respects "isLoading" with a value of {undefined} differently from a value of {false}.
+            this.setState({ defaultOptions, isLoading: undefined });
         }
     };
 
     render() {
         const {
             allowDisable,
-            onToggleDisable,
+            containerClass,
             description,
-            filterOptions,
+            filterOption,
+            formsy,
             initiallyDisabled,
+            inputClass,
             label,
+            labelClass,
+            multiple,
+            onToggleDisable,
             previewOptions,
             required,
             showLoading,
         } = this.props;
-        const { error, model } = this.state;
+        const { defaultOptions, error, isLoading, model } = this.state;
 
         if (error) {
             const inputProps = {
@@ -304,13 +297,14 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                 onToggleDisable,
                 description,
                 initiallyDisabled,
+                formsy,
+                containerClass,
+                inputClass,
                 disabled: true,
-                formsy: this.props.formsy,
-                containerClass: this.props.containerClass,
-                inputClass: this.props.inputClass,
-                labelClass: this.props.labelClass,
+                labelClass,
                 isLoading: false,
                 label,
+                multiple,
                 name: this.props.name || this.props.componentId + '-error',
                 placeholder: 'Error: ' + error.message,
                 required,
@@ -318,7 +312,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
             };
 
             return <SelectInput {...inputProps} />;
-        } else if (model && model.isInit) {
+        } else if (model?.isInit) {
             const inputProps = Object.assign(
                 {
                     id: model.id,
@@ -327,12 +321,11 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                 this.props,
                 {
                     allowCreate: false,
-                    autoValue: false, // QuerySelect will directly control value of ReactSelect via selectedOptions
-                    autoload: true,
-                    cache: true,
-                    description,
-                    filterOptions,
-                    ignoreCase: false,
+                    autoValue: false, // QuerySelect directly controls value of ReactSelect via selectedOptions
+                    cacheOptions: true,
+                    defaultOptions,
+                    filterOption,
+                    isLoading,
                     loadOptions: this.loadOptions,
                     onChange: this.onChange,
                     onFocus: this.onFocus,
@@ -345,20 +338,18 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
 
             return <SelectInput {...inputProps} />;
         } else if (showLoading) {
-            // This <Input/> is used as a placeholder for fields while the model
-            // is initialized. The intent is to allow normal required validation to work
-            // even while QuerySelects are being initialized
             const inputProps = {
                 allowDisable,
-                containerClass: this.props.containerClass,
-                inputClass: this.props.inputClass,
-                labelClass: this.props.labelClass,
+                containerClass,
+                inputClass,
+                labelClass,
                 description,
                 initiallyDisabled,
-                onToggleDisable,
                 disabled: true,
-                formsy: this.props.formsy,
+                onToggleDisable,
+                formsy,
                 label,
+                multiple,
                 name: this.props.name || this.props.componentId + '-loader',
                 placeholder: 'Loading...',
                 required,

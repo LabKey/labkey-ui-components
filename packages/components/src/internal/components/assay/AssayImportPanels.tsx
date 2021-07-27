@@ -28,12 +28,8 @@ import {
     dismissNotifications,
     FileSizeLimitProps,
     getActionErrorMessage,
-    getBatchPropertiesModel,
-    getBatchPropertiesRow,
     getQueryDetails,
     getQueryGridModel,
-    getRunPropertiesModel,
-    getRunPropertiesRow,
     getStateQueryGridModel,
     gridInit,
     importAssayRun,
@@ -52,6 +48,17 @@ import {
     AssayProtocolModel,
 } from '../../..';
 
+import {
+    getRunPropertiesModel,
+    getRunPropertiesRow,
+    getBatchPropertiesModel,
+    getBatchPropertiesRow,
+    checkForDuplicateAssayFiles,
+    DuplicateFilesResponse,
+    flattenQueryGridModelRow,
+    getRunPropertiesFileName,
+    uploadAssayRunFiles,
+} from './actions';
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 import { RunDataPanel } from './RunDataPanel';
@@ -59,13 +66,6 @@ import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { AssayUploadGridLoader } from './AssayUploadGridLoader';
 import { AssayWizardModel, IAssayUploadOptions } from './AssayWizardModel';
-import {
-    checkForDuplicateAssayFiles,
-    DuplicateFilesResponse,
-    flattenQueryGridModelRow,
-    getRunPropertiesFileName,
-    uploadAssayRunFiles,
-} from './actions';
 
 interface OwnProps {
     assayDefinition: AssayDefinitionModel;

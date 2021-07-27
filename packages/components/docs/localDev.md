@@ -63,29 +63,6 @@ yarn outdated
 command to show which packages are out of date and then compare to the spreadsheet to determine if there has already
 been investigation into the cost of upgrading packages that are out of date.
 
-### Storybook
-
-A great way to view and play with these components is via [Storybook](https://storybook.js.org/). This is a tool that is used to deploy components in a functional environment which runs the components according to "stories".
-These stories are composed by developers to show features of a component and let other members of the team interact with a component. Because storybook uses webpack's hot reloading,
-this is also a great way to do visual inspection and testing of your components in isolation.
-
-For each component that is developed, a set of stories that illustrate the components should also be created.  We follow these
-conventions currently:
-* The configuration files for storybook are in the `.storybook` directory.
-* Stories are placed the directory `src/stories` with the names of the story files the same as the names of the respective components
-* The [addon-knobs](https://www.npmjs.com/package/@storybook/addon-knobs) package is used for parameterizing the stories so a user can
-explore the different options available within a component.
-
-You can start up Storybook via:
-
-```sh
-yarn run storybook
-
-# The storybook instance is now available at http://localhost:9001
-```
-
-When changes are made to the source code or .scss files for the components or the stories, the storybook instance will automatically reload.
-
 ### Linting
 In an effort to maintain consistent formatting, use best practices and catch errors before they reach production, it
 is highly recommended to lint any files you've changed before merging them to master.
@@ -218,10 +195,22 @@ number (then do the regular `npm install` for that module, build, etc. and push 
 changes to github as well).
 1. Remove any of the alpha package versions from [Artifactory](https://artifactory.labkey.com/artifactory/webapp/#/home)
 that you had published during development for this feature branch.
-    1. Navigate to the `@labkey/components` [tree node](https://artifactory.labkey.com/artifactory/webapp/#/artifacts/browse/tree/General/libs-client-local/@labkey/components/-/@labkey)
+    - To do this all at once and for all packages, use the `prugeNpmAlphaVersions` gradle task as follows:
+    ```commandline
+        ./gradlew purgeNpmAlphaVersions -PalphaPrefix=fb-feature-1
+    ```
+   This will walk through **all the `@labkey` packages** and find those whose version numbers include this alpha prefix
+   (i.e., those that match the pattern .*-alphaPrefix\\..\*).  If you want to see what would be deleted without
+   actually doing the deletion attach a `-PdryRun` property to the command
+   ```commandline
+       ./gradlew purgeNpmAlphaVersions -PalphaPrefix=fb-feature-1 -PdryRun
+   ```
+    - Alternatively, you can do this manually and one at a time:
+       1. Navigate to the `@labkey/components` [tree node](https://artifactory.labkey.com/artifactory/webapp/#/artifacts/browse/tree/General/libs-client-local/@labkey/components/-/@labkey)
     of the `libs-client-local` artifact.
-    1. Right click on the name of the alpha package version in the tree on the left and choose `delete` (or use the
+       1. Right click on the name of the alpha package version in the tree on the left and choose `delete` (or use the
     `Actions > Delete` in the upper right), note that you must be logged in to see this option.
+
 1. Check on the [TeamCity](https://teamcity.labkey.org) build status and jest test status.
 1. Merge the pull requests for `labkey-ui-components` and any of your related LabKey modules / repos.
 1. Message the Frontend dev room chat that the merge is complete.

@@ -13,7 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// QueryReactSelect
-export const FOCUS_FLAG = 'LOAD_ON_FOCUS';
-
 export const DETAIL_TABLE_CLASSES = 'table table-responsive table-condensed detail-component--table__fixed';

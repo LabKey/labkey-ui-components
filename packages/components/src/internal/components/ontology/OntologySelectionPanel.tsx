@@ -67,10 +67,7 @@ export const OntologySelectionPanelImpl: FC<OntologySelectionPanelImplProps> = m
                     description="Select an ontology to load and browse concepts."
                     inputClass="col-sm-6 col-xs-12"
                     labelClass="control-label col-sm-3 text-left col-xs-12"
-                    formsy={false}
-                    multiple={false}
                     valueKey="code"
-                    labelKey="label"
                     onChange={onOntologySelection}
                     options={ontologies}
                 />

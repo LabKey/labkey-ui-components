@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.60.#
-*Released*: ## July 2021
+### version 2.60.2
+*Released*: 27 July 2021
 * NavigationBar: fix "sm" screen size layout
 
 ### version 2.60.1

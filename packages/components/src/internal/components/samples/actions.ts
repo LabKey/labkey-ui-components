@@ -491,10 +491,10 @@ export function getSampleAliquots(sampleId: number | string): Promise<number[]> 
                 ')',
             schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
             success: result => {
-                let aliquotIds = [];
+                const aliquotIds = [];
                 result.rows.forEach(row => {
-                    aliquotIds.push(caseInsensitive(row, 'RowId'))
-                })
+                    aliquotIds.push(caseInsensitive(row, 'RowId'));
+                });
                 resolve(aliquotIds);
             },
             failure: reason => {

@@ -29,7 +29,7 @@ import { Change, ChangeType, OmniBox } from '../../internal/components/omnibox/O
 
 import { GridAliquotViewSelector } from '../../internal/components/gridbar/GridAliquotViewSelector';
 
-import { QueryModel } from './QueryModel';
+import { QueryModel, createQueryModelId } from './QueryModel';
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ViewMenu } from './ViewMenu';
 import { ExportMenu } from './ExportMenu';
@@ -37,7 +37,6 @@ import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
-import { createQueryModelId } from './QueryModel';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -48,7 +47,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     buttonsComponentProps?: ButtonsComponentProps;
     ButtonsComponentRight?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     emptyText?: string;
-    getEmptyText?: (model: QueryModel) => string
+    getEmptyText?: (model: QueryModel) => string;
     hideEmptyChartMenu?: boolean;
     hideEmptyViewMenu?: boolean;
     loadOnMount?: boolean;
@@ -605,16 +604,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showHeader,
             title,
         } = this.props;
-        const {
-            hasData,
-            id,
-            isLoading,
-            isLoadingSelections,
-            rowsError,
-            selectionsError,
-            messages,
-            queryInfoError,
-        } = model;
+        const { hasData, id, isLoading, isLoadingSelections, rowsError, selectionsError, messages, queryInfoError } =
+            model;
         const hasGridError = queryInfoError !== undefined || rowsError !== undefined;
         const hasError = hasGridError || selectionsError !== undefined;
         let loadingMessage;

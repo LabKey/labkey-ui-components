@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* PermissionAssignments.tsx fix to only request root container security policy if user is root admin
+
 ### version 2.60.1
 *Released*: 26 July 2021
 * AuditQueriesListingPage component conversion to QueryModel

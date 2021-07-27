@@ -1,4 +1,4 @@
-import React, { FC, memo, useEffect, useMemo, useState, useCallback } from 'react';
+import React, { FC, memo, useEffect, useMemo, useState, useCallback, ReactNode } from 'react';
 import { Button, MenuItem, Panel, SplitButton } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
@@ -27,10 +27,17 @@ import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel
 import { getSampleAliquots } from "./actions";
 
 interface Props {
-    sampleId: string;
-    sampleModel: QueryModel;
+    sampleId?: string;
+    sampleModel?: QueryModel;
     showAliquotViewSelector?: boolean
     sampleAliquotType?: ALIQUOT_FILTER_MODE
+    sourceId?: number | string;
+    sourceSampleIds?: number[]
+    sourceAliquotIds?: number[]
+    emptyAssayDefDisplay?: ReactNode
+    emptyAssayResultDisplay?: ReactNode
+    emptyAliquotViewMsg?: string
+    emptySampleViewMsg?: string
 }
 
 const AssayResultPanel: FC = ({ children }) => {
@@ -111,12 +118,15 @@ interface OwnProps {
     tabOrder: string[];
     onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => any;
     activeSampleAliquotType?: ALIQUOT_FILTER_MODE
+    showImportBtn?: boolean
 }
 
 type SampleAssayDetailBodyProps = Props & InjectedAssayModel & OwnProps;
 
 const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryModels> = memo(props => {
-    const { actions, assayModel, queryModels, sampleModel, tabOrder, showAliquotViewSelector, onSampleAliquotTypeChange, activeSampleAliquotType } = props;
+    const { actions, assayModel, queryModels, sampleModel, tabOrder, showImportBtn,
+        showAliquotViewSelector, onSampleAliquotTypeChange, activeSampleAliquotType,
+        emptyAssayDefDisplay, emptyAssayResultDisplay, emptyAliquotViewMsg, emptySampleViewMsg} = props;
     const allModels = Object.values(queryModels);
     const allLoaded = allModels.every(model => !model.isLoading);
 
@@ -158,13 +168,19 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
         if (!activeSampleAliquotType || activeSampleAliquotType == ALIQUOT_FILTER_MODE.all || activeModel.hasRows)
             return undefined;
 
-        return activeSampleAliquotType == ALIQUOT_FILTER_MODE.aliquots ?
-            'No assay results available for aliquots of this sample.'
-            : "Assay results are available for this sample's aliquots, but not available for this sample."
+        if (activeSampleAliquotType == ALIQUOT_FILTER_MODE.aliquots) {
+            return emptyAliquotViewMsg ?? "No assay results available for aliquots of this sample.";
+        }
+        else {
+            return emptySampleViewMsg ?? "Assay results are available for this sample's aliquots, but not available for this sample."
+        }
 
-    }, [activeSampleAliquotType]);
+    }, [activeSampleAliquotType, emptyAliquotViewMsg, emptySampleViewMsg]);
 
     if (allModels.length === 0) {
+        if (emptyAssayDefDisplay)
+            return <>{emptyAssayDefDisplay}</>;
+
         return (
             <AssayResultPanel>
                 <Alert bsStyle="warning">
@@ -184,6 +200,9 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
     }
 
     if (Object.keys(queryModelsWithData).length === 0) {
+        if (emptyAssayResultDisplay)
+            return <>{emptyAssayResultDisplay}</>;
+
         return (
             <AssayResultPanel>
                 <Alert bsStyle="warning">
@@ -200,7 +219,7 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
         <TabbedGridPanel
             actions={actions}
             alwaysShowTabs
-            ButtonsComponent={SampleAssayDetailButtons}
+            ButtonsComponent={showImportBtn ? SampleAssayDetailButtons : undefined}
             buttonsComponentProps={{ assayModel, sampleModel, onSampleAliquotTypeChange, activeSampleAliquotType }}
             ButtonsComponentRight={showAliquotViewSelector ? SampleAssayDetailButtonsRight : undefined}
             getEmptyText={getEmptyText}
@@ -216,14 +235,18 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
 const SampleAssayDetailBody = withQueryModels<SampleAssayDetailBodyProps>(SampleAssayDetailBodyImpl);
 
 const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
-    const { assayModel, sampleId, sampleModel, sampleAliquotType, showAliquotViewSelector } = props;
+    const { assayModel, sampleId, sampleModel, sampleAliquotType, showAliquotViewSelector, sourceSampleIds, sourceAliquotIds, sourceId } = props;
     const loadingDefinitions = isLoading(assayModel.definitionsLoadingState);
 
     const [ aliquotIds, setAliquotIds ] = useState(undefined);
     const [ activeSampleAliquotType, setActiveSampleAliquotType ] = useState(sampleAliquotType);
 
+    const isSourceSampleAssayGrid = useMemo(() => {
+        return !sampleId && sourceSampleIds
+    }, [sampleId, sourceSampleIds]);
+
     useEffect(() => {
-        if (!showAliquotViewSelector)
+        if (!showAliquotViewSelector || !sampleId)
             return;
 
         getSampleAliquots(sampleId)
@@ -243,8 +266,14 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     }, []);
 
     const sampleIds = useMemo(() => {
-        if (!showAliquotViewSelector || !aliquotIds)
+        if (!showAliquotViewSelector || (!isSourceSampleAssayGrid && !aliquotIds))
             return [sampleId];
+
+        if (isSourceSampleAssayGrid) {
+            if (activeSampleAliquotType == ALIQUOT_FILTER_MODE.all)
+                return [...sourceSampleIds, ...sourceAliquotIds];
+            return activeSampleAliquotType == ALIQUOT_FILTER_MODE.aliquots ? sourceAliquotIds : sourceSampleIds;
+        }
 
         if (activeSampleAliquotType == ALIQUOT_FILTER_MODE.all)
             return [sampleId, ...aliquotIds];
@@ -252,15 +281,15 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     }, [sampleId, aliquotIds, activeSampleAliquotType, showAliquotViewSelector]);
 
     const allSampleIds = useMemo(() => {
-        if (!showAliquotViewSelector || !aliquotIds)
+        if (!showAliquotViewSelector || (!isSourceSampleAssayGrid && !aliquotIds))
             return [sampleId];
 
-        return [sampleId, ...aliquotIds];
+        return isSourceSampleAssayGrid ? [...sourceSampleIds, ...sourceAliquotIds] : [sampleId, ...aliquotIds];
     }, [sampleId, aliquotIds, showAliquotViewSelector]);
 
     const key = useMemo(() => {
-        return sampleId + '-' + activeSampleAliquotType;
-    }, [sampleId, activeSampleAliquotType]);
+        return (sampleId ?? sourceId) + '-' + activeSampleAliquotType;
+    }, [sampleId, sourceId, activeSampleAliquotType]);
 
     const { queryConfigs, tabOrder } = useMemo(() => {
         if (loadingDefinitions) {
@@ -270,7 +299,12 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         let _tabOrder = [];
         let configs = assayModel.definitions
             .slice() // need to make a copy of the array before sorting
-            .filter(assay => assay.hasLookup(sampleModel.queryInfo.schemaQuery))
+            .filter(assay => {
+                if (isSourceSampleAssayGrid)
+                    return true;
+
+                return assay.hasLookup(sampleModel.queryInfo.schemaQuery)
+            })
             .sort(naturalSortByProperty('name'))
             .reduce((_configs, assay) => {
                 const _queryConfig = createQueryConfigFilteredBySample(
@@ -279,11 +313,11 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
                     Filter.Types.IN,
                     (fieldKey, sampleIds) => `${fieldKey} IN (${sampleIds.join(',')})`,
                     false,
-                    true
+                    !isSourceSampleAssayGrid
                 );
 
                 if (_queryConfig) {
-                    const modelId = `assay-detail:${assay.id}:${sampleId}`;
+                    const modelId = `assay-detail:${assay.id}:${sampleId ?? sourceId}`;
                     _configs[modelId] = _queryConfig;
                     _tabOrder.push(modelId);
                 }
@@ -292,11 +326,15 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             }, {});
 
         // keep tab when "all" view has data, but filtered view is blank
-        if (showAliquotViewSelector && activeSampleAliquotType != ALIQUOT_FILTER_MODE.all) {
+        if (showAliquotViewSelector && activeSampleAliquotType && activeSampleAliquotType != ALIQUOT_FILTER_MODE.all) {
             const unfilteredConfigs = assayModel.definitions
                 .slice() // need to make a copy of the array before sorting
-                .filter(assay => assay.hasLookup(sampleModel.queryInfo.schemaQuery))
-                .sort(naturalSortByProperty('name'))
+                .filter(assay => {
+                    if (isSourceSampleAssayGrid)
+                        return true;
+
+                    return assay.hasLookup(sampleModel.queryInfo.schemaQuery)
+                })                .sort(naturalSortByProperty('name'))
                 .reduce((_configs, assay) => {
                     const _queryConfig = createQueryConfigFilteredBySample(
                         assay,
@@ -308,7 +346,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
                     );
 
                     if (_queryConfig) {
-                        const modelId = `unfiltered-assay-detail:${assay.id}:${sampleId}`;
+                        const modelId = `unfiltered-assay-detail:${assay.id}:${sampleId ?? sourceId}`;
                         _configs[modelId] = _queryConfig;
                     }
 
@@ -321,7 +359,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         return { queryConfigs: configs, tabOrder: _tabOrder };
     }, [assayModel.definitions, loadingDefinitions, sampleModel, sampleId, sampleIds, showAliquotViewSelector]);
 
-    if (loadingDefinitions || (showAliquotViewSelector && !aliquotIds)) {
+    if (loadingDefinitions || (showAliquotViewSelector && !isSourceSampleAssayGrid && !aliquotIds)) {
         return (
             <AssayResultPanel>
                 <LoadingSpinner />
@@ -337,6 +375,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             tabOrder={tabOrder}
             onSampleAliquotTypeChange={onSampleAliquotTypeChange}
             activeSampleAliquotType={activeSampleAliquotType}
+            showImportBtn={!isSourceSampleAssayGrid}
         />
     );
 };

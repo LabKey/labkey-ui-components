@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version XXX
 *Released*: XXX
 * export createQueryConfigFilteredBySample
-* SampleAssayDetails to support aliquot view selector
+* SampleAssayDetails to support aliquot view selector and source assay
 * add getEmptyText for GridPanel
 
 ### version 2.59.1

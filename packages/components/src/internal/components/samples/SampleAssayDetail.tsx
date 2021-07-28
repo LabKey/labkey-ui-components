@@ -124,6 +124,8 @@ interface OwnProps {
     activeSampleAliquotType?: ALIQUOT_FILTER_MODE;
     showImportBtn?: boolean;
     isSourceSampleAssayGrid?: boolean;
+    onTabChange: (tabId: string) => any;
+    activeTabId?: string
 }
 
 type SampleAssayDetailBodyProps = Props & InjectedAssayModel & OwnProps;
@@ -144,6 +146,8 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
         emptyAssayResultDisplay,
         emptyAliquotViewMsg,
         emptySampleViewMsg,
+        onTabChange,
+        activeTabId
     } = props;
     const allModels = Object.values(queryModels);
     const allLoaded = allModels.every(model => !model.isLoading);
@@ -256,6 +260,8 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
             queryModels={queryModelsWithData}
             showRowCountOnTabs
             tabOrder={tabOrderWithData}
+            onTabSelect={onTabChange}
+            activeModelId={activeTabId}
             title="Assay Results"
         />
     );
@@ -325,6 +331,11 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     const key = useMemo(() => {
         return (sampleId ?? sourceId) + '-' + activeSampleAliquotType;
     }, [sampleId, sourceId, activeSampleAliquotType]);
+
+    const [ activeTabId, setActiveTabId ] = useState(undefined);
+    const onTabChange = useCallback((tab: string) => {
+        setActiveTabId(tab);
+    }, []);
 
     const { queryConfigs, tabOrder } = useMemo(() => {
         if (loadingDefinitions) {
@@ -422,6 +433,8 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             activeSampleAliquotType={activeSampleAliquotType}
             showImportBtn={!isSourceSampleAssayGrid}
             isSourceSampleAssayGrid={isSourceSampleAssayGrid}
+            onTabChange={onTabChange}
+            activeTabId={activeTabId}
         />
     );
 };

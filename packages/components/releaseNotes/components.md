@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.60.3
+*Released*: 28 July 2021
+* PermissionAssignments.tsx fix to only request root container security policy if user is root admin
+
 ### version 2.60.2
 *Released*: 27 July 2021
 * NavigationBar: fix "sm" screen size layout

@@ -55,8 +55,9 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
     }
 
     componentDidMount(): void {
-        const rootId = getServerContext().project.rootId;
-        if (this.props.containerId !== rootId) {
+        const { project, user } = getServerContext();
+        const rootId = project.rootId;
+        if (this.props.containerId !== rootId && user.isRootAdmin) {
             fetchContainerSecurityPolicy(rootId, this.props.principalsById, this.props.inactiveUsersById).then(
                 rootPolicy => {
                     this.setState(() => ({ rootPolicy }));

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add after-creation callback property to PicklistCreationMenuItem
+
 ### version 2.60.3
 *Released*: 28 July 2021
 * PermissionAssignments.tsx fix to only request root container security policy if user is root admin

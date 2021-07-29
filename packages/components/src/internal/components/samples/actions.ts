@@ -19,13 +19,17 @@ import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { IEntityTypeDetails } from '../entities/models';
 import { deleteEntityType } from '../entities/actions';
 import {
+    AssayStateModel,
     buildURL,
     caseInsensitive,
+    createQueryConfigFilteredBySample,
     DomainDetails,
     FindField,
     getSelectedData,
     getSelection,
+    naturalSortByProperty,
     QueryColumn,
+    QueryConfig,
     resolveErrorMessage,
     SAMPLE_ID_FIND_FIELD,
     SchemaQuery,
@@ -503,4 +507,32 @@ export function getSampleAliquots(sampleId: number | string): Promise<number[]> 
             },
         });
     });
+}
+
+export function getSampleAssayQueryConfigs(assayModel: AssayStateModel, sampleIds: (string | number)[], gridSuffix: string, gridPrefix: string, omitSampleCols?: boolean, sampleSchemaQuery?: SchemaQuery): QueryConfig[] {
+    return  assayModel.definitions
+        .slice() // need to make a copy of the array before sorting
+        .filter(assay => {
+            if (!sampleSchemaQuery) return true;
+
+            return assay.hasLookup(sampleSchemaQuery);
+        })
+        .sort(naturalSortByProperty('name'))
+        .reduce((_configs, assay) => {
+            const _queryConfig = createQueryConfigFilteredBySample(
+                assay,
+                sampleIds && sampleIds.length > 0 ? sampleIds : [-1],
+                Filter.Types.IN,
+                (fieldKey, sampleIds) => `${fieldKey} IN (${sampleIds.join(',')})`,
+                false,
+                omitSampleCols
+            );
+
+            if (_queryConfig) {
+                _queryConfig.id = `${gridPrefix}:${assay.id}:${gridSuffix}`;
+                _configs.push(_queryConfig)
+            }
+
+            return _configs;
+        }, []);
 }

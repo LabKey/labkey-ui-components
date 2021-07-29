@@ -279,6 +279,7 @@ import {
     getDeleteSharedSampleTypeUrl,
     getEditSharedSampleTypeUrl,
     getFindSamplesByIdData,
+    getSampleAssayQueryConfigs,
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
@@ -865,6 +866,7 @@ export {
     ALIQUOT_CREATION,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     getFindSamplesByIdData,
+    getSampleAssayQueryConfigs,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

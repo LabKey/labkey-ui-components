@@ -127,9 +127,9 @@ export class AssayDefinitionModel extends Record({
 
     hasLookup(targetSQ: SchemaQuery): boolean {
         const isSampleSet = targetSQ.hasSchema('samples');
-        const findLookup = col => {
+        const findLookup = (col: QueryColumn): boolean => {
             if (col.isLookup()) {
-                const lookupSQ = SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName);
+                const lookupSQ = col.lookup.schemaQuery;
                 const isMatch = targetSQ.isEqual(lookupSQ);
 
                 // 35881: If targetSQ is a Sample Set then allow targeting exp.materials table as well

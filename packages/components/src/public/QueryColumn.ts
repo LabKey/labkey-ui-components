@@ -7,7 +7,7 @@ import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainprop
 import { SchemaQuery } from './SchemaQuery';
 
 export class QueryLookup extends Record({
-    // server defaults
+    containerPath: undefined,
     displayColumn: undefined,
     isPublic: false,
     keyColumn: undefined,
@@ -15,9 +15,10 @@ export class QueryLookup extends Record({
     multiValued: undefined,
     queryName: undefined,
     schemaName: undefined,
-    containerPath: undefined,
+    schemaQuery: undefined,
     table: undefined,
 }) {
+    declare containerPath: string;
     declare displayColumn: string;
     declare isPublic: boolean;
     declare junctionLookup: string; // name of the column on the junction table that is also a lookup
@@ -27,8 +28,16 @@ export class QueryLookup extends Record({
     declare queryName: string;
     // declare schema: string; -- NOT ALLOWING -- USE schemaName
     declare schemaName: string;
+    declare schemaQuery: SchemaQuery;
     // declare table: string; -- NOT ALLOWING -- USE queryName
-    declare containerPath: string;
+
+    static create(rawLookup): QueryLookup {
+        return new QueryLookup(
+            Object.assign({}, rawLookup, {
+                schemaQuery: SchemaQuery.create(rawLookup.schemaName, rawLookup.queryName),
+            })
+        );
+    }
 }
 
 export class QueryColumn extends Record({
@@ -164,7 +173,7 @@ export class QueryColumn extends Record({
         if (rawColumn && rawColumn.lookup !== undefined) {
             return new QueryColumn(
                 Object.assign({}, rawColumn, {
-                    lookup: new QueryLookup(rawColumn.lookup),
+                    lookup: QueryLookup.create(rawColumn.lookup),
                 })
             );
         }
@@ -220,7 +229,7 @@ export class QueryColumn extends Record({
             return false;
         }
 
-        const lookupSQ = SchemaQuery.create(this.lookup.schemaName, this.lookup.queryName);
+        const lookupSQ = this.lookup.schemaQuery;
         // materialsSQ can't be a constant declared at the top of the file due to circular imports.
         const materialsSQ = SchemaQuery.create('exp', 'Materials');
 

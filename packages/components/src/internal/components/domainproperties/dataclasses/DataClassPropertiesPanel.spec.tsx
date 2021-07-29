@@ -27,7 +27,7 @@ describe('DataClassPropertiesPanel', () => {
             <DataClassPropertiesPanel {...BASE_PROPS} model={DataClassModel.create({})} onChange={jest.fn()} />
         );
 
-        const tree = renderer.create(form).toJSON();
+        const tree = renderer.create(form);
         expect(tree).toMatchSnapshot();
     });
 
@@ -48,7 +48,7 @@ describe('DataClassPropertiesPanel', () => {
             />
         );
 
-        const tree = renderer.create(form).toJSON();
+        const tree = renderer.create(form);
         expect(tree).toMatchSnapshot();
     });
 

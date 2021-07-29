@@ -1,6 +1,37 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.60.3
+*Released*: 28 July 2021
+* PermissionAssignments.tsx fix to only request root container security policy if user is root admin
+
+### version 2.60.2
+*Released*: 27 July 2021
+* NavigationBar: fix "sm" screen size layout
+
+### version 2.60.1
+*Released*: 26 July 2021
+* AuditQueriesListingPage component conversion to QueryModel
+* Remove some unused exports from index.ts: getQueryGridModelsForGridId, getRunPropertiesModel, getRunPropertiesRow, getBatchPropertiesModel, getBatchPropertiesRow
+
+### version 2.60.0
+*Released*: 25 July 2021
+* SelectInput:
+    * Now the defacto implementation we use to wrap `ReactSelect`.
+    * Implement my best attempt at stylizing the component to match our theme/look.
+    * Retain support for primitives as the `value`. When `autoValue={true}` (the default) then `SelectInput` attempts to resolve the chosen option from the value.
+    * Add support for resolving the chosen option from a primitive value for asynchronous received values.
+    * When `autoValue={false}` the component will no longer track the `selectedOptions` internally and only utilize them if necessary for Formsy processing.
+    * The `formsy` property now defaults to `false`. All usages updated.
+    * The `showLabel` property now defaults to `undefined` and requires explicit `false` to prevent display of the label. Otherwise, display of the label depends on if the `label` property is provided.
+    * `value` is no longer explicitly tracked for changes (see removal of `SelectInput/equalValues()`).
+    * Reimplement `saveOnBlur` in support of [Issue 33774](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=33774).
+    * Retain support for `valueKey` and `labelKey` when working with user-defined options/models.
+* QuerySelect:
+    * Improve typings to denote all properties available and remove redundant declarations.
+    * Update support for `loadOnFocus` to work with latest version of ReactSelect.
+* Introduce `SelectInputTestUtils.ts` which provides utilities and selectors for interacting with `SelectInput` in Jest tests.
+
 ### version 2.59.1
 *Released*: 21 July 2021
 * Fix issue with onChange callback in FileAttachmentArea

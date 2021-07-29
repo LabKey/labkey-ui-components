@@ -8,9 +8,9 @@ import {
     Alert,
     AppURL,
     capitalizeFirstChar,
+    caseInsensitive,
     EntityDataType,
     GridPanel,
-    LoadingSpinner,
     QueryModel,
     QuerySelect,
     RemoveEntityButton,
@@ -92,9 +92,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
     renderParentSelection = (model: QueryModel): ReactNode => {
         const { chosenType, chosenValue, parentLSIDs, parentTypeOptions, parentDataType, index } = this.props;
 
-        if (model?.isLoading || !parentTypeOptions) {
-            return <LoadingSpinner />;
-        } else if (model?.rowsError || model?.queryInfoError) {
+        if (model?.rowsError || model?.queryInfoError) {
             return <Alert>{model.rowsError || model.queryInfoError}</Alert>;
         }
 
@@ -103,12 +101,10 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
             parentSchemaQuery = SchemaQuery.create(chosenType.schema, chosenType.query);
         }
 
-        const lcTypeName = chosenType?.label.toLowerCase();
-
         let value = chosenValue ?? undefined;
         if (!value && model?.hasData && parentLSIDs?.length > 0) {
             value = Object.values(model.rows)
-                .map(row => row.Name.value)
+                .map(row => caseInsensitive(row, 'Name').value)
                 .join(DELIMITER);
         }
 
@@ -116,17 +112,16 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
             <div className="bottom-spacing" key={'parent-selections-' + index}>
                 <div className="form-group row">
                     <SelectInput
-                        formsy={false}
                         containerClass=""
                         inputClass="col-sm-6"
                         label={parentDataType.typeNounSingular + ' ' + (index + 1)}
-                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
-                        name={lcTypeName ? lcTypeName : 'entityType' + index}
+                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--type-select"
+                        name={'entityType' + index}
                         placeholder={'Select a ' + parentDataType.typeNounSingular + ' ...'}
                         onChange={this.onChangeParentType}
-                        options={parentTypeOptions.toArray()}
+                        options={parentTypeOptions?.toArray()}
                         required
-                        value={lcTypeName}
+                        value={chosenType}
                     />
 
                     {this.props.onRemoveParentType && (
@@ -138,25 +133,21 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         />
                     )}
                 </div>
-                {lcTypeName && chosenType && (
+                {chosenType && (
                     <QuerySelect
-                        componentId={'parentEntityValue_' + lcTypeName} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
+                        componentId={'parentEntityValue_' + chosenType.label} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
                         containerClass="row"
-                        formsy={false}
-                        label={capitalizeFirstChar(parentDataType.nounSingular) + ' IDs'}
                         inputClass="col-sm-6"
-                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
-                        name={'parentEntityValue_' + lcTypeName}
-                        onQSChange={this.onChangeParentValue}
-                        onInitValue={this.onInitValue}
-                        preLoad
-                        loadOnChange // set to true so we'll reload to eliminate the last selected value from the list.
+                        label={capitalizeFirstChar(parentDataType.nounSingular) + ' IDs'}
+                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--parent-select"
                         multiple
+                        name={'parentEntityValue_' + chosenType.label}
+                        onInitValue={this.onInitValue}
+                        onQSChange={this.onChangeParentValue}
                         schemaQuery={parentSchemaQuery}
-                        showLabel
-                        valueColumn="Name"
                         showLoading
                         value={value}
+                        valueColumn="Name"
                     />
                 )}
             </div>

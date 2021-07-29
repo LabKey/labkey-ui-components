@@ -16,12 +16,13 @@
 import { Filter, PermissionTypes, Security, User, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 import { useCallback, useEffect, useState } from 'react';
-import { Option } from 'react-select';
+
 import {
     getQueryDetails,
     ISelectRowsResult,
     LoadingState,
     naturalSort,
+    SelectInputOption,
     QueryInfo,
     QuerySelectOwnProps,
     searchRows,
@@ -31,7 +32,6 @@ import {
 import { getUsers, setUsers } from '../../global';
 
 import { similaritySortFactory } from '../../util/similaritySortFactory';
-import { FOCUS_FLAG } from './constants';
 
 import { QuerySelectModel, QuerySelectModelProps } from './model';
 
@@ -108,7 +108,10 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                             const model = initQuerySelectModel(componentId, newProps, queryInfo);
 
                             if (props.fireQSChangeOnInit && Utils.isFunction(props.onQSChange)) {
-                                let items: Option | Option[] = formatResults(model, model.selectedItems);
+                                let items: SelectInputOption | SelectInputOption[] = formatResults(
+                                    model,
+                                    model.selectedItems
+                                );
 
                                 // mimic ReactSelect in that it will return a single option if multiple is not true
                                 if (props.multiple === false) {
@@ -195,8 +198,8 @@ function initValueColumn(queryInfo: QueryInfo, column?: string): string {
 export function fetchSearchResults(model: QuerySelectModel, input: any): Promise<ISelectRowsResult> {
     const { addExactFilter, displayColumn, maxRows, queryFilters, schemaQuery, selectedItems, valueColumn } = model;
 
-    let allFilters = [],
-        filterVal = input === FOCUS_FLAG ? '' : input.trim();
+    let allFilters = [];
+    const filterVal = input.trim();
 
     // fetch additional options and exclude previously selected so user can see more
     if (model.multiple) {
@@ -216,7 +219,7 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
     }
 
     // Include PKs plus useful-to-search-over columns and append the grid view's column list
-    const requiredColumns = model.queryInfo.pkCols.concat(['Name', 'Description', 'Alias']);
+    const requiredColumns = model.queryInfo.pkCols.concat([displayColumn, valueColumn, 'Name', 'Description', 'Alias']);
     const columns = model.queryInfo
         .getDisplayColumns(schemaQuery.viewName)
         .map(c => c.fieldKey)
@@ -249,7 +252,7 @@ export function saveSearchResults(
     }) as QuerySelectModel;
 }
 
-export function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): Option[] {
+export function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): SelectInputOption[] {
     if (!model.queryInfo || !results) {
         return [];
     }
@@ -273,7 +276,7 @@ export function formatSavedResults(
     model: QuerySelectModel,
     results?: Map<string, Map<string, any>>,
     token?: string
-): Option[] {
+): SelectInputOption[] {
     const { queryInfo, selectedItems, searchResults } = model;
 
     if (!queryInfo) {
@@ -319,27 +322,6 @@ export function setSelection(model: QuerySelectModel, rawSelectedValue: any): Qu
         selectedItems,
         selectedQuery: parseSelectedQuery(model, selectedItems),
     }) as QuerySelectModel;
-}
-
-export function selectShouldSearch(model: QuerySelectModel, input: any): boolean | string {
-    const { delimiter, preLoad, rawSelectedValue, selectedQuery } = model;
-
-    // To do: reduce unnecessary extra loads from values
-    if (input) {
-        if (input === FOCUS_FLAG && preLoad) {
-            return true;
-        } else if (selectedQuery) {
-            const processed = Array.isArray(input) ? input.join(delimiter) : input.toString();
-
-            if (processed === selectedQuery || processed === rawSelectedValue) {
-                return '';
-            }
-        }
-        // if there is an input, but none of the above scenarios match, search
-        return true;
-    }
-
-    return false;
 }
 
 // "selectedQuery" should match against displayColumn as that is what the user is typing against

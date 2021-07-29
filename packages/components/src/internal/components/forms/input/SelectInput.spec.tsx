@@ -18,85 +18,66 @@ import { mount, shallow } from 'enzyme';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { SelectInputImpl } from './SelectInput';
+import { waitForLifecycle } from '../../../testHelpers';
+
+import { SelectInputImpl, SelectInputProps } from './SelectInput';
+import { blurSelectInputInput, setSelectInputText } from './SelectInputTestUtils';
 
 describe('SelectInput', () => {
-    const formsyProps = {
-        formsy: true,
-        getErrorMessage: () => {},
-        getValue: () => {},
-        setValue: () => {},
-    };
+    function getFormsyProps(): Partial<SelectInputProps> {
+        return {
+            formsy: true,
+            getErrorMessage: jest.fn(),
+            getValue: jest.fn(),
+            setValue: jest.fn(),
+        };
+    }
 
     test('Should apply css classes', () => {
         const containerCls = 'container-class-test';
         const inputCls = 'input-class-test';
 
         const component = shallow(
-            <SelectInputImpl {...formsyProps} containerClass={containerCls} inputClass={inputCls} />
+            <SelectInputImpl {...getFormsyProps()} containerClass={containerCls} inputClass={inputCls} />
         );
         expect(component.find('.' + containerCls).length).toBe(1);
         expect(component.find('.' + inputCls).length).toBe(1);
     });
 
     test('Should saveOnBlur - creatable', () => {
-        const setValue = jest.fn();
+        const expectedInputValue = 'Hello';
+        const selectProps = getFormsyProps();
 
-        const selectProps = Object.assign({}, formsyProps, {
-            allowCreate: true,
-            saveOnBlur: true,
-            setValue,
-        });
+        const component = mount<SelectInputImpl>(<SelectInputImpl {...selectProps} allowCreate saveOnBlur />);
+        setSelectInputText(component, expectedInputValue, true);
 
-        const component = mount(<SelectInputImpl {...selectProps} />);
-
-        component
-            .find('input')
-            .simulate('focus')
-            .simulate('change', { target: { value: 'Hello' } })
-            .simulate('blur');
-
-        expect(setValue.mock.calls.length).toBe(1);
-        const state = component.state() as any;
-        expect(state.selectedOptions).toHaveProperty('value', 'Hello');
-
-        component.unmount();
+        expect(selectProps.setValue).toHaveBeenCalledTimes(1);
+        expect(component.state().selectedOptions).toHaveProperty('value', expectedInputValue);
     });
 
-    test('Should saveOnBlur - async', () => {
-        const setValue = jest.fn();
-
-        const selectProps = Object.assign({}, formsyProps, {
-            loadOptions: (input, callback) => {
-                callback(null, {
-                    options: [
-                        { value: 'one', label: 'One' },
-                        { value: 'two', label: 'Two' },
-                    ],
-                    complete: true,
-                });
-            },
+    test('Should saveOnBlur - async', async () => {
+        const selectProps = {
+            ...getFormsyProps(),
+            filterOption: jest.fn((option, rawValue: string) => option.label === rawValue),
+            loadOptions: jest.fn(async () => [
+                { value: 'one', label: 'One' },
+                { value: 'two', label: 'Two' },
+            ]),
             multiple: true,
             saveOnBlur: true,
-            setValue,
-        });
+        };
 
-        const component = mount(<SelectInputImpl {...selectProps} />);
+        const component = mount<SelectInputImpl>(<SelectInputImpl {...selectProps} />);
+        setSelectInputText(component, 'Two');
+        await waitForLifecycle(component);
+        blurSelectInputInput(component);
 
-        component
-            .find('input')
-            .simulate('focus')
-            .simulate('change', { target: { value: 'Two' } })
-            .simulate('blur');
-
-        expect(setValue.mock.calls.length).toBe(1);
-        const state = component.state() as any;
-        expect(state.selectedOptions).toHaveLength(1);
-
-        component.unmount();
+        expect(selectProps.setValue).toHaveBeenCalledTimes(1);
+        expect(component.state().selectedOptions).toHaveLength(1);
+        expect(component.state().selectedOptions[0].value).toEqual('two');
     });
 
-    function validateFieldLabel(component: any, hasFieldLabel: boolean, labelText: string): void {
+    function validateFieldLabel(component: any, hasFieldLabel: boolean, labelText?: string): void {
         expect(component.find(FieldLabel)).toHaveLength(hasFieldLabel ? 1 : 0);
         if (labelText !== undefined) {
             expect(component.find('label').text().startsWith(labelText)).toBeTruthy();
@@ -109,50 +90,13 @@ describe('SelectInput', () => {
         const defaultLabel = 'Jest Label Test';
         const customLabel = 'Jest Custom Label Test';
 
-        let component = mount(
-            <SelectInputImpl
-                {...Object.assign({}, formsyProps, {
-                    showLabel: true,
-                    label: defaultLabel,
-                })}
-            />
-        );
+        const component = mount(<SelectInputImpl {...getFormsyProps()} label={defaultLabel} showLabel />);
         validateFieldLabel(component, true, defaultLabel);
-        component.unmount();
 
-        component = mount(
-            <SelectInputImpl
-                {...Object.assign({}, formsyProps, {
-                    showLabel: false,
-                    label: defaultLabel,
-                })}
-            />
-        );
-        validateFieldLabel(component, false, undefined);
-        component.unmount();
-
-        component = mount(
-            <SelectInputImpl
-                {...Object.assign({}, formsyProps, {
-                    showLabel: true,
-                    label: defaultLabel,
-                    renderFieldLabel: () => <div>{customLabel}</div>,
-                })}
-            />
-        );
+        component.setProps({ renderFieldLabel: () => <div>{customLabel}</div> });
         validateFieldLabel(component, false, customLabel);
-        component.unmount();
 
-        component = mount(
-            <SelectInputImpl
-                {...Object.assign({}, formsyProps, {
-                    showLabel: false,
-                    label: defaultLabel,
-                    renderFieldLabel: () => <div>Jest Custom Label Test</div>,
-                })}
-            />
-        );
-        validateFieldLabel(component, false, undefined);
-        component.unmount();
+        component.setProps({ showLabel: false });
+        validateFieldLabel(component, false);
     });
 });

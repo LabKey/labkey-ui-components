@@ -111,13 +111,12 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                 </Col>
                 <Col xs={5} className={classNames({ 'has-error': !ignoreSelectError && parentValueBlank })}>
                     <SelectInput
-                        formsy={false}
                         inputClass="sampleset-insert--parent-select"
                         name="parentValue"
                         onChange={this.onSelectChange}
                         options={parentOptions}
                         placeholder={`Select a ${parentTypeCaption.toLowerCase()}...`}
-                        value={parentValue ? parentValue.value : undefined}
+                        value={parentValue?.value}
                         onFocus={this.onParentValueFocus}
                         onBlur={this.onParentValueBlur}
                     />

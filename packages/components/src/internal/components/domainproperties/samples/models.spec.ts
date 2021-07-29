@@ -2,7 +2,7 @@ import { fromJS } from 'immutable';
 
 import { DomainDetails } from '../models';
 
-import { IParentAlias, SampleTypeModel } from './models';
+import { SampleTypeModel } from './models';
 
 describe('SampleTypeModel', () => {
     test('isNew', () => {
@@ -16,56 +16,48 @@ describe('SampleTypeModel', () => {
     test('parentAliasInvalid', () => {
         expect(SampleTypeModel.create().parentAliasInvalid(undefined)).toBeTruthy();
         expect(SampleTypeModel.create().parentAliasInvalid(null)).toBeTruthy();
-        expect(SampleTypeModel.create().parentAliasInvalid({} as IParentAlias)).toBeTruthy();
+        expect(SampleTypeModel.create().parentAliasInvalid({})).toBeTruthy();
         expect(
-            SampleTypeModel.create().parentAliasInvalid({ alias: 'ali', parentValue: { value: 'val' } } as IParentAlias)
+            SampleTypeModel.create().parentAliasInvalid({ alias: 'ali', parentValue: { value: 'val' } })
         ).toBeFalsy();
 
         expect(
             SampleTypeModel.create().parentAliasInvalid({
                 alias: undefined,
                 parentValue: { value: 'val' },
-            } as IParentAlias)
+            })
         ).toBeTruthy();
         expect(
-            SampleTypeModel.create().parentAliasInvalid({ alias: null, parentValue: { value: 'val' } } as IParentAlias)
+            SampleTypeModel.create().parentAliasInvalid({ alias: null, parentValue: { value: 'val' } })
         ).toBeTruthy();
-        expect(
-            SampleTypeModel.create().parentAliasInvalid({ alias: '', parentValue: { value: 'val' } } as IParentAlias)
-        ).toBeTruthy();
-        expect(
-            SampleTypeModel.create().parentAliasInvalid({ alias: ' ', parentValue: { value: 'val' } } as IParentAlias)
-        ).toBeTruthy();
+        expect(SampleTypeModel.create().parentAliasInvalid({ alias: '', parentValue: { value: 'val' } })).toBeTruthy();
+        expect(SampleTypeModel.create().parentAliasInvalid({ alias: ' ', parentValue: { value: 'val' } })).toBeTruthy();
 
-        expect(
-            SampleTypeModel.create().parentAliasInvalid({ alias: 'ali', parentValue: undefined } as IParentAlias)
-        ).toBeTruthy();
+        expect(SampleTypeModel.create().parentAliasInvalid({ alias: 'ali', parentValue: undefined })).toBeTruthy();
         expect(
             SampleTypeModel.create().parentAliasInvalid({
                 alias: 'ali',
                 parentValue: { value: undefined },
-            } as IParentAlias)
+            })
         ).toBeTruthy();
         expect(
-            SampleTypeModel.create().parentAliasInvalid({ alias: 'ali', parentValue: { value: null } } as IParentAlias)
+            SampleTypeModel.create().parentAliasInvalid({ alias: 'ali', parentValue: { value: null } })
         ).toBeTruthy();
-        expect(
-            SampleTypeModel.create().parentAliasInvalid({ alias: 'ali', parentValue: { value: '' } } as IParentAlias)
-        ).toBeTruthy();
+        expect(SampleTypeModel.create().parentAliasInvalid({ alias: 'ali', parentValue: { value: '' } })).toBeTruthy();
 
         expect(
             SampleTypeModel.create().parentAliasInvalid({
                 alias: 'ali',
                 parentValue: { value: 'val' },
                 isDupe: true,
-            } as IParentAlias)
+            })
         ).toBeTruthy();
         expect(
             SampleTypeModel.create().parentAliasInvalid({
                 alias: 'ali',
                 parentValue: { value: 'val' },
                 isDupe: false,
-            } as IParentAlias)
+            })
         ).toBeFalsy();
     });
 

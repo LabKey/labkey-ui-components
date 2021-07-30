@@ -509,8 +509,15 @@ export function getSampleAliquots(sampleId: number | string): Promise<number[]> 
     });
 }
 
-export function getSampleAssayQueryConfigs(assayModel: AssayStateModel, sampleIds: (string | number)[], gridSuffix: string, gridPrefix: string, omitSampleCols?: boolean, sampleSchemaQuery?: SchemaQuery): QueryConfig[] {
-    return  assayModel.definitions
+export function getSampleAssayQueryConfigs(
+    assayModel: AssayStateModel,
+    sampleIds: Array<string | number>,
+    gridSuffix: string,
+    gridPrefix: string,
+    omitSampleCols?: boolean,
+    sampleSchemaQuery?: SchemaQuery
+): QueryConfig[] {
+    return assayModel.definitions
         .slice() // need to make a copy of the array before sorting
         .filter(assay => {
             if (!sampleSchemaQuery) return true;
@@ -530,7 +537,7 @@ export function getSampleAssayQueryConfigs(assayModel: AssayStateModel, sampleId
 
             if (_queryConfig) {
                 _queryConfig.id = `${gridPrefix}:${assay.id}:${gridSuffix}`;
-                _configs.push(_queryConfig)
+                _configs.push(_queryConfig);
             }
 
             return _configs;

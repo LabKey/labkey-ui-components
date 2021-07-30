@@ -128,7 +128,7 @@ interface OwnProps {
     showImportBtn?: boolean;
     isSourceSampleAssayGrid?: boolean;
     onTabChange: (tabId: string) => any;
-    activeTabId?: string
+    activeTabId?: string;
 }
 
 type SampleAssayDetailBodyProps = Props & InjectedAssayModel & OwnProps;
@@ -150,7 +150,7 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
         emptyAliquotViewMsg,
         emptySampleViewMsg,
         onTabChange,
-        activeTabId
+        activeTabId,
     } = props;
     const allModels = Object.values(queryModels);
     const allLoaded = allModels.every(model => !model.isLoading);
@@ -322,7 +322,15 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
 
         if (activeSampleAliquotType == ALIQUOT_FILTER_MODE.all) return [sampleId, ...aliquotIds];
         return activeSampleAliquotType == ALIQUOT_FILTER_MODE.aliquots ? aliquotIds : [sampleId];
-    }, [sampleId, aliquotIds, activeSampleAliquotType, showAliquotViewSelector, sourceAliquotIds, sourceId, isSourceSampleAssayGrid]);
+    }, [
+        sampleId,
+        aliquotIds,
+        activeSampleAliquotType,
+        showAliquotViewSelector,
+        sourceAliquotIds,
+        sourceId,
+        isSourceSampleAssayGrid,
+    ]);
 
     const allSampleIds = useMemo(() => {
         if (!showAliquotViewSelector || (!isSourceSampleAssayGrid && !aliquotIds)) return [sampleId];
@@ -334,7 +342,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         return (sampleId ?? sourceId) + '-' + activeSampleAliquotType;
     }, [sampleId, sourceId, activeSampleAliquotType]);
 
-    const [ activeTabId, setActiveTabId ] = useState<string>(undefined);
+    const [activeTabId, setActiveTabId] = useState<string>(undefined);
     const onTabChange = useCallback((tab: string) => {
         setActiveTabId(tab);
     }, []);
@@ -347,26 +355,38 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         const _tabOrder = [];
         const queryGridSuffix = sampleId ?? sourceId + '-source';
         const sampleSchemaQuery = isSourceSampleAssayGrid ? undefined : sampleModel.queryInfo.schemaQuery;
-        const _configs = getSampleAssayQueryConfigs(assayModel, sampleIds, queryGridSuffix, ASSAY_GRID_ID_PREFIX, !isSourceSampleAssayGrid, sampleSchemaQuery);
+        const _configs = getSampleAssayQueryConfigs(
+            assayModel,
+            sampleIds,
+            queryGridSuffix,
+            ASSAY_GRID_ID_PREFIX,
+            !isSourceSampleAssayGrid,
+            sampleSchemaQuery
+        );
 
-        let configs = _configs
-            .reduce((_configs, config) => {
-                const modelId = config.id;
-                _configs[modelId] = config;
-                _tabOrder.push(modelId);
-                return _configs;
-            }, {});
+        let configs = _configs.reduce((_configs, config) => {
+            const modelId = config.id;
+            _configs[modelId] = config;
+            _tabOrder.push(modelId);
+            return _configs;
+        }, {});
 
         // keep tab when "all" view has data, but filtered view is blank
         if (showAliquotViewSelector && activeSampleAliquotType && activeSampleAliquotType != ALIQUOT_FILTER_MODE.all) {
-            const _unfilteredConfigs = getSampleAssayQueryConfigs(assayModel, allSampleIds, queryGridSuffix, UNFILTERED_GRID_ID_PREFIX, !isSourceSampleAssayGrid, sampleSchemaQuery);
+            const _unfilteredConfigs = getSampleAssayQueryConfigs(
+                assayModel,
+                allSampleIds,
+                queryGridSuffix,
+                UNFILTERED_GRID_ID_PREFIX,
+                !isSourceSampleAssayGrid,
+                sampleSchemaQuery
+            );
 
-            const unfilteredConfigs = _unfilteredConfigs
-                .reduce((_configs, config) => {
-                    const modelId = config.id;
-                    _configs[modelId] = config;
-                    return _configs;
-                }, {});
+            const unfilteredConfigs = _unfilteredConfigs.reduce((_configs, config) => {
+                const modelId = config.id;
+                _configs[modelId] = config;
+                return _configs;
+            }, {});
 
             configs = { ...configs, ...unfilteredConfigs };
         }

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 2.61.0
+*Released*: 30 July 2021
 * export createQueryConfigFilteredBySample
 * SampleAssayDetails to support aliquot view selector and source assay
 * add getEmptyText for GridPanel

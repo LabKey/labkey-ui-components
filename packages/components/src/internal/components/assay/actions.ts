@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap } from 'immutable';
-import { Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
+import { Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
 
 import {
     AssayDefinitionModel,
     AssayStateModel,
     buildURL,
-    getQueryGridModel,
-    getStateQueryGridModel,
     naturalSortByProperty,
     QueryColumn,
     QueryGridModel,
     SCHEMAS,
-    SchemaQuery,
     QueryModel,
+    caseInsensitive,
 } from '../../..';
 
 import { AssayUploadTabs } from '../../constants';
@@ -37,6 +35,7 @@ import { IAssayUploadOptions } from './AssayWizardModel';
 
 export const GENERAL_ASSAY_PROVIDER_NAME = 'General';
 
+export const BATCH_PROPERTIES_GRID_ID = 'assay-batchdetails';
 export const RUN_PROPERTIES_GRID_ID = 'assay-run-details';
 
 export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
@@ -323,30 +322,6 @@ export function checkForDuplicateAssayFiles(fileNames: string[]): Promise<Duplic
     });
 }
 
-export function getRunPropertiesModel(
-    assayDefinition: AssayDefinitionModel,
-    runId: string,
-    props?: any
-): QueryGridModel {
-    let initProps = {
-        allowSelection: false,
-        requiredColumns: RUN_PROPERTIES_REQUIRED_COLUMNS,
-        // allow for the possibility of viewing runs that have been replaced.
-        baseFilters: List([Filter.create('Replaced', undefined, Filter.Types.NONBLANK)]),
-    };
-    if (props) {
-        initProps = { ...initProps, ...props };
-    }
-    const model = getStateQueryGridModel(
-        RUN_PROPERTIES_GRID_ID,
-        SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'),
-        initProps,
-        runId
-    );
-
-    return getQueryGridModel(model.getId()) || model;
-}
-
 /**
  * N.B. Because the schema name for assay queries includes the assay type and name (e.g., assay.General.GPAT 1),
  * we are not currently equipped to handle this in the application metadata defined in App/constants.ts.
@@ -381,56 +356,32 @@ export function getRunDetailsQueryColumns(runPropertiesModel: QueryGridModel, re
     return columns;
 }
 
-export function getRunPropertiesFileName(row: Map<string, any>): string {
-    const dataOutputs = row?.get('DataOutputs');
-    return dataOutputs && dataOutputs.size === 1 ? dataOutputs.getIn([0, 'displayValue']) : undefined;
+export function getRunPropertiesFileName(row: Record<string, any>): string {
+    const dataOutputs = caseInsensitive(row, 'DataOutputs');
+    return dataOutputs && dataOutputs.length === 1 ? dataOutputs[0].displayValue : undefined;
 }
 
-export function getRunPropertiesRow(assayDefinition: AssayDefinitionModel, runId: string): Map<string, any> {
-    const model = getRunPropertiesModel(assayDefinition, runId);
-    return model.isLoaded ? model.getRow() : undefined;
-}
-
-export function getBatchPropertiesModel(assayDefinition: AssayDefinitionModel, batchId: string): QueryGridModel {
-    if (!batchId) {
-        return undefined;
-    }
-
-    const model = getStateQueryGridModel(
-        'assay-batchdetails',
-        SchemaQuery.create(assayDefinition.protocolSchemaName, 'Batches'),
-        {
-            allowSelection: false,
-            requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId').toList(),
-        },
-        batchId
-    );
-
-    return getQueryGridModel(model.getId()) || model;
-}
-
-export function getBatchPropertiesRow(assayDefinition: AssayDefinitionModel, batchId: string): Map<string, any> {
-    const model = getBatchPropertiesModel(assayDefinition, batchId);
-    return model && model.isLoaded ? model.getRow() : undefined;
-}
-
-export function flattenQueryGridModelRow(rowData: Map<string, any>): Map<string, any> {
+export function flattenQueryModelRow(rowData: Record<string, any>): Map<string, any> {
     if (rowData) {
         // TODO make the consumers of this row data able to handle the queryData instead of
         // having to create the key -> value map via reduction.
-        return rowData.reduce((map, v, k) => {
+        let map = Map<string, any>();
+
+        Object.keys(rowData).forEach(k => {
+            const v = rowData[k];
             let valueMap = v;
-            if (List.isList(v)) {
-                if (v.size > 1) {
+            if (Utils.isArray(v)) {
+                if (v.length > 1) {
                     console.warn("Multiple values for field '" + k + "'.  Using the last.");
                 }
-                valueMap = v.get(v.size - 1);
+                valueMap = v[v.length - 1];
             }
-            if (valueMap && valueMap.has('value') && valueMap.get('value')) {
-                return map.set(k, valueMap.get('value').toString());
+            if (valueMap && valueMap['value'] !== undefined) {
+                map = map.set(k, valueMap['value']);
             }
-            return map;
-        }, Map<string, any>());
+        });
+
+        return map;
     }
 
     return Map<string, any>();

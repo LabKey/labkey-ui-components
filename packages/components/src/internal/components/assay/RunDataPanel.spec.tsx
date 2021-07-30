@@ -51,7 +51,8 @@ class RunDataPanelWrapperImpl extends React.Component<Props, any> {
             <RunDataPanel
                 currentStep={currentStep}
                 wizardModel={ASSAY_WIZARD_MODEL}
-                gridModel={gridModel}
+                runPropertiesRow={{}}
+                queryGridModelForEditor={gridModel}
                 onFileChange={jest.fn}
                 onFileRemoval={jest.fn}
                 onTextChange={jest.fn}
@@ -75,7 +76,8 @@ describe('<RunDataPanel/>', () => {
             <RunDataPanel
                 currentStep={AssayUploadTabs.Files}
                 wizardModel={ASSAY_WIZARD_MODEL}
-                gridModel={getQueryGridModel(MODEL_ID_NOT_LOADED)}
+                runPropertiesRow={{}}
+                queryGridModelForEditor={getQueryGridModel(MODEL_ID_NOT_LOADED)}
                 onFileChange={jest.fn}
                 onFileRemoval={jest.fn}
                 onTextChange={jest.fn}

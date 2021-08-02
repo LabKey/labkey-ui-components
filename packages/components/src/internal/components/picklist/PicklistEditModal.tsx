@@ -74,9 +74,16 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         finishingVerb = 'Creating';
     }
 
-    const onHide = useCallback(() => {
+    const reset = () => {
         setPicklistError(undefined);
         setIsSubmitting(false);
+        setName(undefined);
+        setDescription(undefined);
+        setShared(false);
+    }
+
+    const onHide = useCallback(() => {
+        reset();
         onCancel();
     }, []);
 
@@ -117,7 +124,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                 updatedList = await createPicklist(trimmedName, description, shared, selectionKey, sampleIds);
                 incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
             }
-            setIsSubmitting(false);
+            reset();
             if (showNotification) {
                 createSuccessNotification(updatedList);
             }

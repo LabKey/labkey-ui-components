@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.61.1
+*Released*: 3 August 2021
+* Add after-creation callback property to PicklistCreationMenuItem
+
+### version 2.61.0
+*Released*: 30 July 2021
+* export createQueryConfigFilteredBySample
+* SampleAssayDetails to support aliquot view selector and source assay
+* add getEmptyText for GridPanel
+
 ### version 2.60.3
 *Released*: 28 July 2021
 * PermissionAssignments.tsx fix to only request root container security policy if user is root admin

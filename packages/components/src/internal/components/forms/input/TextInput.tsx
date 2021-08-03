@@ -145,7 +145,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
 
         let help: string;
         if (queryColumn.nameExpression) {
-            help = `A ${queryColumn.caption.toLowerCase()} will be generated if one is not given.`;
+            help = `A ${queryColumn.caption} will be generated if one is not given.`;
         }
 
         return (

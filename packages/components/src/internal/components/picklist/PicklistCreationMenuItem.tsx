@@ -20,14 +20,16 @@ interface Props {
     currentProductId?: string;
     picklistProductId?: string;
     metricFeatureArea?: string;
+    onCreatePicklist?: () => void;
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {
-    const { key, itemText, user } = props;
+    const { key, itemText, user, onCreatePicklist } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const onFinish = (picklist: Picklist) => {
         setShowModal(false);
+        onCreatePicklist?.();
     };
 
     const onCancel = () => {

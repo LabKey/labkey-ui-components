@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.61.1
+*Released*: 3 August 2021
+* Add after-creation callback property to PicklistCreationMenuItem
+
 ### version 2.61.0
 *Released*: 30 July 2021
 * export createQueryConfigFilteredBySample

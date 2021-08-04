@@ -332,7 +332,6 @@ import {
     getImportItemsForAssayDefinitions,
     getRunDetailsQueryColumns,
     importAssayRun,
-    RUN_PROPERTIES_GRID_ID,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
 } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
@@ -917,7 +916,6 @@ export {
     AssayLink,
     clearAssayDefinitionCache,
     fetchAllAssays,
-    RUN_PROPERTIES_GRID_ID,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
     GENERAL_ASSAY_PROVIDER_NAME,
     // heatmap

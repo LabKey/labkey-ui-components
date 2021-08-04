@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.61.2
+*Released*: 4 August 2021
+* AssayImportPanels.tsx conversion to QueryModel for batch and run properties
+
 ### version 2.61.1
 *Released*: 3 August 2021
 * Add after-creation callback property to PicklistCreationMenuItem

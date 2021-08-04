@@ -328,6 +328,26 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
     }
 }
 
+export class AutoLinkCategoryInput extends React.PureComponent<InputProps> {
+    render() {
+        const { model, onChange } = this.props;
+
+        return (
+            <AssayPropertiesInput
+                label="Linked Dataset Category"
+                helpTipBody={<p> ROSALINE TODO </p>}
+            >
+                <FormControl
+                    id={FORM_IDS.AUTO_LINK_CATEGORY}
+                    type="text"
+                    value={model.autoLinkCategory}
+                    onChange={onChange}
+                />
+            </AssayPropertiesInput>
+        );
+    }
+}
+
 interface ModuleProvidedScriptsInputProps {
     model: AssayProtocolModel;
 }

@@ -18,6 +18,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
       "allowPlateMetadata": false,
       "autoCopyTargetContainer": undefined,
       "autoCopyTargetContainerId": undefined,
+      "autoLinkCategory": undefined,
       "availableDetectionMethods": undefined,
       "availableMetadataInputFormats": undefined,
       "availablePlateTemplates": undefined,
@@ -130,6 +131,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
         "allowPlateMetadata": false,
         "autoCopyTargetContainer": undefined,
         "autoCopyTargetContainerId": undefined,
+        "autoLinkCategory": undefined,
         "availableDetectionMethods": undefined,
         "availableMetadataInputFormats": undefined,
         "availablePlateTemplates": undefined,
@@ -269,6 +271,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                     "allowPlateMetadata": false,
                     "autoCopyTargetContainer": undefined,
                     "autoCopyTargetContainerId": undefined,
+                    "autoLinkCategory": undefined,
                     "availableDetectionMethods": undefined,
                     "availableMetadataInputFormats": undefined,
                     "availablePlateTemplates": undefined,
@@ -532,6 +535,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                     "allowPlateMetadata": false,
                     "autoCopyTargetContainer": undefined,
                     "autoCopyTargetContainerId": undefined,
+                    "autoLinkCategory": undefined,
                     "availableDetectionMethods": undefined,
                     "availableMetadataInputFormats": undefined,
                     "availablePlateTemplates": undefined,
@@ -790,6 +794,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                     "allowPlateMetadata": false,
                     "autoCopyTargetContainer": undefined,
                     "autoCopyTargetContainerId": undefined,
+                    "autoLinkCategory": undefined,
                     "availableDetectionMethods": undefined,
                     "availableMetadataInputFormats": undefined,
                     "availablePlateTemplates": undefined,
@@ -1037,6 +1042,16 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
             className="col-lg-6 col-xs-12"
           />
         </Col>
+        <Col
+          bsClass="col"
+          componentClass="div"
+          lg={6}
+          xs={12}
+        >
+          <div
+            className="col-lg-6 col-xs-12"
+          />
+        </Col>
       </form>
     </Form>
   </AssayPropertiesPanelImpl>
@@ -1058,6 +1073,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
       "allowPlateMetadata": false,
       "autoCopyTargetContainer": undefined,
       "autoCopyTargetContainerId": undefined,
+      "autoLinkCategory": undefined,
       "availableDetectionMethods": undefined,
       "availableMetadataInputFormats": undefined,
       "availablePlateTemplates": undefined,
@@ -1170,6 +1186,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
         "allowPlateMetadata": false,
         "autoCopyTargetContainer": undefined,
         "autoCopyTargetContainerId": undefined,
+        "autoLinkCategory": undefined,
         "availableDetectionMethods": undefined,
         "availableMetadataInputFormats": undefined,
         "availablePlateTemplates": undefined,
@@ -1285,6 +1302,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           "allowPlateMetadata": false,
           "autoCopyTargetContainer": undefined,
           "autoCopyTargetContainerId": undefined,
+          "autoLinkCategory": undefined,
           "availableDetectionMethods": undefined,
           "availableMetadataInputFormats": undefined,
           "availablePlateTemplates": undefined,
@@ -1516,6 +1534,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -1779,6 +1798,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -2037,6 +2057,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -2295,6 +2316,30 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                 Import Settings
                               </div>
                             </SectionHeading>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col
+                        bsClass="col"
+                        componentClass="div"
+                        lg={6}
+                        xs={12}
+                      >
+                        <div
+                          className="col-lg-6 col-xs-12"
+                        >
+                          <div
+                            className="domain-field-padding-bottom"
+                          >
+                            <SectionHeading
+                              title="Link to Study Settings"
+                            >
+                              <div
+                                className="domain-field-section-heading"
+                              >
+                                Link to Study Settings
+                              </div>
+                            </SectionHeading>
                             <AutoLinkDataInput
                               model={
                                 Immutable.Record {
@@ -2306,6 +2351,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -2563,6 +2609,259 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                 </Row>
                               </Component>
                             </AutoLinkDataInput>
+                            <AutoLinkCategoryInput
+                              model={
+                                Immutable.Record {
+                                  "allowBackgroundUpload": false,
+                                  "allowEditableResults": false,
+                                  "allowQCStates": false,
+                                  "allowSpacesInPath": false,
+                                  "allowTransformationScript": false,
+                                  "allowPlateMetadata": false,
+                                  "autoCopyTargetContainer": undefined,
+                                  "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
+                                  "availableDetectionMethods": undefined,
+                                  "availableMetadataInputFormats": undefined,
+                                  "availablePlateTemplates": undefined,
+                                  "backgroundUpload": false,
+                                  "description": undefined,
+                                  "domains": Immutable.List [
+                                    Immutable.Record {
+                                      "name": "Batch Fields",
+                                      "container": undefined,
+                                      "description": undefined,
+                                      "domainURI": undefined,
+                                      "domainId": null,
+                                      "allowFileLinkProperties": false,
+                                      "allowAttachmentProperties": false,
+                                      "allowFlagProperties": true,
+                                      "allowTimepointProperties": false,
+                                      "showDefaultValueSettings": false,
+                                      "defaultDefaultValueType": undefined,
+                                      "defaultValueOptions": Immutable.List [],
+                                      "fields": Immutable.List [],
+                                      "indices": Immutable.List [],
+                                      "domainException": undefined,
+                                      "mandatoryFieldNames": Immutable.List [],
+                                      "reservedFieldNames": Immutable.List [],
+                                      "newDesignFields": undefined,
+                                      "instructions": undefined,
+                                      "domainKindName": undefined,
+                                    },
+                                    Immutable.Record {
+                                      "name": "Run Fields",
+                                      "container": undefined,
+                                      "description": undefined,
+                                      "domainURI": undefined,
+                                      "domainId": null,
+                                      "allowFileLinkProperties": false,
+                                      "allowAttachmentProperties": false,
+                                      "allowFlagProperties": true,
+                                      "allowTimepointProperties": false,
+                                      "showDefaultValueSettings": false,
+                                      "defaultDefaultValueType": undefined,
+                                      "defaultValueOptions": Immutable.List [],
+                                      "fields": Immutable.List [],
+                                      "indices": Immutable.List [],
+                                      "domainException": undefined,
+                                      "mandatoryFieldNames": Immutable.List [],
+                                      "reservedFieldNames": Immutable.List [],
+                                      "newDesignFields": undefined,
+                                      "instructions": undefined,
+                                      "domainKindName": undefined,
+                                    },
+                                    Immutable.Record {
+                                      "name": "Data Fields",
+                                      "container": undefined,
+                                      "description": undefined,
+                                      "domainURI": undefined,
+                                      "domainId": null,
+                                      "allowFileLinkProperties": false,
+                                      "allowAttachmentProperties": false,
+                                      "allowFlagProperties": true,
+                                      "allowTimepointProperties": false,
+                                      "showDefaultValueSettings": false,
+                                      "defaultDefaultValueType": undefined,
+                                      "defaultValueOptions": Immutable.List [],
+                                      "fields": Immutable.List [],
+                                      "indices": Immutable.List [],
+                                      "domainException": undefined,
+                                      "mandatoryFieldNames": Immutable.List [],
+                                      "reservedFieldNames": Immutable.List [],
+                                      "newDesignFields": undefined,
+                                      "instructions": undefined,
+                                      "domainKindName": undefined,
+                                    },
+                                  ],
+                                  "editableResults": false,
+                                  "editableRuns": false,
+                                  "exception": undefined,
+                                  "metadataInputFormatHelp": undefined,
+                                  "moduleTransformScripts": undefined,
+                                  "name": undefined,
+                                  "plateMetadata": undefined,
+                                  "protocolId": undefined,
+                                  "protocolParameters": undefined,
+                                  "protocolTransformScripts": undefined,
+                                  "providerName": "General",
+                                  "saveScriptFiles": false,
+                                  "selectedDetectionMethod": undefined,
+                                  "selectedMetadataInputFormat": undefined,
+                                  "selectedPlateTemplate": undefined,
+                                  "qcEnabled": undefined,
+                                }
+                              }
+                              onChange={[Function]}
+                            >
+                              <Component
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                     ROSALINE TODO 
+                                  </p>
+                                }
+                                label="Linked Dataset Category"
+                              >
+                                <Row
+                                  bsClass="row"
+                                  className="margin-top"
+                                  componentClass="div"
+                                >
+                                  <div
+                                    className="margin-top row"
+                                  >
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      lg={4}
+                                      xs={3}
+                                    >
+                                      <div
+                                        className="col-lg-4 col-xs-3"
+                                      >
+                                        <DomainFieldLabel
+                                          helpTipBody={
+                                            <p>
+                                               ROSALINE TODO 
+                                            </p>
+                                          }
+                                          label="Linked Dataset Category"
+                                        >
+                                          Linked Dataset 
+                                          <span
+                                            className="domain-no-wrap"
+                                          >
+                                            Category
+                                            <Component
+                                              customStyle={Object {}}
+                                              id="tooltip"
+                                              size="1x"
+                                              title="Linked Dataset Category"
+                                            >
+                                              <span
+                                                className="label-help-target"
+                                                onMouseOut={[Function]}
+                                                onMouseOver={[Function]}
+                                              >
+                                                <FontAwesomeIcon
+                                                  border={false}
+                                                  className="label-help-icon"
+                                                  fixedWidth={false}
+                                                  flip={null}
+                                                  icon={
+                                                    Object {
+                                                      "icon": Array [
+                                                        512,
+                                                        512,
+                                                        Array [],
+                                                        "f059",
+                                                        "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                      ],
+                                                      "iconName": "question-circle",
+                                                      "prefix": "fas",
+                                                    }
+                                                  }
+                                                  inverse={false}
+                                                  listItem={false}
+                                                  mask={null}
+                                                  pull={null}
+                                                  pulse={false}
+                                                  rotation={null}
+                                                  size="1x"
+                                                  spin={false}
+                                                  style={Object {}}
+                                                  swapOpacity={false}
+                                                  symbol={false}
+                                                  title=""
+                                                  transform={null}
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                                    data-icon="question-circle"
+                                                    data-prefix="fas"
+                                                    focusable="false"
+                                                    role="img"
+                                                    style={Object {}}
+                                                    viewBox="0 0 512 512"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                  >
+                                                    <path
+                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                      fill="currentColor"
+                                                      style={Object {}}
+                                                    />
+                                                  </svg>
+                                                </FontAwesomeIcon>
+                                                <Overlay
+                                                  animation={[Function]}
+                                                  placement="right"
+                                                  rootClose={false}
+                                                  show={false}
+                                                >
+                                                  <Overlay
+                                                    placement="right"
+                                                    rootClose={false}
+                                                    show={false}
+                                                    transition={[Function]}
+                                                  />
+                                                </Overlay>
+                                              </span>
+                                            </Component>
+                                          </span>
+                                        </DomainFieldLabel>
+                                      </div>
+                                    </Col>
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      lg={8}
+                                      xs={9}
+                                    >
+                                      <div
+                                        className="col-lg-8 col-xs-9"
+                                      >
+                                        <FormControl
+                                          bsClass="form-control"
+                                          componentClass="input"
+                                          id="assay-design-autoLinkCategory"
+                                          onChange={[Function]}
+                                          type="text"
+                                        >
+                                          <input
+                                            className="form-control"
+                                            id="assay-design-autoLinkCategory"
+                                            onChange={[Function]}
+                                            type="text"
+                                          />
+                                        </FormControl>
+                                      </div>
+                                    </Col>
+                                  </div>
+                                </Row>
+                              </Component>
+                            </AutoLinkCategoryInput>
                           </div>
                         </div>
                       </Col>
@@ -2594,6 +2893,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
       "allowPlateMetadata": false,
       "autoCopyTargetContainer": undefined,
       "autoCopyTargetContainerId": undefined,
+      "autoLinkCategory": undefined,
       "availableDetectionMethods": undefined,
       "availableMetadataInputFormats": undefined,
       "availablePlateTemplates": undefined,
@@ -2706,6 +3006,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
         "allowPlateMetadata": false,
         "autoCopyTargetContainer": undefined,
         "autoCopyTargetContainerId": undefined,
+        "autoLinkCategory": undefined,
         "availableDetectionMethods": undefined,
         "availableMetadataInputFormats": undefined,
         "availablePlateTemplates": undefined,
@@ -2821,6 +3122,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
           "allowPlateMetadata": false,
           "autoCopyTargetContainer": undefined,
           "autoCopyTargetContainerId": undefined,
+          "autoLinkCategory": undefined,
           "availableDetectionMethods": undefined,
           "availableMetadataInputFormats": undefined,
           "availablePlateTemplates": undefined,
@@ -3052,6 +3354,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -3315,6 +3618,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -3573,6 +3877,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -3831,6 +4136,30 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                 Import Settings
                               </div>
                             </SectionHeading>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col
+                        bsClass="col"
+                        componentClass="div"
+                        lg={6}
+                        xs={12}
+                      >
+                        <div
+                          className="col-lg-6 col-xs-12"
+                        >
+                          <div
+                            className="domain-field-padding-bottom"
+                          >
+                            <SectionHeading
+                              title="Link to Study Settings"
+                            >
+                              <div
+                                className="domain-field-section-heading"
+                              >
+                                Link to Study Settings
+                              </div>
+                            </SectionHeading>
                             <AutoLinkDataInput
                               model={
                                 Immutable.Record {
@@ -3842,6 +4171,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -4099,6 +4429,259 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                 </Row>
                               </Component>
                             </AutoLinkDataInput>
+                            <AutoLinkCategoryInput
+                              model={
+                                Immutable.Record {
+                                  "allowBackgroundUpload": false,
+                                  "allowEditableResults": false,
+                                  "allowQCStates": false,
+                                  "allowSpacesInPath": false,
+                                  "allowTransformationScript": false,
+                                  "allowPlateMetadata": false,
+                                  "autoCopyTargetContainer": undefined,
+                                  "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
+                                  "availableDetectionMethods": undefined,
+                                  "availableMetadataInputFormats": undefined,
+                                  "availablePlateTemplates": undefined,
+                                  "backgroundUpload": false,
+                                  "description": undefined,
+                                  "domains": Immutable.List [
+                                    Immutable.Record {
+                                      "name": "Batch Fields",
+                                      "container": undefined,
+                                      "description": undefined,
+                                      "domainURI": undefined,
+                                      "domainId": null,
+                                      "allowFileLinkProperties": false,
+                                      "allowAttachmentProperties": false,
+                                      "allowFlagProperties": true,
+                                      "allowTimepointProperties": false,
+                                      "showDefaultValueSettings": false,
+                                      "defaultDefaultValueType": undefined,
+                                      "defaultValueOptions": Immutable.List [],
+                                      "fields": Immutable.List [],
+                                      "indices": Immutable.List [],
+                                      "domainException": undefined,
+                                      "mandatoryFieldNames": Immutable.List [],
+                                      "reservedFieldNames": Immutable.List [],
+                                      "newDesignFields": undefined,
+                                      "instructions": undefined,
+                                      "domainKindName": undefined,
+                                    },
+                                    Immutable.Record {
+                                      "name": "Run Fields",
+                                      "container": undefined,
+                                      "description": undefined,
+                                      "domainURI": undefined,
+                                      "domainId": null,
+                                      "allowFileLinkProperties": false,
+                                      "allowAttachmentProperties": false,
+                                      "allowFlagProperties": true,
+                                      "allowTimepointProperties": false,
+                                      "showDefaultValueSettings": false,
+                                      "defaultDefaultValueType": undefined,
+                                      "defaultValueOptions": Immutable.List [],
+                                      "fields": Immutable.List [],
+                                      "indices": Immutable.List [],
+                                      "domainException": undefined,
+                                      "mandatoryFieldNames": Immutable.List [],
+                                      "reservedFieldNames": Immutable.List [],
+                                      "newDesignFields": undefined,
+                                      "instructions": undefined,
+                                      "domainKindName": undefined,
+                                    },
+                                    Immutable.Record {
+                                      "name": "Data Fields",
+                                      "container": undefined,
+                                      "description": undefined,
+                                      "domainURI": undefined,
+                                      "domainId": null,
+                                      "allowFileLinkProperties": false,
+                                      "allowAttachmentProperties": false,
+                                      "allowFlagProperties": true,
+                                      "allowTimepointProperties": false,
+                                      "showDefaultValueSettings": false,
+                                      "defaultDefaultValueType": undefined,
+                                      "defaultValueOptions": Immutable.List [],
+                                      "fields": Immutable.List [],
+                                      "indices": Immutable.List [],
+                                      "domainException": undefined,
+                                      "mandatoryFieldNames": Immutable.List [],
+                                      "reservedFieldNames": Immutable.List [],
+                                      "newDesignFields": undefined,
+                                      "instructions": undefined,
+                                      "domainKindName": undefined,
+                                    },
+                                  ],
+                                  "editableResults": false,
+                                  "editableRuns": false,
+                                  "exception": undefined,
+                                  "metadataInputFormatHelp": undefined,
+                                  "moduleTransformScripts": undefined,
+                                  "name": undefined,
+                                  "plateMetadata": undefined,
+                                  "protocolId": undefined,
+                                  "protocolParameters": undefined,
+                                  "protocolTransformScripts": undefined,
+                                  "providerName": "General",
+                                  "saveScriptFiles": false,
+                                  "selectedDetectionMethod": undefined,
+                                  "selectedMetadataInputFormat": undefined,
+                                  "selectedPlateTemplate": undefined,
+                                  "qcEnabled": undefined,
+                                }
+                              }
+                              onChange={[Function]}
+                            >
+                              <Component
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                     ROSALINE TODO 
+                                  </p>
+                                }
+                                label="Linked Dataset Category"
+                              >
+                                <Row
+                                  bsClass="row"
+                                  className="margin-top"
+                                  componentClass="div"
+                                >
+                                  <div
+                                    className="margin-top row"
+                                  >
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      lg={4}
+                                      xs={3}
+                                    >
+                                      <div
+                                        className="col-lg-4 col-xs-3"
+                                      >
+                                        <DomainFieldLabel
+                                          helpTipBody={
+                                            <p>
+                                               ROSALINE TODO 
+                                            </p>
+                                          }
+                                          label="Linked Dataset Category"
+                                        >
+                                          Linked Dataset 
+                                          <span
+                                            className="domain-no-wrap"
+                                          >
+                                            Category
+                                            <Component
+                                              customStyle={Object {}}
+                                              id="tooltip"
+                                              size="1x"
+                                              title="Linked Dataset Category"
+                                            >
+                                              <span
+                                                className="label-help-target"
+                                                onMouseOut={[Function]}
+                                                onMouseOver={[Function]}
+                                              >
+                                                <FontAwesomeIcon
+                                                  border={false}
+                                                  className="label-help-icon"
+                                                  fixedWidth={false}
+                                                  flip={null}
+                                                  icon={
+                                                    Object {
+                                                      "icon": Array [
+                                                        512,
+                                                        512,
+                                                        Array [],
+                                                        "f059",
+                                                        "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                      ],
+                                                      "iconName": "question-circle",
+                                                      "prefix": "fas",
+                                                    }
+                                                  }
+                                                  inverse={false}
+                                                  listItem={false}
+                                                  mask={null}
+                                                  pull={null}
+                                                  pulse={false}
+                                                  rotation={null}
+                                                  size="1x"
+                                                  spin={false}
+                                                  style={Object {}}
+                                                  swapOpacity={false}
+                                                  symbol={false}
+                                                  title=""
+                                                  transform={null}
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                                    data-icon="question-circle"
+                                                    data-prefix="fas"
+                                                    focusable="false"
+                                                    role="img"
+                                                    style={Object {}}
+                                                    viewBox="0 0 512 512"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                  >
+                                                    <path
+                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                      fill="currentColor"
+                                                      style={Object {}}
+                                                    />
+                                                  </svg>
+                                                </FontAwesomeIcon>
+                                                <Overlay
+                                                  animation={[Function]}
+                                                  placement="right"
+                                                  rootClose={false}
+                                                  show={false}
+                                                >
+                                                  <Overlay
+                                                    placement="right"
+                                                    rootClose={false}
+                                                    show={false}
+                                                    transition={[Function]}
+                                                  />
+                                                </Overlay>
+                                              </span>
+                                            </Component>
+                                          </span>
+                                        </DomainFieldLabel>
+                                      </div>
+                                    </Col>
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      lg={8}
+                                      xs={9}
+                                    >
+                                      <div
+                                        className="col-lg-8 col-xs-9"
+                                      >
+                                        <FormControl
+                                          bsClass="form-control"
+                                          componentClass="input"
+                                          id="assay-design-autoLinkCategory"
+                                          onChange={[Function]}
+                                          type="text"
+                                        >
+                                          <input
+                                            className="form-control"
+                                            id="assay-design-autoLinkCategory"
+                                            onChange={[Function]}
+                                            type="text"
+                                          />
+                                        </FormControl>
+                                      </div>
+                                    </Col>
+                                  </div>
+                                </Row>
+                              </Component>
+                            </AutoLinkCategoryInput>
                           </div>
                         </div>
                       </Col>
@@ -4130,6 +4713,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
       "allowPlateMetadata": false,
       "autoCopyTargetContainer": undefined,
       "autoCopyTargetContainerId": undefined,
+      "autoLinkCategory": undefined,
       "availableDetectionMethods": undefined,
       "availableMetadataInputFormats": undefined,
       "availablePlateTemplates": undefined,
@@ -4175,6 +4759,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
         "allowPlateMetadata": false,
         "autoCopyTargetContainer": undefined,
         "autoCopyTargetContainerId": undefined,
+        "autoLinkCategory": undefined,
         "availableDetectionMethods": undefined,
         "availableMetadataInputFormats": undefined,
         "availablePlateTemplates": undefined,
@@ -4223,6 +4808,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
           "allowPlateMetadata": false,
           "autoCopyTargetContainer": undefined,
           "autoCopyTargetContainerId": undefined,
+          "autoLinkCategory": undefined,
           "availableDetectionMethods": undefined,
           "availableMetadataInputFormats": undefined,
           "availablePlateTemplates": undefined,
@@ -4389,6 +4975,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -4585,6 +5172,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -4776,6 +5364,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -4967,6 +5556,30 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                 Import Settings
                               </div>
                             </SectionHeading>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col
+                        bsClass="col"
+                        componentClass="div"
+                        lg={6}
+                        xs={12}
+                      >
+                        <div
+                          className="col-lg-6 col-xs-12"
+                        >
+                          <div
+                            className="domain-field-padding-bottom"
+                          >
+                            <SectionHeading
+                              title="Link to Study Settings"
+                            >
+                              <div
+                                className="domain-field-section-heading"
+                              >
+                                Link to Study Settings
+                              </div>
+                            </SectionHeading>
                             <AutoLinkDataInput
                               model={
                                 Immutable.Record {
@@ -4978,6 +5591,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -5168,6 +5782,192 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                 </Row>
                               </Component>
                             </AutoLinkDataInput>
+                            <AutoLinkCategoryInput
+                              model={
+                                Immutable.Record {
+                                  "allowBackgroundUpload": false,
+                                  "allowEditableResults": false,
+                                  "allowQCStates": false,
+                                  "allowSpacesInPath": false,
+                                  "allowTransformationScript": false,
+                                  "allowPlateMetadata": false,
+                                  "autoCopyTargetContainer": undefined,
+                                  "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
+                                  "availableDetectionMethods": undefined,
+                                  "availableMetadataInputFormats": undefined,
+                                  "availablePlateTemplates": undefined,
+                                  "backgroundUpload": false,
+                                  "description": "test description for this assay",
+                                  "domains": Immutable.List [],
+                                  "editableResults": true,
+                                  "editableRuns": true,
+                                  "exception": undefined,
+                                  "metadataInputFormatHelp": undefined,
+                                  "moduleTransformScripts": undefined,
+                                  "name": "name should not be editable",
+                                  "plateMetadata": undefined,
+                                  "protocolId": 1,
+                                  "protocolParameters": undefined,
+                                  "protocolTransformScripts": undefined,
+                                  "providerName": undefined,
+                                  "saveScriptFiles": false,
+                                  "selectedDetectionMethod": undefined,
+                                  "selectedMetadataInputFormat": undefined,
+                                  "selectedPlateTemplate": undefined,
+                                  "qcEnabled": undefined,
+                                }
+                              }
+                              onChange={[Function]}
+                            >
+                              <Component
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                     ROSALINE TODO 
+                                  </p>
+                                }
+                                label="Linked Dataset Category"
+                              >
+                                <Row
+                                  bsClass="row"
+                                  className="margin-top"
+                                  componentClass="div"
+                                >
+                                  <div
+                                    className="margin-top row"
+                                  >
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      lg={4}
+                                      xs={3}
+                                    >
+                                      <div
+                                        className="col-lg-4 col-xs-3"
+                                      >
+                                        <DomainFieldLabel
+                                          helpTipBody={
+                                            <p>
+                                               ROSALINE TODO 
+                                            </p>
+                                          }
+                                          label="Linked Dataset Category"
+                                        >
+                                          Linked Dataset 
+                                          <span
+                                            className="domain-no-wrap"
+                                          >
+                                            Category
+                                            <Component
+                                              customStyle={Object {}}
+                                              id="tooltip"
+                                              size="1x"
+                                              title="Linked Dataset Category"
+                                            >
+                                              <span
+                                                className="label-help-target"
+                                                onMouseOut={[Function]}
+                                                onMouseOver={[Function]}
+                                              >
+                                                <FontAwesomeIcon
+                                                  border={false}
+                                                  className="label-help-icon"
+                                                  fixedWidth={false}
+                                                  flip={null}
+                                                  icon={
+                                                    Object {
+                                                      "icon": Array [
+                                                        512,
+                                                        512,
+                                                        Array [],
+                                                        "f059",
+                                                        "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                      ],
+                                                      "iconName": "question-circle",
+                                                      "prefix": "fas",
+                                                    }
+                                                  }
+                                                  inverse={false}
+                                                  listItem={false}
+                                                  mask={null}
+                                                  pull={null}
+                                                  pulse={false}
+                                                  rotation={null}
+                                                  size="1x"
+                                                  spin={false}
+                                                  style={Object {}}
+                                                  swapOpacity={false}
+                                                  symbol={false}
+                                                  title=""
+                                                  transform={null}
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                                    data-icon="question-circle"
+                                                    data-prefix="fas"
+                                                    focusable="false"
+                                                    role="img"
+                                                    style={Object {}}
+                                                    viewBox="0 0 512 512"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                  >
+                                                    <path
+                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                      fill="currentColor"
+                                                      style={Object {}}
+                                                    />
+                                                  </svg>
+                                                </FontAwesomeIcon>
+                                                <Overlay
+                                                  animation={[Function]}
+                                                  placement="right"
+                                                  rootClose={false}
+                                                  show={false}
+                                                >
+                                                  <Overlay
+                                                    placement="right"
+                                                    rootClose={false}
+                                                    show={false}
+                                                    transition={[Function]}
+                                                  />
+                                                </Overlay>
+                                              </span>
+                                            </Component>
+                                          </span>
+                                        </DomainFieldLabel>
+                                      </div>
+                                    </Col>
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      lg={8}
+                                      xs={9}
+                                    >
+                                      <div
+                                        className="col-lg-8 col-xs-9"
+                                      >
+                                        <FormControl
+                                          bsClass="form-control"
+                                          componentClass="input"
+                                          id="assay-design-autoLinkCategory"
+                                          onChange={[Function]}
+                                          type="text"
+                                        >
+                                          <input
+                                            className="form-control"
+                                            id="assay-design-autoLinkCategory"
+                                            onChange={[Function]}
+                                            type="text"
+                                          />
+                                        </FormControl>
+                                      </div>
+                                    </Col>
+                                  </div>
+                                </Row>
+                              </Component>
+                            </AutoLinkCategoryInput>
                           </div>
                         </div>
                       </Col>
@@ -5201,6 +6001,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
       "allowPlateMetadata": false,
       "autoCopyTargetContainer": undefined,
       "autoCopyTargetContainerId": undefined,
+      "autoLinkCategory": undefined,
       "availableDetectionMethods": undefined,
       "availableMetadataInputFormats": undefined,
       "availablePlateTemplates": undefined,
@@ -5313,6 +6114,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
         "allowPlateMetadata": false,
         "autoCopyTargetContainer": undefined,
         "autoCopyTargetContainerId": undefined,
+        "autoLinkCategory": undefined,
         "availableDetectionMethods": undefined,
         "availableMetadataInputFormats": undefined,
         "availablePlateTemplates": undefined,
@@ -5428,6 +6230,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
           "allowPlateMetadata": false,
           "autoCopyTargetContainer": undefined,
           "autoCopyTargetContainerId": undefined,
+          "autoLinkCategory": undefined,
           "availableDetectionMethods": undefined,
           "availableMetadataInputFormats": undefined,
           "availablePlateTemplates": undefined,
@@ -5628,6 +6431,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -5891,6 +6695,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -6149,6 +6954,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                   "allowPlateMetadata": false,
                                   "autoCopyTargetContainer": undefined,
                                   "autoCopyTargetContainerId": undefined,
+                                  "autoLinkCategory": undefined,
                                   "availableDetectionMethods": undefined,
                                   "availableMetadataInputFormats": undefined,
                                   "availablePlateTemplates": undefined,
@@ -6385,6 +7191,16 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                             </EditableRunsInput>
                           </div>
                         </div>
+                      </Col>
+                      <Col
+                        bsClass="col"
+                        componentClass="div"
+                        lg={6}
+                        xs={12}
+                      >
+                        <div
+                          className="col-lg-6 col-xs-12"
+                        />
                       </Col>
                       <Col
                         bsClass="col"

@@ -47,10 +47,8 @@ import {
     WizardNavButtons,
     AssayProtocolModel,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
-    RUN_PROPERTIES_GRID_ID,
     SCHEMAS,
     caseInsensitive,
-    getStateModelId,
     QueryConfigMap,
 } from '../../..';
 
@@ -58,7 +56,6 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { withQueryModels, InjectedQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 import {
-    BATCH_PROPERTIES_GRID_ID,
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
     flattenQueryModelRow,
@@ -72,6 +69,8 @@ import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { AssayUploadGridLoader } from './AssayUploadGridLoader';
 import { AssayWizardModel, IAssayUploadOptions } from './AssayWizardModel';
+
+const BATCH_PROPERTIES_GRID_ID = 'assay-batchdetails';
 
 interface OwnProps {
     assayDefinition: AssayDefinitionModel;

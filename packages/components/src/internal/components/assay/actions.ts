@@ -35,9 +35,6 @@ import { IAssayUploadOptions } from './AssayWizardModel';
 
 export const GENERAL_ASSAY_PROVIDER_NAME = 'General';
 
-export const BATCH_PROPERTIES_GRID_ID = 'assay-batchdetails';
-export const RUN_PROPERTIES_GRID_ID = 'assay-run-details';
-
 export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
     'Name',
     'RowId',

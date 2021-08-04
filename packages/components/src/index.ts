@@ -142,6 +142,7 @@ import { EditorModel, getStateModelId, getStateQueryGridModel } from './internal
 import {
     clearSelected,
     createQueryGridModelFilteredBySample,
+    createQueryConfigFilteredBySample,
     getSelected,
     getSelectedData,
     getSelection,
@@ -278,6 +279,7 @@ import {
     getDeleteSharedSampleTypeUrl,
     getEditSharedSampleTypeUrl,
     getFindSamplesByIdData,
+    getSampleAssayQueryConfigs,
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
@@ -831,6 +833,7 @@ export {
     getSampleSet,
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
+    createQueryConfigFilteredBySample,
     loadSelectedSamples,
     getSelectedItemSamples,
     FindSamplesByIdHeaderPanel,
@@ -863,6 +866,7 @@ export {
     ALIQUOT_CREATION,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     getFindSamplesByIdData,
+    getSampleAssayQueryConfigs,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

@@ -179,7 +179,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
     getRunPropertiesMap(): Map<string, any> {
         const model = this.getRunPropsQueryModel();
-        return flattenQueryModelRow(model?.getRow() || {});
+        return flattenQueryModelRow(model?.getRow());
     }
 
     getBatchId(): string {
@@ -193,7 +193,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
     getBatchPropertiesMap(): Map<string, any> {
         const model = this.getBatchPropsQueryModel();
-        return flattenQueryModelRow(model?.getRow() || {});
+        return flattenQueryModelRow(model?.getRow());
     }
 
     isRunPropertiesInit(props: Props) {

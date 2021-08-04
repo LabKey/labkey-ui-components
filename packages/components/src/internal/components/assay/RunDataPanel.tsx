@@ -52,7 +52,7 @@ const PREVIEW_ROW_COUNT = 3;
 interface Props {
     currentStep: number;
     wizardModel: AssayWizardModel;
-    runPropertiesRow: Record<string, any>;
+    runPropertiesRow?: Record<string, any>;
     queryGridModelForEditor: QueryGridModel;
     onFileChange: (attachments: Map<string, File>) => any;
     onFileRemoval: (attachmentName: string) => any;

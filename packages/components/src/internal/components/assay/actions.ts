@@ -376,7 +376,7 @@ export function flattenQueryModelRow(rowData: Record<string, any>): Map<string, 
                 }
                 valueMap = v[v.length - 1];
             }
-            if (valueMap && valueMap['value'] !== undefined) {
+            if (valueMap && valueMap['value'] !== undefined && valueMap['value'] !== null) {
                 map = map.set(k, valueMap['value']);
             }
         });

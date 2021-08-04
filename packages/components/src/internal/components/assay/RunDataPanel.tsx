@@ -316,8 +316,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             bulkAddText="Bulk Insert"
                                             bulkAddProps={{
                                                 title: 'Bulk Insert Assay Rows',
-                                                header:
-                                                    'Add a batch of assay data rows that will share the properties set below.',
+                                                header: 'Add a batch of assay data rows that will share the properties set below.',
                                             }}
                                             allowBulkUpdate={allowBulkUpdate}
                                             bordered={true}

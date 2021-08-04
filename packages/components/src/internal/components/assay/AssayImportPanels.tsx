@@ -145,12 +145,15 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const batchId = this.getBatchId();
 
         if (!queryModels[BATCH_PROPERTIES_GRID_ID] && batchId) {
-            actions.addModel({
-                id: BATCH_PROPERTIES_GRID_ID,
-                keyValue: batchId,
-                schemaQuery: SchemaQuery.create(assayDefinition.protocolSchemaName, 'Batches'),
-                requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId').toArray(),
-            }, true);
+            actions.addModel(
+                {
+                    id: BATCH_PROPERTIES_GRID_ID,
+                    keyValue: batchId,
+                    schemaQuery: SchemaQuery.create(assayDefinition.protocolSchemaName, 'Batches'),
+                    requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId').toArray(),
+                },
+                true
+            );
         }
     }
 
@@ -768,14 +771,15 @@ class AssayImportPanelsBody extends Component<Props, State> {
     }
 }
 
-const AssayImportPanelWithQueryModels = withQueryModels<OwnProps & WithFormStepsProps>(
-    AssayImportPanelsBody
-);
+const AssayImportPanelWithQueryModels = withQueryModels<OwnProps & WithFormStepsProps>(AssayImportPanelsBody);
 
 const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
     const { assayDefinition, runId } = props;
     const key = [runId, assayDefinition.protocolSchemaName].join('|');
-    const schemaQuery = useMemo(() => SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'), [assayDefinition.protocolSchemaName]);
+    const schemaQuery = useMemo(
+        () => SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'),
+        [assayDefinition.protocolSchemaName]
+    );
 
     const queryConfigs: QueryConfigMap = useMemo(
         () => ({
@@ -793,14 +797,7 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
         [runId, schemaQuery]
     );
 
-    return (
-        <AssayImportPanelWithQueryModels
-            autoLoad
-            key={key}
-            queryConfigs={queryConfigs}
-            {...props}
-        />
-    );
+    return <AssayImportPanelWithQueryModels autoLoad key={key} queryConfigs={queryConfigs} {...props} />;
 };
 
 export const AssayImportPanels = withFormSteps(AssayImportPanelsBodyImpl, {

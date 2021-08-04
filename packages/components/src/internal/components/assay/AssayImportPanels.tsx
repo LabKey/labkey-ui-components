@@ -101,11 +101,7 @@ interface OwnProps {
     asyncRowSize?: number;
 }
 
-interface BodyProps {
-    runModelId: string;
-}
-
-type Props = OwnProps & WithFormStepsProps & BodyProps & InjectedQueryModels;
+type Props = OwnProps & WithFormStepsProps & InjectedQueryModels;
 
 interface State {
     schemaQuery: SchemaQuery;
@@ -173,8 +169,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
     }
 
     getRunPropsQueryModel(): QueryModel {
-        const { queryModels, runModelId } = this.props;
-        return queryModels[runModelId];
+        return this.props.queryModels.model;
     }
 
     getRunPropertiesMap(): Map<string, any> {
@@ -774,18 +769,18 @@ class AssayImportPanelsBody extends Component<Props, State> {
     }
 }
 
-const AssayImportPanelWithQueryModels = withQueryModels<OwnProps & WithFormStepsProps & BodyProps>(
+const AssayImportPanelWithQueryModels = withQueryModels<OwnProps & WithFormStepsProps>(
     AssayImportPanelsBody
 );
 
 const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
     const { assayDefinition, runId } = props;
+    const key = [runId, assayDefinition.protocolSchemaName].join('|');
     const schemaQuery = useMemo(() => SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'), [assayDefinition.protocolSchemaName]);
-    const runModelId = useMemo(() => getStateModelId(RUN_PROPERTIES_GRID_ID, schemaQuery, runId), [runId, schemaQuery]);
 
     const queryConfigs: QueryConfigMap = useMemo(
         () => ({
-            [runModelId]: {
+            model: {
                 keyValue: runId,
                 schemaQuery,
                 requiredColumns: RUN_PROPERTIES_REQUIRED_COLUMNS.toArray(),
@@ -796,14 +791,13 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
                 ],
             },
         }),
-        [runModelId]
+        [runId, schemaQuery]
     );
 
     return (
         <AssayImportPanelWithQueryModels
             autoLoad
-            key={runModelId}
-            runModelId={runModelId}
+            key={key}
             queryConfigs={queryConfigs}
             {...props}
         />

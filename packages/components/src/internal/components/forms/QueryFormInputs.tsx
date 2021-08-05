@@ -50,7 +50,6 @@ export const getFieldEnabledFieldName = function (column: QueryColumn, fieldName
 interface QueryFormInputsProps {
     columnFilter?: (col?: QueryColumn) => boolean;
     componentKey?: string; // unique key to add to QuerySelect to avoid duplication w/ transpose
-    destroyOnDismount?: boolean;
     fieldValues?: any;
     fireQSChangeOnInit?: boolean;
     checkRequiredFields?: boolean;

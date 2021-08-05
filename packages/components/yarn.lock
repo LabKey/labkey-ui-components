@@ -771,10 +771,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.6.3":
-  version "1.6.3"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.6.3.tgz#4c3bdf94a58b33d8d46f8dbb241d1b2c8b95404b"
-  integrity sha1-TDvflKWLM9jUb427JB0bLIuVQEs=
+"@labkey/api@1.6.5":
+  version "1.6.5"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.6.5.tgz#4d41526aebd016f356f6e22836b3f08df325542d"
+  integrity sha1-TUFSauvQFvNW9uIoNrPwjfMlVC0=
 
 "@labkey/eslint-config-base@0.0.10":
   version "0.0.10"

@@ -436,7 +436,7 @@ describe('GridPanel', () => {
         // You should be able to add multiple filters if they're on different columns.
         testAddOmniBoxValue(wrapper, filterAction1, [filter1]);
         testAddOmniBoxValue(wrapper, filterAction2, [filter1, filter2]);
-        // Adding another filter on the same column as the second should replace the second filter.
+        // Adding another filter on the same column and sample filter type as the second should replace the second filter.
         testAddOmniBoxValue(wrapper, filterAction3, [filter1, filter3]);
         // Modifying the second filter should replace the filter on the model, and not touch the first filter.
         testModifyOmniBoxValue(wrapper, filterAction4, 1, [filter1, filter4]);

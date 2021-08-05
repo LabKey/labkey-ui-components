@@ -379,19 +379,23 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         if (change.type === ChangeType.add || change.type === ChangeType.modify) {
             const newValue = actionValues[actionValues.length - 1].valueObject;
             const newColumnName = newValue.getColumnName();
-            // Remove any filters on the same column, and append the new filter.
-            newFilters = newFilters.filter(filter => filter.getColumnName() !== newColumnName).concat(newValue);
+            const newFilterTypeSuffix = newValue.getFilterType().getURLSuffix();
+
+            // Remove any filters on the same column with the same filter type. Append the new filter.
+            newFilters = newFilters
+                .filter(
+                    f => f.getColumnName() !== newColumnName || f.getFilterType().getURLSuffix() !== newFilterTypeSuffix
+                )
+                .concat(newValue);
+
             // Remove any filter ActionValues with the same columnName as well.
-            actionValues = actionValues.filter(actionValue => {
-                const { action, valueObject } = actionValue;
-
-                if (action.keyword !== 'filter') {
-                    return true;
-                }
-
-                // Keep the new value, and any ActionValues on different columns.
-                return valueObject === newValue || valueObject.getColumnName() !== newColumnName;
-            });
+            actionValues = actionValues.filter(
+                ({ action, valueObject }) =>
+                    action.keyword !== 'filter' ||
+                    valueObject === newValue ||
+                    valueObject.getColumnName() !== newColumnName ||
+                    valueObject.getFilterType().getURLSuffix() !== newFilterTypeSuffix
+            );
         }
 
         // Defer model updates after localState is updated so we don't unnecessarily repopulate the omnibox.

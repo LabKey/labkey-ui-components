@@ -143,11 +143,17 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             }
         }
 
+        let help: string;
+        if (queryColumn.nameExpression) {
+            help = `A ${queryColumn.caption} will be generated if one is not given.`;
+        }
+
         return (
             <Input
                 disabled={this.state.isDisabled}
                 changeDebounceInterval={changeDebounceInterval}
                 elementWrapperClassName={elementWrapperClassName}
+                help={help}
                 id={queryColumn.fieldKey}
                 label={this.renderLabel()}
                 labelClassName={labelClassName}

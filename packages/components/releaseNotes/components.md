@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.62.0
+*Released*: 5 August 2021
+* Add `help` guidance for user when a `nameExpression` is present on the `QueryColumn`.
+* Mark field as required in when updating if a `nameExpression` is present.
+* GridPanel: allow multiple filters on same column in OmniBox.
+
 ### version 2.61.2
 *Released*: 4 August 2021
 * AssayImportPanels.tsx conversion to QueryModel for batch and run properties

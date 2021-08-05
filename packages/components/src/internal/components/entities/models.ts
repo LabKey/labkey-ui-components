@@ -495,7 +495,7 @@ export class EntityIdCreationModel extends Record({
         return entityTypeName ? SchemaQuery.create(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }
 
-    postEntityGrid(queryGridModel: QueryGridModel): Promise<InsertRowsResponse> {
+    postEntityGrid(queryGridModel: QueryGridModel, extraColumnsToInclude?: QueryColumn[]): Promise<InsertRowsResponse> {
         const editorModel = getEditorModel(queryGridModel.getId());
         if (!editorModel) {
             gridShowError(queryGridModel, {
@@ -507,7 +507,17 @@ export class EntityIdCreationModel extends Record({
         const rows = editorModel
             .getRawData(queryGridModel, false)
             .valueSeq()
-            .reduce((rows, row) => rows.push(row.toMap()), List<Map<string, any>>());
+            .reduce((rows, row) => {
+                let map = row.toMap();
+                if (extraColumnsToInclude && extraColumnsToInclude.length > 0)
+                {
+                    extraColumnsToInclude.forEach(col => {
+                        map = map.set(col.name, undefined);
+                    })
+                }
+                rows = rows.push(map);
+                return rows;
+            }, List<Map<string, any>>());
 
         // TODO: InsertRows responses are fragile and depend heavily on shape of data uploaded
         return insertRows({

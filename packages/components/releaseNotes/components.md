@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Issue 43647: SM: creating aliquots for a sample type with a required field gives an error
+    * Add required sample properties to insertRows data for aliquot creation
+
 ### version 2.61.2
 *Released*: 4 August 2021
 * AssayImportPanels.tsx conversion to QueryModel for batch and run properties

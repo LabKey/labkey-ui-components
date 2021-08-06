@@ -43,7 +43,7 @@ import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 
 import { getServerFilePreview } from './utils';
 
-import { getRunPropertiesFileName, getRunPropertiesRow } from './actions';
+import { getRunPropertiesFileName } from './actions';
 import { AssayWizardModel } from './AssayWizardModel';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
@@ -52,7 +52,8 @@ const PREVIEW_ROW_COUNT = 3;
 interface Props {
     currentStep: number;
     wizardModel: AssayWizardModel;
-    gridModel: QueryGridModel;
+    runPropertiesRow?: Record<string, any>;
+    queryGridModelForEditor: QueryGridModel;
     onFileChange: (attachments: Map<string, File>) => any;
     onFileRemoval: (attachmentName: string) => any;
     onTextChange: (inputName: string, value: any) => any;
@@ -121,27 +122,26 @@ export class RunDataPanel extends React.Component<Props, State> {
 
     initPreviewData() {
         const { previousRunData } = this.state;
-        const { wizardModel } = this.props;
+        const { wizardModel, runPropertiesRow } = this.props;
 
         if (!this.isRerun() || !previousRunData || previousRunData.isLoaded || previousRunData.isLoading) {
             return;
         }
 
         if (wizardModel.isInit && wizardModel.usePreviousRunFile) {
-            const row = getRunPropertiesRow(wizardModel.assayDef, wizardModel.runId);
-            if (row.has('DataOutputs')) {
-                const outputFiles = row.get('DataOutputs/DataFileUrl');
-                if (outputFiles && outputFiles.size == 1) {
-                    const outputs = row.get('DataOutputs');
+            if (runPropertiesRow && runPropertiesRow['DataOutputs']) {
+                const outputFiles = runPropertiesRow['DataOutputs/DataFileUrl'];
+                if (outputFiles?.length === 1) {
+                    const outputs = runPropertiesRow['DataOutputs'];
                     this.setState(() => ({ previousRunData: { isLoading: true, isLoaded: false } }));
 
-                    getServerFilePreview(outputs.getIn([0, 'value']), PREVIEW_ROW_COUNT)
+                    getServerFilePreview(outputs[0].value, PREVIEW_ROW_COUNT)
                         .then(response => {
                             this.setState(() => ({
                                 previousRunData: {
                                     isLoaded: true,
                                     data: response,
-                                    fileName: getRunPropertiesFileName(row),
+                                    fileName: getRunPropertiesFileName(runPropertiesRow),
                                 },
                             }));
                         })
@@ -210,8 +210,8 @@ export class RunDataPanel extends React.Component<Props, State> {
     };
 
     onRowCountChange = (rowCount: number) => {
-        const { gridModel } = this.props;
-        const editorModel = getEditorModel(gridModel.getId());
+        const { queryGridModelForEditor } = this.props;
+        const editorModel = getEditorModel(queryGridModelForEditor.getId());
         if (this.props.onGridDataChange) {
             this.props.onGridDataChange(editorModel && editorModel.rowCount > 0, IMPORT_DATA_FORM_TYPES.GRID);
         }
@@ -220,7 +220,7 @@ export class RunDataPanel extends React.Component<Props, State> {
     render() {
         const {
             currentStep,
-            gridModel,
+            queryGridModelForEditor,
             wizardModel,
             onTextChange,
             acceptedPreviewFileFormats,
@@ -234,7 +234,7 @@ export class RunDataPanel extends React.Component<Props, State> {
             maxEditableGridRowMsg,
         } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
-        const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
+        const isLoading = !wizardModel.isInit || !queryGridModelForEditor || !queryGridModelForEditor.isLoaded;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
 
         let cutPastePlaceholder = 'Paste in a tab-separated set of values (including column headers).';
@@ -308,7 +308,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Grid} trackActive={false}>
                                         <EditableGridPanel
-                                            model={gridModel}
+                                            model={queryGridModelForEditor}
                                             isSubmitting={wizardModel.isSubmitting}
                                             disabled={currentStep !== AssayUploadTabs.Grid}
                                             allowBulkRemove={allowBulkRemove}
@@ -316,8 +316,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             bulkAddText="Bulk Insert"
                                             bulkAddProps={{
                                                 title: 'Bulk Insert Assay Rows',
-                                                header:
-                                                    'Add a batch of assay data rows that will share the properties set below.',
+                                                header: 'Add a batch of assay data rows that will share the properties set below.',
                                             }}
                                             allowBulkUpdate={allowBulkUpdate}
                                             bordered={true}

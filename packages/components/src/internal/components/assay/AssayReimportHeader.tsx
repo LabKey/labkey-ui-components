@@ -1,27 +1,28 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
-import { Map } from 'immutable';
 
-import { AppURL } from '../../..';
+import { AppURL, caseInsensitive } from '../../..';
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
 interface Props {
     hasBatchProperties?: boolean;
     assay: AssayDefinitionModel;
-    replacedRunProperties: Map<string, any>;
+    replacedRunProperties: Record<string, any>;
 }
 
 export class AssayReimportHeader extends React.Component<Props> {
     render() {
         const { assay, hasBatchProperties, replacedRunProperties } = this.props;
-        const assayRunUrl = AppURL.create('assays', assay.type, assay.name, 'runs', replacedRunProperties.get('RowId'));
+        const rowId = caseInsensitive(replacedRunProperties, 'RowId').value;
+        const name = caseInsensitive(replacedRunProperties, 'Name').value;
+        const assayRunUrl = AppURL.create('assays', assay.type, assay.name, 'runs', rowId);
         return (
             <Panel>
                 <Panel.Heading>Re-Import Run</Panel.Heading>
                 <Panel.Body>
                     <p>
                         <strong>
-                            Replacing Run: <a href={assayRunUrl.toHref()}>{replacedRunProperties.get('Name')}</a>
+                            Replacing Run: <a href={assayRunUrl.toHref()}>{name}</a>
                         </strong>
                     </p>
                     <p>

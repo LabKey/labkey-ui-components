@@ -26,8 +26,9 @@ export class BatchPropertiesPanel extends React.Component<AssayPropertiesPanelPr
         const { model } = this.props;
 
         return (
+            !is(model.batchId, nextProps.model.batchId) ||
             !is(model.batchColumns, nextProps.model.batchColumns) ||
-            !is(model.batchProperties, nextProps.model.runProperties)
+            !is(model.batchProperties, nextProps.model.batchProperties)
         );
     }
 

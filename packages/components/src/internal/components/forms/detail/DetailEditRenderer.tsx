@@ -187,7 +187,12 @@ export function resolveDetailEditRenderer(
                         validations={validations}
                         validationError={validationError}
                         value={value}
-                        required={col.required}
+                        // Issue 43561: Support name expression fields
+                        // NK: If a name expression is applied, then the server does not mark the field as required as
+                        // it will be generated. This is OK for the insert scenario, however, for update a value is
+                        // still required as the name expression won't be run upon update. Here we mark the input as
+                        // required if the nameExpression is not defined to force the form to require a value.
+                        required={col.required || col.nameExpression !== undefined}
                         elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
                     />
                 );

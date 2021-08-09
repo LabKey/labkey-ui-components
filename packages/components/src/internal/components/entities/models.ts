@@ -509,11 +509,10 @@ export class EntityIdCreationModel extends Record({
             .valueSeq()
             .reduce((rows, row) => {
                 let map = row.toMap();
-                if (extraColumnsToInclude && extraColumnsToInclude.length > 0)
-                {
+                if (extraColumnsToInclude && extraColumnsToInclude.length > 0) {
                     extraColumnsToInclude.forEach(col => {
                         map = map.set(col.name, undefined);
-                    })
+                    });
                 }
                 rows = rows.push(map);
                 return rows;

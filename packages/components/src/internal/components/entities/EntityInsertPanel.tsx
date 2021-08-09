@@ -733,12 +733,14 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     getAliquotCreationExtraColumns = (): QueryColumn[] => {
         const { originalQueryInfo } = this.state;
 
-        let requiredProperties = [];
+        const requiredProperties = [];
         originalQueryInfo.columns.forEach((column, key) => {
-            if (column.required
-                && column.shownInInsertView
-                && !column.hidden
-                && ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) === -1) {
+            if (
+                column.required &&
+                column.shownInInsertView &&
+                !column.hidden &&
+                ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) === -1
+            ) {
                 requiredProperties.push(column);
             }
         });
@@ -766,9 +768,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         this.setSubmitting(true);
 
-        let extraColumnsToInclude : QueryColumn[] = undefined;
-        if (creationType === SampleCreationType.Aliquots)
-            extraColumnsToInclude = this.getAliquotCreationExtraColumns(); // include required sample property fields in post
+        let extraColumnsToInclude: QueryColumn[];
+        if (creationType === SampleCreationType.Aliquots) extraColumnsToInclude = this.getAliquotCreationExtraColumns(); // include required sample property fields in post
 
         try {
             const response = await insertModel.postEntityGrid(queryGridModel, extraColumnsToInclude);

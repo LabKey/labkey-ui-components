@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 2.62.1
+*Released*: 9 August 2021
 * Issue 43647: SM: creating aliquots for a sample type with a required field gives an error
     * Add required sample properties to insertRows data for aliquot creation
 

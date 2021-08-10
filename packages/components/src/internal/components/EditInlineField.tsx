@@ -6,11 +6,11 @@ import { getDateFormat } from '../util/Date';
 import { Key, useEnterEscape } from '../../public/useEnterEscape';
 
 import { DateInput } from './DateInput';
+import { useServerContext } from './base/ServerContext';
 
-interface EditInlineField {
+interface Props {
     allowBlank?: boolean;
     allowEdit?: boolean;
-    dateFormat?: string; // Moment date format
     emptyText?: string;
     label?: string;
     name: string;
@@ -20,9 +20,10 @@ interface EditInlineField {
     value: any;
 }
 
-export const EditInlineField: FC<EditInlineField> = memo(props => {
+export const EditInlineField: FC<Props> = memo(props => {
     const { allowBlank, allowEdit, emptyText, label, name, onChange, placeholder, type, value } = props;
-    const dateFormat = props.dateFormat ? props.dateFormat : getDateFormat();
+    const { container } = useServerContext();
+    const dateFormat = getDateFormat(container);
     const isDate = type === 'date';
     const isText = type === 'text';
     const isTextArea = type === 'textarea';
@@ -110,6 +111,8 @@ export const EditInlineField: FC<EditInlineField> = memo(props => {
         }
     }, []);
 
+    // TODO: Pass through the dateFormat to the <DateInput/> so the format is consistent between viewing and editing.
+    // See note on <DateInput/> regarding supporting date formats.
     return (
         <div className="edit-inline-field">
             {state.editing && isDate && (

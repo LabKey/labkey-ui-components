@@ -16,7 +16,7 @@
 import moment from 'moment-jdateformatparser';
 import momentTZ from 'moment-timezone';
 import numeral from 'numeral';
-import { getServerContext } from '@labkey/api';
+import { Container, getServerContext } from '@labkey/api';
 
 import { QueryColumn } from '../..';
 
@@ -55,12 +55,12 @@ export function isDateTimeCol(col: QueryColumn): boolean {
 }
 
 // 30834: get look and feel display formats
-export function getDateFormat(): string {
-    return moment().toMomentFormatString(getServerContext().container.formats.dateFormat);
+export function getDateFormat(container?: Partial<Container>): string {
+    return moment().toMomentFormatString((container ?? getServerContext().container).formats.dateFormat);
 }
 
-export function getDateTimeFormat(): string {
-    return moment().toMomentFormatString(getServerContext().container.formats.dateTimeFormat);
+export function getDateTimeFormat(container?: Partial<Container>): string {
+    return moment().toMomentFormatString((container ?? getServerContext().container).formats.dateTimeFormat);
 }
 
 export function parseDate(dateStr: string, dateFormat?: string): Date {

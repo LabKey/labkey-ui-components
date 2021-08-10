@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.62.2
+*Released*: 10 August 2021
+* getDateFormat / getDateTimeFormat: support container parameter
+
 ### version 2.62.1
 *Released*: 9 August 2021
 * Issue 43647: SM: creating aliquots for a sample type with a required field gives an error

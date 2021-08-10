@@ -67,7 +67,8 @@ Array [
               >
                 <a
                   className="domain-field-float-right"
-                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataClass"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataClass&referrer=inPage"
+                  rel="noreferrer"
                   target="_blank"
                 >
                   Learn more about designing sources
@@ -495,7 +496,8 @@ Array [
               >
                 <a
                   className="domain-field-float-right"
-                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataClass"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataClass&referrer=inPage"
+                  rel="noreferrer"
                   target="_blank"
                 >
                   Learn more about designing data classes
@@ -2740,7 +2742,7 @@ exports[`DataClassDesigner initModel 1`] = `
               Symbol(immer-draftable): true,
             }
           }
-          nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name"
+          nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name&referrer=inPage"
           nameExpressionPlaceholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
           nounPlural="Data Classes"
           nounSingular="Data Class"
@@ -3061,7 +3063,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 Symbol(immer-draftable): true,
               }
             }
-            nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name"
+            nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name&referrer=inPage"
             nameExpressionPlaceholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
             nounPlural="Data Classes"
             nounSingular="Data Class"
@@ -3307,13 +3309,19 @@ exports[`DataClassDesigner initModel 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <a
+                                                  <HelpLink
                                                     className="domain-field-float-right"
-                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataClass"
-                                                    target="_blank"
+                                                    topic="createDataClass"
                                                   >
-                                                    Learn more about designing data classes
-                                                  </a>
+                                                    <a
+                                                      className="domain-field-float-right"
+                                                      href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataClass&referrer=inPage"
+                                                      rel="noreferrer"
+                                                      target="_blank"
+                                                    >
+                                                      Learn more about designing data classes
+                                                    </a>
+                                                  </HelpLink>
                                                 </div>
                                               </Col>
                                             </div>
@@ -3332,7 +3340,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                       "nameExpression": "Source-\${genId}",
                                     }
                                   }
-                                  nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name"
+                                  nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name&referrer=inPage"
                                   nameExpressionPlaceholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                                   noun="Data Class"
                                   onFormChange={[Function]}
@@ -3633,7 +3641,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                     </p>
                                                     <p>
                                                       <a
-                                                        href="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name"
+                                                        href="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name&referrer=inPage"
                                                         target="_blank"
                                                       >
                                                         More info
@@ -10263,12 +10271,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                                       <br />
                                                                                                       <br />
                                                                                                       Learn more about using 
-                                                                                                      <a
-                                                                                                        href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                                                                                                        target="_blank"
+                                                                                                      <HelpLink
+                                                                                                        topic="urlEncoding"
                                                                                                       >
                                                                                                         URL Formatting Options
-                                                                                                      </a>
+                                                                                                      </HelpLink>
                                                                                                       .
                                                                                                     </React.Fragment>
                                                                                                   }
@@ -10574,12 +10581,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                                         </p>
                                                                                                         <p>
                                                                                                           Learn more about using 
-                                                                                                          <a
-                                                                                                            href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                                                                                                            target="_blank"
+                                                                                                          <HelpLink
+                                                                                                            topic="fieldEditor#conditional"
                                                                                                           >
                                                                                                             Conditional Formats
-                                                                                                          </a>
+                                                                                                          </HelpLink>
                                                                                                           .
                                                                                                         </p>
                                                                                                       </React.Fragment>
@@ -10714,12 +10720,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                                         </p>
                                                                                                         <p>
                                                                                                           Learn more about using 
-                                                                                                          <a
-                                                                                                            href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#regex"
-                                                                                                            target="_blank"
+                                                                                                          <HelpLink
+                                                                                                            topic="fieldEditor#regex"
                                                                                                           >
                                                                                                             Regular Expression Validation
-                                                                                                          </a>
+                                                                                                          </HelpLink>
                                                                                                           .
                                                                                                         </p>
                                                                                                       </React.Fragment>
@@ -11985,12 +11990,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                                       <br />
                                                                                                       <br />
                                                                                                       Learn more about using 
-                                                                                                      <a
-                                                                                                        href="https://www.labkey.org/Documentation/wiki-page.view?name=dateFormats#number"
-                                                                                                        target="_blank"
+                                                                                                      <HelpLink
+                                                                                                        topic="dateFormats#number"
                                                                                                       >
                                                                                                         Number formats
-                                                                                                      </a>
+                                                                                                      </HelpLink>
                                                                                                        in LabKey.
                                                                                                     </React.Fragment>
                                                                                                   }
@@ -12528,12 +12532,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                                       <br />
                                                                                                       <br />
                                                                                                       Learn more about using 
-                                                                                                      <a
-                                                                                                        href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                                                                                                        target="_blank"
+                                                                                                      <HelpLink
+                                                                                                        topic="urlEncoding"
                                                                                                       >
                                                                                                         URL Formatting Options
-                                                                                                      </a>
+                                                                                                      </HelpLink>
                                                                                                       .
                                                                                                     </React.Fragment>
                                                                                                   }
@@ -12828,12 +12831,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                                         </p>
                                                                                                         <p>
                                                                                                           Learn more about using 
-                                                                                                          <a
-                                                                                                            href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                                                                                                            target="_blank"
+                                                                                                          <HelpLink
+                                                                                                            topic="fieldEditor#conditional"
                                                                                                           >
                                                                                                             Conditional Formats
-                                                                                                          </a>
+                                                                                                          </HelpLink>
                                                                                                           .
                                                                                                         </p>
                                                                                                       </React.Fragment>
@@ -12968,12 +12970,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                                         </p>
                                                                                                         <p>
                                                                                                           Learn more about using 
-                                                                                                          <a
-                                                                                                            href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#range"
-                                                                                                            target="_blank"
+                                                                                                          <HelpLink
+                                                                                                            topic="fieldEditor#range"
                                                                                                           >
                                                                                                             Range Validation
-                                                                                                          </a>
+                                                                                                          </HelpLink>
                                                                                                           .
                                                                                                         </p>
                                                                                                       </React.Fragment>
@@ -14221,12 +14222,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                                       <br />
                                                                                                       <br />
                                                                                                       Learn more about using 
-                                                                                                      <a
-                                                                                                        href="https://www.labkey.org/Documentation/wiki-page.view?name=dateFormats#date"
-                                                                                                        target="_blank"
+                                                                                                      <HelpLink
+                                                                                                        topic="dateFormats#date"
                                                                                                       >
                                                                                                         Date and Time formats
-                                                                                                      </a>
+                                                                                                      </HelpLink>
                                                                                                        in LabKey.
                                                                                                     </React.Fragment>
                                                                                                   }
@@ -14726,12 +14726,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                                       <br />
                                                                                                       <br />
                                                                                                       Learn more about using 
-                                                                                                      <a
-                                                                                                        href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                                                                                                        target="_blank"
+                                                                                                      <HelpLink
+                                                                                                        topic="urlEncoding"
                                                                                                       >
                                                                                                         URL Formatting Options
-                                                                                                      </a>
+                                                                                                      </HelpLink>
                                                                                                       .
                                                                                                     </React.Fragment>
                                                                                                   }
@@ -15026,12 +15025,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                                         </p>
                                                                                                         <p>
                                                                                                           Learn more about using 
-                                                                                                          <a
-                                                                                                            href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                                                                                                            target="_blank"
+                                                                                                          <HelpLink
+                                                                                                            topic="fieldEditor#conditional"
                                                                                                           >
                                                                                                             Conditional Formats
-                                                                                                          </a>
+                                                                                                          </HelpLink>
                                                                                                           .
                                                                                                         </p>
                                                                                                       </React.Fragment>
@@ -15166,12 +15164,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                                         </p>
                                                                                                         <p>
                                                                                                           Learn more about using 
-                                                                                                          <a
-                                                                                                            href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#range"
-                                                                                                            target="_blank"
+                                                                                                          <HelpLink
+                                                                                                            topic="fieldEditor#range"
                                                                                                           >
                                                                                                             Range Validation
-                                                                                                          </a>
+                                                                                                          </HelpLink>
                                                                                                           .
                                                                                                         </p>
                                                                                                       </React.Fragment>

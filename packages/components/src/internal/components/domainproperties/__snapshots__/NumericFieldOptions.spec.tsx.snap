@@ -64,12 +64,11 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
                     <br />
                     <br />
                     Learn more about using 
-                    <a
-                      href="https://www.labkey.org/Documentation/wiki-page.view?name=dateFormats#number"
-                      target="_blank"
+                    <HelpLink
+                      topic="dateFormats#number"
                     >
                       Number formats
-                    </a>
+                    </HelpLink>
                      in LabKey.
                   </React.Fragment>
                 }

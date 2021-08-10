@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { getServerContext } from '@labkey/api';
 
 export const CHART_MEASURES_AND_DIMENSIONS_TOPIC = 'chartTrouble';
@@ -41,15 +41,33 @@ export const SAMPLE_ALIQUOT_TOPIC = 'aliquot';
 
 export const UNIQUE_IDS_TOPIC = 'uniqueStorageIds';
 
-export function getHelpLink(topic: string): string {
-    return getServerContext().helpLinkPrefix + topic;
+export function getHelpLink(topic: string, referrer = 'inPage'): string {
+    return getServerContext().helpLinkPrefix + topic + '&referrer=' + referrer;
 }
 
-// TODO: This should be converted into a React.FC with arguments switched to props
+interface HelpLinkProps {
+    className?: string;
+    referrer?: string;
+    topic: string;
+}
+
+export const HelpLink: FC<HelpLinkProps> = props => {
+    const { className, topic, referrer, children } = props;
+
+    return (
+        <a target="_blank" href={getHelpLink(topic, referrer)} className={className} rel="noreferrer">
+            {children}
+        </a>
+    );
+};
+
+/**
+ * @deprecated use <HelpLink>
+ */
 export function helpLinkNode(topic: string, text: ReactNode, className?: string): ReactNode {
     return (
-        <a target="_blank" href={getHelpLink(topic)} className={className}>
+        <HelpLink topic={topic} className={className}>
             {text}
-        </a>
+        </HelpLink>
     );
 }

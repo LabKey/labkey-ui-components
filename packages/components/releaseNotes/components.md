@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 43672: Add "referrer" param to the help link URLs
+  * Deprecate helpLinkNode() in favor of HelpLink FC
+
 ### version 2.62.1
 *Released*: 9 August 2021
 * Issue 43647: SM: creating aliquots for a sample type with a required field gives an error

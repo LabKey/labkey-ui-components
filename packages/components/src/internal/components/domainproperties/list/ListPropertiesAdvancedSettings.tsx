@@ -4,7 +4,7 @@ import { Button, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { helpLinkNode, LabelHelpTip, ListModel, SelectInput } from '../../../..';
+import { LabelHelpTip, ListModel, SelectInput } from '../../../..';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
@@ -17,6 +17,7 @@ import {
     DOCUMENT_TITLE_TIP,
     SEARCH_INDEXING_TIP,
 } from './constants';
+import { helpLinkNode } from '../../../util/helpLinks';
 
 interface DisplayTitleProps {
     model: ListModel;

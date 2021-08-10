@@ -37,7 +37,7 @@ export const PRODUCT_ID_IMG_SRC_MAP = {
     },
 };
 
-export const LK_DOC_FOLDER_TABS = getHelpLink('tabs');
+export const LK_DOC_FOLDER_TABS = getHelpLink('tabs', 'productMenu');
 export const PRODUCT_SERVICES_URL = 'https://www.labkey.com/products-services/';
 export const ADMIN_LOOK_AND_FEEL_URL = ActionURL.buildURL('admin', 'lookAndFeelSettings.view', '/');
 

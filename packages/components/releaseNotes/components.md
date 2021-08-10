@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.6#.#
-*Released*: # August 2021
+### version 2.62.2
+*Released*: 10 August 2021
 * getDateFormat / getDateTimeFormat: support container parameter
 
 ### version 2.62.1

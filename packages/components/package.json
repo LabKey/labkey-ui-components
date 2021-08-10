@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.62.1-fb-helpLinkReferrer43672.0",
+  "version": "2.62.1-fb-helpLinkReferrer43672.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

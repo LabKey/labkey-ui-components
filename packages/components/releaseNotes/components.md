@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.62.3
+*Released*: 11 August 2021
+* Update scss for form has-error display of updated react-select component to match other form inputs
+
 ### version 2.62.2
 *Released*: 10 August 2021
 * getDateFormat / getDateTimeFormat: support container parameter

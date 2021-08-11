@@ -17,9 +17,10 @@ import React, { PureComponent } from 'react';
 
 import { ConfirmModal } from '../../..';
 
+import { helpLinkNode } from '../../util/helpLinks';
+
 import { DeleteConfirmationData } from './actions';
 import { EntityDataType } from './models';
-import { helpLinkNode } from '../../util/helpLinks';
 
 interface Props {
     onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;

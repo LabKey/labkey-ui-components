@@ -8,6 +8,8 @@ import { LabelHelpTip, ListModel, SelectInput } from '../../../..';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
+import { helpLinkNode } from '../../../util/helpLinks';
+
 import { CheckBox } from './ListPropertiesPanelFormElements';
 import { AdvancedSettingsForm } from './models';
 import {
@@ -17,7 +19,6 @@ import {
     DOCUMENT_TITLE_TIP,
     SEARCH_INDEXING_TIP,
 } from './constants';
-import { helpLinkNode } from '../../../util/helpLinks';
 
 interface DisplayTitleProps {
     model: ListModel;

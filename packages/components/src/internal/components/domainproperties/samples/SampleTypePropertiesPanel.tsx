@@ -204,7 +204,9 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         return (
             <>
                 <p>{msg}</p>
-                <p><HelpLink topic={DERIVE_SAMPLES_ALIAS_TOPIC}>More info</HelpLink></p>
+                <p>
+                    <HelpLink topic={DERIVE_SAMPLES_ALIAS_TOPIC}>More info</HelpLink>
+                </p>
             </>
         );
     };

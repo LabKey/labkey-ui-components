@@ -3821,6 +3821,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                               "viewName": undefined,
                                             }
                                           }
+                                          showLabel={false}
                                           showLoading={true}
                                           value="sources"
                                           valueColumn="Value"
@@ -3871,7 +3872,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                     defaultMenuIsOpen={false}
                                                     defaultValue={null}
                                                     delimiter=","
-                                                    id="selectinput-4"
+                                                    id="selectinput-2"
                                                     isClearable={true}
                                                     isDisabled={true}
                                                     name="entity-category"
@@ -3912,7 +3913,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       formatGroupLabel={[Function]}
                                                       getOptionLabel={[Function]}
                                                       getOptionValue={[Function]}
-                                                      id="selectinput-4"
+                                                      id="selectinput-2"
                                                       inputValue=""
                                                       isClearable={true}
                                                       isDisabled={true}
@@ -3965,7 +3966,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         hasValue={false}
                                                         innerProps={
                                                           Object {
-                                                            "id": "selectinput-4",
+                                                            "id": "selectinput-2",
                                                             "onKeyDown": [Function],
                                                           }
                                                         }
@@ -3996,7 +3997,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "formatGroupLabel": [Function],
                                                             "getOptionLabel": [Function],
                                                             "getOptionValue": [Function],
-                                                            "id": "selectinput-4",
+                                                            "id": "selectinput-2",
                                                             "inputValue": "",
                                                             "isClearable": true,
                                                             "isDisabled": true,
@@ -4084,12 +4085,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                               "position": "relative",
                                                             }
                                                           }
-                                                          id="selectinput-4"
+                                                          id="selectinput-2"
                                                           onKeyDown={[Function]}
                                                         >
                                                           <div
                                                             className="select-input select-input--is-disabled css-14jk2my-container"
-                                                            id="selectinput-4"
+                                                            id="selectinput-2"
                                                             onKeyDown={[Function]}
                                                           >
                                                             <LiveRegion
@@ -4128,7 +4129,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "formatGroupLabel": [Function],
                                                                   "getOptionLabel": [Function],
                                                                   "getOptionValue": [Function],
-                                                                  "id": "selectinput-4",
+                                                                  "id": "selectinput-2",
                                                                   "inputValue": "",
                                                                   "isClearable": true,
                                                                   "isDisabled": true,
@@ -4274,7 +4275,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "formatGroupLabel": [Function],
                                                                   "getOptionLabel": [Function],
                                                                   "getOptionValue": [Function],
-                                                                  "id": "selectinput-4",
+                                                                  "id": "selectinput-2",
                                                                   "inputValue": "",
                                                                   "isClearable": true,
                                                                   "isDisabled": true,
@@ -4417,7 +4418,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "formatGroupLabel": [Function],
                                                                         "getOptionLabel": [Function],
                                                                         "getOptionValue": [Function],
-                                                                        "id": "selectinput-4",
+                                                                        "id": "selectinput-2",
                                                                         "inputValue": "",
                                                                         "isClearable": true,
                                                                         "isDisabled": true,
@@ -4547,7 +4548,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "formatGroupLabel": [Function],
                                                                               "getOptionLabel": [Function],
                                                                               "getOptionValue": [Function],
-                                                                              "id": "selectinput-4",
+                                                                              "id": "selectinput-2",
                                                                               "inputValue": "",
                                                                               "isClearable": true,
                                                                               "isDisabled": true,
@@ -4688,7 +4689,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "formatGroupLabel": [Function],
                                                                               "getOptionLabel": [Function],
                                                                               "getOptionValue": [Function],
-                                                                              "id": "selectinput-4",
+                                                                              "id": "selectinput-2",
                                                                               "inputValue": "",
                                                                               "isClearable": true,
                                                                               "isDisabled": true,
@@ -4810,7 +4811,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "formatGroupLabel": [Function],
                                                                                 "getOptionLabel": [Function],
                                                                                 "getOptionValue": [Function],
-                                                                                "id": "selectinput-4",
+                                                                                "id": "selectinput-2",
                                                                                 "inputValue": "",
                                                                                 "isClearable": true,
                                                                                 "isDisabled": true,
@@ -5030,7 +5031,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "formatGroupLabel": [Function],
                                                                         "getOptionLabel": [Function],
                                                                         "getOptionValue": [Function],
-                                                                        "id": "selectinput-4",
+                                                                        "id": "selectinput-2",
                                                                         "inputValue": "",
                                                                         "isClearable": true,
                                                                         "isDisabled": true,
@@ -5155,7 +5156,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "formatGroupLabel": [Function],
                                                                               "getOptionLabel": [Function],
                                                                               "getOptionValue": [Function],
-                                                                              "id": "selectinput-4",
+                                                                              "id": "selectinput-2",
                                                                               "inputValue": "",
                                                                               "isClearable": true,
                                                                               "isDisabled": true,
@@ -5291,7 +5292,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "formatGroupLabel": [Function],
                                                                               "getOptionLabel": [Function],
                                                                               "getOptionValue": [Function],
-                                                                              "id": "selectinput-4",
+                                                                              "id": "selectinput-2",
                                                                               "inputValue": "",
                                                                               "isClearable": true,
                                                                               "isDisabled": true,
@@ -5581,6 +5582,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                               "viewName": undefined,
                                             }
                                           }
+                                          showLabel={false}
                                           showLoading={true}
                                           value={1085}
                                         >
@@ -5630,7 +5632,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                     defaultMenuIsOpen={false}
                                                     defaultValue={null}
                                                     delimiter=","
-                                                    id="selectinput-5"
+                                                    id="selectinput-3"
                                                     isClearable={true}
                                                     isDisabled={true}
                                                     name="entity-sampleSet"
@@ -5671,7 +5673,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       formatGroupLabel={[Function]}
                                                       getOptionLabel={[Function]}
                                                       getOptionValue={[Function]}
-                                                      id="selectinput-5"
+                                                      id="selectinput-3"
                                                       inputValue=""
                                                       isClearable={true}
                                                       isDisabled={true}
@@ -5724,7 +5726,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         hasValue={false}
                                                         innerProps={
                                                           Object {
-                                                            "id": "selectinput-5",
+                                                            "id": "selectinput-3",
                                                             "onKeyDown": [Function],
                                                           }
                                                         }
@@ -5755,7 +5757,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "formatGroupLabel": [Function],
                                                             "getOptionLabel": [Function],
                                                             "getOptionValue": [Function],
-                                                            "id": "selectinput-5",
+                                                            "id": "selectinput-3",
                                                             "inputValue": "",
                                                             "isClearable": true,
                                                             "isDisabled": true,
@@ -5843,12 +5845,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                               "position": "relative",
                                                             }
                                                           }
-                                                          id="selectinput-5"
+                                                          id="selectinput-3"
                                                           onKeyDown={[Function]}
                                                         >
                                                           <div
                                                             className="select-input select-input--is-disabled css-14jk2my-container"
-                                                            id="selectinput-5"
+                                                            id="selectinput-3"
                                                             onKeyDown={[Function]}
                                                           >
                                                             <LiveRegion
@@ -5887,7 +5889,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "formatGroupLabel": [Function],
                                                                   "getOptionLabel": [Function],
                                                                   "getOptionValue": [Function],
-                                                                  "id": "selectinput-5",
+                                                                  "id": "selectinput-3",
                                                                   "inputValue": "",
                                                                   "isClearable": true,
                                                                   "isDisabled": true,
@@ -6033,7 +6035,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "formatGroupLabel": [Function],
                                                                   "getOptionLabel": [Function],
                                                                   "getOptionValue": [Function],
-                                                                  "id": "selectinput-5",
+                                                                  "id": "selectinput-3",
                                                                   "inputValue": "",
                                                                   "isClearable": true,
                                                                   "isDisabled": true,
@@ -6176,7 +6178,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "formatGroupLabel": [Function],
                                                                         "getOptionLabel": [Function],
                                                                         "getOptionValue": [Function],
-                                                                        "id": "selectinput-5",
+                                                                        "id": "selectinput-3",
                                                                         "inputValue": "",
                                                                         "isClearable": true,
                                                                         "isDisabled": true,
@@ -6306,7 +6308,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "formatGroupLabel": [Function],
                                                                               "getOptionLabel": [Function],
                                                                               "getOptionValue": [Function],
-                                                                              "id": "selectinput-5",
+                                                                              "id": "selectinput-3",
                                                                               "inputValue": "",
                                                                               "isClearable": true,
                                                                               "isDisabled": true,
@@ -6447,7 +6449,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "formatGroupLabel": [Function],
                                                                               "getOptionLabel": [Function],
                                                                               "getOptionValue": [Function],
-                                                                              "id": "selectinput-5",
+                                                                              "id": "selectinput-3",
                                                                               "inputValue": "",
                                                                               "isClearable": true,
                                                                               "isDisabled": true,
@@ -6569,7 +6571,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "formatGroupLabel": [Function],
                                                                                 "getOptionLabel": [Function],
                                                                                 "getOptionValue": [Function],
-                                                                                "id": "selectinput-5",
+                                                                                "id": "selectinput-3",
                                                                                 "inputValue": "",
                                                                                 "isClearable": true,
                                                                                 "isDisabled": true,
@@ -6789,7 +6791,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "formatGroupLabel": [Function],
                                                                         "getOptionLabel": [Function],
                                                                         "getOptionValue": [Function],
-                                                                        "id": "selectinput-5",
+                                                                        "id": "selectinput-3",
                                                                         "inputValue": "",
                                                                         "isClearable": true,
                                                                         "isDisabled": true,
@@ -6914,7 +6916,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "formatGroupLabel": [Function],
                                                                               "getOptionLabel": [Function],
                                                                               "getOptionValue": [Function],
-                                                                              "id": "selectinput-5",
+                                                                              "id": "selectinput-3",
                                                                               "inputValue": "",
                                                                               "isClearable": true,
                                                                               "isDisabled": true,
@@ -7050,7 +7052,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "formatGroupLabel": [Function],
                                                                               "getOptionLabel": [Function],
                                                                               "getOptionValue": [Function],
-                                                                              "id": "selectinput-5",
+                                                                              "id": "selectinput-3",
                                                                               "inputValue": "",
                                                                               "isClearable": true,
                                                                               "isDisabled": true,

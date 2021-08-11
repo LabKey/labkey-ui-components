@@ -44,7 +44,6 @@ import {
     getStateQueryGridModel,
     gridInit,
     gridShowError,
-    helpLinkNode,
     IGridLoader,
     IGridResponse,
     InferDomainResponse,
@@ -75,7 +74,7 @@ import {
 
 import { PlacementType } from '../editable/Controls';
 
-import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
+import { DATA_IMPORT_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 import { BulkAddData } from '../editable/EditableGrid';
 

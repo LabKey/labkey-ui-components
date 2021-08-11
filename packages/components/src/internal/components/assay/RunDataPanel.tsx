@@ -31,7 +31,6 @@ import {
     Alert,
     FileSizeLimitProps,
     getEditorModel,
-    helpLinkNode,
     IMPORT_DATA_FORM_TYPES,
     QueryGridModel,
 } from '../../..';
@@ -39,7 +38,7 @@ import {
 import { AssayUploadTabs } from '../../constants';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
 
-import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
+import { helpLinkNode, DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 
 import { getServerFilePreview } from './utils';
 

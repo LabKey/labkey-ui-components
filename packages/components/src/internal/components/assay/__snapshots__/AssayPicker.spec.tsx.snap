@@ -974,7 +974,7 @@ exports[`AssayPicker AssayPicker 1`] = `
                                             To create an assay from an existing design, import a
                                              
                                             <a
-                                              href="https://www.labkey.org/Documentation/wiki-page.view?name=XarTutorial"
+                                              href="https://www.labkey.org/Documentation/wiki-page.view?name=XarTutorial&referrer=inPage"
                                               target="_blank"
                                             >
                                               .XAR or .XAR.XML

@@ -64,12 +64,11 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
                     <br />
                     <br />
                     Learn more about using 
-                    <a
-                      href="https://www.labkey.org/Documentation/wiki-page.view?name=dateFormats#date"
-                      target="_blank"
+                    <HelpLink
+                      topic="dateFormats#date"
                     >
                       Date and Time formats
-                    </a>
+                    </HelpLink>
                      in LabKey.
                   </React.Fragment>
                 }

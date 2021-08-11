@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD August 2021
+* Item 8561: Add some sample type designer element class names for testing
+
 ### version 2.63.0
 *Released*: 11 August 2021
 * Issue 43672: Add "referrer" param to the help link URLs

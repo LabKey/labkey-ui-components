@@ -1,8 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { fromJS } from 'immutable';
-
 import assayDefJSON from '../../../test/data/assayDefinitionModel.json';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
@@ -12,10 +10,11 @@ import { AssayReimportHeader } from './AssayReimportHeader';
 describe('<AssayReimportHeader/>', () => {
     const assay = AssayDefinitionModel.create(assayDefJSON);
 
-    const runData = fromJS({
-        RowId: 10,
-        Name: 'Test Name',
-    });
+    const runData = {
+        RowId: { value: 10 },
+        Name: { value: 'Test Name' },
+    };
+
     test('has batch properties', () => {
         const component = (
             <AssayReimportHeader hasBatchProperties={true} assay={assay} replacedRunProperties={runData} />

@@ -32,7 +32,8 @@ exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
           >
             <a
               className="domain-field-float-right"
-              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet&referrer=inPage"
+              rel="noreferrer"
               target="_blank"
             >
               Learn more about designing sample types
@@ -348,7 +349,8 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
           >
             <a
               className="domain-field-float-right"
-              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet&referrer=inPage"
+              rel="noreferrer"
               target="_blank"
             >
               Learn more about designing sample types
@@ -595,7 +597,8 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
           >
             <a
               className="domain-field-float-right"
-              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet&referrer=inPage"
+              rel="noreferrer"
               target="_blank"
             >
               Learn more about designing sample types
@@ -894,7 +897,8 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
           >
             <a
               className="domain-field-float-right"
-              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet&referrer=inPage"
+              rel="noreferrer"
               target="_blank"
             >
               Learn more about designing sample types
@@ -1259,7 +1263,8 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
           >
             <a
               className="domain-field-float-right"
-              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet&referrer=inPage"
+              rel="noreferrer"
               target="_blank"
             >
               Learn more about designing sample types
@@ -1741,7 +1746,8 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
           >
             <a
               className="domain-field-float-right"
-              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet&referrer=inPage"
+              rel="noreferrer"
               target="_blank"
             >
               Learn more about designing sample types

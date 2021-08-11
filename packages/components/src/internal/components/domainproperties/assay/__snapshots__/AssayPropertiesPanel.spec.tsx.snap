@@ -1480,13 +1480,19 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                           <div
                             className="col-xs-12"
                           >
-                            <a
+                            <HelpLink
                               className="domain-field-float-right"
-                              href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
-                              target="_blank"
+                              topic="defineAssaySchema"
                             >
-                              Learn more about designing assays
-                            </a>
+                              <a
+                                className="domain-field-float-right"
+                                href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema&referrer=inPage"
+                                rel="noreferrer"
+                                target="_blank"
+                              >
+                                Learn more about designing assays
+                              </a>
+                            </HelpLink>
                           </div>
                         </Col>
                       </div>
@@ -3300,13 +3306,19 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                           <div
                             className="col-xs-12"
                           >
-                            <a
+                            <HelpLink
                               className="domain-field-float-right"
-                              href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
-                              target="_blank"
+                              topic="defineAssaySchema"
                             >
-                              Learn more about designing assays
-                            </a>
+                              <a
+                                className="domain-field-float-right"
+                                href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema&referrer=inPage"
+                                rel="noreferrer"
+                                target="_blank"
+                              >
+                                Learn more about designing assays
+                              </a>
+                            </HelpLink>
                           </div>
                         </Col>
                       </div>
@@ -4921,13 +4933,19 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                           <div
                             className="col-xs-12"
                           >
-                            <a
+                            <HelpLink
                               className="domain-field-float-right"
-                              href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
-                              target="_blank"
+                              topic="defineAssaySchema"
                             >
-                              Learn more about designing assays
-                            </a>
+                              <a
+                                className="domain-field-float-right"
+                                href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema&referrer=inPage"
+                                rel="noreferrer"
+                                target="_blank"
+                              >
+                                Learn more about designing assays
+                              </a>
+                            </HelpLink>
                           </div>
                         </Col>
                       </div>

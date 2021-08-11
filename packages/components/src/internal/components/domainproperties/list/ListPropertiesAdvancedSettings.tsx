@@ -4,9 +4,11 @@ import { Button, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { helpLinkNode, LabelHelpTip, ListModel, SelectInput } from '../../../..';
+import { LabelHelpTip, ListModel, SelectInput } from '../../../..';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
+
+import { helpLinkNode } from '../../../util/helpLinks';
 
 import { CheckBox } from './ListPropertiesPanelFormElements';
 import { AdvancedSettingsForm } from './models';

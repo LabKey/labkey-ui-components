@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { helpLinkNode } from '../../..';
+import { helpLinkNode } from '../../util/helpLinks';
 
 interface Props {
     nounPlural?: string;

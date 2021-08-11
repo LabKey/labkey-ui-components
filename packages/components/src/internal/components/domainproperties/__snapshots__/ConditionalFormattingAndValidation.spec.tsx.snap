@@ -187,12 +187,11 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
                       </p>
                       <p>
                         Learn more about using 
-                        <a
-                          href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                          target="_blank"
+                        <HelpLink
+                          topic="fieldEditor#conditional"
                         >
                           Conditional Formats
-                        </a>
+                        </HelpLink>
                         .
                       </p>
                     </React.Fragment>
@@ -370,12 +369,11 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
                       </p>
                       <p>
                         Learn more about using 
-                        <a
-                          href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#regex"
-                          target="_blank"
+                        <HelpLink
+                          topic="fieldEditor#regex"
                         >
                           Regular Expression Validation
-                        </a>
+                        </HelpLink>
                         .
                       </p>
                     </React.Fragment>
@@ -663,12 +661,11 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
                       </p>
                       <p>
                         Learn more about using 
-                        <a
-                          href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                          target="_blank"
+                        <HelpLink
+                          topic="fieldEditor#conditional"
                         >
                           Conditional Formats
-                        </a>
+                        </HelpLink>
                         .
                       </p>
                     </React.Fragment>
@@ -967,12 +964,11 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
                       </p>
                       <p>
                         Learn more about using 
-                        <a
-                          href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                          target="_blank"
+                        <HelpLink
+                          topic="fieldEditor#conditional"
                         >
                           Conditional Formats
-                        </a>
+                        </HelpLink>
                         .
                       </p>
                     </React.Fragment>
@@ -1149,12 +1145,11 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
                       </p>
                       <p>
                         Learn more about using 
-                        <a
-                          href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#regex"
-                          target="_blank"
+                        <HelpLink
+                          topic="fieldEditor#regex"
                         >
                           Regular Expression Validation
-                        </a>
+                        </HelpLink>
                         .
                       </p>
                     </React.Fragment>

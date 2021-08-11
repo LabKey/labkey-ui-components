@@ -1771,12 +1771,11 @@ exports[`DomainRow Sample Field 1`] = `
                                                               <br />
                                                               <br />
                                                               Learn more about using 
-                                                              <a
-                                                                href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                                                                target="_blank"
+                                                              <HelpLink
+                                                                topic="urlEncoding"
                                                               >
                                                                 URL Formatting Options
-                                                              </a>
+                                                              </HelpLink>
                                                               .
                                                             </React.Fragment>
                                                           }
@@ -2069,12 +2068,11 @@ exports[`DomainRow Sample Field 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#conditional"
                                                                   >
                                                                     Conditional Formats
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>
@@ -3962,12 +3960,11 @@ exports[`DomainRow client side warning on field 1`] = `
                                                               <br />
                                                               <br />
                                                               Learn more about using 
-                                                              <a
-                                                                href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                                                                target="_blank"
+                                                              <HelpLink
+                                                                topic="urlEncoding"
                                                               >
                                                                 URL Formatting Options
-                                                              </a>
+                                                              </HelpLink>
                                                               .
                                                             </React.Fragment>
                                                           }
@@ -4260,12 +4257,11 @@ exports[`DomainRow client side warning on field 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#conditional"
                                                                   >
                                                                     Conditional Formats
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>
@@ -5649,12 +5645,11 @@ exports[`DomainRow date time field 1`] = `
                                                               <br />
                                                               <br />
                                                               Learn more about using 
-                                                              <a
-                                                                href="https://www.labkey.org/Documentation/wiki-page.view?name=dateFormats#date"
-                                                                target="_blank"
+                                                              <HelpLink
+                                                                topic="dateFormats#date"
                                                               >
                                                                 Date and Time formats
-                                                              </a>
+                                                              </HelpLink>
                                                                in LabKey.
                                                             </React.Fragment>
                                                           }
@@ -6153,12 +6148,11 @@ exports[`DomainRow date time field 1`] = `
                                                               <br />
                                                               <br />
                                                               Learn more about using 
-                                                              <a
-                                                                href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                                                                target="_blank"
+                                                              <HelpLink
+                                                                topic="urlEncoding"
                                                               >
                                                                 URL Formatting Options
-                                                              </a>
+                                                              </HelpLink>
                                                               .
                                                             </React.Fragment>
                                                           }
@@ -6451,12 +6445,11 @@ exports[`DomainRow date time field 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#conditional"
                                                                   >
                                                                     Conditional Formats
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>
@@ -6591,12 +6584,11 @@ exports[`DomainRow date time field 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#range"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#range"
                                                                   >
                                                                     Range Validation
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>
@@ -7979,12 +7971,11 @@ exports[`DomainRow decimal field 1`] = `
                                                               <br />
                                                               <br />
                                                               Learn more about using 
-                                                              <a
-                                                                href="https://www.labkey.org/Documentation/wiki-page.view?name=dateFormats#number"
-                                                                target="_blank"
+                                                              <HelpLink
+                                                                topic="dateFormats#number"
                                                               >
                                                                 Number formats
-                                                              </a>
+                                                              </HelpLink>
                                                                in LabKey.
                                                             </React.Fragment>
                                                           }
@@ -8519,12 +8510,11 @@ exports[`DomainRow decimal field 1`] = `
                                                               <br />
                                                               <br />
                                                               Learn more about using 
-                                                              <a
-                                                                href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                                                                target="_blank"
+                                                              <HelpLink
+                                                                topic="urlEncoding"
                                                               >
                                                                 URL Formatting Options
-                                                              </a>
+                                                              </HelpLink>
                                                               .
                                                             </React.Fragment>
                                                           }
@@ -8817,12 +8807,11 @@ exports[`DomainRow decimal field 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#conditional"
                                                                   >
                                                                     Conditional Formats
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>
@@ -8957,12 +8946,11 @@ exports[`DomainRow decimal field 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#range"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#range"
                                                                   >
                                                                     Range Validation
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>
@@ -10653,12 +10641,11 @@ exports[`DomainRow participant id field 1`] = `
                                                               <br />
                                                               <br />
                                                               Learn more about using 
-                                                              <a
-                                                                href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                                                                target="_blank"
+                                                              <HelpLink
+                                                                topic="urlEncoding"
                                                               >
                                                                 URL Formatting Options
-                                                              </a>
+                                                              </HelpLink>
                                                               .
                                                             </React.Fragment>
                                                           }
@@ -10951,12 +10938,11 @@ exports[`DomainRow participant id field 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#conditional"
                                                                   >
                                                                     Conditional Formats
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>
@@ -11091,12 +11077,11 @@ exports[`DomainRow participant id field 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#regex"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#regex"
                                                                   >
                                                                     Regular Expression Validation
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>
@@ -12873,12 +12858,11 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                               <br />
                                                               <br />
                                                               Learn more about using 
-                                                              <a
-                                                                href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                                                                target="_blank"
+                                                              <HelpLink
+                                                                topic="urlEncoding"
                                                               >
                                                                 URL Formatting Options
-                                                              </a>
+                                                              </HelpLink>
                                                               .
                                                             </React.Fragment>
                                                           }
@@ -13171,12 +13155,11 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#conditional"
                                                                   >
                                                                     Conditional Formats
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>
@@ -15177,12 +15160,11 @@ exports[`DomainRow string field test 1`] = `
                                                               <br />
                                                               <br />
                                                               Learn more about using 
-                                                              <a
-                                                                href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                                                                target="_blank"
+                                                              <HelpLink
+                                                                topic="urlEncoding"
                                                               >
                                                                 URL Formatting Options
-                                                              </a>
+                                                              </HelpLink>
                                                               .
                                                             </React.Fragment>
                                                           }
@@ -15475,12 +15457,11 @@ exports[`DomainRow string field test 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#conditional"
                                                                   >
                                                                     Conditional Formats
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>
@@ -15615,12 +15596,11 @@ exports[`DomainRow string field test 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#regex"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#regex"
                                                                   >
                                                                     Regular Expression Validation
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>
@@ -17688,12 +17668,11 @@ exports[`DomainRow with empty domain form 1`] = `
                                                               <br />
                                                               <br />
                                                               Learn more about using 
-                                                              <a
-                                                                href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                                                                target="_blank"
+                                                              <HelpLink
+                                                                topic="urlEncoding"
                                                               >
                                                                 URL Formatting Options
-                                                              </a>
+                                                              </HelpLink>
                                                               .
                                                             </React.Fragment>
                                                           }
@@ -17986,12 +17965,11 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#conditional"
                                                                   >
                                                                     Conditional Formats
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>
@@ -18126,12 +18104,11 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 </p>
                                                                 <p>
                                                                   Learn more about using 
-                                                                  <a
-                                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#regex"
-                                                                    target="_blank"
+                                                                  <HelpLink
+                                                                    topic="fieldEditor#regex"
                                                                   >
                                                                     Regular Expression Validation
-                                                                  </a>
+                                                                  </HelpLink>
                                                                   .
                                                                 </p>
                                                               </React.Fragment>

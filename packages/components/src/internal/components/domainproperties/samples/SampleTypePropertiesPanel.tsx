@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
@@ -9,7 +9,6 @@ import {
     Container,
     generateId,
     getHelpLink,
-    helpLinkNode,
     IDomainField,
     IParentOption,
     MetricUnitProps,
@@ -19,7 +18,12 @@ import {
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
-import { DEFINE_SAMPLE_TYPE_TOPIC, DERIVE_SAMPLES_ALIAS_TOPIC, UNIQUE_IDS_TOPIC } from '../../../util/helpLinks';
+import {
+    DEFINE_SAMPLE_TYPE_TOPIC,
+    DERIVE_SAMPLES_ALIAS_TOPIC,
+    UNIQUE_IDS_TOPIC,
+    HelpLink,
+} from '../../../util/helpLinks';
 import { SampleSetParentAliasRow } from '../../samples/SampleSetParentAliasRow';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
@@ -199,10 +203,10 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             : PARENT_ALIAS_HELPER_TEXT;
         return (
             <>
-                <span>
-                    <p>{msg}</p>
-                    <p>{helpLinkNode(DERIVE_SAMPLES_ALIAS_TOPIC, 'More info')}</p>
-                </span>
+                <p>{msg}</p>
+                <p>
+                    <HelpLink topic={DERIVE_SAMPLES_ALIAS_TOPIC}>More info</HelpLink>
+                </p>
             </>
         );
     };
@@ -275,14 +279,14 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         return parentOptions.filter(dataClassOptionFilterFn).length > 0;
     }
 
-    renderUniqueIdHelpText = () => {
+    renderUniqueIdHelpText = (): ReactNode => {
         return (
             <>
-                Use a Unique ID field to represent barcodes or other ID fields in use in your lab.
-                <br />
-                <br />
-                Learn more about using {helpLinkNode(UNIQUE_IDS_TOPIC, 'barcodes and unique IDs')} in{' '}
-                {getCurrentProductName()}.
+                <p>Use a Unique ID field to represent barcodes or other ID fields in use in your lab.</p>
+                <p>
+                    Learn more about using <HelpLink topic={UNIQUE_IDS_TOPIC}>barcodes and unique IDs</HelpLink> in{' '}
+                    {getCurrentProductName()}.
+                </p>
             </>
         );
     };

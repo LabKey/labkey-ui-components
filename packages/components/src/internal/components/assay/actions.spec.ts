@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS } from 'immutable';
-
 import { AssayStateModel, GENERAL_ASSAY_PROVIDER_NAME, QueryInfo, SchemaQuery } from '../../..';
 import { getStateQueryGridModel } from '../../models';
 import { initQueryGridState } from '../../global';
@@ -65,11 +63,11 @@ describe('getImportItemsForAssayDefinitions', () => {
 describe('getRunPropertiesFileName', () => {
     test('abc', () => {
         expect(getRunPropertiesFileName(undefined)).toBe(undefined);
-        expect(getRunPropertiesFileName(fromJS({}))).toBe(undefined);
-        expect(getRunPropertiesFileName(fromJS({ DataOutputs: [] }))).toBe(undefined);
-        expect(
-            getRunPropertiesFileName(fromJS({ DataOutputs: [{ displayValue: 'test1' }, { displayValue: 'test2' }] }))
-        ).toBe(undefined);
-        expect(getRunPropertiesFileName(fromJS({ DataOutputs: [{ displayValue: 'test1' }] }))).toBe('test1');
+        expect(getRunPropertiesFileName({})).toBe(undefined);
+        expect(getRunPropertiesFileName({ DataOutputs: [] })).toBe(undefined);
+        expect(getRunPropertiesFileName({ DataOutputs: [{ displayValue: 'test1' }, { displayValue: 'test2' }] })).toBe(
+            undefined
+        );
+        expect(getRunPropertiesFileName({ DataOutputs: [{ displayValue: 'test1' }] })).toBe('test1');
     });
 });

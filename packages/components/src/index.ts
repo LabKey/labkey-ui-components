@@ -199,7 +199,7 @@ import {
 } from './internal/constants';
 import { getLocation, pushParameter, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
-import { getHelpLink, helpLinkNode, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
+import { getHelpLink, HelpLink, HELP_LINK_REFERRER, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
 import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './internal/url/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
@@ -332,7 +332,6 @@ import {
     getImportItemsForAssayDefinitions,
     getRunDetailsQueryColumns,
     importAssayRun,
-    RUN_PROPERTIES_GRID_ID,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
 } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
@@ -917,7 +916,6 @@ export {
     AssayLink,
     clearAssayDefinitionCache,
     fetchAllAssays,
-    RUN_PROPERTIES_GRID_ID,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
     GENERAL_ASSAY_PROVIDER_NAME,
     // heatmap
@@ -1055,7 +1053,8 @@ export {
     getConfirmDeleteMessage,
     resolveErrorMessage,
     getHelpLink,
-    helpLinkNode,
+    HelpLink,
+    HELP_LINK_REFERRER,
     incrementClientSideMetricCount,
     SAMPLE_ALIQUOT_TOPIC,
     // devTools functions

@@ -1,6 +1,34 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.63.0
+*Released*: 11 August 2021
+* Issue 43672: Add "referrer" param to the help link URLs
+  * Deprecate helpLinkNode() in favor of HelpLink FC
+
+### version 2.62.3
+*Released*: 11 August 2021
+* Update scss for form has-error display of updated react-select component to match other form inputs
+
+### version 2.62.2
+*Released*: 10 August 2021
+* getDateFormat / getDateTimeFormat: support container parameter
+
+### version 2.62.1
+*Released*: 9 August 2021
+* Issue 43647: SM: creating aliquots for a sample type with a required field gives an error
+    * Add required sample properties to insertRows data for aliquot creation
+
+### version 2.62.0
+*Released*: 5 August 2021
+* Add `help` guidance for user when a `nameExpression` is present on the `QueryColumn`.
+* Mark field as required in when updating if a `nameExpression` is present.
+* GridPanel: allow multiple filters on same column in OmniBox.
+
+### version 2.61.2
+*Released*: 4 August 2021
+* AssayImportPanels.tsx conversion to QueryModel for batch and run properties
+
 ### version 2.61.1
 *Released*: 3 August 2021
 * Add after-creation callback property to PicklistCreationMenuItem

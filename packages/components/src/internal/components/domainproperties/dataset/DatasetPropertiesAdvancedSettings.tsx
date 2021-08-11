@@ -3,9 +3,9 @@ import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap'
 
 import { getServerContext } from '@labkey/api';
 
-import { helpLinkNode, initQueryGridState, LabelHelpTip, SelectInputOption, SelectInput } from '../../../..';
+import { initQueryGridState, LabelHelpTip, SelectInputOption, SelectInput } from '../../../..';
 
-import { DATASET_PROPERTIES_TOPIC } from '../../../util/helpLinks';
+import { helpLinkNode, DATASET_PROPERTIES_TOPIC } from '../../../util/helpLinks';
 
 import { SectionHeading } from '../SectionHeading';
 

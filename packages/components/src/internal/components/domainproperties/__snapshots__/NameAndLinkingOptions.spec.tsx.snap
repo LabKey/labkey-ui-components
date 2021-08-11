@@ -338,12 +338,11 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                     <br />
                     <br />
                     Learn more about using 
-                    <a
-                      href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                      target="_blank"
+                    <HelpLink
+                      topic="urlEncoding"
                     >
                       URL Formatting Options
-                    </a>
+                    </HelpLink>
                     .
                   </React.Fragment>
                 }

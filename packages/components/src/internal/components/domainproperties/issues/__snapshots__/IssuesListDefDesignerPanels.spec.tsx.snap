@@ -58,7 +58,8 @@ Array [
               >
                 <a
                   className="domain-field-float-right"
-                  href="https://www.labkey.org/Documentation/wiki-page.view?name=adminIssues"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?name=adminIssues&referrer=inPage"
+                  rel="noreferrer"
                   target="_blank"
                 >
                   Learn more about designing issues lists

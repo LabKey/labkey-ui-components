@@ -67,7 +67,8 @@ Array [
               >
                 <a
                   className="domain-field-float-right"
-                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType&referrer=inPage"
+                  rel="noreferrer"
                   target="_blank"
                 >
                   Learn more about designing some samples
@@ -495,7 +496,8 @@ Array [
               >
                 <a
                   className="domain-field-float-right"
-                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType&referrer=inPage"
+                  rel="noreferrer"
                   target="_blank"
                 >
                   Learn more about designing sample types
@@ -1215,7 +1217,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "nameReadOnly": true,
       }
     }
-    nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
+    nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
     nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
     onCancel={[MockFunction]}
     onComplete={[MockFunction]}
@@ -1485,7 +1487,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "exception": undefined,
           }
         }
-        nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
+        nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
         nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
         onAddParentAlias={[Function]}
         onAddUniqueIdField={[Function]}
@@ -1641,7 +1643,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "exception": undefined,
             }
           }
-          nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
+          nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
           nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
           nounPlural="Sample Types"
           nounSingular="Sample Type"
@@ -1803,7 +1805,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "exception": undefined,
               }
             }
-            nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
+            nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
             nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
             nounPlural="Sample Types"
             nounSingular="Sample Type"
@@ -2005,13 +2007,19 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                 <div
                                                   className="col-xs-12"
                                                 >
-                                                  <a
+                                                  <HelpLink
                                                     className="domain-field-float-right"
-                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType"
-                                                    target="_blank"
+                                                    topic="createSampleType"
                                                   >
-                                                    Learn more about designing sample types
-                                                  </a>
+                                                    <a
+                                                      className="domain-field-float-right"
+                                                      href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType&referrer=inPage"
+                                                      rel="noreferrer"
+                                                      target="_blank"
+                                                    >
+                                                      Learn more about designing sample types
+                                                    </a>
+                                                  </HelpLink>
                                                 </div>
                                               </Col>
                                             </div>
@@ -2157,7 +2165,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                       "exception": undefined,
                                     }
                                   }
-                                  nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
+                                  nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
                                   nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                                   nameReadOnly={true}
                                   noun="Sample Type"
@@ -2459,7 +2467,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                     </p>
                                                     <p>
                                                       <a
-                                                        href="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
+                                                        href="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
                                                         target="_blank"
                                                       >
                                                         More info
@@ -5397,12 +5405,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       <br />
                                                                                                       <br />
                                                                                                       Learn more about using 
-                                                                                                      <a
-                                                                                                        href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
-                                                                                                        target="_blank"
+                                                                                                      <HelpLink
+                                                                                                        topic="urlEncoding"
                                                                                                       >
                                                                                                         URL Formatting Options
-                                                                                                      </a>
+                                                                                                      </HelpLink>
                                                                                                       .
                                                                                                     </React.Fragment>
                                                                                                   }
@@ -5686,12 +5693,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                         </p>
                                                                                                         <p>
                                                                                                           Learn more about using 
-                                                                                                          <a
-                                                                                                            href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#regex"
-                                                                                                            target="_blank"
+                                                                                                          <HelpLink
+                                                                                                            topic="fieldEditor#regex"
                                                                                                           >
                                                                                                             Regular Expression Validation
-                                                                                                          </a>
+                                                                                                          </HelpLink>
                                                                                                           .
                                                                                                         </p>
                                                                                                       </React.Fragment>

@@ -5,6 +5,7 @@ import { ActionURL } from '@labkey/api';
 import { getHelpLink, imageURL } from '../../..';
 
 import { BIOLOGICS_PRODUCT_ID, FREEZER_MANAGER_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app/constants';
+import { HELP_LINK_REFERRER } from '../../util/helpLinks';
 
 // map for product menuSections query so that we request the LKFM section with the LKSM product
 export const PRODUCT_ID_SECTION_QUERY_MAP = {
@@ -37,7 +38,7 @@ export const PRODUCT_ID_IMG_SRC_MAP = {
     },
 };
 
-export const LK_DOC_FOLDER_TABS = getHelpLink('tabs');
+export const LK_DOC_FOLDER_TABS = getHelpLink('tabs', HELP_LINK_REFERRER.PRODUCT_MENU);
 export const PRODUCT_SERVICES_URL = 'https://www.labkey.com/products-services/';
 export const ADMIN_LOOK_AND_FEEL_URL = ActionURL.buildURL('admin', 'lookAndFeelSettings.view', '/');
 

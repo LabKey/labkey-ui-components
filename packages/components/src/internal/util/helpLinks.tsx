@@ -41,13 +41,22 @@ export const SAMPLE_ALIQUOT_TOPIC = 'aliquot';
 
 export const UNIQUE_IDS_TOPIC = 'uniqueStorageIds';
 
-export function getHelpLink(topic: string, referrer = 'inPage'): string {
+// See HelpTopic.java Referrer enum
+export enum HELP_LINK_REFERRER {
+    DEV_MENU = 'devMenu',
+    DOC_MENU = 'docMenu',
+    ERROR_PAGE = 'errorPage',
+    IN_PAGE = 'inPage',
+    PRODUCT_MENU = 'productMenu',
+}
+
+export function getHelpLink(topic: string, referrer = HELP_LINK_REFERRER.IN_PAGE): string {
     return getServerContext().helpLinkPrefix + topic + '&referrer=' + referrer;
 }
 
 interface HelpLinkProps {
     className?: string;
-    referrer?: string;
+    referrer?: HELP_LINK_REFERRER;
     topic: string;
 }
 

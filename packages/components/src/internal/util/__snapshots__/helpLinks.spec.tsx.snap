@@ -3,7 +3,7 @@
 exports[`HelpLink custom props 1`] = `
 <a
   className="test-class-name"
-  href="https://www.labkey.org/Documentation/wiki-page.view?name=TEST_TOPIC&referrer=TEST_REFERRER"
+  href="https://www.labkey.org/Documentation/wiki-page.view?name=TEST_TOPIC&referrer=errorPage"
   rel="noreferrer"
   target="_blank"
 >

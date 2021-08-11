@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.63.0
+*Released*: 11 August 2021
 * Issue 43672: Add "referrer" param to the help link URLs
   * Deprecate helpLinkNode() in favor of HelpLink FC
 

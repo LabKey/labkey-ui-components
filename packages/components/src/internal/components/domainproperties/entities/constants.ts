@@ -21,4 +21,5 @@ export const ENTITY_FORM_IDS = {
     NAME_EXPRESSION: ENTITY_FORM_ID_PREFIX + 'nameExpression',
     DESCRIPTION: ENTITY_FORM_ID_PREFIX + 'description',
     AUTO_LINK_TARGET: ENTITY_FORM_ID_PREFIX + 'autoLinkTargetContainerId',
+    AUTO_LINK_CATEGORY: ENTITY_FORM_ID_PREFIX + 'autoLinkCategory'
 };

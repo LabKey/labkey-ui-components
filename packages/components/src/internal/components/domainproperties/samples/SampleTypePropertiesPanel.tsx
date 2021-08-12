@@ -386,33 +386,56 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 )}
 
                 {allowTimepointProperties && showLinkToStudy && (
-                    <Row className="margin-top">
-                        <Col xs={2}>
-                            <DomainFieldLabel
-                                label="Auto-Link Data to Study"
-                                helpTipBody={
-                                    <>
-                                        <p>
-                                            Automatically link Sample Type data rows to the specified target study. Only
-                                            rows that include subject and visit/date information will be linked.
-                                        </p>
-                                        <p>
-                                            The user performing the import must have insert permission in the target
-                                            study and the corresponding dataset.
-                                        </p>
-                                    </>
-                                }
-                            />
-                        </Col>
-                        <Col xs={5}>
-                            <AutoLinkToStudyDropdown
-                                containers={containers}
-                                onChange={this.onFormChange}
-                                autoLinkTarget={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
-                                value={model.autoLinkTargetContainerId}
-                            />
-                        </Col>
-                    </Row>
+                    <>
+                        <Row className="margin-top">
+                            <Col xs={2}>
+                                <DomainFieldLabel
+                                    label="Auto-Link Data to Study"
+                                    helpTipBody={
+                                        <>
+                                            <p>
+                                                Automatically link Sample Type data rows to the specified target study. Only
+                                                rows that include subject and visit/date information will be linked.
+                                            </p>
+                                            <p>
+                                                The user performing the import must have insert permission in the target
+                                                study and the corresponding dataset.
+                                            </p>
+                                        </>
+                                    }
+                                />
+                            </Col>
+                            <Col xs={5}>
+                                <AutoLinkToStudyDropdown
+                                    containers={containers}
+                                    onChange={this.onFormChange}
+                                    autoLinkTarget={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
+                                    value={model.autoLinkTargetContainerId}
+                                />
+                            </Col>
+                        </Row>
+                        <Row className="margin-top">
+                            <Col xs={2}>
+                                <DomainFieldLabel
+                                    label="Linked Dataset Category"
+                                    helpTipBody={
+                                        <>
+                                            ROSALINE TODO
+                                        </>
+                                    }
+                                />
+                            </Col>
+
+                            <Col xs={5}>
+                                <FormControl
+                                    type="text"
+                                    id={ENTITY_FORM_IDS.AUTO_LINK_CATEGORY}
+                                    onChange={this.onFormChange}
+                                    value={model.autoLinkContainer}
+                                />
+                            </Col>
+                        </Row>
+                    </>
                 )}
 
                 {(appPropertiesOnly || !isCommunityDistribution()) && (

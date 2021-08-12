@@ -2615,7 +2615,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                 </Row>
                               </Component>
                             </AutoLinkDataInput>
-                            <AutoLinkCategoryInput
+                            <Memo()
                               model={
                                 Immutable.Record {
                                   "allowBackgroundUpload": false,
@@ -2724,7 +2724,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                 colSize={9}
                                 helpTipBody={
                                   <p>
-                                     ROSALINE TODO 
+                                    Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created. If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
                                   </p>
                                 }
                                 label="Linked Dataset Category"
@@ -2749,7 +2749,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                         <DomainFieldLabel
                                           helpTipBody={
                                             <p>
-                                               ROSALINE TODO 
+                                              Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created. If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
                                             </p>
                                           }
                                           label="Linked Dataset Category"
@@ -2867,7 +2867,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   </div>
                                 </Row>
                               </Component>
-                            </AutoLinkCategoryInput>
+                            </Memo()>
                           </div>
                         </div>
                       </Col>
@@ -4441,7 +4441,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                 </Row>
                               </Component>
                             </AutoLinkDataInput>
-                            <AutoLinkCategoryInput
+                            <Memo()
                               model={
                                 Immutable.Record {
                                   "allowBackgroundUpload": false,
@@ -4550,7 +4550,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                 colSize={9}
                                 helpTipBody={
                                   <p>
-                                     ROSALINE TODO 
+                                    Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created. If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
                                   </p>
                                 }
                                 label="Linked Dataset Category"
@@ -4575,7 +4575,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                         <DomainFieldLabel
                                           helpTipBody={
                                             <p>
-                                               ROSALINE TODO 
+                                              Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created. If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
                                             </p>
                                           }
                                           label="Linked Dataset Category"
@@ -4693,7 +4693,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   </div>
                                 </Row>
                               </Component>
-                            </AutoLinkCategoryInput>
+                            </Memo()>
                           </div>
                         </div>
                       </Col>
@@ -5800,7 +5800,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                 </Row>
                               </Component>
                             </AutoLinkDataInput>
-                            <AutoLinkCategoryInput
+                            <Memo()
                               model={
                                 Immutable.Record {
                                   "allowBackgroundUpload": false,
@@ -5842,7 +5842,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                 colSize={9}
                                 helpTipBody={
                                   <p>
-                                     ROSALINE TODO 
+                                    Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created. If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
                                   </p>
                                 }
                                 label="Linked Dataset Category"
@@ -5867,7 +5867,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                         <DomainFieldLabel
                                           helpTipBody={
                                             <p>
-                                               ROSALINE TODO 
+                                              Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created. If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
                                             </p>
                                           }
                                           label="Linked Dataset Category"
@@ -5985,7 +5985,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   </div>
                                 </Row>
                               </Component>
-                            </AutoLinkCategoryInput>
+                            </Memo()>
                           </div>
                         </div>
                       </Col>

@@ -201,13 +201,11 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
         const { model } = this.props;
 
         return (
-            <>
-                <div className="domain-field-padding-bottom">
-                    <SectionHeading title="Link to Study Settings" />
-                    <AutoLinkDataInput model={model} onChange={this.onInputChange} />
-                    <AutoLinkCategoryInput model={model} onChange={this.onInputChange} />
-                </div>
-            </>
+            <div className="domain-field-padding-bottom">
+                <SectionHeading title="Link to Study Settings" />
+                <AutoLinkDataInput model={model} onChange={this.onInputChange} />
+                <AutoLinkCategoryInput model={model} onChange={this.onInputChange} />
+            </div>
         );
     }
 

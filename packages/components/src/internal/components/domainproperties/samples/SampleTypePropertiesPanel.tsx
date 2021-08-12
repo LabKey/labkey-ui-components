@@ -431,7 +431,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                     type="text"
                                     id={ENTITY_FORM_IDS.AUTO_LINK_CATEGORY}
                                     onChange={this.onFormChange}
-                                    value={model.autoLinkCategory}
+                                    value={model.autoLinkCategory || ''}
                                 />
                             </Col>
                         </Row>

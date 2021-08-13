@@ -81,5 +81,10 @@ export function getAttachmentTitleFromName(name: string): string {
     if (name.indexOf('/') > -1) {
         return name.substr(name.lastIndexOf('/') + 1);
     }
+    // Issue 43725: Windows file name comes through with backslash instead
+    else if (name.indexOf('\\') > -1) {
+        return name.substr(name.lastIndexOf('\\') + 1);
+    }
+
     return name;
 }

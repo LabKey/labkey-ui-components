@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD August 2021
 * Issue 43728: bulk insert for samples is broken when a file field is present
+* Issue 43725: account for both forward and back slash in FileColumnRenderer.getAttachmentTitleFromName
 
 ### version 2.63.1
 *Released*: 13 August 2021

@@ -892,7 +892,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     columnFilter = (col: QueryColumn): boolean => {
         return (
-            insertColumnFilter(col) &&
+            insertColumnFilter(col, false) &&
             col.fieldKey !== this.props.entityDataType.uniqueFieldKey &&
             col.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY
         );

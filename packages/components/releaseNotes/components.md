@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD August 2021
+* Issue 43728: bulk insert for samples is broken when a file field is present
+
 ### version 2.63.1
 *Released*: 13 August 2021
 * Item 8561: Add some sample type designer element class names for testing

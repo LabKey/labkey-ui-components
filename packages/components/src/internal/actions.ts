@@ -540,9 +540,7 @@ function loadDataForEditor(model: QueryGridModel, response?: any): void {
     const rows: Map<any, Map<string, any>> = response ? response.data : Map<string, Map<string, any>>();
     const ids = response ? response.dataIds : List();
     const columns = model.queryInfo.columns.toList().filter(column => {
-        return (
-            (insertColumnFilter(column) || model.requiredColumns?.indexOf(column.fieldKey) > -1) && !column.isFileInput
-        );
+        return insertColumnFilter(column, false) || model.requiredColumns?.indexOf(column.fieldKey) > -1;
     });
 
     const getLookup = (col: QueryColumn) => getLookupStore(col);

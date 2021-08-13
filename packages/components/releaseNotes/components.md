@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.63.2
+*Released*: 13 August 2021
 * Fix capitalization in FindByIdsModal button
 * Issue 43715: Fix pixel offset for Find menu in nav bar for Firefox
 

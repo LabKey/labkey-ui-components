@@ -98,6 +98,7 @@ import {
 
 import { getUniqueIdColumnMetadata } from './utils';
 import { getEntityTypeData, handleEntityFileImport } from './actions';
+import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
@@ -954,6 +955,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 <div className="top-spacing">
                     {!isLoaded && !insertModel.isError && !!insertModel.targetEntityType?.value && (
                         <LoadingSpinner wrapperClassName="loading-data-message" />
+                    )}
+                    {isLoaded && (
+                        <EntityInsertGridRequiredFieldAlert
+                            type={this.capTypeTextSingular}
+                            queryInfo={queryGridModel?.queryInfo}
+                        />
                     )}
                     {isLoaded && (
                         <EditableGridPanel

@@ -51,6 +51,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
     const [idString, setIdString] = useState<string>(undefined);
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<ReactNode>(undefined);
+    const capitalNounPlural = capitalizeFirstChar(nounPlural);
 
     const reset = () => {
         setIdString(undefined);
@@ -76,7 +77,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
             .map(id => id.trim())
             .filter(id => id.length > 0);
         if (ids.length > 0) {
-            incrementClientSideMetricCount('find' + capitalizeFirstChar(nounPlural) + 'ById', 'findCount');
+            incrementClientSideMetricCount('find' + capitalNounPlural + 'ById', 'findCount');
             setSubmitting(true);
             try {
                 const _sessionKey = await saveIdsToFind(fieldType, ids, sessionKey);
@@ -93,7 +94,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
     return (
         <Modal show={show} onHide={closeModal}>
             <Modal.Header closeButton>
-                <Modal.Title>Find {capitalizeFirstChar(nounPlural)}</Modal.Title>
+                <Modal.Title>Find {capitalNounPlural}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Alert>{error}</Alert>
@@ -130,7 +131,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
                         onClick={_onFind}
                         disabled={!idString || idString.trim().length === 0 || submitting}
                     >
-                        {submitting ? `Finding ${nounPlural}...` : `Find ${nounPlural}`}
+                        {submitting ? `Finding ${capitalNounPlural}...` : `Find ${capitalNounPlural}`}
                     </button>
                 </div>
             </Modal.Footer>

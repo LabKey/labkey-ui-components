@@ -374,14 +374,20 @@
     padding: 7px 4px 7px 22px;
     border-radius: 4px;
     border-style: none;
-    height: 31px;
+  }
+
+  // this nonsense is necessary because the dropdown for the find-menu looks different in
+  // firefox than in other browsers Issue 43715
+  @-moz-document url-prefix() {
+    .navbar__search-input { height: 35px; }
   }
 
   .navbar__input-group {
       width: 320px;
   }
   .navbar__find-and-search-button {
-      border: none;
+      border-color: $white;
+      padding-bottom: 7px; // also part of styling change necessary for Issue 43715
   }
 }
 

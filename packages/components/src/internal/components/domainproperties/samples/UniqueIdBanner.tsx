@@ -33,11 +33,11 @@ export const UniqueIdBanner: FC<Props> = memo(({ model, isFieldsPanel, onAddFiel
 
     const uniqueIdFields = model.domain?.fields?.filter(field => field.isUniqueIdField()).toArray();
     if (model.isNew() && !isFieldsPanel && !uniqueIdFields?.length) {
-        return <div>{NEW_TYPE_NO_BARCODE_FIELDS_MSG}</div>;
+        return <div className="uniqueid-msg">{NEW_TYPE_NO_BARCODE_FIELDS_MSG}</div>;
     } else {
         if (!uniqueIdFields?.length) {
             return (
-                <Alert bsStyle="info">
+                <Alert bsStyle="info" className="uniqueid-alert">
                     {ADD_NEW_UNIQUE_ID_MSG}
                     <Button className="pull-right alert-button" bsStyle="info" onClick={onClick}>
                         Yes, Add Unique ID Field
@@ -46,7 +46,7 @@ export const UniqueIdBanner: FC<Props> = memo(({ model, isFieldsPanel, onAddFiel
             );
         } else if (!isFieldsPanel) {
             return (
-                <div>
+                <div className="uniqueid-msg">
                     <i className="fa fa-check-circle domain-panel-status-icon-green" />
                     <span className="left-spacing">
                         {uniqueIdFields?.length === 1

@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Fix capitalization in FindByIdsModal button
 * Issue 43715: Fix pixel offset for Find menu in nav bar for Firefox
 
+### version 2.63.1
+*Released*: 13 August 2021
+* Item 8561: Add some sample type designer element class names for testing
+
 ### version 2.63.0
 *Released*: 11 August 2021
 * Issue 43672: Add "referrer" param to the help link URLs

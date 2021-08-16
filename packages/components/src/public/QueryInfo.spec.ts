@@ -114,9 +114,7 @@ describe('QueryInfo', () => {
         });
 
         test('with readOnly columns', () => {
-            const columns = queryInfo.getUpdateColumns(
-                List<string>(['Name'])
-            );
+            const columns = queryInfo.getUpdateColumns(List<string>(['Name']));
             expect(columns.size).toBe(4);
             expect(columns.get(0).fieldKey).toBe('Name');
             expect(columns.get(1).fieldKey).toBe('Description');

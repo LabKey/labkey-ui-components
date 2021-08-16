@@ -3093,10 +3093,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>): 
 }
 
 export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number): void {
-    removeRows(
-        model,
-        List<number>([rowIdx])
-    );
+    removeRows(model, List<number>([rowIdx]));
 }
 
 /**

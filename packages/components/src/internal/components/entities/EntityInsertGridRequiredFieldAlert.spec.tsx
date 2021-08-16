@@ -2,10 +2,11 @@ import React from 'react';
 import { List } from 'immutable';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { EntityInsertGridRequiredFieldAlert, getFieldKeysOfRequiredCols } from './EntityInsertGridRequiredFieldAlert';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { Alert } from '../base/Alert';
+
+import { EntityInsertGridRequiredFieldAlert, getFieldKeysOfRequiredCols } from './EntityInsertGridRequiredFieldAlert';
 
 const DEFAULT_PROPS = {
     type: 'Sample Type',
@@ -25,10 +26,8 @@ describe('EntityInsertGridRequiredFieldAlert', () => {
 
     test('queryInfo isLoading', () => {
         const wrapper = mount(
-            <EntityInsertGridRequiredFieldAlert
-                {...DEFAULT_PROPS}
-                queryInfo={QueryInfo.create({ isLoading: true })}
-            />);
+            <EntityInsertGridRequiredFieldAlert {...DEFAULT_PROPS} queryInfo={QueryInfo.create({ isLoading: true })} />
+        );
         validate(wrapper);
         wrapper.unmount();
     });
@@ -51,7 +50,8 @@ describe('EntityInsertGridRequiredFieldAlert', () => {
                         },
                     ],
                 })}
-            />);
+            />
+        );
         validate(wrapper, false);
         wrapper.unmount();
     });
@@ -74,7 +74,8 @@ describe('EntityInsertGridRequiredFieldAlert', () => {
                         },
                     ],
                 })}
-            />);
+            />
+        );
         validate(wrapper, false, true);
         const alertText = wrapper.find(Alert).text();
         expect(alertText).toContain('the selected Sample Type has required fields');
@@ -85,30 +86,80 @@ describe('EntityInsertGridRequiredFieldAlert', () => {
 
 describe('getFieldKeysOfRequiredCols', () => {
     test('editable and required', () => {
-        expect(getFieldKeysOfRequiredCols(List.of(
-            QueryColumn.create({ fieldKey: 'col1', readOnly: false, userEditable: true, shownInUpdateView: true, required: true })
-        )).length).toBe(1);
+        expect(
+            getFieldKeysOfRequiredCols(
+                List.of(
+                    QueryColumn.create({
+                        fieldKey: 'col1',
+                        readOnly: false,
+                        userEditable: true,
+                        shownInUpdateView: true,
+                        required: true,
+                    })
+                )
+            ).length
+        ).toBe(1);
 
-        expect(getFieldKeysOfRequiredCols(List.of(
-            QueryColumn.create({ fieldKey: 'col1', readOnly: false, userEditable: true, shownInUpdateView: true, required: true })
-        ))[0]).toBe('col1');
+        expect(
+            getFieldKeysOfRequiredCols(
+                List.of(
+                    QueryColumn.create({
+                        fieldKey: 'col1',
+                        readOnly: false,
+                        userEditable: true,
+                        shownInUpdateView: true,
+                        required: true,
+                    })
+                )
+            )[0]
+        ).toBe('col1');
     });
 
     test('editable and not required', () => {
-        expect(getFieldKeysOfRequiredCols(List.of(
-            QueryColumn.create({ fieldKey: 'col1', readOnly: false, userEditable: true, shownInUpdateView: true, required: false })
-        )).length).toBe(0);
+        expect(
+            getFieldKeysOfRequiredCols(
+                List.of(
+                    QueryColumn.create({
+                        fieldKey: 'col1',
+                        readOnly: false,
+                        userEditable: true,
+                        shownInUpdateView: true,
+                        required: false,
+                    })
+                )
+            ).length
+        ).toBe(0);
     });
 
     test('not editable and required', () => {
-        expect(getFieldKeysOfRequiredCols(List.of(
-            QueryColumn.create({ fieldKey: 'col1', readOnly: false, userEditable: false, shownInUpdateView: true, required: true })
-        )).length).toBe(0);
+        expect(
+            getFieldKeysOfRequiredCols(
+                List.of(
+                    QueryColumn.create({
+                        fieldKey: 'col1',
+                        readOnly: false,
+                        userEditable: false,
+                        shownInUpdateView: true,
+                        required: true,
+                    })
+                )
+            ).length
+        ).toBe(0);
     });
 
     test('not editable and not required', () => {
-        expect(getFieldKeysOfRequiredCols(List.of(
-            QueryColumn.create({ fieldKey: 'col1', readOnly: false, userEditable: false, shownInUpdateView: true, required: false })
-        )).length).toBe(0);
+        expect(
+            getFieldKeysOfRequiredCols(
+                List.of(
+                    QueryColumn.create({
+                        fieldKey: 'col1',
+                        readOnly: false,
+                        userEditable: false,
+                        shownInUpdateView: true,
+                        required: false,
+                    })
+                )
+            ).length
+        ).toBe(0);
     });
 });

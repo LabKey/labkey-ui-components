@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Issue 43734: SM: Aliquot overview details panel shows some aliquot values under the 'originating sample data' section
+  * Hide extra exp.material fields from aliquot detail view
+
 ### version 2.63.2
 *Released*: 13 August 2021
 * Fix capitalization in FindByIdsModal button

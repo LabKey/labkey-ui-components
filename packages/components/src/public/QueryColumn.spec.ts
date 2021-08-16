@@ -442,7 +442,6 @@ describe('insertColumnFilter', () => {
                 })
             )
         ).toBeFalsy();
-
         expect(
             insertColumnFilter(
                 new QueryColumn({
@@ -451,6 +450,53 @@ describe('insertColumnFilter', () => {
                     userEditable: true,
                     fieldKeyArray: ['test1', 'test2'],
                 })
+            )
+        ).toBeFalsy();
+    });
+
+    test('includeFileInputs', () => {
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    shownInInsertView: true,
+                    userEditable: true,
+                    fieldKeyArray: ['test'],
+                    inputType: 'text',
+                }),
+                true
+            )
+        ).toBeTruthy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    shownInInsertView: true,
+                    userEditable: true,
+                    fieldKeyArray: ['test'],
+                    inputType: 'text',
+                }),
+                false
+            )
+        ).toBeTruthy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    shownInInsertView: true,
+                    userEditable: true,
+                    fieldKeyArray: ['test'],
+                    inputType: 'file',
+                }),
+                true
+            )
+        ).toBeTruthy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    shownInInsertView: true,
+                    userEditable: true,
+                    fieldKeyArray: ['test'],
+                    inputType: 'file',
+                }),
+                false
             )
         ).toBeFalsy();
     });

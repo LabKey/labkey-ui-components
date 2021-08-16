@@ -163,6 +163,31 @@ describe('QueryInfo', () => {
         });
     });
 
+    describe('getInsertColumns', () => {
+        test('includeFileInputs false', () => {
+            const insertCol1 = QueryInfo.fromJSON({
+                columns: [
+                    {
+                        fieldKey: 'test1',
+                        fieldKeyArray: ['test1'],
+                        shownInInsertView: true,
+                        userEditable: true,
+                        inputType: 'text',
+                    },
+                    {
+                        fieldKey: 'test2',
+                        fieldKeyArray: ['test2'],
+                        shownInInsertView: true,
+                        userEditable: true,
+                        inputType: 'file',
+                    },
+                ],
+            }).getInsertColumns();
+            expect(insertCol1.size).toBe(1);
+            expect(insertCol1.get(0).fieldKey).toBe('test1');
+        });
+    });
+
     describe('getFileColumnFieldKeys', () => {
         test('default', () => {
             const fieldKeys = QueryInfo.fromJSON({

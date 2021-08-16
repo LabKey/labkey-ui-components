@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 43725: account for both forward and back slash in FileColumnRenderer.getAttachmentTitleFromName
 * Issue 43703: show warning on sample creation editable grid if required fields are included
 
+### version 2.63.2
+*Released*: 13 August 2021
+* Fix capitalization in FindByIdsModal button
+* Issue 43715: Fix pixel offset for Find menu in nav bar for Firefox
+
 ### version 2.63.1
 *Released*: 13 August 2021
 * Item 8561: Add some sample type designer element class names for testing

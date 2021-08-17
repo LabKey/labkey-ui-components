@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+#### versionn TBD
+*Release*: TBD
+* Issue 43693: Indicate the depth of the lineage graphs and grids
+* Issue 43692: expose LineageGroupingOptions for ease of overriding defaults
+
 ### version 2.63.2
 *Released*: 13 August 2021
 * Fix capitalization in FindByIdsModal button

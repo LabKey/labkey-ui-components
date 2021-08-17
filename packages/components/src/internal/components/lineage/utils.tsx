@@ -9,6 +9,7 @@ import { imageURL, SchemaQuery, SCHEMAS, Theme } from '../../..';
 
 import { LineageItemWithMetadata, LineageLink, LineageNode } from './models';
 import { LINEAGE_DIRECTIONS, LineageIconMetadata } from './types';
+import React, { ReactNode } from 'react';
 
 const DEFAULT_ICON_URL = 'default';
 const BACKUP_IMAGE_ROOT = 'https://labkey.org/_images/';
@@ -173,3 +174,11 @@ export function resolveIconAndShapeForNode(
         imageShape,
     };
 }
+
+export function getLineageDepthLimitMessage(className: string, maxDistance: number) : ReactNode
+{
+    return (
+        <div className={className}>Note: Showing a maximum of {maxDistance} generations from the seed node.</div>
+    )
+}
+

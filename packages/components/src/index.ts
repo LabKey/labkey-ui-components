@@ -342,11 +342,13 @@ import {
     getLineageFilterValue,
     invalidateLineageResults,
 } from './internal/components/lineage/actions';
+import { getLineageDepthLimitMessage } from './internal/components/lineage/utils';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
     LineageFilter,
     LineageURLResolvers,
+    LineageGroupingOptions,
 } from './internal/components/lineage/types';
 import { LineageGraph } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
@@ -942,10 +944,12 @@ export {
     LineageGrid,
     LineageGridFromLocation,
     LineageURLResolvers,
+    LineageGroupingOptions,
     SampleTypeLineageCounts,
     invalidateLineageResults,
     getImmediateChildLineageFilterValue,
     getLineageFilterValue,
+    getLineageDepthLimitMessage,
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,

@@ -65,6 +65,24 @@
     }
 }
 
+.lineage-graph-generation-limit-msg {
+    padding-top: 8px;
+    display: block;
+    font-style: italic
+}
+
+.lineage-grid-generation-limit-msg {
+    padding-top: 8px;
+    font-style: italic
+}
+
+.lineage-source-generation-limit-msg {
+    font-style: italic;
+    //padding-top: 20px;
+    font-weight: normal;
+    font-size: 15px;
+}
+
 .lineage-seed-info {
   margin-top: 10px;
 }

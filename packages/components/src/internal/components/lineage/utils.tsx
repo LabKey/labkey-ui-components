@@ -175,10 +175,10 @@ export function resolveIconAndShapeForNode(
     };
 }
 
-export function getLineageDepthLimitMessage(className: string, maxDistance: number) : ReactNode
+export function getLineageDepthLimitMessage(className: string, maxDistance: number, isRoot?: boolean) : ReactNode
 {
     return (
-        <div className={className}>Note: Showing a maximum of {maxDistance} generations from the seed node.</div>
+        <div className={className}>Note: Showing a maximum of {maxDistance} generations{isRoot? '' : ' from the seed node'}.</div>
     )
 }
 

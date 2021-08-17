@@ -115,6 +115,15 @@ exports[`<LineageGrid/> loading 1`] = `
       </div>
     </div>
   </div>
+  <div
+    className="lineage-grid-generation-limit-msg"
+  >
+    Note: Showing a maximum of 
+    3
+     generations
+     from the seed node
+    .
+  </div>
 </div>
 `;
 
@@ -1531,6 +1540,15 @@ exports[`<LineageGrid/> with data 1`] = `
         </table>
       </div>
     </div>
+  </div>
+  <div
+    className="lineage-grid-generation-limit-msg"
+  >
+    Note: Showing a maximum of 
+    3
+     generations
+     from the seed node
+    .
   </div>
 </div>
 `;

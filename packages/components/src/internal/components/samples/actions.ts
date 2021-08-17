@@ -303,10 +303,6 @@ export function getGroupedSampleDisplayColumns(
             else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
                 aliquotHeaderDisplayColumns = aliquotHeaderDisplayColumns.push(col);
             }
-            else if (sampleTypeDomainFields.metaFields.indexOf(colName) === -1) {
-                if ("created" === colName || "createdby" === colName)
-                    displayColumns.push(col);
-            }
         } else {
             if (sampleTypeDomainFields.aliquotFields.indexOf(colName) === -1) {
                 displayColumns.push(col);

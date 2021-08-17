@@ -30,7 +30,7 @@ exports[`<LineageGrid/> loading 1`] = `
                   }
                 }
               >
-                Name
+                ID
               </th>
               <th
                 className="grid-header-cell"
@@ -238,7 +238,7 @@ exports[`<LineageGrid/> with data 1`] = `
                   }
                 }
               >
-                Name
+                ID
               </th>
               <th
                 className="grid-header-cell"

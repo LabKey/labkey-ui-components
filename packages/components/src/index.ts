@@ -342,6 +342,7 @@ import {
     getLineageFilterValue,
     invalidateLineageResults,
 } from './internal/components/lineage/actions';
+import { DEFAULT_LINEAGE_DISTANCE } from './internal/components/lineage/constants';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
@@ -936,6 +937,7 @@ export {
     ReportItemModal,
     ReportList,
     // lineage
+    DEFAULT_LINEAGE_DISTANCE,
     LINEAGE_GROUPING_GENERATIONS,
     LINEAGE_DIRECTIONS,
     LineageDepthLimitMessage,

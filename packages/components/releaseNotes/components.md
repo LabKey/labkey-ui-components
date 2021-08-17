@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 #### versionn TBD
 *Release*: TBD
 * Issue 43693: Indicate the depth of the lineage graphs and grids
-* Issue 43692: expose LineageGroupingOptions for ease of overriding defaults
+* Issue 43692: expose LineageGroupingOptions for ease of overriding defaults; update default depth to 5
 * Issue 43701: Don't remove sample id from a sample assay results grid since the grid may now include aliquots as well
 * Issue 43722: Update label in lineage grid from Name to ID
 

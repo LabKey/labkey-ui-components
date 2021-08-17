@@ -11,7 +11,7 @@ import {
 } from './types';
 
 // Default depth to fetch with the lineage API
-export const DEFAULT_LINEAGE_DISTANCE = 3;
+export const DEFAULT_LINEAGE_DISTANCE = 5;
 export const DEFAULT_LINEAGE_DIRECTION = LINEAGE_DIRECTIONS.Children;
 
 export const DEFAULT_GROUPING_OPTIONS: LineageGroupingOptions = {

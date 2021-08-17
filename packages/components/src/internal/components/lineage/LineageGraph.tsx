@@ -149,7 +149,7 @@ export const LineageGraph = withLineage<LineageGraphOwnProps>((props: Props) => 
 });
 
 interface LineageDepthLimitProps {
-    className: string,
+    className?: string,
     maxDistance?: number,
     isRoot?: boolean
 }
@@ -162,6 +162,7 @@ export const LineageDepthLimitMessage : FC<LineageDepthLimitProps> = memo(props 
 });
 
 LineageDepthLimitMessage.defaultProps = {
+    className: "lineage-graph-generation-limit-msg",
     maxDistance: DEFAULT_LINEAGE_DISTANCE
 }
 

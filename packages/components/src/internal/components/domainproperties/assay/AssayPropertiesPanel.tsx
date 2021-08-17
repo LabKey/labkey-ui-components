@@ -252,6 +252,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                     {!appPropertiesOnly && this.renderImportSettings()}
                 </Col>
 
+                {/* TODO: As one can run LKS without the study module, we should add a relevant check (i.e. 'hasModule('Study')) to this conditional'*/}
                 <Col xs={12} lg={6}>
                     {!appPropertiesOnly && this.renderLinkToStudySettings()}
                 </Col>

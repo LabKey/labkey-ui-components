@@ -30,7 +30,7 @@ export const EntityInsertGridRequiredFieldAlert: FC<Props> = memo(props => {
 
     return (
         <Alert bsStyle="warning">
-            <b>Warning: </b> the selected {type} has required fields which are not included in the grid below:{' '}
+            <b>Warning: </b> the selected {type} has required fields that are not included in the grid below:{' '}
             {missingReqColLabels.join(', ')}.
         </Alert>
     );

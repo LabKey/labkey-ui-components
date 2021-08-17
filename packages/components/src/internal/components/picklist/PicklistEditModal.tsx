@@ -119,7 +119,6 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                         Category: shared ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY,
                     })
                 );
-                incrementClientSideMetricCount(metricFeatureArea, 'updatePicklist');
             } else {
                 updatedList = await createPicklist(trimmedName, description, shared, selectionKey, sampleIds);
                 incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');

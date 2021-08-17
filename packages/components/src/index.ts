@@ -342,7 +342,6 @@ import {
     getLineageFilterValue,
     invalidateLineageResults,
 } from './internal/components/lineage/actions';
-import { getLineageDepthLimitMessage } from './internal/components/lineage/utils';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
@@ -350,7 +349,7 @@ import {
     LineageURLResolvers,
     LineageGroupingOptions,
 } from './internal/components/lineage/types';
-import { LineageGraph } from './internal/components/lineage/LineageGraph';
+import { LineageGraph, LineageDepthLimitMessage } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
@@ -939,6 +938,7 @@ export {
     // lineage
     LINEAGE_GROUPING_GENERATIONS,
     LINEAGE_DIRECTIONS,
+    LineageDepthLimitMessage,
     LineageFilter,
     LineageGraph,
     LineageGrid,
@@ -949,7 +949,7 @@ export {
     invalidateLineageResults,
     getImmediateChildLineageFilterValue,
     getLineageFilterValue,
-    getLineageDepthLimitMessage,
+
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,

@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { FC, memo, PureComponent } from 'react';
 import { Experiment } from '@labkey/api';
 
 import { Alert, LoadingSpinner } from '../../..';
@@ -13,6 +13,7 @@ import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
 import { isBasicNode, VisGraphOptions, VisGraphNode, VisGraphNodeType } from './vis/VisGraphGenerator';
 import { VisGraph } from './vis/VisGraph';
 import { LineageNodeDetailFactory } from './node/LineageNodeDetailFactory';
+import { DEFAULT_LINEAGE_DISTANCE } from './constants';
 
 interface LineageGraphOwnProps {
     members?: LINEAGE_DIRECTIONS;
@@ -146,3 +147,21 @@ export const LineageGraph = withLineage<LineageGraphOwnProps>((props: Props) => 
 
     return <LineageGraphDisplay {...props} visGraphOptions={props.lineage?.generateGraph(props)} />;
 });
+
+interface LineageDepthLimitProps {
+    className: string,
+    maxDistance?: number,
+    isRoot?: boolean
+}
+export const LineageDepthLimitMessage : FC<LineageDepthLimitProps> = memo(props => {
+    const { className, maxDistance, isRoot } = props;
+
+    return (
+        <div className={className}>Note: Showing a maximum of {maxDistance} generations{isRoot? '' : ' from the seed node'}.</div>
+    )
+});
+
+LineageDepthLimitMessage.defaultProps = {
+    maxDistance: DEFAULT_LINEAGE_DISTANCE
+}
+

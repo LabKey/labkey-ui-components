@@ -3,7 +3,6 @@ import { Button, Checkbox, DropdownButton, Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import {
-    getLineageDepthLimitMessage,
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
     LineageFilter,
@@ -12,6 +11,7 @@ import {
     VisGraphNode
 } from '../../..';
 import { DEFAULT_LINEAGE_DISTANCE, SAMPLE_ALIQUOT_PROTOCOL_LSID } from '../lineage/constants';
+import { LineageDepthLimitMessage } from '../lineage/LineageGraph';
 
 interface Props {
     sampleLsid: string;
@@ -136,7 +136,7 @@ export class SampleLineageGraph extends PureComponent<Props, State> {
                         groupTitles={groupTitles}
                         runProtocolLsid={this.getRunProtocolLsid()}
                     />
-                    {getLineageDepthLimitMessage("lineage-graph-generation-limit-msg", grouping.childDepth)}
+                    <LineageDepthLimitMessage className={"lineage-graph-generation-limit-msg"} maxDistance={grouping.childDepth} />
                 </Panel.Body>
             </Panel>
         );

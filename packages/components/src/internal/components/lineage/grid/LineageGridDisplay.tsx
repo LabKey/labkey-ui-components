@@ -6,12 +6,13 @@ import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import { Alert, AppURL, getLineageDepthLimitMessage, getLocation, Grid, GridProps } from '../../../..';
+import { Alert, AppURL, getLocation, Grid, GridProps } from '../../../..';
 
 import { LineageGridModel } from '../models';
 import { DEFAULT_LINEAGE_DISTANCE } from '../constants';
 import { LINEAGE_DIRECTIONS } from '../types';
 import { getPageNumberChangeURL } from '../actions';
+import { LineageDepthLimitMessage } from '../LineageGraph';
 
 interface LineagePagingProps {
     model: LineageGridModel;
@@ -185,7 +186,7 @@ export class LineageGridDisplay extends PureComponent<LineageGridProps> {
                         <Grid {...gridProps} />
                     </div>
                 </div>
-                {getLineageDepthLimitMessage("lineage-grid-generation-limit-msg", model.distance)}
+                <LineageDepthLimitMessage className={"lineage-grid-generation-limit-msg"} maxDistance={model.distance} />
             </div>
         );
     }

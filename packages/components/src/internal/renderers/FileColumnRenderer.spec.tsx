@@ -74,4 +74,10 @@ describe('getAttachmentTitleFromName', () => {
         expect(getAttachmentTitleFromName('sampletype/test.tsv')).toBe('test.tsv');
         expect(getAttachmentTitleFromName('sampleset/test.tsv')).toBe('test.tsv');
     });
+
+    test('with backslash dir prefix', () => {
+        expect(getAttachmentTitleFromName('something\\test.tsv')).toBe('test.tsv');
+        expect(getAttachmentTitleFromName('sampletype\\test.tsv')).toBe('test.tsv');
+        expect(getAttachmentTitleFromName('sampleset\\test.tsv')).toBe('test.tsv');
+    });
 });

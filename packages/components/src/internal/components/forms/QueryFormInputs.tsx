@@ -186,7 +186,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         // QueryFormInputs to be a rendering factory for the columns that are in the set.
         if (columns) {
             return columns
-                .filter(filter)
+                .filter(col => filter(col))
                 .valueSeq()
                 .map((col, i) => {
                     const shouldDisableField =

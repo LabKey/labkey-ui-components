@@ -98,6 +98,7 @@ import {
 
 import { getUniqueIdColumnMetadata } from './utils';
 import { getEntityTypeData, handleEntityFileImport } from './actions';
+import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
@@ -892,7 +893,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     columnFilter = (col: QueryColumn): boolean => {
         return (
-            insertColumnFilter(col) &&
+            insertColumnFilter(col, false) &&
             col.fieldKey !== this.props.entityDataType.uniqueFieldKey &&
             col.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY
         );
@@ -956,39 +957,45 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                         <LoadingSpinner wrapperClassName="loading-data-message" />
                     )}
                     {isLoaded && (
-                        <EditableGridPanel
-                            addControlProps={{
-                                nounSingular: gridNounSingularCap,
-                                nounPlural: gridNounPluralCap,
-                                placement: 'top' as PlacementType,
-                                wrapperClass: 'pull-left',
-                                maxCount: MAX_EDITABLE_GRID_ROWS,
-                            }}
-                            allowBulkRemove
-                            allowBulkAdd
-                            allowBulkUpdate
-                            bordered
-                            striped
-                            bulkAddText="Bulk Insert"
-                            bulkAddProps={{
-                                title: `Bulk Creation of ${gridNounPluralCap}`,
-                                header: `Add a batch of ${gridNounPlural} that will share the properties set below.`,
-                                columnFilter: this.columnFilter,
-                                fieldValues: this.getBulkAddFormValues(),
-                                creationTypeOptions: bulkCreationTypeOptions,
-                                countText: `New ${gridNounPlural}`,
-                            }}
-                            onBulkAdd={onBulkAdd}
-                            bulkUpdateProps={{ columnFilter: this.columnFilter }}
-                            bulkRemoveText={'Remove ' + gridNounPluralCap}
-                            columnMetadata={columnMetadata}
-                            onRowCountChange={this.onRowCountChange}
-                            model={queryGridModel}
-                            initialEmptyRowCount={0}
-                            emptyGridMsg={`Start by adding the quantity of ${gridNounPlural} you want to create.`}
-                            maxTotalRows={this.props.maxEntities}
-                            getInsertColumns={this.getInsertColumns}
-                        />
+                        <>
+                            <EntityInsertGridRequiredFieldAlert
+                                type={this.capTypeTextSingular}
+                                queryInfo={queryGridModel?.queryInfo}
+                            />
+                            <EditableGridPanel
+                                addControlProps={{
+                                    nounSingular: gridNounSingularCap,
+                                    nounPlural: gridNounPluralCap,
+                                    placement: 'top' as PlacementType,
+                                    wrapperClass: 'pull-left',
+                                    maxCount: MAX_EDITABLE_GRID_ROWS,
+                                }}
+                                allowBulkRemove
+                                allowBulkAdd
+                                allowBulkUpdate
+                                bordered
+                                striped
+                                bulkAddText="Bulk Insert"
+                                bulkAddProps={{
+                                    title: `Bulk Creation of ${gridNounPluralCap}`,
+                                    header: `Add a batch of ${gridNounPlural} that will share the properties set below.`,
+                                    columnFilter: this.columnFilter,
+                                    fieldValues: this.getBulkAddFormValues(),
+                                    creationTypeOptions: bulkCreationTypeOptions,
+                                    countText: `New ${gridNounPlural}`,
+                                }}
+                                onBulkAdd={onBulkAdd}
+                                bulkUpdateProps={{ columnFilter: this.columnFilter }}
+                                bulkRemoveText={'Remove ' + gridNounPluralCap}
+                                columnMetadata={columnMetadata}
+                                onRowCountChange={this.onRowCountChange}
+                                model={queryGridModel}
+                                initialEmptyRowCount={0}
+                                emptyGridMsg={`Start by adding the quantity of ${gridNounPlural} you want to create.`}
+                                maxTotalRows={this.props.maxEntities}
+                                getInsertColumns={this.getInsertColumns}
+                            />
+                        </>
                     )}
                 </div>
             </>

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.64.0
+*Released*: 18 August 2021
+* Issue 43728: bulk insert for samples is broken when a file field is present
+* Issue 43725: account for both forward and back slash in FileColumnRenderer.getAttachmentTitleFromName
+* Issue 43703: show warning on sample creation editable grid if required fields are included
+
 ### version 2.63.2
 *Released*: 13 August 2021
 * Fix capitalization in FindByIdsModal button

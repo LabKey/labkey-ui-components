@@ -22,7 +22,6 @@ import { User, devToolsActive, toggleDevTools } from '../../..';
 
 import { ProductMenuModel } from './model';
 import { signOut, signIn } from './actions';
-import { lpActive, toggleLP } from '../../util/utils';
 
 export interface UserMenuProps {
     extraDevItems?: ReactNode;
@@ -83,9 +82,6 @@ export const UserMenu: FC<UserMenuProps> = props => {
                         <MenuItem header>Dev Tools</MenuItem>
                         <MenuItem onClick={toggleDevTools}>
                             {devToolsActive() ? 'Disable' : 'Enable'} Redux Tools
-                        </MenuItem>
-                        <MenuItem onClick={toggleLP}>
-                            {lpActive() ? 'Disable' : 'Enable'} Lab Processes
                         </MenuItem>
                         {extraDevItems}
                     </>

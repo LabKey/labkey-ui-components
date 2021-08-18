@@ -114,9 +114,7 @@ describe('QueryInfo', () => {
         });
 
         test('with readOnly columns', () => {
-            const columns = queryInfo.getUpdateColumns(
-                List<string>(['Name'])
-            );
+            const columns = queryInfo.getUpdateColumns(List<string>(['Name']));
             expect(columns.size).toBe(4);
             expect(columns.get(0).fieldKey).toBe('Name');
             expect(columns.get(1).fieldKey).toBe('Description');
@@ -160,6 +158,31 @@ describe('QueryInfo', () => {
             expect(queryInfo.columns.size).toBe(1);
             expect(queryInfo.columns.get('test1')).toBeDefined();
             expect(queryInfo.columns.get('test2')).toBeUndefined();
+        });
+    });
+
+    describe('getInsertColumns', () => {
+        test('includeFileInputs false', () => {
+            const insertCol1 = QueryInfo.fromJSON({
+                columns: [
+                    {
+                        fieldKey: 'test1',
+                        fieldKeyArray: ['test1'],
+                        shownInInsertView: true,
+                        userEditable: true,
+                        inputType: 'text',
+                    },
+                    {
+                        fieldKey: 'test2',
+                        fieldKeyArray: ['test2'],
+                        shownInInsertView: true,
+                        userEditable: true,
+                        inputType: 'file',
+                    },
+                ],
+            }).getInsertColumns();
+            expect(insertCol1.size).toBe(1);
+            expect(insertCol1.get(0).fieldKey).toBe('test1');
         });
     });
 

@@ -8,6 +8,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 43701: Don't remove sample id from a sample assay results grid since the grid may now include aliquots as well
 * Issue 43722: Update label in lineage grid from Name to ID
 
+### version 2.64.0
+*Released*: 18 August 2021
+* Issue 43728: bulk insert for samples is broken when a file field is present
+* Issue 43725: account for both forward and back slash in FileColumnRenderer.getAttachmentTitleFromName
+* Issue 43703: show warning on sample creation editable grid if required fields are included
+
 ### version 2.63.2
 *Released*: 13 August 2021
 * Fix capitalization in FindByIdsModal button

@@ -292,12 +292,13 @@ export class QueryColumn extends Record({
     }
 }
 
-export function insertColumnFilter(col: QueryColumn): boolean {
+export function insertColumnFilter(col: QueryColumn, includeFileInputs = true): boolean {
     return (
         col &&
         col.removeFromViews !== true &&
         col.shownInInsertView === true &&
         col.userEditable === true &&
-        col.fieldKeyArray.length === 1
+        col.fieldKeyArray.length === 1 &&
+        (includeFileInputs || !col.isFileInput)
     );
 }

@@ -119,7 +119,7 @@ exports[`<LineageGrid/> loading 1`] = `
     className="lineage-grid-generation-limit-msg"
   >
     Note: Showing a maximum of 
-    3
+    5
      generations
      from the seed node
     .
@@ -142,7 +142,7 @@ exports[`<LineageGrid/> with data 1`] = `
       >
         <a
           className="btn btn-success"
-          href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3&distance=3&members=parents"
+          href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3&distance=5&members=parents"
           onClick={[Function]}
           onKeyDown={[Function]}
         >
@@ -157,7 +157,7 @@ exports[`<LineageGrid/> with data 1`] = `
         >
           <a
             className="btn btn-success disabled"
-            href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3&distance=3&members=children"
+            href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3&distance=5&members=children"
             onClick={[Function]}
             onKeyDown={[Function]}
             style={
@@ -365,7 +365,7 @@ exports[`<LineageGrid/> with data 1`] = `
                 >
                   <a
                     className="lineage-btn-seed btn btn-xs btn-primary"
-                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3&distance=3&members=parents"
+                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3&distance=5&members=parents"
                     onClick={[Function]}
                     onKeyDown={[Function]}
                     title="Parents for Hgb3.3"
@@ -488,7 +488,7 @@ exports[`<LineageGrid/> with data 1`] = `
                 >
                   <a
                     className="lineage-btn-seed btn btn-xs btn-primary"
-                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1&distance=3&members=parents"
+                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1&distance=5&members=parents"
                     onClick={[Function]}
                     onKeyDown={[Function]}
                     title="Parents for Hgb3.3.1"
@@ -508,7 +508,7 @@ exports[`<LineageGrid/> with data 1`] = `
                   </span>
                   <a
                     className="lineage-btn-seed btn btn-xs btn-primary"
-                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1&distance=3&members=children"
+                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1&distance=5&members=children"
                     onClick={[Function]}
                     onKeyDown={[Function]}
                     title="Children for Hgb3.3.1"
@@ -613,7 +613,7 @@ exports[`<LineageGrid/> with data 1`] = `
                 >
                   <a
                     className="lineage-btn-seed btn btn-xs btn-primary"
-                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.1&distance=3&members=parents"
+                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.1&distance=5&members=parents"
                     onClick={[Function]}
                     onKeyDown={[Function]}
                     title="Parents for Hgb3.3.1.1"
@@ -736,7 +736,7 @@ exports[`<LineageGrid/> with data 1`] = `
                 >
                   <a
                     className="lineage-btn-seed btn btn-xs btn-primary"
-                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.3&distance=3&members=parents"
+                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.3&distance=5&members=parents"
                     onClick={[Function]}
                     onKeyDown={[Function]}
                     title="Parents for Hgb3.3.1.3"
@@ -859,7 +859,7 @@ exports[`<LineageGrid/> with data 1`] = `
                 >
                   <a
                     className="lineage-btn-seed btn btn-xs btn-primary"
-                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.2&distance=3&members=parents"
+                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.2&distance=5&members=parents"
                     onClick={[Function]}
                     onKeyDown={[Function]}
                     title="Parents for Hgb3.3.1.2"
@@ -982,7 +982,7 @@ exports[`<LineageGrid/> with data 1`] = `
                 >
                   <a
                     className="lineage-btn-seed btn btn-xs btn-primary"
-                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.5&distance=3&members=parents"
+                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.5&distance=5&members=parents"
                     onClick={[Function]}
                     onKeyDown={[Function]}
                     title="Parents for Hgb3.3.1.5"
@@ -1105,7 +1105,7 @@ exports[`<LineageGrid/> with data 1`] = `
                 >
                   <a
                     className="lineage-btn-seed btn btn-xs btn-primary"
-                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.4&distance=3&members=parents"
+                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.4&distance=5&members=parents"
                     onClick={[Function]}
                     onKeyDown={[Function]}
                     title="Parents for Hgb3.3.1.4"
@@ -1228,7 +1228,7 @@ exports[`<LineageGrid/> with data 1`] = `
                 >
                   <a
                     className="lineage-btn-seed btn btn-xs btn-primary"
-                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.7&distance=3&members=parents"
+                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.7&distance=5&members=parents"
                     onClick={[Function]}
                     onKeyDown={[Function]}
                     title="Parents for Hgb3.3.1.7"
@@ -1351,7 +1351,7 @@ exports[`<LineageGrid/> with data 1`] = `
                 >
                   <a
                     className="lineage-btn-seed btn btn-xs btn-primary"
-                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.6&distance=3&members=parents"
+                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.1.6&distance=5&members=parents"
                     onClick={[Function]}
                     onKeyDown={[Function]}
                     title="Parents for Hgb3.3.1.6"
@@ -1474,7 +1474,7 @@ exports[`<LineageGrid/> with data 1`] = `
                 >
                   <a
                     className="lineage-btn-seed btn btn-xs btn-primary"
-                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.2&distance=3&members=parents"
+                    href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3.2&distance=5&members=parents"
                     onClick={[Function]}
                     onKeyDown={[Function]}
                     title="Parents for Hgb3.3.2"
@@ -1545,9 +1545,9 @@ exports[`<LineageGrid/> with data 1`] = `
     className="lineage-grid-generation-limit-msg"
   >
     Note: Showing a maximum of 
-    3
+    5
      generations
-     from the seed node
+     from Hgb3.3
     .
   </div>
 </div>

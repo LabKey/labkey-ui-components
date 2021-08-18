@@ -448,6 +448,7 @@
     "qcEnabled" : true,
     "protocolTransformScripts" : ["/path/to/transform.R", "/path/to/anotherTransform.pl"],
     "autoCopyTargetContainerId" : "DDFDA233-F0C8-1036-95AB-F5B7057CFF74",
+    "autoLinkCategory": "aCategoryName",
     "allowTransformationScript" : true,
     "allowBackgroundUpload" : true,
     "allowEditableResults" : true,

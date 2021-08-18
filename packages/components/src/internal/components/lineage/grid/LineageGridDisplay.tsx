@@ -186,7 +186,7 @@ export class LineageGridDisplay extends PureComponent<LineageGridProps> {
                         <Grid {...gridProps} />
                     </div>
                 </div>
-                <LineageDepthLimitMessage className={"lineage-grid-generation-limit-msg"} maxDistance={model.distance} />
+                <LineageDepthLimitMessage className={"lineage-grid-generation-limit-msg"} maxDistance={model.distance} nodeName={model.seedNode?.name} />
             </div>
         );
     }

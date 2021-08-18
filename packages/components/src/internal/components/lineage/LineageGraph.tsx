@@ -151,18 +151,20 @@ export const LineageGraph = withLineage<LineageGraphOwnProps>((props: Props) => 
 interface LineageDepthLimitProps {
     className?: string,
     maxDistance?: number,
+    nodeName?: string,
     isRoot?: boolean
 }
 export const LineageDepthLimitMessage : FC<LineageDepthLimitProps> = memo(props => {
-    const { className, maxDistance, isRoot } = props;
+    const { className, maxDistance, isRoot, nodeName } = props;
 
     return (
-        <div className={className}>Note: Showing a maximum of {maxDistance} generations{isRoot? '' : ' from the seed node'}.</div>
+        <div className={className}>Note: Showing a maximum of {maxDistance} generations{isRoot? '' : ' from ' + nodeName}.</div>
     )
 });
 
 LineageDepthLimitMessage.defaultProps = {
     className: "lineage-graph-generation-limit-msg",
-    maxDistance: DEFAULT_LINEAGE_DISTANCE
+    maxDistance: DEFAULT_LINEAGE_DISTANCE,
+    nodeName: 'the seed node',
 }
 

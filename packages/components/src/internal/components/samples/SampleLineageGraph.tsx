@@ -15,6 +15,7 @@ import { LineageDepthLimitMessage } from '../lineage/LineageGraph';
 
 interface Props {
     sampleLsid: string;
+    sampleID: string;
     goToLineageGrid: () => void;
     onLineageNodeDblClick: (node: VisGraphNode) => void;
     groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>;
@@ -117,7 +118,7 @@ export class SampleLineageGraph extends PureComponent<Props, State> {
     }
 
     render() {
-        const { sampleLsid, goToLineageGrid, onLineageNodeDblClick, groupTitles, groupingOptions } = this.props;
+        const { sampleLsid, sampleID, goToLineageGrid, onLineageNodeDblClick, groupTitles, groupingOptions } = this.props;
 
         let grouping = { ...(groupingOptions ?? {childDepth: DEFAULT_LINEAGE_DISTANCE}), generations: LINEAGE_GROUPING_GENERATIONS.Specific};
         return (
@@ -136,7 +137,7 @@ export class SampleLineageGraph extends PureComponent<Props, State> {
                         groupTitles={groupTitles}
                         runProtocolLsid={this.getRunProtocolLsid()}
                     />
-                    <LineageDepthLimitMessage className={"lineage-graph-generation-limit-msg"} maxDistance={grouping.childDepth} />
+                    <LineageDepthLimitMessage className={"lineage-graph-generation-limit-msg"} maxDistance={grouping.childDepth} nodeName={sampleID}/>
                 </Panel.Body>
             </Panel>
         );

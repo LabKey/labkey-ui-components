@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.65.0
+*Released*: 18 August 2021
 * Create Assay Designer 'Linked Dataset Category' field as part of Link to Study dataset category assignment
 
 ### version 2.64.0

@@ -107,15 +107,23 @@ export class EntityParentType extends Record({
         return this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM : QueryColumn.MATERIAL_INPUTS;
     }
 
+    generateFieldKey(): string {
+        const parentInputType = this.getInputType();
+        const formattedQueryName = capitalizeFirstChar(this.query);
+
+        // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
+        // capitalized here and we lower it where needed
+        return this.isAliquotParent
+            ? QueryColumn.ALIQUOTED_FROM
+            : [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
+    }
+
     // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
     generateColumn(displayColumn: string): QueryColumn {
         const parentInputType = this.getInputType();
         const formattedQueryName = capitalizeFirstChar(this.query);
-        // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
-        // capitalized here and we lower it where needed
-        const parentColName = this.isAliquotParent
-            ? QueryColumn.ALIQUOTED_FROM
-            : [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
+        const parentColName = this.generateFieldKey();
+
         // Issue 40233: SM app allows for two types of parents, sources and samples, and its confusing if both use
         // the "Parents" suffix in the editable grid header
         const captionSuffix = this.schema !== SCHEMAS.DATA_CLASSES.SCHEMA ? ' Parents' : '';
@@ -149,6 +157,7 @@ export class EntityParentType extends Record({
             name: parentColName,
             required: this.isAliquotParent,
             shownInInsertView: true,
+            shownInUpdateView: true,
             type: 'Text (String)',
             userEditable: true,
         });
@@ -184,6 +193,7 @@ export interface EntityChoice {
     type: IEntityTypeOption;
     ids: string[]; // LSIDs or RowIds
     value: string; // String with comma-separated values (e.g., "S-1,S-2") for use with QuerySelect multi-select)
+    gridValues?: DisplayObject[]; // array of RowId/DisplayValue DisplayObjects for use with EditableGrid
 }
 
 export interface MaterialOutput {

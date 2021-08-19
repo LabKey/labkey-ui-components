@@ -16,13 +16,14 @@
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 
-import { IEntityTypeDetails } from '../entities/models';
-import { deleteEntityType } from '../entities/actions';
+import { EntityChoice, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
+import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
 import {
     AssayStateModel,
     buildURL,
     caseInsensitive,
     createQueryConfigFilteredBySample,
+    DataClassDataType,
     DomainDetails,
     FindField,
     getSelectedData,
@@ -32,6 +33,7 @@ import {
     QueryConfig,
     resolveErrorMessage,
     SAMPLE_ID_FIND_FIELD,
+    SampleTypeDataType,
     SchemaQuery,
     SCHEMAS,
     selectRows,
@@ -42,6 +44,8 @@ import {
 import { findMissingValues } from '../../util/utils';
 
 import { GroupedSampleFields } from './models';
+import { ParentEntityLineageColumns } from "../entities/constants";
+import { getInitialParentChoices } from "../entities/utils";
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -211,14 +215,13 @@ export function getFilteredSampleSelection(
     sampleType: string,
     filters: Filter.IFilter[]
 ): Promise<any[]> {
-    if (!selection || selection.isEmpty()) {
+    const sampleRowIds = getSampleIdsFromSelection(selection);
+    if (sampleRowIds.length === 0) {
         return new Promise((resolve, reject) => {
             reject('No data is selected');
         });
     }
 
-    const sampleRowIds = [];
-    selection.forEach(sel => sampleRowIds.push(parseInt(sel)));
     return new Promise((resolve, reject) => {
         selectRows({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
@@ -242,15 +245,14 @@ export function getFilteredSampleSelection(
     });
 }
 
-export function getSampleSelectionStorageData(selection: List<any>): Promise<{}> {
-    if (!selection || selection.isEmpty()) {
+export function getSampleSelectionStorageData(selection: List<any>): Promise<Record<string, any>> {
+    const sampleRowIds = getSampleIdsFromSelection(selection);
+    if (sampleRowIds.length === 0) {
         return new Promise((resolve, reject) => {
             reject('No data is selected');
         });
     }
 
-    const sampleRowIds = [];
-    selection.forEach(sel => sampleRowIds.push(parseInt(sel)));
     return new Promise((resolve, reject) => {
         selectRows({
             schemaName: 'inventory',
@@ -277,6 +279,62 @@ export function getSampleSelectionStorageData(selection: List<any>): Promise<{}>
                 reject(resolveErrorMessage(reason));
             });
     });
+}
+
+export function getSampleSelectionLineageData(selection: List<any>, sampleType: string): Promise<{}> {
+    const sampleRowIds = getSampleIdsFromSelection(selection);
+    if (sampleRowIds.length === 0) {
+        return new Promise((resolve, reject) => {
+            reject('No data is selected');
+        });
+    }
+
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+            queryName: sampleType,
+            columns: List.of('RowId', 'Name', 'LSID').concat(ParentEntityLineageColumns).toArray(),
+            filterArray: [Filter.create('RowId', sampleRowIds, Filter.Types.IN)],
+        })
+            .then(response => {
+                const { key, models } = response;
+                resolve(models[key]);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
+
+export const getOriginalParentsFromSampleLineage = async (
+    sampleLineage: Record<string, any>
+): Promise<Record<string, List<EntityChoice>>> => {
+    const originalParents = {};
+    const dataClassOptions = await getEntityTypeOptions(DataClassDataType);
+    const sampleTypeOptions = await getEntityTypeOptions(SampleTypeDataType);
+
+    // iterate through both Data Classes and Sample Types for finding sample parents
+    [DataClassDataType, SampleTypeDataType].forEach(dataType => {
+        const options = dataType === DataClassDataType ? dataClassOptions : sampleTypeOptions;
+        const parentTypeOptions = List<IEntityTypeOption>(options.get(dataType.typeListingSchemaQuery.queryName));
+        Object.keys(sampleLineage).forEach(sampleId => {
+            if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
+
+            originalParents[sampleId] = originalParents[sampleId].concat(
+                getInitialParentChoices(parentTypeOptions, dataType, sampleLineage[sampleId], true)
+            );
+        });
+    });
+    return originalParents;
+};
+
+function getSampleIdsFromSelection(selection: List<any>): number[] {
+    const sampleRowIds = [];
+    if (selection && !selection.isEmpty()) {
+        selection.forEach(sel => sampleRowIds.push(parseInt(sel)));
+    }
+    return sampleRowIds;
 }
 
 export interface GroupedSampleDisplayColumns {

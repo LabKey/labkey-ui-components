@@ -11,6 +11,7 @@ import {
     getAliquotSampleIds,
     getGroupedSampleDomainFields,
     getNotInStorageSampleIds,
+    getSampleSelectionLineageData,
     getSampleSelectionStorageData,
 } from './actions';
 
@@ -30,22 +31,25 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             noStorageSamples: undefined,
             selectionInfoError: undefined,
             sampleItems: undefined,
+            sampleLineage: undefined,
         };
 
         componentDidMount() {
             this.loadSampleTypeDomain();
             this.loadAliquotData();
             this.loadStorageData();
+            this.loadLineageData();
         }
 
         componentDidUpdate(prevProps: Props): void {
             if (prevProps.selection !== this.props.selection) {
                 this.loadAliquotData();
                 this.loadStorageData();
+                this.loadLineageData();
             }
         }
 
-        loadSampleTypeDomain() {
+        loadSampleTypeDomain(): void {
             getGroupedSampleDomainFields(this.props.sampleSet)
                 .then(sampleTypeDomainFields => {
                     this.setState(() => ({
@@ -57,7 +61,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                 });
         }
 
-        loadAliquotData() {
+        loadAliquotData(): void {
             const { determineAliquot, selection, sampleSet } = this.props;
             if (determineAliquot && selection && selection.size > 0)
                 getAliquotSampleIds(selection, sampleSet)
@@ -74,7 +78,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                     });
         }
 
-        loadStorageData() {
+        loadStorageData(): void {
             const { determineStorage, selection, sampleSet } = this.props;
             if (determineStorage && selection && selection.size > 0)
                 getNotInStorageSampleIds(selection, sampleSet)
@@ -103,13 +107,31 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                 });
         }
 
+        loadLineageData(): void {
+            const { selection, sampleSet } = this.props;
+            getSampleSelectionLineageData(selection, sampleSet)
+                .then(sampleLineage => {
+                    this.setState(() => ({
+                        sampleLineage,
+                    }));
+                })
+                .catch(error => {
+                    this.setState(() => ({
+                        sampleLineage: undefined,
+                        selectionInfoError: error,
+                    }));
+                });
+        }
+
         render() {
             const { determineAliquot, determineStorage } = this.props;
-            const { aliquots, noStorageSamples, selectionInfoError, sampleTypeDomainFields } = this.state;
+            const { aliquots, noStorageSamples, selectionInfoError, sampleTypeDomainFields, sampleLineage } = this.state;
 
             let isLoaded = !!sampleTypeDomainFields;
             if (isLoaded && !selectionInfoError) {
-                if ((determineAliquot && !aliquots) || (determineStorage && !noStorageSamples)) isLoaded = false;
+                if ((determineAliquot && !aliquots) || (determineStorage && !noStorageSamples) || !sampleLineage) {
+                    isLoaded = false;
+                }
             }
 
             if (isLoaded) {

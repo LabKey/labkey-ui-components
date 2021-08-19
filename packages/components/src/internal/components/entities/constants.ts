@@ -1,3 +1,5 @@
+import { List } from 'immutable';
+
 import { SCHEMAS } from '../../schemas';
 
 import { DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
@@ -50,15 +52,20 @@ export const DataClassDataType: EntityDataType = {
     importFileAction: 'importData',
 };
 
+export const ParentEntityLineageColumns = List.of(
+    'Inputs/Materials/First',
+    'Inputs/Materials/First/RowId',
+    'Inputs/Materials/First/SampleSet',
+    'Inputs/Data/First',
+    'Inputs/Data/First/RowId',
+    'Inputs/Data/First/DataClass'
+);
+
 export const ParentEntityRequiredColumns = SCHEMAS.CBMB.concat(
     'LSID',
     'Name',
     'Description',
     'AliquotedFromLSID/Name',
     'RootMaterialLSID/Name',
-    'RootMaterialLSID/Description',
-    'Inputs/Materials/First',
-    'Inputs/Materials/First/SampleSet',
-    'Inputs/Data/First',
-    'Inputs/Data/First/DataClass'
-);
+    'RootMaterialLSID/Description'
+).concat(ParentEntityLineageColumns);

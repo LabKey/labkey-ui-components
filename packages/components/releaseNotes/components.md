@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD August 2021
+* Item 9228: Sample Type lineage updates via “Edit Sample in Grid”
+  * query to get first parents (sources or samples) for selected samples in sample type grid
+  * parse sample parent data into format that can be used to get initial columns and values for sample lineage EditableGrid
+  * add new "Lineage Details" tab to the sample edit via grid display
+  * persist updated sample parents on finish/save from EditableGrid
+
 ### version 2.64.0
 *Released*: 18 August 2021
 * Issue 43728: bulk insert for samples is broken when a file field is present

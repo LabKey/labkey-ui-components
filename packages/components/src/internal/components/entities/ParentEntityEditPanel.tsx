@@ -83,12 +83,8 @@ export class ParentEntityEditPanel extends Component<Props, State> {
             const {typeListingSchemaQuery} = parentDataType;
             try {
                 const options = await getEntityTypeOptions(parentDataType);
-                parentTypeOptions = parentTypeOptions.concat(options.get(typeListingSchemaQuery.queryName)) as List<
-                    IEntityTypeOption
-                    >;
-                originalParents = originalParents.concat(
-                    getInitialParentChoices(parentTypeOptions, parentDataType, childData)
-                ) as List<EntityChoice>;
+                parentTypeOptions = parentTypeOptions.concat(options.get(typeListingSchemaQuery.queryName)) as List<IEntityTypeOption>;
+                originalParents = originalParents.concat(getInitialParentChoices(parentTypeOptions, parentDataType, childData)) as List<EntityChoice>;
             } catch (reason) {
                 this.setState({
                     error: getActionErrorMessage(

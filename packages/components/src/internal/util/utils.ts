@@ -374,10 +374,13 @@ export function getUpdatedDataFromGrid(
                 }
                 // Lookup columns store a list but grid only holds a single value
                 else if (List.isList(originalValue) && !Array.isArray(value)) {
-                    if (originalValue.get(0).value !== value) {
+                    // compare values / displayValues as concatenated string
+                    const values = originalValue.map(v => v.value).join(', ');
+                    const displayValues = originalValue.map(v => v.displayValue).join(', ');
+                    if (values !== value && displayValues !== value) {
                         row[key] = (isDate ? parseDate(value) : value) ?? null;
                     }
-                } else if (originalValue !== value) {
+                } else if (!(originalValue === undefined && value === null) && originalValue !== value) {
                     // - only update if the value has changed
                     // - if the value is 'undefined', it will be removed from the update rows, so in order to
                     // erase an existing value we set the value to null in our update data

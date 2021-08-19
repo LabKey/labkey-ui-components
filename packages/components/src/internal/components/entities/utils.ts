@@ -42,7 +42,8 @@ export function parentValuesDiffer(
 export function getInitialParentChoices(
     parentTypeOptions: List<IEntityTypeOption>,
     parentDataType: EntityDataType,
-    childData: Record<string, any>
+    childData: Record<string, any>,
+    forEditableGrid = false
 ): List<EntityChoice> {
     let parentValuesByType = Map<string, EntityChoice>();
 
@@ -64,10 +65,22 @@ export function getInitialParentChoices(
                             type: typeOption,
                             ids: [],
                             value: undefined,
+                            gridValues: [],
                         });
                     }
                     const updatedChoice = parentValuesByType.get(typeOption.query);
-                    updatedChoice.ids.push(inputs[index]?.['value']);
+                    updatedChoice.ids.push(inputs[index]?.value);
+
+                    // when using the data for an editable grid, we need the RowId/DisplayValue pairs
+                    if (inputs[index]) {
+                        updatedChoice.gridValues.push({
+                            value: forEditableGrid
+                                ? childData[parentDataType.inputColumnName + '/RowId'][index]?.value
+                                : inputs[index]?.value,
+                            displayValue: inputs[index]?.displayValue,
+                        });
+                    }
+
                     parentValuesByType = parentValuesByType.set(typeOption.query, updatedChoice);
                 }
             });

@@ -137,7 +137,7 @@ export class SampleLineageGraph extends PureComponent<Props, State> {
                         groupTitles={groupTitles}
                         runProtocolLsid={this.getRunProtocolLsid()}
                     />
-                    <LineageDepthLimitMessage className={"lineage-graph-generation-limit-msg"} maxDistance={grouping.childDepth} nodeName={sampleID}/>
+                    <LineageDepthLimitMessage maxDistance={grouping.childDepth} nodeName={sampleID}/>
                 </Panel.Body>
             </Panel>
         );

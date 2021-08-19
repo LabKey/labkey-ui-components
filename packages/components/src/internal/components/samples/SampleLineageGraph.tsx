@@ -8,7 +8,7 @@ import {
     LineageFilter,
     LineageGraph,
     LineageGroupingOptions,
-    VisGraphNode
+    VisGraphNode,
 } from '../../..';
 import { DEFAULT_LINEAGE_DISTANCE, SAMPLE_ALIQUOT_PROTOCOL_LSID } from '../lineage/constants';
 import { LineageDepthLimitMessage } from '../lineage/LineageGraph';
@@ -19,7 +19,7 @@ interface Props {
     goToLineageGrid: () => void;
     onLineageNodeDblClick: (node: VisGraphNode) => void;
     groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>;
-    groupingOptions?: LineageGroupingOptions
+    groupingOptions?: LineageGroupingOptions;
 }
 
 interface State {
@@ -118,9 +118,13 @@ export class SampleLineageGraph extends PureComponent<Props, State> {
     }
 
     render() {
-        const { sampleLsid, sampleID, goToLineageGrid, onLineageNodeDblClick, groupTitles, groupingOptions } = this.props;
+        const { sampleLsid, sampleID, goToLineageGrid, onLineageNodeDblClick, groupTitles, groupingOptions } =
+            this.props;
 
-        let grouping = { ...(groupingOptions ?? {childDepth: DEFAULT_LINEAGE_DISTANCE}), generations: LINEAGE_GROUPING_GENERATIONS.Specific};
+        const grouping = {
+            ...(groupingOptions ?? { childDepth: DEFAULT_LINEAGE_DISTANCE }),
+            generations: LINEAGE_GROUPING_GENERATIONS.Specific,
+        };
         return (
             <Panel>
                 <Panel.Body>
@@ -137,7 +141,7 @@ export class SampleLineageGraph extends PureComponent<Props, State> {
                         groupTitles={groupTitles}
                         runProtocolLsid={this.getRunProtocolLsid()}
                     />
-                    <LineageDepthLimitMessage maxDistance={grouping.childDepth} nodeName={sampleID}/>
+                    <LineageDepthLimitMessage maxDistance={grouping.childDepth} nodeName={sampleID} />
                 </Panel.Body>
             </Panel>
         );

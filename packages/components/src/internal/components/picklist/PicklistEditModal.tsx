@@ -80,7 +80,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         setName(undefined);
         setDescription(undefined);
         setShared(false);
-    }
+    };
 
     const onHide = useCallback(() => {
         reset();

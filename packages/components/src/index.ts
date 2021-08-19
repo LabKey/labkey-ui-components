@@ -951,7 +951,6 @@ export {
     invalidateLineageResults,
     getImmediateChildLineageFilterValue,
     getLineageFilterValue,
-
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,

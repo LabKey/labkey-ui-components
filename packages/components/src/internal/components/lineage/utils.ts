@@ -9,7 +9,6 @@ import { imageURL, SchemaQuery, SCHEMAS, Theme } from '../../..';
 
 import { LineageItemWithMetadata, LineageLink, LineageNode } from './models';
 import { LINEAGE_DIRECTIONS, LineageIconMetadata } from './types';
-import React, { ReactNode } from 'react';
 
 const DEFAULT_ICON_URL = 'default';
 const BACKUP_IMAGE_ROOT = 'https://labkey.org/_images/';

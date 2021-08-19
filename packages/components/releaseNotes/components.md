@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.65.1
+*Released*: 18 August 2021
+* Issue 43734: SM: Aliquot overview details panel shows some aliquot values under the 'originating sample data' section
+  * Hide extra exp.material fields from aliquot detail view
+
+### version 2.65.0
+*Released*: 18 August 2021
+* Create Assay Designer 'Linked Dataset Category' field as part of Link to Study dataset category assignment
+
 ### version 2.64.0
 *Released*: 18 August 2021
 * Issue 43728: bulk insert for samples is broken when a file field is present

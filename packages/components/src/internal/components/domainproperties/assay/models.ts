@@ -28,6 +28,7 @@ export class AssayProtocolModel extends Record({
     allowPlateMetadata: false,
     autoCopyTargetContainer: undefined,
     autoCopyTargetContainerId: undefined,
+    autoLinkCategory: undefined,
     availableDetectionMethods: undefined,
     availableMetadataInputFormats: undefined,
     availablePlateTemplates: undefined,
@@ -59,6 +60,7 @@ export class AssayProtocolModel extends Record({
     declare allowPlateMetadata: boolean;
     declare autoCopyTargetContainer: {};
     declare autoCopyTargetContainerId: string;
+    declare autoLinkCategory: string;
     declare availableDetectionMethods: [];
     declare availableMetadataInputFormats: {};
     declare availablePlateTemplates: [];

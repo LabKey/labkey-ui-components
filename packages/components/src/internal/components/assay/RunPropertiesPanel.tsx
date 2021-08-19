@@ -24,7 +24,7 @@ import { AssayPropertiesPanelProps } from './models';
 
 const ASSAY_ID_LABEL = (
     <LabelOverlay
-        label="Assay Id"
+        label="Assay ID"
         description="The assay/experiment ID that uniquely identifies this assay run."
         type="Text (String)"
     />

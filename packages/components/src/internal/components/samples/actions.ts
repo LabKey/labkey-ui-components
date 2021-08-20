@@ -281,7 +281,7 @@ export function getSampleSelectionStorageData(selection: List<any>): Promise<Rec
     });
 }
 
-export function getSampleSelectionLineageData(selection: List<any>, sampleType: string): Promise<{}> {
+export function getSampleSelectionLineageData(selection: List<any>, sampleType: string): Promise<any> {
     const sampleRowIds = getSampleIdsFromSelection(selection);
     if (sampleRowIds.length === 0) {
         return new Promise((resolve, reject) => {
@@ -297,8 +297,7 @@ export function getSampleSelectionLineageData(selection: List<any>, sampleType: 
             filterArray: [Filter.create('RowId', sampleRowIds, Filter.Types.IN)],
         })
             .then(response => {
-                const { key, models } = response;
-                resolve(models[key]);
+                resolve(response);
             })
             .catch(reason => {
                 console.error(reason);

@@ -75,6 +75,7 @@ export interface SamplesSelectionResultProps {
     noStorageSamples: any[];
     selectionInfoError: any;
     sampleItems: Record<string, any>;
+    sampleLineageKeys: string[];
     sampleLineage: Record<string, any>;
 }
 

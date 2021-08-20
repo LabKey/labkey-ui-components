@@ -243,7 +243,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getLineageEditorQueryGridModel = (): QueryGridModel => {
-        const { displayQueryModel, sampleLineage } = this.props;
+        const { displayQueryModel, sampleLineage, sampleLineageKeys } = this.props;
         const { originalSampleParents } = this.state;
         const queryModel = displayQueryModel;
         const samplesSchemaQuery = this.getSchemaQuery();
@@ -282,10 +282,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
             queryInfo: queryModel.queryInfo.merge({ columns: updatedColumns }) as QueryInfo,
             loader: {
                 fetch: () => {
-                    return new Promise((resolve, reject) => {
-                        // TODO use the display selection for ordering of dataIds
-                        const dataIds = List<string>(Object.keys(sampleLineage));
-
+                    return new Promise((resolve) => {
                         let data = EditorModel.convertQueryDataToEditorData(fromJS(sampleLineage));
                         Object.keys(originalSampleParents).forEach(sampleId => {
                             originalSampleParents[sampleId].forEach(sampleParent => {
@@ -299,8 +296,8 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
 
                         resolve({
                             data,
-                            dataIds,
-                            totalRows: dataIds.size,
+                            dataIds: List<string>(sampleLineageKeys),
+                            totalRows: sampleLineageKeys.length,
                         });
                     });
                 },

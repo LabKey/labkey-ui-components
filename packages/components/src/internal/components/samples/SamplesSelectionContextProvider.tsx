@@ -31,6 +31,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             noStorageSamples: undefined,
             selectionInfoError: undefined,
             sampleItems: undefined,
+            sampleLineageKeys: undefined,
             sampleLineage: undefined,
         };
 
@@ -110,13 +111,16 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
         loadLineageData(): void {
             const { selection, sampleSet } = this.props;
             getSampleSelectionLineageData(selection, sampleSet)
-                .then(sampleLineage => {
+                .then(response => {
+                    const { key, models, orderedModels } = response;
                     this.setState(() => ({
-                        sampleLineage,
+                        sampleLineageKeys: orderedModels[key].toArray(),
+                        sampleLineage: models[key],
                     }));
                 })
                 .catch(error => {
                     this.setState(() => ({
+                        sampleLineageKeys: undefined,
                         sampleLineage: undefined,
                         selectionInfoError: error,
                     }));

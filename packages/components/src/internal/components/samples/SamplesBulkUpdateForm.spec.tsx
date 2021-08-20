@@ -66,6 +66,8 @@ describe('SamplesBulkUpdateForm', () => {
         noStorageSamples: [],
         selectionInfoError: undefined,
         sampleItems: {},
+        sampleLineageKeys: undefined,
+        sampleLineage: undefined,
 
         updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise.resolve(),
         hasValidMaxSelection: jest.fn,

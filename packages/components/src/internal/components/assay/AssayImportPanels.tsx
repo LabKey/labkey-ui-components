@@ -387,6 +387,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     handleBatchChange = (fieldValues: any, isChanged?: boolean): void => {
+        // TODO: Ensure this works
+        console.log('handleBatchChange', fieldValues, isChanged);
         // Here we have to merge incoming values with model.batchProperties because of the way Formsy works.
         // FileInput fields are not Formsy components, so when they send updates they only send the value for their
         // field. When formsy sends updates it sends the entire form (but not file fields). So we need to merge
@@ -404,6 +406,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     handleRunChange = (fieldValues: any, isChanged?: boolean): void => {
+        // TODO: Ensure this works
+        console.log('handleRunChange', fieldValues, isChanged);
         // See the note in handleBatchChange for why this method exists.
         const values = {
             ...this.state.model.runProperties.toObject(),

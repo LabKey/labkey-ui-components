@@ -13,75 +13,63 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, memo } from 'react';
 import Formsy from 'formsy-react';
 import { Input, Textarea } from 'formsy-react-components';
-import { is } from 'immutable';
 
 import { QueryFormInputs, LabelOverlay } from '../../..';
 
 import { AssayPropertiesPanelProps } from './models';
 
-const ASSAY_ID_LABEL = (
-    <LabelOverlay
-        label="Assay ID"
-        description="The assay/experiment ID that uniquely identifies this assay run."
-        type="Text (String)"
-    />
-);
+export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
+    const { model, onChange, title = 'Run Details', showQuerySelectPreviewOptions } = props;
 
-const COMMENT_LABEL = (
-    <LabelOverlay label="Comments" description="Contains comments about this run" type="Text (String)" />
-);
-
-export class RunPropertiesPanel extends React.Component<AssayPropertiesPanelProps, any> {
-    shouldComponentUpdate(nextProps: AssayPropertiesPanelProps) {
-        return (
-            this.props.model.comment !== nextProps.model.comment ||
-            this.props.model.runName !== nextProps.model.runName ||
-            !is(this.props.model.runColumns, nextProps.model.runColumns) ||
-            !is(this.props.model.runProperties, nextProps.model.runProperties)
-        );
-    }
-
-    render() {
-        const { model, onChange, title, showQuerySelectPreviewOptions } = this.props;
-        const panelTitle = title || 'Run Details';
-
-        return (
-            <div className="panel panel-default">
-                <div className="panel-heading">{panelTitle}</div>
-                <div className="panel-body">
-                    <Formsy className="form-horizontal" onChange={onChange}>
-                        <Input
-                            changeDebounceInterval={0}
-                            label={ASSAY_ID_LABEL}
-                            labelClassName="text-left"
-                            name="runname"
-                            type="text"
-                            value={model.runName}
-                        />
-                        <Textarea
-                            changeDebounceInterval={0}
-                            cols={60}
-                            label={COMMENT_LABEL}
-                            labelClassName="text-left"
-                            name="comment"
-                            rows={2}
-                            value={model.comment}
-                        />
-                        {model.runColumns.size !== 0 && (
-                            <QueryFormInputs
-                                renderFileInputs={true}
-                                queryColumns={model.runColumns}
-                                fieldValues={model.runProperties.toObject()}
-                                onChange={onChange}
-                                showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
+    return (
+        <div className="panel panel-default">
+            <div className="panel-heading">{title}</div>
+            <div className="panel-body">
+                <Formsy className="form-horizontal" onChange={onChange}>
+                    <Input
+                        changeDebounceInterval={0}
+                        label={
+                            <LabelOverlay
+                                description="The assay/experiment ID that uniquely identifies this assay run."
+                                label="Assay ID"
+                                type="Text (String)"
                             />
-                        )}
-                    </Formsy>
-                </div>
+                        }
+                        labelClassName="text-left"
+                        name="runname"
+                        type="text"
+                        value={model.runName}
+                    />
+                    <Textarea
+                        changeDebounceInterval={0}
+                        cols={60}
+                        label={
+                            <LabelOverlay
+                                description="Contains comments about this run"
+                                label="Comments"
+                                type="Text (String)"
+                            />
+                        }
+                        labelClassName="text-left"
+                        name="comment"
+                        rows={2}
+                        value={model.comment}
+                    />
+                    {model.runColumns.size !== 0 && (
+                        <QueryFormInputs
+                            fieldValues={model.runProperties.toObject()}
+                            queryColumns={model.runColumns}
+                            renderFileInputs
+                            showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
+                        />
+                    )}
+                </Formsy>
             </div>
-        );
-    }
-}
+        </div>
+    );
+});
+
+RunPropertiesPanel.displayName = 'RunPropertiesPanel';

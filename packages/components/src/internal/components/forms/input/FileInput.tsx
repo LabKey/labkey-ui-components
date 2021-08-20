@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode, RefObject } from 'react';
+import React, { FC, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
+import { withFormsy } from 'formsy-react';
 
 import { FieldLabel } from '../FieldLabel';
 import { cancelEvent } from '../../../events';
@@ -23,35 +24,41 @@ import { QueryColumn } from '../../../..';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-interface FileInputState extends DisableableInputState {
+interface Props extends DisableableInputProps {
+    addLabelAsterisk?: boolean;
+    changeDebounceInterval?: number;
+    elementWrapperClassName?: string;
+    formsy?: boolean;
+    labelClassName?: string;
+    name?: string;
+    onChange?: (fileMap: Record<string, File>) => void;
+    queryColumn?: QueryColumn;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    showLabel?: boolean;
+    value?: any;
+
+    // from formsy-react
+    getErrorMessage?: Function;
+    getValue?: Function;
+    setValue?: Function;
+    showRequired?: Function;
+    validations?: any;
+}
+
+interface State extends DisableableInputState {
     isHover: boolean;
-    file?: File;
+    file: File;
     error: string;
 }
 
-interface FileInputProps extends DisableableInputProps {
-    changeDebounceInterval: number;
-    elementWrapperClassName: string;
-    labelClassName: string;
-    showLabel: boolean;
-    key: any;
-    value?: any;
-    name?: string;
-    onChange: any;
-    queryColumn?: QueryColumn;
-    addLabelAsterisk?: boolean;
-    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-}
-
-export class FileInput extends DisableableInput<FileInputProps, FileInputState> {
+class FileInputImpl extends DisableableInput<Props, State> {
     fileInput: RefObject<HTMLInputElement>;
 
     static defaultProps = {
         ...DisableableInput.defaultProps,
         ...{
             changeDebounceInterval: 0,
-            elementWrapperClassName: 'col-md-9 col-xs-12',
-            labelClassName: 'control-label text-left',
+            elementWrapperClassName: 'col-sm-9 col-md-9 col-xs-12',
             showLabel: true,
         },
     };
@@ -77,28 +84,32 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     getInputName(): string {
         // FIXME if there's more than one of these on the page with the same inputName
         // files will go to the wrong place when uploaded unless the names are unique
-        return this.props.name ? this.props.name : this.props.queryColumn.name;
+        return this.props.name ?? this.props.queryColumn.fieldKey;
     }
 
     processFiles(fileList: FileList, transferItems?: DataTransferItemList) {
-        const { onChange } = this.props;
-        const name = this.getInputName();
-
         if (fileList.length > 1) {
             this.setState({ error: 'Only one file allowed' });
             return;
         }
-
-        const file = fileList[0];
 
         if (transferItems && transferItems[0].webkitGetAsEntry().isDirectory) {
             this.setState({ error: 'Folders are not supported, only one file allowed' });
             return;
         }
 
-        this.setState({ file, error: '' });
-        onChange({ [name]: file });
+        this.setFormValue(fileList[0]);
     }
+
+    setFormValue = (file: File): void => {
+        const { formsy, onChange, setValue } = this.props;
+        this.setState({ file, error: '' });
+        onChange?.({ [this.getInputName()]: file });
+
+        if (formsy) {
+            setValue?.(file);
+        }
+    };
 
     onChange = (event: React.FormEvent<HTMLInputElement>) => {
         cancelEvent(event);
@@ -131,23 +142,27 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     }
 
     onRemove() {
-        const { onChange } = this.props;
-        const name = this.getInputName();
-
-        this.setState({ file: null });
-        onChange({ [name]: null });
+        // TODO: Consider setting this to an empty file (i.e. new File([], '')) for removal.
+        this.setFormValue(undefined);
     }
 
     render() {
-        const { queryColumn, allowDisable, addLabelAsterisk, renderFieldLabel, showLabel } = this.props;
+        const {
+            addLabelAsterisk,
+            allowDisable,
+            elementWrapperClassName,
+            labelClassName,
+            queryColumn,
+            renderFieldLabel,
+            showLabel,
+        } = this.props;
         const { isHover, isDisabled, file } = this.state;
 
         const name = this.getInputName();
         const inputId = `${name}-fileUpload`;
         let body;
 
-        if (file === null) {
-            const labelClassName = classNames('file-upload--compact-label', { 'file-upload--is-hover': isHover });
+        if (!file) {
             body = (
                 <>
                     <input
@@ -163,7 +178,7 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
 
                     {/* We render a label here so click and drag events propagate to the input above */}
                     <label
-                        className={labelClassName}
+                        className={classNames('file-upload--compact-label', { 'file-upload--is-hover': isHover })}
                         htmlFor={inputId}
                         onDrop={this.onDrop}
                         onDragEnter={this.onDrag}
@@ -198,9 +213,12 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
         }
 
         const labelOverlayProps = {
-            isFormsy: false,
-            inputId,
             addLabelAsterisk,
+            inputId,
+            // While this component supports binding Formsy it does not use a Formsy component
+            // to render the associated label. As such, the label overlay is always configured as isFormsy={false}.
+            isFormsy: false,
+            labelClass: labelClassName,
         };
 
         return (
@@ -219,8 +237,27 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
                         }}
                     />
                 )}
-                <div className="col-md-9">{body}</div>
+                <div className={elementWrapperClassName}>{body}</div>
             </div>
         );
     }
 }
+
+/**
+ * This class is a wrapper around FileInputImpl to be able to bind formsy-react. It uses
+ * the Formsy.Decorator to bind formsy-react so the element can be validated, submitted, etc.
+ */
+const FileInputFormsy = withFormsy(FileInputImpl);
+
+export const FileInput: FC<Props> = props => {
+    if (props.formsy) {
+        return <FileInputFormsy {...props} />;
+    }
+    return <FileInputImpl {...props} />;
+};
+
+FileInput.defaultProps = {
+    formsy: false,
+};
+
+FileInput.displayName = 'FileInput';

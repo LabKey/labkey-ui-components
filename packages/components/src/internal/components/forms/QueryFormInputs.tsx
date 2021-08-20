@@ -59,7 +59,7 @@ interface QueryFormInputsProps {
     queryColumns?: OrderedMap<string, QueryColumn>;
     queryInfo?: QueryInfo;
     lookups?: Map<string, number>;
-    onChange?: Function;
+    onFileChange?: (fileMap: Record<string, File>) => void;
     renderFileInputs?: boolean;
     allowFieldDisable?: boolean;
     onFieldsEnabledChange?: (numEnabled: number) => void;
@@ -170,7 +170,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             lookups,
             queryColumns,
             queryInfo,
-            onChange,
+            onFileChange,
             renderFileInputs,
             allowFieldDisable,
             disabledFields,
@@ -288,15 +288,18 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     } else if (col.inputType === 'file' && renderFileInputs) {
                         return (
                             <FileInput
+                                formsy
                                 key={i}
                                 queryColumn={col}
                                 value={value}
-                                onChange={onChange}
+                                onChange={onFileChange}
+                                name={col.fieldKey}
                                 allowDisable={allowFieldDisable}
                                 initiallyDisabled={shouldDisableField}
                                 onToggleDisable={this.onToggleDisable}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 renderFieldLabel={renderFieldLabel}
+                                showLabel
                             />
                         );
                     }

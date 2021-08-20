@@ -21,7 +21,7 @@ import { AuditBehaviorTypes } from '@labkey/api';
 
 import { updateRows, Alert, resolveErrorMessage, QueryColumn, QueryGridModel } from '../../../..';
 
-import { fileInputRenderer } from '../renderers';
+import { FileInputRenderer } from '../renderers';
 
 import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
@@ -107,8 +107,14 @@ export class DetailEditing extends Component<Props, State> {
     };
 
     fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
-        const updatedFile = this.state.fileMap[col.name];
-        return fileInputRenderer(col, data, updatedFile, this.handleFileInputChange);
+        return (
+            <FileInputRenderer
+                column={col}
+                data={data}
+                onChange={this.handleFileInputChange}
+                updatedFile={this.state.fileMap[col.name]}
+            />
+        );
     };
 
     handleSubmit = values => {

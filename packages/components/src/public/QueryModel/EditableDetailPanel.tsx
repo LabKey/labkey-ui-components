@@ -9,11 +9,11 @@ import { DetailRenderer } from '../../internal/components/forms/detail/DetailDis
 import { extractChanges } from '../../internal/components/forms/detail/utils';
 
 import { Alert, DetailPanel, QueryColumn, RequiresModelAndActions, resolveErrorMessage, updateRows } from '../..';
-import { fileInputRenderer } from '../../internal/components/forms/renderers';
+import { FileInputRenderer } from '../../internal/components/forms/renderers';
 
 const EMPTY_FILE_FOR_DELETE = new File([], '');
 
-interface EditableDetailPanelProps extends RequiresModelAndActions {
+interface Props extends RequiresModelAndActions {
     appEditable?: boolean;
     asSubPanel?: boolean;
     auditBehavior?: AuditBehaviorTypes;
@@ -31,7 +31,7 @@ interface EditableDetailPanelProps extends RequiresModelAndActions {
     useEditIcon: boolean;
 }
 
-interface EditableDetailPanelState {
+interface State {
     canSubmit?: boolean;
     editing?: boolean;
     error?: string;
@@ -39,14 +39,14 @@ interface EditableDetailPanelState {
     fileMap: Record<string, File>;
 }
 
-export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps, EditableDetailPanelState> {
+export class EditableDetailPanel extends PureComponent<Props, State> {
     static defaultProps = {
         useEditIcon: true,
         cancelText: 'Cancel',
         submitText: 'Save',
     };
 
-    state: Readonly<EditableDetailPanelState> = {
+    state: Readonly<State> = {
         canSubmit: false,
         editing: false,
         error: undefined,
@@ -83,8 +83,14 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
     };
 
     fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
-        const updatedFile = this.state.fileMap[col.name];
-        return fileInputRenderer(col, data, updatedFile, this.handleFileInputChange);
+        return (
+            <FileInputRenderer
+                column={col}
+                data={data}
+                onChange={this.handleFileInputChange}
+                updatedFile={this.state.fileMap[col.name]}
+            />
+        );
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -117,6 +123,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             }
         });
 
+        // TODO: Convert this to use Formsy values rather than persisting File data itself
         // to support file/attachment columns, we need to pass them in as FormData and updateRows will handle the rest
         let form;
         if (hasFileUpdates) {

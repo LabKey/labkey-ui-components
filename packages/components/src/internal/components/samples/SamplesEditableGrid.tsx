@@ -255,14 +255,15 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
 
         // TODO factor this out to a separate function
         // model columns should include RowId, Name, and one column for each distinct existing parent (source and/or
-        // sample type) of the selected samples
+        // sample type) of the selected samples.
         let updatedColumns = OrderedMap<string, QueryColumn>();
-        let parentColIndex = 0;
         queryModel.queryInfo.columns.forEach((column, key) => {
             if (['name', 'rowid'].indexOf(key) > -1) {
                 updatedColumns = updatedColumns.set(key, column);
             }
         });
+        const parentColumns = {};
+        let parentColIndex = 0;
         Object.values(originalSampleParents).forEach(sampleParents => {
             sampleParents.forEach(sampleParent => {
                 const { schema, query } = sampleParent.type;
@@ -270,12 +271,17 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                     sampleParent.type.entityDataType.uniqueFieldKey
                 );
 
-                if (!updatedColumns.has(parentCol.fieldKey)) {
-                    updatedColumns = updatedColumns.set(parentCol.fieldKey, parentCol);
+                if (!parentColumns[parentCol.fieldKey]) {
+                    parentColumns[parentCol.fieldKey] = parentCol;
                     parentColIndex++;
                 }
             });
         });
+        Object.keys(parentColumns)
+            .sort() // Order parent columns so sources come first before sample types, and then alphabetically ordered within the types
+            .forEach(key => {
+                updatedColumns = updatedColumns.set(key, parentColumns[key]);
+            });
 
         return getStateQueryGridModel(SAMPLES_LINEAGE_EDIT_GRID_ID, samplesSchemaQuery, {
             editable: true,
@@ -315,7 +321,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     updateAllTabRows = (updateDataRows: any[]): Promise<any> => {
-        const { noStorageSamples, invalidateSampleQueries } = this.props;
+        const { invalidateSampleQueries, sampleLineageKeys } = this.props;
         let sampleSchemaQuery: SchemaQuery = null,
             sampleRows: any[] = [],
             storageRows: any[] = [],
@@ -355,20 +361,6 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                 resolve('There were errors during the save.');
             });
         }
-
-        const sampleIds = new Set();
-        sampleRows.forEach(row => {
-            sampleIds.add(row['RowId']);
-        });
-        lineageRows.forEach(row => {
-            sampleIds.add(row['RowId']);
-        });
-        storageRows.forEach(row => {
-            const sampleId = row['RowId'];
-            if (noStorageSamples.indexOf(sampleId) === -1) sampleIds.add(sampleId);
-        });
-        const totalSamplesToUpdate = sampleIds.size;
-        const noun = totalSamplesToUpdate === 1 ? 'sample' : 'samples';
 
         const commands = [];
         if (sampleRows.length > 0) {
@@ -419,7 +411,9 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                     gridIdInvalidate(SAMPLES_STORAGE_EDIT_GRID_ID, true);
                     gridIdInvalidate(SAMPLES_LINEAGE_EDIT_GRID_ID, true);
                     dismissNotifications(); // get rid of any error notifications that have already been created
-                    createNotification('Successfully updated ' + totalSamplesToUpdate + ' ' + noun + '.');
+
+                    const noun = sampleLineageKeys.length === 1 ? 'sample' : 'samples';
+                    createNotification('Successfully updated the selected ' + noun + '.');
 
                     resolve(result);
                 },
@@ -428,7 +422,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                     dismissNotifications(); // get rid of any error notifications that have already been created
                     createNotification({
                         alertClass: 'danger',
-                        message: resolveErrorMessage(reason, noun, 'samples', 'update'),
+                        message: resolveErrorMessage(reason, 'sample', 'samples', 'update'),
                     });
                     reject(reason);
                 },

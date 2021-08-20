@@ -446,6 +446,10 @@ import { DataClassDesigner } from './internal/components/domainproperties/datacl
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
+import { ValidatorModal } from './internal/components/domainproperties/validation/ValidatorModal';
+import { RangeValidationOptions } from './internal/components/domainproperties/validation/RangeValidationOptions';
+import { PropertyValidator } from './internal/components/domainproperties/models';
+import { DOMAIN_RANGE_VALIDATOR } from './internal/components/domainproperties/constants';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { makeQueryInfo, mountWithServerContextOptions, sleep } from './internal/testHelpers';
 import { QueryModel } from './public/QueryModel/QueryModel';
@@ -988,6 +992,10 @@ export {
     DomainDesign,
     DomainField,
     DomainFieldLabel,
+    ValidatorModal,
+    RangeValidationOptions,
+    PropertyValidator,
+    DOMAIN_RANGE_VALIDATOR,
     DomainDetails,
     inferDomainFromFile,
     getServerFilePreview,

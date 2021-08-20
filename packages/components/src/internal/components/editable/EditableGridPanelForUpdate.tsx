@@ -77,13 +77,13 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         if (gridDataAllTabs.length > 0) {
             this.setState(() => ({ isSubmitting: true }));
             if (updateAllTabRows) {
-                updateAllTabRows(gridDataAllTabs).then(responses => {
+                updateAllTabRows(gridDataAllTabs).then(() => {
                     this.setState(() => ({ isSubmitting: false }), onComplete());
                 });
             } else if (updateRows) {
                 const updatePromises = [];
                 gridDataAllTabs.forEach(data => updatePromises.push(updateRows(data.schemaQuery, data.updatedRows)));
-                Promise.all(updatePromises).then(responses => {
+                Promise.all(updatePromises).then(() => {
                     this.setState(() => ({ isSubmitting: false }), onComplete());
                 });
             }

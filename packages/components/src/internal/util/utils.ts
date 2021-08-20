@@ -374,10 +374,10 @@ export function getUpdatedDataFromGrid(
                 }
                 // Lookup columns store a list but grid only holds a single value
                 else if (List.isList(originalValue) && !Array.isArray(value)) {
-                    // compare values / displayValues as concatenated string
+                    // compare values / displayValues as concatenated string (explicitly using type conversion operator, != instead of !==)
                     const values = originalValue.map(v => v.value).join(', ');
                     const displayValues = originalValue.map(v => v.displayValue).join(', ');
-                    if (values !== value && displayValues !== value) {
+                    if (values != value && displayValues != value) {
                         row[key] = (isDate ? parseDate(value) : value) ?? null;
                     }
                 } else if (!(originalValue === undefined && value === null) && originalValue !== value) {

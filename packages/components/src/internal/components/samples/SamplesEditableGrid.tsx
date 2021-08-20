@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, Map, OrderedMap, fromJS } from 'immutable';
 
-import { AuditBehaviorTypes } from '@labkey/api';
+import { AuditBehaviorTypes, Query } from '@labkey/api';
 
 import {
     User,
@@ -24,7 +24,6 @@ import {
     gridIdInvalidate,
     resolveErrorMessage,
     getQueryGridModel,
-    updateRows,
     LoadingSpinner,
     QueryModel,
     getStateModelId,
@@ -318,7 +317,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
         });
     };
 
-    updateAllTabRows = (updateDataRows: any[]): Promise<void> => {
+    updateAllTabRows = (updateDataRows: any[]): Promise<any> => {
         const { noStorageSamples, invalidateSampleQueries } = this.props;
         let sampleSchemaQuery: SchemaQuery = null,
             sampleRows: any[] = [],
@@ -343,7 +342,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                 this._hasError = false;
                 dismissNotifications();
                 createNotification(NO_UPDATES_MESSAGE);
-                resolve();
+                resolve('No changes to be saved.');
             });
         }
 
@@ -356,7 +355,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                     alertClass: 'danger',
                     message: convertedStorageData?.errors.join('\n'),
                 });
-                resolve();
+                resolve('There were errors during the save.');
             });
         }
 
@@ -374,63 +373,70 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
         const totalSamplesToUpdate = sampleIds.size;
         const noun = totalSamplesToUpdate === 1 ? 'sample' : 'samples';
 
-        const updatePromises = [];
+        const commands = [];
         if (sampleRows.length > 0) {
-            updatePromises.push(
-                updateRows({
-                    schemaQuery: sampleSchemaQuery,
-                    rows: sampleRows,
-                    auditBehavior: AuditBehaviorTypes.DETAILED,
-                })
-            );
+            commands.push({
+                command: 'update',
+                schemaName: sampleSchemaQuery.schemaName,
+                queryName: sampleSchemaQuery.queryName,
+                rows: sampleRows,
+                auditBehavior: AuditBehaviorTypes.DETAILED,
+            });
         }
         if (convertedStorageData?.normalizedRows.length > 0) {
-            updatePromises.push(
-                updateRows({
-                    schemaQuery: INVENTORY_ITEM_QS,
-                    rows: convertedStorageData.normalizedRows,
-                    auditBehavior: AuditBehaviorTypes.DETAILED,
-                })
-            );
+            commands.push({
+                command: 'update',
+                schemaName: INVENTORY_ITEM_QS.schemaName,
+                queryName: INVENTORY_ITEM_QS.queryName,
+                rows: convertedStorageData.normalizedRows,
+                auditBehavior: AuditBehaviorTypes.DETAILED,
+            });
         }
         if (lineageRows.length > 0) {
-            updatePromises.push(
-                updateRows({
-                    schemaQuery: sampleSchemaQuery,
-                    rows: lineageRows,
-                    auditBehavior: AuditBehaviorTypes.DETAILED,
-                })
-            );
+            commands.push({
+                command: 'update',
+                schemaName: sampleSchemaQuery.schemaName,
+                queryName: sampleSchemaQuery.queryName,
+                rows: lineageRows,
+                auditBehavior: AuditBehaviorTypes.DETAILED,
+            });
         }
 
-        return Promise.all(updatePromises)
-            .then(result => {
-                this._hasError = false;
-                if (sampleSchemaQuery) {
-                    if (invalidateSampleQueries) {
-                        invalidateSampleQueries(sampleSchemaQuery);
-                    } else {
-                        queryGridInvalidate(sampleSchemaQuery);
-                        invalidateLineageResults();
+        return new Promise((resolve, reject) => {
+            Query.saveRows({
+                commands,
+                success: (result) => {
+                    this._hasError = false;
+                    if (sampleSchemaQuery) {
+                        if (invalidateSampleQueries) {
+                            invalidateSampleQueries(sampleSchemaQuery);
+                        } else {
+                            queryGridInvalidate(sampleSchemaQuery);
+                            invalidateLineageResults();
+                        }
                     }
-                }
 
-                if (convertedStorageData?.normalizedRows.length > 0) queryGridInvalidate(INVENTORY_ITEM_QS);
+                    if (convertedStorageData?.normalizedRows.length > 0) queryGridInvalidate(INVENTORY_ITEM_QS);
 
-                gridIdInvalidate(SAMPLES_EDIT_GRID_ID, true);
-                gridIdInvalidate(SAMPLES_STORAGE_EDIT_GRID_ID, true);
-                gridIdInvalidate(SAMPLES_LINEAGE_EDIT_GRID_ID, true);
-                dismissNotifications(); // get rid of any error notifications that have already been created
-                createNotification('Successfully updated ' + totalSamplesToUpdate + ' ' + noun);
-            })
-            .catch(reason => {
-                this._hasError = true;
-                dismissNotifications(); // get rid of any error notifications that have already been created
-                createNotification({
-                    alertClass: 'danger',
-                    message: resolveErrorMessage(reason, noun, 'samples', 'update'),
-                });
+                    gridIdInvalidate(SAMPLES_EDIT_GRID_ID, true);
+                    gridIdInvalidate(SAMPLES_STORAGE_EDIT_GRID_ID, true);
+                    gridIdInvalidate(SAMPLES_LINEAGE_EDIT_GRID_ID, true);
+                    dismissNotifications(); // get rid of any error notifications that have already been created
+                    createNotification('Successfully updated ' + totalSamplesToUpdate + ' ' + noun + '.');
+
+                    resolve(result);
+                },
+                failure: reason => {
+                    this._hasError = true;
+                    dismissNotifications(); // get rid of any error notifications that have already been created
+                    createNotification({
+                        alertClass: 'danger',
+                        message: resolveErrorMessage(reason, noun, 'samples', 'update'),
+                    });
+                    reject(reason);
+                },
             });
+        });
     };
 
     getStorageUpdateData(storageRows: any[]) {

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.65.2
+*Released*: 20 August 2021
+* Expose range validator modal and related components
+
 ### version 2.65.1
 *Released*: 18 August 2021
 * Issue 43734: SM: Aliquot overview details panel shows some aliquot values under the 'originating sample data' section

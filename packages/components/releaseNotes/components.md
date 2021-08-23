@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 43701: Don't remove sample id from a sample assay results grid since the grid may now include aliquots as well
 * Issue 43722: Update label in lineage grid from Name to ID
 
+### version 2.65.2
+*Released*: 20 August 2021
+* Expose range validator modal and related components
+
 ### version 2.65.1
 *Released*: 18 August 2021
 * Issue 43734: SM: Aliquot overview details panel shows some aliquot values under the 'originating sample data' section

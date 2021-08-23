@@ -25,7 +25,6 @@ import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS } from '../../constants'
 import { addColumns, changeColumn, removeColumn } from '../../actions';
 
 import {
-    AddEntityButton,
     Alert,
     AppURL,
     capitalizeFirstChar,
@@ -56,7 +55,6 @@ import {
     queryGridInvalidate,
     QueryGridModel,
     QueryInfo,
-    RemoveEntityButton,
     removeQueryGridModel,
     resolveErrorMessage,
     SampleCreationType,
@@ -92,6 +90,7 @@ import {
     EntityInsertPanelTabs,
     EntityParentType,
     EntityTypeOption,
+    getParentEntities,
     IEntityTypeOption,
     IParentOption,
 } from './models';
@@ -99,6 +98,7 @@ import {
 import { getUniqueIdColumnMetadata } from './utils';
 import { getEntityTypeData, handleEntityFileImport } from './actions';
 import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
+import { EntityParentTypeSelectors } from './EntityParentTypeSelectors';
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
@@ -497,8 +497,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                             if (existingParent.index === 1) {
                                 fieldKey = entityDataType.uniqueFieldKey;
                             } else {
-                                const definedParents = updatedModel
-                                    .getParentEntities(combineParentTypes, queryName)
+                                const definedParents = getParentEntities(updatedModel.entityParents, combineParentTypes, queryName)
                                     .filter(parent => parent.query !== undefined);
                                 if (definedParents.size === 0) fieldKey = entityDataType.uniqueFieldKey;
                                 else {
@@ -533,74 +532,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
-    renderParentTypes = (entityDataType: EntityDataType): ReactNode => {
-        const { insertModel } = this.state;
-        const { combineParentTypes } = this.props;
-        const { queryName } = entityDataType.typeListingSchemaQuery;
-
-        return insertModel
-            .getParentEntities(combineParentTypes, queryName)
-            .map(parent => {
-                const { index, key, query } = parent;
-                const capNounSingular = capitalizeFirstChar(entityDataType.nounAsParentSingular);
-                return (
-                    <div className="form-group row" key={key}>
-                        <SelectInput
-                            containerClass=""
-                            inputClass="col-sm-5"
-                            label={capNounSingular + ' ' + index + ' Type'}
-                            labelClass="col-sm-3 entity-insert--parent-label"
-                            name={'parent-re-select-' + index}
-                            id={'parent-re-select-' + index}
-                            onChange={this.changeParent.bind(this, index, queryName)}
-                            options={insertModel.getParentOptions(query, queryName, combineParentTypes)}
-                            value={query}
-                        />
-
-                        <RemoveEntityButton
-                            labelClass="entity-insert--remove-parent"
-                            entity={capNounSingular}
-                            index={index}
-                            onClick={this.removeParent.bind(this, index, queryName)}
-                        />
-                    </div>
-                );
-            })
-            .toArray();
-    };
-
-    renderAddEntityButton = (entityDataType: EntityDataType): ReactNode => {
-        const { insertModel } = this.state;
-        const { combineParentTypes } = this.props;
-        const { queryName } = entityDataType.typeListingSchemaQuery;
-        const parentOptions = insertModel.parentOptions.get(queryName);
-
-        if (parentOptions.size === 0) {
-            return null;
-        }
-
-        const entityParents = insertModel.getParentEntities(combineParentTypes, queryName);
-        const disabled = parentOptions.size <= entityParents.size;
-        const title = disabled
-            ? 'Only ' +
-              parentOptions.size +
-              ' ' +
-              (parentOptions.size === 1 ? entityDataType.descriptionSingular : entityDataType.descriptionPlural) +
-              ' available.'
-            : undefined;
-
-        return (
-            <AddEntityButton
-                containerClass="entity-insert--entity-add-button"
-                key={'add-entity-' + queryName}
-                entity={capitalizeFirstChar(entityDataType.nounAsParentSingular)}
-                title={title}
-                disabled={disabled}
-                onClick={this.addParent.bind(this, queryName)}
-            />
-        );
-    };
-
     renderParentTypesAndButtons = (): ReactNode => {
         const { insertModel } = this.state;
         const { parentDataTypes, combineParentTypes } = this.props;
@@ -610,18 +541,15 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
             if (isInit && targetEntityType && parentDataTypes) {
                 return (
-                    <>
-                        {combineParentTypes
-                            ? // Just grabbing first parent type for the name
-                              this.renderParentTypes(parentDataTypes.get(0))
-                            : parentDataTypes.map(this.renderParentTypes)}
-                        <div className="entity-insert--header">
-                            {combineParentTypes
-                                ? // Just grabbing first parent type for the name
-                                  this.renderAddEntityButton(parentDataTypes.get(0))
-                                : parentDataTypes.map(this.renderAddEntityButton)}
-                        </div>
-                    </>
+                    <EntityParentTypeSelectors
+                        parentDataTypes={parentDataTypes}
+                        parentOptionsMap={insertModel.parentOptions}
+                        entityParentsMap={insertModel.entityParents}
+                        combineParentTypes={combineParentTypes}
+                        onAdd={this.addParent}
+                        onChange={this.changeParent}
+                        onRemove={this.removeParent}
+                    />
                 );
             }
         }

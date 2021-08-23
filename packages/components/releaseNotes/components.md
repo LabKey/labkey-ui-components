@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * parse sample parent data into format that can be used to get initial columns and values for sample lineage EditableGrid
   * add new "Lineage Details" tab to the sample edit via grid display
   * persist updated sample parents on finish/save from EditableGrid
+  * refactor EntityParentTypeSelectors out of EntityInsertPanel.tsx for reuse
 
 #### versionn 2.66.0
 *Release*: 23 August 2021

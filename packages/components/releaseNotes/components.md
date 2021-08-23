@@ -9,6 +9,26 @@ Components, models, actions, and utility functions for LabKey applications and p
   * add new "Lineage Details" tab to the sample edit via grid display
   * persist updated sample parents on finish/save from EditableGrid
 
+#### versionn 2.66.0
+*Release*: 23 August 2021
+* Issue 43693: Indicate the depth of the lineage graphs and grids
+* Issue 43692: expose LineageGroupingOptions for ease of overriding defaults; update default depth to 5
+* Issue 43701: Don't remove sample id from a sample assay results grid since the grid may now include aliquots as well
+* Issue 43722: Update label in lineage grid from Name to ID
+
+### version 2.65.2
+*Released*: 20 August 2021
+* Expose range validator modal and related components
+
+### version 2.65.1
+*Released*: 18 August 2021
+* Issue 43734: SM: Aliquot overview details panel shows some aliquot values under the 'originating sample data' section
+  * Hide extra exp.material fields from aliquot detail view
+
+### version 2.65.0
+*Released*: 18 August 2021
+* Create Assay Designer 'Linked Dataset Category' field as part of Link to Study dataset category assignment
+
 ### version 2.64.0
 *Released*: 18 August 2021
 * Issue 43728: bulk insert for samples is broken when a file field is present

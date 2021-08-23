@@ -13,6 +13,7 @@ import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BaseProperties
 
 import { AssayProtocolModel } from './models';
 import {
+    AutoLinkCategoryInput,
     AutoLinkDataInput,
     BackgroundUploadInput,
     DescriptionInput,
@@ -35,6 +36,7 @@ export const FORM_IDS = {
     ASSAY_NAME: FORM_ID_PREFIX + 'name',
     ASSAY_DESCRIPTION: FORM_ID_PREFIX + 'description',
     AUTO_LINK_TARGET: FORM_ID_PREFIX + 'autoCopyTargetContainerId',
+    AUTO_LINK_CATEGORY: FORM_ID_PREFIX + 'autoLinkCategory',
     BACKGROUND_UPLOAD: FORM_ID_PREFIX + 'backgroundUpload',
     DETECTION_METHOD: FORM_ID_PREFIX + 'selectedDetectionMethod',
     EDITABLE_RUNS: FORM_ID_PREFIX + 'editableRuns',
@@ -178,7 +180,6 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
             <>
                 <div className="domain-field-padding-bottom">
                     <SectionHeading title="Import Settings" />
-                    <AutoLinkDataInput model={model} onChange={this.onInputChange} />
                     {model.allowBackgroundUpload && (
                         <BackgroundUploadInput model={model} onChange={this.onInputChange} />
                     )}
@@ -193,6 +194,18 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                     )}
                 </div>
             </>
+        );
+    }
+
+    renderLinkToStudySettings() {
+        const { model } = this.props;
+
+        return (
+            <div className="domain-field-padding-bottom">
+                <SectionHeading title="Link to Study Settings" />
+                <AutoLinkDataInput model={model} onChange={this.onInputChange} />
+                <AutoLinkCategoryInput model={model} onChange={this.onInputChange} />
+            </div>
         );
     }
 
@@ -234,8 +247,14 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                     {this.renderBasicProperties()}
                     {this.renderEditSettings()}
                 </Col>
+
                 <Col xs={12} lg={6}>
                     {!appPropertiesOnly && this.renderImportSettings()}
+                </Col>
+
+                {/* TODO: As one can run LKS without the study module, we should add a relevant check (i.e. 'hasModule('Study')) to this conditional'*/}
+                <Col xs={12} lg={6}>
+                    {!appPropertiesOnly && this.renderLinkToStudySettings()}
                 </Col>
             </Form>
         );

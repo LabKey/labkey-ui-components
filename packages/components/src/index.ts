@@ -342,13 +342,15 @@ import {
     getLineageFilterValue,
     invalidateLineageResults,
 } from './internal/components/lineage/actions';
+import { DEFAULT_LINEAGE_DISTANCE } from './internal/components/lineage/constants';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
     LineageFilter,
     LineageURLResolvers,
+    LineageGroupingOptions,
 } from './internal/components/lineage/types';
-import { LineageGraph } from './internal/components/lineage/LineageGraph';
+import { LineageGraph, LineageDepthLimitMessage } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
@@ -446,6 +448,10 @@ import { DataClassDesigner } from './internal/components/domainproperties/datacl
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
+import { ValidatorModal } from './internal/components/domainproperties/validation/ValidatorModal';
+import { RangeValidationOptions } from './internal/components/domainproperties/validation/RangeValidationOptions';
+import { PropertyValidator } from './internal/components/domainproperties/models';
+import { DOMAIN_RANGE_VALIDATOR } from './internal/components/domainproperties/constants';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { makeQueryInfo, mountWithServerContextOptions, sleep } from './internal/testHelpers';
 import { QueryModel } from './public/QueryModel/QueryModel';
@@ -935,13 +941,16 @@ export {
     ReportItemModal,
     ReportList,
     // lineage
+    DEFAULT_LINEAGE_DISTANCE,
     LINEAGE_GROUPING_GENERATIONS,
     LINEAGE_DIRECTIONS,
+    LineageDepthLimitMessage,
     LineageFilter,
     LineageGraph,
     LineageGrid,
     LineageGridFromLocation,
     LineageURLResolvers,
+    LineageGroupingOptions,
     SampleTypeLineageCounts,
     invalidateLineageResults,
     getImmediateChildLineageFilterValue,
@@ -988,6 +997,10 @@ export {
     DomainDesign,
     DomainField,
     DomainFieldLabel,
+    ValidatorModal,
+    RangeValidationOptions,
+    PropertyValidator,
+    DOMAIN_RANGE_VALIDATOR,
     DomainDetails,
     inferDomainFromFile,
     getServerFilePreview,

@@ -9,6 +9,7 @@ import { AssayProtocolModel } from './models';
 
 import {
     AutoLinkDataInput,
+    AutoLinkCategoryInput,
     BackgroundUploadInput,
     DescriptionInput,
     DetectionMethodsInput,
@@ -128,6 +129,7 @@ describe('AssayPropertiesPanel', () => {
         expect(simpleModelWrapper.find(SaveScriptDataInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(ModuleProvidedScriptsInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(AutoLinkDataInput)).toHaveLength(1);
+        expect(simpleModelWrapper.find(AutoLinkCategoryInput)).toHaveLength(1);
         simpleModelWrapper.unmount();
     });
 
@@ -160,6 +162,7 @@ describe('AssayPropertiesPanel', () => {
         expect(simpleModelWrapper.find(SaveScriptDataInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(ModuleProvidedScriptsInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(AutoLinkDataInput)).toHaveLength(1);
+        expect(simpleModelWrapper.find(AutoLinkCategoryInput)).toHaveLength(1);
         simpleModelWrapper.unmount();
     });
 
@@ -192,6 +195,7 @@ describe('AssayPropertiesPanel', () => {
         expect(simpleModelWrapper.find(SaveScriptDataInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(ModuleProvidedScriptsInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(AutoLinkDataInput)).toHaveLength(0);
+        expect(simpleModelWrapper.find(AutoLinkCategoryInput)).toHaveLength(0);
         simpleModelWrapper.unmount();
     });
 });

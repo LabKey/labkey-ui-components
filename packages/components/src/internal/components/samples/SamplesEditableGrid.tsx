@@ -27,6 +27,8 @@ import {
     LoadingSpinner,
     QueryModel,
     getStateModelId,
+    EditableColumnMetadata,
+    caseInsensitive,
 } from '../../..';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
@@ -321,7 +323,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     updateAllTabRows = (updateDataRows: any[]): Promise<any> => {
-        const { invalidateSampleQueries, sampleLineageKeys } = this.props;
+        const { invalidateSampleQueries, sampleLineageKeys, aliquots } = this.props;
         let sampleSchemaQuery: SchemaQuery = null,
             sampleRows: any[] = [],
             storageRows: any[] = [],
@@ -339,6 +341,11 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                 sampleSchemaQuery = data.schemaQuery;
             }
         });
+
+        // remove the aliquot rows from the lineageRows array
+        if (this.hasAliquots() && lineageRows.length > 0) {
+            lineageRows = lineageRows.filter(row => aliquots.indexOf(caseInsensitive(row, 'RowId')) === -1);
+        }
 
         if (storageRows.length === 0 && lineageRows.length === 0 && sampleRows.length === 0) {
             return new Promise(resolve => {
@@ -424,7 +431,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                         alertClass: 'danger',
                         message: resolveErrorMessage(reason, 'sample', 'samples', 'update'),
                     });
-                    reject(reason);
+                    resolve(reason);
                 },
             });
         });
@@ -447,17 +454,17 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
         return getConvertedStorageUpdateData(storageRows, sampleItems, sampleTypeUnit, noStorageSamples, selection);
     }
 
-    onGridEditComplete = () => {
+    onGridEditComplete = (): void => {
         const { onGridEditComplete } = this.props;
         if (!this._hasError) onGridEditComplete();
     };
 
-    hasAliquots = () => {
+    hasAliquots = (): boolean => {
         const { aliquots } = this.props;
         return aliquots && aliquots.length > 0;
     };
 
-    getSamplesColumnMetadata = (tabInd: number) => {
+    getSamplesColumnMetadata = (tabInd: number): Map<string, EditableColumnMetadata> => {
         if (tabInd === GridTab.Storage || tabInd === GridTab.Lineage) return undefined;
 
         const { aliquots, sampleTypeDomainFields } = this.props;
@@ -510,21 +517,26 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
         return updatedColumns.asImmutable();
     };
 
-    getSelectedSamplesNoun = () => {
+    getSelectedSamplesNoun = (): string => {
         const { aliquots } = this.props;
         const allAliquots =
             this.hasAliquots() && aliquots.length === this.getSamplesEditorQueryGridModel().dataIds.size;
         return allAliquots ? 'aliquot' : 'sample';
     };
 
-    getReadOnlyRows = (tabInd: number) => {
-        const { noStorageSamples } = this.props;
-        if (!tabInd || tabInd === GridTab.Samples || tabInd === GridTab.Lineage) return undefined;
+    getReadOnlyRows = (tabInd: number): List<string> => {
+        const { noStorageSamples, aliquots } = this.props;
 
-        return List<string>(noStorageSamples);
+        if (tabInd === GridTab.Storage) {
+            return List<string>(noStorageSamples);
+        } else if (tabInd === GridTab.Lineage) {
+            return List<string>(aliquots);
+        }
+
+        return undefined;
     };
 
-    getTabTitle = (tabInd: number) => {
+    getTabTitle = (tabInd: number): string => {
         if (tabInd === GridTab.Storage) return 'Storage Details';
         if (tabInd === GridTab.Lineage) return 'Lineage Details';
         return 'Sample Data';

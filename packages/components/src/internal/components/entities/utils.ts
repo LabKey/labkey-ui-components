@@ -6,6 +6,7 @@ import { DELIMITER } from '../forms/input/SelectInput';
 import { getCurrentProductName } from '../../app/utils';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
+import { ParentIdData } from '../samples/actions';
 
 export function parentValuesDiffer(
     sortedOriginalParents: List<EntityChoice>,
@@ -43,17 +44,17 @@ export function getInitialParentChoices(
     parentTypeOptions: List<IEntityTypeOption>,
     parentDataType: EntityDataType,
     childData: Record<string, any>,
-    forEditableGrid = false
+    parentIdData: Record<string, ParentIdData>
 ): List<EntityChoice> {
     let parentValuesByType = Map<string, EntityChoice>();
 
     if (Object.keys(childData).length > 0) {
         const inputs: Array<Record<string, any>> = childData[parentDataType.inputColumnName];
-        const inputTypes: Array<Record<string, any>> = childData[parentDataType.inputTypeColumnName];
-        if (inputs && inputTypes) {
+        if (inputs) {
             // group the inputs by parent type so we can show each in its own grid.
-            inputTypes.forEach((typeMap, index) => {
-                const typeValue = typeMap.value;
+            inputs.forEach(inputRow => {
+                const inputValue = inputRow.value;
+                const typeValue = parentIdData[inputValue]?.ParentID;
                 const typeOption = parentTypeOptions.find(
                     option => option[parentDataType.inputTypeValueField] === typeValue
                 );
@@ -69,15 +70,12 @@ export function getInitialParentChoices(
                         });
                     }
                     const updatedChoice = parentValuesByType.get(typeOption.query);
-                    updatedChoice.ids.push(inputs[index]?.value);
-
+                    updatedChoice.ids.push(inputValue);
                     // when using the data for an editable grid, we need the RowId/DisplayValue pairs
-                    if (inputs[index]) {
+                    if (parentIdData[inputValue]) {
                         updatedChoice.gridValues.push({
-                            value: forEditableGrid
-                                ? childData[parentDataType.inputColumnName + '/RowId'][index]?.value
-                                : inputs[index]?.value,
-                            displayValue: inputs[index]?.displayValue,
+                            value: parentIdData[inputValue].RowId,
+                            displayValue: inputRow?.displayValue,
                         });
                     }
 

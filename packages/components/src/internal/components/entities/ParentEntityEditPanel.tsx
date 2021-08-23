@@ -21,10 +21,10 @@ import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 
 import { DELIMITER } from '../forms/input/SelectInput';
 
-import { getEntityTypeOptions } from './actions';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { getInitialParentChoices, getUpdatedRowForParentChanges, parentValuesDiffer } from './utils';
+import { getParentTypeDataForSample } from "../samples/actions";
 
 interface Props {
     auditBehavior?: AuditBehaviorTypes;
@@ -80,11 +80,10 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         let originalParents = List<EntityChoice>();
 
         await Promise.all(parentDataTypes.map(async (parentDataType) => {
-            const {typeListingSchemaQuery} = parentDataType;
             try {
-                const options = await getEntityTypeOptions(parentDataType);
-                parentTypeOptions = parentTypeOptions.concat(options.get(typeListingSchemaQuery.queryName)) as List<IEntityTypeOption>;
-                originalParents = originalParents.concat(getInitialParentChoices(parentTypeOptions, parentDataType, childData)) as List<EntityChoice>;
+                const typeData = await getParentTypeDataForSample(parentDataType, [childData]);
+                parentTypeOptions = parentTypeOptions.concat(typeData.parentTypeOptions) as List<IEntityTypeOption>;
+                originalParents = originalParents.concat(getInitialParentChoices(typeData.parentTypeOptions, parentDataType, childData, typeData.parentIdData)) as List<EntityChoice>;
             } catch (reason) {
                 this.setState({
                     error: getActionErrorMessage(

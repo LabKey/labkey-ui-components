@@ -603,6 +603,7 @@ export enum EntityInsertPanelTabs {
 
 export interface EntityDataType {
     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
+    listingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data instances (e.g., all the data class rows) available
     instanceSchemaName: string; // (e.g., samples) Name of the schema associated with an individual instance that can be used in conjunction with a name returned from the typeListingSchemaQuery listing
     deleteConfirmationActionName: string; // action in ExperimentController used to get the delete confirmation data
     nounSingular: string;
@@ -615,7 +616,6 @@ export interface EntityDataType {
     dependencyText: string; // text describing the dependencies that may prevent the entity from being deleted (e.g., 'derived sample or assay data dependencies')
     deleteHelpLinkTopic: string; // help topic for finding out more about dependencies and deletion
     inputColumnName: string; // used for extracting or querying for the parents of this type
-    inputTypeColumnName: string; // used for extracting or querying for the types for the input columns
     inputTypeValueField: string;
     appUrlPrefixParts?: string[]; // the prefix used for creating links to this type in the application
     insertColumnNamePrefix: string; // when updating this value as an input, the name of that column (e.g, MaterialInputs)

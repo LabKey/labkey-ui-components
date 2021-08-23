@@ -39,7 +39,7 @@ describe('getInitialParentChoices', () => {
     ]);
 
     test('empty child data', () => {
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {});
+        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {}, {});
         expect(parentChoices.size).toBe(0);
     });
 
@@ -53,7 +53,7 @@ describe('getInitialParentChoices', () => {
             query: schemaQuery.queryName,
             data: Map<any, Map<string, any>>(),
         });
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model);
+        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model, {});
         expect(parentChoices.size).toBe(0);
     });
 
@@ -95,12 +95,6 @@ describe('getInitialParentChoices', () => {
                             url: '/labkey/Sam%20Man/experiment-showData.view?rowId=57093&dataClassId=322',
                         },
                     ],
-                    'Inputs/Data/First/DataClass': [
-                        {
-                            displayValue: '322',
-                            value: [0],
-                        },
-                    ],
                     Run: {
                         displayValue: 'Derive sample from Sec-32',
                         value: 2144,
@@ -130,11 +124,16 @@ describe('getInitialParentChoices', () => {
                     TextField: {
                         value: null,
                     },
-                    'Inputs/Materials/First/SampleSet': [],
                 },
             }),
         });
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model);
+        const parentIdData = {
+            'urn:lsid:labkey.com:Data.Folder-252:1fce5b0b-33ce-1038-8604-d42714b6919e': {
+                RowId: 123,
+                ParentID: 321,
+            },
+        };
+        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model, parentIdData);
         expect(parentChoices.size).toBe(0);
     });
 
@@ -182,24 +181,6 @@ describe('getInitialParentChoices', () => {
                     url: '/labkey/Sam%20Man/experiment-showData.view?rowId=57088&dataClassId=322',
                 },
             ],
-            'Inputs/Data/First/DataClass': [
-                {
-                    displayValue: '321',
-                    value: 321,
-                },
-                {
-                    displayValue: '321',
-                    value: 321,
-                },
-                {
-                    displayValue: '321',
-                    value: 321,
-                },
-                {
-                    displayValue: '322',
-                    value: 322,
-                },
-            ],
             Run: {
                 displayValue: 'Derive sample from B-50116, B-50117, B-50118, Sec-2',
                 value: 2297,
@@ -229,9 +210,26 @@ describe('getInitialParentChoices', () => {
             TextField: {
                 value: null,
             },
-            'Inputs/Materials/First/SampleSet': [],
         };
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, data);
+        const parentIdData = {
+            'urn:lsid:labkey.com:Data.Folder-252:a49f277e-301e-1038-a031-328bafaf2618': {
+                RowId: 1,
+                ParentID: 321,
+            },
+            'urn:lsid:labkey.com:Data.Folder-252:a49f277f-301e-1038-a031-328bafaf2618': {
+                RowId: 2,
+                ParentID: 321,
+            },
+            'urn:lsid:labkey.com:Data.Folder-252:a49f2780-301e-1038-a031-328bafaf2618': {
+                RowId: 3,
+                ParentID: 321,
+            },
+            'urn:lsid:labkey.com:Data.Folder-252:604347b2-3103-1038-91ee-da4874ca890e': {
+                RowId: 4,
+                ParentID: 322,
+            },
+        };
+        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, data, parentIdData);
         expect(parentChoices.size).toBe(2);
         const firstChoice = parentChoices.get(0);
         expect(firstChoice.type.label).toBe('Second Source');

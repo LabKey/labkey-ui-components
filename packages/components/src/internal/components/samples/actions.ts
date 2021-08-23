@@ -16,7 +16,7 @@
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 
-import { EntityChoice, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
+import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
 import {
     AssayStateModel,
@@ -310,23 +310,83 @@ export const getOriginalParentsFromSampleLineage = async (
     sampleLineage: Record<string, any>
 ): Promise<Record<string, List<EntityChoice>>> => {
     const originalParents = {};
-    const dataClassOptions = await getEntityTypeOptions(DataClassDataType);
-    const sampleTypeOptions = await getEntityTypeOptions(SampleTypeDataType);
+    const dataClassTypeData = await getParentTypeDataForSample(DataClassDataType, Object.values(sampleLineage));
+    const sampleTypeData = await getParentTypeDataForSample(SampleTypeDataType, Object.values(sampleLineage));
 
     // iterate through both Data Classes and Sample Types for finding sample parents
     [DataClassDataType, SampleTypeDataType].forEach(dataType => {
-        const options = dataType === DataClassDataType ? dataClassOptions : sampleTypeOptions;
-        const parentTypeOptions = List<IEntityTypeOption>(options.get(dataType.typeListingSchemaQuery.queryName));
+        const parentTypeOptions =
+            dataType === DataClassDataType ? dataClassTypeData.parentTypeOptions : sampleTypeData.parentTypeOptions;
+        const parentIdData =
+            dataType === DataClassDataType ? dataClassTypeData.parentIdData : sampleTypeData.parentIdData;
         Object.keys(sampleLineage).forEach(sampleId => {
             if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
 
             originalParents[sampleId] = originalParents[sampleId].concat(
-                getInitialParentChoices(parentTypeOptions, dataType, sampleLineage[sampleId], true)
+                getInitialParentChoices(parentTypeOptions, dataType, sampleLineage[sampleId], parentIdData)
             );
         });
     });
+
     return originalParents;
 };
+
+export const getParentTypeDataForSample = async (
+    parentDataType: EntityDataType,
+    samplesData: any[]
+): Promise<{
+    parentTypeOptions: List<IEntityTypeOption>;
+    parentIdData: Record<string, ParentIdData>;
+}> => {
+    const options = await getEntityTypeOptions(parentDataType);
+    const parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
+
+    // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row
+    const parentIDs = [];
+    samplesData.forEach(sampleData => {
+        parentIDs.push(...sampleData[parentDataType.inputColumnName].map(row => row.value));
+    });
+    const parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs);
+
+    return { parentTypeOptions, parentIdData };
+};
+
+export type ParentIdData = {
+    RowId: number;
+    ParentID: string | number;
+};
+
+function getParentRowIdAndDataType(
+    parentDataType: EntityDataType,
+    parentIDs: string[]
+): Promise<Record<string, ParentIdData>> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaName: parentDataType.listingSchemaQuery.schemaName,
+            queryName: parentDataType.listingSchemaQuery.queryName,
+            columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
+            filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
+        })
+            .then(response => {
+                const { key, models } = response;
+                const filteredParentItems = {};
+                Object.keys(models[key]).forEach(row => {
+                    const item = models[key][row];
+                    const lsid = caseInsensitive(item, 'LSID').value;
+                    filteredParentItems[lsid] = {
+                        RowId: caseInsensitive(item, 'RowId').value,
+                        ParentID:
+                            caseInsensitive(item, 'DataClass')?.value ?? caseInsensitive(item, 'SampleSet')?.value,
+                    };
+                });
+                resolve(filteredParentItems);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
 
 function getSampleIdsFromSelection(selection: List<any>): number[] {
     const sampleRowIds = [];

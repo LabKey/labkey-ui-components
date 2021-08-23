@@ -182,7 +182,7 @@ export class AssayProtocolModel extends Record({
         if (!this.allowSpacesInPath && this.saveScriptFiles) {
             const hasSpacedScript = this.protocolTransformScripts.some((script, i) => script.indexOf(' ') > -1);
             if (hasSpacedScript) {
-                return 'The path to the transform script should not contain spaces when the \'Save Script Data for Debugging\' check box is selected.';
+                return "The path to the transform script should not contain spaces when the 'Save Script Data for Debugging' check box is selected.";
             }
         }
     }

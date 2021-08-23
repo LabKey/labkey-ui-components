@@ -342,13 +342,15 @@ import {
     getLineageFilterValue,
     invalidateLineageResults,
 } from './internal/components/lineage/actions';
+import { DEFAULT_LINEAGE_DISTANCE } from './internal/components/lineage/constants';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
     LineageFilter,
     LineageURLResolvers,
+    LineageGroupingOptions,
 } from './internal/components/lineage/types';
-import { LineageGraph } from './internal/components/lineage/LineageGraph';
+import { LineageGraph, LineageDepthLimitMessage } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
@@ -939,13 +941,16 @@ export {
     ReportItemModal,
     ReportList,
     // lineage
+    DEFAULT_LINEAGE_DISTANCE,
     LINEAGE_GROUPING_GENERATIONS,
     LINEAGE_DIRECTIONS,
+    LineageDepthLimitMessage,
     LineageFilter,
     LineageGraph,
     LineageGrid,
     LineageGridFromLocation,
     LineageURLResolvers,
+    LineageGroupingOptions,
     SampleTypeLineageCounts,
     invalidateLineageResults,
     getImmediateChildLineageFilterValue,

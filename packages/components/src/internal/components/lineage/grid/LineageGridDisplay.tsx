@@ -12,6 +12,7 @@ import { LineageGridModel } from '../models';
 import { DEFAULT_LINEAGE_DISTANCE } from '../constants';
 import { LINEAGE_DIRECTIONS } from '../types';
 import { getPageNumberChangeURL } from '../actions';
+import { LineageDepthLimitMessage } from '../LineageGraph';
 
 interface LineagePagingProps {
     model: LineageGridModel;
@@ -185,6 +186,11 @@ export class LineageGridDisplay extends PureComponent<LineageGridProps> {
                         <Grid {...gridProps} />
                     </div>
                 </div>
+                <LineageDepthLimitMessage
+                    className="lineage-grid-generation-limit-msg"
+                    maxDistance={model.distance}
+                    nodeName={model.seedNode?.name}
+                />
             </div>
         );
     }

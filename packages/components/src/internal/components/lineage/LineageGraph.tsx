@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { FC, memo, PureComponent } from 'react';
 import { Experiment } from '@labkey/api';
 
 import { Alert, LoadingSpinner } from '../../..';
@@ -13,8 +13,9 @@ import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
 import { isBasicNode, VisGraphOptions, VisGraphNode, VisGraphNodeType } from './vis/VisGraphGenerator';
 import { VisGraph } from './vis/VisGraph';
 import { LineageNodeDetailFactory } from './node/LineageNodeDetailFactory';
+import { DEFAULT_LINEAGE_DISTANCE } from './constants';
 
-interface LinageGraphOwnProps {
+interface LineageGraphOwnProps {
     members?: LINEAGE_DIRECTIONS;
     navigate?: (node: VisGraphNode) => any;
 }
@@ -29,7 +30,7 @@ interface State {
     selectedNodes: VisGraphNodeType[];
 }
 
-type Props = InjectedLineage & LineageGraphDisplayOwnProps & WithLineageOptions & LinageGraphOwnProps & LineageOptions;
+type Props = InjectedLineage & LineageGraphDisplayOwnProps & WithLineageOptions & LineageGraphOwnProps & LineageOptions;
 
 class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
     private readonly visGraphRef = React.createRef<VisGraph>();
@@ -136,7 +137,7 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
     }
 }
 
-export const LineageGraph = withLineage<LinageGraphOwnProps>((props: Props) => {
+export const LineageGraph = withLineage<LineageGraphOwnProps>((props: Props) => {
     // Optimization: This FunctionComponent allows for "generateGraph" to only be called
     // when the lineage is updated. If it is called in the render loop of <LineageGraphDisplay/>
     // it is run each time a user interacts with the graph (e.g. hovers a node, clicks a node, etc).
@@ -146,3 +147,25 @@ export const LineageGraph = withLineage<LinageGraphOwnProps>((props: Props) => {
 
     return <LineageGraphDisplay {...props} visGraphOptions={props.lineage?.generateGraph(props)} />;
 });
+
+interface LineageDepthLimitProps {
+    className?: string;
+    maxDistance?: number;
+    nodeName?: string;
+    isRoot?: boolean;
+}
+export const LineageDepthLimitMessage: FC<LineageDepthLimitProps> = memo(props => {
+    const { className, maxDistance, isRoot, nodeName } = props;
+
+    return (
+        <div className={className}>
+            Note: Showing a maximum of {maxDistance} generations{isRoot ? '' : ' from ' + nodeName}.
+        </div>
+    );
+});
+
+LineageDepthLimitMessage.defaultProps = {
+    className: 'lineage-graph-generation-limit-msg',
+    maxDistance: DEFAULT_LINEAGE_DISTANCE,
+    nodeName: 'the seed node',
+};

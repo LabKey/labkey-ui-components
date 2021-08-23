@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+#### versionn 2.66.0
+*Release*: 23 August 2021
+* Issue 43693: Indicate the depth of the lineage graphs and grids
+* Issue 43692: expose LineageGroupingOptions for ease of overriding defaults; update default depth to 5
+* Issue 43701: Don't remove sample id from a sample assay results grid since the grid may now include aliquots as well
+* Issue 43722: Update label in lineage grid from Name to ID
+
 ### version 2.65.2
 *Released*: 20 August 2021
 * Expose range validator modal and related components

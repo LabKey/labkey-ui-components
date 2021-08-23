@@ -25,7 +25,7 @@ export const Tag: React.FunctionComponent<TagProps> = props => (
 export const LINEAGE_GRID_COLUMNS = List([
     new GridColumn({
         index: 'name',
-        title: 'Name',
+        title: 'ID',
         width: 270,
         cell: (name: string, node: Map<string, any>) => {
             const indent = node.get('distance') * 10;

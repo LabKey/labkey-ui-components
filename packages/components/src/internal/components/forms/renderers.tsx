@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, ReactNode, ReactText, useCallback } from 'react';
+import React, { ReactNode, ReactText } from 'react';
 import { List, Map } from 'immutable';
 import { Input } from 'formsy-react-components';
 import { addValidationRule, validationRules } from 'formsy-react';
 
-import { FileColumnRenderer, FileInput, QueryColumn } from '../../..';
+import { QueryColumn } from '../../..';
 
 import { LabelOverlay } from './LabelOverlay';
 import { AliasInput } from './input/AliasInput';
@@ -145,28 +145,3 @@ export function resolveDetailFieldValue(
 
     return undefined;
 }
-
-interface FileColumnRendererProps {
-    column: QueryColumn;
-    data: any;
-    onChange: (fileMap: Record<string, File>) => void;
-    updatedFile?: File;
-}
-
-export const FileInputRenderer: FC<FileColumnRendererProps> = props => {
-    const { column, data, onChange, updatedFile } = props;
-    const value = data?.get('value');
-
-    const onRemove = useCallback(() => {
-        onChange({ [column.name]: null });
-    }, [column.name, onChange]);
-
-    // check to see if an existing file for this column has been removed / changed
-    if (value && updatedFile === undefined) {
-        return <FileColumnRenderer col={column} data={data} onRemove={onRemove} />;
-    }
-
-    return <FileInput key={column.fieldKey} queryColumn={column} showLabel={false} onChange={onChange} />;
-};
-
-FileInputRenderer.displayName = 'FileInputRenderer';

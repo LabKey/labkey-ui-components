@@ -20,7 +20,7 @@ import { withFormsy } from 'formsy-react';
 import { FieldLabel } from '../FieldLabel';
 import { cancelEvent } from '../../../events';
 
-import { QueryColumn } from '../../../..';
+import { FileColumnRenderer, QueryColumn } from '../../../..';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -29,13 +29,13 @@ interface Props extends DisableableInputProps {
     changeDebounceInterval?: number;
     elementWrapperClassName?: string;
     formsy?: boolean;
+    initialValue?: any;
     labelClassName?: string;
     name?: string;
     onChange?: (fileMap: Record<string, File>) => void;
     queryColumn?: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
-    value?: any;
 
     // from formsy-react
     getErrorMessage?: Function;
@@ -46,6 +46,7 @@ interface Props extends DisableableInputProps {
 }
 
 interface State extends DisableableInputState {
+    data: any;
     isHover: boolean;
     file: File;
     error: string;
@@ -66,14 +67,17 @@ class FileInputImpl extends DisableableInput<Props, State> {
     constructor(props) {
         super(props);
         this.processFiles = this.processFiles.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.onDrag = this.onDrag.bind(this);
         this.onDragLeave = this.onDragLeave.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.onRemove = this.onRemove.bind(this);
+        this.setFormValue = this.setFormValue.bind(this);
         this.toggleDisabled = this.toggleDisabled.bind(this);
 
         this.fileInput = React.createRef<HTMLInputElement>();
         this.state = {
+            data: props.initialValue,
             isHover: false,
             file: null,
             error: '',
@@ -87,7 +91,7 @@ class FileInputImpl extends DisableableInput<Props, State> {
         return this.props.name ?? this.props.queryColumn.fieldKey;
     }
 
-    processFiles(fileList: FileList, transferItems?: DataTransferItemList) {
+    processFiles(fileList: FileList, transferItems?: DataTransferItemList): void {
         if (fileList.length > 1) {
             this.setState({ error: 'Only one file allowed' });
             return;
@@ -101,22 +105,22 @@ class FileInputImpl extends DisableableInput<Props, State> {
         this.setFormValue(fileList[0]);
     }
 
-    setFormValue = (file: File): void => {
+    setFormValue(file: File): void {
         const { formsy, onChange, setValue } = this.props;
-        this.setState({ file, error: '' });
+        this.setState({ data: undefined, file, error: '' });
         onChange?.({ [this.getInputName()]: file });
 
         if (formsy) {
             setValue?.(file);
         }
-    };
+    }
 
-    onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    onChange(event: React.FormEvent<HTMLInputElement>): void {
         cancelEvent(event);
         this.processFiles(this.fileInput.current.files);
-    };
+    }
 
-    onDrag(event: React.DragEvent<HTMLElement>) {
+    onDrag(event: React.DragEvent<HTMLElement>): void {
         cancelEvent(event);
 
         if (!this.state.isHover) {
@@ -124,7 +128,7 @@ class FileInputImpl extends DisableableInput<Props, State> {
         }
     }
 
-    onDragLeave(event: React.DragEvent<HTMLElement>) {
+    onDragLeave(event: React.DragEvent<HTMLElement>): void {
         cancelEvent(event);
 
         if (this.state.isHover) {
@@ -132,7 +136,7 @@ class FileInputImpl extends DisableableInput<Props, State> {
         }
     }
 
-    onDrop(event: React.DragEvent<HTMLElement>) {
+    onDrop(event: React.DragEvent<HTMLElement>): void {
         cancelEvent(event);
 
         if (event.dataTransfer && event.dataTransfer.files) {
@@ -141,9 +145,9 @@ class FileInputImpl extends DisableableInput<Props, State> {
         }
     }
 
-    onRemove() {
-        // TODO: Consider setting this to an empty file (i.e. new File([], '')) for removal.
-        this.setFormValue(undefined);
+    onRemove(): void {
+        // A value of null is supported by server APIs to clear/remove a file field's value.
+        this.setFormValue(null);
     }
 
     render() {
@@ -156,13 +160,33 @@ class FileInputImpl extends DisableableInput<Props, State> {
             renderFieldLabel,
             showLabel,
         } = this.props;
-        const { isHover, isDisabled, file } = this.state;
+        const { data, file, isDisabled, isHover } = this.state;
 
         const name = this.getInputName();
         const inputId = `${name}-fileUpload`;
         let body;
 
-        if (!file) {
+        if (file) {
+            const attachedFileClass = classNames('attached-file--inline-container', {
+                'file-upload--is-hover': isHover,
+            });
+            body = (
+                <div
+                    className={attachedFileClass}
+                    onDrop={this.onDrop}
+                    onDragEnter={this.onDrag}
+                    onDragOver={this.onDrag}
+                    onDragLeave={this.onDragLeave}
+                >
+                    <span className="fa fa-times-circle attached-file--remove-icon" onClick={this.onRemove} />
+                    <span className="fa fa-file-text attached-file--icon" />
+                    <span>{file.name}</span>
+                    <span className="file-upload--error-message">{this.state.error}</span>
+                </div>
+            );
+        } else if (data?.get('value')) {
+            body = <FileColumnRenderer col={queryColumn} data={data} onRemove={this.onRemove} />;
+        } else {
             body = (
                 <>
                     <input
@@ -191,24 +215,6 @@ class FileInputImpl extends DisableableInput<Props, State> {
                         <span className="file-upload--error-message">{this.state.error}</span>
                     </label>
                 </>
-            );
-        } else {
-            const attachedFileClass = classNames('attached-file--inline-container', {
-                'file-upload--is-hover': isHover,
-            });
-            body = (
-                <div
-                    className={attachedFileClass}
-                    onDrop={this.onDrop}
-                    onDragEnter={this.onDrag}
-                    onDragOver={this.onDrag}
-                    onDragLeave={this.onDragLeave}
-                >
-                    <span className="fa fa-times-circle attached-file--remove-icon" onClick={this.onRemove} />
-                    <span className="fa fa-file-text attached-file--icon" />
-                    <span>{file.name}</span>
-                    <span className="file-upload--error-message">{this.state.error}</span>
-                </div>
             );
         }
 

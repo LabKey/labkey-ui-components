@@ -111,7 +111,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                 .map(row => caseInsensitive(row, 'Name').value)
                 .join(DELIMITER);
         }
-
+        const labelClasses = "col-sm-3 col-xs-12";
         return (
             <div className="bottom-spacing" key={'parent-selections-' + index}>
                 <div className="form-group row">
@@ -125,8 +125,6 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         onChange={this.onChangeParentType}
                         options={parentTypeOptions?.toArray()}
                         required
-                        // allowDisable
-                        // onToggleDisable={this.onToggleDisable}
                         value={chosenType}
                     />
 
@@ -140,22 +138,33 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                     )}
                 </div>
                 {chosenType && (
-                    <QuerySelect
-                        componentId={'parentEntityValue_' + chosenType.label} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
-                        containerClass="row"
-                        inputClass="col-sm-6"
-                        label={capitalizeFirstChar(parentDataType.nounSingular) + ' IDs'}
-                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--parent-select"
-                        multiple
-                        name={'parentEntityValue_' + chosenType.label}
-                        onInitValue={this.onInitValue}
-                        onQSChange={this.onChangeParentValue}
-                        schemaQuery={parentSchemaQuery}
-                        showLoading
-                        value={value}
-                        valueColumn="Name"
-                    />
+                    <>
+                        <QuerySelect
+                            componentId={'parentEntityValue_' + chosenType.label} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
+                            containerClass="row"
+                            inputClass="col-sm-6"
+                            label={capitalizeFirstChar(parentDataType.nounSingular) + ' IDs'}
+                            labelClass={labelClasses + " entity-insert--parent-label entity-insert--parent-select"}
+                            multiple
+                            name={'parentEntityValue_' + chosenType.label}
+                            onInitValue={this.onInitValue}
+                            onQSChange={this.onChangeParentValue}
+                            schemaQuery={parentSchemaQuery}
+                            showLoading
+                            value={value}
+                            valueColumn="Name"
+                        />
+                        {!chosenValue &&
+                        <div className={"row top-spacing edit-parent-danger"}>
+                            <div className={labelClasses}/>
+                            <div className={"col-sm-9 col-xs-12"}>Leaving this selection blank will remove any
+                                current {chosenType.label} {parentDataType.nounSingular} values.
+                            </div>
+                        </div>
+                        }
+                    </>
                 )}
+
             </div>
         );
     };

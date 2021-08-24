@@ -21,9 +21,10 @@ interface Props {
     onCancel: () => void;
     onSuccess: () => void;
     childEntityDataType: EntityDataType;
-    childName: string
     auditBehavior?: AuditBehaviorTypes;
-    parentEntityDataTypes: EntityDataType[][];
+    parentEntityDataTypes: EntityDataType[];
+    parentNounPlural: string;
+    parentNounSingular: string;
 }
 
 export const EntityLineageEditModal: FC<Props> = memo(props => {
@@ -32,31 +33,46 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
         queryModel,
         onCancel,
         childEntityDataType,
-        childName,
         onSuccess,
         parentEntityDataTypes,
+        parentNounPlural,
+        parentNounSingular,
     } = props;
     const [submitting, setSubmitting] = useState(false);
     const [nonAliquots, setNonAliquots] = useState<Record<string, any>[]>(undefined);
     const [errorMessage, setErrorMessage] = useState(undefined);
     const [aliquots, setAliquots] = useState<Record<string, any>[]>(undefined);
-    const [allCurrentParents, setAllCurrentParents] = useState<List<EntityChoice>[]>(Array(parentEntityDataTypes.length))
     const [hasParentUpdates, setHasParentUpdates] = useState<boolean>(false);
+    const [originalParents, setOriginalParents] = useState<List<EntityChoice>[]>()
+    const lcParentNounPlural = parentNounPlural.toLowerCase();
+    const [selectedParents, setSelectedParents] = useState<List<EntityChoice>>(List<EntityChoice>());
 
     useEffect(() => {
         getSelectedData(queryModel.schemaName, queryModel.queryName, [...queryModel.selections])
             .then(response => {
                 const {data, dataIds} = response;
-                const nonAliquots = []
-                const aliquots = []
+                const nonAliquots = [];
+                const aliquots = [];
+                const parents: List<EntityChoice>[] = [];
                 data.forEach((d, key) => {
                     if (d.getIn(['IsAliquot', 'value'])) {
                         aliquots.push(d.toJS());
                     }
                     else {
-                        nonAliquots.push(d.toJS());
+                        const dataRecord = d.toJS();
+                        nonAliquots.push(dataRecord);
+                        // want to know
+                        // (a) what parent types already have values so we can add those types in the form
+                        // (b) if the values for the parents are the same so we can fill in those values
+                        // (c) what current parents are so we can know whether an update has been made
+                        // if we store a map from the input column to the common set of parents, or an empty array
+                        // if the values are not the same we should be able to know these three things
+                        // groups[0] = {'DataInputs/Labs': [123, 234]}}
+                        const lcPrefixes = parentEntityDataTypes.map(dataType => dataType.insertColumnNamePrefix.toLowerCase());
+                        // TODO get the original parents from the selection and store in the parents object
                     }
                 });
+                setOriginalParents(new Array<List<EntityChoice>>(nonAliquots.length));
                 setNonAliquots(nonAliquots);
                 setAliquots(aliquots);
             })
@@ -67,22 +83,18 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     }, [])
 
 
-    const onParentChange = useCallback((index, entityParents: List<EntityChoice>) => {
-        allCurrentParents[index] = entityParents;
-        setHasParentUpdates(allCurrentParents?.find((entityParents) => entityParents?.find(parent => parent.value != undefined)) !== undefined);
-    }, [allCurrentParents]);
+    const onParentChange = useCallback((entityParents: List<EntityChoice>) => {
+        setSelectedParents(entityParents);
+        setHasParentUpdates(entityParents.size > 0);
+    }, []);
 
 
     const onConfirm = useCallback(
         async () => {
             setSubmitting(true);
-            let updatedParents = [];
-            allCurrentParents.forEach((currentParents) => {
-                updatedParents = updatedParents.concat(currentParents.toArray());
-            });
             const rows = [];
-            nonAliquots.forEach(row => {
-                rows.push(getUpdatedRowForParentChanges(List<EntityChoice>(), List<EntityChoice>(updatedParents), row, queryModel.queryInfo));
+            nonAliquots.forEach((row, i) => {
+                rows.push(getUpdatedRowForParentChanges(originalParents[i], selectedParents, row, queryModel.queryInfo));
             });
 
             try
@@ -92,72 +104,84 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                     rows,
                     auditBehavior,
                 });
-                // setSubmitting(false);
-                createNotification(`Successfully updated lineage for ${nonAliquots.length} ${capitalizeFirstChar(getEntityNoun(childEntityDataType, nonAliquots.length))}`)
+                createNotification(`Successfully updated ${lcParentNounPlural} for ${nonAliquots.length} ${capitalizeFirstChar(getEntityNoun(childEntityDataType, nonAliquots.length))}`)
                 onSuccess();
             } catch (e) {
                 setSubmitting(false);
-                setErrorMessage("There was a problem updating the lineage." + resolveErrorMessage(e));
+                setErrorMessage("There was a problem updating the " + lcParentNounPlural + "." + resolveErrorMessage(e));
             }
         },
-        [allCurrentParents, auditBehavior, childEntityDataType, queryModel, nonAliquots]
+        [selectedParents, auditBehavior, childEntityDataType, queryModel, nonAliquots]
     );
 
     if (!queryModel || !nonAliquots || !aliquots) {
         return null;
     }
 
-    let body;
     if (nonAliquots?.length === 0) {
-        body = <Alert bsStyle={'info'}>The lineage for the selected {getEntityNoun(childEntityDataType, queryModel.selections.size)} cannot be changed.</Alert>
-    }
-    else {
-        body = (
-            <>
-                {(aliquots?.length > 0 && !submitting) && <Alert bsStyle={'info'}> {Utils.pluralize(aliquots.length, 'aliquot was', 'aliquots were')} among the selections. Lineage for aliquots cannot be changed.</Alert>}
-                <Alert bsStyle={'danger'}>{errorMessage}</Alert>
-                <Progress
-                    modal={false}
-                    estimate={(nonAliquots?.length ?? 10) * 10}
-                    title={`Updating lineage for ${nonAliquots?.length} ${getEntityNoun(childEntityDataType, nonAliquots?.length)}`}
-                    toggle={submitting}
-                />
-                {!submitting &&
-                <>
-                    {parentEntityDataTypes.map((parentTypes, index) => {
-                        return (
-                            <ParentEntityEditPanel
-                                auditBehavior={auditBehavior}
-                                canUpdate={true}
-                                childQueryInfo={queryModel.queryInfo}
-                                childData={queryModel.getRow()}
-                                parentDataTypes={parentTypes}
-                                childName={undefined}
-                                childNounSingular={childEntityDataType.nounSingular}
-                                key={`parent-${parentTypes[0].nounSingular}-${queryModel.id}`}
-                                onUpdate={onConfirm}
-                                title="Details"
-                                editOnly
-                                hideButtons
-                                includePanelHeader={false}
-                                onChangeParent={(currentParents) => onParentChange(index, currentParents)}
-                            />
-                        )
-                    })}
-                </>
-                }
-            </>
+        return (
+            <Modal show onHide={onCancel}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Cannot Edit {parentNounPlural}</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    <div>The {lcParentNounPlural} for aliquots cannot be changed.</div>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button bsClass={'btn btn-default'} onClick={onCancel} >
+                        Dismiss
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         )
     }
 
     return (
         <Modal bsSize="large" show onHide={onCancel}>
             <Modal.Header closeButton>
-                <Modal.Title>Edit Lineage for {nonAliquots.length} Selected {capitalizeFirstChar(getEntityNoun(childEntityDataType, nonAliquots.length))}</Modal.Title>
+                <Modal.Title>Edit {parentNounPlural} for {nonAliquots.length} Selected {capitalizeFirstChar(getEntityNoun(childEntityDataType, nonAliquots.length))}</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-                {body}
+                <div className={"bottom-spacing"}>
+                    <p>
+                        Values provided here will <b>replace</b> the existing {lcParentNounPlural} of the chosen types for the selected {getEntityNoun(childEntityDataType, nonAliquots.length)}.
+                        Remove {parentNounSingular} Types from the form below that you do not wish to change the value of.
+                    </p>
+                    <p>
+                        To see details of the existing {lcParentNounPlural}, choose "Cancel" here then "Edit Selected {capitalizeFirstChar(childEntityDataType.nounPlural)} in Grid" from the "Manage" menu.
+                    </p>
+                </div>
+                {(aliquots?.length > 0 && !submitting) && <Alert bsStyle={'info'}> {Utils.pluralize(aliquots.length, 'aliquot was', 'aliquots were')} among the selections. Lineage for aliquots cannot be changed.</Alert>}
+                <Alert bsStyle={'danger'}>{errorMessage}</Alert>
+
+                <Progress
+                    modal={false}
+                    estimate={(nonAliquots?.length ?? 10) * 10}
+                    title={`Updating ${lcParentNounPlural} for ${nonAliquots?.length} ${getEntityNoun(childEntityDataType, nonAliquots?.length)}`}
+                    toggle={submitting}
+                />
+                {!submitting &&
+                    <ParentEntityEditPanel
+                        auditBehavior={auditBehavior}
+                        canUpdate={true}
+                        childQueryInfo={queryModel.queryInfo}
+                        childData={queryModel.getRow()}
+                        parentDataTypes={parentEntityDataTypes}
+                        childName={undefined}
+                        childNounSingular={childEntityDataType.nounSingular}
+                        key={`parent${parentNounPlural}-${queryModel.id}`}
+                        onUpdate={onConfirm}
+                        title="Details"
+                        editOnly
+                        hideButtons
+                        submitText={'Update ' + parentNounPlural}
+                        includePanelHeader={false}
+                        onChangeParent={onParentChange}
+                    />
+                }
             </Modal.Body>
 
             <Modal.Footer>
@@ -167,8 +191,8 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                     </Button>
                 )}
 
-                <Button bsClass={'btn btn-primary'} onClick={onConfirm} disabled={submitting || !nonAliquots?.length || !hasParentUpdates}>
-                    {submitting ? 'Updating Lineage...' : 'Update Lineage'}
+                <Button bsClass={'btn btn-success'} onClick={onConfirm} disabled={submitting || !nonAliquots?.length || !hasParentUpdates}>
+                    {submitting ? `Updating ${parentNounPlural} ...` : `Update ${parentNounPlural}`}
                 </Button>
             </Modal.Footer>
         </Modal>

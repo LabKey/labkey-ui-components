@@ -114,6 +114,10 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         });
     };
 
+    compactEditDisplay(): boolean {
+        return this.props.childName == undefined
+    }
+
     hasParents = (): boolean => {
         return this.state.currentParents && !this.state.currentParents.isEmpty();
     };
@@ -258,7 +262,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
             return this.state.currentParents
                 .map((choice, index) => (
                     <div key={choice.type ? choice.type.label + '-' + index : 'unknown-' + index}>
-                        {editing && index > 0 && <hr />}
+                        {editing && (!this.compactEditDisplay() || index > 0) && <hr />}
                         <SingleParentEntityPanel
                             parentDataType={parentDataTypes[0]}
                             parentTypeOptions={this.getParentTypeOptions(index)}
@@ -279,7 +283,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
 
         return (
             <div>
-                {!editOnly && <hr />}
+                {!this.compactEditDisplay() && <hr />}
                 <SingleParentEntityPanel
                     editing={editing}
                     parentTypeOptions={this.state.parentTypeOptions}
@@ -295,9 +299,14 @@ export class ParentEntityEditPanel extends Component<Props, State> {
     };
 
     onAddParent = (): void => {
-        this.setState(state => ({
-            currentParents: state.currentParents.push({ type: undefined, value: undefined, ids: undefined }),
-        }));
+        this.setState(state => {
+            const toAdd = [{ type: undefined, value: undefined, ids: undefined }];
+            if (state.currentParents.size == 0)
+                toAdd.push({ type: undefined, value: undefined, ids: undefined })
+            return {
+                currentParents: state.currentParents.push(...toAdd),
+            }
+        });
     };
 
     renderAddParentButton = (): ReactNode => {

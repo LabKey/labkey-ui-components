@@ -11,7 +11,9 @@ interface Props {
     queryModel: QueryModel;
     childEntityDataType: EntityDataType;
     childName: string;
-    parentEntityDataTypes: EntityDataType[][];
+    parentNounPlural: string;
+    parentNounSingular: string;
+    parentEntityDataTypes: EntityDataType[];
     key?: string;
     itemText?: string;
     auditBehavior?: AuditBehaviorTypes;
@@ -25,8 +27,10 @@ export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
         parentEntityDataTypes,
         queryModel,
         auditBehavior,
+        parentNounPlural,
+        parentNounSingular,
     } = props;
-    const itemText = props.itemText ?? 'Edit Lineage for Selected ' + capitalizeFirstChar(getEntityNoun(childEntityDataType, queryModel.selections.size,));
+    const itemText = props.itemText ?? 'Edit ' + parentNounPlural + ' for Selected ' + capitalizeFirstChar(getEntityNoun(childEntityDataType, queryModel.selections.size) + ' in Bulk');
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
     const onClick = useCallback(() => {
@@ -63,9 +67,10 @@ export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
                     queryModel={queryModel}
                     onCancel={onClose}
                     childEntityDataType={childEntityDataType}
-                    childName={childName}
                     auditBehavior={auditBehavior}
                     parentEntityDataTypes={parentEntityDataTypes}
+                    parentNounPlural={parentNounPlural}
+                    parentNounSingular={parentNounSingular}
                     onSuccess={onSuccess}
                 />
             )}

@@ -60,8 +60,9 @@ describe('BulkUpdateForm', () => {
             const filteredColumns = QUERY_INFO.columns.filter(c => columnFilter(c)).toMap();
 
             // Assert
-            expect(filteredColumns.size).toEqual(1);
+            expect(filteredColumns.size).toEqual(2);
             expect(filteredColumns.get('update')).toEqual(COLUMN_CAN_UPDATE);
+            expect(filteredColumns.get('fileinput')).toEqual(COLUMN_FILE_INPUT);
         });
 
         test('filters with uniqueFieldKey', () => {
@@ -73,7 +74,8 @@ describe('BulkUpdateForm', () => {
             const filteredColumns = QUERY_INFO.columns.filter(c => columnFilter(c)).toMap();
 
             // Assert
-            expect(filteredColumns.size).toEqual(0);
+            expect(filteredColumns.size).toEqual(1);
+            expect(filteredColumns.get('fileinput')).toEqual(COLUMN_FILE_INPUT);
         });
     });
 });

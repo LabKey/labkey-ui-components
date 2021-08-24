@@ -89,6 +89,10 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
         this.props.onInitialParentValue?.(chosenValue, selectedValues, this.props.index);
     };
 
+    onToggleDisable = (disabled: boolean): void => {
+        console.log("TODO disable ", disabled);
+    }
+
     renderParentSelection = (model: QueryModel): ReactNode => {
         const { chosenType, chosenValue, parentLSIDs, parentTypeOptions, parentDataType, index } = this.props;
 
@@ -121,6 +125,8 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         onChange={this.onChangeParentType}
                         options={parentTypeOptions?.toArray()}
                         required
+                        // allowDisable
+                        // onToggleDisable={this.onToggleDisable}
                         value={chosenType}
                     />
 

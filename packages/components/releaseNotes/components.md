@@ -1,7 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-#### versionn 2.66.0
+### version TBD
+* Parameterize verb in DetailPanelHeader.
+* Move getEntityNoun method to utils
+* Add EntityLineageEditMenuItem and EntityLineageEditModal for enabling bulk update of entity lineage
+* Update ParentEntityEditPanel with more optional parameters
+  * hideButtons - to hide the buttons below the panel
+  * editOnly - to indicate that we start in edit mode and cannot cancel out of it;
+  * onChangeParent - callback used when any change in the parent types or values is made
+  * includePanelHeader - allows header on panel to be removed
+
+### version 2.66.0
 *Release*: 23 August 2021
 * Issue 43693: Indicate the depth of the lineage graphs and grids
 * Issue 43692: expose LineageGroupingOptions for ease of overriding defaults; update default depth to 5

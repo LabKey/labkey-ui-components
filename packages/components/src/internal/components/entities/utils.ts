@@ -142,3 +142,7 @@ export function getUniqueIdColumnMetadata(queryInfo: QueryInfo): Map<string, Edi
         });
     return columnMetadata;
 }
+
+export function getEntityNoun(entityDataType: EntityDataType, quantity: number): string {
+    return quantity === 1 ? entityDataType.nounSingular : entityDataType.nounPlural;
+}

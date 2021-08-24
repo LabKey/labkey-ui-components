@@ -264,6 +264,7 @@ import { addDateRangeFilter, last12Months, monthSort } from './internal/componen
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
+import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
 import {
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
@@ -348,7 +349,6 @@ import {
     LINEAGE_GROUPING_GENERATIONS,
     LineageFilter,
     LineageURLResolvers,
-    LineageGroupingOptions,
 } from './internal/components/lineage/types';
 import { LineageGraph, LineageDepthLimitMessage } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
@@ -877,6 +877,7 @@ export {
     EntityDeleteConfirmModal,
     EntityDeleteModal,
     EntityInsertPanel,
+    EntityLineageEditMenuItem,
     ParentEntityEditPanel,
     extractEntityTypeOptionFromRow,
     GenerateEntityResponse,
@@ -950,7 +951,6 @@ export {
     LineageGrid,
     LineageGridFromLocation,
     LineageURLResolvers,
-    LineageGroupingOptions,
     SampleTypeLineageCounts,
     invalidateLineageResults,
     getImmediateChildLineageFilterValue,
@@ -1280,3 +1280,4 @@ export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
 export type { FindField } from './internal/components/samples/models';
 export type { UsersLoader } from './internal/components/forms/actions';
+export type { LineageGroupingOptions } from './internal/components/lineage/types'

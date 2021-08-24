@@ -16,10 +16,8 @@ import {
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDataType } from './models';
+import { getEntityNoun } from './utils';
 
-function getNoun(entityDataType: EntityDataType, quantity: number): string {
-    return quantity === 1 ? entityDataType.nounSingular : entityDataType.nounPlural;
-}
 
 interface Props {
     model?: QueryGridModel;
@@ -82,7 +80,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
             setNumConfirmed(rowsToDelete.length);
             setShowProgress(true);
             beforeDelete?.();
-            const noun = ' ' + getNoun(entityDataType, rowsToDelete.length);
+            const noun = ' ' + getEntityNoun(entityDataType, rowsToDelete.length);
 
             try {
                 await deleteRows({
@@ -133,7 +131,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
             <Progress
                 modal={true}
                 estimate={numConfirmed * 10}
-                title={`Deleting ${numConfirmed} ${getNoun(entityDataType, numConfirmed)}`}
+                title={`Deleting ${numConfirmed} ${getEntityNoun(entityDataType, numConfirmed)}`}
                 toggle={showProgress}
             />
         </>

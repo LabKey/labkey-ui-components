@@ -185,7 +185,9 @@ class FileInputImpl extends DisableableInput<Props, State> {
                 </div>
             );
         } else if (data?.get('value')) {
-            body = <FileColumnRenderer col={queryColumn} data={data} onRemove={this.onRemove} />;
+            body = (
+                <FileColumnRenderer col={queryColumn} data={data} onRemove={isDisabled ? undefined : this.onRemove} />
+            );
         } else {
             body = (
                 <>
@@ -202,7 +204,10 @@ class FileInputImpl extends DisableableInput<Props, State> {
 
                     {/* We render a label here so click and drag events propagate to the input above */}
                     <label
-                        className={classNames('file-upload--compact-label', { 'file-upload--is-hover': isHover })}
+                        className={classNames('file-upload--compact-label', {
+                            'file-upload--is-disabled': isDisabled,
+                            'file-upload--is-hover': isHover && !isDisabled,
+                        })}
                         htmlFor={inputId}
                         onDrop={this.onDrop}
                         onDragEnter={this.onDrag}

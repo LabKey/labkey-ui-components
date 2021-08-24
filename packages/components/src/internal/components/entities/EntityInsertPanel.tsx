@@ -22,8 +22,6 @@ import { Link } from 'react-router';
 
 import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
-import { addColumns, changeColumn, removeColumn } from '../../actions';
-
 import {
     Alert,
     AppURL,
@@ -90,7 +88,6 @@ import {
     EntityInsertPanelTabs,
     EntityParentType,
     EntityTypeOption,
-    getParentEntities,
     IEntityTypeOption,
     IParentOption,
 } from './models';
@@ -98,7 +95,12 @@ import {
 import { getUniqueIdColumnMetadata } from './utils';
 import { getEntityTypeData, handleEntityFileImport } from './actions';
 import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
-import { EntityParentTypeSelectors } from './EntityParentTypeSelectors';
+import {
+    addEntityParentType,
+    changeEntityParentType,
+    EntityParentTypeSelectors,
+    removeEntityParentType,
+} from './EntityParentTypeSelectors';
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
@@ -455,7 +457,13 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     addParent = (queryName: string): void => {
-        this.setState(state => ({ insertModel: state.insertModel.addParent(queryName) }));
+        const { insertModel } = this.state;
+
+        this.setState(state => ({
+            insertModel: state.insertModel.merge({
+                entityParents: addEntityParentType(queryName, insertModel.entityParents),
+            }) as EntityIdCreationModel,
+        }));
     };
 
     changeParent = (
@@ -465,72 +473,48 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         formValue: any,
         parent: IParentOption
     ): void => {
-        const { combineParentTypes } = this.props;
-        const queryGridModel = this.getQueryGridModel();
-        if (queryGridModel) {
-            const { insertModel } = this.state;
-            const { entityDataType } = this.props;
-            const [updatedModel, column, existingParent, parentColumnName] = insertModel.changeParent(
-                index,
-                queryName,
-                entityDataType.uniqueFieldKey,
-                parent
-            );
-            if (!updatedModel)
-                // no updated model if nothing has changed, so we can just stop
-                return;
+        const { insertModel } = this.state;
+        const { entityDataType, combineParentTypes } = this.props;
 
-            this.setState(
-                () => {
-                    return {
-                        insertModel: updatedModel,
-                    };
-                },
-                () => {
-                    this.props.onParentChange?.(updatedModel.entityParents);
-                    if (column && existingParent) {
-                        if (existingParent.query !== undefined) {
-                            changeColumn(queryGridModel, existingParent.createColumnName(), column);
-                        } else {
-                            const columnMap = OrderedMap<string, QueryColumn>();
-                            let fieldKey;
-                            if (existingParent.index === 1) {
-                                fieldKey = entityDataType.uniqueFieldKey;
-                            } else {
-                                const definedParents = getParentEntities(updatedModel.entityParents, combineParentTypes, queryName)
-                                    .filter(parent => parent.query !== undefined);
-                                if (definedParents.size === 0) fieldKey = entityDataType.uniqueFieldKey;
-                                else {
-                                    // want the first defined parent before the new parent's index
-                                    const prevParent = definedParents.findLast(
-                                        parent => parent.index < existingParent.index
-                                    );
-                                    fieldKey = prevParent
-                                        ? prevParent.createColumnName()
-                                        : entityDataType.uniqueFieldKey;
-                                }
-                            }
-                            addColumns(queryGridModel, columnMap.set(column.fieldKey.toLowerCase(), column), fieldKey);
-                        }
-                    } else {
-                        removeColumn(queryGridModel, parentColumnName);
-                    }
-                }
-            );
+        const updatedEntityParents = changeEntityParentType(
+            index,
+            queryName,
+            parent,
+            this.getQueryGridModel(),
+            insertModel.entityParents,
+            entityDataType,
+            combineParentTypes
+        );
+
+        if (updatedEntityParents) {
+            this.updateEntityParents(updatedEntityParents);
         }
     };
 
     removeParent = (index: number, queryName: string): void => {
         const { insertModel } = this.state;
-        const [updatedModel, parentColumnName] = insertModel.removeParent(index, queryName);
-        this.setState(
-            () => ({ insertModel: updatedModel }),
-            () => {
-                this.props.onParentChange?.(updatedModel.entityParents);
-                removeColumn(this.getQueryGridModel(), parentColumnName);
+        const updatedEntityParents = removeEntityParentType(
+            index,
+            queryName,
+            insertModel.entityParents,
+            this.getQueryGridModel()
+        );
+
+        if (updatedEntityParents) {
+            this.updateEntityParents(updatedEntityParents);
+        }
+    };
+
+    updateEntityParents(updatedEntityParents: Map<string, List<EntityParentType>>): void {
+        this.setState(state => ({
+                insertModel: state.insertModel.merge({
+                    entityParents: updatedEntityParents,
+                }) as EntityIdCreationModel,
+            }), () => {
+                this.props.onParentChange?.(updatedEntityParents);
             }
         );
-    };
+    }
 
     renderParentTypesAndButtons = (): ReactNode => {
         const { insertModel } = this.state;
@@ -879,7 +863,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         return (
             <>
                 {this.renderHeader(true)}
-                <hr className="bottom-spacing" />
+                <hr />
                 <div className="top-spacing">
                     {!isLoaded && !insertModel.isError && !!insertModel.targetEntityType?.value && (
                         <LoadingSpinner wrapperClassName="loading-data-message" />

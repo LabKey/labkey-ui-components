@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * query to get first parents (sources or samples) for selected samples in sample type grid
   * parse sample parent data into format that can be used to get initial columns and values for sample lineage EditableGrid
   * add new "Lineage Details" tab to the sample edit via grid display
+  * allow for additional source and parents sample types to be added to EditableGrid
   * persist updated sample parents on finish/save from EditableGrid
   * refactor EntityParentTypeSelectors out of EntityInsertPanel.tsx for reuse
 

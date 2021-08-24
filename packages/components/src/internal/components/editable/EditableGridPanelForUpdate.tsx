@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
 import { getEditorModel } from '../../global';
@@ -32,6 +32,7 @@ interface Props {
     getReadOnlyRows?: (tabId?: number) => List<any>;
     getIdField?: (tabId?: number) => string;
     getTabTitle?: (tabId?: number) => string;
+    getTabHeader?: (tabId?: number) => ReactNode;
 }
 
 interface State {
@@ -138,6 +139,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             getReadOnlyRows,
             getReadOnlyColumns,
             getTabTitle,
+            getTabHeader,
         } = this.props;
         const { isSubmitting } = this.state;
 
@@ -166,6 +168,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                     getReadOnlyColumns={getReadOnlyColumns}
                     getReadOnlyRows={getReadOnlyRows}
                     getTabTitle={getTabTitle}
+                    getTabHeader={getTabHeader}
                 />
                 <WizardNavButtons
                     cancel={onCancel}

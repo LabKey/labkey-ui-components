@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List, Map, OrderedMap, fromJS } from 'immutable';
 
 import { AuditBehaviorTypes, Query } from '@labkey/api';
@@ -29,11 +29,21 @@ import {
     getStateModelId,
     EditableColumnMetadata,
     caseInsensitive,
+    SampleTypeDataType,
+    IEntityTypeOption,
+    EntityDataType,
+    IParentOption,
 } from '../../..';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { getOriginalParentsFromSampleLineage } from './actions';
 import { DisplayObject, EntityChoice, EntityParentType } from '../entities/models';
+import {
+    addEntityParentType,
+    changeEntityParentType,
+    EntityParentTypeSelectors,
+    removeEntityParentType,
+} from '../entities/EntityParentTypeSelectors';
 
 interface OwnProps {
     displayQueryModel: QueryModel;
@@ -55,6 +65,8 @@ interface OwnProps {
         selection: List<any>
     ) => any;
     invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
+    parentDataTypes: List<EntityDataType>;
+    combineParentTypes?: boolean;
 }
 
 type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultProps;
@@ -73,7 +85,9 @@ enum GridTab {
 }
 
 interface State {
-    originalSampleParents: Record<string, List<EntityChoice>>;
+    originalParents: Record<string, List<EntityChoice>>;
+    parentTypeOptions: Map<string, List<IEntityTypeOption>>;
+    entityParentsMap: Map<string, List<EntityParentType>>;
 }
 
 // Usage: export const SamplesEditableGrid = connect<any, any, any>(undefined)(SamplesSelectionProvider(SamplesEditableGridBase));
@@ -85,8 +99,16 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this._hasError = false;
+
         this.state = {
-            originalSampleParents: {},
+            originalParents: undefined,
+            parentTypeOptions: undefined,
+            entityParentsMap: fromJS(
+                props.parentDataTypes.reduce((map, dataType) => {
+                    map[dataType.typeListingSchemaQuery.queryName] = [];
+                    return map;
+                }, {})
+            ),
         };
     }
 
@@ -246,11 +268,12 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
 
     getLineageEditorQueryGridModel = (): QueryGridModel => {
         const { displayQueryModel, sampleLineage, sampleLineageKeys } = this.props;
-        const { originalSampleParents } = this.state;
-        const queryModel = displayQueryModel;
-        const samplesSchemaQuery = this.getSchemaQuery();
+        const { originalParents } = this.state;
+        if (!originalParents) return undefined;
 
         // return quickly if we have already generated a model
+        const queryModel = displayQueryModel;
+        const samplesSchemaQuery = this.getSchemaQuery();
         const modelId = getStateModelId(SAMPLES_LINEAGE_EDIT_GRID_ID, samplesSchemaQuery);
         const stateModel = getQueryGridModel(modelId);
         if (stateModel) return stateModel;
@@ -266,7 +289,8 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
         });
         const parentColumns = {};
         let parentColIndex = 0;
-        Object.values(originalSampleParents).forEach(sampleParents => {
+        // TODO should we use EntityIdCreationModel.getParentColumns?
+        Object.values(originalParents).forEach(sampleParents => {
             sampleParents.forEach(sampleParent => {
                 const { schema, query } = sampleParent.type;
                 const parentCol = EntityParentType.create({ index: parentColIndex, schema, query }).generateColumn(
@@ -292,8 +316,8 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                 fetch: () => {
                     return new Promise((resolve) => {
                         let data = EditorModel.convertQueryDataToEditorData(fromJS(sampleLineage));
-                        Object.keys(originalSampleParents).forEach(sampleId => {
-                            originalSampleParents[sampleId].forEach(sampleParent => {
+                        Object.keys(originalParents).forEach(sampleId => {
+                            originalParents[sampleId].forEach(sampleParent => {
                                 const { schema, query } = sampleParent.type;
                                 const value = List<DisplayObject>(sampleParent.gridValues);
                                 const parentType = EntityParentType.create({ schema, query, value });
@@ -314,10 +338,8 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     initLineageEditableGrid = async (): Promise<void> => {
-        const originalSampleParents = await getOriginalParentsFromSampleLineage(this.props.sampleLineage);
-        this.setState(() => ({
-            originalSampleParents,
-        }), () => {
+        const { originalParents, parentTypeOptions } = await getOriginalParentsFromSampleLineage(this.props.sampleLineage);
+        this.setState(() => ({ originalParents, parentTypeOptions }), () => {
             gridInit(this.getLineageEditorQueryGridModel(), true, this);
         });
     };
@@ -542,6 +564,70 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
         return 'Sample Data';
     };
 
+    addParentType = (queryName: string): void => {
+        const { entityParentsMap } = this.state;
+        const updatedEntityParents = addEntityParentType(queryName, entityParentsMap);
+        this.setState(() => ({ entityParentsMap: updatedEntityParents }));
+    };
+
+    removeParentType = (index: number, queryName: string): void => {
+        const { entityParentsMap } = this.state;
+        const updatedEntityParents = removeEntityParentType(
+            index,
+            queryName,
+            entityParentsMap,
+            this.getLineageEditorQueryGridModel()
+        );
+        this.setState(() => ({ entityParentsMap: updatedEntityParents }));
+    };
+
+    changeParentType = (
+        index: number,
+        queryName: string,
+        fieldName: string,
+        formValue: any,
+        parent: IParentOption
+    ): void => {
+        const { entityParentsMap } = this.state;
+        const { combineParentTypes } = this.props;
+        const updatedEntityParents = changeEntityParentType(
+            index,
+            queryName,
+            parent,
+            this.getLineageEditorQueryGridModel(),
+            entityParentsMap,
+            SampleTypeDataType,
+            combineParentTypes
+        );
+        this.setState(() => ({ entityParentsMap: updatedEntityParents }));
+    };
+
+    getTabHeader = (tabInd: number): ReactNode => {
+        const { parentDataTypes, combineParentTypes } = this.props;
+        const { parentTypeOptions, entityParentsMap } = this.state;
+
+        if (tabInd === GridTab.Lineage) {
+            return (
+                <>
+                    <div className="top-spacing">
+                        <EntityParentTypeSelectors
+                            parentDataTypes={parentDataTypes}
+                            parentOptionsMap={parentTypeOptions}
+                            entityParentsMap={entityParentsMap}
+                            combineParentTypes={combineParentTypes}
+                            onAdd={this.addParentType}
+                            onChange={this.changeParentType}
+                            onRemove={this.removeParentType}
+                        />
+                    </div>
+                    <hr />
+                </>
+            );
+        }
+
+        return null;
+    };
+
     render() {
         const { selectionData, onGridEditCancel, canEditStorage } = this.props;
 
@@ -575,6 +661,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                 getTabTitle={this.getTabTitle}
                 getColumnMetadata={this.getSamplesColumnMetadata}
                 getUpdateColumns={this.getSamplesUpdateColumns}
+                getTabHeader={this.getTabHeader}
             />
         );
     }

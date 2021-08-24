@@ -308,27 +308,41 @@ export function getSampleSelectionLineageData(selection: List<any>, sampleType: 
 
 export const getOriginalParentsFromSampleLineage = async (
     sampleLineage: Record<string, any>
-): Promise<Record<string, List<EntityChoice>>> => {
+): Promise<{
+    originalParents: Record<string, List<EntityChoice>>;
+    parentTypeOptions: Map<string, List<IEntityTypeOption>>;
+}> => {
     const originalParents = {};
+    let parentTypeOptions = Map<string, List<IEntityTypeOption>>();
     const dataClassTypeData = await getParentTypeDataForSample(DataClassDataType, Object.values(sampleLineage));
     const sampleTypeData = await getParentTypeDataForSample(SampleTypeDataType, Object.values(sampleLineage));
 
     // iterate through both Data Classes and Sample Types for finding sample parents
     [DataClassDataType, SampleTypeDataType].forEach(dataType => {
-        const parentTypeOptions =
+        const dataTypeOptions =
             dataType === DataClassDataType ? dataClassTypeData.parentTypeOptions : sampleTypeData.parentTypeOptions;
+
         const parentIdData =
             dataType === DataClassDataType ? dataClassTypeData.parentIdData : sampleTypeData.parentIdData;
         Object.keys(sampleLineage).forEach(sampleId => {
             if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
 
             originalParents[sampleId] = originalParents[sampleId].concat(
-                getInitialParentChoices(parentTypeOptions, dataType, sampleLineage[sampleId], parentIdData)
+                getInitialParentChoices(dataTypeOptions, dataType, sampleLineage[sampleId], parentIdData)
             );
         });
+
+        // filter out the current parent types from the dataTypeOptions
+        const originalParentTypeLsids = [];
+        Object.values(originalParents).forEach((parentTypes: List<EntityChoice>) => {
+            originalParentTypeLsids.push(...parentTypes.map(parentType => parentType.type.lsid).toArray());
+        });
+        parentTypeOptions = parentTypeOptions.set(dataType.typeListingSchemaQuery.queryName,
+            dataTypeOptions.filter(option => originalParentTypeLsids.indexOf(option.lsid) === -1).toList()
+        );
     });
 
-    return originalParents;
+    return { originalParents, parentTypeOptions };
 };
 
 export const getParentTypeDataForSample = async (

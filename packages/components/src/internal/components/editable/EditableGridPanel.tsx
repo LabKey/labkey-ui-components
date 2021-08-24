@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import ReactN from 'reactn';
 import { Panel } from 'react-bootstrap';
 import { List, Map } from 'immutable';
@@ -46,6 +46,7 @@ interface Props extends EditableGridProps {
     getReadOnlyRows?: (tabId?: number) => List<any>;
     getIdField?: (tabId?: number) => string;
     getTabTitle?: (tabId?: number) => string;
+    getTabHeader?: (tabId?: number) => ReactNode;
 }
 
 interface State {
@@ -151,6 +152,7 @@ export class EditableGridPanel extends ReactN.Component<Props, State, GlobalAppS
             getColumnMetadata,
             getReadOnlyRows,
             getReadOnlyColumns,
+            getTabHeader,
         } = this.props;
         const { activeTab } = this.state;
 
@@ -194,6 +196,7 @@ export class EditableGridPanel extends ReactN.Component<Props, State, GlobalAppS
                 <Panel.Heading>{title}</Panel.Heading>
                 <Panel.Body className="table-responsive">
                     {this.renderTabs()}
+                    {getTabHeader && getTabHeader(activeTab)}
                     <EditableGrid {...gridProps} />
                 </Panel.Body>
             </Panel>

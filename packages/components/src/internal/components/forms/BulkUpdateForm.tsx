@@ -99,11 +99,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
 
     columnFilter = (col: QueryColumn): boolean => {
         const lcUniqueFieldKey = this.props.uniqueFieldKey?.toLowerCase();
-        return (
-            col.shownInUpdateView === true &&
-            (!lcUniqueFieldKey || col.name.toLowerCase() !== lcUniqueFieldKey) &&
-            !col.isFileInput
-        );
+        return col.isUpdateColumn && (!lcUniqueFieldKey || col.name.toLowerCase() !== lcUniqueFieldKey);
     };
 
     onSubmit = (data): Promise<any> => {
@@ -162,6 +158,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 onSubmitForEdit={this.onSubmitForEdit}
                 onSubmit={this.onSubmit}
                 onSuccess={onComplete}
+                renderFileInputs
                 queryInfo={queryInfo}
                 showLabelAsterisk
                 submitForEditText="Edit with Grid"

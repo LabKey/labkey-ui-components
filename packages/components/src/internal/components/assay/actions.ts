@@ -92,10 +92,8 @@ export function importAssayRun(config: Partial<AssayDOM.IImportRunOptions>): Pro
 
 export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUploadOptions> {
     return new Promise((resolve, reject) => {
-        const batchProperties = data.batchProperties;
-        const runProperties = data.properties;
-        const batchFiles = collectFiles(batchProperties);
-        const runFiles = collectFiles(runProperties);
+        const batchFiles = collectFiles(data.batchProperties);
+        const runFiles = collectFiles(data.properties);
         let maxFileSize = 0; // return the largest file size, used to determine if async mode should be used
 
         const maxRowCount = Array.isArray(data.dataRows) ? data.dataRows.length : undefined;
@@ -205,7 +203,7 @@ interface FileMap {
     [s: string]: File;
 }
 
-function collectFiles(source): FileMap {
+function collectFiles(source: Record<string, any>): FileMap {
     return Object.keys(source).reduce((files, key) => {
         const item = source[key];
 

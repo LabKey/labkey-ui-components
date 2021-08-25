@@ -1,20 +1,23 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 import { Input } from 'formsy-react-components';
-import { RadioGroupInput } from "./input/RadioGroupInput";
+
 import { addValidationRule } from 'formsy-react';
-import { SampleCreationType, SampleCreationTypeModel } from "../samples/models";
+
+import { SampleCreationType, SampleCreationTypeModel } from '../samples/models';
+
+import { RadioGroupInput } from './input/RadioGroupInput';
 
 interface Props {
-    creationTypeOptions: Array<SampleCreationTypeModel>
+    creationTypeOptions: SampleCreationTypeModel[];
     includeCountField: boolean;
     maxCount: number;
     countText: string;
-    onCountChange?: (count: number) => void
+    onCountChange?: (count: number) => void;
 }
 
 interface State {
-    count: number
-    selectedCreationType: SampleCreationType
+    count: number;
+    selectedCreationType: SampleCreationType;
 }
 
 addValidationRule('isPositiveLt', (vs, v, smax) => {
@@ -22,23 +25,22 @@ addValidationRule('isPositiveLt', (vs, v, smax) => {
         return true;
     }
 
-    const max = parseInt(smax);
-    const i = parseInt(v);
+    const max = parseInt(smax, 10);
+    const i = parseInt(v, 10);
 
     if (!isNaN(i) && i >= 1 && i <= max) return true;
-    return max == 1 ? 'Only 1 allowed' : `Value must be between 1 and ${max}.`;
+    return max === 1 ? 'Only 1 allowed' : `Value must be between 1 and ${max}.`;
 });
 
 export class QueryInfoQuantity extends PureComponent<Props, State> {
-
     constructor(props: Props) {
         super(props);
 
-        const selectedOption = props.creationTypeOptions?.find(option => (option.selected));
+        const selectedOption = props.creationTypeOptions?.find(option => option.selected);
         this.state = {
             count: undefined,
-            selectedCreationType: selectedOption?.type
-        }
+            selectedCreationType: selectedOption?.type,
+        };
     }
 
     onCountChange = (field, value): void => {
@@ -46,26 +48,25 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
         this.props.onCountChange?.(value);
     };
 
-    onOptionChange = (value)  => {
-        this.setState(() => ({selectedCreationType: value}));
-    }
+    onOptionChange = value => {
+        this.setState(() => ({ selectedCreationType: value }));
+    };
 
     render() {
         const { creationTypeOptions, includeCountField, maxCount } = this.props;
         const { count, selectedCreationType } = this.state;
         let text = this.props.countText;
 
-        let options = [];
+        const options = [];
 
-        if (creationTypeOptions)
-        {
+        if (creationTypeOptions) {
             creationTypeOptions.forEach(option => {
                 const selected = selectedCreationType === option.type;
-                if (selected)
-                    text = option.quantityLabel;
+                if (selected) text = option.quantityLabel;
                 options.push({
                     value: option.type,
-                    description: option.disabled && option.disabledDescription ? option.disabledDescription : option.description,
+                    description:
+                        option.disabled && option.disabledDescription ? option.disabledDescription : option.description,
                     label: option.type,
                     disabled: option.disabled,
                     selected: option.selected,
@@ -75,12 +76,7 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
         return (
             <>
                 {options.length > 0 && (
-                    <RadioGroupInput
-                        name={"creationType"}
-                        options={options}
-                        formsy={true}
-                        onValueChange={this.onOptionChange}
-                    />
+                    <RadioGroupInput name="creationType" options={options} formsy onValueChange={this.onOptionChange} />
                 )}
                 {(options.length > 0 || includeCountField) && (
                     <Input
@@ -91,12 +87,12 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
                         max={maxCount}
                         min={1}
                         onChange={this.onCountChange}
-                        required={true}
+                        required
                         step="1"
                         style={{ width: '125px' }}
                         type="number"
                         validations={`isPositiveLt:${maxCount}`}
-                        value={count ? count.toString() : "1"}
+                        value={count ? count.toString() : '1'}
                     />
                 )}
             </>

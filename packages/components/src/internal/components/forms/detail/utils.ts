@@ -68,8 +68,7 @@ export function extractChanges(
                 if (newDateValue === origDateValue) {
                     return false;
                 }
-            }
-            else if (column?.jsonType === 'string') {
+            } else if (column?.jsonType === 'string' && column?.inputType !== 'file') {
                 newValue = newValue?.trim();
                 if (currentData.get(field) === newValue) {
                     return false;

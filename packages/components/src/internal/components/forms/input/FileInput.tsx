@@ -13,45 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode, RefObject } from 'react';
+import React, { FC, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
+import { Map } from 'immutable';
+import { withFormsy } from 'formsy-react';
 
 import { FieldLabel } from '../FieldLabel';
 import { cancelEvent } from '../../../events';
 
-import { QueryColumn } from '../../../..';
+import { FileColumnRenderer, QueryColumn } from '../../../..';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-interface FileInputState extends DisableableInputState {
+interface Props extends DisableableInputProps {
+    addLabelAsterisk?: boolean;
+    changeDebounceInterval?: number;
+    elementWrapperClassName?: string;
+    formsy?: boolean;
+    initialValue?: any;
+    labelClassName?: string;
+    name?: string;
+    onChange?: (fileMap: Record<string, File>) => void;
+    queryColumn?: QueryColumn;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    showLabel?: boolean;
+
+    // from formsy-react
+    getErrorMessage?: Function;
+    getValue?: Function;
+    setValue?: Function;
+    showRequired?: Function;
+    validations?: any;
+}
+
+interface State extends DisableableInputState {
+    data: any;
     isHover: boolean;
-    file?: File;
+    file: File;
     error: string;
 }
 
-interface FileInputProps extends DisableableInputProps {
-    changeDebounceInterval: number;
-    elementWrapperClassName: string;
-    labelClassName: string;
-    showLabel: boolean;
-    key: any;
-    value?: any;
-    name?: string;
-    onChange: any;
-    queryColumn?: QueryColumn;
-    addLabelAsterisk?: boolean;
-    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-}
-
-export class FileInput extends DisableableInput<FileInputProps, FileInputState> {
+class FileInputImpl extends DisableableInput<Props, State> {
     fileInput: RefObject<HTMLInputElement>;
 
     static defaultProps = {
         ...DisableableInput.defaultProps,
         ...{
             changeDebounceInterval: 0,
-            elementWrapperClassName: 'col-md-9 col-xs-12',
-            labelClassName: 'control-label text-left',
+            elementWrapperClassName: 'col-sm-9 col-md-9 col-xs-12',
             showLabel: true,
         },
     };
@@ -59,14 +68,20 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     constructor(props) {
         super(props);
         this.processFiles = this.processFiles.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.onDrag = this.onDrag.bind(this);
         this.onDragLeave = this.onDragLeave.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.onRemove = this.onRemove.bind(this);
+        this.setFormValue = this.setFormValue.bind(this);
         this.toggleDisabled = this.toggleDisabled.bind(this);
 
         this.fileInput = React.createRef<HTMLInputElement>();
         this.state = {
+            // FileInput only accepts query-shaped row data as the initialValue
+            // as that is what is accepted by FileColumnRenderer. Without this there is likely insufficient
+            // metadata to render and act on the associated file value.
+            data: Map.isMap(props.initialValue) ? props.initialValue : undefined,
             isHover: false,
             file: null,
             error: '',
@@ -77,35 +92,39 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     getInputName(): string {
         // FIXME if there's more than one of these on the page with the same inputName
         // files will go to the wrong place when uploaded unless the names are unique
-        return this.props.name ? this.props.name : this.props.queryColumn.name;
+        return this.props.name ?? this.props.queryColumn.fieldKey;
     }
 
-    processFiles(fileList: FileList, transferItems?: DataTransferItemList) {
-        const { onChange } = this.props;
-        const name = this.getInputName();
-
+    processFiles(fileList: FileList, transferItems?: DataTransferItemList): void {
         if (fileList.length > 1) {
             this.setState({ error: 'Only one file allowed' });
             return;
         }
-
-        const file = fileList[0];
 
         if (transferItems && transferItems[0].webkitGetAsEntry().isDirectory) {
             this.setState({ error: 'Folders are not supported, only one file allowed' });
             return;
         }
 
-        this.setState({ file, error: '' });
-        onChange({ [name]: file });
+        this.setFormValue(fileList[0]);
     }
 
-    onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    setFormValue(file: File): void {
+        const { formsy, onChange, setValue } = this.props;
+        this.setState({ data: undefined, file, error: '' });
+        onChange?.({ [this.getInputName()]: file });
+
+        if (formsy) {
+            setValue?.(file);
+        }
+    }
+
+    onChange(event: React.FormEvent<HTMLInputElement>): void {
         cancelEvent(event);
         this.processFiles(this.fileInput.current.files);
-    };
+    }
 
-    onDrag(event: React.DragEvent<HTMLElement>) {
+    onDrag(event: React.DragEvent<HTMLElement>): void {
         cancelEvent(event);
 
         if (!this.state.isHover) {
@@ -113,7 +132,7 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
         }
     }
 
-    onDragLeave(event: React.DragEvent<HTMLElement>) {
+    onDragLeave(event: React.DragEvent<HTMLElement>): void {
         cancelEvent(event);
 
         if (this.state.isHover) {
@@ -121,7 +140,7 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
         }
     }
 
-    onDrop(event: React.DragEvent<HTMLElement>) {
+    onDrop(event: React.DragEvent<HTMLElement>): void {
         cancelEvent(event);
 
         if (event.dataTransfer && event.dataTransfer.files) {
@@ -130,54 +149,28 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
         }
     }
 
-    onRemove() {
-        const { onChange } = this.props;
-        const name = this.getInputName();
-
-        this.setState({ file: null });
-        onChange({ [name]: null });
+    onRemove(): void {
+        // A value of null is supported by server APIs to clear/remove a file field's value.
+        this.setFormValue(null);
     }
 
     render() {
-        const { queryColumn, allowDisable, addLabelAsterisk, renderFieldLabel, showLabel } = this.props;
-        const { isHover, isDisabled, file } = this.state;
+        const {
+            addLabelAsterisk,
+            allowDisable,
+            elementWrapperClassName,
+            labelClassName,
+            queryColumn,
+            renderFieldLabel,
+            showLabel,
+        } = this.props;
+        const { data, file, isDisabled, isHover } = this.state;
 
         const name = this.getInputName();
         const inputId = `${name}-fileUpload`;
         let body;
 
-        if (file === null) {
-            const labelClassName = classNames('file-upload--compact-label', { 'file-upload--is-hover': isHover });
-            body = (
-                <>
-                    <input
-                        disabled={this.state.isDisabled}
-                        type="file"
-                        className="file-upload--input" // This class makes the file input hidden
-                        name={name}
-                        id={inputId}
-                        multiple={false}
-                        onChange={this.onChange}
-                        ref={this.fileInput}
-                    />
-
-                    {/* We render a label here so click and drag events propagate to the input above */}
-                    <label
-                        className={labelClassName}
-                        htmlFor={inputId}
-                        onDrop={this.onDrop}
-                        onDragEnter={this.onDrag}
-                        onDragOver={this.onDrag}
-                        onDragLeave={this.onDragLeave}
-                    >
-                        <i className="fa fa-cloud-upload" aria-hidden="true" />
-                        &nbsp;
-                        <span>Select file or drag and drop here.</span>
-                        <span className="file-upload--error-message">{this.state.error}</span>
-                    </label>
-                </>
-            );
-        } else {
+        if (file) {
             const attachedFileClass = classNames('attached-file--inline-container', {
                 'file-upload--is-hover': isHover,
             });
@@ -195,12 +188,52 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
                     <span className="file-upload--error-message">{this.state.error}</span>
                 </div>
             );
+        } else if (data?.get('value')) {
+            body = (
+                <FileColumnRenderer col={queryColumn} data={data} onRemove={isDisabled ? undefined : this.onRemove} />
+            );
+        } else {
+            body = (
+                <>
+                    <input
+                        disabled={this.state.isDisabled}
+                        type="file"
+                        className="file-upload--input" // This class makes the file input hidden
+                        name={name}
+                        id={inputId}
+                        multiple={false}
+                        onChange={this.onChange}
+                        ref={this.fileInput}
+                    />
+
+                    {/* We render a label here so click and drag events propagate to the input above */}
+                    <label
+                        className={classNames('file-upload--compact-label', {
+                            'file-upload--is-disabled': isDisabled,
+                            'file-upload--is-hover': isHover && !isDisabled,
+                        })}
+                        htmlFor={inputId}
+                        onDrop={this.onDrop}
+                        onDragEnter={this.onDrag}
+                        onDragOver={this.onDrag}
+                        onDragLeave={this.onDragLeave}
+                    >
+                        <i className="fa fa-cloud-upload" aria-hidden="true" />
+                        &nbsp;
+                        <span>Select file or drag and drop here.</span>
+                        <span className="file-upload--error-message">{this.state.error}</span>
+                    </label>
+                </>
+            );
         }
 
         const labelOverlayProps = {
-            isFormsy: false,
-            inputId,
             addLabelAsterisk,
+            inputId,
+            // While this component supports binding Formsy it does not use a Formsy component
+            // to render the associated label. As such, the label overlay is always configured as isFormsy={false}.
+            isFormsy: false,
+            labelClass: labelClassName,
         };
 
         return (
@@ -219,8 +252,27 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
                         }}
                     />
                 )}
-                <div className="col-md-9">{body}</div>
+                <div className={elementWrapperClassName}>{body}</div>
             </div>
         );
     }
 }
+
+/**
+ * This class is a wrapper around FileInputImpl to be able to bind formsy-react. It uses
+ * the Formsy.Decorator to bind formsy-react so the element can be validated, submitted, etc.
+ */
+const FileInputFormsy = withFormsy(FileInputImpl);
+
+export const FileInput: FC<Props> = props => {
+    if (props.formsy) {
+        return <FileInputFormsy {...props} />;
+    }
+    return <FileInputImpl {...props} />;
+};
+
+FileInput.defaultProps = {
+    formsy: false,
+};
+
+FileInput.displayName = 'FileInput';

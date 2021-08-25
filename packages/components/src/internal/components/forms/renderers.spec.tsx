@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 import React from 'react';
-import { mount } from 'enzyme';
-import { fromJS, Map } from 'immutable';
+import { fromJS } from 'immutable';
 
-import { FileColumnRenderer, FileInput, QueryColumn } from '../../..';
-
-import { fileInputRenderer, resolveDetailFieldValue } from './renderers';
+import { resolveDetailFieldValue } from './renderers';
 
 describe('resolveDetailFieldValue', () => {
     test('data value undefined', () => {
@@ -79,30 +76,5 @@ describe('resolveDetailFieldValue', () => {
                 true
             )
         ).toBe('test1');
-    });
-});
-
-describe('fileInputRenderer', () => {
-    const column = new QueryColumn({ name: 'test' });
-
-    test('without value', () => {
-        const wrapper = mount(<div>{fileInputRenderer(column, Map(), undefined, jest.fn)}</div>);
-        expect(wrapper.find(FileColumnRenderer)).toHaveLength(0);
-        expect(wrapper.find(FileInput)).toHaveLength(1);
-        wrapper.unmount();
-    });
-
-    test('with value', () => {
-        const wrapper = mount(<div>{fileInputRenderer(column, Map({ value: 'test.txt' }), undefined, jest.fn)}</div>);
-        expect(wrapper.find(FileColumnRenderer)).toHaveLength(1);
-        expect(wrapper.find(FileInput)).toHaveLength(0);
-        wrapper.unmount();
-    });
-
-    test('updatedFile', () => {
-        const wrapper = mount(<div>{fileInputRenderer(column, Map(), new File([], null), jest.fn)}</div>);
-        expect(wrapper.find(FileColumnRenderer)).toHaveLength(0);
-        expect(wrapper.find(FileInput)).toHaveLength(1);
-        wrapper.unmount();
     });
 });

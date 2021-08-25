@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+#### versionn 2.66.1
+*Release*: 25 August 2021
+* Issue 43782: Omnibox - Filtering on a field pulled into a lookup shows lookup field instead of the pulled in field
+
 #### versionn 2.66.0
 *Release*: 23 August 2021
 * Issue 43693: Indicate the depth of the lineage graphs and grids

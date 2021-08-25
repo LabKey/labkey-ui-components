@@ -1,11 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-#### versionn 2.66.1
+#### version 2.67.0
+*Release*: 25 August 2021
+* Issue 43029: Support File/Attachment Fields
+    * See https://github.com/LabKey/labkey-ui-components/pull/610 for more details.
+
+#### version 2.66.1
 *Release*: 25 August 2021
 * Issue 43782: Omnibox - Filtering on a field pulled into a lookup shows lookup field instead of the pulled in field
 
-#### versionn 2.66.0
+#### version 2.66.0
 *Release*: 23 August 2021
 * Issue 43693: Indicate the depth of the lineage graphs and grids
 * Issue 43692: expose LineageGroupingOptions for ease of overriding defaults; update default depth to 5

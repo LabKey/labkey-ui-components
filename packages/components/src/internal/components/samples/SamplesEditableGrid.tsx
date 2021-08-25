@@ -356,18 +356,13 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                 storageRows = data.updatedRows;
                 sampleSchemaQuery = data.schemaQuery;
             } else if (tabIndex === GridTab.Lineage) {
-                lineageRows = data.updatedRows;
+                lineageRows = getUpdatedLineageRows(data.updatedRows, this.getLineageEditorQueryGridModel(), aliquots)
                 sampleSchemaQuery = data.schemaQuery;
             } else {
                 sampleRows = data.updatedRows;
                 sampleSchemaQuery = data.schemaQuery;
             }
         });
-
-        // remove the aliquot rows from the lineageRows array
-        if (this.hasAliquots() && lineageRows.length > 0) {
-            lineageRows = lineageRows.filter(row => aliquots.indexOf(caseInsensitive(row, 'RowId')) === -1);
-        }
 
         if (storageRows.length === 0 && lineageRows.length === 0 && sampleRows.length === 0) {
             return new Promise(resolve => {
@@ -665,4 +660,39 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
             />
         );
     }
+}
+
+function getUpdatedLineageRows(
+    lineageRows: Record<string, any>[],
+    originalModel: QueryGridModel,
+    aliquots: any[]
+): Record<string, any>[] {
+    const updatedLineageRows = [];
+
+    // iterate through all of the lineage rows to find the ones that have any edit from the initial data row,
+    // also remove the aliquot rows from the lineageRows array
+    lineageRows?.forEach(row => {
+        const rowId = caseInsensitive(row, 'RowId');
+        if (aliquots.indexOf(rowId) === -1) {
+            // compare each row value looking for any that are different from the original value
+            let hasUpdate = false;
+            Object.keys(row).every(key => {
+                const updatedVal = row[key];
+                let originalVal = originalModel.data.get('' + rowId).get(key);
+                if (List.isList(originalVal)) {
+                    originalVal = originalVal?.map(parentRow => parentRow.displayValue).join(', ');
+                }
+
+                if (originalVal !== updatedVal) {
+                    hasUpdate = true;
+                    return false;
+                }
+                return true;
+            });
+
+            if (hasUpdate) updatedLineageRows.push(row);
+        }
+    });
+
+    return updatedLineageRows;
 }

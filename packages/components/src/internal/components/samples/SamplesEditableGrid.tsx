@@ -345,7 +345,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     updateAllTabRows = (updateDataRows: any[]): Promise<any> => {
-        const { invalidateSampleQueries, sampleLineageKeys, aliquots } = this.props;
+        const { noStorageSamples, invalidateSampleQueries, aliquots } = this.props;
         let sampleSchemaQuery: SchemaQuery = null,
             sampleRows: any[] = [],
             storageRows: any[] = [],
@@ -385,6 +385,20 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                 resolve('There were errors during the save.');
             });
         }
+
+        const sampleIds = new Set();
+        sampleRows.forEach(row => {
+            sampleIds.add(row['RowId']);
+        });
+        lineageRows.forEach(row => {
+            sampleIds.add(row['RowId']);
+        });
+        storageRows.forEach(row => {
+            const sampleId = row['RowId'];
+            if (noStorageSamples.indexOf(sampleId) === -1) sampleIds.add(sampleId);
+        });
+        const totalSamplesToUpdate = sampleIds.size;
+        const noun = totalSamplesToUpdate === 1 ? 'sample' : 'samples';
 
         const commands = [];
         if (sampleRows.length > 0) {
@@ -436,8 +450,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                     gridIdInvalidate(SAMPLES_LINEAGE_EDIT_GRID_ID, true);
                     dismissNotifications(); // get rid of any error notifications that have already been created
 
-                    const noun = sampleLineageKeys.length === 1 ? 'sample' : 'samples';
-                    createNotification('Successfully updated the selected ' + noun + '.');
+                    createNotification('Successfully updated ' + totalSamplesToUpdate + ' ' + noun + '.');
 
                     resolve(result);
                 },

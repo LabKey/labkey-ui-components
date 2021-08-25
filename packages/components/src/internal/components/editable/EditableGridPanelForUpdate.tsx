@@ -104,7 +104,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             ? this.props.getSelectionData(tabIndex)
             : this.props.selectionData;
 
-        const editorModel = getEditorModel(model.getId());
+        const editorModel = getEditorModel(model?.getId());
         if (!editorModel) {
             console.error('Grid does not expose an editor. Ensure the grid is properly initialized for editing.');
             return null;

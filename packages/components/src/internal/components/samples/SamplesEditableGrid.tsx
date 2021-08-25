@@ -648,6 +648,10 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
             if (!storageGrid || !storageGrid.isLoaded) return <LoadingSpinner />;
 
             models.push(storageGrid);
+        } else {
+            // add a null to the models array so that the tabIndices line up for other parts of the render,
+            // this can be removed soon once LKB supports freezer management
+            models.push(null);
         }
 
         const lineageGrid = this.getLineageEditorQueryGridModel();

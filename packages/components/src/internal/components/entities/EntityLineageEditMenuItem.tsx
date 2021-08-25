@@ -10,7 +10,6 @@ import { getEntityNoun } from './utils';
 interface Props {
     queryModel: QueryModel;
     childEntityDataType: EntityDataType;
-    childName: string;
     parentNounPlural: string;
     parentNounSingular: string;
     parentEntityDataTypes: EntityDataType[];
@@ -22,7 +21,6 @@ interface Props {
 export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
     const {
         childEntityDataType,
-        childName,
         key,
         parentEntityDataTypes,
         queryModel,

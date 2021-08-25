@@ -10,6 +10,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * editOnly - to indicate that we start in edit mode and cannot cancel out of it;
   * onChangeParent - callback used when any change in the parent types or values is made
   * includePanelHeader - allows header on panel to be removed
+* Add ExperimentException handling to `resolveErrorMessage`
 
 ### version 2.66.0
 *Release*: 23 August 2021

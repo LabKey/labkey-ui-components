@@ -21,10 +21,11 @@ import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 
 import { DELIMITER } from '../forms/input/SelectInput';
 
+import { getParentTypeDataForSample } from '../samples/actions';
+
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { getInitialParentChoices, getUpdatedRowForParentChanges, parentValuesDiffer } from './utils';
-import { getParentTypeDataForSample } from "../samples/actions";
 
 interface Props {
     auditBehavior?: AuditBehaviorTypes;
@@ -79,21 +80,30 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         let parentTypeOptions = List<IEntityTypeOption>();
         let originalParents = List<EntityChoice>();
 
-        await Promise.all(parentDataTypes.map(async (parentDataType) => {
-            try {
-                const typeData = await getParentTypeDataForSample(parentDataType, [childData]);
-                parentTypeOptions = parentTypeOptions.concat(typeData.parentTypeOptions) as List<IEntityTypeOption>;
-                originalParents = originalParents.concat(getInitialParentChoices(typeData.parentTypeOptions, parentDataType, childData, typeData.parentIdData)) as List<EntityChoice>;
-            } catch (reason) {
-                this.setState({
-                    error: getActionErrorMessage(
-                        'Unable to load ' + parentDataType.descriptionSingular + ' data.',
-                        parentDataType.descriptionPlural,
-                        true
-                    ),
-                });
-            }
-        }));
+        await Promise.all(
+            parentDataTypes.map(async parentDataType => {
+                try {
+                    const typeData = await getParentTypeDataForSample(parentDataType, [childData]);
+                    parentTypeOptions = parentTypeOptions.concat(typeData.parentTypeOptions) as List<IEntityTypeOption>;
+                    originalParents = originalParents.concat(
+                        getInitialParentChoices(
+                            typeData.parentTypeOptions,
+                            parentDataType,
+                            childData,
+                            typeData.parentIdData
+                        )
+                    ) as List<EntityChoice>;
+                } catch (reason) {
+                    this.setState({
+                        error: getActionErrorMessage(
+                            'Unable to load ' + parentDataType.descriptionSingular + ' data.',
+                            parentDataType.descriptionPlural,
+                            true
+                        ),
+                    });
+                }
+            })
+        );
 
         this.setState({
             currentParents: originalParents,

@@ -43,9 +43,10 @@ import {
 
 import { findMissingValues } from '../../util/utils';
 
+import { ParentEntityLineageColumns } from '../entities/constants';
+import { getInitialParentChoices } from '../entities/utils';
+
 import { GroupedSampleFields } from './models';
-import { ParentEntityLineageColumns } from "../entities/constants";
-import { getInitialParentChoices } from "../entities/utils";
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -337,7 +338,8 @@ export const getOriginalParentsFromSampleLineage = async (
         Object.values(originalParents).forEach((parentTypes: List<EntityChoice>) => {
             originalParentTypeLsids.push(...parentTypes.map(parentType => parentType.type.lsid).toArray());
         });
-        parentTypeOptions = parentTypeOptions.set(dataType.typeListingSchemaQuery.queryName,
+        parentTypeOptions = parentTypeOptions.set(
+            dataType.typeListingSchemaQuery.queryName,
             dataTypeOptions.filter(option => originalParentTypeLsids.indexOf(option.lsid) === -1).toList()
         );
     });

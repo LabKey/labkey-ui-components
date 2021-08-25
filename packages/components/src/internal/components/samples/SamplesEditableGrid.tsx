@@ -35,15 +35,17 @@ import {
     IParentOption,
 } from '../../..';
 
-import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
-import { getOriginalParentsFromSampleLineage } from './actions';
 import { DisplayObject, EntityChoice, EntityParentType } from '../entities/models';
+
 import {
     addEntityParentType,
     changeEntityParentType,
     EntityParentTypeSelectors,
     removeEntityParentType,
 } from '../entities/EntityParentTypeSelectors';
+
+import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
+import { getOriginalParentsFromSampleLineage } from './actions';
 
 interface OwnProps {
     displayQueryModel: QueryModel;
@@ -314,7 +316,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
             queryInfo: queryModel.queryInfo.merge({ columns: updatedColumns }) as QueryInfo,
             loader: {
                 fetch: () => {
-                    return new Promise((resolve) => {
+                    return new Promise(resolve => {
                         let data = EditorModel.convertQueryDataToEditorData(fromJS(sampleLineage));
                         Object.keys(originalParents).forEach(sampleId => {
                             originalParents[sampleId].forEach(sampleParent => {
@@ -338,10 +340,15 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     initLineageEditableGrid = async (): Promise<void> => {
-        const { originalParents, parentTypeOptions } = await getOriginalParentsFromSampleLineage(this.props.sampleLineage);
-        this.setState(() => ({ originalParents, parentTypeOptions }), () => {
-            gridInit(this.getLineageEditorQueryGridModel(), true, this);
-        });
+        const { originalParents, parentTypeOptions } = await getOriginalParentsFromSampleLineage(
+            this.props.sampleLineage
+        );
+        this.setState(
+            () => ({ originalParents, parentTypeOptions }),
+            () => {
+                gridInit(this.getLineageEditorQueryGridModel(), true, this);
+            }
+        );
     };
 
     updateAllTabRows = (updateDataRows: any[]): Promise<any> => {
@@ -356,7 +363,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                 storageRows = data.updatedRows;
                 sampleSchemaQuery = data.schemaQuery;
             } else if (tabIndex === GridTab.Lineage) {
-                lineageRows = getUpdatedLineageRows(data.updatedRows, this.getLineageEditorQueryGridModel(), aliquots)
+                lineageRows = getUpdatedLineageRows(data.updatedRows, this.getLineageEditorQueryGridModel(), aliquots);
                 sampleSchemaQuery = data.schemaQuery;
             } else {
                 sampleRows = data.updatedRows;
@@ -432,7 +439,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
         return new Promise((resolve, reject) => {
             Query.saveRows({
                 commands,
-                success: (result) => {
+                success: result => {
                     this._hasError = false;
                     if (sampleSchemaQuery) {
                         if (invalidateSampleQueries) {

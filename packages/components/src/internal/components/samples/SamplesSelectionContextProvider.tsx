@@ -129,7 +129,8 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
 
         render() {
             const { determineAliquot, determineStorage } = this.props;
-            const { aliquots, noStorageSamples, selectionInfoError, sampleTypeDomainFields, sampleLineage } = this.state;
+            const { aliquots, noStorageSamples, selectionInfoError, sampleTypeDomainFields, sampleLineage } =
+                this.state;
 
             let isLoaded = !!sampleTypeDomainFields;
             if (isLoaded && !selectionInfoError) {

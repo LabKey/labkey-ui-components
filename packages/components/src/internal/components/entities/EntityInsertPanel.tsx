@@ -506,11 +506,13 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     updateEntityParents(updatedEntityParents: Map<string, List<EntityParentType>>): void {
-        this.setState(state => ({
+        this.setState(
+            state => ({
                 insertModel: state.insertModel.merge({
                     entityParents: updatedEntityParents,
                 }) as EntityIdCreationModel,
-            }), () => {
+            }),
+            () => {
                 this.props.onParentChange?.(updatedEntityParents);
             }
         );

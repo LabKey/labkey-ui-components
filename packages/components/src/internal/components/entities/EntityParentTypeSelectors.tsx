@@ -2,7 +2,6 @@ import React, { FC, memo, useCallback, useMemo } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { EntityDataType, EntityParentType, getParentEntities, getParentOptions, IParentOption } from './models';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { capitalizeFirstChar } from '../../util/utils';
 import { SelectInput } from '../forms/input/SelectInput';
@@ -11,13 +10,15 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { addColumns, changeColumn, removeColumn } from '../../actions';
 import { QueryGridModel } from '../../QueryGridModel';
 
+import { EntityDataType, EntityParentType, getParentEntities, getParentOptions, IParentOption } from './models';
+
 const getAddEntityButtonTitle = (disabled: boolean, optionSize: number, entityDataType: EntityDataType): string => {
     return disabled
         ? (optionSize > 0 ? 'Only ' : '') +
-            optionSize +
-            ' ' +
-            (optionSize === 1 ? entityDataType.descriptionSingular : entityDataType.descriptionPlural) +
-            ' available.'
+              optionSize +
+              ' ' +
+              (optionSize === 1 ? entityDataType.descriptionSingular : entityDataType.descriptionPlural) +
+              ' available.'
         : undefined;
 };
 
@@ -40,8 +41,7 @@ const getUpdatedEntityParentType = (
         // bail out if the selected parent is the same as the existingParent for this index, i.e. nothing changed
         const schemaMatch =
             parent && existingParent && Utils.caseInsensitiveEquals(parent.schema, existingParent.schema);
-        const queryMatch =
-            parent && existingParent && Utils.caseInsensitiveEquals(parent.query, existingParent.query);
+        const queryMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.query, existingParent.query);
         if (schemaMatch && queryMatch) {
             return [undefined, undefined, existingParent, undefined];
         }
@@ -58,7 +58,8 @@ const getUpdatedEntityParentType = (
         const parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
         const existingParent = entityParents.get(parentToResetKey);
         parentColumnName = existingParent.createColumnName();
-        updatedEntityParents = entityParentsMap.mergeIn([queryName, parentToResetKey],
+        updatedEntityParents = entityParentsMap.mergeIn(
+            [queryName, parentToResetKey],
             EntityParentType.create({
                 key: existingParent.key,
                 index,
@@ -98,17 +99,16 @@ export const changeEntityParentType = (
                 if (existingParent.index === 1) {
                     fieldKey = entityDataType.uniqueFieldKey;
                 } else {
-                    const definedParents = getParentEntities(updatedEntityParents, combineParentTypes, queryName)
-                        .filter(parent => parent.query !== undefined);
+                    const definedParents = getParentEntities(
+                        updatedEntityParents,
+                        combineParentTypes,
+                        queryName
+                    ).filter(parent => parent.query !== undefined);
                     if (definedParents.size === 0) fieldKey = entityDataType.uniqueFieldKey;
                     else {
                         // want the first defined parent before the new parent's index
-                        const prevParent = definedParents.findLast(
-                            parent => parent.index < existingParent.index
-                        );
-                        fieldKey = prevParent
-                            ? prevParent.createColumnName()
-                            : entityDataType.uniqueFieldKey;
+                        const prevParent = definedParents.findLast(parent => parent.index < existingParent.index);
+                        fieldKey = prevParent ? prevParent.createColumnName() : entityDataType.uniqueFieldKey;
                     }
                 }
                 addColumns(queryGridModel, columnMap.set(column.fieldKey.toLowerCase(), column), fieldKey);
@@ -197,7 +197,8 @@ interface Props {
 }
 
 export const EntityParentTypeSelectors: FC<Props> = memo(props => {
-    const { parentDataTypes, parentOptionsMap, entityParentsMap, combineParentTypes, onAdd, onChange, onRemove } = props;
+    const { parentDataTypes, parentOptionsMap, entityParentsMap, combineParentTypes, onAdd, onChange, onRemove } =
+        props;
 
     // If combining parent types, just grabbing first parent type for the name
     const dataTypes = useMemo(

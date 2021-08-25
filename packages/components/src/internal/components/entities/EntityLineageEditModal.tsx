@@ -160,7 +160,6 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 <Progress
                     modal={false}
                     estimate={(nonAliquots?.length ?? 10) * 10}
-                    title={`Updating ${lcParentNounPlural} for ${nonAliquots?.length} ${getEntityNoun(childEntityDataType, nonAliquots?.length)}`}
                     toggle={submitting}
                 />
                 {!submitting &&

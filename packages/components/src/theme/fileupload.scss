@@ -99,8 +99,8 @@
 }
 
 .file-upload--is-disabled {
-    background-color: #EEEEEE;
-    color: #555555;
+    background-color: $gray-lighter;
+    color: $gray;
     cursor: not-allowed;
 }
 

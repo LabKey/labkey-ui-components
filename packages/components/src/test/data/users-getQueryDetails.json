@@ -31,7 +31,7 @@
     "nullable" : true,
     "required" : false,
     "isReadOnly" : true,
-    "readOnly" : true,
+    "readOnly" : false,
     "isUserEditable" : true,
     "userEditable" : true,
     "calculated" : false,

@@ -289,7 +289,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 formsy
                                 key={i}
                                 queryColumn={col}
-                                value={value}
+                                initialValue={value}
                                 name={col.fieldKey}
                                 allowDisable={allowFieldDisable}
                                 initiallyDisabled={shouldDisableField}

@@ -386,7 +386,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }));
     };
 
-    handleBatchChange = (values: any, isChanged?: boolean): void => {
+    handleBatchChange = (fieldValues: any, isChanged?: boolean): void => {
+        const values = { ...this.state.model.batchProperties.toObject(), ...fieldValues };
+
         if (isChanged) {
             this.props.onDataChange?.(true, IMPORT_DATA_FORM_TYPES.OTHER);
         }
@@ -394,7 +396,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
         this.handleChange('batchProperties', Map<string, any>(values ? values : {}));
     };
 
-    handleRunChange = (values: any, isChanged?: boolean): void => {
+    handleRunChange = (fieldValues: any, isChanged?: boolean): void => {
+        const values = { ...this.state.model.runProperties.toObject(), ...fieldValues };
         let { comment, runName } = this.state.model;
 
         const cleanedValues = Object.keys(values).reduce((result, key) => {

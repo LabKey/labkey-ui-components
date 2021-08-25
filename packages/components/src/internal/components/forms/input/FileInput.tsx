@@ -15,6 +15,7 @@
  */
 import React, { FC, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
+import { Map } from 'immutable';
 import { withFormsy } from 'formsy-react';
 
 import { FieldLabel } from '../FieldLabel';
@@ -77,7 +78,10 @@ class FileInputImpl extends DisableableInput<Props, State> {
 
         this.fileInput = React.createRef<HTMLInputElement>();
         this.state = {
-            data: props.initialValue,
+            // FileInput only accepts query-shaped row data as the initialValue
+            // as that is what is accepted by FileColumnRenderer. Without this there is likely insufficient
+            // metadata to render and act on the associated file value.
+            data: Map.isMap(props.initialValue) ? props.initialValue : undefined,
             isHover: false,
             file: null,
             error: '',

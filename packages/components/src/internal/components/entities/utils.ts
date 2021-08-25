@@ -89,7 +89,7 @@ export function getUpdatedRowForParentChanges(
     const updatedValues = {};
     if (definedCurrentParents.isEmpty()) {
         // have no current parents but have original parents, send in empty strings so original parents are removed.
-        originalParents.forEach(parentChoice => {
+        originalParents?.forEach(parentChoice => {
             updatedValues[parentChoice.type.entityDataType.insertColumnNamePrefix + parentChoice.type.label] = null;
         });
     } else {
@@ -102,7 +102,7 @@ export function getUpdatedRowForParentChanges(
             definedParents = definedParents.add(parentChoice.type.label);
         });
         // Issue 40194: for any original parents that have been removed, send null values so they will actually be removed
-        originalParents.forEach(parent => {
+        originalParents?.forEach(parent => {
             if (!definedParents.contains(parent.type.label)) {
                 updatedValues[parent.type.entityDataType.insertColumnNamePrefix + parent.type.label] = null;
             }

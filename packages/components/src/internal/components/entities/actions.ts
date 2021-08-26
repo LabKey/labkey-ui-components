@@ -373,7 +373,7 @@ export function getChosenParentData(
 
 // get back a map from the typeListQueryName (e.g., 'SampleSet') and the list of options for that query
 // where the schema field for those options is the typeSchemaName (e.g., 'samples')
-export function getEntityTypeOptions(entityDataType: EntityDataType): Promise<Map<string, List<any>>> {
+export function getEntityTypeOptions(entityDataType: EntityDataType): Promise<Map<string, List<IEntityTypeOption>>> {
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
     return new Promise((resolve, reject) => {
@@ -386,7 +386,7 @@ export function getEntityTypeOptions(entityDataType: EntityDataType): Promise<Ma
         })
             .then(result => {
                 const rows = fromJS(result.models[result.key]);
-                let optionMap = Map<string, List<any>>();
+                let optionMap = Map<string, List<IEntityTypeOption>>();
                 optionMap = optionMap.set(
                     typeListingSchemaQuery.queryName,
                     rows

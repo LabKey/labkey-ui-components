@@ -1,3 +1,5 @@
+import { List } from 'immutable';
+
 import { SCHEMAS } from '../../schemas';
 
 import { DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
@@ -11,6 +13,7 @@ export const SAMPLE_DELETE_CONFIRMATION_ACTION = 'getMaterialDeleteConfirmationD
 
 export const SampleTypeDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
+    listingSchemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
     instanceSchemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
     deleteConfirmationActionName: SAMPLE_DELETE_CONFIRMATION_ACTION,
     nounSingular: 'sample',
@@ -23,7 +26,6 @@ export const SampleTypeDataType: EntityDataType = {
     dependencyText: 'derived sample or assay data dependencies',
     deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
     inputColumnName: 'Inputs/Materials/First',
-    inputTypeColumnName: 'Inputs/Materials/First/SampleSet',
     inputTypeValueField: 'lsid',
     insertColumnNamePrefix: 'MaterialInputs/',
     editTypeAppUrlPrefix: SAMPLE_TYPE_KEY,
@@ -32,6 +34,7 @@ export const SampleTypeDataType: EntityDataType = {
 
 export const DataClassDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
+    listingSchemaQuery: SCHEMAS.EXP_TABLES.DATA,
     instanceSchemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
     deleteConfirmationActionName: DATA_DELETE_CONFIRMATION_ACTION,
     nounSingular: 'data',
@@ -44,11 +47,12 @@ export const DataClassDataType: EntityDataType = {
     dependencyText: 'derived sample dependencies',
     deleteHelpLinkTopic: 'dataClass', // no topic specific to deleting data classes yet, so we refer to data classes in general
     inputColumnName: 'Inputs/Data/First',
-    inputTypeColumnName: 'Inputs/Data/First/DataClass',
     inputTypeValueField: 'rowId',
     insertColumnNamePrefix: 'DataInputs/',
     importFileAction: 'importData',
 };
+
+export const ParentEntityLineageColumns = List.of('Inputs/Materials/First', 'Inputs/Data/First');
 
 export const ParentEntityRequiredColumns = SCHEMAS.CBMB.concat(
     'LSID',
@@ -56,9 +60,5 @@ export const ParentEntityRequiredColumns = SCHEMAS.CBMB.concat(
     'Description',
     'AliquotedFromLSID/Name',
     'RootMaterialLSID/Name',
-    'RootMaterialLSID/Description',
-    'Inputs/Materials/First',
-    'Inputs/Materials/First/SampleSet',
-    'Inputs/Data/First',
-    'Inputs/Data/First/DataClass'
-);
+    'RootMaterialLSID/Description'
+).concat(ParentEntityLineageColumns);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
 import { getEditorModel } from '../../global';
@@ -32,6 +32,7 @@ interface Props {
     getReadOnlyRows?: (tabId?: number) => List<any>;
     getIdField?: (tabId?: number) => string;
     getTabTitle?: (tabId?: number) => string;
+    getTabHeader?: (tabId?: number) => ReactNode;
 }
 
 interface State {
@@ -77,13 +78,13 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         if (gridDataAllTabs.length > 0) {
             this.setState(() => ({ isSubmitting: true }));
             if (updateAllTabRows) {
-                updateAllTabRows(gridDataAllTabs).then(responses => {
+                updateAllTabRows(gridDataAllTabs).then(() => {
                     this.setState(() => ({ isSubmitting: false }), onComplete());
                 });
             } else if (updateRows) {
                 const updatePromises = [];
                 gridDataAllTabs.forEach(data => updatePromises.push(updateRows(data.schemaQuery, data.updatedRows)));
-                Promise.all(updatePromises).then(responses => {
+                Promise.all(updatePromises).then(() => {
                     this.setState(() => ({ isSubmitting: false }), onComplete());
                 });
             }
@@ -103,7 +104,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             ? this.props.getSelectionData(tabIndex)
             : this.props.selectionData;
 
-        const editorModel = getEditorModel(model.getId());
+        const editorModel = getEditorModel(model?.getId());
         if (!editorModel) {
             console.error('Grid does not expose an editor. Ensure the grid is properly initialized for editing.');
             return null;
@@ -138,6 +139,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             getReadOnlyRows,
             getReadOnlyColumns,
             getTabTitle,
+            getTabHeader,
         } = this.props;
         const { isSubmitting } = this.state;
 
@@ -166,6 +168,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                     getReadOnlyColumns={getReadOnlyColumns}
                     getReadOnlyRows={getReadOnlyRows}
                     getTabTitle={getTabTitle}
+                    getTabHeader={getTabHeader}
                 />
                 <WizardNavButtons
                     cancel={onCancel}

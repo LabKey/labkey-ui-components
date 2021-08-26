@@ -75,6 +75,13 @@ describe('EntityParentType', () => {
         expect(col.lookup.displayColumn).toBe('scientificName');
     });
 
+    test('generateFieldKey', () => {
+        expect(EntityParentType.create({ query: 'test' }).generateFieldKey()).toBe('MaterialInputs/Test');
+        expect(EntityParentType.create({ query: 'test', isAliquotParent: true }).generateFieldKey()).toBe('AliquotedFrom');
+        expect(EntityParentType.create({ schema: SCHEMAS.DATA_CLASSES.SCHEMA, query: 'test' }).generateFieldKey()).toBe('DataInputs/Test');
+        expect(EntityParentType.create({ schema: SCHEMAS.DATA_CLASSES.SCHEMA, query: 'test', isAliquotParent: true }).generateFieldKey()).toBe('AliquotedFrom');
+    });
+
     test('getInputType', () => {
         expect(
             EntityParentType.create({
@@ -86,6 +93,12 @@ describe('EntityParentType', () => {
                 schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
             }).getInputType()
         ).toBe(QueryColumn.MATERIAL_INPUTS);
+        expect(
+            EntityParentType.create({
+                schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                isAliquotParent: true,
+            }).getInputType()
+        ).toBe(QueryColumn.ALIQUOTED_FROM);
     });
 
     test('createColumnName', () => {

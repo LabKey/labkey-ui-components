@@ -457,11 +457,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     addParent = (queryName: string): void => {
-        const { insertModel } = this.state;
-
         this.setState(state => ({
             insertModel: state.insertModel.merge({
-                entityParents: addEntityParentType(queryName, insertModel.entityParents),
+                entityParents: addEntityParentType(queryName, state.insertModel.entityParents),
             }) as EntityIdCreationModel,
         }));
     };

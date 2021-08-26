@@ -275,6 +275,7 @@ export const EntityParentTypeSelectors: FC<Props> = memo(props => {
 
                     return (
                         <EntityParentTypeAddEntityButton
+                            key={entityDataType.nounSingular}
                             entityDataType={entityDataType}
                             parentOptions={parentOptions}
                             entityParents={entityParents}

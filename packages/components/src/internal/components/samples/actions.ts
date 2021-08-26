@@ -28,6 +28,7 @@ import {
     FindField,
     getSelectedData,
     getSelection,
+    ISelectRowsResult,
     naturalSortByProperty,
     QueryColumn,
     QueryConfig,
@@ -282,12 +283,10 @@ export function getSampleSelectionStorageData(selection: List<any>): Promise<Rec
     });
 }
 
-export function getSampleSelectionLineageData(selection: List<any>, sampleType: string): Promise<any> {
+export function getSampleSelectionLineageData(selection: List<any>, sampleType: string): Promise<ISelectRowsResult> {
     const sampleRowIds = getSampleIdsFromSelection(selection);
     if (sampleRowIds.length === 0) {
-        return new Promise((resolve, reject) => {
-            reject('No data is selected');
-        });
+        return Promise.reject('No data is selected');
     }
 
     return new Promise((resolve, reject) => {
@@ -368,8 +367,8 @@ export const getParentTypeDataForSample = async (
 };
 
 export type ParentIdData = {
-    RowId: number;
-    ParentID: string | number;
+    parentId: string | number;
+    rowId: number;
 };
 
 function getParentRowIdAndDataType(
@@ -390,8 +389,8 @@ function getParentRowIdAndDataType(
                     const item = models[key][row];
                     const lsid = caseInsensitive(item, 'LSID').value;
                     filteredParentItems[lsid] = {
-                        RowId: caseInsensitive(item, 'RowId').value,
-                        ParentID:
+                        rowId: caseInsensitive(item, 'RowId').value,
+                        parentId:
                             caseInsensitive(item, 'DataClass')?.value ?? caseInsensitive(item, 'SampleSet')?.value,
                     };
                 });

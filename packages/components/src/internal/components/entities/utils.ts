@@ -55,7 +55,7 @@ export function getInitialParentChoices(
             // group the inputs by parent type so we can show each in its own grid.
             inputs.forEach(inputRow => {
                 const inputValue = inputRow.value;
-                const typeValue = parentIdData[inputValue]?.ParentID;
+                const typeValue = parentIdData[inputValue]?.parentId;
                 const typeOption = parentTypeOptions.find(
                     option => option[parentDataType.inputTypeValueField] === typeValue
                 );
@@ -75,7 +75,7 @@ export function getInitialParentChoices(
                     // when using the data for an editable grid, we need the RowId/DisplayValue pairs
                     if (parentIdData[inputValue]) {
                         updatedChoice.gridValues.push({
-                            value: parentIdData[inputValue].RowId,
+                            value: parentIdData[inputValue].rowId,
                             displayValue: inputRow?.displayValue,
                         });
                     }

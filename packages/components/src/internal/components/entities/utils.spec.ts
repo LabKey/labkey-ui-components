@@ -129,8 +129,8 @@ describe('getInitialParentChoices', () => {
         });
         const parentIdData = {
             'urn:lsid:labkey.com:Data.Folder-252:1fce5b0b-33ce-1038-8604-d42714b6919e': {
-                RowId: 123,
-                ParentID: 321,
+                rowId: 123,
+                parentId: 321,
             },
         };
         const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model, parentIdData);
@@ -213,20 +213,20 @@ describe('getInitialParentChoices', () => {
         };
         const parentIdData = {
             'urn:lsid:labkey.com:Data.Folder-252:a49f277e-301e-1038-a031-328bafaf2618': {
-                RowId: 1,
-                ParentID: 321,
+                rowId: 1,
+                parentId: 321,
             },
             'urn:lsid:labkey.com:Data.Folder-252:a49f277f-301e-1038-a031-328bafaf2618': {
-                RowId: 2,
-                ParentID: 321,
+                rowId: 2,
+                parentId: 321,
             },
             'urn:lsid:labkey.com:Data.Folder-252:a49f2780-301e-1038-a031-328bafaf2618': {
-                RowId: 3,
-                ParentID: 321,
+                rowId: 3,
+                parentId: 321,
             },
             'urn:lsid:labkey.com:Data.Folder-252:604347b2-3103-1038-91ee-da4874ca890e': {
-                RowId: 4,
-                ParentID: 322,
+                rowId: 4,
+                parentId: 322,
             },
         };
         const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, data, parentIdData);

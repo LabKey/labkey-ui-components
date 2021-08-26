@@ -965,6 +965,23 @@ describe('getUpdatedDataFromGrid', () => {
             RowId: '448',
         });
     });
+
+    test('row added field but no value', () => {
+        const updatedData = getUpdatedDataFromGrid(
+            originalData,
+            [
+                Map<string, any>({
+                    RowId: '448',
+                    'New Field': '',
+                    Bool: true,
+                    Int: 0,
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
+        expect(updatedData).toHaveLength(0);
+    });
 });
 
 describe('CaseInsensitive', () => {

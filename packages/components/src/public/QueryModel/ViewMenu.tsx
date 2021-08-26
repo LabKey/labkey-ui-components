@@ -8,7 +8,7 @@ import { getQueryMetadata } from '../../internal/global';
 interface ViewMenuProps {
     hideEmptyViewMenu: boolean;
     model: QueryModel;
-    onViewSelect: (viewName) => void;
+    onViewSelect: (viewName: string) => void;
 }
 
 export class ViewMenu extends PureComponent<ViewMenuProps> {
@@ -17,7 +17,10 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         const { isLoading, views, viewName } = model;
         const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
         const defaultView = views.find(view => view.isDefault);
-        const validViews = views.filter(viewInfo => viewInfo.name.indexOf('~~') !== 0);
+        const validViews = views.filter(
+            // Issue 42628: Hide Biologics details view override in view menu
+            view => view.name.indexOf('~~') !== 0 && view.name !== ViewInfo.BIO_DETAIL_NAME
+        );
         const publicViews = validViews.filter(view => !view.isDefault && view.shared);
         const privateViews = validViews.filter(view => !view.isDefault && !view.shared);
         const noViews = publicViews.length === 0 && privateViews.length === 0;

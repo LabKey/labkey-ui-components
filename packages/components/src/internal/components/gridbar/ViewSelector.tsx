@@ -60,7 +60,9 @@ export class ViewSelector extends Component<Props> {
             const items = List<ReactNode>().asMutable();
 
             const valid = model.queryInfo.views.filter(
-                view => view && !view.isDefault && view.name.indexOf('~~') !== 0
+                view =>
+                    // Issue 42628: Hide Biologics details view override in view menu
+                    view && !view.isDefault && view.name.indexOf('~~') !== 0 && view.name !== ViewInfo.BIO_DETAIL_NAME
             );
 
             const publicViews = valid.filter(view => view.shared).sortBy(v => v.label, naturalSort);

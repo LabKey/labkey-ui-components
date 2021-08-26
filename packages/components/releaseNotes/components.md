@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+#### version 2.67.#
+*Release*: ## August 2021
+* Issue 42628: Hide Biologics details view override in view menu
+
 #### version 2.67.0
 *Release*: 25 August 2021
 * Issue 43029: Support File/Attachment Fields

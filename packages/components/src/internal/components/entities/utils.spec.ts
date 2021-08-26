@@ -3,7 +3,7 @@ import { fromJS, List, Map } from 'immutable';
 import { createEntityParentKey, DataClassDataType, QueryGridModel, SchemaQuery } from '../../..';
 
 import { EntityChoice, IEntityTypeOption } from './models';
-import { getInitialParentChoices, parentValuesDiffer } from './utils';
+import { getEntityDescription, getInitialParentChoices, parentValuesDiffer } from './utils';
 
 describe('getInitialParentChoices', () => {
     const modelId = 'id';
@@ -512,5 +512,17 @@ describe('createEntityParentKey', () => {
     });
     test('with id', () => {
         expect(createEntityParentKey(SchemaQuery.create('schema', 'query'), 'id')).toBe('schema:query:id');
+    });
+});
+
+describe('getEntityDescription', () => {
+    test('zero', () => {
+        expect(getEntityDescription(DataClassDataType, 0)).toBe('parent types');
+    });
+    test('one', () => {
+        expect(getEntityDescription(DataClassDataType, 1)).toBe('parent type');
+    });
+    test('multiple', () => {
+        expect(getEntityDescription(DataClassDataType, 2)).toBe('parent types');
     });
 });

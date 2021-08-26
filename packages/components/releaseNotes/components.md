@@ -11,6 +11,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * persist updated sample parents on finish/save from EditableGrid
   * refactor EntityParentTypeSelectors out of EntityInsertPanel.tsx for reuse
 
+#### version 2.67.1
+*Release*: 26 August 2021
+* Issue 42628: Hide Biologics details view override in view menu
+
 #### version 2.67.0
 *Release*: 25 August 2021
 * Issue 43029: Support File/Attachment Fields

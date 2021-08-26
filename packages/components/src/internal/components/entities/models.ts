@@ -107,15 +107,23 @@ export class EntityParentType extends Record({
         return this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM : QueryColumn.MATERIAL_INPUTS;
     }
 
+    generateFieldKey(): string {
+        const parentInputType = this.getInputType();
+        const formattedQueryName = capitalizeFirstChar(this.query);
+
+        // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
+        // capitalized here and we lower it where needed
+        return this.isAliquotParent
+            ? QueryColumn.ALIQUOTED_FROM
+            : [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
+    }
+
     // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
     generateColumn(displayColumn: string): QueryColumn {
         const parentInputType = this.getInputType();
         const formattedQueryName = capitalizeFirstChar(this.query);
-        // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
-        // capitalized here and we lower it where needed
-        const parentColName = this.isAliquotParent
-            ? QueryColumn.ALIQUOTED_FROM
-            : [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
+        const parentColName = this.generateFieldKey();
+
         // Issue 40233: SM app allows for two types of parents, sources and samples, and its confusing if both use
         // the "Parents" suffix in the editable grid header
         const captionSuffix = this.schema !== SCHEMAS.DATA_CLASSES.SCHEMA ? ' Parents' : '';
@@ -149,6 +157,7 @@ export class EntityParentType extends Record({
             name: parentColName,
             required: this.isAliquotParent,
             shownInInsertView: true,
+            shownInUpdateView: true,
             type: 'Text (String)',
             userEditable: true,
         });
@@ -184,6 +193,7 @@ export interface EntityChoice {
     type: IEntityTypeOption;
     ids: string[]; // LSIDs or RowIds
     value: string; // String with comma-separated values (e.g., "S-1,S-2") for use with QuerySelect multi-select)
+    gridValues?: DisplayObject[]; // array of RowId/DisplayValue DisplayObjects for use with EditableGrid
 }
 
 export interface MaterialOutput {
@@ -312,75 +322,6 @@ export class EntityIdCreationModel extends Record({
         return columns;
     }
 
-    addParent(queryName: string): EntityIdCreationModel {
-        const nextIndex = this.entityParents.get(queryName).size + 1;
-        const updatedParents = this.entityParents.get(queryName).push(EntityParentType.create({ index: nextIndex }));
-        return this.setIn(['entityParents', queryName], updatedParents) as EntityIdCreationModel;
-    }
-
-    removeParent(index: number, queryName: string): [EntityIdCreationModel, string] {
-        const entityParents = this.entityParents.get(queryName);
-        const parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
-        const parentColumnName = entityParents.get(parentToResetKey).createColumnName();
-        const updatedEntityParents = entityParents
-            .filter(parent => parent.index !== index)
-            .map((parent, key) => parent.set('index', key + 1));
-        return [
-            this.setIn(['entityParents', queryName], updatedEntityParents) as EntityIdCreationModel,
-            parentColumnName,
-        ];
-    }
-
-    changeParent(
-        index: number,
-        queryName: string,
-        uniqueFieldKey: string,
-        parent: IParentOption
-    ): [EntityIdCreationModel, QueryColumn, EntityParentType, string] {
-        let column;
-        let parentColumnName;
-        let existingParent;
-        const entityParents = this.entityParents.get(queryName);
-        let updatedModel;
-        if (parent) {
-            const existingParentKey = entityParents.findKey(parent => parent.get('index') === index);
-            existingParent = entityParents.get(existingParentKey);
-
-            // bail out if the selected parent is the same as the existingParent for this index, i.e. nothing changed
-            const schemaMatch =
-                parent && existingParent && Utils.caseInsensitiveEquals(parent.schema, existingParent.schema);
-            const queryMatch =
-                parent && existingParent && Utils.caseInsensitiveEquals(parent.query, existingParent.query);
-            if (schemaMatch && queryMatch) {
-                return [undefined, undefined, existingParent, undefined];
-            }
-
-            const parentType = EntityParentType.create({
-                index,
-                key: existingParent.key,
-                query: parent.query,
-                schema: parent.schema,
-            });
-            updatedModel = this.mergeIn(
-                ['entityParents', queryName, existingParentKey],
-                parentType
-            ) as EntityIdCreationModel;
-            column = parentType.generateColumn(uniqueFieldKey);
-        } else {
-            const parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
-            const existingParent = entityParents.get(parentToResetKey);
-            parentColumnName = existingParent.createColumnName();
-            updatedModel = this.mergeIn(
-                ['entityParents', queryName, parentToResetKey],
-                EntityParentType.create({
-                    key: existingParent.key,
-                    index,
-                })
-            ) as EntityIdCreationModel;
-        }
-        return [updatedModel, column, existingParent, parentColumnName];
-    }
-
     hasTargetEntityType(): boolean {
         return this.targetEntityType && this.targetEntityType.value !== undefined;
     }
@@ -451,43 +392,6 @@ export class EntityIdCreationModel extends Record({
             materialInputs,
             targetType: this.targetEntityType.lsid,
         };
-    }
-
-    getParentEntities(combineParentTypes: boolean, queryName?: string): List<EntityParentType> {
-        if (combineParentTypes) {
-            return this.entityParents.reduce((reduction, parentType) => {
-                let index = reduction.size + 1;
-                const types = parentType.map(type => {
-                    return type.set('index', index++);
-                });
-                return reduction.concat(types) as List<EntityParentType>;
-            }, List<EntityParentType>());
-        } else if (queryName !== undefined) {
-            return this.entityParents.get(queryName);
-        } else {
-            return List<EntityParentType>();
-        }
-    }
-
-    getParentOptions(currentSelection: string, queryName: string, combineParentTypes: boolean): any[] {
-        let allOptions = this.parentOptions.get(queryName);
-        if (combineParentTypes) {
-            allOptions = this.parentOptions.valueSeq().reduce((accum, val) => {
-                accum = accum.concat(val) as List<IParentOption>;
-                return accum;
-            }, List<IParentOption>());
-        }
-
-        // exclude options that have already been selected, except the current selection for this input
-        return allOptions
-            .filter(o =>
-                this.getParentEntities(combineParentTypes, queryName).every(parent => {
-                    const notParentMatch = !parent.query || !Utils.caseInsensitiveEquals(parent.query, o.value);
-                    const matchesCurrent = currentSelection && Utils.caseInsensitiveEquals(currentSelection, o.value);
-                    return notParentMatch || matchesCurrent;
-                })
-            )
-            .toArray();
     }
 
     getSchemaQuery(): SchemaQuery {
@@ -581,6 +485,53 @@ export class EntityIdCreationModel extends Record({
     }
 }
 
+export function getParentOptions(
+    parentOptions: Map<string, List<IParentOption>>,
+    entityParents: Map<string, List<EntityParentType>>,
+    currentSelection: string,
+    queryName: string,
+    combineParentTypes: boolean
+): any[] {
+    let allOptions = parentOptions.get(queryName);
+    if (combineParentTypes) {
+        allOptions = parentOptions.valueSeq().reduce((accum, val) => {
+            accum = accum.concat(val) as List<IParentOption>;
+            return accum;
+        }, List<IParentOption>());
+    }
+
+    // exclude options that have already been selected, except the current selection for this input
+    return allOptions
+        .filter(o =>
+            getParentEntities(entityParents, combineParentTypes, queryName).every(parent => {
+                const notParentMatch = !parent.query || !Utils.caseInsensitiveEquals(parent.query, o.value);
+                const matchesCurrent = currentSelection && Utils.caseInsensitiveEquals(currentSelection, o.value);
+                return notParentMatch || matchesCurrent;
+            })
+        )
+        .toArray();
+}
+
+export function getParentEntities(
+    entityParents: Map<string, List<EntityParentType>>,
+    combineParentTypes: boolean,
+    queryName?: string
+): List<EntityParentType> {
+    if (combineParentTypes) {
+        return entityParents.reduce((reduction, parentType) => {
+            let index = reduction.size + 1;
+            const types = parentType.map(type => {
+                return type.set('index', index++);
+            });
+            return reduction.concat(types) as List<EntityParentType>;
+        }, List<EntityParentType>());
+    } else if (queryName !== undefined) {
+        return entityParents.get(queryName);
+    }
+
+    return List<EntityParentType>();
+}
+
 export interface IEntityTypeDetails extends IEntityDetails {
     importAliasKeys?: string[];
     importAliasValues?: string[];
@@ -593,6 +544,7 @@ export enum EntityInsertPanelTabs {
 
 export interface EntityDataType {
     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
+    listingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data instances (e.g., all the data class rows) available
     instanceSchemaName: string; // (e.g., samples) Name of the schema associated with an individual instance that can be used in conjunction with a name returned from the typeListingSchemaQuery listing
     deleteConfirmationActionName: string; // action in ExperimentController used to get the delete confirmation data
     nounSingular: string;
@@ -605,7 +557,6 @@ export interface EntityDataType {
     dependencyText: string; // text describing the dependencies that may prevent the entity from being deleted (e.g., 'derived sample or assay data dependencies')
     deleteHelpLinkTopic: string; // help topic for finding out more about dependencies and deletion
     inputColumnName: string; // used for extracting or querying for the parents of this type
-    inputTypeColumnName: string; // used for extracting or querying for the types for the input columns
     inputTypeValueField: string;
     appUrlPrefixParts?: string[]; // the prefix used for creating links to this type in the application
     insertColumnNamePrefix: string; // when updating this value as an input, the name of that column (e.g, MaterialInputs)

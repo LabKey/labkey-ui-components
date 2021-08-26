@@ -377,7 +377,7 @@ export function getUpdatedDataFromGrid(
                     if (originalValue.get(0).value !== value) {
                         row[key] = (isDate ? parseDate(value) : value) ?? null;
                     }
-                } else if (originalValue !== value) {
+                } else if (!(originalValue === undefined && value === null) && originalValue !== value) {
                     // - only update if the value has changed
                     // - if the value is 'undefined', it will be removed from the update rows, so in order to
                     // erase an existing value we set the value to null in our update data

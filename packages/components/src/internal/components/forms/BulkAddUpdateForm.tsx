@@ -1,88 +1,55 @@
-import React from 'react';
+import React, { FC, useMemo } from 'react';
 import { List } from 'immutable';
 
-import { capitalizeFirstChar, EditorModel, getEditorModel, QueryColumn, QueryGridModel, QueryInfo } from '../../..';
+import { capitalizeFirstChar, getEditorModel, QueryGridModel } from '../../..';
 
 import { getCommonDataValues } from '../../util/utils';
 
-import { QueryInfoForm } from './QueryInfoForm';
+import { QueryInfoForm, QueryInfoFormProps } from './QueryInfoForm';
 
-interface Props {
-    selectedRowIndexes: List<number>;
-    singularNoun?: string;
-    pluralNoun?: string;
-    title?: string;
-    columnFilter?: (col?: QueryColumn) => boolean;
-    itemLabel?: string;
+interface Props extends Omit<QueryInfoFormProps, 'fieldValues' | 'queryInfo'> {
     model: QueryGridModel;
-    onCancel: () => any;
-    onError?: (message: string) => any;
-    onComplete: (data: any, submitForEdit: boolean) => any;
-    onSubmitForEdit: (updateData: any) => any;
+    selectedRowIndexes: List<number>;
 }
 
-export class BulkAddUpdateForm extends React.Component<Props, any> {
-    static defaultProps = {
-        singularNoun: 'row',
-        pluralNoun: 'rows',
-        itemLabel: 'table',
-    };
+export const BulkAddUpdateForm: FC<Props> = ({ model, selectedRowIndexes, ...queryInfoFormProps }) => {
+    const {
+        pluralNoun,
+        singularNoun,
+        submitForEditText = `Finish Editing ${capitalizeFirstChar(pluralNoun)}`,
+        title = 'Update ' + selectedRowIndexes.size + ' ' + (selectedRowIndexes.size === 1 ? singularNoun : pluralNoun),
+    } = queryInfoFormProps;
 
-    getEditorModel(): EditorModel {
-        const { model } = this.props;
-        return getEditorModel(model.getId());
-    }
+    const editorModel = getEditorModel(model.getId());
 
-    getSelectionNoun(): string {
-        const { singularNoun, pluralNoun, selectedRowIndexes } = this.props;
-        return selectedRowIndexes.size === 1 ? singularNoun : pluralNoun;
-    }
-
-    getTitle(): string {
-        const { title, selectedRowIndexes } = this.props;
-        return title ? title : 'Update ' + selectedRowIndexes.size + ' ' + this.getSelectionNoun();
-    }
-
-    render() {
-        const {
-            pluralNoun,
-            model,
-            onCancel,
-            onComplete,
-            columnFilter,
-            onSubmitForEdit,
-            selectedRowIndexes,
-        } = this.props;
-
-        const editorModel = this.getEditorModel();
+    const fieldValues = useMemo(() => {
         const editorData = editorModel
             .getRawData(model)
-            .filter((val, index) => {
-                return selectedRowIndexes.contains(index);
-            })
+            .filter((val, index) => selectedRowIndexes.contains(index))
             .toMap();
-        const fieldValues = getCommonDataValues(editorData);
+        return getCommonDataValues(editorData);
+    }, [editorModel, model, selectedRowIndexes]);
 
-        return (
-            <QueryInfoForm
-                allowFieldDisable={true}
-                initiallyDisableFields={true}
-                canSubmitForEdit={true}
-                fieldValues={fieldValues}
-                onSubmitForEdit={onSubmitForEdit}
-                onSuccess={onComplete}
-                asModal={true}
-                includeCountField={false}
-                checkRequiredFields={false}
-                showLabelAsterisk={true}
-                submitForEditText={`Finish Editing ${capitalizeFirstChar(pluralNoun)}`}
-                columnFilter={columnFilter}
-                onHide={onCancel}
-                onCancel={onCancel}
-                queryInfo={model.queryInfo.getInsertQueryInfo()}
-                schemaQuery={model.queryInfo.schemaQuery}
-                title={this.getTitle()}
-            />
-        );
-    }
-}
+    return (
+        <QueryInfoForm
+            {...queryInfoFormProps}
+            fieldValues={fieldValues}
+            queryInfo={model.queryInfo.getInsertQueryInfo()}
+            submitForEditText={submitForEditText}
+            title={title}
+        />
+    );
+};
+
+BulkAddUpdateForm.defaultProps = {
+    allowFieldDisable: true,
+    asModal: true,
+    checkRequiredFields: false,
+    includeCountField: false,
+    initiallyDisableFields: true,
+    pluralNoun: 'rows',
+    showLabelAsterisk: true,
+    singularNoun: 'row',
+};
+
+BulkAddUpdateForm.displayName = 'BulkAddUpdateForm';

@@ -12,6 +12,29 @@ Components, models, actions, and utility functions for LabKey applications and p
   * includePanelHeader - allows header on panel to be removed
 * Add ExperimentException handling to `resolveErrorMessage`
 
+### version 2.68.0
+*Released*: 26 August 2021
+* Item 9228: Sample Type lineage updates via “Edit Sample in Grid”
+  * query to get first parents (sources or samples) for selected samples in sample type grid
+  * parse sample parent data into format that can be used to get initial columns and values for sample lineage EditableGrid
+  * add new "Lineage Details" tab to the sample edit via grid display
+  * allow for additional source and parents sample types to be added to EditableGrid
+  * persist updated sample parents on finish/save from EditableGrid
+  * refactor EntityParentTypeSelectors out of EntityInsertPanel.tsx for reuse
+
+### version 2.67.1
+*Release*: 26 August 2021
+* Issue 42628: Hide Biologics details view override in view menu
+
+### version 2.67.0
+*Release*: 25 August 2021
+* Issue 43029: Support File/Attachment Fields
+    * See https://github.com/LabKey/labkey-ui-components/pull/610 for more details.
+
+### version 2.66.1
+*Release*: 25 August 2021
+* Issue 43782: Omnibox - Filtering on a field pulled into a lookup shows lookup field instead of the pulled in field
+
 ### version 2.66.0
 *Release*: 23 August 2021
 * Issue 43693: Indicate the depth of the lineage graphs and grids

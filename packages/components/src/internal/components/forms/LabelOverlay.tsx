@@ -33,11 +33,11 @@ export interface LabelOverlayProps {
     canMouseOverTooltip?: boolean;
 }
 
-export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
+export class LabelOverlay extends React.Component<LabelOverlayProps> {
     static defaultProps = {
         isFormsy: true,
         addLabelAsterisk: false,
-        labelClass: 'control-label col-md-3 col-xs-12 text-left',
+        labelClass: 'control-label col-sm-3 col-xs-12 text-left',
         canMouseOverTooltip: false,
     };
 

@@ -5,6 +5,20 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 43760: Update checks for editable columns to incorporate the readOnly setting as well
 
+### version 2.68.0
+*Released*: 26 August 2021
+* Item 9228: Sample Type lineage updates via “Edit Sample in Grid”
+  * query to get first parents (sources or samples) for selected samples in sample type grid
+  * parse sample parent data into format that can be used to get initial columns and values for sample lineage EditableGrid
+  * add new "Lineage Details" tab to the sample edit via grid display
+  * allow for additional source and parents sample types to be added to EditableGrid
+  * persist updated sample parents on finish/save from EditableGrid
+  * refactor EntityParentTypeSelectors out of EntityInsertPanel.tsx for reuse
+
+### version 2.67.1
+*Release*: 26 August 2021
+* Issue 42628: Hide Biologics details view override in view menu
+
 ### version 2.67.0
 *Release*: 25 August 2021
 * Issue 43029: Support File/Attachment Fields

@@ -67,6 +67,7 @@ export interface SamplesSelectionProviderProps {
     sampleSet: string;
     determineAliquot?: boolean;
     determineStorage?: boolean;
+    determineLineage?: boolean;
 }
 
 export interface SamplesSelectionResultProps {
@@ -74,7 +75,9 @@ export interface SamplesSelectionResultProps {
     aliquots: any[];
     noStorageSamples: any[];
     selectionInfoError: any;
-    sampleItems: {};
+    sampleItems: Record<string, any>;
+    sampleLineageKeys: string[];
+    sampleLineage: Record<string, any>;
 }
 
 export interface GroupedSampleFields {

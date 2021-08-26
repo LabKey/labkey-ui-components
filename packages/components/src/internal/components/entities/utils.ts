@@ -5,6 +5,8 @@ import { DELIMITER } from '../forms/input/SelectInput';
 
 import { getCurrentProductName } from '../../app/utils';
 
+import { ParentIdData } from '../samples/actions';
+
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 export function parentValuesDiffer(
@@ -42,17 +44,18 @@ export function parentValuesDiffer(
 export function getInitialParentChoices(
     parentTypeOptions: List<IEntityTypeOption>,
     parentDataType: EntityDataType,
-    childData: Record<string, any>
+    childData: Record<string, any>,
+    parentIdData: Record<string, ParentIdData>
 ): List<EntityChoice> {
     let parentValuesByType = Map<string, EntityChoice>();
 
     if (Object.keys(childData).length > 0) {
         const inputs: Array<Record<string, any>> = childData[parentDataType.inputColumnName];
-        const inputTypes: Array<Record<string, any>> = childData[parentDataType.inputTypeColumnName];
-        if (inputs && inputTypes) {
+        if (inputs) {
             // group the inputs by parent type so we can show each in its own grid.
-            inputTypes.forEach((typeMap, index) => {
-                const typeValue = typeMap.value;
+            inputs.forEach(inputRow => {
+                const inputValue = inputRow.value;
+                const typeValue = parentIdData[inputValue]?.parentId;
                 const typeOption = parentTypeOptions.find(
                     option => option[parentDataType.inputTypeValueField] === typeValue
                 );
@@ -64,10 +67,19 @@ export function getInitialParentChoices(
                             type: typeOption,
                             ids: [],
                             value: undefined,
+                            gridValues: [],
                         });
                     }
                     const updatedChoice = parentValuesByType.get(typeOption.query);
-                    updatedChoice.ids.push(inputs[index]?.['value']);
+                    updatedChoice.ids.push(inputValue);
+                    // when using the data for an editable grid, we need the RowId/DisplayValue pairs
+                    if (parentIdData[inputValue]) {
+                        updatedChoice.gridValues.push({
+                            value: parentIdData[inputValue].rowId,
+                            displayValue: inputRow?.displayValue,
+                        });
+                    }
+
                     parentValuesByType = parentValuesByType.set(typeOption.query, updatedChoice);
                 }
             });
@@ -141,4 +153,8 @@ export function getUniqueIdColumnMetadata(queryInfo: QueryInfo): Map<string, Edi
             });
         });
     return columnMetadata;
+}
+
+export function getEntityDescription(entityDataType: EntityDataType, quantity: number): string {
+    return quantity === 1 ? entityDataType.descriptionSingular : entityDataType.descriptionPlural;
 }

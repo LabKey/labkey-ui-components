@@ -43,24 +43,14 @@ const emptyList = List<string>();
 
 describe('intersect', () => {
     test('with matches', () => {
-        expect(
-            intersect(
-                List<string>(['a', 'b', 'abc']),
-                List<string>(['A', 'Z', 'aBC'])
-            )
-        ).toEqual(
+        expect(intersect(List<string>(['a', 'b', 'abc']), List<string>(['A', 'Z', 'aBC']))).toEqual(
             List<string>(['a', 'abc'])
         );
         expect(intersect(List(['fun', 'times']), List(['funny', 'times']))).toEqual(List(['times']));
     });
 
     test('without matches', () => {
-        expect(
-            intersect(
-                List<string>(['one', 'two']),
-                List(['sun', 'moon'])
-            )
-        ).toEqual(emptyList);
+        expect(intersect(List<string>(['one', 'two']), List(['sun', 'moon']))).toEqual(emptyList);
         expect(intersect(emptyList, List(['fun', 'times']))).toEqual(emptyList);
         expect(intersect(List(['fun', 'times']), emptyList)).toEqual(emptyList);
     });
@@ -68,39 +58,19 @@ describe('intersect', () => {
 
 describe('toLowerSafe', () => {
     test('strings', () => {
-        expect(
-            toLowerSafe(
-                List<string>(['TEST ', ' Test', 'TeSt', 'test'])
-            )
-        ).toEqual(
+        expect(toLowerSafe(List<string>(['TEST ', ' Test', 'TeSt', 'test']))).toEqual(
             List<string>(['test ', ' test', 'test', 'test'])
         );
     });
 
     test('numbers', () => {
-        expect(
-            toLowerSafe(
-                List<string>([1, 2, 3])
-            )
-        ).toEqual(emptyList);
-        expect(
-            toLowerSafe(
-                List<string>([1.0])
-            )
-        ).toEqual(emptyList);
-        expect(
-            toLowerSafe(
-                List<string>([1.0, 2])
-            )
-        ).toEqual(emptyList);
+        expect(toLowerSafe(List<string>([1, 2, 3]))).toEqual(emptyList);
+        expect(toLowerSafe(List<string>([1.0]))).toEqual(emptyList);
+        expect(toLowerSafe(List<string>([1.0, 2]))).toEqual(emptyList);
     });
 
     test('strings and numbers', () => {
-        expect(
-            toLowerSafe(
-                List<string>([1, 2, 'TEST ', ' Test', 3.0, 4.4, 'TeSt', 'test'])
-            )
-        ).toEqual(
+        expect(toLowerSafe(List<string>([1, 2, 'TEST ', ' Test', 3.0, 4.4, 'TeSt', 'test']))).toEqual(
             List<string>(['test ', ' test', 'test', 'test'])
         );
     });
@@ -416,11 +386,7 @@ describe('getUpdatedData', () => {
     });
 
     test('empty updates', () => {
-        const updatedData = getUpdatedData(
-            originalData,
-            {},
-            List<string>(['RowId'])
-        );
+        const updatedData = getUpdatedData(originalData, {}, List<string>(['RowId']));
         expect(updatedData).toHaveLength(0);
     });
 
@@ -964,6 +930,23 @@ describe('getUpdatedDataFromGrid', () => {
             Int2: 22,
             RowId: '448',
         });
+    });
+
+    test('row added field but no value', () => {
+        const updatedData = getUpdatedDataFromGrid(
+            originalData,
+            [
+                Map<string, any>({
+                    RowId: '448',
+                    'New Field': '',
+                    Bool: true,
+                    Int: 0,
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
+        expect(updatedData).toHaveLength(0);
     });
 });
 

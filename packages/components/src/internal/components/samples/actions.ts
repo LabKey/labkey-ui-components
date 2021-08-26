@@ -403,10 +403,11 @@ function getParentRowIdAndDataType(
     });
 }
 
-function getSampleIdsFromSelection(selection: List<any>): number[] {
+// exported for jest testing
+export function getSampleIdsFromSelection(selection: List<any>): number[] {
     const sampleRowIds = [];
     if (selection && !selection.isEmpty()) {
-        selection.forEach(sel => sampleRowIds.push(parseInt(sel)));
+        selection.forEach(sel => sampleRowIds.push(parseInt(sel, 10)));
     }
     return sampleRowIds;
 }

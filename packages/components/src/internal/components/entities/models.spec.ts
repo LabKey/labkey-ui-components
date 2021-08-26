@@ -77,9 +77,19 @@ describe('EntityParentType', () => {
 
     test('generateFieldKey', () => {
         expect(EntityParentType.create({ query: 'test' }).generateFieldKey()).toBe('MaterialInputs/Test');
-        expect(EntityParentType.create({ query: 'test', isAliquotParent: true }).generateFieldKey()).toBe('AliquotedFrom');
-        expect(EntityParentType.create({ schema: SCHEMAS.DATA_CLASSES.SCHEMA, query: 'test' }).generateFieldKey()).toBe('DataInputs/Test');
-        expect(EntityParentType.create({ schema: SCHEMAS.DATA_CLASSES.SCHEMA, query: 'test', isAliquotParent: true }).generateFieldKey()).toBe('AliquotedFrom');
+        expect(EntityParentType.create({ query: 'test', isAliquotParent: true }).generateFieldKey()).toBe(
+            'AliquotedFrom'
+        );
+        expect(EntityParentType.create({ schema: SCHEMAS.DATA_CLASSES.SCHEMA, query: 'test' }).generateFieldKey()).toBe(
+            'DataInputs/Test'
+        );
+        expect(
+            EntityParentType.create({
+                schema: SCHEMAS.DATA_CLASSES.SCHEMA,
+                query: 'test',
+                isAliquotParent: true,
+            }).generateFieldKey()
+        ).toBe('AliquotedFrom');
     });
 
     test('getInputType', () => {
@@ -119,9 +129,7 @@ describe('EntityParentType', () => {
 
 describe('EntityIdCreationModel', () => {
     test('getEmptyEntityParents', () => {
-        const map = EntityIdCreationModel.getEmptyEntityParents(
-            List<string>(['a', 'b'])
-        );
+        const map = EntityIdCreationModel.getEmptyEntityParents(List<string>(['a', 'b']));
         expect(map.size).toBe(2);
         expect(map.get('a').size).toBe(0);
         expect(map.get('b').size).toBe(0);

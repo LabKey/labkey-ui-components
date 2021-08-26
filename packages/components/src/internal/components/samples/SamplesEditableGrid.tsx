@@ -273,70 +273,21 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
         const { originalParents } = this.state;
         if (!originalParents) return undefined;
 
-        // return quickly if we have already generated a model
-        const queryModel = displayQueryModel;
+        // return global state model if we have already generated it
         const samplesSchemaQuery = this.getSchemaQuery();
         const modelId = getStateModelId(SAMPLES_LINEAGE_EDIT_GRID_ID, samplesSchemaQuery);
         const stateModel = getQueryGridModel(modelId);
-        if (stateModel) return stateModel;
-
-        // TODO factor this out to a separate function
-        // model columns should include RowId, Name, and one column for each distinct existing parent (source and/or
-        // sample type) of the selected samples.
-        let updatedColumns = OrderedMap<string, QueryColumn>();
-        queryModel.queryInfo.columns.forEach((column, key) => {
-            if (['name', 'rowid'].indexOf(key) > -1) {
-                updatedColumns = updatedColumns.set(key, column);
-            }
-        });
-        const parentColumns = {};
-        let parentColIndex = 0;
-        // TODO should we use EntityIdCreationModel.getParentColumns?
-        Object.values(originalParents).forEach(sampleParents => {
-            sampleParents.forEach(sampleParent => {
-                const { schema, query } = sampleParent.type;
-                const parentCol = EntityParentType.create({ index: parentColIndex, schema, query }).generateColumn(
-                    sampleParent.type.entityDataType.uniqueFieldKey
-                );
-
-                if (!parentColumns[parentCol.fieldKey]) {
-                    parentColumns[parentCol.fieldKey] = parentCol;
-                    parentColIndex++;
-                }
-            });
-        });
-        Object.keys(parentColumns)
-            .sort() // Order parent columns so sources come first before sample types, and then alphabetically ordered within the types
-            .forEach(key => {
-                updatedColumns = updatedColumns.set(key, parentColumns[key]);
-            });
-
-        return getStateQueryGridModel(SAMPLES_LINEAGE_EDIT_GRID_ID, samplesSchemaQuery, {
-            editable: true,
-            queryInfo: queryModel.queryInfo.merge({ columns: updatedColumns }) as QueryInfo,
-            loader: {
-                fetch: () => {
-                    return new Promise(resolve => {
-                        let data = EditorModel.convertQueryDataToEditorData(fromJS(sampleLineage));
-                        Object.keys(originalParents).forEach(sampleId => {
-                            originalParents[sampleId].forEach(sampleParent => {
-                                const { schema, query } = sampleParent.type;
-                                const value = List<DisplayObject>(sampleParent.gridValues);
-                                const parentType = EntityParentType.create({ schema, query, value });
-                                const fieldKey = parentType.generateFieldKey();
-                                data = data.setIn([sampleId, fieldKey], parentType.value);
-                            });
-                        });
-
-                        resolve({
-                            data,
-                            dataIds: List<string>(sampleLineageKeys),
-                            totalRows: sampleLineageKeys.length,
-                        });
-                    });
-                },
-            },
-        });
+        if (stateModel) {
+            return stateModel;
+        } else {
+            return createLineageEditorQueryGridModel(
+                displayQueryModel,
+                samplesSchemaQuery,
+                originalParents,
+                sampleLineageKeys,
+                sampleLineage
+            );
+        }
     };
 
     initLineageEditableGrid = async (): Promise<void> => {
@@ -719,4 +670,77 @@ function getUpdatedLineageRows(
     });
 
     return updatedLineageRows;
+}
+
+function createLineageEditorQueryGridModel(
+    displayQueryModel: QueryModel,
+    schemaQuery: SchemaQuery,
+    originalParents: Record<string, List<EntityChoice>>,
+    sampleLineageKeys: string[],
+    sampleLineage: Record<string, any>
+): QueryGridModel {
+    const updatedColumns = getLineageEditorUpdateColumns(displayQueryModel, originalParents);
+
+    return getStateQueryGridModel(SAMPLES_LINEAGE_EDIT_GRID_ID, schemaQuery, {
+        editable: true,
+        queryInfo: displayQueryModel.queryInfo.merge({ columns: updatedColumns }) as QueryInfo,
+        loader: {
+            fetch: () => {
+                return new Promise(resolve => {
+                    let data = EditorModel.convertQueryDataToEditorData(fromJS(sampleLineage));
+                    Object.keys(originalParents).forEach(sampleId => {
+                        originalParents[sampleId].forEach(sampleParent => {
+                            const { schema, query } = sampleParent.type;
+                            const value = List<DisplayObject>(sampleParent.gridValues);
+                            const parentType = EntityParentType.create({ schema, query, value });
+                            const fieldKey = parentType.generateFieldKey();
+                            data = data.setIn([sampleId, fieldKey], parentType.value);
+                        });
+                    });
+
+                    resolve({
+                        data,
+                        dataIds: List<string>(sampleLineageKeys),
+                        totalRows: sampleLineageKeys.length,
+                    });
+                });
+            },
+        },
+    });
+}
+
+function getLineageEditorUpdateColumns(
+    displayQueryModel: QueryModel,
+    originalParents: Record<string, List<EntityChoice>>
+): OrderedMap<string, QueryColumn> {
+    // model columns should include RowId, Name, and one column for each distinct existing parent (source and/or
+    // sample type) of the selected samples.
+    let updatedColumns = OrderedMap<string, QueryColumn>();
+    displayQueryModel.queryInfo.columns.forEach((column, key) => {
+        if (['name', 'rowid'].indexOf(key) > -1) {
+            updatedColumns = updatedColumns.set(key, column);
+        }
+    });
+    const parentColumns = {};
+    let parentColIndex = 0;
+    Object.values(originalParents).forEach(sampleParents => {
+        sampleParents.forEach(sampleParent => {
+            const { schema, query } = sampleParent.type;
+            const parentCol = EntityParentType.create({ index: parentColIndex, schema, query }).generateColumn(
+                sampleParent.type.entityDataType.uniqueFieldKey
+            );
+
+            if (!parentColumns[parentCol.fieldKey]) {
+                parentColumns[parentCol.fieldKey] = parentCol;
+                parentColIndex++;
+            }
+        });
+    });
+    Object.keys(parentColumns)
+        .sort() // Order parent columns so sources come first before sample types, and then alphabetically ordered within the types
+        .forEach(key => {
+            updatedColumns = updatedColumns.set(key, parentColumns[key]);
+        });
+
+    return updatedColumns;
 }

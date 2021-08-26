@@ -322,7 +322,28 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
             }
         });
 
-        if (storageRows.length === 0 && lineageRows.length === 0 && sampleRows.length === 0) {
+        // combine sampleRows and lineageRows so that only one update command is used, i.e. so that we only get
+        // one audit entry for the update of a given sample
+        if (lineageRows.length > 0) {
+            const sampleRowIdIndexMap = sampleRows.reduce((map, row, index) => {
+                map[caseInsensitive(row, 'RowId')] = index;
+                return map;
+            }, {});
+            lineageRows.forEach(lineageRow => {
+                const rowId = caseInsensitive(lineageRow, 'RowId');
+                if (sampleRowIdIndexMap[rowId] !== undefined) {
+                    // merge in sample metadata row data with lineage row data for the same RowId
+                    sampleRows[sampleRowIdIndexMap[rowId]] = {
+                        ...sampleRows[sampleRowIdIndexMap[rowId]],
+                        ...lineageRow,
+                    };
+                } else {
+                    sampleRows.push(lineageRow);
+                }
+            });
+        }
+
+        if (storageRows.length === 0 && sampleRows.length === 0) {
             return new Promise(resolve => {
                 this._hasError = false;
                 dismissNotifications();
@@ -348,9 +369,6 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
         sampleRows.forEach(row => {
             sampleIds.add(row['RowId']);
         });
-        lineageRows.forEach(row => {
-            sampleIds.add(row['RowId']);
-        });
         storageRows.forEach(row => {
             const sampleId = row['RowId'];
             if (noStorageSamples.indexOf(sampleId) === -1) sampleIds.add(sampleId);
@@ -374,15 +392,6 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                 schemaName: INVENTORY_ITEM_QS.schemaName,
                 queryName: INVENTORY_ITEM_QS.queryName,
                 rows: convertedStorageData.normalizedRows,
-                auditBehavior: AuditBehaviorTypes.DETAILED,
-            });
-        }
-        if (lineageRows.length > 0) {
-            commands.push({
-                command: 'update',
-                schemaName: sampleSchemaQuery.schemaName,
-                queryName: sampleSchemaQuery.queryName,
-                rows: lineageRows,
                 auditBehavior: AuditBehaviorTypes.DETAILED,
             });
         }

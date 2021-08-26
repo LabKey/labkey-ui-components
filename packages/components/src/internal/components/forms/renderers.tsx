@@ -18,7 +18,7 @@ import { List, Map } from 'immutable';
 import { Input } from 'formsy-react-components';
 import { addValidationRule, validationRules } from 'formsy-react';
 
-import { FileColumnRenderer, FileInput, QueryColumn } from '../../..';
+import { QueryColumn } from '../../..';
 
 import { LabelOverlay } from './LabelOverlay';
 import { AliasInput } from './input/AliasInput';
@@ -144,20 +144,4 @@ export function resolveDetailFieldValue(
     }
 
     return undefined;
-}
-
-export function fileInputRenderer(
-    col: QueryColumn,
-    data: any,
-    updatedFile: File,
-    onChange: (fileMap: Record<string, File>) => void
-): ReactNode {
-    const value = data?.get('value');
-
-    // check to see if an existing file for this column has been removed / changed
-    if (value && updatedFile === undefined) {
-        return <FileColumnRenderer col={col} data={data} onRemove={() => onChange({ [col.name]: null })} />;
-    }
-
-    return <FileInput key={col.fieldKey} queryColumn={col} showLabel={false} onChange={onChange} />;
 }

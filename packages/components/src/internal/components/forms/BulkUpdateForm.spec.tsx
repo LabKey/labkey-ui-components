@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { QueryColumn, QueryInfo, SchemaQuery } from '../../..';
 
@@ -50,19 +50,32 @@ const DEFAULT_PROPS = {
 
 describe('BulkUpdateForm', () => {
     // TODO missing test cases for main functionality of component
+    describe('columnFilter', () => {
+        test('filters without uniqueKeyField', () => {
+            // Arrange
+            const wrapper = shallow(<BulkUpdateForm {...DEFAULT_PROPS} />);
+            const columnFilter = wrapper.find(QueryInfoForm).prop('columnFilter');
 
-    test('getUpdateQueryInfo without uniqueFieldKey', () => {
-        const wrapper = mount(<BulkUpdateForm {...DEFAULT_PROPS} />);
-        const queryInfo = wrapper.find(QueryInfoForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(1);
-        expect(queryInfo.columns.get('update')).toBe(COLUMN_CAN_UPDATE);
-        wrapper.unmount();
-    });
+            // Act
+            const filteredColumns = QUERY_INFO.columns.filter(c => columnFilter(c)).toMap();
 
-    test('getUpdateQueryInfo with uniqueFieldKey', () => {
-        const wrapper = mount(<BulkUpdateForm {...DEFAULT_PROPS} uniqueFieldKey="update" />);
-        const queryInfo = wrapper.find(QueryInfoForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(0);
-        wrapper.unmount();
+            // Assert
+            expect(filteredColumns.size).toEqual(2);
+            expect(filteredColumns.get('update')).toEqual(COLUMN_CAN_UPDATE);
+            expect(filteredColumns.get('fileinput')).toEqual(COLUMN_FILE_INPUT);
+        });
+
+        test('filters with uniqueFieldKey', () => {
+            // Arrange
+            const wrapper = shallow(<BulkUpdateForm {...DEFAULT_PROPS} uniqueFieldKey="update" />);
+            const columnFilter = wrapper.find(QueryInfoForm).prop('columnFilter');
+
+            // Act
+            const filteredColumns = QUERY_INFO.columns.filter(c => columnFilter(c)).toMap();
+
+            // Assert
+            expect(filteredColumns.size).toEqual(1);
+            expect(filteredColumns.get('fileinput')).toEqual(COLUMN_FILE_INPUT);
+        });
     });
 });

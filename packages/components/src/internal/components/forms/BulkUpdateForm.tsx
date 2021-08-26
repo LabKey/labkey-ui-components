@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
@@ -35,63 +35,53 @@ interface Props {
 }
 
 interface State {
-    isLoadingDataForSelection: boolean;
     dataForSelection: Map<string, any>;
     dataIdsForSelection: List<any>;
     errorMsg: string;
+    isLoadingDataForSelection: boolean;
 }
 
-export class BulkUpdateForm extends React.Component<Props, State> {
+export class BulkUpdateForm extends PureComponent<Props, State> {
     static defaultProps = {
-        singularNoun: 'row',
-        pluralNoun: 'rows',
         itemLabel: 'table',
+        pluralNoun: 'rows',
+        singularNoun: 'row',
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            isLoadingDataForSelection: true,
             dataForSelection: undefined,
             dataIdsForSelection: undefined,
             errorMsg: undefined,
+            isLoadingDataForSelection: true,
         };
     }
 
-    componentDidMount(): void {
-        const {
-            onCancel,
-            pluralNoun,
-            queryInfo,
-            readOnlyColumns,
-            selectedIds,
-            shownInUpdateColumns,
-            sortString,
-        } = this.props;
+    componentDidMount = async (): Promise<void> => {
+        const { onCancel, pluralNoun, queryInfo, readOnlyColumns, selectedIds, shownInUpdateColumns, sortString } =
+            this.props;
         // Get all shownInUpdateView columns or undefined
         const columns = shownInUpdateColumns
             ? (queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns)) as List<QueryColumn>)
             : undefined;
         const columnString = columns?.map(c => c.fieldKey).join(',');
         const { schemaName, name } = queryInfo;
-        getSelectedData(schemaName, name, selectedIds, columnString, sortString)
-            .then(response => {
-                const { data, dataIds } = response;
-                this.setState(() => ({
-                    isLoadingDataForSelection: false,
-                    dataForSelection: data,
-                    dataIdsForSelection: dataIds,
-                }));
-            })
-            .catch(reason => {
-                console.error(reason);
-                if (this.props.onError) {
-                    this.props.onError('There was a problem loading the data for the selected ' + pluralNoun + '.');
-                }
-                onCancel();
+
+        try {
+            const { data, dataIds } = await getSelectedData(schemaName, name, selectedIds, columnString, sortString);
+            this.setState({
+                dataForSelection: data,
+                dataIdsForSelection: dataIds,
+                isLoadingDataForSelection: false,
             });
-    }
+        } catch (reason) {
+            console.error(reason);
+            this.props.onError?.('There was a problem loading the data for the selected ' + pluralNoun + '.');
+            onCancel();
+        }
+    };
 
     getSelectionCount(): number {
         return this.props.selectedIds.length;
@@ -107,29 +97,21 @@ export class BulkUpdateForm extends React.Component<Props, State> {
         return prefix + " selected from '" + this.props.itemLabel + "'";
     }
 
-    getUpdateQueryInfo(): QueryInfo {
-        const { queryInfo, uniqueFieldKey } = this.props;
-        const lcUniqueFieldKey = uniqueFieldKey ? uniqueFieldKey.toLowerCase() : undefined;
-        const updateColumns = queryInfo.columns.filter(
-            column =>
-                column.shownInUpdateView &&
-                (!lcUniqueFieldKey || column.name.toLowerCase() !== lcUniqueFieldKey) &&
-                !column.isFileInput
-        );
-        return queryInfo.set('columns', updateColumns) as QueryInfo;
-    }
+    columnFilter = (col: QueryColumn): boolean => {
+        const lcUniqueFieldKey = this.props.uniqueFieldKey?.toLowerCase();
+        return col.isUpdateColumn && (!lcUniqueFieldKey || col.name.toLowerCase() !== lcUniqueFieldKey);
+    };
 
-    bulkUpdateSelectedRows = (data): Promise<any> => {
+    onSubmit = (data): Promise<any> => {
         const { queryInfo, updateRows } = this.props;
         const rows = !Utils.isEmptyObj(data) ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols) : [];
 
         return updateRows(queryInfo.schemaQuery, rows);
     };
 
-    onEditWithGrid = (updateData: OrderedMap<string, any>) => {
-        const { onSubmitForEdit } = this.props;
+    onSubmitForEdit = (updateData: OrderedMap<string, any>) => {
         const { dataForSelection, dataIdsForSelection } = this.state;
-        return onSubmitForEdit(updateData, dataForSelection, dataIdsForSelection);
+        return this.props.onSubmitForEdit(updateData, dataForSelection, dataIdsForSelection);
     };
 
     renderBulkUpdateHeader() {
@@ -160,27 +142,28 @@ export class BulkUpdateForm extends React.Component<Props, State> {
 
         return (
             <QueryInfoForm
-                allowFieldDisable={true}
+                allowFieldDisable
+                asModal
                 canSubmitForEdit={canSubmitForEdit}
-                disableSubmitForEditMsg={'At most ' + MAX_EDITABLE_GRID_ROWS + ' can be edited with the grid.'}
-                initiallyDisableFields={true}
-                isLoading={isLoadingDataForSelection}
-                fieldValues={fieldValues}
-                onSubmitForEdit={this.onEditWithGrid}
-                onSubmit={this.bulkUpdateSelectedRows}
-                onSuccess={onComplete}
-                asModal={true}
-                includeCountField={false}
                 checkRequiredFields={false}
-                showLabelAsterisk={true}
+                columnFilter={this.columnFilter}
+                disableSubmitForEditMsg={'At most ' + MAX_EDITABLE_GRID_ROWS + ' can be edited with the grid.'}
+                fieldValues={fieldValues}
+                header={this.renderBulkUpdateHeader()}
+                includeCountField={false}
+                initiallyDisableFields
+                isLoading={isLoadingDataForSelection}
+                onCancel={onCancel}
+                onHide={onCancel}
+                onSubmitForEdit={this.onSubmitForEdit}
+                onSubmit={this.onSubmit}
+                onSuccess={onComplete}
+                renderFileInputs
+                queryInfo={queryInfo}
+                showLabelAsterisk
                 submitForEditText="Edit with Grid"
                 submitText={`Update ${capitalizeFirstChar(pluralNoun)}`}
-                onHide={onCancel}
-                onCancel={onCancel}
-                queryInfo={this.getUpdateQueryInfo()}
-                schemaQuery={queryInfo.schemaQuery}
                 title={this.getTitle()}
-                header={this.renderBulkUpdateHeader()}
             />
         );
     }

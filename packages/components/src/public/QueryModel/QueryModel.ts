@@ -595,16 +595,20 @@ export class QueryModel {
         const isLookup = lowered.indexOf('/') > -1;
         const allColumns = this.allColumns;
 
-        // First attempt to find by name/lookup
-        const column = allColumns.find(queryColumn => {
+        // First find all possible matches by name/lookup
+        const columns = allColumns.filter(queryColumn => {
             if (isLookup && queryColumn.isLookup()) {
                 return lowered.split('/')[0] === queryColumn.name.toLowerCase();
-            } else if (isLookup && !queryColumn.isLookup()) {
-                return false;
             }
 
             return queryColumn.name.toLowerCase() === lowered;
         });
+
+        // Use exact match first, else first possible match
+        let column = columns.find(c => c.name.toLowerCase() === lowered);
+        if (column === undefined && columns.length > 0) {
+            column = columns[0];
+        }
 
         if (column !== undefined) {
             return column;

@@ -669,6 +669,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
             auditUserComment,
             apiVersion: 13.2,
             form: options.form,
+            autoFormFileData: true,
             success: (response, request) => {
                 if (processRequest(response, request, reject)) return;
 
@@ -751,6 +752,7 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
             auditBehavior: options.auditBehavior,
             auditUserComment: options.auditUserComment,
             form: options.form,
+            autoFormFileData: true,
             success: (response, request) => {
                 if (processRequest(response, request, reject)) return;
 

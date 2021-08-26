@@ -8,12 +8,17 @@ import { DetailPanelHeader } from '../../internal/components/forms/detail/Detail
 import { DetailRenderer } from '../../internal/components/forms/detail/DetailDisplay';
 import { extractChanges } from '../../internal/components/forms/detail/utils';
 
-import { Alert, DetailPanel, QueryColumn, RequiresModelAndActions, resolveErrorMessage, updateRows } from '../..';
-import { fileInputRenderer } from '../../internal/components/forms/renderers';
+import {
+    Alert,
+    DetailPanel,
+    FileInput,
+    QueryColumn,
+    RequiresModelAndActions,
+    resolveErrorMessage,
+    updateRows,
+} from '../..';
 
-const EMPTY_FILE_FOR_DELETE = new File([], '');
-
-interface EditableDetailPanelProps extends RequiresModelAndActions {
+interface Props extends RequiresModelAndActions {
     appEditable?: boolean;
     asSubPanel?: boolean;
     auditBehavior?: AuditBehaviorTypes;
@@ -31,27 +36,25 @@ interface EditableDetailPanelProps extends RequiresModelAndActions {
     useEditIcon: boolean;
 }
 
-interface EditableDetailPanelState {
-    canSubmit?: boolean;
-    editing?: boolean;
-    error?: string;
-    warning?: string;
-    fileMap: Record<string, File>;
+interface State {
+    canSubmit: boolean;
+    editing: boolean;
+    error: string;
+    warning: string;
 }
 
-export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps, EditableDetailPanelState> {
+export class EditableDetailPanel extends PureComponent<Props, State> {
     static defaultProps = {
         useEditIcon: true,
         cancelText: 'Cancel',
         submitText: 'Save',
     };
 
-    state: Readonly<EditableDetailPanelState> = {
+    state: Readonly<State> = {
         canSubmit: false,
         editing: false,
         error: undefined,
         warning: undefined,
-        fileMap: {},
     };
 
     toggleEditing = (): void => {
@@ -75,32 +78,22 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         this.setState(() => ({ warning: undefined }));
     };
 
-    handleFileInputChange = (fileMap: Record<string, File>): void => {
-        this.setState(state => ({
-            fileMap: { ...state.fileMap, ...fileMap },
-            canSubmit: true,
-        }));
-    };
-
     fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
-        const updatedFile = this.state.fileMap[col.name];
-        return fileInputRenderer(col, data, updatedFile, this.handleFileInputChange);
+        return <FileInput formsy initialValue={data} name={col.fieldKey} queryColumn={col} />;
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handleSubmit = (values: Record<string, any>): void => {
+    handleSubmit = async (values: Record<string, any>): Promise<void> => {
         const { auditBehavior, model, onEditToggle, onUpdate } = this.props;
-        const { fileMap } = this.state;
         const { queryInfo } = model;
         const row = model.getRow();
         const updatedValues = extractChanges(queryInfo, fromJS(model.getRow()), values);
-        const hasFileUpdates = Object.keys(fileMap).length > 0;
 
-        if (Object.keys(updatedValues).length === 0 && !hasFileUpdates) {
+        if (Object.keys(updatedValues).length === 0) {
             this.setState(() => ({
                 canSubmit: false,
-                warning: 'No changes detected. Please update the form and click save.',
                 error: undefined,
+                warning: 'No changes detected. Please update the form and click save.',
             }));
 
             return;
@@ -117,28 +110,19 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             }
         });
 
-        // to support file/attachment columns, we need to pass them in as FormData and updateRows will handle the rest
-        let form;
-        if (hasFileUpdates) {
-            form = new FormData();
-            Object.keys(fileMap).forEach(key => {
-                form.append(key, fileMap[key] ?? EMPTY_FILE_FOR_DELETE);
+        try {
+            await updateRows({ auditBehavior, rows: [updatedValues], schemaQuery: queryInfo.schemaQuery });
+
+            this.setState({ editing: false }, () => {
+                onUpdate?.(); // eslint-disable-line no-unused-expressions
+                onEditToggle?.(false); // eslint-disable-line no-unused-expressions
+            });
+        } catch (error) {
+            this.setState({
+                error: resolveErrorMessage(error, 'data', undefined, 'update'),
+                warning: undefined,
             });
         }
-
-        updateRows({ schemaQuery: queryInfo.schemaQuery, rows: [updatedValues], auditBehavior, form })
-            .then(() => {
-                this.setState({ editing: false }, () => {
-                    onUpdate?.(); // eslint-disable-line no-unused-expressions
-                    onEditToggle?.(false); // eslint-disable-line no-unused-expressions
-                });
-            })
-            .catch(error => {
-                this.setState(() => ({
-                    warning: undefined,
-                    error: resolveErrorMessage(error, 'data', undefined, 'update'),
-                }));
-            });
     };
 
     render(): ReactNode {

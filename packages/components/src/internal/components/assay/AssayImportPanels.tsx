@@ -387,14 +387,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     handleBatchChange = (fieldValues: any, isChanged?: boolean): void => {
-        // Here we have to merge incoming values with model.batchProperties because of the way Formsy works.
-        // FileInput fields are not Formsy components, so when they send updates they only send the value for their
-        // field. When formsy sends updates it sends the entire form (but not file fields). So we need to merge
-        // with the known values and then both Formsy and FileInput fields can work together.
-        const values = {
-            ...this.state.model.batchProperties.toObject(),
-            ...fieldValues,
-        };
+        const values = { ...this.state.model.batchProperties.toObject(), ...fieldValues };
 
         if (isChanged) {
             this.props.onDataChange?.(true, IMPORT_DATA_FORM_TYPES.OTHER);
@@ -404,12 +397,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     handleRunChange = (fieldValues: any, isChanged?: boolean): void => {
-        // See the note in handleBatchChange for why this method exists.
-        const values = {
-            ...this.state.model.runProperties.toObject(),
-            ...fieldValues,
-        };
-
+        const values = { ...this.state.model.runProperties.toObject(), ...fieldValues };
         let { comment, runName } = this.state.model;
 
         const cleanedValues = Object.keys(values).reduce((result, key) => {
@@ -536,9 +524,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     const jobDescription = getJobDescription ? getJobDescription(data) : undefined;
                     importAssayRun({ ...processedData, forceAsync, jobDescription, jobNotificationProvider })
                         .then((response: AssayUploadResultModel) => {
-                            if (this.props.onDataChange) {
-                                this.props.onDataChange(false);
-                            }
+                            this.props.onDataChange?.(false);
                             if (importAgain && onSave) {
                                 this.onSuccessContinue(response, backgroundUpload || forceAsync);
                             } else {

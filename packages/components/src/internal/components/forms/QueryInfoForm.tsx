@@ -13,70 +13,60 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Alert, Button, Modal } from 'react-bootstrap';
 import Formsy from 'formsy-react';
 import { Utils } from '@labkey/api';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
-import {
-    formatDateTime,
-    LoadingSpinner,
-    QueryColumn,
-    QueryInfo,
-    SampleCreationTypeModel,
-    SchemaQuery,
-    selectRows,
-    Tip
-} from '../../..';
+import { formatDateTime, LoadingSpinner, QueryColumn, QueryInfo, SampleCreationTypeModel, Tip } from '../../..';
 
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs';
 import { QueryInfoQuantity } from './QueryInfoQuantity';
 
 export interface QueryInfoFormProps {
-    asModal?: boolean;
-    isLoading?: boolean;
     allowFieldDisable?: boolean;
-    useDatePicker?: boolean;
-    initiallyDisableFields?: boolean;
-    disabledFields?: List<string>;
+    asModal?: boolean;
     cancelText?: string;
+    canSubmitForEdit?: boolean;
+    canSubmitNotDirty?: boolean;
     // this can be used when you want a form to supply a set of values to populate a grid, which will be filled in with additional data
     // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
     checkRequiredFields?: boolean;
-    // if checkRequiredFields is false, showLabelAsterisk to show * for fields that are originally required
-    showLabelAsterisk?: boolean;
-    errorCallback?: (error: any) => any;
+    columnFilter?: (col?: QueryColumn) => boolean;
+    countText?: string;
+    creationTypeOptions?: SampleCreationTypeModel[];
+    disabledFields?: List<string>;
+    disableSubmitForEditMsg?: string;
+    errorCallback?: (error: any) => void;
     errorMessagePrefix?: string;
     fieldValues?: any;
+    footer?: ReactNode;
+    header?: ReactNode;
     includeCountField?: boolean;
-    countText?: string;
-    maxCount?: number;
-    onCancel?: () => any;
-    onHide?: () => any;
-    onFormChange?: () => any;
-    canSubmitNotDirty?: boolean;
-    canSubmitForEdit?: boolean;
-    disableSubmitForEditMsg?: string;
-    onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>;
-    onSubmit?: (data: OrderedMap<string, any>) => Promise<any>;
-    onSuccess?: (data: any, submitForEdit: boolean) => any;
-    columnFilter?: (col?: QueryColumn) => boolean;
-    queryInfo: QueryInfo;
-    renderFileInputs?: boolean;
-    schemaQuery: SchemaQuery;
+    initiallyDisableFields?: boolean;
+    isLoading?: boolean;
     isSubmittedText?: string;
     isSubmittingText?: string;
+    maxCount?: number;
+    onCancel?: () => void;
+    onFormChange?: () => void;
+    onHide?: () => void;
+    onSubmit?: (data: OrderedMap<string, any>) => Promise<any>;
+    onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>;
+    onSuccess?: (data: any, submitForEdit: boolean) => void;
+    pluralNoun?: string;
+    queryInfo: QueryInfo;
+    renderFileInputs?: boolean;
+    showErrorsAtBottom?: boolean;
+    // if checkRequiredFields is false, showLabelAsterisk to show * for fields that are originally required
+    showLabelAsterisk?: boolean;
+    singularNoun?: string;
     submitForEditText?: string;
     submitText?: string;
     title?: string;
-    header?: ReactNode;
-    footer?: ReactNode;
-    singularNoun?: string;
-    pluralNoun?: string;
-    showErrorsAtBottom?: boolean;
-    creationTypeOptions?: Array<SampleCreationTypeModel>;
+    useDatePicker?: boolean;
 }
 
 interface State {
@@ -91,7 +81,7 @@ interface State {
     fieldEnabledCount: number;
 }
 
-export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State> {
+export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
     static defaultProps: Partial<QueryInfoFormProps> = {
         canSubmitForEdit: true,
         canSubmitNotDirty: true,
@@ -125,15 +115,6 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
         };
     }
 
-    UNSAFE_componentWillMount(): void {
-        const { schemaQuery } = this.props;
-        selectRows({
-            schemaName: schemaQuery.schemaName,
-            queryName: schemaQuery.queryName,
-            maxRows: 0,
-        });
-    }
-
     enableSubmitButton = (): void => {
         if (this.state.fieldEnabledCount > 0) this.setState({ canSubmit: true });
     };
@@ -143,24 +124,15 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
     };
 
     handleCancel = (): void => {
-        const { onCancel } = this.props;
-        if (Utils.isFunction(onCancel)) {
-            onCancel();
-        }
+        this.props.onCancel?.();
     };
 
     handleChange = (): void => {
-        const { onFormChange } = this.props;
-        if (Utils.isFunction(onFormChange)) {
-            onFormChange();
-        }
+        this.props.onFormChange?.();
 
-        if (!this.state.isDirty)
-            this.setState(() => {
-                return {
-                    isDirty: true,
-                };
-            });
+        if (!this.state.isDirty) {
+            this.setState({ isDirty: true });
+        }
     };
 
     handleSubmitError = (error: any): void => {
@@ -261,29 +233,20 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
     };
 
     setSubmitting = (submitForEdit: boolean): void => {
-        this.setState(() => {
-            return {
-                submitForEdit,
-            };
-        });
+        this.setState({ submitForEdit });
     };
 
     onHide = (): void => {
-        const { onHide } = this.props;
-
-        if (onHide) {
-            onHide();
-        }
-
-        this.setState(() => ({ show: false }));
+        this.props.onHide?.();
+        this.setState({ show: false });
     };
 
     onCountChange = (count: number): void => {
-        this.setState(() => ({ count }));
+        this.setState({ count });
     };
 
     onFieldsEnabledChange = (fieldEnabledCount: number): void => {
-        this.setState(() => ({ fieldEnabledCount }));
+        this.setState({ fieldEnabledCount });
     };
 
     renderButtons = (): ReactNode => {
@@ -387,7 +350,7 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
             creationTypeOptions,
             includeCountField,
             maxCount,
-            countText
+            countText,
         } = this.props;
 
         if (!queryInfo || queryInfo.isLoading) {

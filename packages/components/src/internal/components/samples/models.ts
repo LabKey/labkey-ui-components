@@ -67,6 +67,7 @@ export interface SamplesSelectionProviderProps {
     sampleSet: string;
     determineAliquot?: boolean;
     determineStorage?: boolean;
+    determineLineage?: boolean;
 }
 
 export interface SamplesSelectionResultProps {

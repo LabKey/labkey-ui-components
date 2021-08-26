@@ -64,7 +64,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
 
         loadAliquotData(): void {
             const { determineAliquot, selection, sampleSet } = this.props;
-            if (determineAliquot && selection && selection.size > 0)
+            if (determineAliquot && selection && selection.size > 0) {
                 getAliquotSampleIds(selection, sampleSet)
                     .then(aliquots => {
                         this.setState(() => ({
@@ -77,11 +77,12 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                             selectionInfoError: error,
                         }));
                     });
+            }
         }
 
         loadStorageData(): void {
             const { determineStorage, selection, sampleSet } = this.props;
-            if (determineStorage && selection && selection.size > 0)
+            if (determineStorage && selection && selection.size > 0) {
                 getNotInStorageSampleIds(selection, sampleSet)
                     .then(samples => {
                         this.setState(() => ({
@@ -94,47 +95,54 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                             selectionInfoError: error,
                         }));
                     });
-            getSampleSelectionStorageData(selection)
-                .then(sampleItems => {
-                    this.setState(() => ({
-                        sampleItems,
-                    }));
-                })
-                .catch(error => {
-                    this.setState(() => ({
-                        sampleItems: undefined,
-                        selectionInfoError: error,
-                    }));
-                });
+                getSampleSelectionStorageData(selection)
+                    .then(sampleItems => {
+                        this.setState(() => ({
+                            sampleItems,
+                        }));
+                    })
+                    .catch(error => {
+                        this.setState(() => ({
+                            sampleItems: undefined,
+                            selectionInfoError: error,
+                        }));
+                    });
+            }
         }
 
         loadLineageData(): void {
-            const { selection, sampleSet } = this.props;
-            getSampleSelectionLineageData(selection, sampleSet)
-                .then(response => {
-                    const { key, models, orderedModels } = response;
-                    this.setState(() => ({
-                        sampleLineageKeys: orderedModels[key].toArray(),
-                        sampleLineage: models[key],
-                    }));
-                })
-                .catch(error => {
-                    this.setState(() => ({
-                        sampleLineageKeys: undefined,
-                        sampleLineage: undefined,
-                        selectionInfoError: error,
-                    }));
-                });
+            const { determineLineage, selection, sampleSet } = this.props;
+            if (determineLineage && selection && selection.size > 0) {
+                getSampleSelectionLineageData(selection, sampleSet)
+                    .then(response => {
+                        const { key, models, orderedModels } = response;
+                        this.setState(() => ({
+                            sampleLineageKeys: orderedModels[key].toArray(),
+                            sampleLineage: models[key],
+                        }));
+                    })
+                    .catch(error => {
+                        this.setState(() => ({
+                            sampleLineageKeys: undefined,
+                            sampleLineage: undefined,
+                            selectionInfoError: error,
+                        }));
+                    });
+            }
         }
 
         render() {
-            const { determineAliquot, determineStorage } = this.props;
+            const { determineAliquot, determineStorage, determineLineage } = this.props;
             const { aliquots, noStorageSamples, selectionInfoError, sampleTypeDomainFields, sampleLineage } =
                 this.state;
 
             let isLoaded = !!sampleTypeDomainFields;
             if (isLoaded && !selectionInfoError) {
-                if ((determineAliquot && !aliquots) || (determineStorage && !noStorageSamples) || !sampleLineage) {
+                if (
+                    (determineAliquot && !aliquots) ||
+                    (determineStorage && !noStorageSamples) ||
+                    (determineLineage && !sampleLineage)
+                ) {
                     isLoaded = false;
                 }
             }

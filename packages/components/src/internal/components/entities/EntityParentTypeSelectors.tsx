@@ -11,13 +11,14 @@ import { addColumns, changeColumn, removeColumn } from '../../actions';
 import { QueryGridModel } from '../../QueryGridModel';
 
 import { EntityDataType, EntityParentType, getParentEntities, getParentOptions, IParentOption } from './models';
+import { getEntityDescription } from './utils';
 
 const getAddEntityButtonTitle = (disabled: boolean, optionSize: number, entityDataType: EntityDataType): string => {
     return disabled
         ? (optionSize > 0 ? 'Only ' : '') +
               optionSize +
               ' ' +
-              (optionSize === 1 ? entityDataType.descriptionSingular : entityDataType.descriptionPlural) +
+              getEntityDescription(entityDataType, optionSize) +
               ' available.'
         : undefined;
 };
@@ -28,7 +29,12 @@ const getUpdatedEntityParentType = (
     queryName: string,
     uniqueFieldKey: string,
     parent: IParentOption
-): [Map<string, List<EntityParentType>>, QueryColumn, EntityParentType, string] => {
+): {
+    updatedEntityParents: Map<string, List<EntityParentType>>;
+    column: QueryColumn;
+    existingParent: EntityParentType;
+    parentColumnName: string;
+} => {
     let column;
     let parentColumnName;
     let existingParent;
@@ -43,7 +49,12 @@ const getUpdatedEntityParentType = (
             parent && existingParent && Utils.caseInsensitiveEquals(parent.schema, existingParent.schema);
         const queryMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.query, existingParent.query);
         if (schemaMatch && queryMatch) {
-            return [undefined, undefined, existingParent, undefined];
+            return {
+                updatedEntityParents: undefined,
+                column: undefined,
+                existingParent,
+                parentColumnName: undefined,
+            };
         }
 
         const parentType = EntityParentType.create({
@@ -66,7 +77,13 @@ const getUpdatedEntityParentType = (
             })
         );
     }
-    return [updatedEntityParents, column, existingParent, parentColumnName];
+
+    return {
+        updatedEntityParents,
+        column,
+        existingParent,
+        parentColumnName,
+    };
 };
 
 export const changeEntityParentType = (
@@ -79,7 +96,7 @@ export const changeEntityParentType = (
     combineParentTypes: boolean
 ): Map<string, List<EntityParentType>> => {
     if (queryGridModel) {
-        const [updatedEntityParents, column, existingParent, parentColumnName] = getUpdatedEntityParentType(
+        const { updatedEntityParents, column, existingParent, parentColumnName } = getUpdatedEntityParentType(
             entityParents,
             index,
             queryName,

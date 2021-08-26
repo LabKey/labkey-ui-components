@@ -532,19 +532,19 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
 
     addParentType = (queryName: string): void => {
         const { entityParentsMap } = this.state;
-        const updatedEntityParents = addEntityParentType(queryName, entityParentsMap);
-        this.setState(() => ({ entityParentsMap: updatedEntityParents }));
+        this.setState({ entityParentsMap: addEntityParentType(queryName, entityParentsMap) });
     };
 
     removeParentType = (index: number, queryName: string): void => {
         const { entityParentsMap } = this.state;
-        const updatedEntityParents = removeEntityParentType(
-            index,
-            queryName,
-            entityParentsMap,
-            this.getLineageEditorQueryGridModel()
-        );
-        this.setState(() => ({ entityParentsMap: updatedEntityParents }));
+        this.setState({
+            entityParentsMap: removeEntityParentType(
+                index,
+                queryName,
+                entityParentsMap,
+                this.getLineageEditorQueryGridModel()
+            ),
+        });
     };
 
     changeParentType = (
@@ -556,16 +556,17 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     ): void => {
         const { entityParentsMap } = this.state;
         const { combineParentTypes } = this.props;
-        const updatedEntityParents = changeEntityParentType(
-            index,
-            queryName,
-            parent,
-            this.getLineageEditorQueryGridModel(),
-            entityParentsMap,
-            SampleTypeDataType,
-            combineParentTypes
-        );
-        this.setState(() => ({ entityParentsMap: updatedEntityParents }));
+        this.setState({
+            entityParentsMap: changeEntityParentType(
+                index,
+                queryName,
+                parent,
+                this.getLineageEditorQueryGridModel(),
+                entityParentsMap,
+                SampleTypeDataType,
+                combineParentTypes
+            ),
+        });
     };
 
     getTabHeader = (tabInd: number): ReactNode => {

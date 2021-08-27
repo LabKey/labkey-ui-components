@@ -197,16 +197,22 @@ describe('EntityIdCreationModel', () => {
 describe('getParentOptions', () => {
     let parentOptions = Map<string, List<IParentOption>>();
     beforeAll(() => {
-        parentOptions = parentOptions.set('query1', List.of(
-            { schema: 'a', query: 'test1a', value: 'test1a' },
-            { schema: 'a', query: 'test2a', value: 'test2a' },
-            { schema: 'a', query: 'test3a', value: 'test3a' },
-        ));
-        parentOptions = parentOptions.set('query2', List.of(
-            { schema: 'b', query: 'test1b', value: 'test1b' },
-            { schema: 'b', query: 'test2b', value: 'test2b' },
-            { schema: 'b', query: 'test3b', value: 'test3b' },
-        ));
+        parentOptions = parentOptions.set(
+            'query1',
+            List.of(
+                { schema: 'a', query: 'test1a', value: 'test1a' },
+                { schema: 'a', query: 'test2a', value: 'test2a' },
+                { schema: 'a', query: 'test3a', value: 'test3a' }
+            )
+        );
+        parentOptions = parentOptions.set(
+            'query2',
+            List.of(
+                { schema: 'b', query: 'test1b', value: 'test1b' },
+                { schema: 'b', query: 'test2b', value: 'test2b' },
+                { schema: 'b', query: 'test3b', value: 'test3b' }
+            )
+        );
     });
 
     let entityParents = Map<string, List<EntityParentType>>();
@@ -235,10 +241,13 @@ describe('getParentOptions', () => {
     });
 
     test('queryName, with current selection, filter other selections', () => {
-        entityParents = entityParents.set('query1', List.of(
-            EntityParentType.create({ schema: 'a', query: 'test1a' }),
-            EntityParentType.create({ schema: 'a', query: 'test2a' }),
-        ));
+        entityParents = entityParents.set(
+            'query1',
+            List.of(
+                EntityParentType.create({ schema: 'a', query: 'test1a' }),
+                EntityParentType.create({ schema: 'a', query: 'test2a' })
+            )
+        );
 
         const options = getParentOptions(parentOptions, entityParents, 'test2a', 'query1', false);
         expect(options.length).toBe(2);
@@ -247,13 +256,14 @@ describe('getParentOptions', () => {
     });
 
     test('combineParentTypes, with current selection, filter other selections', () => {
-        entityParents = entityParents.set('query1', List.of(
-            EntityParentType.create({ schema: 'a', query: 'test1a' }),
-            EntityParentType.create({ schema: 'a', query: 'test2a' }),
-        ));
-        entityParents = entityParents.set('query2', List.of(
-            EntityParentType.create({ schema: 'b', query: 'test1b' }),
-        ));
+        entityParents = entityParents.set(
+            'query1',
+            List.of(
+                EntityParentType.create({ schema: 'a', query: 'test1a' }),
+                EntityParentType.create({ schema: 'a', query: 'test2a' })
+            )
+        );
+        entityParents = entityParents.set('query2', List.of(EntityParentType.create({ schema: 'b', query: 'test1b' })));
 
         const options = getParentOptions(parentOptions, entityParents, 'test2a', undefined, true);
         expect(options.length).toBe(4);
@@ -267,14 +277,20 @@ describe('getParentOptions', () => {
 describe('getParentEntities', () => {
     let entityParents = Map<string, List<EntityParentType>>();
     beforeEach(() => {
-        entityParents = entityParents.set('query1', List.of(
-            EntityParentType.create({ schema: 'a', query: 'test1a' }),
-            EntityParentType.create({ schema: 'a', query: 'test2a' }),
-        ));
-        entityParents = entityParents.set('query2', List.of(
-            EntityParentType.create({ schema: 'b', query: 'test1b' }),
-            EntityParentType.create({ schema: 'b', query: 'test2b' }),
-        ));
+        entityParents = entityParents.set(
+            'query1',
+            List.of(
+                EntityParentType.create({ schema: 'a', query: 'test1a' }),
+                EntityParentType.create({ schema: 'a', query: 'test2a' })
+            )
+        );
+        entityParents = entityParents.set(
+            'query2',
+            List.of(
+                EntityParentType.create({ schema: 'b', query: 'test1b' }),
+                EntityParentType.create({ schema: 'b', query: 'test2b' })
+            )
+        );
     });
 
     test('without combineParentTypes or queryName', () => {

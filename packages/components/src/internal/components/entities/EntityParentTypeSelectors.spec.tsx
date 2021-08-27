@@ -6,7 +6,7 @@ import {
     EntityParentTypeAddEntityButton,
     EntityParentTypeSelectors,
     getAddEntityButtonTitle,
-    getUpdatedEntityParentType
+    getUpdatedEntityParentType,
 } from './EntityParentTypeSelectors';
 import { EntityDataType, EntityParentType, IParentOption } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
@@ -150,12 +150,7 @@ describe('EntityParentTypeAddEntityButton', () => {
     });
 
     test('with options', () => {
-        const wrapper = mount(
-            <EntityParentTypeAddEntityButton
-                {...DEFAULT_PROPS}
-                parentOptions={PARENT_OPTIONS}
-            />
-        );
+        const wrapper = mount(<EntityParentTypeAddEntityButton {...DEFAULT_PROPS} parentOptions={PARENT_OPTIONS} />);
         validate(wrapper);
         wrapper.unmount();
     });

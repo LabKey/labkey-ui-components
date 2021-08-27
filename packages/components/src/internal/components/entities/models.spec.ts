@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 
-import { QueryColumn, SampleTypeDataType, SCHEMAS } from '../../..';
+import { IParentOption, QueryColumn, SampleTypeDataType, SCHEMAS } from '../../..';
 
-import { EntityIdCreationModel, EntityParentType, EntityTypeOption } from './models';
+import { EntityIdCreationModel, EntityParentType, EntityTypeOption, getParentOptions } from './models';
 
 describe('EntityParentType', () => {
     test('generateColumn captionSuffix', () => {
@@ -185,5 +185,75 @@ describe('EntityIdCreationModel', () => {
         });
         expect(sq.getSchemaQuery().schemaName).toBe('samples');
         expect(sq.getSchemaQuery().queryName).toBe('a');
+    });
+});
+
+describe('getParentOptions', () => {
+    let parentOptions = Map<string, List<IParentOption>>();
+    beforeAll(() => {
+        parentOptions = parentOptions.set('query1', List.of(
+            { schema: 'a', query: 'test1a', value: 'test1a' },
+            { schema: 'a', query: 'test2a', value: 'test2a' },
+            { schema: 'a', query: 'test3a', value: 'test3a' },
+        ));
+        parentOptions = parentOptions.set('query2', List.of(
+            { schema: 'b', query: 'test1b', value: 'test1b' },
+            { schema: 'b', query: 'test2b', value: 'test2b' },
+            { schema: 'b', query: 'test3b', value: 'test3b' },
+        ));
+    });
+
+    let entityParents = Map<string, List<EntityParentType>>();
+    beforeEach(() => {
+        entityParents = Map<string, List<EntityParentType>>();
+        entityParents = entityParents.set('query1', List());
+        entityParents = entityParents.set('query2', List());
+    });
+
+    test('queryName, without current selection', () => {
+        const options = getParentOptions(parentOptions, entityParents, undefined, 'query1', false);
+        expect(options.length).toBe(3);
+        expect(options[0].query).toBe('test1a');
+        expect(options[1].query).toBe('test2a');
+        expect(options[2].query).toBe('test3a');
+    });
+
+    test('queryName, with current selection', () => {
+        entityParents = entityParents.set('query1', List.of(EntityParentType.create({ schema: 'a', query: 'test2a' })));
+
+        const options = getParentOptions(parentOptions, entityParents, 'test2a', 'query1', false);
+        expect(options.length).toBe(3);
+        expect(options[0].query).toBe('test1a');
+        expect(options[1].query).toBe('test2a');
+        expect(options[2].query).toBe('test3a');
+    });
+
+    test('queryName, with current selection, filter other selections', () => {
+        entityParents = entityParents.set('query1', List.of(
+            EntityParentType.create({ schema: 'a', query: 'test1a' }),
+            EntityParentType.create({ schema: 'a', query: 'test2a' }),
+        ));
+
+        const options = getParentOptions(parentOptions, entityParents, 'test2a', 'query1', false);
+        expect(options.length).toBe(2);
+        expect(options[0].query).toBe('test2a');
+        expect(options[1].query).toBe('test3a');
+    });
+
+    test('combineParentTypes, with current selection, filter other selections', () => {
+        entityParents = entityParents.set('query1', List.of(
+            EntityParentType.create({ schema: 'a', query: 'test1a' }),
+            EntityParentType.create({ schema: 'a', query: 'test2a' }),
+        ));
+        entityParents = entityParents.set('query2', List.of(
+            EntityParentType.create({ schema: 'b', query: 'test1b' }),
+        ));
+
+        const options = getParentOptions(parentOptions, entityParents, 'test2a', undefined, true);
+        expect(options.length).toBe(4);
+        expect(options[0].query).toBe('test2a');
+        expect(options[1].query).toBe('test3a');
+        expect(options[2].query).toBe('test2b');
+        expect(options[3].query).toBe('test3b');
     });
 });

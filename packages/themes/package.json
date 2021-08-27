@@ -1,6 +1,6 @@
 {
   "name": "@labkey/themes",
-  "version": "1.2.0",
+  "version": "1.2.0-fb-dependabotUpdates219.0",
   "description": "Themes that come bundled with LabKey Server",
   "files": [
     "dist/"
@@ -29,19 +29,19 @@
   "devDependencies": {
     "bootstrap-sass": "3.4.1",
     "css-loader": "4.3.0",
-    "file-loader": "6.1.0",
+    "file-loader": "6.1.1",
     "font-awesome": "4.7.0",
-    "mini-css-extract-plugin": "0.11.2",
+    "mini-css-extract-plugin": "0.11.3",
     "node-sass": "4.14.1",
     "nps": "5.10.0",
     "nps-utils": "1.7.0",
-    "optimize-css-assets-webpack-plugin": "5.0.4",
+    "optimize-css-assets-webpack-plugin": "5.0.8",
     "postcss-loader": "3.0.0",
-    "resolve-url-loader": "3.1.1",
+    "resolve-url-loader": "3.1.4",
     "rimraf": "3.0.2",
-    "sass-loader": "10.0.2",
+    "sass-loader": "10.0.5",
     "uglifyjs-webpack-plugin": "2.2.0",
-    "url-loader": "4.1.0",
+    "url-loader": "4.1.1",
     "webpack": "4.44.2",
     "webpack-cli": "3.3.12"
   }

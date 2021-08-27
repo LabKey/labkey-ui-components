@@ -647,7 +647,8 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     }
 }
 
-function getUpdatedLineageRows(
+// exported for jest testing
+export function getUpdatedLineageRows(
     lineageRows: Record<string, any>[],
     originalModel: QueryGridModel,
     aliquots: any[]

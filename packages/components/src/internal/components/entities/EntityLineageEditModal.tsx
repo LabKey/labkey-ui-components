@@ -1,20 +1,25 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
 import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
 import {
     Alert,
-    capitalizeFirstChar, createNotification,
-    DataClassDataType, getSelectedData,
+    capitalizeFirstChar,
+    caseInsensitive,
+    createNotification,
+    naturalSort,
     ParentEntityEditPanel,
     Progress,
-    QueryModel, resolveErrorMessage,
-    SampleTypeDataType, updateRows,
+    QueryModel,
+    resolveErrorMessage,
+    updateRows,
 } from '../../..';
 import { EntityChoice, EntityDataType } from './models';
 import { Button, Modal } from 'react-bootstrap';
-import { getEntityNoun, getUpdatedRowForParentChanges } from './utils';
+import { getEntityNoun } from './utils';
 import { List } from 'immutable';
+import { getOriginalParentsFromSampleLineage, getSampleSelectionLineageData } from '../samples/actions';
+import { ParentEntityLineageColumns } from './constants';
 
 interface Props {
     queryModel?: QueryModel;
@@ -39,47 +44,34 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
         parentNounSingular,
     } = props;
     const [submitting, setSubmitting] = useState(false);
-    const [nonAliquots, setNonAliquots] = useState<Record<string, any>[]>(undefined);
+    const [numAliquots, setNumAliquots] = useState<number>(undefined);
+    const [nonAliquots, setNonAliquots] = useState<Record<string, any>>(undefined);
     const [errorMessage, setErrorMessage] = useState(undefined);
-    const [aliquots, setAliquots] = useState<Record<string, any>[]>(undefined);
     const [hasParentUpdates, setHasParentUpdates] = useState<boolean>(false);
-    const [originalParents, setOriginalParents] = useState<List<EntityChoice>[]>()
     const lcParentNounPlural = parentNounPlural.toLowerCase();
     const [selectedParents, setSelectedParents] = useState<List<EntityChoice>>(List<EntityChoice>());
 
     useEffect(() => {
-        getSelectedData(queryModel.schemaName, queryModel.queryName, [...queryModel.selections])
-            .then(response => {
-                const {data, dataIds} = response;
-                const nonAliquots = [];
-                const aliquots = [];
-                const parents: List<EntityChoice>[] = [];
-                data.forEach((d, key) => {
-                    if (d.getIn(['IsAliquot', 'value'])) {
-                        aliquots.push(d.toJS());
-                    }
-                    else {
-                        const dataRecord = d.toJS();
-                        nonAliquots.push(dataRecord);
-                        // want to know
-                        // (a) what parent types already have values so we can add those types in the form
-                        // (b) if the values for the parents are the same so we can fill in those values
-                        // (c) what current parents are so we can know whether an update has been made
-                        // if we store a map from the input column to the common set of parents, or an empty array
-                        // if the values are not the same we should be able to know these three things
-                        // groups[0] = {'DataInputs/Labs': [123, 234]}}
-                        const lcPrefixes = parentEntityDataTypes.map(dataType => dataType.insertColumnNamePrefix.toLowerCase());
-                        // TODO get the original parents from the selection and store in the parents object
+        getSampleSelectionLineageData(List.of(...queryModel.selections), queryModel.queryName, List.of('RowId', 'Name', 'LSID', 'IsAliquot').concat(ParentEntityLineageColumns).toArray())
+            .then(async response => {
+                const { key, models } = response;
+                const nonAliquots = {};
+                let aliquotCount = 0;
+                Object.keys(models[key]).forEach(id => {
+                    const d = models[key][id];
+                    if (caseInsensitive(d, 'IsAliquot')['value']) {
+                        aliquotCount++;
+                    } else {
+                        nonAliquots[id] = d;
                     }
                 });
-                setOriginalParents(new Array<List<EntityChoice>>(nonAliquots.length));
+                setNumAliquots(aliquotCount);
                 setNonAliquots(nonAliquots);
-                setAliquots(aliquots);
+
             })
-            .catch(reason => {
-                console.error(reason)
-                setErrorMessage("There was a problem retrieving the data for the selected " + childEntityDataType.nounPlural + ".  Please be sure the " + childEntityDataType.nounPlural + " are still valid.");
-            })
+            .catch(error => {
+                setErrorMessage(error);
+            });
     }, [])
 
 
@@ -88,37 +80,72 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
         setHasParentUpdates(entityParents.size > 0);
     }, []);
 
-
     const onConfirm = useCallback(
         async () => {
             setSubmitting(true);
             const rows = [];
-            nonAliquots.forEach((row, i) => {
-                rows.push(getUpdatedRowForParentChanges(originalParents[i], selectedParents, row, queryModel.queryInfo));
+            const { originalParents } = await getOriginalParentsFromSampleLineage(nonAliquots);
+            Object.keys(nonAliquots).forEach((rowId) => {
+                let updatedValues = {}
+                let haveUpdate = false;
+
+                // Find the types that are included and use those for change comparison.
+                // Types that are not represented in the selected parents won't be changed.
+                selectedParents.forEach(selected => {
+                    let originalValue;
+                    const possibleChange = originalParents[rowId].find(p => p.type.lsid == selected.type.lsid);
+                    if (possibleChange) {
+                        originalValue = possibleChange.gridValues.map(gridValue => gridValue.displayValue).sort(naturalSort).join(",");
+                    }
+                    const selValue = selected.value ? selected.value.split(",").sort(naturalSort).join(",") : null;
+                    if (originalValue !== selValue) {
+                        updatedValues[selected.type.entityDataType.insertColumnNamePrefix + selected.type.label] = selValue;
+                        haveUpdate = true;
+                    }
+                });
+                if (haveUpdate) {
+                    queryModel.queryInfo.getPkCols().forEach(pkCol => {
+                        const pkVal = nonAliquots[rowId][pkCol.fieldKey]?.['value'];
+
+                        if (pkVal !== undefined && pkVal !== null) {
+                            updatedValues[pkCol.fieldKey] = pkVal;
+                        } else {
+                            console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
+                        }
+                    });
+                    rows.push(updatedValues)
+                }
             });
 
-            try
-            {
-                await updateRows({
-                    schemaQuery: queryModel.schemaQuery,
-                    rows,
-                    auditBehavior,
-                });
-                createNotification(`Successfully updated ${lcParentNounPlural} for ${nonAliquots.length} ${capitalizeFirstChar(getEntityNoun(childEntityDataType, nonAliquots.length))}`)
+            if (rows.length > 0) {
+                try {
+                    await updateRows({
+                        schemaQuery: queryModel.schemaQuery,
+                        rows,
+                        auditBehavior,
+                    });
+                    createNotification(`Successfully updated ${lcParentNounPlural} for ${rows.length} ${capitalizeFirstChar(getEntityNoun(childEntityDataType, rows.length))}`)
+                    onSuccess();
+                }
+                catch (e) {
+                    setSubmitting(false);
+                    setErrorMessage("There was a problem updating the " + lcParentNounPlural + "." + resolveErrorMessage(e));
+                }
+            } else {
+                createNotification(`No ${childEntityDataType.nounPlural} updated since no ${lcParentNounPlural} changed.`);
                 onSuccess();
-            } catch (e) {
-                setSubmitting(false);
-                setErrorMessage("There was a problem updating the " + lcParentNounPlural + "." + resolveErrorMessage(e));
             }
         },
         [selectedParents, auditBehavior, childEntityDataType, queryModel, nonAliquots]
     );
 
-    if (!queryModel || !nonAliquots || !aliquots) {
+    if (!queryModel || !nonAliquots) {
         return null;
     }
 
-    if (nonAliquots?.length === 0) {
+    const numNonAliquots = Object.keys(nonAliquots).length;
+
+    if (numNonAliquots === 0) {
         return (
             <Modal show onHide={onCancel}>
                 <Modal.Header closeButton>
@@ -141,7 +168,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     return (
         <Modal bsSize="large" show onHide={onCancel}>
             <Modal.Header closeButton>
-                <Modal.Title>Edit {parentNounPlural} for {nonAliquots.length} Selected {capitalizeFirstChar(getEntityNoun(childEntityDataType, nonAliquots.length))}</Modal.Title>
+                <Modal.Title>Edit {parentNounPlural} for {numNonAliquots} Selected {capitalizeFirstChar(getEntityNoun(childEntityDataType, numNonAliquots))}</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
@@ -154,12 +181,12 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                         To see details of the existing {lcParentNounPlural}, choose "Cancel" here then "Edit Selected {capitalizeFirstChar(childEntityDataType.nounPlural)} in Grid" from the "Manage" menu.
                     </p>
                 </div>
-                {(aliquots?.length > 0 && !submitting) && <Alert bsStyle={'info'}> {Utils.pluralize(aliquots.length, 'aliquot was', 'aliquots were')} among the selections. Lineage for aliquots cannot be changed.</Alert>}
+                {(numAliquots > 0 && !submitting) && <Alert bsStyle={'info'}> {Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections. Lineage for aliquots cannot be changed.</Alert>}
                 <Alert bsStyle={'danger'}>{errorMessage}</Alert>
 
                 <Progress
                     modal={false}
-                    estimate={(nonAliquots?.length ?? 10) * 10}
+                    estimate={numNonAliquots  * 10}
                     toggle={submitting}
                 />
                 {!submitting &&
@@ -167,7 +194,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                         auditBehavior={auditBehavior}
                         canUpdate={true}
                         childQueryInfo={queryModel.queryInfo}
-                        childData={queryModel.getRow()}
+                        childData={undefined}
                         parentDataTypes={parentEntityDataTypes}
                         childName={undefined}
                         childNounSingular={childEntityDataType.nounSingular}
@@ -190,10 +217,11 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                     </Button>
                 )}
 
-                <Button bsClass={'btn btn-success'} onClick={onConfirm} disabled={submitting || !nonAliquots?.length || !hasParentUpdates}>
+                <Button bsClass={'btn btn-success'} onClick={onConfirm} disabled={submitting || !numNonAliquots || !hasParentUpdates}>
                     {submitting ? `Updating ${parentNounPlural} ...` : `Update ${parentNounPlural}`}
                 </Button>
             </Modal.Footer>
         </Modal>
     );
 });
+

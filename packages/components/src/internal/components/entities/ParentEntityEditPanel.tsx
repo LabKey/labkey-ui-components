@@ -88,17 +88,18 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         await Promise.all(
             parentDataTypes.map(async parentDataType => {
                 try {
-                    const typeData = await getParentTypeDataForSample(parentDataType, [childData]);
+                    const typeData = await getParentTypeDataForSample(parentDataType, childData ? [childData] : []);
                     parentTypeOptions = parentTypeOptions.concat(typeData.parentTypeOptions) as List<IEntityTypeOption>;
                     originalParents = originalParents.concat(
                         getInitialParentChoices(
                             typeData.parentTypeOptions,
                             parentDataType,
-                            childData,
+                            childData ?? [],
                             typeData.parentIdData
                         )
                     ) as List<EntityChoice>;
                 } catch (reason) {
+                    console.error(reason);
                     this.setState({
                         error: getActionErrorMessage(
                             'Unable to load ' + parentDataType.descriptionSingular + ' data.',

@@ -13,7 +13,12 @@ import { QueryGridModel } from '../../QueryGridModel';
 import { EntityDataType, EntityParentType, getParentEntities, getParentOptions, IParentOption } from './models';
 import { getEntityDescription } from './utils';
 
-const getAddEntityButtonTitle = (disabled: boolean, optionSize: number, entityDataType: EntityDataType): string => {
+// exported for jest testing
+export const getAddEntityButtonTitle = (
+    disabled: boolean,
+    optionSize: number,
+    entityDataType: EntityDataType
+): string => {
     return disabled
         ? (optionSize > 0 ? 'Only ' : '') +
               optionSize +
@@ -23,7 +28,8 @@ const getAddEntityButtonTitle = (disabled: boolean, optionSize: number, entityDa
         : undefined;
 };
 
-const getUpdatedEntityParentType = (
+// exported for jest testing
+export const getUpdatedEntityParentType = (
     entityParentsMap: Map<string, List<EntityParentType>>,
     index: number,
     queryName: string,
@@ -171,11 +177,11 @@ interface AddEntityButtonProps {
     entityDataType: EntityDataType;
     parentOptions: List<IParentOption>;
     entityParents: List<EntityParentType>;
-    combineParentTypes?: boolean;
     onAdd: (queryName: string) => void;
 }
 
-const EntityParentTypeAddEntityButton: FC<AddEntityButtonProps> = memo(props => {
+// exported for jest testing
+export const EntityParentTypeAddEntityButton: FC<AddEntityButtonProps> = memo(props => {
     const { entityDataType, parentOptions, entityParents, onAdd } = props;
     const { queryName } = entityDataType.typeListingSchemaQuery;
 

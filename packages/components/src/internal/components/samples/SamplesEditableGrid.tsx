@@ -720,7 +720,8 @@ function createLineageEditorQueryGridModel(
     });
 }
 
-function getLineageEditorUpdateColumns(
+// exported for jest testing
+export function getLineageEditorUpdateColumns(
     displayQueryModel: QueryModel,
     originalParents: Record<string, List<EntityChoice>>
 ): OrderedMap<string, QueryColumn> {

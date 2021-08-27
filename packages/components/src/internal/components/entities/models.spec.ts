@@ -17,7 +17,13 @@ import { List, Map } from 'immutable';
 
 import { IParentOption, QueryColumn, SampleTypeDataType, SCHEMAS } from '../../..';
 
-import { EntityIdCreationModel, EntityParentType, EntityTypeOption, getParentOptions } from './models';
+import {
+    EntityIdCreationModel,
+    EntityParentType,
+    EntityTypeOption,
+    getParentEntities,
+    getParentOptions,
+} from './models';
 
 describe('EntityParentType', () => {
     test('generateColumn captionSuffix', () => {
@@ -255,5 +261,43 @@ describe('getParentOptions', () => {
         expect(options[1].query).toBe('test3a');
         expect(options[2].query).toBe('test2b');
         expect(options[3].query).toBe('test3b');
+    });
+});
+
+describe('getParentEntities', () => {
+    let entityParents = Map<string, List<EntityParentType>>();
+    beforeEach(() => {
+        entityParents = entityParents.set('query1', List.of(
+            EntityParentType.create({ schema: 'a', query: 'test1a' }),
+            EntityParentType.create({ schema: 'a', query: 'test2a' }),
+        ));
+        entityParents = entityParents.set('query2', List.of(
+            EntityParentType.create({ schema: 'b', query: 'test1b' }),
+            EntityParentType.create({ schema: 'b', query: 'test2b' }),
+        ));
+    });
+
+    test('without combineParentTypes or queryName', () => {
+        expect(getParentEntities(entityParents, false, undefined).size).toBe(0);
+    });
+
+    test('queryName', () => {
+        const entities = getParentEntities(entityParents, false, 'query2');
+        expect(entities.size).toBe(2);
+        expect(entities.get(0).query).toBe('test1b');
+        expect(entities.get(1).query).toBe('test2b');
+    });
+
+    test('combineParentTypes', () => {
+        const entities = getParentEntities(entityParents, true, 'query2');
+        expect(entities.size).toBe(4);
+        expect(entities.get(0).query).toBe('test1a');
+        expect(entities.get(1).query).toBe('test2a');
+        expect(entities.get(2).query).toBe('test1b');
+        expect(entities.get(3).query).toBe('test2b');
+        expect(entities.get(0).index).toBe(1);
+        expect(entities.get(1).index).toBe(2);
+        expect(entities.get(2).index).toBe(3);
+        expect(entities.get(3).index).toBe(4);
     });
 });

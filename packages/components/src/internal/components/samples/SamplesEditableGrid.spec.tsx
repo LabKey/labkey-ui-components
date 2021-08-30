@@ -67,6 +67,8 @@ describe('getUpdatedLineageRows', () => {
         );
         expect(updatedRows.length).toBe(1);
         expect(updatedRows[0].RowId).toBe(1);
+        expect(updatedRows[0]['MaterialInputs/One']).toBe('A');
+        expect(updatedRows[0]['MaterialInputs/Two']).toBe('B, C, D');
     });
 
     test('replace existing parent', () => {
@@ -80,6 +82,8 @@ describe('getUpdatedLineageRows', () => {
         );
         expect(updatedRows.length).toBe(1);
         expect(updatedRows[0].RowId).toBe(1);
+        expect(updatedRows[0]['MaterialInputs/One']).toBe('D');
+        expect(updatedRows[0]['MaterialInputs/Two']).toBe('B, C');
     });
 
     test('remove existing parent', () => {
@@ -93,6 +97,8 @@ describe('getUpdatedLineageRows', () => {
         );
         expect(updatedRows.length).toBe(1);
         expect(updatedRows[0].RowId).toBe(1);
+        expect(updatedRows[0]['MaterialInputs/One']).toBe('');
+        expect(updatedRows[0]['MaterialInputs/Two']).toBe('B, C');
     });
 
     test('add new parent', () => {
@@ -106,6 +112,8 @@ describe('getUpdatedLineageRows', () => {
         );
         expect(updatedRows.length).toBe(1);
         expect(updatedRows[0].RowId).toBe(2);
+        expect(updatedRows[0]['MaterialInputs/One']).toBe('A, B');
+        expect(updatedRows[0]['MaterialInputs/Two']).toBe('');
     });
 
     test('exclude aliquots', () => {

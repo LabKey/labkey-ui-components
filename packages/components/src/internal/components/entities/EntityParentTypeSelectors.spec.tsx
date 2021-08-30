@@ -2,6 +2,12 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { mount, ReactWrapper } from 'enzyme';
 
+import { SelectInput } from '../forms/input/SelectInput';
+
+import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
+
+import { AddEntityButton } from '../buttons/AddEntityButton';
+
 import {
     EntityParentTypeAddEntityButton,
     EntityParentTypeSelectors,
@@ -46,9 +52,9 @@ describe('EntityParentTypeSelectors', () => {
     };
 
     function validate(wrapper: ReactWrapper, inputCount = 0, addBtnCount = 0): void {
-        expect(wrapper.find('SelectInput')).toHaveLength(inputCount);
-        expect(wrapper.find('RemoveEntityButton')).toHaveLength(inputCount);
-        expect(wrapper.find('EntityParentTypeAddEntityButton')).toHaveLength(addBtnCount);
+        expect(wrapper.find(SelectInput)).toHaveLength(inputCount);
+        expect(wrapper.find(RemoveEntityButton)).toHaveLength(inputCount);
+        expect(wrapper.find(EntityParentTypeAddEntityButton)).toHaveLength(addBtnCount);
     }
 
     test('default props', () => {
@@ -95,10 +101,10 @@ describe('EntityParentTypeSelectors', () => {
         );
         validate(wrapper, 4, 2);
 
-        expect(wrapper.find('SelectInput').first().prop('label')).toBe('Parent 1 Type');
-        expect(wrapper.find('SelectInput').last().prop('label')).toBe('Source 2 Type');
-        expect(wrapper.find('RemoveEntityButton').first().prop('entity')).toBe('Parent');
-        expect(wrapper.find('RemoveEntityButton').last().prop('entity')).toBe('Source');
+        expect(wrapper.find(SelectInput).first().prop('label')).toBe('Parent 1 Type');
+        expect(wrapper.find(SelectInput).last().prop('label')).toBe('Source 2 Type');
+        expect(wrapper.find(RemoveEntityButton).first().prop('entity')).toBe('Parent');
+        expect(wrapper.find(RemoveEntityButton).last().prop('entity')).toBe('Source');
 
         wrapper.unmount();
     });
@@ -115,10 +121,10 @@ describe('EntityParentTypeSelectors', () => {
         );
         validate(wrapper, 4, 1);
 
-        expect(wrapper.find('SelectInput').first().prop('label')).toBe('Parent 1 Type');
-        expect(wrapper.find('SelectInput').last().prop('label')).toBe('Parent 4 Type');
-        expect(wrapper.find('RemoveEntityButton').first().prop('entity')).toBe('Parent');
-        expect(wrapper.find('RemoveEntityButton').last().prop('entity')).toBe('Parent');
+        expect(wrapper.find(SelectInput).first().prop('label')).toBe('Parent 1 Type');
+        expect(wrapper.find(SelectInput).last().prop('label')).toBe('Parent 4 Type');
+        expect(wrapper.find(RemoveEntityButton).first().prop('entity')).toBe('Parent');
+        expect(wrapper.find(RemoveEntityButton).last().prop('entity')).toBe('Parent');
 
         wrapper.unmount();
     });
@@ -136,8 +142,8 @@ describe('EntityParentTypeAddEntityButton', () => {
     const PARENT_OPTIONS = List.of({ schema: 'a', query: 'test1' }, { schema: 'a', query: 'test2' });
 
     function validate(wrapper: ReactWrapper, disabled = false, title?: string): void {
-        expect(wrapper.find('AddEntityButton')).toHaveLength(1);
-        const button = wrapper.find('AddEntityButton');
+        expect(wrapper.find(AddEntityButton)).toHaveLength(1);
+        const button = wrapper.find(AddEntityButton);
         expect(button.prop('entity')).toBe('Parent');
         expect(button.prop('title')).toBe(title);
         expect(button.prop('disabled')).toBe(disabled);

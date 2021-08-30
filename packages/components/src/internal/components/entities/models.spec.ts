@@ -215,7 +215,7 @@ describe('getParentOptions', () => {
         );
     });
 
-    let entityParents = Map<string, List<EntityParentType>>();
+    let entityParents;
     beforeEach(() => {
         entityParents = Map<string, List<EntityParentType>>();
         entityParents = entityParents.set('query1', List());

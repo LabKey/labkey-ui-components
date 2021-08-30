@@ -48,6 +48,7 @@ import { ParentEntityLineageColumns } from '../entities/constants';
 import { getInitialParentChoices } from '../entities/utils';
 
 import { GroupedSampleFields } from './models';
+import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -187,8 +188,12 @@ export function getGroupedSampleDomainFields(sampleType: string): Promise<Groupe
                 const metricUnit = sampleTypeDomain.get('options').get('metricUnit');
 
                 sampleTypeDomain.domainDesign.fields.forEach(field => {
-                    if (field.derivationDataScope === 'ChildOnly') aliquotFields.push(field.name.toLowerCase());
-                    else metaFields.push(field.name.toLowerCase());
+                    if (field.derivationDataScope === 'ChildOnly' || field.conceptURI == STORAGE_UNIQUE_ID_CONCEPT_URI ) {
+                        aliquotFields.push(field.name.toLowerCase());
+                    }
+                    else {
+                        metaFields.push(field.name.toLowerCase());
+                    }
                 });
 
                 resolve({

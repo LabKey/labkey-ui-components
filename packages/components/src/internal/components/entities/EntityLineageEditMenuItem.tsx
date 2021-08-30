@@ -28,7 +28,7 @@ export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
         parentNounPlural,
         parentNounSingular,
     } = props;
-    const itemText = props.itemText ?? 'Edit ' + parentNounPlural + ' for Selected ' + capitalizeFirstChar(getEntityNoun(childEntityDataType, queryModel.selections.size) + ' in Bulk');
+    const itemText = props.itemText ?? 'Edit ' + parentNounPlural + ' for Selected ' + capitalizeFirstChar(getEntityNoun(childEntityDataType, queryModel.selections?.size) + ' in Bulk');
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
     const onClick = useCallback(() => {

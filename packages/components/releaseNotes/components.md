@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.68.1
+*Released*: 30 August 2021
 * Issue 43760: Update checks for editable columns to incorporate the readOnly setting as well
 
 ### version 2.68.0

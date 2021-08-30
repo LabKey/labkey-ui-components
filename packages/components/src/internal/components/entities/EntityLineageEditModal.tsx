@@ -92,7 +92,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 // Find the types that are included and use those for change comparison.
                 // Types that are not represented in the selected parents won't be changed.
                 selectedParents.forEach(selected => {
-                    let originalValue;
+                    let originalValue = null;
                     const possibleChange = originalParents[rowId].find(p => p.type.lsid == selected.type.lsid);
                     if (possibleChange) {
                         originalValue = possibleChange.gridValues.map(gridValue => gridValue.displayValue).sort(naturalSort).join(",");

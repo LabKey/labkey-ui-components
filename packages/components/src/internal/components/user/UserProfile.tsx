@@ -79,8 +79,8 @@ export class UserProfile extends PureComponent<Props, State> {
     }
 
     columnFilter = (col: QueryColumn): boolean => {
-        // make sure all columns are set as shownInInsertView
-        const _col = col.set('shownInInsertView', true) as QueryColumn;
+        // make sure all columns are set as shownInInsertView and those that are marked as editable are not also readOnly
+        const _col = col.merge({'shownInInsertView': true, 'readOnly': !col.get('userEditable')}) as QueryColumn;
         return insertColumnFilter(_col) && !FIELDS_TO_EXCLUDE.contains(_col.fieldKey.toLowerCase());
     };
 

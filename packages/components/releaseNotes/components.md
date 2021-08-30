@@ -12,6 +12,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * includePanelHeader - allows header on panel to be removed
 * Add ExperimentException handling to `resolveErrorMessage`
 
+### version 2.68.1
+*Released*: 30 August 2021
+* Issue 43760: Update checks for editable columns to incorporate the readOnly setting as well
+
 ### version 2.68.0
 *Released*: 26 August 2021
 * Item 9228: Sample Type lineage updates via “Edit Sample in Grid”

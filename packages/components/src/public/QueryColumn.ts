@@ -253,8 +253,7 @@ export class QueryColumn extends Record({
     get isUpdateColumn(): boolean {
         return (
             this.removeFromViews !== true &&
-            this.shownInUpdateView === true &&
-            this.userEditable === true &&
+            this.isEditable() &&
             this.fieldKeyArray.length === 1
         );
     }
@@ -297,7 +296,8 @@ export function insertColumnFilter(col: QueryColumn, includeFileInputs = true): 
         col &&
         col.removeFromViews !== true &&
         col.shownInInsertView === true &&
-        col.userEditable === true &&
+        !col.readOnly &&
+        col.userEditable &&
         col.fieldKeyArray.length === 1 &&
         (includeFileInputs || !col.isFileInput)
     );

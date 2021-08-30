@@ -16,13 +16,24 @@
 import React, { FC, memo } from 'react';
 import { List } from 'immutable';
 
+import { QueryColumn } from '../../public/QueryColumn';
+
 import { MultiValueRenderer } from './MultiValueRenderer';
+
+interface Props {
+    col?: QueryColumn;
+    data: any;
+}
 
 /**
  * This is the default cell renderer for Details/Grids using a QueryGridModel.
  */
-export const DefaultRenderer: FC<any> = memo(({ data }) => {
+export const DefaultRenderer: FC<Props> = memo(({ col, data }) => {
     let display = null;
+    // Issue 43474: Prevent text wrapping for date columns
+    const noWrap = col?.jsonType === 'date';
+    // Issue 36941: when using the default renderer, add css so that line breaks as preserved
+    const className = noWrap ? 'ws-no-wrap' : 'ws-pre-wrap';
 
     if (data) {
         if (typeof data === 'string') {
@@ -41,11 +52,16 @@ export const DefaultRenderer: FC<any> = memo(({ data }) => {
             }
 
             if (data.get('url')) {
-                return <a href={data.get('url')}>{display}</a>;
+                return (
+                    <a className={className} href={data.get('url')}>
+                        {display}
+                    </a>
+                );
             }
         }
     }
 
-    // Issue 36941: when using the default renderer, add css so that line breaks as preserved
-    return <span className="detail-display">{display}</span>;
+    return <span className={className}>{display}</span>;
 });
+
+DefaultRenderer.displayName = 'DefaultRenderer';

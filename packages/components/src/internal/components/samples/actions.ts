@@ -188,7 +188,7 @@ export function getGroupedSampleDomainFields(sampleType: string): Promise<Groupe
                 const metricUnit = sampleTypeDomain.get('options').get('metricUnit');
 
                 sampleTypeDomain.domainDesign.fields.forEach(field => {
-                    if (field.derivationDataScope === 'ChildOnly' || field.conceptURI == STORAGE_UNIQUE_ID_CONCEPT_URI ) {
+                    if (field.derivationDataScope === 'ChildOnly' ) {
                         aliquotFields.push(field.name.toLowerCase());
                     }
                     else {
@@ -436,7 +436,13 @@ export function getGroupedSampleDisplayColumns(
     allDisplayColumns.forEach(col => {
         const colName = col.name.toLowerCase();
         if (isAliquot) {
-            if (sampleTypeDomainFields.metaFields.indexOf(colName) > -1) displayColumns.push(col);
+            // barcodes belong to the individual sample or aliquot (but not both)
+            if (col.conceptURI == STORAGE_UNIQUE_ID_CONCEPT_URI) {
+                aliquotHeaderDisplayColumns = aliquotHeaderDisplayColumns.push(col);
+            }
+            else if (sampleTypeDomainFields.metaFields.indexOf(colName) > -1) {
+                displayColumns.push(col);
+            }
             // display parent meta for aliquot
             else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
                 aliquotHeaderDisplayColumns = aliquotHeaderDisplayColumns.push(col);

@@ -12,6 +12,7 @@ import {
     EntityDataType,
     getActionErrorMessage,
     LoadingSpinner,
+    naturalSort,
     Progress,
     QueryInfo,
     resolveErrorMessage,
@@ -116,7 +117,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
             loading: false,
             editing: this.props.editOnly,
             originalParents,
-            parentTypeOptions,
+            parentTypeOptions: List<IEntityTypeOption>(parentTypeOptions.sortBy(p => p.label, naturalSort).toArray()),
         });
     };
 

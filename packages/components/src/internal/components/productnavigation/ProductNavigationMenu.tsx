@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext, Security } from '@labkey/api';
 
-import { Alert, Container, LoadingSpinner, naturalSortByProperty, useServerContext } from '../../..';
+import { Alert, LoadingSpinner, naturalSortByProperty } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
 import { hasPremiumModule } from '../../app/utils';

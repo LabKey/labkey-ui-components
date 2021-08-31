@@ -559,7 +559,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             title="Comment"
           >
             <div
-              className="detail-display"
+              className="ws-pre-wrap"
             >
               This is why I checked it out.
             </div>
@@ -1098,7 +1098,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             title="Comment"
           >
             <div
-              className="detail-display"
+              className="ws-pre-wrap"
             >
               This is why I checked it out.
             </div>
@@ -1681,7 +1681,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             title="Comment"
           >
             <div
-              className="detail-display"
+              className="ws-pre-wrap"
             >
               This is why I checked it out.
             </div>
@@ -2264,7 +2264,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             title="Comment"
           >
             <div
-              className="detail-display"
+              className="ws-pre-wrap"
             >
               This is why I checked it out.
             </div>

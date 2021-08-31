@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.69.1
+*Released*: 31 August 2021
+* Issue 43771: Show Folder title on Application home pages.
+* Issue 43474: Prevent text wrapping for date columns.
+* Introduce `useUserProperties` for retrieving user properties based on current user.
+
 ### version 2.69.0
 *Released*: 31 August 2021
 * Parameterize verb in DetailPanelHeader.

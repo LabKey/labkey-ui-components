@@ -1,5 +1,5 @@
 import React, { FC, memo, ReactNode, useMemo } from 'react';
-import { List, Map, OrderedMap } from 'immutable';
+import { List, OrderedMap } from 'immutable';
 import { Panel } from 'react-bootstrap';
 
 import { DefaultRenderer, QueryColumn } from '../../../..';
@@ -28,33 +28,26 @@ export type DetailRenderer = (
 
 export type TitleRenderer = (column: QueryColumn) => ReactNode;
 
-export const _defaultRenderer: Renderer = d => <DefaultRenderer data={d} />;
+export const _defaultRenderer = (col: QueryColumn): Renderer => {
+    return data => <DefaultRenderer col={col} data={data} />;
+};
 
 function processFields(
     queryColumns: List<QueryColumn>,
-    detailRenderer: DetailRenderer,
-    titleRenderer: TitleRenderer,
+    detailRenderer?: DetailRenderer,
+    titleRenderer?: TitleRenderer,
     options?: RenderOptions,
     fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode
-): Map<string, DetailField> {
+): OrderedMap<string, DetailField> {
     return queryColumns.reduce((fields, c) => {
         const fieldKey = c.fieldKey.toLowerCase();
-        let renderer;
-
-        if (detailRenderer) {
-            renderer = detailRenderer(c, options, fileInputRenderer);
-        }
-
-        if (!renderer) {
-            renderer = _defaultRenderer;
-        }
 
         return fields.set(
             fieldKey,
             new DetailField({
                 fieldKey,
                 title: c.caption,
-                renderer,
+                renderer: detailRenderer?.(c, options, fileInputRenderer) ?? _defaultRenderer(c),
                 titleRenderer: titleRenderer ? titleRenderer(c) : <span title={c.fieldKey}>{c.caption}</span>,
             })
         );

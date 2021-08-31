@@ -1,7 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
+### version 2.69.0
+*Released*: 31 August 2021
 * Parameterize verb in DetailPanelHeader.
 * Move getEntityNoun method to utils
 * Add EntityLineageEditMenuItem and EntityLineageEditModal for enabling bulk update of entity lineage

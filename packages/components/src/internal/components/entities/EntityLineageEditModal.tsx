@@ -22,7 +22,7 @@ import { getOriginalParentsFromSampleLineage, getSampleSelectionLineageData } fr
 import { ParentEntityLineageColumns } from './constants';
 
 interface Props {
-    queryModel?: QueryModel;
+    queryModel: QueryModel;
     onCancel: () => void;
     onSuccess: () => void;
     childEntityDataType: EntityDataType;

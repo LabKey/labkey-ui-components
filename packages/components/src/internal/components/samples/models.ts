@@ -77,7 +77,7 @@ export interface SamplesSelectionResultProps {
     selectionInfoError: any;
     sampleItems: Record<string, any>;
     sampleLineageKeys: string[];
-    sampleLineage: Record<string, any>;
+    sampleLineage: Record<string, any>; // mapping from sample rowId to sample record containing lineage
 }
 
 export interface GroupedSampleFields {

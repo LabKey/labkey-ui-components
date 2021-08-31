@@ -19,6 +19,12 @@ export function getActionErrorMessage(problemStatement: string, noun: string, sh
 const IllegalArgumentMessage = 'java.lang.illegalargumentexception:';
 const ClassCastMessage = 'cannot be cast to class';
 const NullPointerExceptionMessage = 'java.lang.nullpointerexception';
+const ExperimentExceptionMessage = 'org.labkey.api.exp.experimentexception:';
+
+function trimExceptionPrefix(exceptionMessage: string, message: string): string {
+    const startIndex = message.toLowerCase().indexOf(exceptionMessage);
+    return message.substring(startIndex + exceptionMessage.length).trim();
+}
 
 export function resolveErrorMessage(error: any, noun = 'data', nounPlural?: string, verb?: string): string {
     let errorMsg;
@@ -67,14 +73,15 @@ export function resolveErrorMessage(error: any, noun = 'data', nounPlural?: stri
                 noun || 'data'
             }.  The request did not contain the proper identifiers.  Make sure the ${noun || 'data'} are still valid.`;
         } else if (lcMessage.indexOf(IllegalArgumentMessage) >= 0) {
-            const startIndex = lcMessage.indexOf(IllegalArgumentMessage);
-            return errorMsg.substring(startIndex + IllegalArgumentMessage.length).trim();
+            return trimExceptionPrefix(IllegalArgumentMessage, errorMsg);
         } else if (lcMessage.indexOf('at least one of "file", "runfilepath", or "datarows" is required') >= 0) {
             return `No data provided for ${verb || 'import'}.`;
         } else if (lcMessage.indexOf(NullPointerExceptionMessage) >= 0) {
             return `There was a problem ${verb || 'processing'} your ${
                 noun || 'data'
             }. This may be a problem in the application. Contact your administrator.`;
+        } else if (lcMessage.indexOf(ExperimentExceptionMessage) >= 0) {
+            return trimExceptionPrefix(ExperimentExceptionMessage, errorMsg);
         }
     }
     return errorMsg;

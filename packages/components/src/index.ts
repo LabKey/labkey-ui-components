@@ -264,6 +264,7 @@ import { addDateRangeFilter, last12Months, monthSort } from './internal/componen
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
+import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
 import {
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
@@ -348,7 +349,6 @@ import {
     LINEAGE_GROUPING_GENERATIONS,
     LineageFilter,
     LineageURLResolvers,
-    LineageGroupingOptions,
 } from './internal/components/lineage/types';
 import { LineageGraph, LineageDepthLimitMessage } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
@@ -378,6 +378,7 @@ import {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
+    DOMAIN_RANGE_VALIDATOR,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
@@ -418,7 +419,12 @@ import {
     saveDomain,
     setDomainFields,
 } from './internal/components/domainproperties/actions';
-import { DomainDesign, DomainDetails, DomainField } from './internal/components/domainproperties/models';
+import {
+    DomainDesign,
+    DomainDetails,
+    DomainField,
+    PropertyValidator,
+} from './internal/components/domainproperties/models';
 import { SAMPLE_TYPE } from './internal/components/domainproperties/PropDescType';
 import DomainForm from './internal/components/domainproperties/DomainForm';
 import { BasePropertiesPanel } from './internal/components/domainproperties/BasePropertiesPanel';
@@ -450,8 +456,7 @@ import { deleteDataClass, fetchDataClass } from './internal/components/domainpro
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { ValidatorModal } from './internal/components/domainproperties/validation/ValidatorModal';
 import { RangeValidationOptions } from './internal/components/domainproperties/validation/RangeValidationOptions';
-import { PropertyValidator } from './internal/components/domainproperties/models';
-import { DOMAIN_RANGE_VALIDATOR } from './internal/components/domainproperties/constants';
+
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { makeQueryInfo, mountWithServerContextOptions, sleep } from './internal/testHelpers';
 import { QueryModel } from './public/QueryModel/QueryModel';
@@ -877,6 +882,7 @@ export {
     EntityDeleteConfirmModal,
     EntityDeleteModal,
     EntityInsertPanel,
+    EntityLineageEditMenuItem,
     ParentEntityEditPanel,
     extractEntityTypeOptionFromRow,
     GenerateEntityResponse,
@@ -950,7 +956,6 @@ export {
     LineageGrid,
     LineageGridFromLocation,
     LineageURLResolvers,
-    LineageGroupingOptions,
     SampleTypeLineageCounts,
     invalidateLineageResults,
     getImmediateChildLineageFilterValue,
@@ -1280,3 +1285,4 @@ export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
 export type { FindField } from './internal/components/samples/models';
 export type { UsersLoader } from './internal/components/forms/actions';
+export type { LineageGroupingOptions } from './internal/components/lineage/types';

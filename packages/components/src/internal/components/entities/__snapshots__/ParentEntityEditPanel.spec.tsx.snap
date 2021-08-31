@@ -36,6 +36,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
       "plural": undefined,
     }
   }
+  includePanelHeader={true}
   parentDataTypes={
     Array [
       Object {
@@ -99,11 +100,13 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                 onClickFn={[Function]}
                 title="Test 123"
                 useEditIcon={true}
+                verb="Editing"
               >
                 <div
                   className="detail__edit--heading"
                 >
-                  Editing 
+                  Editing
+                   
                   Test 123
                 </div>
               </DetailPanelHeader>
@@ -2216,6 +2219,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
       "plural": undefined,
     }
   }
+  includePanelHeader={true}
   parentDataTypes={
     Array [
       Object {
@@ -2279,6 +2283,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                 onClickFn={[Function]}
                 title="Test 123"
                 useEditIcon={true}
+                verb="Editing"
               >
                 <div
                   className="detail__edit--heading"
@@ -2608,6 +2613,7 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
       "plural": undefined,
     }
   }
+  includePanelHeader={true}
   parentDataTypes={
     Array [
       Object {
@@ -2671,6 +2677,7 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
                 onClickFn={[Function]}
                 title="Test 123"
                 useEditIcon={true}
+                verb="Editing"
               >
                 <div
                   className="detail__edit--heading"

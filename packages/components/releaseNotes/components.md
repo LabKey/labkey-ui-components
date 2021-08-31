@@ -1,6 +1,18 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.69.0
+*Released*: 31 August 2021
+* Parameterize verb in DetailPanelHeader.
+* Move getEntityNoun method to utils
+* Add EntityLineageEditMenuItem and EntityLineageEditModal for enabling bulk update of entity lineage
+* Update ParentEntityEditPanel with more optional parameters
+  * hideButtons - to hide the buttons below the panel
+  * editOnly - to indicate that we start in edit mode and cannot cancel out of it;
+  * onChangeParent - callback used when any change in the parent types or values is made
+  * includePanelHeader - allows header on panel to be removed
+* Add ExperimentException handling to `resolveErrorMessage`
+
 ### version 2.68.1
 *Released*: 30 August 2021
 * Issue 43760: Update checks for editable columns to incorporate the readOnly setting as well

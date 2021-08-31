@@ -700,7 +700,6 @@ describe("getUpdatedLineageRowsForBulkEdit", () => {
             },
         ]);
         const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": original1, "2": original2}, QUERY_INFO);
-        expect(rows).toHaveLength(1);
         expect(rows).toStrictEqual([
             {
                 "RowId": "1",

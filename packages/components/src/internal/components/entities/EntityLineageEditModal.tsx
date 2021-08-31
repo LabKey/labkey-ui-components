@@ -7,7 +7,7 @@ import {
     capitalizeFirstChar,
     caseInsensitive,
     createNotification,
-    naturalSort,
+    LoadingSpinner,
     ParentEntityEditPanel,
     Progress,
     QueryModel,
@@ -28,8 +28,6 @@ interface Props {
     childEntityDataType: EntityDataType;
     auditBehavior?: AuditBehaviorTypes;
     parentEntityDataTypes: EntityDataType[];
-    parentNounPlural: string;
-    parentNounSingular: string;
 }
 
 export const EntityLineageEditModal: FC<Props> = memo(props => {
@@ -40,14 +38,14 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
         childEntityDataType,
         onSuccess,
         parentEntityDataTypes,
-        parentNounPlural,
-        parentNounSingular,
     } = props;
     const [submitting, setSubmitting] = useState(false);
     const [numAliquots, setNumAliquots] = useState<number>(undefined);
     const [nonAliquots, setNonAliquots] = useState<Record<string, any>>(undefined);
-    const [errorMessage, setErrorMessage] = useState(undefined);
+    const [errorMessage, setErrorMessage] = useState<string>(undefined);
     const [hasParentUpdates, setHasParentUpdates] = useState<boolean>(false);
+    const parentNounPlural = parentEntityDataTypes[0].nounPlural;
+    const parentNounSingular = parentEntityDataTypes[0].nounSingular;
     const lcParentNounPlural = parentNounPlural.toLowerCase();
     const [selectedParents, setSelectedParents] = useState<List<EntityChoice>>(List<EntityChoice>());
 
@@ -109,11 +107,11 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
         [selectedParents, auditBehavior, childEntityDataType, queryModel, nonAliquots]
     );
 
-    if (!queryModel || !nonAliquots) {
+    if (!queryModel) {
         return null;
     }
 
-    const numNonAliquots = Object.keys(nonAliquots).length;
+    const numNonAliquots = nonAliquots ? Object.keys(nonAliquots).length : undefined;
 
     if (numNonAliquots === 0) {
         return (
@@ -138,46 +136,50 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     return (
         <Modal bsSize="large" show onHide={onCancel}>
             <Modal.Header closeButton>
-                <Modal.Title>Edit {parentNounPlural} for {numNonAliquots} Selected {capitalizeFirstChar(getEntityNoun(childEntityDataType, numNonAliquots))}</Modal.Title>
+                <Modal.Title>Edit {parentNounPlural} for {numNonAliquots ?? ''} Selected {capitalizeFirstChar(getEntityNoun(childEntityDataType, numNonAliquots))}</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-                <div className={"bottom-spacing"}>
-                    <p>
-                        Values provided here will <b>replace</b> the existing {lcParentNounPlural} of the chosen types for the selected {getEntityNoun(childEntityDataType, nonAliquots.length)}.
-                        Remove {parentNounSingular} Types from the form below that you do not wish to change the value of.
-                    </p>
-                    <p>
-                        To see details of the existing {lcParentNounPlural}, choose "Cancel" here then "Edit Selected {capitalizeFirstChar(childEntityDataType.nounPlural)} in Grid" from the "Manage" menu.
-                    </p>
-                </div>
-                {(numAliquots > 0 && !submitting) && <Alert bsStyle={'info'}> {Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections. Lineage for aliquots cannot be changed.</Alert>}
-                <Alert bsStyle={'danger'}>{errorMessage}</Alert>
+                {!numNonAliquots && <LoadingSpinner />}
+                {numNonAliquots && (
+                    <>
+                    <div className={"bottom-spacing"}>
+                        <p>
+                            Values provided here will <b>replace</b> the existing {lcParentNounPlural} of the chosen types for the selected {getEntityNoun(childEntityDataType, nonAliquots.length)}.
+                            Remove {parentNounSingular} Types from the form below that you do not wish to change the value of.
+                        </p>
+                        <p>
+                            To see details of the existing {lcParentNounPlural}, choose "Cancel" here then "Edit Selected {capitalizeFirstChar(childEntityDataType.nounPlural)} in Grid" from the "Manage" menu.
+                        </p>
+                    </div>
+                    {(numAliquots > 0 && !submitting) && <Alert bsStyle={'info'}> {Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections. Lineage for aliquots cannot be changed.</Alert>}
+                    <Alert bsStyle={'danger'}>{errorMessage}</Alert>
 
-                <Progress
-                    modal={false}
-                    estimate={numNonAliquots  * 10}
-                    toggle={submitting}
-                />
-                {!submitting &&
-                    <ParentEntityEditPanel
-                        auditBehavior={auditBehavior}
-                        canUpdate={true}
-                        childQueryInfo={queryModel.queryInfo}
-                        childData={undefined}
-                        parentDataTypes={parentEntityDataTypes}
-                        childName={undefined}
-                        childNounSingular={childEntityDataType.nounSingular}
-                        key={`parent${parentNounPlural}-${queryModel.id}`}
-                        onUpdate={onConfirm}
-                        title="Details"
-                        editOnly
-                        hideButtons
-                        submitText={'Update ' + parentNounPlural}
-                        includePanelHeader={false}
-                        onChangeParent={onParentChange}
+                    <Progress
+                        modal={false}
+                        estimate={numNonAliquots  * 10}
+                        toggle={submitting}
                     />
-                }
+                    {!submitting &&
+                        <ParentEntityEditPanel
+                            auditBehavior={auditBehavior}
+                            canUpdate={true}
+                            childQueryInfo={queryModel.queryInfo}
+                            childData={undefined}
+                            parentDataTypes={parentEntityDataTypes}
+                            childName={undefined}
+                            childNounSingular={childEntityDataType.nounSingular}
+                            key={`parent${parentNounPlural}-${queryModel.id}`}
+                            onUpdate={onConfirm}
+                            editOnly
+                            hideButtons
+                            submitText={'Update ' + parentNounPlural}
+                            includePanelHeader={false}
+                            onChangeParent={onParentChange}
+                        />
+                    }
+                    </>
+                )}
             </Modal.Body>
 
             <Modal.Footer>

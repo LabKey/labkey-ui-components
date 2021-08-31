@@ -12,7 +12,7 @@ import {
     EntityDataType,
     getActionErrorMessage,
     LoadingSpinner,
-    naturalSort,
+    naturalSortByProperty,
     Progress,
     QueryInfo,
     resolveErrorMessage,
@@ -40,7 +40,7 @@ interface Props {
     onEditToggle?: (editing: boolean) => void;
     parentDataTypes: EntityDataType[]; // Note: the first data type in the array will be used for labels, nouns, etc...
     submitText?: string;
-    title: string;
+    title?: string;
     hideButtons?: boolean;
     editOnly?: boolean;
     onChangeParent?: (currentParents: List<EntityChoice>) => void;
@@ -63,6 +63,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         cancelText: 'Cancel',
         submitText: 'Save',
         includePanelHeader: true,
+        title: 'Details',
     };
 
     state: Readonly<State> = {
@@ -117,7 +118,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
             loading: false,
             editing: this.props.editOnly,
             originalParents,
-            parentTypeOptions: List<IEntityTypeOption>(parentTypeOptions.sortBy(p => p.label, naturalSort).toArray()),
+            parentTypeOptions: List<IEntityTypeOption>(parentTypeOptions.sort(naturalSortByProperty('label')).toArray()),
         });
     };
 
@@ -308,6 +309,10 @@ export class ParentEntityEditPanel extends Component<Props, State> {
     onAddParent = (): void => {
         this.setState(state => {
             const toAdd = [{ type: undefined, value: undefined, ids: undefined }];
+            // when there are no existing parents, the UI makes it look like there is one.
+            // If you Add a parent from that empty state, the only thing that happens from the user's
+            // perspective is you get an option to remove the type.  So, we add a second item here
+            // and the UI will actually look like what a user might expect (two types dropdowns, both of which can be removed.)
             if (state.currentParents.size == 0)
                 toAdd.push({ type: undefined, value: undefined, ids: undefined })
             return {

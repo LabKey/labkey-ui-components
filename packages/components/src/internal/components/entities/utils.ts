@@ -169,7 +169,7 @@ export function getUpdatedLineageRowsForBulkEdit(nonAliquots: Record<string, any
                                                  queryInfo: QueryInfo) : any[] {
     const rows = [];
     Object.keys(nonAliquots).forEach((rowId) => {
-        let updatedValues = {}
+        const updatedValues = {};
         let haveUpdate = false;
 
         // Find the types that are included and use those for change comparison.

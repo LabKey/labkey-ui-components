@@ -370,7 +370,7 @@ import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
 import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
 import { SiteUsersGridPanel } from './internal/components/user/SiteUsersGridPanel';
-import { UserProvider } from './internal/components/user/UserProvider';
+import { UserProvider, useUserProperties } from './internal/components/user/UserProvider';
 import { FieldEditorOverlay } from './internal/components/forms/FieldEditorOverlay';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -815,6 +815,7 @@ export {
     SecurityRole,
     Principal,
     UserProvider,
+    useUserProperties,
     // sample picklist items
     AddToPicklistMenuItem,
     PicklistButton,

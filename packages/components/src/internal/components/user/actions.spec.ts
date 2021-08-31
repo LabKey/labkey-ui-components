@@ -2,8 +2,6 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS } from 'immutable';
-
 import {
     TEST_USER_APP_ADMIN,
     TEST_USER_ASSAY_DESIGNER,
@@ -60,10 +58,10 @@ describe('User actions', () => {
 
     test('getUserLastLogin', () => {
         const lastLogin = '2019-11-15 13:50:17.987';
-        expect(getUserLastLogin(fromJS({ lastlogin: lastLogin }), undefined).indexOf('2019-11-15T')).toBe(0);
-        expect(getUserLastLogin(fromJS({ lastlogin: lastLogin }), 'YYYY-MM-DD')).toBe('2019-11-15');
-        expect(getUserLastLogin(fromJS({ lastLogin }), 'YYYY-MM-DD')).toBe('2019-11-15');
-        expect(getUserLastLogin(fromJS({ LastLogin: lastLogin }), 'YYYY-MM-DD')).toBe('2019-11-15');
+        expect(getUserLastLogin({ lastlogin: lastLogin }).indexOf('2019-11-15T')).toBe(0);
+        expect(getUserLastLogin({ lastlogin: lastLogin }, 'YYYY-MM-DD')).toBe('2019-11-15');
+        expect(getUserLastLogin({ lastLogin }, 'YYYY-MM-DD')).toBe('2019-11-15');
+        expect(getUserLastLogin({ LastLogin: lastLogin }, 'YYYY-MM-DD')).toBe('2019-11-15');
     });
 
     test('getUserRoleDisplay', () => {

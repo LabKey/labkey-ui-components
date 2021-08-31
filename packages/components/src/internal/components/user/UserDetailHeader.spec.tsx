@@ -1,6 +1,5 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { fromJS } from 'immutable';
 
 import { Button } from 'react-bootstrap';
 
@@ -10,7 +9,7 @@ import { UserDetailHeader } from './UserDetailHeader';
 
 describe('<UserDetailHeader/>', () => {
     test('default properties', () => {
-        const component = <UserDetailHeader dateFormat="YYYY-MM-DD" title="Title" user={TEST_USER_READER} />;
+        const component = <UserDetailHeader title="Title" user={TEST_USER_READER} />;
         const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
@@ -24,7 +23,7 @@ describe('<UserDetailHeader/>', () => {
                 renderButtons={<Button>Test</Button>}
                 title="Title (Custom)"
                 user={TEST_USER_ASSAY_DESIGNER}
-                userProperties={fromJS({ lastLogin: '2019-11-15 13:50:17.987' })}
+                userProperties={{ lastLogin: '2019-11-15 13:50:17.987' }}
             />
         );
         const tree = renderer.create(component);

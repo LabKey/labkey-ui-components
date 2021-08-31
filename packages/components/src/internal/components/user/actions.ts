@@ -72,8 +72,8 @@ export function getUserRoleDisplay(user: User): string {
     return 'Unknown Role';
 }
 
-export function getUserLastLogin(userProperties: Map<string, any>, dateFormat: string): string {
-    const lastLogin = caseInsensitive(userProperties.toObject(), 'lastlogin');
+export function getUserLastLogin(userProperties: Record<string, any>, dateFormat?: string): string {
+    const lastLogin = caseInsensitive(userProperties, 'lastlogin');
     return lastLogin ? moment(lastLogin).format(dateFormat) : undefined;
 }
 

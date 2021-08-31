@@ -1,5 +1,4 @@
 import React, { FC, ReactNode, useMemo } from 'react';
-import { Map } from 'immutable';
 
 import { Container, PageDetailHeader, User } from '../../..';
 
@@ -7,13 +6,13 @@ import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
 
 interface Props {
     container?: Partial<Container>;
-    dateFormat: string;
+    dateFormat?: string;
     description?: string;
     renderButtons?: ReactNode;
     showFolderTitle?: boolean;
     title: string;
     user: User;
-    userProperties?: Map<string, any>;
+    userProperties?: Record<string, any>;
 }
 
 export const UserDetailHeader: FC<Props> = props => {
@@ -41,5 +40,4 @@ UserDetailHeader.displayName = 'UserDetailHeader';
 
 UserDetailHeader.defaultProps = {
     showFolderTitle: true,
-    userProperties: Map<string, any>(),
 };

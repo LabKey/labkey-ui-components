@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { PureComponent } from 'react';
-import { List, Map, OrderedMap } from 'immutable';
+import { List, OrderedMap } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
@@ -49,7 +49,7 @@ interface State {
 
 interface Props {
     user: User;
-    userProperties: Map<string, any>;
+    userProperties: Record<string, any>;
     onSuccess: (result: {}, shouldReload: boolean) => void;
     onCancel: () => void;
 }
@@ -162,7 +162,7 @@ export class UserProfile extends PureComponent<Props, State> {
                 <QueryInfoForm
                     columnFilter={this.columnFilter}
                     queryInfo={queryInfo}
-                    fieldValues={userProperties.toJS()}
+                    fieldValues={userProperties}
                     includeCountField={false}
                     submitText="Save"
                     isSubmittedText="Saving..."

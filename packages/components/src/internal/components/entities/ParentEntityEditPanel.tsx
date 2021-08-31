@@ -118,12 +118,14 @@ export class ParentEntityEditPanel extends Component<Props, State> {
             loading: false,
             editing: this.props.editOnly,
             originalParents,
-            parentTypeOptions: List<IEntityTypeOption>(parentTypeOptions.sort(naturalSortByProperty('label')).toArray()),
+            parentTypeOptions: List<IEntityTypeOption>(
+                parentTypeOptions.sort(naturalSortByProperty('label')).toArray()
+            ),
         });
     };
 
     compactEditDisplay(): boolean {
-        return this.props.childName == undefined
+        return this.props.childName == undefined;
     }
 
     hasParents = (): boolean => {
@@ -137,15 +139,18 @@ export class ParentEntityEditPanel extends Component<Props, State> {
 
     changeEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index): void => {
         const { onChangeParent } = this.props;
-        this.setState(state => ({
-            currentParents: state.currentParents.set(index, {
-                type: selectedOption,
-                value: undefined,
-                ids: undefined,
+        this.setState(
+            state => ({
+                currentParents: state.currentParents.set(index, {
+                    type: selectedOption,
+                    value: undefined,
+                    ids: undefined,
+                }),
             }),
-        }), () => {
-            onChangeParent?.(this.state.currentParents);
-        });
+            () => {
+                onChangeParent?.(this.state.currentParents);
+            }
+        );
     };
 
     onParentValueChange = (name: string, value: string | any[], index: number): void => {
@@ -158,22 +163,25 @@ export class ParentEntityEditPanel extends Component<Props, State> {
 
     updateParentValue = (value: string | any[], index: number, updateOriginal: boolean): void => {
         const { onChangeParent } = this.props;
-        this.setState(state => {
-            const newChoice = state.currentParents.get(index);
-            newChoice.value = Array.isArray(value) ? value.join(DELIMITER) : value;
-            return {
-                currentParents: state.currentParents.set(index, newChoice),
-                originalParents:
-                    updateOriginal && state.originalParents.has(index) && !state.originalValueLoaded.get(index)
-                        ? state.originalParents.set(index, { ...newChoice })
-                        : state.originalParents,
-                originalValueLoaded: state.originalParents.has(index)
-                    ? state.originalValueLoaded.set(index, true)
-                    : state.originalValueLoaded,
-            };
-        }, () => {
-            onChangeParent?.(this.state.currentParents);
-        });
+        this.setState(
+            state => {
+                const newChoice = state.currentParents.get(index);
+                newChoice.value = Array.isArray(value) ? value.join(DELIMITER) : value;
+                return {
+                    currentParents: state.currentParents.set(index, newChoice),
+                    originalParents:
+                        updateOriginal && state.originalParents.has(index) && !state.originalValueLoaded.get(index)
+                            ? state.originalParents.set(index, { ...newChoice })
+                            : state.originalParents,
+                    originalValueLoaded: state.originalParents.has(index)
+                        ? state.originalValueLoaded.set(index, true)
+                        : state.originalValueLoaded,
+                };
+            },
+            () => {
+                onChangeParent?.(this.state.currentParents);
+            }
+        );
     };
 
     onCancel = (): void => {
@@ -257,9 +265,12 @@ export class ParentEntityEditPanel extends Component<Props, State> {
 
     onRemoveParentType = (index: number): void => {
         const { onChangeParent } = this.props;
-        this.setState(state => ({ currentParents: state.currentParents.delete(index) }), () => {
-            onChangeParent?.(this.state.currentParents);
-        });
+        this.setState(
+            state => ({ currentParents: state.currentParents.delete(index) }),
+            () => {
+                onChangeParent?.(this.state.currentParents);
+            }
+        );
     };
 
     renderParentData = (): ReactNode => {
@@ -313,11 +324,10 @@ export class ParentEntityEditPanel extends Component<Props, State> {
             // If you Add a parent from that empty state, the only thing that happens from the user's
             // perspective is you get an option to remove the type.  So, we add a second item here
             // and the UI will actually look like what a user might expect (two types dropdowns, both of which can be removed.)
-            if (state.currentParents.size == 0)
-                toAdd.push({ type: undefined, value: undefined, ids: undefined })
+            if (state.currentParents.size == 0) toAdd.push({ type: undefined, value: undefined, ids: undefined });
             return {
                 currentParents: state.currentParents.push(...toAdd),
-            }
+            };
         });
     };
 
@@ -352,7 +362,17 @@ export class ParentEntityEditPanel extends Component<Props, State> {
     };
 
     render() {
-        const { cancelText, parentDataTypes, title, canUpdate, childName, hideButtons, submitText, editOnly, includePanelHeader } = this.props;
+        const {
+            cancelText,
+            parentDataTypes,
+            title,
+            canUpdate,
+            childName,
+            hideButtons,
+            submitText,
+            editOnly,
+            includePanelHeader,
+        } = this.props;
         const { editing, error, loading, submitting } = this.state;
 
         const parentDataType = parentDataTypes[0];
@@ -374,13 +394,13 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                     )}
                     <Panel.Body>
                         <Alert>{error}</Alert>
-                        {childName &&
-                        <div className="bottom-spacing">
-                            <b>
-                                {capitalizeFirstChar(parentDataType.nounPlural)} for {childName}
-                            </b>
-                        </div>
-                        }
+                        {childName && (
+                            <div className="bottom-spacing">
+                                <b>
+                                    {capitalizeFirstChar(parentDataType.nounPlural)} for {childName}
+                                </b>
+                            </div>
+                        )}
                         {loading ? <LoadingSpinner /> : this.renderParentData()}
                         {editing && this.renderAddParentButton()}
                     </Panel.Body>

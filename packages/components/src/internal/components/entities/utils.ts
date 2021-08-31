@@ -163,12 +163,14 @@ export function getEntityDescription(entityDataType: EntityDataType, quantity: n
     return quantity === 1 ? entityDataType.descriptionSingular : entityDataType.descriptionPlural;
 }
 
-export function getUpdatedLineageRowsForBulkEdit(nonAliquots: Record<string, any>,
-                                                 selectedParents: List<EntityChoice>,
-                                                 originalParents: Record<string, List<EntityChoice>>,
-                                                 queryInfo: QueryInfo) : any[] {
+export function getUpdatedLineageRowsForBulkEdit(
+    nonAliquots: Record<string, any>,
+    selectedParents: List<EntityChoice>,
+    originalParents: Record<string, List<EntityChoice>>,
+    queryInfo: QueryInfo
+): any[] {
     const rows = [];
-    Object.keys(nonAliquots).forEach((rowId) => {
+    Object.keys(nonAliquots).forEach(rowId => {
         const updatedValues = {};
         let haveUpdate = false;
 
@@ -178,9 +180,12 @@ export function getUpdatedLineageRowsForBulkEdit(nonAliquots: Record<string, any
             let originalValue = null;
             const possibleChange = originalParents[rowId].find(p => p.type.lsid == selected.type.lsid);
             if (possibleChange) {
-                originalValue = possibleChange.gridValues.map(gridValue => gridValue.displayValue).sort(naturalSort).join(",");
+                originalValue = possibleChange.gridValues
+                    .map(gridValue => gridValue.displayValue)
+                    .sort(naturalSort)
+                    .join(',');
             }
-            const selValue = selected.value ? selected.value.split(",").sort(naturalSort).join(",") : null;
+            const selValue = selected.value ? selected.value.split(',').sort(naturalSort).join(',') : null;
             if (originalValue !== selValue) {
                 updatedValues[selected.type.entityDataType.insertColumnNamePrefix + selected.type.label] = selValue;
                 haveUpdate = true;
@@ -196,7 +201,7 @@ export function getUpdatedLineageRowsForBulkEdit(nonAliquots: Record<string, any
                     console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
                 }
             });
-            rows.push(updatedValues)
+            rows.push(updatedValues);
         }
     });
     return rows;

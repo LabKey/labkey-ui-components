@@ -47,8 +47,9 @@ import { findMissingValues } from '../../util/utils';
 import { ParentEntityLineageColumns } from '../entities/constants';
 import { getInitialParentChoices } from '../entities/utils';
 
-import { GroupedSampleFields } from './models';
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
+
+import { GroupedSampleFields } from './models';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -188,10 +189,9 @@ export function getGroupedSampleDomainFields(sampleType: string): Promise<Groupe
                 const metricUnit = sampleTypeDomain.get('options').get('metricUnit');
 
                 sampleTypeDomain.domainDesign.fields.forEach(field => {
-                    if (field.derivationDataScope === 'ChildOnly' ) {
+                    if (field.derivationDataScope === 'ChildOnly') {
                         aliquotFields.push(field.name.toLowerCase());
-                    }
-                    else {
+                    } else {
                         metaFields.push(field.name.toLowerCase());
                     }
                 });
@@ -288,7 +288,11 @@ export function getSampleSelectionStorageData(selection: List<any>): Promise<Rec
     });
 }
 
-export function getSampleSelectionLineageData(selection: List<any>, sampleType: string, columns?: string[]): Promise<ISelectRowsResult> {
+export function getSampleSelectionLineageData(
+    selection: List<any>,
+    sampleType: string,
+    columns?: string[]
+): Promise<ISelectRowsResult> {
     const sampleRowIds = getSampleRowIdsFromSelection(selection);
     if (sampleRowIds.length === 0) {
         return Promise.reject('No data is selected');
@@ -439,8 +443,7 @@ export function getGroupedSampleDisplayColumns(
             // barcodes belong to the individual sample or aliquot (but not both)
             if (col.conceptURI == STORAGE_UNIQUE_ID_CONCEPT_URI) {
                 aliquotHeaderDisplayColumns = aliquotHeaderDisplayColumns.push(col);
-            }
-            else if (sampleTypeDomainFields.metaFields.indexOf(colName) > -1) {
+            } else if (sampleTypeDomainFields.metaFields.indexOf(colName) > -1) {
                 displayColumns.push(col);
             }
             // display parent meta for aliquot

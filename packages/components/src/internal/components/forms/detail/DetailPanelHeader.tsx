@@ -39,7 +39,7 @@ export class DetailPanelHeader extends React.Component<DetailPanelHeaderProps, a
         if (editing) {
             return (
                 <div className="detail__edit--heading">
-                    {verb}{' '}{title}
+                    {verb} {title}
                     {warning !== undefined && (
                         <span>
                             <span> - </span>

@@ -22,7 +22,7 @@ const NullPointerExceptionMessage = 'java.lang.nullpointerexception';
 const ExperimentExceptionMessage = 'org.labkey.api.exp.experimentexception:';
 
 function trimExceptionPrefix(exceptionMessage: string, message: string): string {
-    const startIndex = message.toLowerCase().indexOf(exceptionMessage)
+    const startIndex = message.toLowerCase().indexOf(exceptionMessage);
     return message.substring(startIndex + exceptionMessage.length).trim();
 }
 

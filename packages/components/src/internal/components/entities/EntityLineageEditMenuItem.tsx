@@ -4,6 +4,7 @@ import { MenuItem } from 'react-bootstrap';
 import { AuditBehaviorTypes } from '@labkey/api';
 
 import { capitalizeFirstChar, EntityDataType, QueryModel, SelectionMenuItem } from '../../..';
+
 import { EntityLineageEditModal } from './EntityLineageEditModal';
 import { getEntityNoun } from './utils';
 
@@ -15,14 +16,13 @@ interface Props {
 }
 
 export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
-    const {
-        childEntityDataType,
-        parentEntityDataTypes,
-        queryModel,
-        auditBehavior,
-    } = props;
+    const { childEntityDataType, parentEntityDataTypes, queryModel, auditBehavior } = props;
     const parentNounPlural = parentEntityDataTypes[0].nounPlural;
-    const itemText =  'Edit ' + parentNounPlural + ' for Selected ' + capitalizeFirstChar(getEntityNoun(childEntityDataType, queryModel?.selections?.size) + ' in Bulk');
+    const itemText =
+        'Edit ' +
+        parentNounPlural +
+        ' for Selected ' +
+        capitalizeFirstChar(getEntityNoun(childEntityDataType, queryModel?.selections?.size) + ' in Bulk');
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
     const onClick = useCallback(() => {
@@ -39,14 +39,14 @@ export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
         <>
             {queryModel !== undefined ? (
                 <SelectionMenuItem
-                    id={'edit-entity-lineage-menu-item'}
+                    id="edit-entity-lineage-menu-item"
                     text={itemText}
                     onClick={onClick}
                     queryModel={queryModel}
                     nounPlural={childEntityDataType.nounPlural}
                 />
             ) : (
-                <MenuItem onClick={onClick} key={'edit-entity-lineage-menu-item'}>
+                <MenuItem onClick={onClick} key="edit-entity-lineage-menu-item">
                     {itemText}
                 </MenuItem>
             )}

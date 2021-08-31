@@ -650,10 +650,10 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
 
 // exported for jest testing
 export function getUpdatedLineageRows(
-    lineageRows: Record<string, any>[],
+    lineageRows: Array<Record<string, any>>,
     originalModel: QueryGridModel,
     aliquots: any[]
-): Record<string, any>[] {
+): Array<Record<string, any>> {
     const updatedLineageRows = [];
 
     // iterate through all of the lineage rows to find the ones that have any edit from the initial data row,
@@ -664,10 +664,15 @@ export function getUpdatedLineageRows(
             // compare each row value looking for any that are different from the original value
             let hasUpdate = false;
             Object.keys(row).every(key => {
-                const updatedVal = Utils.isString(row[key]) ? row[key].split(', ').sort(naturalSort).join(', ') : row[key];
+                const updatedVal = Utils.isString(row[key])
+                    ? row[key].split(', ').sort(naturalSort).join(', ')
+                    : row[key];
                 let originalVal = originalModel.data.get('' + rowId).get(key);
                 if (List.isList(originalVal)) {
-                    originalVal = originalVal?.map(parentRow => parentRow.displayValue).sort(naturalSort).join(', ');
+                    originalVal = originalVal
+                        ?.map(parentRow => parentRow.displayValue)
+                        .sort(naturalSort)
+                        .join(', ');
                 }
 
                 if (originalVal !== updatedVal) {

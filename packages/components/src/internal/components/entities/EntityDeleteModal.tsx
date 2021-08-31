@@ -18,7 +18,6 @@ import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDataType } from './models';
 import { getEntityNoun } from './utils';
 
-
 interface Props {
     model?: QueryGridModel;
     queryModel?: QueryModel;

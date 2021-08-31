@@ -4,18 +4,14 @@ import PanelBody from 'react-bootstrap/lib/PanelBody';
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import {
-    Alert,
-    DataClassDataType,
-    LoadingSpinner,
-    QueryInfo,
-} from '../../..';
+import PanelHeading from 'react-bootstrap/lib/PanelHeading';
+
+import { Alert, DataClassDataType, LoadingSpinner, QueryInfo } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import { initUnitTestMocks } from '../../testHelperMocks';
 
 import { EntityChoice } from './models';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
-import PanelHeading from 'react-bootstrap/lib/PanelHeading';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -92,7 +88,7 @@ describe('<ParentEntityEditPanel>', () => {
         panel.unmount();
     });
 
-    test("hideButtons", () => {
+    test('hideButtons', () => {
         const panel = mount(
             <ParentEntityEditPanel
                 childQueryInfo={queryInfo}
@@ -114,7 +110,7 @@ describe('<ParentEntityEditPanel>', () => {
         expect(panel.find(Button)).toHaveLength(0);
     });
 
-    test("excludePanelHeader", () => {
+    test('excludePanelHeader', () => {
         const panel = mount(
             <ParentEntityEditPanel
                 childQueryInfo={queryInfo}

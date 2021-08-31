@@ -2,12 +2,15 @@ import { fromJS, List, Map } from 'immutable';
 
 import {
     createEntityParentKey,
-    DataClassDataType, makeQueryInfo,
+    DataClassDataType,
+    makeQueryInfo,
     makeTestQueryModel,
     QueryGridModel,
     SampleTypeDataType,
-    SchemaQuery
+    SchemaQuery,
 } from '../../..';
+
+import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
 
 import { EntityChoice, IEntityTypeOption } from './models';
 import {
@@ -15,9 +18,8 @@ import {
     getEntityNoun,
     getInitialParentChoices,
     getUpdatedLineageRowsForBulkEdit,
-    parentValuesDiffer
+    parentValuesDiffer,
 } from './utils';
-import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
 
 describe('getInitialParentChoices', () => {
     const modelId = 'id';
@@ -553,17 +555,17 @@ describe('getEntityNoun', () => {
     });
 });
 
-describe("getUpdatedLineageRowsForBulkEdit", () => {
+describe('getUpdatedLineageRowsForBulkEdit', () => {
     const QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
     const original1 = List<EntityChoice>([
         {
             gridValues: [
                 {
-                    displayValue: "Val1",
+                    displayValue: 'Val1',
                 },
                 {
-                    displayValue: "Val2"
-                }
+                    displayValue: 'Val2',
+                },
             ],
             type: {
                 lsid: 'lsid1',
@@ -576,7 +578,7 @@ describe("getUpdatedLineageRowsForBulkEdit", () => {
         {
             gridValues: [
                 {
-                    displayValue: "Val3",
+                    displayValue: 'Val3',
                 },
             ],
             type: {
@@ -592,7 +594,7 @@ describe("getUpdatedLineageRowsForBulkEdit", () => {
         {
             gridValues: [
                 {
-                    displayValue: "Val1",
+                    displayValue: 'Val1',
                 },
             ],
             type: {
@@ -618,52 +620,69 @@ describe("getUpdatedLineageRowsForBulkEdit", () => {
         },
     ]);
     const samples = {
-        "1": {
+        '1': {
             rowId: {
-                value: "1"
+                value: '1',
             },
         },
-        "2": {
+        '2': {
             rowId: {
-                value: "2"
-            }
-        }
-    }
-    test("no samples", () => {
+                value: '2',
+            },
+        },
+    };
+    test('no samples', () => {
         expect(getUpdatedLineageRowsForBulkEdit({}, selected, {}, QUERY_INFO)).toStrictEqual([]);
     });
 
-    test("no selected parents", () => {
-        expect(getUpdatedLineageRowsForBulkEdit(samples, List<EntityChoice>(), {
-            "1": original1
-        }, QUERY_INFO)).toStrictEqual([]);
+    test('no selected parents', () => {
+        expect(
+            getUpdatedLineageRowsForBulkEdit(
+                samples,
+                List<EntityChoice>(),
+                {
+                    '1': original1,
+                },
+                QUERY_INFO
+            )
+        ).toStrictEqual([]);
     });
 
-    test("no original parents", () => {
-        const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": List<EntityChoice>(), "2": List<EntityChoice>()}, QUERY_INFO);
+    test('no original parents', () => {
+        const rows = getUpdatedLineageRowsForBulkEdit(
+            samples,
+            selected,
+            { '1': List<EntityChoice>(), '2': List<EntityChoice>() },
+            QUERY_INFO
+        );
         expect(rows).toStrictEqual([
             {
-                "RowId": "1",
-                'MaterialInputs/Label 1': "Val1,Val2"
+                RowId: '1',
+                'MaterialInputs/Label 1': 'Val1,Val2',
             },
             {
-                "RowId": "2",
-                'MaterialInputs/Label 1': "Val1,Val2"
-            }
+                RowId: '2',
+                'MaterialInputs/Label 1': 'Val1,Val2',
+            },
         ]);
     });
 
-    test("change one original parent", () => {
-        const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": original1, "2": original2}, QUERY_INFO);
+    test('change one original parent', () => {
+        const rows = getUpdatedLineageRowsForBulkEdit(
+            samples,
+            selected,
+            { '1': original1, '2': original2 },
+            QUERY_INFO
+        );
         expect(rows).toStrictEqual([
             {
-                "RowId": "2",
-                'MaterialInputs/Label 1': "Val1,Val2"
-            }
+                RowId: '2',
+                'MaterialInputs/Label 1': 'Val1,Val2',
+            },
         ]);
     });
 
-    test("remove one of many original parents", () => {
+    test('remove one of many original parents', () => {
         const selected = List<EntityChoice>([
             {
                 type: {
@@ -676,17 +695,22 @@ describe("getUpdatedLineageRowsForBulkEdit", () => {
                 value: undefined,
             },
         ]);
-        const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": original1, "2": original2}, QUERY_INFO);
+        const rows = getUpdatedLineageRowsForBulkEdit(
+            samples,
+            selected,
+            { '1': original1, '2': original2 },
+            QUERY_INFO
+        );
         expect(rows).toHaveLength(1);
         expect(rows).toStrictEqual([
             {
-                "RowId": "1",
-                'MaterialInputs/Label 2': null
-            }
+                RowId: '1',
+                'MaterialInputs/Label 2': null,
+            },
         ]);
     });
 
-    test("remove original parent entirely", () => {
+    test('remove original parent entirely', () => {
         const selected = List<EntityChoice>([
             {
                 type: {
@@ -699,16 +723,21 @@ describe("getUpdatedLineageRowsForBulkEdit", () => {
                 value: 'Val1',
             },
         ]);
-        const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": original1, "2": original2}, QUERY_INFO);
+        const rows = getUpdatedLineageRowsForBulkEdit(
+            samples,
+            selected,
+            { '1': original1, '2': original2 },
+            QUERY_INFO
+        );
         expect(rows).toStrictEqual([
             {
-                "RowId": "1",
-                'MaterialInputs/Label 1': "Val1"
-            }
+                RowId: '1',
+                'MaterialInputs/Label 1': 'Val1',
+            },
         ]);
-    })
+    });
 
-    test("multiple updates", () => {
+    test('multiple updates', () => {
         const selected = List<EntityChoice>([
             {
                 type: {
@@ -731,21 +760,26 @@ describe("getUpdatedLineageRowsForBulkEdit", () => {
                 value: undefined,
             },
         ]);
-        const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": original1, "2": original2}, QUERY_INFO);
+        const rows = getUpdatedLineageRowsForBulkEdit(
+            samples,
+            selected,
+            { '1': original1, '2': original2 },
+            QUERY_INFO
+        );
         expect(rows).toStrictEqual([
             {
-                "RowId": "1",
-                'MaterialInputs/Label 1': "Val2",
-                'MaterialInputs/Label 2': null
+                RowId: '1',
+                'MaterialInputs/Label 1': 'Val2',
+                'MaterialInputs/Label 2': null,
             },
             {
-                "RowId": "2",
-                'MaterialInputs/Label 1': "Val2",
-            }
+                RowId: '2',
+                'MaterialInputs/Label 1': 'Val2',
+            },
         ]);
     });
 
-    test("parents same except for ordering", () => {
+    test('parents same except for ordering', () => {
         const selected = List<EntityChoice>([
             {
                 type: {
@@ -756,13 +790,19 @@ describe("getUpdatedLineageRowsForBulkEdit", () => {
                 },
                 ids: ['id1.2, id1.1'],
                 value: 'Val2,Val1',
-            }]
+            },
+        ]);
+        const rows = getUpdatedLineageRowsForBulkEdit(
+            samples,
+            selected,
+            { '1': original1, '2': original2 },
+            QUERY_INFO
         );
-        const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": original1, "2": original2}, QUERY_INFO);
-        expect(rows).toStrictEqual([{
-            "RowId": "2",
-            "MaterialInputs/Label 1": "Val1,Val2"
-        }]);
+        expect(rows).toStrictEqual([
+            {
+                RowId: '2',
+                'MaterialInputs/Label 1': 'Val1,Val2',
+            },
+        ]);
     });
 });
-

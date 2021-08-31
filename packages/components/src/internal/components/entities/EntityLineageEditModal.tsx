@@ -16,7 +16,7 @@ import {
 } from '../../..';
 import { EntityChoice, EntityDataType } from './models';
 import { Button, Modal } from 'react-bootstrap';
-import { getEntityNoun } from './utils';
+import { getEntityNoun, getUpdatedLineageRowsForBulkEdit } from './utils';
 import { List } from 'immutable';
 import { getOriginalParentsFromSampleLineage, getSampleSelectionLineageData } from '../samples/actions';
 import { ParentEntityLineageColumns } from './constants';
@@ -83,39 +83,9 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const onConfirm = useCallback(
         async () => {
             setSubmitting(true);
-            const rows = [];
+
             const { originalParents } = await getOriginalParentsFromSampleLineage(nonAliquots);
-            Object.keys(nonAliquots).forEach((rowId) => {
-                let updatedValues = {}
-                let haveUpdate = false;
-
-                // Find the types that are included and use those for change comparison.
-                // Types that are not represented in the selected parents won't be changed.
-                selectedParents.forEach(selected => {
-                    let originalValue = null;
-                    const possibleChange = originalParents[rowId].find(p => p.type.lsid == selected.type.lsid);
-                    if (possibleChange) {
-                        originalValue = possibleChange.gridValues.map(gridValue => gridValue.displayValue).sort(naturalSort).join(",");
-                    }
-                    const selValue = selected.value ? selected.value.split(",").sort(naturalSort).join(",") : null;
-                    if (originalValue !== selValue) {
-                        updatedValues[selected.type.entityDataType.insertColumnNamePrefix + selected.type.label] = selValue;
-                        haveUpdate = true;
-                    }
-                });
-                if (haveUpdate) {
-                    queryModel.queryInfo.getPkCols().forEach(pkCol => {
-                        const pkVal = nonAliquots[rowId][pkCol.fieldKey]?.['value'];
-
-                        if (pkVal !== undefined && pkVal !== null) {
-                            updatedValues[pkCol.fieldKey] = pkVal;
-                        } else {
-                            console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
-                        }
-                    });
-                    rows.push(updatedValues)
-                }
-            });
+            const rows =  getUpdatedLineageRowsForBulkEdit(nonAliquots, selectedParents, originalParents, queryModel.queryInfo);
 
             if (rows.length > 0) {
                 try {

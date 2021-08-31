@@ -1,9 +1,23 @@
 import { fromJS, List, Map } from 'immutable';
 
-import { createEntityParentKey, DataClassDataType, QueryGridModel, SchemaQuery } from '../../..';
+import {
+    createEntityParentKey,
+    DataClassDataType, makeQueryInfo,
+    makeTestQueryModel,
+    QueryGridModel,
+    SampleTypeDataType,
+    SchemaQuery
+} from '../../..';
 
 import { EntityChoice, IEntityTypeOption } from './models';
-import { getEntityDescription, getInitialParentChoices, parentValuesDiffer } from './utils';
+import {
+    getEntityDescription,
+    getEntityNoun,
+    getInitialParentChoices,
+    getUpdatedLineageRowsForBulkEdit,
+    parentValuesDiffer
+} from './utils';
+import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
 
 describe('getInitialParentChoices', () => {
     const modelId = 'id';
@@ -526,3 +540,230 @@ describe('getEntityDescription', () => {
         expect(getEntityDescription(DataClassDataType, 2)).toBe('parent types');
     });
 });
+
+describe('getEntityNoun', () => {
+    test('zero', () => {
+        expect(getEntityNoun(SampleTypeDataType, 0)).toBe('samples');
+    });
+    test('one', () => {
+        expect(getEntityNoun(SampleTypeDataType, 1)).toBe('sample');
+    });
+    test('multiple', () => {
+        expect(getEntityNoun(SampleTypeDataType, 2)).toBe('samples');
+    });
+});
+
+describe("getUpdatedLineageRowsForBulkEdit", () => {
+    const QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
+    const original1 = List<EntityChoice>([
+        {
+            gridValues: [
+                {
+                    displayValue: "Val1",
+                },
+                {
+                    displayValue: "Val2"
+                }
+            ],
+            type: {
+                lsid: 'lsid1',
+                rowId: 1,
+                label: 'Label 1',
+            },
+            ids: ['id1.1', 'id1.2'],
+            value: undefined,
+        },
+        {
+            gridValues: [
+                {
+                    displayValue: "Val3",
+                },
+            ],
+            type: {
+                lsid: 'lsid2',
+                rowId: 2,
+                label: 'Label 2',
+            },
+            ids: ['id2.1'],
+            value: undefined,
+        },
+    ]);
+    const original2 = List<EntityChoice>([
+        {
+            gridValues: [
+                {
+                    displayValue: "Val1",
+                },
+            ],
+            type: {
+                lsid: 'lsid1',
+                rowId: 1,
+                label: 'Label 1',
+            },
+            ids: ['id1.1'],
+            value: 'Val1',
+        },
+    ]);
+
+    const selected = List<EntityChoice>([
+        {
+            type: {
+                lsid: 'lsid1',
+                rowId: 1,
+                label: 'Label 1',
+                entityDataType: SampleTypeDataType,
+            },
+            ids: ['id1.1', 'id1.2'],
+            value: 'Val1,Val2',
+        },
+    ]);
+    const samples = {
+        "1": {
+            rowId: {
+                value: "1"
+            },
+        },
+        "2": {
+            rowId: {
+                value: "2"
+            }
+        }
+    }
+    test("no samples", () => {
+        expect(getUpdatedLineageRowsForBulkEdit({}, selected, {}, QUERY_INFO)).toStrictEqual([]);
+    });
+
+    test("no selected parents", () => {
+        expect(getUpdatedLineageRowsForBulkEdit(samples, List<EntityChoice>(), {
+            "1": original1
+        }, QUERY_INFO)).toStrictEqual([]);
+    });
+
+    test("no original parents", () => {
+        const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": List<EntityChoice>(), "2": List<EntityChoice>()}, QUERY_INFO);
+        expect(rows).toStrictEqual([
+            {
+                "RowId": "1",
+                'MaterialInputs/Label 1': "Val1,Val2"
+            },
+            {
+                "RowId": "2",
+                'MaterialInputs/Label 1': "Val1,Val2"
+            }
+        ]);
+    });
+
+    test("change one original parent", () => {
+        const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": original1, "2": original2}, QUERY_INFO);
+        expect(rows).toStrictEqual([
+            {
+                "RowId": "2",
+                'MaterialInputs/Label 1': "Val1,Val2"
+            }
+        ]);
+    });
+
+    test("remove one of many original parents", () => {
+        const selected = List<EntityChoice>([
+            {
+                type: {
+                    lsid: 'lsid2',
+                    rowId: 2,
+                    label: 'Label 2',
+                    entityDataType: SampleTypeDataType,
+                },
+                ids: [],
+                value: undefined,
+            },
+        ]);
+        const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": original1, "2": original2}, QUERY_INFO);
+        expect(rows).toHaveLength(1);
+        expect(rows).toStrictEqual([
+            {
+                "RowId": "1",
+                'MaterialInputs/Label 2': null
+            }
+        ]);
+    });
+
+    test("remove original parent entirely", () => {
+        const selected = List<EntityChoice>([
+            {
+                type: {
+                    lsid: 'lsid1',
+                    rowId: 1,
+                    label: 'Label 1',
+                    entityDataType: SampleTypeDataType,
+                },
+                ids: ['id1.1'],
+                value: 'Val1',
+            },
+        ]);
+        const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": original1, "2": original2}, QUERY_INFO);
+        expect(rows).toHaveLength(1);
+        expect(rows).toStrictEqual([
+            {
+                "RowId": "1",
+                'MaterialInputs/Label 1': "Val1"
+            }
+        ]);
+    })
+
+    test("multiple updates", () => {
+        const selected = List<EntityChoice>([
+            {
+                type: {
+                    lsid: 'lsid1',
+                    rowId: 1,
+                    label: 'Label 1',
+                    entityDataType: SampleTypeDataType,
+                },
+                ids: ['id1.2'],
+                value: 'Val2',
+            },
+            {
+                type: {
+                    lsid: 'lsid2',
+                    rowId: 2,
+                    label: 'Label 2',
+                    entityDataType: SampleTypeDataType,
+                },
+                ids: [],
+                value: undefined,
+            },
+        ]);
+        const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": original1, "2": original2}, QUERY_INFO);
+        expect(rows).toStrictEqual([
+            {
+                "RowId": "1",
+                'MaterialInputs/Label 1': "Val2",
+                'MaterialInputs/Label 2': null
+            },
+            {
+                "RowId": "2",
+                'MaterialInputs/Label 1': "Val2",
+            }
+        ]);
+    });
+
+    test("parents same except for ordering", () => {
+        const selected = List<EntityChoice>([
+            {
+                type: {
+                    lsid: 'lsid1',
+                    rowId: 1,
+                    label: 'Label 1',
+                    entityDataType: SampleTypeDataType,
+                },
+                ids: ['id1.2, id1.1'],
+                value: 'Val2,Val1',
+            }]
+        );
+        const rows = getUpdatedLineageRowsForBulkEdit(samples, selected, {"1": original1, "2": original2}, QUERY_INFO);
+        expect(rows).toStrictEqual([{
+            "RowId": "2",
+            "MaterialInputs/Label 1": "Val1,Val2"
+        }]);
+    });
+});
+

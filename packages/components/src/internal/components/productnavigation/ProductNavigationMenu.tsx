@@ -80,16 +80,8 @@ interface ProductNavigationMenuImplProps extends ProductNavigationMenuProps {
 
 // exported for jest testing
 export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props => {
-    const {
-        error,
-        products,
-        homeVisible,
-        disableLKSContainerLink,
-        tabs,
-        onCloseMenu,
-        selectedProductId,
-        onSelection,
-    } = props;
+    const { error, products, homeVisible, disableLKSContainerLink, tabs, onCloseMenu, selectedProductId, onSelection } =
+        props;
 
     if (error) {
         return <Alert>{error}</Alert>;
@@ -105,7 +97,7 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
     const showSectionsDrawer = selectedProduct !== undefined;
     const { user } = getServerContext();
     const showMenuSettings = useMemo(() => {
-        return hasPremiumModule() && user.isRootAdmin
+        return hasPremiumModule() && user.isRootAdmin;
     }, [user, hasPremiumModule]);
 
     return (
@@ -124,12 +116,7 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
                         tabs={tabs}
                     />
                 )}
-                {showSectionsDrawer && (
-                    <ProductSectionsDrawer
-                        product={selectedProduct}
-                        onCloseMenu={onCloseMenu}
-                    />
-                )}
+                {showSectionsDrawer && <ProductSectionsDrawer product={selectedProduct} onCloseMenu={onCloseMenu} />}
             </ul>
             {selectedProductId === undefined && (
                 <div className="product-navigation-footer">

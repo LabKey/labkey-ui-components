@@ -1,38 +1,39 @@
 import React, { ReactNode } from 'react';
-import { List, Map, OrderedMap, fromJS } from 'immutable';
+import { fromJS, List, Map, OrderedMap } from 'immutable';
 
-import { AuditBehaviorTypes, Query } from '@labkey/api';
+import { AuditBehaviorTypes, Query, Utils } from '@labkey/api';
 
 import {
-    User,
-    EditableGridPanelForUpdate,
-    SchemaQuery,
-    getUniqueIdColumnMetadata,
-    QueryColumn,
-    QueryGridModel,
-    getStateQueryGridModel,
-    EditableGridLoaderFromSelection,
-    gridInit,
-    QueryInfo,
-    getSelectedData,
-    EditorModel,
-    dismissNotifications,
-    createNotification,
-    NO_UPDATES_MESSAGE,
-    queryGridInvalidate,
-    invalidateLineageResults,
-    gridIdInvalidate,
-    resolveErrorMessage,
-    getQueryGridModel,
-    LoadingSpinner,
-    QueryModel,
-    getStateModelId,
-    EditableColumnMetadata,
     caseInsensitive,
-    SampleTypeDataType,
-    IEntityTypeOption,
+    createNotification,
+    dismissNotifications,
+    EditableColumnMetadata,
+    EditableGridLoaderFromSelection,
+    EditableGridPanelForUpdate,
+    EditorModel,
     EntityDataType,
+    getQueryGridModel,
+    getSelectedData,
+    getStateModelId,
+    getStateQueryGridModel,
+    getUniqueIdColumnMetadata,
+    gridIdInvalidate,
+    gridInit,
+    IEntityTypeOption,
+    invalidateLineageResults,
     IParentOption,
+    LoadingSpinner,
+    naturalSort,
+    NO_UPDATES_MESSAGE,
+    QueryColumn,
+    queryGridInvalidate,
+    QueryGridModel,
+    QueryInfo,
+    QueryModel,
+    resolveErrorMessage,
+    SampleTypeDataType,
+    SchemaQuery,
+    User,
 } from '../../..';
 
 import { DisplayObject, EntityChoice, EntityParentType } from '../entities/models';
@@ -663,10 +664,10 @@ export function getUpdatedLineageRows(
             // compare each row value looking for any that are different from the original value
             let hasUpdate = false;
             Object.keys(row).every(key => {
-                const updatedVal = row[key];
+                const updatedVal = Utils.isString(row[key]) ? row[key].split(', ').sort(naturalSort).join(', ') : row[key];
                 let originalVal = originalModel.data.get('' + rowId).get(key);
                 if (List.isList(originalVal)) {
-                    originalVal = originalVal?.map(parentRow => parentRow.displayValue).join(', ');
+                    originalVal = originalVal?.map(parentRow => parentRow.displayValue).sort(naturalSort).join(', ');
                 }
 
                 if (originalVal !== updatedVal) {

@@ -3116,7 +3116,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <span
-                    className="detail-display"
+                    className="ws-pre-wrap"
                   />
                 </td>
                 <td
@@ -3127,7 +3127,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <span
-                    className="detail-display"
+                    className="ws-pre-wrap"
                   />
                 </td>
                 <td
@@ -3138,6 +3138,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <a
+                    className="ws-pre-wrap"
                     href="#/rd/assayrun/650"
                   >
                     GPAT 1_2019-08-07_13-18-06
@@ -3151,7 +3152,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <span
-                    className="detail-display"
+                    className="ws-no-wrap"
                   >
                     2019-08-07 13:18
                   </span>
@@ -3164,6 +3165,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <a
+                    className="ws-pre-wrap"
                     href="#/q/core/siteusers/1005"
                   >
                     susanh
@@ -3177,7 +3179,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <span
-                    className="detail-display"
+                    className="ws-pre-wrap"
                   />
                 </td>
                 <td
@@ -3188,7 +3190,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <span
-                    className="detail-display"
+                    className="ws-pre-wrap"
                   >
                     reimport run 2
                   </span>
@@ -3201,7 +3203,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <span
-                    className="detail-display"
+                    className="ws-pre-wrap"
                   />
                 </td>
                 <td
@@ -3212,7 +3214,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <span
-                    className="detail-display"
+                    className="ws-pre-wrap"
                   />
                 </td>
                 <td
@@ -3223,7 +3225,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <span
-                    className="detail-display"
+                    className="ws-pre-wrap"
                   />
                 </td>
                 <td
@@ -3234,7 +3236,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <span
-                    className="detail-display"
+                    className="ws-pre-wrap"
                   />
                 </td>
                 <td
@@ -3245,7 +3247,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <span
-                    className="detail-display"
+                    className="ws-no-wrap"
                   />
                 </td>
                 <td
@@ -3256,7 +3258,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <span
-                    className="detail-display"
+                    className="ws-pre-wrap"
                   />
                 </td>
               </tr>

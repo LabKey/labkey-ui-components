@@ -32,6 +32,7 @@ const COLUMN_CAN_INSERT_AND_UPDATE = new QueryColumn({
     shownInInsertView: true,
     shownInUpdateView: true,
     userEditable: true,
+    readOnly: false,
 });
 const COLUMN_CAN_INSERT = new QueryColumn({
     fieldKey: 'insert',
@@ -39,6 +40,7 @@ const COLUMN_CAN_INSERT = new QueryColumn({
     shownInInsertView: true,
     shownInUpdateView: false,
     userEditable: true,
+    readOnly: false,
 });
 const COLUMN_CAN_UPDATE = new QueryColumn({
     fieldKey: 'update',
@@ -46,6 +48,7 @@ const COLUMN_CAN_UPDATE = new QueryColumn({
     shownInInsertView: false,
     shownInUpdateView: true,
     userEditable: true,
+    readOnly: false,
 });
 const COLUMN_CANNOT_INSERT_AND_UPDATE = new QueryColumn({
     fieldKey: 'neither',
@@ -53,6 +56,7 @@ const COLUMN_CANNOT_INSERT_AND_UPDATE = new QueryColumn({
     shownInInsertView: false,
     shownInUpdateView: false,
     userEditable: true,
+    readOnly: false,
 });
 const COLUMN_FILE_INPUT = new QueryColumn({
     fieldKey: 'fileInput',
@@ -60,6 +64,7 @@ const COLUMN_FILE_INPUT = new QueryColumn({
     shownInInsertView: true,
     shownInUpdateView: true,
     userEditable: true,
+    readOnly: false,
     inputType: 'file',
 });
 const QUERY_INFO = QueryInfo.fromJSON({

@@ -1,6 +1,28 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.69.1
+*Released*: 31 August 2021
+* Issue 43771: Show Folder title on Application home pages.
+* Issue 43474: Prevent text wrapping for date columns.
+* Introduce `useUserProperties` for retrieving user properties based on current user.
+
+### version 2.69.0
+*Released*: 31 August 2021
+* Parameterize verb in DetailPanelHeader.
+* Move getEntityNoun method to utils
+* Add EntityLineageEditMenuItem and EntityLineageEditModal for enabling bulk update of entity lineage
+* Update ParentEntityEditPanel with more optional parameters
+  * hideButtons - to hide the buttons below the panel
+  * editOnly - to indicate that we start in edit mode and cannot cancel out of it;
+  * onChangeParent - callback used when any change in the parent types or values is made
+  * includePanelHeader - allows header on panel to be removed
+* Add ExperimentException handling to `resolveErrorMessage`
+
+### version 2.68.1
+*Released*: 30 August 2021
+* Issue 43760: Update checks for editable columns to incorporate the readOnly setting as well
+
 ### version 2.68.0
 *Released*: 26 August 2021
 * Item 9228: Sample Type lineage updates via “Edit Sample in Grid”
@@ -11,20 +33,20 @@ Components, models, actions, and utility functions for LabKey applications and p
   * persist updated sample parents on finish/save from EditableGrid
   * refactor EntityParentTypeSelectors out of EntityInsertPanel.tsx for reuse
 
-#### version 2.67.1
+### version 2.67.1
 *Release*: 26 August 2021
 * Issue 42628: Hide Biologics details view override in view menu
 
-#### version 2.67.0
+### version 2.67.0
 *Release*: 25 August 2021
 * Issue 43029: Support File/Attachment Fields
     * See https://github.com/LabKey/labkey-ui-components/pull/610 for more details.
 
-#### version 2.66.1
+### version 2.66.1
 *Release*: 25 August 2021
 * Issue 43782: Omnibox - Filtering on a field pulled into a lookup shows lookup field instead of the pulled in field
 
-#### version 2.66.0
+### version 2.66.0
 *Release*: 23 August 2021
 * Issue 43693: Indicate the depth of the lineage graphs and grids
 * Issue 43692: expose LineageGroupingOptions for ease of overriding defaults; update default depth to 5

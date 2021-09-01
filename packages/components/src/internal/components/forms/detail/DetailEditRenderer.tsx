@@ -49,7 +49,7 @@ export function titleRenderer(col: QueryColumn): React.ReactNode {
 }
 
 function detailNonEditableRenderer(col: QueryColumn, data: any): ReactNode {
-    return <div className="field__un-editable">{_defaultRenderer(data)}</div>;
+    return <div className="field__un-editable">{_defaultRenderer(col)(data)}</div>;
 }
 
 // TODO: Merge this functionality with <QueryFormInputs />

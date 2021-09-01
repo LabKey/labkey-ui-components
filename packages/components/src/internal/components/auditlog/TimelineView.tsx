@@ -159,7 +159,7 @@ export class TimelineView extends React.Component<Props, any> {
                 placement="bottom"
                 title="Comment"
             >
-                <div className="detail-display">{comment}</div>
+                <div className="ws-pre-wrap">{comment}</div>
             </LabelHelpTip>
         );
     }
@@ -176,7 +176,7 @@ export class TimelineView extends React.Component<Props, any> {
                         placement="bottom"
                         title={info.title}
                     >
-                        <div className="detail-display">{info.content}</div>
+                        <div className="ws-pre-wrap">{info.content}</div>
                     </LabelHelpTip>
                 );
             }

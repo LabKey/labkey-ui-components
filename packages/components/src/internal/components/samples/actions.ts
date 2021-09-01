@@ -47,6 +47,8 @@ import { findMissingValues } from '../../util/utils';
 import { ParentEntityLineageColumns } from '../entities/constants';
 import { getInitialParentChoices } from '../entities/utils';
 
+import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
+
 import { GroupedSampleFields } from './models';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
@@ -187,8 +189,11 @@ export function getGroupedSampleDomainFields(sampleType: string): Promise<Groupe
                 const metricUnit = sampleTypeDomain.get('options').get('metricUnit');
 
                 sampleTypeDomain.domainDesign.fields.forEach(field => {
-                    if (field.derivationDataScope === 'ChildOnly') aliquotFields.push(field.name.toLowerCase());
-                    else metaFields.push(field.name.toLowerCase());
+                    if (field.derivationDataScope === 'ChildOnly') {
+                        aliquotFields.push(field.name.toLowerCase());
+                    } else {
+                        metaFields.push(field.name.toLowerCase());
+                    }
                 });
 
                 resolve({
@@ -217,7 +222,7 @@ export function getFilteredSampleSelection(
     sampleType: string,
     filters: Filter.IFilter[]
 ): Promise<any[]> {
-    const sampleRowIds = getSampleIdsFromSelection(selection);
+    const sampleRowIds = getSampleRowIdsFromSelection(selection);
     if (sampleRowIds.length === 0) {
         return new Promise((resolve, reject) => {
             reject('No data is selected');
@@ -248,7 +253,7 @@ export function getFilteredSampleSelection(
 }
 
 export function getSampleSelectionStorageData(selection: List<any>): Promise<Record<string, any>> {
-    const sampleRowIds = getSampleIdsFromSelection(selection);
+    const sampleRowIds = getSampleRowIdsFromSelection(selection);
     if (sampleRowIds.length === 0) {
         return new Promise((resolve, reject) => {
             reject('No data is selected');
@@ -283,8 +288,12 @@ export function getSampleSelectionStorageData(selection: List<any>): Promise<Rec
     });
 }
 
-export function getSampleSelectionLineageData(selection: List<any>, sampleType: string): Promise<ISelectRowsResult> {
-    const sampleRowIds = getSampleIdsFromSelection(selection);
+export function getSampleSelectionLineageData(
+    selection: List<any>,
+    sampleType: string,
+    columns?: string[]
+): Promise<ISelectRowsResult> {
+    const sampleRowIds = getSampleRowIdsFromSelection(selection);
     if (sampleRowIds.length === 0) {
         return Promise.reject('No data is selected');
     }
@@ -293,7 +302,7 @@ export function getSampleSelectionLineageData(selection: List<any>, sampleType: 
         selectRows({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             queryName: sampleType,
-            columns: List.of('RowId', 'Name', 'LSID').concat(ParentEntityLineageColumns).toArray(),
+            columns: columns ?? List.of('RowId', 'Name', 'LSID').concat(ParentEntityLineageColumns).toArray(),
             filterArray: [Filter.create('RowId', sampleRowIds, Filter.Types.IN)],
         })
             .then(response => {
@@ -404,7 +413,7 @@ function getParentRowIdAndDataType(
 }
 
 // exported for jest testing
-export function getSampleIdsFromSelection(selection: List<any>): number[] {
+export function getSampleRowIdsFromSelection(selection: List<any>): number[] {
     const sampleRowIds = [];
     if (selection && !selection.isEmpty()) {
         selection.forEach(sel => sampleRowIds.push(parseInt(sel, 10)));
@@ -431,7 +440,12 @@ export function getGroupedSampleDisplayColumns(
     allDisplayColumns.forEach(col => {
         const colName = col.name.toLowerCase();
         if (isAliquot) {
-            if (sampleTypeDomainFields.metaFields.indexOf(colName) > -1) displayColumns.push(col);
+            // barcodes belong to the individual sample or aliquot (but not both)
+            if (col.conceptURI == STORAGE_UNIQUE_ID_CONCEPT_URI) {
+                aliquotHeaderDisplayColumns = aliquotHeaderDisplayColumns.push(col);
+            } else if (sampleTypeDomainFields.metaFields.indexOf(colName) > -1) {
+                displayColumns.push(col);
+            }
             // display parent meta for aliquot
             else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
                 aliquotHeaderDisplayColumns = aliquotHeaderDisplayColumns.push(col);

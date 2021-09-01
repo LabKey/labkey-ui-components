@@ -5,7 +5,6 @@
 import { List, Map } from 'immutable';
 import { ActionURL, getServerContext, PermissionTypes } from '@labkey/api';
 
-import { AppURL, buildURL, hasAllPermissions, imageURL, MenuSectionConfig, User } from '../..';
 
 import { LABKEY_WEBSOCKET } from '../constants';
 
@@ -31,6 +30,10 @@ import {
     WORKFLOW_KEY,
 } from './constants';
 import { AppProperties } from './models';
+import { hasAllPermissions, User } from '../components/base/models/User';
+import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
+import { imageURL } from '../url/ActionURL';
+import { AppURL, buildURL } from '../url/AppURL';
 
 // Type definition not provided for event codes so here we provide our own
 // Source: https://www.iana.org/assignments/websocket/websocket.xml#close-code-number
@@ -102,10 +105,12 @@ export function userCanDesignLocations(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.Admin]);
 }
 
-export function isFreezerManagementEnabled(): boolean {
+// TODO is this called with currentApp anywhere?
+export function isFreezerManagementEnabled(currentApp?: string): boolean {
     return (
         getServerContext().moduleContext?.inventory !== undefined &&
-        (!isBiologicsEnabled() || isFreezerManagerEnabledInBiologics())
+        (!isBiologicsEnabled() || isFreezerManagerEnabledInBiologics() ||
+            (currentApp && currentApp !== BIOLOGICS_APP_PROPERTIES.productId))
     );
 }
 

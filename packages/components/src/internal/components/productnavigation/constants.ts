@@ -6,17 +6,9 @@ import { getHelpLink, imageURL } from '../../..';
 
 import {
     BIOLOGICS_APP_PROPERTIES,
-    FREEZER_MANAGER_APP_PROPERTIES,
     SAMPLE_MANAGER_APP_PROPERTIES,
 } from '../../app/constants';
 import { HELP_LINK_REFERRER } from '../../util/helpLinks';
-import { isFreezerManagementEnabled } from '../../app/utils';
-
-// map for product menuSections query so that we request the LKFM section with the LKSM product
-export const PRODUCT_ID_SECTION_QUERY_MAP = {
-    [SAMPLE_MANAGER_APP_PROPERTIES.productId.toLowerCase()]: List.of(SAMPLE_MANAGER_APP_PROPERTIES.productId, FREEZER_MANAGER_APP_PROPERTIES.productId),
-    [BIOLOGICS_APP_PROPERTIES.productId.toLowerCase()]: isFreezerManagementEnabled() ? List.of(BIOLOGICS_APP_PROPERTIES.productId, FREEZER_MANAGER_APP_PROPERTIES.productId) : List.of(BIOLOGICS_APP_PROPERTIES.productId),
-};
 
 // list of section keys to skip for the section rendering
 export const SECTION_KEYS_TO_SKIP = ['user', 'biologicsWorkflow'];

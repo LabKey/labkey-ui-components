@@ -103,10 +103,10 @@ export function userCanDesignLocations(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.Admin]);
 }
 
-export function isFreezerManagementEnabled(currentApp?: string): boolean {
+export function isFreezerManagementEnabled(): boolean {
     return (
         getServerContext().moduleContext?.inventory !== undefined &&
-        (!isBiologicsEnabled() || isFreezerManagerEnabledInBiologics() || (currentApp && currentApp !== BIOLOGICS_PRODUCT_ID))
+        (!isBiologicsEnabled() || isFreezerManagerEnabledInBiologics())
     );
 }
 
@@ -154,11 +154,33 @@ export function isCommunityDistribution(): boolean {
     return !hasModule('SampleManagement') && !hasPremiumModule();
 }
 
+export function addFMSectionConfig(user: User, currentApp: string, sectionConfigs: List<Map<string, MenuSectionConfig>>):  List<Map<string, MenuSectionConfig>> {
+
+    if (isFreezerManagementEnabled()) {
+        const fmAppBase = getApplicationUrlBase('inventory', currentApp);
+        let locationsMenuConfig = new MenuSectionConfig({
+            emptyText: 'No freezers have been defined',
+            iconURL: imageURL('_images', 'freezer_menu.svg'),
+            maxColumns: 1,
+            maxItemsPerColumn: 12,
+            seeAllURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),
+            headerURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),
+        });
+        if (userCanDesignLocations(user)) {
+            locationsMenuConfig = locationsMenuConfig.merge({
+                emptyURL: fmAppBase + NEW_FREEZER_DESIGN_HREF.toHref(),
+                emptyURLText: 'Create a freezer',
+            }) as MenuSectionConfig;
+        }
+        return sectionConfigs.push(Map<string, MenuSectionConfig>().set(FREEZERS_KEY, locationsMenuConfig));
+    }
+    return sectionConfigs;
+}
+
 export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 
     const smAppBase = getApplicationUrlBase('sampleManagement', currentApp);
-    const fmAppBase = getApplicationUrlBase('inventory', currentApp);
 
     if (isSampleManagerEnabled()) {
         let sourcesMenuConfig = new MenuSectionConfig({
@@ -207,23 +229,7 @@ export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<
         sectionConfigs = sectionConfigs.push(Map<string, MenuSectionConfig>().set(ASSAYS_KEY, assaysMenuConfig));
     }
 
-    if (isFreezerManagementEnabled(currentApp)) {
-        let locationsMenuConfig = new MenuSectionConfig({
-            emptyText: 'No freezers have been defined',
-            iconURL: imageURL('_images', 'freezer_menu.svg'),
-            maxColumns: 1,
-            maxItemsPerColumn: 12,
-            seeAllURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),
-            headerURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),
-        });
-        if (userCanDesignLocations(user)) {
-            locationsMenuConfig = locationsMenuConfig.merge({
-                emptyURL: fmAppBase + NEW_FREEZER_DESIGN_HREF.toHref(),
-                emptyURLText: 'Create a freezer',
-            }) as MenuSectionConfig;
-        }
-        sectionConfigs = sectionConfigs.push(Map<string, MenuSectionConfig>().set(FREEZERS_KEY, locationsMenuConfig));
-    }
+    sectionConfigs = addFMSectionConfig(user, currentApp, sectionConfigs);
 
     if (isSampleManagerEnabled()) {
         sectionConfigs = sectionConfigs.push(

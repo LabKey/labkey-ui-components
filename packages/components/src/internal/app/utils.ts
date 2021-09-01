@@ -13,7 +13,9 @@ import {
     ASSAYS_KEY,
     BIOLOGICS_PRODUCT_ID,
     BIOLOGICS_PRODUCT_NAME,
+    BIOLOGICS_APP_PROPERTIES,
     FREEZER_MANAGER_PRODUCT_ID,
+    FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
     LABKEY_SERVER_PRODUCT_NAME,
@@ -24,6 +26,7 @@ import {
     NEW_SOURCE_TYPE_HREF,
     SAMPLE_MANAGER_PRODUCT_ID,
     SAMPLE_MANAGER_PRODUCT_NAME,
+    SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLES_KEY,
     SERVER_NOTIFICATIONS_INVALIDATE,
     SET_RESET_QUERY_GRID_STATE,
@@ -32,6 +35,7 @@ import {
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
 } from './constants';
+import { AppProperties } from './models';
 
 // Type definition not provided for event codes so here we provide our own
 // Source: https://www.iana.org/assignments/websocket/websocket.xml#close-code-number
@@ -131,6 +135,22 @@ export function isSampleManagerEnabled(): boolean {
 
 export function isBiologicsEnabled(): boolean {
     return getServerContext().moduleContext?.biologics !== undefined;
+}
+
+export function isPremiumProductEnabled(): boolean {
+    return isSampleManagerEnabled() || isBiologicsEnabled();
+}
+
+export function getPrimaryAppProperties(): AppProperties {
+    if (isBiologicsEnabled()) {
+        return BIOLOGICS_APP_PROPERTIES;
+    } else if (isSampleManagerEnabled()) {
+        return SAMPLE_MANAGER_APP_PROPERTIES;
+    } else if (isFreezerManagementEnabled()) {
+        return FREEZER_MANAGER_APP_PROPERTIES;
+    } else {
+        return undefined;
+    }
 }
 
 function isFreezerManagerEnabledInBiologics(): boolean {
@@ -282,3 +302,4 @@ export function getCurrentProductName() {
     else if (lcController === BIOLOGICS_PRODUCT_ID.toLowerCase()) return BIOLOGICS_PRODUCT_NAME;
     return LABKEY_SERVER_PRODUCT_NAME;
 }
+

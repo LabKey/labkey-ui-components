@@ -3,6 +3,8 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { AppURL } from '../url/AppURL';
+import { AppProperties } from './models';
+import { imageURL } from '../url/ActionURL';
 
 // These ids should match what is used by the MenuProviders in the Java code so we can avoid toLowerCase comparisons.
 export const LKS_PRODUCT_ID = 'LabKeyServer';
@@ -13,6 +15,11 @@ export const FREEZER_MANAGER_PRODUCT_ID = 'freezerManager';
 export const SAMPLE_MANAGER_PRODUCT_NAME = 'Sample Manager';
 export const BIOLOGICS_PRODUCT_NAME = 'Biologics';
 export const LABKEY_SERVER_PRODUCT_NAME = 'LabKey Server';
+export const FREEZER_MANAGER_PRODUCT_NAME = "Freezer Manager";
+
+const BIOLOGICS_CONTROLLER_NAME = "biologics";
+const SAMPLE_MANAGER_CONTROLLER_NAME = "sampleManager";
+const FREEZER_MANAGER_CONTROLLER_NAME = "freezerManager";
 
 export const ASSAYS_KEY = 'assays';
 export const ASSAY_DESIGN_KEY = 'assayDesign';
@@ -66,3 +73,27 @@ export const STICKY_HEADER_HEIGHT = 56; // Issue 38478
 export const NOTIFICATION_TIMEOUT = 500;
 
 export const SERVER_NOTIFICATION_MAX_ROWS = 8;
+
+export const BIOLOGICS_APP_PROPERTIES : AppProperties = {
+    productId: BIOLOGICS_PRODUCT_ID,
+    name: BIOLOGICS_PRODUCT_NAME,
+    logoWithTextImageUrl: imageURL('biologics/images', 'lk-bio-logo-text.svg'),
+    logoBadgeImageUrl: imageURL('biologics/images', 'lk-bio-logo-badge.svg'),
+    controllerName: BIOLOGICS_CONTROLLER_NAME,
+}
+
+export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
+    productId: SAMPLE_MANAGER_PRODUCT_ID,
+    name: SAMPLE_MANAGER_PRODUCT_NAME,
+    logoWithTextImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-appmenu-WHITE.svg'),
+    logoBadgeImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-Badge-WHITE.svg'),
+    controllerName: SAMPLE_MANAGER_CONTROLLER_NAME,
+}
+
+export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {
+    productId: FREEZER_MANAGER_PRODUCT_ID,
+    name: FREEZER_MANAGER_PRODUCT_NAME,
+    logoWithTextImageUrl: imageURL('_images', 'LK-noTAG-overcast.svg'),
+    logoBadgeImageUrl: imageURL('_images', 'mobile-logo-overcast.svg'),
+    controllerName: FREEZER_MANAGER_CONTROLLER_NAME,
+}

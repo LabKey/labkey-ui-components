@@ -47,3 +47,11 @@ export class AppModel extends Record({
         return this.needsInvalidateQueryGrid;
     }
 }
+
+export interface AppProperties {
+    productId: string;
+    name: string;
+    logoWithTextImageUrl: string;
+    logoBadgeImageUrl: string;
+    controllerName: string;
+}

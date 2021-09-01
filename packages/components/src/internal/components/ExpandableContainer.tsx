@@ -16,6 +16,7 @@ interface Props {
     initExpanded?: boolean;
     onClick?: (show: boolean) => any;
     iconClickOnly?: boolean;
+    containerCls?: string;
 }
 
 interface State {
@@ -57,9 +58,9 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { children, iconSrc, iconFaCls, isExpandable, clause, links, iconClickOnly } = this.props;
+        const { children, iconSrc, iconFaCls, isExpandable, clause, links, iconClickOnly, containerCls } = this.props;
         const { visible, isHover } = this.state;
-        const containerCls = iconClickOnly ? 'container-expandable-icononly' : 'container-expandable-detail';
+        const containerDivCls = iconClickOnly ? 'container-expandable-icononly' : 'container-expandable-detail';
 
         return (
             <div className={classNames('row', 'container-expandable', { disabled: !isExpandable })}>
@@ -69,6 +70,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
                     onMouseLeave={isExpandable ? this.handleMouseLeave : undefined}
                     className={classNames(
                         containerCls,
+                        containerDivCls,
                         { 'container-expandable-child__inactive': visible },
                         { 'container-expandable__active': isHover || visible },
                         { 'container-expandable__inactive': !isHover && !visible }

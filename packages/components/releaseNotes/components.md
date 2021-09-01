@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 9269: ...
+  * ExpandableContainer update to allow for custom container class
+
 ### version 2.69.1
 *Released*: 31 August 2021
 * Issue 43771: Show Folder title on Application home pages.

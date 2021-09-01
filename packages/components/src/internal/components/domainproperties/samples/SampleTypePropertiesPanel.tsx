@@ -420,7 +420,10 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                     label="Linked Dataset Category"
                                     helpTipBody={
                                         <>
-                                            ROSALINE TODO
+                                            Specify the desired category for the Sample Type Dataset that will be created (or appended to) in the
+                                            target study when rows are linked. If the category you specify does not exist, it will be created.
+                                            If the Sample Type Dataset already exists, this setting will not overwrite a previously assigned category.
+                                            Leave blank to use the default category of "Uncategorized".
                                         </>
                                     }
                                 />

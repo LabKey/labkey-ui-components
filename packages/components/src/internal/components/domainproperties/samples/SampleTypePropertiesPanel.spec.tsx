@@ -97,8 +97,9 @@ describe('<SampleTypePropertiesPanel/>', () => {
         // Add parent alias button should be visible
         expect(wrapper.find('.container--addition-icon')).toHaveLength(1);
 
-        // Link to Study dropdown should not be visible since allowTimepointProperties: false
+        // Link to Study fields should not be visible since allowTimepointProperties: false
         expect(wrapper.text()).not.toContain('Auto-Link Data to Study');
+        expect(wrapper.text()).not.toContain('Linked Dataset Category');
 
         wrapper.unmount();
     });
@@ -169,9 +170,11 @@ describe('<SampleTypePropertiesPanel/>', () => {
 
         // Currently appears only when 'allowTimepointProperties' is true and 'showLinkToStudy' is true
         expect(wrapper.text()).toContain('Auto-Link Data to Study');
+        expect(wrapper.text()).toContain('Linked Dataset Category');
 
         wrapper.setProps({ showLinkToStudy: false });
         expect(wrapper.text()).not.toContain('Auto-Link Data to Study');
+        expect(wrapper.text()).not.toContain('Linked Dataset Category');
 
         wrapper.unmount();
     });

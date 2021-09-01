@@ -2,8 +2,8 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
-import { List, Map, OrderedMap } from 'immutable';
+import React, { PureComponent } from 'react';
+import { List, OrderedMap } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
@@ -13,6 +13,7 @@ import {
     FileInput,
     getActionErrorMessage,
     getQueryDetails,
+    insertColumnFilter,
     LoadingSpinner,
     QueryInfo,
     QueryColumn,
@@ -48,12 +49,12 @@ interface State {
 
 interface Props {
     user: User;
-    userProperties: Map<string, any>;
-    onSuccess: (result: {}, shouldReload: boolean) => any;
-    onCancel: () => any;
+    userProperties: Record<string, any>;
+    onSuccess: (result: {}, shouldReload: boolean) => void;
+    onCancel: () => void;
 }
 
-export class UserProfile extends React.Component<Props, State> {
+export class UserProfile extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -66,7 +67,7 @@ export class UserProfile extends React.Component<Props, State> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         getQueryDetails(SCHEMAS.CORE_TABLES.USERS)
             .then(queryInfo => {
                 this.setState(() => ({ queryInfo }));
@@ -77,24 +78,18 @@ export class UserProfile extends React.Component<Props, State> {
             });
     }
 
-    getUpdateQueryInfo(): QueryInfo {
-        const { queryInfo } = this.state;
-        let updateColumns = queryInfo.columns.filter(column => {
-            return column.userEditable && !FIELDS_TO_EXCLUDE.contains(column.fieldKey.toLowerCase());
-        });
+    columnFilter = (col: QueryColumn): boolean => {
+        // make sure all columns are set as shownInInsertView and those that are marked as editable are not also readOnly
+        const _col = col.merge({ shownInInsertView: true, readOnly: !col.get('userEditable') }) as QueryColumn;
+        return insertColumnFilter(_col) && !FIELDS_TO_EXCLUDE.contains(_col.fieldKey.toLowerCase());
+    };
 
-        // make sure all columns are set as shownInInsertView
-        updateColumns = updateColumns.map(col => col.set('shownInInsertView', true) as QueryColumn);
-
-        return queryInfo.set('columns', updateColumns) as QueryInfo;
-    }
-
-    onAvatarFileChange = (files: {}) => {
+    onAvatarFileChange = (files: {}): void => {
         this.setState(() => ({ avatar: files[USER_AVATAR_FILE] }));
     };
 
-    removeCurrentAvatar = () => {
-        this.setState(() => ({ removeCurrentAvatar: true }));
+    removeCurrentAvatar = (): void => {
+        this.setState({ removeCurrentAvatar: true });
     };
 
     submitUserDetails = (data: OrderedMap<string, any>): Promise<any> => {
@@ -115,7 +110,7 @@ export class UserProfile extends React.Component<Props, State> {
         return updateUserDetails(SCHEMAS.CORE_TABLES.USERS, getUserDetailsRowData(user, data, avatar));
     };
 
-    onSuccess = (result: {}) => {
+    onSuccess = (result: {}): void => {
         this.props.onSuccess(result, this.state.reloadRequired);
     };
 
@@ -165,9 +160,9 @@ export class UserProfile extends React.Component<Props, State> {
                 </Row>
                 {this.renderSectionTitle('User Details')}
                 <QueryInfoForm
-                    queryInfo={this.getUpdateQueryInfo()}
-                    schemaQuery={queryInfo.schemaQuery}
-                    fieldValues={userProperties.toJS()}
+                    columnFilter={this.columnFilter}
+                    queryInfo={queryInfo}
+                    fieldValues={userProperties}
                     includeCountField={false}
                     submitText="Save"
                     isSubmittedText="Saving..."
@@ -175,7 +170,7 @@ export class UserProfile extends React.Component<Props, State> {
                     onSuccess={this.onSuccess}
                     onHide={onCancel}
                     disabledFields={DISABLED_FIELDS}
-                    showErrorsAtBottom={true}
+                    showErrorsAtBottom
                 />
             </>
         );

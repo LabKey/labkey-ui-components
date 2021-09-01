@@ -19,16 +19,12 @@ import { List } from 'immutable';
 import Formsy from 'formsy-react';
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { updateRows, Alert, resolveErrorMessage, QueryColumn, QueryGridModel } from '../../../..';
-
-import { fileInputRenderer } from '../renderers';
+import { updateRows, Alert, FileInput, resolveErrorMessage, QueryColumn, QueryGridModel } from '../../../..';
 
 import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { extractChanges } from './utils';
 import { DetailRenderer } from './DetailDisplay';
-
-const EMPTY_FILE_FOR_DELETE = new File([], '');
 
 interface Props {
     appEditable?: boolean;
@@ -55,7 +51,6 @@ interface State {
     error: ReactNode;
     isSubmitting: boolean;
     warning: string;
-    fileMap: Record<string, File>;
 }
 
 export class DetailEditing extends Component<Props, State> {
@@ -71,7 +66,6 @@ export class DetailEditing extends Component<Props, State> {
         warning: undefined,
         error: undefined,
         isSubmitting: false,
-        fileMap: {},
     };
 
     disableSubmitButton = (): void => {
@@ -99,79 +93,55 @@ export class DetailEditing extends Component<Props, State> {
         }
     };
 
-    handleFileInputChange = (fileMap: Record<string, File>): void => {
-        this.setState(state => ({
-            fileMap: { ...state.fileMap, ...fileMap },
-            canSubmit: true,
-        }));
-    };
-
     fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
-        const updatedFile = this.state.fileMap[col.name];
-        return fileInputRenderer(col, data, updatedFile, this.handleFileInputChange);
+        return <FileInput formsy initialValue={data} name={col.fieldKey} queryColumn={col} />;
     };
 
-    handleSubmit = values => {
-        this.setState(() => ({ isSubmitting: true }));
+    handleSubmit = async (values: Record<string, any>): Promise<void> => {
+        this.setState({ isSubmitting: true });
 
         const { auditBehavior, queryModel, onEditToggle, onUpdate } = this.props;
-        const { fileMap } = this.state;
         const queryData = queryModel.getRow();
         const queryInfo = queryModel.queryInfo;
         const schemaQuery = queryInfo.schemaQuery;
         const updatedValues = extractChanges(queryInfo, queryData, values);
-        const hasFileUpdates = Object.keys(fileMap).length > 0;
 
-        // If form contains new values, proceed to update
-        if (Object.keys(updatedValues).length > 0 || hasFileUpdates) {
-            // iterate the set of pkCols for this QueryInfo -- include value from queryData
-            queryInfo.getPkCols().forEach(pkCol => {
-                const pkVal = queryData.getIn([pkCol.fieldKey, 'value']);
-
-                if (pkVal !== undefined && pkVal !== null) {
-                    updatedValues[pkCol.fieldKey] = pkVal;
-                } else {
-                    console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
-                }
-            });
-
-            // to support file/attachment columns, we need to pass them in as FormData and updateRows will handle the rest
-            let form;
-            if (hasFileUpdates) {
-                form = new FormData();
-                Object.keys(fileMap).forEach(key => {
-                    form.append(key, fileMap[key] ?? EMPTY_FILE_FOR_DELETE);
-                });
-            }
-
-            return updateRows({
-                schemaQuery,
-                rows: [updatedValues],
-                form,
-                auditBehavior,
-            })
-                .then(() => {
-                    this.setState(
-                        () => ({ isSubmitting: false, editing: false }),
-                        () => {
-                            onUpdate?.();
-                            onEditToggle?.(false);
-                        }
-                    );
-                })
-                .catch(error => {
-                    this.setState(() => ({
-                        warning: undefined,
-                        isSubmitting: false,
-                        error: resolveErrorMessage(error, 'data', undefined, 'update'),
-                    }));
-                });
-        } else {
+        if (Object.keys(updatedValues).length === 0) {
             this.setState({
                 canSubmit: false,
-                warning: 'No changes detected. Please update the form and click save.',
                 error: undefined,
+                warning: 'No changes detected. Please update the form and click save.',
                 isSubmitting: false,
+            });
+            return;
+        }
+
+        // iterate the set of pkCols for this QueryInfo -- include value from queryData
+        queryInfo.getPkCols().forEach(pkCol => {
+            const pkVal = queryData.getIn([pkCol.fieldKey, 'value']);
+
+            if (pkVal !== undefined && pkVal !== null) {
+                updatedValues[pkCol.fieldKey] = pkVal;
+            } else {
+                console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
+            }
+        });
+
+        try {
+            await updateRows({ auditBehavior, rows: [updatedValues], schemaQuery });
+
+            this.setState(
+                () => ({ isSubmitting: false, editing: false }),
+                () => {
+                    onUpdate?.();
+                    onEditToggle?.(false);
+                }
+            );
+        } catch (error) {
+            this.setState({
+                error: resolveErrorMessage(error, 'data', undefined, 'update'),
+                isSubmitting: false,
+                warning: undefined,
             });
         }
     };

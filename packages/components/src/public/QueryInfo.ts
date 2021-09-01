@@ -226,7 +226,7 @@ export class QueryInfo extends Record({
 
     getInsertColumns(): List<QueryColumn> {
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set
-        return this.columns.filter(insertColumnFilter).toList();
+        return this.columns.filter(col => insertColumnFilter(col, false)).toList();
     }
 
     getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {

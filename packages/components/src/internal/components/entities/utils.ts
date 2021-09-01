@@ -1,9 +1,11 @@
 import { List, Map, Set } from 'immutable';
 
-import { EditableColumnMetadata, naturalSort, QueryInfo, SchemaQuery } from '../../..';
+import { caseInsensitive, EditableColumnMetadata, naturalSort, QueryInfo, QueryModel, SchemaQuery } from '../../..';
 import { DELIMITER } from '../forms/input/SelectInput';
 
 import { getCurrentProductName } from '../../app/utils';
+
+import { ParentIdData } from '../samples/actions';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
@@ -42,17 +44,18 @@ export function parentValuesDiffer(
 export function getInitialParentChoices(
     parentTypeOptions: List<IEntityTypeOption>,
     parentDataType: EntityDataType,
-    childData: Record<string, any>
+    childData: Record<string, any>,
+    parentIdData: Record<string, ParentIdData>
 ): List<EntityChoice> {
     let parentValuesByType = Map<string, EntityChoice>();
 
     if (Object.keys(childData).length > 0) {
         const inputs: Array<Record<string, any>> = childData[parentDataType.inputColumnName];
-        const inputTypes: Array<Record<string, any>> = childData[parentDataType.inputTypeColumnName];
-        if (inputs && inputTypes) {
+        if (inputs) {
             // group the inputs by parent type so we can show each in its own grid.
-            inputTypes.forEach((typeMap, index) => {
-                const typeValue = typeMap.value;
+            inputs.forEach(inputRow => {
+                const inputValue = inputRow.value;
+                const typeValue = parentIdData[inputValue]?.parentId;
                 const typeOption = parentTypeOptions.find(
                     option => option[parentDataType.inputTypeValueField] === typeValue
                 );
@@ -64,10 +67,19 @@ export function getInitialParentChoices(
                             type: typeOption,
                             ids: [],
                             value: undefined,
+                            gridValues: [],
                         });
                     }
                     const updatedChoice = parentValuesByType.get(typeOption.query);
-                    updatedChoice.ids.push(inputs[index]?.['value']);
+                    updatedChoice.ids.push(inputValue);
+                    // when using the data for an editable grid, we need the RowId/DisplayValue pairs
+                    if (parentIdData[inputValue]) {
+                        updatedChoice.gridValues.push({
+                            value: parentIdData[inputValue].rowId,
+                            displayValue: inputRow?.displayValue,
+                        });
+                    }
+
                     parentValuesByType = parentValuesByType.set(typeOption.query, updatedChoice);
                 }
             });
@@ -89,7 +101,7 @@ export function getUpdatedRowForParentChanges(
     const updatedValues = {};
     if (definedCurrentParents.isEmpty()) {
         // have no current parents but have original parents, send in empty strings so original parents are removed.
-        originalParents.forEach(parentChoice => {
+        originalParents?.forEach(parentChoice => {
             updatedValues[parentChoice.type.entityDataType.insertColumnNamePrefix + parentChoice.type.label] = null;
         });
     } else {
@@ -102,7 +114,7 @@ export function getUpdatedRowForParentChanges(
             definedParents = definedParents.add(parentChoice.type.label);
         });
         // Issue 40194: for any original parents that have been removed, send null values so they will actually be removed
-        originalParents.forEach(parent => {
+        originalParents?.forEach(parent => {
             if (!definedParents.contains(parent.type.label)) {
                 updatedValues[parent.type.entityDataType.insertColumnNamePrefix + parent.type.label] = null;
             }
@@ -141,4 +153,56 @@ export function getUniqueIdColumnMetadata(queryInfo: QueryInfo): Map<string, Edi
             });
         });
     return columnMetadata;
+}
+
+export function getEntityNoun(entityDataType: EntityDataType, quantity: number): string {
+    return quantity === 1 ? entityDataType.nounSingular : entityDataType.nounPlural;
+}
+
+export function getEntityDescription(entityDataType: EntityDataType, quantity: number): string {
+    return quantity === 1 ? entityDataType.descriptionSingular : entityDataType.descriptionPlural;
+}
+
+export function getUpdatedLineageRowsForBulkEdit(
+    nonAliquots: Record<string, any>,
+    selectedParents: List<EntityChoice>,
+    originalParents: Record<string, List<EntityChoice>>,
+    queryInfo: QueryInfo
+): any[] {
+    const rows = [];
+    Object.keys(nonAliquots).forEach(rowId => {
+        const updatedValues = {};
+        let haveUpdate = false;
+
+        // Find the types that are included and use those for change comparison.
+        // Types that are not represented in the selected parents won't be changed.
+        selectedParents.forEach(selected => {
+            let originalValue = null;
+            const possibleChange = originalParents[rowId].find(p => p.type.lsid == selected.type.lsid);
+            if (possibleChange) {
+                originalValue = possibleChange.gridValues
+                    .map(gridValue => gridValue.displayValue)
+                    .sort(naturalSort)
+                    .join(',');
+            }
+            const selValue = selected.value ? selected.value.split(',').sort(naturalSort).join(',') : null;
+            if (originalValue !== selValue) {
+                updatedValues[selected.type.entityDataType.insertColumnNamePrefix + selected.type.label] = selValue;
+                haveUpdate = true;
+            }
+        });
+        if (haveUpdate) {
+            queryInfo.getPkCols().forEach(pkCol => {
+                const pkVal = caseInsensitive(nonAliquots[rowId], pkCol.fieldKey)?.['value'];
+
+                if (pkVal !== undefined && pkVal !== null) {
+                    updatedValues[pkCol.fieldKey] = pkVal;
+                } else {
+                    console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
+                }
+            });
+            rows.push(updatedValues);
+        }
+    });
+    return rows;
 }

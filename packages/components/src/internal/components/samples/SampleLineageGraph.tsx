@@ -1,15 +1,25 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { Button, Panel, Checkbox, DropdownButton } from 'react-bootstrap';
+import { Button, Checkbox, DropdownButton, Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 
-import { LineageFilter, LineageGraph, LINEAGE_GROUPING_GENERATIONS, VisGraphNode, LINEAGE_DIRECTIONS } from '../../..';
-import { SAMPLE_ALIQUOT_PROTOCOL_LSID } from '../lineage/constants';
+import {
+    LINEAGE_DIRECTIONS,
+    LINEAGE_GROUPING_GENERATIONS,
+    LineageFilter,
+    LineageGraph,
+    LineageGroupingOptions,
+    VisGraphNode,
+} from '../../..';
+import { DEFAULT_LINEAGE_DISTANCE, SAMPLE_ALIQUOT_PROTOCOL_LSID } from '../lineage/constants';
+import { LineageDepthLimitMessage } from '../lineage/LineageGraph';
 
 interface Props {
     sampleLsid: string;
+    sampleID: string;
     goToLineageGrid: () => void;
     onLineageNodeDblClick: (node: VisGraphNode) => void;
     groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>;
+    groupingOptions?: LineageGroupingOptions;
 }
 
 interface State {
@@ -108,7 +118,13 @@ export class SampleLineageGraph extends PureComponent<Props, State> {
     }
 
     render() {
-        const { sampleLsid, goToLineageGrid, onLineageNodeDblClick, groupTitles } = this.props;
+        const { sampleLsid, sampleID, goToLineageGrid, onLineageNodeDblClick, groupTitles, groupingOptions } =
+            this.props;
+
+        const grouping = {
+            ...(groupingOptions ?? { childDepth: DEFAULT_LINEAGE_DISTANCE }),
+            generations: LINEAGE_GROUPING_GENERATIONS.Specific,
+        };
         return (
             <Panel>
                 <Panel.Body>
@@ -116,16 +132,18 @@ export class SampleLineageGraph extends PureComponent<Props, State> {
                         Go to Lineage Grid
                     </Button>
                     {this.renderFilter()}
+
                     <LineageGraph
                         lsid={sampleLsid}
-                        grouping={{ generations: LINEAGE_GROUPING_GENERATIONS.Specific }}
+                        grouping={grouping}
                         filters={this.getLineageFilters()}
                         navigate={onLineageNodeDblClick}
                         groupTitles={groupTitles}
                         runProtocolLsid={this.getRunProtocolLsid()}
                     />
+                    <LineageDepthLimitMessage maxDistance={grouping.childDepth} nodeName={sampleID} />
                 </Panel.Body>
             </Panel>
         );
     }
-} //
+}

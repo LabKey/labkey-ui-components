@@ -98,6 +98,12 @@
   }
 }
 
+.file-upload--is-disabled {
+    background-color: $gray-lighter;
+    color: $gray;
+    cursor: not-allowed;
+}
+
 .file-upload--error-message {
   margin-left: 7px;
   color: $brand-danger;

@@ -48,26 +48,25 @@ export const getFieldEnabledFieldName = function (column: QueryColumn, fieldName
 };
 
 interface QueryFormInputsProps {
+    allowFieldDisable?: boolean;
+    checkRequiredFields?: boolean;
     columnFilter?: (col?: QueryColumn) => boolean;
     componentKey?: string; // unique key to add to QuerySelect to avoid duplication w/ transpose
+    disabledFields?: List<string>;
     fieldValues?: any;
     fireQSChangeOnInit?: boolean;
-    checkRequiredFields?: boolean;
-    showLabelAsterisk?: boolean; // only used if checkRequiredFields is false, to show * for fields that are originally required
     includeLabelField?: boolean;
+    initiallyDisableFields?: boolean;
+    lookups?: Map<string, number>;
+    onFieldsEnabledChange?: (numEnabled: number) => void;
     onQSChange?: (name: string, value: string | any[], items: any) => any;
     queryColumns?: OrderedMap<string, QueryColumn>;
     queryInfo?: QueryInfo;
-    lookups?: Map<string, number>;
-    onChange?: Function;
     renderFileInputs?: boolean;
-    allowFieldDisable?: boolean;
-    onFieldsEnabledChange?: (numEnabled: number) => void;
-    initiallyDisableFields?: boolean;
-    useDatePicker?: boolean;
-    disabledFields?: List<string>;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    showLabelAsterisk?: boolean; // only used if checkRequiredFields is false, to show * for fields that are originally required
     showQuerySelectPreviewOptions?: boolean;
+    useDatePicker?: boolean;
 }
 
 interface State {
@@ -170,7 +169,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             lookups,
             queryColumns,
             queryInfo,
-            onChange,
             renderFileInputs,
             allowFieldDisable,
             disabledFields,
@@ -186,7 +184,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         // QueryFormInputs to be a rendering factory for the columns that are in the set.
         if (columns) {
             return columns
-                .filter(filter)
+                .filter(col => filter(col))
                 .valueSeq()
                 .map((col, i) => {
                     const shouldDisableField =
@@ -288,15 +286,17 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     } else if (col.inputType === 'file' && renderFileInputs) {
                         return (
                             <FileInput
+                                formsy
                                 key={i}
                                 queryColumn={col}
-                                value={value}
-                                onChange={onChange}
+                                initialValue={value}
+                                name={col.fieldKey}
                                 allowDisable={allowFieldDisable}
                                 initiallyDisabled={shouldDisableField}
                                 onToggleDisable={this.onToggleDisable}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 renderFieldLabel={renderFieldLabel}
+                                showLabel
                             />
                         );
                     }

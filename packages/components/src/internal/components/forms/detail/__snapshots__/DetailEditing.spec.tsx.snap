@@ -35,7 +35,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-fieldkey="flag"
             >
               <span
-                className="detail-display"
+                className="ws-pre-wrap"
               >
                 
               </span>
@@ -55,7 +55,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-fieldkey="for set 3"
             >
               <span
-                className="detail-display"
+                className="ws-pre-wrap"
               >
                 abc
               </span>
@@ -75,7 +75,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-fieldkey="again for set 3"
             >
               <span
-                className="detail-display"
+                className="ws-pre-wrap"
               >
                 false
               </span>
@@ -95,7 +95,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-fieldkey="another"
             >
               <span
-                className="detail-display"
+                className="ws-pre-wrap"
               >
                 test test
               </span>
@@ -115,6 +115,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-fieldkey="lookupfield"
             >
               <a
+                className="ws-pre-wrap"
                 href="/labkey/Sample%20Management%202/list-details.view?listId=1&pk=test2"
               >
                 test2
@@ -174,7 +175,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-fieldkey="flag"
             >
               <span
-                className="detail-display"
+                className="ws-pre-wrap"
               >
                 
               </span>
@@ -194,7 +195,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-fieldkey="for set 3"
             >
               <span
-                className="detail-display"
+                className="ws-pre-wrap"
               >
                 abc
               </span>
@@ -214,7 +215,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-fieldkey="again for set 3"
             >
               <span
-                className="detail-display"
+                className="ws-pre-wrap"
               >
                 false
               </span>
@@ -234,7 +235,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-fieldkey="another"
             >
               <span
-                className="detail-display"
+                className="ws-pre-wrap"
               >
                 test test
               </span>
@@ -254,6 +255,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-fieldkey="lookupfield"
             >
               <a
+                className="ws-pre-wrap"
                 href="/labkey/Sample%20Management%202/list-details.view?listId=1&pk=test2"
               >
                 test2

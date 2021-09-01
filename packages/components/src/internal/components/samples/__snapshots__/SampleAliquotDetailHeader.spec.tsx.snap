@@ -19,6 +19,7 @@ Array [
         </td>
         <td>
           <a
+            className="ws-pre-wrap"
             href="#/rd/samples/2"
           >
             S-1-1
@@ -31,6 +32,7 @@ Array [
         </td>
         <td>
           <a
+            className="ws-pre-wrap"
             href="#/q/core/siteusers/1005"
           >
             xyang
@@ -43,7 +45,7 @@ Array [
         </td>
         <td>
           <span
-            className="detail-display"
+            className="ws-pre-wrap"
           >
             2021-03-02 14:49
           </span>
@@ -55,7 +57,7 @@ Array [
         </td>
         <td>
           <span
-            className="detail-display"
+            className="ws-pre-wrap"
           >
             this is a sub-aliquot - 3
           </span>
@@ -67,7 +69,7 @@ Array [
         </td>
         <td>
           <span
-            className="detail-display"
+            className="ws-pre-wrap"
           >
             ali-1-1 - child4
           </span>
@@ -92,6 +94,7 @@ Array [
         </td>
         <td>
           <a
+            className="ws-pre-wrap"
             href="#/rd/samples/1"
           >
             S-1
@@ -104,7 +107,7 @@ Array [
         </td>
         <td>
           <span
-            className="detail-display"
+            className="ws-pre-wrap"
           >
             4
           </span>

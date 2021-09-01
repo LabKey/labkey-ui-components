@@ -22,10 +22,7 @@ import { Link } from 'react-router';
 
 import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
-import { addColumns, changeColumn, removeColumn } from '../../actions';
-
 import {
-    AddEntityButton,
     Alert,
     AppURL,
     capitalizeFirstChar,
@@ -56,7 +53,6 @@ import {
     queryGridInvalidate,
     QueryGridModel,
     QueryInfo,
-    RemoveEntityButton,
     removeQueryGridModel,
     resolveErrorMessage,
     SampleCreationType,
@@ -98,6 +94,13 @@ import {
 
 import { getUniqueIdColumnMetadata } from './utils';
 import { getEntityTypeData, handleEntityFileImport } from './actions';
+import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
+import {
+    addEntityParentType,
+    changeEntityParentType,
+    EntityParentTypeSelectors,
+    removeEntityParentType,
+} from './EntityParentTypeSelectors';
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
@@ -454,7 +457,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     addParent = (queryName: string): void => {
-        this.setState(state => ({ insertModel: state.insertModel.addParent(queryName) }));
+        this.setState(state => ({
+            insertModel: state.insertModel.merge({
+                entityParents: addEntityParentType(queryName, state.insertModel.entityParents),
+            }) as EntityIdCreationModel,
+        }));
     };
 
     changeParent = (
@@ -464,141 +471,50 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         formValue: any,
         parent: IParentOption
     ): void => {
-        const { combineParentTypes } = this.props;
-        const queryGridModel = this.getQueryGridModel();
-        if (queryGridModel) {
-            const { insertModel } = this.state;
-            const { entityDataType } = this.props;
-            const [updatedModel, column, existingParent, parentColumnName] = insertModel.changeParent(
-                index,
-                queryName,
-                entityDataType.uniqueFieldKey,
-                parent
-            );
-            if (!updatedModel)
-                // no updated model if nothing has changed, so we can just stop
-                return;
+        const { insertModel } = this.state;
+        const { entityDataType, combineParentTypes } = this.props;
 
-            this.setState(
-                () => {
-                    return {
-                        insertModel: updatedModel,
-                    };
-                },
-                () => {
-                    this.props.onParentChange?.(updatedModel.entityParents);
-                    if (column && existingParent) {
-                        if (existingParent.query !== undefined) {
-                            changeColumn(queryGridModel, existingParent.createColumnName(), column);
-                        } else {
-                            const columnMap = OrderedMap<string, QueryColumn>();
-                            let fieldKey;
-                            if (existingParent.index === 1) {
-                                fieldKey = entityDataType.uniqueFieldKey;
-                            } else {
-                                const definedParents = updatedModel
-                                    .getParentEntities(combineParentTypes, queryName)
-                                    .filter(parent => parent.query !== undefined);
-                                if (definedParents.size === 0) fieldKey = entityDataType.uniqueFieldKey;
-                                else {
-                                    // want the first defined parent before the new parent's index
-                                    const prevParent = definedParents.findLast(
-                                        parent => parent.index < existingParent.index
-                                    );
-                                    fieldKey = prevParent
-                                        ? prevParent.createColumnName()
-                                        : entityDataType.uniqueFieldKey;
-                                }
-                            }
-                            addColumns(queryGridModel, columnMap.set(column.fieldKey.toLowerCase(), column), fieldKey);
-                        }
-                    } else {
-                        removeColumn(queryGridModel, parentColumnName);
-                    }
-                }
-            );
+        const updatedEntityParents = changeEntityParentType(
+            index,
+            queryName,
+            parent,
+            this.getQueryGridModel(),
+            insertModel.entityParents,
+            entityDataType,
+            combineParentTypes
+        );
+
+        if (updatedEntityParents) {
+            this.updateEntityParents(updatedEntityParents);
         }
     };
 
     removeParent = (index: number, queryName: string): void => {
         const { insertModel } = this.state;
-        const [updatedModel, parentColumnName] = insertModel.removeParent(index, queryName);
+        const updatedEntityParents = removeEntityParentType(
+            index,
+            queryName,
+            insertModel.entityParents,
+            this.getQueryGridModel()
+        );
+
+        if (updatedEntityParents) {
+            this.updateEntityParents(updatedEntityParents);
+        }
+    };
+
+    updateEntityParents(updatedEntityParents: Map<string, List<EntityParentType>>): void {
         this.setState(
-            () => ({ insertModel: updatedModel }),
+            state => ({
+                insertModel: state.insertModel.merge({
+                    entityParents: updatedEntityParents,
+                }) as EntityIdCreationModel,
+            }),
             () => {
-                this.props.onParentChange?.(updatedModel.entityParents);
-                removeColumn(this.getQueryGridModel(), parentColumnName);
+                this.props.onParentChange?.(updatedEntityParents);
             }
         );
-    };
-
-    renderParentTypes = (entityDataType: EntityDataType): ReactNode => {
-        const { insertModel } = this.state;
-        const { combineParentTypes } = this.props;
-        const { queryName } = entityDataType.typeListingSchemaQuery;
-
-        return insertModel
-            .getParentEntities(combineParentTypes, queryName)
-            .map(parent => {
-                const { index, key, query } = parent;
-                const capNounSingular = capitalizeFirstChar(entityDataType.nounAsParentSingular);
-                return (
-                    <div className="form-group row" key={key}>
-                        <SelectInput
-                            containerClass=""
-                            inputClass="col-sm-5"
-                            label={capNounSingular + ' ' + index + ' Type'}
-                            labelClass="col-sm-3 entity-insert--parent-label"
-                            name={'parent-re-select-' + index}
-                            id={'parent-re-select-' + index}
-                            onChange={this.changeParent.bind(this, index, queryName)}
-                            options={insertModel.getParentOptions(query, queryName, combineParentTypes)}
-                            value={query}
-                        />
-
-                        <RemoveEntityButton
-                            labelClass="entity-insert--remove-parent"
-                            entity={capNounSingular}
-                            index={index}
-                            onClick={this.removeParent.bind(this, index, queryName)}
-                        />
-                    </div>
-                );
-            })
-            .toArray();
-    };
-
-    renderAddEntityButton = (entityDataType: EntityDataType): ReactNode => {
-        const { insertModel } = this.state;
-        const { combineParentTypes } = this.props;
-        const { queryName } = entityDataType.typeListingSchemaQuery;
-        const parentOptions = insertModel.parentOptions.get(queryName);
-
-        if (parentOptions.size === 0) {
-            return null;
-        }
-
-        const entityParents = insertModel.getParentEntities(combineParentTypes, queryName);
-        const disabled = parentOptions.size <= entityParents.size;
-        const title = disabled
-            ? 'Only ' +
-              parentOptions.size +
-              ' ' +
-              (parentOptions.size === 1 ? entityDataType.descriptionSingular : entityDataType.descriptionPlural) +
-              ' available.'
-            : undefined;
-
-        return (
-            <AddEntityButton
-                containerClass="entity-insert--entity-add-button"
-                key={'add-entity-' + queryName}
-                entity={capitalizeFirstChar(entityDataType.nounAsParentSingular)}
-                title={title}
-                disabled={disabled}
-                onClick={this.addParent.bind(this, queryName)}
-            />
-        );
-    };
+    }
 
     renderParentTypesAndButtons = (): ReactNode => {
         const { insertModel } = this.state;
@@ -609,18 +525,15 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
             if (isInit && targetEntityType && parentDataTypes) {
                 return (
-                    <>
-                        {combineParentTypes
-                            ? // Just grabbing first parent type for the name
-                              this.renderParentTypes(parentDataTypes.get(0))
-                            : parentDataTypes.map(this.renderParentTypes)}
-                        <div className="entity-insert--header">
-                            {combineParentTypes
-                                ? // Just grabbing first parent type for the name
-                                  this.renderAddEntityButton(parentDataTypes.get(0))
-                                : parentDataTypes.map(this.renderAddEntityButton)}
-                        </div>
-                    </>
+                    <EntityParentTypeSelectors
+                        parentDataTypes={parentDataTypes}
+                        parentOptionsMap={insertModel.parentOptions}
+                        entityParentsMap={insertModel.entityParents}
+                        combineParentTypes={combineParentTypes}
+                        onAdd={this.addParent}
+                        onChange={this.changeParent}
+                        onRemove={this.removeParent}
+                    />
                 );
             }
         }
@@ -892,7 +805,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     columnFilter = (col: QueryColumn): boolean => {
         return (
-            insertColumnFilter(col) &&
+            insertColumnFilter(col, false) &&
             col.fieldKey !== this.props.entityDataType.uniqueFieldKey &&
             col.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY
         );
@@ -950,45 +863,51 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         return (
             <>
                 {this.renderHeader(true)}
-                <hr className="bottom-spacing" />
+                <hr />
                 <div className="top-spacing">
                     {!isLoaded && !insertModel.isError && !!insertModel.targetEntityType?.value && (
                         <LoadingSpinner wrapperClassName="loading-data-message" />
                     )}
                     {isLoaded && (
-                        <EditableGridPanel
-                            addControlProps={{
-                                nounSingular: gridNounSingularCap,
-                                nounPlural: gridNounPluralCap,
-                                placement: 'top' as PlacementType,
-                                wrapperClass: 'pull-left',
-                                maxCount: MAX_EDITABLE_GRID_ROWS,
-                            }}
-                            allowBulkRemove
-                            allowBulkAdd
-                            allowBulkUpdate
-                            bordered
-                            striped
-                            bulkAddText="Bulk Insert"
-                            bulkAddProps={{
-                                title: `Bulk Creation of ${gridNounPluralCap}`,
-                                header: `Add a batch of ${gridNounPlural} that will share the properties set below.`,
-                                columnFilter: this.columnFilter,
-                                fieldValues: this.getBulkAddFormValues(),
-                                creationTypeOptions: bulkCreationTypeOptions,
-                                countText: `New ${gridNounPlural}`,
-                            }}
-                            onBulkAdd={onBulkAdd}
-                            bulkUpdateProps={{ columnFilter: this.columnFilter }}
-                            bulkRemoveText={'Remove ' + gridNounPluralCap}
-                            columnMetadata={columnMetadata}
-                            onRowCountChange={this.onRowCountChange}
-                            model={queryGridModel}
-                            initialEmptyRowCount={0}
-                            emptyGridMsg={`Start by adding the quantity of ${gridNounPlural} you want to create.`}
-                            maxTotalRows={this.props.maxEntities}
-                            getInsertColumns={this.getInsertColumns}
-                        />
+                        <>
+                            <EntityInsertGridRequiredFieldAlert
+                                type={this.capTypeTextSingular}
+                                queryInfo={queryGridModel?.queryInfo}
+                            />
+                            <EditableGridPanel
+                                addControlProps={{
+                                    nounSingular: gridNounSingularCap,
+                                    nounPlural: gridNounPluralCap,
+                                    placement: 'top' as PlacementType,
+                                    wrapperClass: 'pull-left',
+                                    maxCount: MAX_EDITABLE_GRID_ROWS,
+                                }}
+                                allowBulkRemove
+                                allowBulkAdd
+                                allowBulkUpdate
+                                bordered
+                                striped
+                                bulkAddText="Bulk Insert"
+                                bulkAddProps={{
+                                    title: `Bulk Creation of ${gridNounPluralCap}`,
+                                    header: `Add a batch of ${gridNounPlural} that will share the properties set below.`,
+                                    columnFilter: this.columnFilter,
+                                    fieldValues: this.getBulkAddFormValues(),
+                                    creationTypeOptions: bulkCreationTypeOptions,
+                                    countText: `New ${gridNounPlural}`,
+                                }}
+                                onBulkAdd={onBulkAdd}
+                                bulkUpdateProps={{ columnFilter: this.columnFilter }}
+                                bulkRemoveText={'Remove ' + gridNounPluralCap}
+                                columnMetadata={columnMetadata}
+                                onRowCountChange={this.onRowCountChange}
+                                model={queryGridModel}
+                                initialEmptyRowCount={0}
+                                emptyGridMsg={`Start by adding the quantity of ${gridNounPlural} you want to create.`}
+                                maxTotalRows={this.props.maxEntities}
+                                getInsertColumns={this.getInsertColumns}
+                            />
+                        </>
                     )}
                 </div>
             </>

@@ -19,6 +19,7 @@ interface DetailPanelHeaderProps {
     isEditable: boolean;
     canUpdate: boolean;
     editing?: boolean;
+    verb?: string;
     onClickFn?: () => void;
     title?: string;
     warning?: string;
@@ -29,15 +30,16 @@ export class DetailPanelHeader extends React.Component<DetailPanelHeaderProps, a
     static defaultProps = {
         title: 'Details',
         useEditIcon: true,
+        verb: 'Editing',
     };
 
     render() {
-        const { isEditable, canUpdate, editing, onClickFn, warning, title, useEditIcon } = this.props;
+        const { isEditable, canUpdate, editing, onClickFn, warning, title, useEditIcon, verb } = this.props;
 
         if (editing) {
             return (
                 <div className="detail__edit--heading">
-                    Editing {title}
+                    {verb} {title}
                     {warning !== undefined && (
                         <span>
                             <span> - </span>

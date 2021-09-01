@@ -82,12 +82,14 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
     );
 
     let foundSamplesMsg;
+    let showButtons = true;
     if (isLoading(loadingState) || (listModel?.isLoading && !listModel.queryInfoError)) {
         foundSamplesMsg = (
             <div className="bottom-spacing">
                 <LoadingSpinner />
             </div>
         );
+        showButtons = false;
     } else if (!numIdsMsg || !listModel || listModel.queryInfoError) {
         foundSamplesMsg = null;
     } else {
@@ -115,14 +117,16 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
         <Section title={title} panelClassName={panelClassName}>
             {foundSamplesMsg}
             <SamplesNotFoundMsg missingIds={missingIds} />
-            <div className="bottom-spacing">
-                <Button className="button-right-spacing" bsClass="btn btn-default" onClick={onAddMoreSamples}>
-                    Add {hasSamples ? 'More ' : ''}Samples
-                </Button>
-                <Button bsClass="btn btn-default" onClick={onClearSamples} disabled={!numIdsMsg}>
-                    Reset
-                </Button>
-            </div>
+            {showButtons && (
+                <div className="bottom-spacing">
+                    <Button className="button-right-spacing" bsClass="btn btn-default" onClick={onAddMoreSamples}>
+                        Add {hasSamples ? 'More ' : ''}Samples
+                    </Button>
+                    <Button bsClass="btn btn-default" onClick={onClearSamples} disabled={!numIdsMsg}>
+                        Reset
+                    </Button>
+                </div>
+            )}
             {hasSamples && <Alert bsStyle="info">{workWithSamplesMsg}</Alert>}
             <FindByIdsModal
                 show={showFindModal}

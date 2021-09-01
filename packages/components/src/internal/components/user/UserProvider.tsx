@@ -2,8 +2,7 @@
  * Copyright (c) 2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
-import { Map, fromJS } from 'immutable';
+import React, { useEffect, useState } from 'react';
 
 import { getUserProperties, LoadingPage, User } from '../../..';
 
@@ -12,7 +11,7 @@ interface Props {
 }
 
 interface State {
-    userProperties: Map<string, any>;
+    userProperties: Record<string, any>;
 }
 
 export type UserProviderProps = Props & State;
@@ -21,6 +20,7 @@ const Context = React.createContext<State>(undefined);
 const UserContextProvider = Context.Provider;
 export const UserContextConsumer = Context.Consumer;
 
+/** @deprecated Consider calling getUserProperties() or using useUserProperties hook instead. */
 export const UserProvider = (Component: React.ComponentType) => {
     return class UserProviderImpl extends React.Component<Props, State> {
         constructor(props: Props) {
@@ -31,30 +31,21 @@ export const UserProvider = (Component: React.ComponentType) => {
             };
         }
 
-        componentDidMount(): void {
+        componentDidMount = async (): Promise<void> => {
             const { user } = this.props;
 
             if (!user.isGuest) {
-                getUserProperties(user.id)
-                    .then(response => {
-                        if (response && response.props) {
-                            this.setState(() => ({ userProperties: fromJS(response.props) }));
-                        } else {
-                            this.setEmptyUserProperties();
-                        }
-                    })
-                    .catch(reason => {
-                        console.error(reason);
-                        this.setEmptyUserProperties();
-                    });
-            } else {
-                this.setEmptyUserProperties();
+                try {
+                    const response = await getUserProperties(user.id);
+                    this.setState({ userProperties: response.props });
+                    return;
+                } catch (e) {
+                    console.error('Failed to load user properties', e);
+                }
             }
-        }
 
-        setEmptyUserProperties() {
-            this.setState(() => ({ userProperties: Map<string, any>() }));
-        }
+            this.setState({ userProperties: {} });
+        };
 
         render() {
             if (this.state.userProperties) {
@@ -69,3 +60,25 @@ export const UserProvider = (Component: React.ComponentType) => {
         }
     };
 };
+
+export function useUserProperties(user: User): Record<string, any> {
+    const { id, isGuest } = user;
+    const [userProperties, setUserProperties] = useState<Record<string, any>>({});
+
+    useEffect(() => {
+        if (isGuest) {
+            setUserProperties({});
+        } else {
+            (async () => {
+                try {
+                    const response = await getUserProperties(id);
+                    setUserProperties(response.props);
+                } catch (e) {
+                    console.error('Failed to load user properties', e);
+                }
+            })();
+        }
+    }, [isGuest, id]);
+
+    return userProperties;
+}

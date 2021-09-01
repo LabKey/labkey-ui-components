@@ -360,7 +360,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             sampleIds,
             queryGridSuffix,
             ASSAY_GRID_ID_PREFIX,
-            !isSourceSampleAssayGrid,
+            false,
             sampleSchemaQuery
         );
 
@@ -378,7 +378,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
                 allSampleIds,
                 queryGridSuffix,
                 UNFILTERED_GRID_ID_PREFIX,
-                !isSourceSampleAssayGrid,
+                false,
                 sampleSchemaQuery
             );
 

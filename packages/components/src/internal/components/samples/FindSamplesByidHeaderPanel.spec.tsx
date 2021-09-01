@@ -71,11 +71,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
         expect(section.prop('title')).toBe('Find Samples in Bulk');
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
         const buttons = wrapper.find('button');
-        expect(buttons).toHaveLength(2);
-        expect(buttons.at(0).text()).toBe('Add Samples');
-        expect(buttons.at(0).prop('disabled')).toBe(false);
-        expect(buttons.at(1).text()).toBe('Reset');
-        expect(buttons.at(1).prop('disabled')).toBe(true);
+        expect(buttons).toHaveLength(0);
         expect(wrapper.find(Alert)).toHaveLength(0);
         expect(wrapper.find('.find-samples-warning')).toHaveLength(0);
     });

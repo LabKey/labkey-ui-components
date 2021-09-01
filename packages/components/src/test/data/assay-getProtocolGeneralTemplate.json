@@ -264,6 +264,7 @@
     "qcEnabled" : false,
     "protocolTransformScripts" : [ ],
     "autoCopyTargetContainer" : null,
+    "autoLinkCategory": "",
     "allowTransformationScript" : true,
     "allowBackgroundUpload" : true,
     "allowEditableResults" : true,

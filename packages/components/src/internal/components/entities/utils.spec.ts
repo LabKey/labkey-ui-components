@@ -1,9 +1,25 @@
 import { fromJS, List, Map } from 'immutable';
 
-import { createEntityParentKey, DataClassDataType, QueryGridModel, SchemaQuery } from '../../..';
+import {
+    createEntityParentKey,
+    DataClassDataType,
+    makeQueryInfo,
+    makeTestQueryModel,
+    QueryGridModel,
+    SampleTypeDataType,
+    SchemaQuery,
+} from '../../..';
+
+import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
 
 import { EntityChoice, IEntityTypeOption } from './models';
-import { getInitialParentChoices, parentValuesDiffer } from './utils';
+import {
+    getEntityDescription,
+    getEntityNoun,
+    getInitialParentChoices,
+    getUpdatedLineageRowsForBulkEdit,
+    parentValuesDiffer,
+} from './utils';
 
 describe('getInitialParentChoices', () => {
     const modelId = 'id';
@@ -39,7 +55,7 @@ describe('getInitialParentChoices', () => {
     ]);
 
     test('empty child data', () => {
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {});
+        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {}, {});
         expect(parentChoices.size).toBe(0);
     });
 
@@ -53,7 +69,7 @@ describe('getInitialParentChoices', () => {
             query: schemaQuery.queryName,
             data: Map<any, Map<string, any>>(),
         });
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model);
+        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model, {});
         expect(parentChoices.size).toBe(0);
     });
 
@@ -95,12 +111,6 @@ describe('getInitialParentChoices', () => {
                             url: '/labkey/Sam%20Man/experiment-showData.view?rowId=57093&dataClassId=322',
                         },
                     ],
-                    'Inputs/Data/First/DataClass': [
-                        {
-                            displayValue: '322',
-                            value: [0],
-                        },
-                    ],
                     Run: {
                         displayValue: 'Derive sample from Sec-32',
                         value: 2144,
@@ -130,11 +140,16 @@ describe('getInitialParentChoices', () => {
                     TextField: {
                         value: null,
                     },
-                    'Inputs/Materials/First/SampleSet': [],
                 },
             }),
         });
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model);
+        const parentIdData = {
+            'urn:lsid:labkey.com:Data.Folder-252:1fce5b0b-33ce-1038-8604-d42714b6919e': {
+                rowId: 123,
+                parentId: 321,
+            },
+        };
+        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model, parentIdData);
         expect(parentChoices.size).toBe(0);
     });
 
@@ -182,24 +197,6 @@ describe('getInitialParentChoices', () => {
                     url: '/labkey/Sam%20Man/experiment-showData.view?rowId=57088&dataClassId=322',
                 },
             ],
-            'Inputs/Data/First/DataClass': [
-                {
-                    displayValue: '321',
-                    value: 321,
-                },
-                {
-                    displayValue: '321',
-                    value: 321,
-                },
-                {
-                    displayValue: '321',
-                    value: 321,
-                },
-                {
-                    displayValue: '322',
-                    value: 322,
-                },
-            ],
             Run: {
                 displayValue: 'Derive sample from B-50116, B-50117, B-50118, Sec-2',
                 value: 2297,
@@ -229,9 +226,26 @@ describe('getInitialParentChoices', () => {
             TextField: {
                 value: null,
             },
-            'Inputs/Materials/First/SampleSet': [],
         };
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, data);
+        const parentIdData = {
+            'urn:lsid:labkey.com:Data.Folder-252:a49f277e-301e-1038-a031-328bafaf2618': {
+                rowId: 1,
+                parentId: 321,
+            },
+            'urn:lsid:labkey.com:Data.Folder-252:a49f277f-301e-1038-a031-328bafaf2618': {
+                rowId: 2,
+                parentId: 321,
+            },
+            'urn:lsid:labkey.com:Data.Folder-252:a49f2780-301e-1038-a031-328bafaf2618': {
+                rowId: 3,
+                parentId: 321,
+            },
+            'urn:lsid:labkey.com:Data.Folder-252:604347b2-3103-1038-91ee-da4874ca890e': {
+                rowId: 4,
+                parentId: 322,
+            },
+        };
+        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, data, parentIdData);
         expect(parentChoices.size).toBe(2);
         const firstChoice = parentChoices.get(0);
         expect(firstChoice.type.label).toBe('Second Source');
@@ -514,5 +528,281 @@ describe('createEntityParentKey', () => {
     });
     test('with id', () => {
         expect(createEntityParentKey(SchemaQuery.create('schema', 'query'), 'id')).toBe('schema:query:id');
+    });
+});
+
+describe('getEntityDescription', () => {
+    test('zero', () => {
+        expect(getEntityDescription(DataClassDataType, 0)).toBe('parent types');
+    });
+    test('one', () => {
+        expect(getEntityDescription(DataClassDataType, 1)).toBe('parent type');
+    });
+    test('multiple', () => {
+        expect(getEntityDescription(DataClassDataType, 2)).toBe('parent types');
+    });
+});
+
+describe('getEntityNoun', () => {
+    test('zero', () => {
+        expect(getEntityNoun(SampleTypeDataType, 0)).toBe('samples');
+    });
+    test('one', () => {
+        expect(getEntityNoun(SampleTypeDataType, 1)).toBe('sample');
+    });
+    test('multiple', () => {
+        expect(getEntityNoun(SampleTypeDataType, 2)).toBe('samples');
+    });
+});
+
+describe('getUpdatedLineageRowsForBulkEdit', () => {
+    const QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
+    const original1 = List<EntityChoice>([
+        {
+            gridValues: [
+                {
+                    displayValue: 'Val1',
+                },
+                {
+                    displayValue: 'Val2',
+                },
+            ],
+            type: {
+                lsid: 'lsid1',
+                rowId: 1,
+                label: 'Label 1',
+            },
+            ids: ['id1.1', 'id1.2'],
+            value: undefined,
+        },
+        {
+            gridValues: [
+                {
+                    displayValue: 'Val3',
+                },
+            ],
+            type: {
+                lsid: 'lsid2',
+                rowId: 2,
+                label: 'Label 2',
+            },
+            ids: ['id2.1'],
+            value: undefined,
+        },
+    ]);
+    const original2 = List<EntityChoice>([
+        {
+            gridValues: [
+                {
+                    displayValue: 'Val1',
+                },
+            ],
+            type: {
+                lsid: 'lsid1',
+                rowId: 1,
+                label: 'Label 1',
+            },
+            ids: ['id1.1'],
+            value: 'Val1',
+        },
+    ]);
+
+    const selected = List<EntityChoice>([
+        {
+            type: {
+                lsid: 'lsid1',
+                rowId: 1,
+                label: 'Label 1',
+                entityDataType: SampleTypeDataType,
+            },
+            ids: ['id1.1', 'id1.2'],
+            value: 'Val1,Val2',
+        },
+    ]);
+    const samples = {
+        '1': {
+            rowId: {
+                value: '1',
+            },
+        },
+        '2': {
+            rowId: {
+                value: '2',
+            },
+        },
+    };
+    test('no samples', () => {
+        expect(getUpdatedLineageRowsForBulkEdit({}, selected, {}, QUERY_INFO)).toStrictEqual([]);
+    });
+
+    test('no selected parents', () => {
+        expect(
+            getUpdatedLineageRowsForBulkEdit(
+                samples,
+                List<EntityChoice>(),
+                {
+                    '1': original1,
+                },
+                QUERY_INFO
+            )
+        ).toStrictEqual([]);
+    });
+
+    test('no original parents', () => {
+        const rows = getUpdatedLineageRowsForBulkEdit(
+            samples,
+            selected,
+            { '1': List<EntityChoice>(), '2': List<EntityChoice>() },
+            QUERY_INFO
+        );
+        expect(rows).toStrictEqual([
+            {
+                RowId: '1',
+                'MaterialInputs/Label 1': 'Val1,Val2',
+            },
+            {
+                RowId: '2',
+                'MaterialInputs/Label 1': 'Val1,Val2',
+            },
+        ]);
+    });
+
+    test('change one original parent', () => {
+        const rows = getUpdatedLineageRowsForBulkEdit(
+            samples,
+            selected,
+            { '1': original1, '2': original2 },
+            QUERY_INFO
+        );
+        expect(rows).toStrictEqual([
+            {
+                RowId: '2',
+                'MaterialInputs/Label 1': 'Val1,Val2',
+            },
+        ]);
+    });
+
+    test('remove one of many original parents', () => {
+        const selected = List<EntityChoice>([
+            {
+                type: {
+                    lsid: 'lsid2',
+                    rowId: 2,
+                    label: 'Label 2',
+                    entityDataType: SampleTypeDataType,
+                },
+                ids: [],
+                value: undefined,
+            },
+        ]);
+        const rows = getUpdatedLineageRowsForBulkEdit(
+            samples,
+            selected,
+            { '1': original1, '2': original2 },
+            QUERY_INFO
+        );
+        expect(rows).toHaveLength(1);
+        expect(rows).toStrictEqual([
+            {
+                RowId: '1',
+                'MaterialInputs/Label 2': null,
+            },
+        ]);
+    });
+
+    test('remove original parent entirely', () => {
+        const selected = List<EntityChoice>([
+            {
+                type: {
+                    lsid: 'lsid1',
+                    rowId: 1,
+                    label: 'Label 1',
+                    entityDataType: SampleTypeDataType,
+                },
+                ids: ['id1.1'],
+                value: 'Val1',
+            },
+        ]);
+        const rows = getUpdatedLineageRowsForBulkEdit(
+            samples,
+            selected,
+            { '1': original1, '2': original2 },
+            QUERY_INFO
+        );
+        expect(rows).toStrictEqual([
+            {
+                RowId: '1',
+                'MaterialInputs/Label 1': 'Val1',
+            },
+        ]);
+    });
+
+    test('multiple updates', () => {
+        const selected = List<EntityChoice>([
+            {
+                type: {
+                    lsid: 'lsid1',
+                    rowId: 1,
+                    label: 'Label 1',
+                    entityDataType: SampleTypeDataType,
+                },
+                ids: ['id1.2'],
+                value: 'Val2',
+            },
+            {
+                type: {
+                    lsid: 'lsid2',
+                    rowId: 2,
+                    label: 'Label 2',
+                    entityDataType: SampleTypeDataType,
+                },
+                ids: [],
+                value: undefined,
+            },
+        ]);
+        const rows = getUpdatedLineageRowsForBulkEdit(
+            samples,
+            selected,
+            { '1': original1, '2': original2 },
+            QUERY_INFO
+        );
+        expect(rows).toStrictEqual([
+            {
+                RowId: '1',
+                'MaterialInputs/Label 1': 'Val2',
+                'MaterialInputs/Label 2': null,
+            },
+            {
+                RowId: '2',
+                'MaterialInputs/Label 1': 'Val2',
+            },
+        ]);
+    });
+
+    test('parents same except for ordering', () => {
+        const selected = List<EntityChoice>([
+            {
+                type: {
+                    lsid: 'lsid1',
+                    rowId: 1,
+                    label: 'Label 1',
+                    entityDataType: SampleTypeDataType,
+                },
+                ids: ['id1.2, id1.1'],
+                value: 'Val2,Val1',
+            },
+        ]);
+        const rows = getUpdatedLineageRowsForBulkEdit(
+            samples,
+            selected,
+            { '1': original1, '2': original2 },
+            QUERY_INFO
+        );
+        expect(rows).toStrictEqual([
+            {
+                RowId: '2',
+                'MaterialInputs/Label 1': 'Val1,Val2',
+            },
+        ]);
     });
 });

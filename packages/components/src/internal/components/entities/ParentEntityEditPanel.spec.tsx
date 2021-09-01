@@ -4,12 +4,9 @@ import PanelBody from 'react-bootstrap/lib/PanelBody';
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import {
-    Alert,
-    DataClassDataType,
-    LoadingSpinner,
-    QueryInfo,
-} from '../../..';
+import PanelHeading from 'react-bootstrap/lib/PanelHeading';
+
+import { Alert, DataClassDataType, LoadingSpinner, QueryInfo } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import { initUnitTestMocks } from '../../testHelperMocks';
 
@@ -89,5 +86,48 @@ describe('<ParentEntityEditPanel>', () => {
         expect(panel.find(Button)).toHaveLength(2);
         expect(panel).toMatchSnapshot();
         panel.unmount();
+    });
+
+    test('hideButtons', () => {
+        const panel = mount(
+            <ParentEntityEditPanel
+                childQueryInfo={queryInfo}
+                childData={{}}
+                canUpdate={true}
+                childName="Test"
+                childNounSingular="Testing"
+                title="Test 123"
+                hideButtons={true}
+                parentDataTypes={[DataClassDataType]}
+            />
+        );
+        panel.setState({
+            loading: false,
+            editing: true,
+            originalParents: List<EntityChoice>(),
+            currentParents: List<EntityChoice>(),
+        });
+        expect(panel.find(Button)).toHaveLength(0);
+    });
+
+    test('excludePanelHeader', () => {
+        const panel = mount(
+            <ParentEntityEditPanel
+                childQueryInfo={queryInfo}
+                childData={{}}
+                canUpdate={true}
+                childName="Test"
+                childNounSingular="Testing"
+                title="Test 123"
+                includePanelHeader={false}
+                parentDataTypes={[DataClassDataType]}
+            />
+        );
+        panel.setState({
+            loading: false,
+            originalParents: List<EntityChoice>(),
+            currentParents: List<EntityChoice>(),
+        });
+        expect(panel.find(PanelHeading)).toHaveLength(0);
     });
 });

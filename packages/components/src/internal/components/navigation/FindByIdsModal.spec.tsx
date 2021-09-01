@@ -63,6 +63,6 @@ describe('FindByIdsModal', () => {
         const textArea = wrapper.find('textarea');
         expect(textArea.prop('placeholder')).toBe('List Barcodes here');
         const findButton = wrapper.find('button.btn-success');
-        expect(findButton.text()).toBe('Find tests');
+        expect(findButton.text()).toBe('Find Tests');
     });
 });

@@ -1,6 +1,86 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.69.1
+*Released*: 31 August 2021
+* Issue 43771: Show Folder title on Application home pages.
+* Issue 43474: Prevent text wrapping for date columns.
+* Introduce `useUserProperties` for retrieving user properties based on current user.
+
+### version 2.69.0
+*Released*: 31 August 2021
+* Parameterize verb in DetailPanelHeader.
+* Move getEntityNoun method to utils
+* Add EntityLineageEditMenuItem and EntityLineageEditModal for enabling bulk update of entity lineage
+* Update ParentEntityEditPanel with more optional parameters
+  * hideButtons - to hide the buttons below the panel
+  * editOnly - to indicate that we start in edit mode and cannot cancel out of it;
+  * onChangeParent - callback used when any change in the parent types or values is made
+  * includePanelHeader - allows header on panel to be removed
+* Add ExperimentException handling to `resolveErrorMessage`
+
+### version 2.68.1
+*Released*: 30 August 2021
+* Issue 43760: Update checks for editable columns to incorporate the readOnly setting as well
+
+### version 2.68.0
+*Released*: 26 August 2021
+* Item 9228: Sample Type lineage updates via “Edit Sample in Grid”
+  * query to get first parents (sources or samples) for selected samples in sample type grid
+  * parse sample parent data into format that can be used to get initial columns and values for sample lineage EditableGrid
+  * add new "Lineage Details" tab to the sample edit via grid display
+  * allow for additional source and parents sample types to be added to EditableGrid
+  * persist updated sample parents on finish/save from EditableGrid
+  * refactor EntityParentTypeSelectors out of EntityInsertPanel.tsx for reuse
+
+### version 2.67.1
+*Release*: 26 August 2021
+* Issue 42628: Hide Biologics details view override in view menu
+
+### version 2.67.0
+*Release*: 25 August 2021
+* Issue 43029: Support File/Attachment Fields
+    * See https://github.com/LabKey/labkey-ui-components/pull/610 for more details.
+
+### version 2.66.1
+*Release*: 25 August 2021
+* Issue 43782: Omnibox - Filtering on a field pulled into a lookup shows lookup field instead of the pulled in field
+
+### version 2.66.0
+*Release*: 23 August 2021
+* Issue 43693: Indicate the depth of the lineage graphs and grids
+* Issue 43692: expose LineageGroupingOptions for ease of overriding defaults; update default depth to 5
+* Issue 43701: Don't remove sample id from a sample assay results grid since the grid may now include aliquots as well
+* Issue 43722: Update label in lineage grid from Name to ID
+
+### version 2.65.2
+*Released*: 20 August 2021
+* Expose range validator modal and related components
+
+### version 2.65.1
+*Released*: 18 August 2021
+* Issue 43734: SM: Aliquot overview details panel shows some aliquot values under the 'originating sample data' section
+  * Hide extra exp.material fields from aliquot detail view
+
+### version 2.65.0
+*Released*: 18 August 2021
+* Create Assay Designer 'Linked Dataset Category' field as part of Link to Study dataset category assignment
+
+### version 2.64.0
+*Released*: 18 August 2021
+* Issue 43728: bulk insert for samples is broken when a file field is present
+* Issue 43725: account for both forward and back slash in FileColumnRenderer.getAttachmentTitleFromName
+* Issue 43703: show warning on sample creation editable grid if required fields are included
+
+### version 2.63.2
+*Released*: 13 August 2021
+* Fix capitalization in FindByIdsModal button
+* Issue 43715: Fix pixel offset for Find menu in nav bar for Firefox
+
+### version 2.63.1
+*Released*: 13 August 2021
+* Item 8561: Add some sample type designer element class names for testing
+
 ### version 2.63.0
 *Released*: 11 August 2021
 * Issue 43672: Add "referrer" param to the help link URLs

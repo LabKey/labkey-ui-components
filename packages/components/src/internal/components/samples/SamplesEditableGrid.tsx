@@ -1,36 +1,52 @@
-import React from 'react';
-import { List, Map, OrderedMap } from 'immutable';
+import React, { ReactNode } from 'react';
+import { fromJS, List, Map, OrderedMap } from 'immutable';
 
-import { AuditBehaviorTypes } from '@labkey/api';
+import { AuditBehaviorTypes, Query, Utils } from '@labkey/api';
 
 import {
-    User,
-    EditableGridPanelForUpdate,
-    SchemaQuery,
-    getUniqueIdColumnMetadata,
-    QueryColumn,
-    QueryGridModel,
-    getStateQueryGridModel,
-    EditableGridLoaderFromSelection,
-    gridInit,
-    QueryInfo,
-    getSelectedData,
-    EditorModel,
-    dismissNotifications,
+    caseInsensitive,
     createNotification,
-    NO_UPDATES_MESSAGE,
-    queryGridInvalidate,
-    invalidateLineageResults,
-    schemaGridInvalidate,
-    gridIdInvalidate,
-    resolveErrorMessage,
+    dismissNotifications,
+    EditableColumnMetadata,
+    EditableGridLoaderFromSelection,
+    EditableGridPanelForUpdate,
+    EditorModel,
+    EntityDataType,
     getQueryGridModel,
-    updateRows,
+    getSelectedData,
+    getStateModelId,
+    getStateQueryGridModel,
+    getUniqueIdColumnMetadata,
+    gridIdInvalidate,
+    gridInit,
+    IEntityTypeOption,
+    invalidateLineageResults,
+    IParentOption,
     LoadingSpinner,
+    naturalSort,
+    NO_UPDATES_MESSAGE,
+    QueryColumn,
+    queryGridInvalidate,
+    QueryGridModel,
+    QueryInfo,
     QueryModel,
+    resolveErrorMessage,
+    SampleTypeDataType,
+    SchemaQuery,
+    User,
 } from '../../..';
 
+import { DisplayObject, EntityChoice, EntityParentType } from '../entities/models';
+
+import {
+    addEntityParentType,
+    changeEntityParentType,
+    EntityParentTypeSelectors,
+    removeEntityParentType,
+} from '../entities/EntityParentTypeSelectors';
+
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
+import { getOriginalParentsFromSampleLineage } from './actions';
 
 interface OwnProps {
     displayQueryModel: QueryModel;
@@ -52,6 +68,8 @@ interface OwnProps {
         selection: List<any>
     ) => any;
     invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
+    parentDataTypes: List<EntityDataType>;
+    combineParentTypes?: boolean;
 }
 
 type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultProps;
@@ -59,44 +77,62 @@ type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultPr
 const STORAGE_UPDATE_FIELDS = ['StoredAmount', 'Units', 'FreezeThawCount'];
 const SAMPLES_EDIT_GRID_ID = 'update-samples-grid';
 const SAMPLES_STORAGE_EDIT_GRID_ID = 'update-samples-storage-grid';
+const SAMPLES_LINEAGE_EDIT_GRID_ID = 'update-samples-lineage-grid';
 
 const INVENTORY_ITEM_QS = SchemaQuery.create('inventory', 'item');
 
 enum GridTab {
     Samples,
     Storage,
+    Lineage,
 }
 
-// Usage:
-// export const SamplesEditableGrid = connect<any, any, any>(undefined)(SamplesSelectionProvider(SamplesEditableGridBase));
-export class SamplesEditableGridBase extends React.Component<Props, any> {
+interface State {
+    originalParents: Record<string, List<EntityChoice>>;
+    parentTypeOptions: Map<string, List<IEntityTypeOption>>;
+    entityParentsMap: Map<string, List<EntityParentType>>;
+}
+
+// Usage: export const SamplesEditableGrid = connect<any, any, any>(undefined)(SamplesSelectionProvider(SamplesEditableGridBase));
+export class SamplesEditableGridBase extends React.Component<Props, State> {
     private readOnlyColumns: List<string> = undefined;
 
     private _hasError: boolean;
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
-
         this._hasError = false;
+
+        this.state = {
+            originalParents: undefined,
+            parentTypeOptions: undefined,
+            entityParentsMap: fromJS(
+                props.parentDataTypes.reduce((map, dataType) => {
+                    map[dataType.typeListingSchemaQuery.queryName] = [];
+                    return map;
+                }, {})
+            ),
+        };
     }
 
     componentDidMount(): void {
         this.init();
     }
 
-    init() {
+    init(): void {
         dismissNotifications();
         this.initSamplesEditableGrid();
         this.initStorageEditableGrid();
+        this.initLineageEditableGrid();
     }
 
-    componentWillUnmount() {
-        if (this._hasError)
-            // dismiss grid error msg, retain success msg
-            dismissNotifications();
+    componentWillUnmount(): void {
+        // dismiss grid error msg, retain success msg
+        if (this._hasError) dismissNotifications();
 
         gridIdInvalidate(SAMPLES_EDIT_GRID_ID, true);
         gridIdInvalidate(SAMPLES_STORAGE_EDIT_GRID_ID, true);
+        gridIdInvalidate(SAMPLES_LINEAGE_EDIT_GRID_ID, true);
     }
 
     getReadOnlyColumns(): List<string> {
@@ -129,7 +165,7 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
         return List<string>(STORAGE_UPDATE_FIELDS);
     }
 
-    getSamplesEditorQueryGridModel = () => {
+    getSamplesEditorQueryGridModel = (): QueryGridModel => {
         const {
             editableGridUpdateData,
             editableGridDataForSelection,
@@ -155,16 +191,16 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
         return getQueryGridModel(editModel.getId()) || editModel;
     };
 
-    initSamplesEditableGrid = () => {
+    initSamplesEditableGrid = (): void => {
         gridInit(this.getSamplesEditorQueryGridModel(), true, this);
     };
 
-    getSchemaQuery = () => {
+    getSchemaQuery = (): SchemaQuery => {
         const { displayQueryModel } = this.props;
         return displayQueryModel?.queryInfo?.schemaQuery;
     };
 
-    getStorageEditorQueryGridModel = () => {
+    getStorageEditorQueryGridModel = (): QueryGridModel => {
         const { displayQueryModel, editableGridDataIdsForSelection } = this.props;
 
         const queryModel = displayQueryModel;
@@ -229,19 +265,57 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
         return getQueryGridModel(editModel.getId()) || editModel;
     };
 
-    initStorageEditableGrid = () => {
+    initStorageEditableGrid = (): void => {
         if (this.props.canEditStorage) gridInit(this.getStorageEditorQueryGridModel(), true, this);
     };
 
-    updateAllTabRows = (updateDataRows: any[]): Promise<void> => {
-        const { noStorageSamples, invalidateSampleQueries } = this.props;
-        let sampleRows: any[] = [],
-            sampleSchemaQuery: SchemaQuery = null,
-            storageRows: any[] = [];
+    getLineageEditorQueryGridModel = (): QueryGridModel => {
+        const { displayQueryModel, sampleLineage, sampleLineageKeys } = this.props;
+        const { originalParents } = this.state;
+        if (!originalParents) return undefined;
+
+        // return global state model if we have already generated it
+        const samplesSchemaQuery = this.getSchemaQuery();
+        const modelId = getStateModelId(SAMPLES_LINEAGE_EDIT_GRID_ID, samplesSchemaQuery);
+        const stateModel = getQueryGridModel(modelId);
+        if (stateModel) {
+            return stateModel;
+        } else {
+            return createLineageEditorQueryGridModel(
+                displayQueryModel,
+                samplesSchemaQuery,
+                originalParents,
+                sampleLineageKeys,
+                sampleLineage
+            );
+        }
+    };
+
+    initLineageEditableGrid = async (): Promise<void> => {
+        const { originalParents, parentTypeOptions } = await getOriginalParentsFromSampleLineage(
+            this.props.sampleLineage
+        );
+        this.setState(
+            () => ({ originalParents, parentTypeOptions }),
+            () => {
+                gridInit(this.getLineageEditorQueryGridModel(), true, this);
+            }
+        );
+    };
+
+    updateAllTabRows = (updateDataRows: any[]): Promise<any> => {
+        const { noStorageSamples, invalidateSampleQueries, aliquots } = this.props;
+        let sampleSchemaQuery: SchemaQuery = null,
+            sampleRows: any[] = [],
+            storageRows: any[] = [],
+            lineageRows: any[] = [];
         updateDataRows.forEach(data => {
             const tabIndex = data.tabIndex;
             if (tabIndex === GridTab.Storage) {
                 storageRows = data.updatedRows;
+                sampleSchemaQuery = data.schemaQuery;
+            } else if (tabIndex === GridTab.Lineage) {
+                lineageRows = getUpdatedLineageRows(data.updatedRows, this.getLineageEditorQueryGridModel(), aliquots);
                 sampleSchemaQuery = data.schemaQuery;
             } else {
                 sampleRows = data.updatedRows;
@@ -249,12 +323,33 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
             }
         });
 
+        // combine sampleRows and lineageRows so that only one update command is used, i.e. so that we only get
+        // one audit entry for the update of a given sample
+        if (lineageRows.length > 0) {
+            const sampleRowIdIndexMap = sampleRows.reduce((map, row, index) => {
+                map[caseInsensitive(row, 'RowId')] = index;
+                return map;
+            }, {});
+            lineageRows.forEach(lineageRow => {
+                const rowId = caseInsensitive(lineageRow, 'RowId');
+                if (sampleRowIdIndexMap[rowId] !== undefined) {
+                    // merge in sample metadata row data with lineage row data for the same RowId
+                    sampleRows[sampleRowIdIndexMap[rowId]] = {
+                        ...sampleRows[sampleRowIdIndexMap[rowId]],
+                        ...lineageRow,
+                    };
+                } else {
+                    sampleRows.push(lineageRow);
+                }
+            });
+        }
+
         if (storageRows.length === 0 && sampleRows.length === 0) {
             return new Promise(resolve => {
                 this._hasError = false;
                 dismissNotifications();
                 createNotification(NO_UPDATES_MESSAGE);
-                resolve();
+                resolve('No changes to be saved.');
             });
         }
 
@@ -267,7 +362,7 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
                     alertClass: 'danger',
                     message: convertedStorageData?.errors.join('\n'),
                 });
-                resolve();
+                resolve('There were errors during the save.');
             });
         }
 
@@ -282,53 +377,62 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
         const totalSamplesToUpdate = sampleIds.size;
         const noun = totalSamplesToUpdate === 1 ? 'sample' : 'samples';
 
-        const updatePromises = [];
+        const commands = [];
         if (sampleRows.length > 0) {
-            updatePromises.push(
-                updateRows({
-                    schemaQuery: sampleSchemaQuery,
-                    rows: sampleRows,
-                    auditBehavior: AuditBehaviorTypes.DETAILED,
-                })
-            );
+            commands.push({
+                command: 'update',
+                schemaName: sampleSchemaQuery.schemaName,
+                queryName: sampleSchemaQuery.queryName,
+                rows: sampleRows,
+                auditBehavior: AuditBehaviorTypes.DETAILED,
+            });
         }
         if (convertedStorageData?.normalizedRows.length > 0) {
-            updatePromises.push(
-                updateRows({
-                    schemaQuery: INVENTORY_ITEM_QS,
-                    rows: convertedStorageData.normalizedRows,
-                    auditBehavior: AuditBehaviorTypes.DETAILED,
-                })
-            );
+            commands.push({
+                command: 'update',
+                schemaName: INVENTORY_ITEM_QS.schemaName,
+                queryName: INVENTORY_ITEM_QS.queryName,
+                rows: convertedStorageData.normalizedRows,
+                auditBehavior: AuditBehaviorTypes.DETAILED,
+            });
         }
 
-        return Promise.all(updatePromises)
-            .then(result => {
-                this._hasError = false;
-                if (sampleSchemaQuery) {
-                    if (invalidateSampleQueries) {
-                        invalidateSampleQueries(sampleSchemaQuery);
-                    } else {
-                        queryGridInvalidate(sampleSchemaQuery);
-                        invalidateLineageResults();
+        return new Promise((resolve, reject) => {
+            Query.saveRows({
+                commands,
+                success: result => {
+                    this._hasError = false;
+                    if (sampleSchemaQuery) {
+                        if (invalidateSampleQueries) {
+                            invalidateSampleQueries(sampleSchemaQuery);
+                        } else {
+                            queryGridInvalidate(sampleSchemaQuery);
+                            invalidateLineageResults();
+                        }
                     }
-                }
 
-                if (convertedStorageData?.normalizedRows.length > 0) queryGridInvalidate(INVENTORY_ITEM_QS);
+                    if (convertedStorageData?.normalizedRows.length > 0) queryGridInvalidate(INVENTORY_ITEM_QS);
 
-                gridIdInvalidate(SAMPLES_EDIT_GRID_ID, true);
-                gridIdInvalidate(SAMPLES_STORAGE_EDIT_GRID_ID, true);
-                dismissNotifications(); // get rid of any error notifications that have already been created
-                createNotification('Successfully updated ' + totalSamplesToUpdate + ' ' + noun);
-            })
-            .catch(reason => {
-                this._hasError = true;
-                dismissNotifications(); // get rid of any error notifications that have already been created
-                createNotification({
-                    alertClass: 'danger',
-                    message: resolveErrorMessage(reason, noun, 'samples', 'update'),
-                });
+                    gridIdInvalidate(SAMPLES_EDIT_GRID_ID, true);
+                    gridIdInvalidate(SAMPLES_STORAGE_EDIT_GRID_ID, true);
+                    gridIdInvalidate(SAMPLES_LINEAGE_EDIT_GRID_ID, true);
+                    dismissNotifications(); // get rid of any error notifications that have already been created
+
+                    createNotification('Successfully updated ' + totalSamplesToUpdate + ' ' + noun + '.');
+
+                    resolve(result);
+                },
+                failure: reason => {
+                    this._hasError = true;
+                    dismissNotifications(); // get rid of any error notifications that have already been created
+                    createNotification({
+                        alertClass: 'danger',
+                        message: resolveErrorMessage(reason, 'sample', 'samples', 'update'),
+                    });
+                    resolve(reason);
+                },
             });
+        });
     };
 
     getStorageUpdateData(storageRows: any[]) {
@@ -348,18 +452,18 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
         return getConvertedStorageUpdateData(storageRows, sampleItems, sampleTypeUnit, noStorageSamples, selection);
     }
 
-    onGridEditComplete = () => {
+    onGridEditComplete = (): void => {
         const { onGridEditComplete } = this.props;
         if (!this._hasError) onGridEditComplete();
     };
 
-    hasAliquots = () => {
+    hasAliquots = (): boolean => {
         const { aliquots } = this.props;
         return aliquots && aliquots.length > 0;
     };
 
-    getSamplesColumnMetadata = (tabInd: number) => {
-        if (tabInd === GridTab.Storage) return undefined;
+    getSamplesColumnMetadata = (tabInd: number): Map<string, EditableColumnMetadata> => {
+        if (tabInd === GridTab.Storage || tabInd === GridTab.Lineage) return undefined;
 
         const { aliquots, sampleTypeDomainFields } = this.props;
 
@@ -390,10 +494,10 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
         return columnMetadata.asImmutable();
     };
 
-    getSamplesUpdateColumns = (tabInd: number) => {
-        if (tabInd === GridTab.Storage) return undefined;
+    getSamplesUpdateColumns = (tabInd: number): List<QueryColumn> => {
+        if (tabInd === GridTab.Storage || tabInd === GridTab.Lineage) return undefined;
 
-        const { aliquots, sampleTypeDomainFields } = this.props;
+        const { sampleTypeDomainFields } = this.props;
         const allColumns: List<QueryColumn> = this.getSamplesEditorQueryGridModel().getUpdateColumns(
             this.getReadOnlyColumns()
         );
@@ -411,22 +515,94 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
         return updatedColumns.asImmutable();
     };
 
-    getSelectedSamplesNoun = () => {
+    getSelectedSamplesNoun = (): string => {
         const { aliquots } = this.props;
         const allAliquots =
             this.hasAliquots() && aliquots.length === this.getSamplesEditorQueryGridModel().dataIds.size;
         return allAliquots ? 'aliquot' : 'sample';
     };
 
-    getReadOnlyRows = (tabInd: number) => {
-        const { noStorageSamples } = this.props;
-        if (!tabInd || tabInd === GridTab.Samples) return undefined;
+    getReadOnlyRows = (tabInd: number): List<string> => {
+        const { noStorageSamples, aliquots } = this.props;
 
-        return List<string>(noStorageSamples);
+        if (tabInd === GridTab.Storage) {
+            return List<string>(noStorageSamples);
+        } else if (tabInd === GridTab.Lineage) {
+            return List<string>(aliquots);
+        }
+
+        return undefined;
     };
 
-    getTabTitle = (tabInd: number) => {
-        return tabInd === GridTab.Storage ? 'Storage Details' : 'Sample Data';
+    getTabTitle = (tabInd: number): string => {
+        if (tabInd === GridTab.Storage) return 'Storage Details';
+        if (tabInd === GridTab.Lineage) return 'Lineage Details';
+        return 'Sample Data';
+    };
+
+    addParentType = (queryName: string): void => {
+        const { entityParentsMap } = this.state;
+        this.setState({ entityParentsMap: addEntityParentType(queryName, entityParentsMap) });
+    };
+
+    removeParentType = (index: number, queryName: string): void => {
+        const { entityParentsMap } = this.state;
+        this.setState({
+            entityParentsMap: removeEntityParentType(
+                index,
+                queryName,
+                entityParentsMap,
+                this.getLineageEditorQueryGridModel()
+            ),
+        });
+    };
+
+    changeParentType = (
+        index: number,
+        queryName: string,
+        fieldName: string,
+        formValue: any,
+        parent: IParentOption
+    ): void => {
+        const { entityParentsMap } = this.state;
+        const { combineParentTypes } = this.props;
+        this.setState({
+            entityParentsMap: changeEntityParentType(
+                index,
+                queryName,
+                parent,
+                this.getLineageEditorQueryGridModel(),
+                entityParentsMap,
+                SampleTypeDataType,
+                combineParentTypes
+            ),
+        });
+    };
+
+    getTabHeader = (tabInd: number): ReactNode => {
+        const { parentDataTypes, combineParentTypes } = this.props;
+        const { parentTypeOptions, entityParentsMap } = this.state;
+
+        if (tabInd === GridTab.Lineage) {
+            return (
+                <>
+                    <div className="top-spacing">
+                        <EntityParentTypeSelectors
+                            parentDataTypes={parentDataTypes}
+                            parentOptionsMap={parentTypeOptions}
+                            entityParentsMap={entityParentsMap}
+                            combineParentTypes={combineParentTypes}
+                            onAdd={this.addParentType}
+                            onChange={this.changeParentType}
+                            onRemove={this.removeParentType}
+                        />
+                    </div>
+                    <hr />
+                </>
+            );
+        }
+
+        return null;
     };
 
     render() {
@@ -441,7 +617,15 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
             if (!storageGrid || !storageGrid.isLoaded) return <LoadingSpinner />;
 
             models.push(storageGrid);
+        } else {
+            // add a null to the models array so that the tabIndices line up for other parts of the render,
+            // this can be removed soon once LKB supports freezer management
+            models.push(null);
         }
+
+        const lineageGrid = this.getLineageEditorQueryGridModel();
+        if (!lineageGrid || !lineageGrid.isLoaded) return <LoadingSpinner />;
+        models.push(lineageGrid);
 
         return (
             <EditableGridPanelForUpdate
@@ -458,7 +642,123 @@ export class SamplesEditableGridBase extends React.Component<Props, any> {
                 getTabTitle={this.getTabTitle}
                 getColumnMetadata={this.getSamplesColumnMetadata}
                 getUpdateColumns={this.getSamplesUpdateColumns}
+                getTabHeader={this.getTabHeader}
             />
         );
     }
+}
+
+// exported for jest testing
+export function getUpdatedLineageRows(
+    lineageRows: Array<Record<string, any>>,
+    originalModel: QueryGridModel,
+    aliquots: any[]
+): Array<Record<string, any>> {
+    const updatedLineageRows = [];
+
+    // iterate through all of the lineage rows to find the ones that have any edit from the initial data row,
+    // also remove the aliquot rows from the lineageRows array
+    lineageRows?.forEach(row => {
+        const rowId = caseInsensitive(row, 'RowId');
+        if (aliquots.indexOf(rowId) === -1) {
+            // compare each row value looking for any that are different from the original value
+            let hasUpdate = false;
+            Object.keys(row).every(key => {
+                const updatedVal = Utils.isString(row[key])
+                    ? row[key].split(', ').sort(naturalSort).join(', ')
+                    : row[key];
+                let originalVal = originalModel.data.get('' + rowId).get(key);
+                if (List.isList(originalVal)) {
+                    originalVal = originalVal
+                        ?.map(parentRow => parentRow.displayValue)
+                        .sort(naturalSort)
+                        .join(', ');
+                }
+
+                if (originalVal !== updatedVal) {
+                    hasUpdate = true;
+                    return false;
+                }
+                return true;
+            });
+
+            if (hasUpdate) updatedLineageRows.push(row);
+        }
+    });
+
+    return updatedLineageRows;
+}
+
+function createLineageEditorQueryGridModel(
+    displayQueryModel: QueryModel,
+    schemaQuery: SchemaQuery,
+    originalParents: Record<string, List<EntityChoice>>,
+    sampleLineageKeys: string[],
+    sampleLineage: Record<string, any>
+): QueryGridModel {
+    const updatedColumns = getLineageEditorUpdateColumns(displayQueryModel, originalParents);
+
+    return getStateQueryGridModel(SAMPLES_LINEAGE_EDIT_GRID_ID, schemaQuery, {
+        editable: true,
+        queryInfo: displayQueryModel.queryInfo.merge({ columns: updatedColumns }) as QueryInfo,
+        loader: {
+            fetch: () => {
+                return new Promise(resolve => {
+                    let data = EditorModel.convertQueryDataToEditorData(fromJS(sampleLineage));
+                    Object.keys(originalParents).forEach(sampleId => {
+                        originalParents[sampleId].forEach(sampleParent => {
+                            const { schema, query } = sampleParent.type;
+                            const value = List<DisplayObject>(sampleParent.gridValues);
+                            const parentType = EntityParentType.create({ schema, query, value });
+                            const fieldKey = parentType.generateFieldKey();
+                            data = data.setIn([sampleId, fieldKey], parentType.value);
+                        });
+                    });
+
+                    resolve({
+                        data,
+                        dataIds: List<string>(sampleLineageKeys),
+                        totalRows: sampleLineageKeys.length,
+                    });
+                });
+            },
+        },
+    });
+}
+
+// exported for jest testing
+export function getLineageEditorUpdateColumns(
+    displayQueryModel: QueryModel,
+    originalParents: Record<string, List<EntityChoice>>
+): OrderedMap<string, QueryColumn> {
+    // model columns should include RowId, Name, and one column for each distinct existing parent (source and/or
+    // sample type) of the selected samples.
+    let updatedColumns = OrderedMap<string, QueryColumn>();
+    displayQueryModel.queryInfo.columns.forEach((column, key) => {
+        if (['name', 'rowid'].indexOf(key) > -1) {
+            updatedColumns = updatedColumns.set(key, column);
+        }
+    });
+    const parentColumns = {};
+    let parentColIndex = 0;
+    Object.values(originalParents).forEach(sampleParents => {
+        sampleParents.forEach(sampleParent => {
+            const { schema, query } = sampleParent.type;
+            const parentCol = EntityParentType.create({ index: parentColIndex, schema, query }).generateColumn(
+                sampleParent.type.entityDataType.uniqueFieldKey
+            );
+
+            if (!parentColumns[parentCol.fieldKey]) {
+                parentColumns[parentCol.fieldKey] = parentCol;
+                parentColIndex++;
+            }
+        });
+    });
+    Object.keys(parentColumns)
+        .sort() // Order parent columns so sources come first before sample types, and then alphabetically ordered within the types
+        .forEach(key => {
+            updatedColumns = updatedColumns.set(key, parentColumns[key]);
+        });
+
+    return updatedColumns;
 }

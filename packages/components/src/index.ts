@@ -264,6 +264,7 @@ import { addDateRangeFilter, last12Months, monthSort } from './internal/componen
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
+import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
 import {
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
@@ -342,13 +343,14 @@ import {
     getLineageFilterValue,
     invalidateLineageResults,
 } from './internal/components/lineage/actions';
+import { DEFAULT_LINEAGE_DISTANCE } from './internal/components/lineage/constants';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
     LineageFilter,
     LineageURLResolvers,
 } from './internal/components/lineage/types';
-import { LineageGraph } from './internal/components/lineage/LineageGraph';
+import { LineageGraph, LineageDepthLimitMessage } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
@@ -368,7 +370,7 @@ import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
 import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
 import { SiteUsersGridPanel } from './internal/components/user/SiteUsersGridPanel';
-import { UserProvider } from './internal/components/user/UserProvider';
+import { UserProvider, useUserProperties } from './internal/components/user/UserProvider';
 import { FieldEditorOverlay } from './internal/components/forms/FieldEditorOverlay';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -376,6 +378,7 @@ import {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
+    DOMAIN_RANGE_VALIDATOR,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
@@ -416,7 +419,12 @@ import {
     saveDomain,
     setDomainFields,
 } from './internal/components/domainproperties/actions';
-import { DomainDesign, DomainDetails, DomainField } from './internal/components/domainproperties/models';
+import {
+    DomainDesign,
+    DomainDetails,
+    DomainField,
+    PropertyValidator,
+} from './internal/components/domainproperties/models';
 import { SAMPLE_TYPE } from './internal/components/domainproperties/PropDescType';
 import DomainForm from './internal/components/domainproperties/DomainForm';
 import { BasePropertiesPanel } from './internal/components/domainproperties/BasePropertiesPanel';
@@ -446,6 +454,9 @@ import { DataClassDesigner } from './internal/components/domainproperties/datacl
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
+import { ValidatorModal } from './internal/components/domainproperties/validation/ValidatorModal';
+import { RangeValidationOptions } from './internal/components/domainproperties/validation/RangeValidationOptions';
+
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { makeQueryInfo, mountWithServerContextOptions, sleep } from './internal/testHelpers';
 import { QueryModel } from './public/QueryModel/QueryModel';
@@ -804,6 +815,7 @@ export {
     SecurityRole,
     Principal,
     UserProvider,
+    useUserProperties,
     // sample picklist items
     AddToPicklistMenuItem,
     PicklistButton,
@@ -871,6 +883,7 @@ export {
     EntityDeleteConfirmModal,
     EntityDeleteModal,
     EntityInsertPanel,
+    EntityLineageEditMenuItem,
     ParentEntityEditPanel,
     extractEntityTypeOptionFromRow,
     GenerateEntityResponse,
@@ -935,8 +948,10 @@ export {
     ReportItemModal,
     ReportList,
     // lineage
+    DEFAULT_LINEAGE_DISTANCE,
     LINEAGE_GROUPING_GENERATIONS,
     LINEAGE_DIRECTIONS,
+    LineageDepthLimitMessage,
     LineageFilter,
     LineageGraph,
     LineageGrid,
@@ -988,6 +1003,10 @@ export {
     DomainDesign,
     DomainField,
     DomainFieldLabel,
+    ValidatorModal,
+    RangeValidationOptions,
+    PropertyValidator,
+    DOMAIN_RANGE_VALIDATOR,
     DomainDetails,
     inferDomainFromFile,
     getServerFilePreview,
@@ -1267,3 +1286,4 @@ export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
 export type { FindField } from './internal/components/samples/models';
 export type { UsersLoader } from './internal/components/forms/actions';
+export type { LineageGroupingOptions } from './internal/components/lineage/types';

@@ -107,21 +107,17 @@ describe('QueryInfo', () => {
     describe('getUpdateColumns', () => {
         test('without readOnly columns', () => {
             const columns = queryInfo.getUpdateColumns();
-            expect(columns.size).toBe(3);
+            expect(columns.size).toBe(2);
             expect(columns.get(0).fieldKey).toBe('Description');
-            expect(columns.get(1).fieldKey).toBe('SampleSet');
-            expect(columns.get(2).fieldKey).toBe('New');
+            expect(columns.get(1).fieldKey).toBe('New');
         });
 
         test('with readOnly columns', () => {
-            const columns = queryInfo.getUpdateColumns(
-                List<string>(['Name'])
-            );
-            expect(columns.size).toBe(4);
+            const columns = queryInfo.getUpdateColumns(List<string>(['Name']));
+            expect(columns.size).toBe(3);
             expect(columns.get(0).fieldKey).toBe('Name');
             expect(columns.get(1).fieldKey).toBe('Description');
-            expect(columns.get(2).fieldKey).toBe('SampleSet');
-            expect(columns.get(3).fieldKey).toBe('New');
+            expect(columns.get(2).fieldKey).toBe('New');
         });
     });
 
@@ -160,6 +156,33 @@ describe('QueryInfo', () => {
             expect(queryInfo.columns.size).toBe(1);
             expect(queryInfo.columns.get('test1')).toBeDefined();
             expect(queryInfo.columns.get('test2')).toBeUndefined();
+        });
+    });
+
+    describe('getInsertColumns', () => {
+        test('includeFileInputs false', () => {
+            const insertCol1 = QueryInfo.fromJSON({
+                columns: [
+                    {
+                        fieldKey: 'test1',
+                        fieldKeyArray: ['test1'],
+                        shownInInsertView: true,
+                        userEditable: true,
+                        readOnly: false,
+                        inputType: 'text',
+                    },
+                    {
+                        fieldKey: 'test2',
+                        fieldKeyArray: ['test2'],
+                        shownInInsertView: true,
+                        userEditable: true,
+                        readOnly: false,
+                        inputType: 'file',
+                    },
+                ],
+            }).getInsertColumns();
+            expect(insertCol1.size).toBe(1);
+            expect(insertCol1.get(0).fieldKey).toBe('test1');
         });
     });
 

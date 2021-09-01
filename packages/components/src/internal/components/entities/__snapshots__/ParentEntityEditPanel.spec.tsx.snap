@@ -36,6 +36,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
       "plural": undefined,
     }
   }
+  includePanelHeader={true}
   parentDataTypes={
     Array [
       Object {
@@ -46,10 +47,14 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
         "descriptionSingular": "parent type",
         "importFileAction": "importData",
         "inputColumnName": "Inputs/Data/First",
-        "inputTypeColumnName": "Inputs/Data/First/DataClass",
         "inputTypeValueField": "rowId",
         "insertColumnNamePrefix": "DataInputs/",
         "instanceSchemaName": "exp.data",
+        "listingSchemaQuery": Immutable.Record {
+          "schemaName": "exp",
+          "queryName": "Data",
+          "viewName": undefined,
+        },
         "nounAsParentSingular": "Parent",
         "nounPlural": "data",
         "nounSingular": "data",
@@ -95,11 +100,13 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                 onClickFn={[Function]}
                 title="Test 123"
                 useEditIcon={true}
+                verb="Editing"
               >
                 <div
                   className="detail__edit--heading"
                 >
-                  Editing 
+                  Editing
+                   
                   Test 123
                 </div>
               </DetailPanelHeader>
@@ -142,10 +149,14 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                       "descriptionSingular": "parent type",
                       "importFileAction": "importData",
                       "inputColumnName": "Inputs/Data/First",
-                      "inputTypeColumnName": "Inputs/Data/First/DataClass",
                       "inputTypeValueField": "rowId",
                       "insertColumnNamePrefix": "DataInputs/",
                       "instanceSchemaName": "exp.data",
+                      "listingSchemaQuery": Immutable.Record {
+                        "schemaName": "exp",
+                        "queryName": "Data",
+                        "viewName": undefined,
+                      },
                       "nounAsParentSingular": "Parent",
                       "nounPlural": "data",
                       "nounSingular": "data",
@@ -177,10 +188,14 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                         "descriptionSingular": "parent type",
                         "importFileAction": "importData",
                         "inputColumnName": "Inputs/Data/First",
-                        "inputTypeColumnName": "Inputs/Data/First/DataClass",
                         "inputTypeValueField": "rowId",
                         "insertColumnNamePrefix": "DataInputs/",
                         "instanceSchemaName": "exp.data",
+                        "listingSchemaQuery": Immutable.Record {
+                          "schemaName": "exp",
+                          "queryName": "Data",
+                          "viewName": undefined,
+                        },
                         "nounAsParentSingular": "Parent",
                         "nounPlural": "data",
                         "nounSingular": "data",
@@ -226,10 +241,14 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                           "descriptionSingular": "parent type",
                           "importFileAction": "importData",
                           "inputColumnName": "Inputs/Data/First",
-                          "inputTypeColumnName": "Inputs/Data/First/DataClass",
                           "inputTypeValueField": "rowId",
                           "insertColumnNamePrefix": "DataInputs/",
                           "instanceSchemaName": "exp.data",
+                          "listingSchemaQuery": Immutable.Record {
+                            "schemaName": "exp",
+                            "queryName": "Data",
+                            "viewName": undefined,
+                          },
                           "nounAsParentSingular": "Parent",
                           "nounPlural": "data",
                           "nounSingular": "data",
@@ -289,10 +308,14 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                             "descriptionSingular": "parent type",
                             "importFileAction": "importData",
                             "inputColumnName": "Inputs/Data/First",
-                            "inputTypeColumnName": "Inputs/Data/First/DataClass",
                             "inputTypeValueField": "rowId",
                             "insertColumnNamePrefix": "DataInputs/",
                             "instanceSchemaName": "exp.data",
+                            "listingSchemaQuery": Immutable.Record {
+                              "schemaName": "exp",
+                              "queryName": "Data",
+                              "viewName": undefined,
+                            },
                             "nounAsParentSingular": "Parent",
                             "nounPlural": "data",
                             "nounSingular": "data",
@@ -2196,6 +2219,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
       "plural": undefined,
     }
   }
+  includePanelHeader={true}
   parentDataTypes={
     Array [
       Object {
@@ -2206,10 +2230,14 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
         "descriptionSingular": "parent type",
         "importFileAction": "importData",
         "inputColumnName": "Inputs/Data/First",
-        "inputTypeColumnName": "Inputs/Data/First/DataClass",
         "inputTypeValueField": "rowId",
         "insertColumnNamePrefix": "DataInputs/",
         "instanceSchemaName": "exp.data",
+        "listingSchemaQuery": Immutable.Record {
+          "schemaName": "exp",
+          "queryName": "Data",
+          "viewName": undefined,
+        },
         "nounAsParentSingular": "Parent",
         "nounPlural": "data",
         "nounSingular": "data",
@@ -2255,6 +2283,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                 onClickFn={[Function]}
                 title="Test 123"
                 useEditIcon={true}
+                verb="Editing"
               >
                 <div
                   className="detail__edit--heading"
@@ -2314,10 +2343,14 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                       "descriptionSingular": "parent type",
                       "importFileAction": "importData",
                       "inputColumnName": "Inputs/Data/First",
-                      "inputTypeColumnName": "Inputs/Data/First/DataClass",
                       "inputTypeValueField": "rowId",
                       "insertColumnNamePrefix": "DataInputs/",
                       "instanceSchemaName": "exp.data",
+                      "listingSchemaQuery": Immutable.Record {
+                        "schemaName": "exp",
+                        "queryName": "Data",
+                        "viewName": undefined,
+                      },
                       "nounAsParentSingular": "Parent",
                       "nounPlural": "data",
                       "nounSingular": "data",
@@ -2349,10 +2382,14 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                         "descriptionSingular": "parent type",
                         "importFileAction": "importData",
                         "inputColumnName": "Inputs/Data/First",
-                        "inputTypeColumnName": "Inputs/Data/First/DataClass",
                         "inputTypeValueField": "rowId",
                         "insertColumnNamePrefix": "DataInputs/",
                         "instanceSchemaName": "exp.data",
+                        "listingSchemaQuery": Immutable.Record {
+                          "schemaName": "exp",
+                          "queryName": "Data",
+                          "viewName": undefined,
+                        },
                         "nounAsParentSingular": "Parent",
                         "nounPlural": "data",
                         "nounSingular": "data",
@@ -2398,10 +2435,14 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                           "descriptionSingular": "parent type",
                           "importFileAction": "importData",
                           "inputColumnName": "Inputs/Data/First",
-                          "inputTypeColumnName": "Inputs/Data/First/DataClass",
                           "inputTypeValueField": "rowId",
                           "insertColumnNamePrefix": "DataInputs/",
                           "instanceSchemaName": "exp.data",
+                          "listingSchemaQuery": Immutable.Record {
+                            "schemaName": "exp",
+                            "queryName": "Data",
+                            "viewName": undefined,
+                          },
                           "nounAsParentSingular": "Parent",
                           "nounPlural": "data",
                           "nounSingular": "data",
@@ -2461,10 +2502,14 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                             "descriptionSingular": "parent type",
                             "importFileAction": "importData",
                             "inputColumnName": "Inputs/Data/First",
-                            "inputTypeColumnName": "Inputs/Data/First/DataClass",
                             "inputTypeValueField": "rowId",
                             "insertColumnNamePrefix": "DataInputs/",
                             "instanceSchemaName": "exp.data",
+                            "listingSchemaQuery": Immutable.Record {
+                              "schemaName": "exp",
+                              "queryName": "Data",
+                              "viewName": undefined,
+                            },
                             "nounAsParentSingular": "Parent",
                             "nounPlural": "data",
                             "nounSingular": "data",
@@ -2568,6 +2613,7 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
       "plural": undefined,
     }
   }
+  includePanelHeader={true}
   parentDataTypes={
     Array [
       Object {
@@ -2578,10 +2624,14 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
         "descriptionSingular": "parent type",
         "importFileAction": "importData",
         "inputColumnName": "Inputs/Data/First",
-        "inputTypeColumnName": "Inputs/Data/First/DataClass",
         "inputTypeValueField": "rowId",
         "insertColumnNamePrefix": "DataInputs/",
         "instanceSchemaName": "exp.data",
+        "listingSchemaQuery": Immutable.Record {
+          "schemaName": "exp",
+          "queryName": "Data",
+          "viewName": undefined,
+        },
         "nounAsParentSingular": "Parent",
         "nounPlural": "data",
         "nounSingular": "data",
@@ -2627,6 +2677,7 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
                 onClickFn={[Function]}
                 title="Test 123"
                 useEditIcon={true}
+                verb="Editing"
               >
                 <div
                   className="detail__edit--heading"

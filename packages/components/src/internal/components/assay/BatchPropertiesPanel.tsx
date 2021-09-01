@@ -13,51 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, memo } from 'react';
 import Formsy from 'formsy-react';
-import { is } from 'immutable';
 
 import { QueryFormInputs } from '../../..';
 
 import { AssayPropertiesPanelProps } from './models';
 
-export class BatchPropertiesPanel extends React.Component<AssayPropertiesPanelProps, any> {
-    shouldComponentUpdate(nextProps: AssayPropertiesPanelProps) {
-        const { model } = this.props;
+export const BatchPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
+    const { model, onChange, title = 'Batch Details', showQuerySelectPreviewOptions } = props;
 
-        return (
-            !is(model.batchId, nextProps.model.batchId) ||
-            !is(model.batchColumns, nextProps.model.batchColumns) ||
-            !is(model.batchProperties, nextProps.model.batchProperties)
-        );
-    }
-
-    render() {
-        const { model, onChange, title, showQuerySelectPreviewOptions } = this.props;
-        const panelTitle = title || 'Batch Details';
-
-        if (model.batchColumns.size) {
-            const disabled = model.batchId !== undefined;
-
-            return (
-                <div className="panel panel-default">
-                    <div className="panel-heading">{panelTitle}</div>
-
-                    <div className="panel-body">
-                        <Formsy className="form-horizontal" onChange={onChange} disabled={disabled}>
-                            <QueryFormInputs
-                                renderFileInputs={true}
-                                queryColumns={model.batchColumns}
-                                fieldValues={model.batchProperties.toObject()}
-                                onChange={onChange}
-                                showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
-                            />
-                        </Formsy>
-                    </div>
-                </div>
-            );
-        }
-
+    if (model.batchColumns.size === 0) {
         return null;
     }
-}
+
+    const disabled = model.batchId !== undefined;
+
+    return (
+        <div className="panel panel-default">
+            <div className="panel-heading">{title}</div>
+
+            <div className="panel-body">
+                <Formsy className="form-horizontal" onChange={onChange} disabled={disabled}>
+                    <QueryFormInputs
+                        fieldValues={model.batchProperties.toObject()}
+                        queryColumns={model.batchColumns}
+                        renderFileInputs
+                        showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
+                    />
+                </Formsy>
+            </div>
+        </div>
+    );
+});
+
+BatchPropertiesPanel.displayName = 'BatchPropertiesPanel';

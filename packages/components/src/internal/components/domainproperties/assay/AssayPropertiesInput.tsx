@@ -328,6 +328,31 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
     }
 }
 
+export const AutoLinkCategoryInput: FC<InputProps> = memo(props => {
+    const { model, onChange } = props;
+
+    return (
+        <AssayPropertiesInput
+            label="Linked Dataset Category"
+            helpTipBody={
+                <p>
+                    Specify the desired category for the Assay Dataset that will be created (or appended to) in the
+                    target study when rows are linked. If the category you specify does not exist, it will be created.
+                    If the Assay Dataset already exists, this setting will not overwrite a previously assigned category.
+                    Leave blank to use the default category of "Uncategorized".
+                </p>
+            }
+        >
+            <FormControl
+                id={FORM_IDS.AUTO_LINK_CATEGORY}
+                type="text"
+                value={model.autoLinkCategory}
+                onChange={onChange}
+            />
+        </AssayPropertiesInput>
+    );
+});
+
 interface ModuleProvidedScriptsInputProps {
     model: AssayProtocolModel;
 }
@@ -466,6 +491,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                     })}
                                     target="_blank"
                                     className="labkey-text-link"
+                                    rel="noreferrer"
                                 >
                                     Download sample file
                                 </a>

@@ -408,6 +408,7 @@ describe('insertColumnFilter', () => {
                     removeFromViews: false,
                     shownInInsertView: true,
                     userEditable: true,
+                    readOnly: false,
                     fieldKeyArray: ['test'],
                 })
             )
@@ -417,7 +418,19 @@ describe('insertColumnFilter', () => {
                 new QueryColumn({
                     removeFromViews: false,
                     shownInInsertView: true,
+                    userEditable: true,
+                    readOnly: true,
+                    fieldKeyArray: ['test'],
+                })
+            )
+        ).toBeFalsy(); // really, this is expected and can happen. See Issue 43760
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    removeFromViews: false,
+                    shownInInsertView: true,
                     userEditable: false,
+                    readOnly: false,
                     fieldKeyArray: ['test'],
                 })
             )
@@ -428,6 +441,7 @@ describe('insertColumnFilter', () => {
                     removeFromViews: false,
                     shownInInsertView: false,
                     userEditable: true,
+                    readOnly: false,
                     fieldKeyArray: ['test'],
                 })
             )
@@ -438,19 +452,71 @@ describe('insertColumnFilter', () => {
                     removeFromViews: false,
                     shownInInsertView: false,
                     userEditable: false,
+                    readOnly: true,
                     fieldKeyArray: ['test'],
                 })
             )
         ).toBeFalsy();
-
         expect(
             insertColumnFilter(
                 new QueryColumn({
                     removeFromViews: false,
                     shownInInsertView: true,
                     userEditable: true,
+                    readOnly: false,
                     fieldKeyArray: ['test1', 'test2'],
                 })
+            )
+        ).toBeFalsy();
+    });
+
+    test('includeFileInputs', () => {
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    shownInInsertView: true,
+                    userEditable: true,
+                    readOnly: false,
+                    fieldKeyArray: ['test'],
+                    inputType: 'text',
+                }),
+                true
+            )
+        ).toBeTruthy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    shownInInsertView: true,
+                    userEditable: true,
+                    readOnly: false,
+                    fieldKeyArray: ['test'],
+                    inputType: 'text',
+                }),
+                false
+            )
+        ).toBeTruthy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    shownInInsertView: true,
+                    userEditable: true,
+                    readOnly: false,
+                    fieldKeyArray: ['test'],
+                    inputType: 'file',
+                }),
+                true
+            )
+        ).toBeTruthy();
+        expect(
+            insertColumnFilter(
+                new QueryColumn({
+                    shownInInsertView: true,
+                    userEditable: true,
+                    readOnly: false,
+                    fieldKeyArray: ['test'],
+                    inputType: 'file',
+                }),
+                false
             )
         ).toBeFalsy();
     });

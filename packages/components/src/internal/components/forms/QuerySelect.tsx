@@ -17,7 +17,7 @@ import React, { FC, PureComponent, ReactNode } from 'react';
 import { fromJS, List, Map } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
-import { SchemaQuery } from '../../..';
+import { resolveErrorMessage, SchemaQuery } from '../../..';
 
 import { DELIMITER, SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
@@ -142,7 +142,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
 
 interface State {
     defaultOptions: boolean | SelectInputOption[];
-    error: any;
+    error: string;
     isLoading: boolean;
     loadOnFocusLock: boolean;
     model: QuerySelectModel;
@@ -183,9 +183,12 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
 
         try {
             const model = await initSelect(this.props);
+
+            if (!this.mounted) return;
+
             this.setState({ model });
         } catch (error) {
-            this.setState({ error });
+            this.setState({ error: error?.message ?? 'Failed to initialize.' });
         }
     };
 
@@ -217,18 +220,17 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             this.setState({ loadOnFocusLock: true });
         }
 
-        return new Promise((resolve): void => {
-            const { model } = this.state;
-
-            this.querySelectTimer = window.setTimeout(() => {
+        return new Promise((resolve, reject): void => {
+            this.querySelectTimer = window.setTimeout(async () => {
                 this.querySelectTimer = undefined;
-                model.search(input).then(data => {
+
+                try {
                     const { model } = this.state;
 
+                    const data = await model.search(input);
+
                     // prevent stale state updates of ReactSelect
-                    if (this._mounted !== true) {
-                        return;
-                    }
+                    if (!this.mounted) return;
 
                     const models = fromJS(data.models[data.key]);
 
@@ -237,10 +239,20 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                     this.setState(() => ({
                         model: model.saveSearchResults(models),
                     }));
-                });
+                } catch (error) {
+                    const errorMsg = resolveErrorMessage(error) ?? 'Failed to retrieve search results.';
+                    console.error(errorMsg, error);
+                    reject(errorMsg);
+                    if (!this.mounted) return;
+                    this.setState({ error: errorMsg });
+                }
             }, 250);
         });
     };
+
+    get mounted(): boolean {
+        return this._mounted === true;
+    }
 
     onChange = (name: string, value: any, selectedOptions): void => {
         this.setState(
@@ -266,6 +278,8 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             this.setState({ loadOnFocusLock: true, isLoading: true });
 
             const defaultOptions = await this.loadOptions('');
+
+            if (!this.mounted) return;
 
             // ReactSelect respects "isLoading" with a value of {undefined} differently from a value of {false}.
             this.setState({ defaultOptions, isLoading: undefined });
@@ -306,7 +320,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                 label,
                 multiple,
                 name: this.props.name || this.props.componentId + '-error',
-                placeholder: 'Error: ' + error.message,
+                placeholder: `Error: ${error}`,
                 required,
                 type: 'text',
             };

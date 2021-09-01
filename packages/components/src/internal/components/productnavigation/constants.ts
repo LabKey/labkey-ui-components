@@ -4,12 +4,18 @@ import { ActionURL } from '@labkey/api';
 
 import { getHelpLink, imageURL } from '../../..';
 
-import { BIOLOGICS_PRODUCT_ID, FREEZER_MANAGER_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app/constants';
+import {
+    BIOLOGICS_APP_PROPERTIES,
+    FREEZER_MANAGER_APP_PROPERTIES,
+    SAMPLE_MANAGER_APP_PROPERTIES,
+} from '../../app/constants';
 import { HELP_LINK_REFERRER } from '../../util/helpLinks';
+import { isFreezerManagementEnabled } from '../../app/utils';
 
 // map for product menuSections query so that we request the LKFM section with the LKSM product
 export const PRODUCT_ID_SECTION_QUERY_MAP = {
-    [SAMPLE_MANAGER_PRODUCT_ID.toLowerCase()]: List.of(SAMPLE_MANAGER_PRODUCT_ID, FREEZER_MANAGER_PRODUCT_ID),
+    [SAMPLE_MANAGER_APP_PROPERTIES.productId.toLowerCase()]: List.of(SAMPLE_MANAGER_APP_PROPERTIES.productId, FREEZER_MANAGER_APP_PROPERTIES.productId),
+    [BIOLOGICS_APP_PROPERTIES.productId.toLowerCase()]: isFreezerManagementEnabled() ? List.of(BIOLOGICS_APP_PROPERTIES.productId, FREEZER_MANAGER_APP_PROPERTIES.productId) : List.of(BIOLOGICS_APP_PROPERTIES.productId),
 };
 
 // list of section keys to skip for the section rendering
@@ -25,13 +31,13 @@ export const BIOLOGICS_DISABLED_PRODUCT_ICON = 'lk-bio-logo-badge-gray.svg';
 
 // mapping from product ids to the image/icon src paths
 export const PRODUCT_ID_IMG_SRC_MAP = {
-    [SAMPLE_MANAGER_PRODUCT_ID.toLowerCase()]: {
+    [SAMPLE_MANAGER_APP_PROPERTIES.productId.toLowerCase()]: {
         iconUrl: imageURL('sampleManagement/images', SAMPLE_MANAGER_PRODUCT_ICON),
         iconUrlAlt: imageURL('sampleManagement/images', SAMPLE_MANAGER_ALT_PRODUCT_ICON),
 
         iconUrlDisabled: imageURL('sampleManagement/images', SAMPLE_MANAGER_DISABLED_PRODUCT_ICON),
     },
-    [BIOLOGICS_PRODUCT_ID.toLowerCase()]: {
+    [BIOLOGICS_APP_PROPERTIES.productId.toLowerCase()]: {
         iconUrl: imageURL('biologics/images', BIOLOGICS_PRODUCT_ICON),
         iconUrlAlt: imageURL('biologics/images', BIOLOGICS_ALT_PRODUCT_ICON),
         iconUrlDisabled: imageURL('biologics/images', BIOLOGICS_DISABLED_PRODUCT_ICON),

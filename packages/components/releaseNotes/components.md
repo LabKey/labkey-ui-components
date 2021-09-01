@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * export function `addFMSectionConfig` for incorporating FM menu config in megamenu
 * Add new AppProperties interface and define properties for our three apps in the App object
+  * Stop exporting product id constants that are encapsulated into the app properties constants
 
 ### version 2.69.1
 *Released*: 31 August 2021

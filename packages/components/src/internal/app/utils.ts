@@ -11,10 +11,7 @@ import { LABKEY_WEBSOCKET } from '../constants';
 
 import {
     ASSAYS_KEY,
-    BIOLOGICS_PRODUCT_ID,
-    BIOLOGICS_PRODUCT_NAME,
     BIOLOGICS_APP_PROPERTIES,
-    FREEZER_MANAGER_PRODUCT_ID,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
@@ -24,8 +21,6 @@ import {
     NEW_FREEZER_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_SOURCE_TYPE_HREF,
-    SAMPLE_MANAGER_PRODUCT_ID,
-    SAMPLE_MANAGER_PRODUCT_NAME,
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLES_KEY,
     SERVER_NOTIFICATIONS_INVALIDATE,
@@ -115,10 +110,10 @@ export function isFreezerManagementEnabled(): boolean {
 }
 
 export function isProductNavigationEnabled(productId: string): boolean {
-    if (productId === SAMPLE_MANAGER_PRODUCT_ID) {
+    if (productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
         return isSampleManagerEnabled() && (!isBiologicsEnabled() || isSampleManagerNavigationEnabled());
     }
-    else if (productId === BIOLOGICS_PRODUCT_ID) {
+    else if (productId === BIOLOGICS_APP_PROPERTIES.productId) {
         return isBiologicsEnabled();
     }
 
@@ -294,12 +289,9 @@ export function getCurrentProductName() {
     const lcController = ActionURL.getController().toLowerCase();
     if (!lcController) return LABKEY_SERVER_PRODUCT_NAME;
 
-    if (
-        lcController === SAMPLE_MANAGER_PRODUCT_ID.toLowerCase() ||
-        lcController === FREEZER_MANAGER_PRODUCT_ID.toLowerCase()
-    )
-        return SAMPLE_MANAGER_PRODUCT_NAME;
-    else if (lcController === BIOLOGICS_PRODUCT_ID.toLowerCase()) return BIOLOGICS_PRODUCT_NAME;
+    if (isPremiumProductEnabled()) {
+        return getPrimaryAppProperties().name;
+    }
     return LABKEY_SERVER_PRODUCT_NAME;
 }
 

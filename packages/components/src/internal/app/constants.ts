@@ -8,14 +8,14 @@ import { imageURL } from '../url/ActionURL';
 
 // These ids should match what is used by the MenuProviders in the Java code so we can avoid toLowerCase comparisons.
 export const LKS_PRODUCT_ID = 'LabKeyServer';
-export const BIOLOGICS_PRODUCT_ID = 'Biologics';
-export const SAMPLE_MANAGER_PRODUCT_ID = 'SampleManager';
-export const FREEZER_MANAGER_PRODUCT_ID = 'freezerManager';
+const BIOLOGICS_PRODUCT_ID = 'Biologics';
+const SAMPLE_MANAGER_PRODUCT_ID = 'SampleManager';
+const FREEZER_MANAGER_PRODUCT_ID = 'freezerManager';
 
-export const SAMPLE_MANAGER_PRODUCT_NAME = 'Sample Manager';
-export const BIOLOGICS_PRODUCT_NAME = 'Biologics';
+const SAMPLE_MANAGER_PRODUCT_NAME = 'Sample Manager';
+const BIOLOGICS_PRODUCT_NAME = 'Biologics';
 export const LABKEY_SERVER_PRODUCT_NAME = 'LabKey Server';
-export const FREEZER_MANAGER_PRODUCT_NAME = "Freezer Manager";
+const FREEZER_MANAGER_PRODUCT_NAME = "Freezer Manager";
 
 const BIOLOGICS_CONTROLLER_NAME = "biologics";
 const SAMPLE_MANAGER_CONTROLLER_NAME = "sampleManager";

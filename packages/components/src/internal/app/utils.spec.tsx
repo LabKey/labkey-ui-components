@@ -23,7 +23,11 @@ import {
     userCanDesignLocations,
     userCanDesignSourceTypes,
 } from './utils';
-import { BIOLOGICS_PRODUCT_ID, FREEZER_MANAGER_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from './constants';
+import {
+    BIOLOGICS_APP_PROPERTIES,
+    FREEZER_MANAGER_APP_PROPERTIES,
+    SAMPLE_MANAGER_APP_PROPERTIES,
+} from './constants';
 
 describe('getMenuSectionConfigs', () => {
     test('sampleManager enabled', () => {
@@ -237,7 +241,7 @@ describe('utils', () => {
             samplemanagement: {},
             biologics: { isFreezerManagerEnabled: false },
         };
-        expect(isFreezerManagementEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeTruthy();
+        expect(isFreezerManagementEnabled()).toBeTruthy();
 
         LABKEY.moduleContext = {
             inventory: {},
@@ -249,14 +253,14 @@ describe('utils', () => {
 
     test('isProductNavigationEnabled', () => {
         LABKEY.moduleContext = {};
-        expect(isProductNavigationEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeFalsy();
-        expect(isProductNavigationEnabled(BIOLOGICS_PRODUCT_ID)).toBeFalsy();
-        expect(isProductNavigationEnabled(FREEZER_MANAGER_PRODUCT_ID)).toBeFalsy();
+        expect(isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId)).toBeFalsy();
+        expect(isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId)).toBeFalsy();
+        expect(isProductNavigationEnabled(FREEZER_MANAGER_APP_PROPERTIES.productId)).toBeFalsy();
 
         LABKEY.moduleContext = {
             samplemanagement: {},
         };
-        expect(isProductNavigationEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeTruthy();
+        expect(isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId)).toBeTruthy();
 
         LABKEY.moduleContext = {
             samplemanagement: {},
@@ -264,8 +268,8 @@ describe('utils', () => {
                 isBiologicsSampleManagerNavEnabled: false,
             },
         };
-        expect(isProductNavigationEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeFalsy();
-        expect(isProductNavigationEnabled(BIOLOGICS_PRODUCT_ID)).toBeTruthy();
+        expect(isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId)).toBeFalsy();
+        expect(isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId)).toBeTruthy();
 
         LABKEY.moduleContext = {
             samplemanagement: {},
@@ -273,8 +277,8 @@ describe('utils', () => {
                 isBiologicsSampleManagerNavEnabled: true,
             },
         };
-        expect(isProductNavigationEnabled(SAMPLE_MANAGER_PRODUCT_ID)).toBeTruthy();
-        expect(isProductNavigationEnabled(BIOLOGICS_PRODUCT_ID)).toBeTruthy();
+        expect(isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId)).toBeTruthy();
+        expect(isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId)).toBeTruthy();
     });
 
     test('hasPremiumModule', () => {

@@ -54,4 +54,5 @@ export interface AppProperties {
     logoWithTextImageUrl: string;
     logoBadgeImageUrl: string;
     controllerName: string;
+    moduleName: string;
 }

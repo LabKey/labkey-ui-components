@@ -11,15 +11,20 @@ import { LABKEY_WEBSOCKET } from '../constants';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_REQUESTS_MENU,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
     LABKEY_SERVER_PRODUCT_NAME,
+    MEDIA_KEY,
     MENU_RELOAD,
     NEW_ASSAY_DESIGN_HREF,
     NEW_FREEZER_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_SOURCE_TYPE_HREF,
+    NOTEBOOKS_KEY,
+    REGISTRY_KEY,
+    REQUESTS_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLES_KEY,
     SERVER_NOTIFICATIONS_INVALIDATE,
@@ -139,6 +144,14 @@ export function isPremiumProductEnabled(): boolean {
     return isSampleManagerEnabled() || isBiologicsEnabled();
 }
 
+export function sampleManagerIsPrimaryApp(): boolean {
+    return getPrimaryAppProperties().productId === SAMPLE_MANAGER_APP_PROPERTIES.productId;
+}
+
+export function biologcisIsPrimaryApp(): boolean {
+    return getPrimaryAppProperties().productId === BIOLOGICS_APP_PROPERTIES.productId;
+}
+
 export function getPrimaryAppProperties(): AppProperties {
     if (isBiologicsEnabled()) {
         return BIOLOGICS_APP_PROPERTIES;
@@ -153,6 +166,10 @@ export function getPrimaryAppProperties(): AppProperties {
 
 function isFreezerManagerEnabledInBiologics(): boolean {
     return getServerContext().moduleContext?.biologics?.isFreezerManagerEnabled === true;
+}
+
+export function isRequestsEnabled(): boolean {
+    return getServerContext().moduleContext?.biologics?.[EXPERIMENTAL_REQUESTS_MENU] === true;
 }
 
 export function isSamplePicklistEnabled(): boolean {
@@ -195,73 +212,133 @@ export function addFMSectionConfig(user: User, currentApp: string, sectionConfig
     return sectionConfigs;
 }
 
+function addSamplesSectionConfig(user: User, currentApp: string, appBase: string, sectionConfigs: List<Map<string, MenuSectionConfig>>): List<Map<string, MenuSectionConfig>> {
+    let samplesMenuConfig = new MenuSectionConfig({
+        emptyText: 'No sample types have been defined',
+        iconURL: imageURL('_images', 'samples.svg'),
+        maxColumns: 1,
+        maxItemsPerColumn: 12,
+        seeAllURL: appBase + AppURL.create(SAMPLES_KEY).addParam('viewAs', 'cards').toHref(),
+    });
+    if (user.hasDesignSampleSetsPermission()) {
+        samplesMenuConfig = samplesMenuConfig.merge({
+            emptyURL: appBase + NEW_SAMPLE_TYPE_HREF.toHref(),
+            emptyURLText: 'Create a sample type',
+        }) as MenuSectionConfig;
+    }
+    return sectionConfigs.push(Map<string, MenuSectionConfig>().set(SAMPLES_KEY, samplesMenuConfig));
+}
+
+function addAssaysSectionConfig(user: User, currnetApp: string, appBase: string, sectionConfigs: List<Map<string, MenuSectionConfig>>): List<Map<string, MenuSectionConfig>> {
+    let assaysMenuConfig = new MenuSectionConfig({
+        emptyText: 'No assays have been defined',
+        iconURL: imageURL('_images', 'assay.svg'),
+        maxColumns: 2,
+        maxItemsPerColumn: 12,
+        seeAllURL: appBase + AppURL.create(ASSAYS_KEY).addParam('viewAs', 'grid').toHref(),
+    });
+    if (user.hasDesignAssaysPermission()) {
+        assaysMenuConfig = assaysMenuConfig.merge({
+            emptyURL: appBase + NEW_ASSAY_DESIGN_HREF.toHref(),
+            emptyURLText: 'Create an assay design',
+        }) as MenuSectionConfig;
+    }
+    return sectionConfigs.push(Map<string, MenuSectionConfig>().set(ASSAYS_KEY, assaysMenuConfig));
+}
+
+function createWorkflowSectionConfig(appBase: string): MenuSectionConfig {
+    return new MenuSectionConfig({
+        headerURL: appBase + WORKFLOW_HOME_HREF.toHref(),
+        iconURL: imageURL('_images', 'workflow.svg'),
+        seeAllURL: appBase + AppURL.create(WORKFLOW_KEY).toHref(),
+    })
+}
+
 export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 
-    const smAppBase = getApplicationUrlBase('sampleManagement', currentApp);
-
-    if (isSampleManagerEnabled()) {
+    const appBase =  getApplicationUrlBase(getPrimaryAppProperties().moduleName, currentApp);
+    const isSMPrimary = sampleManagerIsPrimaryApp();
+    const isBioPrimary = biologcisIsPrimaryApp();
+    const isBioOrSM = isSMPrimary || isBioPrimary;
+    if (isSMPrimary) {
         let sourcesMenuConfig = new MenuSectionConfig({
             emptyText: 'No source types have been defined',
             iconURL: imageURL('_images', 'source_type.svg'),
             maxColumns: 1,
             maxItemsPerColumn: 12,
-            seeAllURL: smAppBase + AppURL.create(SOURCES_KEY).addParam('viewAs', 'grid').toHref(),
+            seeAllURL: appBase + AppURL.create(SOURCES_KEY).addParam('viewAs', 'grid').toHref(),
         });
         if (userCanDesignSourceTypes(user)) {
             sourcesMenuConfig = sourcesMenuConfig.merge({
-                emptyURL: smAppBase + NEW_SOURCE_TYPE_HREF.toHref(),
+                emptyURL: appBase + NEW_SOURCE_TYPE_HREF.toHref(),
                 emptyURLText: 'Create a source type',
             }) as MenuSectionConfig;
         }
         sectionConfigs = sectionConfigs.push(Map<string, MenuSectionConfig>().set(SOURCES_KEY, sourcesMenuConfig));
-
-        let samplesMenuConfig = new MenuSectionConfig({
-            emptyText: 'No sample types have been defined',
-            iconURL: imageURL('_images', 'samples.svg'),
-            maxColumns: 1,
-            maxItemsPerColumn: 12,
-            seeAllURL: smAppBase + AppURL.create(SAMPLES_KEY).addParam('viewAs', 'cards').toHref(),
-        });
-        if (user.hasDesignSampleSetsPermission()) {
-            samplesMenuConfig = samplesMenuConfig.merge({
-                emptyURL: smAppBase + NEW_SAMPLE_TYPE_HREF.toHref(),
-                emptyURLText: 'Create a sample type',
-            }) as MenuSectionConfig;
-        }
-        sectionConfigs = sectionConfigs.push(Map<string, MenuSectionConfig>().set(SAMPLES_KEY, samplesMenuConfig));
-
-        let assaysMenuConfig = new MenuSectionConfig({
-            emptyText: 'No assays have been defined',
-            iconURL: imageURL('_images', 'assay.svg'),
-            maxColumns: 2,
-            maxItemsPerColumn: 12,
-            seeAllURL: smAppBase + AppURL.create(ASSAYS_KEY).addParam('viewAs', 'grid').toHref(),
-        });
-        if (user.hasDesignAssaysPermission()) {
-            assaysMenuConfig = assaysMenuConfig.merge({
-                emptyURL: smAppBase + NEW_ASSAY_DESIGN_HREF.toHref(),
-                emptyURLText: 'Create an assay design',
-            }) as MenuSectionConfig;
-        }
-        sectionConfigs = sectionConfigs.push(Map<string, MenuSectionConfig>().set(ASSAYS_KEY, assaysMenuConfig));
+    }
+    else if (isBioPrimary) {
+        sectionConfigs = sectionConfigs.push(  Map({ [REGISTRY_KEY]: new MenuSectionConfig({
+                iconURL: imageURL('_images', 'molecule.svg'),
+                seeAllURL: AppURL.create(REGISTRY_KEY),
+            })})
+        );
+    }
+    if (isBioOrSM) {
+        sectionConfigs = addSamplesSectionConfig(user, currentApp, appBase, sectionConfigs);
+        sectionConfigs = addAssaysSectionConfig(user, currentApp, appBase, sectionConfigs);
     }
 
     sectionConfigs = addFMSectionConfig(user, currentApp, sectionConfigs);
 
-    if (isSampleManagerEnabled()) {
+    if (isSMPrimary) {
         sectionConfigs = sectionConfigs.push(
             Map({
-                [WORKFLOW_KEY]: new MenuSectionConfig({
-                    headerURL: smAppBase + WORKFLOW_HOME_HREF.toHref(),
-                    iconURL: imageURL('_images', 'workflow.svg'),
-                    seeAllURL: smAppBase + AppURL.create(WORKFLOW_KEY).toHref(),
-                }),
+                [WORKFLOW_KEY]: createWorkflowSectionConfig(appBase),
                 [USER_KEY]: new MenuSectionConfig({
                     iconCls: 'fas fa-user-circle ',
                 }),
             })
         );
+    } else if (isBioPrimary) {
+        const requestsMenuConfig = new MenuSectionConfig({
+            headerURL: buildURL('query', 'executeQuery', {
+                schemaName: 'issues',
+                'query.queryName': 'IssueListDef',
+            }),
+            iconURL: imageURL('_images', 'default.svg'),
+        });
+        const mediaMenuConfig = new MenuSectionConfig({
+            headerURL: AppURL.create(MEDIA_KEY),
+            iconURL: imageURL('_images', 'mixtures.svg'),
+            seeAllURL: AppURL.create(MEDIA_KEY),
+        });
+        // TODO: This can generate URLs that differ between app.view and appDev.view
+        const notebooksMenuConfig = new MenuSectionConfig({
+            iconURL: imageURL('biologics/images', 'notebook_blue.svg'),
+            seeAllURL: AppURL.create(NOTEBOOKS_KEY),
+        });
+        if (isRequestsEnabled()) {
+            // When "Requests" are enabled render as two columns
+            sectionConfigs = sectionConfigs.push(
+                Map({
+                    [REQUESTS_KEY]: requestsMenuConfig,
+                }),
+                Map({
+                    [WORKFLOW_KEY]: createWorkflowSectionConfig(appBase),
+                    [MEDIA_KEY]: mediaMenuConfig,
+                    [NOTEBOOKS_KEY]: notebooksMenuConfig,
+                })
+            );
+        } else {
+            sectionConfigs = sectionConfigs.push(
+                Map({
+                    [WORKFLOW_KEY]: createWorkflowSectionConfig(appBase),
+                    [MEDIA_KEY]: mediaMenuConfig,
+                    [NOTEBOOKS_KEY]: notebooksMenuConfig,
+                })
+            );
+        }
     } else {
         const userSectionConfig = new MenuSectionConfig({
             iconCls: 'fas fa-user-circle ',

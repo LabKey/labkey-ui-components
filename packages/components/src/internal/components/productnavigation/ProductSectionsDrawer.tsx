@@ -13,7 +13,10 @@ import {
 import {
     BIOLOGICS_APP_PROPERTIES,
     FREEZER_MANAGER_APP_PROPERTIES,
-    FREEZERS_KEY, SAMPLE_MANAGER_APP_PROPERTIES,
+    FREEZERS_KEY,
+    MEDIA_KEY,
+    NOTEBOOKS_KEY,
+    SAMPLE_MANAGER_APP_PROPERTIES,
     WORKFLOW_KEY
 } from '../../app/constants';
 
@@ -143,9 +146,9 @@ export function parseProductMenuSectionResponse(
             );
         });
 
-    // special case to sort LKSM storage before workflow to match the mega menu display
+    // special case to sort storage before workflow to match the mega menu display for LKSM and LKB
     return menuSections.sort((a, b) => {
-        if (a.key === FREEZERS_KEY && b.key === WORKFLOW_KEY) {
+        if (a.key === FREEZERS_KEY && (b.key === WORKFLOW_KEY || b.key === MEDIA_KEY || b.key === NOTEBOOKS_KEY)) {
             return -1;
         }
         return 0;

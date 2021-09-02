@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-*
+* Create Sample Type Designer 'Linked Dataset Category' field as part of Link to Study dataset category assignment
 
 ### version 2.69.1
 *Released*: 31 August 2021

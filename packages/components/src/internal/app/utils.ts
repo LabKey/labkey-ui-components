@@ -201,7 +201,7 @@ export function isCommunityDistribution(): boolean {
     return !hasModule('SampleManagement') && !hasPremiumModule();
 }
 
-function addFMSectionConfig(user: User, currentApp: string, sectionConfigs: List<Map<string, MenuSectionConfig>>, moduleContext?: any):  List<Map<string, MenuSectionConfig>> {
+function getStorageSectionConfig(user: User, currentApp: string, moduleContext: any, maxItemsPerColumn: number):  MenuSectionConfig {
 
     if (isFreezerManagementEnabled()) {
         const fmAppBase = getApplicationUrlBase('inventory', currentApp, moduleContext);
@@ -209,7 +209,7 @@ function addFMSectionConfig(user: User, currentApp: string, sectionConfigs: List
             emptyText: 'No freezers have been defined',
             iconURL: imageURL('_images', 'freezer_menu.svg'),
             maxColumns: 1,
-            maxItemsPerColumn: 12,
+            maxItemsPerColumn,
             seeAllURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),
             headerURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),
         });
@@ -219,9 +219,9 @@ function addFMSectionConfig(user: User, currentApp: string, sectionConfigs: List
                 emptyURLText: 'Create a freezer',
             }) as MenuSectionConfig;
         }
-        return sectionConfigs.push(Map<string, MenuSectionConfig>().set(FREEZERS_KEY, locationsMenuConfig));
+        return locationsMenuConfig;
     }
-    return sectionConfigs;
+    return undefined;
 }
 
 function addSamplesSectionConfig(user: User, currentApp: string, appBase: string, sectionConfigs: List<Map<string, MenuSectionConfig>>): List<Map<string, MenuSectionConfig>> {
@@ -302,9 +302,12 @@ export function getMenuSectionConfigs(user: User, currentApp: string, moduleCont
         sectionConfigs = addAssaysSectionConfig(user, currentApp, appBase, sectionConfigs);
     }
 
-    sectionConfigs = addFMSectionConfig(user, currentApp, sectionConfigs, moduleContext);
+    const storageConfig = getStorageSectionConfig(user, currentApp, moduleContext, isBioPrimary && isRequestsEnabled(moduleContext) ? 7 : 12);
 
     if (isSMPrimary || currentAppProperties.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
+        if (storageConfig) {
+            sectionConfigs = sectionConfigs.push(Map({[FREEZERS_KEY]: storageConfig}));
+        }
         sectionConfigs = sectionConfigs.push(
             Map({
                 [WORKFLOW_KEY]: createWorkflowSectionConfig(appBase),
@@ -314,13 +317,7 @@ export function getMenuSectionConfigs(user: User, currentApp: string, moduleCont
             })
         );
     } else if (isBioPrimary) {
-        const requestsMenuConfig = new MenuSectionConfig({
-            headerURL: buildURL('query', 'executeQuery', {
-                schemaName: 'issues',
-                'query.queryName': 'IssueListDef',
-            }),
-            iconURL: imageURL('_images', 'default.svg'),
-        });
+
         const mediaMenuConfig = new MenuSectionConfig({
             headerURL: AppURL.create(MEDIA_KEY),
             iconURL: imageURL('_images', 'mixtures.svg'),
@@ -331,12 +328,24 @@ export function getMenuSectionConfigs(user: User, currentApp: string, moduleCont
             iconURL: imageURL('biologics/images', 'notebook_blue.svg'),
             seeAllURL: AppURL.create(NOTEBOOKS_KEY),
         });
-        if (isRequestsEnabled()) {
-            // When "Requests" are enabled render as two columns
-            sectionConfigs = sectionConfigs.push(
-                Map({
-                    [REQUESTS_KEY]: requestsMenuConfig,
+        if (isRequestsEnabled(moduleContext)) {
+            const requestsMenuConfig = new MenuSectionConfig({
+                headerURL: buildURL('query', 'executeQuery', {
+                    schemaName: 'issues',
+                    'query.queryName': 'IssueListDef',
                 }),
+                iconURL: imageURL('_images', 'default.svg'),
+            });
+            // When "Requests" are enabled render as two columns
+            let requestsCol = Map({
+                [REQUESTS_KEY]: requestsMenuConfig,
+            });
+            // ... and put the storage in this same column
+            if (storageConfig) {
+                requestsCol = requestsCol.set(FREEZERS_KEY, storageConfig);
+            }
+            sectionConfigs = sectionConfigs.push(
+                requestsCol,
                 Map({
                     [WORKFLOW_KEY]: createWorkflowSectionConfig(appBase),
                     [MEDIA_KEY]: mediaMenuConfig,
@@ -344,6 +353,11 @@ export function getMenuSectionConfigs(user: User, currentApp: string, moduleCont
                 })
             );
         } else {
+            if (storageConfig) {
+                sectionConfigs = sectionConfigs.push(
+                    Map({[FREEZERS_KEY]: storageConfig})
+                );
+            }
             sectionConfigs = sectionConfigs.push(
                 Map({
                     [WORKFLOW_KEY]: createWorkflowSectionConfig(appBase),

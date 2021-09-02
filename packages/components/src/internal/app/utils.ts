@@ -39,6 +39,7 @@ import { hasAllPermissions, User } from '../components/base/models/User';
 import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
 import { imageURL } from '../url/ActionURL';
 import { AppURL, buildURL } from '../url/AppURL';
+import { useMemo } from 'react';
 
 // Type definition not provided for event codes so here we provide our own
 // Source: https://www.iana.org/assignments/websocket/websocket.xml#close-code-number
@@ -266,6 +267,7 @@ function createWorkflowSectionConfig(appBase: string): MenuSectionConfig {
     })
 }
 
+// exported for testing
 export function getMenuSectionConfigs(user: User, currentApp: string, moduleContext?: any): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 
@@ -374,6 +376,12 @@ export function getMenuSectionConfigs(user: User, currentApp: string, moduleCont
     }
     return sectionConfigs;
 }
+
+export const useMenuSectionConfigs = (user: User, appProperties: AppProperties, moduleContext: any): List<Map<string, MenuSectionConfig>> => {
+    return useMemo(() => {
+        return getMenuSectionConfigs(user, appProperties.productId, moduleContext);
+    }, [user, moduleContext]);
+};
 
 function getProductId(moduleName: string, moduleContext: any): string {
     const lcModuleName = moduleName.toLowerCase();

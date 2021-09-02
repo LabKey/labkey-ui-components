@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 9269: ...
   * ExpandableContainer update to allow for custom container class
+  * getTimelineEntityUrl() fix to use rd/freezerLocation for inventoryLocation urlType
 
 ### version 2.69.1
 *Released*: 31 August 2021

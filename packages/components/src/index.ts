@@ -515,7 +515,6 @@ import {
 } from './internal/app/reducers';
 
 import {
-    addFMSectionConfig,
     CloseEventCode,
     getDateFormat as getAppDateFormat,
     getPrimaryAppProperties,
@@ -615,7 +614,6 @@ const App = {
     hasPremiumModule,
     hasModule,
     getDateFormat: getAppDateFormat,
-    addFMSectionConfig,
     getMenuSectionConfigs,
     getUserPermissions,
     doResetQueryGridState,

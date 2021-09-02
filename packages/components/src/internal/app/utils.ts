@@ -110,10 +110,10 @@ export function userCanDesignLocations(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.Admin]);
 }
 
-export function isFreezerManagementEnabled(): boolean {
+export function isFreezerManagementEnabled(moduleContext?: any): boolean {
     return (
-        getServerContext().moduleContext?.inventory !== undefined &&
-        (!isBiologicsEnabled() || isFreezerManagerEnabledInBiologics())
+        (moduleContext ?? getServerContext().moduleContext)?.inventory !== undefined &&
+        (!isBiologicsEnabled(moduleContext) || isFreezerManagerEnabledInBiologics(moduleContext))
     );
 }
 
@@ -132,44 +132,56 @@ export function isSampleManagerNavigationEnabled(): boolean {
     return getServerContext().moduleContext?.biologics?.isBiologicsSampleManagerNavEnabled === true;
 }
 
-export function isSampleManagerEnabled(): boolean {
-    return getServerContext().moduleContext?.samplemanagement !== undefined;
+export function isSampleManagerEnabled(moduleContext?: any): boolean {
+    return (moduleContext ?? getServerContext().moduleContext)?.samplemanagement !== undefined;
 }
 
-export function isBiologicsEnabled(): boolean {
-    return getServerContext().moduleContext?.biologics !== undefined;
+export function isBiologicsEnabled(moduleContext?: any): boolean {
+    return(moduleContext ?? getServerContext().moduleContext)?.biologics !== undefined;
 }
 
-export function isPremiumProductEnabled(): boolean {
-    return isSampleManagerEnabled() || isBiologicsEnabled();
+export function isPremiumProductEnabled(moduleContext?: any): boolean {
+    return isSampleManagerEnabled(moduleContext) || isBiologicsEnabled(moduleContext);
 }
 
-export function sampleManagerIsPrimaryApp(): boolean {
-    return getPrimaryAppProperties().productId === SAMPLE_MANAGER_APP_PROPERTIES.productId;
+export function sampleManagerIsPrimaryApp(moduleContext?: any): boolean {
+    return getPrimaryAppProperties(moduleContext).productId === SAMPLE_MANAGER_APP_PROPERTIES.productId;
 }
 
-export function biologcisIsPrimaryApp(): boolean {
-    return getPrimaryAppProperties().productId === BIOLOGICS_APP_PROPERTIES.productId;
+export function biologcisIsPrimaryApp(moduleContext?: any): boolean {
+    return getPrimaryAppProperties(moduleContext).productId === BIOLOGICS_APP_PROPERTIES.productId;
 }
 
-export function getPrimaryAppProperties(): AppProperties {
-    if (isBiologicsEnabled()) {
-        return BIOLOGICS_APP_PROPERTIES;
-    } else if (isSampleManagerEnabled()) {
+export function getCurrentAppProperties(): AppProperties {
+    const lcController = ActionURL.getController().toLowerCase();
+    if (!lcController) return undefined;
+    if (lcController === SAMPLE_MANAGER_APP_PROPERTIES.controllerName.toLowerCase())
         return SAMPLE_MANAGER_APP_PROPERTIES;
-    } else if (isFreezerManagementEnabled()) {
+    if (lcController === BIOLOGICS_APP_PROPERTIES.controllerName.toLowerCase())
+        return BIOLOGICS_APP_PROPERTIES;
+    if (lcController === FREEZER_MANAGER_APP_PROPERTIES.controllerName.toLowerCase())
+        return FREEZER_MANAGER_APP_PROPERTIES;
+    return undefined;
+}
+
+export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
+    if (isBiologicsEnabled(moduleContext)) {
+        return BIOLOGICS_APP_PROPERTIES;
+    } else if (isSampleManagerEnabled(moduleContext)) {
+        return SAMPLE_MANAGER_APP_PROPERTIES;
+    } else if (isFreezerManagementEnabled(moduleContext)) {
         return FREEZER_MANAGER_APP_PROPERTIES;
     } else {
         return undefined;
     }
 }
 
-function isFreezerManagerEnabledInBiologics(): boolean {
-    return getServerContext().moduleContext?.biologics?.isFreezerManagerEnabled === true;
+function isFreezerManagerEnabledInBiologics(moduleContext?: any): boolean {
+    return (moduleContext ?? getServerContext().moduleContext)?.biologics?.isFreezerManagerEnabled === true;
 }
 
-export function isRequestsEnabled(): boolean {
-    return getServerContext().moduleContext?.biologics?.[EXPERIMENTAL_REQUESTS_MENU] === true;
+export function isRequestsEnabled(moduleContext?: any): boolean {
+    return (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_REQUESTS_MENU] === true;
 }
 
 export function isSamplePicklistEnabled(): boolean {
@@ -189,10 +201,10 @@ export function isCommunityDistribution(): boolean {
     return !hasModule('SampleManagement') && !hasPremiumModule();
 }
 
-export function addFMSectionConfig(user: User, currentApp: string, sectionConfigs: List<Map<string, MenuSectionConfig>>):  List<Map<string, MenuSectionConfig>> {
+function addFMSectionConfig(user: User, currentApp: string, sectionConfigs: List<Map<string, MenuSectionConfig>>, moduleContext?: any):  List<Map<string, MenuSectionConfig>> {
 
     if (isFreezerManagementEnabled()) {
-        const fmAppBase = getApplicationUrlBase('inventory', currentApp);
+        const fmAppBase = getApplicationUrlBase('inventory', currentApp, moduleContext);
         let locationsMenuConfig = new MenuSectionConfig({
             emptyText: 'No freezers have been defined',
             iconURL: imageURL('_images', 'freezer_menu.svg'),
@@ -254,14 +266,15 @@ function createWorkflowSectionConfig(appBase: string): MenuSectionConfig {
     })
 }
 
-export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<string, MenuSectionConfig>> {
+export function getMenuSectionConfigs(user: User, currentApp: string, moduleContext?: any): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 
-    const appBase =  getApplicationUrlBase(getPrimaryAppProperties().moduleName, currentApp);
-    const isSMPrimary = sampleManagerIsPrimaryApp();
-    const isBioPrimary = biologcisIsPrimaryApp();
+    const appBase =  getApplicationUrlBase(getPrimaryAppProperties(moduleContext).moduleName, currentApp, moduleContext);
+    const currentAppProperties = getCurrentAppProperties(); // based on the controller name
+    const isSMPrimary = sampleManagerIsPrimaryApp(moduleContext);
+    const isBioPrimary = biologcisIsPrimaryApp(moduleContext);
     const isBioOrSM = isSMPrimary || isBioPrimary;
-    if (isSMPrimary) {
+    if (isSMPrimary || currentAppProperties.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
         let sourcesMenuConfig = new MenuSectionConfig({
             emptyText: 'No source types have been defined',
             iconURL: imageURL('_images', 'source_type.svg'),
@@ -275,9 +288,9 @@ export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<
                 emptyURLText: 'Create a source type',
             }) as MenuSectionConfig;
         }
-        sectionConfigs = sectionConfigs.push(Map<string, MenuSectionConfig>().set(SOURCES_KEY, sourcesMenuConfig));
+        sectionConfigs = sectionConfigs.push(Map({ [SOURCES_KEY]: sourcesMenuConfig }));
     }
-    else if (isBioPrimary) {
+    else if (isBioPrimary ) {
         sectionConfigs = sectionConfigs.push(  Map({ [REGISTRY_KEY]: new MenuSectionConfig({
                 iconURL: imageURL('_images', 'molecule.svg'),
                 seeAllURL: AppURL.create(REGISTRY_KEY),
@@ -289,9 +302,9 @@ export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<
         sectionConfigs = addAssaysSectionConfig(user, currentApp, appBase, sectionConfigs);
     }
 
-    sectionConfigs = addFMSectionConfig(user, currentApp, sectionConfigs);
+    sectionConfigs = addFMSectionConfig(user, currentApp, sectionConfigs, moduleContext);
 
-    if (isSMPrimary) {
+    if (isSMPrimary || currentAppProperties.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
         sectionConfigs = sectionConfigs.push(
             Map({
                 [WORKFLOW_KEY]: createWorkflowSectionConfig(appBase),
@@ -343,19 +356,19 @@ export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<
         const userSectionConfig = new MenuSectionConfig({
             iconCls: 'fas fa-user-circle ',
         });
-        sectionConfigs = sectionConfigs.push(Map<string, MenuSectionConfig>().set(USER_KEY, userSectionConfig));
+        sectionConfigs = sectionConfigs.push(Map ({[USER_KEY]: userSectionConfig}));
     }
     return sectionConfigs;
 }
 
-function getProductId(moduleName: string): string {
+function getProductId(moduleName: string, moduleContext: any): string {
     const lcModuleName = moduleName.toLowerCase();
-    const moduleContext = getServerContext().moduleContext[lcModuleName];
-    return moduleContext?.productId ? moduleContext.productId.toLowerCase() : undefined;
+    const context = (moduleContext ?? getServerContext().moduleContext)?.[lcModuleName];
+    return context?.productId ? context.productId.toLowerCase() : undefined;
 }
 
-function getApplicationUrlBase(moduleName: string, currentApp: string): string {
-    const appName = getProductId(moduleName);
+function getApplicationUrlBase(moduleName: string, currentApp: string, moduleContext: any): string {
+    const appName = getProductId(moduleName, moduleContext);
     return !appName || appName === currentApp.toLowerCase()
         ? ''
         : buildURL(appName, 'app.view', undefined, { returnUrl: false });
@@ -365,6 +378,7 @@ export function getDateFormat(): string {
     return getServerContext().container.formats.dateFormat;
 }
 
+// Returns the friendly name of the product, primarly for use in help text.
 export function getCurrentProductName() {
     const lcController = ActionURL.getController().toLowerCase();
     if (!lcController) return LABKEY_SERVER_PRODUCT_NAME;

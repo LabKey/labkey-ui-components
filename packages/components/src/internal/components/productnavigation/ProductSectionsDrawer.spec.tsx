@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
 import { Alert, Container, MenuSectionModel } from '../../..';
-import { FREEZERS_KEY, WORKFLOW_KEY } from '../../app/constants';
+import { FREEZERS_KEY, MEDIA_KEY, NOTEBOOKS_KEY, WORKFLOW_KEY } from '../../app/constants';
 
 import {
     getProductSectionUrl,
@@ -104,5 +104,24 @@ describe('ProductSectionsDrawer', () => {
         expect(sections[1].key).toBe('s1');
         expect(sections[2].key).toBe(FREEZERS_KEY);
         expect(sections[3].key).toBe(WORKFLOW_KEY);
+    });
+
+    test("parseProductMenuSectionResponse, LKB sorting", () => {
+        const modelSections = List<MenuSectionModel>([
+            new MenuSectionModel({ key: 's1', productId: 'a', label: 'S1' }),
+            new MenuSectionModel({ key: WORKFLOW_KEY, productId: 'a', label: 'Workflow' }),
+            new MenuSectionModel({ key: MEDIA_KEY, productId: 'a', label: 'Media' }),
+            new MenuSectionModel({ key: NOTEBOOKS_KEY, productId: 'a', label: 'Notebooks' }),
+            new MenuSectionModel({ key: FREEZERS_KEY, productId: 'a', label: 'Storage' }),
+        ]);
+
+        const sections = parseProductMenuSectionResponse(modelSections, TEST_PRODUCT, TEST_PROJECT.path);
+        expect(sections).toHaveLength(6);
+        expect(sections[0].key).toBe('home');
+        expect(sections[1].key).toBe('s1');
+        expect(sections[2].key).toBe(FREEZERS_KEY);
+        expect(sections[3].key).toBe(WORKFLOW_KEY);
+        expect(sections[4].key).toBe(MEDIA_KEY);
+        expect(sections[5].key).toBe(NOTEBOOKS_KEY);
     });
 });

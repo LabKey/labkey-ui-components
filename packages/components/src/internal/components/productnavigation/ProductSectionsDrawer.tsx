@@ -36,6 +36,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [sections, setSections] = useState<ProductSectionModel[]>();
 
+    // TODO when isFreezerManagerEnabled goes away, we can put this data in the AppProperties constants instead
     const productIds = useMemo((): List<string> => {
         let productIds = List.of(product.productId);
         if (product.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||

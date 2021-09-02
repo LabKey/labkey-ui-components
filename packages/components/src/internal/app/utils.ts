@@ -111,10 +111,13 @@ export function userCanDesignLocations(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.Admin]);
 }
 
-export function isFreezerManagementEnabled(moduleContext?: any): boolean {
+export function isFreezerManagementEnabled(moduleContext?: any, currentProductId?: string): boolean {
     return (
         (moduleContext ?? getServerContext().moduleContext)?.inventory !== undefined &&
-        (!isBiologicsEnabled(moduleContext) || isFreezerManagerEnabledInBiologics(moduleContext))
+        (!isBiologicsEnabled(moduleContext) || isFreezerManagerEnabledInBiologics(moduleContext) ||
+            // if looking at the SM app or FM within a Biologics folder but the FM in Biologics flag is off,
+            // you still want to see the Storage menu
+            (currentProductId && currentProductId !== BIOLOGICS_APP_PROPERTIES.productId))
     );
 }
 
@@ -146,11 +149,11 @@ export function isPremiumProductEnabled(moduleContext?: any): boolean {
 }
 
 export function sampleManagerIsPrimaryApp(moduleContext?: any): boolean {
-    return getPrimaryAppProperties(moduleContext).productId === SAMPLE_MANAGER_APP_PROPERTIES.productId;
+    return getPrimaryAppProperties(moduleContext)?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId;
 }
 
-export function biologcisIsPrimaryApp(moduleContext?: any): boolean {
-    return getPrimaryAppProperties(moduleContext).productId === BIOLOGICS_APP_PROPERTIES.productId;
+export function biologicsIsPrimaryApp(moduleContext?: any): boolean {
+    return getPrimaryAppProperties(moduleContext)?.productId === BIOLOGICS_APP_PROPERTIES.productId;
 }
 
 export function getCurrentAppProperties(): AppProperties {
@@ -202,10 +205,11 @@ export function isCommunityDistribution(): boolean {
     return !hasModule('SampleManagement') && !hasPremiumModule();
 }
 
-function getStorageSectionConfig(user: User, currentApp: string, moduleContext: any, maxItemsPerColumn: number):  MenuSectionConfig {
+// exported for testing
+export function getStorageSectionConfig(user: User, currentProductId: string, moduleContext: any, maxItemsPerColumn: number):  MenuSectionConfig {
 
-    if (isFreezerManagementEnabled()) {
-        const fmAppBase = getApplicationUrlBase('inventory', currentApp, moduleContext);
+    if (isFreezerManagementEnabled(moduleContext, currentProductId)) {
+        const fmAppBase = getApplicationUrlBase(FREEZER_MANAGER_APP_PROPERTIES.moduleName, currentProductId, moduleContext);
         let locationsMenuConfig = new MenuSectionConfig({
             emptyText: 'No freezers have been defined',
             iconURL: imageURL('_images', 'freezer_menu.svg'),
@@ -225,7 +229,26 @@ function getStorageSectionConfig(user: User, currentApp: string, moduleContext: 
     return undefined;
 }
 
-function addSamplesSectionConfig(user: User, currentApp: string, appBase: string, sectionConfigs: List<Map<string, MenuSectionConfig>>): List<Map<string, MenuSectionConfig>> {
+// exported for testing
+export function addSourcesSectionConfig(user: User, appBase: string, sectionConfigs: List<Map<string, MenuSectionConfig>>): List<Map<string, MenuSectionConfig>> {
+    let sourcesMenuConfig = new MenuSectionConfig({
+        emptyText: 'No source types have been defined',
+        iconURL: imageURL('_images', 'source_type.svg'),
+        maxColumns: 1,
+        maxItemsPerColumn: 12,
+        seeAllURL: appBase + AppURL.create(SOURCES_KEY).addParam('viewAs', 'grid').toHref(),
+    });
+    if (userCanDesignSourceTypes(user)) {
+        sourcesMenuConfig = sourcesMenuConfig.merge({
+            emptyURL: appBase + NEW_SOURCE_TYPE_HREF.toHref(),
+            emptyURLText: 'Create a source type',
+        }) as MenuSectionConfig;
+    }
+    return sectionConfigs.push(Map({ [SOURCES_KEY]: sourcesMenuConfig }));
+}
+
+// exported for testing
+export function addSamplesSectionConfig(user: User, appBase: string, sectionConfigs: List<Map<string, MenuSectionConfig>>): List<Map<string, MenuSectionConfig>> {
     let samplesMenuConfig = new MenuSectionConfig({
         emptyText: 'No sample types have been defined',
         iconURL: imageURL('_images', 'samples.svg'),
@@ -242,7 +265,8 @@ function addSamplesSectionConfig(user: User, currentApp: string, appBase: string
     return sectionConfigs.push(Map<string, MenuSectionConfig>().set(SAMPLES_KEY, samplesMenuConfig));
 }
 
-function addAssaysSectionConfig(user: User, currnetApp: string, appBase: string, sectionConfigs: List<Map<string, MenuSectionConfig>>): List<Map<string, MenuSectionConfig>> {
+// exported for testing
+export function addAssaysSectionConfig(user: User, appBase: string, sectionConfigs: List<Map<string, MenuSectionConfig>>): List<Map<string, MenuSectionConfig>> {
     let assaysMenuConfig = new MenuSectionConfig({
         emptyText: 'No assays have been defined',
         iconURL: imageURL('_images', 'assay.svg'),
@@ -259,38 +283,49 @@ function addAssaysSectionConfig(user: User, currnetApp: string, appBase: string,
     return sectionConfigs.push(Map<string, MenuSectionConfig>().set(ASSAYS_KEY, assaysMenuConfig));
 }
 
-function createWorkflowSectionConfig(appBase: string): MenuSectionConfig {
+function getWorkflowSectionConfig(appBase: string): MenuSectionConfig {
     return new MenuSectionConfig({
         headerURL: appBase + WORKFLOW_HOME_HREF.toHref(),
         iconURL: imageURL('_images', 'workflow.svg'),
         seeAllURL: appBase + AppURL.create(WORKFLOW_KEY).toHref(),
-    })
+    });
 }
 
+const USER_SECTION_CONFIG = new MenuSectionConfig({
+    iconCls: 'fas fa-user-circle ',
+});
+
+const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
+    headerURL: buildURL('query', 'executeQuery', {
+        schemaName: 'issues',
+        'query.queryName': 'IssueListDef',
+    }),
+    iconURL: imageURL('_images', 'default.svg'),
+});
+
+// TODO: This can generate URLs that differ between app.view and appDev.view
+const NOTEBOOKS_SECTION_CONFIG = new MenuSectionConfig({
+    iconURL: imageURL('biologics/images', 'notebook_blue.svg'),
+    seeAllURL: AppURL.create(NOTEBOOKS_KEY),
+});
+
+const MEDIA_SECTION_CONFIG = new MenuSectionConfig({
+    headerURL: AppURL.create(MEDIA_KEY),
+    iconURL: imageURL('_images', 'mixtures.svg'),
+    seeAllURL: AppURL.create(MEDIA_KEY),
+});
+
 // exported for testing
-export function getMenuSectionConfigs(user: User, currentApp: string, moduleContext?: any): List<Map<string, MenuSectionConfig>> {
+export function getMenuSectionConfigs(user: User, currentProductId: string, moduleContext?: any): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 
-    const appBase =  getApplicationUrlBase(getPrimaryAppProperties(moduleContext).moduleName, currentApp, moduleContext);
+    const appBase = getApplicationUrlBase(getPrimaryAppProperties(moduleContext).moduleName, currentProductId, moduleContext);
     const currentAppProperties = getCurrentAppProperties(); // based on the controller name
     const isSMPrimary = sampleManagerIsPrimaryApp(moduleContext);
-    const isBioPrimary = biologcisIsPrimaryApp(moduleContext);
+    const isBioPrimary = biologicsIsPrimaryApp(moduleContext);
     const isBioOrSM = isSMPrimary || isBioPrimary;
-    if (isSMPrimary || currentAppProperties.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
-        let sourcesMenuConfig = new MenuSectionConfig({
-            emptyText: 'No source types have been defined',
-            iconURL: imageURL('_images', 'source_type.svg'),
-            maxColumns: 1,
-            maxItemsPerColumn: 12,
-            seeAllURL: appBase + AppURL.create(SOURCES_KEY).addParam('viewAs', 'grid').toHref(),
-        });
-        if (userCanDesignSourceTypes(user)) {
-            sourcesMenuConfig = sourcesMenuConfig.merge({
-                emptyURL: appBase + NEW_SOURCE_TYPE_HREF.toHref(),
-                emptyURLText: 'Create a source type',
-            }) as MenuSectionConfig;
-        }
-        sectionConfigs = sectionConfigs.push(Map({ [SOURCES_KEY]: sourcesMenuConfig }));
+    if (isSMPrimary || currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
+        sectionConfigs = addSourcesSectionConfig(user, appBase, sectionConfigs);
     }
     else if (isBioPrimary ) {
         sectionConfigs = sectionConfigs.push(  Map({ [REGISTRY_KEY]: new MenuSectionConfig({
@@ -300,47 +335,28 @@ export function getMenuSectionConfigs(user: User, currentApp: string, moduleCont
         );
     }
     if (isBioOrSM) {
-        sectionConfigs = addSamplesSectionConfig(user, currentApp, appBase, sectionConfigs);
-        sectionConfigs = addAssaysSectionConfig(user, currentApp, appBase, sectionConfigs);
+        sectionConfigs = addSamplesSectionConfig(user, appBase, sectionConfigs);
+        sectionConfigs = addAssaysSectionConfig(user, appBase, sectionConfigs);
     }
 
-    const storageConfig = getStorageSectionConfig(user, currentApp, moduleContext, isBioPrimary && isRequestsEnabled(moduleContext) ? 7 : 12);
+    const storageConfig = getStorageSectionConfig(user, currentProductId, moduleContext, isBioPrimary && isRequestsEnabled(moduleContext) ? 7 : 12);
+    const workflowConfig = getWorkflowSectionConfig(appBase);
 
-    if (isSMPrimary || currentAppProperties.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
+    if (isSMPrimary || currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
         if (storageConfig) {
             sectionConfigs = sectionConfigs.push(Map({[FREEZERS_KEY]: storageConfig}));
         }
         sectionConfigs = sectionConfigs.push(
             Map({
-                [WORKFLOW_KEY]: createWorkflowSectionConfig(appBase),
-                [USER_KEY]: new MenuSectionConfig({
-                    iconCls: 'fas fa-user-circle ',
-                }),
+                [WORKFLOW_KEY]: workflowConfig,
+                [USER_KEY]: USER_SECTION_CONFIG,
             })
         );
     } else if (isBioPrimary) {
-
-        const mediaMenuConfig = new MenuSectionConfig({
-            headerURL: AppURL.create(MEDIA_KEY),
-            iconURL: imageURL('_images', 'mixtures.svg'),
-            seeAllURL: AppURL.create(MEDIA_KEY),
-        });
-        // TODO: This can generate URLs that differ between app.view and appDev.view
-        const notebooksMenuConfig = new MenuSectionConfig({
-            iconURL: imageURL('biologics/images', 'notebook_blue.svg'),
-            seeAllURL: AppURL.create(NOTEBOOKS_KEY),
-        });
         if (isRequestsEnabled(moduleContext)) {
-            const requestsMenuConfig = new MenuSectionConfig({
-                headerURL: buildURL('query', 'executeQuery', {
-                    schemaName: 'issues',
-                    'query.queryName': 'IssueListDef',
-                }),
-                iconURL: imageURL('_images', 'default.svg'),
-            });
             // When "Requests" are enabled render as two columns
             let requestsCol = Map({
-                [REQUESTS_KEY]: requestsMenuConfig,
+                [REQUESTS_KEY]: REQUESTS_SECTION_CONFIG,
             });
             // ... and put the storage in this same column
             if (storageConfig) {
@@ -349,9 +365,9 @@ export function getMenuSectionConfigs(user: User, currentApp: string, moduleCont
             sectionConfigs = sectionConfigs.push(
                 requestsCol,
                 Map({
-                    [WORKFLOW_KEY]: createWorkflowSectionConfig(appBase),
-                    [MEDIA_KEY]: mediaMenuConfig,
-                    [NOTEBOOKS_KEY]: notebooksMenuConfig,
+                    [WORKFLOW_KEY]: workflowConfig,
+                    [MEDIA_KEY]: MEDIA_SECTION_CONFIG,
+                    [NOTEBOOKS_KEY]: NOTEBOOKS_SECTION_CONFIG,
                 })
             );
         } else {
@@ -362,17 +378,17 @@ export function getMenuSectionConfigs(user: User, currentApp: string, moduleCont
             }
             sectionConfigs = sectionConfigs.push(
                 Map({
-                    [WORKFLOW_KEY]: createWorkflowSectionConfig(appBase),
-                    [MEDIA_KEY]: mediaMenuConfig,
-                    [NOTEBOOKS_KEY]: notebooksMenuConfig,
+                    [WORKFLOW_KEY]: workflowConfig,
+                    [MEDIA_KEY]: MEDIA_SECTION_CONFIG,
+                    [NOTEBOOKS_KEY]: NOTEBOOKS_SECTION_CONFIG,
                 })
             );
         }
     } else {
-        const userSectionConfig = new MenuSectionConfig({
-            iconCls: 'fas fa-user-circle ',
-        });
-        sectionConfigs = sectionConfigs.push(Map ({[USER_KEY]: userSectionConfig}));
+        if (storageConfig) {
+            sectionConfigs = sectionConfigs.push(Map({[FREEZERS_KEY]: storageConfig}));
+        }
+        sectionConfigs = sectionConfigs.push(Map ({[USER_KEY]: USER_SECTION_CONFIG}));
     }
     return sectionConfigs;
 }
@@ -386,14 +402,14 @@ export const useMenuSectionConfigs = (user: User, appProperties: AppProperties, 
 function getProductId(moduleName: string, moduleContext: any): string {
     const lcModuleName = moduleName.toLowerCase();
     const context = (moduleContext ?? getServerContext().moduleContext)?.[lcModuleName];
-    return context?.productId ? context.productId.toLowerCase() : undefined;
+    return context?.productId?.toLowerCase();
 }
 
-function getApplicationUrlBase(moduleName: string, currentApp: string, moduleContext: any): string {
-    const appName = getProductId(moduleName, moduleContext);
-    return !appName || appName === currentApp.toLowerCase()
+function getApplicationUrlBase(moduleName: string, currentProductId: string, moduleContext: any): string {
+    const lcProductId = getProductId(moduleName, moduleContext);
+    return !lcProductId || lcProductId === currentProductId.toLowerCase()
         ? ''
-        : buildURL(appName, 'app.view', undefined, { returnUrl: false });
+        : buildURL(lcProductId, 'app.view', undefined, { returnUrl: false });
 }
 
 export function getDateFormat(): string {

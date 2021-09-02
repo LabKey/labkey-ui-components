@@ -3,9 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* export function `addFMSectionConfig` for incorporating FM menu config in megamenu
 * Add new AppProperties interface and define properties for our three apps in the App object
   * Stop exporting product id constants that are encapsulated into the app properties constants
+  * Expose new helper methods from App object (`isPremiumProductEnabled`, `sampleManagerIsPrimaryApp`, `getPrimayAppProperties`)
+* Update getMenuSections config to merge in logic for Biologics as well
+* Move FREEZER_ITEM_SAMPLE_MAPPER here from SampleManagement so it can be used for Biologics as well
 
 ### version 2.69.1
 *Released*: 31 August 2021

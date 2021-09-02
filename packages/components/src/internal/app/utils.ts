@@ -105,12 +105,10 @@ export function userCanDesignLocations(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.Admin]);
 }
 
-// TODO is this called with currentApp anywhere?
-export function isFreezerManagementEnabled(currentApp?: string): boolean {
+export function isFreezerManagementEnabled(): boolean {
     return (
         getServerContext().moduleContext?.inventory !== undefined &&
-        (!isBiologicsEnabled() || isFreezerManagerEnabledInBiologics() ||
-            (currentApp && currentApp !== BIOLOGICS_APP_PROPERTIES.productId))
+        (!isBiologicsEnabled() || isFreezerManagerEnabledInBiologics())
     );
 }
 

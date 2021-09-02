@@ -239,13 +239,6 @@ describe('utils', () => {
         LABKEY.moduleContext = {
             inventory: {},
             samplemanagement: {},
-            biologics: { isFreezerManagerEnabled: false },
-        };
-        expect(isFreezerManagementEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId)).toBeTruthy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-            samplemanagement: {},
             biologics: { isFreezerManagerEnabled: true },
         };
         expect(isFreezerManagementEnabled()).toBeTruthy();

@@ -4,16 +4,12 @@ import { Alert } from 'react-bootstrap';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { QueryGridModel } from '../../QueryGridModel';
-
 import {
     Actions,
     caseInsensitive,
-    DetailEditing,
     EditableDetailPanel,
     getActionErrorMessage,
     LoadingPage,
-    QueryColumn,
     QueryModel,
     SampleAliquotDetailHeader,
 } from '../../..';
@@ -31,7 +27,6 @@ interface Props {
     detailRenderer?: DetailRenderer;
     onEditToggle?: (isEditing: boolean) => void;
     onUpdate: () => void;
-    queryGridModel?: QueryGridModel;
     queryModel?: QueryModel;
     sampleSet: string;
     title: string;
@@ -55,10 +50,8 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        if (!props.queryModel && !props.queryGridModel) {
-            throw new Error(
-                'SampleDetailEditing: Requires that either a "queryModel" or "queryGridModel" is provided.'
-            );
+        if (!props.queryModel) {
+            throw new Error('SampleDetailEditing: Requires that a "queryModel" be provided.');
         } else if (props.queryModel && !props.actions) {
             throw new Error('SampleDetailEditing: If a "queryModel" is specified, then "actions" are required.');
         }
@@ -96,30 +89,15 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     };
 
     getRow = (): Record<string, any> => {
-        const { queryGridModel, queryModel } = this.props;
-
-        if (queryModel) {
-            return queryModel.getRow() ?? {};
-        } else {
-            return queryGridModel.getRow().toJS();
-        }
+        const { queryModel } = this.props;
+        return queryModel.getRow() ?? {};
     };
 
     getUpdateDisplayColumns = (isAliquot: boolean): GroupedSampleDisplayColumns => {
-        const { queryGridModel, queryModel } = this.props;
+        const { queryModel } = this.props;
         const { sampleTypeDomainFields } = this.state;
-
-        let displayColumns: List<QueryColumn>;
-        let updateColumns: List<QueryColumn>;
-
-        if (queryModel) {
-            displayColumns = List(queryModel.detailColumns);
-            updateColumns = List(queryModel.updateColumns);
-        } else {
-            displayColumns = queryGridModel.getDetailsDisplayColumns();
-            updateColumns = queryGridModel.getUpdateDisplayColumns();
-        }
-
+        const displayColumns = List(queryModel.detailColumns);
+        const updateColumns = List(queryModel.updateColumns);
         return getGroupedSampleDisplayColumns(displayColumns, updateColumns, sampleTypeDomainFields, isAliquot);
     };
 
@@ -132,7 +110,6 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
             detailRenderer,
             onEditToggle,
             onUpdate,
-            queryGridModel,
             queryModel,
             title,
         } = this.props;
@@ -146,11 +123,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
             );
         }
 
-        if (
-            !sampleTypeDomainFields ||
-            (queryModel && queryModel.isLoading) ||
-            (queryGridModel && !queryGridModel.isLoaded)
-        ) {
+        if (!sampleTypeDomainFields || (queryModel && queryModel.isLoading)) {
             return <LoadingPage title={title} />;
         }
 
@@ -161,36 +134,19 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
             <SampleAliquotDetailHeader aliquotHeaderDisplayColumns={aliquotHeaderDisplayColumns} row={fromJS(row)} />
         ) : null;
 
-        if (queryModel) {
-            return (
-                <EditableDetailPanel
-                    actions={actions}
-                    auditBehavior={auditBehavior}
-                    canUpdate={canUpdate}
-                    detailEditRenderer={detailEditRenderer}
-                    detailHeader={detailHeader}
-                    detailRenderer={detailRenderer}
-                    editColumns={editColumns.toArray()}
-                    model={queryModel}
-                    onEditToggle={onEditToggle}
-                    onUpdate={onUpdate}
-                    queryColumns={displayColumns.toArray()}
-                />
-            );
-        }
-
         return (
-            <DetailEditing
+            <EditableDetailPanel
+                actions={actions}
                 auditBehavior={auditBehavior}
                 canUpdate={canUpdate}
                 detailEditRenderer={detailEditRenderer}
                 detailHeader={detailHeader}
                 detailRenderer={detailRenderer}
-                editColumns={editColumns}
+                editColumns={editColumns.toArray()}
+                model={queryModel}
                 onEditToggle={onEditToggle}
                 onUpdate={onUpdate}
-                queryColumns={displayColumns}
-                queryModel={queryGridModel}
+                queryColumns={displayColumns.toArray()}
             />
         );
     }

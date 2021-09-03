@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Remove QueryGridModel based <Detail> and <DetailEditing> components
+* Remove unused QueryGridModel prop from AssayImportSubMenuItem and SamplesBulkUpdateForm
 
 ### version 2.69.1
 *Released*: 31 August 2021

@@ -244,10 +244,8 @@ import { ColorIcon } from './internal/components/base/ColorIcon';
 import { QuerySelect } from './internal/components/forms/QuerySelect';
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
-import { DetailEditing } from './internal/components/forms/detail/DetailEditing';
 
 import { resolveDetailRenderer } from './internal/components/forms/detail/DetailEditRenderer';
-import { Detail } from './internal/components/forms/detail/Detail';
 import {
     getUsersWithPermissions,
     handleInputTab,
@@ -777,7 +775,6 @@ export {
     QuerySelect,
     UserSelectInput,
     DetailPanelHeader,
-    DetailEditing,
     handleInputTab,
     handleTabKeyOnTextArea,
     withFormSteps,
@@ -1161,7 +1158,6 @@ export {
     // QueryGridModel
     QueryGridModel,
     QueryGridPanel,
-    Detail,
     GRID_CHECKBOX_OPTIONS,
     // QueryModel
     QueryModel,

@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 4.0.1
+*Released*: 1 September 2021
+* Dependabot package updates
+
 ### version 4.0.0
 *Released*: 9 June 2021
 * Move build output to resources/gen

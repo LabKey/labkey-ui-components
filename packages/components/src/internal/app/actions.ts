@@ -23,6 +23,7 @@ import {
     SERVER_NOTIFICATIONS_INVALIDATE,
     RESET_QUERY_GRID_STATE,
 } from './constants';
+import { getAppProductIds } from './utils';
 
 function fetchUserPermissions() {
     return new Promise((resolve, reject) => {
@@ -60,7 +61,7 @@ export const setReloadRequired = () => ({ type: SET_RELOAD_REQUIRED });
 
 export const doResetQueryGridState = () => ({ type: RESET_QUERY_GRID_STATE });
 
-export function menuInit(currentProductId: string, userMenuProductId: string, productIds?: List<string>) {
+export function menuInit(currentProductId: string, appProductId: string, productIds?: List<string>) {
     return (dispatch, getState) => {
         let menu = getState().routing.menu;
         if ((!menu.isLoaded && !menu.isLoading) || menu.needsReload) {
@@ -68,8 +69,9 @@ export function menuInit(currentProductId: string, userMenuProductId: string, pr
                 dispatch({
                     type: MENU_LOADING_START,
                     currentProductId,
-                    userMenuProductId,
-                    productIds, // when undefined, this returns all menu sections for modules in this container
+                    userMenuProductId: appProductId,
+                    // when productIds is undefined, this returns all menu sections for modules in this container, which we currently don't ever want
+                    productIds: productIds ?? getAppProductIds(appProductId),
                 });
             }
             menu = getState().routing.menu;

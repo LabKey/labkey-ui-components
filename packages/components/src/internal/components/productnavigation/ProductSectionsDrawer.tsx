@@ -23,7 +23,7 @@ import {
 import { ProductModel, ProductSectionModel } from './models';
 import { APPLICATION_NAVIGATION_METRIC, SECTION_KEYS_TO_SKIP } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
-import { isFreezerManagementEnabled } from '../../app/utils';
+import { getAppProductIds } from '../../app/utils';
 
 interface ProductAppsDrawerProps {
     product: ProductModel;
@@ -36,14 +36,8 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [sections, setSections] = useState<ProductSectionModel[]>();
 
-    // TODO when isFreezerManagerEnabled goes away, we can put this data in the AppProperties constants instead
     const productIds = useMemo((): List<string> => {
-        let productIds = List.of(product.productId);
-        if (product.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||
-            (product.productId == BIOLOGICS_APP_PROPERTIES.productId && isFreezerManagementEnabled())) {
-            productIds = productIds.push(FREEZER_MANAGER_APP_PROPERTIES.productId);
-        }
-        return productIds;
+       return getAppProductIds(product.productId)
     }, [product.productId]);
 
     useEffect(() => {

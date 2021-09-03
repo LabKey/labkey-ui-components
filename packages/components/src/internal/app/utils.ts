@@ -291,6 +291,28 @@ function getWorkflowSectionConfig(appBase: string): MenuSectionConfig {
     });
 }
 
+function getNotebooksSectionConfig(appBase: string): MenuSectionConfig {
+    return new MenuSectionConfig({
+        iconURL: imageURL('biologics/images', 'notebook_blue.svg'),
+        seeAllURL: appBase + AppURL.create(NOTEBOOKS_KEY),
+    });
+}
+
+function getMediaSectionConfig(appBase: string): MenuSectionConfig {
+    return new MenuSectionConfig({
+        headerURL: appBase + AppURL.create(MEDIA_KEY),
+        iconURL: imageURL('_images', 'mixtures.svg'),
+        seeAllURL: appBase + AppURL.create(MEDIA_KEY),
+    });
+}
+
+function getRegistrySectionConfig(appBase: string): MenuSectionConfig {
+    return new MenuSectionConfig({
+        iconURL: imageURL('_images', 'molecule.svg'),
+        seeAllURL: appBase + AppURL.create(REGISTRY_KEY),
+    })
+}
+
 const USER_SECTION_CONFIG = new MenuSectionConfig({
     iconCls: 'fas fa-user-circle ',
 });
@@ -303,22 +325,6 @@ const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
     iconURL: imageURL('_images', 'default.svg'),
 });
 
-// TODO: This can generate URLs that differ between app.view and appDev.view
-const NOTEBOOKS_SECTION_CONFIG = new MenuSectionConfig({
-    iconURL: imageURL('biologics/images', 'notebook_blue.svg'),
-    seeAllURL: AppURL.create(NOTEBOOKS_KEY),
-});
-
-const MEDIA_SECTION_CONFIG = new MenuSectionConfig({
-    headerURL: AppURL.create(MEDIA_KEY),
-    iconURL: imageURL('_images', 'mixtures.svg'),
-    seeAllURL: AppURL.create(MEDIA_KEY),
-});
-
-const REGISTRY_SECTION_CONFIG = new MenuSectionConfig({
-    iconURL: imageURL('_images', 'molecule.svg'),
-    seeAllURL: AppURL.create(REGISTRY_KEY),
-});
 
 // exported for testing
 export function getMenuSectionConfigs(user: User, currentProductId: string, moduleContext?: any): List<Map<string, MenuSectionConfig>> {
@@ -333,7 +339,7 @@ export function getMenuSectionConfigs(user: User, currentProductId: string, modu
         sectionConfigs = addSourcesSectionConfig(user, appBase, sectionConfigs);
     }
     else if (isBioPrimary ) {
-        sectionConfigs = sectionConfigs.push(  Map({ [REGISTRY_KEY]: REGISTRY_SECTION_CONFIG }));
+        sectionConfigs = sectionConfigs.push(  Map({ [REGISTRY_KEY]: getRegistrySectionConfig(appBase) }));
     }
     if (isBioOrSM) {
         sectionConfigs = addSamplesSectionConfig(user, appBase, sectionConfigs);
@@ -367,8 +373,8 @@ export function getMenuSectionConfigs(user: User, currentProductId: string, modu
                 requestsCol,
                 Map({
                     [WORKFLOW_KEY]: workflowConfig,
-                    [MEDIA_KEY]: MEDIA_SECTION_CONFIG,
-                    [NOTEBOOKS_KEY]: NOTEBOOKS_SECTION_CONFIG,
+                    [MEDIA_KEY]: getMediaSectionConfig(appBase),
+                    [NOTEBOOKS_KEY]: getNotebooksSectionConfig(appBase),
                 })
             );
         } else {
@@ -380,8 +386,8 @@ export function getMenuSectionConfigs(user: User, currentProductId: string, modu
             sectionConfigs = sectionConfigs.push(
                 Map({
                     [WORKFLOW_KEY]: workflowConfig,
-                    [MEDIA_KEY]: MEDIA_SECTION_CONFIG,
-                    [NOTEBOOKS_KEY]: NOTEBOOKS_SECTION_CONFIG,
+                    [MEDIA_KEY]: getMediaSectionConfig(appBase),
+                    [NOTEBOOKS_KEY]: getNotebooksSectionConfig(appBase),
                 })
             );
         }
@@ -426,5 +432,15 @@ export function getCurrentProductName() {
         return getPrimaryAppProperties().name;
     }
     return LABKEY_SERVER_PRODUCT_NAME;
+}
+
+// TODO when isFreezerManagerEnabled goes away, we can put this data in the AppProperties constants instead
+export function getAppProductIds(appProductId: string) : List<string> {
+    let productIds = List.of(appProductId);
+    if (appProductId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||
+        (appProductId == BIOLOGICS_APP_PROPERTIES.productId && isFreezerManagementEnabled())) {
+        productIds = productIds.push(FREEZER_MANAGER_APP_PROPERTIES.productId);
+    }
+    return productIds;
 }
 

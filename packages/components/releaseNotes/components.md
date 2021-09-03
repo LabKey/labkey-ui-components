@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Expose new helper methods from App object (`isPremiumProductEnabled`, `sampleManagerIsPrimaryApp`, `getPrimayAppProperties`)
 * Update getMenuSections config to merge in logic for Biologics as well
 * Move FREEZER_ITEM_SAMPLE_MAPPER here from SampleManagement so it can be used for Biologics as well
+* Change menuInit so it will get the given app's productIds only
 
 ### version 2.69.1
 *Released*: 31 August 2021

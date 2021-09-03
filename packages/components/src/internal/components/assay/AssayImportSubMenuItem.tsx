@@ -1,25 +1,13 @@
 import React, { FC, useMemo } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import {
-    getImportItemsForAssayDefinitions,
-    InjectedAssayModel,
-    SubMenuItem,
-    SubMenuItemProps,
-    QueryGridModel,
-    withAssayModels,
-    QueryModel,
-} from '../../..';
+import { InjectedAssayModel, SubMenuItem, SubMenuItemProps, withAssayModels, QueryModel } from '../../..';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
 import { getImportItemsForAssayDefinitionsQM } from './actions';
 
 interface Props extends SubMenuItemProps {
     isLoaded?: boolean;
-    /**
-     * @deprecated: Use QueryModel instead.
-     */
-    model?: QueryGridModel;
     queryModel?: QueryModel;
     requireSelection: boolean;
     nounPlural?: string;
@@ -31,7 +19,6 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
     const {
         assayModel,
         isLoaded = true,
-        model,
         nounPlural = 'items',
         providerType,
         queryModel,
@@ -45,11 +32,8 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         }
 
         let importItems;
-
         if (queryModel !== undefined) {
             importItems = getImportItemsForAssayDefinitionsQM(assayModel, queryModel, providerType);
-        } else {
-            importItems = getImportItemsForAssayDefinitions(assayModel, model, providerType);
         }
 
         // Convert OrderedMap to array.
@@ -57,7 +41,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
             subItems.push({ text: assay.name, href });
             return subItems;
         }, []);
-    }, [assayModel, isLoaded, model, providerType, queryModel]);
+    }, [assayModel, isLoaded, providerType, queryModel]);
 
     if (!isLoaded) {
         return (
@@ -73,11 +57,8 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
     }
 
     let selectedCount = -1;
-
     if (queryModel !== undefined) {
         selectedCount = queryModel.selections?.size ?? -1;
-    } else if (model) {
-        selectedCount = model.selectedIds.size;
     }
 
     const overlayMessage =

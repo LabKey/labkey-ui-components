@@ -328,8 +328,6 @@ import {
     deleteAssayRuns,
     fetchAllAssays,
     GENERAL_ASSAY_PROVIDER_NAME,
-    getImportItemsForAssayDefinitions,
-    getRunDetailsQueryColumns,
     importAssayRun,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
 } from './internal/components/assay/actions';
@@ -919,8 +917,6 @@ export {
     importAssayRun,
     deleteAssayDesign,
     deleteAssayRuns,
-    getImportItemsForAssayDefinitions,
-    getRunDetailsQueryColumns,
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,

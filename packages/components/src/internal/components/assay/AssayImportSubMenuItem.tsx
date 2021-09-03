@@ -4,7 +4,7 @@ import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 import { InjectedAssayModel, SubMenuItem, SubMenuItemProps, withAssayModels, QueryModel } from '../../..';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
-import { getImportItemsForAssayDefinitionsQM } from './actions';
+import { getImportItemsForAssayDefinitions } from './actions';
 
 interface Props extends SubMenuItemProps {
     isLoaded?: boolean;
@@ -31,10 +31,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
             return [];
         }
 
-        let importItems;
-        if (queryModel !== undefined) {
-            importItems = getImportItemsForAssayDefinitionsQM(assayModel, queryModel, providerType);
-        }
+        const importItems = getImportItemsForAssayDefinitions(assayModel, queryModel, providerType);
 
         // Convert OrderedMap to array.
         return importItems.reduce((subItems, href, assay) => {

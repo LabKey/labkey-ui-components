@@ -294,22 +294,22 @@ function getWorkflowSectionConfig(appBase: string): MenuSectionConfig {
 function getNotebooksSectionConfig(appBase: string): MenuSectionConfig {
     return new MenuSectionConfig({
         iconURL: imageURL('biologics/images', 'notebook_blue.svg'),
-        seeAllURL: appBase + AppURL.create(NOTEBOOKS_KEY),
+        seeAllURL: appBase + AppURL.create(NOTEBOOKS_KEY).toHref(),
     });
 }
 
 function getMediaSectionConfig(appBase: string): MenuSectionConfig {
     return new MenuSectionConfig({
-        headerURL: appBase + AppURL.create(MEDIA_KEY),
+        headerURL: appBase + AppURL.create(MEDIA_KEY).toHref(),
         iconURL: imageURL('_images', 'mixtures.svg'),
-        seeAllURL: appBase + AppURL.create(MEDIA_KEY),
+        seeAllURL: appBase + AppURL.create(MEDIA_KEY).toHref(),
     });
 }
 
 function getRegistrySectionConfig(appBase: string): MenuSectionConfig {
     return new MenuSectionConfig({
         iconURL: imageURL('_images', 'molecule.svg'),
-        seeAllURL: appBase + AppURL.create(REGISTRY_KEY),
+        seeAllURL: appBase + AppURL.create(REGISTRY_KEY).toHref(),
     })
 }
 

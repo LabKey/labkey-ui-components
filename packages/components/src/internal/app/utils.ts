@@ -315,6 +315,11 @@ const MEDIA_SECTION_CONFIG = new MenuSectionConfig({
     seeAllURL: AppURL.create(MEDIA_KEY),
 });
 
+const REGISTRY_SECTION_CONFIG = new MenuSectionConfig({
+    iconURL: imageURL('_images', 'molecule.svg'),
+    seeAllURL: AppURL.create(REGISTRY_KEY),
+});
+
 // exported for testing
 export function getMenuSectionConfigs(user: User, currentProductId: string, moduleContext?: any): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
@@ -328,11 +333,7 @@ export function getMenuSectionConfigs(user: User, currentProductId: string, modu
         sectionConfigs = addSourcesSectionConfig(user, appBase, sectionConfigs);
     }
     else if (isBioPrimary ) {
-        sectionConfigs = sectionConfigs.push(  Map({ [REGISTRY_KEY]: new MenuSectionConfig({
-                iconURL: imageURL('_images', 'molecule.svg'),
-                seeAllURL: AppURL.create(REGISTRY_KEY),
-            })})
-        );
+        sectionConfigs = sectionConfigs.push(  Map({ [REGISTRY_KEY]: REGISTRY_SECTION_CONFIG }));
     }
     if (isBioOrSM) {
         sectionConfigs = addSamplesSectionConfig(user, appBase, sectionConfigs);

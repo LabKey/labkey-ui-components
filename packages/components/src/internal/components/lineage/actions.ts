@@ -111,8 +111,8 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
 
 function applyLineageMetadata(
     lineage: LineageResult,
-    metadata: { [lsid: string]: LineageNodeMetadata },
-    iconURLByLsid: { [lsid: string]: string },
+    metadata: Record<string /* LSID */, LineageNodeMetadata>,
+    iconURLByLsid: Record<string /* LSID */, string>,
     options?: LineageOptions
 ): LineageResult {
     const urlResolver = getURLResolver(options);
@@ -142,7 +142,7 @@ function applyLineageMetadata(
 
 function applyItemMetadata(
     item: LineageItemWithIOMetadata,
-    iconURLByLsid: { [lsid: string]: string },
+    iconURLByLsid: Record<string /* LSID */, string>,
     urlResolver: LineageURLResolver,
     isSeed = false
 ): Partial<LineageItemWithIOMetadata> {
@@ -155,7 +155,7 @@ function applyItemMetadata(
 
 function applyLineageIOMetadata(
     item: LineageIOWithMetadata,
-    iconURLByLsid: { [lsid: string]: string },
+    iconURLByLsid: Record<string /* LSID */, string>,
     urlResolver: LineageURLResolver
 ): LineageIOWithMetadata {
     const _applyItem = produce((draft: Draft<LineageItemWithMetadata>) => {
@@ -173,37 +173,27 @@ function applyLineageIOMetadata(
     };
 }
 
-export function processLineageResult(lineage: LineageResult, options?: LineageOptions): Promise<LineageResult> {
-    return new Promise((resolve, reject) => {
-        return Promise.all(fetchNodeMetadata(lineage))
-            .then(results => {
-                const iconURLByLsid = {};
-                const metadata = {};
-                results.forEach(result => {
-                    const queryInfo = result.queries[result.key];
-                    const model = fromJS(result.models[result.key]);
-                    model.forEach(data => {
-                        const lsid = data.getIn(['LSID', 'value']);
-                        iconURLByLsid[lsid] = queryInfo.iconURL;
-                        metadata[lsid] = LineageNodeMetadata.create(data, queryInfo);
-                    });
-                });
+export async function processLineageResult(lineage: LineageResult, options?: LineageOptions): Promise<LineageResult> {
+    const iconURLByLsid = {};
+    const metadata = {};
 
-                return applyLineageMetadata(lineage, metadata, iconURLByLsid, options);
-            })
-            .then(
-                result => {
-                    resolve(result);
-                },
-                reason => {
-                    reject(reason);
-                }
-            );
+    const results = await Promise.all(fetchNodeMetadata(lineage));
+
+    results.forEach(result => {
+        const queryInfo = result.queries[result.key];
+        const model = fromJS(result.models[result.key]);
+        model.forEach(data => {
+            const lsid = data.getIn(['LSID', 'value']);
+            iconURLByLsid[lsid] = queryInfo.iconURL;
+            metadata[lsid] = LineageNodeMetadata.create(data, queryInfo);
+        });
     });
+
+    return applyLineageMetadata(lineage, metadata, iconURLByLsid, options);
 }
 
-let lineageResultCache: { [key: string]: Promise<LineageResult> } = {};
-let lineageSeedCache: { [key: string]: Promise<LineageResult> } = {};
+let lineageResultCache: Record<string, Promise<LineageResult>> = {};
+let lineageSeedCache: Record<string, Promise<LineageResult>> = {};
 
 export function invalidateLineageResults(): void {
     lineageResultCache = {};

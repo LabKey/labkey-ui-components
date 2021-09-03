@@ -376,6 +376,7 @@ import {
     getLineageFilterValue,
     invalidateLineageResults,
 } from './internal/components/lineage/actions';
+import { InjectedLineage, withLineage } from './internal/components/lineage/withLineage';
 import { DEFAULT_LINEAGE_DISTANCE } from './internal/components/lineage/constants';
 import {
     LINEAGE_DIRECTIONS,
@@ -1088,6 +1089,7 @@ export {
     ReportList,
     // lineage
     DEFAULT_LINEAGE_DISTANCE,
+    InjectedLineage,
     LINEAGE_GROUPING_GENERATIONS,
     LINEAGE_DIRECTIONS,
     LineageDepthLimitMessage,
@@ -1100,6 +1102,7 @@ export {
     invalidateLineageResults,
     getImmediateChildLineageFilterValue,
     getLineageFilterValue,
+    withLineage,
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,

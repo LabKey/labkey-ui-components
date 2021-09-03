@@ -48,6 +48,7 @@ export class SampleTypeModel extends Record({
 
         return new SampleTypeModel({
             ...options?.toJS(),
+            aliquotNameExpression: options?.get('aliquotNameExpression') || '',
             name,
             nameReadOnly: raw.nameReadOnly,
             importAliases,

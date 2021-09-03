@@ -389,7 +389,9 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                 name="aliquotNameExpression"
                                 type="text"
                                 placeholder={aliquotNameExpressionPlaceholder ?? ALIQUOT_NAME_PLACEHOLDER}
-                                onChange={this.onFormChange}
+                                onChange={(e: React.ChangeEvent<FormControlProps>) => {
+                                    this.onFieldChange(e.target.name, e.target.value);
+                                }}
                                 value={model.aliquotNameExpression}
                             />
                         </Col>

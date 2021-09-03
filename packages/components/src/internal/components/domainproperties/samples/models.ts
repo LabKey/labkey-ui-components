@@ -8,6 +8,7 @@ export class SampleTypeModel extends Record({
     name: undefined,
     nameReadOnly: false,
     nameExpression: undefined,
+    aliquotNameExpression: undefined,
     description: undefined,
     labelColor: undefined,
     metricUnit: undefined,
@@ -22,6 +23,7 @@ export class SampleTypeModel extends Record({
     declare name: string;
     declare nameReadOnly?: boolean;
     declare nameExpression: string;
+    declare aliquotNameExpression: string;
     declare description: string;
     declare labelColor: string;
     declare metricUnit: string;
@@ -142,4 +144,10 @@ export interface MetricUnitProps {
     metricUnitRequired?: boolean;
     metricUnitHelpMsg?: string;
     metricUnitOptions?: any[];
+}
+
+export interface AliquotNamePatternProps {
+    showAliquotNameExpression?: boolean;
+    aliquotNameExpressionInfoUrl?: string;
+    aliquotNameExpressionPlaceholder?: string;
 }

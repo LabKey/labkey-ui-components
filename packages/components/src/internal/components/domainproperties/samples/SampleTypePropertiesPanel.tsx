@@ -42,10 +42,12 @@ import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
 import { getCurrentProductName, isCommunityDistribution } from '../../../app/utils';
 
-import { IParentAlias, SampleTypeModel } from './models';
+import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
+const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
+const ALIQUOT_NAME_PLACEHOLDER = 'Enter a naming pattern for aliquots (e.g., ${${AliquotedFrom}-:withCounter})';
 
 // Splitting these out to clarify where they end-up
 interface OwnProps {
@@ -69,6 +71,7 @@ interface OwnProps {
     dataClassTypeCaption?: string;
     dataClassParentageLabel?: string;
     metricUnitProps?: MetricUnitProps;
+    aliquotNamePatternProps?: AliquotNamePatternProps;
 }
 
 // Splitting these out to clarify where they end-up
@@ -298,6 +301,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             parentOptions,
             nameExpressionInfoUrl,
             nameExpressionPlaceholder,
+            aliquotNamePatternProps,
             nounSingular,
             nounPlural,
             headerText,
@@ -312,6 +316,12 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             metricUnitProps,
         } = this.props;
         const { isValid, containers } = this.state;
+
+        const {
+            showAliquotNameExpression,
+            aliquotNameExpressionInfoUrl,
+            aliquotNameExpressionPlaceholder,
+        } = aliquotNamePatternProps;
 
         const includeMetricUnitProperty = metricUnitProps?.includeMetricUnitProperty,
             metricUnitLabel = metricUnitProps?.metricUnitLabel || 'Metric Unit',
@@ -350,6 +360,41 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                 />
+                {showAliquotNameExpression && (
+                    <Row className="margin-bottom">
+                        <Col xs={2}>
+                            <DomainFieldLabel
+                                label="Aliquot Naming Pattern"
+                                helpTipBody={
+                                    <>
+                                        <p>Pattern used for generating unique Ids for Aliquots.
+                                        </p>
+                                        <p>
+                                            By default, the name of the aliquot will use the name of its parent followed by a dash and a counter for that parent’s aliquots.
+                                        </p>
+                                        <p>
+                                            For example, if the original sample is S1, aliquots of that sample will be named S1-1, S1-2, etc.
+                                        </p>
+                                        <p>
+                                            <a target="_blank" href={aliquotNameExpressionInfoUrl ?? ALIQUOT_HELP_LINK}>
+                                                More info
+                                            </a>
+                                        </p>
+                                    </>
+                                }
+                            />
+                        </Col>
+                        <Col xs={10}>
+                            <FormControl
+                                name="aliquotNameExpression"
+                                type="text"
+                                placeholder={aliquotNameExpressionPlaceholder ?? ALIQUOT_NAME_PLACEHOLDER}
+                                onChange={this.onFormChange}
+                                value={model.aliquotNameExpression}
+                            />
+                        </Col>
+                    </Row>
+                )}
                 {this.renderParentAliases(true, includeDataClasses && !useSeparateDataClassesAliasMenu)}
                 {parentOptions && (
                     <Row>

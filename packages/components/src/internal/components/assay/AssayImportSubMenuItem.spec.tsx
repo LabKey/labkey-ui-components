@@ -13,6 +13,7 @@ const DEFAULT_PROPS = {
     reloadAssays: jest.fn,
     assayDefinition: undefined,
     assayProtocol: undefined,
+    queryModel: undefined,
 };
 
 describe('AssayImportSubMenuItem', () => {

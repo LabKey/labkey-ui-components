@@ -7,7 +7,16 @@ import { Draft, produce } from 'immer';
 import { fromJS, Map, OrderedSet } from 'immutable';
 import { Experiment, Filter, getServerContext, Query } from '@labkey/api';
 
-import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../../..';
+import {
+    AppURL,
+    caseInsensitive,
+    ISelectRowsResult,
+    Location,
+    naturalSort,
+    SchemaQuery,
+    SCHEMAS,
+    selectRows,
+} from '../../..';
 
 import {
     Lineage,
@@ -274,54 +283,45 @@ export function loadSeedResult(seed: string, container?: string, options?: Linea
 }
 
 // TODO add jest test coverage for this function
-function computeSampleCounts(lineageResult: LineageResult, sampleSets: any): any {
+function computeSampleCounts(lineageResult: LineageResult, sampleSets: ISelectRowsResult): any {
     const { key, models } = sampleSets;
+    const { nodes, seed } = lineageResult;
 
-    const rows = [];
     const nodeIds = {};
+    const seedNode = nodes.get(seed);
 
-    lineageResult.nodes.forEach(node => {
-        if (node.lsid && node.cpasType) {
-            const key = node.cpasType;
-
-            if (!nodeIds[key]) {
-                nodeIds[key] = [];
+    nodes.forEach(({ cpasType, id, lsid }) => {
+        if (lsid && cpasType) {
+            if (!nodeIds[cpasType]) {
+                nodeIds[cpasType] = [];
             }
 
-            nodeIds[key].push(node.id);
+            nodeIds[cpasType].push(id);
         }
     });
 
-    for (const row in models[key]) {
-        if (models[key].hasOwnProperty(row)) {
-            const _row = models[key][row];
+    const rows = Object.values(models[key]).map(row => {
+        const name = caseInsensitive(row, 'Name').value;
+        const cpasType = caseInsensitive(row, 'LSID').value;
+        const count = nodeIds[cpasType]?.length ?? 0;
 
-            let count = 0,
-                filteredURL;
-            const name = _row['Name'].value,
-                ids = nodeIds[_row['LSID'].value];
+        return {
+            name: {
+                url: AppURL.create('samples', name).toHref(),
+                value: name,
+            },
+            sampleCount: {
+                url:
+                    count > 0
+                        ? AppURL.create('rd', 'expdata', seedNode.id, 'samples').addParam('tab', name).toHref()
+                        : undefined,
+                value: count,
+            },
+            modified: count > 0 ? caseInsensitive(row, 'Modified') : undefined,
+        };
+    });
 
-            // if there were related samples, use the array of RowIds as a count and to build an AppURL and filter
-            if (ids) {
-                count = ids.length;
-
-                filteredURL = AppURL.create('samples', name)
-                    .addFilters(Filter.create('RowId', ids, Filter.Types.IN))
-                    .toHref();
-            }
-
-            rows.push({
-                name: {
-                    value: _row['Name'].value,
-                    url: filteredURL,
-                },
-                sampleCount: {
-                    value: count,
-                },
-                modified: count > 0 ? _row['Modified'] : undefined,
-            });
-        }
-    }
+    rows.sort((rowA, rowB) => naturalSort(rowA.name.value, rowB.name.value));
 
     return fromJS(rows);
 }

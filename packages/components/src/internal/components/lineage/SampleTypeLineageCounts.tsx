@@ -36,7 +36,9 @@ class CountsWithLineageImpl extends PureComponent<InjectedLineage> {
             return <Alert>{lineage.error}</Alert>;
         }
 
-        return <Grid columns={this.columns} data={lineage.sampleStats} />;
+        const data = lineage.sampleStats.filter(stats => stats.getIn(['sampleCount', 'value']) > 0).toList();
+
+        return <Grid columns={this.columns} data={data} emptyText="No derived samples" />;
     }
 }
 

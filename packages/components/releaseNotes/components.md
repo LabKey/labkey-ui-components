@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.70.0
+*Released*: 6 September 2021
+* Remove QueryGridModel based <Detail> and <DetailEditing> components
+* Remove unused QueryGridModel prop from AssayImportSubMenuItem and SamplesBulkUpdateForm
+* Remove unused getImportItemsForAssayDefinitions() and getRunDetailsQueryColumns()
+
 ### version 2.69.1
 *Released*: 31 August 2021
 * Issue 43771: Show Folder title on Application home pages.

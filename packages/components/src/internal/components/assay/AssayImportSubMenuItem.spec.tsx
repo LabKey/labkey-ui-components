@@ -72,7 +72,9 @@ describe('AssayImportSubMenuItem', () => {
     });
 
     test('requireSelection with proper number selected', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ selections: new Set(['test']) });
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+            selections: new Set(['test']),
+        });
         const wrapper = mount(
             <AssayImportSubMenuItemImpl
                 {...DEFAULT_PROPS}

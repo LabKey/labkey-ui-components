@@ -94,11 +94,11 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     };
 
     getUpdateDisplayColumns = (isAliquot: boolean): GroupedSampleDisplayColumns => {
-        const { queryModel } = this.props;
+        const {
+            queryModel: { detailColumns, updateColumns },
+        } = this.props;
         const { sampleTypeDomainFields } = this.state;
-        const displayColumns = List(queryModel.detailColumns);
-        const updateColumns = List(queryModel.updateColumns);
-        return getGroupedSampleDisplayColumns(displayColumns, updateColumns, sampleTypeDomainFields, isAliquot);
+        return getGroupedSampleDisplayColumns(detailColumns, updateColumns, sampleTypeDomainFields, isAliquot);
     };
 
     render() {
@@ -131,7 +131,10 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         const isAliquot = !!caseInsensitive(row, 'AliquotedFromLSID/Name')?.value;
         const { aliquotHeaderDisplayColumns, displayColumns, editColumns } = this.getUpdateDisplayColumns(isAliquot);
         const detailHeader = isAliquot ? (
-            <SampleAliquotDetailHeader aliquotHeaderDisplayColumns={aliquotHeaderDisplayColumns} row={fromJS(row)} />
+            <SampleAliquotDetailHeader
+                aliquotHeaderDisplayColumns={List(aliquotHeaderDisplayColumns)}
+                row={fromJS(row)}
+            />
         ) : null;
 
         return (
@@ -142,11 +145,11 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                 detailEditRenderer={detailEditRenderer}
                 detailHeader={detailHeader}
                 detailRenderer={detailRenderer}
-                editColumns={editColumns.toArray()}
+                editColumns={editColumns}
                 model={queryModel}
                 onEditToggle={onEditToggle}
                 onUpdate={onUpdate}
-                queryColumns={displayColumns.toArray()}
+                queryColumns={displayColumns}
             />
         );
     }

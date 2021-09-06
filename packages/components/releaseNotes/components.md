@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.70.0
+*Released*: 6 September 2021
 * Remove QueryGridModel based <Detail> and <DetailEditing> components
 * Remove unused QueryGridModel prop from AssayImportSubMenuItem and SamplesBulkUpdateForm
 * Remove unused getImportItemsForAssayDefinitions() and getRunDetailsQueryColumns()

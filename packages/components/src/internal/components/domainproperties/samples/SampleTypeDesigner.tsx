@@ -27,7 +27,7 @@ import { SAMPLE_TYPE, UNIQUE_ID_TYPE } from '../PropDescType';
 
 import { hasModule, isCommunityDistribution } from '../../../app/utils';
 
-import {AliquotNamePatternProps, IParentAlias, SampleTypeModel} from './models';
+import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { UniqueIdBanner } from './UniqueIdBanner';
 
@@ -426,7 +426,16 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     saveDomain = async () => {
         const { beforeFinish, setSubmitting } = this.props;
         const { model } = this.state;
-        const { name, domain, description, nameExpression, aliquotNameExpression, labelColor, metricUnit, autoLinkTargetContainerId } = model;
+        const {
+            name,
+            domain,
+            description,
+            nameExpression,
+            aliquotNameExpression,
+            labelColor,
+            metricUnit,
+            autoLinkTargetContainerId,
+        } = model;
 
         if (beforeFinish) {
             beforeFinish(model);

@@ -317,11 +317,8 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         } = this.props;
         const { isValid, containers } = this.state;
 
-        const {
-            showAliquotNameExpression,
-            aliquotNameExpressionInfoUrl,
-            aliquotNameExpressionPlaceholder,
-        } = aliquotNamePatternProps;
+        const { showAliquotNameExpression, aliquotNameExpressionInfoUrl, aliquotNameExpressionPlaceholder } =
+            aliquotNamePatternProps;
 
         const includeMetricUnitProperty = metricUnitProps?.includeMetricUnitProperty,
             metricUnitLabel = metricUnitProps?.metricUnitLabel || 'Metric Unit',
@@ -367,16 +364,21 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                 label="Aliquot Naming Pattern"
                                 helpTipBody={
                                     <>
-                                        <p>Pattern used for generating unique Ids for Aliquots.
+                                        <p>Pattern used for generating unique Ids for Aliquots.</p>
+                                        <p>
+                                            By default, the name of the aliquot will use the name of its parent followed
+                                            by a dash and a counter for that parent’s aliquots.
                                         </p>
                                         <p>
-                                            By default, the name of the aliquot will use the name of its parent followed by a dash and a counter for that parent’s aliquots.
+                                            For example, if the original sample is S1, aliquots of that sample will be
+                                            named S1-1, S1-2, etc.
                                         </p>
                                         <p>
-                                            For example, if the original sample is S1, aliquots of that sample will be named S1-1, S1-2, etc.
-                                        </p>
-                                        <p>
-                                            <a target="_blank" href={aliquotNameExpressionInfoUrl ?? ALIQUOT_HELP_LINK}>
+                                            <a
+                                                target="_blank"
+                                                href={aliquotNameExpressionInfoUrl ?? ALIQUOT_HELP_LINK}
+                                                rel="noreferrer"
+                                            >
                                                 More info
                                             </a>
                                         </p>

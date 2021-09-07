@@ -80,10 +80,10 @@ describe('getMenuSectionConfigs', () => {
     test('freezerManager enabled', () => {
         LABKEY.moduleContext = {
             inventory: {
-                productId: 'freezerManager',
+                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
             },
         };
-        const configs = getMenuSectionConfigs(new User(), 'freezerManager');
+        const configs = getMenuSectionConfigs(new User(), FREEZER_MANAGER_APP_PROPERTIES.productId);
 
         expect(configs.size).toBe(2);
         expect(configs.hasIn([0, 'freezers'])).toBeTruthy();
@@ -98,10 +98,10 @@ describe('getMenuSectionConfigs', () => {
                 moduleNames: ['samplemanagement', 'study', 'premium'],
             },
             samplemanagement: {
-                productId: 'SampleManager',
+                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
             },
             inventory: {
-                productId: 'freezerManager',
+                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
             },
         };
 
@@ -131,14 +131,14 @@ describe('getMenuSectionConfigs', () => {
                 moduleNames: ['samplemanagement', 'study', 'premium'],
             },
             samplemanagement: {
-                productId: 'SampleManager',
+                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
             },
             inventory: {
-                productId: 'freezerManager',
+                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
             },
         };
 
-        const configs = getMenuSectionConfigs(new User(), 'freezerManager');
+        const configs = getMenuSectionConfigs(new User(), FREEZER_MANAGER_APP_PROPERTIES.productId);
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, 'sources'])).toBeTruthy();
         expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual(

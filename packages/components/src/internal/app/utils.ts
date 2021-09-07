@@ -335,7 +335,8 @@ export function getMenuSectionConfigs(user: User, currentProductId: string, modu
     const isSMPrimary = sampleManagerIsPrimaryApp(moduleContext);
     const isBioPrimary = biologicsIsPrimaryApp(moduleContext);
     const isBioOrSM = isSMPrimary || isBioPrimary;
-    if (isSMPrimary || currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
+    const inSMApp = isSMPrimary || currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId;
+    if (inSMApp) {
         sectionConfigs = addSourcesSectionConfig(user, appBase, sectionConfigs);
     }
     else if (isBioPrimary ) {
@@ -349,7 +350,7 @@ export function getMenuSectionConfigs(user: User, currentProductId: string, modu
     const storageConfig = getStorageSectionConfig(user, currentProductId, moduleContext, isBioPrimary && isRequestsEnabled(moduleContext) ? 7 : 12);
     const workflowConfig = getWorkflowSectionConfig(appBase);
 
-    if (isSMPrimary || currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
+    if (inSMApp) {
         if (storageConfig) {
             sectionConfigs = sectionConfigs.push(Map({[FREEZERS_KEY]: storageConfig}));
         }
@@ -403,7 +404,7 @@ export function getMenuSectionConfigs(user: User, currentProductId: string, modu
 export const useMenuSectionConfigs = (user: User, appProperties: AppProperties, moduleContext: any): List<Map<string, MenuSectionConfig>> => {
     return useMemo(() => {
         return getMenuSectionConfigs(user, appProperties.productId, moduleContext);
-    }, [user, moduleContext]);
+    }, [user, moduleContext, appProperties.productId]);
 };
 
 function getProductId(moduleName: string, moduleContext: any): string {

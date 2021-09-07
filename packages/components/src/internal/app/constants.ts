@@ -10,7 +10,7 @@ import { imageURL } from '../url/ActionURL';
 export const LKS_PRODUCT_ID = 'LabKeyServer';
 const BIOLOGICS_PRODUCT_ID = 'Biologics';
 const SAMPLE_MANAGER_PRODUCT_ID = 'SampleManager';
-const FREEZER_MANAGER_PRODUCT_ID = 'freezerManager';
+const FREEZER_MANAGER_PRODUCT_ID = 'FreezerManager';
 
 const SAMPLE_MANAGER_PRODUCT_NAME = 'Sample Manager';
 const BIOLOGICS_PRODUCT_NAME = 'Biologics';

@@ -141,7 +141,7 @@ export function parseProductMenuSectionResponse(
             );
         });
 
-    // special case to sort storage before workflow to match the mega menu display for LKSM and LKB
+    // special case to sort storage before workflow, media, and notebooks to match the mega menu display for LKSM and LKB
     return menuSections.sort((a, b) => {
         if (a.key === FREEZERS_KEY && (b.key === WORKFLOW_KEY || b.key === MEDIA_KEY || b.key === NOTEBOOKS_KEY)) {
             return -1;

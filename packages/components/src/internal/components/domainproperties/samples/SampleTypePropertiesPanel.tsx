@@ -317,8 +317,9 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         } = this.props;
         const { isValid, containers } = this.state;
 
-        const { showAliquotNameExpression, aliquotNameExpressionInfoUrl, aliquotNameExpressionPlaceholder } =
-            aliquotNamePatternProps;
+        const showAliquotNameExpression = aliquotNamePatternProps?.showAliquotNameExpression;
+        const aliquotNameExpressionInfoUrl = aliquotNamePatternProps?.aliquotNameExpressionInfoUrl;
+        const aliquotNameExpressionPlaceholder = aliquotNamePatternProps?.aliquotNameExpressionPlaceholder;
 
         const includeMetricUnitProperty = metricUnitProps?.includeMetricUnitProperty,
             metricUnitLabel = metricUnitProps?.metricUnitLabel || 'Metric Unit',

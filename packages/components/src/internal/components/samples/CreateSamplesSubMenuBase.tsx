@@ -111,7 +111,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     const sampleOptions = [DERIVATIVE_CREATION];
     if (allowPooledSamples) sampleOptions.push(POOLED_SAMPLE_CREATION);
-    if (selectedOption && selectedOption === menuCurrentChoice) sampleOptions.push(ALIQUOT_CREATION);
+    if (selectedOption && selectedOption === menuCurrentChoice) sampleOptions.push({...ALIQUOT_CREATION, selected: true});
 
     return (
         <>

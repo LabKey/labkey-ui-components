@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update getMenuSections config to merge in logic for Biologics as well
 * Move FREEZER_ITEM_SAMPLE_MAPPER here from SampleManagement so it can be used for Biologics as well
 * Change menuInit so it will get the given app's productIds only
+* Issue 43826: Default to Aliquot in modal when creating samples of the same type
 
 ### version 2.70.0
 *Released*: 6 September 2021

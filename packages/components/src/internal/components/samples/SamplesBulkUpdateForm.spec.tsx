@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { fromJS, List } from 'immutable';
+import { fromJS } from 'immutable';
 
-import { QueryGridModel, QueryColumn, QueryInfo, SchemaQuery, BulkUpdateForm } from '../../..';
+import { QueryColumn, QueryInfo, SchemaQuery, BulkUpdateForm, makeTestQueryModel } from '../../..';
 
 import { SamplesBulkUpdateFormBase } from './SamplesBulkUpdateForm';
 
@@ -40,14 +40,6 @@ describe('SamplesBulkUpdateForm', () => {
         },
     });
 
-    const queryGridProps = {
-        urlPrefix: 'Sample1',
-        queryInfo: QUERY_INFO,
-        selectedIds: List.of('1', '2', '3'),
-    };
-
-    const queryGridModel = new QueryGridModel(queryGridProps);
-
     const sampleTypeDomainFields = {
         aliquotFields: ['aliquotspecific'],
         metaFields: ['metadata'],
@@ -57,7 +49,10 @@ describe('SamplesBulkUpdateForm', () => {
     const samplesSelection = fromJS(['1', '2', '3']);
 
     const DEFAULT_PROPS = {
-        queryGridModel,
+        queryModel: makeTestQueryModel(SchemaQuery.create('schema', 'query'), QUERY_INFO).mutate({
+            urlPrefix: 'Sample1',
+            selections: new Set(['1', '2', '3']),
+        }),
         sampleTypeDomainFields,
         selection: samplesSelection,
         sampleSetLabel: 'sampleType1',

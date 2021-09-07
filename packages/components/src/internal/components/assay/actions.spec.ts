@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AssayStateModel, GENERAL_ASSAY_PROVIDER_NAME, QueryInfo, SchemaQuery } from '../../..';
-import { getStateQueryGridModel } from '../../models';
+import { AssayStateModel, GENERAL_ASSAY_PROVIDER_NAME, makeTestQueryModel, QueryInfo, SchemaQuery } from '../../..';
 import { initQueryGridState } from '../../global';
 import { ASSAY_DEFINITION_MODEL, TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
 
@@ -28,7 +27,7 @@ beforeAll(() => {
 
 describe('getImportItemsForAssayDefinitions', () => {
     test('empty list', () => {
-        const sampleModel = getStateQueryGridModel('jestTest-0', SchemaQuery.create('samples', 'samples'));
+        const sampleModel = makeTestQueryModel(SchemaQuery.create('samples', 'samples'));
         const items = getImportItemsForAssayDefinitions(new AssayStateModel(), sampleModel);
         expect(items.size).toBe(0);
     });
@@ -39,13 +38,13 @@ describe('getImportItemsForAssayDefinitions', () => {
 
         // with a query name that DOES NOT match the assay def sampleColumn lookup
         queryInfo = queryInfo.set('schemaQuery', SchemaQuery.create('samples', 'Sample set 1')) as QueryInfo;
-        let sampleModel = getStateQueryGridModel('jestTest-1', queryInfo.schemaQuery, { queryInfo });
+        let sampleModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
         let items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
         expect(items.size).toBe(0);
 
         // with a query name that DOES match the assay def sampleColumn lookup
         queryInfo = queryInfo.set('schemaQuery', SchemaQuery.create('samples', 'Sample set 10')) as QueryInfo;
-        sampleModel = getStateQueryGridModel('jestTest-2', queryInfo.schemaQuery, { queryInfo });
+        sampleModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
         items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
         expect(items.size).toBe(1);
     });

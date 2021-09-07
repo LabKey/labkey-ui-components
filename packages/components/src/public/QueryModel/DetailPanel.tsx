@@ -50,7 +50,6 @@ export const DetailPanel: FC<DetailPanelProps> = memo(props => {
         return <LoadingSpinner />;
     }
 
-    // This logic should be kept consistent with corollary logic in <Detail/>
     if (editingMode) {
         displayColumns = List(editColumns ?? model.updateColumns);
     } else {

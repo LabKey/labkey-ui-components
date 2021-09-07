@@ -1,14 +1,13 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import { BulkUpdateForm, QueryColumn, QueryGridModel, QueryInfo, QueryModel, SchemaQuery } from '../../..';
+import { BulkUpdateForm, QueryColumn, QueryInfo, QueryModel, SchemaQuery } from '../../..';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 
 interface OwnProps {
-    queryModel?: QueryModel;
-    queryGridModel?: QueryGridModel;
+    queryModel: QueryModel;
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<void>;
     hasValidMaxSelection: () => any;
     sampleSetLabel: string;
@@ -24,9 +23,8 @@ type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultPr
 // export const SamplesBulkUpdateForm = connect<any, any, any>(undefined)(SamplesSelectionProvider(SamplesBulkUpdateFormBase));
 
 export class SamplesBulkUpdateFormBase extends React.Component<Props, any> {
-    getGridSelectionSize = () => {
-        const { queryGridModel, queryModel } = this.props;
-        return queryGridModel ? queryGridModel.selectedIds.size : queryModel.selections.size;
+    getGridSelectionSize = (): number => {
+        return this.props.queryModel.selections.size;
     };
 
     getAliquotHeader() {
@@ -49,15 +47,15 @@ export class SamplesBulkUpdateFormBase extends React.Component<Props, any> {
         }
     }
 
-    getSelectedNoun = () => {
+    getSelectedNoun = (): string => {
         const { aliquots } = this.props;
         const allAliquots = aliquots && aliquots.length > 0 && aliquots.length === this.getGridSelectionSize();
         return allAliquots ? 'aliquot' : 'sample';
     };
 
-    getQueryInfo() {
-        const { aliquots, queryGridModel, queryModel, sampleTypeDomainFields } = this.props;
-        const originalQueryInfo = queryGridModel?.queryInfo ?? queryModel.queryInfo;
+    getQueryInfo(): QueryInfo {
+        const { aliquots, queryModel, sampleTypeDomainFields } = this.props;
+        const originalQueryInfo = queryModel.queryInfo;
 
         let columns = OrderedMap<string, QueryColumn>();
 
@@ -68,7 +66,7 @@ export class SamplesBulkUpdateFormBase extends React.Component<Props, any> {
                 if (column.fieldKey.toLowerCase() === 'description' || isAliquotField)
                     columns = columns.set(key, column);
             });
-            originalQueryInfo.getPkCols().forEach((column, ind) => {
+            originalQueryInfo.getPkCols().forEach(column => {
                 columns = columns.set(column.fieldKey, column);
             });
         } else {
@@ -85,7 +83,6 @@ export class SamplesBulkUpdateFormBase extends React.Component<Props, any> {
     render() {
         const {
             updateRows,
-            queryGridModel,
             queryModel,
             hasValidMaxSelection,
             sampleSetLabel,
@@ -95,21 +92,19 @@ export class SamplesBulkUpdateFormBase extends React.Component<Props, any> {
             editSelectionInGrid,
         } = this.props;
 
-        const selectedId = queryGridModel ? queryGridModel.selectedIds.toArray() : [...queryModel.selections];
-        const sortString = queryGridModel ? queryGridModel.getSorts() : queryModel.sorts.join(',');
         return (
             <BulkUpdateForm
                 singularNoun={this.getSelectedNoun()}
                 pluralNoun={this.getSelectedNoun() + 's'}
                 itemLabel={sampleSetLabel}
                 queryInfo={this.getQueryInfo()}
-                selectedIds={selectedId}
+                selectedIds={[...queryModel.selections]}
                 canSubmitForEdit={hasValidMaxSelection()}
                 onCancel={onCancel}
                 onError={onBulkUpdateError}
                 onComplete={onBulkUpdateComplete}
                 onSubmitForEdit={editSelectionInGrid}
-                sortString={sortString}
+                sortString={queryModel.sorts.join(',')}
                 updateRows={updateRows}
                 header={this.getAliquotHeader()}
             />

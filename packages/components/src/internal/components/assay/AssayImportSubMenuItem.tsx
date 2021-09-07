@@ -1,26 +1,14 @@
 import React, { FC, useMemo } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import {
-    getImportItemsForAssayDefinitions,
-    InjectedAssayModel,
-    SubMenuItem,
-    SubMenuItemProps,
-    QueryGridModel,
-    withAssayModels,
-    QueryModel,
-} from '../../..';
+import { InjectedAssayModel, SubMenuItem, SubMenuItemProps, withAssayModels, QueryModel } from '../../..';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
-import { getImportItemsForAssayDefinitionsQM } from './actions';
+import { getImportItemsForAssayDefinitions } from './actions';
 
 interface Props extends SubMenuItemProps {
     isLoaded?: boolean;
-    /**
-     * @deprecated: Use QueryModel instead.
-     */
-    model?: QueryGridModel;
-    queryModel?: QueryModel;
+    queryModel: QueryModel;
     requireSelection: boolean;
     nounPlural?: string;
     providerType?: string;
@@ -31,7 +19,6 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
     const {
         assayModel,
         isLoaded = true,
-        model,
         nounPlural = 'items',
         providerType,
         queryModel,
@@ -44,24 +31,18 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
             return [];
         }
 
-        let importItems;
-
-        if (queryModel !== undefined) {
-            importItems = getImportItemsForAssayDefinitionsQM(assayModel, queryModel, providerType);
-        } else {
-            importItems = getImportItemsForAssayDefinitions(assayModel, model, providerType);
-        }
-
-        // Convert OrderedMap to array.
-        return importItems.reduce((subItems, href, assay) => {
-            subItems.push({ text: assay.name, href });
-            return subItems;
-        }, []);
-    }, [assayModel, isLoaded, model, providerType, queryModel]);
+        return getImportItemsForAssayDefinitions(assayModel, queryModel, providerType).reduce(
+            (subItems, href, assay) => {
+                subItems.push({ text: assay.name, href });
+                return subItems;
+            },
+            []
+        );
+    }, [assayModel, isLoaded, providerType, queryModel]);
 
     if (!isLoaded) {
         return (
-            <MenuItem disabled={true}>
+            <MenuItem disabled>
                 <span className="fa fa-spinner fa-pulse" /> Loading assays...
             </MenuItem>
         );
@@ -72,13 +53,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         return null;
     }
 
-    let selectedCount = -1;
-
-    if (queryModel !== undefined) {
-        selectedCount = queryModel.selections?.size ?? -1;
-    } else if (model) {
-        selectedCount = model.selectedIds.size;
-    }
+    const selectedCount = queryModel?.selections?.size ?? -1;
 
     const overlayMessage =
         requireSelection && selectedCount === 0
@@ -89,7 +64,6 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
     const menuProps: Props = Object.assign({}, props, {
         disabled: overlayMessage.length > 0,
         items,
-        model: undefined,
         queryModel: undefined,
         text,
     });
@@ -99,7 +73,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
 
         return (
             <OverlayTrigger overlay={overlay} placement="right">
-                <MenuItem disabled={true}>{menuProps.text}</MenuItem>
+                <MenuItem disabled>{menuProps.text}</MenuItem>
             </OverlayTrigger>
         );
     }

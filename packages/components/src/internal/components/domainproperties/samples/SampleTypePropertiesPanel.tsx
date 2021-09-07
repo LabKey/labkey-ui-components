@@ -322,6 +322,30 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         const allowTimepointProperties = model.domain.get('allowTimepointProperties');
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
+
+        const autoLinkDataToStudyHelpTip =
+            <>
+                <p>
+                    Automatically link Sample Type data rows to the specified target study. Only
+                    rows that include subject and visit/date information will be linked.
+                </p>
+                <p>
+                    The user performing the import must have insert permission in the target
+                    study and the corresponding dataset.
+                </p>
+            </>;
+        const linkedDatasetCategoryHelpTip =
+            <>
+                <p>
+                    Specify the desired category for the Sample Type Dataset that will be created (or appended to) in the
+                    target study when rows are linked. If the category you specify does not exist, it will be created.
+                </p>
+                <p>
+                    If the Sample Type Dataset already exists, this setting will not overwrite a previously assigned category.
+                    Leave blank to use the default category of "Uncategorized".
+                </p>
+            </>;
+
         return (
             <BasePropertiesPanel
                 {...this.props}
@@ -391,18 +415,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                             <Col xs={2}>
                                 <DomainFieldLabel
                                     label="Auto-Link Data to Study"
-                                    helpTipBody={
-                                        <>
-                                            <p>
-                                                Automatically link Sample Type data rows to the specified target study. Only
-                                                rows that include subject and visit/date information will be linked.
-                                            </p>
-                                            <p>
-                                                The user performing the import must have insert permission in the target
-                                                study and the corresponding dataset.
-                                            </p>
-                                        </>
-                                    }
+                                    helpTipBody={autoLinkDataToStudyHelpTip}
                                 />
                             </Col>
                             <Col xs={5}>
@@ -418,14 +431,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                             <Col xs={2}>
                                 <DomainFieldLabel
                                     label="Linked Dataset Category"
-                                    helpTipBody={
-                                        <>
-                                            Specify the desired category for the Sample Type Dataset that will be created (or appended to) in the
-                                            target study when rows are linked. If the category you specify does not exist, it will be created.
-                                            If the Sample Type Dataset already exists, this setting will not overwrite a previously assigned category.
-                                            Leave blank to use the default category of "Uncategorized".
-                                        </>
-                                    }
+                                    helpTipBody={linkedDatasetCategoryHelpTip}
                                 />
                             </Col>
 

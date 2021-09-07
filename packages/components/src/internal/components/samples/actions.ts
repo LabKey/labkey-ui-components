@@ -422,33 +422,33 @@ export function getSampleRowIdsFromSelection(selection: List<any>): number[] {
 }
 
 export interface GroupedSampleDisplayColumns {
-    aliquotHeaderDisplayColumns: List<QueryColumn>;
-    displayColumns: List<QueryColumn>;
-    editColumns: List<QueryColumn>;
+    aliquotHeaderDisplayColumns: QueryColumn[];
+    displayColumns: QueryColumn[];
+    editColumns: QueryColumn[];
 }
 
 export function getGroupedSampleDisplayColumns(
-    allDisplayColumns: List<QueryColumn>,
-    allUpdateColumns: List<QueryColumn>,
+    allDisplayColumns: QueryColumn[],
+    allUpdateColumns: QueryColumn[],
     sampleTypeDomainFields: GroupedSampleFields,
     isAliquot: boolean
 ): GroupedSampleDisplayColumns {
-    const editColumns = List<QueryColumn>().asMutable();
-    const displayColumns = List<QueryColumn>().asMutable();
-    let aliquotHeaderDisplayColumns = List<QueryColumn>();
+    const editColumns = [];
+    const displayColumns = [];
+    const aliquotHeaderDisplayColumns = [];
 
     allDisplayColumns.forEach(col => {
         const colName = col.name.toLowerCase();
         if (isAliquot) {
             // barcodes belong to the individual sample or aliquot (but not both)
-            if (col.conceptURI == STORAGE_UNIQUE_ID_CONCEPT_URI) {
-                aliquotHeaderDisplayColumns = aliquotHeaderDisplayColumns.push(col);
+            if (col.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI) {
+                aliquotHeaderDisplayColumns.push(col);
             } else if (sampleTypeDomainFields.metaFields.indexOf(colName) > -1) {
                 displayColumns.push(col);
             }
             // display parent meta for aliquot
             else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
-                aliquotHeaderDisplayColumns = aliquotHeaderDisplayColumns.push(col);
+                aliquotHeaderDisplayColumns.push(col);
             }
         } else {
             if (sampleTypeDomainFields.aliquotFields.indexOf(colName) === -1) {

@@ -424,7 +424,16 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     saveDomain = async () => {
         const { beforeFinish, setSubmitting } = this.props;
         const { model } = this.state;
-        const { name, domain, description, nameExpression, labelColor, metricUnit, autoLinkTargetContainerId, autoLinkCategory } = model;
+        const {
+            name,
+            domain,
+            description,
+            nameExpression,
+            labelColor,
+            metricUnit,
+            autoLinkTargetContainerId,
+            autoLinkCategory,
+        } = model;
 
         if (beforeFinish) {
             beforeFinish(model);

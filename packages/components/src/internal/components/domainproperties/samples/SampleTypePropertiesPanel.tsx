@@ -323,28 +323,31 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
 
-        const autoLinkDataToStudyHelpTip =
+        const autoLinkDataToStudyHelpTip = (
             <>
                 <p>
-                    Automatically link Sample Type data rows to the specified target study. Only
-                    rows that include subject and visit/date information will be linked.
+                    Automatically link Sample Type data rows to the specified target study. Only rows that include
+                    subject and visit/date information will be linked.
                 </p>
                 <p>
-                    The user performing the import must have insert permission in the target
-                    study and the corresponding dataset.
+                    The user performing the import must have insert permission in the target study and the corresponding
+                    dataset.
                 </p>
-            </>;
-        const linkedDatasetCategoryHelpTip =
+            </>
+        );
+        const linkedDatasetCategoryHelpTip = (
             <>
                 <p>
-                    Specify the desired category for the Sample Type Dataset that will be created (or appended to) in the
-                    target study when rows are linked. If the category you specify does not exist, it will be created.
+                    Specify the desired category for the Sample Type Dataset that will be created (or appended to) in
+                    the target study when rows are linked. If the category you specify does not exist, it will be
+                    created.
                 </p>
                 <p>
-                    If the Sample Type Dataset already exists, this setting will not overwrite a previously assigned category.
-                    Leave blank to use the default category of "Uncategorized".
+                    If the Sample Type Dataset already exists, this setting will not overwrite a previously assigned
+                    category. Leave blank to use the default category of "Uncategorized".
                 </p>
-            </>;
+            </>
+        );
 
         return (
             <BasePropertiesPanel

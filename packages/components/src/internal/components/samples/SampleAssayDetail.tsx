@@ -1,6 +1,5 @@
 import React, { FC, memo, useEffect, useMemo, useState, useCallback, ReactNode } from 'react';
 import { Button, MenuItem, Panel, SplitButton } from 'react-bootstrap';
-import { Filter } from '@labkey/api';
 
 import {
     Alert,
@@ -10,7 +9,6 @@ import {
     InjectedAssayModel,
     isLoading,
     LoadingSpinner,
-    naturalSortByProperty,
     QueryModel,
     RequiresModelAndActions,
     SampleAliquotViewSelector,
@@ -19,8 +17,7 @@ import {
 } from '../../..';
 
 import { withAssayModels } from '../assay/withAssayModels';
-import { getImportItemsForAssayDefinitionsQM } from '../assay/actions';
-import { createQueryConfigFilteredBySample } from '../../actions';
+import { getImportItemsForAssayDefinitions } from '../assay/actions';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
@@ -74,7 +71,7 @@ const SampleAssayDetailButtons: FC<SampleAssayDetailButtonsProps> = props => {
     let currentAssayHref: string;
     const menuItems = [];
 
-    getImportItemsForAssayDefinitionsQM(assayModel, sampleModel).forEach((href, assay) => {
+    getImportItemsForAssayDefinitions(assayModel, sampleModel).forEach((href, assay) => {
         if (model?.title === assay.name) {
             currentAssayHref = href;
         }

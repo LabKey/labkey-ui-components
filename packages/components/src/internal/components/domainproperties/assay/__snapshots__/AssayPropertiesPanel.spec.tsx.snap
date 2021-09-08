@@ -2723,9 +2723,14 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                               <Component
                                 colSize={9}
                                 helpTipBody={
-                                  <p>
-                                    Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created. If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
-                                  </p>
+                                  <React.Fragment>
+                                    <p>
+                                      Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created.
+                                    </p>
+                                    <p>
+                                      If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
+                                    </p>
+                                  </React.Fragment>
                                 }
                                 label="Linked Dataset Category"
                               >
@@ -2748,9 +2753,14 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       >
                                         <DomainFieldLabel
                                           helpTipBody={
-                                            <p>
-                                              Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created. If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
-                                            </p>
+                                            <React.Fragment>
+                                              <p>
+                                                Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created.
+                                              </p>
+                                              <p>
+                                                If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
+                                              </p>
+                                            </React.Fragment>
                                           }
                                           label="Linked Dataset Category"
                                         >
@@ -4549,9 +4559,14 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                               <Component
                                 colSize={9}
                                 helpTipBody={
-                                  <p>
-                                    Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created. If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
-                                  </p>
+                                  <React.Fragment>
+                                    <p>
+                                      Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created.
+                                    </p>
+                                    <p>
+                                      If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
+                                    </p>
+                                  </React.Fragment>
                                 }
                                 label="Linked Dataset Category"
                               >
@@ -4574,9 +4589,14 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       >
                                         <DomainFieldLabel
                                           helpTipBody={
-                                            <p>
-                                              Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created. If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
-                                            </p>
+                                            <React.Fragment>
+                                              <p>
+                                                Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created.
+                                              </p>
+                                              <p>
+                                                If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
+                                              </p>
+                                            </React.Fragment>
                                           }
                                           label="Linked Dataset Category"
                                         >
@@ -5841,9 +5861,14 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                               <Component
                                 colSize={9}
                                 helpTipBody={
-                                  <p>
-                                    Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created. If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
-                                  </p>
+                                  <React.Fragment>
+                                    <p>
+                                      Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created.
+                                    </p>
+                                    <p>
+                                      If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
+                                    </p>
+                                  </React.Fragment>
                                 }
                                 label="Linked Dataset Category"
                               >
@@ -5866,9 +5891,14 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                       >
                                         <DomainFieldLabel
                                           helpTipBody={
-                                            <p>
-                                              Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created. If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
-                                            </p>
+                                            <React.Fragment>
+                                              <p>
+                                                Specify the desired category for the Assay Dataset that will be created (or appended to) in the target study when rows are linked. If the category you specify does not exist, it will be created.
+                                              </p>
+                                              <p>
+                                                If the Assay Dataset already exists, this setting will not overwrite a previously assigned category. Leave blank to use the default category of "Uncategorized".
+                                              </p>
+                                            </React.Fragment>
                                           }
                                           label="Linked Dataset Category"
                                         >

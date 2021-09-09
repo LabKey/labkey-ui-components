@@ -190,7 +190,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         } catch (error) {
             if (!this.mounted) return;
 
-            this.setState({ error: error?.message ?? 'Failed to initialize.' });
+            this.setState({ error: resolveErrorMessage(error) ?? 'Failed to initialize.' });
         }
     };
 

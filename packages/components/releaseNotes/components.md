@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 2.75.0
+*Released*: 9 September 2021
 * Add "Aliquot Naming Pattern" to sample designer
 
 ### version 2.74.0

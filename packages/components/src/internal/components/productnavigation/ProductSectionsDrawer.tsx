@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
@@ -10,11 +10,20 @@ import {
     MenuSectionModel,
     ProductMenuModel,
 } from '../../..';
-import { FREEZERS_KEY, WORKFLOW_KEY } from '../../app/constants';
+import {
+    BIOLOGICS_APP_PROPERTIES,
+    FREEZER_MANAGER_APP_PROPERTIES,
+    FREEZERS_KEY,
+    MEDIA_KEY,
+    NOTEBOOKS_KEY,
+    SAMPLE_MANAGER_APP_PROPERTIES,
+    WORKFLOW_KEY
+} from '../../app/constants';
 
 import { ProductModel, ProductSectionModel } from './models';
-import { APPLICATION_NAVIGATION_METRIC, PRODUCT_ID_SECTION_QUERY_MAP, SECTION_KEYS_TO_SKIP } from './constants';
+import { APPLICATION_NAVIGATION_METRIC, SECTION_KEYS_TO_SKIP } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
+import { getAppProductIds } from '../../app/utils';
 
 interface ProductAppsDrawerProps {
     product: ProductModel;
@@ -27,11 +36,16 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [sections, setSections] = useState<ProductSectionModel[]>();
 
+    const productIds = useMemo((): List<string> => {
+       return getAppProductIds(product.productId)
+    }, [product.productId]);
+
     useEffect(() => {
+
         const model = new ProductMenuModel({
             currentProductId: product.productId,
             userMenuProductId: product.productId,
-            productIds: PRODUCT_ID_SECTION_QUERY_MAP[product.productId.toLowerCase()] ?? List.of(product.productId),
+            productIds,
         });
 
         model
@@ -127,9 +141,9 @@ export function parseProductMenuSectionResponse(
             );
         });
 
-    // special case to sort LKSM storage before workflow to match the mega menu display
+    // special case to sort storage before workflow, media, and notebooks to match the mega menu display for LKSM and LKB
     return menuSections.sort((a, b) => {
-        if (a.key === FREEZERS_KEY && b.key === WORKFLOW_KEY) {
+        if (a.key === FREEZERS_KEY && (b.key === WORKFLOW_KEY || b.key === MEDIA_KEY || b.key === NOTEBOOKS_KEY)) {
             return -1;
         }
         return 0;

@@ -141,8 +141,8 @@ import { Footer } from './internal/components/base/Footer';
 import { EditorModel, getStateModelId, getStateQueryGridModel } from './internal/models';
 import {
     clearSelected,
-    createQueryGridModelFilteredBySample,
     createQueryConfigFilteredBySample,
+    createQueryGridModelFilteredBySample,
     getSelected,
     getSelectedData,
     getSelection,
@@ -199,7 +199,7 @@ import {
 } from './internal/constants';
 import { getLocation, pushParameter, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
-import { getHelpLink, HelpLink, HELP_LINK_REFERRER, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
+import { getHelpLink, HELP_LINK_REFERRER, HelpLink, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
 import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './internal/url/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
@@ -297,8 +297,8 @@ import { SampleCreationTypeModal } from './internal/components/samples/SampleCre
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import {
-    SampleAliquotViewSelector,
     ALIQUOT_FILTER_MODE,
+    SampleAliquotViewSelector,
 } from './internal/components/samples/SampleAliquotViewSelector';
 import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
 import { FindSamplesByIdHeaderPanel } from './internal/components/samples/FindSamplesByIdHeaderPanel';
@@ -346,7 +346,7 @@ import {
     LineageFilter,
     LineageURLResolvers,
 } from './internal/components/lineage/types';
-import { LineageGraph, LineageDepthLimitMessage } from './internal/components/lineage/LineageGraph';
+import { LineageDepthLimitMessage, LineageGraph } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
@@ -372,9 +372,9 @@ import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
+    DOMAIN_RANGE_VALIDATOR,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
-    DOMAIN_RANGE_VALIDATOR,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
@@ -513,13 +513,18 @@ import {
 import {
     CloseEventCode,
     getDateFormat as getAppDateFormat,
-    getMenuSectionConfigs,
+    getPrimaryAppProperties,
     hasModule,
     hasPremiumModule,
+    isBiologicsEnabled,
     isFreezerManagementEnabled,
+    isPremiumProductEnabled,
+    isRequestsEnabled,
     isSampleManagerEnabled,
     isSamplePicklistEnabled,
     registerWebSocketListeners,
+    sampleManagerIsPrimaryApp,
+    useMenuSectionConfigs,
     userCanDeletePublicPicklists,
     userCanDesignLocations,
     userCanDesignSourceTypes,
@@ -549,11 +554,12 @@ import {
 import {
     ASSAY_DESIGN_KEY,
     ASSAYS_KEY,
-    BIOLOGICS_PRODUCT_ID,
+    BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
+    EXPERIMENTAL_REQUESTS_MENU,
     FIND_SAMPLES_HREF,
     FIND_SAMPLES_KEY,
-    FREEZER_MANAGER_PRODUCT_ID,
+    FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
     MANAGE_STORAGE_UNITS_HREF,
@@ -565,7 +571,7 @@ import {
     NOTIFICATION_TIMEOUT,
     PICKLIST_HOME_HREF,
     PICKLIST_KEY,
-    SAMPLE_MANAGER_PRODUCT_ID,
+    SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLE_TYPE_KEY,
     SAMPLES_KEY,
     SECURITY_LOGOUT,
@@ -599,12 +605,17 @@ const App = {
     CloseEventCode,
     registerWebSocketListeners,
     isFreezerManagementEnabled,
+    isRequestsEnabled,
     isSampleManagerEnabled,
+    isBiologicsEnabled,
     isSamplePicklistEnabled,
+    isPremiumProductEnabled,
+    sampleManagerIsPrimaryApp,
+    getPrimaryAppProperties,
     hasPremiumModule,
     hasModule,
     getDateFormat: getAppDateFormat,
-    getMenuSectionConfigs,
+    useMenuSectionConfigs,
     getUserPermissions,
     doResetQueryGridState,
     menuInit,
@@ -625,11 +636,12 @@ const App = {
     USER_PERMISSIONS_SUCCESS,
     USER_PERMISSIONS_REQUEST,
     UPDATE_USER_DISPLAY_NAME,
-    BIOLOGICS_PRODUCT_ID,
-    SAMPLE_MANAGER_PRODUCT_ID,
-    FREEZER_MANAGER_PRODUCT_ID,
+    BIOLOGICS: BIOLOGICS_APP_PROPERTIES,
+    SAMPLE_MANAGER: SAMPLE_MANAGER_APP_PROPERTIES,
+    FREEZER_MANAGER: FREEZER_MANAGER_APP_PROPERTIES,
     ASSAYS_KEY,
     ASSAY_DESIGN_KEY,
+    EXPERIMENTAL_REQUESTS_MENU,
     FIND_SAMPLES_KEY,
     PICKLIST_KEY,
     SAMPLES_KEY,

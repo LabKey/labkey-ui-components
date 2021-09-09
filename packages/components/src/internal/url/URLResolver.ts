@@ -20,6 +20,7 @@ import { AppURL, createProductUrl } from '../..';
 import { LineageLinkMetadata } from '../components/lineage/types';
 
 import { AppRouteResolver } from './AppURLResolver';
+import { FREEZER_MANAGER_APP_PROPERTIES } from '../app/constants';
 
 const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
 
@@ -468,6 +469,29 @@ export const PICKLIST_MAPPER = new ActionMapper('picklist', 'grid', row => {
     return false;
 });
 
+export const FREEZER_ITEM_SAMPLE_MAPPER =
+    new ActionMapper('query', 'executeQuery', row => {
+        const url = row.get('url');
+        if (url) {
+            const materialIdKey = 'query.MaterialId~eq';
+            const params = ActionURL.getParameters(url);
+            if (
+                params.schemaName &&
+                params.schemaName.toLowerCase() === 'inventory' &&
+                params.queryName &&
+                params.queryName.toLowerCase() === 'item' &&
+                params[materialIdKey] !== undefined
+            ) {
+                return createProductUrl(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId,
+                    undefined,
+                    AppURL.create('rd', 'sampleItem', params[materialIdKey])
+                );
+            }
+        }
+        return false;
+    });
+
 export const URL_MAPPERS = {
     ASSAY_MAPPERS,
     DATA_CLASS_MAPPERS,
@@ -481,6 +505,7 @@ export const URL_MAPPERS = {
     AUDIT_DETAILS_MAPPER,
     LOOKUP_MAPPER,
     PIPELINE_MAPPER,
+    FREEZER_ITEM_SAMPLE_MAPPER,
 };
 
 export class URLResolver {

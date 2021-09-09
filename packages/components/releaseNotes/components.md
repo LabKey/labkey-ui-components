@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.74.0
+*Released*: 9 September 2021
+* Add new AppProperties interface and define properties for our three apps in the App object
+  * Stop exporting product id constants that are encapsulated into the app properties constants
+  * Expose new helper methods from App object (`isPremiumProductEnabled`, `sampleManagerIsPrimaryApp`, `getPrimayAppProperties`)
+* Update getMenuSections config to merge in logic for Biologics as well
+* Move FREEZER_ITEM_SAMPLE_MAPPER here from SampleManagement so it can be used for Biologics as well
+* Change menuInit so it will get the given app's productIds only
+* Issue 43826: Default to Aliquot in modal when creating samples of the same type
+
 ### version 2.73.0
 *Released*: 9 September 2021
 * Package updates

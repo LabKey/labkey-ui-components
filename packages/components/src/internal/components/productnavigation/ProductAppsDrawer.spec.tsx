@@ -1,7 +1,10 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { BIOLOGICS_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app/constants';
+import {
+    BIOLOGICS_APP_PROPERTIES,
+    SAMPLE_MANAGER_APP_PROPERTIES,
+} from '../../app/constants';
 
 import { DEFAULT_ICON_ALT_URL, DEFAULT_ICON_URL, ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductAppMenuItem } from './ProductAppMenuItem';
@@ -21,8 +24,8 @@ const DEFAULT_PROPS = {
 };
 
 const TEST_PRODUCTS = [
-    new ProductModel({ productId: SAMPLE_MANAGER_PRODUCT_ID, productName: 'LKSM Name' }),
-    new ProductModel({ productId: BIOLOGICS_PRODUCT_ID, productName: 'LKB Name' }),
+    new ProductModel({ productId: SAMPLE_MANAGER_APP_PROPERTIES.productId, productName: 'LKSM Name' }),
+    new ProductModel({ productId: BIOLOGICS_APP_PROPERTIES.productId, productName: 'LKB Name' }),
     new ProductModel({ productId: 'other', productName: 'Other Name' }),
 ];
 
@@ -72,8 +75,8 @@ describe('ProductAppsDrawer', () => {
         };
         // create them after setting the module context to properly set the disabled flags
         const products = [
-            new ProductModel({ productId: SAMPLE_MANAGER_PRODUCT_ID, productName: 'LKSM Name' }),
-            new ProductModel({ productId: BIOLOGICS_PRODUCT_ID, productName: 'LKB Name' }),
+            new ProductModel({ productId: SAMPLE_MANAGER_APP_PROPERTIES.productId, productName: 'LKSM Name' }),
+            new ProductModel({ productId: BIOLOGICS_APP_PROPERTIES.productId, productName: 'LKB Name' }),
             new ProductModel({ productId: 'other', productName: 'Other Name' }),
         ];
         const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={products} />);
@@ -103,8 +106,8 @@ describe('ProductAppsDrawer', () => {
         };
         // create them after setting the module context to properly set the disabled flags
         const products = [
-            new ProductModel({ productId: SAMPLE_MANAGER_PRODUCT_ID, productName: 'LKSM Name' }),
-            new ProductModel({ productId: BIOLOGICS_PRODUCT_ID, productName: 'LKB Name' }),
+            new ProductModel({ productId: SAMPLE_MANAGER_APP_PROPERTIES.productId, productName: 'LKSM Name' }),
+            new ProductModel({ productId: BIOLOGICS_APP_PROPERTIES.productId, productName: 'LKB Name' }),
             new ProductModel({ productId: 'other', productName: 'Other Name' }),
         ];
         const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={products} />);
@@ -127,8 +130,8 @@ describe('ProductAppsDrawer', () => {
         };
         // create them after setting the module context to properly set the disabled flags
         const products = [
-            new ProductModel({ productId: SAMPLE_MANAGER_PRODUCT_ID, productName: 'LKSM Name' }),
-            new ProductModel({ productId: BIOLOGICS_PRODUCT_ID, productName: 'LKB Name' }),
+            new ProductModel({ productId: SAMPLE_MANAGER_APP_PROPERTIES.productId, productName: 'LKSM Name' }),
+            new ProductModel({ productId: BIOLOGICS_APP_PROPERTIES.productId, productName: 'LKB Name' }),
             new ProductModel({ productId: 'other', productName: 'Other Name' }),
         ];
         const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={products} />);

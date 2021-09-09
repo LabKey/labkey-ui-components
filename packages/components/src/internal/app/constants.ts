@@ -3,16 +3,23 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { AppURL } from '../url/AppURL';
+import { AppProperties } from './models';
+import { imageURL } from '../url/ActionURL';
 
 // These ids should match what is used by the MenuProviders in the Java code so we can avoid toLowerCase comparisons.
 export const LKS_PRODUCT_ID = 'LabKeyServer';
-export const BIOLOGICS_PRODUCT_ID = 'Biologics';
-export const SAMPLE_MANAGER_PRODUCT_ID = 'SampleManager';
-export const FREEZER_MANAGER_PRODUCT_ID = 'freezerManager';
+const BIOLOGICS_PRODUCT_ID = 'Biologics';
+const SAMPLE_MANAGER_PRODUCT_ID = 'SampleManager';
+const FREEZER_MANAGER_PRODUCT_ID = 'FreezerManager';
 
-export const SAMPLE_MANAGER_PRODUCT_NAME = 'Sample Manager';
-export const BIOLOGICS_PRODUCT_NAME = 'Biologics';
+const SAMPLE_MANAGER_PRODUCT_NAME = 'Sample Manager';
+const BIOLOGICS_PRODUCT_NAME = 'Biologics';
 export const LABKEY_SERVER_PRODUCT_NAME = 'LabKey Server';
+const FREEZER_MANAGER_PRODUCT_NAME = "Freezer Manager";
+
+const BIOLOGICS_CONTROLLER_NAME = "biologics";
+const SAMPLE_MANAGER_CONTROLLER_NAME = "sampleManager";
+const FREEZER_MANAGER_CONTROLLER_NAME = "freezerManager";
 
 export const ASSAYS_KEY = 'assays';
 export const ASSAY_DESIGN_KEY = 'assayDesign';
@@ -27,6 +34,10 @@ export const HOME_KEY = 'home';
 export const USER_KEY = 'user';
 export const PICKLIST_KEY = 'picklist';
 export const FIND_SAMPLES_KEY = 'findSamples';
+export const REQUESTS_KEY = 'requests';
+export const MEDIA_KEY = 'media';
+export const NOTEBOOKS_KEY = 'notebooks';
+export const REGISTRY_KEY ='registry';
 
 export const FIND_SAMPLES_HREF = AppURL.create(FIND_SAMPLES_KEY);
 export const NEW_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new');
@@ -66,3 +77,32 @@ export const STICKY_HEADER_HEIGHT = 56; // Issue 38478
 export const NOTIFICATION_TIMEOUT = 500;
 
 export const SERVER_NOTIFICATION_MAX_ROWS = 8;
+
+export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
+
+export const BIOLOGICS_APP_PROPERTIES : AppProperties = {
+    productId: BIOLOGICS_PRODUCT_ID,
+    name: BIOLOGICS_PRODUCT_NAME,
+    logoWithTextImageUrl: imageURL('biologics/images', 'lk-bio-logo-text.svg'),
+    logoBadgeImageUrl: imageURL('biologics/images', 'lk-bio-logo-badge.svg'),
+    controllerName: BIOLOGICS_CONTROLLER_NAME,
+    moduleName: 'biologics',
+}
+
+export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
+    productId: SAMPLE_MANAGER_PRODUCT_ID,
+    name: SAMPLE_MANAGER_PRODUCT_NAME,
+    logoWithTextImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-appmenu-WHITE.svg'),
+    logoBadgeImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-Badge-WHITE.svg'),
+    controllerName: SAMPLE_MANAGER_CONTROLLER_NAME,
+    moduleName: 'sampleManagement',
+}
+
+export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {
+    productId: FREEZER_MANAGER_PRODUCT_ID,
+    name: FREEZER_MANAGER_PRODUCT_NAME,
+    logoWithTextImageUrl: imageURL('_images', 'LK-noTAG-overcast.svg'),
+    logoBadgeImageUrl: imageURL('_images', 'mobile-logo-overcast.svg'),
+    controllerName: FREEZER_MANAGER_CONTROLLER_NAME,
+    moduleName: 'inventory'
+}

@@ -5,6 +5,20 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * Add "Aliquot Naming Pattern" to sample designer
 
+### version 2.73.0
+*Released*: 9 September 2021
+* Package updates
+
+### version 2.72.0
+*Released*: 9 September 2021
+* Item 9269: Support for adding FM freezer locations
+  * ExpandableContainer update to allow for custom container class
+  * getTimelineEntityUrl() fix to use rd/freezerLocation for inventoryLocation urlType
+
+### version 2.71.0
+*Released*: 8 September 2021
+* Create Sample Type Designer 'Linked Dataset Category' field as part of Link to Study dataset category assignment
+
 ### version 2.70.0
 *Released*: 6 September 2021
 * Remove QueryGridModel based <Detail> and <DetailEditing> components

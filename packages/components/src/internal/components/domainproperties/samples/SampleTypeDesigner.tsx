@@ -435,6 +435,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             labelColor,
             metricUnit,
             autoLinkTargetContainerId,
+            autoLinkCategory,
         } = model;
 
         if (beforeFinish) {
@@ -453,6 +454,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             labelColor,
             metricUnit,
             autoLinkTargetContainerId,
+            autoLinkCategory,
             importAliases: this.getImportAliasesAsMap(model).toJS(),
         };
 

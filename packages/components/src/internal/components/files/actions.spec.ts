@@ -209,6 +209,7 @@ describe('fileSizeLimitCompare', () => {
         arrayBuffer: undefined,
         stream: undefined,
         text: undefined,
+        webkitRelativePath: undefined,
     };
 
     test('no limits', () => {

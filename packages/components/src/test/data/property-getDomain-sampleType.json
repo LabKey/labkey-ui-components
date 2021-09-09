@@ -6,6 +6,7 @@
     "description": "tacocat",
     "labelColor": "#009ce0",
     "autoLinkTargetContainerId": "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
+    "autoLinkCategory": "LinkedCategory",
     "importAliases": {
       "a": "materialInputs/Fruits",
       "b": "dataInputs/Source 1",

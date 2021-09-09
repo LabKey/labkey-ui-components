@@ -8,7 +8,7 @@ import { Query } from '@labkey/api';
 
 import { AppURL } from '../../..';
 import { isBiologicsEnabled, isFreezerManagementEnabled, isSampleManagerEnabled } from '../../app/utils';
-import { ASSAYS_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
+import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 
 export type AuditQuery = {
     containerFilter?: Query.ContainerFilter;
@@ -145,11 +145,11 @@ export function getTimelineEntityUrl(d: Record<string, any>): AppURL {
                 break;
             case 'inventoryLocation':
                 if (Array.isArray(value) && value.length > 1) {
-                    url = AppURL.create('freezers', value[0], 'storageView').addParam('locationId', value[1]);
+                    url = AppURL.create('rd', 'freezerLocation', value[1]);
                 }
                 break;
             case 'inventoryBox':
-                url = AppURL.create('boxes', value);
+                url = AppURL.create(BOXES_KEY, value);
                 break;
             default:
                 break;

@@ -24,6 +24,7 @@ describe('<ExpandableContainer/>', () => {
                 isExpandable={false}
                 initExpanded={true}
                 iconFaCls="fa-test"
+                containerCls="test-container-cls"
             >
                 <div>Body</div>
             </ExpandableContainer>

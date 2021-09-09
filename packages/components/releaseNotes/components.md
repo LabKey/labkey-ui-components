@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * ExpandableContainer update to allow for custom container class
   * getTimelineEntityUrl() fix to use rd/freezerLocation for inventoryLocation urlType
 
+### version 2.71.0
+*Released*: 8 September 2021
+* Create Sample Type Designer 'Linked Dataset Category' field as part of Link to Study dataset category assignment
+
 ### version 2.70.0
 *Released*: 6 September 2021
 * Remove QueryGridModel based <Detail> and <DetailEditing> components

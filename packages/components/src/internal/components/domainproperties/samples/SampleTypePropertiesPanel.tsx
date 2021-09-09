@@ -322,6 +322,33 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         const allowTimepointProperties = model.domain.get('allowTimepointProperties');
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
+
+        const autoLinkDataToStudyHelpTip = (
+            <>
+                <p>
+                    Automatically link Sample Type data rows to the specified target study. Only rows that include
+                    subject and visit/date information will be linked.
+                </p>
+                <p>
+                    The user performing the import must have insert permission in the target study and the corresponding
+                    dataset.
+                </p>
+            </>
+        );
+        const linkedDatasetCategoryHelpTip = (
+            <>
+                <p>
+                    Specify the desired category for the Sample Type Dataset that will be created (or appended to) in
+                    the target study when rows are linked. If the category you specify does not exist, it will be
+                    created.
+                </p>
+                <p>
+                    If the Sample Type Dataset already exists, this setting will not overwrite a previously assigned
+                    category. Leave blank to use the default category of "Uncategorized".
+                </p>
+            </>
+        );
+
         return (
             <BasePropertiesPanel
                 {...this.props}
@@ -386,33 +413,41 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 )}
 
                 {allowTimepointProperties && showLinkToStudy && (
-                    <Row className="margin-top">
-                        <Col xs={2}>
-                            <DomainFieldLabel
-                                label="Auto-Link Data to Study"
-                                helpTipBody={
-                                    <>
-                                        <p>
-                                            Automatically link Sample Type data rows to the specified target study. Only
-                                            rows that include subject and visit/date information will be linked.
-                                        </p>
-                                        <p>
-                                            The user performing the import must have insert permission in the target
-                                            study and the corresponding dataset.
-                                        </p>
-                                    </>
-                                }
-                            />
-                        </Col>
-                        <Col xs={5}>
-                            <AutoLinkToStudyDropdown
-                                containers={containers}
-                                onChange={this.onFormChange}
-                                autoLinkTarget={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
-                                value={model.autoLinkTargetContainerId}
-                            />
-                        </Col>
-                    </Row>
+                    <>
+                        <Row className="margin-top">
+                            <Col xs={2}>
+                                <DomainFieldLabel
+                                    label="Auto-Link Data to Study"
+                                    helpTipBody={autoLinkDataToStudyHelpTip}
+                                />
+                            </Col>
+                            <Col xs={5}>
+                                <AutoLinkToStudyDropdown
+                                    containers={containers}
+                                    onChange={this.onFormChange}
+                                    autoLinkTarget={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
+                                    value={model.autoLinkTargetContainerId}
+                                />
+                            </Col>
+                        </Row>
+                        <Row className="margin-top">
+                            <Col xs={2}>
+                                <DomainFieldLabel
+                                    label="Linked Dataset Category"
+                                    helpTipBody={linkedDatasetCategoryHelpTip}
+                                />
+                            </Col>
+
+                            <Col xs={5}>
+                                <FormControl
+                                    type="text"
+                                    id={ENTITY_FORM_IDS.AUTO_LINK_CATEGORY}
+                                    onChange={this.onFormChange}
+                                    value={model.autoLinkCategory || ''}
+                                />
+                            </Col>
+                        </Row>
+                    </>
                 )}
 
                 {(appPropertiesOnly || !isCommunityDistribution()) && (

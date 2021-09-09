@@ -59,6 +59,7 @@ export const ParentEntityRequiredColumns = SCHEMAS.CBMB.concat(
     'Name',
     'Description',
     'AliquotedFromLSID/Name',
+    'RootMaterialLSID',
     'RootMaterialLSID/Name',
     'RootMaterialLSID/Description'
 ).concat(ParentEntityLineageColumns);

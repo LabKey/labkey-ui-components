@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.73.0
+*Released*: 9 September 2021
+* Package updates
+
 ### version 2.72.0
 *Released*: 9 September 2021
 * Item 9269: Support for adding FM freezer locations

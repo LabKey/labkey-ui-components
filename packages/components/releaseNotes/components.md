@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.74.0
+*Released*: 9 September 2021
 * Add new AppProperties interface and define properties for our three apps in the App object
   * Stop exporting product id constants that are encapsulated into the app properties constants
   * Expose new helper methods from App object (`isPremiumProductEnabled`, `sampleManagerIsPrimaryApp`, `getPrimayAppProperties`)

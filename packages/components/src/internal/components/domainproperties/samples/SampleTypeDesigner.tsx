@@ -27,7 +27,7 @@ import { SAMPLE_TYPE, UNIQUE_ID_TYPE } from '../PropDescType';
 
 import { hasModule, isCommunityDistribution } from '../../../app/utils';
 
-import { IParentAlias, SampleTypeModel } from './models';
+import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { UniqueIdBanner } from './UniqueIdBanner';
 
@@ -97,6 +97,8 @@ interface Props {
     validateProperties?: (designerDetails?: any) => Promise<any>;
 
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+
+    aliquotNamePatternProps?: AliquotNamePatternProps;
 }
 
 interface State {
@@ -429,6 +431,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             domain,
             description,
             nameExpression,
+            aliquotNameExpression,
             labelColor,
             metricUnit,
             autoLinkTargetContainerId,
@@ -447,6 +450,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const details = {
             name,
             nameExpression,
+            aliquotNameExpression,
             labelColor,
             metricUnit,
             autoLinkTargetContainerId,
@@ -553,6 +557,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             testMode,
             domainFormDisplayOptions,
             showLinkToStudy,
+            aliquotNamePatternProps,
         } = this.props;
         const { error, model, parentOptions, showUniqueIdConfirmation } = this.state;
         const numNewUniqueIdFields = this.getNumNewUniqueIdFields();
@@ -619,6 +624,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     useTheme={useTheme}
                     metricUnitProps={metricUnitProps}
                     onAddUniqueIdField={this.onAddUniqueIdField}
+                    aliquotNamePatternProps={aliquotNamePatternProps}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}

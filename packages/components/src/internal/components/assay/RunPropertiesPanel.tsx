@@ -21,18 +21,6 @@ import { QueryFormInputs, LabelOverlay } from '../../..';
 
 import { AssayPropertiesPanelProps } from './models';
 
-const ASSAY_ID_LABEL = (
-    <LabelOverlay
-        description="The assay/experiment ID that uniquely identifies this assay run."
-        label="Assay ID"
-        type="Text (String)"
-    />
-);
-
-const COMMENT_LABEL = (
-    <LabelOverlay description="Contains comments about this run" label="Comments" type="Text (String)" />
-);
-
 export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
     const { model, onChange, title = 'Run Details', showQuerySelectPreviewOptions } = props;
 
@@ -43,7 +31,13 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                 <Formsy className="form-horizontal" onChange={onChange}>
                     <Input
                         changeDebounceInterval={0}
-                        label={ASSAY_ID_LABEL}
+                        label={
+                            <LabelOverlay
+                                description="The assay/experiment ID that uniquely identifies this assay run."
+                                label="Assay ID"
+                                type="Text (String)"
+                            />
+                        }
                         labelClassName="text-left"
                         name="runname"
                         type="text"
@@ -52,7 +46,13 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                     <Textarea
                         changeDebounceInterval={0}
                         cols={60}
-                        label={COMMENT_LABEL}
+                        label={
+                            <LabelOverlay
+                                description="Contains comments about this run"
+                                label="Comments"
+                                type="Text (String)"
+                            />
+                        }
                         labelClassName="text-left"
                         name="comment"
                         rows={2}

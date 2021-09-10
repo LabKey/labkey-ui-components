@@ -178,18 +178,27 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         }
     }
 
+    /**
+     * This is an override of setState() as defined on React.Component. With the extensive use
+     * of QuerySelect throughout our applications the calling of setState() after the component has been
+     * unmounted is a rather frequent occurrence.
+     * NK: This is not an ideal solution as unmounted async calls to setState() are considered an
+     * anti-pattern in React. That said, this works for the time being to alleviate intermittent
+     * test failures resulting from erroneous handling in Jest. If a better solution comes along please use it.
+     */
+    override setState = (state: any, callback?: () => void): void => {
+        if (this._mounted) {
+            super.setState(state, callback);
+        }
+    };
+
     initModel = async (): Promise<void> => {
         this.setState(this.getInitialState(this.props));
 
         try {
             const model = await initSelect(this.props);
-
-            if (!this.mounted) return;
-
             this.setState({ model });
         } catch (error) {
-            if (!this.mounted) return;
-
             this.setState({ error: resolveErrorMessage(error) ?? 'Failed to initialize.' });
         }
     };
@@ -232,7 +241,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                     const data = await model.search(input);
 
                     // prevent stale state updates of ReactSelect
-                    if (!this.mounted) return;
+                    if (!this._mounted) return;
 
                     const models = fromJS(data.models[data.key]);
 
@@ -245,16 +254,11 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                     const errorMsg = resolveErrorMessage(error) ?? 'Failed to retrieve search results.';
                     console.error(errorMsg, error);
                     reject(errorMsg);
-                    if (!this.mounted) return;
                     this.setState({ error: errorMsg });
                 }
             }, 250);
         });
     };
-
-    get mounted(): boolean {
-        return this._mounted === true;
-    }
 
     onChange = (name: string, value: any, selectedOptions): void => {
         this.setState(
@@ -280,8 +284,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             this.setState({ loadOnFocusLock: true, isLoading: true });
 
             const defaultOptions = await this.loadOptions('');
-
-            if (!this.mounted) return;
 
             // ReactSelect respects "isLoading" with a value of {undefined} differently from a value of {false}.
             this.setState({ defaultOptions, isLoading: undefined });

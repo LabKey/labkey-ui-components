@@ -187,6 +187,8 @@ export function withQueryModels<Props>(
         }
 
         componentDidMount(): void {
+            this._mounted = true;
+
             if (this.props.autoLoad) {
                 this.loadAllModels();
             }
@@ -235,7 +237,26 @@ export function withQueryModels<Props>(
             }
         }
 
+        componentWillUnmount(): void {
+            this._mounted = false;
+        }
+
+        /**
+         * This is an override of setState() as defined on React.Component. With the extensive use
+         * of QuerySelect throughout our applications the calling of setState() after the component has been
+         * unmounted is a rather frequent occurrence.
+         * NK: This is not an ideal solution as unmounted async calls to setState() are considered an
+         * anti-pattern in React. That said, this works for the time being to alleviate intermittent
+         * test failures resulting from erroneous handling in Jest. If a better solution comes along please use it.
+         */
+        override setState = (state: any, callback?: () => void): void => {
+            if (this._mounted) {
+                super.setState(state, callback);
+            }
+        };
+
         actions: Actions;
+        _mounted: boolean;
 
         bindURL = (id: string): void => {
             const { router, location } = this.props;

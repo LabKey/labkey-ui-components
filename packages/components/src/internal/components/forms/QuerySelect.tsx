@@ -284,10 +284,14 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             // Set and forget "loadOnFocusLock" state so "loadOnFocus" only occurs on the initial focus.
             this.setState({ loadOnFocusLock: true, isLoading: true });
 
-            const defaultOptions = await this.loadOptions('');
+            try {
+                const defaultOptions = await this.loadOptions('');
 
-            // ReactSelect respects "isLoading" with a value of {undefined} differently from a value of {false}.
-            this.setState({ defaultOptions, isLoading: undefined });
+                // ReactSelect respects "isLoading" with a value of {undefined} differently from a value of {false}.
+                this.setState({ defaultOptions, isLoading: undefined });
+            } catch (e) {
+                /* ignore -- error already logged/configured in loadOptions() */
+            }
         }
     };
 

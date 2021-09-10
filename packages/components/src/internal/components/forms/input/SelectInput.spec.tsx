@@ -59,7 +59,7 @@ describe('SelectInput', () => {
         const selectProps = {
             ...getFormsyProps(),
             filterOption: jest.fn((option, rawValue: string) => option.label === rawValue),
-            loadOptions: jest.fn(async () => [
+            loadOptions: jest.fn().mockResolvedValue([
                 { value: 'one', label: 'One' },
                 { value: 'two', label: 'Two' },
             ]),

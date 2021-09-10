@@ -31,6 +31,7 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                 <Formsy className="form-horizontal" onChange={onChange}>
                     <Input
                         changeDebounceInterval={0}
+                        id="runname"
                         label={
                             <LabelOverlay
                                 description="The assay/experiment ID that uniquely identifies this assay run."
@@ -46,6 +47,7 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                     <Textarea
                         changeDebounceInterval={0}
                         cols={60}
+                        id="comment"
                         label={
                             <LabelOverlay
                                 description="Contains comments about this run"

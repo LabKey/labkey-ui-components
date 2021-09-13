@@ -279,6 +279,7 @@ import {
     getEditSharedSampleTypeUrl,
     getFindSamplesByIdData,
     getSampleAssayQueryConfigs,
+    getSampleAliquotsQueryConfig,
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
@@ -368,6 +369,7 @@ import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
 import { SiteUsersGridPanel } from './internal/components/user/SiteUsersGridPanel';
 import { UserProvider, useUserProperties } from './internal/components/user/UserProvider';
+import { UserLink } from './internal/components/user/UserLink';
 import { FieldEditorOverlay } from './internal/components/forms/FieldEditorOverlay';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -806,6 +808,7 @@ export {
     getUserSharedContainerPermissions,
     UserDetailHeader,
     UserProfile,
+    UserLink,
     ChangePasswordModal,
     SiteUsersGridPanel,
     InsufficientPermissionsPage,
@@ -887,6 +890,7 @@ export {
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     getFindSamplesByIdData,
     getSampleAssayQueryConfigs,
+    getSampleAliquotsQueryConfig,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

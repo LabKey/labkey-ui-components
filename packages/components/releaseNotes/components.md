@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* EntityLineageEditMenuItem update to add an optional onSuccess callback prop
+
 ### version 2.75.0
 *Released*: 9 September 2021
 * Add "Aliquot Naming Pattern" to sample designer

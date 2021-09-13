@@ -296,6 +296,7 @@ import { CreateSamplesSubMenuBase } from './internal/components/samples/CreateSa
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
+import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import {
     ALIQUOT_FILTER_MODE,
     SampleAliquotViewSelector,
@@ -875,6 +876,7 @@ export {
     SamplesSelectionProvider,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
+    SampleAliquotsSummary,
     ALIQUOT_FILTER_MODE,
     SampleAssayDetail,
     SharedSampleTypeAdminConfirmModal,

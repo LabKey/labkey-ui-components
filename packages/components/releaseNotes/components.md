@@ -3,6 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.75.0
 *Released*: 9 September 2021
+* Move Sample Aliquots panel UI and utils here from LKSM
+* Issue 43833: update aliquot detail panel
+
+### version 2.75.0
+*Released*: 9 September 2021
 * Add "Aliquot Naming Pattern" to sample designer
 
 ### version 2.74.0

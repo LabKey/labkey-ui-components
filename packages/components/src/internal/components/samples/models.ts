@@ -95,3 +95,10 @@ export interface FindField {
     label: string;
     storageKeyPrefix: string;
 }
+
+export interface SampleAliquotsStats {
+    aliquotCount: number;
+    inStorageCount: number;
+    jobsCount?: number
+    aliquotIds?: number[]
+}

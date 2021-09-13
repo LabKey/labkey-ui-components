@@ -192,7 +192,7 @@ export class QueryModel {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly keyValue?: any;
     /**
-     * The maximum number of rows to return from the server (defaults to 100000).
+     * The maximum number of rows to return from the server (defaults to 20).
      * If you want to return all possible rows, set this config property to -1.
      */
     readonly maxRows: number;

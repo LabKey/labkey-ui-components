@@ -159,7 +159,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         showLoading: true,
     };
 
-    private _mounted: boolean;
     private querySelectTimer: number;
 
     constructor(props: QuerySelectOwnProps) {
@@ -168,7 +167,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
     }
 
     componentDidMount(): void {
-        this._mounted = true;
         this.initModel();
     }
 
@@ -177,21 +175,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             this.initModel();
         }
     }
-
-    /**
-     * This is an override of setState() as defined on React.Component. With the extensive use
-     * of QuerySelect throughout our applications the calling of setState() after the component has been
-     * unmounted is a rather frequent occurrence.
-     * NK: This is not an ideal solution. Unmounted async calls to setState() are considered an
-     * anti-pattern in React. That said, this works for the time being to alleviate intermittent
-     * test failures resulting from erroneous handling in Jest. If a better solution comes along please use it.
-     */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    override setState = (state: any, callback?: () => void): void => {
-        if (this._mounted) {
-            super.setState(state, callback);
-        }
-    };
 
     initModel = async (): Promise<void> => {
         this.setState(this.getInitialState(this.props));
@@ -216,7 +199,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
     };
 
     componentWillUnmount(): void {
-        this._mounted = false;
         clearTimeout(this.querySelectTimer);
     }
 
@@ -240,9 +222,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                     const { model } = this.state;
 
                     const data = await model.search(input);
-
-                    // prevent stale state updates of ReactSelect
-                    if (!this._mounted) return;
 
                     const models = fromJS(data.models[data.key]);
 

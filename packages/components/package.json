@@ -13,6 +13,7 @@
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
     "prepublishOnly": "yarn build",
+    "test-dev": "cross-env NODE_ENV=test jest --maxWorkers=6 --silent",
     "test": "cross-env NODE_ENV=test jest --ci --runInBand --silent",
     "watch:build": "watch 'yarn build' ./src",
     "watch": "npm run watch:build",

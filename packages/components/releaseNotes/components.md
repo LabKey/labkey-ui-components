@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update `EntityDeleteConfirmModalDisplay` to add message about sample status preventing deletion
 * add `isSampleStatusEnabled` helper method in App object
+
 ### version 2.75.0
 *Released*: 9 September 2021
 * Add "Aliquot Naming Pattern" to sample designer

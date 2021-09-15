@@ -96,12 +96,12 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                     rows,
                     auditBehavior,
                 });
+                onSuccess();
                 createNotification(
                     `Successfully updated ${lcParentNounPlural} for ${rows.length} ${capitalizeFirstChar(
                         getEntityNoun(childEntityDataType, rows.length)
                     )}`
                 );
-                onSuccess();
             } catch (e) {
                 setSubmitting(false);
                 setErrorMessage(
@@ -109,8 +109,8 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 );
             }
         } else {
-            createNotification(`No ${childEntityDataType.nounPlural} updated since no ${lcParentNounPlural} changed.`);
             onSuccess();
+            createNotification(`No ${childEntityDataType.nounPlural} updated since no ${lcParentNounPlural} changed.`);
         }
     }, [selectedParents, auditBehavior, childEntityDataType, queryModel, nonAliquots]);
 

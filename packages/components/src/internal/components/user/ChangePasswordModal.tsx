@@ -39,7 +39,7 @@ export class ChangePasswordModal extends React.Component<Props, State> {
                 this.setState(() => ({ passwordRule: response.summary }));
             })
             .catch(response => {
-                this.setState({ error: resolveErrorMessage(response), submitting: false });
+                this.setState({ error: resolveErrorMessage(response) });
             });
     }
 

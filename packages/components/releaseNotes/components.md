@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * EntityLineageEditMenuItem update to add an optional onSuccess callback prop
 
+### version 2.75.1
+*Released*: 16 September 2021
+* Rehydrate yarn.lock to fix issue with npm run start-link in LKSM module
+
 ### version 2.75.0
 *Released*: 9 September 2021
 * Add "Aliquot Naming Pattern" to sample designer

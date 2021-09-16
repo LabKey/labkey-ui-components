@@ -13,13 +13,9 @@ import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel
 import { withAssayModels } from '../assay/withAssayModels';
 
 const SampleAliquotAssaysCountBodyImpl: FC<InjectedQueryModels> = memo(props => {
-    const { actions, queryModels } = props;
+    const { queryModels } = props;
     const allModels = Object.values(queryModels);
     const allLoaded = allModels.every(model => !model.isLoading);
-
-    useEffect(() => {
-        actions.loadAllModels(true);
-    }, []);
 
     const totalCount = useMemo(() => {
         let count = 0;
@@ -76,6 +72,7 @@ const SampleAliquotAssaysCountImpl: FC<Props & InjectedAssayModel> = props => {
             {...props}
             key={'aliquot-assay-stats-' + sampleId}
             queryConfigs={queryConfigs}
+            autoLoad={true}
         />
     );
 };

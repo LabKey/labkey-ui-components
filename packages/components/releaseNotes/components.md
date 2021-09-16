@@ -5,8 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 16 September 2021
 * Rehydrate yarn.lock to fix issue with npm run start-link in LKSM module
 
-### version 2.75.0
-*Released*: 9 September 2021
+### version XXX
+*Released*: XXX
 * Move Sample Aliquots panel UI and utils here from LKSM
 * Issue 43833: update aliquot detail panel
 

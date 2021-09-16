@@ -19,6 +19,25 @@ const DEFAULT_PROPS = {
     aliquotJobsQueryConfig: {schemaQuery: SchemaQuery.create("test", "query")},
 };
 
+const noAliquotVolume = {
+    'AliquotTotalVolume' : {
+        displayValue: null
+    },
+    'Units' : {
+        displayValue: null
+    }
+}
+
+const zeroAliquotVolume = {
+    'AliquotTotalVolume' : {
+        displayValue: 0
+    },
+    'Units' : {
+        displayValue: null
+    }
+}
+
+
 function getQueryModelFromRows(rows) {
     return makeTestQueryModel(SchemaQuery.create('schema', 'query'), undefined,
         rows, Object.keys(rows), Object.keys(rows).length, 'id')
@@ -50,7 +69,7 @@ describe("<SampleAliquotsSummaryWithModels/>", () => {
             sampleId={'86873'}
             sampleLsid={'S-20200404-1'}
             sampleSet={'dirt'}
-            totalAliquotVolume={undefined}
+            sampleRow={noAliquotVolume}
             aliquotsModel={undefined}
             jobsModel={undefined}
         />);
@@ -65,7 +84,7 @@ describe("<SampleAliquotsSummaryWithModels/>", () => {
             sampleId={'86873'}
             sampleLsid={'S-20200404-1'}
             sampleSet={'dirt'}
-            totalAliquotVolume={undefined}
+            sampleRow={noAliquotVolume}
             aliquotsModel={makeTestQueryModel(SchemaQuery.create('schema', 'query'))}
             jobsModel={undefined}
         />);
@@ -80,7 +99,7 @@ describe("<SampleAliquotsSummaryWithModels/>", () => {
             sampleId={'86873'}
             sampleLsid={'S-20200404-1'}
             sampleSet={'dirt'}
-            totalAliquotVolume={undefined}
+            sampleRow={noAliquotVolume}
             aliquotsModel={getQueryModelFromRows({})}
             jobsModel={getQueryModelFromRows({})}
         />);
@@ -95,7 +114,7 @@ describe("<SampleAliquotsSummaryWithModels/>", () => {
             sampleId={'86873'}
             sampleLsid={'S-20200404-1'}
             sampleSet={'dirt'}
-            totalAliquotVolume={'0'}
+            sampleRow={zeroAliquotVolume}
             aliquotsModel={getQueryModelFromRows({
                 1: {
                     StorageStatus: {value: 'Not in storage'},
@@ -116,7 +135,7 @@ describe("<SampleAliquotsSummaryWithModels/>", () => {
             sampleId={'86873'}
             sampleLsid={'S-20200404-1'}
             sampleSet={'dirt'}
-            totalAliquotVolume={'0'}
+            sampleRow={zeroAliquotVolume}
             aliquotsModel={getQueryModelFromRows({
                 1: {
                     StorageStatus: {value: 'In storage'},
@@ -137,7 +156,14 @@ describe("<SampleAliquotsSummaryWithModels/>", () => {
             sampleId={'86873'}
             sampleLsid={'S-20200404-1'}
             sampleSet={'dirt'}
-            totalAliquotVolume={'0 g'}
+            sampleRow={{
+                'AliquotTotalVolume' : {
+                    displayValue: 0
+                },
+                'Units' : {
+                    displayValue: 'g'
+                }
+            }}
             aliquotsModel={getQueryModelFromRows({
                 1: {
                     StorageStatus: {value: 'In storage'},
@@ -159,7 +185,14 @@ describe("<SampleAliquotsSummaryWithModels/>", () => {
             sampleId={'86873'}
             sampleLsid={'S-20200404-1'}
             sampleSet={'dirt'}
-            totalAliquotVolume={'100.1'}
+            sampleRow={{
+                'AliquotTotalVolume' : {
+                    displayValue: 100.1
+                },
+                'Units' : {
+                    displayValue: null
+                }
+            }}
             aliquotsModel={getQueryModelFromRows({
                 1: {
                     StorageStatus: {value: 'In storage'},
@@ -180,7 +213,14 @@ describe("<SampleAliquotsSummaryWithModels/>", () => {
             sampleId={'86873'}
             sampleLsid={'S-20200404-1'}
             sampleSet={'dirt'}
-            totalAliquotVolume={'150.6'}
+            sampleRow={{
+                'AliquotTotalVolume' : {
+                    displayValue: 150.6
+                },
+                'Units' : {
+                    displayValue: null
+                }
+            }}
             aliquotsModel={getQueryModelFromRows({
                 1: {
                     StorageStatus: {value: 'In storage'},
@@ -219,7 +259,14 @@ describe("<SampleAliquotsSummaryWithModels/>", () => {
             sampleId={'86873'}
             sampleLsid={'S-20200404-1'}
             sampleSet={'dirt'}
-            totalAliquotVolume={'150.6 mL'}
+            sampleRow={{
+                'AliquotTotalVolume' : {
+                    displayValue: 150.6
+                },
+                'Units' : {
+                    displayValue: 'mL'
+                }
+            }}
             aliquotsModel={getQueryModelFromRows({
                 1: {
                     StorageStatus: {value: 'In storage'},
@@ -251,7 +298,14 @@ describe("<SampleAliquotsSummaryWithModels/>", () => {
             sampleId={'86873'}
             sampleLsid={'S-20200404-1'}
             sampleSet={'dirt'}
-            totalAliquotVolume={'50,600.1 mL'}
+            sampleRow={{
+                'AliquotTotalVolume' : {
+                    displayValue: 50600.1
+                },
+                'Units' : {
+                    displayValue: 'mL'
+                }
+            }}
             aliquotsModel={getQueryModelFromRows({
                 1: {
                     StorageStatus: {value: 'In storage'},
@@ -283,7 +337,14 @@ describe("<SampleAliquotsSummaryWithModels/>", () => {
             sampleId={'86873'}
             sampleLsid={'S-20200404-1'}
             sampleSet={'dirt'}
-            totalAliquotVolume={'1,100.1 mL'}
+            sampleRow={{
+                'AliquotTotalVolume' : {
+                    displayValue: 1100.1
+                },
+                'Units' : {
+                    displayValue: 'mL'
+                }
+            }}
             aliquotsModel={getQueryModelFromRows({
                 1: {
                     StorageStatus: {value: 'In storage'},

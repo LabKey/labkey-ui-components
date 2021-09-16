@@ -99,6 +99,6 @@ export interface FindField {
 export interface SampleAliquotsStats {
     aliquotCount: number;
     inStorageCount: number;
-    jobsCount?: number
-    aliquotIds?: number[]
+    jobsCount?: number;
+    aliquotIds?: number[];
 }

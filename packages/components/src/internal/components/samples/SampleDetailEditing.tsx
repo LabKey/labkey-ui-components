@@ -35,8 +35,6 @@ interface Props {
     sampleSet: string;
     title: string;
     queryModel?: QueryModel;
-    isAliquot?: boolean;
-    aliquotRootLsid?: string;
 }
 
 interface State {
@@ -133,7 +131,6 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
             onUpdate,
             queryModel,
             title,
-            aliquotRootLsid,
         } = this.props;
         const { hasError, sampleTypeDomainFields } = this.state;
 
@@ -201,7 +198,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                         <Panel.Body>
                             {parentDetailHeader}
                             <DetailPanelWithModel
-                                key={aliquotRootLsid}
+                                key={root?.value}
                                 queryConfig={this.getAliquotRootSampleQueryConfig()}
                             />
                         </Panel.Body>

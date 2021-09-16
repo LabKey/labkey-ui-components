@@ -10,7 +10,7 @@ interface Props {
     userId: string
 }
 
-export class UserLink extends React.PureComponent<Props, any> {
+export class UserLink extends React.PureComponent<Props> {
 
     render() {
         const { allUsers, currentUser, userId } = this.props;

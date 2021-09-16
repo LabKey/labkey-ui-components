@@ -13,7 +13,7 @@ import {
     App,
     AppURL,
     ALIQUOT_FILTER_MODE,
-    SchemaQuery
+    SchemaQuery, caseInsensitive
 } from '../../..';
 
 import { getSampleAliquotsQueryConfig, getSampleAliquotsStats } from './actions';
@@ -24,8 +24,8 @@ interface OwnProps {
     sampleLsid: string;
     sampleId: string;
     sampleSet: string;
-    totalAliquotVolume: string;
     aliquotJobsQueryConfig: QueryConfig;
+    sampleRow: any;
     sampleSchemaQuery?: SchemaQuery;
 }
 
@@ -41,10 +41,14 @@ interface SampleAliquotsSummaryWithModelsProps {
 export class SampleAliquotsSummaryWithModels extends PureComponent<Props & SampleAliquotsSummaryWithModelsProps> {
 
     renderStats(stats: SampleAliquotsStats, hideAssayData?: boolean) {
-        const { sampleSet, sampleId, totalAliquotVolume, sampleSchemaQuery, aliquotJobsQueryConfig } = this.props;
+        const { sampleSet, sampleId, sampleRow, sampleSchemaQuery, aliquotJobsQueryConfig } = this.props;
         let aliquotUrl = AppURL.create(App.SAMPLES_KEY, sampleSet, sampleId, 'Aliquots');
         const jobUrl = AppURL.create(App.SAMPLES_KEY, sampleSet, sampleId, 'Jobs').addParam('sampleAliquotType', ALIQUOT_FILTER_MODE.aliquots).toHref();
         const assayDataUrl = AppURL.create(App.SAMPLES_KEY, sampleSet, sampleId, 'Assays').addParam('sampleAliquotType', ALIQUOT_FILTER_MODE.aliquots).toHref();
+
+        const totalAliquotVolume = caseInsensitive(sampleRow, 'AliquotTotalVolume')?.displayValue?.toLocaleString();
+        const units = caseInsensitive(sampleRow, 'Units')?.displayValue ?? caseInsensitive(sampleRow, 'Units')?.value;
+        const totalAliquotVolumeDisplay = totalAliquotVolume != null ? (totalAliquotVolume + (units ? ' ' + units : '')) : undefined;
 
         return (
             <>
@@ -62,7 +66,7 @@ export class SampleAliquotsSummaryWithModels extends PureComponent<Props & Sampl
                 </tr>
                 <tr>
                     <td>Current available amount:</td>
-                    <td className={'aliquot-stats-value'}>{totalAliquotVolume ? totalAliquotVolume : 'Not available'}</td>
+                    <td className={'aliquot-stats-value'}>{totalAliquotVolumeDisplay ? totalAliquotVolumeDisplay : 'Not available'}</td>
                 </tr>
                 <tr>
                     <td>Jobs with aliquots:</td>

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.75.1
+*Released*: 16 September 2021
+* Rehydrate yarn.lock to fix issue with npm run start-link in LKSM module
+
 ### version 2.75.0
 *Released*: 9 September 2021
 * Move Sample Aliquots panel UI and utils here from LKSM

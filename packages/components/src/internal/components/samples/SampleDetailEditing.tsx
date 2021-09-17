@@ -106,7 +106,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         return getGroupedSampleDisplayColumns(detailColumns, updateColumns, sampleTypeDomainFields, isAliquot);
     };
 
-    getAliquotRootSampleQueryConfig = () : QueryConfig => {
+    getAliquotRootSampleQueryConfig = (): QueryConfig => {
         const { sampleSet } = this.props;
 
         const row = this.getRow();
@@ -114,7 +114,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
 
         return {
             schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
-            baseFilters: [Filter.create("lsid", rootLsid)],
+            baseFilters: [Filter.create('lsid', rootLsid)],
             requiredColumns: ['Name', 'Description'],
             omittedColumns: ['IsAliquot'],
         };
@@ -166,7 +166,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         const parentDetailHeader = showRootSampleName ? (
             <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-meta-table">
                 <tbody>
-                    <tr key='originalSample'>
+                    <tr key="originalSample">
                         <td>Original sample</td>
                         <td>
                             <DefaultRenderer data={fromJS(root)} />
@@ -192,7 +192,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                     queryColumns={displayColumns}
                     title={isAliquot ? 'Aliquot Details' : undefined}
                 />
-                {isAliquot &&
+                {isAliquot && (
                     <Panel>
                         <Panel.Heading>Original Sample Details</Panel.Heading>
                         <Panel.Body>
@@ -203,7 +203,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                             />
                         </Panel.Body>
                     </Panel>
-                }
+                )}
             </>
         );
     }

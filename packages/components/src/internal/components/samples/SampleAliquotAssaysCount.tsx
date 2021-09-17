@@ -1,12 +1,6 @@
 import React, { FC, memo, useEffect, useMemo } from 'react';
 
-import {
-    InjectedAssayModel,
-    isLoading,
-    LoadingSpinner,
-    getSampleAssayQueryConfigs,
-    SchemaQuery,
-} from "../../..";
+import { InjectedAssayModel, isLoading, LoadingSpinner, getSampleAssayQueryConfigs, SchemaQuery } from '../../..';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
@@ -21,15 +15,14 @@ const SampleAliquotAssaysCountBodyImpl: FC<InjectedQueryModels> = memo(props => 
         let count = 0;
         allModels.forEach(model => {
             count += model.rowCount;
-        })
+        });
         return count;
     }, [allLoaded, queryModels]);
 
-    if (allModels.length === 0)
-        return <>0</>;
+    if (allModels.length === 0) return <>0</>;
 
     if (!allLoaded) {
-        return <LoadingSpinner/>;
+        return <LoadingSpinner />;
     }
 
     return <>{totalCount}</>;
@@ -52,19 +45,24 @@ const SampleAliquotAssaysCountImpl: FC<Props & InjectedAssayModel> = props => {
             return {};
         }
 
-        const _configs = getSampleAssayQueryConfigs(assayModel, aliquotIds, sampleId + '', 'aliquot-assay', true, sampleSchemaQuery);
+        const _configs = getSampleAssayQueryConfigs(
+            assayModel,
+            aliquotIds,
+            sampleId + '',
+            'aliquot-assay',
+            true,
+            sampleSchemaQuery
+        );
 
-        return _configs
-            .reduce((_configs, config) => {
-                const modelId = config.id;
-                _configs[modelId] = config;
-                return _configs;
-            }, {});
-
+        return _configs.reduce((_configs, config) => {
+            const modelId = config.id;
+            _configs[modelId] = config;
+            return _configs;
+        }, {});
     }, [assayModel.definitions, loadingDefinitions, sampleSchemaQuery, sampleId, aliquotIds]);
 
     if (loadingDefinitions) {
-        return <LoadingSpinner />
+        return <LoadingSpinner />;
     }
 
     return (

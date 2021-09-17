@@ -51,7 +51,7 @@ import { getInitialParentChoices } from '../entities/utils';
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
 import { GroupedSampleFields, SampleAliquotsStats } from './models';
-import { IS_ALIQUOT_FIELD } from "./constants";
+import { IS_ALIQUOT_FIELD } from './constants';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -683,12 +683,13 @@ export function getSampleAssayQueryConfigs(
         }, []);
 }
 
-
 export function getSampleAliquotsStats(rows: Record<string, any>): SampleAliquotsStats {
-    let inStorageCount = 0, aliquotCount = 0, aliquotIds = [];
-    for (let ind in rows) {
+    let inStorageCount = 0,
+        aliquotCount = 0,
+        aliquotIds = [];
+    for (const ind in rows) {
         const row = rows[ind];
-        const storageStatus = caseInsensitive(row, 'StorageStatus')?.value
+        const storageStatus = caseInsensitive(row, 'StorageStatus')?.value;
 
         const inStorage = storageStatus === 'In storage';
         inStorageCount += inStorage ? 1 : 0;
@@ -700,8 +701,8 @@ export function getSampleAliquotsStats(rows: Record<string, any>): SampleAliquot
     return {
         aliquotCount,
         inStorageCount,
-        aliquotIds
-    }
+        aliquotIds,
+    };
 }
 
 export function getSampleAliquotsQueryConfig(
@@ -714,14 +715,14 @@ export function getSampleAliquotsQueryConfig(
     const omitCol = IS_ALIQUOT_FIELD;
 
     return {
-        id: getStateModelId("sample-aliquots", SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet)),
+        id: getStateModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet)),
         schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,
         omittedColumns: omitCols ? [...omitCols.toArray(), omitCol] : [omitCol],
         baseFilters: [
             Filter.create('RootMaterialLSID', aliquotRootLsid ?? sampleLsid),
-            Filter.create('Lsid', sampleLsid, Filter.Types.EXP_CHILD_OF)
-        ]
+            Filter.create('Lsid', sampleLsid, Filter.Types.EXP_CHILD_OF),
+        ],
     };
 }

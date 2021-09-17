@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Move Sample Aliquots panel UI and utils here from LKSM
 * Issue 43833: update aliquot detail panel
 
+### version TBD
+*Released*: TBD
+* EntityLineageEditMenuItem and related updates to support selenium tests for Source Samples grid
+
 ### version 2.76.0
 *Released*: 16 September 2021
 * EntityLineageEditMenuItem update to add an optional onSuccess callback prop

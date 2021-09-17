@@ -6,7 +6,6 @@ import { AuditBehaviorTypes } from '@labkey/api';
 import { capitalizeFirstChar, EntityDataType, QueryModel, SelectionMenuItem } from '../../..';
 
 import { EntityLineageEditModal } from './EntityLineageEditModal';
-import { getEntityNoun } from './utils';
 
 interface Props {
     queryModel: QueryModel;
@@ -23,7 +22,8 @@ export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
         'Edit ' +
         parentNounPlural +
         ' for Selected ' +
-        capitalizeFirstChar(getEntityNoun(childEntityDataType, queryModel?.selections?.size) + ' in Bulk');
+        capitalizeFirstChar(childEntityDataType.nounPlural) +
+        ' in Bulk';
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
     const onClick = useCallback(() => {

@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update `EntityDeleteConfirmModalDisplay` to add message about sample status preventing deletion
 * add `isSampleStatusEnabled` helper method in App object
+* Reset error caused by editing after exiting edit mode in `ParentEntityEditPanel`
 
 ### version 2.75.0
 *Released*: 9 September 2021

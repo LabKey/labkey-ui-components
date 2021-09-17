@@ -7,6 +7,19 @@ Components, models, actions, and utility functions for LabKey applications and p
 * add `isSampleStatusEnabled` helper method in App object
 * Reset error caused by editing after exiting edit mode in `ParentEntityEditPanel`
 
+### version 2.77.0
+*Released*: 17 September 2021
+* Move Sample Aliquots panel UI and utils here from LKSM
+* Issue 43833: update aliquot detail panel
+
+### version 2.76.0
+*Released*: 16 September 2021
+* EntityLineageEditMenuItem update to add an optional onSuccess callback prop
+
+### version 2.75.1
+*Released*: 16 September 2021
+* Rehydrate yarn.lock to fix issue with npm run start-link in LKSM module
+
 ### version 2.75.0
 *Released*: 9 September 2021
 * Add "Aliquot Naming Pattern" to sample designer

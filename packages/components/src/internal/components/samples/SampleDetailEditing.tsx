@@ -1,17 +1,22 @@
 import React, { PureComponent } from 'react';
 import { List, fromJS } from 'immutable';
-import { Alert } from 'react-bootstrap';
+import { Alert, Panel } from 'react-bootstrap';
 
-import { AuditBehaviorTypes } from '@labkey/api';
+import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import {
     Actions,
     caseInsensitive,
+    DefaultRenderer,
+    DetailPanelWithModel,
     EditableDetailPanel,
     getActionErrorMessage,
     LoadingPage,
+    QueryConfig,
     QueryModel,
     SampleAliquotDetailHeader,
+    SchemaQuery,
+    SCHEMAS,
 } from '../../..';
 
 import { DetailRenderer } from '../forms/detail/DetailDisplay';
@@ -27,9 +32,9 @@ interface Props {
     detailRenderer?: DetailRenderer;
     onEditToggle?: (isEditing: boolean) => void;
     onUpdate: () => void;
-    queryModel?: QueryModel;
     sampleSet: string;
     title: string;
+    queryModel?: QueryModel;
 }
 
 interface State {
@@ -101,6 +106,20 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         return getGroupedSampleDisplayColumns(detailColumns, updateColumns, sampleTypeDomainFields, isAliquot);
     };
 
+    getAliquotRootSampleQueryConfig = (): QueryConfig => {
+        const { sampleSet } = this.props;
+
+        const row = this.getRow();
+        const rootLsid = caseInsensitive(row, 'RootMaterialLSID')?.value;
+
+        return {
+            schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
+            baseFilters: [Filter.create('lsid', rootLsid)],
+            requiredColumns: ['Name', 'Description'],
+            omittedColumns: ['IsAliquot'],
+        };
+    };
+
     render() {
         const {
             actions,
@@ -128,7 +147,14 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         }
 
         const row = this.getRow();
-        const isAliquot = !!caseInsensitive(row, 'AliquotedFromLSID/Name')?.value;
+
+        const parent = caseInsensitive(row, 'AliquotedFromLSID/Name');
+        const isAliquot = !!parent?.value;
+
+        const root = caseInsensitive(row, 'rootmateriallsid/name');
+
+        const showRootSampleName = root?.value !== parent?.value;
+
         const { aliquotHeaderDisplayColumns, displayColumns, editColumns } = this.getUpdateDisplayColumns(isAliquot);
         const detailHeader = isAliquot ? (
             <SampleAliquotDetailHeader
@@ -137,20 +163,48 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
             />
         ) : null;
 
+        const parentDetailHeader = showRootSampleName ? (
+            <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-meta-table">
+                <tbody>
+                    <tr key="originalSample">
+                        <td>Original sample</td>
+                        <td>
+                            <DefaultRenderer data={fromJS(root)} />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        ) : null;
+
         return (
-            <EditableDetailPanel
-                actions={actions}
-                auditBehavior={auditBehavior}
-                canUpdate={canUpdate}
-                detailEditRenderer={detailEditRenderer}
-                detailHeader={detailHeader}
-                detailRenderer={detailRenderer}
-                editColumns={editColumns}
-                model={queryModel}
-                onEditToggle={onEditToggle}
-                onUpdate={onUpdate}
-                queryColumns={displayColumns}
-            />
+            <>
+                <EditableDetailPanel
+                    actions={actions}
+                    auditBehavior={auditBehavior}
+                    canUpdate={canUpdate}
+                    detailEditRenderer={detailEditRenderer}
+                    detailHeader={detailHeader}
+                    detailRenderer={detailRenderer}
+                    editColumns={editColumns}
+                    model={queryModel}
+                    onEditToggle={onEditToggle}
+                    onUpdate={onUpdate}
+                    queryColumns={displayColumns}
+                    title={isAliquot ? 'Aliquot Details' : undefined}
+                />
+                {isAliquot && (
+                    <Panel>
+                        <Panel.Heading>Original Sample Details</Panel.Heading>
+                        <Panel.Body>
+                            {parentDetailHeader}
+                            <DetailPanelWithModel
+                                key={root?.value}
+                                queryConfig={this.getAliquotRootSampleQueryConfig()}
+                            />
+                        </Panel.Body>
+                    </Panel>
+                )}
+            </>
         );
     }
 }

@@ -13,10 +13,11 @@ interface Props {
     childEntityDataType: EntityDataType;
     parentEntityDataTypes: EntityDataType[];
     auditBehavior?: AuditBehaviorTypes;
+    onSuccess?: () => void;
 }
 
 export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
-    const { childEntityDataType, parentEntityDataTypes, queryModel, auditBehavior } = props;
+    const { childEntityDataType, parentEntityDataTypes, queryModel, auditBehavior, onSuccess } = props;
     const parentNounPlural = parentEntityDataTypes[0].nounPlural;
     const itemText =
         'Edit ' +
@@ -31,9 +32,14 @@ export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
         }
     }, [queryModel]);
 
-    const onClose = useCallback(() => {
+    const onCancel = useCallback(() => {
         setShowEditModal(false);
     }, []);
+
+    const _onSuccess = useCallback(() => {
+        setShowEditModal(false);
+        onSuccess?.();
+    }, [onSuccess]);
 
     return (
         <>
@@ -53,11 +59,11 @@ export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
             {showEditModal && (
                 <EntityLineageEditModal
                     queryModel={queryModel}
-                    onCancel={onClose}
+                    onCancel={onCancel}
                     childEntityDataType={childEntityDataType}
                     auditBehavior={auditBehavior}
                     parentEntityDataTypes={parentEntityDataTypes}
-                    onSuccess={onClose}
+                    onSuccess={_onSuccess}
                 />
             )}
         </>

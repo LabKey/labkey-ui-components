@@ -28,6 +28,7 @@ import {
     FindField,
     getSelectedData,
     getSelection,
+    getStateModelId,
     ISelectRowsResult,
     naturalSortByProperty,
     QueryColumn,
@@ -49,7 +50,8 @@ import { getInitialParentChoices } from '../entities/utils';
 
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
-import { GroupedSampleFields } from './models';
+import { GroupedSampleFields, SampleAliquotsStats } from './models';
+import { IS_ALIQUOT_FIELD } from './constants';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -443,8 +445,6 @@ export function getGroupedSampleDisplayColumns(
             // barcodes belong to the individual sample or aliquot (but not both)
             if (col.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI) {
                 aliquotHeaderDisplayColumns.push(col);
-            } else if (sampleTypeDomainFields.metaFields.indexOf(colName) > -1) {
-                displayColumns.push(col);
             }
             // display parent meta for aliquot
             else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
@@ -464,10 +464,6 @@ export function getGroupedSampleDisplayColumns(
                 editColumns.push(col);
             } else if (colName === 'description') {
                 editColumns.push(col);
-            } else {
-                if (sampleTypeDomainFields.metaFields.indexOf(colName) === -1) {
-                    editColumns.push(col);
-                }
             }
         } else {
             if (sampleTypeDomainFields.aliquotFields.indexOf(colName) === -1) {
@@ -685,4 +681,48 @@ export function getSampleAssayQueryConfigs(
 
             return _configs;
         }, []);
+}
+
+export function getSampleAliquotsStats(rows: Record<string, any>): SampleAliquotsStats {
+    let inStorageCount = 0,
+        aliquotCount = 0,
+        aliquotIds = [];
+    for (const ind in rows) {
+        const row = rows[ind];
+        const storageStatus = caseInsensitive(row, 'StorageStatus')?.value;
+
+        const inStorage = storageStatus === 'In storage';
+        inStorageCount += inStorage ? 1 : 0;
+        aliquotCount++;
+
+        aliquotIds.push(caseInsensitive(row, 'RowId')?.value);
+    }
+
+    return {
+        aliquotCount,
+        inStorageCount,
+        aliquotIds,
+    };
+}
+
+export function getSampleAliquotsQueryConfig(
+    sampleSet: string,
+    sampleLsid: string,
+    forGridView?: boolean,
+    aliquotRootLsid?: string,
+    omitCols?: List<string>
+): QueryConfig {
+    const omitCol = IS_ALIQUOT_FIELD;
+
+    return {
+        id: getStateModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet)),
+        schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
+        bindURL: forGridView,
+        maxRows: forGridView ? undefined : -1,
+        omittedColumns: omitCols ? [...omitCols.toArray(), omitCol] : [omitCol],
+        baseFilters: [
+            Filter.create('RootMaterialLSID', aliquotRootLsid ?? sampleLsid),
+            Filter.create('Lsid', sampleLsid, Filter.Types.EXP_CHILD_OF),
+        ],
+    };
 }

@@ -21,3 +21,5 @@ export const SAMPLE_ID_FIND_FIELD: FindField = {
     label: 'Sample IDs',
     storageKeyPrefix: 's:',
 };
+
+export const IS_ALIQUOT_FIELD = 'isAliquot';

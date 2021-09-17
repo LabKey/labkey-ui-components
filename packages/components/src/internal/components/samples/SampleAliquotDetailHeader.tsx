@@ -39,14 +39,9 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
         const created = newRow.get('created');
         const createdBy = newRow.get('createdby');
         const parent = newRow.get('aliquotedfromlsid/name');
-        const root = newRow.get('rootmateriallsid/name');
-        const rootDescription = newRow.get('rootmateriallsid/description');
-
-        const showRootSampleName = root.get('value') !== parent.get('value');
 
         return (
             <>
-                {this.renderAliquotDetailSubHeader('Aliquot Data')}
                 <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-table">
                     <tbody>
                         {this.renderDetailRow('Aliquoted from', parent, 'aliquotedfrom')}
@@ -60,13 +55,6 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
                                 key
                             );
                         })}
-                    </tbody>
-                </table>
-                {this.renderAliquotDetailSubHeader('Original Sample Data')}
-                <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-meta-table">
-                    <tbody>
-                        {showRootSampleName && this.renderDetailRow('Original sample', root, 'originalsample')}
-                        {this.renderDetailRow('Sample description', rootDescription, 'sampledescription')}
                     </tbody>
                 </table>
             </>

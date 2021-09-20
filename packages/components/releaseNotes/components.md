@@ -1,14 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* EntityLineageEditMenuItem and related updates to support selenium tests for Source Samples grid
+
 ### version 2.77.0
 *Released*: 17 September 2021
 * Move Sample Aliquots panel UI and utils here from LKSM
 * Issue 43833: update aliquot detail panel
-
-### version TBD
-*Released*: TBD
-* EntityLineageEditMenuItem and related updates to support selenium tests for Source Samples grid
 
 ### version 2.76.0
 *Released*: 16 September 2021

@@ -24,12 +24,40 @@ import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from '../samples/Sampl
 interface Props {
     queryGridModel?: QueryGridModel;
     queryModel?: QueryModel;
-    updateFilter?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
+    updateFilter?: (filter: Filter.IFilter, filterColumnToRemove?: string, newModel?: ALIQUOT_FILTER_MODE) => void;
+    initAliquotMode?: ALIQUOT_FILTER_MODE; // allow to set aliquot filter from a init value
+}
+
+interface State {
+    initAliquotModeSynced: boolean
 }
 
 const IS_ALIQUOT_COL = 'IsAliquot';
 
-export class GridAliquotViewSelector extends Component<Props> {
+export class GridAliquotViewSelector extends Component<Props, State> {
+    state: Readonly<State> = {
+        initAliquotModeSynced: false
+    };
+
+    componentDidMount(): void {
+        this.syncInitMode();
+    }
+
+    componentDidUpdate = (): void => {
+        this.syncInitMode();
+    };
+
+    syncInitMode = () => {
+        const { initAliquotMode, queryModel } = this.props;
+        const { initAliquotModeSynced } = this.state;
+        if (!initAliquotModeSynced && initAliquotMode && !queryModel?.isLoading) {
+            const currentMode = this.getAliquotFilterMode();
+            if (initAliquotMode != currentMode)
+                this.updateAliquotFilter(initAliquotMode);
+            this.setState(() => ({ initAliquotModeSynced: true }));
+        }
+    }
+
     updateAliquotFilter = (newMode: ALIQUOT_FILTER_MODE) => {
         const { queryGridModel, updateFilter } = this.props;
 
@@ -40,7 +68,7 @@ export class GridAliquotViewSelector extends Component<Props> {
         if (queryGridModel) {
             replaceFilter(queryGridModel, IS_ALIQUOT_COL, newFilter);
         } else if (updateFilter) {
-            updateFilter(newFilter, IS_ALIQUOT_COL);
+            updateFilter(newFilter, IS_ALIQUOT_COL, newMode);
         }
     };
 
@@ -56,7 +84,7 @@ export class GridAliquotViewSelector extends Component<Props> {
 
                     if (filterType == Filter.Types.ISBLANK || filterType == Filter.Types.MISSING) {
                         mode = ALIQUOT_FILTER_MODE.none;
-                    } else if (filterType == Filter.Types.EQUAL) {
+                    } else if (filterType == Filter.Types.EQUAL || filterType.getURLSuffix() == 'eq') {
                         if (value === '') return;
                         mode =
                             value === 'true' || value === true

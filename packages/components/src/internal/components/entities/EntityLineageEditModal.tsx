@@ -200,16 +200,12 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
 
             <Modal.Footer>
                 {onCancel && (
-                    <Button
-                        className="pull-left test-loc-cancel-button"
-                        onClick={onCancel}
-                    >
+                    <Button className="pull-left" onClick={onCancel}>
                         Cancel
                     </Button>
                 )}
 
                 <Button
-                    className="test-loc-submit-button"
                     bsStyle="success"
                     onClick={onConfirm}
                     disabled={submitting || !numNonAliquots || !hasParentUpdates}

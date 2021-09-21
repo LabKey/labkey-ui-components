@@ -19,12 +19,13 @@ import {
     updateRows,
 } from '../../..';
 
-import { getOriginalParentsFromSampleLineage, getSampleSelectionLineageData } from '../samples/actions';
+import { getOriginalParentsFromSampleLineage } from '../samples/actions';
 
 import { EntityChoice, EntityDataType } from './models';
 import { getEntityNoun, getUpdatedLineageRowsForBulkEdit } from './utils';
 
 import { ParentEntityLineageColumns } from './constants';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface Props {
     queryModel: QueryModel;
@@ -33,10 +34,11 @@ interface Props {
     childEntityDataType: EntityDataType;
     auditBehavior?: AuditBehaviorTypes;
     parentEntityDataTypes: EntityDataType[];
+    api?: ComponentsAPIWrapper;
 }
 
 export const EntityLineageEditModal: FC<Props> = memo(props => {
-    const { auditBehavior, queryModel, onCancel, childEntityDataType, onSuccess, parentEntityDataTypes } = props;
+    const { api, auditBehavior, queryModel, onCancel, childEntityDataType, onSuccess, parentEntityDataTypes } = props;
     const [submitting, setSubmitting] = useState(false);
     const [numAliquots, setNumAliquots] = useState<number>(undefined);
     const [nonAliquots, setNonAliquots] = useState<Record<string, any>>(undefined);
@@ -48,7 +50,9 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const [selectedParents, setSelectedParents] = useState<List<EntityChoice>>(List<EntityChoice>());
 
     useEffect(() => {
-        getSampleSelectionLineageData(
+        if (!queryModel) return;
+
+        api.getSampleSelectionLineageData(
             List.of(...queryModel.selections),
             queryModel.queryName,
             List.of('RowId', 'Name', 'LSID', 'IsAliquot').concat(ParentEntityLineageColumns).toArray()
@@ -216,3 +220,9 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
         </Modal>
     );
 });
+
+EntityLineageEditModal.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};
+
+EntityLineageEditModal.displayName = 'EntityLineageEditModal';

@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Reset error caused by editing after exiting edit mode in `ParentEntityEditPanel`
 * update `resolveErrorMessage` to detect foreign key constraint messages
 
+### version 2.77.1
+*Released*: 21 September 2021
+* EntityLineageEditMenuItem and related updates to support selenium tests for Source Samples grid
+
 ### version 2.77.0
 *Released*: 17 September 2021
 * Move Sample Aliquots panel UI and utils here from LKSM

@@ -24,6 +24,7 @@ describe('EntityLineageEditMenuItem', () => {
         expect(wrapper.find(SelectionMenuItem)).toHaveLength(0);
         expect(wrapper.find(MenuItem)).toHaveLength(1);
         expect(wrapper.find(MenuItem).text()).toBe('Edit Cells for Selected Samples in Bulk');
+        wrapper.unmount();
     });
 
     test('multiple selections', () => {
@@ -38,6 +39,7 @@ describe('EntityLineageEditMenuItem', () => {
         );
         expect(wrapper.find(SelectionMenuItem)).toHaveLength(1);
         expect(wrapper.find(SelectionMenuItem).text()).toBe('Edit Cells for Selected Samples in Bulk');
+        wrapper.unmount();
     });
 
     test('single selection', () => {
@@ -51,6 +53,7 @@ describe('EntityLineageEditMenuItem', () => {
             />
         );
         expect(wrapper.find(SelectionMenuItem)).toHaveLength(1);
-        expect(wrapper.find(SelectionMenuItem).text()).toBe('Edit Cells for Selected Sample in Bulk');
+        expect(wrapper.find(SelectionMenuItem).text()).toBe('Edit Cells for Selected Samples in Bulk');
+        wrapper.unmount();
     });
 });

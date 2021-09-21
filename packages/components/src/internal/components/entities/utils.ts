@@ -177,18 +177,20 @@ export function getUpdatedLineageRowsForBulkEdit(
         // Find the types that are included and use those for change comparison.
         // Types that are not represented in the selected parents won't be changed.
         selectedParents.forEach(selected => {
-            let originalValue = null;
-            const possibleChange = originalParents[rowId].find(p => p.type.lsid == selected.type.lsid);
-            if (possibleChange) {
-                originalValue = possibleChange.gridValues
-                    .map(gridValue => gridValue.displayValue)
-                    .sort(naturalSort)
-                    .join(',');
-            }
-            const selValue = selected.value ? selected.value.split(',').sort(naturalSort).join(',') : null;
-            if (originalValue !== selValue) {
-                updatedValues[selected.type.entityDataType.insertColumnNamePrefix + selected.type.label] = selValue;
-                haveUpdate = true;
+            if (selected.type) {
+                let originalValue = null;
+                const possibleChange = originalParents[rowId].find(p => p.type.lsid == selected.type.lsid);
+                if (possibleChange) {
+                    originalValue = possibleChange.gridValues
+                        .map(gridValue => gridValue.displayValue)
+                        .sort(naturalSort)
+                        .join(',');
+                }
+                const selValue = selected.value ? selected.value.split(',').sort(naturalSort).join(',') : null;
+                if (originalValue !== selValue) {
+                    updatedValues[selected.type.entityDataType.insertColumnNamePrefix + selected.type.label] = selValue;
+                    haveUpdate = true;
+                }
             }
         });
         if (haveUpdate) {

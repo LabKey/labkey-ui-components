@@ -171,7 +171,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                             </p>
                         </div>
                         {numAliquots > 0 && !submitting && (
-                            <Alert bsStyle="info">
+                            <Alert bsStyle="info" className="has-aliquots-alert">
                                 {' '}
                                 {Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections.
                                 Lineage for aliquots cannot be changed.

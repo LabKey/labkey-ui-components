@@ -100,7 +100,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 createNotification(
                     `Successfully updated ${lcParentNounPlural} for ${rows.length} ${capitalizeFirstChar(
                         getEntityNoun(childEntityDataType, rows.length)
-                    )}`
+                    )}.`
                 );
             } catch (e) {
                 setSubmitting(false);
@@ -206,7 +206,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 )}
 
                 <Button
-                    bsClass="btn btn-success"
+                    bsStyle="success"
                     onClick={onConfirm}
                     disabled={submitting || !numNonAliquots || !hasParentUpdates}
                 >

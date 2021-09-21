@@ -6,7 +6,6 @@ import {
     EntityDeleteModal,
     getSampleAliquotsQueryConfig,
     GridPanel,
-    InjectedQueryModels,
     LoadingSpinner,
     ManageDropdownButton,
     QueryModel,
@@ -15,9 +14,11 @@ import {
     SchemaQuery,
     SelectionMenuItem,
     User,
-    withQueryModels,
 } from "../../../index";
 
+// These need to be direct imports from files to avoid circular dependencies in index.ts
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import {getOmittedSampleTypeColumns} from "./utils";
 
 interface Props {
     sampleLsid: string
@@ -26,6 +27,7 @@ interface Props {
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
     rootLsid?: string // if sample is an aliquot, use the aliquot's root to find subaliquots
     storageButton?: React.FC<{user: User, queryModel: QueryModel, afterStorageUpdate: () => void}>;
+    inventoryCols?: string[];
 }
 
 interface State {
@@ -42,11 +44,9 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
     }
 
     componentDidMount() {
-        const { sampleLsid, schemaQuery, actions, user, rootLsid } = this.props;
+        const { sampleLsid, schemaQuery, actions, user, rootLsid, inventoryCols } = this.props;
 
-        // ToDo?
-        // const queryConfig = getSampleAliquotsQueryConfig(schemaQuery.getQuery(), sampleLsid, user, true, rootLsid);
-        const queryConfig = getSampleAliquotsQueryConfig(schemaQuery.getQuery(), sampleLsid);
+        const queryConfig = getSampleAliquotsQueryConfig(schemaQuery.getQuery(), sampleLsid, true, rootLsid, getOmittedSampleTypeColumns(user, inventoryCols));
         // don't need to load the data here because that is done by default in the GridPanel.
         actions.addModel(queryConfig, false);
     }

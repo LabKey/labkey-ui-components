@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.77.1
+*Released*: 21 September 2021
 * EntityLineageEditMenuItem and related updates to support selenium tests for Source Samples grid
 
 ### version 2.77.0

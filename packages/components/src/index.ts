@@ -298,6 +298,7 @@ import { SampleCreationTypeModal } from './internal/components/samples/SampleCre
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
+import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 import {
     ALIQUOT_FILTER_MODE,
     SampleAliquotViewSelector,
@@ -880,6 +881,7 @@ export {
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
     SampleAliquotsSummary,
+    SampleAliquotsGridPanel,
     ALIQUOT_FILTER_MODE,
     SampleAssayDetail,
     SharedSampleTypeAdminConfirmModal,

@@ -136,3 +136,8 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
         </>
     );
 });
+
+EntityDeleteModal.defaultProps = {
+    auditBehavior: AuditBehaviorTypes.DETAILED,
+    maxSelected: 10000
+}

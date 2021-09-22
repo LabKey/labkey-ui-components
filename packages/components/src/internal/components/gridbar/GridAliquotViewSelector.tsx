@@ -29,14 +29,14 @@ interface Props {
 }
 
 interface State {
-    initAliquotModeSynced: boolean
+    initAliquotModeSynced: boolean;
 }
 
 const IS_ALIQUOT_COL = 'IsAliquot';
 
 export class GridAliquotViewSelector extends Component<Props, State> {
     state: Readonly<State> = {
-        initAliquotModeSynced: false
+        initAliquotModeSynced: false,
     };
 
     componentDidMount(): void {
@@ -53,11 +53,10 @@ export class GridAliquotViewSelector extends Component<Props, State> {
         // if bindURL = true, rely on url param to set aliquot filter and ignore the initAliquotMode prop
         if (!initAliquotModeSynced && initAliquotMode && !queryModel.bindURL && !queryModel?.isLoading) {
             const currentMode = this.getAliquotFilterMode();
-            if (initAliquotMode != currentMode)
-                this.updateAliquotFilter(initAliquotMode);
+            if (initAliquotMode != currentMode) this.updateAliquotFilter(initAliquotMode);
             this.setState(() => ({ initAliquotModeSynced: true }));
         }
-    }
+    };
 
     updateAliquotFilter = (newMode: ALIQUOT_FILTER_MODE) => {
         const { queryGridModel, updateFilter } = this.props;

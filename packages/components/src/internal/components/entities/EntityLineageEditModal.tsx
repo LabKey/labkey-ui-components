@@ -52,7 +52,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     useEffect(() => {
         if (!queryModel) return;
 
-        api.getSampleSelectionLineageData(
+        api.samples.getSampleSelectionLineageData(
             List.of(...queryModel.selections),
             queryModel.queryName,
             List.of('RowId', 'Name', 'LSID', 'IsAliquot').concat(ParentEntityLineageColumns).toArray()

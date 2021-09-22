@@ -1,25 +1,19 @@
-import { List } from 'immutable';
-import { ISelectRowsResult } from './query/api';
-
-import { getSampleSelectionLineageData } from './components/samples/actions';
+import { SamplesAPIWrapper, SamplesServerAPIWrapper, getSamplesTestAPIWrapper } from './components/samples/APIWrapper';
 
 export interface ComponentsAPIWrapper {
-    getSampleSelectionLineageData: (
-        selection: List<any>,
-        sampleType: string,
-        columns?: string[]
-    ) => Promise<ISelectRowsResult>;
+    // TODO add more wrappers for other functional areas of this package
+    samples: SamplesAPIWrapper;
 }
 
-export class ServerAPIWrapper implements ComponentsAPIWrapper {
-    getSampleSelectionLineageData = getSampleSelectionLineageData; // TODO see if this implementation should just move here
+export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
+    return {
+        samples: new SamplesServerAPIWrapper(),
+    };
 }
-
-export const getDefaultAPIWrapper = (): ComponentsAPIWrapper => new ServerAPIWrapper();
 
 export function getTestAPIWrapper(overrides: Partial<ComponentsAPIWrapper> = {}): ComponentsAPIWrapper {
     return {
-        getSampleSelectionLineageData: jest.fn(),
+        samples: getSamplesTestAPIWrapper(overrides.samples),
         ...overrides,
     };
 }

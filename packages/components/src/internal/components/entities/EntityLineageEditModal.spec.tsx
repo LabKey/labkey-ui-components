@@ -64,7 +64,7 @@ const DEFAULT_PROPS = {
     childEntityDataType: SampleTypeDataType,
     parentEntityDataTypes: [SampleTypeDataType, DataClassDataType],
     api: getTestAPIWrapper({
-        getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
+        samples: { getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS) },
     }),
 };
 
@@ -98,7 +98,7 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 api={getTestAPIWrapper({
-                    getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS),
+                    samples: { getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS) },
                 })}
             />
         );
@@ -116,7 +116,7 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 api={getTestAPIWrapper({
-                    getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_ALL_ALIQUOTS),
+                    samples: { getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_ALL_ALIQUOTS) },
                 })}
             />
         );

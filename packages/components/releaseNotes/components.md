@@ -3,7 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Initial API wrapper for actions to allow for jest test overrides
+* Initial API wrapper for actions to allow for jest test overrides, currently only a single action in the "samples" area
+* Jest test for EntityLineageEditModal which use the test API wrapper and overrides
 
 ### version 2.77.2
 *Released*: 21 September 2021

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.77.1-fb-sampletypesaliquotspage-1.1",
+  "version": "2.77.2-fb-sampletypesaliquotspage-1.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -13,7 +13,8 @@
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
     "prepublishOnly": "yarn build",
-    "test": "cross-env NODE_ENV=test jest --maxWorkers=6",
+    "test": "cross-env NODE_ENV=test jest --maxWorkers=6 --silent",
+    "test-ci": "cross-env NODE_ENV=test jest --ci --runInBand --silent",
     "watch:build": "watch 'yarn build' ./src",
     "watch": "npm run watch:build",
     "lint": "eslint",

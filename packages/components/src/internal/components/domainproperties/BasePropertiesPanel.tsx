@@ -44,7 +44,7 @@ export class BasePropertiesPanel extends React.PureComponent<Props, any> {
         updateDomainPanelClassList(this.props.useTheme, undefined, this.props.headerId);
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<any>, snapshot?: any): void {
+    componentDidUpdate(prevProps: Props): void {
         updateDomainPanelClassList(prevProps.useTheme, undefined, this.props.headerId);
     }
 
@@ -80,7 +80,7 @@ export class BasePropertiesPanel extends React.PureComponent<Props, any> {
                         id={headerId}
                         title={title}
                         titlePrefix={titlePrefix}
-                        togglePanel={(evt: any) => this.toggleLocalPanel(evt)}
+                        togglePanel={this.toggleLocalPanel}
                         collapsed={collapsed}
                         collapsible={collapsible}
                         controlledCollapse={controlledCollapse}
@@ -92,10 +92,7 @@ export class BasePropertiesPanel extends React.PureComponent<Props, any> {
                     <Panel.Body collapsible={collapsible || controlledCollapse}>{children}</Panel.Body>
                 </Panel>
                 {!isValid && (
-                    <div
-                        onClick={(evt: any) => this.toggleLocalPanel(evt)}
-                        className={getDomainAlertClasses(collapsed, true, useTheme)}
-                    >
+                    <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true, useTheme)}>
                         <Alert bsStyle="danger">{PROPERTIES_PANEL_ERROR_MSG}</Alert>
                     </div>
                 )}

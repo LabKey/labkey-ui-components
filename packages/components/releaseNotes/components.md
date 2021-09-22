@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.77.3
+*Released*: 22 September 2021
+* Issue 43923: LKSM: Unable to go back to page 1 for Source/Samples grid
+  * Allow GridAliquotViewSelector to update queryModel's aliquot filter
+
 ### version 2.77.2
 *Released*: 21 September 2021
 * Address intermittent Jest test failures

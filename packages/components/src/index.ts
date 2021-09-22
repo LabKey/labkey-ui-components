@@ -253,6 +253,7 @@ import {
     useUsersWithPermissions,
 } from './internal/components/forms/actions';
 import { FormStep, FormTabs, withFormSteps } from './internal/components/forms/FormStep';
+import { GridAliquotViewSelector } from './internal/components/gridbar/GridAliquotViewSelector';
 import { SchemaListing } from './internal/components/listing/SchemaListing';
 import { QueriesListing } from './internal/components/listing/QueriesListing';
 import { QueriesListingPage } from './internal/components/listing/pages/QueriesListingPage';
@@ -879,6 +880,7 @@ export {
     SamplesSelectionProvider,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
+    GridAliquotViewSelector,
     SampleAliquotsSummary,
     ALIQUOT_FILTER_MODE,
     SampleAssayDetail,

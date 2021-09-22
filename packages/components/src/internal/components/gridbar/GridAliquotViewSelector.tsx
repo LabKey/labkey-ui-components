@@ -50,7 +50,8 @@ export class GridAliquotViewSelector extends Component<Props, State> {
     syncInitMode = () => {
         const { initAliquotMode, queryModel } = this.props;
         const { initAliquotModeSynced } = this.state;
-        if (!initAliquotModeSynced && initAliquotMode && !queryModel?.isLoading) {
+        // if bindURL = true, rely on url param to set aliquot filter and ignore the initAliquotMode prop
+        if (!initAliquotModeSynced && initAliquotMode && !queryModel.bindURL && !queryModel?.isLoading) {
             const currentMode = this.getAliquotFilterMode();
             if (initAliquotMode != currentMode)
                 this.updateAliquotFilter(initAliquotMode);

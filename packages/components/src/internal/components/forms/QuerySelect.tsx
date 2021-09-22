@@ -17,7 +17,7 @@ import React, { FC, PureComponent, ReactNode } from 'react';
 import { fromJS, List, Map } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
-import { SchemaQuery } from '../../..';
+import { resolveErrorMessage, SchemaQuery } from '../../..';
 
 import { DELIMITER, SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
@@ -142,7 +142,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
 
 interface State {
     defaultOptions: boolean | SelectInputOption[];
-    error: any;
+    error: string;
     isLoading: boolean;
     loadOnFocusLock: boolean;
     model: QuerySelectModel;
@@ -159,7 +159,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         showLoading: true,
     };
 
-    private _mounted: boolean;
     private querySelectTimer: number;
 
     constructor(props: QuerySelectOwnProps) {
@@ -168,7 +167,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
     }
 
     componentDidMount(): void {
-        this._mounted = true;
         this.initModel();
     }
 
@@ -185,7 +183,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             const model = await initSelect(this.props);
             this.setState({ model });
         } catch (error) {
-            this.setState({ error });
+            this.setState({ error: resolveErrorMessage(error) ?? 'Failed to initialize.' });
         }
     };
 
@@ -201,7 +199,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
     };
 
     componentWillUnmount(): void {
-        this._mounted = false;
         clearTimeout(this.querySelectTimer);
     }
 
@@ -217,18 +214,14 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             this.setState({ loadOnFocusLock: true });
         }
 
-        return new Promise((resolve): void => {
-            const { model } = this.state;
-
-            this.querySelectTimer = window.setTimeout(() => {
+        return new Promise((resolve, reject): void => {
+            this.querySelectTimer = window.setTimeout(async () => {
                 this.querySelectTimer = undefined;
-                model.search(input).then(data => {
+
+                try {
                     const { model } = this.state;
 
-                    // prevent stale state updates of ReactSelect
-                    if (this._mounted !== true) {
-                        return;
-                    }
+                    const data = await model.search(input);
 
                     const models = fromJS(data.models[data.key]);
 
@@ -237,7 +230,12 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                     this.setState(() => ({
                         model: model.saveSearchResults(models),
                     }));
-                });
+                } catch (error) {
+                    const errorMsg = resolveErrorMessage(error) ?? 'Failed to retrieve search results.';
+                    console.error(errorMsg, error);
+                    reject(errorMsg);
+                    this.setState({ error: errorMsg });
+                }
             }, 250);
         });
     };
@@ -265,10 +263,14 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             // Set and forget "loadOnFocusLock" state so "loadOnFocus" only occurs on the initial focus.
             this.setState({ loadOnFocusLock: true, isLoading: true });
 
-            const defaultOptions = await this.loadOptions('');
+            try {
+                const defaultOptions = await this.loadOptions('');
 
-            // ReactSelect respects "isLoading" with a value of {undefined} differently from a value of {false}.
-            this.setState({ defaultOptions, isLoading: undefined });
+                // ReactSelect respects "isLoading" with a value of {undefined} differently from a value of {false}.
+                this.setState({ defaultOptions, isLoading: undefined });
+            } catch (e) {
+                /* ignore -- error already logged/configured in loadOptions() */
+            }
         }
     };
 
@@ -306,7 +308,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                 label,
                 multiple,
                 name: this.props.name || this.props.componentId + '-error',
-                placeholder: 'Error: ' + error.message,
+                placeholder: `Error: ${error}`,
                 required,
                 type: 'text',
             };

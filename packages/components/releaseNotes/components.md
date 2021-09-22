@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Initial API wrapper for actions to allow for jest test overrides
 
+### version 2.77.2
+*Released*: 21 September 2021
+* Address intermittent Jest test failures
+
 ### version 2.77.1
 *Released*: 21 September 2021
 * EntityLineageEditMenuItem and related updates to support selenium tests for Source Samples grid

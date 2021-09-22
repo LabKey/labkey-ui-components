@@ -108,4 +108,10 @@ export class DataClassModel implements DataClassModelConfig {
             sampleSet: this.sampleSet,
         };
     }
+
+    mutate(props: Partial<DataClassModel>): DataClassModel {
+        return produce<DataClassModel>(this, draft => {
+            Object.assign(draft, props);
+        });
+    }
 }

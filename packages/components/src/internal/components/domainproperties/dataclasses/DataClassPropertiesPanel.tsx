@@ -1,6 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { Draft, produce } from 'immer';
 
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 import { QuerySelect, SCHEMAS } from '../../../..';
@@ -9,7 +8,6 @@ import { ENTITY_FORM_ID_PREFIX } from '../entities/constants';
 import { getFormNameFromId } from '../entities/actions';
 
 import { HelpTopicURL } from '../HelpTopicURL';
-import { initQueryGridState } from '../../../global';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse,
@@ -25,9 +23,9 @@ const FORM_IDS = {
     SAMPLE_TYPE_ID: ENTITY_FORM_ID_PREFIX + 'sampleSet',
 };
 
-interface OwnProps {
+interface OwnProps extends BasePropertiesPanelProps {
     model: DataClassModel;
-    onChange: (model: DataClassModel) => any;
+    onChange: (model: DataClassModel) => void;
     appPropertiesOnly?: boolean;
     headerText?: string;
     helpTopic?: string;
@@ -37,17 +35,14 @@ interface OwnProps {
     nounPlural?: string;
 }
 
-type Props = OwnProps & BasePropertiesPanelProps;
+type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
 
 interface State {
     isValid: boolean;
 }
 
 // Note: exporting this class for jest test case
-export class DataClassPropertiesPanelImpl extends PureComponent<
-    Props & InjectedDomainPropertiesPanelCollapseProps,
-    State
-> {
+export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
     static defaultProps = {
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
@@ -57,25 +52,13 @@ export class DataClassPropertiesPanelImpl extends PureComponent<
         appPropertiesOnly: false,
     };
 
-    constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
-        super(props);
-        initQueryGridState(); // needed for QuerySelect usage
-
-        this.state = {
-            isValid: true,
-        };
-
-        this.state = produce({ isValid: true }, () => {});
-    }
+    state: Readonly<State> = { isValid: true };
 
     updateValidStatus = (newModel?: DataClassModel): void => {
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
-        const isValid = updatedModel && updatedModel.hasValidProperties;
         this.setState(
-            produce((draft: Draft<State>) => {
-                draft.isValid = isValid;
-            }),
+            () => ({ isValid: !!updatedModel?.hasValidProperties }),
             () => {
                 // Issue 39918: only consider the model changed if there is a newModel param
                 if (newModel) {
@@ -92,11 +75,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<
     };
 
     onChange = (id: string, value: any): void => {
-        const { model } = this.props;
-        const newModel = produce(model, (draft: Draft<DataClassModel>) => {
-            draft[getFormNameFromId(id)] = value;
-        });
-        this.updateValidStatus(newModel);
+        this.updateValidStatus(this.props.model.mutate({ [getFormNameFromId(id)]: value }));
     };
 
     renderSampleTypeSelect(): ReactNode {
@@ -194,4 +173,4 @@ export class DataClassPropertiesPanelImpl extends PureComponent<
     }
 }
 
-export const DataClassPropertiesPanel = withDomainPropertiesPanelCollapse<Props>(DataClassPropertiesPanelImpl);
+export const DataClassPropertiesPanel = withDomainPropertiesPanelCollapse<OwnProps>(DataClassPropertiesPanelImpl);

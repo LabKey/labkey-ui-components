@@ -26,7 +26,7 @@ interface Props {
     user: User
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
     rootLsid?: string // if sample is an aliquot, use the aliquot's root to find subaliquots
-    storageButton?: React.FC<{user: User, queryModel: QueryModel, afterStorageUpdate: () => void}>;
+    storageButton?: any; // TODO
     inventoryCols?: string[];
 }
 

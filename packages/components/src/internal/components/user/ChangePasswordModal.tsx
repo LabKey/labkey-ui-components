@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 
-import { User, LabelHelpTip, Alert } from '../../..';
+import { User, LabelHelpTip, Alert, resolveErrorMessage } from '../../..';
 
 import { ChangePasswordModel } from './models';
 import { changePassword, getPasswordRuleInfo } from './actions';
 
 interface Props {
     user: User;
-    onSuccess: () => any;
-    onHide: () => any;
+    onSuccess: () => void;
+    onHide: () => void;
 }
 
 interface State {
@@ -33,13 +33,17 @@ export class ChangePasswordModal extends React.Component<Props, State> {
         };
     }
 
-    componentDidMount() {
-        getPasswordRuleInfo().then(response => {
-            this.setState(() => ({ passwordRule: response.summary }));
-        });
+    componentDidMount(): void {
+        getPasswordRuleInfo()
+            .then(response => {
+                this.setState(() => ({ passwordRule: response.summary }));
+            })
+            .catch(response => {
+                this.setState({ error: resolveErrorMessage(response) });
+            });
     }
 
-    onChange = evt => {
+    onChange = (evt): void => {
         const name = evt.target.id;
         const value = evt.target.value;
 
@@ -48,20 +52,17 @@ export class ChangePasswordModal extends React.Component<Props, State> {
         }));
     };
 
-    submitChangePassword = () => {
-        this.setState(() => ({ submitting: true }));
+    submitChangePassword = (): void => {
+        this.setState({ submitting: true });
 
         changePassword(this.state.model)
-            .then(result => {
+            .then(() => {
                 this.props.onHide();
                 this.props.onSuccess();
-                this.setState(() => ({ submitting: false }));
+                this.setState({ submitting: false });
             })
             .catch(response => {
-                this.setState(() => ({
-                    submitting: false,
-                    error: response.exception,
-                }));
+                this.setState({ error: resolveErrorMessage(response), submitting: false });
             });
     };
 

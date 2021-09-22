@@ -35,7 +35,11 @@ export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> =
     useEffect(() => {
         if (valueIsPath) {
             if (fieldValue) {
-                fetchPathModel(fieldValue).then(setPath);
+                fetchPathModel(fieldValue)
+                    .then(setPath)
+                    .catch(err => {
+                        console.error('Failed to fetch path model', err);
+                    });
             } else {
                 setPath(undefined);
             }
@@ -44,9 +48,17 @@ export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> =
 
     useEffect(() => {
         if (!valueIsPath && fieldValue) {
-            fetchConceptForCode(fieldValue).then(setConcept);
+            fetchConceptForCode(fieldValue)
+                .then(setConcept)
+                .catch(err => {
+                    console.error('Failed to fetch concept for code', err);
+                });
         } else if (path?.code) {
-            fetchConceptForCode(path.code).then(setConcept);
+            fetchConceptForCode(path.code)
+                .then(setConcept)
+                .catch(err => {
+                    console.error('Failed to fetch concept for code', err);
+                });
         } else {
             setConcept(undefined);
         }

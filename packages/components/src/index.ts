@@ -299,6 +299,7 @@ import { SamplesSelectionProvider } from './internal/components/samples/SamplesS
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
+import { getOmittedSampleTypeColumns } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
     SampleAliquotViewSelector,
@@ -893,6 +894,7 @@ export {
     getFindSamplesByIdData,
     getSampleAssayQueryConfigs,
     getSampleAliquotsQueryConfig,
+    getOmittedSampleTypeColumns,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

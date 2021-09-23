@@ -1,5 +1,4 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 
 import {
     App,
@@ -12,28 +11,22 @@ import {
 } from '../../../index';
 import { mountWithServerContext } from '../../testHelpers';
 
-// IN PROGRESS
 describe('<SampleAliquotsGridPanel/>', () => {
     const SAMPLE_TYPE_NAME = 'SampleTypeName';
-    let model = new QueryModel({ schemaQuery: SchemaQuery.create('samples', SAMPLE_TYPE_NAME) });
+    const DEFAULT_CONTEXT = { user: App.TEST_USER_EDITOR };
+
     const queryInfo = QueryInfo.create({ schemaName: 'samples', name: SAMPLE_TYPE_NAME, queryLabel: SAMPLE_TYPE_NAME });
+    let model = new QueryModel({ schemaQuery: SchemaQuery.create('samples', SAMPLE_TYPE_NAME) });
     model = model.mutate({
         queryInfo,
-        rows: {
-            '0': {
-                RowId: { value: 0 },
-                Data: { value: 100 },
-            },
-        },
-        orderedRows: ['0'],
         queryInfoLoadingState: LoadingState.LOADED,
         rowsLoadingState: LoadingState.LOADED,
         chartsLoadingState: LoadingState.LOADED,
     });
 
     const DEFAULT_PROPS = {
-        sampleLsid: 'urn:lsid:labkey.com:Sample.87.NewestSampleType:seven',
-        schemaQuery: SchemaQuery.create('samples', 'name'),
+        sampleLsid: 'lsidValue',
+        schemaQuery: SchemaQuery.create('samples', SAMPLE_TYPE_NAME),
         user: App.TEST_USER_READER,
         onSampleChangeInvalidate: jest.fn(),
         queryModels: { modelid: model },
@@ -43,11 +36,17 @@ describe('<SampleAliquotsGridPanel/>', () => {
             addModel: jest.fn(),
         },
     };
-    const DEFAULT_CONTEXT = { user: App.TEST_USER_READER };
 
-    // todo
     test('with storageButton node', () => {
-        const wrapper = shallow(<SampleAliquotsGridPanel {...DEFAULT_PROPS} />);
+        const DummyButton = () => {
+            return <div className="dummyButton"> foo </div>;
+        };
+
+        const wrapper = mountWithServerContext(
+            <SampleAliquotsGridPanel storageButton={DummyButton} {...DEFAULT_PROPS} />,
+            DEFAULT_CONTEXT
+        );
+        expect(wrapper.find(DummyButton).exists()).toEqual(true);
         wrapper.unmount();
     });
 
@@ -60,17 +59,17 @@ describe('<SampleAliquotsGridPanel/>', () => {
         wrapper.unmount();
     });
 
-    // can't do it :(
-    test('show confirm delete', () => {
-        const wrapper = mountWithServerContext(<SampleAliquotsGridPanel {...DEFAULT_PROPS} />, DEFAULT_CONTEXT);
-        wrapper.setState({ showConfirmDelete: true });
-        wrapper.update();
-        wrapper.instance().forceUpdate();
-
-        wrapper.instance().setState({ showConfirmDelete: true }, () => {
-            wrapper.instance().forceUpdate();
-            console.log(wrapper.debug());
-        });
-        wrapper.unmount();
-    });
+    // Temp comment: :(
+    // test('show confirm delete', () => {
+    //     const wrapper = mountWithServerContext(<SampleAliquotsGridPanel {...DEFAULT_PROPS} />, DEFAULT_CONTEXT);
+    //     wrapper.setState({ showConfirmDelete: true });
+    //     wrapper.update();
+    //     wrapper.instance().forceUpdate();
+    //
+    //     wrapper.instance().setState({ showConfirmDelete: true }, () => {
+    //         wrapper.instance().forceUpdate();
+    //         console.log(wrapper.debug());
+    //     });
+    //     wrapper.unmount();
+    // });
 });

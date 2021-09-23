@@ -27,7 +27,7 @@ interface Props {
     user: User;
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
     rootLsid?: string; // if sample is an aliquot, use the aliquot's root to find subaliquots
-    storageButton?: any; // TODO
+    storageButton?: any;
     inventoryCols?: string[];
 }
 

@@ -21,11 +21,12 @@ import {
 
 import { getOriginalParentsFromSampleLineage } from '../samples/actions';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { EntityChoice, EntityDataType } from './models';
 import { getEntityNoun, getUpdatedLineageRowsForBulkEdit } from './utils';
 
 import { ParentEntityLineageColumns } from './constants';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface Props {
     queryModel: QueryModel;
@@ -52,11 +53,12 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     useEffect(() => {
         if (!queryModel) return;
 
-        api.samples.getSampleSelectionLineageData(
-            List.of(...queryModel.selections),
-            queryModel.queryName,
-            List.of('RowId', 'Name', 'LSID', 'IsAliquot').concat(ParentEntityLineageColumns).toArray()
-        )
+        api.samples
+            .getSampleSelectionLineageData(
+                List.of(...queryModel.selections),
+                queryModel.queryName,
+                List.of('RowId', 'Name', 'LSID', 'IsAliquot').concat(ParentEntityLineageColumns).toArray()
+            )
             .then(async response => {
                 const { key, models } = response;
                 const nonAliquots = {};

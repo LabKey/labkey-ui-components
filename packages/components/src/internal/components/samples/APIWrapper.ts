@@ -1,5 +1,7 @@
 import { List } from 'immutable';
+
 import { ISelectRowsResult } from '../../query/api';
+
 import { getSampleSelectionLineageData } from './actions';
 
 export interface SamplesAPIWrapper {

@@ -6,12 +6,15 @@ import { mount, ReactWrapper } from 'enzyme';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
+import { getTestAPIWrapper } from '../../APIWrapper';
+
+import { waitForLifecycle } from '../../testHelpers';
+
+import { Progress } from '../base/Progress';
+
 import { EntityLineageEditModal } from './EntityLineageEditModal';
 import { DataClassDataType, SampleTypeDataType } from './constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
-import { getTestAPIWrapper } from '../../APIWrapper';
-import { waitForLifecycle } from '../../testHelpers';
-import { Progress } from '../base/Progress';
 
 const SQ = SchemaQuery.create('schema', 'query');
 const MODEL = makeTestQueryModel(SQ).mutate({
@@ -106,7 +109,9 @@ describe('EntityLineageEditModal', () => {
         validate(wrapper, true, true);
         expect(wrapper.find(Modal.Title).text()).toBe('Edit samples for 1 Selected Sample');
         expect(wrapper.find(Button).last().text()).toBe('Update samples');
-        expect(wrapper.find('.has-aliquots-alert').hostNodes().text()).toBe(' 2 aliquots were among the selections. Lineage for aliquots cannot be changed.');
+        expect(wrapper.find('.has-aliquots-alert').hostNodes().text()).toBe(
+            ' 2 aliquots were among the selections. Lineage for aliquots cannot be changed.'
+        );
         wrapper.unmount();
     });
 

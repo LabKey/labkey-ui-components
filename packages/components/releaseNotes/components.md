@@ -8,6 +8,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Reset error caused by editing after exiting edit mode in `ParentEntityEditPanel`
 * update `resolveErrorMessage` to detect foreign key constraint messages
 
+### version 2.77.4
+*Released*: 23 September 2021
+* Initial API wrapper for actions to allow for jest test overrides, currently only a single action in the "samples" area
+* Jest test for EntityLineageEditModal which use the test API wrapper and overrides
+
+### version 2.77.3
+*Released*: 22 September 2021
+* Issue 43923: LKSM: Unable to go back to page 1 for Source/Samples grid
+  * Allow GridAliquotViewSelector to update queryModel's aliquot filter
+
 ### version 2.77.2
 *Released*: 21 September 2021
 * Address intermittent Jest test failures

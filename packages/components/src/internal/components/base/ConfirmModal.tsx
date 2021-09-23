@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Sizes } from 'react-bootstrap';
 import classNames from 'classnames';
 
 interface Props {
-    show?: boolean;
-    title?: string;
-    onConfirm?: () => void;
-    onCancel?: () => void;
-    confirmButtonText?: string;
     cancelButtonText?: string;
+    confirmButtonText?: string;
     confirmVariant?: string;
+    onCancel?: () => void;
+    onConfirm?: () => void;
+    show?: boolean;
+    size?: Sizes;
     submitting?: boolean;
+    title?: string;
 }
 
 export class ConfirmModal extends React.PureComponent<Props> {
@@ -47,12 +48,13 @@ export class ConfirmModal extends React.PureComponent<Props> {
             confirmButtonText,
             cancelButtonText,
             confirmVariant,
+            size,
             submitting,
         } = this.props;
         const cancelBtnClass = classNames({ 'pull-left': onConfirm !== undefined });
         return (
-            <Modal show={show} onHide={onCancel}>
-                <Modal.Header closeButton={onCancel !== undefined}>
+            <Modal bsSize={size} show={show} onHide={onCancel}>
+                <Modal.Header closeButton={!!onCancel}>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
 

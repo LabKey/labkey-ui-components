@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Support filterable prop for QueryColumn
+
 ### version 2.77.4
 *Released*: 23 September 2021
 * Initial API wrapper for actions to allow for jest test overrides, currently only a single action in the "samples" area

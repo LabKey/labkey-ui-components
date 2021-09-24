@@ -92,6 +92,7 @@ export class QueryColumn extends Record({
     shownInInsertView: undefined,
     shownInUpdateView: undefined,
     sortable: true,
+    filterable: true,
     // sqlType: undefined,
     type: undefined,
     userEditable: undefined,
@@ -157,6 +158,7 @@ export class QueryColumn extends Record({
     declare shownInInsertView: boolean;
     declare shownInUpdateView: boolean;
     declare sortable: boolean;
+    declare filterable: boolean;
     // declare sqlType: string;
     declare type: string;
     declare userEditable: boolean;

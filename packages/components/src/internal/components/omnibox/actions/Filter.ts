@@ -303,7 +303,10 @@ export class FilterAction implements Action {
                         .filter(c => c.name.toLowerCase().indexOf(columnName.toLowerCase()) === 0)
                         .toList();
                 }
-                columnSet = columnSet.filter(c => !c.multiValue).toList();
+                columnSet = columnSet
+                    .filter(c => !c.multiValue)
+                    .filter(c => c.filterable)
+                    .toList();
 
                 columnSet.forEach(c => {
                     actionOptions.push({

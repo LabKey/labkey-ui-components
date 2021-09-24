@@ -2,74 +2,63 @@ import React from 'react';
 
 import {
     App,
+    EntityDeleteModal,
     LoadingSpinner,
     LoadingState,
     QueryInfo,
-    QueryModel,
     SampleAliquotsGridPanel,
     SchemaQuery,
+    SCHEMAS,
 } from '../../../index';
-import { mountWithServerContext } from '../../testHelpers';
 
-describe('<SampleAliquotsGridPanel/>', () => {
-    const SAMPLE_TYPE_NAME = 'SampleTypeName';
+import { mountWithServerContext } from '../../testHelpers';
+import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+
+import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
+
+describe('SampleAliquotsGridPanel', () => {
+    const SCHEMA_QUERY = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'SampleTypeName');
     const DEFAULT_CONTEXT = { user: App.TEST_USER_EDITOR };
 
-    const queryInfo = QueryInfo.create({ schemaName: 'samples', name: SAMPLE_TYPE_NAME, queryLabel: SAMPLE_TYPE_NAME });
-    let model = new QueryModel({ schemaQuery: SchemaQuery.create('samples', SAMPLE_TYPE_NAME) });
-    model = model.mutate({
-        queryInfo,
-        queryInfoLoadingState: LoadingState.LOADED,
-        rowsLoadingState: LoadingState.LOADED,
-        chartsLoadingState: LoadingState.LOADED,
-    });
-
     const DEFAULT_PROPS = {
-        sampleLsid: 'lsidValue',
-        schemaQuery: SchemaQuery.create('samples', SAMPLE_TYPE_NAME),
-        user: App.TEST_USER_READER,
+        actions: makeTestActions(jest.fn),
         onSampleChangeInvalidate: jest.fn(),
-        queryModels: { modelid: model },
-        actions: {
-            loadCharts: jest.fn(),
-            loadModel: jest.fn(),
-            addModel: jest.fn(),
+        queryModels: {
+            model: makeTestQueryModel(SCHEMA_QUERY, new QueryInfo(), {}, [], 0, 'model'),
         },
+        sampleLsid: 'lsidValue',
+        schemaQuery: SCHEMA_QUERY,
+        user: App.TEST_USER_READER,
     };
 
     test('with storageButton node', () => {
-        const DummyButton = () => {
-            return <div className="dummyButton"> foo </div>;
-        };
+        const DummyButton = () => <div className="dummyButton"> foo </div>;
 
         const wrapper = mountWithServerContext(
-            <SampleAliquotsGridPanel storageButton={DummyButton} {...DEFAULT_PROPS} />,
+            <SampleAliquotsGridPanelImpl storageButton={DummyButton} {...DEFAULT_PROPS} />,
             DEFAULT_CONTEXT
         );
         expect(wrapper.find(DummyButton).exists()).toEqual(true);
         wrapper.unmount();
     });
 
-    test('loading spinner', () => {
-        const loadingProps = { ...DEFAULT_PROPS, queryModels: [false] };
+    test('loading', () => {
+        const props = DEFAULT_PROPS;
+        const model = props.queryModels.model.mutate({ queryInfoLoadingState: LoadingState.LOADING });
 
-        const wrapper = mountWithServerContext(<SampleAliquotsGridPanel {...loadingProps} />, DEFAULT_CONTEXT);
+        const wrapper = mountWithServerContext(
+            <SampleAliquotsGridPanelImpl {...props} queryModels={{ model }} />,
+            DEFAULT_CONTEXT
+        );
+
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
-
         wrapper.unmount();
     });
 
-    // Temp comment: :(
-    // test('show confirm delete', () => {
-    //     const wrapper = mountWithServerContext(<SampleAliquotsGridPanel {...DEFAULT_PROPS} />, DEFAULT_CONTEXT);
-    //     wrapper.setState({ showConfirmDelete: true });
-    //     wrapper.update();
-    //     wrapper.instance().forceUpdate();
-    //
-    //     wrapper.instance().setState({ showConfirmDelete: true }, () => {
-    //         wrapper.instance().forceUpdate();
-    //         console.log(wrapper.debug());
-    //     });
-    //     wrapper.unmount();
-    // });
+    test('show confirm delete', () => {
+        const wrapper = mountWithServerContext(<SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} />, DEFAULT_CONTEXT);
+        wrapper.setState({ showConfirmDelete: true });
+        expect(wrapper.find(EntityDeleteModal).exists()).toEqual(true);
+        wrapper.unmount();
+    });
 });

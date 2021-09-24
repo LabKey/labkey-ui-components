@@ -1,12 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { ComponentType, FC, PureComponent } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 
 import {
     EntityDeleteModal,
-    getSampleAliquotsQueryConfig,
     GridPanel,
-    LoadingSpinner,
     ManageDropdownButton,
     QueryModel,
     RequiresPermission,
@@ -17,18 +15,58 @@ import {
 } from '../../../index';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import {
+    InjectedQueryModels,
+    RequiresModelAndActions,
+    withQueryModels,
+} from '../../../public/QueryModel/withQueryModels';
 
 import { getOmittedSampleTypeColumns } from './utils';
+import { getSampleAliquotsQueryConfig } from './actions';
+
+interface StorageButtonsComponentProps {
+    afterStorageUpdate: () => void;
+    queryModel: QueryModel;
+    user: User;
+}
+
+type StorageButton = ComponentType<StorageButtonsComponentProps>;
+
+interface AliquotGridButtonsProps {
+    afterAction: () => void;
+    onDelete: () => void;
+    StorageButtonsComponent?: StorageButton;
+    user: User;
+}
+
+const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> = props => {
+    const { afterAction, model, onDelete, StorageButtonsComponent, user } = props;
+
+    return (
+        <div className="btn-group">
+            <RequiresPermission perms={PermissionTypes.Delete}>
+                <ManageDropdownButton id="samplealiquotlisting">
+                    <SelectionMenuItem
+                        id="sample-aliquot-delete-menu-item"
+                        text="Delete Aliquots"
+                        onClick={onDelete}
+                        queryModel={model}
+                        nounPlural="aliquots"
+                    />
+                </ManageDropdownButton>
+
+                {StorageButtonsComponent && (
+                    <StorageButtonsComponent afterStorageUpdate={afterAction} queryModel={model} user={user} />
+                )}
+            </RequiresPermission>
+        </div>
+    );
+};
 
 interface Props {
-    sampleLsid: string;
-    schemaQuery: SchemaQuery;
-    user: User;
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
-    rootLsid?: string; // if sample is an aliquot, use the aliquot's root to find subaliquots
-    storageButton?: any;
-    inventoryCols?: string[];
+    storageButton?: StorageButton;
+    user: User;
 }
 
 interface State {
@@ -36,122 +74,91 @@ interface State {
 }
 
 export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQueryModels, State> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            showConfirmDelete: false,
-        };
-    }
+    state: Readonly<State> = { showConfirmDelete: false };
 
-    componentDidMount() {
-        const { sampleLsid, schemaQuery, actions, user, rootLsid, inventoryCols } = this.props;
+    afterAction = (): void => {
+        const { actions, onSampleChangeInvalidate, queryModels } = this.props;
+        const { model } = queryModels;
 
-        const queryConfig = getSampleAliquotsQueryConfig(
-            schemaQuery.getQuery(),
-            sampleLsid,
-            true,
-            rootLsid,
-            getOmittedSampleTypeColumns(user, inventoryCols)
-        );
-        // don't need to load the data here because that is done by default in the GridPanel.
-        actions.addModel(queryConfig, false);
-    }
-
-    getQueryModel(): QueryModel {
-        return Object.values(this.props.queryModels)[0];
-    }
-
-    afterAction = () => {
-        const { actions, schemaQuery, onSampleChangeInvalidate } = this.props;
         this.resetState();
-        onSampleChangeInvalidate(schemaQuery);
-        const model = this.getQueryModel();
+        onSampleChangeInvalidate(model.schemaQuery);
         actions.loadModel(model.id, true);
     };
 
-    hideConfirm = () => {
-        this.setState(() => ({ showConfirmDelete: false }));
-    };
-
-    onDelete = () => {
+    onDelete = (): void => {
         if (this.hasSelection()) {
-            this.setState(() => ({ showConfirmDelete: true }));
+            this.setState({ showConfirmDelete: true });
         }
     };
 
-    resetState = () => {
+    resetState = (): void => {
         if (this.hasSelection()) {
-            this.setState(() => ({ showConfirmDelete: false }));
+            this.setState({ showConfirmDelete: false });
         }
     };
 
-    hasSelection() {
-        return this.getQueryModel().selections?.size > 0;
-    }
-
-    renderButtons = () => {
-        const queryModel = this.getQueryModel();
-        const Node = this.props.storageButton;
-        return (
-            <div className="btn-group">
-                <RequiresPermission perms={PermissionTypes.Delete}>
-                    <ManageDropdownButton id="samplealiquotlisting">
-                        <SelectionMenuItem
-                            id="sample-aliquot-delete-menu-item"
-                            text="Delete Aliquots"
-                            onClick={() => this.onDelete()}
-                            queryModel={queryModel}
-                            nounPlural="aliquots"
-                        />
-                    </ManageDropdownButton>
-
-                    {Node && (
-                        <Node user={this.props.user} queryModel={queryModel} afterStorageUpdate={this.afterAction} />
-                    )}
-                </RequiresPermission>
-            </div>
-        );
-    };
-
-    renderDeleteModal() {
-        const model = this.getQueryModel();
-
-        if (!this.state.showConfirmDelete) return null;
-
-        return (
-            <EntityDeleteModal
-                queryModel={model}
-                useSelected={true}
-                afterDelete={this.afterAction}
-                onCancel={this.resetState}
-                entityDataType={SampleTypeDataType}
-                verb="deleted and removed from storage"
-            />
-        );
+    hasSelection(): boolean {
+        return this.props.queryModels.model.hasSelections;
     }
 
     render() {
-        const { actions } = this.props;
-
-        const model = this.getQueryModel();
-
-        if (!model) return <LoadingSpinner />;
+        const { actions, queryModels, storageButton, user } = this.props;
+        const { model } = queryModels;
 
         return (
             <>
-                {this.state.showConfirmDelete && this.renderDeleteModal()}
                 <GridPanel
                     actions={actions}
-                    ButtonsComponent={() => this.renderButtons()}
+                    ButtonsComponent={AliquotGridButtons}
                     buttonsComponentProps={{
-                        canDelete: true,
+                        afterAction: this.afterAction,
+                        onDelete: this.onDelete,
+                        StorageButtonsComponent: storageButton,
+                        user,
                     }}
+                    loadOnMount={false}
                     model={model}
                     showViewMenu={false}
                 />
+
+                {this.state.showConfirmDelete && (
+                    <EntityDeleteModal
+                        afterDelete={this.afterAction}
+                        entityDataType={SampleTypeDataType}
+                        onCancel={this.resetState}
+                        queryModel={model}
+                        useSelected
+                        verb="deleted and removed from storage"
+                    />
+                )}
             </>
         );
     }
 }
 
-export const SampleAliquotsGridPanel = withQueryModels<Props>(SampleAliquotsGridPanelImpl);
+const SampleAliquotsGridPanelWithModel = withQueryModels<Props>(SampleAliquotsGridPanelImpl);
+
+interface SampleAliquotsGridPanelProps extends Props {
+    inventoryCols?: string[];
+    rootLsid?: string; // if sample is an aliquot, use the aliquot's root to find subaliquots
+    sampleLsid: string;
+    schemaQuery: SchemaQuery;
+}
+
+export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props => {
+    const { inventoryCols, sampleLsid, schemaQuery, rootLsid, user } = props;
+
+    const queryConfigs = {
+        model: getSampleAliquotsQueryConfig(
+            schemaQuery.getQuery(),
+            sampleLsid,
+            true,
+            rootLsid,
+            getOmittedSampleTypeColumns(user, inventoryCols)
+        ),
+    };
+
+    return <SampleAliquotsGridPanelWithModel {...props} autoLoad queryConfigs={queryConfigs} />;
+};
+
+SampleAliquotsGridPanel.displayName = 'SampleAliquotsGridPanel';

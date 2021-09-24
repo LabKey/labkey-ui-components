@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.77.#
+*Released*: ## September 2021
+* Process the user `input` in `UserSelectInput` and compare it against user displayNames to support type-ahead filtering.
+* Prevent processing of "selectedOptions" for asynchronous `SelectInput` configurations during `componentDidUpdate`.
+* Update some internal typings for `SelectInput`.
+* Add unit tests for `initOptions`.
+
 ### version 2.77.4
 *Released*: 23 September 2021
 * Initial API wrapper for actions to allow for jest test overrides, currently only a single action in the "samples" area

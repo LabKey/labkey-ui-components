@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * add `isSampleStatusEnabled` helper method in App object
 * Reset error caused by editing after exiting edit mode in `ParentEntityEditPanel`
 * update `resolveErrorMessage` to detect foreign key constraint messages
+* fix problem in `extractChanges` (used by `EditableDetailPanel`) that was using `undefined` for a value that was cleared, which doesn't get sent to the server.
 
 ### version 2.77.4
 *Released*: 23 September 2021

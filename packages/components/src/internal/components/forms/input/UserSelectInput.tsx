@@ -20,15 +20,15 @@ export const UserSelectInput: FC<UserSelectInputProps> = props => {
 
     const loadOptions = useCallback(
         async (input: string) => {
-            let options_;
-            const input_ = input?.trim().toLowerCase();
+            let options;
+            const sanitizedInput = input?.trim().toLowerCase();
 
             try {
                 const users = await getUsersWithPermissions(permissions);
-                options_ = users
+                options = users
                     .filter(v => {
-                        if (input_) {
-                            return v.displayName?.toLowerCase().indexOf(input_) > -1;
+                        if (sanitizedInput) {
+                            return v.displayName?.toLowerCase().indexOf(sanitizedInput) > -1;
                         }
 
                         return true;
@@ -42,7 +42,7 @@ export const UserSelectInput: FC<UserSelectInputProps> = props => {
                 console.error(error);
             }
 
-            return options_;
+            return options;
         },
         [notifyList, permissions, useEmail]
     );

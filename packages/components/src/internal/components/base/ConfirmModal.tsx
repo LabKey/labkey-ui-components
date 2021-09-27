@@ -18,6 +18,7 @@ import { Button, Modal, Sizes } from 'react-bootstrap';
 import classNames from 'classnames';
 
 interface Props {
+    backdrop?: string;
     cancelButtonText?: string;
     confirmButtonText?: string;
     confirmVariant?: string;
@@ -40,6 +41,7 @@ export class ConfirmModal extends React.PureComponent<Props> {
 
     render(): ReactNode {
         const {
+            backdrop,
             children,
             show,
             title,
@@ -53,7 +55,7 @@ export class ConfirmModal extends React.PureComponent<Props> {
         } = this.props;
         const cancelBtnClass = classNames({ 'pull-left': onConfirm !== undefined });
         return (
-            <Modal bsSize={size} show={show} onHide={onCancel}>
+            <Modal backdrop={backdrop} bsSize={size} show={show} onHide={onCancel}>
                 <Modal.Header closeButton={!!onCancel}>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>

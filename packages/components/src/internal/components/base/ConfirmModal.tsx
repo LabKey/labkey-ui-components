@@ -49,10 +49,7 @@ export class ConfirmModal extends React.PureComponent<Props> {
             confirmVariant,
             submitting,
         } = this.props;
-        const cancelBtnClass = classNames('btn btn-default', {
-            'pull-left': onConfirm !== undefined,
-        });
-
+        const cancelBtnClass = classNames({ 'pull-left': onConfirm !== undefined });
         return (
             <Modal show={show} onHide={onCancel}>
                 <Modal.Header closeButton={onCancel !== undefined}>
@@ -63,12 +60,12 @@ export class ConfirmModal extends React.PureComponent<Props> {
 
                 <Modal.Footer>
                     {onCancel && (
-                        <Button bsClass={cancelBtnClass} onClick={onCancel}>
+                        <Button className={cancelBtnClass} onClick={onCancel}>
                             {cancelButtonText}
                         </Button>
                     )}
                     {onConfirm && (
-                        <Button bsClass={'btn btn-' + confirmVariant} onClick={onConfirm} disabled={submitting}>
+                        <Button bsStyle={confirmVariant} onClick={onConfirm} disabled={submitting}>
                             {confirmButtonText}
                         </Button>
                     )}

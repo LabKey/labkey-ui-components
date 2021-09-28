@@ -9,6 +9,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * update `resolveErrorMessage` to detect foreign key constraint messages
 * fix problem in `extractChanges` (used by `EditableDetailPanel`) that was using `undefined` for a value that was cleared, which doesn't get sent to the server.
 
+# version 2.77.6
+*Released*: ?? September 2021
+* Generate correct classNames for ConfirmModal cancel and confirm buttons
+* Add margin-left to .required-symbol, users no longer need to add a trailing space to form labels
+
 ### version 2.77.5
 *Released*: 27 September 2021
 * Process the user `input` in `UserSelectInput` and compare it against user displayNames to support type-ahead filtering.

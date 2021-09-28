@@ -2,7 +2,7 @@ import { User } from '../base/models/User';
 import { App } from '../../../index';
 
 export function getOmittedSampleTypeColumns(user: User, omitCols = null): string[] {
-    let cols: string[] = [];
+    const cols: string[] = [];
 
     if (user.isGuest) {
         cols.push('checkedOutBy');

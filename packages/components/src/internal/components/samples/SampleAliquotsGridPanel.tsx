@@ -2,6 +2,8 @@ import React, { ComponentType, FC, PureComponent } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 
+import { List } from 'immutable';
+
 import {
     EntityDeleteModal,
     GridPanel,
@@ -23,7 +25,6 @@ import {
 
 import { getOmittedSampleTypeColumns } from './utils';
 import { getSampleAliquotsQueryConfig } from './actions';
-import { List } from 'immutable';
 
 interface StorageButtonsComponentProps {
     afterStorageUpdate: () => void;

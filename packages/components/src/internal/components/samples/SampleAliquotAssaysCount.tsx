@@ -5,6 +5,7 @@ import { InjectedAssayModel, isLoading, LoadingSpinner, SchemaQuery } from '../.
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { withAssayModels } from '../assay/withAssayModels';
+
 import { getSampleAssayQueryConfigs } from './actions';
 
 const SampleAliquotAssaysCountBodyImpl: FC<InjectedQueryModels> = memo(props => {

@@ -7,7 +7,7 @@ export function getOmittedSampleTypeColumns(user: User, omitCols = null): string
     if (user.isGuest) {
         cols.push('checkedOutBy');
     } else if (omitCols && !App.isFreezerManagementEnabled()) {
-        cols.concat(omitCols);
+        cols = cols.concat(omitCols);
     }
 
     return cols;

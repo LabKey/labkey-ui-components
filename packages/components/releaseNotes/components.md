@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.78.0
+*Released*: 28 September 2021
 * Update `EntityDeleteConfirmModalDisplay` to add message about sample status preventing deletion
 * add `isSampleStatusEnabled` helper method in App object
 * Reset error caused by editing after exiting edit mode in `ParentEntityEditPanel`
@@ -10,7 +10,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * fix problem in `extractChanges` (used by `EditableDetailPanel`) that was using `undefined` for a value that was cleared, which doesn't get sent to the server.
 
 # version 2.77.6
-*Released*: ?? September 2021
+*Released*: 28 September 2021
 * Generate correct classNames for ConfirmModal cancel and confirm buttons
 * Add margin-left to .required-symbol, users no longer need to add a trailing space to form labels
 

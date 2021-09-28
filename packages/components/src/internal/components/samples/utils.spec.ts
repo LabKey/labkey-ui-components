@@ -3,7 +3,7 @@ import { List } from 'immutable';
 import { App, getOmittedSampleTypeColumns } from '../../../index';
 import { isFreezerManagementEnabled } from '../../app/utils';
 
-// Duplicated from sampleManagement/packages/workflow/src/constants.ts
+// Duplicated from inventory/packages/freezermanager/src/constants.ts
 export const CHECKED_OUT_BY_FIELD = 'checkedOutBy';
 export const INVENTORY_COLS = [
     'LabelColor',

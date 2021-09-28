@@ -23,6 +23,7 @@ import {
 
 import { getOmittedSampleTypeColumns } from './utils';
 import { getSampleAliquotsQueryConfig } from './actions';
+import { List } from 'immutable';
 
 interface StorageButtonsComponentProps {
     afterStorageUpdate: () => void;
@@ -154,7 +155,7 @@ export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props =
             sampleLsid,
             true,
             rootLsid,
-            getOmittedSampleTypeColumns(user, inventoryCols)
+            List(getOmittedSampleTypeColumns(user, inventoryCols))
         ),
     };
 

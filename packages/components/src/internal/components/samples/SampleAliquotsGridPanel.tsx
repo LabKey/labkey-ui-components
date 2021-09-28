@@ -27,8 +27,8 @@ import { getOmittedSampleTypeColumns } from './utils';
 import { getSampleAliquotsQueryConfig } from './actions';
 
 interface StorageButtonsComponentProps {
-    afterStorageUpdate: () => void;
-    queryModel: QueryModel;
+    afterStorageUpdate?: () => void;
+    queryModel?: QueryModel;
     user: User;
 }
 

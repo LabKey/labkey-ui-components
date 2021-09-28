@@ -22,7 +22,7 @@ export const INVENTORY_COLS = [
     'StorageComment',
 ];
 
-test('getOmittedSampleTypeColumns with inventoryCols', () => {
+test('getOmittedSampleTypeColumns with inventoryCols omitted', () => {
     LABKEY.moduleContext = {};
     expect(isFreezerManagementEnabled()).toBeFalsy();
     expect(getOmittedSampleTypeColumns(App.TEST_USER_READER)).toStrictEqual(List<string>());

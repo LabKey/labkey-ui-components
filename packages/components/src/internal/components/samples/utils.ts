@@ -1,13 +1,13 @@
 import { User } from '../base/models/User';
 import { App } from '../../../index';
 
-export function getOmittedSampleTypeColumns(user: User, inventoryCols = null): string[] {
+export function getOmittedSampleTypeColumns(user: User, omitCols = null): string[] {
     let cols: string[] = [];
 
     if (user.isGuest) {
         cols.push('checkedOutBy');
-    } else if (inventoryCols && !App.isFreezerManagementEnabled()) {
-        cols.concat(inventoryCols);
+    } else if (omitCols && !App.isFreezerManagementEnabled()) {
+        cols.concat(omitCols);
     }
 
     return cols;

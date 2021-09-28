@@ -140,14 +140,14 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
 const SampleAliquotsGridPanelWithModel = withQueryModels<Props>(SampleAliquotsGridPanelImpl);
 
 interface SampleAliquotsGridPanelProps extends Props {
-    inventoryCols?: string[];
+    omitCols?: string[];
     rootLsid?: string; // if sample is an aliquot, use the aliquot's root to find subaliquots
     sampleLsid: string;
     schemaQuery: SchemaQuery;
 }
 
 export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props => {
-    const { inventoryCols, sampleLsid, schemaQuery, rootLsid, user } = props;
+    const { omitCols, sampleLsid, schemaQuery, rootLsid, user } = props;
 
     const queryConfigs = {
         model: getSampleAliquotsQueryConfig(
@@ -155,7 +155,7 @@ export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props =
             sampleLsid,
             true,
             rootLsid,
-            List(getOmittedSampleTypeColumns(user, inventoryCols))
+            List(getOmittedSampleTypeColumns(user, omitCols))
         ),
     };
 

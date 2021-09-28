@@ -50,6 +50,10 @@ export function resolveErrorMessage(error: any, noun = 'data', nounPlural?: stri
             return `There was a problem ${verb || 'creating'} your ${noun || 'data'}.  Check the existing ${
                 nounPlural || noun
             } for possible duplicates and make sure any referenced ${nounPlural || noun} are still valid.`;
+        } else if (lcMessage.indexOf('violates foreign key constraint') >= 0 ||
+                   lcMessage.indexOf('conflicted with the foreign key constraint') >= 0) {
+            return `There was a problem ${verb || 'creating'} your ${noun || 'data'}. Check the data fields to make
+            sure they contain or reference valid values.`;
         } else if (lcMessage.indexOf('bad sql grammar') >= 0 || lcMessage.indexOf(ClassCastMessage) >= 0) {
             return `There was a problem ${verb || 'creating'} your ${
                 noun || 'data'

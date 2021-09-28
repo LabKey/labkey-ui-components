@@ -15,6 +15,7 @@
  */
 import { Iterable, List, Map, Set } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
+import { ChangeEvent } from 'react';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL'; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular loading
 import { QueryInfo } from '../../public/QueryInfo';
@@ -660,3 +661,15 @@ export function findMissingValues(ordinals: number[], orderedValues: any[]): any
     }
     return missingValues;
 }
+
+// Helper that handles grabbing a files array from an HTMLInput ChangeEvent, use this to reduce boilerplate when
+// handling events for file inputs.
+export const handleFileInputChange = (
+    callback: (files: File[]) => void
+): ((evt: ChangeEvent<HTMLInputElement>) => void) => {
+    return (evt: ChangeEvent<HTMLInputElement>): void => {
+        if (evt.currentTarget.files.length > 0) {
+            callback(Array.from(evt.currentTarget.files));
+        }
+    };
+};

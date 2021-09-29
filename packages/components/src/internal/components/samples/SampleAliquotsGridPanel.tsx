@@ -14,7 +14,7 @@ import {
     SchemaQuery,
     SelectionMenuItem,
     User,
-} from '../../../index';
+} from '../../..';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import {

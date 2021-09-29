@@ -1,7 +1,7 @@
 import { User } from '../base/models/User';
-import { App } from '../../../index';
+import { App } from '../../..';
 
-export function getOmittedSampleTypeColumns(user: User, omitCols = null): string[] {
+export function getOmittedSampleTypeColumns(user: User, omitCols?: string[]): string[] {
     let cols: string[] = [];
 
     if (user.isGuest) {

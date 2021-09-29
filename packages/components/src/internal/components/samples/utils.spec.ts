@@ -1,6 +1,4 @@
-import { List } from 'immutable';
-
-import { App, getOmittedSampleTypeColumns } from '../../../index';
+import { App, getOmittedSampleTypeColumns } from '../../..';
 import { isFreezerManagementEnabled } from '../../app/utils';
 
 // Duplicated from inventory/packages/freezermanager/src/constants.ts

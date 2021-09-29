@@ -9,7 +9,7 @@ import {
     SampleAliquotsGridPanel,
     SchemaQuery,
     SCHEMAS,
-} from '../../../index';
+} from '../../..';
 
 import { mountWithServerContext } from '../../testHelpers';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';

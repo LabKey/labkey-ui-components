@@ -120,7 +120,7 @@ import {
     initNotificationsState,
 } from './internal/components/notifications/global';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
-import { formatDate, formatDateTime, getDateFormat } from './internal/util/Date';
+import { formatDate, formatDateTime, getDateFormat, parseDate } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
@@ -1075,6 +1075,7 @@ export {
     getDisambiguatedSelectInputOptions,
     formatDate,
     formatDateTime,
+    parseDate,
     blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,

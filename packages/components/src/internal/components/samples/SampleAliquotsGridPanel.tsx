@@ -12,7 +12,8 @@ import {
     QueryModel,
     RequiresPermission,
     SampleTypeDataType,
-    SchemaQuery, SCHEMAS,
+    SchemaQuery, 
+    SCHEMAS,
     SelectionMenuItem,
     User,
 } from '../../..';

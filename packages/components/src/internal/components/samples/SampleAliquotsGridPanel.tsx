@@ -6,12 +6,13 @@ import { List } from 'immutable';
 
 import {
     EntityDeleteModal,
+    getStateModelId,
     GridPanel,
     ManageDropdownButton,
     QueryModel,
     RequiresPermission,
     SampleTypeDataType,
-    SchemaQuery,
+    SchemaQuery, SCHEMAS,
     SelectionMenuItem,
     User,
 } from '../../..';
@@ -78,9 +79,13 @@ interface State {
 export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQueryModels, State> {
     state: Readonly<State> = { showConfirmDelete: false };
 
+    getQueryModel = (): QueryModel => {
+        return Object.values(this.props.queryModels)[0];
+    }
+
     afterAction = (): void => {
-        const { actions, onSampleChangeInvalidate, queryModels } = this.props;
-        const { model } = queryModels;
+        const { actions, onSampleChangeInvalidate } = this.props;
+        const model = this.getQueryModel();
 
         this.resetState();
         onSampleChangeInvalidate(model.schemaQuery);
@@ -100,12 +105,12 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
     };
 
     hasSelection(): boolean {
-        return this.props.queryModels.model.hasSelections;
+        return this.getQueryModel().hasSelections;
     }
 
     render() {
-        const { actions, queryModels, storageButton, user } = this.props;
-        const { model } = queryModels;
+        const { actions, storageButton, user } = this.props;
+        const queryModel = this.getQueryModel();
 
         return (
             <>
@@ -118,8 +123,7 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
                         StorageButtonsComponent: storageButton,
                         user,
                     }}
-                    loadOnMount={false}
-                    model={model}
+                    model={queryModel}
                     showViewMenu={false}
                 />
 
@@ -128,7 +132,7 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
                         afterDelete={this.afterAction}
                         entityDataType={SampleTypeDataType}
                         onCancel={this.resetState}
-                        queryModel={model}
+                        queryModel={queryModel}
                         useSelected
                         verb="deleted and removed from storage"
                     />
@@ -149,9 +153,10 @@ interface SampleAliquotsGridPanelProps extends Props {
 
 export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props => {
     const { omitCols, sampleLsid, schemaQuery, rootLsid, user } = props;
+    const id = getStateModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery()));
 
     const queryConfigs = {
-        model: getSampleAliquotsQueryConfig(
+        [id]: getSampleAliquotsQueryConfig(
             schemaQuery.getQuery(),
             sampleLsid,
             true,
@@ -160,7 +165,7 @@ export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props =
         ),
     };
 
-    return <SampleAliquotsGridPanelWithModel {...props} autoLoad queryConfigs={queryConfigs} />;
+    return <SampleAliquotsGridPanelWithModel {...props} queryConfigs={queryConfigs} />;
 };
 
 SampleAliquotsGridPanel.displayName = 'SampleAliquotsGridPanel';

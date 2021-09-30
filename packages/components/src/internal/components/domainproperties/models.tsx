@@ -71,6 +71,7 @@ import {
     reorderSummaryColumns,
 } from './propertiesUtil';
 import { INT_LIST, VAR_LIST } from './list/constants';
+import { hasPremiumModule } from '../../app/utils';
 
 export interface IFieldChange {
     id: string;
@@ -1219,8 +1220,8 @@ export function isPropertyTypeAllowed(
 
     if (STUDY_PROPERTY_TYPES.includes(type)) return showStudyPropertyTypes;
 
-    // We are excluding the field types below for the App
-    return ![LOOKUP_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
+    // We are excluding the field types below for the App for non-premium
+    return hasPremiumModule() || ![LOOKUP_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
 }
 
 export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {

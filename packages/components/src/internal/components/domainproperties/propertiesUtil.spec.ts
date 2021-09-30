@@ -12,6 +12,10 @@ import {
     reorderSummaryColumns,
 } from './propertiesUtil';
 
+beforeEach(() => {
+    LABKEY.moduleContext.api = { moduleNames: [] };
+});
+
 describe('domain properties utils', () => {
     test('generateBulkDeleteWarning', () => {
         const deletabilityInfo = { deletableSelectedFields: [1, 2, 3], undeletableFields: [0] };
@@ -118,6 +122,21 @@ describe('domain properties utils', () => {
         expect(result.hasOwnProperty('conceptSubtree')).toBeFalsy();
         expect(result.hasOwnProperty('conceptImportColumn')).toBeFalsy();
         expect(result.hasOwnProperty('conceptLabelColumn')).toBeFalsy();
+        expect(result.hasOwnProperty('principalConceptCode')).toBeFalsy();
+        expect(result.hasOwnProperty('conditionalFormats')).toBeFalsy();
+    });
+
+    test('removeNonAppProperties with premium', () => {
+        LABKEY.moduleContext.api = { moduleNames: ['premium'] };
+        const result = removeNonAppProperties(DomainField.serialize(DomainField.create({})));
+        expect(result.hasOwnProperty('conceptURI')).toBeTruthy();
+        expect(result.hasOwnProperty('lookupContainer')).toBeTruthy();
+        expect(result.hasOwnProperty('lookupSchema')).toBeTruthy();
+        expect(result.hasOwnProperty('lookupQuery')).toBeTruthy();
+        expect(result.hasOwnProperty('sourceOntology')).toBeTruthy();
+        expect(result.hasOwnProperty('conceptSubtree')).toBeTruthy();
+        expect(result.hasOwnProperty('conceptImportColumn')).toBeTruthy();
+        expect(result.hasOwnProperty('conceptLabelColumn')).toBeTruthy();
         expect(result.hasOwnProperty('principalConceptCode')).toBeFalsy();
         expect(result.hasOwnProperty('conditionalFormats')).toBeFalsy();
     });

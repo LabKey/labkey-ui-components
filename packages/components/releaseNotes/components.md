@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.79.0
+*Released*: 30 September 2021
 * Move SampleAliquotsGridPanel here from LKSM
 
 ### version 2.78.0

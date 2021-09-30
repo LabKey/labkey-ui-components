@@ -12,7 +12,7 @@ import {
     QueryModel,
     RequiresPermission,
     SampleTypeDataType,
-    SchemaQuery, 
+    SchemaQuery,
     SCHEMAS,
     SelectionMenuItem,
     User,
@@ -82,7 +82,7 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
 
     getQueryModel = (): QueryModel => {
         return Object.values(this.props.queryModels)[0];
-    }
+    };
 
     afterAction = (): void => {
         const { actions, onSampleChangeInvalidate } = this.props;
@@ -154,7 +154,10 @@ interface SampleAliquotsGridPanelProps extends Props {
 
 export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props => {
     const { omitCols, sampleLsid, schemaQuery, rootLsid, user } = props;
-    const id = getStateModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery()));
+    const id = getStateModelId(
+        'sample-aliquots',
+        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery())
+    );
 
     const queryConfigs = {
         [id]: getSampleAliquotsQueryConfig(

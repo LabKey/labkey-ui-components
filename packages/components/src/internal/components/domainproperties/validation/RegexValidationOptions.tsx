@@ -18,6 +18,7 @@ import {
 import { PropertyValidator } from '../models';
 import { PropDescType } from '../PropDescType';
 import { LabelHelpTip } from '../../../..';
+import { JavaDocsLink } from '../../../util/helpLinks';
 
 interface RegexValidationOptionsProps {
     validator: any;
@@ -31,7 +32,7 @@ interface RegexValidationOptionsProps {
     onDelete: (index: number) => any;
 }
 
-export class RegexValidationOptions extends React.PureComponent<RegexValidationOptionsProps, any> {
+export class RegexValidationOptions extends React.PureComponent<RegexValidationOptionsProps> {
     labelWidth = 4;
     fieldWidth = 8;
 
@@ -46,7 +47,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         tooltipTitle?: string,
         tooltipBody?: ReactNode,
         required?: boolean
-    ) {
+    ): ReactNode {
         const { validatorIndex, domainIndex } = this.props;
 
         return (
@@ -78,7 +79,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         );
     }
 
-    renderFailValidationCheckbox(value: boolean) {
+    renderFailValidationCheckbox(value: boolean): ReactNode {
         const { validatorIndex, domainIndex } = this.props;
 
         return (
@@ -103,7 +104,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         );
     }
 
-    renderName(value: string) {
+    renderName(value: string): ReactNode {
         const { validatorIndex, domainIndex } = this.props;
 
         return (
@@ -124,7 +125,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         );
     }
 
-    renderRemoveValidator() {
+    renderRemoveValidator(): ReactNode {
         const { validatorIndex, domainIndex } = this.props;
 
         return (
@@ -143,13 +144,12 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         );
     }
 
-    onDelete = () => {
+    onDelete = (): void => {
         const { onDelete, validatorIndex } = this.props;
-
         onDelete(validatorIndex);
     };
 
-    onChange = evt => {
+    onChange = (evt): void => {
         const { onChange, validator, validatorIndex } = this.props;
 
         const value = evt.target.value;
@@ -166,7 +166,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         onChange(newValidator, validatorIndex);
     };
 
-    expandValidator = evt => {
+    expandValidator = (): void => {
         const { onExpand, validatorIndex } = this.props;
 
         if (onExpand) {
@@ -174,7 +174,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         }
     };
 
-    renderCollapsed = () => {
+    renderCollapsed = (): ReactNode => {
         const { validator } = this.props;
 
         return (
@@ -189,7 +189,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         );
     };
 
-    render() {
+    render(): ReactNode {
         const { validatorIndex, expanded, validator } = this.props;
 
         return (
@@ -201,7 +201,11 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                             DOMAIN_VALIDATOR_EXPRESSION,
                             validator.expression,
                             'Regular Expression',
-                            "The regular expression that this field's value will be evaluated against. All regular expressions must be compatible with Java regular expressions as implemented in the Pattern class.",
+                            <p>
+                                The regular expression that this field's value will be evaluated against. All regular
+                                expressions must be compatible with Java regular expressions as implemented in the{' '}
+                                <JavaDocsLink urlSuffix="java/util/regex/Pattern.html">Pattern</JavaDocsLink> class.
+                            </p>,
                             true
                         )}
                         {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validator.description)}

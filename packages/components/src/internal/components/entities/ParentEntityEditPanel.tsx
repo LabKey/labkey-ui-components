@@ -189,6 +189,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
             state => ({
                 currentParents: state.originalParents,
                 editing: false,
+                error: undefined,
                 originalValueLoaded: List<boolean>(),
             }),
             () => {
@@ -217,6 +218,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                     () => ({
                         submitting: false,
                         editing: false,
+                        error: undefined,
                     }),
                     () => {
                         onUpdate?.();

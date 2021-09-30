@@ -15,7 +15,7 @@
  */
 import React, { PureComponent } from 'react';
 
-import { ConfirmModal } from '../../..';
+import { App, ConfirmModal, SCHEMAS } from '../../..';
 
 import { helpLinkNode } from '../../util/helpLinks';
 
@@ -47,6 +47,9 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
 
         if (!confirmationData) return undefined;
 
+        // TODO when experimental flag for sample status is removed, move this text into the SampleTypeDataType constant
+        const _dependencyText = App.isSampleStatusEnabled() && entityDataType.instanceSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA ? dependencyText + ' or status that prevents deletion' : dependencyText;
+
         const numCanDelete = confirmationData.canDelete.length;
         const numCannotDelete = confirmationData.cannotDelete.length;
         const canDeleteNoun = numCanDelete === 1 ? nounSingular : nounPlural;
@@ -67,11 +70,11 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
         } else if (numCanDelete === 0) {
             if (totalNum === 1) {
                 text =
-                    'The ' + totalNoun + " you've selected cannot be deleted because it has " + dependencyText + '.  ';
+                    'The ' + totalNoun + " you've selected cannot be deleted because it has " + _dependencyText + '.  ';
             } else {
                 text = numCannotDelete === 2 ? 'Neither of' : 'None of';
                 text += ' the ' + totalNum + ' ' + totalNoun + " you've selected can be deleted";
-                text += ' because they have ' + dependencyText + '.';
+                text += ' because they have ' + _dependencyText + '.';
             }
         } else {
             text =
@@ -85,7 +88,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
                 verb +
                 '. ';
             text += numCannotDelete + ' ' + cannotDeleteNoun + ' cannot be deleted because ';
-            text += (numCannotDelete === 1 ? ' it has ' : ' they have ') + dependencyText + '.';
+            text += (numCannotDelete === 1 ? ' it has ' : ' they have ') + _dependencyText + '.';
         }
         const message = (
             <span>

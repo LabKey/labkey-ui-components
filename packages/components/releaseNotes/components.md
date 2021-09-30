@@ -5,6 +5,30 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * Support filterable prop for QueryColumn
 
+### version 2.79.0
+*Released*: 30 September 2021
+* Move SampleAliquotsGridPanel here from LKSM
+
+### version 2.78.0
+*Released*: 28 September 2021
+* Update `EntityDeleteConfirmModalDisplay` to add message about sample status preventing deletion
+* add `isSampleStatusEnabled` helper method in App object
+* Reset error caused by editing after exiting edit mode in `ParentEntityEditPanel`
+* update `resolveErrorMessage` to detect foreign key constraint messages
+* fix problem in `extractChanges` (used by `EditableDetailPanel`) that was using `undefined` for a value that was cleared, which doesn't get sent to the server.
+
+# version 2.77.6
+*Released*: 28 September 2021
+* Generate correct classNames for ConfirmModal cancel and confirm buttons
+* Add margin-left to .required-symbol, users no longer need to add a trailing space to form labels
+
+### version 2.77.5
+*Released*: 27 September 2021
+* Process the user `input` in `UserSelectInput` and compare it against user displayNames to support type-ahead filtering.
+* Prevent processing of "selectedOptions" for asynchronous `SelectInput` configurations during `componentDidUpdate`.
+* Update some internal typings for `SelectInput`.
+* Add unit tests for `initOptions`.
+
 ### version 2.77.4
 *Released*: 23 September 2021
 * Initial API wrapper for actions to allow for jest test overrides, currently only a single action in the "samples" area

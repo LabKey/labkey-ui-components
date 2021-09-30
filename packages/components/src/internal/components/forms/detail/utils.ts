@@ -75,7 +75,7 @@ export function extractChanges(
                 }
             }
 
-            changedValues[field] = newValue;
+            changedValues[field] = newValue === undefined ? null : newValue;
         }
     });
 

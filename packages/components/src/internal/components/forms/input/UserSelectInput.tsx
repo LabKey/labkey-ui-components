@@ -18,23 +18,34 @@ interface UserSelectInputProps extends Omit<SelectInputProps, 'delimiter' | 'loa
 export const UserSelectInput: FC<UserSelectInputProps> = props => {
     const { notifyList, permissions, useEmail, ...selectInputProps } = props;
 
-    const loadOptions = useCallback(async () => {
-        let options_;
+    const loadOptions = useCallback(
+        async (input: string) => {
+            let options;
+            const sanitizedInput = input?.trim().toLowerCase();
 
-        try {
-            const users = await getUsersWithPermissions(permissions);
-            options_ = users
-                .map(v => ({
-                    label: v.displayName,
-                    value: notifyList ? v.displayName : useEmail ? v.email : v.userId,
-                }))
-                .toArray();
-        } catch (error) {
-            console.error(error);
-        }
+            try {
+                const users = await getUsersWithPermissions(permissions);
+                options = users
+                    .filter(v => {
+                        if (sanitizedInput) {
+                            return v.displayName?.toLowerCase().indexOf(sanitizedInput) > -1;
+                        }
 
-        return options_;
-    }, [notifyList, permissions, useEmail]);
+                        return true;
+                    })
+                    .map(v => ({
+                        label: v.displayName,
+                        value: notifyList ? v.displayName : useEmail ? v.email : v.userId,
+                    }))
+                    .toArray();
+            } catch (error) {
+                console.error(error);
+            }
+
+            return options;
+        },
+        [notifyList, permissions, useEmail]
+    );
 
     return <SelectInput {...selectInputProps} delimiter={notifyList ? ';' : ','} loadOptions={loadOptions} />;
 };

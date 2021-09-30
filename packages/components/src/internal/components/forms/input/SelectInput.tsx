@@ -98,7 +98,7 @@ export type FilterOption = ((option: SelectInputOption, rawInput: string) => boo
 
 export const DELIMITER = ',';
 
-function initOptionFromPrimitive(value: string | number, props: SelectInputProps): any {
+function initOptionFromPrimitive(value: string | number, props: SelectInputProps): SelectInputOption {
     const { labelKey = 'label', options, valueKey = 'value' } = props;
     return options?.find(o => o[valueKey] === value) ?? { [labelKey]: value, [valueKey]: value };
 }
@@ -106,7 +106,7 @@ function initOptionFromPrimitive(value: string | number, props: SelectInputProps
 // Used to initialize the selected options in `state` when `autoValue` is enabled.
 // This will accept a primitive value (e.g. 5) and resolve it to an option (e.g. { label: 'Awesome', value: 5 })
 // if the option is available. Supports mapping single or multiple values.
-export function initOptions(props: SelectInputProps): any {
+export function initOptions(props: SelectInputProps): SelectInputOption | SelectInputOption[] {
     const { value } = props;
     let options;
 
@@ -195,8 +195,8 @@ interface State {
     asyncKey: number;
     initialLoad: boolean;
     isDisabled: boolean;
-    originalOptions: SelectInputOption[];
-    selectedOptions: SelectInputOption[];
+    originalOptions: SelectInputOption | SelectInputOption[];
+    selectedOptions: SelectInputOption | SelectInputOption[];
 }
 
 // Implementation exported only for tests
@@ -240,7 +240,9 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     };
 
     componentDidUpdate(prevProps: SelectInputProps): void {
-        if (!this.CHANGE_LOCK && this.props.autoValue && prevProps.value !== this.props.value) {
+        if (!this.CHANGE_LOCK && this.props.autoValue && !this.isAsync() && prevProps.value !== this.props.value) {
+            // If "autoValue" is enabled and the value has changed for a non-async configuration, then we need
+            // to reinitialize "selectedOptions" from the latest props. The async case is handled in this.loadOptions().
             const selectedOptions = initOptions(this.props);
             this.setState({ originalOptions: selectedOptions, selectedOptions });
         }

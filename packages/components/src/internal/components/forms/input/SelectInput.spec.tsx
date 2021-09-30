@@ -20,7 +20,7 @@ import { FieldLabel } from '../FieldLabel';
 
 import { waitForLifecycle } from '../../../testHelpers';
 
-import { SelectInputImpl, SelectInputProps } from './SelectInput';
+import { initOptions, SelectInputImpl, SelectInputProps } from './SelectInput';
 import { blurSelectInputInput, setSelectInputText } from './SelectInputTestUtils';
 
 describe('SelectInput', () => {
@@ -98,5 +98,50 @@ describe('SelectInput', () => {
 
         component.setProps({ showLabel: false });
         validateFieldLabel(component, false);
+    });
+
+    describe('initOptions', () => {
+        test('empty values', () => {
+            expect(initOptions({ value: undefined })).toBeUndefined();
+            expect(initOptions({ value: null })).toBeUndefined();
+            expect(initOptions({ value: '' })).toBeUndefined();
+            expect(initOptions({ value: [] })).toHaveLength(0);
+        });
+        test('primitive values', () => {
+            expect(initOptions({ value: 5 })).toEqual({ label: 5, value: 5 });
+            expect(initOptions({ value: 'word' })).toEqual({ label: 'word', value: 'word' });
+            expect(initOptions({ value: [5, 'word'] })).toEqual([
+                { label: 5, value: 5 },
+                { label: 'word', value: 'word' },
+            ]);
+
+            // labelKey / valueKey
+            expect(initOptions({ labelKey: 'display', value: 5, valueKey: 'key' })).toEqual({ display: 5, key: 5 });
+            expect(initOptions({ labelKey: 'display', value: 'word', valueKey: 'key' })).toEqual({
+                display: 'word',
+                key: 'word',
+            });
+        });
+        test('options', () => {
+            const option1 = { label: 'Five', value: 5 };
+            const option2 = { label: 'Word', value: 'word' };
+            const options = [option1, option2];
+
+            expect(initOptions({ options, value: 5 })).toEqual(option1);
+            expect(initOptions({ options, value: 'word' })).toEqual(option2);
+            expect(initOptions({ options, value: 99 })).toEqual({ label: 99, value: 99 });
+
+            // labelKey / valueKey
+            const option3 = { name: 'Jackie Robinson', number: 42 };
+            const option4 = { name: 'Ken Griffey Jr', number: 24 };
+            const customOptions = [option3, option4];
+            expect(initOptions({ labelKey: 'name', options: customOptions, value: 42, valueKey: 'number' })).toEqual(
+                option3
+            );
+            expect(initOptions({ labelKey: 'name', options: customOptions, value: 99, valueKey: 'number' })).toEqual({
+                name: 99,
+                number: 99,
+            });
+        });
     });
 });

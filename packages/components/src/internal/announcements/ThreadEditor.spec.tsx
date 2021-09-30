@@ -38,7 +38,7 @@ describe('ThreadEditor', () => {
         );
 
         // displays user avatar
-        expect(wrapper.find('.author-avatar').props().title).toEqual(COMMENTER.displayName);
+        expect(wrapper.find('.user-avatar').props().title).toEqual(COMMENTER.displayName);
 
         expect(wrapper.find(COMMENT_TEXTAREA).exists()).toEqual(true);
         wrapper.find(COMMENT_TEXTAREA).simulate('change', { target: { name: 'body', value: expectedBody } });

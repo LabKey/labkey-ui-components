@@ -12,7 +12,7 @@ interface UserAvatarProps {
 }
 
 export const UserAvatar: FC<UserAvatarProps> = memo(({ avatar, displayName, id }) => (
-    <img key={id} className="author-avatar" src={avatar} alt={displayName} title={displayName} />
+    <img key={id} className="user-avatar" src={avatar} alt={displayName} title={displayName} />
 ));
 
 interface AuthorAvatarsProps {
@@ -21,7 +21,7 @@ interface AuthorAvatarsProps {
 
 export const UserAvatars: FC<AuthorAvatarsProps> = memo(({ users }) => {
     return (
-        <span className="author-avatars">
+        <span className="user-avatars">
             {users.map(author => (
                 <UserAvatar key={author.id} {...author} />
             ))}

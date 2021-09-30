@@ -60,16 +60,25 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
               <DomainFieldLabel
                 helpTipBody={
                   <React.Fragment>
-                    To control how a date or time value is displayed, provide a string format compatible with the Java class SimpleDateFormat.
-                    <br />
-                    <br />
-                    Learn more about using 
-                    <HelpLink
-                      topic="dateFormats#date"
-                    >
-                      Date and Time formats
-                    </HelpLink>
-                     in LabKey.
+                    <p>
+                      To control how a date or time value is displayed, provide a string format compatible with the Java
+                       
+                      <Memo
+                        urlSuffix="java/text/SimpleDateFormat.html"
+                      >
+                        SimpleDateFormat
+                      </Memo>
+                       class.
+                    </p>
+                    <p>
+                      Learn more about using 
+                      <HelpLink
+                        topic="dateFormats#date"
+                      >
+                        Date and Time formats
+                      </HelpLink>
+                       in LabKey.
+                    </p>
                   </React.Fragment>
                 }
                 label="Format for Dates"

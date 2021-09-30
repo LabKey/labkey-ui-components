@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 43981: Add JavaDoc links to help text in field editor
+* Issue 43907: Lookup field type with target table not in select options renders as disabled
 
 ### version 2.78.0
 *Released*: 28 September 2021

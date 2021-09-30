@@ -1,6 +1,7 @@
 import React, { FC, memo, useCallback } from 'react';
 import { Modal } from 'react-bootstrap';
-import { Alert } from '@labkey/components';
+
+import { Alert } from '../..';
 
 import { Attachment, getAttachmentURL } from './model';
 
@@ -27,7 +28,11 @@ const ThreadAttachment: FC<ThreadAttachmentProps> = memo(({ attachment, onRemove
 
             {url === undefined && <span>{attachment.name}</span>}
 
-            {url !== undefined && (<a href={url} target="__blank">{attachment.name}</a>)}
+            {url !== undefined && (
+                <a href={url} target="__blank">
+                    {attachment.name}
+                </a>
+            )}
         </div>
     );
 });
@@ -40,9 +45,7 @@ interface ThreadAttachmentsProps {
 
 export const ThreadAttachments: FC<ThreadAttachmentsProps> = memo(({ attachments, error, onRemove }) => (
     <div className="thread-editor-attachments">
-        <div className="thread-editor-attachments__error help-block">
-            {error}
-        </div>
+        <div className="thread-editor-attachments__error help-block">{error}</div>
 
         <div className="thread-editor-attachments__body">
             <div className="thread-editor-attachments__list">
@@ -62,32 +65,33 @@ interface RemoveAttachmentModalProps {
     remove: () => void;
 }
 
-export const RemoveAttachmentModal: FC<RemoveAttachmentModalProps> = memo(({ cancel, error, isRemoving, name, remove }) => {
-    return (
-        <Modal show onHide={cancel} className="archive-notebook-modal">
-            <Modal.Header>
-                <Modal.Title>Delete Attachment?</Modal.Title>
-            </Modal.Header>
+export const RemoveAttachmentModal: FC<RemoveAttachmentModalProps> = memo(
+    ({ cancel, error, isRemoving, name, remove }) => {
+        return (
+            <Modal show onHide={cancel} className="archive-notebook-modal">
+                <Modal.Header>
+                    <Modal.Title>Delete Attachment?</Modal.Title>
+                </Modal.Header>
 
-            <Modal.Body>
-                <Alert>{error}</Alert>
+                <Modal.Body>
+                    <Alert>{error}</Alert>
+                    Are you sure you want to delete the attachment "{name}"?
+                </Modal.Body>
 
-                Are you sure you want to delete the attachment "{name}"?
-            </Modal.Body>
+                <Modal.Footer>
+                    <div className="pull-left">
+                        <button className="btn btn-default" disabled={isRemoving === true} onClick={cancel}>
+                            Cancel
+                        </button>
+                    </div>
 
-            <Modal.Footer>
-                <div className="pull-left">
-                    <button className="btn btn-default" disabled={isRemoving === true} onClick={cancel}>
-                        Cancel
-                    </button>
-                </div>
-
-                <div className="pull-right">
-                    <button className="btn btn-danger" disabled={isRemoving} onClick={remove}>
-                        Yes, delete attachment
-                    </button>
-                </div>
-            </Modal.Footer>
-        </Modal>
-    );
-});
+                    <div className="pull-right">
+                        <button className="btn btn-danger" disabled={isRemoving} onClick={remove}>
+                            Yes, delete attachment
+                        </button>
+                    </div>
+                </Modal.Footer>
+            </Modal>
+        );
+    }
+);

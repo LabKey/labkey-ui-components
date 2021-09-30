@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add optional `keySuffix` property to `UserSelectInput` to facilitate manual clearing of (actually rerendering of) the component from a containing component
 
+### version 2.79.0
+*Released*: 30 September 2021
+* Move SampleAliquotsGridPanel here from LKSM
+
 ### version 2.78.0
 *Released*: 28 September 2021
 * Update `EntityDeleteConfirmModalDisplay` to add message about sample status preventing deletion

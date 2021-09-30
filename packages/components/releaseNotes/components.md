@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.80.1
+*Released*: 4 October 2021
+* Expose additional `Modal` props via `ConfirmModal`.
+* Export `parseDate`.
+
 ### version 2.80.0
 *Released*: 4 October 2021
 * Add announcements components (Discussions, Thread, ThreadBlock, and more)

@@ -13,10 +13,11 @@ interface UserSelectInputProps extends Omit<SelectInputProps, 'delimiter' | 'loa
     notifyList?: boolean;
     permissions?: string | string[];
     useEmail?: boolean;
+    keySuffix?: number;
 }
 
 export const UserSelectInput: FC<UserSelectInputProps> = props => {
-    const { notifyList, permissions, useEmail, ...selectInputProps } = props;
+    const { keySuffix, notifyList, permissions, useEmail, ...selectInputProps } = props;
 
     const loadOptions = useCallback(
         async (input: string) => {
@@ -47,7 +48,7 @@ export const UserSelectInput: FC<UserSelectInputProps> = props => {
         [notifyList, permissions, useEmail]
     );
 
-    return <SelectInput {...selectInputProps} delimiter={notifyList ? ';' : ','} loadOptions={loadOptions} />;
+    return <SelectInput key={selectInputProps.name + (keySuffix ? ('-' + keySuffix) : '')} {...selectInputProps} delimiter={notifyList ? ';' : ','} loadOptions={loadOptions} />;
 };
 
 UserSelectInput.defaultProps = {

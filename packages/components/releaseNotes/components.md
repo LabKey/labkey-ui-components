@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add optional `keySuffix` property to `UserSelectInput` to facilitate manual clearing of (actually rerendering of) the component from a containing component
+
 ### version 2.78.0
 *Released*: 28 September 2021
 * Update `EntityDeleteConfirmModalDisplay` to add message about sample status preventing deletion

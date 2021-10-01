@@ -57,6 +57,7 @@ export class QueryColumn extends Record({
     fieldKey: undefined,
     fieldKeyArray: undefined,
     // fieldKeyPath: undefined,
+    filterable: true,
     format: undefined,
     // friendlyType: undefined,
     hidden: undefined,
@@ -92,7 +93,6 @@ export class QueryColumn extends Record({
     shownInInsertView: undefined,
     shownInUpdateView: undefined,
     sortable: true,
-    filterable: true,
     // sqlType: undefined,
     type: undefined,
     userEditable: undefined,
@@ -123,6 +123,7 @@ export class QueryColumn extends Record({
     declare fieldKey: string;
     declare fieldKeyArray: string[];
     // declare fieldKeyPath: string;
+    declare filterable: boolean;
     declare format: string;
     // declare friendlyType: string;
     declare hidden: boolean;
@@ -158,7 +159,6 @@ export class QueryColumn extends Record({
     declare shownInInsertView: boolean;
     declare shownInUpdateView: boolean;
     declare sortable: boolean;
-    declare filterable: boolean;
     // declare sqlType: string;
     declare type: string;
     declare userEditable: boolean;

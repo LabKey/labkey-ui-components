@@ -279,8 +279,6 @@ import {
     getDeleteSharedSampleTypeUrl,
     getEditSharedSampleTypeUrl,
     getFindSamplesByIdData,
-    getSampleAssayQueryConfigs,
-    getSampleAliquotsQueryConfig,
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
@@ -299,6 +297,8 @@ import { SampleCreationTypeModal } from './internal/components/samples/SampleCre
 import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
+import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
+import { getOmittedSampleTypeColumns } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
     SampleAliquotViewSelector,
@@ -886,6 +886,7 @@ export {
     SampleAliquotsSummary,
     ALIQUOT_FILTER_MODE,
     SampleAssayDetail,
+    SampleAliquotsGridPanel,
     SharedSampleTypeAdminConfirmModal,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
@@ -893,8 +894,7 @@ export {
     ALIQUOT_CREATION,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     getFindSamplesByIdData,
-    getSampleAssayQueryConfigs,
-    getSampleAliquotsQueryConfig,
+    getOmittedSampleTypeColumns,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

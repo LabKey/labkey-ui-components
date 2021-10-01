@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.79.1
+*Released*: 1 October 2021
+* Support filterable prop for QueryColumn
+
 ### version 2.79.0
 *Released*: 30 September 2021
 * Move SampleAliquotsGridPanel here from LKSM

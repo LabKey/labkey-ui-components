@@ -253,11 +253,7 @@ export class QueryColumn extends Record({
     }
 
     get isUpdateColumn(): boolean {
-        return (
-            this.removeFromViews !== true &&
-            this.isEditable() &&
-            this.fieldKeyArray.length === 1
-        );
+        return this.removeFromViews !== true && this.isEditable() && this.fieldKeyArray.length === 1;
     }
 
     get isUniqueIdColumn(): boolean {

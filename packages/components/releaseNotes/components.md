@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 43981: Add JavaDoc links to help text in field editor
 * Issue 43907: Lookup field type with target table not in select options renders as disabled
 * Issue 43934: Add lookup, flag, and ontology lookup data type in field editor for LKSM premium users
+* Issue 44011: DatePickerInput fix to account for the shortcut formats (i.e. "Date", "DateTime", and "Time")
 * Fix for getUpdatedDataFromGrid() helper to account for empty array values
 
 ### version 2.79.1

@@ -21,7 +21,7 @@ import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 import { QueryColumn } from '../../../..';
-import { datePlaceholder, isDateTimeCol, parseDate } from '../../../util/Date';
+import { datePlaceholder, getDateFormat, getDateTimeFormat, getTimeFormat, isDateTimeCol, parseDate } from '../../../util/Date';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -116,7 +116,12 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
 
     getDateFormat(): string {
         const { dateFormat, queryColumn } = this.props;
-        const rawFormat = dateFormat || queryColumn.format || datePlaceholder(queryColumn);
+        let rawFormat = dateFormat || queryColumn.format || datePlaceholder(queryColumn);
+
+        // Issue 44011: account for the shortcut values (i.e. "Date", "DateTime", and "Time")
+        if (rawFormat === 'Date') rawFormat = getDateFormat();
+        if (rawFormat === 'DateTime') rawFormat = getDateTimeFormat();
+        if (rawFormat === 'Time') rawFormat = getTimeFormat();
 
         // Moment.js and react datepicker date format is different
         // https://github.com/Hacker0x01/react-datepicker/issues/1609
@@ -143,6 +148,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             isClearable,
             wrapperClassName,
         } = this.props;
+        console.log('this.getDateFormat()', this.getDateFormat());
 
         const { isDisabled, selectedDate } = this.state;
         const labelClass = 'control-label col-sm-3 text-left col-xs-12';

@@ -57,6 +57,7 @@ export class QueryColumn extends Record({
     fieldKey: undefined,
     fieldKeyArray: undefined,
     // fieldKeyPath: undefined,
+    filterable: true,
     format: undefined,
     // friendlyType: undefined,
     hidden: undefined,
@@ -122,6 +123,7 @@ export class QueryColumn extends Record({
     declare fieldKey: string;
     declare fieldKeyArray: string[];
     // declare fieldKeyPath: string;
+    declare filterable: boolean;
     declare format: string;
     // declare friendlyType: string;
     declare hidden: boolean;
@@ -251,11 +253,7 @@ export class QueryColumn extends Record({
     }
 
     get isUpdateColumn(): boolean {
-        return (
-            this.removeFromViews !== true &&
-            this.isEditable() &&
-            this.fieldKeyArray.length === 1
-        );
+        return this.removeFromViews !== true && this.isEditable() && this.fieldKeyArray.length === 1;
     }
 
     get isUniqueIdColumn(): boolean {

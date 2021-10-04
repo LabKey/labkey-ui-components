@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 43934: Add lookup, flag, and ontology lookup data type in field editor for LKSM premium users
 * Fix for getUpdatedDataFromGrid() helper to account for empty array values
 
+### version 2.79.1
+*Released*: 1 October 2021
+* Support filterable prop for QueryColumn
+
 ### version 2.79.0
 *Released*: 30 September 2021
 * Move SampleAliquotsGridPanel here from LKSM

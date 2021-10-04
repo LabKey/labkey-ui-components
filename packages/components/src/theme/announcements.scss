@@ -1,0 +1,184 @@
+$editor-padding-horizontal: 15px;
+
+.editor-toolbar__button {
+    border: none;
+    background: none;
+    height: 24px;
+    width: 24px;
+    padding: 3px 5px;
+}
+.editor-toolbar__button[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+.editor-toolbar .dropdown-menu a:hover,
+.editor-toolbar__section a:hover,
+.editor-toolbar__button:hover,
+.editor-toolbar__button.active {
+    color: rgb(0, 102, 204);
+}
+.editor-toolbar__section,
+.editor-toolbar__menus {
+    display: inline-block;
+}
+.editor-toolbar__section {
+    margin-right: 15px;
+}
+.editor-toolbar {
+    border-bottom: 1px solid #E5E5E5;
+    padding: 8px $editor-padding-horizontal;
+}
+.editor-toolbar .dropdown-menu h1,
+.editor-toolbar .dropdown-menu h2,
+.editor-toolbar .dropdown-menu h3 {
+    margin: .2em 0;
+}
+.insert-menu {
+    .dropdown-toggle {
+        color: #444444;
+        font-weight: 500;
+        text-decoration: none;
+    }
+    .dropdown-toggle:hover {
+        color: rgb(0, 102, 204);
+    }
+}
+.insert-menu__attachment {
+    a {
+        padding: 0;
+    }
+
+    .insert-menu__attachment_input {
+        cursor: pointer;
+        font-weight: normal;
+        margin: 0;
+        width: 100%;
+
+        input[type=file] {
+            display: none;
+        }
+    }
+}
+.clickable-text {
+    cursor: pointer;
+    color: #2980B9;
+
+    &:hover {
+        text-decoration: underline;
+        color: darken(#2980B9, 15);
+    }
+}
+.discussions-container__title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+}
+.thread-editor {
+    display: flex;
+}
+.thread-editor__body {
+    flex: 1;
+}
+.thread-editor__create-btn {
+    text-transform: capitalize;
+}
+.thread-editor__cancel-btn {
+    margin-left: 15px;
+}
+.thread-responses-container {
+    margin-left: 42px;
+    margin-bottom: 15px;
+}
+.thread-block-header__date {
+    color: #777;
+}
+.thread-block-header__menu {
+    color: #555555;
+    cursor: pointer;
+    margin-left: 15px;
+    vertical-align: middle;
+
+    a.dropdown-toggle {
+        color: inherit;
+        padding: 0 10px;
+    }
+
+    .caret {
+        display: none;
+    }
+
+    &:hover {
+        color: #333333;
+    }
+}
+.thread-block {
+    margin: 15px 0;
+}
+.thread-block-body {
+    .clickable-text {
+        margin-right: 15px;
+    }
+}
+.thread-block-body__content {
+    margin: 10px 0;
+}
+.thread-block__toggle-reply-msg {
+    color: #777;
+
+    .fa-check-circle {
+        color: #5CB85C;
+    }
+}
+.thread-editor-preview {
+    padding: 6px 12px;
+    min-height: 69px;
+    margin-bottom: 15px;
+    border: 1px solid #E5E5E5;
+    border-top: none;
+}
+.thread-editor-toolbar {
+    border: 1px solid #E5E5E5;
+}
+.thread-editor__input {
+    border-top: none;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    box-shadow: none;
+    min-height: 100px;
+}
+.thread-editor__attachment-input {
+    cursor: pointer;
+    margin-left: 15px;
+
+    input[type=file] {
+        display: none;
+    }
+}
+.thread-editor-attachments {
+    margin: 15px 0;
+}
+.thread-editor-attachments__body {
+    display: flex;
+}
+.thread-editor-attachments__list {
+    display: flex;
+    flex-wrap: wrap;
+}
+.thread-attachment {
+    padding: 6px;
+}
+.thread-attachment-icon {
+    font-size: 20px;
+    margin-right: 8px;
+}
+.thread-attachment-icon--remove {
+    color: $brand-danger;
+    cursor: pointer;
+
+    &:hover {
+        color: darken($brand-danger, 15%);
+    }
+}
+.thread-attachment-icon--file {
+    color: darkgrey;
+}

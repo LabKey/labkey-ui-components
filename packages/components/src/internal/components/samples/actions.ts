@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
+import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
@@ -725,4 +725,30 @@ export function getSampleAliquotsQueryConfig(
             Filter.create('Lsid', sampleLsid, Filter.Types.EXP_CHILD_OF),
         ],
     };
+}
+
+export type SampleAssayResultViewConfig = {
+    title: string;
+    moduleName: string;
+    schemaName: string;
+    queryName: string;
+    viewName?: string;
+    sampleRowKey?: string; // sample row property to use for key in baseFilter, defaults to 'RowId'
+    filterKey: string; // field key of the query/view to use for the sample filter IN clause
+    containerFilter?: Query.ContainerFilter; // Defaults to 'current'
+};
+
+export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultViewConfig[]> {
+    return new Promise((resolve, reject) => {
+        resolve([]);
+        // resolve([{
+        //     title: 'Skyline Documents',
+        //     moduleName: 'TargetedMS',
+        //     schemaName: 'targetedms',
+        //     queryName: 'SampleFileAssayResults',
+        //     sampleRowKey: 'Name',
+        //     filterKey: 'SampleName',
+        //     containerFilter: Query.ContainerFilter.allFolders,
+        // }])
+    });
 }

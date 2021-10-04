@@ -1,6 +1,6 @@
 {
   "name": "@labkey/eslint-config-react",
-  "version": "0.0.11-fb-lp-comments.0",
+  "version": "0.0.11",
   "description": "shareable eslint config for typescript and react",
   "main": "index.js",
   "files": [

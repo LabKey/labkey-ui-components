@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
+import { waitForLifecycle } from '../testHelpers';
 
-import { waitForLifecycle } from '../eln/test/utils';
 import { applyList, applyTemplate, handleBulletedListEnter, olMapper, ThreadEditor, ulMapper } from './ThreadEditor';
 import { createTestAPIWrapper } from './test/utils';
 import { COMMENTER, NOUN_PLURAL, NOUN_SINGULAR, RESPONSE, THREAD } from './test/fixtures';

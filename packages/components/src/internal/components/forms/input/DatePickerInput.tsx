@@ -148,7 +148,6 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             isClearable,
             wrapperClassName,
         } = this.props;
-        console.log('this.getDateFormat()', this.getDateFormat());
 
         const { isDisabled, selectedDate } = this.state;
         const labelClass = 'control-label col-sm-3 text-left col-xs-12';

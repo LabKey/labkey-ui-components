@@ -758,10 +758,10 @@
     eslint-plugin-prettier "3.4.1"
     prettier "2.4.1"
 
-"@labkey/eslint-config-react@0.0.11-fb-lp-comments.0":
-  version "0.0.11-fb-lp-comments.0"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/eslint-config-react/-/@labkey/eslint-config-react-0.0.11-fb-lp-comments.0.tgz#b33ba577792549a16564962b3863665f4b1b54c2"
-  integrity sha1-szuld3klSaFlZJYrOGNmX0sbVMI=
+"@labkey/eslint-config-react@0.0.11":
+  version "0.0.11"
+  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/eslint-config-react/-/@labkey/eslint-config-react-0.0.11.tgz#b55ee50634ad805794d231499a2399fa7c736206"
+  integrity sha1-tV7lBjStgFeU0jFJmiOZ+nxzYgY=
   dependencies:
     "@labkey/eslint-config-base" "0.0.11-fb-discussions.2"
     eslint-plugin-react "7.26.0"

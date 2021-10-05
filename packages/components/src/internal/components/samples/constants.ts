@@ -23,3 +23,42 @@ export const SAMPLE_ID_FIND_FIELD: FindField = {
 };
 
 export const IS_ALIQUOT_FIELD = 'isAliquot';
+
+export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';
+
+export enum SampleOperations {
+    EditMetadata=1,
+    EditLineage,
+    AddToStorage,
+    UpdateStorageMetadata,
+    RemoveFromStorage,
+    AddToPicklist,
+    RemoveFromPicklist,
+    Delete,
+    AddToWorkflow,
+    RemoveFromWorkflow,
+    AddAssayData,
+    LinkToStudy,
+    RecallFromStudy
+}
+
+export const permittedOps = {
+    'Available': new Set(Object.keys(SampleOperations)),
+    'Consumed': new Set([
+        SampleOperations.EditMetadata,
+        SampleOperations.EditLineage,
+        SampleOperations.RemoveFromStorage,
+        SampleOperations.AddToPicklist,
+        SampleOperations.RemoveFromPicklist,
+        SampleOperations.Delete,
+        SampleOperations.AddToWorkflow,
+        SampleOperations.RemoveFromWorkflow,
+        SampleOperations.AddAssayData,
+        SampleOperations.LinkToStudy,
+        SampleOperations.RecallFromStudy
+    ]),
+    'Locked': new Set([
+        SampleOperations.AddToPicklist,
+        SampleOperations.RemoveFromPicklist
+    ]),
+};

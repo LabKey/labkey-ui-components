@@ -299,7 +299,8 @@ import { SamplesSelectionProvider } from './internal/components/samples/SamplesS
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
-import { getOmittedSampleTypeColumns } from './internal/components/samples/utils';
+
+import { getOmittedSampleTypeColumns, isSampleOperationPermitted } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
     SampleAliquotViewSelector,
@@ -477,11 +478,14 @@ import {
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
 } from './internal/components/samples/models';
+import { SampleOperationMenuItem } from './internal/components/samples/SampleOperationMenuItem';
 import {
     FIND_BY_IDS_QUERY_PARAM,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     UNIQUE_ID_FIND_FIELD,
+    SampleOperations,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
 } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -857,6 +861,10 @@ export {
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
+    isSampleOperationPermitted,
+    SampleOperationMenuItem,
+    SampleOperations,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
     FIND_BY_IDS_QUERY_PARAM,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_ID_FIND_FIELD,

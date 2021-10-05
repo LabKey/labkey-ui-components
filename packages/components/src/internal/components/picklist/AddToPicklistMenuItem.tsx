@@ -8,6 +8,9 @@ import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 
 import { ChoosePicklistModal } from './ChoosePicklistModal';
 import { PicklistEditModal } from './PicklistEditModal';
+import { isSampleOperationPermitted } from '../samples/utils';
+import { SampleOperations } from '../samples/constants';
+import { SampleOperationMenuItem } from '../samples/SampleOperationMenuItem';
 
 interface Props {
     queryModel?: QueryModel;
@@ -63,9 +66,9 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         return null;
     }
 
-    const useSelection = queryModel !== undefined;
+    const useSelection = sampleIds == undefined;
     const id = queryModel?.id;
-    const numSelected = queryModel ? queryModel.selections?.size : sampleIds?.length;
+    const numSelected = sampleIds ? sampleIds.length : queryModel.selections?.size;
 
     return (
         <>
@@ -78,9 +81,11 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     nounPlural="samples"
                 />
             ) : (
-                <MenuItem onClick={onClick} key={key}>
-                    {itemText}
-                </MenuItem>
+                <SampleOperationMenuItem
+                    operationPermitted={isSampleOperationPermitted(queryModel.getRow(), SampleOperations.AddToPicklist)}
+                    menuItemProps={{onClick: onClick, key: key}}
+                    menuItemContent={itemText}
+                />
             )}
             {showChoosePicklist && (
                 <ChoosePicklistModal

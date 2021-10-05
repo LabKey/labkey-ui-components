@@ -623,22 +623,19 @@ export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: s
     });
 }
 
-export function getSampleAliquots(sampleId: number | string): Promise<number[]> {
+export function getSampleAliquotRows(sampleId: number | string): Promise<Record<string, any>[]> {
     return new Promise((resolve, reject) => {
         Query.executeSql({
             sql:
-                'SELECT m.RowId\n' +
+                'SELECT m.RowId, m.Name\n' +
                 'FROM exp.materials m \n' +
                 'WHERE m.RootMaterialLSID = (SELECT lsid FROM exp.materials mi WHERE mi.RowId = ' +
                 sampleId +
                 ')',
             schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
+            requiredVersion: 17.1,
             success: result => {
-                const aliquotIds = [];
-                result.rows.forEach(row => {
-                    aliquotIds.push(caseInsensitive(row, 'RowId'));
-                });
-                resolve(aliquotIds);
+                resolve(result.rows);
             },
             failure: reason => {
                 console.error(reason);

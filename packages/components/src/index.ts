@@ -272,6 +272,7 @@ import {
 import { GenerateEntityResponse } from './internal/components/entities/models';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
+import { NameIdSettings } from "./internal/components/settings/NameIdSettings";
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
@@ -923,6 +924,8 @@ export {
     SearchResultCard,
     SearchResultsPanel,
     searchUsingIndex,
+    // settings
+    NameIdSettings,
     // assay
     AssayUploadResultModel,
     AssayDesignDeleteModal,

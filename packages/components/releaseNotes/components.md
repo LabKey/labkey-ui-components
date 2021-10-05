@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add settings panel 'ID/Name Settings' for use in LKB and LKSM
+
 ### version 2.81.0
 *Released*: 5 October 2021
 * Issue 43981: Add JavaDoc links to help text in field editor

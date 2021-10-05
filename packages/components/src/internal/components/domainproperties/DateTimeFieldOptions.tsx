@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
-import { DATE_FORMATS_TOPIC, helpLinkNode } from '../../util/helpLinks';
+import { DATE_FORMATS_TOPIC, HelpLink, JavaDocsLink } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName, getNameFromId } from './actions';
@@ -15,8 +15,8 @@ interface DateTimeFieldProps extends ITypeDependentProps {
     excludeFromShifting: boolean;
 }
 
-export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps, any> {
-    onFieldChange = evt => {
+export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps> {
+    onFieldChange = (evt): void => {
         const { onChange } = this.props;
 
         let value = evt.target.value;
@@ -30,19 +30,22 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
         }
     };
 
-    getFormatHelpText = () => {
+    getFormatHelpText = (): ReactNode => {
         return (
             <>
-                To control how a date or time value is displayed, provide a string format compatible with the Java class
-                SimpleDateFormat.
-                <br />
-                <br />
-                Learn more about using {helpLinkNode(DATE_FORMATS_TOPIC, 'Date and Time formats')} in LabKey.
+                <p>
+                    To control how a date or time value is displayed, provide a string format compatible with the Java{' '}
+                    <JavaDocsLink urlSuffix="java/text/SimpleDateFormat.html">SimpleDateFormat</JavaDocsLink> class.
+                </p>
+                <p>
+                    Learn more about using <HelpLink topic={DATE_FORMATS_TOPIC}>Date and Time formats</HelpLink> in
+                    LabKey.
+                </p>
             </>
         );
     };
 
-    render() {
+    render(): ReactNode {
         const { index, label, format, lockType, domainIndex } = this.props;
 
         return (

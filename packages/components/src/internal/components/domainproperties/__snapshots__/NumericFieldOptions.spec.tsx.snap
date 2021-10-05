@@ -60,16 +60,25 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
               <DomainFieldLabel
                 helpTipBody={
                   <React.Fragment>
-                    To control how a number value is displayed, provide a string format compatible with the Java class DecimalFormat.
-                    <br />
-                    <br />
-                    Learn more about using 
-                    <HelpLink
-                      topic="dateFormats#number"
-                    >
-                      Number formats
-                    </HelpLink>
-                     in LabKey.
+                    <p>
+                      To control how a number value is displayed, provide a string format compatible with the Java
+                       
+                      <Memo
+                        urlSuffix="java/text/DecimalFormat.html"
+                      >
+                        DecimalFormat
+                      </Memo>
+                       class.
+                    </p>
+                    <p>
+                      Learn more about using 
+                      <HelpLink
+                        topic="dateFormats#number"
+                      >
+                        Number formats
+                      </HelpLink>
+                       in LabKey.
+                    </p>
                   </React.Fragment>
                 }
                 label="Format for Numbers"

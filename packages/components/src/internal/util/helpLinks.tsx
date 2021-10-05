@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, memo } from 'react';
 import { getServerContext } from '@labkey/api';
 
 export const CHART_MEASURES_AND_DIMENSIONS_TOPIC = 'chartTrouble';
@@ -80,3 +80,18 @@ export function helpLinkNode(topic: string, text: ReactNode, className?: string)
         </HelpLink>
     );
 }
+
+interface JavaDocsLinkProps {
+    urlSuffix: string;
+}
+
+export const JavaDocsLink: FC<JavaDocsLinkProps> = memo(props => {
+    const { urlSuffix, children } = props;
+    const { jdkJavaDocLinkPrefix } = getServerContext();
+
+    return (
+        <a target="_blank" href={jdkJavaDocLinkPrefix + urlSuffix} rel="noreferrer">
+            {children}
+        </a>
+    );
+});

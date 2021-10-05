@@ -733,22 +733,23 @@ export type SampleAssayResultViewConfig = {
     schemaName: string;
     queryName: string;
     viewName?: string;
-    sampleRowKey?: string; // sample row property to use for key in baseFilter, defaults to 'RowId'
+    sampleRowKey?: string; // sample row property to use for key in baseFilter, defaults to 'RowId' when value is undefined
     filterKey: string; // field key of the query/view to use for the sample filter IN clause
-    containerFilter?: Query.ContainerFilter; // Defaults to 'current'
+    containerFilter?: string; // Defaults to 'current' when value is undefined
 };
 
 export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultViewConfig[]> {
     return new Promise((resolve, reject) => {
-        resolve([]);
-        // resolve([{
-        //     title: 'Skyline Documents',
-        //     moduleName: 'TargetedMS',
-        //     schemaName: 'targetedms',
-        //     queryName: 'SampleFileAssayResults',
-        //     sampleRowKey: 'Name',
-        //     filterKey: 'SampleName',
-        //     containerFilter: Query.ContainerFilter.allFolders,
-        // }])
+        return Ajax.request({
+            url: buildURL('sampleManager', 'getSampleAssayResultsViewConfigs.api'),
+            method: 'GET',
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response.configs ?? []);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
+            }),
+        });
     });
 }

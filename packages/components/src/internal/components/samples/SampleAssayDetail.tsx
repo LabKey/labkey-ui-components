@@ -1,5 +1,6 @@
 import React, { FC, memo, useEffect, useMemo, useState, useCallback, ReactNode } from 'react';
 import { Button, MenuItem, Panel, SplitButton } from 'react-bootstrap';
+import { Filter, getServerContext } from '@labkey/api';
 
 import {
     Alert,
@@ -30,9 +31,8 @@ import {
     getSampleAliquots,
     getSampleAssayQueryConfigs,
     getSampleAssayResultViewConfigs,
-    SampleAssayResultViewConfig
+    SampleAssayResultViewConfig,
 } from './actions';
-import { Filter, getServerContext } from '@labkey/api';
 
 interface Props {
     sampleId?: string;
@@ -321,8 +321,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     useEffect(() => {
         getSampleAssayResultViewConfigs()
             .then(setSampleAssayResultViewConfigs)
-            .catch(error => {
-                // TODO handle error
+            .catch(() => {
                 setSampleAssayResultViewConfigs([]);
             });
     }, []);

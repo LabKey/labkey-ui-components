@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.81.0
+*Released*: 5 October 2021
 * Issue 43981: Add JavaDoc links to help text in field editor
 * Issue 43907: Lookup field type with target table not in select options renders as disabled
 * Issue 43934: Add lookup, flag, and ontology lookup data type in field editor for LKSM premium users

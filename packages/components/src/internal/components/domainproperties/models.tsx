@@ -27,6 +27,8 @@ import { camelCaseToTitleCase } from '../../util/utils';
 
 import { getConceptForCode } from '../ontology/actions';
 
+import { hasPremiumModule } from '../../app/utils';
+
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
     DOMAIN_FIELD_DIMENSION,
@@ -71,7 +73,6 @@ import {
     reorderSummaryColumns,
 } from './propertiesUtil';
 import { INT_LIST, VAR_LIST } from './list/constants';
-import { hasPremiumModule } from '../../app/utils';
 
 export interface IFieldChange {
     id: string;

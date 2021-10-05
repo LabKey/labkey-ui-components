@@ -366,9 +366,10 @@ export function getUpdatedDataFromGrid(
                 if ((List.isList(originalValue) || originalValue === undefined) && Array.isArray(value)) {
                     if (
                         (originalValue?.size ?? 0) !== value.length ||
-                        (originalValue && originalValue?.findIndex(
-                            o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1
-                        ) !== -1)
+                        (originalValue &&
+                            originalValue?.findIndex(
+                                o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1
+                            ) !== -1)
                     ) {
                         row[key] = value;
                     }

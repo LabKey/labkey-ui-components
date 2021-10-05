@@ -16,9 +16,10 @@
 
 import { List } from 'immutable';
 
+import { hasPremiumModule } from '../../app/utils';
+
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from './constants';
 import { DomainDesign, DomainField, DomainPropertiesGridColumn } from './models';
-import { hasPremiumModule } from '../../app/utils';
 
 // this is similar to what's in PropertiesEditorUtil.java that does the name validation in the old UI
 export function isLegalName(str: string): boolean {

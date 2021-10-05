@@ -714,20 +714,30 @@ describe('getUpdatedDataFromGrid', () => {
             },
         });
 
-        let updatedData = getUpdatedDataFromGrid(orig, [
-            Map<string, any>({
-                 RowId: '448',
-                 Alias: [],
-             }),
-        ], 'RowId', queryInfo);
+        let updatedData = getUpdatedDataFromGrid(
+            orig,
+            [
+                Map<string, any>({
+                    RowId: '448',
+                    Alias: [],
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
         expect(updatedData).toHaveLength(0);
 
-        updatedData = getUpdatedDataFromGrid(orig, [
-            Map<string, any>({
-                RowId: '448',
-                Alias: ['test1'],
-            }),
-        ], 'RowId', queryInfo);
+        updatedData = getUpdatedDataFromGrid(
+            orig,
+            [
+                Map<string, any>({
+                    RowId: '448',
+                    Alias: ['test1'],
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
         expect(updatedData).toHaveLength(1);
     });
 

@@ -31,8 +31,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
             <>
                 <p>
                     To control how a number value is displayed, provide a string format compatible with the Java{' '}
-                    <JavaDocsLink urlSuffix="java/text/DecimalFormat.html">DecimalFormat</JavaDocsLink>{' '}
-                    class.
+                    <JavaDocsLink urlSuffix="java/text/DecimalFormat.html">DecimalFormat</JavaDocsLink> class.
                 </p>
                 <p>
                     Learn more about using <HelpLink topic={NUMBER_FORMATS_TOPIC}>Number formats</HelpLink> in LabKey.

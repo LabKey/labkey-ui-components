@@ -21,7 +21,14 @@ import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 import { QueryColumn } from '../../../..';
-import { datePlaceholder, getDateFormat, getDateTimeFormat, getTimeFormat, isDateTimeCol, parseDate } from '../../../util/Date';
+import {
+    datePlaceholder,
+    getDateFormat,
+    getDateTimeFormat,
+    getTimeFormat,
+    isDateTimeCol,
+    parseDate,
+} from '../../../util/Date';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 

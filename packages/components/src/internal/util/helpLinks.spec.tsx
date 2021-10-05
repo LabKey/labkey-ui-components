@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { HelpLink, getHelpLink, HELP_LINK_REFERRER } from './helpLinks';
+import { HelpLink, getHelpLink, HELP_LINK_REFERRER, JavaDocsLink } from './helpLinks';
 
 const HELP_LINK_BASE_URL = 'https://www.labkey.org/Documentation/wiki-page.view?';
 
@@ -32,5 +32,14 @@ describe('getHelpLink', () => {
         expect(getHelpLink('TEST_TOPIC', HELP_LINK_REFERRER.ERROR_PAGE)).toBe(
             HELP_LINK_BASE_URL + 'name=TEST_TOPIC&referrer=errorPage'
         );
+    });
+});
+
+describe('JavaDocsLink', () => {
+    test('default props', () => {
+        LABKEY.jdkJavaDocLinkPrefix = 'https://docs.oracle.com/en/java/javase/16/docs/api/java.base/';
+        const component = <JavaDocsLink urlSuffix="test/SomeClass.html">Some Class</JavaDocsLink>;
+        const tree = renderer.create(component);
+        expect(tree).toMatchSnapshot();
     });
 });

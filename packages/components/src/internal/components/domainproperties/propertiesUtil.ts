@@ -16,6 +16,8 @@
 
 import { List } from 'immutable';
 
+import { hasPremiumModule } from '../../app/utils';
+
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from './constants';
 import { DomainDesign, DomainField, DomainPropertiesGridColumn } from './models';
 
@@ -187,20 +189,21 @@ export function removeUnusedOntologyProperties(obj) {
 }
 
 export function removeNonAppProperties(obj) {
-    delete obj.lookupContainer;
-    delete obj.lookupSchema;
-    delete obj.lookupQuery;
+    if (!hasPremiumModule()) {
+        delete obj.lookupContainer;
+        delete obj.lookupSchema;
+        delete obj.lookupQuery;
 
-    // these props are always removed for appPropertiesOnly and then also conditionally removed for
-    // containers that don't have the Ontology module enabled (see removeUnusedOntologyProperties)
-    delete obj.sourceOntology;
-    delete obj.conceptSubtree;
-    delete obj.conceptImportColumn;
-    delete obj.conceptLabelColumn;
+        // these props are always removed for non-premium and then also conditionally removed for
+        // containers that don't have the Ontology module enabled (see removeUnusedOntologyProperties)
+        delete obj.sourceOntology;
+        delete obj.conceptSubtree;
+        delete obj.conceptImportColumn;
+        delete obj.conceptLabelColumn;
+    }
     delete obj.principalConceptCode;
 
     delete obj.conditionalFormats;
-
     delete obj.hidden;
     delete obj.shownInUpdateView;
     delete obj.shownInInsertView;

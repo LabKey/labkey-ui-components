@@ -63,6 +63,11 @@ export function getDateTimeFormat(container?: Partial<Container>): string {
     return moment().toMomentFormatString((container ?? getServerContext().container).formats.dateTimeFormat);
 }
 
+// hard-coded value, see docs: https://www.labkey.org/Documentation/Archive/21.7/wiki-page.view?name=studyDateNumber#short
+export function getTimeFormat(): string {
+    return moment().toMomentFormatString('HH:mm:ss');
+}
+
 export function parseDate(dateStr: string, dateFormat?: string): Date {
     if (!dateStr) return null;
 

@@ -20,3 +20,13 @@ exports[`HelpLink default props 1`] = `
   default props text
 </a>
 `;
+
+exports[`JavaDocsLink default props 1`] = `
+<a
+  href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/test/SomeClass.html"
+  rel="noreferrer"
+  target="_blank"
+>
+  Some Class
+</a>
+`;

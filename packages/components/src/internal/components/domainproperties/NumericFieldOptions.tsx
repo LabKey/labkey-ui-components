@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
-import { helpLinkNode, NUMBER_FORMATS_TOPIC } from '../../util/helpLinks';
+import { HelpLink, JavaDocsLink, NUMBER_FORMATS_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';
@@ -15,8 +15,8 @@ interface NumericFieldProps extends ITypeDependentProps {
     defaultScale: string;
 }
 
-export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, any> {
-    onFieldChange = evt => {
+export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> {
+    onFieldChange = (evt): void => {
         const { onChange } = this.props;
 
         const value = evt.target.value;
@@ -26,19 +26,21 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
         }
     };
 
-    getFormatHelpText = () => {
+    getFormatHelpText = (): ReactNode => {
         return (
             <>
-                To control how a number value is displayed, provide a string format compatible with the Java class
-                DecimalFormat.
-                <br />
-                <br />
-                Learn more about using {helpLinkNode(NUMBER_FORMATS_TOPIC, 'Number formats')} in LabKey.
+                <p>
+                    To control how a number value is displayed, provide a string format compatible with the Java{' '}
+                    <JavaDocsLink urlSuffix="java/text/DecimalFormat.html">DecimalFormat</JavaDocsLink> class.
+                </p>
+                <p>
+                    Learn more about using <HelpLink topic={NUMBER_FORMATS_TOPIC}>Number formats</HelpLink> in LabKey.
+                </p>
             </>
         );
     };
 
-    render() {
+    render(): ReactNode {
         const { index, label, format, defaultScale, lockType, domainIndex } = this.props;
 
         return (

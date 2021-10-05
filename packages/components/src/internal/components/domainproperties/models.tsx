@@ -27,6 +27,8 @@ import { camelCaseToTitleCase } from '../../util/utils';
 
 import { getConceptForCode } from '../ontology/actions';
 
+import { hasPremiumModule } from '../../app/utils';
+
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
     DOMAIN_FIELD_DIMENSION,
@@ -1219,8 +1221,8 @@ export function isPropertyTypeAllowed(
 
     if (STUDY_PROPERTY_TYPES.includes(type)) return showStudyPropertyTypes;
 
-    // We are excluding the field types below for the App
-    return ![LOOKUP_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
+    // We are excluding the field types below for the App for non-premium
+    return hasPremiumModule() || ![LOOKUP_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
 }
 
 export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {

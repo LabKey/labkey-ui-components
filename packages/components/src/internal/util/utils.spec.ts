@@ -700,9 +700,45 @@ describe('getUpdatedDataFromGrid', () => {
             Date: null,
         },
     });
+
     test('no edited rows', () => {
         const updatedData = getUpdatedDataFromGrid(originalData, [], 'RowId', queryInfo);
         expect(updatedData).toHaveLength(0);
+    });
+
+    test('edited row with array', () => {
+        const orig = fromJS({
+            448: {
+                RowId: 448,
+                Alias: undefined,
+            },
+        });
+
+        let updatedData = getUpdatedDataFromGrid(
+            orig,
+            [
+                Map<string, any>({
+                    RowId: '448',
+                    Alias: [],
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
+        expect(updatedData).toHaveLength(0);
+
+        updatedData = getUpdatedDataFromGrid(
+            orig,
+            [
+                Map<string, any>({
+                    RowId: '448',
+                    Alias: ['test1'],
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
+        expect(updatedData).toHaveLength(1);
     });
 
     test('edited rows did not change', () => {

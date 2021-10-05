@@ -192,8 +192,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
             let infos = List<{ name: string; type: PropDescType }>();
 
             queries.forEach(q => {
-                if (q.isIncludedForLookups)
-                    infos = infos.concat(q.getLookupInfo(this.props.lookupURI)).toList();
+                if (q.isIncludedForLookups) infos = infos.concat(q.getLookupInfo(this.props.lookupURI)).toList();
             });
 
             this.setState({
@@ -210,17 +209,20 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
         const isEmpty = queries.size === 0;
         const hasValue = !!value;
         const blankOption = !hasValue && !isEmpty;
+        const queryName = value ? decodeLookup(value).queryName : undefined;
+        const queryNameOptionExists =
+            queryName && queries?.size > 0 ? queries.find(query => query.name === queryName) !== undefined : true; // default to true without a selected queryName
 
         return (
             <FormControl
                 componentClass="select"
-                disabled={loading || disabled}
+                disabled={loading || disabled || !queryNameOptionExists}
                 value={value}
                 id={id}
                 name={name}
                 onChange={onChange}
             >
-                {disabled && value && (
+                {value && (disabled || !queryNameOptionExists) && (
                     <option key="_disabled" value={value}>
                         {decodeLookup(value).queryName}
                     </option>

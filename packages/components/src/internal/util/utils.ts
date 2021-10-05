@@ -363,12 +363,13 @@ export function getUpdatedDataFromGrid(
                 }
 
                 // If col is a multi-value column, compare all values for changes
-                if (List.isList(originalValue) && Array.isArray(value)) {
+                if ((List.isList(originalValue) || originalValue === undefined) && Array.isArray(value)) {
                     if (
-                        originalValue.size !== value.length ||
-                        originalValue.findIndex(
-                            o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1
-                        ) !== -1
+                        (originalValue?.size ?? 0) !== value.length ||
+                        (originalValue &&
+                            originalValue?.findIndex(
+                                o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1
+                            ) !== -1)
                     ) {
                         row[key] = value;
                     }

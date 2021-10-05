@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Ajax, PermissionTypes, Utils } from '@labkey/api';
 import { Button, Checkbox, FormControl, FormControlProps } from 'react-bootstrap';
 
-import { Alert, ConfirmModal, LoadingSpinner, RequiresPermission } from '../../..';
+import {Alert, ConfirmModal, LabelHelpTip, LoadingSpinner, RequiresPermission} from '../../..';
 
 interface State {
     error: string;
@@ -137,6 +137,10 @@ export const NameIdSettings: FC = () => {
                                     checked={allowUserSpecifiedNames}
                                 >
                                     Allow users to create/import their own IDs/Names
+
+                                    <LabelHelpTip title="TBD">
+                                        <p> TBD </p>
+                                    </LabelHelpTip>
                                 </Checkbox>
                             </form>
                         )}

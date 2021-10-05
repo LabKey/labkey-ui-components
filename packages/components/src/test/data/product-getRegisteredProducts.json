@@ -1,6 +1,6 @@
 [ {
   "moduleName" : "Biologics",
-  "sectionNames" : [ "Registry", "NonMediaSampleTypes", "Media", "Experiments", "Workflow" ],
+  "sectionNames" : [ "Registry", "Sample Types", "Media", "Experiments", "Workflow" ],
   "documentationUrl" : "https://www.labkey.org/Documentation/wiki-page.view?name=biologics",
   "productId" : "Biologics",
   "productName" : "Biologics",

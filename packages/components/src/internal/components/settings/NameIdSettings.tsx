@@ -124,8 +124,8 @@ export const NameIdSettings: FC = () => {
         <RequiresPermission perms={PermissionTypes.Admin}>
             <div className="name-id-settings-panel panel">
                 <div className="panel-body">
-                    <h4 className="settings-panel-title">ID/Name Settings</h4>
-                    <div className="setting-checkbox">
+                    <h4 className="setting-panel-title">ID/Name Settings</h4>
+                    <div className="setting-section">
                         <h5> User Defined ID/Names </h5>
 
                         {loadingPrefix && <LoadingSpinner />}
@@ -142,7 +142,7 @@ export const NameIdSettings: FC = () => {
                         )}
                     </div>
 
-                    <div className="setting-prefix">
+                    <div className="setting-section">
                         <h5> ID/Name Prefix </h5>
                         <div>
                             Enter a Prefix to be applied to all new Sample Types, Data Classes (e.g. CellLine,

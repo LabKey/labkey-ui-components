@@ -41,14 +41,16 @@ interface AliquotGridButtonsProps {
     onDelete: () => void;
     StorageButtonsComponent?: StorageButton;
     user: User;
+    lineageUpdateAllowed: boolean;
 }
 
 const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> = props => {
-    const { afterAction, model, onDelete, StorageButtonsComponent, user } = props;
+    const { afterAction, lineageUpdateAllowed, model, onDelete, StorageButtonsComponent, user } = props;
 
     return (
         <div className="btn-group">
             <RequiresPermission perms={PermissionTypes.Delete}>
+                {lineageUpdateAllowed &&
                 <ManageDropdownButton id="samplealiquotlisting">
                     <SelectionMenuItem
                         id="sample-aliquot-delete-menu-item"
@@ -58,7 +60,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
                         nounPlural="aliquots"
                     />
                 </ManageDropdownButton>
-
+                }
                 {StorageButtonsComponent && (
                     <StorageButtonsComponent afterStorageUpdate={afterAction} queryModel={model} user={user} />
                 )}
@@ -71,6 +73,7 @@ interface Props {
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
     storageButton?: StorageButton;
     user: User;
+    lineageUpdateAllowed: boolean;
 }
 
 interface State {
@@ -110,7 +113,7 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
     }
 
     render() {
-        const { actions, storageButton, user } = this.props;
+        const { actions, storageButton, user, lineageUpdateAllowed } = this.props;
         const queryModel = this.getQueryModel();
 
         return (
@@ -123,6 +126,7 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
                         onDelete: this.onDelete,
                         StorageButtonsComponent: storageButton,
                         user,
+                        lineageUpdateAllowed,
                     }}
                     model={queryModel}
                     showViewMenu={false}

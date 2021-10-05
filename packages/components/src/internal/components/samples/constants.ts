@@ -43,7 +43,9 @@ export enum SampleOperations {
 }
 
 export const permittedOps = {
-    'Available': new Set(Object.keys(SampleOperations)),
+    'Available': new Set(
+        Object.keys(SampleOperations).filter(val => !isNaN(parseInt(val))).map(val => parseInt(val))
+    ),
     'Consumed': new Set([
         SampleOperations.EditMetadata,
         SampleOperations.EditLineage,

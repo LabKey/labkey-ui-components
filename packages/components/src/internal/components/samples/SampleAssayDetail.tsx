@@ -1,4 +1,4 @@
-import React, { FC, memo, useEffect, useMemo, useState, useCallback, ReactNode } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, MenuItem, Panel, SplitButton } from 'react-bootstrap';
 
 import {
@@ -8,10 +8,12 @@ import {
     createNotification,
     InjectedAssayModel,
     isLoading,
+    isSampleOperationPermitted,
     LoadingSpinner,
     QueryModel,
     RequiresModelAndActions,
     SampleAliquotViewSelector,
+    SampleOperations,
     TabbedGridPanel,
     useServerContext,
 } from '../../..';
@@ -344,6 +346,10 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         setActiveTabId(tab);
     }, []);
 
+    const canImportData = useMemo(() => {
+        return isSampleOperationPermitted(sampleModel.getRow(), SampleOperations.AddAssayData)
+    }, [sampleModel]);
+
     const { queryConfigs, tabOrder } = useMemo(() => {
         if (loadingDefinitions) {
             return { queryConfigs: {}, tabOrder: [] };
@@ -410,6 +416,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         );
     }
 
+
     return (
         <SampleAssayDetailBody
             {...props}
@@ -418,7 +425,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             tabOrder={tabOrder}
             onSampleAliquotTypeChange={onSampleAliquotTypeChange}
             activeSampleAliquotType={activeSampleAliquotType}
-            showImportBtn={!isSourceSampleAssayGrid}
+            showImportBtn={!isSourceSampleAssayGrid && canImportData}
             isSourceSampleAssayGrid={isSourceSampleAssayGrid}
             onTabChange={onTabChange}
             activeTabId={activeTabId}

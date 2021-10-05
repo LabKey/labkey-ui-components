@@ -9,6 +9,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 44011: DatePickerInput fix to account for the shortcut formats (i.e. "Date", "DateTime", and "Time")
 * Fix for getUpdatedDataFromGrid() helper to account for empty array values
 
+### version 2.80.1
+*Released*: 4 October 2021
+* Expose additional `Modal` props via `ConfirmModal`.
+* Export `parseDate`.
+
+### version 2.80.0
+*Released*: 4 October 2021
+* Add announcements components (Discussions, Thread, ThreadBlock, and more)
+* Add UserAvatars and UserAvatar
+* Add handleFileInputChange helper
+
 ### version 2.79.1
 *Released*: 1 October 2021
 * Support filterable prop for QueryColumn

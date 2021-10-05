@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.79.1-fb-fieldEditorFixes2111.0",
+  "version": "2.80.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -77,7 +77,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.15.5",
-    "@labkey/eslint-config-react": "0.0.10",
+    "@labkey/eslint-config-react": "0.0.11",
     "@types/classnames": "2.3.1",
     "@types/enzyme": "3.10.9",
     "@types/history": "4.7.9",

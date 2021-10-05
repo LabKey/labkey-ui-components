@@ -51,6 +51,7 @@ import {
     downloadAttachment,
     generateId,
     getDisambiguatedSelectInputOptions,
+    handleFileInputChange,
     handleRequestFailure,
     isImage,
     isIntegerInRange,
@@ -119,7 +120,7 @@ import {
     initNotificationsState,
 } from './internal/components/notifications/global';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
-import { formatDate, formatDateTime, getDateFormat } from './internal/util/Date';
+import { formatDate, formatDateTime, getDateFormat, parseDate } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
@@ -598,6 +599,13 @@ import { Key, useEnterEscape } from './public/useEnterEscape';
 import { DateInput } from './internal/components/DateInput';
 import { EditInlineField } from './internal/components/EditInlineField';
 import { FileAttachmentArea } from './internal/components/files/FileAttachmentArea';
+import { UserAvatar, UserAvatars } from './internal/components/UserAvatars';
+import { AnnouncementRenderType } from './internal/announcements/model';
+import { Discussions } from './internal/announcements/Discussions';
+import { Thread } from './internal/announcements/Thread';
+import { ThreadBlock } from './internal/announcements/ThreadBlock';
+import { ThreadEditor } from './internal/announcements/ThreadEditor';
+
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
 enablePatches();
@@ -1067,10 +1075,12 @@ export {
     getDisambiguatedSelectInputOptions,
     formatDate,
     formatDateTime,
+    parseDate,
     blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,
     downloadAttachment,
+    handleFileInputChange,
     handleRequestFailure,
     resolveKey,
     isIntegerInRange,
@@ -1220,6 +1230,15 @@ export {
     DateInput,
     EditInlineField,
     FileAttachmentArea,
+    // UserAvatars
+    UserAvatar,
+    UserAvatars,
+    // Announcements
+    AnnouncementRenderType,
+    Discussions,
+    Thread,
+    ThreadBlock,
+    ThreadEditor,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
@@ -1301,3 +1320,7 @@ export type { FileSizeLimitProps } from './public/files/models';
 export type { FindField } from './internal/components/samples/models';
 export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
+export type { AnnouncementModel, ThreadActions } from './internal/announcements/model';
+export type { AnnouncementsAPIWrapper } from './internal/announcements/APIWrapper';
+export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
+export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';

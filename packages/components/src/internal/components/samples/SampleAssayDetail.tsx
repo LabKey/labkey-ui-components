@@ -71,7 +71,8 @@ interface SampleAssayDetailButtonsOwnProps {
 
 type SampleAssayDetailButtonsProps = SampleAssayDetailButtonsOwnProps & RequiresModelAndActions;
 
-const SampleAssayDetailButtons: FC<SampleAssayDetailButtonsProps> = props => {
+// exported for jest testing
+export const SampleAssayDetailButtons: FC<SampleAssayDetailButtonsProps> = props => {
     const { assayModel, model, sampleModel } = props;
     const { user } = useServerContext();
 
@@ -111,7 +112,8 @@ const SampleAssayDetailButtons: FC<SampleAssayDetailButtonsProps> = props => {
     }
 };
 
-const SampleAssayDetailButtonsRight: FC<SampleAssayDetailButtonsProps> = props => {
+// export for jest testing
+export const SampleAssayDetailButtonsRight: FC<SampleAssayDetailButtonsProps> = props => {
     const { activeSampleAliquotType, onSampleAliquotTypeChange, isSourceSampleAssayGrid } = props;
 
     return (

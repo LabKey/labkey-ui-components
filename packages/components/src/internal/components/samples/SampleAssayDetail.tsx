@@ -424,21 +424,25 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             configs = { ...configs, ...unfilteredConfigs };
         }
 
-        // add in the config objects for those module defined sample assay result views (i.e. TargetedMS module),
+        // add in the config objects for those module-defined sample assay result views (e.g. TargetedMS module),
         // note that the moduleName from the config must be active/enabled in the container
         const activeModules = getServerContext().container.activeModules;
         sampleAssayResultViewConfigs.forEach(config => {
             if (activeModules?.indexOf(config.moduleName) > -1) {
+                const baseConfig = {
+                    title: config.title,
+                    schemaQuery: SchemaQuery.create(config.schemaName, config.queryName, config.viewName),
+                    containerFilter: config.containerFilter,
+                };
+
                 let modelId = `${ASSAY_GRID_ID_PREFIX}:${config.title}:${sampleId}`;
                 let sampleFilterValues = sampleRows.map(
                     row => caseInsensitive(row, config.sampleRowKey ?? 'RowId')?.value
                 );
                 configs[modelId] = {
+                    ...baseConfig,
                     id: modelId,
-                    title: config.title,
-                    schemaQuery: SchemaQuery.create(config.schemaName, config.queryName, config.viewName),
                     baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
-                    containerFilter: config.containerFilter,
                 };
 
                 if (includeUnfilteredConfigs) {
@@ -447,11 +451,9 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
                         row => caseInsensitive(row, config.sampleRowKey ?? 'RowId')?.value
                     );
                     configs[modelId] = {
+                        ...baseConfig,
                         id: modelId,
-                        title: config.title,
-                        schemaQuery: SchemaQuery.create(config.schemaName, config.queryName, config.viewName),
                         baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
-                        containerFilter: config.containerFilter,
                     };
                 }
             }

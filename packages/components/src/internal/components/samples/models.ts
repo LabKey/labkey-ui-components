@@ -102,3 +102,9 @@ export interface SampleAliquotsStats {
     jobsCount?: number;
     aliquotIds?: number[];
 }
+
+export interface SampleStatus {
+    label: string,
+    statusType: string,
+    description?: string
+}

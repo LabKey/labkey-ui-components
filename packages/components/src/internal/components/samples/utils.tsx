@@ -1,9 +1,16 @@
 import React from 'react';
 import { User } from '../base/models/User';
-import { App, caseInsensitive, LoadingSpinner, SAMPLE_STATE_TYPE_COLUMN_NAME } from '../../..';
-import { permittedOps, SampleOperations } from './constants';
+import {
+    App,
+    caseInsensitive,
+    LoadingSpinner,
+    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+    SAMPLE_STATE_TYPE_COLUMN_NAME
+} from '../../..';
+import { permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperations } from './constants';
 import { isSampleStatusEnabled } from '../../app/utils';
 import { ReactNode } from 'react';
+import { SampleStatus } from './models';
 
 export function getOmittedSampleTypeColumns(user: User, omitCols?: string[]): string[] {
     let cols: string[] = [];
@@ -47,3 +54,12 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
     }
     return deleteMsg;
 }
+
+export function getSampleStatus(row: any): SampleStatus {
+    return {
+        label: caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME)?.displayValue,
+        statusType: caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value,
+        description: caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value,
+    }
+}
+

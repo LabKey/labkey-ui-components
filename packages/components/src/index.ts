@@ -300,7 +300,12 @@ import { SampleAliquotDetailHeader } from './internal/components/samples/SampleA
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 
-import { getOmittedSampleTypeColumns, getSampleDeleteMessage, isSampleOperationPermitted } from './internal/components/samples/utils';
+import {
+    getOmittedSampleTypeColumns,
+    getSampleDeleteMessage,
+    getSampleStatus,
+    isSampleOperationPermitted
+} from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
     SampleAliquotViewSelector,
@@ -484,11 +489,11 @@ import {
     FIND_BY_IDS_QUERY_PARAM,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
-    UNIQUE_ID_FIND_FIELD,
-    SampleOperations,
-    SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SampleOperations,
     SampleStateTypes,
+    UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -866,6 +871,7 @@ export {
     fetchDataClass,
     isSampleOperationPermitted,
     getSampleDeleteMessage,
+    getSampleStatus,
     SampleOperationMenuItem,
     SampleOperations,
     SampleStateTypes,
@@ -1316,6 +1322,7 @@ export type {
     GroupedSampleFields,
     SamplesSelectionProviderProps,
     SamplesSelectionResultProps,
+    SampleStatus,
 } from './internal/components/samples/models';
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/AppURLResolver';

@@ -1,44 +1,44 @@
 import React, { FC, memo } from 'react';
 import classNames from 'classnames';
 import { LabelHelpTip } from '../base/LabelHelpTip';
-import { caseInsensitive } from '../../util/utils';
-import {
-    SAMPLE_STATE_COLUMN_NAME,
-    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
-    SAMPLE_STATE_TYPE_COLUMN_NAME, SampleStateTypes
-} from './constants';
+import { SampleStateTypes } from './constants';
 import { isSampleStatusEnabled } from '../../app/utils';
+import { SampleStatus } from './models';
 
-
-function getSampleStatus(row: any) {
-    return {
-        status: caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME)?.displayValue,
-        statusType: caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value,
-        description: caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value,
-    }
+interface Props {
+    status: SampleStatus,
+    iconOnly?: boolean,
+    className?: string,
 }
 
-export const SampleStatusTag: FC<{ sampleRow: any }> = memo(({sampleRow}) => {
-    const { status, statusType, description } = getSampleStatus(sampleRow);
+export const SampleStatusTag: FC<Props> = memo((props) => {
+    const { status, iconOnly, className } = props;
+    const { label, statusType, description } = status;
 
-    if (!status || !isSampleStatusEnabled())
+    if (!label || !isSampleStatusEnabled())
         return null;
 
-    const icon = <span>{status}</span>;
+    const icon = iconOnly ? (
+        <i className={classNames("sample-status-icon fa fa-info", {
+            "alert-danger":  statusType === SampleStateTypes.Locked,
+            "alert-warning": statusType === SampleStateTypes.Consumed,
+            "alert-success": statusType === SampleStateTypes.Available,
+        })}/>
+    ) : <span>{label}</span>;
     const isAvailable = statusType === SampleStateTypes.Available;
 
     return (
         <>
-            <br/>
-            <div className={classNames("pull-right sample-status-tag",  {
-                "alert-danger": statusType === SampleStateTypes.Locked,
-                "alert-warning": statusType === SampleStateTypes.Consumed,
-                "alert-success": statusType === SampleStateTypes.Available,
+            <span className={classNames( className, {
+                "sample-status-tag": !iconOnly,
+                "alert-danger": !iconOnly && statusType === SampleStateTypes.Locked,
+                "alert-warning": !iconOnly && statusType === SampleStateTypes.Consumed,
+                "alert-success": !iconOnly && statusType === SampleStateTypes.Available,
             })}>
                 {(description || !isAvailable) ? (
                     <LabelHelpTip iconComponent={icon} placement="bottom" title={"Sample Status"}>
                         <div className="ws-pre-wrap popover-message">
-                            <b>{status}</b> - {description}
+                            <b>{label}</b> {description && '- '}{description}
                             {!isAvailable && (
                                 <div className="margin-top sample-status-warning">
                                     Not all operations are permitted for a sample with this status.
@@ -46,8 +46,8 @@ export const SampleStatusTag: FC<{ sampleRow: any }> = memo(({sampleRow}) => {
                             )}
                         </div>
                     </LabelHelpTip>
-                ) : status}
-            </div>
+                ) : label}
+            </span>
         </>
     );
 });

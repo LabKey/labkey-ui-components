@@ -19,7 +19,7 @@ export const SampleOperationMenuItem: FC<Props> = memo(props => {
         return <MenuItem {...menuItemProps}>{menuItemContent}</MenuItem>
 
     const overlay = (
-        <Popover id="disable-operation-warning" className="menu-item-popover-message">
+        <Popover id="disable-operation-warning" className="popover-message">
             {disabledMessage ?? OPERATION_NOT_PERMITTED_MESSAGE}
         </Popover>
     );

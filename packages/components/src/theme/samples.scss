@@ -97,3 +97,22 @@
 .sample-aliquots-details-meta-table {
     margin-bottom: 0;
 }
+
+.sample-status-header {
+    display: inline-block;
+    margin-right:8px;
+}
+
+.sample-status-header-button {
+    vertical-align: top;
+}
+
+.sample-status-tag {
+    display: inline-block;
+    padding: 4px 9px;
+    border-radius: 3px;
+}
+
+.sample-status-warning {
+    font-style: italic;
+}

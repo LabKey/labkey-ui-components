@@ -24,7 +24,9 @@ export const SAMPLE_ID_FIND_FIELD: FindField = {
 
 export const IS_ALIQUOT_FIELD = 'isAliquot';
 
+export const SAMPLE_STATE_COLUMN_NAME = 'SampleState';
 export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';
+export const SAMPLE_STATE_DESCRIPTION_COLUMN_NAME = 'SampleState/Description';
 
 export enum SampleOperations {
     EditMetadata=1,
@@ -42,11 +44,17 @@ export enum SampleOperations {
     RecallFromStudy
 }
 
+export enum SampleStateTypes  {
+    Available='Available',
+    Consumed='Consumed',
+    Locked='Locked',
+}
+
 export const permittedOps = {
-    'Available': new Set(
+    [SampleStateTypes.Available]: new Set(
         Object.keys(SampleOperations).filter(val => !isNaN(parseInt(val))).map(val => parseInt(val))
     ),
-    'Consumed': new Set([
+    [SampleStateTypes.Consumed]: new Set([
         SampleOperations.EditMetadata,
         SampleOperations.EditLineage,
         SampleOperations.RemoveFromStorage,
@@ -59,7 +67,7 @@ export const permittedOps = {
         SampleOperations.LinkToStudy,
         SampleOperations.RecallFromStudy
     ]),
-    'Locked': new Set([
+    [SampleStateTypes.Locked]: new Set([
         SampleOperations.AddToPicklist,
         SampleOperations.RemoveFromPicklist
     ]),

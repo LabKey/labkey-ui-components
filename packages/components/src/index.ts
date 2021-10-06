@@ -300,7 +300,7 @@ import { SampleAliquotDetailHeader } from './internal/components/samples/SampleA
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 
-import { getOmittedSampleTypeColumns, isSampleOperationPermitted } from './internal/components/samples/utils';
+import { getOmittedSampleTypeColumns, getSampleDeleteMessage, isSampleOperationPermitted } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
     SampleAliquotViewSelector,
@@ -479,6 +479,7 @@ import {
     SampleCreationType,
 } from './internal/components/samples/models';
 import { SampleOperationMenuItem } from './internal/components/samples/SampleOperationMenuItem';
+import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import {
     FIND_BY_IDS_QUERY_PARAM,
     SAMPLE_ID_FIND_FIELD,
@@ -486,6 +487,8 @@ import {
     UNIQUE_ID_FIND_FIELD,
     SampleOperations,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+    SampleStateTypes,
 } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -862,9 +865,13 @@ export {
     deleteDataClass,
     fetchDataClass,
     isSampleOperationPermitted,
+    getSampleDeleteMessage,
     SampleOperationMenuItem,
     SampleOperations,
+    SampleStateTypes,
+    SampleStatusTag,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     FIND_BY_IDS_QUERY_PARAM,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_ID_FIND_FIELD,

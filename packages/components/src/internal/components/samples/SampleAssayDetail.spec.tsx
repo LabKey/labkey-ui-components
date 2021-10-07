@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount, ReactWrapper, shallow } from 'enzyme';
 import { fromJS } from 'immutable';
 import { Button, SplitButton } from 'react-bootstrap';
 
@@ -16,13 +16,17 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import {
     AssayResultPanel,
     getSampleAssayDetailEmptyText,
+    SampleAssayDetailBody,
     SampleAssayDetailBodyImpl,
     SampleAssayDetailButtons,
     SampleAssayDetailButtonsRight,
+    SampleAssayDetailImpl,
 } from './SampleAssayDetail';
 import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from './SampleAliquotViewSelector';
-import { mountWithServerContext } from '../../testHelpers';
+import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
 import { TEST_USER_AUTHOR, TEST_USER_READER } from '../../../test/data/users';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { getSamplesTestAPIWrapper } from './APIWrapper';
 
 const assayModel = new AssayStateModel({
     definitions: [
@@ -33,7 +37,7 @@ const assayModel = new AssayStateModel({
 });
 const SQ = SchemaQuery.create('schema', 'query');
 const modelLoadedNoRows = makeTestQueryModel(SQ, new QueryInfo(), {}, [], 0).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
-const modelLoadedWithRow = makeTestQueryModel(SQ, new QueryInfo(), {1: {}}, ['1'], 1).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
+const modelLoadedWithRow = makeTestQueryModel(SQ, new QueryInfo(), {1: { RowId: { value: 1 }, Name: { value: 'Name1' } }}, ['1'], 1).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
 const modelLoading = makeTestQueryModel(SQ).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADING });
 const sampleModel = makeTestQueryModel(SQ);
 const model = makeTestQueryModel(SQ).mutate({ title: 'First Assay' });
@@ -144,17 +148,18 @@ describe('getSampleAssayDetailEmptyText', () => {
     });
 });
 
-describe('SampleAssayDetailBodyImpl', () => {
-    const IMPL_PROPS = {
-        assayModel: undefined,
-        reloadAssays: jest.fn,
-        assayDefinition: undefined,
-        assayProtocol: undefined,
-        onTabChange: jest.fn,
-        actions: makeTestActions(),
-        queryModels: {},
-    };
+const IMPL_PROPS = {
+    assayModel,
+    sampleModel: modelLoadedWithRow,
+    reloadAssays: jest.fn,
+    assayDefinition: undefined,
+    assayProtocol: undefined,
+    onTabChange: jest.fn,
+    actions: makeTestActions(),
+    queryModels: {},
+};
 
+describe('SampleAssayDetailBodyImpl', () => {
     function validate(wrapper: ReactWrapper, hasAssayResultsPanel = true, alertText?: string, loading = false): void {
         expect(wrapper.find(AssayResultPanel)).toHaveLength(hasAssayResultsPanel ? 1 : 0);
         if (alertText) {
@@ -261,6 +266,101 @@ describe('SampleAssayDetailBodyImpl', () => {
         );
         validate(wrapper, false, undefined, true);
         expect(wrapper.find(TabbedGridPanel).prop('tabOrder')).toStrictEqual(['id3', 'id2']);
+        wrapper.unmount();
+    });
+});
+
+describe('SampleAssayDetailImpl', () => {
+    // TODO more test cases for other parts of the SampleAssayDetailImpl to be added
+
+    test('sampleAssayResultViewConfigs - none', async () => {
+        const wrapper = mount(
+            <SampleAssayDetailImpl
+                {...IMPL_PROPS}
+                api={getTestAPIWrapper({
+                    samples: getSamplesTestAPIWrapper({
+                        getSampleAssayResultViewConfigs: () => Promise.resolve([]),
+                    }),
+                })}
+            />
+        );
+        await waitForLifecycle(wrapper);
+        const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
+        expect(Object.keys(configs).length).toBe(0);
+        wrapper.unmount();
+    });
+
+    const moduleAssayConfig = {
+        title: 'Test',
+        moduleName: 'ModuleB',
+        schemaName: 'schema',
+        queryName: 'query',
+        filterKey: 'filterKey',
+    };
+
+    test('sampleAssayResultViewConfigs - module not enabled', async () => {
+        LABKEY.container.activeModules = ['ModuleA'];
+
+        const wrapper = mount(
+            <SampleAssayDetailImpl
+                {...IMPL_PROPS}
+                api={getTestAPIWrapper({
+                    samples: getSamplesTestAPIWrapper({
+                        getSampleAssayResultViewConfigs: () => Promise.resolve([moduleAssayConfig]),
+                    }),
+                })}
+            />
+        );
+        await waitForLifecycle(wrapper);
+        const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
+        expect(Object.keys(configs).length).toBe(0);
+        wrapper.unmount();
+    });
+
+    test('sampleAssayResultViewConfigs - module is enabled', async () => {
+        LABKEY.container.activeModules = ['ModuleA', 'ModuleB'];
+
+        const wrapper = mount(
+            <SampleAssayDetailImpl
+                {...IMPL_PROPS}
+                api={getTestAPIWrapper({
+                    samples: getSamplesTestAPIWrapper({
+                        getSampleAssayResultViewConfigs: () => Promise.resolve([moduleAssayConfig]),
+                    }),
+                })}
+            />
+        );
+        await waitForLifecycle(wrapper);
+        const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
+        const configKeys = Object.keys(configs);
+        expect(configKeys.length).toBe(1);
+        expect(configs[configKeys[0]].baseFilters[0].getColumnName()).toBe('filterKey');
+        expect(configs[configKeys[0]].baseFilters[0].getValue()).toStrictEqual([1]); // RowId value of sample row
+        wrapper.unmount();
+    });
+
+    test('sampleAssayResultViewConfigs - sampleRowKey', async () => {
+        LABKEY.container.activeModules = ['ModuleA', 'ModuleB'];
+
+        const wrapper = mount(
+            <SampleAssayDetailImpl
+                {...IMPL_PROPS}
+                api={getTestAPIWrapper({
+                    samples: getSamplesTestAPIWrapper({
+                        getSampleAssayResultViewConfigs: () => Promise.resolve([{
+                            ...moduleAssayConfig,
+                            sampleRowKey: 'Name',
+                        }]),
+                    }),
+                })}
+            />
+        );
+        await waitForLifecycle(wrapper);
+        const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
+        const configKeys = Object.keys(configs);
+        expect(configKeys.length).toBe(1);
+        expect(configs[configKeys[0]].baseFilters[0].getColumnName()).toBe('filterKey');
+        expect(configs[configKeys[0]].baseFilters[0].getValue()).toStrictEqual(['Name1']); // Name value of sample row
         wrapper.unmount();
     });
 });

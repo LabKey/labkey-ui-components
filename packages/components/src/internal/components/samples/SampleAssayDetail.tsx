@@ -27,14 +27,11 @@ import { getImportItemsForAssayDefinitions } from '../assay/actions';
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import {
-    getSampleAliquotRows,
-    getSampleAssayQueryConfigs,
-    getSampleAssayResultViewConfigs,
-    SampleAssayResultViewConfig,
-} from './actions';
+import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface Props {
+    api?: ComponentsAPIWrapper;
     sampleId?: string;
     sampleModel?: QueryModel;
     showAliquotViewSelector?: boolean;
@@ -296,10 +293,13 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
     );
 });
 
-const SampleAssayDetailBody = withQueryModels<SampleAssayDetailBodyProps>(SampleAssayDetailBodyImpl);
+// exported for jest testing
+export const SampleAssayDetailBody = withQueryModels<SampleAssayDetailBodyProps>(SampleAssayDetailBodyImpl);
 
-const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
+// exported for jest testing
+export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     const {
+        api,
         assayModel,
         sampleId,
         sampleModel,
@@ -310,38 +310,40 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         sourceId,
     } = props;
 
-        const [activeSampleAliquotType, setActiveSampleAliquotType] = useState<ALIQUOT_FILTER_MODE>(
+    const [activeSampleAliquotType, setActiveSampleAliquotType] = useState<ALIQUOT_FILTER_MODE>(
         sampleAliquotType ?? ALIQUOT_FILTER_MODE.all
     );
 
     const isSourceSampleAssayGrid = useMemo(() => {
-        return sampleId == null && sourceSampleRows != null;
+        return sampleId === null && sourceSampleRows !== null;
     }, [sampleId, sourceSampleRows]);
 
     const [aliquotRows, setAliquotRows] = useState<Record<string, any>[]>(undefined);
     useEffect(() => {
         if (!showAliquotViewSelector || !sampleId) return;
 
-        getSampleAliquotRows(sampleId)
-            .then(aliquots => {
-                setAliquotRows(aliquots);
-            })
-            .catch(reason => {
-                createNotification({
-                    alertClass: 'danger',
-                    message: 'Unable to load sample aliquots. Your session may have expired.',
+        api.samples
+            .getSampleAliquotRows(sampleId)
+                .then(aliquots => {
+                    setAliquotRows(aliquots);
+                })
+                .catch(() => {
+                    createNotification({
+                        alertClass: 'danger',
+                        message: 'Unable to load sample aliquots. Your session may have expired.',
+                    });
                 });
-            });
-    }, [sampleId, showAliquotViewSelector]);
+            }, [sampleId, showAliquotViewSelector]);
 
     const [sampleAssayResultViewConfigs, setSampleAssayResultViewConfigs] = useState<SampleAssayResultViewConfig[]>(undefined);
     useEffect(() => {
-        getSampleAssayResultViewConfigs()
-            .then(setSampleAssayResultViewConfigs)
-            .catch(() => {
-                setSampleAssayResultViewConfigs([]);
-            });
-    }, []);
+        api.samples
+            .getSampleAssayResultViewConfigs()
+                    .then(setSampleAssayResultViewConfigs)
+                    .catch(() => {
+                        setSampleAssayResultViewConfigs([]);
+                    });
+            }, []);
 
     const loadingDefinitions =
         isLoading(assayModel.definitionsLoadingState) || sampleAssayResultViewConfigs === undefined;
@@ -515,6 +517,10 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             activeTabId={activeTabId}
         />
     );
+};
+
+SampleAssayDetailImpl.defaultProps = {
+    api: getDefaultAPIWrapper(),
 };
 
 export const SampleAssayDetail = withAssayModels(SampleAssayDetailImpl);

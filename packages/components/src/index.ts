@@ -304,7 +304,8 @@ import {
     getOmittedSampleTypeColumns,
     getSampleDeleteMessage,
     getSampleStatus,
-    isSampleOperationPermitted
+    isSampleOperationPermitted,
+    getFilterArrayForSampleOperation,
 } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
@@ -870,6 +871,7 @@ export {
     deleteDataClass,
     fetchDataClass,
     isSampleOperationPermitted,
+    getFilterArrayForSampleOperation,
     getSampleDeleteMessage,
     getSampleStatus,
     SampleOperationMenuItem,

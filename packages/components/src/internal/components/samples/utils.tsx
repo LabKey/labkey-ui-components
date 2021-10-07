@@ -5,12 +5,13 @@ import {
     caseInsensitive,
     LoadingSpinner,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
-    SAMPLE_STATE_TYPE_COLUMN_NAME
+    SAMPLE_STATE_TYPE_COLUMN_NAME, SampleStateTypes
 } from '../../..';
 import { permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperations } from './constants';
 import { isSampleStatusEnabled } from '../../app/utils';
 import { ReactNode } from 'react';
 import { SampleStatus } from './models';
+import { Filter } from '@labkey/api';
 
 export function getOmittedSampleTypeColumns(user: User, omitCols?: string[]): string[] {
     let cols: string[] = [];
@@ -61,5 +62,26 @@ export function getSampleStatus(row: any): SampleStatus {
         statusType: caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value,
         description: caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value,
     }
+}
+
+export function getFilterArrayForSampleOperation(operation: SampleOperations): Filter.IFilter[] {
+    if (!isSampleStatusEnabled())
+        return [];
+
+    let typesAllowed = [];
+    let typesNotAllowed = [];
+    for (let stateType in SampleStateTypes) {
+        if (permittedOps[stateType].has(operation))
+            typesAllowed.push(stateType);
+        else
+            typesNotAllowed.push(stateType);
+    }
+    if (typesNotAllowed.length == 0)
+        return [];
+    if (typesNotAllowed.length == 1)
+        return [Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesNotAllowed[0], Filter.Types.NEQ)];
+    if (typesAllowed.length == 1)
+        return [Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesAllowed[0], Filter.Types.EQ)];
+    return [Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesAllowed, Filter.Types.IN)];
 }
 

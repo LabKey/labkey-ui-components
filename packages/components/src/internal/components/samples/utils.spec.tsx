@@ -65,5 +65,5 @@ describe("isSampleOperationPermitted", () => {
         expect(isSampleOperationPermitted(SampleStateType.Consumed, SampleOperation.RemoveFromStorage)).toBeTruthy();
         expect(isSampleOperationPermitted(SampleStateType.Available, SampleOperation.EditLineage)).toBeTruthy();
     })
-})
+});
 

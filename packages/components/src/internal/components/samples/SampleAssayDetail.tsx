@@ -48,7 +48,7 @@ interface Props {
     emptySampleViewMsg?: string;
 }
 
-const AssayResultPanel: FC = ({ children }) => {
+export const AssayResultPanel: FC = ({ children }) => {
     return (
         <Panel>
             <Panel.Heading>Assay Results</Panel.Heading>
@@ -131,6 +131,27 @@ export const SampleAssayDetailButtonsRight: FC<SampleAssayDetailButtonsProps> = 
     );
 };
 
+// export for jest testing
+export const getSampleAssayDetailEmptyText = (
+    hasRows: boolean,
+    activeSampleAliquotType?: ALIQUOT_FILTER_MODE,
+    emptySampleViewMsg?: string,
+    emptyAliquotViewMsg?: string
+): string => {
+    if (!activeSampleAliquotType || activeSampleAliquotType === ALIQUOT_FILTER_MODE.all || hasRows) {
+        return undefined;
+    }
+
+    if (activeSampleAliquotType === ALIQUOT_FILTER_MODE.aliquots) {
+        return emptyAliquotViewMsg ?? 'No assay results available for aliquots of this sample.';
+    }
+
+    return (
+        emptySampleViewMsg ??
+        "Assay results are available for this sample's aliquots, but not available for this sample."
+    );
+};
+
 interface OwnProps {
     onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => any;
     activeSampleAliquotType?: ALIQUOT_FILTER_MODE;
@@ -142,7 +163,8 @@ interface OwnProps {
 
 type SampleAssayDetailBodyProps = Props & InjectedAssayModel & OwnProps;
 
-const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryModels> = memo(props => {
+// export for jest testing
+export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryModels> = memo(props => {
     const {
         actions,
         assayModel,
@@ -203,17 +225,12 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
 
     const getEmptyText = useCallback(
         activeModel => {
-            if (!activeSampleAliquotType || activeSampleAliquotType === ALIQUOT_FILTER_MODE.all || activeModel.hasRows)
-                return undefined;
-
-            if (activeSampleAliquotType === ALIQUOT_FILTER_MODE.aliquots) {
-                return emptyAliquotViewMsg ?? 'No assay results available for aliquots of this sample.';
-            } else {
-                return (
-                    emptySampleViewMsg ??
-                    "Assay results are available for this sample's aliquots, but not available for this sample."
-                );
-            }
+            return getSampleAssayDetailEmptyText(
+                activeModel?.hasRows,
+                activeSampleAliquotType,
+                emptySampleViewMsg,
+                emptyAliquotViewMsg
+            );
         },
         [activeSampleAliquotType, emptyAliquotViewMsg, emptySampleViewMsg]
     );
@@ -225,7 +242,7 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
             <AssayResultPanel>
                 <Alert bsStyle="warning">
                     There are no assay designs defined that reference this sample type as either a result field or run
-                    property
+                    property.
                 </Alert>
             </AssayResultPanel>
         );

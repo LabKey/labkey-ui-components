@@ -1,18 +1,28 @@
 import React from 'react';
-import { ReactWrapper } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { fromJS } from 'immutable';
 import { Button, SplitButton } from 'react-bootstrap';
 
+import { AssayStateModel } from '../assay/models';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { AssayStateModel } from '../assay/models';
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { LoadingState } from '../../../public/LoadingState';
+import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
+import { QueryInfo } from '../../../public/QueryInfo';
 
-import { SampleAssayDetailButtons, SampleAssayDetailButtonsRight } from './SampleAssayDetail';
+import {
+    AssayResultPanel,
+    getSampleAssayDetailEmptyText,
+    SampleAssayDetailBodyImpl,
+    SampleAssayDetailButtons,
+    SampleAssayDetailButtonsRight,
+} from './SampleAssayDetail';
+import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import { mountWithServerContext } from '../../testHelpers';
 import { TEST_USER_AUTHOR, TEST_USER_READER } from '../../../test/data/users';
-import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 
 const assayModel = new AssayStateModel({
     definitions: [
@@ -21,8 +31,12 @@ const assayModel = new AssayStateModel({
     ],
     definitionsLoadingState: LoadingState.LOADED,
 });
-const sampleModel = makeTestQueryModel(SchemaQuery.create('schema', 'query'));
-const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ title: 'First Assay' });
+const SQ = SchemaQuery.create('schema', 'query');
+const modelLoadedNoRows = makeTestQueryModel(SQ, new QueryInfo(), {}, [], 0).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
+const modelLoadedWithRow = makeTestQueryModel(SQ, new QueryInfo(), {1: {}}, ['1'], 1).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
+const modelLoading = makeTestQueryModel(SQ).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADING });
+const sampleModel = makeTestQueryModel(SQ);
+const model = makeTestQueryModel(SQ).mutate({ title: 'First Assay' });
 const DEFAULT_PROPS = {
     assayModel,
     sampleModel,
@@ -106,6 +120,147 @@ describe('SampleAssayDetailButtonsRight', () => {
         expect(wrapper.find(SampleAliquotViewSelector).prop('headerLabel')).toBe('Show Assay Data with Source Samples');
         expect(wrapper.find(SampleAliquotViewSelector).prop('samplesLabel')).toBe('Derived Samples Only');
         expect(wrapper.find(SampleAliquotViewSelector).prop('allLabel')).toBe('Derived Samples or Aliquots');
+        wrapper.unmount();
+    });
+});
+
+describe('getSampleAssayDetailEmptyText', () => {
+    test('return undefined', () => {
+        expect(getSampleAssayDetailEmptyText(true)).toBeUndefined();
+        expect(getSampleAssayDetailEmptyText(false, undefined)).toBeUndefined();
+        expect(getSampleAssayDetailEmptyText(false, ALIQUOT_FILTER_MODE.all)).toBeUndefined();
+    });
+
+    test('return empty view message', () => {
+        expect(getSampleAssayDetailEmptyText(false, ALIQUOT_FILTER_MODE.none)).toBeDefined();
+        expect(getSampleAssayDetailEmptyText(false, ALIQUOT_FILTER_MODE.aliquots)).toBeDefined();
+        expect(getSampleAssayDetailEmptyText(false, ALIQUOT_FILTER_MODE.samples)).toBeDefined();
+    });
+
+    test('custom empty view message', () => {
+        expect(getSampleAssayDetailEmptyText(false, ALIQUOT_FILTER_MODE.none, 'test1', 'test2')).toBe('test1');
+        expect(getSampleAssayDetailEmptyText(false, ALIQUOT_FILTER_MODE.aliquots, 'test1', 'test2')).toBe('test2');
+        expect(getSampleAssayDetailEmptyText(false, ALIQUOT_FILTER_MODE.samples, 'test1', 'test2')).toBe('test1');
+    });
+});
+
+describe('SampleAssayDetailBodyImpl', () => {
+    const IMPL_PROPS = {
+        assayModel: undefined,
+        reloadAssays: jest.fn,
+        assayDefinition: undefined,
+        assayProtocol: undefined,
+        onTabChange: jest.fn,
+        actions: makeTestActions(),
+        queryModels: {},
+    };
+
+    function validate(wrapper: ReactWrapper, hasAssayResultsPanel = true, alertText?: string, loading = false): void {
+        expect(wrapper.find(AssayResultPanel)).toHaveLength(hasAssayResultsPanel ? 1 : 0);
+        if (alertText) {
+            expect(wrapper.find(Alert).text()).toContain(alertText);
+        }
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(loading ? 1 : 0);
+        expect(wrapper.find(TabbedGridPanel)).toHaveLength(!hasAssayResultsPanel ? 1 : 0);
+    }
+
+    test('no assay models', () => {
+        const wrapper = mount(<SampleAssayDetailBodyImpl {...IMPL_PROPS} />);
+        validate(wrapper, true, 'There are no assay designs defined that reference this sample type');
+        wrapper.unmount();
+    });
+
+    test('no assay models with emptyAssayDefDisplay', () => {
+        const wrapper = mount(
+            <SampleAssayDetailBodyImpl
+                {...IMPL_PROPS}
+                emptyAssayDefDisplay={
+                    <AssayResultPanel>
+                        <Alert>emptyAssayDefDisplay</Alert>
+                    </AssayResultPanel>
+                }
+            />
+        );
+        validate(wrapper, true, 'emptyAssayDefDisplay');
+        wrapper.unmount();
+    });
+
+    test('models loading', () => {
+        const wrapper = mount(
+            <SampleAssayDetailBodyImpl
+                {...IMPL_PROPS}
+                queryModels={{
+                    id1: modelLoadedNoRows,
+                    id2: modelLoadedWithRow,
+                    id3: modelLoading,
+                }}
+            />
+        );
+        validate(wrapper, true, undefined, true);
+        wrapper.unmount();
+    });
+
+    test('no assay results for models', () => {
+        const wrapper = mount(
+            <SampleAssayDetailBodyImpl
+                {...IMPL_PROPS}
+                queryModels={{
+                    id1: modelLoadedNoRows,
+                }}
+            />
+        );
+        validate(wrapper, true, 'No assay results available for this sample.');
+        wrapper.unmount();
+    });
+
+    test('no assay results for models with emptyAssayResultDisplay', () => {
+        const wrapper = mount(
+            <SampleAssayDetailBodyImpl
+                {...IMPL_PROPS}
+                queryModels={{
+                    id1: modelLoadedNoRows,
+                }}
+                emptyAssayResultDisplay={
+                    <AssayResultPanel>
+                        <Alert>emptyAssayResultDisplay</Alert>
+                    </AssayResultPanel>
+                }
+            />
+        );
+        validate(wrapper, true, 'emptyAssayResultDisplay');
+        wrapper.unmount();
+    });
+
+    test('with assay results', () => {
+        const wrapper = mount(
+            <SampleAssayDetailBodyImpl
+                {...IMPL_PROPS}
+                queryModels={{
+                    id1: modelLoadedNoRows.mutate({ id: 'id1' }),
+                    id2: modelLoadedWithRow.mutate({ id: 'id2' }),
+                }}
+            />
+        );
+        validate(wrapper, false, undefined, true);
+        const modelKeys = Object.keys(wrapper.find(TabbedGridPanel).prop('queryModels'));
+        expect(modelKeys.indexOf('id1')).toBe(-1);
+        expect(modelKeys.indexOf('id2')).toBe(0);
+        wrapper.unmount();
+    });
+
+    test('tabOrder by title', () => {
+        const wrapper = mount(
+            <SampleAssayDetailBodyImpl
+                {...IMPL_PROPS}
+                queryModels={{
+                    id1: modelLoadedNoRows.mutate({ id: 'id1', title: 'C' }),
+                    id2: modelLoadedWithRow.mutate({ id: 'id2', title: 'B' }),
+                    id3: modelLoadedWithRow.mutate({ id: 'id3', title: 'A' }),
+                }}
+            />
+        );
+        validate(wrapper, false, undefined, true);
+        expect(wrapper.find(TabbedGridPanel).prop('tabOrder')).toStrictEqual(['id3', 'id2']);
         wrapper.unmount();
     });
 });

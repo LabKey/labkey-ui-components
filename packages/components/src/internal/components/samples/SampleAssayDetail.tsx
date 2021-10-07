@@ -13,7 +13,7 @@ import {
     QueryModel,
     RequiresModelAndActions,
     SampleAliquotViewSelector,
-    SampleOperations,
+    SampleOperation,
     TabbedGridPanel,
     useServerContext,
 } from '../../..';
@@ -25,6 +25,7 @@ import { getImportItemsForAssayDefinitions } from '../assay/actions';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 import { getSampleAliquots, getSampleAssayQueryConfigs } from './actions';
+import { getSampleStatusType } from './utils';
 
 interface Props {
     sampleId?: string;
@@ -347,7 +348,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     }, []);
 
     const canImportData = useMemo(() => {
-        return isSampleOperationPermitted(sampleModel.getRow(), SampleOperations.AddAssayData)
+        return isSampleOperationPermitted(getSampleStatusType(sampleModel.getRow()), SampleOperation.AddAssayData)
     }, [sampleModel]);
 
     const { queryConfigs, tabOrder } = useMemo(() => {

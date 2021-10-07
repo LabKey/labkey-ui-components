@@ -28,7 +28,7 @@ export const SAMPLE_STATE_COLUMN_NAME = 'SampleState';
 export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';
 export const SAMPLE_STATE_DESCRIPTION_COLUMN_NAME = 'SampleState/Description';
 
-export enum SampleOperations {
+export enum SampleOperation {
     EditMetadata=1,
     EditLineage,
     AddToStorage,
@@ -44,31 +44,31 @@ export enum SampleOperations {
     RecallFromStudy
 }
 
-export enum SampleStateTypes  {
+export enum SampleStateType  {
     Available='Available',
     Consumed='Consumed',
     Locked='Locked',
 }
 
 export const permittedOps = {
-    [SampleStateTypes.Available]: new Set(
-        Object.keys(SampleOperations).filter(val => !isNaN(parseInt(val))).map(val => parseInt(val))
+    [SampleStateType.Available]: new Set(
+        Object.keys(SampleOperation).filter(val => !isNaN(parseInt(val))).map(val => parseInt(val))
     ),
-    [SampleStateTypes.Consumed]: new Set([
-        SampleOperations.EditMetadata,
-        SampleOperations.EditLineage,
-        SampleOperations.RemoveFromStorage,
-        SampleOperations.AddToPicklist,
-        SampleOperations.RemoveFromPicklist,
-        SampleOperations.Delete,
-        SampleOperations.AddToWorkflow,
-        SampleOperations.RemoveFromWorkflow,
-        SampleOperations.AddAssayData,
-        SampleOperations.LinkToStudy,
-        SampleOperations.RecallFromStudy
+    [SampleStateType.Consumed]: new Set([
+        SampleOperation.EditMetadata,
+        SampleOperation.EditLineage,
+        SampleOperation.RemoveFromStorage,
+        SampleOperation.AddToPicklist,
+        SampleOperation.RemoveFromPicklist,
+        SampleOperation.Delete,
+        SampleOperation.AddToWorkflow,
+        SampleOperation.RemoveFromWorkflow,
+        SampleOperation.AddAssayData,
+        SampleOperation.LinkToStudy,
+        SampleOperation.RecallFromStudy
     ]),
-    [SampleStateTypes.Locked]: new Set([
-        SampleOperations.AddToPicklist,
-        SampleOperations.RemoveFromPicklist
+    [SampleStateType.Locked]: new Set([
+        SampleOperation.AddToPicklist,
+        SampleOperation.RemoveFromPicklist
     ]),
 };

@@ -8,8 +8,8 @@ import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 
 import { ChoosePicklistModal } from './ChoosePicklistModal';
 import { PicklistEditModal } from './PicklistEditModal';
-import { isSampleOperationPermitted } from '../samples/utils';
-import { SampleOperations } from '../samples/constants';
+import { getSampleStatusType, isSampleOperationPermitted } from '../samples/utils';
+import { SampleOperation } from '../samples/constants';
 import { SampleOperationMenuItem } from '../samples/SampleOperationMenuItem';
 
 interface Props {
@@ -82,7 +82,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                 />
             ) : (
                 <SampleOperationMenuItem
-                    operationPermitted={isSampleOperationPermitted(queryModel.getRow(), SampleOperations.AddToPicklist)}
+                    operationPermitted={isSampleOperationPermitted(getSampleStatusType(queryModel.getRow()), SampleOperation.AddToPicklist)}
                     menuItemProps={{onClick: onClick, key: key}}
                     menuItemContent={itemText}
                 />

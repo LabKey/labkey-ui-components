@@ -14,7 +14,7 @@ import {
     QueryModel,
     QuerySelect,
     RemoveEntityButton,
-    SampleOperations,
+    SampleOperation,
     SchemaQuery,
     SCHEMAS,
     SelectInput,
@@ -113,7 +113,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
         }
         let queryFilters = List<Filter.IFilter>()
         if (isSampleStatusEnabled() && parentDataType.instanceSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) {
-            queryFilters = queryFilters.push(...getFilterArrayForSampleOperation(SampleOperations.EditLineage));
+            queryFilters = queryFilters.push(...getFilterArrayForSampleOperation(SampleOperation.EditLineage));
         }
         const labelClasses = 'col-sm-3 col-xs-12';
         return (

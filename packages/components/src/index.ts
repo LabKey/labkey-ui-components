@@ -304,6 +304,7 @@ import {
     getOmittedSampleTypeColumns,
     getSampleDeleteMessage,
     getSampleStatus,
+    getSampleStatusType,
     isSampleOperationPermitted,
     getFilterArrayForSampleOperation,
 } from './internal/components/samples/utils';
@@ -492,8 +493,8 @@ import {
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
-    SampleOperations,
-    SampleStateTypes,
+    SampleOperation,
+    SampleStateType,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
@@ -874,9 +875,10 @@ export {
     getFilterArrayForSampleOperation,
     getSampleDeleteMessage,
     getSampleStatus,
+    getSampleStatusType,
     SampleOperationMenuItem,
-    SampleOperations,
-    SampleStateTypes,
+    SampleOperation,
+    SampleStateType,
     SampleStatusTag,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,

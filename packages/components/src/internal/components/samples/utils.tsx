@@ -5,9 +5,9 @@ import {
     caseInsensitive,
     LoadingSpinner,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
-    SAMPLE_STATE_TYPE_COLUMN_NAME, SampleStateTypes
+    SAMPLE_STATE_TYPE_COLUMN_NAME, SampleStateType
 } from '../../..';
-import { permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperations } from './constants';
+import { permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
 import { isSampleStatusEnabled } from '../../app/utils';
 import { ReactNode } from 'react';
 import { SampleStatus } from './models';
@@ -25,16 +25,14 @@ export function getOmittedSampleTypeColumns(user: User, omitCols?: string[]): st
     return cols;
 }
 
-export function isSampleOperationPermitted(data: string | any, operation: SampleOperations): boolean {
+export function isSampleOperationPermitted(sampleStatusType: SampleStateType, operation: SampleOperation): boolean {
     if (!isSampleStatusEnabled()) // everything is possible when not tracking status
         return true;
 
-    if (!data) // no status provided means all operations are permitted
+    if (!sampleStatusType) // no status provided means all operations are permitted
         return true;
 
-    const stateTypeString = (typeof data === 'string') ? data : caseInsensitive(data, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value;
-
-    return !stateTypeString || permittedOps[stateTypeString].has(operation);
+    return permittedOps[sampleStatusType].has(operation);
 }
 
 export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: boolean): ReactNode {
@@ -56,21 +54,25 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
     return deleteMsg;
 }
 
+export function getSampleStatusType(row: any): SampleStateType {
+    return caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value;
+}
+
 export function getSampleStatus(row: any): SampleStatus {
     return {
         label: caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME)?.displayValue,
-        statusType: caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value,
+        statusType: getSampleStatusType(row),
         description: caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value,
     }
 }
 
-export function getFilterArrayForSampleOperation(operation: SampleOperations): Filter.IFilter[] {
+export function getFilterArrayForSampleOperation(operation: SampleOperation): Filter.IFilter[] {
     if (!isSampleStatusEnabled())
         return [];
 
     let typesAllowed = [];
     let typesNotAllowed = [];
-    for (let stateType in SampleStateTypes) {
+    for (let stateType in SampleStateType) {
         if (permittedOps[stateType].has(operation))
             typesAllowed.push(stateType);
         else

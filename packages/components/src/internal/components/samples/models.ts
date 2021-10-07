@@ -1,4 +1,5 @@
 import { List } from 'immutable';
+import { SampleStateType } from './constants';
 
 export enum SampleCreationType {
     Independents = 'New samples',
@@ -105,6 +106,6 @@ export interface SampleAliquotsStats {
 
 export interface SampleStatus {
     label: string,
-    statusType: string,
+    statusType: SampleStateType,
     description?: string
 }

@@ -315,7 +315,8 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     );
 
     const isSourceSampleAssayGrid = useMemo(() => {
-        return sampleId === null && sourceSampleRows !== null;
+        // using type conversion comparison (i.e. == and !=) to check for both null and undefined
+        return sampleId == null && sourceSampleRows != null;
     }, [sampleId, sourceSampleRows]);
 
     const [aliquotRows, setAliquotRows] = useState<Record<string, any>[]>(undefined);

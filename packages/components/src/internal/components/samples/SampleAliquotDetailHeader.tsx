@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 
 import { DefaultRenderer, QueryColumn } from '../../..';
+import { isSampleStatusEnabled } from '../../app/utils';
 
 interface SampleAliquotDetailHeaderProps {
     aliquotHeaderDisplayColumns: List<QueryColumn>;
@@ -36,6 +37,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
         }, OrderedMap<string, any>());
 
         const description = newRow.get('description');
+        const status = newRow.get('samplestate');
         const created = newRow.get('created');
         const createdBy = newRow.get('createdby');
         const parent = newRow.get('aliquotedfromlsid/name');
@@ -48,6 +50,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
                         {this.renderDetailRow('Aliquoted by', createdBy, 'aliquotedby')}
                         {this.renderDetailRow('Aliquot date', created, 'aliquoteddate')}
                         {this.renderDetailRow('Aliquot description', description, 'aliquoteddescription')}
+                        {isSampleStatusEnabled() && this.renderDetailRow('Aliquot status', status, 'aliquotedstatus')}
                         {aliquotHeaderDisplayColumns.map((aliquotCol, key) => {
                             return this.renderDetailRow(
                                 aliquotCol.caption,

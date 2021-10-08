@@ -67,7 +67,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
     }
 
     const useSelection = sampleIds == undefined;
-    const id = queryModel?.id;
+    const id = sampleIds ? undefined : queryModel?.id;
     const numSelected = sampleIds ? sampleIds.length : queryModel.selections?.size;
 
     return (

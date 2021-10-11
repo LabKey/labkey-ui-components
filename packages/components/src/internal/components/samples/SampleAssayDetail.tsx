@@ -235,10 +235,11 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
         return (
             <AssayResultPanel>
                 <Alert bsStyle="warning">
-                    No assay results available for this sample. To upload assay data, use the <b>Upload Assay Data</b>{' '}
-                    option from the &nbsp;
-                    <i className="fa fa-bars" />
-                    &nbsp; menu above.
+                    No assay results available for this sample.
+                    {isSampleOperationPermitted(getSampleStatusType(sampleModel.getRow()), SampleOperation.AddAssayData) &&
+                        <>To upload assay data, use the <b>Upload Assay Data</b>{' '} option from the &nbsp;
+                            <i className="fa fa-bars" />&nbsp; menu above.</>
+                    }
                 </Alert>
             </AssayResultPanel>
         );

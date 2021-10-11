@@ -66,24 +66,18 @@ export function getSampleStatus(row: any): SampleStatus {
     }
 }
 
-export function getFilterArrayForSampleOperation(operation: SampleOperation): Filter.IFilter[] {
+export function getFilterForSampleOperation(operation: SampleOperation): Filter.IFilter {
     if (!isSampleStatusEnabled())
-        return [];
+        return null;
 
-    let typesAllowed = [];
     let typesNotAllowed = [];
     for (let stateType in SampleStateType) {
-        if (permittedOps[stateType].has(operation))
-            typesAllowed.push(stateType);
-        else
+        if (!permittedOps[stateType].has(operation))
             typesNotAllowed.push(stateType);
     }
     if (typesNotAllowed.length == 0)
-        return [];
-    if (typesNotAllowed.length == 1)
-        return [Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesNotAllowed[0], Filter.Types.NEQ)];
-    if (typesAllowed.length == 1)
-        return [Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesAllowed[0], Filter.Types.EQ)];
-    return [Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesAllowed, Filter.Types.IN)];
+        return null;
+
+    return Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesNotAllowed, Filter.Types.NOT_IN);
 }
 

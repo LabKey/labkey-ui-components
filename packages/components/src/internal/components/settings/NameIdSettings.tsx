@@ -1,123 +1,127 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useReducer } from 'react';
 
 import { Ajax, PermissionTypes, Utils } from '@labkey/api';
-import { Button, Checkbox, FormControl, FormControlProps } from 'react-bootstrap';
+import { Button, Checkbox, FormControl } from 'react-bootstrap';
 
-import {Alert, ConfirmModal, LabelHelpTip, LoadingSpinner, RequiresPermission} from '../../..';
+import {
+    Alert,
+    buildURL,
+    ConfirmModal,
+    handleRequestFailure,
+    LabelHelpTip,
+    LoadingSpinner,
+    RequiresPermission,
+    resolveErrorMessage,
+} from '../../..';
+
+class NameIdSettingsActions {
+    save = (key: string, value: string | boolean): Promise<null> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: buildURL('sampleManager', 'setNameExpressionOptions'),
+                jsonData: { [key]: value },
+                method: 'POST',
+                success: Utils.getCallbackWrapper(response => resolve(response)),
+                failure: handleRequestFailure(reject, 'Failed to save name expression options.'),
+            });
+        });
+    };
+    init = (): Promise<{ prefix: string; allowUserSpecifiedNames: boolean }> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: buildURL('sampleManager', 'getNameExpressionOptions'),
+                success: Utils.getCallbackWrapper(response => resolve(response)),
+                failure: handleRequestFailure(reject, 'Failed to get name expression options.'),
+            });
+        });
+    };
+}
 
 interface State {
     error: string;
-    loadingPrefix: boolean;
+    loading: boolean;
     prefix: string;
     savingPrefix: boolean;
-    loadingAllowUserSpecifiedNames: boolean;
     allowUserSpecifiedNames: boolean;
     savingAllowUserSpecifiedNames: boolean;
     confirmModalOpen: boolean;
 }
 
 export const NameIdSettings: FC = () => {
-    const [state, setState] = useState<State>({
+    const initialState: State = {
         error: undefined,
-        loadingPrefix: false, // true
+        loading: true,
         prefix: '',
         savingPrefix: false,
         confirmModalOpen: false,
-        loadingAllowUserSpecifiedNames: false, // true
         allowUserSpecifiedNames: false,
         savingAllowUserSpecifiedNames: false,
-    });
+    };
+    const [state, setState] = useReducer(
+        (currentState: State, newState: Partial<State>): State => ({ ...currentState, ...newState }),
+        initialState
+    );
+
     const {
-        loadingPrefix,
+        loading,
         savingAllowUserSpecifiedNames,
         allowUserSpecifiedNames,
-        loadingAllowUserSpecifiedNames,
         prefix,
         savingPrefix,
         confirmModalOpen,
         error,
     } = state;
 
+    const api = new NameIdSettingsActions();
+
     useEffect(() => {
-        // modularize? Pretty similar calls
-        // // temp comment: set prefix
-        // Ajax.request({
-        //     url: 'getExpressionPrefix url',
-        //     success: Utils.getCallbackWrapper(response => {
-        //         setState(currentState => ({ ...currentState, prefix: response.data['dummyValue'], loadingPrefix: false }));
-        //     }),
-        //     failure: Utils.getCallbackWrapper(err => {
-        //         setState(currentState => ({
-        //             ...currentState,
-        //             error: err.exception ?? 'Error loading setting',
-        //             loadingPrefix: false,
-        //         }));
-        //     }),
-        // });
-        //
-        // // temp comment: set allowUserSpecifiedNames
-        // Ajax.request({
-        //     url: 'allowUserSpecifiedNames url',
-        //     success: Utils.getCallbackWrapper(response => {
-        //         setState(currentState => ({ ...currentState, allowUserSpecifiedNames: response.data['dummyValue'], loadingAllowUserSpecifiedNames: false }));
-        //     }),
-        //     failure: Utils.getCallbackWrapper(err => {
-        //         setState(currentState => ({
-        //             ...currentState,
-        //             error: err.exception ?? 'Error loading setting',
-        //             loadingAllowUserSpecifiedNames: false,
-        //         }));
-        //     }),
-        // });
+        api.init()
+            .then(response => {
+                setState({
+                    prefix: response.prefix ?? '',
+                    allowUserSpecifiedNames: response.allowUserSpecifiedNames,
+                    loading: false,
+                });
+            })
+            .catch(err => {
+                setState({
+                    error: resolveErrorMessage(err),
+                    loading: false,
+                });
+            });
     }, []);
 
     const saveAllowUserSpecifiedNames = (): void => {
-        saveStateAttribute('savingAllowUserSpecifiedNames', true);
-        // Ajax.request({
-        //     url: 'setExpressionPrefix url',
-        //     jsonData: { allowUserSpecifiedNames: !state.allowUserSpecifiedNames },
-        //     method: 'POST',
-        //     success: Utils.getCallbackWrapper(() => {
-        //         setState(currentState => ({ ...currentState, allowUserSpecifiedNames: !state.allowUserSpecifiedNames, savingAllowUserSpecifiedNames: false }));
-        //     }),
-        //     failure: Utils.getCallbackWrapper(err => {
-        //         console.error(err);
-        //         setState(currentState => ({
-        //             ...currentState,
-        //             error: err.exception ?? 'Error saving setting',
-        //             savingAllowUserSpecifiedNames: false,
-        //         }));
-        //     }),
-        // });
+        setState({ savingAllowUserSpecifiedNames: true });
+        api.save('allowUserSpecifiedNames', allowUserSpecifiedNames)
+            .then(() => {
+                setState({
+                    allowUserSpecifiedNames: !state.allowUserSpecifiedNames,
+                    savingAllowUserSpecifiedNames: false,
+                });
+            })
+            .catch(err => displayError(err));
     };
 
     const savePrefix = (): void => {
-        saveStateAttribute('savingPrefix', true);
-        // Ajax.request({
-        //     url: 'savingPrefix url',
-        //     jsonData: { prefix: prefix },
-        //     method: 'POST',
-        //     success: Utils.getCallbackWrapper(() => {
-        //         setState(currentState => ({ ...currentState, savingPrefix: false }));
-        //     }),
-        //     failure: Utils.getCallbackWrapper(err => {
-        //         console.error(err);
-        //         setState(currentState => ({
-        //             ...currentState,
-        //             error: err.exception ?? 'Error saving setting',
-        //             savingPrefix: false,
-        //         }));
-        //     }),
-        // });
+        setState({ savingPrefix: true });
+        api.save('prefix', prefix)
+            .then(() => {
+                setState({ savingPrefix: false, confirmModalOpen: false });
+            })
+            .catch(err => displayError(err));
     };
 
-    const saveStateAttribute = (attr: string, value: any): void => {
-        setState(currentState => ({ ...currentState, [attr]: value }));
+    const displayError = (err): void => {
+        setState({
+            error: err.exception ?? 'Error saving setting',
+            savingAllowUserSpecifiedNames: false,
+        });
     };
 
     const onChange = (evt: any, stateAttr: string): void => {
         const val = evt.target.value;
-        saveStateAttribute(stateAttr, val);
+        setState({ [stateAttr]: val });
     };
 
     return (
@@ -128,16 +132,15 @@ export const NameIdSettings: FC = () => {
                     <div className="setting-section">
                         <h5> User Defined ID/Names </h5>
 
-                        {loadingPrefix && <LoadingSpinner />}
-                        {!loadingPrefix && (
+                        {loading && <LoadingSpinner />}
+                        {!loading && (
                             <form>
                                 <Checkbox
-                                    onChange={saveAllowUserSpecifiedNames}
+                                    onChange={() => saveAllowUserSpecifiedNames()}
                                     disabled={savingAllowUserSpecifiedNames}
                                     checked={allowUserSpecifiedNames}
                                 >
                                     Allow users to create/import their own IDs/Names
-
                                     <LabelHelpTip title="TBD">
                                         <p> TBD </p>
                                     </LabelHelpTip>
@@ -155,8 +158,8 @@ export const NameIdSettings: FC = () => {
                             "CL123".
                         </div>
 
-                        {loadingAllowUserSpecifiedNames && <LoadingSpinner />}
-                        {!loadingAllowUserSpecifiedNames && (
+                        {loading && <LoadingSpinner />}
+                        {!loading && (
                             <>
                                 <div className="prefix">
                                     <div className="prefix-label"> Prefix: </div>
@@ -173,7 +176,7 @@ export const NameIdSettings: FC = () => {
 
                                     <Button
                                         className="btn btn-success"
-                                        onClick={() => saveStateAttribute('confirmModalOpen', true)}
+                                        onClick={() => setState({ confirmModalOpen: true })}
                                         disabled={savingPrefix}
                                     >
                                         Apply Prefix
@@ -186,7 +189,7 @@ export const NameIdSettings: FC = () => {
                                 {confirmModalOpen && (
                                     <ConfirmModal
                                         title="Apply Prefix?"
-                                        onCancel={() => saveStateAttribute('confirmModalOpen', false)}
+                                        onCancel={() => setState({ confirmModalOpen: false })}
                                         onConfirm={() => savePrefix()}
                                         confirmButtonText="Yes, Save and Apply Prefix"
                                         cancelButtonText="Cancel"

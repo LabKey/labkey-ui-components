@@ -93,10 +93,10 @@ export const NameIdSettings: FC = () => {
 
     const saveAllowUserSpecifiedNames = (): void => {
         setState({ savingAllowUserSpecifiedNames: true });
-        api.save('allowUserSpecifiedNames', allowUserSpecifiedNames)
+        api.save('allowUserSpecifiedNames', !allowUserSpecifiedNames)
             .then(() => {
                 setState({
-                    allowUserSpecifiedNames: !state.allowUserSpecifiedNames,
+                    allowUserSpecifiedNames: !allowUserSpecifiedNames,
                     savingAllowUserSpecifiedNames: false,
                 });
             })

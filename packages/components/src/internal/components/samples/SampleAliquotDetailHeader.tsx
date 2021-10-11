@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 
-import { DefaultRenderer, QueryColumn } from '../../..';
+import { caseInsensitive, DefaultRenderer, QueryColumn } from '../../..';
 import { isSampleStatusEnabled } from '../../app/utils';
+import { SAMPLE_STATE_COLUMN_NAME } from './constants';
 
 interface SampleAliquotDetailHeaderProps {
     aliquotHeaderDisplayColumns: List<QueryColumn>;
@@ -32,15 +33,11 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
     render() {
         const { row, aliquotHeaderDisplayColumns } = this.props;
 
-        const newRow = row.reduce((newRow, value, key) => {
-            return newRow.set(key.toLowerCase(), value);
-        }, OrderedMap<string, any>());
-
-        const description = newRow.get('description');
-        const status = newRow.get('samplestate');
-        const created = newRow.get('created');
-        const createdBy = newRow.get('createdby');
-        const parent = newRow.get('aliquotedfromlsid/name');
+        const description = caseInsensitive(row,'description');
+        const status = caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME);
+        const created = caseInsensitive(row, 'created');
+        const createdBy = caseInsensitive(row, 'createdby');
+        const parent = caseInsensitive(row, 'aliquotedfromlsid/name');
 
         return (
             <>
@@ -54,7 +51,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
                         {aliquotHeaderDisplayColumns.map((aliquotCol, key) => {
                             return this.renderDetailRow(
                                 aliquotCol.caption,
-                                newRow.get(aliquotCol.fieldKey.toLowerCase()),
+                                caseInsensitive(row, aliquotCol.fieldKey),
                                 key
                             );
                         })}

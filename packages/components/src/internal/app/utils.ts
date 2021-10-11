@@ -192,10 +192,6 @@ export function isRequestsEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_REQUESTS_MENU] === true;
 }
 
-export function isSamplePicklistEnabled(): boolean {
-    return !isBiologicsEnabled();
-}
-
 export function hasModule(moduleName: string) {
     const { moduleContext } = getServerContext();
     return moduleContext.api?.moduleNames?.indexOf(moduleName.toLowerCase()) >= 0;

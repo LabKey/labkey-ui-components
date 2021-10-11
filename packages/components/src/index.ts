@@ -499,6 +499,9 @@ import { PicklistEditModal } from './internal/components/picklist/PicklistEditMo
 import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
+import { PicklistListing } from './internal/components/picklist/PicklistListing';
+import { PicklistOverview } from './internal/components/picklist/PicklistOverview';
+import { PicklistSubNav } from './internal/components/picklist/PicklistSubNav';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
@@ -526,7 +529,6 @@ import {
     isPremiumProductEnabled,
     isRequestsEnabled,
     isSampleManagerEnabled,
-    isSamplePicklistEnabled,
     isSampleStatusEnabled,
     registerWebSocketListeners,
     sampleManagerIsPrimaryApp,
@@ -621,7 +623,6 @@ const App = {
     isRequestsEnabled,
     isSampleManagerEnabled,
     isBiologicsEnabled,
-    isSamplePicklistEnabled,
     isPremiumProductEnabled,
     sampleManagerIsPrimaryApp,
     isSampleStatusEnabled,
@@ -849,6 +850,9 @@ export {
     PICKLIST_KEY_COLUMN,
     PICKLIST_SAMPLE_ID_COLUMN,
     Picklist,
+    PicklistListing,
+    PicklistOverview,
+    PicklistSubNav,
     deletePicklists,
     getSelectedPicklistSamples,
     removeSamplesFromPicklist,

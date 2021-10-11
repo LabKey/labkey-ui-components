@@ -27,19 +27,12 @@ import {
 
 import { getOmittedSampleTypeColumns } from './utils';
 import { getSampleAliquotsQueryConfig } from './actions';
-
-interface StorageButtonsComponentProps {
-    afterStorageUpdate?: () => void;
-    queryModel?: QueryModel;
-    user: User;
-}
-
-type StorageButton = ComponentType<StorageButtonsComponentProps>;
+import { SampleStorageButton } from "./models";
 
 interface AliquotGridButtonsProps {
     afterAction: () => void;
     onDelete: () => void;
-    StorageButtonsComponent?: StorageButton;
+    StorageButtonsComponent?: SampleStorageButton;
     user: User;
 }
 
@@ -69,7 +62,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
 
 interface Props {
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
-    storageButton?: StorageButton;
+    storageButton?: SampleStorageButton;
     user: User;
 }
 

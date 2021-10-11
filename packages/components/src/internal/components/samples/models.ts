@@ -1,4 +1,7 @@
+import { ComponentType } from "react";
 import { List } from 'immutable';
+
+import { QueryModel, User } from "../../..";
 
 export enum SampleCreationType {
     Independents = 'New samples',
@@ -102,3 +105,12 @@ export interface SampleAliquotsStats {
     jobsCount?: number;
     aliquotIds?: number[];
 }
+
+export interface SampleStorageButtonsComponentProps {
+    user: User;
+    afterStorageUpdate?: () => void;
+    queryModel?: QueryModel;
+    isPicklist?: boolean;
+}
+
+export type SampleStorageButton = ComponentType<SampleStorageButtonsComponentProps>;

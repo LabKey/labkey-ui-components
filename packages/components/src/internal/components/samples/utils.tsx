@@ -39,7 +39,7 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
     let deleteMsg;
     if (canDelete === undefined) {
         deleteMsg = <LoadingSpinner msg="Loading delete confirmation data..." />;
-    } else if (canDelete === false) {
+    } else if (!canDelete) {
         deleteMsg = 'This sample cannot be deleted because ';
         if (deleteInfoError) {
             deleteMsg += 'there was a problem loading the delete confirmation data.';

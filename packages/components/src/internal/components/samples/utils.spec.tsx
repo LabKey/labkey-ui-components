@@ -1,12 +1,18 @@
 import React from 'react';
 import {
     App,
+    getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
+    getSampleDeleteMessage,
     isSampleOperationPermitted,
+    LoadingSpinner,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
     SampleStateType
 } from '../../..';
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
+import { Filter } from '@labkey/api';
+import { mount } from 'enzyme';
 
 // Duplicated from inventory/packages/freezermanager/src/constants.ts
 export const CHECKED_OUT_BY_FIELD = 'checkedOutBy';
@@ -42,6 +48,34 @@ test('getOmittedSampleTypeColumns with inventoryCols omitted', () => {
     expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST, INVENTORY_COLS)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
 });
 
+describe("getSampleDeleteMessage", () => {
+    test("loading", () => {
+        LABKEY.moduleContext = {};
+        const wrapper = mount(<span>{getSampleDeleteMessage(undefined, false)}</span>);
+        expect(wrapper.find(LoadingSpinner).exists()).toBeTruthy();
+    });
+
+    test("cannot delete", () => {
+        LABKEY.moduleContext = {};
+        const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
+        expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
+        expect(wrapper.text()).toContain("This sample cannot be deleted because it has either derived sample or assay data dependencies.")
+    });
+
+    test("cannot delete with error", () => {
+        LABKEY.moduleContext = {};
+        const wrapper = mount(<span>{getSampleDeleteMessage(false, true)}</span>);
+        expect(wrapper.text()).toContain("This sample cannot be deleted because there was a problem loading the delete confirmation data.")
+    });
+
+    test("cannot delete, status enabled", () => {
+        LABKEY.moduleContext = { experiment: {'experimental-sample-status': true} };
+        const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
+        expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
+        expect(wrapper.text()).toContain("This sample cannot be deleted because it has either derived sample or assay data dependencies or status that prevents deletion.")
+    });
+});
+
 describe("isSampleOperationPermitted", () => {
     test("status not enabled", () => {
         LABKEY.moduleContext = {};
@@ -64,6 +98,24 @@ describe("isSampleOperationPermitted", () => {
         expect(isSampleOperationPermitted(SampleStateType.Consumed, SampleOperation.AddToStorage)).toBeFalsy();
         expect(isSampleOperationPermitted(SampleStateType.Consumed, SampleOperation.RemoveFromStorage)).toBeTruthy();
         expect(isSampleOperationPermitted(SampleStateType.Available, SampleOperation.EditLineage)).toBeTruthy();
+    })
+});
+
+describe("getFilterForSampleOperation", () => {
+   test("status not enabled", () => {
+       LABKEY.moduleContext = {};
+       expect(getFilterForSampleOperation(SampleOperation.EditMetadata)).toBeNull()
+   });
+
+   test("enabled, all allowed", () => {
+       LABKEY.moduleContext = { experiment: {'experimental-sample-status': true} };
+       expect(getFilterForSampleOperation(SampleOperation.AddToPicklist)).toBeNull();
+   })
+
+    test("enabled, some status does not allow", () => {
+        LABKEY.moduleContext = { experiment: {'experimental-sample-status': true} };
+        expect(getFilterForSampleOperation(SampleOperation.EditLineage)).toStrictEqual(Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME,[SampleStateType.Locked], Filter.Types.NOT_IN));
+        expect(getFilterForSampleOperation(SampleOperation.UpdateStorageMetadata)).toStrictEqual(Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME,[SampleStateType.Consumed, SampleStateType.Locked], Filter.Types.NOT_IN));
     })
 });
 

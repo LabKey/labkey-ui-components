@@ -485,7 +485,7 @@ import {
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
 } from './internal/components/samples/models';
-import { SampleOperationMenuItem } from './internal/components/samples/SampleOperationMenuItem';
+import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import {
     FIND_BY_IDS_QUERY_PARAM,
@@ -876,7 +876,7 @@ export {
     getSampleDeleteMessage,
     getSampleStatus,
     getSampleStatusType,
-    SampleOperationMenuItem,
+    DisableableMenuItem,
     SampleOperation,
     SampleStateType,
     SampleStatusTag,

@@ -9,9 +9,9 @@ interface Props {
     placement?: string,
 }
 
-const OPERATION_NOT_PERMITTED_MESSAGE = "The current status of the sample does not permit this operation.";
+const SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE = "The current status of the sample does not permit this operation.";
 
-export const SampleOperationMenuItem: FC<Props> = memo(props => {
+export const DisableableMenuItem: FC<Props> = memo(props => {
 
     const { disabledMessage, operationPermitted, menuItemProps, menuItemContent, placement } = props;
 
@@ -20,7 +20,7 @@ export const SampleOperationMenuItem: FC<Props> = memo(props => {
 
     const overlay = (
         <Popover id="disable-operation-warning" className="popover-message">
-            {disabledMessage ?? OPERATION_NOT_PERMITTED_MESSAGE}
+            {disabledMessage ?? SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE}
         </Popover>
     );
     return (

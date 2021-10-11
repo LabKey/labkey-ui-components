@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Updates for restricting single sample operations based on status
-    * Add `SampleOperationMenuItem` that encapsulates the `OverlayTrigger` and `Popover` displayed when operation is not permitted
+    * Add `DisableableMenuItem` that encapsulates the `OverlayTrigger` and `Popover` displayed when operation is not permitted
     * Add constants and utility methods for checking if operations are permitted
     * Add `SampleStatusTag` component for displaying the status on a details page
     * Update `SingleParentEntityPanel` to filter out samples that can't be used as parents

@@ -10,7 +10,7 @@ import { ChoosePicklistModal } from './ChoosePicklistModal';
 import { PicklistEditModal } from './PicklistEditModal';
 import { getSampleStatusType, isSampleOperationPermitted } from '../samples/utils';
 import { SampleOperation } from '../samples/constants';
-import { SampleOperationMenuItem } from '../samples/SampleOperationMenuItem';
+import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 
 interface Props {
     queryModel?: QueryModel;
@@ -81,7 +81,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     nounPlural="samples"
                 />
             ) : (
-                <SampleOperationMenuItem
+                <DisableableMenuItem
                     operationPermitted={isSampleOperationPermitted(getSampleStatusType(queryModel.getRow()), SampleOperation.AddToPicklist)}
                     menuItemProps={{onClick, key}}
                     menuItemContent={itemText}

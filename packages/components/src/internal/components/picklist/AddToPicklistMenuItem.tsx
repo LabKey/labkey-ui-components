@@ -66,7 +66,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         return null;
     }
 
-    const useSelection = sampleIds == undefined;
+    const useSelection = sampleIds === undefined;
     const id = sampleIds ? undefined : queryModel?.id;
     const numSelected = sampleIds ? sampleIds.length : queryModel.selections?.size;
 
@@ -83,7 +83,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
             ) : (
                 <SampleOperationMenuItem
                     operationPermitted={isSampleOperationPermitted(getSampleStatusType(queryModel.getRow()), SampleOperation.AddToPicklist)}
-                    menuItemProps={{onClick: onClick, key: key}}
+                    menuItemProps={{onClick, key}}
                     menuItemContent={itemText}
                 />
             )}

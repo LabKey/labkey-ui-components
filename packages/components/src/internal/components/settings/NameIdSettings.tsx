@@ -22,7 +22,7 @@ export const NameIdSettings = () => {
 
 interface Props {
     init: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
-    save: (key: string, value: string | boolean) => Promise<null>;
+    save: (key: string, value: string | boolean) => Promise<void>;
 }
 
 interface State {
@@ -118,7 +118,7 @@ export const NameIdSettingsForm: FC<Props> = props => {
                     {!loading && (
                         <form>
                             <Checkbox
-                                onChange={() => saveAllowUserSpecifiedNames()}
+                                onChange={saveAllowUserSpecifiedNames}
                                 disabled={savingAllowUserSpecifiedNames}
                                 checked={allowUserSpecifiedNames}
                             >
@@ -172,7 +172,7 @@ export const NameIdSettingsForm: FC<Props> = props => {
                                 <ConfirmModal
                                     title="Apply Prefix?"
                                     onCancel={() => setState({ confirmModalOpen: false })}
-                                    onConfirm={() => savePrefix()}
+                                    onConfirm={savePrefix}
                                     confirmButtonText="Yes, Save and Apply Prefix"
                                     cancelButtonText="Cancel"
                                 >

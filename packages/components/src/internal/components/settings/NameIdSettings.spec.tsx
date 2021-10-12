@@ -1,13 +1,14 @@
 import {mount} from "enzyme";
 import React from "react";
-import { ConfirmModal, LoadingSpinner, sleep} from "../../..";
+import { ConfirmModal, LoadingSpinner} from "../../..";
 import {Button, Checkbox} from "react-bootstrap";
 import {NameIdSettingsForm} from "./NameIdSettings";
+import {waitForLifecycle} from "../../testHelpers";
 
 describe('NameIdSettings', () => {
     const DEFAULT_PROPS = {
         init: jest.fn(async () => {return {prefix: "ABC", allowUserSpecifiedNames: false}}),
-        save: jest.fn(async () => {return null})
+        save: jest.fn(async () => {})
     };
 
     test('on init', async () => {
@@ -16,8 +17,7 @@ describe('NameIdSettings', () => {
         expect(wrapper.find('.prefix-field').exists()).toEqual(false);
         expect(wrapper.find(Checkbox).exists()).toEqual(false);
 
-        await sleep();
-        wrapper.update();
+        await waitForLifecycle(wrapper);
 
         expect(wrapper.find(LoadingSpinner).length).toEqual(0);
         expect(wrapper.find('.prefix-field').exists()).toEqual(true);
@@ -25,18 +25,30 @@ describe('NameIdSettings', () => {
         expect(DEFAULT_PROPS.init).toHaveBeenCalled();
     });
 
+    test('allowUserSpecifiedNames checkbox', async () => {
+        const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
+        await waitForLifecycle(wrapper);
+
+        const checkbox = () => wrapper.find('input').first();
+        expect(checkbox().prop('checked')).toBe(false);
+
+        checkbox().simulate('change', {target: {checked: true}});
+
+        await waitForLifecycle(wrapper);
+        expect(DEFAULT_PROPS.save).toHaveBeenCalled();
+        expect(checkbox().prop('checked')).toBe(true);
+    });
+
     test('prefix preview', async () => {
         const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
-        await sleep();
-        wrapper.update();
+        await waitForLifecycle(wrapper);
 
         expect(wrapper.find('.prefix-example').text()).toContain("ABC-Blood-${GenId}")
     });
 
     test('apply prefix confirm modal -- cancel', async () => {
         const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
-        await sleep();
-        wrapper.update();
+        await waitForLifecycle(wrapper);
 
         wrapper.find(Button).simulate('click');
         expect(wrapper.find(ConfirmModal).exists()).toEqual(true);
@@ -46,12 +58,10 @@ describe('NameIdSettings', () => {
 
     test('apply prefix confirm modal -- save', async () => {
         const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
-        await sleep();
-        wrapper.update();
+        await waitForLifecycle(wrapper);
 
         wrapper.find(Button).simulate('click');
         expect(wrapper.find(ConfirmModal).exists()).toEqual(true);
-        console.log(wrapper.find(Button).length);
 
         // Click on 'Yes, Save and Apply Prefix' button
         wrapper.find(Button).last().simulate('click');

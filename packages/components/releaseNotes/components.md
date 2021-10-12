@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 9440: Enable picklists for LKB
   * Move PicklistOverview, PicklistSubNav and PicklistListing here from LKSM
 
+### version 2.82.0
+*Released*: 12 October 2021
+* Item 9533: SampleAssayDetail support for module defined sample assay results view configs
+
 ### version 2.81.0
 *Released*: 5 October 2021
 * Issue 43981: Add JavaDoc links to help text in field editor

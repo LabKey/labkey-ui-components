@@ -5,11 +5,12 @@ import { isSamplePicklistEnabled, userCanManagePicklists } from '../../app/utils
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 
-import { ChoosePicklistModal } from './ChoosePicklistModal';
-import { PicklistEditModal } from './PicklistEditModal';
 import { getSampleStatusType, isSampleOperationPermitted } from '../samples/utils';
 import { SampleOperation } from '../samples/constants';
 import { DisableableMenuItem } from '../samples/DisableableMenuItem';
+
+import { PicklistEditModal } from './PicklistEditModal';
+import { ChoosePicklistModal } from './ChoosePicklistModal';
 
 interface Props {
     queryModel?: QueryModel;
@@ -23,16 +24,8 @@ interface Props {
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {
-    const {
-        sampleIds,
-        key,
-        itemText,
-        user,
-        queryModel,
-        currentProductId,
-        picklistProductId,
-        metricFeatureArea,
-    } = props;
+    const { sampleIds, key, itemText, user, queryModel, currentProductId, picklistProductId, metricFeatureArea } =
+        props;
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
 
@@ -81,8 +74,11 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                 />
             ) : (
                 <DisableableMenuItem
-                    operationPermitted={isSampleOperationPermitted(getSampleStatusType(queryModel.getRow()), SampleOperation.AddToPicklist)}
-                    menuItemProps={{onClick, key}}
+                    operationPermitted={isSampleOperationPermitted(
+                        getSampleStatusType(queryModel.getRow()),
+                        SampleOperation.AddToPicklist
+                    )}
+                    menuItemProps={{ onClick, key }}
                     menuItemContent={itemText}
                 />
             )}

@@ -26,9 +26,10 @@ import { DETAIL_TABLE_CLASSES } from '../forms/constants';
 
 import { DELIMITER } from '../forms/input/SelectInput';
 
-import { IEntityTypeOption } from './models';
 import { isSampleStatusEnabled } from '../../app/utils';
 import { getFilterForSampleOperation } from '../samples/utils';
+
+import { IEntityTypeOption } from './models';
 
 interface OwnProps {
     chosenType: IEntityTypeOption;
@@ -111,7 +112,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                 .map(row => caseInsensitive(row, 'Name').value)
                 .join(DELIMITER);
         }
-        let queryFilters = List<Filter.IFilter>()
+        let queryFilters = List<Filter.IFilter>();
         if (isSampleStatusEnabled() && parentDataType.instanceSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) {
             queryFilters = queryFilters.push(getFilterForSampleOperation(SampleOperation.EditLineage));
         }

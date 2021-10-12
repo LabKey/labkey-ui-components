@@ -1,4 +1,5 @@
 import { List } from 'immutable';
+
 import { SampleStateType } from './constants';
 
 export enum SampleCreationType {
@@ -105,7 +106,7 @@ export interface SampleAliquotsStats {
 }
 
 export interface SampleStatus {
-    label: string,
-    statusType: SampleStateType,
-    description?: string
+    label: string;
+    statusType: SampleStateType;
+    description?: string;
 }

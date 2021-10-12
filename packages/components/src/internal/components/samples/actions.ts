@@ -50,9 +50,10 @@ import { getInitialParentChoices } from '../entities/utils';
 
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
+import { isSampleStatusEnabled } from '../../app/utils';
+
 import { GroupedSampleFields, SampleAliquotsStats } from './models';
 import { IS_ALIQUOT_FIELD } from './constants';
-import { isSampleStatusEnabled } from '../../app/utils';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -430,8 +431,7 @@ export interface GroupedSampleDisplayColumns {
     editColumns: QueryColumn[];
 }
 
-function isAliquotEditableField(colName: string) : boolean
-{
+function isAliquotEditableField(colName: string): boolean {
     return colName === 'description' || (isSampleStatusEnabled() && colName === 'samplestate');
 }
 

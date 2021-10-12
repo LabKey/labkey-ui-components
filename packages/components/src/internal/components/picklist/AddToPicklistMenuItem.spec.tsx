@@ -9,9 +9,10 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 
+import { SAMPLE_STATE_TYPE_COLUMN_NAME } from '../samples/constants';
+
 import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
 import { PicklistEditModal } from './PicklistEditModal';
-import { SAMPLE_STATE_TYPE_COLUMN_NAME } from '../samples/constants';
 
 describe('AddToPicklistMenuItem', () => {
     const key = 'picklists';
@@ -105,13 +106,19 @@ describe('AddToPicklistMenuItem', () => {
 
     test('modal open on click, sampleIds', () => {
         const wrapper = mount(
-            <AddToPicklistMenuItem itemText={text} queryModel={queryModelWithoutSelections} sampleIds={['1']} key={key} user={TEST_USER_EDITOR} />
+            <AddToPicklistMenuItem
+                itemText={text}
+                queryModel={queryModelWithoutSelections}
+                sampleIds={['1']}
+                key={key}
+                user={TEST_USER_EDITOR}
+            />
         );
         validateMenuItemClick(wrapper, true);
         wrapper.unmount();
     });
 
-    test("sample with status", () => {
+    test('sample with status', () => {
         let model = makeTestQueryModel(SchemaQuery.create('test', 'query'));
         model = model.mutate({
             rows: {
@@ -123,8 +130,14 @@ describe('AddToPicklistMenuItem', () => {
             orderedRows: ['1'],
         });
         const wrapper = mount(
-            <AddToPicklistMenuItem itemText={text} queryModel={model} sampleIds={['1']} key={key} user={TEST_USER_EDITOR} />
+            <AddToPicklistMenuItem
+                itemText={text}
+                queryModel={model}
+                sampleIds={['1']}
+                key={key}
+                user={TEST_USER_EDITOR}
+            />
         );
         validateMenuItemClick(wrapper, true);
-    })
+    });
 });

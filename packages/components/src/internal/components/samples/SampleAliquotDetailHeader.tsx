@@ -3,6 +3,7 @@ import { List, Map, OrderedMap } from 'immutable';
 
 import { caseInsensitive, DefaultRenderer, QueryColumn } from '../../..';
 import { isSampleStatusEnabled } from '../../app/utils';
+
 import { SAMPLE_STATE_COLUMN_NAME } from './constants';
 
 interface SampleAliquotDetailHeaderProps {

@@ -2,21 +2,19 @@ import React, { FC, memo, ReactNode } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
 interface Props {
-    disabledMessage?: ReactNode
-    operationPermitted: boolean,
-    menuItemProps?: any,
-    menuItemContent: ReactNode,
-    placement?: string,
+    disabledMessage?: ReactNode;
+    operationPermitted: boolean;
+    menuItemProps?: any;
+    menuItemContent: ReactNode;
+    placement?: string;
 }
 
-const SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE = "The current status of the sample does not permit this operation.";
+const SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE = 'The current status of the sample does not permit this operation.';
 
 export const DisableableMenuItem: FC<Props> = memo(props => {
-
     const { disabledMessage, operationPermitted, menuItemProps, menuItemContent, placement } = props;
 
-    if (operationPermitted)
-        return <MenuItem {...menuItemProps}>{menuItemContent}</MenuItem>
+    if (operationPermitted) return <MenuItem {...menuItemProps}>{menuItemContent}</MenuItem>;
 
     const overlay = (
         <Popover id="disable-operation-warning" className="popover-message">
@@ -24,9 +22,8 @@ export const DisableableMenuItem: FC<Props> = memo(props => {
         </Popover>
     );
     return (
-        <OverlayTrigger overlay={overlay} placement={ placement ?? "left"}>
+        <OverlayTrigger overlay={overlay} placement={placement ?? 'left'}>
             <MenuItem disabled>{menuItemContent}</MenuItem>
         </OverlayTrigger>
-    )
+    );
 });
-

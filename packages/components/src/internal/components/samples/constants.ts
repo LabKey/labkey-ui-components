@@ -29,7 +29,7 @@ export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';
 export const SAMPLE_STATE_DESCRIPTION_COLUMN_NAME = 'SampleState/Description';
 
 export enum SampleOperation {
-    EditMetadata=1,
+    EditMetadata = 1,
     EditLineage,
     AddToStorage,
     UpdateStorageMetadata,
@@ -41,18 +41,20 @@ export enum SampleOperation {
     RemoveFromWorkflow,
     AddAssayData,
     LinkToStudy,
-    RecallFromStudy
+    RecallFromStudy,
 }
 
-export enum SampleStateType  {
-    Available='Available',
-    Consumed='Consumed',
-    Locked='Locked',
+export enum SampleStateType {
+    Available = 'Available',
+    Consumed = 'Consumed',
+    Locked = 'Locked',
 }
 
 export const permittedOps = {
     [SampleStateType.Available]: new Set(
-        Object.keys(SampleOperation).filter(val => !isNaN(parseInt(val))).map(val => parseInt(val))
+        Object.keys(SampleOperation)
+            .filter(val => !isNaN(parseInt(val)))
+            .map(val => parseInt(val))
     ),
     [SampleStateType.Consumed]: new Set([
         SampleOperation.EditMetadata,
@@ -65,10 +67,7 @@ export const permittedOps = {
         SampleOperation.RemoveFromWorkflow,
         SampleOperation.AddAssayData,
         SampleOperation.LinkToStudy,
-        SampleOperation.RecallFromStudy
+        SampleOperation.RecallFromStudy,
     ]),
-    [SampleStateType.Locked]: new Set([
-        SampleOperation.AddToPicklist,
-        SampleOperation.RemoveFromPicklist
-    ]),
+    [SampleStateType.Locked]: new Set([SampleOperation.AddToPicklist, SampleOperation.RemoveFromPicklist]),
 };

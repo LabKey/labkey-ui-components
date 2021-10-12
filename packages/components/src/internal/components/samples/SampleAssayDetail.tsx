@@ -237,7 +237,7 @@ const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & InjectedQueryMo
                 <Alert bsStyle="warning">
                     No assay results available for this sample.
                     {isSampleOperationPermitted(
-                        getSampleStatusType(sampleModel.getRow()),
+                        getSampleStatusType(sampleModel?.getRow()),
                         SampleOperation.AddAssayData
                     ) && (
                         <>
@@ -355,7 +355,7 @@ const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     }, []);
 
     const canImportData = useMemo(() => {
-        return isSampleOperationPermitted(getSampleStatusType(sampleModel.getRow()), SampleOperation.AddAssayData);
+        return isSampleOperationPermitted(getSampleStatusType(sampleModel?.getRow()), SampleOperation.AddAssayData);
     }, [sampleModel]);
 
     const { queryConfigs, tabOrder } = useMemo(() => {

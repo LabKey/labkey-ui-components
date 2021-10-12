@@ -13,6 +13,11 @@ import { LoadingState } from '../../../public/LoadingState';
 import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
 import { QueryInfo } from '../../../public/QueryInfo';
 
+import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
+import { TEST_USER_AUTHOR, TEST_USER_READER } from '../../../test/data/users';
+import { getTestAPIWrapper } from '../../APIWrapper';
+
+import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import {
     AssayResultPanel,
     getSampleAssayDetailEmptyText,
@@ -22,23 +27,31 @@ import {
     SampleAssayDetailButtonsRight,
     SampleAssayDetailImpl,
 } from './SampleAssayDetail';
-import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from './SampleAliquotViewSelector';
-import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
-import { TEST_USER_AUTHOR, TEST_USER_READER } from '../../../test/data/users';
-import { getTestAPIWrapper } from '../../APIWrapper';
 import { getSamplesTestAPIWrapper } from './APIWrapper';
 
 const assayModel = new AssayStateModel({
     definitions: [
-        new AssayDefinitionModel({ id: 17, name: 'First Assay', type: 'General', links: fromJS({ 'import': 'test1' }) }),
-        new AssayDefinitionModel({ id: 41, name: 'NAb Assay', type: 'NAb', links: fromJS({ 'import': 'test2' }) }),
+        new AssayDefinitionModel({ id: 17, name: 'First Assay', type: 'General', links: fromJS({ import: 'test1' }) }),
+        new AssayDefinitionModel({ id: 41, name: 'NAb Assay', type: 'NAb', links: fromJS({ import: 'test2' }) }),
     ],
     definitionsLoadingState: LoadingState.LOADED,
 });
 const SQ = SchemaQuery.create('schema', 'query');
-const modelLoadedNoRows = makeTestQueryModel(SQ, new QueryInfo(), {}, [], 0).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
-const modelLoadedWithRow = makeTestQueryModel(SQ, new QueryInfo(), {1: { RowId: { value: 1 }, Name: { value: 'Name1' } }}, ['1'], 1).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
-const modelLoading = makeTestQueryModel(SQ).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADING });
+const modelLoadedNoRows = makeTestQueryModel(SQ, new QueryInfo(), {}, [], 0).mutate({
+    queryInfoLoadingState: LoadingState.LOADED,
+    rowsLoadingState: LoadingState.LOADED,
+});
+const modelLoadedWithRow = makeTestQueryModel(
+    SQ,
+    new QueryInfo(),
+    { 1: { RowId: { value: 1 }, Name: { value: 'Name1' } } },
+    ['1'],
+    1
+).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
+const modelLoading = makeTestQueryModel(SQ).mutate({
+    queryInfoLoadingState: LoadingState.LOADED,
+    rowsLoadingState: LoadingState.LOADING,
+});
 const sampleModel = makeTestQueryModel(SQ);
 const model = makeTestQueryModel(SQ).mutate({ title: 'First Assay' });
 const DEFAULT_PROPS = {
@@ -55,30 +68,27 @@ describe('SampleAssayDetailButtons', () => {
     }
 
     test('without insert perm', () => {
-        const wrapper = mountWithServerContext(
-            <SampleAssayDetailButtons {...DEFAULT_PROPS} />,
-            { user: TEST_USER_READER }
-        );
+        const wrapper = mountWithServerContext(<SampleAssayDetailButtons {...DEFAULT_PROPS} />, {
+            user: TEST_USER_READER,
+        });
         validate(wrapper);
         wrapper.unmount();
     });
 
     test('currentAssayHref undefined', () => {
         const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ title: 'Other Assay' });
-        const wrapper = mountWithServerContext(
-            <SampleAssayDetailButtons {...DEFAULT_PROPS} model={model} />,
-            { user: TEST_USER_AUTHOR }
-        );
+        const wrapper = mountWithServerContext(<SampleAssayDetailButtons {...DEFAULT_PROPS} model={model} />, {
+            user: TEST_USER_AUTHOR,
+        });
         validate(wrapper);
         wrapper.unmount();
     });
 
     test('multiple menu items', () => {
         const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ title: 'NAb Assay' });
-        const wrapper = mountWithServerContext(
-            <SampleAssayDetailButtons {...DEFAULT_PROPS} model={model} />,
-            { user: TEST_USER_AUTHOR }
-        );
+        const wrapper = mountWithServerContext(<SampleAssayDetailButtons {...DEFAULT_PROPS} model={model} />, {
+            user: TEST_USER_AUTHOR,
+        });
         validate(wrapper, 2);
         expect(wrapper.find(SplitButton).prop('href')).toBe('test2');
         wrapper.unmount();
@@ -87,7 +97,12 @@ describe('SampleAssayDetailButtons', () => {
     test('one menu item', () => {
         const assayModel = new AssayStateModel({
             definitions: [
-                new AssayDefinitionModel({ id: 17, name: 'First Assay', type: 'General', links: fromJS({ 'import': 'test1' }) }),
+                new AssayDefinitionModel({
+                    id: 17,
+                    name: 'First Assay',
+                    type: 'General',
+                    links: fromJS({ import: 'test1' }),
+                }),
             ],
             definitionsLoadingState: LoadingState.LOADED,
         });
@@ -347,10 +362,13 @@ describe('SampleAssayDetailImpl', () => {
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper({
                     samples: getSamplesTestAPIWrapper({
-                        getSampleAssayResultViewConfigs: () => Promise.resolve([{
-                            ...moduleAssayConfig,
-                            sampleRowKey: 'Name',
-                        }]),
+                        getSampleAssayResultViewConfigs: () =>
+                            Promise.resolve([
+                                {
+                                    ...moduleAssayConfig,
+                                    sampleRowKey: 'Name',
+                                },
+                            ]),
                     }),
                 })}
             />

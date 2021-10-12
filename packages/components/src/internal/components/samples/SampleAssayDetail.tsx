@@ -27,8 +27,9 @@ import { getImportItemsForAssayDefinitions } from '../assay/actions';
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -325,26 +326,27 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
 
         api.samples
             .getSampleAliquotRows(sampleId)
-                .then(aliquots => {
-                    setAliquotRows(aliquots);
-                })
-                .catch(() => {
-                    createNotification({
-                        alertClass: 'danger',
-                        message: 'Unable to load sample aliquots. Your session may have expired.',
-                    });
+            .then(aliquots => {
+                setAliquotRows(aliquots);
+            })
+            .catch(() => {
+                createNotification({
+                    alertClass: 'danger',
+                    message: 'Unable to load sample aliquots. Your session may have expired.',
                 });
-            }, [sampleId, showAliquotViewSelector]);
+            });
+    }, [sampleId, showAliquotViewSelector]);
 
-    const [sampleAssayResultViewConfigs, setSampleAssayResultViewConfigs] = useState<SampleAssayResultViewConfig[]>(undefined);
+    const [sampleAssayResultViewConfigs, setSampleAssayResultViewConfigs] =
+        useState<SampleAssayResultViewConfig[]>(undefined);
     useEffect(() => {
         api.samples
             .getSampleAssayResultViewConfigs()
-                    .then(setSampleAssayResultViewConfigs)
-                    .catch(() => {
-                        setSampleAssayResultViewConfigs([]);
-                    });
-            }, []);
+            .then(setSampleAssayResultViewConfigs)
+            .catch(() => {
+                setSampleAssayResultViewConfigs([]);
+            });
+    }, []);
 
     const loadingDefinitions =
         isLoading(assayModel.definitionsLoadingState) || sampleAssayResultViewConfigs === undefined;

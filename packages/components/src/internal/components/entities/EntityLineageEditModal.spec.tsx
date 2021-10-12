@@ -12,10 +12,11 @@ import { waitForLifecycle } from '../../testHelpers';
 
 import { Progress } from '../base/Progress';
 
+import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
+
 import { EntityLineageEditModal } from './EntityLineageEditModal';
 import { DataClassDataType, SampleTypeDataType } from './constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
-import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
 
 const SQ = SchemaQuery.create('schema', 'query');
 const MODEL = makeTestQueryModel(SQ).mutate({
@@ -69,7 +70,7 @@ const DEFAULT_PROPS = {
     parentEntityDataTypes: [SampleTypeDataType, DataClassDataType],
     api: getTestAPIWrapper({
         samples: getSamplesTestAPIWrapper({
-            getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS)
+            getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
         }),
     }),
 };
@@ -127,7 +128,7 @@ describe('EntityLineageEditModal', () => {
                 queryModel={MODEL}
                 api={getTestAPIWrapper({
                     samples: getSamplesTestAPIWrapper({
-                        getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_ALL_ALIQUOTS)
+                        getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_ALL_ALIQUOTS),
                     }),
                 })}
             />

@@ -4,6 +4,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Add settings panel 'ID/Name Settings' for use in LKB and LKSM
+* Within naming pattern, add warning UI if prefix altered
+
+### version 2.82.0
+*Released*: 12 October 2021
+* Item 9533: SampleAssayDetail support for module defined sample assay results view configs
 
 ### version 2.81.0
 *Released*: 5 October 2021

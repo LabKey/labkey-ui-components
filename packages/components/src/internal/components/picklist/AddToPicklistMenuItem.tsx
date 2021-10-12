@@ -1,5 +1,4 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { MenuItem } from 'react-bootstrap';
 
 import { User } from '../base/models/User';
 import { isSamplePicklistEnabled, userCanManagePicklists } from '../../app/utils';

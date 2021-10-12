@@ -35,13 +35,4 @@ describe('PicklistButton', () => {
         expect(menuItem.prop('selectionKey')).toBe(queryModel.id);
         expect(menuItem.prop('selectedQuantity')).toBe(2);
     });
-
-    test('no model', () => {
-        const wrapper = mount(<PicklistButton model={undefined} user={TEST_USER_EDITOR} />);
-        expect(wrapper.find('MenuItem')).toHaveLength(2);
-        const menuItem = wrapper.find(PicklistCreationMenuItem);
-        expect(menuItem).toHaveLength(1);
-        expect(menuItem.prop('selectionKey')).toBeFalsy();
-        expect(menuItem.prop('selectedQuantity')).toBeFalsy();
-    });
 });

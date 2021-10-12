@@ -14,7 +14,9 @@ import {
     QueryModel,
     QuerySelect,
     RemoveEntityButton,
+    SampleOperation,
     SchemaQuery,
+    SCHEMAS,
     SelectInput,
 } from '../../..';
 
@@ -23,6 +25,9 @@ import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../p
 import { DETAIL_TABLE_CLASSES } from '../forms/constants';
 
 import { DELIMITER } from '../forms/input/SelectInput';
+
+import { isSampleStatusEnabled } from '../../app/utils';
+import { getFilterForSampleOperation } from '../samples/utils';
 
 import { IEntityTypeOption } from './models';
 
@@ -107,6 +112,10 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                 .map(row => caseInsensitive(row, 'Name').value)
                 .join(DELIMITER);
         }
+        let queryFilters = List<Filter.IFilter>();
+        if (isSampleStatusEnabled() && parentDataType.instanceSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) {
+            queryFilters = queryFilters.push(getFilterForSampleOperation(SampleOperation.EditLineage));
+        }
         const labelClasses = 'col-sm-3 col-xs-12';
         return (
             <div className="bottom-spacing" key={'parent-selections-' + index}>
@@ -146,6 +155,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                             onInitValue={this.onInitValue}
                             onQSChange={this.onChangeParentValue}
                             schemaQuery={parentSchemaQuery}
+                            queryFilters={queryFilters}
                             showLoading
                             value={value}
                             valueColumn="Name"

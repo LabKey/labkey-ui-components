@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.83.0
+*Released*: 12 October 2021
+* Updates for restricting single sample operations based on status
+    * Add `DisableableMenuItem` that encapsulates the `OverlayTrigger` and `Popover` displayed when operation is not permitted
+    * Add constants and utility methods for checking if operations are permitted
+    * Add `SampleStatusTag` component for displaying the status on a details page
+    * Update `SingleParentEntityPanel` to filter out samples that can't be used as parents
+
 ### version 2.82.0
 *Released*: 12 October 2021
 * Item 9533: SampleAssayDetail support for module defined sample assay results view configs

@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
+import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
@@ -629,22 +629,19 @@ export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: s
     });
 }
 
-export function getSampleAliquots(sampleId: number | string): Promise<number[]> {
+export function getSampleAliquotRows(sampleId: number | string): Promise<Record<string, any>[]> {
     return new Promise((resolve, reject) => {
         Query.executeSql({
             sql:
-                'SELECT m.RowId\n' +
+                'SELECT m.RowId, m.Name\n' +
                 'FROM exp.materials m \n' +
                 'WHERE m.RootMaterialLSID = (SELECT lsid FROM exp.materials mi WHERE mi.RowId = ' +
                 sampleId +
                 ')',
             schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
+            requiredVersion: 17.1,
             success: result => {
-                const aliquotIds = [];
-                result.rows.forEach(row => {
-                    aliquotIds.push(caseInsensitive(row, 'RowId'));
-                });
-                resolve(aliquotIds);
+                resolve(result.rows);
             },
             failure: reason => {
                 console.error(reason);
@@ -731,4 +728,31 @@ export function getSampleAliquotsQueryConfig(
             Filter.create('Lsid', sampleLsid, Filter.Types.EXP_CHILD_OF),
         ],
     };
+}
+
+export type SampleAssayResultViewConfig = {
+    title: string;
+    moduleName: string;
+    schemaName: string;
+    queryName: string;
+    viewName?: string;
+    sampleRowKey?: string; // sample row property to use for key in baseFilter, defaults to 'RowId' when value is undefined
+    filterKey: string; // field key of the query/view to use for the sample filter IN clause
+    containerFilter?: string; // Defaults to 'current' when value is undefined
+};
+
+export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultViewConfig[]> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('sampleManager', 'getSampleAssayResultsViewConfigs.api'),
+            method: 'GET',
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response.configs ?? []);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
+            }),
+        });
+    });
 }

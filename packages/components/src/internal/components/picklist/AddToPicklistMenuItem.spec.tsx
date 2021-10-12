@@ -139,5 +139,6 @@ describe('AddToPicklistMenuItem', () => {
             />
         );
         validateMenuItemClick(wrapper, true);
+        wrapper.unmount();
     });
 });

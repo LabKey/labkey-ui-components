@@ -218,11 +218,11 @@ Array [
             >
               <input
                 className="form-control"
+                defaultValue=""
                 id="entity-nameExpression"
                 onChange={[Function]}
                 placeholder="name expression placeholder test"
                 type="text"
-                value=""
               />
             </div>
           </div>
@@ -652,11 +652,11 @@ Array [
             >
               <input
                 className="form-control"
+                defaultValue=""
                 id="entity-nameExpression"
                 onChange={[Function]}
                 placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                 type="text"
-                value=""
               />
             </div>
           </div>
@@ -1673,6 +1673,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             dataClassAliasCaption="Data Class Alias"
             dataClassParentageLabel="data class"
             dataClassTypeCaption="Data Class"
+            hasWarning={false}
             headerId="sample-type-properties-hdr"
             helpTopic="createSampleType"
             includeDataClasses={false}
@@ -2173,6 +2174,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                       "exception": undefined,
                                     }
                                   }
+                                  hasWarning={false}
                                   nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
                                   nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                                   nameReadOnly={true}
@@ -2580,20 +2582,21 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             >
                                               <FormControl
                                                 bsClass="form-control"
+                                                className=""
                                                 componentClass="input"
+                                                defaultValue=""
                                                 id="entity-nameExpression"
                                                 onChange={[Function]}
                                                 placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                                                 type="text"
-                                                value=""
                                               >
                                                 <input
                                                   className="form-control"
+                                                  defaultValue=""
                                                   id="entity-nameExpression"
                                                   onChange={[Function]}
                                                   placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                                                   type="text"
-                                                  value=""
                                                 />
                                               </FormControl>
                                             </div>

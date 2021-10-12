@@ -218,11 +218,11 @@ Array [
             >
               <input
                 className="form-control"
+                defaultValue=""
                 id="entity-nameExpression"
                 onChange={[Function]}
                 placeholder="name expression placeholder test"
                 type="text"
-                value=""
               />
             </div>
           </div>
@@ -647,11 +647,11 @@ Array [
             >
               <input
                 className="form-control"
+                defaultValue=""
                 id="entity-nameExpression"
                 onChange={[Function]}
                 placeholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                 type="text"
-                value=""
               />
             </div>
           </div>
@@ -2755,6 +2755,7 @@ exports[`DataClassDesigner initModel 1`] = `
             appPropertiesOnly={false}
             collapsed={false}
             controlledCollapse={true}
+            hasWarning={false}
             headerId="dataclass-properties-hdr"
             helpTopic="createDataClass"
             isValid={true}
@@ -3340,6 +3341,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                       "nameExpression": "Source-\${genId}",
                                     }
                                   }
+                                  hasWarning={false}
                                   nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name&referrer=inPage"
                                   nameExpressionPlaceholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                                   noun="Data Class"
@@ -3746,20 +3748,21 @@ exports[`DataClassDesigner initModel 1`] = `
                                             >
                                               <FormControl
                                                 bsClass="form-control"
+                                                className=""
                                                 componentClass="input"
+                                                defaultValue="Source-\${genId}"
                                                 id="entity-nameExpression"
                                                 onChange={[Function]}
                                                 placeholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                                                 type="text"
-                                                value="Source-\${genId}"
                                               >
                                                 <input
                                                   className="form-control"
+                                                  defaultValue="Source-\${genId}"
                                                   id="entity-nameExpression"
                                                   onChange={[Function]}
                                                   placeholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                                                   type="text"
-                                                  value="Source-\${genId}"
                                                 />
                                               </FormControl>
                                             </div>

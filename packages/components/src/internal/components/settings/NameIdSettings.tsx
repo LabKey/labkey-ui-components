@@ -35,7 +35,7 @@ interface State {
     confirmModalOpen: boolean;
 }
 
-const NameIdSettingsForm: FC<Props> = props => {
+export const NameIdSettingsForm: FC<Props> = props => {
     const {init, save} = props;
     const initialState: State = {
         error: undefined,

@@ -2,6 +2,8 @@ import React from 'react';
 import { Col, Form, FormControl, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 
+import classNames from 'classnames';
+
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { IEntityDetails } from './models';
@@ -12,7 +14,6 @@ import {
     isExistingEntity,
 } from './actions';
 import { ENTITY_FORM_IDS } from './constants';
-import classNames from "classnames";
 
 export interface EntityDetailsProps {
     noun: string;
@@ -98,7 +99,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                     </Col>
                     <Col xs={10}>
                         <FormControl
-                            className={classNames({'naming-pattern-border-warning': hasWarning})}
+                            className={classNames({ 'naming-pattern-border-warning': hasWarning })}
                             id={ENTITY_FORM_IDS.NAME_EXPRESSION}
                             type="text"
                             placeholder={nameExpressionPlaceholder}

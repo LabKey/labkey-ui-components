@@ -6,7 +6,7 @@ import { Alert } from '../../..';
 import { DomainPanelStatus } from './models';
 import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from './actions';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
-import {PROPERTIES_PANEL_ERROR_MSG, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG} from './constants';
+import { PROPERTIES_PANEL_ERROR_MSG, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from './constants';
 import { InjectedDomainPropertiesPanelCollapseProps } from './DomainPropertiesPanelCollapse';
 
 export interface BasePropertiesPanelProps {

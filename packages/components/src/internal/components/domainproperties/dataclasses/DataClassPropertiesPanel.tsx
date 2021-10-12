@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
-import {init, QuerySelect, SCHEMAS} from '../../../..';
+import { init, QuerySelect, SCHEMAS } from '../../../..';
 import { DEFINE_DATA_CLASS_TOPIC, DATA_CLASS_NAME_EXPRESSION_TOPIC, getHelpLink } from '../../../util/helpLinks';
 import { ENTITY_FORM_ID_PREFIX } from '../entities/constants';
 import { getFormNameFromId } from '../entities/actions';
@@ -54,12 +54,12 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         appPropertiesOnly: false,
     };
 
-    state: Readonly<State> = { isValid: true, prefix: undefined, hasWarning: false, };
+    state: Readonly<State> = { isValid: true, prefix: undefined, hasWarning: false };
 
     componentDidMount() {
         init()
             .then(response => {
-                this.setState({prefix: response.prefix ?? null});
+                this.setState({ prefix: response.prefix ?? null });
             })
             .catch(() => {
                 console.error('Unable to load Naming Pattern Prefix.');
@@ -68,7 +68,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
 
     updateValidStatus = (newModel?: DataClassModel): void => {
         const { model, onChange } = this.props;
-        const {prefix} = this.state;
+        const { prefix } = this.state;
 
         const updatedModel = newModel || model;
 

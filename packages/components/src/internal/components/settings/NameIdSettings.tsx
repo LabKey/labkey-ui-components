@@ -3,19 +3,14 @@ import React, { FC, useEffect, useReducer } from 'react';
 import { PermissionTypes } from '@labkey/api';
 import { Button, Checkbox, FormControl } from 'react-bootstrap';
 
-import {
-    Alert,
-    ConfirmModal,
-    LabelHelpTip,
-    LoadingSpinner,
-    RequiresPermission,
-} from '../../..';
-import {init, save} from "./actions";
+import { Alert, ConfirmModal, LabelHelpTip, LoadingSpinner, RequiresPermission } from '../../..';
+
+import { init, save } from './actions';
 
 export const NameIdSettings = () => {
-    return(
+    return (
         <RequiresPermission perms={PermissionTypes.Admin}>
-            <NameIdSettingsForm save={save} init={init}/>
+            <NameIdSettingsForm save={save} init={init} />
         </RequiresPermission>
     );
 };
@@ -36,7 +31,7 @@ interface State {
 }
 
 export const NameIdSettingsForm: FC<Props> = props => {
-    const {init, save} = props;
+    const { init, save } = props;
     const initialState: State = {
         error: undefined,
         loading: true,
@@ -68,7 +63,7 @@ export const NameIdSettingsForm: FC<Props> = props => {
             allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
             loading: false,
         });
-    }
+    };
 
     useEffect(() => {
         initialize();
@@ -134,10 +129,9 @@ export const NameIdSettingsForm: FC<Props> = props => {
                 <div className="setting-section">
                     <h5> ID/Name Prefix </h5>
                     <div>
-                        Enter a Prefix to be applied to all new Sample Types, Data Classes (e.g. CellLine,
-                        Construct), Notebooks, and Workflow Jobs. Prefixes generally are 2-3 characters long but
-                        will not be limited. For example, if you provide the prefix "CL" your ID will look like
-                        "CL123".
+                        Enter a Prefix to be applied to all new Sample Types, Data Classes (e.g. CellLine, Construct),
+                        Notebooks, and Workflow Jobs. Prefixes generally are 2-3 characters long but will not be
+                        limited. For example, if you provide the prefix "CL" your ID will look like "CL123".
                     </div>
 
                     {loading && <LoadingSpinner />}
@@ -178,9 +172,9 @@ export const NameIdSettingsForm: FC<Props> = props => {
                                 >
                                     <div>
                                         <p>
-                                            This action will change the Naming Pattern for all new and existing
-                                            Sample Types and Data Classes. No existing IDs/Names will be affected.
-                                            Are you sure you want to apply the prefix?
+                                            This action will change the Naming Pattern for all new and existing Sample
+                                            Types and Data Classes. No existing IDs/Names will be affected. Are you sure
+                                            you want to apply the prefix?
                                         </p>
                                     </div>
                                 </ConfirmModal>

@@ -9,7 +9,8 @@ import {
     Container,
     generateId,
     getHelpLink,
-    IDomainField, init,
+    IDomainField,
+    init,
     IParentOption,
     MetricUnitProps,
     SCHEMAS,
@@ -153,7 +154,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
         init()
             .then(response => {
-                this.setState({prefix: response.prefix ?? null});
+                this.setState({ prefix: response.prefix ?? null });
             })
             .catch(() => {
                 console.error('Unable to load Naming Pattern Prefix.');
@@ -162,7 +163,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
     updateValidStatus = (newModel?: SampleTypeModel): void => {
         const { model, updateModel, metricUnitProps } = this.props;
-        const {prefix} = this.state;
+        const { prefix } = this.state;
 
         const updatedModel = newModel || model;
         const isValid =

@@ -1,14 +1,20 @@
-import {mount} from "enzyme";
-import React from "react";
-import { ConfirmModal, LoadingSpinner} from "../../..";
-import {Button, Checkbox} from "react-bootstrap";
-import {NameIdSettingsForm} from "./NameIdSettings";
-import {waitForLifecycle} from "../../testHelpers";
+import { mount } from 'enzyme';
+import React from 'react';
+
+import { Button, Checkbox } from 'react-bootstrap';
+
+import { ConfirmModal, LoadingSpinner } from '../../..';
+
+import { waitForLifecycle } from '../../testHelpers';
+
+import { NameIdSettingsForm } from './NameIdSettings';
 
 describe('NameIdSettings', () => {
     const DEFAULT_PROPS = {
-        init: jest.fn(async () => {return {prefix: "ABC", allowUserSpecifiedNames: false}}),
-        save: jest.fn(async () => {})
+        init: jest.fn(async () => {
+            return { prefix: 'ABC', allowUserSpecifiedNames: false };
+        }),
+        save: jest.fn(async () => {}),
     };
 
     test('on init', async () => {
@@ -32,7 +38,7 @@ describe('NameIdSettings', () => {
         const checkbox = () => wrapper.find('input').first();
         expect(checkbox().prop('checked')).toBe(false);
 
-        checkbox().simulate('change', {target: {checked: true}});
+        checkbox().simulate('change', { target: { checked: true } });
 
         await waitForLifecycle(wrapper);
         expect(DEFAULT_PROPS.save).toHaveBeenCalled();
@@ -43,7 +49,7 @@ describe('NameIdSettings', () => {
         const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
 
-        expect(wrapper.find('.prefix-example').text()).toContain("ABC-Blood-${GenId}")
+        expect(wrapper.find('.prefix-example').text()).toContain('ABC-Blood-${GenId}');
     });
 
     test('apply prefix confirm modal -- cancel', async () => {

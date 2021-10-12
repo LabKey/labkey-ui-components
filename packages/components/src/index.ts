@@ -501,7 +501,7 @@ import { PicklistCreationMenuItem } from './internal/components/picklist/Picklis
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
 import { PicklistListing } from './internal/components/picklist/PicklistListing';
 import { PicklistOverview } from './internal/components/picklist/PicklistOverview';
-import { PicklistSubNav } from './internal/components/picklist/PicklistSubNav';
+import { PicklistSubNav } from './internal/components/picklist/PicklistSubnav';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {

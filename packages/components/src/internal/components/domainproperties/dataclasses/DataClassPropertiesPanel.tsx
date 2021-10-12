@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
-import { QuerySelect, SCHEMAS } from '../../../..';
+import {init, QuerySelect, SCHEMAS} from '../../../..';
 import { DEFINE_DATA_CLASS_TOPIC, DATA_CLASS_NAME_EXPRESSION_TOPIC, getHelpLink } from '../../../util/helpLinks';
 import { ENTITY_FORM_ID_PREFIX } from '../entities/constants';
 import { getFormNameFromId } from '../entities/actions';
@@ -39,6 +39,8 @@ type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
 
 interface State {
     isValid: boolean;
+    prefix: string;
+    hasWarning: boolean;
 }
 
 // Note: exporting this class for jest test case
@@ -52,13 +54,31 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         appPropertiesOnly: false,
     };
 
-    state: Readonly<State> = { isValid: true };
+    state: Readonly<State> = { isValid: true, prefix: undefined, hasWarning: false, };
+
+    componentDidMount() {
+        init()
+            .then(response => {
+                this.setState({prefix: response.prefix ?? null});
+            })
+            .catch(() => {
+                console.error('Unable to load Naming Pattern Prefix.');
+            });
+    }
 
     updateValidStatus = (newModel?: DataClassModel): void => {
         const { model, onChange } = this.props;
+        const {prefix} = this.state;
+
         const updatedModel = newModel || model;
+
+        let hasWarning = false;
+        if (prefix && !updatedModel.nameExpression.startsWith(prefix)) {
+            hasWarning = true;
+        }
+
         this.setState(
-            () => ({ isValid: !!updatedModel?.hasValidProperties }),
+            () => ({ isValid: !!updatedModel?.hasValidProperties, hasWarning }),
             () => {
                 // Issue 39918: only consider the model changed if there is a newModel param
                 if (newModel) {
@@ -138,7 +158,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             nameExpressionPlaceholder,
             helpTopic,
         } = this.props;
-        const { isValid } = this.state;
+        const { isValid, hasWarning } = this.state;
 
         return (
             <BasePropertiesPanel
@@ -148,6 +168,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                 titlePrefix={model.name}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
+                hasWarning={hasWarning}
             >
                 <Row className="margin-bottom">
                     {headerText && (
@@ -165,6 +186,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     data={model.entityDataMap}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
+                    hasWarning={hasWarning}
                 />
                 {!appPropertiesOnly && this.renderCategorySelect()}
                 {!appPropertiesOnly && this.renderSampleTypeSelect()}

@@ -6,11 +6,12 @@ import { Alert } from '../../..';
 import { DomainPanelStatus } from './models';
 import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from './actions';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
-import { PROPERTIES_PANEL_ERROR_MSG } from './constants';
+import {PROPERTIES_PANEL_ERROR_MSG, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG} from './constants';
 import { InjectedDomainPropertiesPanelCollapseProps } from './DomainPropertiesPanelCollapse';
 
 export interface BasePropertiesPanelProps {
     panelStatus: DomainPanelStatus;
+    hasWarning?: boolean;
     validate: boolean;
     useTheme: boolean;
 }
@@ -67,6 +68,7 @@ export class BasePropertiesPanel extends React.PureComponent<Props, any> {
             title,
             isValid,
             children,
+            hasWarning,
         } = this.props;
 
         return (
@@ -94,6 +96,11 @@ export class BasePropertiesPanel extends React.PureComponent<Props, any> {
                 {!isValid && (
                     <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true, useTheme)}>
                         <Alert bsStyle="danger">{PROPERTIES_PANEL_ERROR_MSG}</Alert>
+                    </div>
+                )}
+                {isValid && hasWarning && (
+                    <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true, useTheme)}>
+                        <Alert bsStyle="warning">{PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}</Alert>
                     </div>
                 )}
             </>

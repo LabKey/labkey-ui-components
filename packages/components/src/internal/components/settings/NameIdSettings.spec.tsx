@@ -1,34 +1,47 @@
 import {mount, shallow} from "enzyme";
 import React from "react";
-import { NameIdSettings } from "../../..";
-import {Checkbox} from "react-bootstrap";
+import {App, LoadingSpinner, sleep} from "../../..";
+import {Checkbox, FormControl} from "react-bootstrap";
+import {mountWithServerContext} from "../../testHelpers";
+import {act} from "react-test-renderer";
+
+
 
 describe('NameIdSettings', () => {
+    const DEFAULT_PROPS = {
+        init: jest.fn(async () => {return {prefix: "ABC", allowUserSpecifiedNames: false}}),
+        save: jest.fn()
+    }
 
-    test('click checkbox', () => {
-        const wrapper = mount(<NameIdSettings/>);
-        // const spy = jest.spyOn(wrapper.instance(), 'saveAllowUserSpecifiedNames');
-        // wrapper.instance().saveAllowUserSpecifiedNames = jest.fn(() => wrapper.setState({modalOpen: true}));
+    test('on init', async () => {
+        const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
+        expect(wrapper.find(LoadingSpinner).length).toEqual(2);
+        expect(wrapper.find('.prefix-field').exists()).toEqual(false);
+        expect(wrapper.find(Checkbox).exists()).toEqual(false);
 
-        wrapper.find(Checkbox).simulate('click');
+        await sleep();
+        wrapper.update();
 
+        expect(wrapper.find(LoadingSpinner).length).toEqual(0);
+        expect(wrapper.find('.prefix-field').exists()).toEqual(true);
+        expect(wrapper.find(Checkbox).exists()).toEqual(true);
 
-        console.log(wrapper.debug()); // click, verify callback
-
+        // wrapper.instance().saveAllowUserSpecifiedNames();
+        // expect(save).toHaveBeenCalled();
     });
-
-    test('prefix preview', () => {
-        const wrapper = shallow(<NameIdSettings/>);
-
-    });
-
-    test('apply prefix confirm modal -- cancel', () => {
-        const wrapper = shallow(<NameIdSettings/>);
-
-    });
-
-    test('apply prefix confirm modal -- save', () => {
-        const wrapper = shallow(<NameIdSettings/>);
-
-    });
+    //
+    // test('prefix preview', () => {
+    //     const wrapper = shallow(<NameIdSettingsForm api={testAPI} />);
+    //
+    // });
+    //
+    // test('apply prefix confirm modal -- cancel', () => {
+    //     const wrapper = shallow(<NameIdSettingsForm api={testAPI} />);
+    //
+    // });
+    //
+    // test('apply prefix confirm modal -- save', () => {
+    //     const wrapper = shallow(<NameIdSettingsForm api={testAPI} />);
+    //
+    // });
 });

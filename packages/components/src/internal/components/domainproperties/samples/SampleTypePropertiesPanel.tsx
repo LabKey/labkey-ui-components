@@ -9,7 +9,7 @@ import {
     Container,
     generateId,
     getHelpLink,
-    IDomainField,
+    IDomainField, init,
     IParentOption,
     MetricUnitProps,
     SCHEMAS,
@@ -85,6 +85,8 @@ interface EntityProps {
 interface State {
     isValid: boolean;
     containers: List<Container>;
+    prefix: string;
+    hasWarning: boolean;
 }
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
@@ -134,6 +136,8 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         this.state = {
             isValid: true,
             containers: undefined,
+            prefix: undefined,
+            hasWarning: false,
         };
     }
 
@@ -146,16 +150,31 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 console.error('Unable to load valid study targets for Auto-Link Data to Study input.');
                 this.setState(() => ({ containers: List<Container>() }));
             });
+
+        init()
+            .then(response => {
+                this.setState({prefix: response.prefix ?? null});
+            })
+            .catch(() => {
+                console.error('Unable to load Naming Pattern Prefix.');
+            });
     }
 
     updateValidStatus = (newModel?: SampleTypeModel): void => {
         const { model, updateModel, metricUnitProps } = this.props;
+        const {prefix} = this.state;
+
         const updatedModel = newModel || model;
         const isValid =
             updatedModel?.hasValidProperties() && updatedModel?.isMetricUnitValid(metricUnitProps?.metricUnitRequired);
 
+        let hasWarning = false;
+        if (prefix && !updatedModel.nameExpression.startsWith(prefix)) {
+            hasWarning = true;
+        }
+
         this.setState(
-            () => ({ isValid }),
+            () => ({ isValid, hasWarning }),
             () => {
                 // Issue 39918: only consider the model changed if there is a newModel param
                 if (newModel) {
@@ -315,7 +334,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             showLinkToStudy,
             metricUnitProps,
         } = this.props;
-        const { isValid, containers } = this.state;
+        const { isValid, containers, hasWarning } = this.state;
 
         const showAliquotNameExpression = aliquotNamePatternProps?.showAliquotNameExpression;
         const aliquotNameExpressionInfoUrl = aliquotNamePatternProps?.aliquotNameExpressionInfoUrl;
@@ -365,6 +384,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 titlePrefix={model.name}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
+                hasWarning={hasWarning}
             >
                 <Row className="margin-bottom">
                     {headerText && (
@@ -384,6 +404,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     nameReadOnly={model.nameReadOnly}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
+                    hasWarning={hasWarning}
                 />
                 {showAliquotNameExpression && (
                     <Row className="margin-bottom">

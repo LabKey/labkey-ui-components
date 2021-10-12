@@ -52,6 +52,12 @@
   padding: 0
 }
 
+.naming-pattern-border-warning {
+    border-color: $yellow-border !important;
+    box-shadow: inset 0 0 5px 0 $yellow-shadow !important;
+    outline: none !important;
+}
+
 .domain-summary-selection {
     margin-left: 7px;
     margin-top: 3px;

@@ -12,10 +12,12 @@ import {
     isExistingEntity,
 } from './actions';
 import { ENTITY_FORM_IDS } from './constants';
+import classNames from "classnames";
 
 export interface EntityDetailsProps {
     noun: string;
     onFormChange: (evt: any) => any;
+    hasWarning?: boolean;
     formValues?: IEntityDetails;
     data?: Map<string, any>;
     nameExpressionInfoUrl?: string;
@@ -33,6 +35,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
             formValues,
             data,
             nameReadOnly,
+            hasWarning,
         } = this.props;
         const moreInfoLink = nameExpressionInfoUrl ? (
             <p>
@@ -95,11 +98,12 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                     </Col>
                     <Col xs={10}>
                         <FormControl
+                            className={classNames({'naming-pattern-border-warning': hasWarning})}
                             id={ENTITY_FORM_IDS.NAME_EXPRESSION}
                             type="text"
                             placeholder={nameExpressionPlaceholder}
                             onChange={onFormChange}
-                            value={getEntityNameExpressionValue(formValues, data)}
+                            defaultValue={getEntityNameExpressionValue(formValues, data)}
                         />
                     </Col>
                 </Row>

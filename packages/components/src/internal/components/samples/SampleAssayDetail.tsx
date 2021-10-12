@@ -32,7 +32,6 @@ import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
-import { getSampleAliquots, getSampleAssayQueryConfigs } from './actions';
 import { getSampleStatusType } from './utils';
 
 interface Props {

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.82.0
+*Released*: 12 October 2021
 * Item 9533: SampleAssayDetail support for module defined sample assay results view configs
 
 ### version 2.81.0

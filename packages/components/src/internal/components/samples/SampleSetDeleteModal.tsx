@@ -37,7 +37,7 @@ export const SampleSetDeleteModal: FC<Props> = props => {
     return (
         <>
             {!showProgress && (
-                <EntityTypeDeleteConfirmModal rowId={rowId} noun="sample" onConfirm={onConfirm} onCancel={onCancel} />
+                <EntityTypeDeleteConfirmModal rowId={rowId} isSample noun="sample" onConfirm={onConfirm} onCancel={onCancel} />
             )}
             <Progress
                 delay={0}

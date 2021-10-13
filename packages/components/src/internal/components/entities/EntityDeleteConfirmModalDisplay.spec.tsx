@@ -24,13 +24,13 @@ describe('<EntityDeleteConfirmModal/>', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
                 confirmationData={{
-                    canDelete: [
+                    allowed: [
                         {
                             Name: 'D-2.3.1',
                             RowId: 351,
                         },
                     ],
-                    cannotDelete: [],
+                    notAllowed: [],
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
@@ -48,7 +48,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
                 confirmationData={{
-                    canDelete: [
+                    allowed: [
                         {
                             Name: 'D-2.3.1',
                             RowId: 351,
@@ -62,7 +62,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
                             RowId: 5,
                         },
                     ],
-                    cannotDelete: [],
+                    notAllowed: [],
                 }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
@@ -80,7 +80,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
                 confirmationData={{
-                    canDelete: [
+                    allowed: [
                         {
                             Name: 'D-2.3.1',
                             RowId: 351,
@@ -90,7 +90,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
                             RowId: 352,
                         },
                     ],
-                    cannotDelete: [
+                    notAllowed: [
                         {
                             Name: 'D-4',
                             RowId: 5,
@@ -115,8 +115,8 @@ describe('<EntityDeleteConfirmModal/>', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
                 confirmationData={{
-                    canDelete: [],
-                    cannotDelete: [
+                    allowed: [],
+                    notAllowed: [
                         {
                             Name: 'D-2.3.1',
                             RowId: 351,
@@ -147,8 +147,8 @@ describe('<EntityDeleteConfirmModal/>', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
                 confirmationData={{
-                    canDelete: [],
-                    cannotDelete: [
+                    allowed: [],
+                    notAllowed: [
                         {
                             Name: 'D-2.3.1',
                             RowId: 351,
@@ -175,8 +175,8 @@ describe('<EntityDeleteConfirmModal/>', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
                 confirmationData={{
-                    canDelete: [],
-                    cannotDelete: [
+                    allowed: [],
+                    notAllowed: [
                         {
                             Name: 'D-2.3.1',
                             RowId: 351,
@@ -201,13 +201,13 @@ describe('<EntityDeleteConfirmModal/>', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
                 confirmationData={{
-                    canDelete: [
+                    allowed: [
                         {
                             Name: 'D-4',
                             RowId: 441,
                         },
                     ],
-                    cannotDelete: [
+                    notAllowed: [
                         {
                             Name: 'D-2.3.1',
                             RowId: 351,

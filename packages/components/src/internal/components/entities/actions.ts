@@ -10,7 +10,9 @@ import {
     naturalSort,
     QueryInfo,
     SampleCreationType,
+    SampleOperation,
     SchemaQuery,
+    SCHEMAS,
     selectRows,
     SHARED_CONTAINER_PATH,
 } from '../../..';
@@ -29,8 +31,8 @@ import {
 import { DataClassDataType, SampleTypeDataType } from './constants';
 
 export interface DeleteConfirmationData {
-    canDelete: any[];
-    cannotDelete: any[];
+    allowed: any[];
+    notAllowed: any[];
 }
 
 export function getDeleteConfirmationData(
@@ -48,6 +50,9 @@ export function getDeleteConfirmationData(
             params = {
                 rowIds,
             };
+        }
+        if (dataType.instanceSchemaName == SCHEMAS.SAMPLE_SETS.SCHEMA) {
+            params['sampleOperation'] = SampleOperation[SampleOperation.Delete];
         }
         return Ajax.request({
             url: buildURL('experiment', dataType.deleteConfirmationActionName),

@@ -9,7 +9,7 @@ import { SAMPLE_TYPE_KEY } from '../../app/constants';
 import { EntityDataType } from './models';
 
 export const DATA_DELETE_CONFIRMATION_ACTION = 'getDataDeleteConfirmationData.api';
-export const SAMPLE_DELETE_CONFIRMATION_ACTION = 'getMaterialDeleteConfirmationData.api';
+export const SAMPLE_DELETE_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
 
 export const SampleTypeDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,

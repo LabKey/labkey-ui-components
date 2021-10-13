@@ -1,13 +1,14 @@
 import React from 'react';
 import { Map } from 'immutable';
 
-import { ConfirmModal, buildURL } from '../../..';
+import { ConfirmModal, buildURL, SampleOperation } from '../../..';
 
 interface Props {
     onConfirm: () => any;
     onCancel: () => any;
     rowId: number;
     noun: string;
+    isSample?: boolean;
     deleteConfirmationActionName?: string;
     showDependenciesLink: boolean;
 }
@@ -18,12 +19,15 @@ export class EntityTypeDeleteConfirmModal extends React.Component<Props, any> {
     };
 
     render() {
-        const { onConfirm, onCancel, showDependenciesLink, rowId, deleteConfirmationActionName, noun } = this.props;
+        const { isSample, onConfirm, onCancel, showDependenciesLink, rowId, deleteConfirmationActionName, noun } = this.props;
 
         let dependencies = <>dependencies</>;
         if (showDependenciesLink && deleteConfirmationActionName) {
             let params = Map<string, string>();
             params = params.set('singleObjectRowId', rowId.toString());
+            if (isSample) {
+                params = params.set('sampleOperation', SampleOperation[SampleOperation.Delete]);
+            }
             dependencies = (
                 <a href={buildURL('experiment', deleteConfirmationActionName, params.toJS())}>dependencies</a>
             );

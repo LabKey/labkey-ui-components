@@ -50,8 +50,8 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
         // TODO when experimental flag for sample status is removed, move this text into the SampleTypeDataType constant
         const _dependencyText = App.isSampleStatusEnabled() && entityDataType.instanceSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA ? dependencyText + ' or status that prevents deletion' : dependencyText;
 
-        const numCanDelete = confirmationData.canDelete.length;
-        const numCannotDelete = confirmationData.cannotDelete.length;
+        const numCanDelete = confirmationData.allowed.length;
+        const numCannotDelete = confirmationData.notAllowed.length;
         const canDeleteNoun = numCanDelete === 1 ? nounSingular : nounPlural;
         const cannotDeleteNoun = numCannotDelete === 1 ? nounSingular : nounPlural;
         const totalNum = numCanDelete + numCannotDelete;
@@ -115,7 +115,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
     }
 
     onConfirm = (): void => {
-        this.props.onConfirm?.(this.props.confirmationData.canDelete, this.props.confirmationData.cannotDelete);
+        this.props.onConfirm?.(this.props.confirmationData.allowed, this.props.confirmationData.notAllowed);
     };
 
     render() {

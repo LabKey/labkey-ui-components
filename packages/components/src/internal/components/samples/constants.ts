@@ -29,7 +29,7 @@ export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';
 export const SAMPLE_STATE_DESCRIPTION_COLUMN_NAME = 'SampleState/Description';
 
 export enum SampleOperation {
-    EditMetadata = 1,
+    EditMetadata ,
     EditLineage,
     AddToStorage,
     UpdateStorageMetadata,

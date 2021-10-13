@@ -3,6 +3,8 @@ import { List } from 'immutable';
 
 import { QueryModel, User } from "../../..";
 
+import { SampleStateType } from './constants';
+
 export enum SampleCreationType {
     Independents = 'New samples',
     Derivatives = 'Derivatives',
@@ -104,6 +106,12 @@ export interface SampleAliquotsStats {
     inStorageCount: number;
     jobsCount?: number;
     aliquotIds?: number[];
+}
+
+export interface SampleStatus {
+    label: string;
+    statusType: SampleStateType;
+    description?: string;
 }
 
 export interface SampleStorageButtonsComponentProps {

@@ -50,6 +50,8 @@ import { getInitialParentChoices } from '../entities/utils';
 
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
+import { isSampleStatusEnabled } from '../../app/utils';
+
 import { GroupedSampleFields, SampleAliquotsStats } from './models';
 import { IS_ALIQUOT_FIELD } from './constants';
 
@@ -429,6 +431,10 @@ export interface GroupedSampleDisplayColumns {
     editColumns: QueryColumn[];
 }
 
+function isAliquotEditableField(colName: string): boolean {
+    return colName === 'description' || (isSampleStatusEnabled() && colName === 'samplestate');
+}
+
 export function getGroupedSampleDisplayColumns(
     allDisplayColumns: QueryColumn[],
     allUpdateColumns: QueryColumn[],
@@ -462,7 +468,7 @@ export function getGroupedSampleDisplayColumns(
         if (isAliquot) {
             if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
                 editColumns.push(col);
-            } else if (colName === 'description') {
+            } else if (isAliquotEditableField(colName)) {
                 editColumns.push(col);
             }
         } else {

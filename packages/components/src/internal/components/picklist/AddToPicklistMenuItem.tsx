@@ -1,13 +1,16 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { MenuItem } from 'react-bootstrap';
 
 import { User } from '../base/models/User';
 import { isFreezerManagementEnabled, userCanManagePicklists } from '../../app/utils';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 
-import { ChoosePicklistModal } from './ChoosePicklistModal';
+import { getSampleStatusType, isSampleOperationPermitted } from '../samples/utils';
+import { SampleOperation } from '../samples/constants';
+import { DisableableMenuItem } from '../samples/DisableableMenuItem';
+
 import { PicklistEditModal } from './PicklistEditModal';
+import { ChoosePicklistModal } from './ChoosePicklistModal';
 
 interface Props {
     queryModel?: QueryModel;
@@ -21,16 +24,8 @@ interface Props {
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {
-    const {
-        sampleIds,
-        key,
-        itemText,
-        user,
-        queryModel,
-        currentProductId,
-        picklistProductId,
-        metricFeatureArea,
-    } = props;
+    const { sampleIds, key, itemText, user, queryModel, currentProductId, picklistProductId, metricFeatureArea } =
+        props;
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
 
@@ -63,9 +58,9 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         return null;
     }
 
-    const useSelection = queryModel !== undefined;
-    const id = queryModel?.id;
-    const numSelected = queryModel ? queryModel.selections?.size : sampleIds?.length;
+    const useSelection = sampleIds === undefined;
+    const id = sampleIds ? undefined : queryModel?.id;
+    const numSelected = sampleIds ? sampleIds.length : queryModel.selections?.size;
 
     return (
         <>
@@ -78,9 +73,14 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     nounPlural="samples"
                 />
             ) : (
-                <MenuItem onClick={onClick} key={key}>
-                    {itemText}
-                </MenuItem>
+                <DisableableMenuItem
+                    operationPermitted={isSampleOperationPermitted(
+                        getSampleStatusType(queryModel.getRow()),
+                        SampleOperation.AddToPicklist
+                    )}
+                    menuItemProps={{ onClick, key }}
+                    menuItemContent={itemText}
+                />
             )}
             {showChoosePicklist && (
                 <ChoosePicklistModal

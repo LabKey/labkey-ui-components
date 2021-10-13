@@ -5,6 +5,7 @@ import {
     EntityDeleteModal,
     LoadingSpinner,
     LoadingState,
+    ManageDropdownButton,
     QueryInfo,
     SampleAliquotsGridPanel,
     SchemaQuery,
@@ -35,7 +36,7 @@ describe('SampleAliquotsGridPanel', () => {
         const DummyButton = () => <div className="dummyButton"> foo </div>;
 
         const wrapper = mountWithServerContext(
-            <SampleAliquotsGridPanelImpl storageButton={DummyButton} {...DEFAULT_PROPS} />,
+            <SampleAliquotsGridPanelImpl storageButton={DummyButton} {...DEFAULT_PROPS} lineageUpdateAllowed={true} />,
             DEFAULT_CONTEXT
         );
         expect(wrapper.find(DummyButton).exists()).toEqual(true);
@@ -47,7 +48,7 @@ describe('SampleAliquotsGridPanel', () => {
         const model = props.queryModels.model.mutate({ queryInfoLoadingState: LoadingState.LOADING });
 
         const wrapper = mountWithServerContext(
-            <SampleAliquotsGridPanelImpl {...props} queryModels={{ model }} />,
+            <SampleAliquotsGridPanelImpl {...props} queryModels={{ model }} lineageUpdateAllowed={true} />,
             DEFAULT_CONTEXT
         );
 
@@ -56,9 +57,20 @@ describe('SampleAliquotsGridPanel', () => {
     });
 
     test('show confirm delete', () => {
-        const wrapper = mountWithServerContext(<SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} />, DEFAULT_CONTEXT);
+        const wrapper = mountWithServerContext(
+            <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} lineageUpdateAllowed={true} />,
+            DEFAULT_CONTEXT
+        );
         wrapper.setState({ showConfirmDelete: true });
         expect(wrapper.find(EntityDeleteModal).exists()).toEqual(true);
         wrapper.unmount();
+    });
+
+    test('lineage update not allowed', () => {
+        const wrapper = mountWithServerContext(
+            <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} lineageUpdateAllowed={false} />,
+            DEFAULT_CONTEXT
+        );
+        expect(wrapper.find(ManageDropdownButton).exists()).toBeFalsy();
     });
 });

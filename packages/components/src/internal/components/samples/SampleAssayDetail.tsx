@@ -1,4 +1,4 @@
-import React, { FC, memo, useEffect, useMemo, useState, useCallback, ReactNode } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, MenuItem, Panel, SplitButton } from 'react-bootstrap';
 import { Filter, getServerContext } from '@labkey/api';
 
@@ -10,12 +10,14 @@ import {
     createNotification,
     InjectedAssayModel,
     isLoading,
+    isSampleOperationPermitted,
     LoadingSpinner,
     naturalSortByProperty,
     QueryConfig,
     QueryModel,
     RequiresModelAndActions,
     SampleAliquotViewSelector,
+    SampleOperation,
     SchemaQuery,
     TabbedGridPanel,
     useServerContext,
@@ -30,6 +32,7 @@ import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
+import { getSampleStatusType } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -260,10 +263,17 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         return (
             <AssayResultPanel>
                 <Alert bsStyle="warning">
-                    No assay results available for this sample. To upload assay data, use the <b>Upload Assay Data</b>{' '}
-                    option from the &nbsp;
-                    <i className="fa fa-bars" />
-                    &nbsp; menu above.
+                    No assay results available for this sample.
+                    {isSampleOperationPermitted(
+                        getSampleStatusType(sampleModel?.getRow()),
+                        SampleOperation.AddAssayData
+                    ) && (
+                        <>
+                            To upload assay data, use the <b>Upload Assay Data</b> option from the &nbsp;
+                            <i className="fa fa-bars" />
+                            &nbsp; menu above.
+                        </>
+                    )}
                 </Alert>
             </AssayResultPanel>
         );
@@ -404,6 +414,10 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         setActiveTabId(tab);
     }, []);
 
+    const canImportData = useMemo(() => {
+        return isSampleOperationPermitted(getSampleStatusType(sampleModel?.getRow()), SampleOperation.AddAssayData);
+    }, [sampleModel]);
+
     const queryConfigs = useMemo(() => {
         if (loadingDefinitions) {
             return {};
@@ -514,7 +528,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             queryConfigs={queryConfigs}
             onSampleAliquotTypeChange={onSampleAliquotTypeChange}
             activeSampleAliquotType={activeSampleAliquotType}
-            showImportBtn={!isSourceSampleAssayGrid}
+            showImportBtn={!isSourceSampleAssayGrid && canImportData}
             isSourceSampleAssayGrid={isSourceSampleAssayGrid}
             onTabChange={onTabChange}
             activeTabId={activeTabId}

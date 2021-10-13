@@ -301,7 +301,15 @@ import { SamplesSelectionProvider } from './internal/components/samples/SamplesS
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
-import { getOmittedSampleTypeColumns } from './internal/components/samples/utils';
+
+import {
+    getOmittedSampleTypeColumns,
+    getSampleDeleteMessage,
+    getSampleStatus,
+    getSampleStatusType,
+    isSampleOperationPermitted,
+    getFilterForSampleOperation,
+} from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
     SampleAliquotViewSelector,
@@ -479,10 +487,16 @@ import {
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
 } from './internal/components/samples/models';
+import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
+import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import {
     FIND_BY_IDS_QUERY_PARAM,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
+    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SampleOperation,
+    SampleStateType,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
@@ -859,6 +873,17 @@ export {
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
+    isSampleOperationPermitted,
+    getFilterForSampleOperation,
+    getSampleDeleteMessage,
+    getSampleStatus,
+    getSampleStatusType,
+    DisableableMenuItem,
+    SampleOperation,
+    SampleStateType,
+    SampleStatusTag,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     FIND_BY_IDS_QUERY_PARAM,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_ID_FIND_FIELD,
@@ -1306,6 +1331,7 @@ export type {
     GroupedSampleFields,
     SamplesSelectionProviderProps,
     SamplesSelectionResultProps,
+    SampleStatus,
 } from './internal/components/samples/models';
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/AppURLResolver';

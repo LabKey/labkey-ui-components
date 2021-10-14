@@ -44,6 +44,7 @@ import {
     IGridLoader,
     IGridResponse,
     InferDomainResponse,
+    init,
     insertColumnFilter,
     LabelHelpTip,
     LoadingSpinner,
@@ -172,6 +173,7 @@ interface StateProps {
     useAsync: boolean;
     fieldsWarningMsg: ReactNode;
     creationType: SampleCreationType;
+    allowUserSpecifiedNames: boolean;
 }
 
 export class EntityInsertPanelImpl extends Component<Props, StateProps> {
@@ -208,6 +210,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             useAsync: false,
             fieldsWarningMsg: undefined,
             creationType: props.creationType,
+            allowUserSpecifiedNames: true,
         };
     }
 
@@ -265,6 +268,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { creationType } = this.state;
 
         const allowParents = this.allowParents();
+
+        const nameIdSettings = await init();
+        this.setState({ allowUserSpecifiedNames: nameIdSettings.allowUserSpecifiedNames });
 
         let { insertModel } = this.state;
 
@@ -914,6 +920,43 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
+    renderUpdateTooltipText = () => {
+        const { nounPlural } = this.props;
+        const { allowUserSpecifiedNames } = this.state;
+
+        if (nounPlural === 'Samples' && !allowUserSpecifiedNames) {
+            return (
+                <>
+                    <p>
+                        By default, import will insert new Samples based on the file provided, e.g. Update data for
+                        existing samples during this file import is unchecked. This Sample Type has been configured to
+                        not accept user defined Sample IDs/Names. Do not provide a Sample ID/ Name column in your file
+                        or this will result in error.
+                    </p>
+                    <p>
+                        When Update data for existing samples during this file import is checked, the Sample ID/Name
+                        column must be provided. All Sample IDs/Names provided must already exist in the system. If a
+                        new Sample ID/Name is encountered an error will occur.
+                    </p>
+                </>
+            );
+        }
+
+        return (
+            <>
+                <p>
+                    By default, import will insert new {nounPlural} based on the file provided. The operation will fail
+                    if there are existing {this.capIdsText} that match those being imported.
+                </p>
+                <p>
+                    When update is selected, data will be updated for matching {this.capIdsText}, and new {nounPlural}{' '}
+                    will be created for any new {this.capIdsText} provided. Data will not be changed for any columns not
+                    in the imported file.
+                </p>
+            </>
+        );
+    };
+
     toggleInsertOptionChange = (): void => {
         this.setState(state => ({ isMerge: !state.isMerge }));
     };
@@ -1188,17 +1231,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                             </span>
                                             &nbsp;
                                             <LabelHelpTip title="Import Options">
-                                                <p>
-                                                    By default, import will insert new {nounPlural} based on the file
-                                                    provided. The operation will fail if there are existing{' '}
-                                                    {this.capIdsText} that match those being imported.
-                                                </p>
-                                                <p>
-                                                    When update is selected, data will be updated for matching{' '}
-                                                    {this.capIdsText}, and new {nounPlural} will be created for any new{' '}
-                                                    {this.capIdsText} provided. Data will not be changed for any columns
-                                                    not in the imported file.
-                                                </p>
+                                                {this.renderUpdateTooltipText()}
                                                 <p>
                                                     For more information on import options for {nounPlural}, see the{' '}
                                                     {this.props.importHelpLinkNode} documentation page.

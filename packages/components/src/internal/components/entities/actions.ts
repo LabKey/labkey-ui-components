@@ -63,10 +63,12 @@ export function getOperationConfirmationData(
                 if (response.success) {
                     resolve(response.data);
                 } else {
+                    console.error("Response failure when getting operation confirmation data", response.exception);
                     reject(response.exception);
                 }
             }),
             failure: Utils.getCallbackWrapper(response => {
+                console.error("Error getting operation confirmation data", response);
                 reject(response ? response.exception : 'Unknown error getting operation confirmation data.');
             }),
         });

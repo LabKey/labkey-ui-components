@@ -1,34 +1,30 @@
-.setting-panel-title {
+.name-id-setting__setting-panel-title {
     border-bottom: 1px solid #eeeeee;
     font-weight: normal;
     margin-bottom: 15px;
     padding-bottom: 15px;
 }
 
-.setting-prefix {
-    margin-bottom: 20px;
-}
-
-.setting-section h5 {
+.name-id-setting__setting-section h5 {
     font-weight: bold;
     margin: 16px 0;
 }
 
-.prefix {
+.name-id-setting__prefix {
     display: flex;
     align-items: center;
     margin-top: 20px;
 }
 
-.prefix-label {
+.name-id-setting__prefix-label {
     margin-right: 10px;
 }
 
-.prefix-field {
+.name-id-setting__prefix-field {
     margin-right: 10px;
 }
 
-.prefix-example {
+.name-id-setting__prefix-example {
     margin-top: 10px;
     margin-left: 48px;
     color: #999999;

@@ -1,23 +1,24 @@
-import React, { FC, useEffect, useReducer } from 'react';
+import React, {FC, useCallback, useEffect, useReducer} from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 import { Button, Checkbox, FormControl } from 'react-bootstrap';
 
 import { Alert, ConfirmModal, LabelHelpTip, LoadingSpinner, RequiresPermission } from '../../..';
 
-import { init, save } from './actions';
+import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
+import {hasModule} from "../../app/utils";
 
 export const NameIdSettings = () => {
     return (
         <RequiresPermission perms={PermissionTypes.Admin}>
-            <NameIdSettingsForm save={save} init={init} />
+            <NameIdSettingsForm saveNameExpressionOptions={saveNameExpressionOptions} loadNameExpressionOptions={loadNameExpressionOptions} />
         </RequiresPermission>
     );
 };
 
 interface Props {
-    init: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
-    save: (key: string, value: string | boolean) => Promise<void>;
+    loadNameExpressionOptions: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
+    saveNameExpressionOptions: (key: string, value: string | boolean) => Promise<void>;
 }
 
 interface State {
@@ -30,17 +31,17 @@ interface State {
     confirmModalOpen: boolean;
 }
 
+const initialState: State = {
+    error: undefined,
+    loading: true,
+    prefix: '',
+    savingPrefix: false,
+    confirmModalOpen: false,
+    allowUserSpecifiedNames: false,
+    savingAllowUserSpecifiedNames: false,
+};
 export const NameIdSettingsForm: FC<Props> = props => {
-    const { init, save } = props;
-    const initialState: State = {
-        error: undefined,
-        loading: true,
-        prefix: '',
-        savingPrefix: false,
-        confirmModalOpen: false,
-        allowUserSpecifiedNames: false,
-        savingAllowUserSpecifiedNames: false,
-    };
+    const { loadNameExpressionOptions, saveNameExpressionOptions } = props;
     const [state, setState] = useReducer(
         (currentState: State, newState: Partial<State>): State => ({ ...currentState, ...newState }),
         initialState
@@ -57,7 +58,7 @@ export const NameIdSettingsForm: FC<Props> = props => {
     } = state;
 
     const initialize = async () => {
-        const payload = await init();
+        const payload = await loadNameExpressionOptions();
         setState({
             prefix: payload.prefix ?? '',
             allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
@@ -69,25 +70,19 @@ export const NameIdSettingsForm: FC<Props> = props => {
         initialize();
     }, []);
 
-    const saveAllowUserSpecifiedNames = (): void => {
+    const saveAllowUserSpecifiedNames = useCallback(async () => {
         setState({ savingAllowUserSpecifiedNames: true });
-        save('allowUserSpecifiedNames', !allowUserSpecifiedNames)
-            .then(() => {
-                setState({
-                    allowUserSpecifiedNames: !allowUserSpecifiedNames,
-                    savingAllowUserSpecifiedNames: false,
-                });
-            })
-            .catch(err => displayError(err));
-    };
+        await saveNameExpressionOptions('allowUserSpecifiedNames', !allowUserSpecifiedNames).catch(err => displayError(err));
+        setState({
+            allowUserSpecifiedNames: !allowUserSpecifiedNames,
+            savingAllowUserSpecifiedNames: false,
+        });
+    }, []);
 
-    const savePrefix = (): void => {
+    const savePrefix = async () => {
         setState({ savingPrefix: true });
-        save('prefix', prefix)
-            .then(() => {
-                setState({ savingPrefix: false, confirmModalOpen: false });
-            })
-            .catch(err => displayError(err));
+        await saveNameExpressionOptions('prefix', prefix).catch(err => displayError(err));
+        setState({ savingPrefix: false, confirmModalOpen: false });
     };
 
     const displayError = (err): void => {
@@ -97,16 +92,24 @@ export const NameIdSettingsForm: FC<Props> = props => {
         });
     };
 
-    const onChange = (evt: any, stateAttr: string): void => {
+    const prefixOnChange = useCallback(async (evt: any) => {
         const val = evt.target.value;
-        setState({ [stateAttr]: val });
-    };
+        setState({ prefix: val });
+    }, []);
+
+    const openConfirmModal = useCallback(async () => {
+        setState({ confirmModalOpen: true })
+    }, []);
+
+    const closeConfirmModal = useCallback(async () => {
+        setState({ confirmModalOpen: false })
+    }, []);
 
     return (
         <div className="name-id-settings-panel panel">
             <div className="panel-body">
-                <h4 className="setting-panel-title">ID/Name Settings</h4>
-                <div className="setting-section">
+                <h4 className="name-id-setting__setting-panel-title">ID/Name Settings</h4>
+                <div className="name-id-setting__setting-section">
                     <h5> User Defined ID/Names </h5>
 
                     {loading && <LoadingSpinner />}
@@ -126,46 +129,45 @@ export const NameIdSettingsForm: FC<Props> = props => {
                     )}
                 </div>
 
-                <div className="setting-section">
+                <div className="name-id-setting__setting-section">
                     <h5> ID/Name Prefix </h5>
                     <div>
-                        Enter a Prefix to be applied to all new Sample Types, Data Classes (e.g. CellLine, Construct),
-                        Notebooks, and Workflow Jobs. Prefixes generally are 2-3 characters long but will not be
+                        Enter a Prefix to be applied to all {hasModule('biologics') ? "Sample Types and Data Classes (e.g. CellLine, Construct)" : "Sample Types and Sources"}. Prefixes generally are 2-3 characters long but will not be
                         limited. For example, if you provide the prefix "CL" your ID will look like "CL123".
                     </div>
 
                     {loading && <LoadingSpinner />}
                     {!loading && (
                         <>
-                            <div className="prefix">
-                                <div className="prefix-label"> Prefix: </div>
+                            <div className="name-id-setting__prefix">
+                                <div className="name-id-setting__prefix-label"> Prefix: </div>
 
-                                <div className="prefix-field">
+                                <div className="name-id-setting__prefix-field">
                                     <FormControl
                                         name="prefix"
                                         type="text"
                                         placeholder="Enter Prefix"
-                                        onChange={evt => onChange(evt, 'prefix')}
+                                        onChange={prefixOnChange}
                                         value={prefix}
                                     />
                                 </div>
 
                                 <Button
                                     className="btn btn-success"
-                                    onClick={() => setState({ confirmModalOpen: true })}
+                                    onClick={openConfirmModal}
                                     disabled={savingPrefix}
                                 >
                                     Apply Prefix
                                 </Button>
                             </div>
-                            <div className="prefix-example">
+                            <div className="name-id-setting__prefix-example">
                                 Example: {prefix}-Blood-${'{'}GenId{'}'}
                             </div>
 
                             {confirmModalOpen && (
                                 <ConfirmModal
                                     title="Apply Prefix?"
-                                    onCancel={() => setState({ confirmModalOpen: false })}
+                                    onCancel={closeConfirmModal}
                                     onConfirm={savePrefix}
                                     confirmButtonText="Yes, Save and Apply Prefix"
                                     cancelButtonText="Cancel"

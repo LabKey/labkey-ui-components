@@ -10,7 +10,6 @@ import {
     generateId,
     getHelpLink,
     IDomainField,
-    init,
     IParentOption,
     MetricUnitProps,
     SCHEMAS,
@@ -45,6 +44,7 @@ import { getCurrentProductName, isCommunityDistribution } from '../../../app/uti
 
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
+import {loadNameExpressionOptions} from "../../settings/actions";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
@@ -87,7 +87,6 @@ interface State {
     isValid: boolean;
     containers: List<Container>;
     prefix: string;
-    hasWarning: boolean;
 }
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
@@ -138,7 +137,6 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             isValid: true,
             containers: undefined,
             prefix: undefined,
-            hasWarning: false,
         };
     }
 
@@ -152,7 +150,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 this.setState(() => ({ containers: List<Container>() }));
             });
 
-        init()
+        loadNameExpressionOptions()
             .then(response => {
                 this.setState({ prefix: response.prefix ?? null });
             })
@@ -169,13 +167,8 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         const isValid =
             updatedModel?.hasValidProperties() && updatedModel?.isMetricUnitValid(metricUnitProps?.metricUnitRequired);
 
-        let hasWarning = false;
-        if (prefix && !updatedModel.nameExpression.startsWith(prefix)) {
-            hasWarning = true;
-        }
-
         this.setState(
-            () => ({ isValid, hasWarning }),
+            () => ({ isValid }),
             () => {
                 // Issue 39918: only consider the model changed if there is a newModel param
                 if (newModel) {
@@ -335,7 +328,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             showLinkToStudy,
             metricUnitProps,
         } = this.props;
-        const { isValid, containers, hasWarning } = this.state;
+        const { isValid, containers, prefix } = this.state;
 
         const showAliquotNameExpression = aliquotNamePatternProps?.showAliquotNameExpression;
         const aliquotNameExpressionInfoUrl = aliquotNamePatternProps?.aliquotNameExpressionInfoUrl;
@@ -350,6 +343,11 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         const allowTimepointProperties = model.domain.get('allowTimepointProperties');
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
+
+        let hasWarning = false;
+        if (prefix && !model.nameExpression.startsWith(prefix)) {
+            hasWarning = true;
+        }
 
         const autoLinkDataToStudyHelpTip = (
             <>

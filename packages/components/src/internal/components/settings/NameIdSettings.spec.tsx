@@ -10,12 +10,15 @@ import { waitForLifecycle } from '../../testHelpers';
 import { NameIdSettingsForm } from './NameIdSettings';
 
 describe('NameIdSettings', () => {
-    const DEFAULT_PROPS = {
-        init: jest.fn(async () => {
-            return { prefix: 'ABC', allowUserSpecifiedNames: false };
-        }),
-        save: jest.fn(async () => {}),
-    };
+    let DEFAULT_PROPS;
+    beforeEach(() => {
+        DEFAULT_PROPS = {
+            init: jest.fn(async () => {
+                return { prefix: 'ABC', allowUserSpecifiedNames: false };
+            }),
+            save: jest.fn(async () => {}),
+        };
+    });
 
     test('on init', async () => {
         const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);

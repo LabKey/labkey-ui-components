@@ -3,7 +3,7 @@ import { Ajax, Utils } from '@labkey/api';
 import { buildURL } from '../../url/AppURL';
 import { handleRequestFailure } from '../../util/utils';
 
-export const save = (key: string, value: string | boolean): Promise<null> => {
+export const saveNameExpressionOptions = (key: string, value: string | boolean): Promise<null> => {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('sampleManager', 'setNameExpressionOptions'),
@@ -15,7 +15,7 @@ export const save = (key: string, value: string | boolean): Promise<null> => {
     });
 };
 
-export const init = (): Promise<{ prefix: string; allowUserSpecifiedNames: boolean }> => {
+export const loadNameExpressionOptions = (): Promise<{ prefix: string; allowUserSpecifiedNames: boolean }> => {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('sampleManager', 'getNameExpressionOptions'),

@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
-import { init, QuerySelect, SCHEMAS } from '../../../..';
+import { QuerySelect, SCHEMAS } from '../../../..';
 import { DEFINE_DATA_CLASS_TOPIC, DATA_CLASS_NAME_EXPRESSION_TOPIC, getHelpLink } from '../../../util/helpLinks';
 import { ENTITY_FORM_ID_PREFIX } from '../entities/constants';
 import { getFormNameFromId } from '../entities/actions';
@@ -16,6 +16,7 @@ import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BaseProperties
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { DataClassModel } from './models';
+import {loadNameExpressionOptions} from "../../settings/actions";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {
@@ -40,7 +41,6 @@ type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
 interface State {
     isValid: boolean;
     prefix: string;
-    hasWarning: boolean;
 }
 
 // Note: exporting this class for jest test case
@@ -54,10 +54,10 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         appPropertiesOnly: false,
     };
 
-    state: Readonly<State> = { isValid: true, prefix: undefined, hasWarning: false };
+    state: Readonly<State> = { isValid: true, prefix: undefined };
 
     componentDidMount() {
-        init()
+        loadNameExpressionOptions()
             .then(response => {
                 this.setState({ prefix: response.prefix ?? null });
             })
@@ -68,17 +68,10 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
 
     updateValidStatus = (newModel?: DataClassModel): void => {
         const { model, onChange } = this.props;
-        const { prefix } = this.state;
-
         const updatedModel = newModel || model;
 
-        let hasWarning = false;
-        if (prefix && !updatedModel.nameExpression.startsWith(prefix)) {
-            hasWarning = true;
-        }
-
         this.setState(
-            () => ({ isValid: !!updatedModel?.hasValidProperties, hasWarning }),
+            () => ({ isValid: !!updatedModel?.hasValidProperties }),
             () => {
                 // Issue 39918: only consider the model changed if there is a newModel param
                 if (newModel) {
@@ -158,7 +151,12 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             nameExpressionPlaceholder,
             helpTopic,
         } = this.props;
-        const { isValid, hasWarning } = this.state;
+        const { isValid, prefix } = this.state;
+
+        let hasWarning = false;
+        if (prefix && !model.nameExpression.startsWith(prefix)) {
+            hasWarning = true;
+        }
 
         return (
             <BasePropertiesPanel

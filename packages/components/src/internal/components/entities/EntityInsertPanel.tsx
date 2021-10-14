@@ -44,7 +44,6 @@ import {
     IGridLoader,
     IGridResponse,
     InferDomainResponse,
-    init,
     insertColumnFilter,
     LabelHelpTip,
     LoadingSpinner,
@@ -102,6 +101,7 @@ import {
     EntityParentTypeSelectors,
     removeEntityParentType,
 } from './EntityParentTypeSelectors';
+import {loadNameExpressionOptions} from "../settings/actions";
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
@@ -269,7 +269,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         const allowParents = this.allowParents();
 
-        const nameIdSettings = await init();
+        const nameIdSettings = await loadNameExpressionOptions();
         this.setState({ allowUserSpecifiedNames: nameIdSettings.allowUserSpecifiedNames });
 
         let { insertModel } = this.state;

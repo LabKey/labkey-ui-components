@@ -52,10 +52,10 @@
   padding: 0
 }
 
-.naming-pattern-border-warning {
-    border-color: $yellow-border !important;
-    box-shadow: inset 0 0 5px 0 $yellow-shadow !important;
-    outline: none !important;
+.form-control.naming-pattern-border-warning {
+    border-color: $yellow-border;
+    box-shadow: inset 0 0 5px 0 $yellow-shadow;
+    outline: none;
 }
 
 .domain-summary-selection {

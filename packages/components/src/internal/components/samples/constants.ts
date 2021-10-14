@@ -71,3 +71,17 @@ export const permittedOps = {
     ]),
     [SampleStateType.Locked]: new Set([SampleOperation.AddToPicklist, SampleOperation.RemoveFromPicklist]),
 };
+
+export const operationRestrictionMessage = {
+    [SampleOperation.EditMetadata]: {
+        all: 'updating of their data without also changing the status',
+        singular: 'updating of its data',
+        plural: 'updating of their data',
+        recommendation: 'Either change the status here or remove these samples from your selection.'
+    },
+    [SampleOperation.EditLineage]: {
+        all: 'updating of their lineage',
+        singular: 'updating of its lineage',
+        plural: 'updating of their lineage',
+    }
+}

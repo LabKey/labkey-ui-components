@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 import classNames from 'classnames';
 
-import { MAX_EDITABLE_GRID_ROWS } from '../../../index';
+import { Alert, MAX_EDITABLE_GRID_ROWS, SampleOperation } from '../../../index';
 
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { OperationConfirmationData } from '../entities/actions';
+import { OperationNotPermittedMessage } from './OperationNotPermittedMessage';
 
 interface Props {
     show: boolean;
@@ -14,16 +17,26 @@ interface Props {
     showIcons: boolean;
     onCancel: () => void;
     onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
+    api?: ComponentsAPIWrapper;
+    selectionKey: string;
 }
 
 interface State extends Record<string, any> {
     numPerParent: number;
     creationType: SampleCreationType;
     submitting: boolean;
+    confirmationData: OperationConfirmationData;
+    errorMessage: string;
 }
 
 export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     private readonly _maxPerParent;
+    // This is used because a user may cancel during the loading phase, in which case we don't want to update state
+    private _mounted: boolean;
+
+    static defaultProps = {
+        api: getDefaultAPIWrapper(),
+    };
 
     constructor(props: Props) {
         super(props);
@@ -32,9 +45,41 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
             creationType: props.options.find(option => option.selected)?.type || props.options[0].type,
             numPerParent: 1,
             submitting: false,
+            confirmationData: undefined,
+            errorMessage: undefined,
         };
         this._maxPerParent = MAX_EDITABLE_GRID_ROWS / props.parentCount;
     }
+
+    componentDidMount(): void {
+        this._mounted = true;
+        this.init();
+    }
+
+    componentWillUnmount(): void {
+        this._mounted = false;
+    }
+
+    init = async (): Promise<void> => {
+        const { api, selectionKey } = this.props;
+
+        try {
+            const confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditLineage, selectionKey);
+            if (this._mounted) {
+                this.setState({
+                    confirmationData,
+                    error: false
+                });
+            }
+        } catch (e) {
+            if (this._mounted) {
+                this.setState({
+                    error: 'There was a problem retrieving the confirmation data.',
+                    isLoading: false,
+                });
+            }
+        }
+    };
 
     onCancel = (): void => {
         this.props.onCancel();
@@ -124,7 +169,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
 
     render(): React.ReactNode {
         const { show, parentCount } = this.props;
-        const { submitting } = this.state;
+        const { submitting, confirmationData } = this.state;
 
         const parentNoun = parentCount > 1 ? 'Parents' : 'Parent';
         const canSubmit = !submitting && this.isValidNumPerParent();
@@ -136,6 +181,13 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 </Modal.Header>
 
                 <Modal.Body>
+                    <Alert bsStyle="info">
+                        <OperationNotPermittedMessage
+                            operation={SampleOperation.EditLineage}
+                            totalCount={parentCount}
+                            confirmationData={confirmationData}
+                        />
+                    </Alert>
                     {this.renderOptions()}
                     {this.renderNumPerParent()}
                 </Modal.Body>

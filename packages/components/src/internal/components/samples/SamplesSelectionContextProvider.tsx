@@ -24,7 +24,7 @@ type Props = SamplesSelectionProviderProps;
 type State = SamplesSelectionResultProps;
 
 export const SamplesSelectionProvider = (Component: React.ComponentType) => {
-    class SamplesSelectionProviderImpl extends React.Component<Props, State> {
+    return class SamplesSelectionProviderImpl extends React.Component<Props, State> {
         state: Readonly<State> = {
             sampleTypeDomainFields: undefined,
             aliquots: undefined,
@@ -158,6 +158,4 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             }
         }
     }
-
-    return SamplesSelectionProviderImpl;
 };

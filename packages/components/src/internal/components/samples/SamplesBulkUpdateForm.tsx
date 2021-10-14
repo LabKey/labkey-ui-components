@@ -35,15 +35,16 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo( (props) => {
     const [error, setError] = useState<boolean>(false);
 
     useEffect(() => {
-        api.samples.getSampleOperationConfirmationData(SampleOperation.EditMetadata, queryModel.id)
-            .then((data) => {
+        (async () => {
+            try {
+                const data = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditMetadata, queryModel.id);
                 setConfirmationData(data);
                 setError(false);
-            })
-            .catch((reason) => {
-                console.error("There was a problem retrieving the update confirmation data.", reason);
+            }
+            catch {
                 setError(true);
-            });
+            }
+        })();
     }, []);
 
     const gridSelectionSize = useMemo(() => {

@@ -1,6 +1,6 @@
 import { List, Map, Set } from 'immutable';
 
-import { caseInsensitive, EditableColumnMetadata, naturalSort, QueryInfo, QueryModel, SchemaQuery } from '../../..';
+import { caseInsensitive, EditableColumnMetadata, naturalSort, QueryInfo, SchemaQuery, SCHEMAS } from '../../..';
 import { DELIMITER } from '../forms/input/SelectInput';
 
 import { getCurrentProductName } from '../../app/utils';
@@ -207,4 +207,8 @@ export function getUpdatedLineageRowsForBulkEdit(
         }
     });
     return rows;
+}
+
+export function isSampleEntity(dataType: EntityDataType) {
+    return dataType.instanceSchemaName == SCHEMAS.SAMPLE_SETS.SCHEMA;
 }

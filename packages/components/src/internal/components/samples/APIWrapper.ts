@@ -8,6 +8,8 @@ import {
     getSampleSelectionLineageData,
     SampleAssayResultViewConfig,
 } from './actions';
+import { SampleOperation } from './constants';
+import { getSampleOperationConfirmationData, OperationConfirmationData } from '../entities/actions';
 
 export interface SamplesAPIWrapper {
     getSampleAliquotRows: (sampleId: number | string) => Promise<Record<string, any>[]>;
@@ -19,12 +21,18 @@ export interface SamplesAPIWrapper {
         sampleType: string,
         columns?: string[]
     ) => Promise<ISelectRowsResult>;
+
+    getSampleOperationConfirmationData: (
+        operation: SampleOperation,
+        selectionKey: string,
+        rowIds?: string[]) => Promise<OperationConfirmationData>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleAliquotRows = getSampleAliquotRows;
     getSampleAssayResultViewConfigs = getSampleAssayResultViewConfigs;
     getSampleSelectionLineageData = getSampleSelectionLineageData;
+    getSampleOperationConfirmationData = getSampleOperationConfirmationData;
 }
 
 export function getSamplesTestAPIWrapper(overrides: Partial<SamplesAPIWrapper> = {}): SamplesAPIWrapper {
@@ -32,6 +40,7 @@ export function getSamplesTestAPIWrapper(overrides: Partial<SamplesAPIWrapper> =
         getSampleAliquotRows: jest.fn(),
         getSampleAssayResultViewConfigs: jest.fn(),
         getSampleSelectionLineageData: jest.fn(),
+        getSampleOperationConfirmationData: jest.fn(),
         ...overrides,
     };
 }

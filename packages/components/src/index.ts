@@ -397,7 +397,7 @@ import { fetchContainerSecurityPolicy } from './internal/components/permissions/
 import {
     extractEntityTypeOptionFromRow,
     getDataDeleteConfirmationData,
-    getSampleDeleteConfirmationData,
+    getSampleOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
     DataClassDataType,
@@ -939,7 +939,7 @@ export {
     GenerateEntityResponse,
     AddEntityButton,
     RemoveEntityButton,
-    getSampleDeleteConfirmationData,
+    getSampleOperationConfirmationData,
     getDataDeleteConfirmationData,
     createEntityParentKey,
     getUniqueIdColumnMetadata,

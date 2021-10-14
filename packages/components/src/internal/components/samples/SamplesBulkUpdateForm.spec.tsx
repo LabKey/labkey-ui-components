@@ -6,6 +6,7 @@ import { fromJS } from 'immutable';
 import { QueryColumn, QueryInfo, SchemaQuery, BulkUpdateForm, makeTestQueryModel } from '../../..';
 
 import { SamplesBulkUpdateFormBase } from './SamplesBulkUpdateForm';
+import { getSamplesTestAPIWrapper } from './APIWrapper';
 
 describe('SamplesBulkUpdateForm', () => {
     const COLUMN_DESCRIPTION = new QueryColumn({
@@ -70,6 +71,7 @@ describe('SamplesBulkUpdateForm', () => {
         onBulkUpdateError: jest.fn,
         onBulkUpdateComplete: jest.fn,
         editSelectionInGrid: jest.fn,
+        api: getSamplesTestAPIWrapper(),
     };
 
     const SINGLE_ALIQUOT_WARN =

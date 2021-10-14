@@ -12,7 +12,6 @@ import {
     SampleCreationType,
     SampleOperation,
     SchemaQuery,
-    SCHEMAS,
     selectRows,
     SHARED_CONTAINER_PATH,
 } from '../../..';
@@ -29,17 +28,19 @@ import {
     IParentOption,
 } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
+import { isSampleEntity } from './utils';
 
-export interface DeleteConfirmationData {
+export interface OperationConfirmationData {
     allowed: any[];
     notAllowed: any[];
 }
 
-export function getDeleteConfirmationData(
+export function getOperationConfirmationData(
     selectionKey: string,
     dataType: EntityDataType,
-    rowIds?: string[]
-): Promise<DeleteConfirmationData> {
+    rowIds?: string[],
+    extraParams?: any,
+): Promise<OperationConfirmationData> {
     return new Promise((resolve, reject) => {
         let params;
         if (selectionKey) {
@@ -51,11 +52,11 @@ export function getDeleteConfirmationData(
                 rowIds,
             };
         }
-        if (dataType.instanceSchemaName == SCHEMAS.SAMPLE_SETS.SCHEMA) {
-            params['sampleOperation'] = SampleOperation[SampleOperation.Delete];
+        if (extraParams) {
+           params = Object.assign(params, extraParams);
         }
         return Ajax.request({
-            url: buildURL('experiment', dataType.deleteConfirmationActionName),
+            url: buildURL('experiment', dataType.operationConfirmationActionName),
             method: 'POST',
             jsonData: params,
             success: Utils.getCallbackWrapper(response => {
@@ -66,23 +67,31 @@ export function getDeleteConfirmationData(
                 }
             }),
             failure: Utils.getCallbackWrapper(response => {
-                reject(response ? response.exception : 'Unknown error getting delete confirmation data.');
+                reject(response ? response.exception : 'Unknown error getting operation confirmation data.');
             }),
         });
     });
 }
 
-export function getSampleDeleteConfirmationData(
+export function getDeleteConfirmationData(
     selectionKey: string,
+    dataType: EntityDataType,
     rowIds?: string[]
-): Promise<DeleteConfirmationData> {
-    return getDeleteConfirmationData(selectionKey, SampleTypeDataType, rowIds);
+): Promise<OperationConfirmationData> {
+    if (isSampleEntity(dataType)) {
+        return getSampleOperationConfirmationData(SampleOperation.Delete, selectionKey, rowIds);
+    }
+    return getOperationConfirmationData(selectionKey, dataType, rowIds);
+}
+
+export function getSampleOperationConfirmationData(operation: SampleOperation, selectionKey: string, rowIds?: string[]): Promise<OperationConfirmationData> {
+    return getOperationConfirmationData(selectionKey, SampleTypeDataType, rowIds, {sampleOperation: SampleOperation[operation]});
 }
 
 export function getDataDeleteConfirmationData(
     selectionKey: string,
     rowIds?: string[]
-): Promise<DeleteConfirmationData> {
+): Promise<OperationConfirmationData> {
     return getDeleteConfirmationData(selectionKey, DataClassDataType, rowIds);
 }
 

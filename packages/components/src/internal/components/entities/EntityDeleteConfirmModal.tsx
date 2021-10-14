@@ -18,7 +18,7 @@ import React, { PureComponent } from 'react';
 import { ConfirmModal, LoadingSpinner, Alert } from '../../..';
 
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
-import { DeleteConfirmationData, getDeleteConfirmationData } from './actions';
+import { OperationConfirmationData, getDeleteConfirmationData } from './actions';
 import { EntityDataType } from './models';
 
 interface Props {
@@ -31,7 +31,7 @@ interface Props {
 }
 
 interface State {
-    confirmationData: DeleteConfirmationData;
+    confirmationData: OperationConfirmationData;
     error: string;
     isLoading: boolean;
 }

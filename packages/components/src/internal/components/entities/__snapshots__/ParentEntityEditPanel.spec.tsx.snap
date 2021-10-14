@@ -40,7 +40,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
   parentDataTypes={
     Array [
       Object {
-        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -106,7 +106,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                   className="detail__edit--heading"
                 >
                   Editing
-                   
+
                   Test 123
                 </div>
               </DetailPanelHeader>
@@ -127,7 +127,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
               >
                 <b>
                   Data
-                   for 
+                   for
                   Test
                 </b>
               </div>
@@ -142,7 +142,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                   onInitialParentValue={[Function]}
                   parentDataType={
                     Object {
-                      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
                       "deleteHelpLinkTopic": "dataClass",
                       "dependencyText": "derived sample dependencies",
                       "descriptionPlural": "parent types",
@@ -181,7 +181,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                     onValueChange={[Function]}
                     parentDataType={
                       Object {
-                        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
                         "deleteHelpLinkTopic": "dataClass",
                         "dependencyText": "derived sample dependencies",
                         "descriptionPlural": "parent types",
@@ -234,7 +234,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                       onValueChange={[Function]}
                       parentDataType={
                         Object {
-                          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
                           "deleteHelpLinkTopic": "dataClass",
                           "dependencyText": "derived sample dependencies",
                           "descriptionPlural": "parent types",
@@ -301,7 +301,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                         onValueChange={[Function]}
                         parentDataType={
                           Object {
-                            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
                             "deleteHelpLinkTopic": "dataClass",
                             "dependencyText": "derived sample dependencies",
                             "descriptionPlural": "parent types",
@@ -426,7 +426,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                                               <React.Fragment>
                                                 <p>
                                                   <strong>
-                                                    Description: 
+                                                    Description:
                                                   </strong>
                                                   Select a Data Type 1
                                                 </p>
@@ -2223,7 +2223,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
   parentDataTypes={
     Array [
       Object {
-        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -2321,7 +2321,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
               >
                 <b>
                   Data
-                   for 
+                   for
                   Test
                 </b>
               </div>
@@ -2336,7 +2336,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                   onInitialParentValue={[Function]}
                   parentDataType={
                     Object {
-                      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
                       "deleteHelpLinkTopic": "dataClass",
                       "dependencyText": "derived sample dependencies",
                       "descriptionPlural": "parent types",
@@ -2375,7 +2375,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                     onValueChange={[Function]}
                     parentDataType={
                       Object {
-                        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
                         "deleteHelpLinkTopic": "dataClass",
                         "dependencyText": "derived sample dependencies",
                         "descriptionPlural": "parent types",
@@ -2428,7 +2428,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                       onValueChange={[Function]}
                       parentDataType={
                         Object {
-                          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
                           "deleteHelpLinkTopic": "dataClass",
                           "dependencyText": "derived sample dependencies",
                           "descriptionPlural": "parent types",
@@ -2495,7 +2495,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                         onValueChange={[Function]}
                         parentDataType={
                           Object {
-                            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
                             "deleteHelpLinkTopic": "dataClass",
                             "dependencyText": "derived sample dependencies",
                             "descriptionPlural": "parent types",
@@ -2539,9 +2539,9 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                                   Data Type
                                 </td>
                                 <td>
-                                  No 
+                                  No
                                   data type
-                                   has been set for this 
+                                   has been set for this
                                   testing
                                   .
                                 </td>
@@ -2553,9 +2553,9 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                                   Data ID
                                 </td>
                                 <td>
-                                  No 
+                                  No
                                   data
-                                   ID has been set for this 
+                                   ID has been set for this
                                   testing
                                   .
                                 </td>
@@ -2617,7 +2617,7 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
   parentDataTypes={
     Array [
       Object {
-        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -2702,7 +2702,7 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
               >
                 <b>
                   Data
-                   for 
+                   for
                   Test
                 </b>
               </div>
@@ -2717,7 +2717,7 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
                     aria-hidden="true"
                     className="fa fa-spinner fa-pulse"
                   />
-                   
+
                   Loading...
                 </span>
               </LoadingSpinner>

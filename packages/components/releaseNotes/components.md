@@ -5,7 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Updates for restricting operations for selections of samples based on status
   * `getMaterialDeleteConfirmationData.api` renamed to `getMaterialOperationConfirmationData.api` and return structure generalized
-  *
+  * Update `SamplesBulkUpdateForm` to provide alert when samples don't allow data updates.
+
 ### version 2.83.0
 *Released*: 12 October 2021
 * Updates for restricting single sample operations based on status

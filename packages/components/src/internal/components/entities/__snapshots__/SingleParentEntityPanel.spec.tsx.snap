@@ -7,7 +7,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
   index={0}
   parentDataType={
     Object {
-      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
@@ -71,7 +71,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
     onValueChange={[Function]}
     parentDataType={
       Object {
-        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -149,7 +149,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       onValueChange={[Function]}
       parentDataType={
         Object {
-          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived sample dependencies",
           "descriptionPlural": "parent types",
@@ -241,7 +241,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         onValueChange={[Function]}
         parentDataType={
           Object {
-            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived sample dependencies",
             "descriptionPlural": "parent types",
@@ -450,7 +450,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                               <React.Fragment>
                                 <p>
                                   <strong>
-                                    Description: 
+                                    Description:
                                   </strong>
                                   Select a Data Type 1
                                 </p>
@@ -2675,7 +2675,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
   index={0}
   parentDataType={
     Object {
-      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
@@ -2739,7 +2739,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
     onValueChange={[Function]}
     parentDataType={
       Object {
-        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -2817,7 +2817,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       onValueChange={[Function]}
       parentDataType={
         Object {
-          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived sample dependencies",
           "descriptionPlural": "parent types",
@@ -2909,7 +2909,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         onValueChange={[Function]}
         parentDataType={
           Object {
-            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived sample dependencies",
             "descriptionPlural": "parent types",
@@ -2981,9 +2981,9 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
                   Data Type
                 </td>
                 <td>
-                  No 
+                  No
                   data type
-                   has been set for this 
+                   has been set for this
                   sample
                   .
                 </td>
@@ -2995,9 +2995,9 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
                   Data ID
                 </td>
                 <td>
-                  No 
+                  No
                   data
-                   ID has been set for this 
+                   ID has been set for this
                   sample
                   .
                 </td>
@@ -3022,7 +3022,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       "appUrlPrefixParts": Array [
         "sources",
       ],
-      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
@@ -3115,7 +3115,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         "appUrlPrefixParts": Array [
           "sources",
         ],
-        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -3259,7 +3259,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "appUrlPrefixParts": Array [
             "sources",
           ],
-          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived sample dependencies",
           "descriptionPlural": "parent types",
@@ -3417,7 +3417,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "appUrlPrefixParts": Array [
               "sources",
             ],
-            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived sample dependencies",
             "descriptionPlural": "parent types",
@@ -3714,7 +3714,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                         aria-hidden="true"
                         className="fa fa-spinner fa-pulse"
                       />
-                       
+
                       Loading data...
                     </span>
                   </LoadingSpinner>

@@ -19,13 +19,13 @@ import { App, ConfirmModal, SCHEMAS } from '../../..';
 
 import { helpLinkNode } from '../../util/helpLinks';
 
-import { DeleteConfirmationData } from './actions';
+import { OperationConfirmationData } from './actions';
 import { EntityDataType } from './models';
 
 interface Props {
     onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
     onCancel: () => any;
-    confirmationData: DeleteConfirmationData;
+    confirmationData: OperationConfirmationData;
     entityDataType: EntityDataType;
     verb?: string;
 }

@@ -42,9 +42,10 @@ import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
 import { getCurrentProductName, isCommunityDistribution } from '../../../app/utils';
 
+import { loadNameExpressionOptions } from '../../settings/actions';
+
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
-import {loadNameExpressionOptions} from "../../settings/actions";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');

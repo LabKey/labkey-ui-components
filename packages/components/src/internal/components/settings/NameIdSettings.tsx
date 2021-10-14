@@ -1,17 +1,21 @@
-import React, {FC, useCallback, useEffect, useReducer} from 'react';
+import React, { FC, useCallback, useEffect, useReducer } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 import { Button, Checkbox, FormControl } from 'react-bootstrap';
 
 import { Alert, ConfirmModal, LabelHelpTip, LoadingSpinner, RequiresPermission } from '../../..';
 
+import { hasModule } from '../../app/utils';
+
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
-import {hasModule} from "../../app/utils";
 
 export const NameIdSettings = () => {
     return (
         <RequiresPermission perms={PermissionTypes.Admin}>
-            <NameIdSettingsForm saveNameExpressionOptions={saveNameExpressionOptions} loadNameExpressionOptions={loadNameExpressionOptions} />
+            <NameIdSettingsForm
+                saveNameExpressionOptions={saveNameExpressionOptions}
+                loadNameExpressionOptions={loadNameExpressionOptions}
+            />
         </RequiresPermission>
     );
 };
@@ -72,7 +76,9 @@ export const NameIdSettingsForm: FC<Props> = props => {
 
     const saveAllowUserSpecifiedNames = useCallback(async () => {
         setState({ savingAllowUserSpecifiedNames: true });
-        await saveNameExpressionOptions('allowUserSpecifiedNames', !allowUserSpecifiedNames).catch(err => displayError(err));
+        await saveNameExpressionOptions('allowUserSpecifiedNames', !allowUserSpecifiedNames).catch(err =>
+            displayError(err)
+        );
         setState({
             allowUserSpecifiedNames: !allowUserSpecifiedNames,
             savingAllowUserSpecifiedNames: false,
@@ -98,11 +104,11 @@ export const NameIdSettingsForm: FC<Props> = props => {
     }, []);
 
     const openConfirmModal = useCallback(async () => {
-        setState({ confirmModalOpen: true })
+        setState({ confirmModalOpen: true });
     }, []);
 
     const closeConfirmModal = useCallback(async () => {
-        setState({ confirmModalOpen: false })
+        setState({ confirmModalOpen: false });
     }, []);
 
     return (
@@ -132,8 +138,12 @@ export const NameIdSettingsForm: FC<Props> = props => {
                 <div className="name-id-setting__setting-section">
                     <h5> ID/Name Prefix </h5>
                     <div>
-                        Enter a Prefix to be applied to all {hasModule('biologics') ? "Sample Types and Data Classes (e.g. CellLine, Construct)" : "Sample Types and Sources"}. Prefixes generally are 2-3 characters long but will not be
-                        limited. For example, if you provide the prefix "CL" your ID will look like "CL123".
+                        Enter a Prefix to be applied to all
+                        {hasModule('biologics')
+                            ? 'Sample Types and Data Classes (e.g. CellLine, Construct)'
+                            : 'Sample Types and Sources'}
+                        . Prefixes generally are 2-3 characters long but will not be limited. For example, if you
+                        provide the prefix "CL" your ID will look like "CL123".
                     </div>
 
                     {loading && <LoadingSpinner />}
@@ -152,11 +162,7 @@ export const NameIdSettingsForm: FC<Props> = props => {
                                     />
                                 </div>
 
-                                <Button
-                                    className="btn btn-success"
-                                    onClick={openConfirmModal}
-                                    disabled={savingPrefix}
-                                >
+                                <Button className="btn btn-success" onClick={openConfirmModal} disabled={savingPrefix}>
                                     Apply Prefix
                                 </Button>
                             </div>

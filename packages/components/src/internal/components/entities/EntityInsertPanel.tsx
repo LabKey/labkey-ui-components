@@ -82,6 +82,8 @@ import { fetchDomainDetails } from '../domainproperties/actions';
 
 import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from '../samples/constants';
 
+import { loadNameExpressionOptions } from '../settings/actions';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -101,7 +103,6 @@ import {
     EntityParentTypeSelectors,
     removeEntityParentType,
 } from './EntityParentTypeSelectors';
-import {loadNameExpressionOptions} from "../settings/actions";
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';

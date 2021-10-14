@@ -15,8 +15,9 @@ import {
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
+import { loadNameExpressionOptions } from '../../settings/actions';
+
 import { DataClassModel } from './models';
-import {loadNameExpressionOptions} from "../../settings/actions";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {

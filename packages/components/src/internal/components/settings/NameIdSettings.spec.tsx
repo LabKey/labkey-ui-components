@@ -13,25 +13,25 @@ describe('NameIdSettings', () => {
     let DEFAULT_PROPS;
     beforeEach(() => {
         DEFAULT_PROPS = {
-            init: jest.fn(async () => {
+            loadNameExpressionOptions: jest.fn(async () => {
                 return { prefix: 'ABC', allowUserSpecifiedNames: false };
             }),
-            save: jest.fn(async () => {}),
+            saveNameExpressionOptions: jest.fn(async () => {}),
         };
     });
 
     test('on init', async () => {
         const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         expect(wrapper.find(LoadingSpinner).length).toEqual(2);
-        expect(wrapper.find('.prefix-field').exists()).toEqual(false);
+        expect(wrapper.find('.name-id-setting__prefix-field').exists()).toEqual(false);
         expect(wrapper.find(Checkbox).exists()).toEqual(false);
 
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find(LoadingSpinner).length).toEqual(0);
-        expect(wrapper.find('.prefix-field').exists()).toEqual(true);
+        expect(wrapper.find('.name-id-setting__prefix-field').exists()).toEqual(true);
         expect(wrapper.find(Checkbox).exists()).toEqual(true);
-        expect(DEFAULT_PROPS.init).toHaveBeenCalled();
+        expect(DEFAULT_PROPS.loadNameExpressionOptions).toHaveBeenCalled();
     });
 
     test('allowUserSpecifiedNames checkbox', async () => {
@@ -44,7 +44,7 @@ describe('NameIdSettings', () => {
         checkbox().simulate('change', { target: { checked: true } });
 
         await waitForLifecycle(wrapper);
-        expect(DEFAULT_PROPS.save).toHaveBeenCalled();
+        expect(DEFAULT_PROPS.saveNameExpressionOptions).toHaveBeenCalled();
         expect(checkbox().prop('checked')).toBe(true);
     });
 
@@ -52,7 +52,7 @@ describe('NameIdSettings', () => {
         const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
 
-        expect(wrapper.find('.prefix-example').text()).toContain('ABC-Blood-${GenId}');
+        expect(wrapper.find('.name-id-setting__prefix-example').text()).toContain('ABC-Blood-${GenId}');
     });
 
     test('apply prefix confirm modal -- cancel', async () => {
@@ -74,6 +74,6 @@ describe('NameIdSettings', () => {
 
         // Click on 'Yes, Save and Apply Prefix' button
         wrapper.find(Button).last().simulate('click');
-        expect(DEFAULT_PROPS.save).toHaveBeenCalled();
+        expect(DEFAULT_PROPS.saveNameExpressionOptions).toHaveBeenCalled();
     });
 });

@@ -1,11 +1,11 @@
 import React, { FC, useCallback, useEffect, useReducer } from 'react';
 
-import {PermissionTypes} from '@labkey/api';
+import { PermissionTypes } from '@labkey/api';
 import { Button, Checkbox, FormControl } from 'react-bootstrap';
 
 import { Alert, ConfirmModal, LabelHelpTip, LoadingSpinner, RequiresPermission } from '../../..';
 
-import {sampleManagerIsPrimaryApp} from '../../app/utils';
+import { sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
 
@@ -76,15 +76,14 @@ export const NameIdSettingsForm: FC<Props> = props => {
 
     const saveAllowUserSpecifiedNames = useCallback(async () => {
         setState({ savingAllowUserSpecifiedNames: true });
-        await saveNameExpressionOptions('allowUserSpecifiedNames', !allowUserSpecifiedNames).then(() => {
-            setState({
-                allowUserSpecifiedNames: !allowUserSpecifiedNames,
-                savingAllowUserSpecifiedNames: false,
-            });
-        }).catch(err =>
-            displayError(err)
-        );
-
+        await saveNameExpressionOptions('allowUserSpecifiedNames', !allowUserSpecifiedNames)
+            .then(() => {
+                setState({
+                    allowUserSpecifiedNames: !allowUserSpecifiedNames,
+                    savingAllowUserSpecifiedNames: false,
+                });
+            })
+            .catch(err => displayError(err));
     }, [allowUserSpecifiedNames]);
 
     const savePrefix = async () => {
@@ -130,8 +129,16 @@ export const NameIdSettingsForm: FC<Props> = props => {
                             >
                                 Allow users to create/import their own IDs/Names
                                 <LabelHelpTip title="User Defined ID/Names">
-                                    <p> When users are not permitted to create their own IDs/Names, the ID/Name field will be hidden during creation and update of rows, and when accessing the design of a new or existing Sample Type or {sampleManagerIsPrimaryApp() ? 'Source Type' : 'Data Class'}. </p>
-                                    <p>Additionally, attempting to import data and update existing rows during file import will result in an error if a new ID/Name is encountered. </p>
+                                    <p>
+                                        When users are not permitted to create their own IDs/Names, the ID/Name field
+                                        will be hidden during creation and update of rows, and when accessing the design
+                                        of a new or existing Sample Type or{' '}
+                                        {sampleManagerIsPrimaryApp() ? 'Source Type' : 'Data Class'}.
+                                    </p>
+                                    <p>
+                                        Additionally, attempting to import data and update existing rows during file
+                                        import will result in an error if a new ID/Name is encountered.
+                                    </p>
                                 </LabelHelpTip>
                             </Checkbox>
                         </form>
@@ -142,10 +149,8 @@ export const NameIdSettingsForm: FC<Props> = props => {
                     <h5> ID/Name Prefix </h5>
                     <div>
                         Enter a prefix to be applied to all Sample Types and{' '}
-                        {sampleManagerIsPrimaryApp()
-                            ? 'Source Types'
-                            : 'Data Classes (e.g., CellLine, Construct)'}
-                        . Prefixes generally are 2-3 characters long but will not be limited.
+                        {sampleManagerIsPrimaryApp() ? 'Source Types' : 'Data Classes (e.g., CellLine, Construct)'}.
+                        Prefixes generally are 2-3 characters long but will not be limited.
                     </div>
 
                     {loading && <LoadingSpinner />}
@@ -183,8 +188,9 @@ export const NameIdSettingsForm: FC<Props> = props => {
                                     <div>
                                         <p>
                                             This action will change the Naming Pattern for all new and existing Sample
-                                            Types and {sampleManagerIsPrimaryApp() ? 'Source Types' : 'Data Classes'}. No existing IDs/Names will be affected. Are you sure
-                                            you want to apply the prefix?
+                                            Types and {sampleManagerIsPrimaryApp() ? 'Source Types' : 'Data Classes'}.
+                                            No existing IDs/Names will be affected. Are you sure you want to apply the
+                                            prefix?
                                         </p>
                                     </div>
                                 </ConfirmModal>

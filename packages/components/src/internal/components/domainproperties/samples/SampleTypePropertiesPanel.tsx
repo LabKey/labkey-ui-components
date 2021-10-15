@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
+import classNames from 'classnames';
+
 import { getFormNameFromId } from '../entities/actions';
 import {
     AddEntityButton,
@@ -44,10 +46,10 @@ import { getCurrentProductName, isCommunityDistribution } from '../../../app/uti
 
 import { loadNameExpressionOptions } from '../../settings/actions';
 
+import { PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
+
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
-import {PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG} from "../constants";
-import classNames from "classnames";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
@@ -346,10 +348,15 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
 
-        let hasWarning = undefined;
+        let hasWarning;
         if (prefix && !model.nameExpression.startsWith(prefix)) {
             hasWarning = `${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
-        } else if (prefix && showAliquotNameExpression && model.aliquotNameExpression && !model.aliquotNameExpression.startsWith(prefix)) {
+        } else if (
+            prefix &&
+            showAliquotNameExpression &&
+            model.aliquotNameExpression &&
+            !model.aliquotNameExpression.startsWith(prefix)
+        ) {
             hasWarning = `Aliquot ${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
         }
 
@@ -440,7 +447,10 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         </Col>
                         <Col xs={10}>
                             <FormControl
-                                className={classNames({ 'naming-pattern-border-warning': hasWarning !== undefined && hasWarning.startsWith('Aliquot') })}
+                                className={classNames({
+                                    'naming-pattern-border-warning':
+                                        hasWarning !== undefined && hasWarning.startsWith('Aliquot'),
+                                })}
                                 name="aliquotNameExpression"
                                 type="text"
                                 placeholder={aliquotNameExpressionPlaceholder ?? ALIQUOT_NAME_PLACEHOLDER}

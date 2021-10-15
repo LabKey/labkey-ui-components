@@ -17,8 +17,9 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { loadNameExpressionOptions } from '../../settings/actions';
 
+import { PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
+
 import { DataClassModel } from './models';
-import {PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG} from "../constants";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {
@@ -155,7 +156,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         } = this.props;
         const { isValid, prefix } = this.state;
 
-        let hasWarning = undefined;
+        let hasWarning;
         if (prefix && model.nameExpression && !model.nameExpression.startsWith(prefix)) {
             hasWarning = `${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
         }

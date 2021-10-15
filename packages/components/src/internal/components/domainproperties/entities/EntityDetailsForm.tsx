@@ -99,7 +99,10 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                     </Col>
                     <Col xs={10}>
                         <FormControl
-                            className={classNames({ 'naming-pattern-border-warning': hasWarning !== undefined && !hasWarning.startsWith('Aliquot') })}
+                            className={classNames({
+                                'naming-pattern-border-warning':
+                                    hasWarning !== undefined && !hasWarning.startsWith('Aliquot'),
+                            })}
                             id={ENTITY_FORM_IDS.NAME_EXPRESSION}
                             type="text"
                             placeholder={nameExpressionPlaceholder}

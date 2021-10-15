@@ -46,6 +46,8 @@ import { loadNameExpressionOptions } from '../../settings/actions';
 
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
+import {PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG} from "../constants";
+import classNames from "classnames";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
@@ -162,7 +164,6 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
     updateValidStatus = (newModel?: SampleTypeModel): void => {
         const { model, updateModel, metricUnitProps } = this.props;
-        const { prefix } = this.state;
 
         const updatedModel = newModel || model;
         const isValid =
@@ -345,9 +346,11 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
 
-        let hasWarning = false;
+        let hasWarning = undefined;
         if (prefix && !model.nameExpression.startsWith(prefix)) {
-            hasWarning = true;
+            hasWarning = `${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
+        } else if (prefix && showAliquotNameExpression && model.aliquotNameExpression && !model.aliquotNameExpression.startsWith(prefix)) {
+            hasWarning = `Aliquot ${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
         }
 
         const autoLinkDataToStudyHelpTip = (
@@ -437,6 +440,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         </Col>
                         <Col xs={10}>
                             <FormControl
+                                className={classNames({ 'naming-pattern-border-warning': hasWarning !== undefined && hasWarning.startsWith('Aliquot') })}
                                 name="aliquotNameExpression"
                                 type="text"
                                 placeholder={aliquotNameExpressionPlaceholder ?? ALIQUOT_NAME_PLACEHOLDER}

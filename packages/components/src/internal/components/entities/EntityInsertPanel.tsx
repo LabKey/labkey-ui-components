@@ -929,15 +929,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             return (
                 <>
                     <p>
-                        By default, import will insert new Samples based on the file provided, e.g. Update data for
-                        existing samples during this file import is unchecked. This Sample Type has been configured to
-                        not accept user defined Sample IDs/Names. Do not provide a Sample ID/ Name column in your file
-                        or this will result in error.
+                        When "Update data for existing samples during this file import" is unchecked, import will insert new samples based on the file provided. This Sample Type has been configured to not accept user-defined Sample IDs or Names. Providing a Sample ID or Name column in your file will result in an error.
                     </p>
                     <p>
-                        When Update data for existing samples during this file import is checked, the Sample ID/Name
-                        column must be provided. All Sample IDs/Names provided must already exist in the system. If a
-                        new Sample ID/Name is encountered an error will occur.
+                        When "Update data for existing samples during this file import" is checked, the Sample ID or Name column must be provided. All Sample IDs or Names provided must already exist in the system. Encountering a new Sample ID or Name will result in an error.
                     </p>
                 </>
             );

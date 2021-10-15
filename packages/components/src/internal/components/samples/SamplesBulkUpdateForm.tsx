@@ -5,8 +5,9 @@ import { Alert } from 'react-bootstrap';
 import { BulkUpdateForm, QueryColumn, QueryInfo, QueryModel, SampleOperation, SchemaQuery } from '../../..';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
-import { OperationConfirmationData } from '../entities/actions';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { OperationConfirmationData } from '../entities/models';
+import { OperationNotPermittedMessage } from './OperationNotPermittedMessage';
 
 interface OwnProps {
     queryModel: QueryModel;
@@ -65,49 +66,13 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo( (props) => {
         }
     }
 
-    let notAllowedMsg = undefined;
-
-    if (confirmationData) {
-        const noneAllowed = confirmationData.notAllowed.length === gridSelectionSize;
-        if (noneAllowed)
-            notAllowedMsg = (
-                <p>
-                    All selected samples have a status that prevents updating of their data without also changing the status.
-                </p>
-            );
-
-        const onlyAliquots = aliquots?.length === gridSelectionSize;
-        const noAliquots = !aliquots || aliquots.length == 0;
-        let notAllowed = [];
-        if (onlyAliquots || noAliquots) {
-            notAllowed = confirmationData.notAllowed;
-        } else { // some aliquots, some not
-            notAllowed = confirmationData.notAllowed.filter(id => aliquots.indexOf(id) < 0);
-        }
-        if (notAllowed?.length > 0) {
-            notAllowedMsg = (
-                <p>
-                    The current status of {notAllowed.length} selected sample{notAllowed.length ? 's ' : ' '}
-                    prevents the updating of {notAllowed.length == 1 ? 'its' : 'their' } data. Either change the status here or remove these samples from your
-                    selection.
-                </p>
-            );
-        }
-    } else if (error) {
-        notAllowedMsg = (
-            <p>
-                There was a problem retrieving status data for the selected samples. Please verify the status of the samples.
-            </p>
-        )
-    }
-
-    if (!aliquotsMsg && ! notAllowedMsg)
+    if (!aliquotsMsg && (!confirmationData || confirmationData.notAllowed.length == 0))
         return null;
 
     return (
         <Alert bsStyle="info">
             {aliquotsMsg}
-            {notAllowedMsg}
+            {<OperationNotPermittedMessage operation={SampleOperation.EditMetadata} confirmationData={confirmationData} aliquotIds={aliquots}/>}
         </Alert>
     );
 });

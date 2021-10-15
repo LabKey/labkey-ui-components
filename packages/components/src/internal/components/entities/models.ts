@@ -19,20 +19,21 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 import { getEditorModel } from '../../global';
 import { gridShowError } from '../../actions';
 import {
-    capitalizeFirstChar,
+    capitalizeFirstChar, caseInsensitive,
     generateId,
     insertRows,
     InsertRowsResponse,
-    SelectInputOption,
     QueryColumn,
     QueryGridModel,
     QueryInfo,
     SampleCreationType,
-    SCHEMAS,
     SchemaQuery,
+    SCHEMAS,
+    SelectInputOption,
 } from '../../..';
 import { decodePart, encodePart } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
+import { immerable } from 'immer';
 
 export interface EntityInputProps {
     role: string;
@@ -564,4 +565,36 @@ export interface EntityDataType {
     editTypeAppUrlPrefix?: string; // the app url route prefix for the edit design page for the given data type
     importFileAction: string; // the action in the 'experiment' controller to use for file import for the given data type
     isFromSharedContainer?: boolean; // if the data type is defined in /Shared project
+}
+
+export class OperationConfirmationData {
+    [immerable]: true;
+
+    readonly allowed: any[];
+    readonly notAllowed: any[];
+    readonly idMap: {key: number, isAllowed: boolean};
+
+    constructor(values?: Partial<OperationConfirmationData>) {
+        Object.assign(this, values);
+        const idMap = {};
+        values.allowed.forEach(allowed => {
+            idMap[caseInsensitive(allowed, "rowId")] = true;
+        });
+        values.notAllowed.forEach(notAllowed => {
+            idMap[caseInsensitive(notAllowed, "rowId")] = false;
+        });
+        Object.assign(this, {idMap});
+    }
+
+    isIdAllowed(id: number|string): boolean {
+        return this.idMap[id];
+    }
+
+    get anyAllowed(): boolean {
+        return this.allowed.length > 0
+    }
+
+    get totalCount(): number {
+        return this.allowed.length + this.notAllowed.length;
+    }
 }

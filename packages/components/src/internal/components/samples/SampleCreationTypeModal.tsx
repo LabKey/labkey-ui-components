@@ -7,8 +7,8 @@ import { Alert, MAX_EDITABLE_GRID_ROWS, SampleOperation } from '../../../index';
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-import { OperationConfirmationData } from '../entities/actions';
 import { OperationNotPermittedMessage } from './OperationNotPermittedMessage';
+import { OperationConfirmationData } from '../entities/models';
 
 interface Props {
     show: boolean;
@@ -184,7 +184,6 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                     <Alert bsStyle="info">
                         <OperationNotPermittedMessage
                             operation={SampleOperation.EditLineage}
-                            totalCount={parentCount}
                             confirmationData={confirmationData}
                         />
                     </Alert>

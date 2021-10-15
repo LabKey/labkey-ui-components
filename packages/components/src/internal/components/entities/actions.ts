@@ -26,14 +26,10 @@ import {
     EntityTypeOption,
     IEntityTypeOption,
     IParentOption,
+    OperationConfirmationData,
 } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
 import { isSampleEntity } from './utils';
-
-export interface OperationConfirmationData {
-    allowed: any[];
-    notAllowed: any[];
-}
 
 export function getOperationConfirmationData(
     selectionKey: string,
@@ -61,7 +57,7 @@ export function getOperationConfirmationData(
             jsonData: params,
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
-                    resolve(response.data);
+                    resolve(new OperationConfirmationData(response.data));
                 } else {
                     console.error("Response failure when getting operation confirmation data", response.exception);
                     reject(response.exception);

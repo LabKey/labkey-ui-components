@@ -16,6 +16,7 @@ import {
     Progress,
     QueryModel,
     resolveErrorMessage,
+    SampleOperation,
     updateRows,
 } from '../../..';
 
@@ -23,10 +24,11 @@ import { getOriginalParentsFromSampleLineage } from '../samples/actions';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { EntityChoice, EntityDataType } from './models';
+import { EntityChoice, EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun, getUpdatedLineageRowsForBulkEdit } from './utils';
 
 import { ParentEntityLineageColumns } from './constants';
+import { OperationNotPermittedMessage } from '../samples/OperationNotPermittedMessage';
 
 interface Props {
     queryModel: QueryModel;
@@ -41,42 +43,53 @@ interface Props {
 export const EntityLineageEditModal: FC<Props> = memo(props => {
     const { api, auditBehavior, queryModel, onCancel, childEntityDataType, onSuccess, parentEntityDataTypes } = props;
     const [submitting, setSubmitting] = useState(false);
-    const [numAliquots, setNumAliquots] = useState<number>(undefined);
-    const [nonAliquots, setNonAliquots] = useState<Record<string, any>>(undefined);
+    const [allowedForUpdate, setAllowedForUpdate] = useState<Record<string, any>>(undefined);
+    const [aliquotIds, setAliquotIds] = useState<number[]>(undefined);
     const [errorMessage, setErrorMessage] = useState<string>(undefined);
     const [hasParentUpdates, setHasParentUpdates] = useState<boolean>(false);
     const parentNounPlural = parentEntityDataTypes[0].nounPlural;
     const parentNounSingular = parentEntityDataTypes[0].nounSingular;
     const lcParentNounPlural = parentNounPlural.toLowerCase();
     const [selectedParents, setSelectedParents] = useState<List<EntityChoice>>(List<EntityChoice>());
+    const [confirmationData, setConfirmationData] = useState<OperationConfirmationData>(undefined);
 
     useEffect(() => {
         if (!queryModel) return;
 
-        api.samples
-            .getSampleSelectionLineageData(
-                List.of(...queryModel.selections),
-                queryModel.queryName,
-                List.of('RowId', 'Name', 'LSID', 'IsAliquot').concat(ParentEntityLineageColumns).toArray()
-            )
-            .then(async response => {
-                const { key, models } = response;
-                const nonAliquots = {};
-                let aliquotCount = 0;
+        (async () => {
+            try {
+                const _confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditLineage, queryModel.id);
+                const sampleData = await api.samples.getSampleSelectionLineageData(
+                    List.of(...queryModel.selections),
+                    queryModel.queryName,
+                    List.of('RowId', 'Name', 'LSID', 'IsAliquot').concat(ParentEntityLineageColumns).toArray()
+                );
+
+                const { key, models } = sampleData;
+                const allowedForUpdate = {};
+                const aIds = [];
                 Object.keys(models[key]).forEach(id => {
                     const d = models[key][id];
                     if (caseInsensitive(d, 'IsAliquot')['value']) {
-                        aliquotCount++;
+                        aIds.push(id);
                     } else {
-                        nonAliquots[id] = d;
+                        if (_confirmationData.isIdAllowed(id)) {
+                            allowedForUpdate[id] = d;
+                        }
                     }
                 });
-                setNumAliquots(aliquotCount);
-                setNonAliquots(nonAliquots);
-            })
-            .catch(error => {
-                setErrorMessage(error);
-            });
+                setConfirmationData(_confirmationData);
+                setAliquotIds(aIds);
+                setAllowedForUpdate(allowedForUpdate);
+            } catch (error) {
+                if (errorMessage)
+                    setErrorMessage(errorMessage + " " + error);
+                else
+                    setErrorMessage(error);
+            }
+
+        })();
+
     }, []);
 
     const onParentChange = useCallback((entityParents: List<EntityChoice>) => {
@@ -87,9 +100,9 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const onConfirm = useCallback(async () => {
         setSubmitting(true);
 
-        const { originalParents } = await getOriginalParentsFromSampleLineage(nonAliquots);
+        const { originalParents } = await getOriginalParentsFromSampleLineage(allowedForUpdate);
         const rows = getUpdatedLineageRowsForBulkEdit(
-            nonAliquots,
+            allowedForUpdate,
             selectedParents,
             originalParents,
             queryModel.queryInfo
@@ -118,15 +131,16 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
             onSuccess();
             createNotification(`No ${childEntityDataType.nounPlural} updated since no ${lcParentNounPlural} changed.`);
         }
-    }, [selectedParents, auditBehavior, childEntityDataType, queryModel, nonAliquots]);
+    }, [selectedParents, auditBehavior, childEntityDataType, queryModel, allowedForUpdate]);
 
-    if (!queryModel) {
+    if (!queryModel || !confirmationData) {
         return null;
     }
 
-    const numNonAliquots = nonAliquots ? Object.keys(nonAliquots).length : undefined;
+    const numAllowed = allowedForUpdate ? Object.keys(allowedForUpdate).length : undefined;
+    const numAliquots = aliquotIds.length;
 
-    if (numNonAliquots === 0) {
+    if (numAllowed === 0) {
         return (
             <Modal show onHide={onCancel}>
                 <Modal.Header closeButton>
@@ -134,7 +148,16 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <div>The {lcParentNounPlural} for aliquots cannot be changed.</div>
+                    <div>
+                        {(numAliquots == confirmationData.totalCount) && <>The {lcParentNounPlural} for aliquots cannot be changed.</>}
+                        {(numAliquots !== confirmationData.totalCount) && (
+                            <>
+                                {Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections.
+                                Lineage for aliquots cannot be changed.
+                            </>
+                        )}
+                        <OperationNotPermittedMessage confirmationData={confirmationData} operation={SampleOperation.EditLineage} aliquotIds={aliquotIds}/>
+                    </div>
                 </Modal.Body>
 
                 <Modal.Footer>
@@ -150,19 +173,19 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
         <Modal bsSize="large" show onHide={onCancel}>
             <Modal.Header closeButton>
                 <Modal.Title>
-                    Edit {parentNounPlural} for {numNonAliquots ?? ''} Selected{' '}
-                    {capitalizeFirstChar(getEntityNoun(childEntityDataType, numNonAliquots))}
+                    Edit {parentNounPlural} for {numAllowed ?? ''} Selected{' '}
+                    {capitalizeFirstChar(getEntityNoun(childEntityDataType, numAllowed))}
                 </Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-                {!numNonAliquots && <LoadingSpinner />}
-                {numNonAliquots && (
+                {!numAllowed && <LoadingSpinner />}
+                {numAllowed && (
                     <>
                         <div className="bottom-spacing">
                             <p>
                                 Values provided here will <b>replace</b> the existing {lcParentNounPlural} of the chosen
-                                types for the selected {getEntityNoun(childEntityDataType, nonAliquots.length)}. Remove{' '}
+                                types for the selected {getEntityNoun(childEntityDataType, numAllowed)}. Remove{' '}
                                 {parentNounSingular} Types from the form below that you do not wish to change the value
                                 of.
                             </p>
@@ -172,16 +195,21 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                                 "Manage" menu.
                             </p>
                         </div>
-                        {numAliquots > 0 && !submitting && (
+                        {(numAliquots > 0 || confirmationData.notAllowed.length > 0) && !submitting && (
                             <Alert bsStyle="info" className="has-aliquots-alert">
                                 {' '}
-                                {Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections.
-                                Lineage for aliquots cannot be changed.
+                                {numAliquots > 0 && (
+                                    <>
+                                        {Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections.
+                                        Lineage for aliquots cannot be changed.
+                                    </>
+                                )}
+                                <OperationNotPermittedMessage confirmationData={confirmationData} operation={SampleOperation.EditLineage}/>
                             </Alert>
                         )}
                         <Alert bsStyle="danger">{errorMessage}</Alert>
 
-                        <Progress modal={false} estimate={numNonAliquots * 10} toggle={submitting} />
+                        <Progress modal={false} estimate={numAllowed * 10} toggle={submitting} />
                         {!submitting && (
                             <ParentEntityEditPanel
                                 auditBehavior={auditBehavior}
@@ -214,7 +242,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 <Button
                     bsStyle="success"
                     onClick={onConfirm}
-                    disabled={submitting || !numNonAliquots || !hasParentUpdates}
+                    disabled={submitting || !numAllowed || !hasParentUpdates}
                 >
                     {submitting ? `Updating ${parentNounPlural} ...` : `Update ${parentNounPlural}`}
                 </Button>

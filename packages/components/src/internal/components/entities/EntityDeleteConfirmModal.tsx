@@ -18,8 +18,8 @@ import React, { PureComponent } from 'react';
 import { ConfirmModal, LoadingSpinner, Alert } from '../../..';
 
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
-import { OperationConfirmationData, getDeleteConfirmationData } from './actions';
-import { EntityDataType } from './models';
+import { getDeleteConfirmationData } from './actions';
+import { EntityDataType, OperationConfirmationData } from './models';
 
 interface Props {
     onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;

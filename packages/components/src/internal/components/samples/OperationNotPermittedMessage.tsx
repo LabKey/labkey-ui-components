@@ -1,18 +1,18 @@
 import React, { FC, memo, useEffect, useState } from 'react';
-import { OperationConfirmationData } from '../entities/actions';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { operationRestrictionMessage, SampleOperation } from './constants';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
+import { OperationConfirmationData } from '../entities/models';
+import { caseInsensitive } from '../../util/utils';
 
 interface Props {
     operation: SampleOperation,
     confirmationData: OperationConfirmationData,
-    totalCount: number,
     api?: ComponentsAPIWrapper,
-    aliquots?: any[],
+    aliquotIds?: any[],
 }
 
 function getOperationRestrictionMessage(operation: SampleOperation, numSamples: number, isAll?: boolean): string {
@@ -35,26 +35,27 @@ function getOperationRestrictionMessage(operation: SampleOperation, numSamples: 
 
 export const OperationNotPermittedMessage: FC<Props> = memo((props) => {
 
-    const { operation, aliquots, confirmationData, totalCount } = props;
+    const { operation, aliquotIds, confirmationData } = props;
 
     let notAllowedMsg = null;
 
     if (confirmationData) {
-        const noneAllowed = confirmationData.notAllowed.length === totalCount;
-        if (noneAllowed)
-            notAllowedMsg = (
+        const noneAllowed = confirmationData.allowed.length === 0;
+        if (noneAllowed) {
+            return (
                 <p>
                     All selected samples have a status that prevents {operationRestrictionMessage[operation].all}.
                 </p>
             );
+        }
 
-        const onlyAliquots = aliquots?.length === totalCount;
-        const noAliquots = !aliquots || aliquots.length == 0;
+        const onlyAliquots = aliquotIds?.length === confirmationData.totalCount;
+        const noAliquots = !aliquotIds || aliquotIds.length == 0;
         let notAllowed = [];
         if (onlyAliquots || noAliquots) {
             notAllowed = confirmationData.notAllowed;
         } else { // some aliquots, some not
-            notAllowed = confirmationData.notAllowed.filter(id => aliquots.indexOf(id) < 0);
+            notAllowed = confirmationData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, "rowId")) < 0);
         }
         if (notAllowed?.length > 0) {
             notAllowedMsg = (

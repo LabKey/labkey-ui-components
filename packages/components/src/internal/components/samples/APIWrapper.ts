@@ -9,7 +9,8 @@ import {
     SampleAssayResultViewConfig,
 } from './actions';
 import { SampleOperation } from './constants';
-import { getSampleOperationConfirmationData, OperationConfirmationData } from '../entities/actions';
+import { getSampleOperationConfirmationData} from '../entities/actions';
+import { OperationConfirmationData } from '../entities/models';
 
 export interface SamplesAPIWrapper {
     getSampleAliquotRows: (sampleId: number | string) => Promise<Record<string, any>[]>;

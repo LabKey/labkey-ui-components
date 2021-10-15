@@ -138,7 +138,7 @@ export const NameIdSettingsForm: FC<Props> = props => {
                 <div className="name-id-setting__setting-section">
                     <h5> ID/Name Prefix </h5>
                     <div>
-                        Enter a Prefix to be applied to all
+                        Enter a Prefix to be applied to all{' '}
                         {hasModule('biologics')
                             ? 'Sample Types and Data Classes (e.g. CellLine, Construct)'
                             : 'Sample Types and Sources'}
@@ -167,7 +167,7 @@ export const NameIdSettingsForm: FC<Props> = props => {
                                 </Button>
                             </div>
                             <div className="name-id-setting__prefix-example">
-                                Example: {prefix}-Blood-${'{'}GenId{'}'}
+                                Example: {prefix}Blood-${'{'}GenId{'}'}
                             </div>
 
                             {confirmModalOpen && (

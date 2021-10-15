@@ -179,7 +179,7 @@ export const FIELD_NAME_CHAR_WARNING_INFO =
     'SPSS, and MATLAB.';
 
 export const PROPERTIES_PANEL_ERROR_MSG = 'Contains errors or is missing required values.';
-export const PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG = 'todo warning message.';
+export const PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG = 'Naming Pattern does not utilize ID/Name prefix.';
 
 export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideRequired: false,

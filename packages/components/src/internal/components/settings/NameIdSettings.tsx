@@ -83,7 +83,7 @@ export const NameIdSettingsForm: FC<Props> = props => {
             allowUserSpecifiedNames: !allowUserSpecifiedNames,
             savingAllowUserSpecifiedNames: false,
         });
-    }, []);
+    }, [allowUserSpecifiedNames]);
 
     const savePrefix = async () => {
         setState({ savingPrefix: true });

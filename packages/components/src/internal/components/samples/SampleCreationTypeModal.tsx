@@ -181,23 +181,40 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <Alert bsStyle="info">
-                        <OperationNotPermittedMessage
-                            operation={SampleOperation.EditLineage}
-                            confirmationData={confirmationData}
-                        />
-                    </Alert>
-                    {this.renderOptions()}
-                    {this.renderNumPerParent()}
+                    {confirmationData?.anyNotAllowed &&
+                        <Alert bsStyle="info">
+                            <OperationNotPermittedMessage
+                                operation={SampleOperation.EditLineage}
+                                confirmationData={confirmationData}
+                            />
+                        </Alert>
+                    }
+                    {confirmationData?.anyAllowed && (
+                        <>
+                            {this.renderOptions()}
+                            {this.renderNumPerParent()}
+                        </>
+                    )}
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button bsStyle="default" className="pull-left" onClick={this.onCancel}>
-                        Cancel
-                    </Button>
-                    <Button bsStyle="success" onClick={this.onConfirm} disabled={!canSubmit}>
-                        Go to Sample Creation Grid
-                    </Button>
+                    {confirmationData?.anyAllowed &&
+                        <>
+                            <Button bsStyle="default" className="pull-left" onClick={this.onCancel}>
+                                Cancel
+                            </Button>
+                            <Button bsStyle="success" onClick={this.onConfirm} disabled={!canSubmit}>
+                            Go to Sample Creation Grid
+                            </Button>
+                        </>
+                    }
+                    {confirmationData && !confirmationData.anyAllowed &&
+                        <>
+                            <Button bsStyle="default" onClick={this.onCancel} >
+                                Dismiss
+                            </Button>
+                        </>
+                    }
                 </Modal.Footer>
             </Modal>
         );

@@ -587,7 +587,12 @@ export class OperationConfirmationData {
     }
 
     isIdAllowed(id: number|string): boolean {
-        return this.idMap[id];
+        const idNum = typeof id === 'string' ? parseInt(id) : id;
+        return this.idMap[idNum];
+    }
+
+    get noneAllowed(): boolean {
+        return this.allowed.length === 0;
     }
 
     get anyAllowed(): boolean {
@@ -596,5 +601,9 @@ export class OperationConfirmationData {
 
     get totalCount(): number {
         return this.allowed.length + this.notAllowed.length;
+    }
+
+    get anyNotAllowed(): boolean {
+        return this.notAllowed.length > 0;
     }
 }

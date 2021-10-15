@@ -83,5 +83,15 @@ export const operationRestrictionMessage = {
         all: 'updating of their lineage',
         singular: 'updating of its lineage',
         plural: 'updating of their lineage',
+    },
+    [SampleOperation.RemoveFromStorage]: {
+        all: 'removing from storage',
+        singular: 'removing it from storage',
+        plural: 'removing them from storage',
+    },
+    [SampleOperation.AddToWorkflow]: {
+        all: 'adding them to a job',
+        singular: 'adding it to a job',
+        plural: 'adding them to a job'
     }
 }

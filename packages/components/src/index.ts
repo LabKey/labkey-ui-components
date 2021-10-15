@@ -486,6 +486,7 @@ import {
     SampleCreationType,
 } from './internal/components/samples/models';
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
+import { OperationNotPermittedMessage } from './internal/components/samples/OperationNotPermittedMessage';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import {
     FIND_BY_IDS_QUERY_PARAM,
@@ -928,6 +929,7 @@ export {
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     getFindSamplesByIdData,
     getOmittedSampleTypeColumns,
+    OperationNotPermittedMessage,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
@@ -1315,6 +1317,7 @@ export type {
     IEntityTypeOption,
     IParentOption,
     MaterialOutput,
+    OperationConfirmationData,
 } from './internal/components/entities/models';
 export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
 export type { PermissionsProviderProps } from './internal/components/permissions/models';

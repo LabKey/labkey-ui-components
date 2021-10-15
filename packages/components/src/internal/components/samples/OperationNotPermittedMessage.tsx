@@ -40,8 +40,7 @@ export const OperationNotPermittedMessage: FC<Props> = memo((props) => {
     let notAllowedMsg = null;
 
     if (confirmationData) {
-        const noneAllowed = confirmationData.allowed.length === 0;
-        if (noneAllowed) {
+        if (confirmationData.noneAllowed) {
             return (
                 <p>
                     All selected samples have a status that prevents {operationRestrictionMessage[operation].all}.
@@ -61,7 +60,7 @@ export const OperationNotPermittedMessage: FC<Props> = memo((props) => {
             notAllowedMsg = (
                 <p>
                     The current status of {notAllowed.length} selected sample{notAllowed.length == 1 ? ' ' : 's '}
-                    prevents the {getOperationRestrictionMessage(operation, notAllowed.length, false)}
+                    prevents {getOperationRestrictionMessage(operation, notAllowed.length, false)}
                 </p>
             );
         }

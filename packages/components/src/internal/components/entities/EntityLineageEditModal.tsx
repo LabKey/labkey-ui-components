@@ -138,7 +138,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     }
 
     const numAllowed = allowedForUpdate ? Object.keys(allowedForUpdate).length : undefined;
-    const numAliquots = aliquotIds.length;
+    const numAliquots = aliquotIds?.length || 0;
 
     if (numAllowed === 0) {
         return (
@@ -149,7 +149,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
 
                 <Modal.Body>
                     <div>
-                        {(numAliquots == confirmationData.totalCount) && <>The {lcParentNounPlural} for aliquots cannot be changed.</>}
+                        {(numAliquots === confirmationData.totalCount) && <>The {lcParentNounPlural} for aliquots cannot be changed.</>}
                         {(numAliquots !== confirmationData.totalCount) && (
                             <>
                                 {Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections.

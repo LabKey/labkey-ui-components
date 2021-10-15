@@ -1,7 +1,7 @@
-import { ComponentType } from "react";
+import { ComponentType } from 'react';
 import { List } from 'immutable';
 
-import { QueryModel, User } from "../../..";
+import { QueryModel, User } from '../../..';
 
 import { SampleStateType } from './constants';
 

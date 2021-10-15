@@ -27,7 +27,7 @@ import {
 
 import { getOmittedSampleTypeColumns } from './utils';
 import { getSampleAliquotsQueryConfig } from './actions';
-import { SampleStorageButton } from "./models";
+import { SampleStorageButton } from './models';
 
 interface AliquotGridButtonsProps {
     afterAction: () => void;

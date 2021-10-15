@@ -1,6 +1,8 @@
 import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, MenuItem } from 'react-bootstrap';
 
+import { Filter, PermissionTypes, Utils } from '@labkey/api';
+
 import {
     App,
     AppURL,
@@ -10,7 +12,8 @@ import {
     getConfirmDeleteMessage,
     getListProperties,
     GridPanel,
-    InsufficientPermissionsPage, invalidateLineageResults,
+    InsufficientPermissionsPage,
+    invalidateLineageResults,
     LoadingPage,
     LoadingSpinner,
     ManageDropdownButton,
@@ -31,7 +34,7 @@ import {
     SCHEMAS,
     SelectionMenuItem,
     updatePicklist,
-    User
+    User,
 } from '../../..';
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import {
@@ -40,9 +43,7 @@ import {
     withQueryModels,
 } from '../../../public/QueryModel/withQueryModels';
 
-import { Filter, PermissionTypes, Utils } from '@labkey/api';
-
-import { SampleStorageButton } from "../samples/models";
+import { SampleStorageButton } from '../samples/models';
 
 interface OwnProps {
     user: User;
@@ -50,7 +51,7 @@ interface OwnProps {
     params?: any;
     StorageButtonsComponent?: SampleStorageButton;
     JobsButtonsComponent?: SampleJobsButton;
-    sampleExportOptions?: { [key: string]: any }
+    sampleExportOptions?: { [key: string]: any };
 }
 
 interface SampleJobsButtonsComponentProps {
@@ -65,10 +66,10 @@ const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_METADATA_ID = 'picklist-metadata-';
 
 interface GridButtonProps {
-    user: User,
-    picklist: Picklist,
-    onRemoveFromPicklistClick?: () => void,
-    afterStorageUpdate?: () => void,
+    user: User;
+    picklist: Picklist;
+    onRemoveFromPicklistClick?: () => void;
+    afterStorageUpdate?: () => void;
     StorageButtonsComponent?: SampleStorageButton;
     JobsButtonsComponent?: SampleJobsButton;
 }
@@ -81,7 +82,7 @@ export const GridButtons: FC<GridButtonProps & RequiresModelAndActions> = memo(p
         onRemoveFromPicklistClick,
         user,
         StorageButtonsComponent,
-        JobsButtonsComponent
+        JobsButtonsComponent,
     } = props;
     if (!model || model.isLoading) {
         return null;
@@ -90,24 +91,18 @@ export const GridButtons: FC<GridButtonProps & RequiresModelAndActions> = memo(p
     return (
         <RequiresPermission perms={PermissionTypes.Insert}>
             <div className="btn-group">
-                <ManageDropdownButton id={'picklist-samples'}>
-                    {picklist.canRemoveItems(user) &&
-                    <SelectionMenuItem
-                            id={'remove-samples-menu-item'}
-                            text={'Remove from Picklist'}
+                <ManageDropdownButton id="picklist-samples">
+                    {picklist.canRemoveItems(user) && (
+                        <SelectionMenuItem
+                            id="remove-samples-menu-item"
+                            text="Remove from Picklist"
                             onClick={onRemoveFromPicklistClick}
                             queryModel={model}
-                            nounPlural={'samples'}
-                    />
-                    }
+                            nounPlural="samples"
+                        />
+                    )}
                 </ManageDropdownButton>
-                {JobsButtonsComponent && (
-                    <JobsButtonsComponent
-                        user={user}
-                        model={model}
-                        isPicklist={true}
-                    />
-                )}
+                {JobsButtonsComponent && <JobsButtonsComponent user={user} model={model} isPicklist={true} />}
                 {StorageButtonsComponent && (
                     <StorageButtonsComponent
                         afterStorageUpdate={afterStorageUpdate}
@@ -124,8 +119,9 @@ export const GridButtons: FC<GridButtonProps & RequiresModelAndActions> = memo(p
 type Props = OwnProps & InjectedQueryModels;
 
 export const PicklistOverviewImpl: FC<Props> = memo(props => {
-    const {id} = props.params;
-    const {queryModels, actions, user, navigate, sampleExportOptions, StorageButtonsComponent, JobsButtonsComponent} = props;
+    const { id } = props.params;
+    const { queryModels, actions, user, navigate, sampleExportOptions, StorageButtonsComponent, JobsButtonsComponent } =
+        props;
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const [listName, setListName] = useState<string>(undefined);
@@ -157,13 +153,16 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
     }, [queryModels]);
 
     useEffect(() => {
-        actions.addModel({
-            schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
-            id: getMetadataGridId(),
-            bindURL: false,
-            requiredColumns: ['Category'],
-            baseFilters: [Filter.create('listId', id)]
-        }, true);
+        actions.addModel(
+            {
+                schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
+                id: getMetadataGridId(),
+                bindURL: false,
+                requiredColumns: ['Category'],
+                baseFilters: [Filter.create('listId', id)],
+            },
+            true
+        );
         getListProperties(id).then(listModel => {
             setListName(listModel.name);
             actions.addModel({
@@ -184,14 +183,15 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
             .then(() => {
                 setShowDeleteModal(false);
                 navigate(AppURL.create(App.PICKLIST_KEY));
-                createNotification('Successfully deleted picklist "' + picklist.name + '".' );
+                createNotification('Successfully deleted picklist "' + picklist.name + '".');
             })
             .catch(() => {
                 setShowDeleteModal(false);
                 createNotification({
-                    message: "There was a problem deleting this picklist.  Be sure the list is still valid and has not been deleted by another user.",
-                    alertClass: "danger"
-                })
+                    message:
+                        'There was a problem deleting this picklist.  Be sure the list is still valid and has not been deleted by another user.',
+                    alertClass: 'danger',
+                });
             });
     }, [picklist, navigate]);
 
@@ -218,19 +218,26 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
 
     // Using a type for evt here causes difficulties.  It wants a FormEvent<Checkbox> but
     // then it doesn't recognize checked as a valid field on current target.
-    const onSharedChanged = useCallback((evt) => {
-        picklist = picklist.mutate({
-            Category: evt.currentTarget.checked ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY
-        }) as Picklist;
-        updatePicklist(picklist).then((update) => {
-            actions.loadModel(getMetadataGridId());
-        }).catch((reason) => {
-            createNotification({
-                message: 'There was a problem updating the sharing for this picklist. ' + resolveErrorMessage(reason),
-                alertClass: 'danger'
-            });
-        });
-    }, [picklist]);
+    const onSharedChanged = useCallback(
+        evt => {
+            picklist = picklist.mutate({
+                Category: evt.currentTarget.checked ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY,
+            }) as Picklist;
+            updatePicklist(picklist)
+                .then(update => {
+                    actions.loadModel(getMetadataGridId());
+                })
+                .catch(reason => {
+                    createNotification({
+                        message:
+                            'There was a problem updating the sharing for this picklist. ' +
+                            resolveErrorMessage(reason),
+                        alertClass: 'danger',
+                    });
+                });
+        },
+        [picklist]
+    );
 
     const onRemoveFromPicklistClick = () => {
         setShowRemoveFromPicklistConfirm(true);
@@ -243,7 +250,9 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
     const onRemoveFromList = useCallback(async () => {
         if (itemsQueryModel?.hasSelections) {
             const numDeleted = await removeSamplesFromPicklist(picklist, itemsQueryModel);
-            createNotification('Successfully removed ' + Utils.pluralize(numDeleted, 'sample', 'samples') + ' from this list.');
+            createNotification(
+                'Successfully removed ' + Utils.pluralize(numDeleted, 'sample', 'samples') + ' from this list.'
+            );
             setShowRemoveFromPicklistConfirm(false);
             actions.replaceSelections(getItemsGridId(), []);
             actions.loadModel(getItemsGridId(), true);
@@ -256,21 +265,21 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
     }, []);
 
     const afterStorageUpdate = () => {
-        const {actions} = props;
+        const { actions } = props;
         onSampleSetChange();
         actions.loadAllModels(true);
     };
 
     if (!picklist) {
-        return <LoadingPage/>;
+        return <LoadingPage />;
     }
 
     if (!picklist.isValid()) {
-        return <NotFound/>;
+        return <NotFound />;
     }
 
     if (!picklist.isUserList(user) && !picklist.isPublic()) {
-        return <InsufficientPermissionsPage title={'Picklist'}/>;
+        return <InsufficientPermissionsPage title="Picklist" />;
     }
 
     const gridButtonProps = {
@@ -279,27 +288,32 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
         user,
         picklist,
         StorageButtonsComponent,
-        JobsButtonsComponent
+        JobsButtonsComponent,
     };
 
-    const nounAndNumber = itemsQueryModel?.selections ? Utils.pluralize(itemsQueryModel.selections.size, 'Sample', 'Samples') : undefined;
-    const selectedNounAndNumber = itemsQueryModel?.selections ? Utils.pluralize(itemsQueryModel.selections.size, 'selected sample', 'selected samples') : undefined;
+    const nounAndNumber = itemsQueryModel?.selections
+        ? Utils.pluralize(itemsQueryModel.selections.size, 'Sample', 'Samples')
+        : undefined;
+    const selectedNounAndNumber = itemsQueryModel?.selections
+        ? Utils.pluralize(itemsQueryModel.selections.size, 'selected sample', 'selected samples')
+        : undefined;
     return (
         <Page title={listName}>
             <PageDetailHeader
                 user={user}
-                iconDir={'_images'}
-                iconSrc={'workflow'}
+                iconDir="_images"
+                iconSrc="workflow"
                 title={listName}
                 subTitle={undefined}
                 description={picklist.Description}
                 leftColumns={9}
-                iconAltText={'picklist-icon'}
+                iconAltText="picklist-icon"
             >
                 {(picklist.isEditable(user) || picklist.isDeletable(user)) && (
                     <ManageDropdownButton id="picklistHeader" pullRight collapsed>
-                        {picklist.isUserList(user) &&
-                        <MenuItem onClick={onEditPicklistMetadataClick}>Edit Picklist</MenuItem>}
+                        {picklist.isUserList(user) && (
+                            <MenuItem onClick={onEditPicklistMetadataClick}>Edit Picklist</MenuItem>
+                        )}
                         <MenuItem onClick={onDeletePicklistClick}>Delete Picklist</MenuItem>
                     </ManageDropdownButton>
                 )}
@@ -307,16 +321,16 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
 
             <div className="panel panel-default">
                 <div className="panel-body">
-                    <div className={'picklist-grid'}>
+                    <div className="picklist-grid">
                         {picklist.isEditable(user) && (
                             <>
-                                <div className={'picklist-sharing'}>Sharing</div>
+                                <div className="picklist-sharing">Sharing</div>
                                 <Checkbox checked={picklist.isPublic()} onChange={onSharedChanged}>
                                     <span>Share this picklist publicly with team members</span>
                                 </Checkbox>
                             </>
                         )}
-                        {queryModels[getItemsGridId()] ?
+                        {queryModels[getItemsGridId()] ? (
                             <GridPanel
                                 ButtonsComponent={GridButtons}
                                 buttonsComponentProps={gridButtonProps}
@@ -324,9 +338,9 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                                 actions={actions}
                                 advancedExportOptions={sampleExportOptions}
                             />
-                            :
-                            <LoadingSpinner/>
-                        }
+                        ) : (
+                            <LoadingSpinner />
+                        )}
                     </div>
                 </div>
             </div>
@@ -349,7 +363,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
             />
             {showRemoveFromPicklistConfirm && (
                 <ConfirmModal
-                    title={'Remove from Picklist'}
+                    title="Remove from Picklist"
                     onConfirm={onRemoveFromList}
                     onCancel={onCancelRemoveFromList}
                     confirmVariant="danger"
@@ -361,10 +375,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                 </ConfirmModal>
             )}
         </Page>
-
     );
 });
 
 export const PicklistOverview = withQueryModels<OwnProps>(PicklistOverviewImpl);
-
-

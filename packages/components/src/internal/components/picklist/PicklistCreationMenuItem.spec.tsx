@@ -75,7 +75,7 @@ describe('PicklistCreationMenuItem', () => {
 
     test('not enabled for Biologics', () => {
         LABKEY.moduleContext = {
-            biologics: {}
+            biologics: {},
         };
 
         const wrapper = mount(

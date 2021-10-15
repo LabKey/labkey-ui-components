@@ -1,4 +1,7 @@
+import { ComponentType } from 'react';
 import { List } from 'immutable';
+
+import { QueryModel, User } from '../../..';
 
 import { SampleStateType } from './constants';
 
@@ -110,3 +113,12 @@ export interface SampleStatus {
     statusType: SampleStateType;
     description?: string;
 }
+
+export interface SampleStorageButtonsComponentProps {
+    user: User;
+    afterStorageUpdate?: () => void;
+    queryModel?: QueryModel;
+    isPicklist?: boolean;
+}
+
+export type SampleStorageButton = ComponentType<SampleStorageButtonsComponentProps>;

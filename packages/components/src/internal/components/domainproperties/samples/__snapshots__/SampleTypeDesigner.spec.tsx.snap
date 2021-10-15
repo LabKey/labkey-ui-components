@@ -1673,7 +1673,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             dataClassAliasCaption="Data Class Alias"
             dataClassParentageLabel="data class"
             dataClassTypeCaption="Data Class"
-            hasWarning={false}
             headerId="sample-type-properties-hdr"
             helpTopic="createSampleType"
             includeDataClasses={false}
@@ -2174,7 +2173,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                       "exception": undefined,
                                     }
                                   }
-                                  hasWarning={false}
                                   nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
                                   nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                                   nameReadOnly={true}

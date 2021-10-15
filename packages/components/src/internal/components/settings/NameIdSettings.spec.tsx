@@ -14,7 +14,7 @@ describe('NameIdSettings', () => {
     beforeEach(() => {
         DEFAULT_PROPS = {
             loadNameExpressionOptions: jest.fn(async () => {
-                return { prefix: 'ABC', allowUserSpecifiedNames: false };
+                return { prefix: 'ABC-', allowUserSpecifiedNames: false };
             }),
             saveNameExpressionOptions: jest.fn(async () => {}),
         };

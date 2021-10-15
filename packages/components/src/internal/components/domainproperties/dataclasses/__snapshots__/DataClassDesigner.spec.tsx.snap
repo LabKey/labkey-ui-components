@@ -2755,7 +2755,6 @@ exports[`DataClassDesigner initModel 1`] = `
             appPropertiesOnly={false}
             collapsed={false}
             controlledCollapse={true}
-            hasWarning={false}
             headerId="dataclass-properties-hdr"
             helpTopic="createDataClass"
             isValid={true}
@@ -3341,7 +3340,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                       "nameExpression": "Source-\${genId}",
                                     }
                                   }
-                                  hasWarning={false}
                                   nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name&referrer=inPage"
                                   nameExpressionPlaceholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                                   noun="Data Class"

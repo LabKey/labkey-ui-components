@@ -7,6 +7,10 @@ import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
 
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 
+beforeAll(() => {
+    LABKEY.moduleContext.inventory = { productId: ['FreezerManager'] };
+});
+
 describe('PicklistCreationMenuItem', () => {
     const key = 'picklists';
     const selectionKey = 'test-selection';
@@ -71,7 +75,7 @@ describe('PicklistCreationMenuItem', () => {
 
     test('not enabled for Biologics', () => {
         LABKEY.moduleContext = {
-            biologics: {}
+            biologics: {},
         };
 
         const wrapper = mount(

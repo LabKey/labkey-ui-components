@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 2.84.0
+*Released*: 14 October 2021
 * Item 9440: Enable picklists for LKB
   * Move PicklistOverview, PicklistSubNav and PicklistListing here from LKSM
 

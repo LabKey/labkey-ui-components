@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD October 2021
+* Item 9584: ManageSampleStatesPanel to display, update, add, remove sample statuses for a container
+
 ### version 2.84.0
 *Released*: 14 October 2021
 * Item 9440: Enable picklists for LKB

@@ -15,6 +15,7 @@
  */
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
+import { Draft, immerable, produce } from 'immer';
 
 import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
@@ -748,6 +749,46 @@ export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultView
             method: 'GET',
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.configs ?? []);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
+            }),
+        });
+    });
+}
+
+export class SampleState {
+    [immerable] = true;
+
+    readonly rowId: number;
+    readonly label: string;
+    readonly description: string;
+    readonly stateType: string;
+    readonly inUse: boolean;
+
+    constructor(values?: Partial<SampleState>) {
+        Object.assign(this, values);
+    }
+
+    set(name: string, value: any): SampleState {
+        return this.mutate({ [name]: value });
+    }
+
+    mutate(props: Partial<SampleState>): SampleState {
+        return produce(this, (draft: Draft<SampleState>) => {
+            Object.assign(draft, props);
+        });
+    }
+}
+
+export function getSampleStates(): Promise<SampleState[]> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('sampleManager', 'getSampleStates.api'),
+            method: 'GET',
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response.states?.map(state => new SampleState(state)) ?? []);
             }),
             failure: Utils.getCallbackWrapper(response => {
                 console.error(response);

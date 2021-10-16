@@ -6,7 +6,9 @@ import {
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
     getSampleSelectionLineageData,
+    getSampleStates,
     SampleAssayResultViewConfig,
+    SampleState,
 } from './actions';
 
 export interface SamplesAPIWrapper {
@@ -19,12 +21,15 @@ export interface SamplesAPIWrapper {
         sampleType: string,
         columns?: string[]
     ) => Promise<ISelectRowsResult>;
+
+    getSampleStates: () => Promise<SampleState[]>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleAliquotRows = getSampleAliquotRows;
     getSampleAssayResultViewConfigs = getSampleAssayResultViewConfigs;
     getSampleSelectionLineageData = getSampleSelectionLineageData;
+    getSampleStates = getSampleStates;
 }
 
 export function getSamplesTestAPIWrapper(overrides: Partial<SamplesAPIWrapper> = {}): SamplesAPIWrapper {
@@ -32,6 +37,7 @@ export function getSamplesTestAPIWrapper(overrides: Partial<SamplesAPIWrapper> =
         getSampleAliquotRows: jest.fn(),
         getSampleAssayResultViewConfigs: jest.fn(),
         getSampleSelectionLineageData: jest.fn(),
+        getSampleStates: jest.fn(),
         ...overrides,
     };
 }

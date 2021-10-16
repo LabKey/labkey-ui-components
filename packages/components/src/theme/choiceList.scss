@@ -25,6 +25,12 @@
     overflow: auto;
 }
 
+.choices-list__item-type {
+    padding-left: 10px;
+    font-size: smaller;
+    font-style: italic;
+}
+
 .choices-list .list-group-item .fa {
     margin-right: 6px;
 }

@@ -765,10 +765,14 @@ export class SampleState {
     readonly label: string;
     readonly description: string;
     readonly stateType: string;
+    readonly publicData: boolean;
     readonly inUse: boolean;
 
     constructor(values?: Partial<SampleState>) {
         Object.assign(this, values);
+        if (this.publicData === undefined) {
+            Object.assign(this, { publicData: false });
+        }
     }
 
     set(name: string, value: any): SampleState {

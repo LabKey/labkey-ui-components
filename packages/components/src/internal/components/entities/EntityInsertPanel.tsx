@@ -148,6 +148,8 @@ interface OwnProps {
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => void;
     onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
     parentDataTypes?: List<EntityDataType>;
+    // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
+    loadNameExpressionOptions?: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
 }
 
 interface FromLocationProps {
@@ -181,6 +183,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     static defaultProps = {
         numPerParent: 1,
         tab: EntityInsertPanelTabs.First,
+        loadNameExpressionOptions,
     };
 
     private readonly capNounSingular;
@@ -271,7 +274,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const allowParents = this.allowParents();
 
         try {
-            const nameIdSettings = await loadNameExpressionOptions();
+            const nameIdSettings = await this.props.loadNameExpressionOptions();
             this.setState({ allowUserSpecifiedNames: nameIdSettings.allowUserSpecifiedNames });
         } catch (error) {
             this.setState({

@@ -72,7 +72,7 @@ export const permittedOps = {
     [SampleStateType.Locked]: new Set([SampleOperation.AddToPicklist, SampleOperation.RemoveFromPicklist]),
 };
 
-export const STATUS_DATA_RETRIEVAL_ERROR = "There was a problem retrieving status data about the samples.";
+export const STATUS_DATA_RETRIEVAL_ERROR = "There was a problem retrieving the current sample status data.";
 
 export const operationRestrictionMessage = {
     [SampleOperation.EditMetadata]: {

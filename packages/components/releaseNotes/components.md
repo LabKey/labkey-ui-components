@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * `getMaterialDeleteConfirmationData.api` renamed to `getMaterialOperationConfirmationData.api` and return structure generalized
   * Update `SamplesBulkUpdateForm` to provide alert when samples don't allow data updates.
 
+### version 2.84.0
+*Released*: 14 October 2021
+* Item 9440: Enable picklists for LKB
+  * Move PicklistOverview, PicklistSubNav and PicklistListing here from LKSM
+
 ### version 2.83.0
 *Released*: 12 October 2021
 * Updates for restricting single sample operations based on status

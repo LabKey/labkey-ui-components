@@ -14,6 +14,10 @@ import { SAMPLE_STATE_TYPE_COLUMN_NAME } from '../samples/constants';
 import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
 import { PicklistEditModal } from './PicklistEditModal';
 
+beforeAll(() => {
+    LABKEY.moduleContext.inventory = { productId: ['FreezerManager'] };
+});
+
 describe('AddToPicklistMenuItem', () => {
     const key = 'picklists';
     const text = 'Picklist Testing';

@@ -1,13 +1,12 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 import classNames from 'classnames';
 
-import { Alert, MAX_EDITABLE_GRID_ROWS, SampleOperation } from '../../../index';
+import { Alert, getOperationNotPermittedMessage, MAX_EDITABLE_GRID_ROWS, SampleOperation } from '../../../index';
 
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-import { OperationNotPermittedMessage } from './OperationNotPermittedMessage';
 import { OperationConfirmationData } from '../entities/models';
 
 interface Props {
@@ -183,10 +182,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 <Modal.Body>
                     {confirmationData?.anyNotAllowed &&
                         <Alert bsStyle="info">
-                            <OperationNotPermittedMessage
-                                operation={SampleOperation.EditLineage}
-                                confirmationData={confirmationData}
-                            />
+                            {getOperationNotPermittedMessage(SampleOperation.EditLineage, confirmationData)}
                         </Alert>
                     }
                     {confirmationData?.anyAllowed && (

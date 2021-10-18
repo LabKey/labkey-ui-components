@@ -34,7 +34,7 @@ import { isSampleEntity } from './utils';
 export function getOperationConfirmationData(
     selectionKey: string,
     dataType: EntityDataType,
-    rowIds?: string[],
+    rowIds?: string[] | number[],
     extraParams?: any,
 ): Promise<OperationConfirmationData> {
     return new Promise((resolve, reject) => {
@@ -74,7 +74,7 @@ export function getOperationConfirmationData(
 export function getDeleteConfirmationData(
     selectionKey: string,
     dataType: EntityDataType,
-    rowIds?: string[]
+    rowIds?: string[]|number[]
 ): Promise<OperationConfirmationData> {
     if (isSampleEntity(dataType)) {
         return getSampleOperationConfirmationData(SampleOperation.Delete, selectionKey, rowIds);
@@ -82,13 +82,13 @@ export function getDeleteConfirmationData(
     return getOperationConfirmationData(selectionKey, dataType, rowIds);
 }
 
-export function getSampleOperationConfirmationData(operation: SampleOperation, selectionKey: string, rowIds?: string[]): Promise<OperationConfirmationData> {
+export function getSampleOperationConfirmationData(operation: SampleOperation, selectionKey: string, rowIds?: string[] | number[]): Promise<OperationConfirmationData> {
     return getOperationConfirmationData(selectionKey, SampleTypeDataType, rowIds, {sampleOperation: SampleOperation[operation]});
 }
 
 export function getDataDeleteConfirmationData(
     selectionKey: string,
-    rowIds?: string[]
+    rowIds?: string[] | number[]
 ): Promise<OperationConfirmationData> {
     return getDeleteConfirmationData(selectionKey, DataClassDataType, rowIds);
 }

@@ -2,12 +2,20 @@ import React, { FC, memo, useEffect, useMemo, useState } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import { BulkUpdateForm, QueryColumn, QueryInfo, QueryModel, SampleOperation, SchemaQuery } from '../../..';
+import {
+    BulkUpdateForm,
+    getOperationNotPermittedMessage,
+    QueryColumn,
+    QueryInfo,
+    QueryModel,
+    SampleOperation,
+    SchemaQuery
+} from '../../..';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { OperationConfirmationData } from '../entities/models';
-import { OperationNotPermittedMessage } from './OperationNotPermittedMessage';
+import { STATUS_DATA_RETRIEVAL_ERROR } from './constants';
 
 interface OwnProps {
     queryModel: QueryModel;
@@ -66,15 +74,21 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo( (props) => {
         }
     }
 
-    if (!aliquotsMsg && (!confirmationData || confirmationData.notAllowed.length == 0))
-        return null;
+    const alerts = [];
 
-    return (
+    if (error) {
+        alerts.push(<Alert>{STATUS_DATA_RETRIEVAL_ERROR}</Alert>);
+    }
+    if (!aliquotsMsg && (!confirmationData || confirmationData.notAllowed.length == 0))
+        return <>{alerts}</>;
+
+    alerts.push(
         <Alert bsStyle="info">
             {aliquotsMsg}
-            {<OperationNotPermittedMessage operation={SampleOperation.EditMetadata} confirmationData={confirmationData} aliquotIds={aliquots}/>}
+            <p>{getOperationNotPermittedMessage(SampleOperation.EditMetadata, confirmationData, aliquots)}</p>
         </Alert>
     );
+    return <>{alerts}</>;
 });
 
 SamplesBulkUpdateAlert.defaultProps = {

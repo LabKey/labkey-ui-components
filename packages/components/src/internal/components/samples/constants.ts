@@ -72,6 +72,8 @@ export const permittedOps = {
     [SampleStateType.Locked]: new Set([SampleOperation.AddToPicklist, SampleOperation.RemoveFromPicklist]),
 };
 
+export const STATUS_DATA_RETRIEVAL_ERROR = "There was a problem retrieving status data about the samples.";
+
 export const operationRestrictionMessage = {
     [SampleOperation.EditMetadata]: {
         all: 'updating of their data without also changing the status',
@@ -83,6 +85,16 @@ export const operationRestrictionMessage = {
         all: 'updating of their lineage',
         singular: 'updating of its lineage',
         plural: 'updating of their lineage',
+    },
+    [SampleOperation.AddToStorage]: {
+        all: 'adding to storage',
+        singular: 'adding it to storage',
+        plural: 'adding them to storage',
+    },
+    [SampleOperation.UpdateStorageMetadata]: {
+        all: 'updating storage data',
+        singular: 'updating its storage data',
+        plural: 'updating their storage data',
     },
     [SampleOperation.RemoveFromStorage]: {
         all: 'removing from storage',

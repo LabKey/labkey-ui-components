@@ -301,12 +301,13 @@ import { SampleAliquotsSummary } from './internal/components/samples/SampleAliqu
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 
 import {
+    getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
+    getOperationNotPermittedMessage,
     getSampleDeleteMessage,
     getSampleStatus,
     getSampleStatusType,
     isSampleOperationPermitted,
-    getFilterForSampleOperation,
 } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
@@ -486,7 +487,6 @@ import {
     SampleCreationType,
 } from './internal/components/samples/models';
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
-import { OperationNotPermittedMessage } from './internal/components/samples/OperationNotPermittedMessage';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import {
     FIND_BY_IDS_QUERY_PARAM,
@@ -929,7 +929,7 @@ export {
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     getFindSamplesByIdData,
     getOmittedSampleTypeColumns,
-    OperationNotPermittedMessage,
+    getOperationNotPermittedMessage,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

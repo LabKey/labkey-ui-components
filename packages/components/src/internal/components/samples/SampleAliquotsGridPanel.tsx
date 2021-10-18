@@ -30,7 +30,7 @@ import { getSampleAliquotsQueryConfig } from './actions';
 
 interface StorageButtonsComponentProps {
     afterStorageUpdate?: () => void;
-    queryModel?: QueryModel;
+    queryModel: QueryModel;
     user: User;
 }
 

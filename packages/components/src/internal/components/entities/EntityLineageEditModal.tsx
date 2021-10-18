@@ -11,6 +11,7 @@ import {
     capitalizeFirstChar,
     caseInsensitive,
     createNotification,
+    getOperationNotPermittedMessage,
     LoadingSpinner,
     ParentEntityEditPanel,
     Progress,
@@ -28,7 +29,6 @@ import { EntityChoice, EntityDataType, OperationConfirmationData } from './model
 import { getEntityNoun, getUpdatedLineageRowsForBulkEdit } from './utils';
 
 import { ParentEntityLineageColumns } from './constants';
-import { OperationNotPermittedMessage } from '../samples/OperationNotPermittedMessage';
 
 interface Props {
     queryModel: QueryModel;
@@ -156,7 +156,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                                 Lineage for aliquots cannot be changed.
                             </>
                         )}
-                        <OperationNotPermittedMessage confirmationData={confirmationData} operation={SampleOperation.EditLineage} aliquotIds={aliquotIds}/>
+                        <p>{getOperationNotPermittedMessage(SampleOperation.EditLineage, confirmationData, aliquotIds)}</p>
                     </div>
                 </Modal.Body>
 
@@ -204,7 +204,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                                         Lineage for aliquots cannot be changed.
                                     </>
                                 )}
-                                <OperationNotPermittedMessage confirmationData={confirmationData} operation={SampleOperation.EditLineage}/>
+                                <p>{getOperationNotPermittedMessage(SampleOperation.EditLineage, confirmationData)}</p>
                             </Alert>
                         )}
                         <Alert bsStyle="danger">{errorMessage}</Alert>

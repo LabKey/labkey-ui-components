@@ -6,7 +6,7 @@ import { User } from '../base/models/User';
 import {
     App,
     caseInsensitive,
-    LoadingSpinner,
+    LoadingSpinner, OperationConfirmationData,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleStateType,
@@ -14,7 +14,7 @@ import {
 
 import { isSampleStatusEnabled } from '../../app/utils';
 
-import { permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
+import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
 
 import { SampleStatus } from './models';
 
@@ -83,4 +83,49 @@ export function getFilterForSampleOperation(operation: SampleOperation): Filter.
     if (typesNotAllowed.length == 0) return null;
 
     return Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesNotAllowed, Filter.Types.NOT_IN);
+}
+
+function getOperationMessageAndRecommendation(operation: SampleOperation, numSamples: number, isAll?: boolean): string {
+    if (isAll) {
+        return operationRestrictionMessage[operation].all;
+    } else {
+        const messageInfo = operationRestrictionMessage[operation];
+        let message;
+        if (numSamples == 1) {
+            message = operationRestrictionMessage[operation].singular + '.';
+        } else {
+            message = operationRestrictionMessage[operation].plural + '.';
+        }
+        if (messageInfo.recommendation) {
+            return message + '. ' + messageInfo.recommendation;
+        }
+        return message;
+    }
+}
+
+export function getOperationNotPermittedMessage(operation: SampleOperation, confirmationData: OperationConfirmationData, aliquotIds?: number[]): string {
+
+    let notAllowedMsg = null;
+
+    if (confirmationData) {
+        if (confirmationData.noneAllowed) {
+            return `All selected samples have a status that prevents ${operationRestrictionMessage[operation].all}.`;
+        }
+
+        const onlyAliquots = aliquotIds?.length === confirmationData.totalCount;
+        const noAliquots = !aliquotIds || aliquotIds.length == 0;
+        let notAllowed = [];
+        if (onlyAliquots || noAliquots) {
+            notAllowed = confirmationData.notAllowed;
+        } else { // some aliquots, some not
+            notAllowed = confirmationData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);
+        }
+        if (notAllowed?.length > 0) {
+            notAllowedMsg =
+                `The current status of ${notAllowed.length} selected sample${notAllowed.length == 1 ? ' ' : 's '}
+                  prevents ${getOperationMessageAndRecommendation(operation, notAllowed.length, false)}`;
+        }
+    }
+
+    return notAllowedMsg;
 }

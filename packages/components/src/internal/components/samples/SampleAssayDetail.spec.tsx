@@ -292,8 +292,8 @@ describe('SampleAssayDetailImpl', () => {
         const wrapper = mount(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleAssayResultViewConfigs: () => Promise.resolve([]),
                     }),
                 })}
@@ -319,8 +319,8 @@ describe('SampleAssayDetailImpl', () => {
         const wrapper = mount(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleAssayResultViewConfigs: () => Promise.resolve([moduleAssayConfig]),
                     }),
                 })}
@@ -338,8 +338,8 @@ describe('SampleAssayDetailImpl', () => {
         const wrapper = mount(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleAssayResultViewConfigs: () => Promise.resolve([moduleAssayConfig]),
                     }),
                 })}
@@ -360,8 +360,8 @@ describe('SampleAssayDetailImpl', () => {
         const wrapper = mount(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleAssayResultViewConfigs: () =>
                             Promise.resolve([
                                 {

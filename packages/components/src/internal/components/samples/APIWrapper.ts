@@ -32,12 +32,15 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleStatuses = getSampleStatuses;
 }
 
-export function getSamplesTestAPIWrapper(overrides: Partial<SamplesAPIWrapper> = {}): SamplesAPIWrapper {
+/**
+ * Note: Intentionally does not use jest.fn() to avoid jest becoming an implicit external package dependency.
+ */
+export function getSamplesTestAPIWrapper(mockFn = (): any => () => {}, overrides: Partial<SamplesAPIWrapper> = {}): SamplesAPIWrapper {
     return {
-        getSampleAliquotRows: jest.fn(),
-        getSampleAssayResultViewConfigs: jest.fn(),
-        getSampleSelectionLineageData: jest.fn(),
-        getSampleStatuses: jest.fn(),
+        getSampleAliquotRows: mockFn(),
+        getSampleAssayResultViewConfigs: mockFn(),
+        getSampleSelectionLineageData: mockFn(),
+        getSampleStatuses: mockFn(),
         ...overrides,
     };
 }

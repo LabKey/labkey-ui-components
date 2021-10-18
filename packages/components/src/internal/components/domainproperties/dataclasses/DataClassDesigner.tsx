@@ -31,6 +31,8 @@ interface Props {
     saveBtnText?: string;
     testMode?: boolean;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
+    loadNameExpressionOptions?: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
 }
 
 interface State {
@@ -42,6 +44,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
         domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'data class' },
+        loadNameExpressionOptions: loadNameExpressionOptions,
     };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
@@ -57,7 +60,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
 
     componentDidMount = async (): Promise<void> => {
         if (this.state.model.isNew) {
-            const response = await loadNameExpressionOptions();
+            const response = await this.props.loadNameExpressionOptions();
 
             this.setState(
                 produce((draft: Draft<State>) => {

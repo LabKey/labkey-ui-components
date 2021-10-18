@@ -1,4 +1,4 @@
-import React, {FC, memo, useCallback, useEffect, useReducer} from 'react';
+import React, { FC, memo, useCallback, useEffect, useReducer } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 import { Button, Checkbox, FormControl } from 'react-bootstrap';
@@ -115,11 +115,11 @@ export const NameIdSettingsForm: FC<Props> = props => {
         setState({ prefix: val });
     }, []);
 
-    const openConfirmModal = useCallback( () => {
+    const openConfirmModal = useCallback(() => {
         setState({ confirmModalOpen: true });
     }, []);
 
-    const closeConfirmModal = useCallback( () => {
+    const closeConfirmModal = useCallback(() => {
         setState({ confirmModalOpen: false });
     }, []);
 

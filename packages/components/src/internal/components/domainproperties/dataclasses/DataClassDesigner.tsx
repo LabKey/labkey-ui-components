@@ -62,10 +62,10 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             this.setState(
                 produce((draft: Draft<State>) => {
                     draft.model.nameExpression = response.prefix;
-                }),
+                })
             );
         }
-    }
+    };
 
     onFinish = (): void => {
         const { defaultNameFieldConfig, setSubmitting, nounSingular } = this.props;

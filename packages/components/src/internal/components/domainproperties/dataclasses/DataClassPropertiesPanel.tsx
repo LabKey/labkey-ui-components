@@ -65,9 +65,9 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             const response = await loadNameExpressionOptions();
             this.setState({ prefix: response.prefix ?? null });
         } catch (error) {
-            this.setState({ loadingError: "There was a problem retrieving the Naming Pattern prefix." });
+            this.setState({ loadingError: 'There was a problem retrieving the Naming Pattern prefix.' });
         }
-    }
+    };
 
     updateValidStatus = (newModel?: DataClassModel): void => {
         const { model, onChange } = this.props;

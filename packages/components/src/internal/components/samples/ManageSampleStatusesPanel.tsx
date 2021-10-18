@@ -20,6 +20,7 @@ import { SCHEMAS } from '../../schemas';
 import { resolveErrorMessage } from '../../util/messaging';
 
 import { SampleState } from './actions';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = SchemaQuery.create('exp', 'SampleStateType');
@@ -31,29 +32,31 @@ interface Props {
     titleCls?: string;
 }
 
-export const ManageSampleStatesPanel: FC<Props> = memo(props => {
+export const ManageSampleStatusesPanel: FC<Props> = memo(props => {
     const { api, titleCls } = props;
     const [states, setStates] = useState<SampleState[]>();
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
     const addNew = useMemo(() => selected === NEW_STATUS_INDEX, [selected]);
 
-    const querySampleStates = useCallback((newStatusLabel?: string) => {
+    const querySampleStatuses = useCallback((newStatusLabel?: string) => {
+        setError(undefined);
+
         api.samples
-            .getSampleStates()
-            .then((sampleStates => {
-                setStates(sampleStates);
-                if (newStatusLabel) setSelected(sampleStates.findIndex(state => state.label === newStatusLabel));
+            .getSampleStatuses()
+            .then((statuses => {
+                setStates(statuses);
+                if (newStatusLabel) setSelected(statuses.findIndex(state => state.label === newStatusLabel));
             }))
             .catch(() => {
                 setStates([]);
-                setError('Error: Unable to load sample states.');
+                setError('Error: Unable to load sample statuses.');
             });
     }, [api]);
 
     useEffect(() => {
-        querySampleStates();
-    }, [querySampleStates]);
+        querySampleStatuses();
+    }, [querySampleStatuses]);
 
     const onSetSelected = useCallback((index: number) => {
         setSelected(index);
@@ -63,9 +66,10 @@ export const ManageSampleStatesPanel: FC<Props> = memo(props => {
         setSelected(NEW_STATUS_INDEX);
     }, []);
 
-    const onSaveSuccess = useCallback((newStatusLabel?: string) => {
-        querySampleStates(newStatusLabel);
-    }, [querySampleStates, states, addNew]);
+    const onActionComplete = useCallback((newStatusLabel?: string, isDelete = false) => {
+        querySampleStatuses(newStatusLabel);
+        if (isDelete) setSelected(undefined);
+    }, [querySampleStatuses, states, addNew]);
 
     return (
         <div className="panel panel-default">
@@ -74,14 +78,19 @@ export const ManageSampleStatesPanel: FC<Props> = memo(props => {
                 {titleCls && <h4 className={titleCls}>{TITLE}</h4>}
                 {error && <Alert>{error}</Alert>}
                 {!states && <LoadingSpinner />}
-                {states && (
+                {states && !error && (
                     <div className="row choices-container">
                         <div className="col-lg-4 col-md-6">
-                            <SampleStatesList states={states} selected={selected} onSelect={onSetSelected} />
+                            <SampleStatusesList states={states} selected={selected} onSelect={onSetSelected} />
                             <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />
                         </div>
                         <div className="col-lg-8 col-md-6">
-                            <SampleStateDetail state={states[selected]} addNew={addNew} onSaveSuccess={onSaveSuccess} />
+                            <SampleStatusDetail
+                                // use null to indicate that no statuses exist to be selected, so don't show the empty message
+                                state={states.length === 0 ? null : states[selected]}
+                                addNew={addNew}
+                                onActionComplete={onActionComplete}
+                            />
                         </div>
                     </div>
                 )}
@@ -90,40 +99,40 @@ export const ManageSampleStatesPanel: FC<Props> = memo(props => {
     );
 });
 
-ManageSampleStatesPanel.defaultProps = {
+ManageSampleStatusesPanel.defaultProps = {
     api: getDefaultAPIWrapper(),
 };
 
-ManageSampleStatesPanel.displayName = 'ManageSampleStatesPanel';
+ManageSampleStatusesPanel.displayName = 'ManageSampleStatusesPanel';
 
-interface SampleStatesListProps {
+interface SampleStatusesListProps {
     onSelect: (index: number) => void;
     selected: number;
     states: SampleState[];
 }
 
-const SampleStatesList: FC<SampleStatesListProps> = memo(props => {
+const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
     const { states, onSelect, selected } = props;
 
     return (
         <div className="list-group">
             {states.map((state, index) => (
-                <SampleStatesListItem state={state} index={index} active={index === selected} onSelect={onSelect} />
+                <SampleStatusesListItem state={state} index={index} active={index === selected} onSelect={onSelect} />
             ))}
-            {states.length === 0 && <p className="choices-list__empty-message">No sample states defined.</p>}
+            {states.length === 0 && <p className="choices-list__empty-message">No sample statuses defined.</p>}
         </div>
     );
 });
-SampleStatesList.displayName = 'SampleStatesList';
+SampleStatusesList.displayName = 'SampleStatusesList';
 
-interface SampleStatesListItemProps {
+interface SampleStatusesListItemProps {
     active?: boolean;
     index: number;
     onSelect: (index: number) => void;
     state: SampleState;
 }
 
-const SampleStatesListItem: FC<SampleStatesListItemProps> = memo(props => {
+const SampleStatusesListItem: FC<SampleStatusesListItemProps> = memo(props => {
     const { state, index, active, onSelect } = props;
     const onClick = useCallback(() => {
         onSelect(index);
@@ -135,29 +144,29 @@ const SampleStatesListItem: FC<SampleStatesListItemProps> = memo(props => {
             {state.stateType !== state.label && <span className="choices-list__item-type">{state.stateType}</span>}
             {state.inUse && (
                 <LockIcon
-                    iconCls="pull-right"
+                    iconCls="pull-right choices-list__locked"
                     body={
                         <p>
-                            This sample state is in-use so its status type cannot be changed and it cannot be removed.
+                            This sample status cannot change status type or be deleted because it is in-use.
                         </p>
                     }
                     id="sample-state-lock-icon"
-                    title="Sample State Locked"
+                    title="Sample Status Locked"
                 />
             )}
         </button>
     );
 });
-SampleStatesList.displayName = 'SampleStatesList';
+SampleStatusesListItem.displayName = 'SampleStatusesListItem';
 
-interface SampleStateDetailProps {
+interface SampleStatusDetailProps {
     addNew: boolean;
-    onSaveSuccess: (newStatusLabel?: string) => void;
+    onActionComplete: (newStatusLabel?: string, isDelete?: boolean) => void;
     state: SampleState;
 }
 
-const SampleStateDetail: FC<SampleStateDetailProps> = memo(props => {
-    const { state, addNew, onSaveSuccess } = props;
+const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
+    const { state, addNew, onActionComplete } = props;
     const [typeOptions, setTypeOptions] = useState<Array<Record<string, any>>>();
     const [updatedState, setUpdatedState] = useState<SampleState>();
     const [dirty, setDirty] = useState<boolean>();
@@ -185,10 +194,14 @@ const SampleStateDetail: FC<SampleStateDetailProps> = memo(props => {
     }, []);
 
     useEffect(() => {
-        if (state) setUpdatedState(state);
-        if (addNew) setUpdatedState(new SampleState({ stateType: typeOptions?.[0]?.value }));
+        if (addNew) {
+            setUpdatedState(new SampleState({ stateType: typeOptions?.[0]?.value }));
+        } else {
+            setUpdatedState(state);
+        }
         setDirty(addNew);
         setSaving(false);
+        setShowDeleteConfirm(false);
         setError(undefined);
     }, [state, addNew]);
 
@@ -218,7 +231,7 @@ const SampleStateDetail: FC<SampleStateDetailProps> = memo(props => {
                 rows: [updatedState],
             })
                 .then(() => {
-                    onSaveSuccess();
+                    onActionComplete();
                 })
                 .catch(error => {
                     setError(resolveErrorMessage(error, 'status', 'statuses', 'updating'));
@@ -230,7 +243,7 @@ const SampleStateDetail: FC<SampleStateDetailProps> = memo(props => {
                 rows: List([updatedState]),
             })
                 .then(() => {
-                    onSaveSuccess(updatedState.label);
+                    onActionComplete(updatedState.label);
                 })
                 .catch(response => {
                     setError(resolveErrorMessage(response.get('error'), 'status', 'statuses', 'inserting'));
@@ -239,12 +252,29 @@ const SampleStateDetail: FC<SampleStateDetailProps> = memo(props => {
         }
     }, [updatedState]);
 
-    // TODO
-    const onDeleteConfirm = useCallback(() => {}, []);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>();
+    const onToggleDeleteConfirm = useCallback(() => setShowDeleteConfirm(!showDeleteConfirm), [showDeleteConfirm]);
+    const onDeleteConfirm = useCallback(() => {
+        if (updatedState.rowId) {
+            deleteRows({
+                schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
+                rows: [updatedState],
+            }).then(() => {
+                onActionComplete(undefined, true);
+            })
+            .catch(error => {
+                setError(resolveErrorMessage(error, 'status', 'statuses', 'deleting'));
+                setShowDeleteConfirm(false);
+            });
+        } else {
+            setShowDeleteConfirm(false);
+        }
+    }, [updatedState]);
 
     return (
         <>
-            {!updatedState && <p className="choices-detail__empty-message">Select a sample status to view details.</p>}
+            {/*using null for state value to indicate that we don't want to show the empty message*/}
+            {!updatedState && state !== null && <p className="choices-detail__empty-message">Select a sample status to view details.</p>}
             {updatedState && (
                 <form className="form-horizontal content-form">
                     {error && <Alert>{error}</Alert>}
@@ -298,7 +328,7 @@ const SampleStateDetail: FC<SampleStateDetailProps> = memo(props => {
                     </FormGroup>
                     <div>
                         {!addNew && (
-                            <Button bsStyle="default" disabled={updatedState.inUse || saving} onClick={onDeleteConfirm}>
+                            <Button bsStyle="default" disabled={updatedState.inUse || saving} onClick={onToggleDeleteConfirm}>
                                 <span className="fa fa-trash" />
                                 <span>&nbsp;Delete</span>
                             </Button>
@@ -309,7 +339,23 @@ const SampleStateDetail: FC<SampleStateDetailProps> = memo(props => {
                     </div>
                 </form>
             )}
+            {showDeleteConfirm && (
+                <ConfirmModal
+                    cancelButtonText="Cancel"
+                    confirmButtonText="Yes, Delete"
+                    onCancel={onToggleDeleteConfirm}
+                    onConfirm={onDeleteConfirm}
+                    title="Permanently delete status?"
+                >
+                    <span>
+                        The <b>{updatedState.label}</b> status will be permanently deleted.
+                        <p className="top-spacing">
+                            <strong>Deletion cannot be undone.</strong> Do you want to proceed?
+                        </p>
+                    </span>
+                </ConfirmModal>
+            )}
         </>
     );
 });
-SampleStateDetail.displayName = 'SampleStateDetail';
+SampleStatusDetail.displayName = 'SampleStatusDetail';

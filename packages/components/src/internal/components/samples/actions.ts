@@ -786,13 +786,13 @@ export class SampleState {
     }
 }
 
-export function getSampleStates(): Promise<SampleState[]> {
+export function getSampleStatuses(): Promise<SampleState[]> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('sampleManager', 'getSampleStates.api'),
+            url: buildURL('sampleManager', 'getSampleStatuses.api'),
             method: 'GET',
             success: Utils.getCallbackWrapper(response => {
-                resolve(response.states?.map(state => new SampleState(state)) ?? []);
+                resolve(response.statuses?.map(state => new SampleState(state)) ?? []);
             }),
             failure: Utils.getCallbackWrapper(response => {
                 console.error(response);

@@ -19,8 +19,9 @@ import { caseInsensitive } from '../../util/utils';
 import { SCHEMAS } from '../../schemas';
 import { resolveErrorMessage } from '../../util/messaging';
 
-import { SampleState } from './actions';
 import { ConfirmModal } from '../base/ConfirmModal';
+
+import { SampleState } from './actions';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = SchemaQuery.create('exp', 'SampleStateType');
@@ -40,6 +41,7 @@ const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     const [dirty, setDirty] = useState<boolean>();
     const [saving, setSaving] = useState<boolean>();
     const [error, setError] = useState<string>();
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>();
 
     useEffect(() => {
         selectRows({
@@ -55,8 +57,8 @@ const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     .toArray();
                 setTypeOptions(data);
             })
-            .catch(error => {
-                console.error(error);
+            .catch(reason => {
+                console.error(reason);
                 setTypeOptions(DEFAULT_TYPE_OPTIONS);
             });
     }, []);
@@ -71,7 +73,7 @@ const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
         setSaving(false);
         setShowDeleteConfirm(false);
         setError(undefined);
-    }, [state, addNew]);
+    }, [state, addNew, typeOptions]);
 
     const onFormChange = useCallback(
         (evt): void => {
@@ -99,10 +101,10 @@ const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                 rows: [updatedState],
             })
                 .then(() => {
-                    onActionComplete();
+                    onActionComplete(updatedState.label);
                 })
-                .catch(error => {
-                    setError(resolveErrorMessage(error, 'status', 'statuses', 'updating'));
+                .catch(reason => {
+                    setError(resolveErrorMessage(reason, 'status', 'statuses', 'updating'));
                     setSaving(false);
                 });
         } else {
@@ -118,31 +120,33 @@ const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     setSaving(false);
                 });
         }
-    }, [updatedState]);
+    }, [updatedState, onActionComplete]);
 
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>();
     const onToggleDeleteConfirm = useCallback(() => setShowDeleteConfirm(!showDeleteConfirm), [showDeleteConfirm]);
     const onDeleteConfirm = useCallback(() => {
         if (updatedState.rowId) {
             deleteRows({
                 schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
                 rows: [updatedState],
-            }).then(() => {
-                onActionComplete(undefined, true);
             })
-                .catch(error => {
-                    setError(resolveErrorMessage(error, 'status', 'statuses', 'deleting'));
+                .then(() => {
+                    onActionComplete(undefined, true);
+                })
+                .catch(reason => {
+                    setError(resolveErrorMessage(reason, 'status', 'statuses', 'deleting'));
                     setShowDeleteConfirm(false);
                 });
         } else {
             setShowDeleteConfirm(false);
         }
-    }, [updatedState]);
+    }, [updatedState, onActionComplete]);
 
     return (
         <>
-            {/*using null for state value to indicate that we don't want to show the empty message*/}
-            {!updatedState && state !== null && <p className="choices-detail__empty-message">Select a sample status to view details.</p>}
+            {/* using null for state value to indicate that we don't want to show the empty message*/}
+            {!updatedState && state !== null && (
+                <p className="choices-detail__empty-message">Select a sample status to view details.</p>
+            )}
             {updatedState && (
                 <form className="form-horizontal content-form">
                     {error && <Alert>{error}</Alert>}
@@ -196,7 +200,11 @@ const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     </FormGroup>
                     <div>
                         {!addNew && (
-                            <Button bsStyle="default" disabled={updatedState.inUse || saving} onClick={onToggleDeleteConfirm}>
+                            <Button
+                                bsStyle="default"
+                                disabled={updatedState.inUse || saving}
+                                onClick={onToggleDeleteConfirm}
+                            >
                                 <span className="fa fa-trash" />
                                 <span>&nbsp;Delete</span>
                             </Button>
@@ -248,11 +256,7 @@ const SampleStatusesListItem: FC<SampleStatusesListItemProps> = memo(props => {
             {state.inUse && (
                 <LockIcon
                     iconCls="pull-right choices-list__locked"
-                    body={
-                        <p>
-                            This sample status cannot change status type or be deleted because it is in-use.
-                        </p>
-                    }
+                    body={<p>This sample status cannot change status type or be deleted because it is in-use.</p>}
                     id="sample-state-lock-icon"
                     title="Sample Status Locked"
                 />
@@ -274,7 +278,13 @@ const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
     return (
         <div className="list-group">
             {states.map((state, index) => (
-                <SampleStatusesListItem state={state} index={index} active={index === selected} onSelect={onSelect} />
+                <SampleStatusesListItem
+                    key={state.rowId}
+                    state={state}
+                    index={index}
+                    active={index === selected}
+                    onSelect={onSelect}
+                />
             ))}
             {states.length === 0 && <p className="choices-list__empty-message">No sample statuses defined.</p>}
         </div>
@@ -294,20 +304,23 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
     const [selected, setSelected] = useState<number>();
     const addNew = useMemo(() => selected === NEW_STATUS_INDEX, [selected]);
 
-    const querySampleStatuses = useCallback((newStatusLabel?: string) => {
-        setError(undefined);
+    const querySampleStatuses = useCallback(
+        (newStatusLabel?: string) => {
+            setError(undefined);
 
-        api.samples
-            .getSampleStatuses()
-            .then((statuses => {
-                setStates(statuses);
-                if (newStatusLabel) setSelected(statuses.findIndex(state => state.label === newStatusLabel));
-            }))
-            .catch(() => {
-                setStates([]);
-                setError('Error: Unable to load sample statuses.');
-            });
-    }, [api]);
+            api.samples
+                .getSampleStatuses()
+                .then(statuses => {
+                    setStates(statuses);
+                    if (newStatusLabel) setSelected(statuses.findIndex(state => state.label === newStatusLabel));
+                })
+                .catch(() => {
+                    setStates([]);
+                    setError('Error: Unable to load sample statuses.');
+                });
+        },
+        [api]
+    );
 
     useEffect(() => {
         querySampleStatuses();
@@ -321,10 +334,13 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
         setSelected(NEW_STATUS_INDEX);
     }, []);
 
-    const onActionComplete = useCallback((newStatusLabel?: string, isDelete = false) => {
-        querySampleStatuses(newStatusLabel);
-        if (isDelete) setSelected(undefined);
-    }, [querySampleStatuses, states, addNew]);
+    const onActionComplete = useCallback(
+        (newStatusLabel?: string, isDelete = false) => {
+            querySampleStatuses(newStatusLabel);
+            if (isDelete) setSelected(undefined);
+        },
+        [querySampleStatuses]
+    );
 
     return (
         <div className="panel panel-default">

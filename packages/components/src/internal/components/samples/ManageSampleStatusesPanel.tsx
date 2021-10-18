@@ -256,7 +256,7 @@ const SampleStatusesListItem: FC<SampleStatusesListItemProps> = memo(props => {
             {state.inUse && (
                 <LockIcon
                     iconCls="pull-right choices-list__locked"
-                    body={<p>This sample status cannot change status type or be deleted because it is in-use.</p>}
+                    body={<p>This sample status cannot change status type or be deleted because it is in use.</p>}
                     id="sample-state-lock-icon"
                     title="Sample Status Locked"
                 />

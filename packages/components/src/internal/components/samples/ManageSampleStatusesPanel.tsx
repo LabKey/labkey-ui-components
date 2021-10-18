@@ -27,138 +27,6 @@ const STATE_TYPE_SQ = SchemaQuery.create('exp', 'SampleStateType');
 const DEFAULT_TYPE_OPTIONS = [{ value: 'Available' }, { value: 'Consumed' }, { value: 'Locked' }];
 const NEW_STATUS_INDEX = -1;
 
-interface Props {
-    api?: ComponentsAPIWrapper;
-    titleCls?: string;
-}
-
-export const ManageSampleStatusesPanel: FC<Props> = memo(props => {
-    const { api, titleCls } = props;
-    const [states, setStates] = useState<SampleState[]>();
-    const [error, setError] = useState<string>();
-    const [selected, setSelected] = useState<number>();
-    const addNew = useMemo(() => selected === NEW_STATUS_INDEX, [selected]);
-
-    const querySampleStatuses = useCallback((newStatusLabel?: string) => {
-        setError(undefined);
-
-        api.samples
-            .getSampleStatuses()
-            .then((statuses => {
-                setStates(statuses);
-                if (newStatusLabel) setSelected(statuses.findIndex(state => state.label === newStatusLabel));
-            }))
-            .catch(() => {
-                setStates([]);
-                setError('Error: Unable to load sample statuses.');
-            });
-    }, [api]);
-
-    useEffect(() => {
-        querySampleStatuses();
-    }, [querySampleStatuses]);
-
-    const onSetSelected = useCallback((index: number) => {
-        setSelected(index);
-    }, []);
-
-    const onAddState = useCallback(() => {
-        setSelected(NEW_STATUS_INDEX);
-    }, []);
-
-    const onActionComplete = useCallback((newStatusLabel?: string, isDelete = false) => {
-        querySampleStatuses(newStatusLabel);
-        if (isDelete) setSelected(undefined);
-    }, [querySampleStatuses, states, addNew]);
-
-    return (
-        <div className="panel panel-default">
-            {!titleCls && <div className="panel-heading">{TITLE}</div>}
-            <div className="panel-body">
-                {titleCls && <h4 className={titleCls}>{TITLE}</h4>}
-                {error && <Alert>{error}</Alert>}
-                {!states && <LoadingSpinner />}
-                {states && !error && (
-                    <div className="row choices-container">
-                        <div className="col-lg-4 col-md-6">
-                            <SampleStatusesList states={states} selected={selected} onSelect={onSetSelected} />
-                            <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />
-                        </div>
-                        <div className="col-lg-8 col-md-6">
-                            <SampleStatusDetail
-                                // use null to indicate that no statuses exist to be selected, so don't show the empty message
-                                state={states.length === 0 ? null : states[selected]}
-                                addNew={addNew}
-                                onActionComplete={onActionComplete}
-                            />
-                        </div>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-});
-
-ManageSampleStatusesPanel.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
-
-ManageSampleStatusesPanel.displayName = 'ManageSampleStatusesPanel';
-
-interface SampleStatusesListProps {
-    onSelect: (index: number) => void;
-    selected: number;
-    states: SampleState[];
-}
-
-const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
-    const { states, onSelect, selected } = props;
-
-    return (
-        <div className="list-group">
-            {states.map((state, index) => (
-                <SampleStatusesListItem state={state} index={index} active={index === selected} onSelect={onSelect} />
-            ))}
-            {states.length === 0 && <p className="choices-list__empty-message">No sample statuses defined.</p>}
-        </div>
-    );
-});
-SampleStatusesList.displayName = 'SampleStatusesList';
-
-interface SampleStatusesListItemProps {
-    active?: boolean;
-    index: number;
-    onSelect: (index: number) => void;
-    state: SampleState;
-}
-
-const SampleStatusesListItem: FC<SampleStatusesListItemProps> = memo(props => {
-    const { state, index, active, onSelect } = props;
-    const onClick = useCallback(() => {
-        onSelect(index);
-    }, [onSelect, index]);
-
-    return (
-        <button className={classNames('list-group-item', { active })} onClick={onClick} type="button">
-            {state.label}
-            {state.stateType !== state.label && <span className="choices-list__item-type">{state.stateType}</span>}
-            {state.inUse && (
-                <LockIcon
-                    iconCls="pull-right choices-list__locked"
-                    body={
-                        <p>
-                            This sample status cannot change status type or be deleted because it is in-use.
-                        </p>
-                    }
-                    id="sample-state-lock-icon"
-                    title="Sample Status Locked"
-                />
-            )}
-        </button>
-    );
-});
-SampleStatusesListItem.displayName = 'SampleStatusesListItem';
-
 interface SampleStatusDetailProps {
     addNew: boolean;
     onActionComplete: (newStatusLabel?: string, isDelete?: boolean) => void;
@@ -262,10 +130,10 @@ const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
             }).then(() => {
                 onActionComplete(undefined, true);
             })
-            .catch(error => {
-                setError(resolveErrorMessage(error, 'status', 'statuses', 'deleting'));
-                setShowDeleteConfirm(false);
-            });
+                .catch(error => {
+                    setError(resolveErrorMessage(error, 'status', 'statuses', 'deleting'));
+                    setShowDeleteConfirm(false);
+                });
         } else {
             setShowDeleteConfirm(false);
         }
@@ -359,3 +227,135 @@ const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     );
 });
 SampleStatusDetail.displayName = 'SampleStatusDetail';
+
+interface SampleStatusesListItemProps {
+    active?: boolean;
+    index: number;
+    onSelect: (index: number) => void;
+    state: SampleState;
+}
+
+const SampleStatusesListItem: FC<SampleStatusesListItemProps> = memo(props => {
+    const { state, index, active, onSelect } = props;
+    const onClick = useCallback(() => {
+        onSelect(index);
+    }, [onSelect, index]);
+
+    return (
+        <button className={classNames('list-group-item', { active })} onClick={onClick} type="button">
+            {state.label}
+            {state.stateType !== state.label && <span className="choices-list__item-type">{state.stateType}</span>}
+            {state.inUse && (
+                <LockIcon
+                    iconCls="pull-right choices-list__locked"
+                    body={
+                        <p>
+                            This sample status cannot change status type or be deleted because it is in-use.
+                        </p>
+                    }
+                    id="sample-state-lock-icon"
+                    title="Sample Status Locked"
+                />
+            )}
+        </button>
+    );
+});
+SampleStatusesListItem.displayName = 'SampleStatusesListItem';
+
+interface SampleStatusesListProps {
+    onSelect: (index: number) => void;
+    selected: number;
+    states: SampleState[];
+}
+
+const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
+    const { states, onSelect, selected } = props;
+
+    return (
+        <div className="list-group">
+            {states.map((state, index) => (
+                <SampleStatusesListItem state={state} index={index} active={index === selected} onSelect={onSelect} />
+            ))}
+            {states.length === 0 && <p className="choices-list__empty-message">No sample statuses defined.</p>}
+        </div>
+    );
+});
+SampleStatusesList.displayName = 'SampleStatusesList';
+
+interface ManageSampleStatusesPanelProps {
+    api?: ComponentsAPIWrapper;
+    titleCls?: string;
+}
+
+export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = memo(props => {
+    const { api, titleCls } = props;
+    const [states, setStates] = useState<SampleState[]>();
+    const [error, setError] = useState<string>();
+    const [selected, setSelected] = useState<number>();
+    const addNew = useMemo(() => selected === NEW_STATUS_INDEX, [selected]);
+
+    const querySampleStatuses = useCallback((newStatusLabel?: string) => {
+        setError(undefined);
+
+        api.samples
+            .getSampleStatuses()
+            .then((statuses => {
+                setStates(statuses);
+                if (newStatusLabel) setSelected(statuses.findIndex(state => state.label === newStatusLabel));
+            }))
+            .catch(() => {
+                setStates([]);
+                setError('Error: Unable to load sample statuses.');
+            });
+    }, [api]);
+
+    useEffect(() => {
+        querySampleStatuses();
+    }, [querySampleStatuses]);
+
+    const onSetSelected = useCallback((index: number) => {
+        setSelected(index);
+    }, []);
+
+    const onAddState = useCallback(() => {
+        setSelected(NEW_STATUS_INDEX);
+    }, []);
+
+    const onActionComplete = useCallback((newStatusLabel?: string, isDelete = false) => {
+        querySampleStatuses(newStatusLabel);
+        if (isDelete) setSelected(undefined);
+    }, [querySampleStatuses, states, addNew]);
+
+    return (
+        <div className="panel panel-default">
+            {!titleCls && <div className="panel-heading">{TITLE}</div>}
+            <div className="panel-body">
+                {titleCls && <h4 className={titleCls}>{TITLE}</h4>}
+                {error && <Alert>{error}</Alert>}
+                {!states && <LoadingSpinner />}
+                {states && !error && (
+                    <div className="row choices-container">
+                        <div className="col-lg-4 col-md-6">
+                            <SampleStatusesList states={states} selected={selected} onSelect={onSetSelected} />
+                            <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />
+                        </div>
+                        <div className="col-lg-8 col-md-6">
+                            <SampleStatusDetail
+                                // use null to indicate that no statuses exist to be selected, so don't show the empty message
+                                state={states.length === 0 ? null : states[selected]}
+                                addNew={addNew}
+                                onActionComplete={onActionComplete}
+                            />
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+});
+
+ManageSampleStatusesPanel.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};
+
+ManageSampleStatusesPanel.displayName = 'ManageSampleStatusesPanel';

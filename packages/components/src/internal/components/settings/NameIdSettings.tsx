@@ -9,7 +9,7 @@ import { sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
 
-export const NameIdSettings = () => {
+export const NameIdSettings: FC = memo(() => {
     return (
         <RequiresPermission perms={PermissionTypes.Admin}>
             <NameIdSettingsForm
@@ -18,7 +18,7 @@ export const NameIdSettings = () => {
             />
         </RequiresPermission>
     );
-};
+});
 
 interface Props {
     loadNameExpressionOptions: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;

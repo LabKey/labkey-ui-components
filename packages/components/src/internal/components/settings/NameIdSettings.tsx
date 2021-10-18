@@ -61,13 +61,17 @@ export const NameIdSettingsForm: FC<Props> = props => {
         error,
     } = state;
 
-    const initialize = async () => {
-        const payload = await loadNameExpressionOptions();
-        setState({
-            prefix: payload.prefix ?? '',
-            allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
-            loading: false,
-        });
+    const initialize = async (): Promise<void> => {
+        try {
+            const payload = await loadNameExpressionOptions();
+            setState({
+                prefix: payload.prefix ?? '',
+                allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
+                loading: false,
+            });
+        } catch (err) {
+            setState({ error: err, loading: false });
+        }
     };
 
     useEffect(() => {

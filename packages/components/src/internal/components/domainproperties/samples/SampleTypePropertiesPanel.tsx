@@ -448,8 +448,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         <Col xs={10}>
                             <FormControl
                                 className={classNames({
-                                    'naming-pattern-border-warning':
-                                        hasWarning !== undefined && hasWarning.startsWith('Aliquot'),
+                                    'naming-pattern-border-warning': hasWarning?.startsWith('Aliquot'),
                                 })}
                                 name="aliquotNameExpression"
                                 type="text"

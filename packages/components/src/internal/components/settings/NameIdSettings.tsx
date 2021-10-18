@@ -78,30 +78,37 @@ export const NameIdSettingsForm: FC<Props> = props => {
         initialize();
     }, []);
 
-    const saveAllowUserSpecifiedNames = useCallback(async () => {
-        setState({ savingAllowUserSpecifiedNames: true });
-        await saveNameExpressionOptions('allowUserSpecifiedNames', !allowUserSpecifiedNames)
-            .then(() => {
-                setState({
-                    allowUserSpecifiedNames: !allowUserSpecifiedNames,
-                    savingAllowUserSpecifiedNames: false,
-                });
-            })
-            .catch(err => displayError(err));
-    }, [allowUserSpecifiedNames]);
-
-    const savePrefix = async () => {
-        setState({ savingPrefix: true });
-        await saveNameExpressionOptions('prefix', prefix).catch(err => displayError(err));
-        setState({ savingPrefix: false, confirmModalOpen: false });
-    };
-
     const displayError = (err): void => {
         setState({
             error: err.exception ?? 'Error saving setting',
             savingAllowUserSpecifiedNames: false,
         });
     };
+
+    const saveAllowUserSpecifiedNames = useCallback(async () => {
+        setState({ savingAllowUserSpecifiedNames: true });
+
+        try {
+            await saveNameExpressionOptions('allowUserSpecifiedNames', !allowUserSpecifiedNames);
+            setState({
+                allowUserSpecifiedNames: !allowUserSpecifiedNames,
+                savingAllowUserSpecifiedNames: false,
+            });
+        } catch (err) {
+            displayError(err);
+        }
+    }, [allowUserSpecifiedNames, saveNameExpressionOptions]);
+
+    const savePrefix = useCallback(async () => {
+        setState({ savingPrefix: true });
+
+        try {
+            await saveNameExpressionOptions('prefix', prefix);
+            setState({ savingPrefix: false, confirmModalOpen: false });
+        } catch (err) {
+            displayError(err);
+        }
+    }, [prefix, saveNameExpressionOptions]);
 
     const prefixOnChange = useCallback(async (evt: any) => {
         const val = evt.target.value;

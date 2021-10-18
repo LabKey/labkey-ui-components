@@ -92,6 +92,7 @@ interface State {
     isValid: boolean;
     containers: List<Container>;
     prefix: string;
+    loadingError: string;
 }
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
@@ -142,10 +143,11 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             isValid: true,
             containers: undefined,
             prefix: undefined,
+            loadingError: undefined,
         };
     }
 
-    componentDidMount() {
+    componentDidMount = async (): Promise<void> => {
         getValidPublishTargets()
             .then(containers => {
                 this.setState({ containers });
@@ -155,13 +157,12 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 this.setState(() => ({ containers: List<Container>() }));
             });
 
-        loadNameExpressionOptions()
-            .then(response => {
-                this.setState({ prefix: response.prefix ?? null });
-            })
-            .catch(() => {
-                console.error('Unable to load Naming Pattern Prefix.');
-            });
+        try {
+            const response = await loadNameExpressionOptions();
+            this.setState({ prefix: response.prefix ?? null });
+        } catch (error) {
+            this.setState({ loadingError: "There was a problem retrieving the Naming Pattern prefix." });
+        }
     }
 
     updateValidStatus = (newModel?: SampleTypeModel): void => {
@@ -332,7 +333,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             showLinkToStudy,
             metricUnitProps,
         } = this.props;
-        const { isValid, containers, prefix } = this.state;
+        const { isValid, containers, prefix, loadingError } = this.state;
 
         const showAliquotNameExpression = aliquotNamePatternProps?.showAliquotNameExpression;
         const aliquotNameExpressionInfoUrl = aliquotNamePatternProps?.aliquotNameExpressionInfoUrl;
@@ -348,16 +349,18 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
 
-        let hasWarning;
-        if (prefix && !model.nameExpression.startsWith(prefix)) {
-            hasWarning = `${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
+        let warning;
+        if (prefix && !model.isNew() && !model.nameExpression.startsWith(prefix)) {
+            warning = `${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
         } else if (
             prefix &&
             showAliquotNameExpression &&
             model.aliquotNameExpression &&
             !model.aliquotNameExpression.startsWith(prefix)
         ) {
-            hasWarning = `Aliquot ${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
+            warning = `Aliquot ${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
+        } else if (loadingError !== undefined) {
+            warning = loadingError;
         }
 
         const autoLinkDataToStudyHelpTip = (
@@ -394,7 +397,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 titlePrefix={model.name}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
-                hasWarning={hasWarning}
+                warning={warning}
             >
                 <Row className="margin-bottom">
                     {headerText && (
@@ -414,7 +417,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     nameReadOnly={model.nameReadOnly}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
-                    hasWarning={hasWarning}
+                    warning={warning}
                 />
                 {showAliquotNameExpression && (
                     <Row className="margin-bottom">
@@ -448,7 +451,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         <Col xs={10}>
                             <FormControl
                                 className={classNames({
-                                    'naming-pattern-border-warning': hasWarning?.startsWith('Aliquot'),
+                                    'naming-pattern-border-warning': warning?.startsWith('Aliquot'),
                                 })}
                                 name="aliquotNameExpression"
                                 type="text"

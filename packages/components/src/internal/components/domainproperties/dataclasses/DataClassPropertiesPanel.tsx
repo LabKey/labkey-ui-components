@@ -44,6 +44,7 @@ type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
 interface State {
     isValid: boolean;
     prefix: string;
+    loadingError: string;
 }
 
 // Note: exporting this class for jest test case
@@ -57,16 +58,15 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         appPropertiesOnly: false,
     };
 
-    state: Readonly<State> = { isValid: true, prefix: undefined };
+    state: Readonly<State> = { isValid: true, prefix: undefined, loadingError: undefined };
 
-    componentDidMount() {
-        loadNameExpressionOptions()
-            .then(response => {
-                this.setState({ prefix: response.prefix ?? null });
-            })
-            .catch(() => {
-                console.error('Unable to load Naming Pattern Prefix.');
-            });
+    componentDidMount = async (): Promise<void> => {
+        try {
+            const response = await loadNameExpressionOptions();
+            this.setState({ prefix: response.prefix ?? null });
+        } catch (error) {
+            this.setState({ loadingError: "There was a problem retrieving the Naming Pattern prefix." });
+        }
     }
 
     updateValidStatus = (newModel?: DataClassModel): void => {
@@ -154,11 +154,13 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             nameExpressionPlaceholder,
             helpTopic,
         } = this.props;
-        const { isValid, prefix } = this.state;
+        const { isValid, prefix, loadingError } = this.state;
 
-        let hasWarning;
-        if (prefix && model.nameExpression && !model.nameExpression.startsWith(prefix)) {
-            hasWarning = `${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
+        let warning;
+        if (prefix && !model.isNew && model.nameExpression && !model.nameExpression.startsWith(prefix)) {
+            warning = `${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
+        } else if (loadingError !== undefined) {
+            warning = loadingError;
         }
 
         return (
@@ -169,7 +171,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                 titlePrefix={model.name}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
-                hasWarning={hasWarning}
+                warning={warning}
             >
                 <Row className="margin-bottom">
                     {headerText && (
@@ -187,7 +189,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     data={model.entityDataMap}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
-                    hasWarning={hasWarning}
+                    warning={warning}
                 />
                 {!appPropertiesOnly && this.renderCategorySelect()}
                 {!appPropertiesOnly && this.renderSampleTypeSelect()}

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useReducer } from 'react';
+import React, {FC, memo, useCallback, useEffect, useReducer} from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 import { Button, Checkbox, FormControl } from 'react-bootstrap';
@@ -70,7 +70,7 @@ export const NameIdSettingsForm: FC<Props> = props => {
                 loading: false,
             });
         } catch (err) {
-            setState({ error: err, loading: false });
+            setState({ error: err.exception, loading: false });
         }
     };
 
@@ -110,16 +110,16 @@ export const NameIdSettingsForm: FC<Props> = props => {
         }
     }, [prefix, saveNameExpressionOptions]);
 
-    const prefixOnChange = useCallback(async (evt: any) => {
+    const prefixOnChange = useCallback((evt: any) => {
         const val = evt.target.value;
         setState({ prefix: val });
     }, []);
 
-    const openConfirmModal = useCallback(async () => {
+    const openConfirmModal = useCallback( () => {
         setState({ confirmModalOpen: true });
     }, []);
 
-    const closeConfirmModal = useCallback(async () => {
+    const closeConfirmModal = useCallback( () => {
         setState({ confirmModalOpen: false });
     }, []);
 

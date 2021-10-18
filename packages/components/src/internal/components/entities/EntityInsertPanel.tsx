@@ -270,8 +270,17 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         const allowParents = this.allowParents();
 
-        const nameIdSettings = await loadNameExpressionOptions();
-        this.setState({ allowUserSpecifiedNames: nameIdSettings.allowUserSpecifiedNames });
+        try {
+            const nameIdSettings = await loadNameExpressionOptions();
+            this.setState({ allowUserSpecifiedNames: nameIdSettings.allowUserSpecifiedNames });
+        } catch (error) {
+            this.setState({
+                error: getActionErrorMessage(
+                    'There was a problem retrieving name expression options.',
+                    this.typeTextPlural
+                ),
+            });
+        }
 
         let { insertModel } = this.state;
 

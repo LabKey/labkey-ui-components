@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
 import { List } from 'immutable';
 
-import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, resolveErrorMessage } from '../../../..';
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, loadNameExpressionOptions, resolveErrorMessage } from '../../../..';
 import { DomainDesign, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, saveDomain } from '../actions';
@@ -53,6 +53,18 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             },
             () => {}
         );
+    }
+
+    componentDidMount = async (): Promise<void> => {
+        if (this.state.model.isNew) {
+            const response = await loadNameExpressionOptions();
+
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.model.nameExpression = response.prefix;
+                }),
+            );
+        }
     }
 
     onFinish = (): void => {

@@ -11,7 +11,7 @@ import { InjectedDomainPropertiesPanelCollapseProps } from './DomainPropertiesPa
 
 export interface BasePropertiesPanelProps {
     panelStatus: DomainPanelStatus;
-    hasWarning?: string;
+    warning?: string;
     validate: boolean;
     useTheme: boolean;
 }
@@ -68,7 +68,7 @@ export class BasePropertiesPanel extends React.PureComponent<Props, any> {
             title,
             isValid,
             children,
-            hasWarning,
+            warning,
         } = this.props;
 
         return (
@@ -98,9 +98,9 @@ export class BasePropertiesPanel extends React.PureComponent<Props, any> {
                         <Alert bsStyle="danger">{PROPERTIES_PANEL_ERROR_MSG}</Alert>
                     </div>
                 )}
-                {isValid && hasWarning && (
+                {isValid && warning && (
                     <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true, useTheme)}>
-                        <Alert bsStyle="warning">{hasWarning}</Alert>
+                        <Alert bsStyle="warning">{warning}</Alert>
                     </div>
                 )}
             </>

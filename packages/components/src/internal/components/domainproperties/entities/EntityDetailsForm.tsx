@@ -18,7 +18,7 @@ import { ENTITY_FORM_IDS } from './constants';
 export interface EntityDetailsProps {
     noun: string;
     onFormChange: (evt: any) => any;
-    hasWarning?: string;
+    warning?: string;
     formValues?: IEntityDetails;
     data?: Map<string, any>;
     nameExpressionInfoUrl?: string;
@@ -36,7 +36,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
             formValues,
             data,
             nameReadOnly,
-            hasWarning,
+            warning,
         } = this.props;
         const moreInfoLink = nameExpressionInfoUrl ? (
             <p>
@@ -101,7 +101,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                         <FormControl
                             className={classNames({
                                 'naming-pattern-border-warning':
-                                    hasWarning !== undefined && !hasWarning.startsWith('Aliquot'),
+                                    warning !== undefined && !warning.startsWith('Aliquot'),
                             })}
                             id={ENTITY_FORM_IDS.NAME_EXPRESSION}
                             type="text"

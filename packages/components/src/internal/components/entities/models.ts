@@ -584,7 +584,7 @@ export class OperationConfirmationData {
         } else {
             Object.assign(this, {allowed: []});
         }
-        if (values.notAllowed) {
+        if (values?.notAllowed) {
             values.notAllowed.forEach(notAllowed => {
                 idMap[caseInsensitive(notAllowed, "rowId")] = false;
             });

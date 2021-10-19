@@ -52,6 +52,12 @@
   padding: 0
 }
 
+.form-control.naming-pattern-border-warning {
+    border-color: $yellow-border;
+    box-shadow: inset 0 0 5px 0 $yellow-shadow;
+    outline: none;
+}
+
 .domain-summary-selection {
     margin-left: 7px;
     margin-top: 3px;

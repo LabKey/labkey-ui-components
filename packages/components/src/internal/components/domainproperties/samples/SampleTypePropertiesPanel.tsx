@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
+import classNames from 'classnames';
+
 import { getFormNameFromId } from '../entities/actions';
 import {
     AddEntityButton,
@@ -41,6 +43,10 @@ import { ENTITY_FORM_IDS } from '../entities/constants';
 import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
 import { getCurrentProductName, isCommunityDistribution } from '../../../app/utils';
+
+import { loadNameExpressionOptions } from '../../settings/actions';
+
+import { PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
@@ -85,6 +91,8 @@ interface EntityProps {
 interface State {
     isValid: boolean;
     containers: List<Container>;
+    prefix: string;
+    loadingError: string;
 }
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
@@ -134,10 +142,12 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         this.state = {
             isValid: true,
             containers: undefined,
+            prefix: undefined,
+            loadingError: undefined,
         };
     }
 
-    componentDidMount() {
+    componentDidMount = async (): Promise<void> => {
         getValidPublishTargets()
             .then(containers => {
                 this.setState({ containers });
@@ -146,10 +156,18 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 console.error('Unable to load valid study targets for Auto-Link Data to Study input.');
                 this.setState(() => ({ containers: List<Container>() }));
             });
-    }
+
+        try {
+            const response = await loadNameExpressionOptions();
+            this.setState({ prefix: response.prefix ?? null });
+        } catch (error) {
+            this.setState({ loadingError: 'There was a problem retrieving the Naming Pattern prefix.' });
+        }
+    };
 
     updateValidStatus = (newModel?: SampleTypeModel): void => {
         const { model, updateModel, metricUnitProps } = this.props;
+
         const updatedModel = newModel || model;
         const isValid =
             updatedModel?.hasValidProperties() && updatedModel?.isMetricUnitValid(metricUnitProps?.metricUnitRequired);
@@ -315,7 +333,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             showLinkToStudy,
             metricUnitProps,
         } = this.props;
-        const { isValid, containers } = this.state;
+        const { isValid, containers, prefix, loadingError } = this.state;
 
         const showAliquotNameExpression = aliquotNamePatternProps?.showAliquotNameExpression;
         const aliquotNameExpressionInfoUrl = aliquotNamePatternProps?.aliquotNameExpressionInfoUrl;
@@ -330,6 +348,20 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         const allowTimepointProperties = model.domain.get('allowTimepointProperties');
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
+
+        let warning;
+        if (prefix && !model.isNew() && !model.nameExpression.startsWith(prefix)) {
+            warning = `${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
+        } else if (
+            prefix &&
+            showAliquotNameExpression &&
+            model.aliquotNameExpression &&
+            !model.aliquotNameExpression.startsWith(prefix)
+        ) {
+            warning = `Aliquot ${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
+        } else if (loadingError !== undefined) {
+            warning = loadingError;
+        }
 
         const autoLinkDataToStudyHelpTip = (
             <>
@@ -365,6 +397,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 titlePrefix={model.name}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
+                warning={warning}
             >
                 <Row className="margin-bottom">
                     {headerText && (
@@ -384,6 +417,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     nameReadOnly={model.nameReadOnly}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
+                    warning={warning}
                 />
                 {showAliquotNameExpression && (
                     <Row className="margin-bottom">
@@ -416,6 +450,9 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         </Col>
                         <Col xs={10}>
                             <FormControl
+                                className={classNames({
+                                    'naming-pattern-border-warning': warning?.startsWith('Aliquot'),
+                                })}
                                 name="aliquotNameExpression"
                                 type="text"
                                 placeholder={aliquotNameExpressionPlaceholder ?? ALIQUOT_NAME_PLACEHOLDER}

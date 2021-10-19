@@ -218,11 +218,11 @@ Array [
             >
               <input
                 className="form-control"
+                defaultValue=""
                 id="entity-nameExpression"
                 onChange={[Function]}
                 placeholder="name expression placeholder test"
                 type="text"
-                value=""
               />
             </div>
           </div>
@@ -647,11 +647,11 @@ Array [
             >
               <input
                 className="form-control"
+                defaultValue=""
                 id="entity-nameExpression"
                 onChange={[Function]}
                 placeholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                 type="text"
-                value=""
               />
             </div>
           </div>
@@ -1472,6 +1472,24 @@ exports[`DataClassDesigner initModel 1`] = `
       Symbol(immer-draftable): true,
     }
   }
+  loadNameExpressionOptions={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+        Array [],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+      ],
+    }
+  }
   onCancel={[MockFunction]}
   onComplete={[MockFunction]}
   testMode={true}
@@ -1799,6 +1817,24 @@ exports[`DataClassDesigner initModel 1`] = `
         "rowId": 802,
         "sampleSet": 1085,
         Symbol(immer-draftable): true,
+      }
+    }
+    loadNameExpressionOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": Promise {},
+          },
+          Object {
+            "type": "return",
+            "value": Promise {},
+          },
+        ],
       }
     }
     nounPlural="Data Classes"
@@ -3746,20 +3782,21 @@ exports[`DataClassDesigner initModel 1`] = `
                                             >
                                               <FormControl
                                                 bsClass="form-control"
+                                                className=""
                                                 componentClass="input"
+                                                defaultValue="Source-\${genId}"
                                                 id="entity-nameExpression"
                                                 onChange={[Function]}
                                                 placeholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                                                 type="text"
-                                                value="Source-\${genId}"
                                               >
                                                 <input
                                                   className="form-control"
+                                                  defaultValue="Source-\${genId}"
                                                   id="entity-nameExpression"
                                                   onChange={[Function]}
                                                   placeholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
                                                   type="text"
-                                                  value="Source-\${genId}"
                                                 />
                                               </FormControl>
                                             </div>

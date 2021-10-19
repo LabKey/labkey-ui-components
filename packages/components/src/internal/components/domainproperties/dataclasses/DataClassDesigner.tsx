@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
 import { List } from 'immutable';
 
-import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, resolveErrorMessage } from '../../../..';
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, loadNameExpressionOptions, resolveErrorMessage } from '../../../..';
 import { DomainDesign, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, saveDomain } from '../actions';
@@ -31,6 +31,8 @@ interface Props {
     saveBtnText?: string;
     testMode?: boolean;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
+    loadNameExpressionOptions?: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
 }
 
 interface State {
@@ -42,6 +44,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
         domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'data class' },
+        loadNameExpressionOptions: loadNameExpressionOptions,
     };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
@@ -54,6 +57,18 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             () => {}
         );
     }
+
+    componentDidMount = async (): Promise<void> => {
+        if (this.state.model.isNew) {
+            const response = await this.props.loadNameExpressionOptions();
+
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.model.nameExpression = response.prefix;
+                })
+            );
+        }
+    };
 
     onFinish = (): void => {
         const { defaultNameFieldConfig, setSubmitting, nounSingular } = this.props;

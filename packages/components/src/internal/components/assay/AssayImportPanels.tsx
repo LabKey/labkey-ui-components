@@ -293,9 +293,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
             // the currently selected samples so we can pre-populate the fields in the wizard with the selected
             // samples.
             this.props.loadSelections(location, sampleColumnData.column).then(samples => {
-                getSampleOperationConfirmationData(SampleOperation.AddAssayData, undefined, Object.keys(samples.toJS()))
+                getSampleOperationConfirmationData(SampleOperation.AddAssayData, undefined, samples ?  Object.keys(samples.toJS()) : [])
                     .then(statusConfirmationData => {
-                        const validSamples = samples.filter((sample, key) => statusConfirmationData.isIdAllowed(key));
+                        const validSamples = samples ? samples.filter((sample, key) => statusConfirmationData.isIdAllowed(key)) : OrderedMap<any, any>();
                         // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
                         let runProperties = this.populateAssayRequest(this.getRunPropertiesMap());
                         let batchProperties = this.getBatchPropertiesMap();
@@ -322,7 +322,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                                     batchProperties,
                                     runProperties,
                                 }) as AssayWizardModel,
-                                sampleStatusWarning: getOperationNotPermittedMessage(SampleOperation.AddAssayData, statusConfirmationData),
+                                sampleStatusWarning: samples ? getOperationNotPermittedMessage(SampleOperation.AddAssayData, statusConfirmationData) : undefined,
                             }),
                             this.onInitModelComplete
                         );

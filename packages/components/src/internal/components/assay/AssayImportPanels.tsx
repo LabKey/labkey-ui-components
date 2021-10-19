@@ -13,47 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { Component, ReactNode, FC, useMemo } from 'react';
+import React, { Component, FC, ReactNode, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 import { Map, OrderedMap } from 'immutable';
 import { AssayDOM, Filter, Utils } from '@labkey/api';
 
-import { IMPORT_DATA_FORM_TYPES, AssayUploadTabs } from '../../constants';
+import { AssayUploadTabs, IMPORT_DATA_FORM_TYPES } from '../../constants';
 
 import {
     Alert,
     AssayDefinitionModel,
     AssayDomainTypes,
+    AssayProtocolModel,
     AssayUploadResultModel,
+    caseInsensitive,
     dismissNotifications,
     FileSizeLimitProps,
     getActionErrorMessage,
+    getOperationNotPermittedMessage,
     getQueryDetails,
     getQueryGridModel,
+    getSampleOperationConfirmationData,
     getStateQueryGridModel,
     gridInit,
     importAssayRun,
-    loadSelectedSamples,
     LoadingSpinner,
     Location,
     Progress,
     QueryColumn,
+    QueryConfigMap,
     QueryGridModel,
     removeQueryGridModel,
     resolveErrorMessage,
+    RUN_PROPERTIES_REQUIRED_COLUMNS,
+    SampleOperation,
     SchemaQuery,
+    SCHEMAS,
     withFormSteps,
     WithFormStepsProps,
     WizardNavButtons,
-    AssayProtocolModel,
-    RUN_PROPERTIES_REQUIRED_COLUMNS,
-    SCHEMAS,
-    caseInsensitive,
-    QueryConfigMap,
 } from '../../..';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { withQueryModels, InjectedQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 import {
     checkForDuplicateAssayFiles,
@@ -69,6 +71,8 @@ import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { AssayUploadGridLoader } from './AssayUploadGridLoader';
 import { AssayWizardModel, IAssayUploadOptions } from './AssayWizardModel';
+import { loadSelectedSamples } from '../samples/actions';
+import { STATUS_DATA_RETRIEVAL_ERROR } from '../samples/constants';
 
 const BATCH_PROPERTIES_GRID_ID = 'assay-batchdetails';
 
@@ -109,6 +113,7 @@ interface State {
     showRenameModal: boolean;
     duplicateFileResponse?: DuplicateFilesResponse;
     importAgain?: boolean;
+    sampleStatusWarning: string;
 }
 
 class AssayImportPanelsBody extends Component<Props, State> {
@@ -127,6 +132,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             model: this.getInitWizardModel(props),
             schemaQuery: SchemaQuery.create(props.assayDefinition.protocolSchemaName, 'Data'),
             showRenameModal: false,
+            sampleStatusWarning: undefined,
         };
     }
 
@@ -287,35 +293,45 @@ class AssayImportPanelsBody extends Component<Props, State> {
             // the currently selected samples so we can pre-populate the fields in the wizard with the selected
             // samples.
             this.props.loadSelections(location, sampleColumnData.column).then(samples => {
-                // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
-                let runProperties = this.populateAssayRequest(this.getRunPropertiesMap());
-                let batchProperties = this.getBatchPropertiesMap();
-                if (sampleColumnData && samples && samples.size === 1) {
-                    const { column, domain } = sampleColumnData;
-                    const selectedSample = samples.first();
-                    const sampleValue = selectedSample.getIn([column.fieldKey, 0]).value;
+                getSampleOperationConfirmationData(SampleOperation.AddAssayData, undefined, Object.keys(samples.toJS()))
+                    .then(statusConfirmationData => {
+                        const validSamples = samples.filter((sample, key) => statusConfirmationData.isIdAllowed(key));
+                        // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
+                        let runProperties = this.populateAssayRequest(this.getRunPropertiesMap());
+                        let batchProperties = this.getBatchPropertiesMap();
+                        if (sampleColumnData && validSamples && validSamples.size === 1) {
+                            const { column, domain } = sampleColumnData;
+                            const selectedSample = validSamples.first();
+                            const sampleValue = selectedSample.getIn([column.fieldKey, 0]).value;
 
-                    if (domain === AssayDomainTypes.RUN) {
-                        runProperties = runProperties.set(column.fieldKey, sampleValue);
-                    } else if (domain === AssayDomainTypes.BATCH) {
-                        batchProperties = batchProperties.set(column.fieldKey, sampleValue);
-                    }
+                            if (domain === AssayDomainTypes.RUN) {
+                                runProperties = runProperties.set(column.fieldKey, sampleValue);
+                            } else if (domain === AssayDomainTypes.BATCH) {
+                                batchProperties = batchProperties.set(column.fieldKey, sampleValue);
+                            }
 
-                    // Note: we do not do anything with the results domain here if samples are selected because that has to
-                    // be addressed by the AssayGridLoader, which grabs the sample data from the selectedSamples property.
-                }
+                            // Note: we do not do anything with the results domain here if samples are selected because that has to
+                            // be addressed by the AssayGridLoader, which grabs the sample data from the selectedSamples property.
+                        }
 
-                this.setState(
-                    state => ({
-                        model: state.model.merge({
-                            isInit: this.isRunPropertiesInit(this.props),
-                            selectedSamples: samples,
-                            batchProperties,
-                            runProperties,
-                        }) as AssayWizardModel,
-                    }),
-                    this.onInitModelComplete
-                );
+                        this.setState(
+                            state => ({
+                                model: state.model.merge({
+                                    isInit: this.isRunPropertiesInit(this.props),
+                                    selectedSamples: validSamples,
+                                    batchProperties,
+                                    runProperties,
+                                }) as AssayWizardModel,
+                                sampleStatusWarning: getOperationNotPermittedMessage(SampleOperation.AddAssayData, statusConfirmationData),
+                            }),
+                            this.onInitModelComplete
+                        );
+                    })
+                    .catch(reason => {
+                        this.setState({
+                            error: STATUS_DATA_RETRIEVAL_ERROR
+                        })
+                    });
             });
         } else {
             this.setState(
@@ -656,7 +672,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             runDataPanelTitle,
             allowAsyncImport,
         } = this.props;
-        const { duplicateFileResponse, model, showRenameModal } = this.state;
+        const { duplicateFileResponse, model, showRenameModal, sampleStatusWarning } = this.state;
 
         if (!model.isInit) {
             // TODO: Remove this call. We should not be attempting to initialize/mutate during render()
@@ -680,6 +696,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                         hasBatchProperties={model.batchColumns.size > 0}
                     />
                 )}
+                <Alert bsStyle={"info"}>{sampleStatusWarning}</Alert>
                 <BatchPropertiesPanel
                     model={model}
                     showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}

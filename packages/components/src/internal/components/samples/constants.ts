@@ -101,9 +101,38 @@ export const operationRestrictionMessage = {
         singular: 'removing it from storage',
         plural: 'removing them from storage',
     },
+    [SampleOperation.AddToPicklist]: {
+        all: 'adding to a picklist',
+        singular: 'adding it to a picklist',
+        plural: 'adding them to a picklist',
+    },
+    [SampleOperation.RemoveFromPicklist]: {
+        all: 'removing from a picklist',
+        singular: 'removing it from a picklist',
+        plural: 'removing them from a picklist',
+    },
+    // [SampleOperation.Delete]: {
+    //    Not needed because included from the server side response
+    // },
     [SampleOperation.AddToWorkflow]: {
         all: 'adding them to a job',
         singular: 'adding it to a job',
-        plural: 'adding them to a job'
-    }
+        plural: 'adding them to a job',
+    },
+    [SampleOperation.RemoveFromWorkflow]: {
+        all: 'removing from a job',
+        singular: 'removing it from a job',
+        plural: 'removing them from a job'
+    },
+    [SampleOperation.AddAssayData]: {
+        all: 'adding associated assay data',
+        singular: 'adding associated assay data',
+        plural: 'adding associated assay data'
+    },
+    // [SampleOperation.LinkToStudy]: {
+    //    Not needed because check is done on LKS page
+    // },
+    // [SampleOperation.RecallFromStudy]: {
+    //    Not needed because only possible from LKS
+    // }
 }

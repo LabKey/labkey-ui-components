@@ -283,7 +283,6 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
-    loadSelectedSamples,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
@@ -897,7 +896,6 @@ export {
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     createQueryConfigFilteredBySample,
-    loadSelectedSamples,
     getSelectedItemSamples,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,

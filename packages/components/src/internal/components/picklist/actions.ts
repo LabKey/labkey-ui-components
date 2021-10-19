@@ -12,11 +12,12 @@ import { User } from '../base/models/User';
 import { AppURL, buildURL, createProductUrlFromParts } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
 import { resolveErrorMessage } from '../../util/messaging';
-import { SCHEMAS } from '../../../index';
+import { OperationConfirmationData, SCHEMAS } from '../../../index';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
+import { isSampleStatusEnabled } from '../../app/utils';
 
 export function getPicklists(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
@@ -47,27 +48,33 @@ export function getPicklists(): Promise<Picklist[]> {
 
 export function setPicklistDefaultView(name: string): Promise<string> {
     return new Promise((resolve, reject) => {
+        const columns = [
+            { fieldKey: 'SampleID/Name' },
+            { fieldKey: 'SampleID/LabelColor' },
+            { fieldKey: 'SampleID/SampleSet' },
+        ];
+        if (isSampleStatusEnabled()) {
+            columns.push({ fieldKey: 'SampleID/SampleState' });
+        }
+        columns.push(
+            { fieldKey: 'SampleID/StoredAmount' },
+            { fieldKey: 'SampleID/Units' },
+            { fieldKey: 'SampleID/freezeThawCount' },
+            { fieldKey: 'SampleID/StorageStatus' },
+            { fieldKey: 'SampleID/checkedOutBy' },
+            { fieldKey: 'SampleID/Created' },
+            { fieldKey: 'SampleID/CreatedBy' },
+            { fieldKey: 'SampleID/StorageLocation' },
+            { fieldKey: 'SampleID/StorageRow' },
+            { fieldKey: 'SampleID/StorageCol' },
+            { fieldKey: 'SampleID/isAliquot' },
+        );
         const jsonData = {
             schemaName: 'lists',
             queryName: name,
             views: [
                 {
-                    columns: [
-                        { fieldKey: 'SampleID/Name' },
-                        { fieldKey: 'SampleID/LabelColor' },
-                        { fieldKey: 'SampleID/SampleSet' },
-                        { fieldKey: 'SampleID/StoredAmount' },
-                        { fieldKey: 'SampleID/Units' },
-                        { fieldKey: 'SampleID/freezeThawCount' },
-                        { fieldKey: 'SampleID/StorageStatus' },
-                        { fieldKey: 'SampleID/checkedOutBy' },
-                        { fieldKey: 'SampleID/Created' },
-                        { fieldKey: 'SampleID/CreatedBy' },
-                        { fieldKey: 'SampleID/StorageLocation' },
-                        { fieldKey: 'SampleID/StorageRow' },
-                        { fieldKey: 'SampleID/StorageCol' },
-                        { fieldKey: 'SampleID/isAliquot' },
-                    ],
+                    columns
                 },
             ],
             shared: true,
@@ -93,8 +100,9 @@ export function createPicklist(
     name: string,
     description: string,
     shared: boolean,
+    statusData: OperationConfirmationData,
     selectionKey: string,
-    sampleIds: string[]
+    sampleIds: string[],
 ): Promise<Picklist> {
     return new Promise((resolve, reject) => {
         Domain.create({
@@ -127,7 +135,7 @@ export function createPicklist(
                 Promise.all([
                     getListIdFromDomainId(response.domainId),
                     setPicklistDefaultView(name),
-                    addSamplesToPicklist(name, selectionKey, sampleIds),
+                    addSamplesToPicklist(name, statusData, selectionKey, sampleIds),
                 ])
                     .then(responses => {
                         const [listId] = responses;
@@ -290,15 +298,17 @@ export function getSamplesNotInList(listName: string, selectionKey?: string, sam
 
 export function addSamplesToPicklist(
     listName: string,
+    statusData: OperationConfirmationData,
     selectionKey?: string,
-    sampleIds?: string[]
-): Promise<InsertRowsResponse> {
+    sampleIds?: string[]): Promise<InsertRowsResponse> {
     return new Promise((resolve, reject) => {
         return getSamplesNotInList(listName, selectionKey, sampleIds)
             .then(sampleIdsToAdd => {
                 let rows = List<any>();
                 sampleIdsToAdd.forEach(id => {
-                    rows = rows.push({ SampleID: id });
+                    if (statusData.isIdAllowed(id)) {
+                        rows = rows.push({SampleID: id});
+                    }
                 });
                 if (rows.size > 0) {
                     insertRows({

@@ -103,22 +103,26 @@ function getOperationMessageAndRecommendation(operation: SampleOperation, numSam
     }
 }
 
-export function getOperationNotPermittedMessage(operation: SampleOperation, confirmationData: OperationConfirmationData, aliquotIds?: number[]): string {
+export function getOperationNotPermittedMessage(operation: SampleOperation, statusData: OperationConfirmationData, aliquotIds?: number[]): string {
 
     let notAllowedMsg = null;
 
-    if (confirmationData) {
-        if (confirmationData.noneAllowed) {
+    if (statusData) {
+        if (statusData.totalCount === 0) {
+            return null;
+        }
+
+        if (statusData.noneAllowed) {
             return `All selected samples have a status that prevents ${operationRestrictionMessage[operation].all}.`;
         }
 
-        const onlyAliquots = aliquotIds?.length === confirmationData.totalCount;
+        const onlyAliquots = aliquotIds?.length === statusData.totalCount;
         const noAliquots = !aliquotIds || aliquotIds.length == 0;
         let notAllowed = [];
         if (onlyAliquots || noAliquots) {
-            notAllowed = confirmationData.notAllowed;
+            notAllowed = statusData.notAllowed;
         } else { // some aliquots, some not
-            notAllowed = confirmationData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);
+            notAllowed = statusData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);
         }
         if (notAllowed?.length > 0) {
             notAllowedMsg =

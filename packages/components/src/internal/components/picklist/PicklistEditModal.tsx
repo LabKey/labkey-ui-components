@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
 import { Checkbox, Modal } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
@@ -16,6 +16,10 @@ import { incrementClientSideMetricCount } from '../../actions';
 
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
 import { Picklist } from './models';
+import { getSampleOperationConfirmationData } from '../entities/actions';
+import { SampleOperation } from '../samples/constants';
+import { OperationConfirmationData } from '../entities/models';
+import { getOperationNotPermittedMessage } from '../samples/utils';
 
 interface Props {
     show: boolean;
@@ -63,6 +67,17 @@ export const PicklistEditModal: FC<Props> = memo(props => {
 
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [picklistError, setPicklistError] = useState<string>(undefined);
+    const [validCount, setValidCount] = useState<number>(selectedQuantity ? selectedQuantity : sampleIds?.length);
+    const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
+
+    useEffect(() => {
+        getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
+            .then(data => {
+                setStatusData(data);
+                setValidCount(data.allowed.length);
+            })
+            .catch(reason => { setPicklistError(reason); })
+    }, [selectionKey, sampleIds])
 
     const isUpdate = picklist !== undefined;
     let finishVerb, finishingVerb;
@@ -87,15 +102,13 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         onCancel();
     }, []);
 
-    const quantity = selectedQuantity ? selectedQuantity : sampleIds?.length;
-
     const createSuccessNotification = (picklist: Picklist) => {
         createNotification({
             message: () => {
                 return (
                     <>
                         Successfully created "{picklist.name}" with{' '}
-                        {quantity ? Utils.pluralize(quantity, 'sample', 'samples') : ' no samples'}.&nbsp;
+                        {validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples'}.&nbsp;
                         <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>
                         .
                     </>
@@ -120,7 +133,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                     })
                 );
             } else {
-                updatedList = await createPicklist(trimmedName, description, shared, selectionKey, sampleIds);
+                updatedList = await createPicklist(trimmedName, description, shared, statusData, selectionKey, sampleIds);
                 incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
             }
             reset();
@@ -139,12 +152,11 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     if (isUpdate) {
         title = 'Update Picklist Data';
     } else {
-        const count = sampleIds?.length ?? selectedQuantity;
-        if (!count) {
+        if (!validCount) {
             title = 'Create an Empty Picklist';
-        } else if (selectionKey && count) {
-            title = <>Create a New Picklist with the {Utils.pluralize(count, 'Selected Sample', 'Selected Samples')}</>;
-        } else if (count === 1) {
+        } else if (selectionKey && validCount) {
+            title = <>Create a New Picklist with the {Utils.pluralize(validCount, 'Selected Sample', 'Selected Samples')}</>;
+        } else if (validCount === 1) {
             title = 'Create a New Picklist with This Sample';
         } else {
             title = 'Create a New Picklist with These Samples';
@@ -159,7 +171,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
 
             <Modal.Body>
                 <Alert>{picklistError}</Alert>
-
+                <Alert bsStyle={"info"}>{getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData)}</Alert>
                 <form>
                     <div className="form-group">
                         <label className="control-label">Name *</label>

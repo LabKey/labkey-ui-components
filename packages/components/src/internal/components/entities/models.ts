@@ -607,3 +607,5 @@ export class OperationConfirmationData {
         return this.notAllowed.length > 0;
     }
 }
+
+export const EMPTY_OPERATION_CONFIRMATION_DATA = new OperationConfirmationData({allowed: [], notAllowed: []});

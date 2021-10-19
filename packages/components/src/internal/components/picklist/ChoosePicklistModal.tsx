@@ -23,6 +23,10 @@ import {
     SampleTypeCount,
 } from './actions';
 import { Picklist } from './models';
+import { getSampleOperationConfirmationData } from '../entities/actions';
+import { SampleOperation } from '../samples/constants';
+import { OperationConfirmationData } from '../entities/models';
+import { getOperationNotPermittedMessage } from '../samples/utils';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -224,6 +228,17 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         const [error, setError] = useState<string>(undefined);
         const [submitting, setSubmitting] = useState<boolean>(false);
         const [activeItem, setActiveItem] = useState<Picklist>(undefined);
+        const [validCount, setValidCount] = useState<number>(numSelected);
+        const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
+
+        useEffect(() => {
+            getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
+                .then(data => {
+                    setStatusData(data);
+                    setValidCount(data.allowed.length);
+                })
+                .catch(reason => { setError(reason); });
+        }, [selectionKey, sampleIds]);
 
         const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
             setSearch(event.target.value.trim().toLowerCase());
@@ -256,7 +271,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         const onAddClicked = useCallback(async () => {
             setSubmitting(true);
             try {
-                const insertResponse = await addSamplesToPicklist(activeItem.name, selectionKey, sampleIds);
+                const insertResponse = await addSamplesToPicklist(activeItem.name, statusData, selectionKey, sampleIds);
                 setError(undefined);
                 setSubmitting(false);
                 incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
@@ -265,7 +280,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                         <AddedToPicklistNotification
                             picklist={activeItem}
                             numAdded={insertResponse.rows.length}
-                            numSelected={numSelected}
+                            numSelected={validCount}
                             currentProductId={currentProductId}
                             picklistProductId={picklistProductId}
                         />
@@ -278,7 +293,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 setSubmitting(false);
                 setError(resolveErrorMessage(e));
             }
-        }, [activeItem, selectionKey, setSubmitting, setError, sampleIds, numSelected]);
+        }, [activeItem, selectionKey, setSubmitting, setError, sampleIds, validCount]);
 
         const closeModal = useCallback(() => {
             setError(undefined);
@@ -307,7 +322,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             if (isSearching) {
                 suffix = ' matching your search';
             }
-            suffix += ' to add ' + (numSelected === 1 ? 'this sample to.' : 'these samples to.');
+            suffix += ' to add ' + (validCount === 1 ? 'this sample to.' : 'these samples to.');
             myEmptyMessage += suffix;
             teamEmptyMessage += suffix;
             if (!isSearching) {
@@ -324,21 +339,12 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             }
         }
 
-        return (
-            <Modal show bsSize="large" onHide={closeModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Choose a Picklist</Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <Alert bsStyle="danger">{picklistLoadError ?? error}</Alert>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <Alert bsStyle="info">
-                                Adding {Utils.pluralize(numSelected, 'sample', 'samples')} to selected picklist.
-                            </Alert>
-                        </div>
-                    </div>
+        let body;
+        let title;
+        if (statusData?.anyAllowed) {
+            title = 'Choose a Picklist'
+            body = (
+                <>
                     <div className="row">
                         <div className="col-md-6">
                             <input
@@ -382,6 +388,31 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                             {activeItem !== undefined && <PicklistDetails picklist={activeItem} />}
                         </div>
                     </div>
+                </>
+            )
+        }
+        else {
+            title='Cannot Add to Picklist'
+        }
+        return (
+            <Modal show bsSize="large" onHide={closeModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{title}</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    <Alert bsStyle="danger">{picklistLoadError ?? error}</Alert>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <Alert bsStyle="info">
+                                {statusData?.anyAllowed && (
+                                    <p>Adding {Utils.pluralize(validCount, 'sample', 'samples')} to selected picklist.</p>
+                                )}
+                                <p>{getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData)}</p>
+                            </Alert>
+                        </div>
+                    </div>
+                    {body}
                 </Modal.Body>
 
                 <Modal.Footer>

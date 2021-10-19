@@ -20,6 +20,7 @@ import { getSelectedItemSamples } from '../samples/actions';
 
 import {
     DisplayObject,
+    EMPTY_OPERATION_CONFIRMATION_DATA,
     EntityDataType,
     EntityIdCreationModel,
     EntityParentType,
@@ -37,6 +38,12 @@ export function getOperationConfirmationData(
     rowIds?: string[] | number[],
     extraParams?: any,
 ): Promise<OperationConfirmationData> {
+    if (!selectionKey && !rowIds?.length) {
+        return new Promise(resolve => {
+            resolve(EMPTY_OPERATION_CONFIRMATION_DATA)
+        });
+    }
+
     return new Promise((resolve, reject) => {
         let params;
         if (selectionKey) {

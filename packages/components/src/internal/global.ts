@@ -332,7 +332,7 @@ export function updateLookupStore(store: LookupStore, updates: any, failIfNotFou
     return updatedStore;
 }
 
-function getPermissionsKey(permissions?: string | string[]): string {
+export function getUsersCacheKey(permissions?: string | string[], containerPath?: string): string {
     let key = 'allPermissions';
     if (permissions) {
         if (Array.isArray(permissions)) {
@@ -341,23 +341,28 @@ function getPermissionsKey(permissions?: string | string[]): string {
             key = permissions;
         }
     }
+    if (containerPath) {
+        key = [containerPath, key].join('|');
+    }
     return key;
 }
 
 /**
  * Get the users list from the global QueryGrid state
  */
-export function getUsers(permissions?: string | string[]): List<User> {
-    return getGlobalState('users').get(getPermissionsKey(permissions));
+export function getUsers(permissions?: string | string[], containerPath?: string): Promise<List<User>> {
+    return getGlobalState('users').get(getUsersCacheKey(permissions, containerPath));
 }
 
 /**
  * Sets the users list to be used for this application in the global QueryGrid state
  * @param users List of users
+ * @param permissions the PermissionType or array of PermissionType values that can be used to identify a list of users.
+ * @param containerPath the containerPath
  */
-export function setUsers(users: List<User>, permissions?: string | string[]): void {
+export function setUsers(users: Promise<List<User>>, permissions?: string | string[], containerPath?: string): void {
     setGlobal({
-        QueryGrid_users: getGlobalState('users').set(getPermissionsKey(permissions), users),
+        QueryGrid_users: getGlobalState('users').set(getUsersCacheKey(permissions, containerPath), users),
     });
 }
 
@@ -366,6 +371,6 @@ export function setUsers(users: List<User>, permissions?: string | string[]): vo
  */
 export function invalidateUsers(): void {
     setGlobal({
-        QueryGrid_users: Map<string, List<User>>(),
+        QueryGrid_users: Map<string, Promise<List<User>>>(),
     });
 }

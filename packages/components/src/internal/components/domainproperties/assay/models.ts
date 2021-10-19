@@ -19,6 +19,11 @@ import { Utils } from '@labkey/api';
 
 import { DomainDesign, FieldErrors } from '../models';
 
+enum Status {
+    true = 'Active',
+    false = 'Archived',
+}
+
 export class AssayProtocolModel extends Record({
     allowBackgroundUpload: false,
     allowEditableResults: false,
@@ -50,6 +55,7 @@ export class AssayProtocolModel extends Record({
     selectedDetectionMethod: undefined,
     selectedMetadataInputFormat: undefined,
     selectedPlateTemplate: undefined,
+    status: false,
     qcEnabled: undefined,
 }) {
     declare allowBackgroundUpload: boolean;
@@ -82,6 +88,7 @@ export class AssayProtocolModel extends Record({
     declare selectedDetectionMethod: string;
     declare selectedMetadataInputFormat: string;
     declare selectedPlateTemplate: string;
+    declare status: boolean;
     declare qcEnabled: boolean;
 
     static create(raw: any): AssayProtocolModel {
@@ -115,6 +122,13 @@ export class AssayProtocolModel extends Record({
             }
         }
 
+        // Rosaline temp note: use reverse enum mapping instead?
+        if (raw.status === 'Active') {
+            raw.status = true;
+        } else if (raw.status === 'Archived') {
+            raw.status = false;
+        }
+
         return new AssayProtocolModel({ ...raw, name, domains });
     }
 
@@ -129,6 +143,8 @@ export class AssayProtocolModel extends Record({
         // only need to serialize the id and not the autoCopyTargetContainer object
         delete json.autoCopyTargetContainer;
         delete json.exception;
+        
+        json.status = Status[json.status];
 
         return json;
     }

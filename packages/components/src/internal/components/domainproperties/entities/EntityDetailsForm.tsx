@@ -2,6 +2,8 @@ import React from 'react';
 import { Col, Form, FormControl, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 
+import classNames from 'classnames';
+
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { IEntityDetails } from './models';
@@ -16,6 +18,7 @@ import { ENTITY_FORM_IDS } from './constants';
 export interface EntityDetailsProps {
     noun: string;
     onFormChange: (evt: any) => any;
+    warning?: string;
     formValues?: IEntityDetails;
     data?: Map<string, any>;
     nameExpressionInfoUrl?: string;
@@ -33,6 +36,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
             formValues,
             data,
             nameReadOnly,
+            warning,
         } = this.props;
         const moreInfoLink = nameExpressionInfoUrl ? (
             <p>
@@ -95,11 +99,15 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                     </Col>
                     <Col xs={10}>
                         <FormControl
+                            className={classNames({
+                                'naming-pattern-border-warning':
+                                    warning !== undefined && !warning.startsWith('Aliquot'),
+                            })}
                             id={ENTITY_FORM_IDS.NAME_EXPRESSION}
                             type="text"
                             placeholder={nameExpressionPlaceholder}
                             onChange={onFormChange}
-                            value={getEntityNameExpressionValue(formValues, data)}
+                            defaultValue={getEntityNameExpressionValue(formValues, data)}
                         />
                     </Col>
                 </Row>

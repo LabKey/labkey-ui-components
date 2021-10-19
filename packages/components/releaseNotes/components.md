@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD October 2021
 * Item 9584: ManageSampleStatesPanel to display, update, add, remove sample statuses for a container
 
+### version 2.85.0
+*Released*: 18 October 2021
+* Add settings panel 'ID/Name Settings' for use in LKB and LKSM
+* Within naming pattern, add warning UI if prefix altered
+
 ### version 2.84.0
 *Released*: 14 October 2021
 * Item 9440: Enable picklists for LKB

@@ -15,6 +15,10 @@ import {
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
+import { loadNameExpressionOptions } from '../../settings/actions';
+
+import { PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
+
 import { DataClassModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
@@ -39,6 +43,8 @@ type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
 
 interface State {
     isValid: boolean;
+    prefix: string;
+    loadingError: string;
 }
 
 // Note: exporting this class for jest test case
@@ -52,11 +58,21 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         appPropertiesOnly: false,
     };
 
-    state: Readonly<State> = { isValid: true };
+    state: Readonly<State> = { isValid: true, prefix: undefined, loadingError: undefined };
+
+    componentDidMount = async (): Promise<void> => {
+        try {
+            const response = await loadNameExpressionOptions();
+            this.setState({ prefix: response.prefix ?? null });
+        } catch (error) {
+            this.setState({ loadingError: 'There was a problem retrieving the Naming Pattern prefix.' });
+        }
+    };
 
     updateValidStatus = (newModel?: DataClassModel): void => {
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
+
         this.setState(
             () => ({ isValid: !!updatedModel?.hasValidProperties }),
             () => {
@@ -138,7 +154,14 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             nameExpressionPlaceholder,
             helpTopic,
         } = this.props;
-        const { isValid } = this.state;
+        const { isValid, prefix, loadingError } = this.state;
+
+        let warning;
+        if (prefix && !model.isNew && model.nameExpression && !model.nameExpression.startsWith(prefix)) {
+            warning = `${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
+        } else if (loadingError !== undefined) {
+            warning = loadingError;
+        }
 
         return (
             <BasePropertiesPanel
@@ -148,6 +171,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                 titlePrefix={model.name}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
+                warning={warning}
             >
                 <Row className="margin-bottom">
                     {headerText && (
@@ -165,6 +189,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     data={model.entityDataMap}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
+                    warning={warning}
                 />
                 {!appPropertiesOnly && this.renderCategorySelect()}
                 {!appPropertiesOnly && this.renderSampleTypeSelect()}

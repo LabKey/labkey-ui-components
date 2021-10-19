@@ -161,7 +161,6 @@ const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                                 onChange={onFormChange}
                                 disabled={saving}
                                 placeholder="Enter status label"
-                                // ref={nameRef}
                                 type="text"
                                 value={updatedState.label ?? ''}
                             />

@@ -82,6 +82,8 @@ import { fetchDomainDetails } from '../domainproperties/actions';
 
 import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from '../samples/constants';
 
+import { loadNameExpressionOptions } from '../settings/actions';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -146,6 +148,8 @@ interface OwnProps {
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => void;
     onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
     parentDataTypes?: List<EntityDataType>;
+    // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
+    loadNameExpressionOptions?: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
 }
 
 interface FromLocationProps {
@@ -172,12 +176,14 @@ interface StateProps {
     useAsync: boolean;
     fieldsWarningMsg: ReactNode;
     creationType: SampleCreationType;
+    allowUserSpecifiedNames: boolean;
 }
 
 export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     static defaultProps = {
         numPerParent: 1,
         tab: EntityInsertPanelTabs.First,
+        loadNameExpressionOptions,
     };
 
     private readonly capNounSingular;
@@ -208,6 +214,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             useAsync: false,
             fieldsWarningMsg: undefined,
             creationType: props.creationType,
+            allowUserSpecifiedNames: true,
         };
     }
 
@@ -265,6 +272,18 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { creationType } = this.state;
 
         const allowParents = this.allowParents();
+
+        try {
+            const nameIdSettings = await this.props.loadNameExpressionOptions();
+            this.setState({ allowUserSpecifiedNames: nameIdSettings.allowUserSpecifiedNames });
+        } catch (error) {
+            this.setState({
+                error: getActionErrorMessage(
+                    'There was a problem retrieving name expression options.',
+                    this.typeTextPlural
+                ),
+            });
+        }
 
         let { insertModel } = this.state;
 
@@ -914,6 +933,43 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
+    renderUpdateTooltipText = () => {
+        const { nounPlural } = this.props;
+        const { allowUserSpecifiedNames } = this.state;
+
+        if (nounPlural === 'Samples' && !allowUserSpecifiedNames) {
+            return (
+                <>
+                    <p>
+                        When "Update data for existing samples during this file import" is unchecked, import will insert
+                        new samples based on the file provided. This Sample Type has been configured to not accept
+                        user-defined Sample IDs or Names. Providing a Sample ID or Name column in your file will result
+                        in an error.
+                    </p>
+                    <p>
+                        When "Update data for existing samples during this file import" is checked, the Sample ID or
+                        Name column must be provided. All Sample IDs or Names provided must already exist in the system.
+                        Encountering a new Sample ID or Name will result in an error.
+                    </p>
+                </>
+            );
+        }
+
+        return (
+            <>
+                <p>
+                    By default, import will insert new {nounPlural} based on the file provided. The operation will fail
+                    if there are existing {this.capIdsText} that match those being imported.
+                </p>
+                <p>
+                    When update is selected, data will be updated for matching {this.capIdsText}, and new {nounPlural}{' '}
+                    will be created for any new {this.capIdsText} provided. Data will not be changed for any columns not
+                    in the imported file.
+                </p>
+            </>
+        );
+    };
+
     toggleInsertOptionChange = (): void => {
         this.setState(state => ({ isMerge: !state.isMerge }));
     };
@@ -1188,17 +1244,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                             </span>
                                             &nbsp;
                                             <LabelHelpTip title="Import Options">
-                                                <p>
-                                                    By default, import will insert new {nounPlural} based on the file
-                                                    provided. The operation will fail if there are existing{' '}
-                                                    {this.capIdsText} that match those being imported.
-                                                </p>
-                                                <p>
-                                                    When update is selected, data will be updated for matching{' '}
-                                                    {this.capIdsText}, and new {nounPlural} will be created for any new{' '}
-                                                    {this.capIdsText} provided. Data will not be changed for any columns
-                                                    not in the imported file.
-                                                </p>
+                                                {this.renderUpdateTooltipText()}
                                                 <p>
                                                     For more information on import options for {nounPlural}, see the{' '}
                                                     {this.props.importHelpLinkNode} documentation page.

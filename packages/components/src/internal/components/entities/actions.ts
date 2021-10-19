@@ -3,6 +3,7 @@ import { fromJS, List, Map } from 'immutable';
 
 import {
     buildURL,
+    getFilterForSampleOperation,
     getQueryGridModel,
     getSelected,
     importData,
@@ -20,7 +21,6 @@ import { getSelectedItemSamples } from '../samples/actions';
 
 import {
     DisplayObject,
-    EMPTY_OPERATION_CONFIRMATION_DATA,
     EntityDataType,
     EntityIdCreationModel,
     EntityParentType,
@@ -40,7 +40,7 @@ export function getOperationConfirmationData(
 ): Promise<OperationConfirmationData> {
     if (!selectionKey && !rowIds?.length) {
         return new Promise(resolve => {
-            resolve(EMPTY_OPERATION_CONFIRMATION_DATA)
+            resolve(new OperationConfirmationData())
         });
     }
 
@@ -131,7 +131,10 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
                     schemaName: 'exp',
                     queryName: 'materials',
                     columns: 'LSID,Name,RowId,SampleSet',
-                    filterArray: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+                    filterArray: [
+                        Filter.create('RowId', sampleIds, Filter.Types.IN),
+                        getFilterForSampleOperation(SampleOperation.EditLineage)
+                    ],
                     containerFilter: Query.containerFilter.currentPlusProjectAndShared,
                 })
                     .then(response => {
@@ -212,7 +215,10 @@ function initParents(
             if (queryGridModel && queryGridModel.selectedLoaded) {
                 return getSelectedParents(
                     schemaQuery,
-                    [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)],
+                    [
+                        Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN),
+                        getFilterForSampleOperation(SampleOperation.EditLineage)
+                    ],
                     isAliquotParent
                 )
                     .then(response => resolve(response))
@@ -227,7 +233,10 @@ function initParents(
                         }
                         return getSelectedParents(
                             schemaQuery,
-                            [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)],
+                            [
+                                Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),
+                                getFilterForSampleOperation(SampleOperation.EditLineage)
+                            ],
                             isAliquotParent
                         )
                             .then(response => resolve(response))
@@ -260,7 +269,10 @@ function initParents(
 
             return getSelectedParents(
                 SchemaQuery.create(schema, query),
-                [Filter.create('RowId', value)],
+                [
+                    Filter.create('RowId', value),
+                    getFilterForSampleOperation(SampleOperation.EditLineage)
+                ],
                 isAliquotParent
             )
                 .then(response => resolve(response))

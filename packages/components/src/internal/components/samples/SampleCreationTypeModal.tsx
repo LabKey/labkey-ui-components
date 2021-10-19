@@ -2,7 +2,12 @@ import React from 'react';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 import classNames from 'classnames';
 
-import { Alert, getOperationNotPermittedMessage, MAX_EDITABLE_GRID_ROWS, SampleOperation } from '../../../index';
+import {
+    Alert, filterSampleRowsForOperation,
+    getOperationNotPermittedMessage,
+    MAX_EDITABLE_GRID_ROWS,
+    SampleOperation
+} from '../../../index';
 
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
@@ -17,7 +22,8 @@ interface Props {
     onCancel: () => void;
     onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
     api?: ComponentsAPIWrapper;
-    selectionKey: string;
+    selectionKey?: string;
+    selectedItems?: { [key: string]: any }
 }
 
 interface State extends Record<string, any> {
@@ -60,22 +66,32 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     }
 
     init = async (): Promise<void> => {
-        const { api, selectionKey } = this.props;
-
-        try {
-            const confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditLineage, selectionKey);
+        const { api, selectedItems, selectionKey } = this.props;
+        if (selectedItems) {
+            const { rows, statusMessage, statusData } = filterSampleRowsForOperation(selectedItems, SampleOperation.EditLineage);
             if (this._mounted) {
                 this.setState({
-                    confirmationData,
+                    confirmationData: statusData,
                     error: false
                 });
             }
-        } catch (e) {
-            if (this._mounted) {
-                this.setState({
-                    error: 'There was a problem retrieving the confirmation data.',
-                    isLoading: false,
-                });
+        } else {
+            try {
+                const confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditLineage, selectionKey);
+                if (this._mounted) {
+                    this.setState({
+                        confirmationData,
+                        error: false
+                    });
+                }
+            }
+            catch (e) {
+                if (this._mounted) {
+                    this.setState({
+                        error: 'There was a problem retrieving the confirmation data.',
+                        isLoading: false,
+                    });
+                }
             }
         }
     };

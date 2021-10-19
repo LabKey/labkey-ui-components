@@ -30,6 +30,7 @@ interface CreateSamplesSubMenuProps {
     sampleWizardURL?: (targetSampleType?: string, parent?: string) => AppURL;
     getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
     allowPooledSamples?: boolean;
+    selectedItems?: { [key: string]: any };
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
@@ -47,6 +48,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         sampleWizardURL,
         getProductSampleWizardURL,
         isSelectingSamples,
+        selectedItems,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -138,7 +140,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     options={parentType === App.SOURCES_KEY ? [CHILD_SAMPLE_CREATION] : sampleOptions}
                     onCancel={onCancel}
                     onSubmit={onSampleCreationSubmit}
-                    selectionKey={selectionKey}
+                    selectionKey={selectedItems ? undefined : selectionKey}
+                    selectedItems={selectedItems}
                 />
             )}
         </>

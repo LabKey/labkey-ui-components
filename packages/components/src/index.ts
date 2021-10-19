@@ -302,6 +302,7 @@ import { SampleAliquotsSummary } from './internal/components/samples/SampleAliqu
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 
 import {
+    filterSampleRowsForOperation,
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
@@ -877,6 +878,7 @@ export {
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
+    filterSampleRowsForOperation,
     isSampleOperationPermitted,
     getFilterForSampleOperation,
     getSampleDeleteMessage,

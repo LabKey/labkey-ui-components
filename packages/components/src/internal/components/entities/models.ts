@@ -577,12 +577,20 @@ export class OperationConfirmationData {
     constructor(values?: Partial<OperationConfirmationData>) {
         Object.assign(this, values);
         const idMap = {};
-        values.allowed.forEach(allowed => {
-            idMap[caseInsensitive(allowed, "rowId")] = true;
-        });
-        values.notAllowed.forEach(notAllowed => {
-            idMap[caseInsensitive(notAllowed, "rowId")] = false;
-        });
+        if (values?.allowed) {
+            values.allowed.forEach(allowed => {
+                idMap[caseInsensitive(allowed, "rowId")] = true;
+            });
+        } else {
+            Object.assign(this, {allowed: []});
+        }
+        if (values.notAllowed) {
+            values.notAllowed.forEach(notAllowed => {
+                idMap[caseInsensitive(notAllowed, "rowId")] = false;
+            });
+        } else {
+            Object.assign(this, {notAllowed: []});
+        }
         Object.assign(this, {idMap});
     }
 
@@ -607,5 +615,3 @@ export class OperationConfirmationData {
         return this.notAllowed.length > 0;
     }
 }
-
-export const EMPTY_OPERATION_CONFIRMATION_DATA = new OperationConfirmationData({allowed: [], notAllowed: []});

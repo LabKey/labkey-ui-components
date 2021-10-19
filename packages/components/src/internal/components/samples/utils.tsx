@@ -6,7 +6,7 @@ import { User } from '../base/models/User';
 import {
     App,
     caseInsensitive,
-    LoadingSpinner, OperationConfirmationData,
+    LoadingSpinner,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleStateType,
@@ -16,6 +16,7 @@ import { isSampleStatusEnabled } from '../../app/utils';
 
 import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
 
+import { OperationConfirmationData } from '../entities/models';
 import { SampleStatus } from './models';
 
 export function getOmittedSampleTypeColumns(user: User, omitCols?: string[]): string[] {
@@ -132,4 +133,29 @@ export function getOperationNotPermittedMessage(operation: SampleOperation, stat
     }
 
     return notAllowedMsg;
+}
+
+export function filterSampleRowsForOperation(rows: {[key: string]: any }, operation: SampleOperation) : {rows: {[key: string]: any }, statusMessage: string, statusData: OperationConfirmationData } {
+    let allowed = [];
+    let notAllowed = [];
+    let validRows = {};
+    for (let [id, row] of Object.entries(rows)) {
+        const statusType = caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME).value;
+        const statusRecord = {
+            'RowId': id,
+            'Name': caseInsensitive(row, "SampleID").displayValue
+        }
+        if (isSampleOperationPermitted(statusType, operation)) {
+            allowed.push(statusRecord);
+            validRows[id] = row;
+        } else {
+            notAllowed.push(statusRecord);
+        }
+    }
+    const statusData =  new OperationConfirmationData({allowed, notAllowed});
+    return {
+        rows: validRows,
+        statusMessage: getOperationNotPermittedMessage(operation,statusData),
+        statusData,
+    }
 }

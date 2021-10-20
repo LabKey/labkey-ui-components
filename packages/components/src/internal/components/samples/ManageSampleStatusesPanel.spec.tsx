@@ -5,6 +5,7 @@ import { waitForLifecycle } from '../../testHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { Alert } from '../base/Alert';
+import { LockIcon } from '../base/LockIcon';
 import { SampleState } from './actions';
 
 import {
@@ -166,6 +167,48 @@ describe('SampleStatusesList', () => {
         validate(wrapper, states.length);
         expect(wrapper.find(SampleStatusesListItem).first().prop('active')).toBe(false);
         expect(wrapper.find(SampleStatusesListItem).last().prop('active')).toBe(true);
+        wrapper.unmount();
+    });
+});
+
+describe('SampleStatusesListItem', () => {
+    const DEFAULT_PROPS = {
+        index: 0,
+        state: new SampleState({ label: 'Available', stateType: 'Available', inUse: false }),
+        onSelect: jest.fn,
+    };
+
+    function validate(wrapper: ReactWrapper, active = false, inUse = false, text = 'Available'): void {
+        expect(wrapper.find('button')).toHaveLength(1);
+        expect(wrapper.find('.active')).toHaveLength(active ? 1 : 0);
+        expect(wrapper.find('.choices-list__item-type')).toHaveLength(text !== 'Available' ? 1 : 0);
+        expect(wrapper.find(LockIcon)).toHaveLength(inUse ? 1 : 0);
+        expect(wrapper.find('button').text()).toBe(text);
+    }
+
+    test('default props', () => {
+        const wrapper = mount(<SampleStatusesListItem {...DEFAULT_PROPS} />);
+        validate(wrapper);
+        wrapper.unmount();
+    });
+
+    test('active', () => {
+        const wrapper = mount(<SampleStatusesListItem {...DEFAULT_PROPS} active />);
+        validate(wrapper, true);
+        wrapper.unmount();
+    });
+
+    test('stateType not same as label', () => {
+        const state = new SampleState({ label: 'Received', stateType: 'Available', inUse: false });
+        const wrapper = mount(<SampleStatusesListItem {...DEFAULT_PROPS} state={state} />);
+        validate(wrapper, false, false, 'ReceivedAvailable');
+        wrapper.unmount();
+    });
+
+    test('in use', () => {
+        const state = new SampleState({ label: 'Available', stateType: 'Available', inUse: true });
+        const wrapper = mount(<SampleStatusesListItem {...DEFAULT_PROPS} state={state} />);
+        validate(wrapper, false, true);
         wrapper.unmount();
     });
 });

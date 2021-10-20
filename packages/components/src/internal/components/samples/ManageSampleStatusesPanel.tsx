@@ -5,10 +5,9 @@ import { List } from 'immutable';
 import classNames from 'classnames';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 import { Alert } from '../base/Alert';
 import { LockIcon } from '../base/LockIcon';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
@@ -18,10 +17,9 @@ import { selectRows, updateRows, insertRows, deleteRows } from '../../query/api'
 import { caseInsensitive } from '../../util/utils';
 import { SCHEMAS } from '../../schemas';
 import { resolveErrorMessage } from '../../util/messaging';
-
-import { ConfirmModal } from '../base/ConfirmModal';
-
 import { SampleState } from './actions';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = SchemaQuery.create('exp', 'SampleStateType');

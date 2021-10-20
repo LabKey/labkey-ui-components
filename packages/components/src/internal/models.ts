@@ -692,8 +692,8 @@ export class EditorModel
         } else return undefined;
     }
 
-    static convertQueryDataToEditorData(data: Map<string, any>, updates?: Map<any, any>): Map<any, Map<string, any>> {
-        return data.map(valueMap => {
+    static convertQueryDataToEditorData(data: Map<string, any>, updates?: Map<any, any>, idsNotToUpdate?: number[]): Map<any, Map<string, any>> {
+        return data.map((valueMap, id) => {
             const returnMap = valueMap.reduce((m, valueMap, key) => {
                 const editorData = EditorModel.getEditorDataFromQueryValueMap(valueMap);
                 // data maps have keys that are display names/captions. We need to convert to the
@@ -701,7 +701,7 @@ export class EditorModel
                 if (editorData !== undefined) return m.set(encodePart(key), editorData);
                 else return m;
             }, Map<any, any>());
-            return updates ? returnMap.merge(updates) : returnMap;
+            return (updates && (!idsNotToUpdate || idsNotToUpdate.indexOf(parseInt(id)) < 0)) ? returnMap.merge(updates) : returnMap;
         }) as Map<any, Map<string, any>>;
     }
 

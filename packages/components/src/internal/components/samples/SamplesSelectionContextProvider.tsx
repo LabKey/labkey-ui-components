@@ -4,13 +4,14 @@
  */
 import React from 'react';
 
-import { LoadingSpinner } from '../../..';
+import { LoadingSpinner, SampleOperation } from '../../..';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import {
     getAliquotSampleIds,
     getGroupedSampleDomainFields,
     getNotInStorageSampleIds,
+    getNotPermittedSampleIds,
     getSampleSelectionLineageData,
     getSampleSelectionStorageData,
 } from './actions';
@@ -33,10 +34,18 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             sampleItems: undefined,
             sampleLineageKeys: undefined,
             sampleLineage: undefined,
+            notEditableSamples: undefined,
+            noLineageUpdateSamples: undefined,
+            noStorageUpdateSamples: undefined,
         };
+
+        _storageUpdateNotPermittedIds = undefined;
+        _editNotPermittedIds = undefined;
+        _editLineageNotPermittedIds = undefined;
 
         componentDidMount() {
             this.loadSampleTypeDomain();
+            this.loadEditNotPermittedData();
             this.loadAliquotData();
             this.loadStorageData();
             this.loadLineageData();
@@ -44,6 +53,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
 
         componentDidUpdate(prevProps: Props): void {
             if (prevProps.selection !== this.props.selection) {
+                this.loadEditNotPermittedData();
                 this.loadAliquotData();
                 this.loadStorageData();
                 this.loadLineageData();
@@ -62,6 +72,32 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                 });
         }
 
+        loadEditNotPermittedData(): void {
+            const { selection, sampleSet } = this.props;
+            getNotPermittedSampleIds(selection, sampleSet, SampleOperation.EditMetadata)
+                .then(samples => {
+                    this._editNotPermittedIds = samples;
+                    this.setNotEditableIds();
+                })
+                .catch(error => {
+                    this._editNotPermittedIds = undefined;
+                    this.setState({
+                        selectionInfoError: error,
+                    });
+                });
+        }
+
+        setNotEditableIds(): void {
+            if (this._editNotPermittedIds && this.state.aliquots) {
+                let idSet = new Set(this._editNotPermittedIds);
+                this.state.aliquots.forEach(id => idSet.add(id));
+
+                this.setState({
+                    notEditableSamples: Array.from(idSet)
+                });
+            }
+        }
+
         loadAliquotData(): void {
             const { determineAliquot, selection, sampleSet } = this.props;
             if (determineAliquot && selection && selection.size > 0) {
@@ -69,7 +105,10 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                     .then(aliquots => {
                         this.setState(() => ({
                             aliquots,
-                        }));
+                        }), () => {
+                            this.setNotEditableIds();
+                            this.setLineageNotEditableIds();
+                        });
                     })
                     .catch(error => {
                         this.setState(() => ({
@@ -80,6 +119,16 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             }
         }
 
+        setStorageNotEditableIds(): void {
+            if (this._storageUpdateNotPermittedIds && this.state.noStorageSamples) {
+                let idSet = new Set(this._storageUpdateNotPermittedIds);
+                this.state.noStorageSamples.forEach(id => idSet.add(id));
+                this.setState({
+                    noStorageUpdateSamples: Array.from(idSet)
+                });
+            }
+        }
+
         loadStorageData(): void {
             const { determineStorage, selection, sampleSet } = this.props;
             if (determineStorage && selection && selection.size > 0) {
@@ -87,7 +136,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                     .then(samples => {
                         this.setState(() => ({
                             noStorageSamples: samples,
-                        }));
+                        }), () => this.setStorageNotEditableIds());
                     })
                     .catch(error => {
                         this.setState(() => ({
@@ -107,6 +156,27 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                             selectionInfoError: error,
                         }));
                     });
+                getNotPermittedSampleIds(selection, sampleSet, SampleOperation.UpdateStorageMetadata)
+                    .then(samples => {
+                        this._storageUpdateNotPermittedIds = samples;
+                        this.setStorageNotEditableIds()
+                    })
+                    .catch(error => {
+                        this._storageUpdateNotPermittedIds = undefined;
+                        this.setState({
+                            selectionInfoError: error,
+                        });
+                    });
+            }
+        }
+
+        setLineageNotEditableIds(): void {
+            if (this._editLineageNotPermittedIds && this.state.aliquots) {
+                let idSet = new Set(this._editLineageNotPermittedIds);
+                this.state.aliquots.forEach(id => idSet.add(id));
+                this.setState({
+                    noLineageUpdateSamples: Array.from(idSet)
+                });
             }
         }
 
@@ -128,20 +198,40 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                             selectionInfoError: error,
                         }));
                     });
+                getNotPermittedSampleIds(selection, sampleSet, SampleOperation.EditLineage)
+                    .then(samples => {
+                        this._editLineageNotPermittedIds = samples;
+                        this.setLineageNotEditableIds();
+                    })
+                    .catch(error => {
+                        this._editLineageNotPermittedIds = undefined;
+                        this.setState({
+                            selectionInfoError: error,
+                        });
+                    });
             }
         }
 
         render() {
             const { determineAliquot, determineStorage, determineLineage } = this.props;
-            const { aliquots, noStorageSamples, selectionInfoError, sampleTypeDomainFields, sampleLineage } =
-                this.state;
+            const {
+                aliquots,
+                noStorageSamples,
+                selectionInfoError,
+                sampleTypeDomainFields,
+                sampleLineage,
+                notEditableSamples,
+                noLineageUpdateSamples,
+                noStorageUpdateSamples,
+            } = this.state;
 
             let isLoaded = !!sampleTypeDomainFields;
             if (isLoaded && !selectionInfoError) {
                 if (
+                    !notEditableSamples ||
                     (determineAliquot && !aliquots) ||
-                    (determineStorage && !noStorageSamples) ||
-                    (determineLineage && !sampleLineage)
+                    (determineStorage && (!noStorageSamples || !noStorageUpdateSamples)) ||
+                    (determineLineage && (!sampleLineage || !noLineageUpdateSamples ))
                 ) {
                     isLoaded = false;
                 }

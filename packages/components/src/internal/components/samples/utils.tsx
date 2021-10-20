@@ -74,7 +74,7 @@ export function getSampleStatus(row: any): SampleStatus {
     };
 }
 
-export function getFilterForSampleOperation(operation: SampleOperation): Filter.IFilter {
+export function getFilterForSampleOperation(operation: SampleOperation, allowed=true): Filter.IFilter {
     if (!isSampleStatusEnabled()) return null;
 
     const typesNotAllowed = [];
@@ -83,7 +83,11 @@ export function getFilterForSampleOperation(operation: SampleOperation): Filter.
     }
     if (typesNotAllowed.length == 0) return null;
 
-    return Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesNotAllowed, Filter.Types.NOT_IN);
+    if (allowed) {
+        return Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesNotAllowed, Filter.Types.NOT_IN);
+    } else {
+        return Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesNotAllowed, Filter.Types.IN);
+    }
 }
 
 function getOperationMessageAndRecommendation(operation: SampleOperation, numSamples: number, isAll?: boolean): string {

@@ -26,6 +26,7 @@ import {
     DataClassDataType,
     DomainDetails,
     FindField,
+    getFilterForSampleOperation,
     getSelectedData,
     getSelection,
     getStateModelId,
@@ -35,6 +36,7 @@ import {
     QueryConfig,
     resolveErrorMessage,
     SAMPLE_ID_FIND_FIELD,
+    SampleOperation,
     SampleTypeDataType,
     SchemaQuery,
     SCHEMAS,
@@ -221,7 +223,11 @@ export function getNotInStorageSampleIds(selection: List<any>, sampleType: strin
     return getFilteredSampleSelection(selection, sampleType, [Filter.create('StorageStatus', 'Not in storage')]);
 }
 
-export function getFilteredSampleSelection(
+export function getNotPermittedSampleIds(selection: List<any>, sampleType: string, operation: SampleOperation): Promise<any[]> {
+    return getFilteredSampleSelection(selection, sampleType, [getFilterForSampleOperation(operation, false)]);
+}
+
+function getFilteredSampleSelection(
     selection: List<any>,
     sampleType: string,
     filters: Filter.IFilter[]

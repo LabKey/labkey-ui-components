@@ -1,4 +1,4 @@
-import React, { FC, memo, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
@@ -13,9 +13,7 @@ import {
 } from '../../..';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { OperationConfirmationData } from '../entities/models';
-import { STATUS_DATA_RETRIEVAL_ERROR } from './constants';
 
 interface OwnProps {
     queryModel: QueryModel;
@@ -33,28 +31,12 @@ type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultPr
 interface UpdateAlertProps {
     aliquots: any[],
     queryModel: QueryModel,
-    api?: ComponentsAPIWrapper,
+    editStatusData: OperationConfirmationData,
 }
 
 // exported for jest testing
 export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo( (props) => {
-    const { queryModel, aliquots, api } = props;
-
-    const [confirmationData, setConfirmationData] = useState<OperationConfirmationData>(undefined);
-    const [error, setError] = useState<boolean>(false);
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const data = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditMetadata, queryModel.id);
-                setConfirmationData(data);
-                setError(false);
-            }
-            catch {
-                setError(true);
-            }
-        })();
-    }, []);
+    const { queryModel, aliquots, editStatusData } = props;
 
     const gridSelectionSize = useMemo(() => {
         return props.queryModel.selections.size;
@@ -76,24 +58,17 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo( (props) => {
 
     const alerts = [];
 
-    if (error) {
-        alerts.push(<Alert>{STATUS_DATA_RETRIEVAL_ERROR}</Alert>);
-    }
-    if (!aliquotsMsg && (!confirmationData || confirmationData.notAllowed.length == 0))
+    if (!aliquotsMsg && (!editStatusData || editStatusData.notAllowed.length == 0))
         return <>{alerts}</>;
 
     alerts.push(
-        <Alert bsStyle="info">
+        <Alert bsStyle="warning">
             {aliquotsMsg}
-            <p>{getOperationNotPermittedMessage(SampleOperation.EditMetadata, confirmationData, aliquots)}</p>
+            <p>{getOperationNotPermittedMessage(SampleOperation.EditMetadata, editStatusData, aliquots)}</p>
         </Alert>
     );
     return <>{alerts}</>;
 });
-
-SamplesBulkUpdateAlert.defaultProps = {
-    api: getDefaultAPIWrapper(),
-}
 
 // Usage:
 // export const SamplesBulkUpdateForm = connect<any, any, any>(undefined)(SamplesSelectionProvider(SamplesBulkUpdateFormBase));
@@ -147,6 +122,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
             onBulkUpdateError,
             onBulkUpdateComplete,
             editSelectionInGrid,
+            editStatusData
         } = this.props;
 
         return (
@@ -163,7 +139,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
                 onSubmitForEdit={editSelectionInGrid}
                 sortString={queryModel.sorts.join(',')}
                 updateRows={updateRows}
-                header={<SamplesBulkUpdateAlert queryModel={queryModel} aliquots={aliquots}/>}
+                header={<SamplesBulkUpdateAlert queryModel={queryModel} aliquots={aliquots} editStatusData={editStatusData}/>}
             />
         );
     }

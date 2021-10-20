@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Modal, Tab, Tabs } from 'react-bootstrap';
+import { Button, Modal, Tab, Tabs } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { Utils } from '@labkey/api';
@@ -341,6 +341,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
 
         let body;
         let title;
+        let buttons;
         if (statusData?.anyAllowed) {
             title = 'Choose a Picklist'
             body = (
@@ -390,9 +391,34 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                     </div>
                 </>
             )
+            buttons = (
+                <>
+                    <div className="pull-left">
+                        <button type="button" className="btn btn-default" onClick={closeModal}>
+                            Cancel
+                        </button>
+                    </div>
+
+                    <div className="pull-right">
+                        <button
+                            type="button"
+                            className="btn btn-success"
+                            onClick={onAddClicked}
+                            disabled={activeItem === undefined || submitting}
+                        >
+                            {submitting ? 'Adding to Picklist...' : 'Add to Picklist'}
+                        </button>
+                    </div>
+                </>
+            )
         }
         else {
             title='Cannot Add to Picklist'
+            buttons = (
+                <Button bsClass="btn btn-default" onClick={closeModal}>
+                    Dismiss
+                </Button>
+            )
         }
         return (
             <Modal show bsSize="large" onHide={closeModal}>
@@ -416,22 +442,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <div className="pull-left">
-                        <button type="button" className="btn btn-default" onClick={closeModal}>
-                            Cancel
-                        </button>
-                    </div>
-
-                    <div className="pull-right">
-                        <button
-                            type="button"
-                            className="btn btn-success"
-                            onClick={onAddClicked}
-                            disabled={activeItem === undefined || submitting}
-                        >
-                            {submitting ? 'Adding to Picklist...' : 'Add to Picklist'}
-                        </button>
-                    </div>
+                    {buttons}
                 </Modal.Footer>
             </Modal>
         );

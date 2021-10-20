@@ -35,7 +35,6 @@ export enum SampleOperation {
     UpdateStorageMetadata,
     RemoveFromStorage,
     AddToPicklist,
-    RemoveFromPicklist,
     Delete,
     AddToWorkflow,
     RemoveFromWorkflow,
@@ -61,7 +60,6 @@ export const permittedOps = {
         SampleOperation.EditLineage,
         SampleOperation.RemoveFromStorage,
         SampleOperation.AddToPicklist,
-        SampleOperation.RemoveFromPicklist,
         SampleOperation.Delete,
         SampleOperation.AddToWorkflow,
         SampleOperation.RemoveFromWorkflow,
@@ -69,7 +67,7 @@ export const permittedOps = {
         SampleOperation.LinkToStudy,
         SampleOperation.RecallFromStudy,
     ]),
-    [SampleStateType.Locked]: new Set([SampleOperation.AddToPicklist, SampleOperation.RemoveFromPicklist]),
+    [SampleStateType.Locked]: new Set([SampleOperation.AddToPicklist]),
 };
 
 export const STATUS_DATA_RETRIEVAL_ERROR = "There was a problem retrieving the current sample status data.";
@@ -87,29 +85,24 @@ export const operationRestrictionMessage = {
         plural: 'updating of their lineage',
     },
     [SampleOperation.AddToStorage]: {
-        all: 'adding to storage',
+        all: 'adding them to storage',
         singular: 'adding it to storage',
         plural: 'adding them to storage',
     },
     [SampleOperation.UpdateStorageMetadata]: {
-        all: 'updating storage data',
+        all: 'updating their storage data',
         singular: 'updating its storage data',
         plural: 'updating their storage data',
     },
     [SampleOperation.RemoveFromStorage]: {
-        all: 'removing from storage',
+        all: 'removing them from storage',
         singular: 'removing it from storage',
         plural: 'removing them from storage',
     },
     [SampleOperation.AddToPicklist]: {
-        all: 'adding to a picklist',
+        all: 'adding them to a picklist',
         singular: 'adding it to a picklist',
         plural: 'adding them to a picklist',
-    },
-    [SampleOperation.RemoveFromPicklist]: {
-        all: 'removing from a picklist',
-        singular: 'removing it from a picklist',
-        plural: 'removing them from a picklist',
     },
     // [SampleOperation.Delete]: {
     //    Not needed because included from the server side response
@@ -120,7 +113,7 @@ export const operationRestrictionMessage = {
         plural: 'adding them to a job',
     },
     [SampleOperation.RemoveFromWorkflow]: {
-        all: 'removing from a job',
+        all: 'removing them from a job',
         singular: 'removing it from a job',
         plural: 'removing them from a job'
     },

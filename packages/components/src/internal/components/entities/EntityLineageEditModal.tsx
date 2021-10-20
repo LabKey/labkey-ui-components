@@ -51,14 +51,14 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const parentNounSingular = parentEntityDataTypes[0].nounSingular;
     const lcParentNounPlural = parentNounPlural.toLowerCase();
     const [selectedParents, setSelectedParents] = useState<List<EntityChoice>>(List<EntityChoice>());
-    const [confirmationData, setConfirmationData] = useState<OperationConfirmationData>(undefined);
+    const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
 
     useEffect(() => {
         if (!queryModel) return;
 
         (async () => {
             try {
-                const _confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditLineage, queryModel.id);
+                const confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditLineage, queryModel.id);
                 const sampleData = await api.samples.getSampleSelectionLineageData(
                     List.of(...queryModel.selections),
                     queryModel.queryName,
@@ -73,12 +73,12 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                     if (caseInsensitive(d, 'IsAliquot')['value']) {
                         aIds.push(id);
                     } else {
-                        if (_confirmationData.isIdAllowed(id)) {
+                        if (confirmationData.isIdAllowed(id)) {
                             allowedForUpdate[id] = d;
                         }
                     }
                 });
-                setConfirmationData(_confirmationData);
+                setStatusData(confirmationData);
                 setAliquotIds(aIds);
                 setAllowedForUpdate(allowedForUpdate);
             } catch (error) {
@@ -133,7 +133,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
         }
     }, [selectedParents, auditBehavior, childEntityDataType, queryModel, allowedForUpdate]);
 
-    if (!queryModel || !confirmationData) {
+    if (!queryModel || !statusData) {
         return null;
     }
 
@@ -149,14 +149,14 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
 
                 <Modal.Body>
                     <div>
-                        {(numAliquots === confirmationData.totalCount) && <>The {lcParentNounPlural} for aliquots cannot be changed.</>}
-                        {(numAliquots !== confirmationData.totalCount) && (
+                        {(numAliquots === statusData.totalCount) && <>The {lcParentNounPlural} for aliquots cannot be changed.</>}
+                        {(numAliquots > 0) && (
                             <>
                                 {Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections.
                                 Lineage for aliquots cannot be changed.
                             </>
                         )}
-                        <p>{getOperationNotPermittedMessage(SampleOperation.EditLineage, confirmationData, aliquotIds)}</p>
+                        <p>{getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData, aliquotIds)}</p>
                     </div>
                 </Modal.Body>
 
@@ -195,7 +195,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                                 "Manage" menu.
                             </p>
                         </div>
-                        {(numAliquots > 0 || confirmationData.notAllowed.length > 0) && !submitting && (
+                        {(numAliquots > 0 || statusData.notAllowed.length > 0) && !submitting && (
                             <Alert bsStyle="info" className="has-aliquots-alert">
                                 {' '}
                                 {numAliquots > 0 && (
@@ -204,7 +204,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                                         Lineage for aliquots cannot be changed.
                                     </>
                                 )}
-                                <p>{getOperationNotPermittedMessage(SampleOperation.EditLineage, confirmationData)}</p>
+                                <p>{getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}</p>
                             </Alert>
                         )}
                         <Alert bsStyle="danger">{errorMessage}</Alert>

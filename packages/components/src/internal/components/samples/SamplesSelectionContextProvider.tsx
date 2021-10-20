@@ -4,7 +4,7 @@
  */
 import React from 'react';
 
-import { LoadingSpinner, SampleOperation } from '../../..';
+import { caseInsensitive, getSampleOperationConfirmationData, LoadingSpinner, SampleOperation } from '../../..';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import {
@@ -34,6 +34,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             sampleItems: undefined,
             sampleLineageKeys: undefined,
             sampleLineage: undefined,
+            editStatusData: undefined,
             notEditableSamples: undefined,
             noLineageUpdateSamples: undefined,
             noStorageUpdateSamples: undefined,
@@ -45,7 +46,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
 
         componentDidMount() {
             this.loadSampleTypeDomain();
-            this.loadEditNotPermittedData();
+            this.loadEditConfirmationData();
             this.loadAliquotData();
             this.loadStorageData();
             this.loadLineageData();
@@ -53,7 +54,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
 
         componentDidUpdate(prevProps: Props): void {
             if (prevProps.selection !== this.props.selection) {
-                this.loadEditNotPermittedData();
+                this.loadEditConfirmationData();
                 this.loadAliquotData();
                 this.loadStorageData();
                 this.loadLineageData();
@@ -72,26 +73,27 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                 });
         }
 
-        loadEditNotPermittedData(): void {
+        loadEditConfirmationData(): void {
             const { selection, sampleSet } = this.props;
-            getNotPermittedSampleIds(selection, sampleSet, SampleOperation.EditMetadata)
-                .then(samples => {
-                    this._editNotPermittedIds = samples;
-                    this.setNotEditableIds();
+            getSampleOperationConfirmationData(SampleOperation.EditMetadata, undefined, selection.toArray())
+                .then(editConfirmationData => {
+                    this.setState({
+                        editStatusData: editConfirmationData
+                    }, () => this.setNotEditableIds())
                 })
                 .catch(error => {
-                    this._editNotPermittedIds = undefined;
                     this.setState({
                         selectionInfoError: error,
+                        editStatusData: undefined,
                     });
                 });
         }
 
         setNotEditableIds(): void {
-            if (this._editNotPermittedIds && this.state.aliquots) {
-                let idSet = new Set(this._editNotPermittedIds);
-                this.state.aliquots.forEach(id => idSet.add(id));
-
+            const { selection } = this.props;
+            if (this.state.editStatusData && this.state.aliquots) {
+                let idSet = new Set(this.state.aliquots);
+                this.state.editStatusData.notAllowed.forEach(data => idSet.add(caseInsensitive(data, "rowId")));
                 this.setState({
                     notEditableSamples: Array.from(idSet)
                 });

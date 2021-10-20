@@ -15,7 +15,7 @@
  */
 import React, { PureComponent } from 'react';
 
-import { App, ConfirmModal, SCHEMAS } from '../../..';
+import { Alert, App, capitalizeFirstChar, ConfirmModal, SCHEMAS } from '../../..';
 
 import { helpLinkNode } from '../../util/helpLinks';
 
@@ -43,6 +43,8 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
     getConfirmationProperties(): { message: any; title: string; canDelete: boolean } {
         const { confirmationData, entityDataType, verb } = this.props;
         const { deleteHelpLinkTopic, nounSingular, nounPlural, dependencyText } = entityDataType;
+        const capNounSingular = capitalizeFirstChar(nounSingular);
+        const capNounPlural = capitalizeFirstChar(nounPlural);
 
         if (!confirmationData) return undefined;
 
@@ -51,8 +53,8 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
 
         const numCanDelete = confirmationData.allowed.length;
         const numCannotDelete = confirmationData.notAllowed.length;
-        const canDeleteNoun = numCanDelete === 1 ? nounSingular : nounPlural;
-        const cannotDeleteNoun = numCannotDelete === 1 ? nounSingular : nounPlural;
+        const canDeleteNoun = numCanDelete === 1 ? capNounSingular : capNounPlural;
+        const cannotDeleteNoun = numCannotDelete === 1 ? capNounSingular : capNounPlural;
         const totalNum = numCanDelete + numCannotDelete;
         const totalNoun = totalNum === 1 ? nounSingular : nounPlural;
         let text;
@@ -91,8 +93,10 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
         }
         const message = (
             <span>
-                {text}
-                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(deleteHelpLinkTopic, 'more info')})</>}
+                <Alert bsStyle={"warning"}>
+                    {text}
+                    {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(deleteHelpLinkTopic, 'more info')})</>}
+                </Alert>
                 {numCanDelete > 0 && (
                     <p className="top-spacing">
                         <strong>Deletion cannot be undone.</strong> Do you want to proceed?
@@ -105,10 +109,10 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
             message,
             title:
                 numCanDelete > 0
-                    ? 'Permanently delete ' + numCanDelete + ' ' + canDeleteNoun + '?'
+                    ? 'Permanently Delete ' + numCanDelete + ' ' + canDeleteNoun + '?'
                     : totalNum === 1
-                    ? 'Cannot delete ' + nounSingular
-                    : 'No ' + nounPlural + ' can be deleted',
+                    ? 'Cannot Delete ' + capNounSingular
+                    : 'No ' + capNounPlural + ' Can Be Deleted',
             canDelete: numCanDelete > 0,
         };
     }

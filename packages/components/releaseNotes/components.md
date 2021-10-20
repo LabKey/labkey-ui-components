@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.##.#
 *Released*: ## November 2021
 * getUsersWithPermissions: support alternate container paths
-    * expose via UserSelectInput and useUsersWithPermissions
+  * expose via UserSelectInput and useUsersWithPermissions
+* Announcements: support supplying containerPath
 
 ### version 2.90.1
 *Released*: 1 November 2021

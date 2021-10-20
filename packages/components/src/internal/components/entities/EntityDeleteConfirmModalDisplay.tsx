@@ -54,7 +54,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
         const numCanDelete = confirmationData.allowed.length;
         const numCannotDelete = confirmationData.notAllowed.length;
         const canDeleteNoun = numCanDelete === 1 ? capNounSingular : capNounPlural;
-        const cannotDeleteNoun = numCannotDelete === 1 ? capNounSingular : capNounPlural;
+        const cannotDeleteNoun = numCannotDelete === 1 ? nounSingular : nounPlural;
         const totalNum = numCanDelete + numCannotDelete;
         const totalNoun = totalNum === 1 ? nounSingular : nounPlural;
         let text;
@@ -93,10 +93,8 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
         }
         const message = (
             <span>
-                <Alert bsStyle={"warning"}>
-                    {text}
-                    {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(deleteHelpLinkTopic, 'more info')})</>}
-                </Alert>
+                {text}
+                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(deleteHelpLinkTopic, 'more info')})</>}
                 {numCanDelete > 0 && (
                     <p className="top-spacing">
                         <strong>Deletion cannot be undone.</strong> Do you want to proceed?

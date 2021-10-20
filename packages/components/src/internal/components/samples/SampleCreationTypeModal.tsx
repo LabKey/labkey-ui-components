@@ -30,7 +30,7 @@ interface State extends Record<string, any> {
     numPerParent: number;
     creationType: SampleCreationType;
     submitting: boolean;
-    confirmationData: OperationConfirmationData;
+    statusData: OperationConfirmationData;
     errorMessage: string;
 }
 
@@ -50,7 +50,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
             creationType: props.options.find(option => option.selected)?.type || props.options[0].type,
             numPerParent: 1,
             submitting: false,
-            confirmationData: undefined,
+            statusData: undefined,
             errorMessage: undefined,
         };
         this._maxPerParent = MAX_EDITABLE_GRID_ROWS / props.parentCount;
@@ -71,7 +71,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
             const { rows, statusMessage, statusData } = filterSampleRowsForOperation(selectedItems, SampleOperation.EditLineage);
             if (this._mounted) {
                 this.setState({
-                    confirmationData: statusData,
+                    statusData: statusData,
                     error: false
                 });
             }
@@ -80,7 +80,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 const confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditLineage, selectionKey);
                 if (this._mounted) {
                     this.setState({
-                        confirmationData,
+                        statusData: confirmationData,
                         error: false
                     });
                 }
@@ -184,11 +184,11 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
 
     render(): React.ReactNode {
         const { show, parentCount } = this.props;
-        const { submitting, confirmationData } = this.state;
+        const { submitting, statusData } = this.state;
 
         const parentNoun = parentCount > 1 ? 'Parents' : 'Parent';
         const canSubmit = !submitting && this.isValidNumPerParent();
-        const title = 'Create Samples from Selected ' + parentNoun;
+        const title = (statusData?.noneAllowed ? 'Cannot ' : '') + 'Create Samples from Selected ' + parentNoun;
         return (
             <Modal show={show} onHide={this.onCancel}>
                 <Modal.Header closeButton>
@@ -196,13 +196,14 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 </Modal.Header>
 
                 <Modal.Body>
-                    {confirmationData?.anyNotAllowed &&
-                        <Alert bsStyle="info">
-                            {getOperationNotPermittedMessage(SampleOperation.EditLineage, confirmationData)}
-                        </Alert>
-                    }
-                    {confirmationData?.anyAllowed && (
+                    {statusData?.noneAllowed && getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
+                    {statusData?.anyAllowed && (
                         <>
+                            {statusData?.anyNotAllowed &&
+                                <Alert bsStyle="warning">
+                                    {getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
+                                </Alert>
+                            }
                             {this.renderOptions()}
                             {this.renderNumPerParent()}
                         </>
@@ -210,7 +211,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {confirmationData?.anyAllowed &&
+                    {statusData?.anyAllowed &&
                         <>
                             <Button bsStyle="default" className="pull-left" onClick={this.onCancel}>
                                 Cancel
@@ -220,7 +221,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                             </Button>
                         </>
                     }
-                    {confirmationData && !confirmationData.anyAllowed &&
+                    {statusData && !statusData.anyAllowed &&
                         <>
                             <Button bsStyle="default" onClick={this.onCancel} >
                                 Dismiss

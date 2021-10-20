@@ -347,6 +347,14 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             body = (
                 <>
                     <div className="row">
+                        <div className="col-md-12">
+                            <Alert bsStyle="info">
+                                Adding {Utils.pluralize(validCount, 'sample', 'samples')} to selected picklist.&nbsp;
+                                {getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData)}
+                            </Alert>
+                        </div>
+                    </div>
+                    <div className="row">
                         <div className="col-md-6">
                             <input
                                 autoFocus
@@ -418,7 +426,8 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 <Button bsClass="btn btn-default" onClick={closeModal}>
                     Dismiss
                 </Button>
-            )
+            );
+            body = getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData);
         }
         return (
             <Modal show bsSize="large" onHide={closeModal}>
@@ -428,16 +437,6 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
 
                 <Modal.Body>
                     <Alert bsStyle="danger">{picklistLoadError ?? error}</Alert>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <Alert bsStyle="info">
-                                {statusData?.anyAllowed && (
-                                    <p>Adding {Utils.pluralize(validCount, 'sample', 'samples')} to selected picklist.</p>
-                                )}
-                                <p>{getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData)}</p>
-                            </Alert>
-                        </div>
-                    </div>
                     {body}
                 </Modal.Body>
 

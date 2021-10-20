@@ -171,7 +171,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
 
             <Modal.Body>
                 <Alert>{picklistError}</Alert>
-                <Alert bsStyle={"info"}>{getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData)}</Alert>
+                <Alert bsStyle={"warning"}>{getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData)}</Alert>
                 <form>
                     <div className="form-group">
                         <label className="control-label">Name *</label>

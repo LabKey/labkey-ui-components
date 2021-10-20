@@ -1,11 +1,16 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
+import { Button } from 'react-bootstrap';
 
 import { waitForLifecycle } from '../../testHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { Alert } from '../base/Alert';
 import { LockIcon } from '../base/LockIcon';
+import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
+import { SelectInput } from '../forms/input/SelectInput';
+import { ConfirmModal } from '../base/ConfirmModal';
+
 import { SampleState } from './actions';
 
 import {
@@ -15,6 +20,7 @@ import {
     SampleStatusesListItem,
 } from './ManageSampleStatusesPanel';
 
+// these have to be below other imports or results in circular dependency errors in running tests
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getSamplesTestAPIWrapper } from './APIWrapper';
 
@@ -209,6 +215,99 @@ describe('SampleStatusesListItem', () => {
         const state = new SampleState({ label: 'Available', stateType: 'Available', inUse: true });
         const wrapper = mount(<SampleStatusesListItem {...DEFAULT_PROPS} state={state} />);
         validate(wrapper, false, true);
+        wrapper.unmount();
+    });
+});
+
+describe('SampleStatusDetail', () => {
+    const STATE = new SampleState({ label: 'Available', description: 'desc', stateType: 'Available', inUse: false });
+    const DEFAULT_PROPS = {
+        addNew: false,
+        state: STATE,
+        onActionComplete: jest.fn,
+    };
+
+    function validate(wrapper: ReactWrapper, hasState = true, showSelect = true, inputCount = 3): void {
+        expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(!hasState && showSelect ? 1 : 0);
+        expect(wrapper.find('form')).toHaveLength(hasState ? 1 : 0);
+        expect(wrapper.find(DomainFieldLabel)).toHaveLength(hasState ? 3 : 0);
+        expect(wrapper.find('input')).toHaveLength(hasState ? inputCount : 0);
+    }
+
+    test('show select message', async () => {
+        const wrapper = mount(<SampleStatusDetail {...DEFAULT_PROPS} state={undefined} />);
+        await waitForLifecycle(wrapper);
+        validate(wrapper, false);
+        wrapper.unmount();
+    });
+
+    test('do not show select message', async () => {
+        const wrapper = mount(<SampleStatusDetail {...DEFAULT_PROPS} state={null} />);
+        await waitForLifecycle(wrapper);
+        validate(wrapper, false, false);
+        wrapper.unmount();
+    });
+
+    test('input values from state', async () => {
+        const wrapper = mount(<SampleStatusDetail {...DEFAULT_PROPS} />);
+        await waitForLifecycle(wrapper);
+        validate(wrapper);
+        expect(wrapper.find('input[name="label"]').prop('value')).toBe(STATE.label);
+        expect(wrapper.find('input[name="label"]').prop('disabled')).toBe(false);
+        expect(wrapper.find('textarea').prop('value')).toBe(STATE.description);
+        expect(wrapper.find('textarea').prop('disabled')).toBe(false);
+        expect(wrapper.find(SelectInput).prop('value')).toBe(STATE.stateType);
+        expect(wrapper.find(SelectInput).prop('disabled')).toBe(false);
+        expect(wrapper.find(Button)).toHaveLength(2);
+        expect(wrapper.find(Button).first().prop('disabled')).toBe(false);
+        expect(wrapper.find(Button).last().prop('disabled')).toBe(true); // save initially disabled
+        wrapper.unmount();
+    });
+
+    test('in use disabled', async () => {
+        const inUseState = new SampleState({ label: 'Available', stateType: 'Available', inUse: true });
+        const wrapper = mount(<SampleStatusDetail {...DEFAULT_PROPS} state={inUseState} />);
+        await waitForLifecycle(wrapper);
+        validate(wrapper, true, true, 2);
+        expect(wrapper.find('input[name="label"]').prop('disabled')).toBe(false);
+        expect(wrapper.find('textarea').prop('disabled')).toBe(false);
+        expect(wrapper.find(SelectInput).prop('disabled')).toBe(true);
+        expect(wrapper.find(Button)).toHaveLength(2);
+        expect(wrapper.find(Button).first().prop('disabled')).toBe(true); // delete disabled
+        expect(wrapper.find(Button).last().prop('disabled')).toBe(true); // save initially disabled
+        wrapper.unmount();
+    });
+
+    test('save button disabled', async () => {
+        const wrapper = mount(<SampleStatusDetail {...DEFAULT_PROPS} />);
+        await waitForLifecycle(wrapper);
+        validate(wrapper);
+        expect(wrapper.find('.btn-success').prop('disabled')).toBe(true); // save initially disabled
+        wrapper
+            .find('input')
+            .first()
+            .simulate('change', { target: { name: 'label', value: 'new label' } });
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.btn-success').prop('disabled')).toBe(false);
+        wrapper.unmount();
+    });
+
+    test('add new', async () => {
+        const wrapper = mount(<SampleStatusDetail {...DEFAULT_PROPS} addNew />);
+        await waitForLifecycle(wrapper);
+        validate(wrapper);
+        expect(wrapper.find(Button)).toHaveLength(1); // no delete button for add new
+        wrapper.unmount();
+    });
+
+    test('show confirm delete', async () => {
+        const wrapper = mount(<SampleStatusDetail {...DEFAULT_PROPS} />);
+        await waitForLifecycle(wrapper);
+        validate(wrapper);
+        expect(wrapper.find(ConfirmModal)).toHaveLength(0);
+        wrapper.find(Button).first().simulate('click'); // click delete button
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find(ConfirmModal)).toHaveLength(1);
         wrapper.unmount();
     });
 });

@@ -114,7 +114,19 @@ export interface ThreadBlockProps extends ThreadEditorProps {
 }
 
 export const ThreadBlock: FC<ThreadBlockProps> = props => {
-    const { api, canReply, onCreate, onDelete, onToggleResponses, onUpdate, readOnly, showResponses, thread, user } = props;
+    const {
+        api,
+        canReply,
+        containerPath,
+        onCreate,
+        onDelete,
+        onToggleResponses,
+        onUpdate,
+        readOnly,
+        showResponses,
+        thread,
+        user,
+    } = props;
     const [ editing, setEditing ] = useState(false);
     const [ error, setError ] = useState<string>(undefined);
     const [ recentTimeout, setRecentTimeout ] = useState<number>(undefined);
@@ -130,7 +142,7 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
     const onDeleteThread = useCallback(async () => {
         let deleted = false;
         try {
-            deleted = await api.deleteThread(thread.rowId);
+            deleted = await api.deleteThread(thread.rowId, containerPath);
         } catch (err) {
             setError(resolveErrorMessage(err, 'thread', 'thread', 'delete'));
         }
@@ -138,7 +150,7 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
         if (deleted) {
             onDelete?.(thread);
         }
-    }, [api, onDelete, thread]);
+    }, [api, containerPath, onDelete, thread]);
 
     const onCancel = useCallback(() => {
         setEditing(false);

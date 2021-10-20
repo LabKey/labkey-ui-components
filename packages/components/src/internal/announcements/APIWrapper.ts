@@ -18,22 +18,22 @@ const createThreadForm = (thread: Partial<AnnouncementModel>, files: File[]) => 
 };
 
 export interface AnnouncementsAPIWrapper {
-    createThread: (thread: Partial<AnnouncementModel>, files: File[], reply?: boolean) => Promise<AnnouncementModel>;
-    deleteAttachment: (parent: string, name: string) => Promise<boolean>;
-    deleteThread: (threadRowId: number) => Promise<boolean>;
-    getDiscussions: (discussionSrcIdentifier: string) => Promise<AnnouncementModel[]>;
-    getThread: (threadRowId: number) => Promise<AnnouncementModel>;
-    renderContent: (content: string) => Promise<string>;
-    updateThread: (thread: Partial<AnnouncementModel>, files: File[]) => Promise<AnnouncementModel>;
+    createThread: (thread: Partial<AnnouncementModel>, files: File[], reply?: boolean, containerPath?: string) => Promise<AnnouncementModel>;
+    deleteAttachment: (parent: string, name: string, containerPath?: string) => Promise<boolean>;
+    deleteThread: (threadRowId: number, containerPath?: string) => Promise<boolean>;
+    getDiscussions: (discussionSrcIdentifier: string, containerPath?: string) => Promise<AnnouncementModel[]>;
+    getThread: (threadRowId: number, containerPath?: string) => Promise<AnnouncementModel>;
+    renderContent: (content: string, containerPath?: string) => Promise<string>;
+    updateThread: (thread: Partial<AnnouncementModel>, files: File[], containerPath?: string) => Promise<AnnouncementModel>;
 }
 
 export class ServerAnnouncementsAPIWrapper implements AnnouncementsAPIWrapper {
-    createThread = (thread: Partial<AnnouncementModel>, files, reply?: boolean): Promise<AnnouncementModel> => {
+    createThread = (thread: Partial<AnnouncementModel>, files, reply?: boolean, containerPath?: string): Promise<AnnouncementModel> => {
         const form = createThreadForm(thread, files);
         form.append('reply', (!!reply).toString());
         return new Promise((resolve, reject) => {
             return Ajax.request({
-                url: ActionURL.buildURL('announcements', 'createThread.api'),
+                url: ActionURL.buildURL('announcements', 'createThread.api', containerPath),
                 method: 'POST',
                 form,
                 success: Utils.getCallbackWrapper(({ data }) => { resolve(data); }),
@@ -41,10 +41,10 @@ export class ServerAnnouncementsAPIWrapper implements AnnouncementsAPIWrapper {
             });
         });
     };
-    deleteAttachment = (entityId: string, name: string): Promise<boolean> => {
+    deleteAttachment = (entityId: string, name: string, containerPath?: string): Promise<boolean> => {
         return new Promise((resolve, reject) => {
             return Ajax.request({
-                url: ActionURL.buildURL('announcements', 'deleteAttachment.api'),
+                url: ActionURL.buildURL('announcements', 'deleteAttachment.api', containerPath),
                 method: 'POST',
                 jsonData: { entityId, name },
                 success: Utils.getCallbackWrapper(({ success }) => resolve(success)),
@@ -52,10 +52,10 @@ export class ServerAnnouncementsAPIWrapper implements AnnouncementsAPIWrapper {
             });
         });
     };
-    deleteThread = (threadRowId: number): Promise<boolean> => {
+    deleteThread = (threadRowId: number, containerPath?: string): Promise<boolean> => {
         return new Promise((resolve, reject) => {
             return Ajax.request({
-                url: ActionURL.buildURL('announcements', 'deleteThread.api'),
+                url: ActionURL.buildURL('announcements', 'deleteThread.api', containerPath),
                 method: 'POST',
                 jsonData: { rowId: threadRowId },
                 success: Utils.getCallbackWrapper(({ success }) => resolve(success)),
@@ -63,10 +63,10 @@ export class ServerAnnouncementsAPIWrapper implements AnnouncementsAPIWrapper {
             });
         });
     };
-    getDiscussions = (discussionSrcIdentifier: string): Promise<AnnouncementModel[]> => {
+    getDiscussions = (discussionSrcIdentifier: string, containerPath?: string): Promise<AnnouncementModel[]> => {
         return new Promise((resolve, reject) => {
             return Ajax.request({
-                url: ActionURL.buildURL('announcements', 'getDiscussions.api'),
+                url: ActionURL.buildURL('announcements', 'getDiscussions.api', containerPath),
                 method: 'POST',
                 jsonData: { discussionSrcIdentifier },
                 success: Utils.getCallbackWrapper(({ data }) => { resolve(data); }),
@@ -74,10 +74,10 @@ export class ServerAnnouncementsAPIWrapper implements AnnouncementsAPIWrapper {
             });
         });
     };
-    getThread = (threadRowId: number): Promise<AnnouncementModel> => {
+    getThread = (threadRowId: number, containerPath?: string): Promise<AnnouncementModel> => {
         return new Promise((resolve, reject) => {
             return Ajax.request({
-                url: ActionURL.buildURL('announcements', 'getThread.api'),
+                url: ActionURL.buildURL('announcements', 'getThread.api', containerPath),
                 method: 'POST',
                 jsonData: { rowId: threadRowId },
                 success: Utils.getCallbackWrapper(({ data }) => { resolve(data); }),
@@ -85,10 +85,10 @@ export class ServerAnnouncementsAPIWrapper implements AnnouncementsAPIWrapper {
             });
         });
     };
-    renderContent = (content: string): Promise<string> => {
+    renderContent = (content: string, containerPath?: string): Promise<string> => {
         return new Promise((resolve, reject) => {
             return Ajax.request({
-                url: ActionURL.buildURL('core', 'transformWiki.api'),
+                url: ActionURL.buildURL('core', 'transformWiki.api', containerPath),
                 method: 'POST',
                 jsonData: { body: content, fromFormat: 'MARKDOWN', toFormat: 'HTML' },
                 success: Utils.getCallbackWrapper(({ body }) => { resolve(body); }),
@@ -96,11 +96,11 @@ export class ServerAnnouncementsAPIWrapper implements AnnouncementsAPIWrapper {
             });
         });
     };
-    updateThread = (thread: Partial<AnnouncementModel>, files: File[]): Promise<AnnouncementModel> => {
+    updateThread = (thread: Partial<AnnouncementModel>, files: File[], containerPath?: string): Promise<AnnouncementModel> => {
         const form = createThreadForm(thread, files);
         return new Promise((resolve, reject) => {
             return Ajax.request({
-                url: ActionURL.buildURL('announcements', 'updateThread.api'),
+                url: ActionURL.buildURL('announcements', 'updateThread.api', containerPath),
                 method: 'POST',
                 form,
                 success: Utils.getCallbackWrapper(({ data }) => { resolve(data); }),

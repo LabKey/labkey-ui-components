@@ -18,12 +18,13 @@ import { mount } from 'enzyme';
 
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { SampleTypeDataType } from './constants';
+import { OperationConfirmationData } from './models';
 
 describe('<EntityDeleteConfirmModal/>', () => {
     test('Can delete 1', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={{
+                confirmationData={new OperationConfirmationData({
                     allowed: [
                         {
                             Name: 'D-2.3.1',
@@ -31,14 +32,14 @@ describe('<EntityDeleteConfirmModal/>', () => {
                         },
                     ],
                     notAllowed: [],
-                }}
+                })}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
             />
         );
         const wrapper = mount(component);
-        expect(wrapper.find('.modal-title').text()).toBe('Permanently delete 1 sample?');
+        expect(wrapper.find('.modal-title').text()).toBe('Permanently Delete 1 Sample?');
         expect(
             wrapper.find('.modal-body').text().indexOf('The selected sample will be permanently deleted.')
         ).toBeGreaterThan(-1);
@@ -47,7 +48,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
     test('Can delete all', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={{
+                confirmationData={new OperationConfirmationData({
                     allowed: [
                         {
                             Name: 'D-2.3.1',
@@ -63,14 +64,14 @@ describe('<EntityDeleteConfirmModal/>', () => {
                         },
                     ],
                     notAllowed: [],
-                }}
+                })}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
             />
         );
         const wrapper = mount(component);
-        expect(wrapper.find('.modal-title').text()).toBe('Permanently delete 3 samples?');
+        expect(wrapper.find('.modal-title').text()).toBe('Permanently Delete 3 Samples?');
         expect(
             wrapper.find('.modal-body').text().indexOf('All 3 samples will be permanently deleted.')
         ).toBeGreaterThan(-1);
@@ -79,7 +80,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
     test('Can delete some', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={{
+                confirmationData={new OperationConfirmationData({
                     allowed: [
                         {
                             Name: 'D-2.3.1',
@@ -96,7 +97,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
                             RowId: 5,
                         },
                     ],
-                }}
+                })}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
@@ -104,7 +105,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
         );
         const wrapper = mount(component);
 
-        expect(wrapper.find('.modal-title').text()).toBe('Permanently delete 2 samples?');
+        expect(wrapper.find('.modal-title').text()).toBe('Permanently Delete 2 Samples?');
         expect(
             wrapper.find('.modal-body').text().indexOf('selected 3 samples but only 2 can be deleted.')
         ).toBeGreaterThan(-1);
@@ -114,7 +115,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
     test('Cannot delete any', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={{
+                confirmationData={new OperationConfirmationData({
                     allowed: [],
                     notAllowed: [
                         {
@@ -130,14 +131,14 @@ describe('<EntityDeleteConfirmModal/>', () => {
                             RowId: 5,
                         },
                     ],
-                }}
+                })}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
             />
         );
         const wrapper = mount(component);
-        expect(wrapper.find('.modal-title').text()).toBe('No samples can be deleted');
+        expect(wrapper.find('.modal-title').text()).toBe('No Samples Can Be Deleted');
         expect(
             wrapper.find('.modal-body').text().indexOf("None of the 3 samples you've selected can be deleted")
         ).toBeGreaterThan(-1);
@@ -146,7 +147,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
     test('Cannot delete two', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={{
+                confirmationData={new OperationConfirmationData({
                     allowed: [],
                     notAllowed: [
                         {
@@ -158,14 +159,14 @@ describe('<EntityDeleteConfirmModal/>', () => {
                             RowId: 44,
                         },
                     ],
-                }}
+                })}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
             />
         );
         const wrapper = mount(component);
-        expect(wrapper.find('.modal-title').text()).toBe('No samples can be deleted');
+        expect(wrapper.find('.modal-title').text()).toBe('No Samples Can Be Deleted');
         expect(
             wrapper.find('.modal-body').text().indexOf("Neither of the 2 samples you've selected can be deleted")
         ).toBeGreaterThan(-1);
@@ -174,7 +175,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
     test('Cannot delete one', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={{
+                confirmationData={new OperationConfirmationData({
                     allowed: [],
                     notAllowed: [
                         {
@@ -182,14 +183,14 @@ describe('<EntityDeleteConfirmModal/>', () => {
                             RowId: 351,
                         },
                     ],
-                }}
+                })}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
             />
         );
         const wrapper = mount(component);
-        expect(wrapper.find('.modal-title').text()).toBe('Cannot delete sample');
+        expect(wrapper.find('.modal-title').text()).toBe('Cannot Delete Sample');
         expect(
             wrapper.find('.modal-body').text().indexOf("The sample you've selected cannot be deleted")
         ).toBeGreaterThan(-1);
@@ -200,7 +201,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
         const onCancelFn = jest.fn();
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={{
+                confirmationData={new OperationConfirmationData({
                     allowed: [
                         {
                             Name: 'D-4',
@@ -221,7 +222,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
                             RowId: 5,
                         },
                     ],
-                }}
+                })}
                 onCancel={onCancelFn}
                 onConfirm={onConfirmFn}
                 entityDataType={SampleTypeDataType}

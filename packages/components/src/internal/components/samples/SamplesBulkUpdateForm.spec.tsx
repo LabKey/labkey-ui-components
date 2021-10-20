@@ -3,8 +3,15 @@ import { mount } from 'enzyme';
 
 import { fromJS } from 'immutable';
 
-import { QueryColumn, QueryInfo, SchemaQuery, BulkUpdateForm, makeTestQueryModel } from '../../..';
+import {
+    QueryColumn,
+    QueryInfo,
+    SchemaQuery,
+    BulkUpdateForm,
+    makeTestQueryModel,
+} from '../../..';
 
+import { OperationConfirmationData } from '../entities/models';
 import { SamplesBulkUpdateFormBase } from './SamplesBulkUpdateForm';
 import { getSamplesTestAPIWrapper } from './APIWrapper';
 
@@ -60,6 +67,10 @@ describe('SamplesBulkUpdateForm', () => {
         sampleSet: 'sampleType1',
         aliquots: [],
         noStorageSamples: [],
+        notEditableSamples: [],
+        noLineageUpdateSamples: [],
+        noStorageUpdateSamples: [],
+        editStatusData: new OperationConfirmationData({}),
         selectionInfoError: undefined,
         sampleItems: {},
         sampleLineageKeys: undefined,

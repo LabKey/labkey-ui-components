@@ -241,7 +241,8 @@ interface SampleStatusesListItemProps {
     state: SampleState;
 }
 
-const SampleStatusesListItem: FC<SampleStatusesListItemProps> = memo(props => {
+// exported for jest testing
+export const SampleStatusesListItem: FC<SampleStatusesListItemProps> = memo(props => {
     const { state, index, active, onSelect } = props;
     const onClick = useCallback(() => {
         onSelect(index);

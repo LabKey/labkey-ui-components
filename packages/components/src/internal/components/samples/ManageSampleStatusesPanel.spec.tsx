@@ -7,20 +7,25 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { Alert } from '../base/Alert';
 import { SampleState } from './actions';
 
-import { ManageSampleStatusesPanel, SampleStatusDetail, SampleStatusesList } from './ManageSampleStatusesPanel';
+import {
+    ManageSampleStatusesPanel,
+    SampleStatusDetail,
+    SampleStatusesList,
+    SampleStatusesListItem,
+} from './ManageSampleStatusesPanel';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getSamplesTestAPIWrapper } from './APIWrapper';
 
-const DEFAULT_PROPS = {
-    api: getTestAPIWrapper(jest.fn, {
-        samples: getSamplesTestAPIWrapper(jest.fn, {
-            getSampleStatuses: () => Promise.resolve([new SampleState()]),
-        }),
-    }),
-};
-
 describe('ManageSampleStatusesPanel', () => {
+    const DEFAULT_PROPS = {
+        api: getTestAPIWrapper(jest.fn, {
+            samples: getSamplesTestAPIWrapper(jest.fn, {
+                getSampleStatuses: () => Promise.resolve([new SampleState()]),
+            }),
+        }),
+    };
+
     function validate(wrapper: ReactWrapper, hasError = false, hasTitleCls = false): void {
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         expect(wrapper.find(Alert)).toHaveLength(hasError ? 1 : 0);
@@ -123,6 +128,44 @@ describe('ManageSampleStatusesPanel', () => {
         const wrapper = mount(<ManageSampleStatusesPanel {...DEFAULT_PROPS} titleCls="test-cls" />);
         await waitForLifecycle(wrapper);
         validate(wrapper, false, true);
+        wrapper.unmount();
+    });
+});
+
+describe('SampleStatusesList', () => {
+    const DEFAULT_PROPS = {
+        states: [],
+        selected: undefined,
+        onSelect: jest.fn,
+    };
+
+    function validate(wrapper: ReactWrapper, count = 0): void {
+        expect(wrapper.find('.choices-list__empty-message')).toHaveLength(count === 0 ? 1 : 0);
+        expect(wrapper.find('.list-group')).toHaveLength(1);
+        expect(wrapper.find(SampleStatusesListItem)).toHaveLength(count);
+    }
+
+    test('no states', () => {
+        const wrapper = mount(<SampleStatusesList {...DEFAULT_PROPS} />);
+        validate(wrapper);
+        wrapper.unmount();
+    });
+
+    test('with states, no selection', () => {
+        const states = [new SampleState(), new SampleState()];
+        const wrapper = mount(<SampleStatusesList {...DEFAULT_PROPS} states={states} />);
+        validate(wrapper, states.length);
+        expect(wrapper.find(SampleStatusesListItem).first().prop('active')).toBe(false);
+        expect(wrapper.find(SampleStatusesListItem).last().prop('active')).toBe(false);
+        wrapper.unmount();
+    });
+
+    test('with states, with selection', () => {
+        const states = [new SampleState(), new SampleState()];
+        const wrapper = mount(<SampleStatusesList {...DEFAULT_PROPS} states={states} selected={1} />);
+        validate(wrapper, states.length);
+        expect(wrapper.find(SampleStatusesListItem).first().prop('active')).toBe(false);
+        expect(wrapper.find(SampleStatusesListItem).last().prop('active')).toBe(true);
         wrapper.unmount();
     });
 });

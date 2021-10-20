@@ -32,7 +32,8 @@ interface SampleStatusDetailProps {
     state: SampleState;
 }
 
-const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
+// exported for jest testing
+export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     const { state, addNew, onActionComplete } = props;
     const [typeOptions, setTypeOptions] = useState<Array<Record<string, any>>>();
     const [updatedState, setUpdatedState] = useState<SampleState>();
@@ -269,7 +270,8 @@ interface SampleStatusesListProps {
     states: SampleState[];
 }
 
-const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
+// exported for jest testing
+export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
     const { states, onSelect, selected } = props;
 
     return (

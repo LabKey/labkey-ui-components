@@ -183,8 +183,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
             loader: new EditableGridLoaderFromSelection(
                 editableGridUpdateData,
                 editableGridDataForSelection,
-                editableGridDataIdsForSelection ?? List(Array.from(displayQueryModel.selections)),
-                notEditableSamples
+                editableGridDataIdsForSelection ?? List(Array.from(displayQueryModel.selections))
             ),
             requiredColumns: this.getSamplesGridRequiredColumns(),
             omittedColumns: samplesGridOmittedColumns ? samplesGridOmittedColumns : List<string>(),
@@ -325,12 +324,6 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
             }
         });
 
-        // remove all rows for samples that are not editable.
-        sampleRows = sampleRows.filter(sampleRow => {
-            const rowId = caseInsensitive(sampleRow, 'RowId');
-            return notEditableSamples.indexOf(rowId) < 0;
-        })
-
         // combine sampleRows and lineageRows so that only one update command is used, i.e. so that we only get
         // one audit entry for the update of a given sample
         if (lineageRows.length > 0) {
@@ -379,10 +372,10 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
 
         const sampleIds = new Set();
         sampleRows.forEach(row => {
-            sampleIds.add(row['RowId']);
+            sampleIds.add(caseInsensitive(row, 'RowId'));
         });
         storageRows.forEach(row => {
-            const sampleId = row['RowId'];
+            const sampleId = caseInsensitive(row, 'RowId');
             if (noStorageUpdateSamples.indexOf(sampleId) === -1) sampleIds.add(sampleId);
         });
         const totalSamplesToUpdate = sampleIds.size;
@@ -534,14 +527,14 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getReadOnlyRows = (tabInd: number): List<string> => {
-        const { notEditableSamples, noStorageUpdateSamples, noLineageUpdateSamples } = this.props;
+        const { aliquots,  noStorageSamples } = this.props;
 
         if (tabInd === GridTab.Storage) {
-            return List<string>(noStorageUpdateSamples);
+            return List<string>(noStorageSamples);
         } else if (tabInd === GridTab.Lineage) {
-            return List<string>(noLineageUpdateSamples);
+            return List<string>(aliquots);
         } else {
-            return List<string>(notEditableSamples);
+            return undefined;
         }
     };
 
@@ -608,14 +601,14 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                             onRemove={this.removeParentType}
                         />
                     </div>
-                    <div className="sample-status-warning">Aliquots and samples with a status that prevents updating of lineage are not editable here.</div>
+                    <div className="sample-status-warning">Lineage for aliquots cannot be changed.</div>
                     <hr />
                 </>
             );
         } else if (tabInd === GridTab.Storage) {
-            return <div className="top-spacing sample-status-warning">Samples that are not currently in storage or have a status that prevents updating of storage data are not editable here.</div>
+            return <div className="top-spacing sample-status-warning">Samples that are not currently in storage are not editable here.</div>
         } else {
-            return <div className="top-spacing sample-status-warning">Samples that have a status that prevents updating of data are not editable here.</div>
+            return <div className="top-spacing sample-status-warning">Aliquot data inherited from the original sample cannot be updated here.</div>
         }
     };
 

@@ -47,4 +47,18 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         queryName: 'SampleSetCounts',
         schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
     },
+    SampleStatuses: {
+        charts: [
+            CHART_SELECTORS.All,
+        ],
+        colorPath: ['Color', 'value'],
+        createText: 'Create Samples',
+        createURL: () => App.NEW_SAMPLES_HREF,
+        // getAppURL: row => AppURL.create(SAMPLES_KEY),
+        itemCountSQ: SCHEMAS.CORE_TABLES.DATA_STATES,
+        key: SAMPLES_KEY,
+        label: 'Sample Count by Status',
+        queryName: 'SampleStatusCounts',
+        schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+    },
 };

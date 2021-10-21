@@ -398,7 +398,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
     handleRunChange = (fieldValues: any, isChanged?: boolean): void => {
         const values = { ...this.state.model.runProperties.toObject(), ...fieldValues };
-        let { comment, runName } = this.state.model;
+        let { comment, runName, workflowTask } = this.state.model;
 
         const cleanedValues = Object.keys(values).reduce((result, key) => {
             const value = values[key];
@@ -406,6 +406,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 runName = value;
             } else if (key === 'comment') {
                 comment = value;
+            } else if (key === 'workflowtask') {
+                workflowTask = value;
             } else if (value !== undefined) {
                 result[key] = value;
             }
@@ -421,6 +423,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 model: state.model.merge({
                     runName,
                     comment,
+                    workflowTask,
                 }) as AssayWizardModel,
             }));
         });

@@ -140,6 +140,10 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const numAllowed = allowedForUpdate ? Object.keys(allowedForUpdate).length : undefined;
     const numAliquots = aliquotIds?.length || 0;
 
+    const aliquotsMsg = (numAliquots > 0 && numAliquots < statusData.totalCount) ? (
+        `${Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections.  Lineage for aliquots cannot be changed. `
+    ) : undefined;
+
     if (numAllowed === 0) {
         return (
             <Modal show onHide={onCancel}>
@@ -150,13 +154,8 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 <Modal.Body>
                     <div>
                         {(numAliquots === statusData.totalCount) && <>The {lcParentNounPlural} for aliquots cannot be changed.</>}
-                        {(numAliquots > 0) && (
-                            <>
-                                {Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections.
-                                Lineage for aliquots cannot be changed.
-                            </>
-                        )}
-                        <p>{getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData, aliquotIds)}</p>
+                        {aliquotsMsg}
+                        {getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
                     </div>
                 </Modal.Body>
 
@@ -196,15 +195,9 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                             </p>
                         </div>
                         {(numAliquots > 0 || statusData.notAllowed.length > 0) && !submitting && (
-                            <Alert bsStyle="info" className="has-aliquots-alert">
-                                {' '}
-                                {numAliquots > 0 && (
-                                    <>
-                                        {Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections.
-                                        Lineage for aliquots cannot be changed.
-                                    </>
-                                )}
-                                <p>{getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}</p>
+                            <Alert bsStyle="warning" className="has-aliquots-alert">
+                                {aliquotsMsg}
+                                {getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
                             </Alert>
                         )}
                         <Alert bsStyle="danger">{errorMessage}</Alert>

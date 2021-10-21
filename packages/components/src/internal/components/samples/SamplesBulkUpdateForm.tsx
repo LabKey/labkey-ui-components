@@ -46,13 +46,13 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo( (props) => {
     if (aliquots && aliquots.length > 0) {
         if (aliquots.length < gridSelectionSize) {
             aliquotsMsg = (
-                <p>
+                <>
                     {aliquots.length} aliquot{aliquots.length > 1 ? 's were' : ' was'} among the selections. Aliquot
-                    data is inherited from the original sample and cannot be updated here.
-                </p>
+                    data is inherited from the original sample and cannot be updated here.{' '}
+                </>
             );
         } else {
-            aliquotsMsg =  <p>Aliquot data inherited from the original sample cannot be updated here.</p>
+            aliquotsMsg =  <>Aliquot data inherited from the original sample cannot be updated here.</>
         }
     }
 
@@ -64,7 +64,7 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo( (props) => {
     alerts.push(
         <Alert bsStyle="warning">
             {aliquotsMsg}
-            <p>{getOperationNotPermittedMessage(SampleOperation.EditMetadata, editStatusData, aliquots)}</p>
+            {getOperationNotPermittedMessage(SampleOperation.EditMetadata, editStatusData, aliquots)}
         </Alert>
     );
     return <>{alerts}</>;

@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Updates for restricting operations for selections of samples based on status
   * `getMaterialDeleteConfirmationData.api` renamed to `getMaterialOperationConfirmationData.api` and return structure generalized
   * Update `SamplesBulkUpdateForm` to provide alert when samples don't allow data updates.
+  * Update `AssayImportPanels` with alert about selected samples not allowing additional assay data to be associated with them
+  * Update `EditableGridLoaderFromSelection` to accept a set of ids that are not to be updated when loading data from the bulk edit form.
+  * Update various action modals with status alerts and to show only text and a dismiss button when nothing can be done from the selected samples
+  * Fix bug in `SampleStatusTag` for icon-only display of Available statuses.
+  * Add info headers in `SamplesEditableGrid` indicating why rows are not editable.
 
 ### version 2.85.0
 *Released*: 18 October 2021

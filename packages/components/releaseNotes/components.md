@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### TBD
+*Released*: TBD
+* Auto-close confirm modal in case of error saving for 'ID/Name Settings' panel
+
 ### version 2.85.0
 *Released*: 18 October 2021
 * Add settings panel 'ID/Name Settings' for use in LKB and LKSM

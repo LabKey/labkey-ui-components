@@ -104,10 +104,10 @@ export const NameIdSettingsForm: FC<Props> = props => {
 
         try {
             await saveNameExpressionOptions('prefix', prefix);
-            setState({ savingPrefix: false, confirmModalOpen: false });
         } catch (err) {
             displayError(err);
         }
+        setState({ savingPrefix: false, confirmModalOpen: false });
     }, [prefix, saveNameExpressionOptions]);
 
     const prefixOnChange = useCallback((evt: any) => {

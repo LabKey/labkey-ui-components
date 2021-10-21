@@ -8,8 +8,8 @@ import {
     getSampleSelectionLineageData,
     getSampleStatuses,
     SampleAssayResultViewConfig,
-    SampleState,
 } from './actions';
+import { SampleState } from './models';
 
 export interface SamplesAPIWrapper {
     getSampleAliquotRows: (sampleId: number | string) => Promise<Record<string, any>[]>;

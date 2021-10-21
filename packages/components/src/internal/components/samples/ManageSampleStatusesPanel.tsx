@@ -17,7 +17,7 @@ import { selectRows, updateRows, insertRows, deleteRows } from '../../query/api'
 import { caseInsensitive } from '../../util/utils';
 import { SCHEMAS } from '../../schemas';
 import { resolveErrorMessage } from '../../util/messaging';
-import { SampleState } from './actions';
+import { SampleState } from './models';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
@@ -62,6 +62,12 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
             });
     }, []);
 
+    const resetState = useCallback(() => {
+        setSaving(false);
+        setShowDeleteConfirm(false);
+        setError(undefined);
+    }, []);
+
     useEffect(() => {
         if (addNew) {
             setUpdatedState(new SampleState({ stateType: typeOptions?.[0]?.value }));
@@ -69,10 +75,8 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
             setUpdatedState(state);
         }
         setDirty(addNew);
-        setSaving(false);
-        setShowDeleteConfirm(false);
-        setError(undefined);
-    }, [state, addNew, typeOptions]);
+        resetState();
+    }, [state, addNew, typeOptions, resetState]);
 
     const onFormChange = useCallback(
         (evt): void => {
@@ -90,6 +94,10 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
         },
         [updatedState]
     );
+
+    const onCancel = useCallback(() => {
+        onActionComplete(undefined, true);
+    }, [onActionComplete]);
 
     const onSave = useCallback(() => {
         setError(undefined);
@@ -207,6 +215,11 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                                 <span>&nbsp;Delete</span>
                             </Button>
                         )}
+                        {addNew && (
+                            <Button bsStyle="default" disabled={saving} onClick={onCancel}>
+                                Cancel
+                            </Button>
+                        )}
                         <Button bsStyle="success" className="pull-right" disabled={!dirty || saving} onClick={onSave}>
                             {saving ? 'Saving...' : 'Save'}
                         </Button>
@@ -219,7 +232,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     confirmButtonText="Yes, Delete"
                     onCancel={onToggleDeleteConfirm}
                     onConfirm={onDeleteConfirm}
-                    title="Permanently delete status?"
+                    title="Permanently Delete Status?"
                 >
                     <span>
                         The <b>{updatedState.label}</b> status will be permanently deleted.

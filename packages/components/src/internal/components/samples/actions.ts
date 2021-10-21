@@ -15,7 +15,6 @@
  */
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
-import { Draft, immerable, produce } from 'immer';
 
 import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
@@ -52,8 +51,9 @@ import { getInitialParentChoices } from '../entities/utils';
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
 import { isSampleStatusEnabled } from '../../app/utils';
+import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
-import { GroupedSampleFields, SampleAliquotsStats } from './models';
+import { GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
 import { IS_ALIQUOT_FIELD } from './constants';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
@@ -745,7 +745,7 @@ export type SampleAssayResultViewConfig = {
 export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultViewConfig[]> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('sampleManager', 'getSampleAssayResultsViewConfigs.api'),
+            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleAssayResultsViewConfigs.api'),
             method: 'GET',
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.configs ?? []);
@@ -758,38 +758,10 @@ export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultView
     });
 }
 
-export class SampleState {
-    [immerable] = true;
-
-    readonly rowId: number;
-    readonly label: string;
-    readonly description: string;
-    readonly stateType: string;
-    readonly publicData: boolean;
-    readonly inUse: boolean;
-
-    constructor(values?: Partial<SampleState>) {
-        Object.assign(this, values);
-        if (this.publicData === undefined) {
-            Object.assign(this, { publicData: false });
-        }
-    }
-
-    set(name: string, value: any): SampleState {
-        return this.mutate({ [name]: value });
-    }
-
-    mutate(props: Partial<SampleState>): SampleState {
-        return produce(this, (draft: Draft<SampleState>) => {
-            Object.assign(draft, props);
-        });
-    }
-}
-
 export function getSampleStatuses(): Promise<SampleState[]> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('sampleManager', 'getSampleStatuses.api'),
+            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleStatuses.api'),
             method: 'GET',
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.statuses?.map(state => new SampleState(state)) ?? []);

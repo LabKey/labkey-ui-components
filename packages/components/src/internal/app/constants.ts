@@ -87,7 +87,7 @@ export const BIOLOGICS_APP_PROPERTIES : AppProperties = {
     logoBadgeImageUrl: imageURL('biologics/images', 'lk-bio-logo-badge.svg'),
     controllerName: BIOLOGICS_CONTROLLER_NAME,
     moduleName: 'biologics',
-}
+};
 
 export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
     productId: SAMPLE_MANAGER_PRODUCT_ID,
@@ -96,7 +96,7 @@ export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
     logoBadgeImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-Badge-WHITE.svg'),
     controllerName: SAMPLE_MANAGER_CONTROLLER_NAME,
     moduleName: 'sampleManagement',
-}
+};
 
 export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {
     productId: FREEZER_MANAGER_PRODUCT_ID,
@@ -104,5 +104,5 @@ export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {
     logoWithTextImageUrl: imageURL('_images', 'LK-noTAG-overcast.svg'),
     logoBadgeImageUrl: imageURL('_images', 'mobile-logo-overcast.svg'),
     controllerName: FREEZER_MANAGER_CONTROLLER_NAME,
-    moduleName: 'inventory'
-}
+    moduleName: 'inventory',
+};

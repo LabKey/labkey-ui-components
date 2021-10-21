@@ -19,7 +19,8 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 import { getEditorModel } from '../../global';
 import { gridShowError } from '../../actions';
 import {
-    capitalizeFirstChar, caseInsensitive,
+    capitalizeFirstChar,
+    caseInsensitive,
     generateId,
     insertRows,
     InsertRowsResponse,

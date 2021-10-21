@@ -143,7 +143,7 @@ export class AssayProtocolModel extends Record({
         // only need to serialize the id and not the autoCopyTargetContainer object
         delete json.autoCopyTargetContainer;
         delete json.exception;
-        
+
         json.status = Status[json.status];
 
         return json;

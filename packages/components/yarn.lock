@@ -738,10 +738,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.6.7":
-  version "1.6.7"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.6.7.tgz#20bff29d8be22838bc224d636543dd09ace9afd2"
-  integrity sha1-IL/ynYviKDi8Ik1jZUPdCazpr9I=
+"@labkey/api@1.6.8-fb-lp-assay-task-client.1":
+  version "1.6.8-fb-lp-assay-task-client.1"
+  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.6.8-fb-lp-assay-task-client.1.tgz#2dd549bb487c843f741c10c1757b103b37648e9b"
+  integrity sha1-LdVJu0h8hD90HBDBdXsQOzdkjps=
 
 "@labkey/eslint-config-base@0.0.11-fb-discussions.2":
   version "0.0.11-fb-discussions.2"

@@ -11,8 +11,7 @@ import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 import { SelectInput } from '../forms/input/SelectInput';
 import { ConfirmModal } from '../base/ConfirmModal';
 
-import { SampleState } from './actions';
-
+import { SampleState } from './models';
 import {
     ManageSampleStatusesPanel,
     SampleStatusDetail,
@@ -259,7 +258,9 @@ describe('SampleStatusDetail', () => {
         expect(wrapper.find(SelectInput).prop('value')).toBe(STATE.stateType);
         expect(wrapper.find(SelectInput).prop('disabled')).toBe(false);
         expect(wrapper.find(Button)).toHaveLength(2);
+        expect(wrapper.find(Button).first().text()).toContain('Delete');
         expect(wrapper.find(Button).first().prop('disabled')).toBe(false);
+        expect(wrapper.find(Button).last().text()).toBe('Save');
         expect(wrapper.find(Button).last().prop('disabled')).toBe(true); // save initially disabled
         wrapper.unmount();
     });
@@ -273,7 +274,9 @@ describe('SampleStatusDetail', () => {
         expect(wrapper.find('textarea').prop('disabled')).toBe(false);
         expect(wrapper.find(SelectInput).prop('disabled')).toBe(true);
         expect(wrapper.find(Button)).toHaveLength(2);
+        expect(wrapper.find(Button).first().text()).toContain('Delete');
         expect(wrapper.find(Button).first().prop('disabled')).toBe(true); // delete disabled
+        expect(wrapper.find(Button).last().text()).toBe('Save');
         expect(wrapper.find(Button).last().prop('disabled')).toBe(true); // save initially disabled
         wrapper.unmount();
     });
@@ -296,7 +299,9 @@ describe('SampleStatusDetail', () => {
         const wrapper = mount(<SampleStatusDetail {...DEFAULT_PROPS} addNew />);
         await waitForLifecycle(wrapper);
         validate(wrapper);
-        expect(wrapper.find(Button)).toHaveLength(1); // no delete button for add new
+        expect(wrapper.find(Button)).toHaveLength(2);
+        expect(wrapper.find(Button).first().text()).toBe('Cancel');
+        expect(wrapper.find(Button).first().prop('disabled')).toBe(false);
         wrapper.unmount();
     });
 

@@ -40,7 +40,7 @@ export const StatusGrid: FC<OwnProps> = memo(props => {
             ? [Filter.create('Type', assayTypes, Filter.Types.IN)]
             : excludedAssayProviders
             ? [Filter.create('Type', excludedAssayProviders, Filter.Types.NOT_IN)]
-            : undefined;
+            : [];
 
         const activeBaseFilter = allBaseFilter.concat([Filter.create('Status', 'Active')]);
 

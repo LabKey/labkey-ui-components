@@ -171,7 +171,6 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
             editableGridDataForSelection,
             editableGridDataIdsForSelection,
             samplesGridOmittedColumns,
-            notEditableSamples,
         } = this.props;
 
         const { displayQueryModel } = this.props;
@@ -305,7 +304,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     updateAllTabRows = (updateDataRows: any[]): Promise<any> => {
-        const { notEditableSamples, noLineageUpdateSamples, noStorageUpdateSamples, invalidateSampleQueries, aliquots } = this.props;
+        const { noStorageSamples, invalidateSampleQueries, aliquots } = this.props;
         let sampleSchemaQuery: SchemaQuery = null,
             sampleRows: any[] = [],
             storageRows: any[] = [],
@@ -333,17 +332,14 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
             }, {});
             lineageRows.forEach(lineageRow => {
                 const rowId = caseInsensitive(lineageRow, 'RowId');
-                // skip updates that aren't allowed.
-                if (noLineageUpdateSamples.indexOf(rowId) < 0) {
-                    if (sampleRowIdIndexMap[rowId] !== undefined) {
-                        // merge in sample metadata row data with lineage row data for the same RowId
-                        sampleRows[sampleRowIdIndexMap[rowId]] = {
-                            ...sampleRows[sampleRowIdIndexMap[rowId]],
-                            ...lineageRow,
-                        };
-                    } else {
-                        sampleRows.push(lineageRow);
-                    }
+                if (sampleRowIdIndexMap[rowId] !== undefined) {
+                    // merge in sample metadata row data with lineage row data for the same RowId
+                    sampleRows[sampleRowIdIndexMap[rowId]] = {
+                        ...sampleRows[sampleRowIdIndexMap[rowId]],
+                        ...lineageRow,
+                    };
+                } else {
+                    sampleRows.push(lineageRow);
                 }
             });
         }
@@ -376,7 +372,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
         });
         storageRows.forEach(row => {
             const sampleId = caseInsensitive(row, 'RowId');
-            if (noStorageUpdateSamples.indexOf(sampleId) === -1) sampleIds.add(sampleId);
+            if (noStorageSamples.indexOf(sampleId) === -1) sampleIds.add(sampleId);
         });
         const totalSamplesToUpdate = sampleIds.size;
         const noun = totalSamplesToUpdate === 1 ? 'sample' : 'samples';
@@ -444,7 +440,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
             canEditStorage,
             sampleItems,
             sampleTypeDomainFields,
-            noStorageUpdateSamples,
+            noStorageSamples,
             selection,
             getConvertedStorageUpdateData,
         } = this.props;
@@ -453,7 +449,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
         const sampleTypeUnit = sampleTypeDomainFields.metricUnit;
 
         // the current implementation of getConvertedStorageUpdateData uses @labkey/freezermanager, so it cannot be moved to ui-components
-        return getConvertedStorageUpdateData(storageRows, sampleItems, sampleTypeUnit, noStorageUpdateSamples, selection);
+        return getConvertedStorageUpdateData(storageRows, sampleItems, sampleTypeUnit, noStorageSamples, selection);
     }
 
     onGridEditComplete = (): void => {

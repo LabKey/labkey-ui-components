@@ -83,10 +83,7 @@ export interface SamplesSelectionResultProps {
     sampleItems: Record<string, any>;
     sampleLineageKeys: string[];
     sampleLineage: Record<string, any>; // mapping from sample rowId to sample record containing lineage
-    notEditableSamples: any[], // samples whose metadata cannot be updated, either because of status or because they are aliquots
     editStatusData: OperationConfirmationData, // data about which samples can and cannot be edited due to their status
-    noLineageUpdateSamples: any[], // samples prevented from having lineage updates due to their current status
-    noStorageUpdateSamples: any[], // samples prevented from having storage updates due to their current status
 }
 
 export interface GroupedSampleFields {

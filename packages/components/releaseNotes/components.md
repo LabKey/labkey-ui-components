@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Support 'Status' setting on Assay Designs
+* Hide 'Archived' Assay designs from megaMenu
+* Show 'Active' Assay designs tab by default on Assay Overview Page
+
 ### version 2.85.0
 *Released*: 18 October 2021
 * Add settings panel 'ID/Name Settings' for use in LKB and LKSM

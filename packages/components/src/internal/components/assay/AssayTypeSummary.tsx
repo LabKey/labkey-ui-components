@@ -1,7 +1,8 @@
 import React, { FC, memo, useState } from 'react';
 
 import { AppURL, AssaysHeatMap, SelectViewInput, SelectView } from '../../..';
-import {StatusGrid} from "./StatusGrid";
+
+import { StatusGrid } from './StatusGrid';
 
 const ASSAY_VIEWS = [SelectView.Grid, SelectView.Heatmap];
 
@@ -27,7 +28,7 @@ export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
                 <AssaysHeatMap navigate={navigate} excludedAssayProviders={excludedAssayProviders} />
             )}
             {selectedView === SelectView.Grid && (
-                <StatusGrid assayTypes={assayTypes} excludedAssayProviders={excludedAssayProviders}/>
+                <StatusGrid assayTypes={assayTypes} excludedAssayProviders={excludedAssayProviders} />
             )}
         </>
     );

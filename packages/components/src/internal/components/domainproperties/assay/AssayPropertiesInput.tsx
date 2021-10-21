@@ -208,17 +208,12 @@ export function MetadataInputFormatsInput(props: InputProps) {
 }
 
 export const AssayStatusInput = props => {
-    return(
-        <AssayPropertiesInput
-            label="Status"
-            helpTipBody={
-                <p> Rosaline: tbd </p>
-            }
-        >
+    return (
+        <AssayPropertiesInput label="Status" helpTipBody={<p> Rosaline: tbd </p>}>
             <input type="checkbox" id={FORM_IDS.STATUS} checked={props.model.status} onChange={props.onChange} />
         </AssayPropertiesInput>
     );
-}
+};
 
 export function EditableRunsInput(props: InputProps) {
     return (

@@ -171,9 +171,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                     {!appPropertiesOnly && model.allowPlateMetadata && (
                         <PlateMetadataInput model={model} onChange={this.onInputChange} />
                     )}
-                    {!appPropertiesOnly &&  (
-                        <AssayStatusInput model={model} onChange={this.onInputChange} />
-                    )}
+                    {!appPropertiesOnly && <AssayStatusInput model={model} onChange={this.onInputChange} />}
                 </div>
             </>
         );

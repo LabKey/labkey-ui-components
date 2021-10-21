@@ -102,13 +102,17 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     const onSave = useCallback(() => {
         setError(undefined);
         setSaving(true);
-        if (updatedState.rowId) {
+
+        // trim the label string before saving
+        const stateToSave = updatedState.set('label', updatedState.label?.trim());
+
+        if (stateToSave.rowId) {
             updateRows({
                 schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
-                rows: [updatedState],
+                rows: [stateToSave],
             })
                 .then(() => {
-                    onActionComplete(updatedState.label);
+                    onActionComplete(stateToSave.label);
                 })
                 .catch(reason => {
                     setError(resolveErrorMessage(reason, 'status', 'statuses', 'updating'));
@@ -117,10 +121,10 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
         } else {
             insertRows({
                 schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
-                rows: List([updatedState]),
+                rows: List([stateToSave]),
             })
                 .then(() => {
-                    onActionComplete(updatedState.label);
+                    onActionComplete(stateToSave.label);
                 })
                 .catch(response => {
                     setError(resolveErrorMessage(response.get('error'), 'status', 'statuses', 'inserting'));

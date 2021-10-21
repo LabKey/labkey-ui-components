@@ -74,7 +74,6 @@ interface QueryFormInputsProps {
     showLabelAsterisk?: boolean; // only used if checkRequiredFields is false, to show * for fields that are originally required
     showQuerySelectPreviewOptions?: boolean;
     useDatePicker?: boolean;
-    sampleOperation?: SampleOperation;
 }
 
 interface State {
@@ -184,7 +183,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             useDatePicker,
             renderFieldLabel,
             showQuerySelectPreviewOptions,
-            sampleOperation,
         } = this.props;
 
         const filter = columnFilter ?? insertColumnFilter;
@@ -246,9 +244,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             const joinValues = multiple;
                             const id = col.fieldKey + i + (componentKey ?? '');
                             let queryFilters;
-                            if (col.isSampleLookup() && sampleOperation) {
-                                queryFilters = List<Filter.IFilter>([getFilterForSampleOperation(sampleOperation)]);
-                            }
                             return (
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}

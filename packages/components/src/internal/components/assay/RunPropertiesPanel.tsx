@@ -17,7 +17,7 @@ import React, { FC, memo } from 'react';
 import Formsy from 'formsy-react';
 import { Input, Textarea } from 'formsy-react-components';
 
-import { QueryFormInputs, LabelOverlay, SampleOperation } from '../../..';
+import { LabelOverlay, QueryFormInputs } from '../../..';
 
 import { AssayPropertiesPanelProps } from './models';
 
@@ -66,7 +66,6 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                             queryColumns={model.runColumns}
                             renderFileInputs
                             showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
-                            sampleOperation={SampleOperation.AddAssayData}
                         />
                     )}
                 </Formsy>

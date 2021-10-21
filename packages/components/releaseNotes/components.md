@@ -11,6 +11,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Update various action modals with status alerts and to show only text and a dismiss button when nothing can be done from the selected samples
   * Fix bug in `SampleStatusTag` for icon-only display of Available statuses.
   * Add info headers in `SamplesEditableGrid` indicating why rows are not editable.
+  * Allow user to specify a sample operation that can be used to filter the sample lookup fields in `QueryFormInputs` and use this for `RunPropertiesPanel` and `BatchPropertiesPanel`
 
 ### version 2.85.0
 *Released*: 18 October 2021

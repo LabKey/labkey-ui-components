@@ -16,11 +16,18 @@
 import React, { ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
-import { Utils } from '@labkey/api';
+import { Filter, Utils } from '@labkey/api';
 
 import { initLookup } from '../../actions';
 
-import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo } from '../../..';
+import {
+    caseInsensitive,
+    getFilterForSampleOperation,
+    insertColumnFilter,
+    QueryColumn,
+    QueryInfo,
+    SampleOperation
+} from '../../..';
 
 import { resolveRenderer } from './renderers';
 import { QuerySelect } from './QuerySelect';
@@ -67,6 +74,7 @@ interface QueryFormInputsProps {
     showLabelAsterisk?: boolean; // only used if checkRequiredFields is false, to show * for fields that are originally required
     showQuerySelectPreviewOptions?: boolean;
     useDatePicker?: boolean;
+    sampleOperation?: SampleOperation;
 }
 
 interface State {
@@ -84,6 +92,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         initiallyDisableFields: false,
         disabledFields: List<string>(),
         showQuerySelectPreviewOptions: true,
+        sampleOperation: undefined,
     };
 
     private _fieldEnabledCount = 0;
@@ -175,6 +184,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             useDatePicker,
             renderFieldLabel,
             showQuerySelectPreviewOptions,
+            sampleOperation,
         } = this.props;
 
         const filter = columnFilter ?? insertColumnFilter;
@@ -235,7 +245,10 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
                             const id = col.fieldKey + i + (componentKey ?? '');
-
+                            let queryFilters;
+                            if (col.isSampleLookup() && sampleOperation) {
+                                queryFilters = List<Filter.IFilter>([getFilterForSampleOperation(sampleOperation)]);
+                            }
                             return (
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}
@@ -258,6 +271,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."
                                         previewOptions={showQuerySelectPreviewOptions}
+                                        queryFilters={queryFilters}
                                         renderFieldLabel={renderFieldLabel}
                                         required={col.required}
                                         schemaQuery={col.lookup.schemaQuery}

@@ -16,7 +16,7 @@
 import React, { FC, memo } from 'react';
 import Formsy from 'formsy-react';
 
-import { QueryFormInputs } from '../../..';
+import { QueryFormInputs, SampleOperation } from '../../..';
 
 import { AssayPropertiesPanelProps } from './models';
 
@@ -40,6 +40,7 @@ export const BatchPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props =>
                         queryColumns={model.batchColumns}
                         renderFileInputs
                         showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
+                        sampleOperation={SampleOperation.AddAssayData}
                     />
                 </Formsy>
             </div>

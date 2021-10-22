@@ -6,6 +6,7 @@ import { mount } from 'enzyme';
 
 import {
     App,
+    filterSampleRowsForOperation,
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getSampleDeleteMessage,
@@ -133,5 +134,77 @@ describe('getFilterForSampleOperation', () => {
                 Filter.Types.NOT_IN
             )
         );
+    });
+});
+
+describe('filterSampleRowsForOperation', () => {
+    const availableRow1 = {
+        rowId: {value: 1},
+        SampleID: { value: 1, displayValue: "T-1"},
+        [SAMPLE_STATE_TYPE_COLUMN_NAME]: {value: SampleStateType.Available}
+    };
+    const availableRow2 = {
+        rowId: {value: 2},
+        sampleId: { value: 2, displayValue: "T-2"},
+        [SAMPLE_STATE_TYPE_COLUMN_NAME]: {value: SampleStateType.Available}
+    };
+    const consumedRow1 = {
+        rowId: {value: 20},
+        SampleID: { value: 20, displayValue: "T-20"},
+        [SAMPLE_STATE_TYPE_COLUMN_NAME]: {value: SampleStateType.Consumed}
+    };
+    const lockedRow1 = {
+        rowId: {value: 30},
+        SampleID: { value: 30, displayValue: "T-30"},
+        [SAMPLE_STATE_TYPE_COLUMN_NAME]: {value: SampleStateType.Locked}
+    };
+    const lockedRow2 = {
+        rowId: {value: 31},
+        SampleID: { value: 310, displayValue: "T-310"},
+        [SAMPLE_STATE_TYPE_COLUMN_NAME]: {value: SampleStateType.Locked}
+    };
+
+    function validate(rows: { [p: string]: any }, operation: SampleOperation, numAllowed: number, numNotAllowed: number) {
+        const filteredData = filterSampleRowsForOperation(rows, operation);
+        expect(Object.keys(filteredData.rows)).toHaveLength(numAllowed);
+        expect(filteredData.statusData.allowed).toHaveLength(numAllowed);
+        expect(filteredData.statusData.notAllowed).toHaveLength(numNotAllowed);
+        if (numNotAllowed == 0) {
+            expect(filteredData.statusMessage).toBeNull();
+        } else {
+            expect(filteredData.statusMessage).toBeTruthy();
+        }
+    }
+
+    test("all available", () => {
+        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        const data = {
+            1: availableRow1,
+            2: availableRow2,
+        };
+        validate(data, SampleOperation.UpdateStorageMetadata, 2, 0);
+    });
+
+    test("all locked", () => {
+        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        const data = {
+            30: lockedRow1,
+            31: lockedRow2,
+        };
+        validate(data, SampleOperation.EditMetadata, 0, 2);
+        validate(data, SampleOperation.AddToPicklist, 2, 0);
+    });
+
+    test("mixed statuses", () => {
+        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        const data = {
+            30: lockedRow1,
+            20: consumedRow1,
+            1: availableRow1,
+            2: availableRow2,
+        };
+        validate(data, SampleOperation.EditLineage, 3, 1);
+        validate(data, SampleOperation.UpdateStorageMetadata, 2, 2);
+        validate(data, SampleOperation.AddToPicklist, 4, 0);
     });
 });

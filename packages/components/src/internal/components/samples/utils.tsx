@@ -144,7 +144,7 @@ export function filterSampleRowsForOperation(rows: { [p: string]: any }, operati
     let validRows = {};
     Object.values(rows).forEach (row => {
         const statusType = caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME).value;
-        const id = caseInsensitive(row, sampleIdField)
+        const id = caseInsensitive(row, sampleIdField).value
         const statusRecord = {
             'RowId': caseInsensitive(row, sampleIdField).value,
             'Name': caseInsensitive(row, "SampleID").displayValue
@@ -159,7 +159,7 @@ export function filterSampleRowsForOperation(rows: { [p: string]: any }, operati
     const statusData =  new OperationConfirmationData({allowed, notAllowed});
     return {
         rows: validRows,
-        statusMessage: getOperationNotPermittedMessage(operation,statusData),
+        statusMessage: getOperationNotPermittedMessage(operation, statusData),
         statusData,
     }
 }

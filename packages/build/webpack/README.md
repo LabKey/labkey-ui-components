@@ -27,13 +27,13 @@ and code live. Each `entryPoint` will have output files generated as part of the
 [LabKey Gradle build] steps for that module. The artifacts will be generated and placed into the
 standard LabKey `views` directory to make the pages available to the server through the module's
 controller. The generated `<entryPoint>.html` and `<entryPoint>.view.xml` files will be placed in the
-`<module>/resources/views` directory and the generated JS/CSS artifacts will be placed in the
-`<module>/resources/web/<module>/gen` directory.
+`<module>/resources/views/gen` directory and the generated JS/CSS artifacts will be placed in the
+`<module>/resources/web/gen` directory.
 
 If your `entryPoint` is to be used in a JSP or included in another LabKey page and you don't want to expose it
 directly as its own `view`, you can set the `generateLib` property for your `entryPoint`. This will generate
-the same JS/CSS artifacts in the `<module>/resources/web/<module>/gen` directory but will skip the `resources/views`
-generation step and instead create an `<entryPoint>.lib.xml` file in the `<module>/resources/web/<module>/gen` directory.
+the same JS/CSS artifacts in the `<module>/resources/web/gen` directory but will skip the `resources/views`
+generation step and instead create an `<entryPoint>.lib.xml` file in the `<module>/resources/web/gen` directory.
 This lib.xml can then be used in your JSP or other LabKey page. You can see an example of this in the experiment
 [entryPoints.js] file.
 

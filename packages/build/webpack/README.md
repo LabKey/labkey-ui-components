@@ -58,7 +58,7 @@ To configure a LabKey module to participant in the React page build process:
     and generated JS/CSS artifacts.
 
 You can see examples of each of these files in the following LabKey modules:
-[assay], [experiment], and [list].
+[assay], [experiment], and [pipeline].
 
 ### Building LabKey React pages
 
@@ -143,7 +143,7 @@ build before publishing a new `@labkey/build` version, you can do one of the fol
 [LabKey Gradle build]: https://www.labkey.org/Documentation/wiki-page.view?name=gradleBuild
 [assay]: https://github.com/LabKey/platform/tree/develop/assay
 [experiment]: https://github.com/LabKey/platform/tree/develop/experiment
-[list]: https://github.com/LabKey/platform/tree/develop/list
+[pipeline]: https://github.com/LabKey/platform/tree/develop/pipeline
 [experiment]: https://github.com/LabKey/platform/blob/develop/experiment/package.json
 [entryPoints.js]: https://github.com/LabKey/platform/blob/develop/experiment/src/client/entryPoints.js
 [.npmrc]: https://github.com/LabKey/platform/blob/develop/experiment/.npmrc

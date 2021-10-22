@@ -198,7 +198,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                     barFillColors={barFillColors}
                     data={data}
                     defaultBorderColor="#555"
-                    onClick={this.onBarClick}
+                    onClick={selectedGroup.getAppURL ? this.onBarClick : undefined}
                     title={`${selectedGroup.label} (${currentChartOptions.label})`}
                 />
             );
@@ -223,16 +223,18 @@ export class BarChartViewer extends PureComponent<Props, State> {
                                 </MenuItem>
                             ))}
                         </DropdownButton>
-                        <DropdownButton id="sample-set-selected-chart-menu" title={currentChartOptions.label}>
-                            {selectedCharts.map((chart, i) => (
-                                <MenuItem active={currentChart === i} key={i} onClick={() => this.selectChart(i)}>
-                                    {chart.label}
-                                </MenuItem>
-                            ))}
-                        </DropdownButton>
+                        {selectedCharts?.length > 1 && (
+                            <DropdownButton id="sample-set-selected-chart-menu" title={currentChartOptions.label}>
+                                {selectedCharts.map((chart, i) => (
+                                    <MenuItem active={currentChart === i} key={i} onClick={() => this.selectChart(i)}>
+                                        {chart.label}
+                                    </MenuItem>
+                                ))}
+                            </DropdownButton>
+                        )}
                     </div>
                 )}
-                {!hasError && (
+                {!hasError && selectedCharts?.length > 1 && (
                     <div className="btn-group pull-right">
                         <Tip caption="Previous">
                             <Button disabled={currentChart === 0} onClick={this.prevChart}>

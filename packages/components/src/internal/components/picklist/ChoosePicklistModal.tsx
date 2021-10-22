@@ -23,10 +23,10 @@ import {
     SampleTypeCount,
 } from './actions';
 import { Picklist } from './models';
-import { getSampleOperationConfirmationData } from '../entities/actions';
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -211,6 +211,7 @@ interface ChoosePicklistModalDisplayProps {
 export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePicklistModalDisplayProps> = memo(
     props => {
         const {
+            api,
             picklists,
             loading,
             picklistLoadError,
@@ -232,13 +233,16 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
 
         useEffect(() => {
-            getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
-                .then(data => {
+            (async () => {
+                try {
+                    const data = await api.samples.getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
                     setStatusData(data);
                     setValidCount(data.allowed.length);
-                })
-                .catch(reason => { setError(reason); });
-        }, [selectionKey, sampleIds]);
+                } catch(reason) {
+                    setError(reason);
+                }
+            })();
+        }, [api, selectionKey, sampleIds]);
 
         const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
             setSearch(event.target.value.trim().toLowerCase());
@@ -349,7 +353,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                     <div className="row">
                         <div className="col-md-12">
                             <Alert bsStyle="info">
-                                Adding {Utils.pluralize(validCount, 'sample', 'samples')} to selected picklist.&nbsp;
+                                Adding {Utils.pluralize(validCount, 'sample', 'samples')} to selected picklist.{' '}
                                 {getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData)}
                             </Alert>
                         </div>
@@ -458,6 +462,7 @@ interface ChoosePicklistModalProps {
     currentProductId?: string;
     picklistProductId?: string;
     metricFeatureArea?: string;
+    api?: ComponentsAPIWrapper;
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
@@ -479,3 +484,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
 
     return <ChoosePicklistModalDisplay {...props} picklists={items} picklistLoadError={error} loading={loading} />;
 });
+
+ChoosePicklistModal.defaultProps = {
+    api: getDefaultAPIWrapper(),
+}

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { mount } from 'enzyme';
 
-import { NavItem } from 'react-bootstrap';
+import { Button, ModalBody, ModalTitle, NavItem } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR } from '../../../test/data/users';
 
@@ -17,6 +17,10 @@ import {
     PicklistItemsSummaryDisplay,
     PicklistList,
 } from './ChoosePicklistModal';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
+import { OperationConfirmationData } from '../entities/models';
+import { waitForLifecycle } from '../../testHelpers';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -291,7 +295,7 @@ describe('AddToPicklistNotification', () => {
 });
 
 describe('ChoosePicklistModalDisplay', () => {
-    test('loading', () => {
+    test('loading', async () => {
         const wrapper = mount(
             <ChoosePicklistModalDisplay
                 picklists={[]}
@@ -302,11 +306,18 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2']}
                 numSelected={2}
+                api={getTestAPIWrapper({
+                    samples: getSamplesTestAPIWrapper({
+                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData({allowed: [1, 2], notAllowed: []})),
+                    }),
+                })}
             />
         );
+
+        await waitForLifecycle(wrapper);
         const alert = wrapper.find('.alert-info');
         expect(alert).toHaveLength(1);
-        expect(alert.text()).toBe('Adding 2 samples to selected picklist.');
+        expect(alert.text()).toBe('Adding 2 samples to selected picklist. ');
         const input = wrapper.find('input');
         expect(input).toHaveLength(1);
         expect(input.prop('placeholder')).toBe('Find a picklist');
@@ -322,7 +333,7 @@ describe('ChoosePicklistModalDisplay', () => {
         wrapper.unmount();
     });
 
-    test('loading error', () => {
+    test('loading error', async () => {
         const errorText = 'Couldn\'t get your data';
         const wrapper = mount(
             <ChoosePicklistModalDisplay
@@ -334,15 +345,22 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2']}
                 numSelected={2}
+                api={getTestAPIWrapper({
+                    samples: getSamplesTestAPIWrapper({
+                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData({allowed: [1, 2], notAllowed: []})),
+                    }),
+                })}
             />
         );
+        await waitForLifecycle(wrapper);
+
         const alert = wrapper.find('.alert-danger');
         expect(alert).toHaveLength(1);
         expect(alert.text()).toBe(errorText);
         wrapper.unmount();
     });
 
-    test('adding one sample', () => {
+    test('adding one sample', async () => {
         const wrapper = mount(
             <ChoosePicklistModalDisplay
                 picklists={[]}
@@ -353,15 +371,22 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1']}
                 numSelected={1}
+                api={getTestAPIWrapper({
+                    samples: getSamplesTestAPIWrapper({
+                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData({allowed: [1], notAllowed: []})),
+                    }),
+                })}
             />
         );
+        await waitForLifecycle(wrapper);
+
         const alert = wrapper.find('.alert-info');
         expect(alert).toHaveLength(1);
-        expect(alert.text()).toBe('Adding 1 sample to selected picklist.');
+        expect(alert.text()).toBe('Adding 1 sample to selected picklist. ');
         wrapper.unmount();
     });
 
-    test('with active item', () => {
+    test('with active item', async () => {
         const wrapper = mount(
             <ChoosePicklistModalDisplay
                 picklists={[PUBLIC_EDITOR_PICKLIST]}
@@ -372,12 +397,72 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1']}
                 numSelected={1}
+                api={getTestAPIWrapper({
+                    samples: getSamplesTestAPIWrapper({
+                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData({allowed: [1], notAllowed: []})),
+                    }),
+                })}
             />
         );
+        await waitForLifecycle(wrapper);
 
         const picklistButtons = wrapper.find('.list-group-item');
         picklistButtons.at(0).simulate('click');
         expect(wrapper.find('.choice-details')).toHaveLength(1);
+        wrapper.unmount();
+    });
+
+    test('some not allowed', async () => {
+        const wrapper = mount(
+            <ChoosePicklistModalDisplay
+                picklists={[PUBLIC_EDITOR_PICKLIST]}
+                picklistLoadError={undefined}
+                loading={false}
+                onCancel={jest.fn()}
+                afterAddToPicklist={jest.fn()}
+                user={TEST_USER_EDITOR}
+                sampleIds={['1', '2', '3']}
+                numSelected={1}
+                api={getTestAPIWrapper({
+                    samples: getSamplesTestAPIWrapper({
+                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData({allowed: [1], notAllowed: [2, 3]})),
+                    }),
+                })}
+            />
+        );
+        await waitForLifecycle(wrapper);
+        const alert = wrapper.find('.alert-info');
+        expect(alert).toHaveLength(1);
+        expect(alert.text()).toBe('Adding 1 sample to selected picklist. ' +
+            'The current status of 2 selected samples prevents adding them to a picklist.');
+        wrapper.unmount();
+    });
+
+    test('none allowed', async () => {
+        const wrapper = mount(
+            <ChoosePicklistModalDisplay
+                picklists={[PUBLIC_EDITOR_PICKLIST]}
+                picklistLoadError={undefined}
+                loading={false}
+                onCancel={jest.fn()}
+                afterAddToPicklist={jest.fn()}
+                user={TEST_USER_EDITOR}
+                sampleIds={['1', '2', '3']}
+                numSelected={1}
+                api={getTestAPIWrapper({
+                    samples: getSamplesTestAPIWrapper({
+                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData({allowed: [], notAllowed: [1, 2, 3]})),
+                    }),
+                })}
+            />
+        );
+        await waitForLifecycle(wrapper);
+        const modalTitle = wrapper.find(ModalTitle);
+        expect(modalTitle.text()).toBe("Cannot Add to Picklist");
+        expect(wrapper.find(ModalBody).text()).toBe("All selected samples have a status that prevents adding them to a picklist.");
+        const buttons = wrapper.find(Button);
+        expect(buttons).toHaveLength(1);
+        expect(buttons.at(0).text()).toBe("Dismiss");
         wrapper.unmount();
     });
 });

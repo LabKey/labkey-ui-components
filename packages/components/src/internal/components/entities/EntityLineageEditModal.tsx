@@ -141,7 +141,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const numAliquots = aliquotIds?.length || 0;
 
     const aliquotsMsg = (numAliquots > 0 && numAliquots < statusData.totalCount) ? (
-        `${Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections.  Lineage for aliquots cannot be changed. `
+        `${Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections. Lineage for aliquots cannot be changed. `
     ) : undefined;
 
     if (numAllowed === 0) {

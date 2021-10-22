@@ -97,9 +97,9 @@ function getOperationMessageAndRecommendation(operation: SampleOperation, numSam
         const messageInfo = operationRestrictionMessage[operation];
         let message;
         if (numSamples == 1) {
-            message = operationRestrictionMessage[operation].singular + '.';
+            message = operationRestrictionMessage[operation].singular;
         } else {
-            message = operationRestrictionMessage[operation].plural + '.';
+            message = operationRestrictionMessage[operation].plural;
         }
         if (messageInfo.recommendation) {
             return message + '. ' + messageInfo.recommendation;
@@ -131,22 +131,22 @@ export function getOperationNotPermittedMessage(operation: SampleOperation, stat
         }
         if (notAllowed?.length > 0) {
             notAllowedMsg =
-                `The current status of ${notAllowed.length} selected sample${notAllowed.length == 1 ? ' ' : 's '}
-                  prevents ${getOperationMessageAndRecommendation(operation, notAllowed.length, false)}`;
+                `The current status of ${notAllowed.length} selected sample${notAllowed.length == 1 ? '' : 's'} prevents ${getOperationMessageAndRecommendation(operation, notAllowed.length, false)}.`;
         }
     }
 
     return notAllowedMsg;
 }
 
-export function filterSampleRowsForOperation(rows: {[key: string]: any }, operation: SampleOperation) : {rows: {[key: string]: any }, statusMessage: string, statusData: OperationConfirmationData } {
+export function filterSampleRowsForOperation(rows: { [p: string]: any }, operation: SampleOperation, sampleIdField: string = 'RowId') : { rows: { [p: string]: any }; statusMessage: string; statusData: OperationConfirmationData } {
     let allowed = [];
     let notAllowed = [];
     let validRows = {};
-    for (let [id, row] of Object.entries(rows)) {
+    Object.values(rows).forEach (row => {
         const statusType = caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME).value;
+        const id = caseInsensitive(row, sampleIdField)
         const statusRecord = {
-            'RowId': id,
+            'RowId': caseInsensitive(row, sampleIdField).value,
             'Name': caseInsensitive(row, "SampleID").displayValue
         }
         if (isSampleOperationPermitted(statusType, operation)) {
@@ -155,7 +155,7 @@ export function filterSampleRowsForOperation(rows: {[key: string]: any }, operat
         } else {
             notAllowed.push(statusRecord);
         }
-    }
+    });
     const statusData =  new OperationConfirmationData({allowed, notAllowed});
     return {
         rows: validRows,

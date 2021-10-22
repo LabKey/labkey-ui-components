@@ -269,7 +269,7 @@ import {
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
 } from './internal/components/notifications/messaging';
-import { GenerateEntityResponse } from './internal/components/entities/models';
+import { GenerateEntityResponse, OperationConfirmationData } from './internal/components/entities/models';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
@@ -945,6 +945,7 @@ export {
     ParentEntityEditPanel,
     extractEntityTypeOptionFromRow,
     GenerateEntityResponse,
+    OperationConfirmationData,
     AddEntityButton,
     RemoveEntityButton,
     getSampleOperationConfirmationData,
@@ -1326,7 +1327,6 @@ export type {
     IEntityTypeOption,
     IParentOption,
     MaterialOutput,
-    OperationConfirmationData,
 } from './internal/components/entities/models';
 export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
 export type { PermissionsProviderProps } from './internal/components/permissions/models';

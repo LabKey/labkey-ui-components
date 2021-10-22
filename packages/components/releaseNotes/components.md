@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD October 2021
+### version 2.96.0
+*Released*: 22 October 2021
 * Item 9584: ManageSampleStatusesPanel for sample statuses CRUD operations
   * Update APIWrapper to take mockFn as a param instead of adding jest dependency directly
   * getSampleStatuses action to call API and return SampleState array

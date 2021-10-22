@@ -48,9 +48,7 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
     },
     SampleStatuses: {
-        charts: [
-            CHART_SELECTORS.All,
-        ],
+        charts: [CHART_SELECTORS.All],
         colorPath: ['Color', 'value'],
         createText: 'Create Samples',
         createURL: () => App.NEW_SAMPLES_HREF,

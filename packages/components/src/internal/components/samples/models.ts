@@ -1,10 +1,11 @@
 import { ComponentType } from 'react';
 import { List } from 'immutable';
 
+import { Draft, immerable, produce } from 'immer';
+
 import { QueryModel, User } from '../../..';
 
 import { SampleStateType } from './constants';
-import { Draft, immerable, produce } from "immer";
 
 export enum SampleCreationType {
     Independents = 'New samples',

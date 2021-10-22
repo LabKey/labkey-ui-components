@@ -3,8 +3,10 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { AppURL } from '../url/AppURL';
-import { AppProperties } from './models';
+
 import { imageURL } from '../url/ActionURL';
+
+import { AppProperties } from './models';
 
 // These ids should match what is used by the MenuProviders in the Java code so we can avoid toLowerCase comparisons.
 export const LKS_PRODUCT_ID = 'LabKeyServer';
@@ -15,11 +17,11 @@ const FREEZER_MANAGER_PRODUCT_ID = 'FreezerManager';
 const SAMPLE_MANAGER_PRODUCT_NAME = 'Sample Manager';
 const BIOLOGICS_PRODUCT_NAME = 'Biologics';
 export const LABKEY_SERVER_PRODUCT_NAME = 'LabKey Server';
-const FREEZER_MANAGER_PRODUCT_NAME = "Freezer Manager";
+const FREEZER_MANAGER_PRODUCT_NAME = 'Freezer Manager';
 
-const BIOLOGICS_CONTROLLER_NAME = "biologics";
-const SAMPLE_MANAGER_CONTROLLER_NAME = "sampleManager";
-const FREEZER_MANAGER_CONTROLLER_NAME = "freezerManager";
+const BIOLOGICS_CONTROLLER_NAME = 'biologics';
+const SAMPLE_MANAGER_CONTROLLER_NAME = 'sampleManager';
+const FREEZER_MANAGER_CONTROLLER_NAME = 'freezerManager';
 
 export const ASSAYS_KEY = 'assays';
 export const ASSAY_DESIGN_KEY = 'assayDesign';
@@ -37,7 +39,7 @@ export const FIND_SAMPLES_KEY = 'findSamples';
 export const REQUESTS_KEY = 'requests';
 export const MEDIA_KEY = 'media';
 export const NOTEBOOKS_KEY = 'notebooks';
-export const REGISTRY_KEY ='registry';
+export const REGISTRY_KEY = 'registry';
 
 export const FIND_SAMPLES_HREF = AppURL.create(FIND_SAMPLES_KEY);
 export const NEW_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new');
@@ -80,7 +82,7 @@ export const SERVER_NOTIFICATION_MAX_ROWS = 8;
 
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
 
-export const BIOLOGICS_APP_PROPERTIES : AppProperties = {
+export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     productId: BIOLOGICS_PRODUCT_ID,
     name: BIOLOGICS_PRODUCT_NAME,
     logoWithTextImageUrl: imageURL('biologics/images', 'lk-bio-logo-text.svg'),

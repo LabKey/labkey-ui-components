@@ -121,10 +121,9 @@ export function getOperationNotPermittedMessage(operation: SampleOperation, stat
             return `All selected samples have a status that prevents ${operationRestrictionMessage[operation].all}.`;
         }
 
-        const onlyAliquots = aliquotIds?.length === statusData.totalCount;
         const noAliquots = !aliquotIds || aliquotIds.length == 0;
         let notAllowed = [];
-        if (onlyAliquots || noAliquots) {
+        if (noAliquots) {
             notAllowed = statusData.notAllowed;
         } else { // some aliquots, some not
             notAllowed = statusData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);

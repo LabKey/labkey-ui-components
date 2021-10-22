@@ -8,10 +8,10 @@ import {
     App,
     filterSampleRowsForOperation,
     getFilterForSampleOperation,
-    getOmittedSampleTypeColumns,
+    getOmittedSampleTypeColumns, getOperationNotPermittedMessage,
     getSampleDeleteMessage,
     isSampleOperationPermitted,
-    LoadingSpinner,
+    LoadingSpinner, OperationConfirmationData,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
     SampleStateType,
@@ -206,5 +206,148 @@ describe('filterSampleRowsForOperation', () => {
         validate(data, SampleOperation.EditLineage, 3, 1);
         validate(data, SampleOperation.UpdateStorageMetadata, 2, 2);
         validate(data, SampleOperation.AddToPicklist, 4, 0);
+    });
+});
+
+describe("getOperationNotPermittedMessage", () => {
+    test("no status data", () => {
+        expect(getOperationNotPermittedMessage(SampleOperation.EditMetadata, undefined)).toBeNull();
+        expect(getOperationNotPermittedMessage(SampleOperation.EditMetadata, undefined, [1, 2])).toBeNull();
+    });
+
+    test("status data, no rows", () => {
+        expect(getOperationNotPermittedMessage(SampleOperation.UpdateStorageMetadata, new OperationConfirmationData())).toBeNull();
+    });
+
+    test("none allowed", () => {
+        expect(getOperationNotPermittedMessage(
+            SampleOperation.AddToStorage,
+            new OperationConfirmationData({
+                allowed: [],
+                notAllowed: [
+                    {
+                        Name: 'D-2',
+                        RowId: 351,
+                    },
+                ],
+            })))
+            .toBe("All selected samples have a status that prevents adding them to storage.")
+    });
+
+    test("some not allowed, without aliquots", () => {
+        expect(getOperationNotPermittedMessage(
+            SampleOperation.EditLineage,
+            new OperationConfirmationData({
+                allowed: [
+                    {
+                        Name: 'T-1',
+                        RowId: 111,
+                    },
+                ],
+                notAllowed: [
+                    {
+                        Name: 'D-2',
+                        RowId: 351,
+                    },
+                ],
+            })))
+            .toBe("The current status of 1 selected sample prevents updating of its lineage.")
+        expect(getOperationNotPermittedMessage(
+            SampleOperation.EditLineage,
+            new OperationConfirmationData({
+                allowed: [
+                    {
+                        Name: 'T-1',
+                        RowId: 111,
+                    },
+                ],
+                notAllowed: [
+                    {
+                        Name: 'D-2',
+                        RowId: 351,
+                    },
+                    {
+                        Name: 'D-3',
+                        RowId: 353,
+                    },
+                ],
+            }),[]))
+            .toBe("The current status of 2 selected samples prevents updating of their lineage.")
+
+    });
+
+    test("some allowed, with aliquots", () => {
+        expect(getOperationNotPermittedMessage(
+            SampleOperation.EditLineage,
+            new OperationConfirmationData({
+                allowed: [
+                    {
+                        Name: 'T-1',
+                        RowId: 111,
+                    },
+                ],
+                notAllowed: [
+                    {
+                        Name: 'D-2',
+                        RowId: 351,
+                    },
+                    {
+                        Name: 'D-4',
+                        RowId: 354,
+                    },
+                    {
+                        Name: 'D-3.1',
+                        RowId: 356,
+                    },
+                ],
+            }), [356]))
+            .toBe("The current status of 2 selected samples prevents updating of their lineage.")
+    });
+
+    test("all allowed", () => {
+        expect(getOperationNotPermittedMessage(
+            SampleOperation.EditLineage,
+            new OperationConfirmationData({
+                allowed: [
+                    {
+                        Name: 'T-1',
+                        RowId: 111,
+                    },
+                    {
+                        Name: 'T-2',
+                        RowId: 123
+                    }
+                ],
+                notAllowed: [
+
+                ],
+            }), [356]))
+            .toBeNull();
+
+        expect(getOperationNotPermittedMessage(
+            SampleOperation.EditLineage,
+            new OperationConfirmationData({
+                allowed: [
+                    {
+                        Name: 'T-1',
+                        RowId: 111,
+                    },
+                ],
+                notAllowed: [
+                    {
+                        Name: 'D-2.1',
+                        RowId: 351,
+                    },
+                    {
+                        Name: 'D-4.1',
+                        RowId: 354,
+                    },
+                    {
+                        Name: 'D-3.1',
+                        RowId: 356,
+                    },
+                ],
+            }), [351, 354, 356, 357]))
+            .toBeNull();
     });
 });

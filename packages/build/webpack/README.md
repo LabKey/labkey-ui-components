@@ -12,7 +12,7 @@ module's `package.json` file at them.
 
 1. Add the `@labkey/build` package to your module's `package.json` devDependencies.
 1. Add/update the `scripts` in your `package.json` to reference the relevant config file in
-    `node_modules/@labkey/build/webpack`. See examples from the [study] module.
+    `node_modules/@labkey/build/webpack`. See examples from the [experiment] module.
     1. use one of the three configuration files based on your script target: `prod.config.js`, `dev.config.js`,
         or `watch.config.js`
     1. make sure to pass the following environment variables as part of your webpack command:
@@ -42,7 +42,7 @@ This lib.xml can then be used in your JSP or other LabKey page. You can see an e
 
 To configure a LabKey module to participant in the React page build process:
 1. Add the following files to your module's main directory:
-    1. `package.json` - Defines your module's npm build scripts, see [study] module example, and npm package
+    1. `package.json` - Defines your module's npm build scripts, see [experiment] module example, and npm package
         dependencies. Note that after your first successful build of this module after adding this,
         a new `package-lock.json` file will be generated. You will want to add that file to your git repo
         and check it in as well. Note that in this file the `npm clean` command might need to be adjusted
@@ -144,7 +144,6 @@ build before publishing a new `@labkey/build` version, you can do one of the fol
 [assay]: https://github.com/LabKey/platform/tree/develop/assay
 [experiment]: https://github.com/LabKey/platform/tree/develop/experiment
 [list]: https://github.com/LabKey/platform/tree/develop/list
-[study]: https://github.com/LabKey/platform/blob/develop/study/package.json
+[experiment]: https://github.com/LabKey/platform/blob/develop/experiment/package.json
 [entryPoints.js]: https://github.com/LabKey/platform/blob/develop/experiment/src/client/entryPoints.js
-[.npmrc]: https://github.com/LabKey/platform/blob/develop/study/.npmrc
-[tsconfig.json]: https://github.com/LabKey/platform/blob/develop/study/tsconfig.json
+[.npmrc]: https://github.com/LabKey/platform/blob/develop/experiment/.npmrc

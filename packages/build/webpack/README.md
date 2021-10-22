@@ -16,10 +16,9 @@ module's `package.json` file at them.
     1. use one of the three configuration files based on your script target: `prod.config.js`, `dev.config.js`,
         or `watch.config.js`
     1. make sure to pass the following environment variables as part of your webpack command:
-        1.  `NODE_ENV` - development or production
-        1. `LK_MODULE_CONTAINER` - if your module is in a module container repository with other modules,
-            this is the name of the repository
-        1.  `LK_MODULE` - module name
+        1. `NODE_ENV` - development or production
+        2. `PROD_SOURCE_MAP` - optional source map setting for the production webpack config to use,
+           defaults to `nosources-source-map`
 
 ### How it works
 

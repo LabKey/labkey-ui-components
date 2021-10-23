@@ -600,6 +600,10 @@ export class OperationConfirmationData {
         return this.idMap[idNum];
     }
 
+    get allAllowed(): boolean {
+        return this.notAllowed.length === 0;
+    }
+
     get noneAllowed(): boolean {
         return this.allowed.length === 0;
     }

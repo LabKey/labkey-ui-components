@@ -136,8 +136,8 @@ describe('EntityLineageEditModal', () => {
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn,{
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
                         getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
                     }),
@@ -200,8 +200,8 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
                         getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
                     }),
@@ -221,8 +221,8 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn,{
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
                         getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(NONE_ALLOWED_CONFIRMATION_DATA)),
                     }),
@@ -243,8 +243,8 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn,{
+                    samples: getSamplesTestAPIWrapper(jest.fn,{
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS),
                         getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(SOME_ALLOWED_CONFIRMATION_DATA)),
                     }),
@@ -268,8 +268,8 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn,{
+                    samples: getSamplesTestAPIWrapper(jest.fn,{
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS),
                         getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(NONE_ALLOWED_CONFIRMATION_DATA)),
                     }),
@@ -293,8 +293,8 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn,{
+                    samples: getSamplesTestAPIWrapper(jest.fn,{
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
                         getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(SOME_ALLOWED_CONFIRMATION_DATA)),
                     }),

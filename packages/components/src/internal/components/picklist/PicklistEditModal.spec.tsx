@@ -197,8 +197,8 @@ describe('PicklistEditModal', () => {
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
                 onFinish={jest.fn()}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn,{
+                    samples: getSamplesTestAPIWrapper(jest.fn,{
                         getSampleOperationConfirmationData: () => Promise.resolve(noneAllowedStatus),
                     }),
                 })}
@@ -220,8 +220,8 @@ describe('PicklistEditModal', () => {
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
                 onFinish={jest.fn()}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn,{
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleOperationConfirmationData: () => Promise.resolve(someAllowedStatus),
                     }),
                 })}
@@ -241,8 +241,8 @@ describe('PicklistEditModal', () => {
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
                 onFinish={jest.fn()}
-                api={getTestAPIWrapper({
-                    samples: getSamplesTestAPIWrapper({
+                api={getTestAPIWrapper(jest.fn,{
+                    samples: getSamplesTestAPIWrapper(jest.fn,{
                         getSampleOperationConfirmationData: () => Promise.resolve(allAllowedStatus),
                     }),
                 })}

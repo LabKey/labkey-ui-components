@@ -53,7 +53,7 @@ export function getSamplesTestAPIWrapper(
         getSampleAssayResultViewConfigs: mockFn(),
         getSampleSelectionLineageData: mockFn(),
         getSampleStatuses: mockFn(),
-        getSampleOperationConfirmationData: mockFn()
+        getSampleOperationConfirmationData: mockFn(),
         ...overrides,
     };
 }

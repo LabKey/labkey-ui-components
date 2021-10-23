@@ -6,6 +6,7 @@ import { MenuItem, Modal } from 'react-bootstrap';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
 
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
+import { PicklistEditModal } from './PicklistEditModal';
 
 beforeAll(() => {
     LABKEY.moduleContext.inventory = { productId: ['FreezerManager'] };
@@ -30,7 +31,7 @@ describe('PicklistCreationMenuItem', () => {
         const menuItem = wrapper.find(MenuItem);
         expect(menuItem).toHaveLength(1);
         expect(menuItem.text()).toBe(text);
-        const memoWrapper = wrapper.find('Memo()');
+        const memoWrapper = wrapper.find(PicklistEditModal);
         expect(memoWrapper).toHaveLength(1);
         expect(memoWrapper.prop('selectionKey')).toBe(selectionKey);
         expect(memoWrapper.prop('selectedQuantity')).toBe(selectedQuantity);

@@ -4,8 +4,6 @@ import { Draft, immerable, produce } from 'immer';
 
 import { OperationConfirmationData, QueryModel, User } from '../../..';
 
-import { QueryModel, User } from '../../..';
-
 import { SampleStateType } from './constants';
 
 export enum SampleCreationType {

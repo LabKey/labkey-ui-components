@@ -6,8 +6,10 @@ import {
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
     getSampleSelectionLineageData,
+    getSampleStatuses,
     SampleAssayResultViewConfig,
 } from './actions';
+import { SampleState } from './models';
 import { SampleOperation } from './constants';
 import { getSampleOperationConfirmationData} from '../entities/actions';
 import { OperationConfirmationData } from '../entities/models';
@@ -23,6 +25,8 @@ export interface SamplesAPIWrapper {
         columns?: string[]
     ) => Promise<ISelectRowsResult>;
 
+    getSampleStatuses: () => Promise<SampleState[]>;
+
     getSampleOperationConfirmationData: (
         operation: SampleOperation,
         selectionKey: string,
@@ -33,15 +37,23 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleAliquotRows = getSampleAliquotRows;
     getSampleAssayResultViewConfigs = getSampleAssayResultViewConfigs;
     getSampleSelectionLineageData = getSampleSelectionLineageData;
+    getSampleStatuses = getSampleStatuses;
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
 }
 
-export function getSamplesTestAPIWrapper(overrides: Partial<SamplesAPIWrapper> = {}): SamplesAPIWrapper {
+/**
+ * Note: Intentionally does not use jest.fn() to avoid jest becoming an implicit external package dependency.
+ */
+export function getSamplesTestAPIWrapper(
+    mockFn = (): any => () => {},
+    overrides: Partial<SamplesAPIWrapper> = {}
+): SamplesAPIWrapper {
     return {
-        getSampleAliquotRows: jest.fn(),
-        getSampleAssayResultViewConfigs: jest.fn(),
-        getSampleSelectionLineageData: jest.fn(),
-        getSampleOperationConfirmationData: jest.fn(),
+        getSampleAliquotRows: mockFn(),
+        getSampleAssayResultViewConfigs: mockFn(),
+        getSampleSelectionLineageData: mockFn(),
+        getSampleStatuses: mockFn(),
+        getSampleOperationConfirmationData: mockFn()
         ...overrides,
     };
 }

@@ -13,7 +13,6 @@ import {
     createNotification,
     getOperationNotPermittedMessage,
     LoadingSpinner,
-    ParentEntityEditPanel,
     Progress,
     QueryModel,
     resolveErrorMessage,
@@ -23,12 +22,13 @@ import {
 
 import { getOriginalParentsFromSampleLineage } from '../samples/actions';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 import { EntityChoice, EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun, getUpdatedLineageRowsForBulkEdit } from './utils';
 
 import { ParentEntityLineageColumns } from './constants';
+import { ParentEntityEditPanel } from './ParentEntityEditPanel';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface Props {
     queryModel: QueryModel;

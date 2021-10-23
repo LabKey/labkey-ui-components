@@ -53,8 +53,9 @@ import { getInitialParentChoices } from '../entities/utils';
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
 import { isSampleStatusEnabled } from '../../app/utils';
+import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
-import { GroupedSampleFields, SampleAliquotsStats } from './models';
+import { GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
 import { IS_ALIQUOT_FIELD } from './constants';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
@@ -750,10 +751,26 @@ export type SampleAssayResultViewConfig = {
 export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultViewConfig[]> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('sampleManager', 'getSampleAssayResultsViewConfigs.api'),
+            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleAssayResultsViewConfigs.api'),
             method: 'GET',
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.configs ?? []);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
+            }),
+        });
+    });
+}
+
+export function getSampleStatuses(): Promise<SampleState[]> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleStatuses.api'),
+            method: 'GET',
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response.statuses?.map(state => new SampleState(state)) ?? []);
             }),
             failure: Utils.getCallbackWrapper(response => {
                 console.error(response);

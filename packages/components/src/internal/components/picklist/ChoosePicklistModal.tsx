@@ -48,8 +48,10 @@ export const PicklistList: FC<PicklistListProps> = memo(props => {
                     onClick={onSelect.bind(this, item)}
                     type="button"
                 >
-                    {showSharedIcon && item.isPublic() && <span className="fa fa-users" />}
                     {item.name}
+                    {showSharedIcon && item.isPublic() && (
+                        <span className="fa fa-users pull-right" title="Team Picklist" />
+                    )}
                 </button>
             ))}
             {items.length === 0 && <p className="choices-list__empty-message">{emptyMessage}</p>}

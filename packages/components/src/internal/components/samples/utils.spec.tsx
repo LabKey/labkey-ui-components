@@ -348,6 +348,6 @@ describe("getOperationNotPermittedMessage", () => {
                     },
                 ],
             }), [351, 354, 356, 357]))
-            .toBeNull();
+            .toBe('The current status of 3 selected samples prevents updating of their lineage.');
     });
 });

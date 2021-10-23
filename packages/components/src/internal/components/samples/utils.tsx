@@ -123,9 +123,10 @@ export function getOperationNotPermittedMessage(operation: SampleOperation, stat
 
         const noAliquots = !aliquotIds || aliquotIds.length == 0;
         let notAllowed = [];
-        if (noAliquots) {
+        // no aliquots or only aliquots, we show a status message about all that are not allowed
+        if (noAliquots || aliquotIds.length == statusData.totalCount) {
             notAllowed = statusData.notAllowed;
-        } else { // some aliquots, some not
+        } else { // some aliquots, some not, filter out the aliquots from the status message
             notAllowed = statusData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);
         }
         if (notAllowed?.length > 0) {

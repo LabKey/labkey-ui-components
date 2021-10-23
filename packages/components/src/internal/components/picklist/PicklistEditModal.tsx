@@ -20,6 +20,7 @@ import { getSampleOperationConfirmationData } from '../entities/actions';
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface Props {
     show: boolean;
@@ -33,10 +34,12 @@ interface Props {
     currentProductId?: string;
     picklistProductId?: string;
     metricFeatureArea?: string;
+    api?: ComponentsAPIWrapper;
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
     const {
+        api,
         show,
         onCancel,
         onFinish,
@@ -71,7 +74,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
 
     useEffect(() => {
-        getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
+        api.samples.getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
             .then(data => {
                 setStatusData(data);
                 setValidCount(data.allowed.length);
@@ -217,3 +220,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         </Modal>
     );
 });
+
+PicklistEditModal.defaultProps = {
+    api: getDefaultAPIWrapper()
+}

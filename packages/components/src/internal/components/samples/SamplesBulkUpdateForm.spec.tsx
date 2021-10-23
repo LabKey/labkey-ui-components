@@ -109,7 +109,7 @@ describe("SamplesBulkUpdateAlert", () => {
         '1 aliquot was among the selections. Aliquot data is inherited from the original sample and cannot be updated here. ';
     const MULTI_ALIQUOTS_WARN =
         '2 aliquots were among the selections. Aliquot data is inherited from the original sample and cannot be updated here. ';
-    const ALL_ALIQUOTS_WARN = 'Aliquot data inherited from the original sample cannot be updated here.';
+    const ALL_ALIQUOTS_WARN = 'Aliquot data inherited from the original sample cannot be updated here. ';
     const ONE_LOCKED_WARN = 'The current status of 1 selected sample prevents updating of its data. Either change the status here or remove these samples from your selection.';
     const TWO_LOCKED_WARN = 'The current status of 2 selected samples prevents updating of their data. Either change the status here or remove these samples from your selection.';
 
@@ -152,7 +152,7 @@ describe("SamplesBulkUpdateAlert", () => {
                 })}
             />);
         expect(wrapper.find(Alert).exists()).toBeTruthy();
-        expect(wrapper.text()).toBe(ALL_ALIQUOTS_WARN + ' ' + ONE_LOCKED_WARN);
+        expect(wrapper.text()).toBe(ALL_ALIQUOTS_WARN + ONE_LOCKED_WARN);
         wrapper.unmount();
     });
 
@@ -177,7 +177,7 @@ describe("SamplesBulkUpdateAlert", () => {
                 })}
             />);
         expect(wrapper.find(Alert).exists()).toBeTruthy();
-        expect(wrapper.text()).toBe(MULTI_ALIQUOTS_WARN + ' ' + ONE_LOCKED_WARN);
+        expect(wrapper.text()).toBe(MULTI_ALIQUOTS_WARN + ONE_LOCKED_WARN);
         wrapper.unmount();
     });
 

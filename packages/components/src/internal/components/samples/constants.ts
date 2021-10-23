@@ -77,7 +77,7 @@ export const operationRestrictionMessage = {
         all: 'updating of their data without also changing the status',
         singular: 'updating of its data',
         plural: 'updating of their data',
-        recommendation: 'Either change the status here or remove these samples from your selection.'
+        recommendation: 'Either change the status here or remove these samples from your selection'
     },
     [SampleOperation.EditLineage]: {
         all: 'updating of their lineage',

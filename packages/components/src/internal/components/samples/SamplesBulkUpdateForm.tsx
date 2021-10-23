@@ -1,7 +1,5 @@
 import React, { FC, memo, useMemo } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
-import { Alert } from 'react-bootstrap';
-
 import {
     BulkUpdateForm,
     getOperationNotPermittedMessage,
@@ -9,7 +7,8 @@ import {
     QueryInfo,
     QueryModel,
     SampleOperation,
-    SchemaQuery
+    SchemaQuery,
+    Alert
 } from '../../..';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
@@ -30,21 +29,17 @@ type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultPr
 
 interface UpdateAlertProps {
     aliquots: any[],
-    queryModel: QueryModel,
+    numSelections: number,
     editStatusData: OperationConfirmationData,
 }
 
 // exported for jest testing
 export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo( (props) => {
-    const { queryModel, aliquots, editStatusData } = props;
-
-    const gridSelectionSize = useMemo(() => {
-        return props.queryModel.selections.size;
-    }, [queryModel]);
+    const { numSelections, aliquots, editStatusData } = props;
 
     let aliquotsMsg = undefined;
     if (aliquots && aliquots.length > 0) {
-        if (aliquots.length < gridSelectionSize) {
+        if (aliquots.length < numSelections) {
             aliquotsMsg = (
                 <>
                     {aliquots.length} aliquot{aliquots.length > 1 ? 's were' : ' was'} among the selections. Aliquot
@@ -52,22 +47,19 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo( (props) => {
                 </>
             );
         } else {
-            aliquotsMsg =  <>Aliquot data inherited from the original sample cannot be updated here.</>
+            aliquotsMsg =  <>Aliquot data inherited from the original sample cannot be updated here.{' '}</>
         }
     }
 
-    const alerts = [];
+    if (!aliquotsMsg && (!editStatusData || editStatusData.allAllowed))
+        return null;
 
-    if (!aliquotsMsg && (!editStatusData || editStatusData.notAllowed.length == 0))
-        return <>{alerts}</>;
-
-    alerts.push(
+    return (
         <Alert bsStyle="warning">
             {aliquotsMsg}
             {getOperationNotPermittedMessage(SampleOperation.EditMetadata, editStatusData, aliquots)}
         </Alert>
     );
-    return <>{alerts}</>;
 });
 
 // Usage:
@@ -139,7 +131,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
                 onSubmitForEdit={editSelectionInGrid}
                 sortString={queryModel.sorts.join(',')}
                 updateRows={updateRows}
-                header={<SamplesBulkUpdateAlert queryModel={queryModel} aliquots={aliquots} editStatusData={editStatusData}/>}
+                header={<SamplesBulkUpdateAlert numSelections={queryModel?.selections?.size || 0} aliquots={aliquots} editStatusData={editStatusData}/>}
             />
         );
     }

@@ -3,16 +3,10 @@ import { mount } from 'enzyme';
 
 import { fromJS } from 'immutable';
 
-import {
-    QueryColumn,
-    QueryInfo,
-    SchemaQuery,
-    BulkUpdateForm,
-    makeTestQueryModel,
-} from '../../..';
+import { Alert, BulkUpdateForm, makeTestQueryModel, QueryColumn, QueryInfo, SchemaQuery, } from '../../..';
 
 import { OperationConfirmationData } from '../entities/models';
-import { SamplesBulkUpdateFormBase } from './SamplesBulkUpdateForm';
+import { SamplesBulkUpdateAlert, SamplesBulkUpdateFormBase } from './SamplesBulkUpdateForm';
 import { getSamplesTestAPIWrapper } from './APIWrapper';
 
 describe('SamplesBulkUpdateForm', () => {
@@ -82,10 +76,6 @@ describe('SamplesBulkUpdateForm', () => {
         api: getSamplesTestAPIWrapper(),
     };
 
-    const SINGLE_ALIQUOT_WARN =
-        '1 aliquot was among the selections. Aliquot data is inherited from the original sample and cannot be updated here.';
-    const MULTI_ALIQUOTS_WARN =
-        '2 aliquots were among the selections. Aliquot data is inherited from the original sample and cannot be updated here.';
 
     test('all selected are samples', () => {
         const wrapper = mount(<SamplesBulkUpdateFormBase {...DEFAULT_PROPS} />);
@@ -110,37 +100,131 @@ describe('SamplesBulkUpdateForm', () => {
         wrapper.unmount();
     });
 
-    test('samples and one aliquot', () => {
-        const props = {
-            ...DEFAULT_PROPS,
-            aliquots: [1],
-        };
-        const wrapper = mount(<SamplesBulkUpdateFormBase {...props} />);
-        const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(2);
-        expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
-        expect(queryInfo.columns.get('meta')).toBe(COLUMN_META);
 
-        const aliquotWarning = wrapper.find(BulkUpdateForm).prop('header');
-        expect(aliquotWarning.props.children.join('')).toEqual(SINGLE_ALIQUOT_WARN);
+});
 
+describe("SamplesBulkUpdateAlert", () => {
+
+    const SINGLE_ALIQUOT_WARN =
+        '1 aliquot was among the selections. Aliquot data is inherited from the original sample and cannot be updated here. ';
+    const MULTI_ALIQUOTS_WARN =
+        '2 aliquots were among the selections. Aliquot data is inherited from the original sample and cannot be updated here. ';
+    const ALL_ALIQUOTS_WARN = 'Aliquot data inherited from the original sample cannot be updated here.';
+    const ONE_LOCKED_WARN = 'The current status of 1 selected sample prevents updating of its data. Either change the status here or remove these samples from your selection.';
+    const TWO_LOCKED_WARN = 'The current status of 2 selected samples prevents updating of their data. Either change the status here or remove these samples from your selection.';
+
+    test('samples and one aliquot, no editStatusData', () => {
+        const wrapper = mount(<SamplesBulkUpdateAlert aliquots={[1]} numSelections={3} editStatusData={undefined} />);
+        expect(wrapper.find(Alert).exists()).toBeTruthy();
+        expect(wrapper.text()).toBe(SINGLE_ALIQUOT_WARN);
         wrapper.unmount();
     });
 
     test('samples and 2 aliquots', () => {
-        const props = {
-            ...DEFAULT_PROPS,
-            aliquots: [1, 2],
-        };
-        const wrapper = mount(<SamplesBulkUpdateFormBase {...props} />);
-        const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(2);
-        expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
-        expect(queryInfo.columns.get('meta')).toBe(COLUMN_META);
-
-        const aliquotWarning = wrapper.find(BulkUpdateForm).prop('header');
-        expect(aliquotWarning.props.children.join('')).toEqual(MULTI_ALIQUOTS_WARN);
-
+        const wrapper = mount(<SamplesBulkUpdateAlert aliquots={[1,2]} numSelections={3} editStatusData={undefined} />);
+        expect(wrapper.find(Alert).exists()).toBeTruthy();
+        expect(wrapper.text()).toBe(MULTI_ALIQUOTS_WARN);
         wrapper.unmount();
+    });
+
+    test('only aliquots', () => {
+        const wrapper = mount(<SamplesBulkUpdateAlert aliquots={[1,2]} numSelections={2} editStatusData={undefined} />);
+        expect(wrapper.find(Alert).exists()).toBeTruthy();
+        expect(wrapper.text()).toBe(ALL_ALIQUOTS_WARN);
+        wrapper.unmount();
+    });
+
+    test('only aliquots, some locked', () => {
+        const wrapper = mount(
+            <SamplesBulkUpdateAlert
+                aliquots={[1,2]}
+                numSelections={2}
+                editStatusData={new OperationConfirmationData({
+                    allowed: [{
+                        Name: 'A-1',
+                        RowId: 1
+                    }],
+                    notAllowed: [{
+                        Name: 'A-2',
+                        RowId: 2,
+                    }
+                    ]
+                })}
+            />);
+        expect(wrapper.find(Alert).exists()).toBeTruthy();
+        expect(wrapper.text()).toBe(ALL_ALIQUOTS_WARN + ' ' + ONE_LOCKED_WARN);
+        wrapper.unmount();
+    });
+
+    test('some aliquots, some locked', () => {
+        const wrapper = mount(
+            <SamplesBulkUpdateAlert
+                aliquots={[1,2]}
+                numSelections={3}
+                editStatusData={new OperationConfirmationData({
+                    allowed: [{
+                        Name: 'A-1',
+                        RowId: 1
+                    }],
+                    notAllowed: [{
+                        Name: 'A-2',
+                        RowId: 2,
+                    }, {
+                        Name: 'A-3',
+                        RowId: 3,
+                    }
+                    ]
+                })}
+            />);
+        expect(wrapper.find(Alert).exists()).toBeTruthy();
+        expect(wrapper.text()).toBe(MULTI_ALIQUOTS_WARN + ' ' + ONE_LOCKED_WARN);
+        wrapper.unmount();
+    });
+
+    test ('no aliquots, some locked', () => {
+        const wrapper = mount(
+            <SamplesBulkUpdateAlert
+                aliquots={[]}
+                numSelections={3}
+                editStatusData={new OperationConfirmationData({
+                    allowed: [{
+                        Name: 'A-1',
+                        RowId: 1
+                    }],
+                    notAllowed: [{
+                        Name: 'A-2',
+                        RowId: 2,
+                    }, {
+                        Name: 'A-3',
+                        RowId: 3,
+                    }
+                    ]
+                })}
+            />);
+        expect(wrapper.find(Alert).exists()).toBeTruthy();
+        expect(wrapper.text()).toBe(TWO_LOCKED_WARN);
+        wrapper.unmount();
+    });
+
+    test ('no aliquots, all allowed', () => {
+        const wrapper = mount(
+            <SamplesBulkUpdateAlert
+                aliquots={[]}
+                numSelections={3}
+                editStatusData={new OperationConfirmationData({
+                    allowed: [{
+                        Name: 'A-1',
+                        RowId: 1
+                    }, {
+                        Name: 'A-2',
+                        RowId: 2,
+                    }, {
+                        Name: 'A-3',
+                        RowId: 3,
+                    }
+                    ]
+                })}
+            />);
+        expect(wrapper.find(Alert).exists()).toBeFalsy();
     });
 });

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import Formsy from 'formsy-react';
 import { Input, Textarea } from 'formsy-react-components';
 
@@ -24,7 +24,20 @@ import { AssayPropertiesPanelProps } from './models';
 
 export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
     const { model, onChange, title = 'Run Details', showQuerySelectPreviewOptions } = props;
-
+    const nameLabel = useMemo(
+        () => (
+            <LabelOverlay
+                description="The assay/experiment ID that uniquely identifies this assay run."
+                label="Assay ID"
+                type="Text (String)"
+            />
+        ),
+        []
+    );
+    const commentLabel = useMemo(
+        () => <LabelOverlay description="Contains comments about this run" label="Comments" type="Text (String)" />,
+        []
+    );
     return (
         <div className="panel panel-default">
             <div className="panel-heading">{title}</div>
@@ -33,13 +46,7 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                     <Input
                         changeDebounceInterval={0}
                         id="runname"
-                        label={
-                            <LabelOverlay
-                                description="The assay/experiment ID that uniquely identifies this assay run."
-                                label="Assay ID"
-                                type="Text (String)"
-                            />
-                        }
+                        label={nameLabel}
                         labelClassName="text-left"
                         name="runname"
                         type="text"
@@ -49,13 +56,7 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                         changeDebounceInterval={0}
                         cols={60}
                         id="comment"
-                        label={
-                            <LabelOverlay
-                                description="Contains comments about this run"
-                                label="Comments"
-                                type="Text (String)"
-                            />
-                        }
+                        label={commentLabel}
                         labelClassName="text-left"
                         name="comment"
                         rows={2}

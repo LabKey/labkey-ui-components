@@ -36,7 +36,7 @@ export function getOperationConfirmationData(
     selectionKey: string,
     dataType: EntityDataType,
     rowIds?: string[] | number[],
-    extraParams?: any,
+    extraParams?: Record<string, any>,
 ): Promise<OperationConfirmationData> {
     if (!selectionKey && !rowIds?.length) {
         return new Promise(resolve => {

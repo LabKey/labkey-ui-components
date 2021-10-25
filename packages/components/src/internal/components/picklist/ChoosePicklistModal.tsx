@@ -429,9 +429,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         else {
             title='Cannot Add to Picklist'
             buttons = (
-                <Button bsClass="btn btn-default" onClick={closeModal}>
-                    Dismiss
-                </Button>
+                <Button bsClass="btn btn-default pull-right" onClick={closeModal}>Dismiss</Button>
             );
             body = getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData);
         }

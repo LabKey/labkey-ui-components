@@ -138,7 +138,7 @@ export function getOperationNotPermittedMessage(operation: SampleOperation, stat
     return notAllowedMsg;
 }
 
-export function filterSampleRowsForOperation(rows: { [p: string]: any }, operation: SampleOperation, sampleIdField: string = 'RowId') : { rows: { [p: string]: any }; statusMessage: string; statusData: OperationConfirmationData } {
+export function filterSampleRowsForOperation(rows: Record<string, any>, operation: SampleOperation, sampleIdField: string = 'RowId') : { rows: { [p: string]: any }; statusMessage: string; statusData: OperationConfirmationData } {
     let allowed = [];
     let notAllowed = [];
     let validRows = {};

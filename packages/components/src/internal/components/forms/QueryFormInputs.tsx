@@ -16,18 +16,11 @@
 import React, { ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
-import { Filter, Utils } from '@labkey/api';
+import { Utils } from '@labkey/api';
 
 import { initLookup } from '../../actions';
 
-import {
-    caseInsensitive,
-    getFilterForSampleOperation,
-    insertColumnFilter,
-    QueryColumn,
-    QueryInfo,
-    SampleOperation
-} from '../../..';
+import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo } from '../../..';
 
 import { resolveRenderer } from './renderers';
 import { QuerySelect } from './QuerySelect';
@@ -242,7 +235,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
                             const id = col.fieldKey + i + (componentKey ?? '');
-                            let queryFilters;
                             return (
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}
@@ -265,7 +257,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."
                                         previewOptions={showQuerySelectPreviewOptions}
-                                        queryFilters={queryFilters}
                                         renderFieldLabel={renderFieldLabel}
                                         required={col.required}
                                         schemaQuery={col.lookup.schemaQuery}

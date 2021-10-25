@@ -7,7 +7,7 @@ import {
     getOperationNotPermittedMessage,
     MAX_EDITABLE_GRID_ROWS,
     SampleOperation
-} from '../../../index';
+} from '../../..';
 
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
@@ -23,7 +23,7 @@ interface Props {
     onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
     api?: ComponentsAPIWrapper;
     selectionKey?: string;
-    selectedItems?: { [key: string]: any }
+    selectedItems?: Record<string, any>;
 }
 
 interface State extends Record<string, any> {
@@ -221,7 +221,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                             </Button>
                         </>
                     }
-                    {statusData && !statusData.anyAllowed &&
+                    {statusData && statusData.noneAllowed &&
                         <>
                             <Button bsStyle="default" onClick={this.onCancel} >
                                 Dismiss

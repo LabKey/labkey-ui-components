@@ -97,7 +97,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 return appURL;
             }
         },
-        [useOnClick, parentKey, parentModel, parentQueryModel, setSampleCreationURL, setSelectedOption]
+        [useOnClick, parentKey, selectionKey, setSampleCreationURL, setSelectedOption]
     );
 
     const onCancel = useCallback(() => {

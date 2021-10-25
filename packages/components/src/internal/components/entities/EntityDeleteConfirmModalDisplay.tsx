@@ -20,6 +20,7 @@ import { Alert, App, capitalizeFirstChar, ConfirmModal, SCHEMAS } from '../../..
 import { helpLinkNode } from '../../util/helpLinks';
 
 import { EntityDataType, OperationConfirmationData } from './models';
+import { isSampleEntity } from './utils';
 
 interface Props {
     onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
@@ -49,7 +50,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
         if (!confirmationData) return undefined;
 
         // TODO when experimental flag for sample status is removed, move this text into the SampleTypeDataType constant
-        const _dependencyText = App.isSampleStatusEnabled() && entityDataType.instanceSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA ? dependencyText + ' or status that prevents deletion' : dependencyText;
+        const _dependencyText = App.isSampleStatusEnabled() && isSampleEntity(entityDataType)? dependencyText + ' or status that prevents deletion' : dependencyText;
 
         const numCanDelete = confirmationData.allowed.length;
         const numCannotDelete = confirmationData.notAllowed.length;

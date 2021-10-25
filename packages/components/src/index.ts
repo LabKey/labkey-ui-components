@@ -489,6 +489,7 @@ import {
 } from './internal/components/samples/models';
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
+import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
 import {
     FIND_BY_IDS_QUERY_PARAM,
     SAMPLE_ID_FIND_FIELD,
@@ -934,6 +935,7 @@ export {
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     getFindSamplesByIdData,
     getOmittedSampleTypeColumns,
+    ManageSampleStatusesPanel,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

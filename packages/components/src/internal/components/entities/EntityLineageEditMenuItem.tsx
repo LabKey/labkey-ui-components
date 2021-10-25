@@ -3,8 +3,9 @@ import { MenuItem } from 'react-bootstrap';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { capitalizeFirstChar, EntityDataType, QueryModel, SelectionMenuItem } from '../../..';
+import { capitalizeFirstChar, QueryModel, SelectionMenuItem } from '../../..';
 
+import { EntityDataType } from './models';
 import { EntityLineageEditModal } from './EntityLineageEditModal';
 
 interface Props {

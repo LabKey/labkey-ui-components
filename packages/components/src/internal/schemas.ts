@@ -48,6 +48,7 @@ export const EXP_TABLES = {
 const CORE_SCHEMA = 'core';
 export const CORE_TABLES = {
     SCHEMA: CORE_SCHEMA,
+    DATA_STATES: SchemaQuery.create(CORE_SCHEMA, 'DataStates'),
     USERS: SchemaQuery.create(CORE_SCHEMA, 'Users'),
 };
 

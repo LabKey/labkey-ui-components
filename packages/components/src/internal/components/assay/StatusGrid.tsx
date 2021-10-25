@@ -20,13 +20,11 @@ interface OwnProps {
     excludedAssayProviders?: string[];
 }
 
-const StatusGridImpl: FC<InjectedQueryModels> = memo(props => {
+export const StatusGridImpl: FC<InjectedQueryModels> = memo(props => {
     const { actions, queryModels } = props;
 
     return (
-        <div>
-            <TabbedGridPanel tabOrder={['active', 'all']} actions={actions} queryModels={queryModels} asPanel={false} />
-        </div>
+        <TabbedGridPanel tabOrder={['active', 'all']} actions={actions} queryModels={queryModels} asPanel={false} />
     );
 });
 

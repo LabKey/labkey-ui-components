@@ -19,6 +19,7 @@ import { Utils } from '@labkey/api';
 
 import { DomainDesign, FieldErrors } from '../models';
 
+// See ExpProtocol.Status in 'platform' repository.
 enum Status {
     true = 'Active',
     false = 'Archived',

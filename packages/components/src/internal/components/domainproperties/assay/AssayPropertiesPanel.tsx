@@ -30,6 +30,7 @@ import {
     SaveScriptDataInput,
     TransformScriptsInput,
 } from './AssayPropertiesInput';
+import { isPremiumProductEnabled } from "../../../app/utils";
 
 const PROPERTIES_HEADER_ID = 'assay-properties-hdr';
 const FORM_ID_PREFIX = 'assay-design-';
@@ -171,7 +172,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                     {!appPropertiesOnly && model.allowPlateMetadata && (
                         <PlateMetadataInput model={model} onChange={this.onInputChange} />
                     )}
-                    {!appPropertiesOnly && <AssayStatusInput model={model} onChange={this.onInputChange} />}
+                    {isPremiumProductEnabled() && <AssayStatusInput model={model} onChange={this.onInputChange} />}
                 </div>
             </>
         );

@@ -1,13 +1,19 @@
-import {mount, shallow} from "enzyme";
-import React from "react";
-import {StatusGrid, StatusGridImpl} from "./StatusGrid";
-import {makeTestActions, makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {LoadingState} from "../../../public/LoadingState";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {AssayStateModel} from "./models";
-import {AssayDefinitionModel} from "../../AssayDefinitionModel";
-import {fromJS} from "immutable";
+import { mount, shallow } from 'enzyme';
+import React from 'react';
+
+import { fromJS } from 'immutable';
+
+import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+
+import { QueryInfo } from '../../../public/QueryInfo';
+import { LoadingState } from '../../../public/LoadingState';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { AssayDefinitionModel } from '../../AssayDefinitionModel';
+
+import { AssayStateModel } from './models';
+
+import { StatusGrid, StatusGridImpl } from './StatusGrid';
 
 const SQ = SchemaQuery.create('schema', 'query');
 
@@ -29,8 +35,8 @@ const assayModel = new AssayStateModel({
 
 const STATUS_GRID_PROPS = {
     excludedAssayProviders: [],
-    assayTypes: undefined
-}
+    assayTypes: undefined,
+};
 const IMPL_PROPS = {
     // assayModel,
     // sampleModel: modelLoadedWithRow,
@@ -39,9 +45,7 @@ const IMPL_PROPS = {
     // assayProtocol: undefined,
     // onTabChange: jest.fn,
     actions: makeTestActions(),
-    queryModels: {'active': makeTestQueryModel(
-            SchemaQuery.create('assay', 'AssayList')
-        )},
+    queryModels: { active: makeTestQueryModel(SchemaQuery.create('assay', 'AssayList')) },
 };
 
 describe('StatusGridImpl', () => {
@@ -84,4 +88,4 @@ describe('StatusGridImpl', () => {
         console.log(wrapper.debug());
         wrapper.unmount();
     });
-})
+});

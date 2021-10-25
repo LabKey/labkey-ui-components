@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Update aliquot rollup column field
+
 ### version 2.86.0
 *Released*: 22 October 2021
 * Item 9584: ManageSampleStatusesPanel for sample statuses CRUD operations

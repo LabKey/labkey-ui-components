@@ -13,8 +13,8 @@ const DEFAULT_PROPS = {
 };
 
 const noAliquotVolume = {
-    AliquotTotalVolume: {
-        displayValue: null,
+    AliquotVolume: {
+        value: null
     },
     Units: {
         displayValue: null,
@@ -22,8 +22,8 @@ const noAliquotVolume = {
 };
 
 const zeroAliquotVolume = {
-    AliquotTotalVolume: {
-        displayValue: 0,
+    AliquotVolume: {
+        value: null
     },
     Units: {
         displayValue: null,
@@ -170,8 +170,8 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
                 sampleLsid="S-20200404-1"
                 sampleSet="dirt"
                 sampleRow={{
-                    AliquotTotalVolume: {
-                        displayValue: 0,
+                    AliquotVolume: {
+                        value: 0,
                     },
                     Units: {
                         displayValue: 'g',
@@ -200,8 +200,8 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
                 sampleLsid="S-20200404-1"
                 sampleSet="dirt"
                 sampleRow={{
-                    AliquotTotalVolume: {
-                        displayValue: 100.1,
+                    AliquotVolume: {
+                        value: 100.1,
                     },
                     Units: {
                         displayValue: null,
@@ -230,8 +230,8 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
                 sampleLsid="S-20200404-1"
                 sampleSet="dirt"
                 sampleRow={{
-                    AliquotTotalVolume: {
-                        displayValue: 150.6,
+                    AliquotVolume: {
+                        value: 150.6,
                     },
                     Units: {
                         displayValue: null,
@@ -277,8 +277,8 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
                 sampleLsid="S-20200404-1"
                 sampleSet="dirt"
                 sampleRow={{
-                    AliquotTotalVolume: {
-                        displayValue: 150.6,
+                    AliquotVolume: {
+                        value: 150.6,
                     },
                     Units: {
                         displayValue: 'mL',
@@ -317,8 +317,8 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
                 sampleLsid="S-20200404-1"
                 sampleSet="dirt"
                 sampleRow={{
-                    AliquotTotalVolume: {
-                        displayValue: 50600.1,
+                    AliquotVolume: {
+                        value: 50600.1,
                     },
                     Units: {
                         displayValue: 'mL',
@@ -357,8 +357,8 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
                 sampleLsid="S-20200404-1"
                 sampleSet="dirt"
                 sampleRow={{
-                    AliquotTotalVolume: {
-                        displayValue: 1100.1,
+                    AliquotVolume: {
+                        value: 1100.1,
                     },
                     Units: {
                         displayValue: 'mL',

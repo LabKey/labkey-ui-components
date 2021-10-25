@@ -11,7 +11,7 @@ import {
 } from './actions';
 import { SampleState } from './models';
 import { SampleOperation } from './constants';
-import { getSampleOperationConfirmationData} from '../entities/actions';
+import { getSampleOperationConfirmationData } from '../entities/actions';
 import { OperationConfirmationData } from '../entities/models';
 
 export interface SamplesAPIWrapper {

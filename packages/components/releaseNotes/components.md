@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD October 2021
 * Item ...
+  * Add sample status column to picklist default view on creation, if sample status is enabled
 
 ### version 2.86.0
 *Released*: 22 October 2021

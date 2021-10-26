@@ -29,7 +29,7 @@ import {
     selectRows,
 } from '../../..';
 
-import { getUsers, getUsersCacheKey, setUsers } from '../../global';
+import { getUsers, setUsers } from '../../global';
 
 import { similaritySortFactory } from '../../util/similaritySortFactory';
 

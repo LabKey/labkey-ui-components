@@ -332,7 +332,7 @@ export function updateLookupStore(store: LookupStore, updates: any, failIfNotFou
     return updatedStore;
 }
 
-export function getUsersCacheKey(permissions?: string | string[], containerPath?: string): string {
+function getUsersCacheKey(permissions?: string | string[], containerPath?: string): string {
     let key = 'allPermissions';
     if (permissions) {
         if (Array.isArray(permissions)) {

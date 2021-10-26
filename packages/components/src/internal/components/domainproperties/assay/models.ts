@@ -123,7 +123,6 @@ export class AssayProtocolModel extends Record({
             }
         }
 
-        // Rosaline temp note: use reverse enum mapping instead?
         if (raw.status === 'Active') {
             raw.status = true;
         } else if (raw.status === 'Archived') {

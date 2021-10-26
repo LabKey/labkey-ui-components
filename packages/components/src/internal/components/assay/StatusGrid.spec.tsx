@@ -19,7 +19,6 @@ const IMPL_PROPS = {
 };
 
 describe('StatusGrid', () => {
-    // Temp note: Verify the tabbedGridPanel exists? Is there anything really to do here, since you're passing directly to the TabbedGridPanel?
     test('StatusGridImpl', () => {
         const wrapper = mount(<StatusGridImpl {...IMPL_PROPS} />);
 

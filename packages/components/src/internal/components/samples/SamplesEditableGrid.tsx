@@ -171,18 +171,23 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
             editableGridDataForSelection,
             editableGridDataIdsForSelection,
             samplesGridOmittedColumns,
+            sampleTypeDomainFields,
+            aliquots,
         } = this.props;
 
         const { displayQueryModel } = this.props;
         const samplesSchemaQuery = this.getSchemaQuery();
 
+        const allAliquots = this.hasAliquots() && aliquots.length === displayQueryModel.selections.size;
         const editModel = getStateQueryGridModel(SAMPLES_EDIT_GRID_ID, samplesSchemaQuery, {
             editable: true,
             queryInfo: displayQueryModel.queryInfo,
             loader: new EditableGridLoaderFromSelection(
                 editableGridUpdateData,
                 editableGridDataForSelection,
-                editableGridDataIdsForSelection ?? List(Array.from(displayQueryModel.selections))
+                editableGridDataIdsForSelection ?? List(Array.from(displayQueryModel.selections)),
+                allAliquots ? [] : aliquots,
+                allAliquots ? undefined : sampleTypeDomainFields.metaFields
             ),
             requiredColumns: this.getSamplesGridRequiredColumns(),
             omittedColumns: samplesGridOmittedColumns ? samplesGridOmittedColumns : List<string>(),

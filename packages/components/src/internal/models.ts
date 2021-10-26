@@ -692,7 +692,7 @@ export class EditorModel
         } else return undefined;
     }
 
-    static convertQueryDataToEditorData(data: Map<string, any>, updates?: Map<any, any>, idsNotToUpdate?: number[]): Map<any, Map<string, any>> {
+    static convertQueryDataToEditorData(data: Map<string, any>, updates?: Map<any, any>, idsNotToUpdate?: number[], fieldsNotToUpdate?: string[]): Map<any, Map<string, any>> {
         return data.map((valueMap, id) => {
             const returnMap = valueMap.reduce((m, valueMap, key) => {
                 const editorData = EditorModel.getEditorDataFromQueryValueMap(valueMap);
@@ -701,7 +701,18 @@ export class EditorModel
                 if (editorData !== undefined) return m.set(encodePart(key), editorData);
                 else return m;
             }, Map<any, any>());
-            return (updates && (!idsNotToUpdate || idsNotToUpdate.indexOf(parseInt(id)) < 0)) ? returnMap.merge(updates) : returnMap;
+            if (!updates) {
+                return returnMap;
+            }
+            if (!idsNotToUpdate || idsNotToUpdate.indexOf(parseInt(id)) < 0 || !fieldsNotToUpdate)
+                return returnMap.merge(updates);
+            let trimmedUpdates = Map<any, any>();
+            updates.forEach((value, fieldKey) => {
+                if (fieldsNotToUpdate.indexOf(fieldKey.toLowerCase()) < 0) {
+                    trimmedUpdates = trimmedUpdates.set(fieldKey, value);
+                }
+            })
+            return returnMap.merge(trimmedUpdates);
         }) as Map<any, Map<string, any>>;
     }
 

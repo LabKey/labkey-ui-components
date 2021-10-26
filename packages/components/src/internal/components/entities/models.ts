@@ -595,7 +595,7 @@ export class OperationConfirmationData {
         Object.assign(this, {idMap});
     }
 
-    isIdAllowed(id: number|string): boolean {
+    isIdAllowed(id: number | string): boolean {
         const idNum = typeof id === 'string' ? parseInt(id) : id;
         return this.idMap[idNum];
     }

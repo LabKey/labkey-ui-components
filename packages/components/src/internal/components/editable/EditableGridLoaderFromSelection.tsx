@@ -26,12 +26,14 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
     dataIdsForSelection: List<any>;
     model: QueryGridModel;
     idsNotToUpdate: number[];
+    fieldsNotToUpdate: string[];
 
-    constructor(updateData, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>, idsNotToUpdate?: any[]) {
+    constructor(updateData, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>, idsNotToUpdate?: any[], fieldsNotToUpdate?: string[]) {
         this.updateData = updateData || {};
         this.dataForSelection = dataForSelection;
         this.dataIdsForSelection = dataIdsForSelection;
         this.idsNotToUpdate = idsNotToUpdate || [];
+        this.fieldsNotToUpdate = fieldsNotToUpdate || [];
     }
 
     selectAndFetch(gridModel: QueryGridModel): Promise<IGridResponse> {
@@ -44,7 +46,7 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
                 .then(response => {
                     const { data, dataIds, totalRows } = response;
                     resolve({
-                        data: EditorModel.convertQueryDataToEditorData(data, Map<any, any>(this.updateData), this.idsNotToUpdate),
+                        data: EditorModel.convertQueryDataToEditorData(data, Map<any, any>(this.updateData), this.idsNotToUpdate, this.fieldsNotToUpdate),
                         dataIds,
                         totalRows,
                     });
@@ -63,7 +65,8 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
             const data = EditorModel.convertQueryDataToEditorData(
                 this.dataForSelection,
                 Map<any, any>(this.updateData),
-                this.idsNotToUpdate
+                this.idsNotToUpdate,
+                this.fieldsNotToUpdate
             );
 
             resolve({

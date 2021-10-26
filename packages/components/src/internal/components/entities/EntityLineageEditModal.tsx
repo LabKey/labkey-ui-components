@@ -153,7 +153,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
 
                 <Modal.Body>
                     <div>
-                        {(numAliquots === statusData.totalCount) && <>The {lcParentNounPlural} for aliquots cannot be changed.</>}
+                        {(numAliquots === statusData.totalCount) && <>The {lcParentNounPlural} for aliquots cannot be changed. </>}
                         {aliquotsMsg}
                         {getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
                     </div>

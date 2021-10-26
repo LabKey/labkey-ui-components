@@ -28,7 +28,7 @@ export const StatusGridImpl: FC<InjectedQueryModels> = memo(props => {
     );
 });
 
-const StatusGridWithModels = withQueryModels(StatusGridImpl);
+export const StatusGridWithModels = withQueryModels(StatusGridImpl);
 
 export const StatusGrid: FC<OwnProps> = memo(props => {
     const { assayTypes, excludedAssayProviders } = props;
@@ -49,6 +49,7 @@ export const StatusGrid: FC<OwnProps> = memo(props => {
                 id: ACTIVE_GRID_ID,
                 title: 'Active',
                 schemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
+                omittedColumns: ['Status'],
             },
             [ALL_GRID_ID]: {
                 ...SAMPLE_QUERY_CONFIG,

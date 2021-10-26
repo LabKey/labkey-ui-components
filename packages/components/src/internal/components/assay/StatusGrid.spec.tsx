@@ -1,91 +1,91 @@
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 
-import { fromJS } from 'immutable';
+import { IFilter } from '@labkey/api/dist/labkey/filter/Filter';
 
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-
-import { QueryInfo } from '../../../public/QueryInfo';
-import { LoadingState } from '../../../public/LoadingState';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { AssayDefinitionModel } from '../../AssayDefinitionModel';
+import { TabbedGridPanel } from '../../..';
 
-import { AssayStateModel } from './models';
+import { StatusGrid, StatusGridImpl, StatusGridWithModels } from './StatusGrid';
 
-import { StatusGrid, StatusGridImpl } from './StatusGrid';
-
-const SQ = SchemaQuery.create('schema', 'query');
-
-const modelLoadedWithRow = makeTestQueryModel(
-    SQ,
-    new QueryInfo(),
-    { 1: { RowId: { value: 1 }, Name: { value: 'Name1' } } },
-    ['1'],
-    1
-).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
-const sampleModel = makeTestQueryModel(SQ);
-const assayModel = new AssayStateModel({
-    definitions: [
-        new AssayDefinitionModel({ id: 17, name: 'First Assay', type: 'General', links: fromJS({ import: 'test1' }) }),
-        new AssayDefinitionModel({ id: 41, name: 'NAb Assay', type: 'NAb', links: fromJS({ import: 'test2' }) }),
-    ],
-    definitionsLoadingState: LoadingState.LOADED,
-});
-
-const STATUS_GRID_PROPS = {
-    excludedAssayProviders: [],
-    assayTypes: undefined,
-};
 const IMPL_PROPS = {
-    // assayModel,
-    // sampleModel: modelLoadedWithRow,
-    // reloadAssays: jest.fn,
-    // assayDefinition: undefined,
-    // assayProtocol: undefined,
-    // onTabChange: jest.fn,
     actions: makeTestActions(),
-    queryModels: { active: makeTestQueryModel(SchemaQuery.create('assay', 'AssayList')) },
+    queryModels: {
+        active: makeTestQueryModel(SchemaQuery.create('assay', 'AssayList')),
+        all: makeTestQueryModel(SchemaQuery.create('assay', 'AssayList')),
+    },
 };
 
-describe('StatusGridImpl', () => {
-    // Verify the tabbedGridPanel exists? Is there anything really to do here, since you're passing directly to the TabbedGridPanel?
-    test('no assay models', () => {
-        const wrapper = shallow(<StatusGridImpl {...IMPL_PROPS} />);
+describe('StatusGrid', () => {
+    // Temp note: Verify the tabbedGridPanel exists? Is there anything really to do here, since you're passing directly to the TabbedGridPanel?
+    test('StatusGridImpl', () => {
+        const wrapper = mount(<StatusGridImpl {...IMPL_PROPS} />);
 
-        console.log(wrapper.debug());
+        expect(wrapper.find(TabbedGridPanel)).toHaveLength(1);
         wrapper.unmount();
     });
 
-    // 1: If assayTypes exists, col filter on Type should be those in assayTypes
+    const validate = (filter: IFilter[], filterType: string, value: string[], filterLength: number) => {
+        expect(filter.length).toBe(filterLength);
+        expect(filter[0].getColumnName()).toBe('Type');
+        expect(filter[0].getFilterType().getDisplayText()).toBe(filterType);
+        expect(filter[0].getValue()).toEqual(value);
+    };
+    // If assayTypes exists, col filter on Type should be those in assayTypes
     test('StatusGrid assayTypes', () => {
-        const wrapper = shallow(<StatusGrid {...STATUS_GRID_PROPS} />);
+        const wrapper = mount(<StatusGrid assayTypes={['General']} />);
+        const statusGridWithModelsProps = wrapper.find(StatusGridWithModels).props();
 
-        console.log(wrapper.debug());
+        const activeFilter = statusGridWithModelsProps.queryConfigs.active.baseFilters;
+        validate(activeFilter, 'Equals One Of', ['General'], 2);
+
+        const allFilter = statusGridWithModelsProps.queryConfigs.all.baseFilters;
+        validate(allFilter, 'Equals One Of', ['General'], 1);
+
         wrapper.unmount();
     });
 
-    // 2: If excludedAssayProviders exists, col filter on Type should be those not in excludedAssayProviders
+    // If excludedAssayProviders exists, col filter on Type should be those not in excludedAssayProviders
     test('StatusGrid excludedAssayProviders', () => {
-        const wrapper = shallow(<StatusGrid {...STATUS_GRID_PROPS} />);
+        const wrapper = shallow(<StatusGrid excludedAssayProviders={['Luminex']} />);
+        const statusGridWithModelsProps = wrapper.find(StatusGridWithModels).props();
 
-        console.log(wrapper.debug());
+        const activeFilter = statusGridWithModelsProps.queryConfigs.active.baseFilters;
+        validate(activeFilter, 'Does Not Equal Any Of', ['Luminex'], 2);
+
+        const allFilter = statusGridWithModelsProps.queryConfigs.all.baseFilters;
+        validate(allFilter, 'Does Not Equal Any Of', ['Luminex'], 1);
+
         wrapper.unmount();
     });
 
-    // 3: If both exist, only assayTypes is used
+    // If both exist, only assayTypes is used
     test('StatusGrid assayTypes and excludedAssayProviders', () => {
-        const wrapper = shallow(<StatusGrid {...STATUS_GRID_PROPS} />);
+        const wrapper = shallow(<StatusGrid assayTypes={['General']} excludedAssayProviders={['Luminex']} />);
+        const statusGridWithModelsProps = wrapper.find(StatusGridWithModels).props();
 
-        console.log(wrapper.debug());
+        const activeFilter = statusGridWithModelsProps.queryConfigs.active.baseFilters;
+        validate(activeFilter, 'Equals One Of', ['General'], 2);
+
+        const allFilter = statusGridWithModelsProps.queryConfigs.all.baseFilters;
+        validate(allFilter, 'Equals One Of', ['General'], 1);
+
         wrapper.unmount();
     });
 
-    // 4: If neither exist, no col filter on Type is used
+    // If neither exist, no col filter on Type is used
     test('StatusGrid assayTypes nor excludedAssayProviders', () => {
-        const wrapper = shallow(<StatusGrid {...STATUS_GRID_PROPS} />);
+        const wrapper = shallow(<StatusGrid />);
+        const statusGridWithModelsProps = wrapper.find(StatusGridWithModels).props();
 
-        console.log(wrapper.debug());
+        const activeFilter = statusGridWithModelsProps.queryConfigs.active.baseFilters;
+        expect(activeFilter.length).toBe(1);
+
+        const allFilter = statusGridWithModelsProps.queryConfigs.all.baseFilters;
+        expect(allFilter).toEqual([]);
+
         wrapper.unmount();
     });
 });

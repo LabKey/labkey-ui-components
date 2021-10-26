@@ -188,7 +188,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
 
         const parentNoun = parentCount > 1 ? 'Parents' : 'Parent';
         const canSubmit = !submitting && this.isValidNumPerParent();
-        const title = (statusData?.totalCount > 0 && statusData?.noneAllowed ? 'Cannot ' : '') + 'Create Samples from Selected ' + parentNoun;
+        const title = (statusData?.noneAllowed ? 'Cannot ' : '') + 'Create Samples from Selected ' + parentNoun;
         return (
             <Modal show={show} onHide={this.onCancel}>
                 <Modal.Header closeButton>
@@ -196,7 +196,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 </Modal.Header>
 
                 <Modal.Body>
-                    {statusData?.totalCount > 0 && statusData?.noneAllowed && getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
+                    {statusData?.noneAllowed && getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
                     {(statusData?.totalCount == 0 || statusData?.anyAllowed) && (
                         <>
                             {statusData?.anyNotAllowed &&

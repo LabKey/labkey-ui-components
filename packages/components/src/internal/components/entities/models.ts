@@ -605,11 +605,11 @@ export class OperationConfirmationData {
     }
 
     get noneAllowed(): boolean {
-        return this.allowed.length === 0;
+        return this.allowed.length === 0 && this.notAllowed.length > 0;
     }
 
     get anyAllowed(): boolean {
-        return this.allowed.length > 0
+        return this.allowed.length > 0;
     }
 
     get totalCount(): number {

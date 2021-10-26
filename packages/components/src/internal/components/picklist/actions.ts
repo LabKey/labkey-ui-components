@@ -17,6 +17,7 @@ import { SCHEMAS } from '../../../index';
 import { PICKLIST_KEY } from '../../app/constants';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
+import { isSampleStatusEnabled } from "../../app/utils";
 
 export function getPicklists(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
@@ -47,29 +48,32 @@ export function getPicklists(): Promise<Picklist[]> {
 
 export function setPicklistDefaultView(name: string): Promise<string> {
     return new Promise((resolve, reject) => {
+        const columns = [
+            { fieldKey: 'SampleID/Name' },
+            { fieldKey: 'SampleID/LabelColor' },
+            { fieldKey: 'SampleID/SampleSet' },
+        ];
+        if (isSampleStatusEnabled()) {
+            columns.push({ fieldKey: 'SampleID/SampleState' });
+        }
+        columns.push(
+            { fieldKey: 'SampleID/StoredAmount' },
+            { fieldKey: 'SampleID/Units' },
+            { fieldKey: 'SampleID/freezeThawCount' },
+            { fieldKey: 'SampleID/StorageStatus' },
+            { fieldKey: 'SampleID/checkedOutBy' },
+            { fieldKey: 'SampleID/Created' },
+            { fieldKey: 'SampleID/CreatedBy' },
+            { fieldKey: 'SampleID/StorageLocation' },
+            { fieldKey: 'SampleID/StorageRow' },
+            { fieldKey: 'SampleID/StorageCol' },
+            { fieldKey: 'SampleID/isAliquot' },
+        );
+
         const jsonData = {
             schemaName: 'lists',
             queryName: name,
-            views: [
-                {
-                    columns: [
-                        { fieldKey: 'SampleID/Name' },
-                        { fieldKey: 'SampleID/LabelColor' },
-                        { fieldKey: 'SampleID/SampleSet' },
-                        { fieldKey: 'SampleID/StoredAmount' },
-                        { fieldKey: 'SampleID/Units' },
-                        { fieldKey: 'SampleID/freezeThawCount' },
-                        { fieldKey: 'SampleID/StorageStatus' },
-                        { fieldKey: 'SampleID/checkedOutBy' },
-                        { fieldKey: 'SampleID/Created' },
-                        { fieldKey: 'SampleID/CreatedBy' },
-                        { fieldKey: 'SampleID/StorageLocation' },
-                        { fieldKey: 'SampleID/StorageRow' },
-                        { fieldKey: 'SampleID/StorageCol' },
-                        { fieldKey: 'SampleID/isAliquot' },
-                    ],
-                },
-            ],
+            views: [{ columns }],
             shared: true,
         };
         return Ajax.request({

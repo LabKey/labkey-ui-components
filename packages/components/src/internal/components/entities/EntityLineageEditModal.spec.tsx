@@ -189,7 +189,7 @@ describe('EntityLineageEditModal', () => {
         await waitForLifecycle(wrapper);
         validate(wrapper, true, false, false);
         expect(wrapper.find(Modal.Title).text()).toBe('Cannot Edit samples');
-        expect(wrapper.find(Modal.Body).text()).toBe('The samples for aliquots cannot be changed.');
+        expect(wrapper.find(Modal.Body).text()).toBe('The samples for aliquots cannot be changed. ');
         expect(wrapper.find(Button).text()).toBe('Dismiss');
         wrapper.unmount();
     });

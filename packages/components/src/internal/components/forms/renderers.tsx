@@ -92,7 +92,12 @@ const AssayTaskInputRenderer: InputRenderer = (
     value: any,
     isDetailInput: boolean
 ) => (
-    <AssayTaskInput assayId={data.getIn([ASSAY_ID_INDEX, 'value'])} isDetailInput={isDetailInput} value={value} />
+    <AssayTaskInput
+        assayId={data.getIn([ASSAY_ID_INDEX, 'value'])}
+        isDetailInput={isDetailInput}
+        name={col.name}
+        value={value}
+    />
 );
 
 export function resolveRenderer(column: QueryColumn): InputRenderer {

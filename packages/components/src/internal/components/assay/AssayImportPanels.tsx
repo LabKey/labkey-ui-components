@@ -204,7 +204,13 @@ class AssayImportPanelsBody extends Component<Props, State> {
     }
 
     initModel = (props: Props): void => {
-        const { assayDefinition, runId } = props;
+        const { assayDefinition, location, runId } = props;
+        let workflowTask;
+
+        if (location.query?.workflowTaskId) {
+            const _workflowTask = parseInt(location.query?.workflowTaskId, 10);
+            workflowTask = isNaN(_workflowTask) ? undefined : _workflowTask;
+        }
 
         if (this.state.model.isInit) {
             return;
@@ -228,6 +234,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                         batchProperties: this.getBatchPropertiesMap(),
                         runProperties: this.getRunPropertiesMap(),
                         queryInfo,
+                        workflowTask,
                     }),
                 }),
                 this.onGetQueryDetailsComplete

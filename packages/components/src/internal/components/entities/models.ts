@@ -604,6 +604,8 @@ export class OperationConfirmationData {
         return this.notAllowed.length === 0;
     }
 
+    // Note that this returns false if there are no samples represented since we generally want
+    // noneAllowed to mean there are some samples but none are allowed.
     get noneAllowed(): boolean {
         return this.allowed.length === 0 && this.notAllowed.length > 0;
     }

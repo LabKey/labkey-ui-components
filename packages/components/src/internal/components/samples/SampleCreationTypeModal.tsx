@@ -188,7 +188,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
 
         const parentNoun = parentCount > 1 ? 'Parents' : 'Parent';
         const canSubmit = !submitting && this.isValidNumPerParent();
-        const title = (statusData?.noneAllowed ? 'Cannot ' : '') + 'Create Samples from Selected ' + parentNoun;
+        const title = (statusData?.totalCount > 0 && statusData?.noneAllowed ? 'Cannot ' : '') + 'Create Samples from Selected ' + parentNoun;
         return (
             <Modal show={show} onHide={this.onCancel}>
                 <Modal.Header closeButton>
@@ -196,8 +196,8 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 </Modal.Header>
 
                 <Modal.Body>
-                    {statusData?.noneAllowed && getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
-                    {statusData?.anyAllowed && (
+                    {statusData?.totalCount > 0 && statusData?.noneAllowed && getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
+                    {(statusData?.totalCount == 0 || statusData?.anyAllowed) && (
                         <>
                             {statusData?.anyNotAllowed &&
                                 <Alert bsStyle="warning">
@@ -211,7 +211,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {statusData?.anyAllowed &&
+                    {(statusData?.totalCount == 0 || statusData?.anyAllowed) &&
                         <>
                             <Button bsStyle="default" className="pull-left" onClick={this.onCancel}>
                                 Cancel
@@ -221,7 +221,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                             </Button>
                         </>
                     }
-                    {statusData && statusData.noneAllowed &&
+                    {statusData?.noneAllowed &&
                         <>
                             <Button bsStyle="default" onClick={this.onCancel} >
                                 Dismiss

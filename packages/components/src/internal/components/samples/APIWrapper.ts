@@ -30,7 +30,7 @@ export interface SamplesAPIWrapper {
     getSampleOperationConfirmationData: (
         operation: SampleOperation,
         selectionKey: string,
-        rowIds?: string[]) => Promise<OperationConfirmationData>;
+        rowIds?: number[] | string[]) => Promise<OperationConfirmationData>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {

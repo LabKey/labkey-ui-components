@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.87.0
+*Released*: ?? October 2021
+* Bump @labkey/api dependency
+* Add AssayTaskInput
+* Update RunPropertiesPanel to render AssayTaskInput
+* Update resolveRenderer to use AssayTaskInput
+
 ### 2.86.1
 *Released*: 26 October 2021
 * Auto-close confirm modal in case of error saving for 'ID/Name Settings' panel

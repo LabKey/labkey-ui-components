@@ -12,14 +12,13 @@ module's `package.json` file at them.
 
 1. Add the `@labkey/build` package to your module's `package.json` devDependencies.
 1. Add/update the `scripts` in your `package.json` to reference the relevant config file in
-    `node_modules/@labkey/build/webpack`. See examples from the [study] module.
+    `node_modules/@labkey/build/webpack`. See examples from the [experiment] module.
     1. use one of the three configuration files based on your script target: `prod.config.js`, `dev.config.js`,
         or `watch.config.js`
     1. make sure to pass the following environment variables as part of your webpack command:
-        1.  `NODE_ENV` - development or production
-        1. `LK_MODULE_CONTAINER` - if your module is in a module container repository with other modules,
-            this is the name of the repository
-        1.  `LK_MODULE` - module name
+        1. `NODE_ENV` - development or production
+        2. `PROD_SOURCE_MAP` - optional source map setting for the production webpack config to use,
+           defaults to `nosources-source-map`
 
 ### How it works
 
@@ -28,13 +27,13 @@ and code live. Each `entryPoint` will have output files generated as part of the
 [LabKey Gradle build] steps for that module. The artifacts will be generated and placed into the
 standard LabKey `views` directory to make the pages available to the server through the module's
 controller. The generated `<entryPoint>.html` and `<entryPoint>.view.xml` files will be placed in the
-`<module>/resources/views` directory and the generated JS/CSS artifacts will be placed in the
-`<module>/resources/web/<module>/gen` directory.
+`<module>/resources/views/gen` directory and the generated JS/CSS artifacts will be placed in the
+`<module>/resources/web/gen` directory.
 
 If your `entryPoint` is to be used in a JSP or included in another LabKey page and you don't want to expose it
 directly as its own `view`, you can set the `generateLib` property for your `entryPoint`. This will generate
-the same JS/CSS artifacts in the `<module>/resources/web/<module>/gen` directory but will skip the `resources/views`
-generation step and instead create an `<entryPoint>.lib.xml` file in the `<module>/resources/web/<module>/gen` directory.
+the same JS/CSS artifacts in the `<module>/resources/web/gen` directory but will skip the `resources/views`
+generation step and instead create an `<entryPoint>.lib.xml` file in the `<module>/resources/web/gen` directory.
 This lib.xml can then be used in your JSP or other LabKey page. You can see an example of this in the experiment
 [entryPoints.js] file.
 
@@ -42,7 +41,7 @@ This lib.xml can then be used in your JSP or other LabKey page. You can see an e
 
 To configure a LabKey module to participant in the React page build process:
 1. Add the following files to your module's main directory:
-    1. `package.json` - Defines your module's npm build scripts, see [study] module example, and npm package
+    1. `package.json` - Defines your module's npm build scripts, see [experiment] module example, and npm package
         dependencies. Note that after your first successful build of this module after adding this,
         a new `package-lock.json` file will be generated. You will want to add that file to your git repo
         and check it in as well. Note that in this file the `npm clean` command might need to be adjusted
@@ -58,7 +57,7 @@ To configure a LabKey module to participant in the React page build process:
     and generated JS/CSS artifacts.
 
 You can see examples of each of these files in the following LabKey modules:
-[assay], [experiment], and [list].
+[assay], [experiment], and [pipeline].
 
 ### Building LabKey React pages
 
@@ -143,8 +142,7 @@ build before publishing a new `@labkey/build` version, you can do one of the fol
 [LabKey Gradle build]: https://www.labkey.org/Documentation/wiki-page.view?name=gradleBuild
 [assay]: https://github.com/LabKey/platform/tree/develop/assay
 [experiment]: https://github.com/LabKey/platform/tree/develop/experiment
-[list]: https://github.com/LabKey/platform/tree/develop/list
-[study]: https://github.com/LabKey/platform/blob/develop/study/package.json
+[pipeline]: https://github.com/LabKey/platform/tree/develop/pipeline
+[experiment]: https://github.com/LabKey/platform/blob/develop/experiment/package.json
 [entryPoints.js]: https://github.com/LabKey/platform/blob/develop/experiment/src/client/entryPoints.js
-[.npmrc]: https://github.com/LabKey/platform/blob/develop/study/.npmrc
-[tsconfig.json]: https://github.com/LabKey/platform/blob/develop/study/tsconfig.json
+[.npmrc]: https://github.com/LabKey/platform/blob/develop/experiment/.npmrc

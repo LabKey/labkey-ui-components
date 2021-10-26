@@ -1,6 +1,8 @@
 import { ComponentType } from 'react';
 import { List } from 'immutable';
 
+import { Draft, immerable, produce } from 'immer';
+
 import { QueryModel, User } from '../../..';
 
 import { SampleStateType } from './constants';
@@ -122,3 +124,31 @@ export interface SampleStorageButtonsComponentProps {
 }
 
 export type SampleStorageButton = ComponentType<SampleStorageButtonsComponentProps>;
+
+export class SampleState {
+    [immerable] = true;
+
+    readonly rowId: number;
+    readonly label: string;
+    readonly description: string;
+    readonly stateType: string;
+    readonly publicData: boolean;
+    readonly inUse: boolean;
+
+    constructor(values?: Partial<SampleState>) {
+        Object.assign(this, values);
+        if (this.publicData === undefined) {
+            Object.assign(this, { publicData: false });
+        }
+    }
+
+    set(name: string, value: any): SampleState {
+        return this.mutate({ [name]: value });
+    }
+
+    mutate(props: Partial<SampleState>): SampleState {
+        return produce(this, (draft: Draft<SampleState>) => {
+            Object.assign(draft, props);
+        });
+    }
+}

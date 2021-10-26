@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Auto-close confirm modal in case of error saving for 'ID/Name Settings' panel
 
+### version 2.86.0
+*Released*: 22 October 2021
+* Item 9584: ManageSampleStatusesPanel for sample statuses CRUD operations
+  * Update APIWrapper to take mockFn as a param instead of adding jest dependency directly
+  * getSampleStatuses action to call API and return SampleState array
+  * NameIdSettings component update to support optional titleCls prop
+
 ### version 2.85.0
 *Released*: 18 October 2021
 * Add settings panel 'ID/Name Settings' for use in LKB and LKSM

@@ -12,7 +12,7 @@ interface Props {
     data: ChartData[];
     defaultBorderColor?: string;
     defaultFillColor?: string;
-    onClick: (evt: any, row: any) => void;
+    onClick?: (evt: any, row: any) => void;
     title: string;
 }
 

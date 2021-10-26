@@ -9,10 +9,17 @@ import { sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
 
-export const NameIdSettings: FC = memo(() => {
+const TITLE = 'ID/Name Settings';
+
+interface NameIdSettingsProps {
+    titleCls?: string;
+}
+
+export const NameIdSettings: FC<NameIdSettingsProps> = memo(props => {
     return (
         <RequiresPermission perms={PermissionTypes.Admin}>
             <NameIdSettingsForm
+                {...props}
                 saveNameExpressionOptions={saveNameExpressionOptions}
                 loadNameExpressionOptions={loadNameExpressionOptions}
             />
@@ -20,7 +27,7 @@ export const NameIdSettings: FC = memo(() => {
     );
 });
 
-interface Props {
+interface NameIdSettingsFormProps extends NameIdSettingsProps {
     loadNameExpressionOptions: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
     saveNameExpressionOptions: (key: string, value: string | boolean) => Promise<void>;
 }
@@ -44,8 +51,8 @@ const initialState: State = {
     allowUserSpecifiedNames: false,
     savingAllowUserSpecifiedNames: false,
 };
-export const NameIdSettingsForm: FC<Props> = props => {
-    const { loadNameExpressionOptions, saveNameExpressionOptions } = props;
+export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
+    const { loadNameExpressionOptions, saveNameExpressionOptions, titleCls } = props;
     const [state, setState] = useReducer(
         (currentState: State, newState: Partial<State>): State => ({ ...currentState, ...newState }),
         initialState
@@ -124,9 +131,10 @@ export const NameIdSettingsForm: FC<Props> = props => {
     }, []);
 
     return (
-        <div className="name-id-settings-panel panel">
+        <div className="name-id-settings-panel panel panel-default">
+            {!titleCls && <div className="panel-heading">{TITLE}</div>}
             <div className="panel-body">
-                <h4 className="name-id-setting__setting-panel-title">ID/Name Settings</h4>
+                {titleCls && <h4 className={titleCls}>{TITLE}</h4>}
                 <div className="name-id-setting__setting-section">
                     <h5> User-defined IDs/Names </h5>
 

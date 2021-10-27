@@ -16,8 +16,9 @@ import { OperationConfirmationData, SCHEMAS } from '../../../index';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
-import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
 import { isSampleStatusEnabled } from '../../app/utils';
+
+import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
 
 export function getPicklists(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
@@ -67,14 +68,14 @@ export function setPicklistDefaultView(name: string): Promise<string> {
             { fieldKey: 'SampleID/StorageLocation' },
             { fieldKey: 'SampleID/StorageRow' },
             { fieldKey: 'SampleID/StorageCol' },
-            { fieldKey: 'SampleID/isAliquot' },
+            { fieldKey: 'SampleID/isAliquot' }
         );
         const jsonData = {
             schemaName: 'lists',
             queryName: name,
             views: [
                 {
-                    columns
+                    columns,
                 },
             ],
             shared: true,
@@ -102,7 +103,7 @@ export function createPicklist(
     shared: boolean,
     statusData: OperationConfirmationData,
     selectionKey: string,
-    sampleIds: string[],
+    sampleIds: string[]
 ): Promise<Picklist> {
     return new Promise((resolve, reject) => {
         Domain.create({
@@ -300,14 +301,15 @@ export function addSamplesToPicklist(
     listName: string,
     statusData: OperationConfirmationData,
     selectionKey?: string,
-    sampleIds?: string[]): Promise<InsertRowsResponse> {
+    sampleIds?: string[]
+): Promise<InsertRowsResponse> {
     return new Promise((resolve, reject) => {
         return getSamplesNotInList(listName, selectionKey, sampleIds)
             .then(sampleIdsToAdd => {
                 let rows = List<any>();
                 sampleIdsToAdd.forEach(id => {
                     if (statusData.isIdAllowed(id)) {
-                        rows = rows.push({SampleID: id});
+                        rows = rows.push({ SampleID: id });
                     }
                 });
                 if (rows.size > 0) {

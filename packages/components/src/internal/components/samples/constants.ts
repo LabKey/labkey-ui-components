@@ -29,7 +29,7 @@ export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';
 export const SAMPLE_STATE_DESCRIPTION_COLUMN_NAME = 'SampleState/Description';
 
 export enum SampleOperation {
-    EditMetadata ,
+    EditMetadata,
     EditLineage,
     AddToStorage,
     UpdateStorageMetadata,
@@ -70,14 +70,14 @@ export const permittedOps = {
     [SampleStateType.Locked]: new Set([SampleOperation.AddToPicklist]),
 };
 
-export const STATUS_DATA_RETRIEVAL_ERROR = "There was a problem retrieving the current sample status data.";
+export const STATUS_DATA_RETRIEVAL_ERROR = 'There was a problem retrieving the current sample status data.';
 
 export const operationRestrictionMessage = {
     [SampleOperation.EditMetadata]: {
         all: 'updating of their data without also changing the status',
         singular: 'updating of its data',
         plural: 'updating of their data',
-        recommendation: 'Either change the status here or remove these samples from your selection'
+        recommendation: 'Either change the status here or remove these samples from your selection',
     },
     [SampleOperation.EditLineage]: {
         all: 'updating of their lineage',
@@ -115,12 +115,12 @@ export const operationRestrictionMessage = {
     [SampleOperation.RemoveFromWorkflow]: {
         all: 'removing them from a job',
         singular: 'removing it from a job',
-        plural: 'removing them from a job'
+        plural: 'removing them from a job',
     },
     [SampleOperation.AddAssayData]: {
         all: 'adding associated assay data',
         singular: 'adding associated assay data',
-        plural: 'adding associated assay data'
+        plural: 'adding associated assay data',
     },
     // [SampleOperation.LinkToStudy]: {
     //    Not needed because check is done on LKS page
@@ -128,4 +128,4 @@ export const operationRestrictionMessage = {
     // [SampleOperation.RecallFromStudy]: {
     //    Not needed because only possible from LKS
     // }
-}
+};

@@ -528,7 +528,7 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getReadOnlyRows = (tabInd: number): List<string> => {
-        const { aliquots,  noStorageSamples } = this.props;
+        const { aliquots, noStorageSamples } = this.props;
 
         if (tabInd === GridTab.Storage) {
             return List<string>(noStorageSamples);
@@ -607,9 +607,17 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                 </>
             );
         } else if (tabInd === GridTab.Storage) {
-            return <div className="top-spacing sample-status-warning">Samples that are not currently in storage are not editable here.</div>
+            return (
+                <div className="top-spacing sample-status-warning">
+                    Samples that are not currently in storage are not editable here.
+                </div>
+            );
         } else {
-            return <div className="top-spacing sample-status-warning">Aliquot data inherited from the original sample cannot be updated here.</div>
+            return (
+                <div className="top-spacing sample-status-warning">
+                    Aliquot data inherited from the original sample cannot be updated here.
+                </div>
+            );
         }
     };
 

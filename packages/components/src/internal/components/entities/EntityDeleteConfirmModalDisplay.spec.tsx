@@ -24,15 +24,17 @@ describe('<EntityDeleteConfirmModal/>', () => {
     test('Can delete 1', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={new OperationConfirmationData({
-                    allowed: [
-                        {
-                            Name: 'D-2.3.1',
-                            RowId: 351,
-                        },
-                    ],
-                    notAllowed: [],
-                })}
+                confirmationData={
+                    new OperationConfirmationData({
+                        allowed: [
+                            {
+                                Name: 'D-2.3.1',
+                                RowId: 351,
+                            },
+                        ],
+                        notAllowed: [],
+                    })
+                }
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
@@ -48,23 +50,25 @@ describe('<EntityDeleteConfirmModal/>', () => {
     test('Can delete all', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={new OperationConfirmationData({
-                    allowed: [
-                        {
-                            Name: 'D-2.3.1',
-                            RowId: 351,
-                        },
-                        {
-                            Name: 'D-3',
-                            RowId: 352,
-                        },
-                        {
-                            Name: 'D-4',
-                            RowId: 5,
-                        },
-                    ],
-                    notAllowed: [],
-                })}
+                confirmationData={
+                    new OperationConfirmationData({
+                        allowed: [
+                            {
+                                Name: 'D-2.3.1',
+                                RowId: 351,
+                            },
+                            {
+                                Name: 'D-3',
+                                RowId: 352,
+                            },
+                            {
+                                Name: 'D-4',
+                                RowId: 5,
+                            },
+                        ],
+                        notAllowed: [],
+                    })
+                }
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
@@ -80,24 +84,26 @@ describe('<EntityDeleteConfirmModal/>', () => {
     test('Can delete some', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={new OperationConfirmationData({
-                    allowed: [
-                        {
-                            Name: 'D-2.3.1',
-                            RowId: 351,
-                        },
-                        {
-                            Name: 'D-3',
-                            RowId: 352,
-                        },
-                    ],
-                    notAllowed: [
-                        {
-                            Name: 'D-4',
-                            RowId: 5,
-                        },
-                    ],
-                })}
+                confirmationData={
+                    new OperationConfirmationData({
+                        allowed: [
+                            {
+                                Name: 'D-2.3.1',
+                                RowId: 351,
+                            },
+                            {
+                                Name: 'D-3',
+                                RowId: 352,
+                            },
+                        ],
+                        notAllowed: [
+                            {
+                                Name: 'D-4',
+                                RowId: 5,
+                            },
+                        ],
+                    })
+                }
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
@@ -115,23 +121,25 @@ describe('<EntityDeleteConfirmModal/>', () => {
     test('Cannot delete any', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={new OperationConfirmationData({
-                    allowed: [],
-                    notAllowed: [
-                        {
-                            Name: 'D-2.3.1',
-                            RowId: 351,
-                        },
-                        {
-                            Name: 'D-3',
-                            RowId: 352,
-                        },
-                        {
-                            Name: 'D-4',
-                            RowId: 5,
-                        },
-                    ],
-                })}
+                confirmationData={
+                    new OperationConfirmationData({
+                        allowed: [],
+                        notAllowed: [
+                            {
+                                Name: 'D-2.3.1',
+                                RowId: 351,
+                            },
+                            {
+                                Name: 'D-3',
+                                RowId: 352,
+                            },
+                            {
+                                Name: 'D-4',
+                                RowId: 5,
+                            },
+                        ],
+                    })
+                }
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
@@ -147,19 +155,21 @@ describe('<EntityDeleteConfirmModal/>', () => {
     test('Cannot delete two', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={new OperationConfirmationData({
-                    allowed: [],
-                    notAllowed: [
-                        {
-                            Name: 'D-2.3.1',
-                            RowId: 351,
-                        },
-                        {
-                            Name: 'D-3',
-                            RowId: 44,
-                        },
-                    ],
-                })}
+                confirmationData={
+                    new OperationConfirmationData({
+                        allowed: [],
+                        notAllowed: [
+                            {
+                                Name: 'D-2.3.1',
+                                RowId: 351,
+                            },
+                            {
+                                Name: 'D-3',
+                                RowId: 44,
+                            },
+                        ],
+                    })
+                }
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
@@ -175,15 +185,17 @@ describe('<EntityDeleteConfirmModal/>', () => {
     test('Cannot delete one', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={new OperationConfirmationData({
-                    allowed: [],
-                    notAllowed: [
-                        {
-                            Name: 'D-2.3.1',
-                            RowId: 351,
-                        },
-                    ],
-                })}
+                confirmationData={
+                    new OperationConfirmationData({
+                        allowed: [],
+                        notAllowed: [
+                            {
+                                Name: 'D-2.3.1',
+                                RowId: 351,
+                            },
+                        ],
+                    })
+                }
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={SampleTypeDataType}
@@ -201,28 +213,30 @@ describe('<EntityDeleteConfirmModal/>', () => {
         const onCancelFn = jest.fn();
         const component = (
             <EntityDeleteConfirmModalDisplay
-                confirmationData={new OperationConfirmationData({
-                    allowed: [
-                        {
-                            Name: 'D-4',
-                            RowId: 441,
-                        },
-                    ],
-                    notAllowed: [
-                        {
-                            Name: 'D-2.3.1',
-                            RowId: 351,
-                        },
-                        {
-                            Name: 'D-3',
-                            RowId: 352,
-                        },
-                        {
-                            Name: 'D-4',
-                            RowId: 5,
-                        },
-                    ],
-                })}
+                confirmationData={
+                    new OperationConfirmationData({
+                        allowed: [
+                            {
+                                Name: 'D-4',
+                                RowId: 441,
+                            },
+                        ],
+                        notAllowed: [
+                            {
+                                Name: 'D-2.3.1',
+                                RowId: 351,
+                            },
+                            {
+                                Name: 'D-3',
+                                RowId: 352,
+                            },
+                            {
+                                Name: 'D-4',
+                                RowId: 5,
+                            },
+                        ],
+                    })
+                }
                 onCancel={onCancelFn}
                 onConfirm={onConfirmFn}
                 entityDataType={SampleTypeDataType}

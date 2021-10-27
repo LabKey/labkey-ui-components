@@ -3,16 +3,19 @@ import { Button, FormControl, Modal } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import {
-    Alert, filterSampleRowsForOperation,
+    Alert,
+    filterSampleRowsForOperation,
     getOperationNotPermittedMessage,
     MAX_EDITABLE_GRID_ROWS,
-    SampleOperation
+    SampleOperation,
 } from '../../..';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { OperationConfirmationData } from '../entities/models';
 
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-import { OperationConfirmationData } from '../entities/models';
 
 interface Props {
     show: boolean;
@@ -68,24 +71,29 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     init = async (): Promise<void> => {
         const { api, selectedItems, selectionKey } = this.props;
         if (selectedItems) {
-            const { rows, statusMessage, statusData } = filterSampleRowsForOperation(selectedItems, SampleOperation.EditLineage);
+            const { rows, statusMessage, statusData } = filterSampleRowsForOperation(
+                selectedItems,
+                SampleOperation.EditLineage
+            );
             if (this._mounted) {
                 this.setState({
-                    statusData: statusData,
-                    error: false
+                    statusData,
+                    error: false,
                 });
             }
         } else {
             try {
-                const confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditLineage, selectionKey);
+                const confirmationData = await api.samples.getSampleOperationConfirmationData(
+                    SampleOperation.EditLineage,
+                    selectionKey
+                );
                 if (this._mounted) {
                     this.setState({
                         statusData: confirmationData,
-                        error: false
+                        error: false,
                     });
                 }
-            }
-            catch (e) {
+            } catch (e) {
                 if (this._mounted) {
                     this.setState({
                         error: 'There was a problem retrieving the confirmation data.',
@@ -106,7 +114,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     };
 
     onChooseOption = option => {
-        this.setState({creationType: option.type});
+        this.setState({ creationType: option.type });
     };
 
     isValidNumPerParent = (): boolean => {
@@ -196,14 +204,15 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 </Modal.Header>
 
                 <Modal.Body>
-                    {statusData?.noneAllowed && getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
+                    {statusData?.noneAllowed &&
+                        getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
                     {(statusData?.totalCount == 0 || statusData?.anyAllowed) && (
                         <>
-                            {statusData?.anyNotAllowed &&
+                            {statusData?.anyNotAllowed && (
                                 <Alert bsStyle="warning">
                                     {getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
                                 </Alert>
-                            }
+                            )}
                             {this.renderOptions()}
                             {this.renderNumPerParent()}
                         </>
@@ -211,23 +220,23 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {(statusData?.totalCount == 0 || statusData?.anyAllowed) &&
+                    {(statusData?.totalCount == 0 || statusData?.anyAllowed) && (
                         <>
                             <Button bsStyle="default" className="pull-left" onClick={this.onCancel}>
                                 Cancel
                             </Button>
                             <Button bsStyle="success" onClick={this.onConfirm} disabled={!canSubmit}>
-                            Go to Sample Creation Grid
+                                Go to Sample Creation Grid
                             </Button>
                         </>
-                    }
-                    {statusData?.noneAllowed &&
+                    )}
+                    {statusData?.noneAllowed && (
                         <>
-                            <Button bsStyle="default" onClick={this.onCancel} >
+                            <Button bsStyle="default" onClick={this.onCancel}>
                                 Dismiss
                             </Button>
                         </>
-                    }
+                    )}
                 </Modal.Footer>
             </Modal>
         );

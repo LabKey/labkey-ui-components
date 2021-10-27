@@ -14,9 +14,10 @@ import {
 
 import { isSampleStatusEnabled } from '../../app/utils';
 
+import { OperationConfirmationData } from '../entities/models';
+
 import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
 
-import { OperationConfirmationData } from '../entities/models';
 import { SampleStatus } from './models';
 
 export function getOmittedSampleTypeColumns(user: User, omitCols?: string[]): string[] {
@@ -74,7 +75,7 @@ export function getSampleStatus(row: any): SampleStatus {
     };
 }
 
-export function getFilterForSampleOperation(operation: SampleOperation, allowed=true): Filter.IFilter {
+export function getFilterForSampleOperation(operation: SampleOperation, allowed = true): Filter.IFilter {
     if (!isSampleStatusEnabled()) return null;
 
     const typesNotAllowed = [];
@@ -108,8 +109,11 @@ function getOperationMessageAndRecommendation(operation: SampleOperation, numSam
     }
 }
 
-export function getOperationNotPermittedMessage(operation: SampleOperation, statusData: OperationConfirmationData, aliquotIds?: number[]): string {
-
+export function getOperationNotPermittedMessage(
+    operation: SampleOperation,
+    statusData: OperationConfirmationData,
+    aliquotIds?: number[]
+): string {
     let notAllowedMsg = null;
 
     if (statusData) {
@@ -126,29 +130,35 @@ export function getOperationNotPermittedMessage(operation: SampleOperation, stat
         // no aliquots or only aliquots, we show a status message about all that are not allowed
         if (noAliquots || aliquotIds.length == statusData.totalCount) {
             notAllowed = statusData.notAllowed;
-        } else { // some aliquots, some not, filter out the aliquots from the status message
+        } else {
+            // some aliquots, some not, filter out the aliquots from the status message
             notAllowed = statusData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);
         }
         if (notAllowed?.length > 0) {
-            notAllowedMsg =
-                `The current status of ${notAllowed.length} selected sample${notAllowed.length == 1 ? '' : 's'} prevents ${getOperationMessageAndRecommendation(operation, notAllowed.length, false)}.`;
+            notAllowedMsg = `The current status of ${notAllowed.length} selected sample${
+                notAllowed.length == 1 ? '' : 's'
+            } prevents ${getOperationMessageAndRecommendation(operation, notAllowed.length, false)}.`;
         }
     }
 
     return notAllowedMsg;
 }
 
-export function filterSampleRowsForOperation(rows: Record<string, any>, operation: SampleOperation, sampleIdField: string = 'RowId') : { rows: { [p: string]: any }; statusMessage: string; statusData: OperationConfirmationData } {
-    let allowed = [];
-    let notAllowed = [];
-    let validRows = {};
-    Object.values(rows).forEach (row => {
+export function filterSampleRowsForOperation(
+    rows: Record<string, any>,
+    operation: SampleOperation,
+    sampleIdField = 'RowId'
+): { rows: { [p: string]: any }; statusMessage: string; statusData: OperationConfirmationData } {
+    const allowed = [];
+    const notAllowed = [];
+    const validRows = {};
+    Object.values(rows).forEach(row => {
         const statusType = caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME).value;
-        const id = caseInsensitive(row, sampleIdField).value
+        const id = caseInsensitive(row, sampleIdField).value;
         const statusRecord = {
-            'RowId': caseInsensitive(row, sampleIdField).value,
-            'Name': caseInsensitive(row, "SampleID").displayValue
-        }
+            RowId: caseInsensitive(row, sampleIdField).value,
+            Name: caseInsensitive(row, 'SampleID').displayValue,
+        };
         if (isSampleOperationPermitted(statusType, operation)) {
             allowed.push(statusRecord);
             validRows[id] = row;
@@ -156,10 +166,10 @@ export function filterSampleRowsForOperation(rows: Record<string, any>, operatio
             notAllowed.push(statusRecord);
         }
     });
-    const statusData =  new OperationConfirmationData({allowed, notAllowed});
+    const statusData = new OperationConfirmationData({ allowed, notAllowed });
     return {
         rows: validRows,
         statusMessage: getOperationNotPermittedMessage(operation, statusData),
         statusData,
-    }
+    };
 }

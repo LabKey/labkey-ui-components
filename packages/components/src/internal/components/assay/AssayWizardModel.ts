@@ -84,7 +84,8 @@ export class AssayWizardModel
         forceAsync: false,
         workflowTask: undefined,
     })
-    implements FileAttachmentFormModel {
+    implements FileAttachmentFormModel
+{
     declare assayDef: AssayDefinitionModel;
     declare isError?: boolean;
     declare isInit: boolean;

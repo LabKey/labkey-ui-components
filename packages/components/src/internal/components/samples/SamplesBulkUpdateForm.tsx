@@ -1,5 +1,6 @@
 import React, { FC, memo, useMemo } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
+
 import {
     BulkUpdateForm,
     getOperationNotPermittedMessage,
@@ -8,11 +9,12 @@ import {
     QueryModel,
     SampleOperation,
     SchemaQuery,
-    Alert
+    Alert,
 } from '../../..';
 
-import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { OperationConfirmationData } from '../entities/models';
+
+import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 
 interface OwnProps {
     queryModel: QueryModel;
@@ -28,16 +30,16 @@ interface OwnProps {
 type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultProps;
 
 interface UpdateAlertProps {
-    aliquots: any[],
-    numSelections: number,
-    editStatusData: OperationConfirmationData,
+    aliquots: any[];
+    numSelections: number;
+    editStatusData: OperationConfirmationData;
 }
 
 // exported for jest testing
-export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo( (props) => {
+export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo(props => {
     const { numSelections, aliquots, editStatusData } = props;
 
-    let aliquotsMsg = undefined;
+    let aliquotsMsg;
     if (aliquots && aliquots.length > 0) {
         if (aliquots.length < numSelections) {
             aliquotsMsg = (
@@ -47,12 +49,11 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo( (props) => {
                 </>
             );
         } else {
-            aliquotsMsg =  <>Aliquot data inherited from the original sample cannot be updated here.{' '}</>
+            aliquotsMsg = <>Aliquot data inherited from the original sample cannot be updated here. </>;
         }
     }
 
-    if (!aliquotsMsg && (!editStatusData || editStatusData.allAllowed))
-        return null;
+    if (!aliquotsMsg && (!editStatusData || editStatusData.allAllowed)) return null;
 
     return (
         <Alert bsStyle="warning">
@@ -65,7 +66,6 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo( (props) => {
 // Usage:
 // export const SamplesBulkUpdateForm = connect<any, any, any>(undefined)(SamplesSelectionProvider(SamplesBulkUpdateFormBase));
 export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
-
     getGridSelectionSize = (): number => {
         return this.props.queryModel.selections.size;
     };
@@ -86,7 +86,11 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
         if (aliquots && aliquots.length === this.getGridSelectionSize()) {
             originalQueryInfo.columns.forEach((column, key) => {
                 const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(column.fieldKey.toLowerCase()) > -1;
-                if (column.fieldKey.toLowerCase() === 'description' || column.fieldKey.toLowerCase() === 'samplestate' || isAliquotField)
+                if (
+                    column.fieldKey.toLowerCase() === 'description' ||
+                    column.fieldKey.toLowerCase() === 'samplestate' ||
+                    isAliquotField
+                )
                     columns = columns.set(key, column);
             });
             originalQueryInfo.getPkCols().forEach(column => {
@@ -114,7 +118,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
             onBulkUpdateError,
             onBulkUpdateComplete,
             editSelectionInGrid,
-            editStatusData
+            editStatusData,
         } = this.props;
 
         return (
@@ -131,7 +135,13 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
                 onSubmitForEdit={editSelectionInGrid}
                 sortString={queryModel.sorts.join(',')}
                 updateRows={updateRows}
-                header={<SamplesBulkUpdateAlert numSelections={queryModel?.selections?.size || 0} aliquots={aliquots} editStatusData={editStatusData}/>}
+                header={
+                    <SamplesBulkUpdateAlert
+                        numSelections={queryModel?.selections?.size || 0}
+                        aliquots={aliquots}
+                        editStatusData={editStatusData}
+                    />
+                }
             />
         );
     }

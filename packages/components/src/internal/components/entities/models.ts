@@ -16,6 +16,8 @@
 import { AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
 import { List, Map, OrderedMap, Record } from 'immutable';
 
+import { immerable } from 'immer';
+
 import { getEditorModel } from '../../global';
 import { gridShowError } from '../../actions';
 import {
@@ -34,7 +36,6 @@ import {
 } from '../../..';
 import { decodePart, encodePart } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
-import { immerable } from 'immer';
 
 export interface EntityInputProps {
     role: string;
@@ -573,26 +574,26 @@ export class OperationConfirmationData {
 
     readonly allowed: any[];
     readonly notAllowed: any[];
-    readonly idMap: {key: number, isAllowed: boolean};
+    readonly idMap: { key: number; isAllowed: boolean };
 
     constructor(values?: Partial<OperationConfirmationData>) {
         Object.assign(this, values);
         const idMap = {};
         if (values?.allowed) {
             values.allowed.forEach(allowed => {
-                idMap[caseInsensitive(allowed, "rowId")] = true;
+                idMap[caseInsensitive(allowed, 'rowId')] = true;
             });
         } else {
-            Object.assign(this, {allowed: []});
+            Object.assign(this, { allowed: [] });
         }
         if (values?.notAllowed) {
             values.notAllowed.forEach(notAllowed => {
-                idMap[caseInsensitive(notAllowed, "rowId")] = false;
+                idMap[caseInsensitive(notAllowed, 'rowId')] = false;
             });
         } else {
-            Object.assign(this, {notAllowed: []});
+            Object.assign(this, { notAllowed: [] });
         }
-        Object.assign(this, {idMap});
+        Object.assign(this, { idMap });
     }
 
     isIdAllowed(id: number | string): boolean {

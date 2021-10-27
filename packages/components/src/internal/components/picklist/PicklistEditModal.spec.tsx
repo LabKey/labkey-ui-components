@@ -8,7 +8,7 @@ import {
     OperationConfirmationData,
     Picklist,
     PRIVATE_PICKLIST_CATEGORY,
-    PUBLIC_PICKLIST_CATEGORY
+    PUBLIC_PICKLIST_CATEGORY,
 } from '../../../index';
 
 import { PicklistEditModal } from './PicklistEditModal';
@@ -18,37 +18,48 @@ import { waitForLifecycle } from '../../testHelpers';
 
 describe('PicklistEditModal', () => {
     const allAllowedStatus = new OperationConfirmationData({
-        allowed: [{
-            Name: 'T-1',
-            RowId: 1
-        }, {
-            Name: 'T-2',
-            RowId: 2
-        }]
+        allowed: [
+            {
+                Name: 'T-1',
+                RowId: 1,
+            },
+            {
+                Name: 'T-2',
+                RowId: 2,
+            },
+        ],
     });
 
     const noneAllowedStatus = new OperationConfirmationData({
-        notAllowed: [{
-            Name: 'T-1',
-            RowId: 1
-        }, {
-            Name: 'T-2',
-            RowId: 2
-        }]
+        notAllowed: [
+            {
+                Name: 'T-1',
+                RowId: 1,
+            },
+            {
+                Name: 'T-2',
+                RowId: 2,
+            },
+        ],
     });
 
     const someAllowedStatus = new OperationConfirmationData({
-        allowed: [{
-            Name: 'T-3',
-            RowId: 3
-        }],
-        notAllowed: [{
-            Name: 'T-1',
-            RowId: 1
-        }, {
-            Name: 'T-2',
-            RowId: 2
-        }]
+        allowed: [
+            {
+                Name: 'T-3',
+                RowId: 3,
+            },
+        ],
+        notAllowed: [
+            {
+                Name: 'T-1',
+                RowId: 1,
+            },
+            {
+                Name: 'T-2',
+                RowId: 2,
+            },
+        ],
     });
 
     function validateText(wrapper: ReactWrapper, expectedTitle: string, expectedFinishText: string) {
@@ -163,7 +174,7 @@ describe('PicklistEditModal', () => {
             Description: 'My test description',
         });
         const wrapper = mount(
-            <PicklistEditModal show={true} picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()}/>
+            <PicklistEditModal show={true} picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />
         );
         validateText(wrapper, 'Update Picklist Data', 'Update Picklist');
         const labels = wrapper.find('label');
@@ -184,21 +195,21 @@ describe('PicklistEditModal', () => {
             Description: 'My test description',
         });
         const wrapper = mount(
-            <PicklistEditModal show={true} picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()}/>
+            <PicklistEditModal show={true} picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />
         );
         expect(wrapper.find('input').at(1).prop('checked')).toBe(true);
         wrapper.unmount();
     });
 
-    test("Create picklist, none allowed", async () => {
+    test('Create picklist, none allowed', async () => {
         const wrapper = mount(
             <PicklistEditModal
                 show={true}
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
                 onFinish={jest.fn()}
-                api={getTestAPIWrapper(jest.fn,{
-                    samples: getSamplesTestAPIWrapper(jest.fn,{
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleOperationConfirmationData: () => Promise.resolve(noneAllowedStatus),
                     }),
                 })}
@@ -210,7 +221,6 @@ describe('PicklistEditModal', () => {
         expect(alerts).toHaveLength(2);
         expect(alerts.at(0).text()).toBeFalsy();
         expect(alerts.at(1).text()).toBe('All selected samples have a status that prevents adding them to a picklist.');
-
     });
 
     test('Create picklist, some allowed', async () => {
@@ -220,7 +230,7 @@ describe('PicklistEditModal', () => {
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
                 onFinish={jest.fn()}
-                api={getTestAPIWrapper(jest.fn,{
+                api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleOperationConfirmationData: () => Promise.resolve(someAllowedStatus),
                     }),
@@ -231,7 +241,9 @@ describe('PicklistEditModal', () => {
         validateText(wrapper, 'Create a New Picklist with This Sample', 'Create Picklist');
         const alerts = wrapper.find(Alert);
         expect(alerts).toHaveLength(2);
-        expect(alerts.at(1).text()).toBe('The current status of 2 selected samples prevents adding them to a picklist.');
+        expect(alerts.at(1).text()).toBe(
+            'The current status of 2 selected samples prevents adding them to a picklist.'
+        );
     });
 
     test('Create picklist, all allowed', async () => {
@@ -241,8 +253,8 @@ describe('PicklistEditModal', () => {
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
                 onFinish={jest.fn()}
-                api={getTestAPIWrapper(jest.fn,{
-                    samples: getSamplesTestAPIWrapper(jest.fn,{
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleOperationConfirmationData: () => Promise.resolve(allAllowedStatus),
                     }),
                 })}

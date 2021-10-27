@@ -224,7 +224,11 @@ export function getNotInStorageSampleIds(selection: List<any>, sampleType: strin
     return getFilteredSampleSelection(selection, sampleType, [Filter.create('StorageStatus', 'Not in storage')]);
 }
 
-export function getNotPermittedSampleIds(selection: List<any>, sampleType: string, operation: SampleOperation): Promise<any[]> {
+export function getNotPermittedSampleIds(
+    selection: List<any>,
+    sampleType: string,
+    operation: SampleOperation
+): Promise<any[]> {
     return getFilteredSampleSelection(selection, sampleType, [getFilterForSampleOperation(operation, false)]);
 }
 
@@ -636,7 +640,7 @@ export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: s
     });
 }
 
-export function getSampleAliquotRows(sampleId: number | string): Promise<Record<string, any>[]> {
+export function getSampleAliquotRows(sampleId: number | string): Promise<Array<Record<string, any>>> {
     return new Promise((resolve, reject) => {
         Query.executeSql({
             sql:

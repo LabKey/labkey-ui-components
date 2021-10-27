@@ -91,7 +91,7 @@ describe('SampleStatusTag', () => {
         LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
         const wrapper = mount(<SampleStatusTag status={availableNoDescription} iconOnly={true} />);
         validateIconOnly(wrapper, 'alert-success');
-    })
+    });
 
     test('not iconOnly, locked status type', () => {
         LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };

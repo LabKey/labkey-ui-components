@@ -43,7 +43,7 @@ export const SampleStatusTag: FC<Props> = memo(props => {
                     'alert-success': !iconOnly && statusType === SampleStateType.Available,
                 })}
             >
-                {(description || !isAvailable || iconOnly) ? (
+                {description || !isAvailable || iconOnly ? (
                     <LabelHelpTip iconComponent={icon} placement="bottom" title="Sample Status">
                         <div className="ws-pre-wrap popover-message">
                             <b>{label}</b> {description && '- '}
@@ -55,8 +55,9 @@ export const SampleStatusTag: FC<Props> = memo(props => {
                             )}
                         </div>
                     </LabelHelpTip>
-                ) :  label
-                }
+                ) : (
+                    label
+                )}
             </span>
         </>
     );

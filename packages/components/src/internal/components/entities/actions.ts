@@ -36,11 +36,11 @@ export function getOperationConfirmationData(
     selectionKey: string,
     dataType: EntityDataType,
     rowIds?: string[] | number[],
-    extraParams?: Record<string, any>,
+    extraParams?: Record<string, any>
 ): Promise<OperationConfirmationData> {
     if (!selectionKey && !rowIds?.length) {
         return new Promise(resolve => {
-            resolve(new OperationConfirmationData())
+            resolve(new OperationConfirmationData());
         });
     }
 
@@ -56,7 +56,7 @@ export function getOperationConfirmationData(
             };
         }
         if (extraParams) {
-           params = Object.assign(params, extraParams);
+            params = Object.assign(params, extraParams);
         }
         return Ajax.request({
             url: buildURL('experiment', dataType.operationConfirmationActionName),
@@ -66,12 +66,12 @@ export function getOperationConfirmationData(
                 if (response.success) {
                     resolve(new OperationConfirmationData(response.data));
                 } else {
-                    console.error("Response failure when getting operation confirmation data", response.exception);
+                    console.error('Response failure when getting operation confirmation data', response.exception);
                     reject(response.exception);
                 }
             }),
             failure: Utils.getCallbackWrapper(response => {
-                console.error("Error getting operation confirmation data", response);
+                console.error('Error getting operation confirmation data', response);
                 reject(response ? response.exception : 'Unknown error getting operation confirmation data.');
             }),
         });
@@ -81,7 +81,7 @@ export function getOperationConfirmationData(
 export function getDeleteConfirmationData(
     selectionKey: string,
     dataType: EntityDataType,
-    rowIds?: string[]|number[]
+    rowIds?: string[] | number[]
 ): Promise<OperationConfirmationData> {
     if (isSampleEntity(dataType)) {
         return getSampleOperationConfirmationData(SampleOperation.Delete, selectionKey, rowIds);
@@ -89,8 +89,14 @@ export function getDeleteConfirmationData(
     return getOperationConfirmationData(selectionKey, dataType, rowIds);
 }
 
-export function getSampleOperationConfirmationData(operation: SampleOperation, selectionKey: string, rowIds?: string[] | number[]): Promise<OperationConfirmationData> {
-    return getOperationConfirmationData(selectionKey, SampleTypeDataType, rowIds, {sampleOperation: SampleOperation[operation]});
+export function getSampleOperationConfirmationData(
+    operation: SampleOperation,
+    selectionKey: string,
+    rowIds?: string[] | number[]
+): Promise<OperationConfirmationData> {
+    return getOperationConfirmationData(selectionKey, SampleTypeDataType, rowIds, {
+        sampleOperation: SampleOperation[operation],
+    });
 }
 
 export function getDataDeleteConfirmationData(
@@ -127,9 +133,7 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
     return new Promise((resolve, reject) => {
         return getSelectedItemSamples(itemIds)
             .then(sampleIds => {
-                const filterArray = [
-                    Filter.create('RowId', sampleIds, Filter.Types.IN),
-                ];
+                const filterArray = [Filter.create('RowId', sampleIds, Filter.Types.IN)];
                 const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
                 if (opFilter) {
                     filterArray.push(opFilter);
@@ -217,18 +221,12 @@ function initParents(
             const queryGridModel = getQueryGridModel(selectionKey);
 
             if (queryGridModel && queryGridModel.selectedLoaded) {
-                const filterArray = [
-                    Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)
-                ];
+                const filterArray = [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)];
                 const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
                 if (opFilter) {
                     filterArray.push(opFilter);
                 }
-                return getSelectedParents(
-                    schemaQuery,
-                    filterArray,
-                    isAliquotParent
-                )
+                return getSelectedParents(schemaQuery, filterArray, isAliquotParent)
                     .then(response => resolve(response))
                     .catch(reason => reject(reason));
             } else {
@@ -239,18 +237,12 @@ function initParents(
                                 .then(response => resolve(response))
                                 .catch(reason => reject(reason));
                         }
-                        const filterArray = [
-                            Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)
-                        ];
+                        const filterArray = [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)];
                         const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
                         if (opFilter) {
                             filterArray.push(opFilter);
                         }
-                        return getSelectedParents(
-                            schemaQuery,
-                            filterArray,
-                            isAliquotParent
-                        )
+                        return getSelectedParents(schemaQuery, filterArray, isAliquotParent)
                             .then(response => resolve(response))
                             .catch(reason => reject(reason));
                     })
@@ -279,18 +271,12 @@ function initParents(
                 );
             }
 
-            const filterArray = [
-                Filter.create('RowId', value)
-            ];
+            const filterArray = [Filter.create('RowId', value)];
             const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
             if (opFilter) {
                 filterArray.push(opFilter);
             }
-            return getSelectedParents(
-                SchemaQuery.create(schema, query),
-                filterArray,
-                isAliquotParent
-            )
+            return getSelectedParents(SchemaQuery.create(schema, query), filterArray, isAliquotParent)
                 .then(response => resolve(response))
                 .catch(reason => reject(reason));
         } else {

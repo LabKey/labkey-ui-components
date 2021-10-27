@@ -28,7 +28,13 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
     idsNotToUpdate: number[];
     fieldsNotToUpdate: string[];
 
-    constructor(updateData, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>, idsNotToUpdate?: any[], fieldsNotToUpdate?: string[]) {
+    constructor(
+        updateData,
+        dataForSelection: Map<string, any>,
+        dataIdsForSelection: List<any>,
+        idsNotToUpdate?: any[],
+        fieldsNotToUpdate?: string[]
+    ) {
         this.updateData = updateData || {};
         this.dataForSelection = dataForSelection;
         this.dataIdsForSelection = dataIdsForSelection;
@@ -46,7 +52,12 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
                 .then(response => {
                     const { data, dataIds, totalRows } = response;
                     resolve({
-                        data: EditorModel.convertQueryDataToEditorData(data, Map<any, any>(this.updateData), this.idsNotToUpdate, this.fieldsNotToUpdate),
+                        data: EditorModel.convertQueryDataToEditorData(
+                            data,
+                            Map<any, any>(this.updateData),
+                            this.idsNotToUpdate,
+                            this.fieldsNotToUpdate
+                        ),
                         dataIds,
                         totalRows,
                     });

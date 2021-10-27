@@ -13,14 +13,13 @@ import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainpr
 import { createNotification } from '../notifications/actions';
 
 import { incrementClientSideMetricCount } from '../../actions';
-
-import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
-import { Picklist } from './models';
-import { getSampleOperationConfirmationData } from '../entities/actions';
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { Picklist } from './models';
+import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
 
 interface Props {
     show: boolean;
@@ -74,13 +73,16 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
 
     useEffect(() => {
-        api.samples.getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
+        api.samples
+            .getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
             .then(data => {
                 setStatusData(data);
                 setValidCount(data.allowed.length);
             })
-            .catch(reason => { setPicklistError(reason); })
-    }, [selectionKey, sampleIds])
+            .catch(reason => {
+                setPicklistError(reason);
+            });
+    }, [selectionKey, sampleIds]);
 
     const isUpdate = picklist !== undefined;
     let finishVerb, finishingVerb;
@@ -136,7 +138,14 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                     })
                 );
             } else {
-                updatedList = await createPicklist(trimmedName, description, shared, statusData, selectionKey, sampleIds);
+                updatedList = await createPicklist(
+                    trimmedName,
+                    description,
+                    shared,
+                    statusData,
+                    selectionKey,
+                    sampleIds
+                );
                 incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
             }
             reset();
@@ -158,7 +167,9 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         if (!validCount) {
             title = 'Create an Empty Picklist';
         } else if (selectionKey && validCount) {
-            title = <>Create a New Picklist with the {Utils.pluralize(validCount, 'Selected Sample', 'Selected Samples')}</>;
+            title = (
+                <>Create a New Picklist with the {Utils.pluralize(validCount, 'Selected Sample', 'Selected Samples')}</>
+            );
         } else if (validCount === 1) {
             title = 'Create a New Picklist with This Sample';
         } else {
@@ -174,7 +185,9 @@ export const PicklistEditModal: FC<Props> = memo(props => {
 
             <Modal.Body>
                 <Alert>{picklistError}</Alert>
-                <Alert bsStyle={"warning"}>{getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData)}</Alert>
+                <Alert bsStyle="warning">
+                    {getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData)}
+                </Alert>
                 <form>
                     <div className="form-group">
                         <label className="control-label">Name *</label>
@@ -222,5 +235,5 @@ export const PicklistEditModal: FC<Props> = memo(props => {
 });
 
 PicklistEditModal.defaultProps = {
-    api: getDefaultAPIWrapper()
-}
+    api: getDefaultAPIWrapper(),
+};

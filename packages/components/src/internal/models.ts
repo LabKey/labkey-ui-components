@@ -323,7 +323,8 @@ export class EditorModel
         selectedRowIdx: -1,
         selectionCells: Set<string>(),
     })
-    implements EditorModelProps {
+    implements EditorModelProps
+{
     declare cellMessages: CellMessages;
     declare cellValues: CellValues;
     declare colCount: number;
@@ -500,10 +501,7 @@ export class EditorModel
                                 missingRequired.get(col.caption).push(rn + 1)
                             );
                         } else {
-                            missingRequired = missingRequired.set(
-                                col.caption,
-                                List<number>([rn + 1])
-                            );
+                            missingRequired = missingRequired.set(col.caption, List<number>([rn + 1]));
                         }
                     }
                 }
@@ -518,10 +516,7 @@ export class EditorModel
                                 keyValues.get(rn + 1).push(valueDescriptor.raw.toString())
                             );
                         } else {
-                            keyValues = keyValues.set(
-                                rn + 1,
-                                List<string>([valueDescriptor.raw.toString()])
-                            );
+                            keyValues = keyValues.set(rn + 1, List<string>([valueDescriptor.raw.toString()]));
                         }
                     }
                 } else if (uniqueFieldKey && col.fieldKey === uniqueFieldKey) {
@@ -533,10 +528,7 @@ export class EditorModel
                         if (uniqueKeyMap.has(stringVal)) {
                             uniqueKeyMap = uniqueKeyMap.set(stringVal, uniqueKeyMap.get(stringVal).push(rn + 1));
                         } else {
-                            uniqueKeyMap = uniqueKeyMap.set(
-                                stringVal,
-                                List<number>([rn + 1])
-                            );
+                            uniqueKeyMap = uniqueKeyMap.set(stringVal, List<number>([rn + 1]));
                         }
                     }
                 }
@@ -555,11 +547,7 @@ export class EditorModel
             .reduce((keyMap, values, rowNumber) => {
                 const key = values.join(', ');
                 if (keyMap.has(key)) return keyMap.set(key, keyMap.get(key).push(rowNumber));
-                else
-                    return keyMap.set(
-                        key,
-                        List<number>([rowNumber])
-                    );
+                else return keyMap.set(key, List<number>([rowNumber]));
             }, Map<string, List<number>>())
             .filter(rowNumbers => rowNumbers.size > 1)
             .toMap();
@@ -692,7 +680,12 @@ export class EditorModel
         } else return undefined;
     }
 
-    static convertQueryDataToEditorData(data: Map<string, any>, updates?: Map<any, any>, idsNotToUpdate?: number[], fieldsNotToUpdate?: string[]): Map<any, Map<string, any>> {
+    static convertQueryDataToEditorData(
+        data: Map<string, any>,
+        updates?: Map<any, any>,
+        idsNotToUpdate?: number[],
+        fieldsNotToUpdate?: string[]
+    ): Map<any, Map<string, any>> {
         return data.map((valueMap, id) => {
             const returnMap = valueMap.reduce((m, valueMap, key) => {
                 const editorData = EditorModel.getEditorDataFromQueryValueMap(valueMap);
@@ -711,7 +704,7 @@ export class EditorModel
                 if (fieldsNotToUpdate.indexOf(fieldKey.toLowerCase()) < 0) {
                     trimmedUpdates = trimmedUpdates.set(fieldKey, value);
                 }
-            })
+            });
             return returnMap.merge(trimmedUpdates);
         }) as Map<any, Map<string, any>>;
     }

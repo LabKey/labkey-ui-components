@@ -75,12 +75,10 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
             selectionKey = parentModel?.getId() || parentQueryModel?.id;
         }
         return selectionKey;
-
-    }, [parentModel, parentQueryModel])
+    }, [parentModel, parentQueryModel]);
 
     const onSampleCreationMenuSelect = useCallback(
         (key: string) => {
-
             let appURL: string | AppURL;
 
             if (sampleWizardURL) {
@@ -118,7 +116,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     const sampleOptions = [DERIVATIVE_CREATION];
     if (allowPooledSamples) sampleOptions.push(POOLED_SAMPLE_CREATION);
-    if (selectedOption && selectedOption === menuCurrentChoice) sampleOptions.push({...ALIQUOT_CREATION, selected: true});
+    if (selectedOption && selectedOption === menuCurrentChoice)
+        sampleOptions.push({ ...ALIQUOT_CREATION, selected: true });
 
     return (
         <>

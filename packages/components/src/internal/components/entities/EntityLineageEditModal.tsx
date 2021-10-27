@@ -58,7 +58,10 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
 
         (async () => {
             try {
-                const confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditLineage, queryModel.id);
+                const confirmationData = await api.samples.getSampleOperationConfirmationData(
+                    SampleOperation.EditLineage,
+                    queryModel.id
+                );
                 const sampleData = await api.samples.getSampleSelectionLineageData(
                     List.of(...queryModel.selections),
                     queryModel.queryName,
@@ -82,14 +85,10 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 setAliquotIds(aIds);
                 setAllowedForUpdate(allowedForUpdate);
             } catch (error) {
-                if (errorMessage)
-                    setErrorMessage(errorMessage + " " + error);
-                else
-                    setErrorMessage(error);
+                if (errorMessage) setErrorMessage(errorMessage + ' ' + error);
+                else setErrorMessage(error);
             }
-
         })();
-
     }, []);
 
     const onParentChange = useCallback((entityParents: List<EntityChoice>) => {
@@ -140,9 +139,14 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const numAllowed = allowedForUpdate ? Object.keys(allowedForUpdate).length : undefined;
     const numAliquots = aliquotIds?.length || 0;
 
-    const aliquotsMsg = (numAliquots > 0 && numAliquots < statusData.totalCount) ? (
-        `${Utils.pluralize(numAliquots, 'aliquot was', 'aliquots were')} among the selections. Lineage for aliquots cannot be changed. `
-    ) : undefined;
+    const aliquotsMsg =
+        numAliquots > 0 && numAliquots < statusData.totalCount
+            ? `${Utils.pluralize(
+                  numAliquots,
+                  'aliquot was',
+                  'aliquots were'
+              )} among the selections. Lineage for aliquots cannot be changed. `
+            : undefined;
 
     if (numAllowed === 0) {
         return (
@@ -153,7 +157,9 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
 
                 <Modal.Body>
                     <div>
-                        {(numAliquots === statusData.totalCount) && <>The {lcParentNounPlural} for aliquots cannot be changed. </>}
+                        {numAliquots === statusData.totalCount && (
+                            <>The {lcParentNounPlural} for aliquots cannot be changed. </>
+                        )}
                         {aliquotsMsg}
                         {getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
                     </div>
@@ -232,11 +238,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                     </Button>
                 )}
 
-                <Button
-                    bsStyle="success"
-                    onClick={onConfirm}
-                    disabled={submitting || !numAllowed || !hasParentUpdates}
-                >
+                <Button bsStyle="success" onClick={onConfirm} disabled={submitting || !numAllowed || !hasParentUpdates}>
                     {submitting ? `Updating ${parentNounPlural} ...` : `Update ${parentNounPlural}`}
                 </Button>
             </Modal.Footer>

@@ -57,6 +57,10 @@ import {
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
+import { loadSelectedSamples } from '../samples/actions';
+
+import { STATUS_DATA_RETRIEVAL_ERROR } from '../samples/constants';
+
 import {
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
@@ -71,8 +75,6 @@ import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { AssayUploadGridLoader } from './AssayUploadGridLoader';
 import { AssayWizardModel, IAssayUploadOptions } from './AssayWizardModel';
-import { loadSelectedSamples } from '../samples/actions';
-import { STATUS_DATA_RETRIEVAL_ERROR } from '../samples/constants';
 
 const BATCH_PROPERTIES_GRID_ID = 'assay-batchdetails';
 
@@ -300,9 +302,15 @@ class AssayImportPanelsBody extends Component<Props, State> {
             // the currently selected samples so we can pre-populate the fields in the wizard with the selected
             // samples.
             this.props.loadSelections(location, sampleColumnData.column).then(samples => {
-                getSampleOperationConfirmationData(SampleOperation.AddAssayData, undefined, samples ?  Object.keys(samples.toJS()) : [])
+                getSampleOperationConfirmationData(
+                    SampleOperation.AddAssayData,
+                    undefined,
+                    samples ? Object.keys(samples.toJS()) : []
+                )
                     .then(statusConfirmationData => {
-                        const validSamples = samples ? samples.filter((sample, key) => statusConfirmationData.isIdAllowed(key)) : OrderedMap<any, any>();
+                        const validSamples = samples
+                            ? samples.filter((sample, key) => statusConfirmationData.isIdAllowed(key))
+                            : OrderedMap<any, any>();
                         // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
                         let runProperties = this.populateAssayRequest(this.getRunPropertiesMap());
                         let batchProperties = this.getBatchPropertiesMap();
@@ -329,15 +337,20 @@ class AssayImportPanelsBody extends Component<Props, State> {
                                     batchProperties,
                                     runProperties,
                                 }) as AssayWizardModel,
-                                sampleStatusWarning: samples ? getOperationNotPermittedMessage(SampleOperation.AddAssayData, statusConfirmationData) : undefined,
+                                sampleStatusWarning: samples
+                                    ? getOperationNotPermittedMessage(
+                                          SampleOperation.AddAssayData,
+                                          statusConfirmationData
+                                      )
+                                    : undefined,
                             }),
                             this.onInitModelComplete
                         );
                     })
                     .catch(reason => {
                         this.setState({
-                            error: STATUS_DATA_RETRIEVAL_ERROR
-                        })
+                            error: STATUS_DATA_RETRIEVAL_ERROR,
+                        });
                     });
             });
         } else {
@@ -706,7 +719,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                         hasBatchProperties={model.batchColumns.size > 0}
                     />
                 )}
-                <Alert bsStyle={"info"}>{sampleStatusWarning}</Alert>
+                <Alert bsStyle="info">{sampleStatusWarning}</Alert>
                 <BatchPropertiesPanel
                     model={model}
                     showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}

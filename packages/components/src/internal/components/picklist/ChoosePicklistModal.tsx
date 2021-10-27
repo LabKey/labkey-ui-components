@@ -15,6 +15,12 @@ import { createNotification } from '../notifications/actions';
 
 import { incrementClientSideMetricCount } from '../../actions';
 
+import { SampleOperation } from '../samples/constants';
+import { OperationConfirmationData } from '../entities/models';
+import { getOperationNotPermittedMessage } from '../samples/utils';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { Picklist } from './models';
 import {
     addSamplesToPicklist,
     getPicklistCountsBySampleType,
@@ -22,11 +28,6 @@ import {
     getPicklistUrl,
     SampleTypeCount,
 } from './actions';
-import { Picklist } from './models';
-import { SampleOperation } from '../samples/constants';
-import { OperationConfirmationData } from '../entities/models';
-import { getOperationNotPermittedMessage } from '../samples/utils';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -237,10 +238,14 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         useEffect(() => {
             (async () => {
                 try {
-                    const data = await api.samples.getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
+                    const data = await api.samples.getSampleOperationConfirmationData(
+                        SampleOperation.AddToPicklist,
+                        selectionKey,
+                        sampleIds
+                    );
                     setStatusData(data);
                     setValidCount(data.allowed.length);
-                } catch(reason) {
+                } catch (reason) {
                     setError(reason);
                 }
             })();
@@ -349,7 +354,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         let title;
         let buttons;
         if (statusData?.anyAllowed) {
-            title = 'Choose a Picklist'
+            title = 'Choose a Picklist';
             body = (
                 <>
                     <div className="row">
@@ -404,7 +409,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                         </div>
                     </div>
                 </>
-            )
+            );
             buttons = (
                 <>
                     <div className="pull-left">
@@ -424,12 +429,13 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                         </button>
                     </div>
                 </>
-            )
-        }
-        else {
-            title='Cannot Add to Picklist'
+            );
+        } else {
+            title = 'Cannot Add to Picklist';
             buttons = (
-                <Button bsClass="btn btn-default pull-right" onClick={closeModal}>Dismiss</Button>
+                <Button bsClass="btn btn-default pull-right" onClick={closeModal}>
+                    Dismiss
+                </Button>
             );
             body = getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData);
         }
@@ -444,9 +450,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                     {body}
                 </Modal.Body>
 
-                <Modal.Footer>
-                    {buttons}
-                </Modal.Footer>
+                <Modal.Footer>{buttons}</Modal.Footer>
             </Modal>
         );
     }
@@ -487,4 +491,4 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
 
 ChoosePicklistModal.defaultProps = {
     api: getDefaultAPIWrapper(),
-}
+};

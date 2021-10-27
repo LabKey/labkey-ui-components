@@ -19,7 +19,8 @@ export class EntityTypeDeleteConfirmModal extends React.Component<Props, any> {
     };
 
     render() {
-        const { isSample, onConfirm, onCancel, showDependenciesLink, rowId, deleteConfirmationActionName, noun } = this.props;
+        const { isSample, onConfirm, onCancel, showDependenciesLink, rowId, deleteConfirmationActionName, noun } =
+            this.props;
 
         let dependencies = <>dependencies</>;
         if (showDependenciesLink && deleteConfirmationActionName) {

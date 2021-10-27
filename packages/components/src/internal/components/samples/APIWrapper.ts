@@ -2,6 +2,10 @@ import { List } from 'immutable';
 
 import { ISelectRowsResult } from '../../query/api';
 
+import { getSampleOperationConfirmationData } from '../entities/actions';
+
+import { OperationConfirmationData } from '../entities/models';
+
 import {
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
@@ -11,11 +15,9 @@ import {
 } from './actions';
 import { SampleState } from './models';
 import { SampleOperation } from './constants';
-import { getSampleOperationConfirmationData } from '../entities/actions';
-import { OperationConfirmationData } from '../entities/models';
 
 export interface SamplesAPIWrapper {
-    getSampleAliquotRows: (sampleId: number | string) => Promise<Record<string, any>[]>;
+    getSampleAliquotRows: (sampleId: number | string) => Promise<Array<Record<string, any>>>;
 
     getSampleAssayResultViewConfigs: () => Promise<SampleAssayResultViewConfig[]>;
 
@@ -30,7 +32,8 @@ export interface SamplesAPIWrapper {
     getSampleOperationConfirmationData: (
         operation: SampleOperation,
         selectionKey: string,
-        rowIds?: number[] | string[]) => Promise<OperationConfirmationData>;
+        rowIds?: number[] | string[]
+    ) => Promise<OperationConfirmationData>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {

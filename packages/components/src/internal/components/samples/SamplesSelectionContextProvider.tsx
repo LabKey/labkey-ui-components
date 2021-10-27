@@ -6,6 +6,8 @@ import React from 'react';
 
 import { LoadingSpinner, SampleOperation } from '../../..';
 
+import { getSampleOperationConfirmationData } from '../entities/actions';
+
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import {
     getAliquotSampleIds,
@@ -14,7 +16,6 @@ import {
     getSampleSelectionLineageData,
     getSampleSelectionStorageData,
 } from './actions';
-import { getSampleOperationConfirmationData, } from '../entities/actions';
 
 const Context = React.createContext<SamplesSelectionResultProps>(undefined);
 const SamplesSelectionContextProvider = Context.Provider;
@@ -71,8 +72,8 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             getSampleOperationConfirmationData(SampleOperation.EditMetadata, undefined, selection.toArray())
                 .then(editConfirmationData => {
                     this.setState({
-                        editStatusData: editConfirmationData
-                    })
+                        editStatusData: editConfirmationData,
+                    });
                 })
                 .catch(error => {
                     this.setState({
@@ -184,5 +185,5 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                 return <LoadingSpinner />;
             }
         }
-    }
+    };
 };

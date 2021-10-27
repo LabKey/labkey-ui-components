@@ -7,7 +7,7 @@ import {
     SubMenuItemProps,
     withAssayModels,
     QueryModel,
-    DisableableMenuItem
+    DisableableMenuItem,
 } from '../../..';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
@@ -50,12 +50,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
     }, [assayModel, isLoaded, providerType, queryModel]);
 
     if (disabled) {
-        return (
-            <DisableableMenuItem
-                operationPermitted={false}
-                menuItemContent={text}
-            />
-        )
+        return <DisableableMenuItem operationPermitted={false} menuItemContent={text} />;
     }
     if (!isLoaded) {
         return (

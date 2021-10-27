@@ -77,43 +77,55 @@ const DEFAULT_PROPS = {
 };
 
 const ALL_ALLOWED_CONFIRMATION_DATA = new OperationConfirmationData({
-    allowed: [{
-        'Name': 'A-1',
-        'RowId': 1
-    }, {
-        'Name': 'A-2',
-        'RowId': 2
-    }, {
-        'Name': 'A-3',
-        'RowId': 3
-    }]
+    allowed: [
+        {
+            Name: 'A-1',
+            RowId: 1,
+        },
+        {
+            Name: 'A-2',
+            RowId: 2,
+        },
+        {
+            Name: 'A-3',
+            RowId: 3,
+        },
+    ],
 });
 
 const NONE_ALLOWED_CONFIRMATION_DATA = new OperationConfirmationData({
-    notAllowed: [{
-        'Name': 'A-1',
-        'RowId': 1
-    }, {
-        'Name': 'A-2',
-        'RowId': 2
-    }, {
-        'Name': 'A-3',
-        'RowId': 3
-    }]
+    notAllowed: [
+        {
+            Name: 'A-1',
+            RowId: 1,
+        },
+        {
+            Name: 'A-2',
+            RowId: 2,
+        },
+        {
+            Name: 'A-3',
+            RowId: 3,
+        },
+    ],
 });
 const SOME_ALLOWED_CONFIRMATION_DATA = new OperationConfirmationData({
-    allowed: [{
-        'Name': 'A-1',
-        'RowId': 1
-    }
+    allowed: [
+        {
+            Name: 'A-1',
+            RowId: 1,
+        },
     ],
-    notAllowed: [{
-        'Name': 'A-2',
-        'RowId': 2
-    }, {
-        'Name': 'A-3',
-        'RowId': 3
-    }]
+    notAllowed: [
+        {
+            Name: 'A-2',
+            RowId: 2,
+        },
+        {
+            Name: 'A-3',
+            RowId: 3,
+        },
+    ],
 });
 
 describe('EntityLineageEditModal', () => {
@@ -137,12 +149,14 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn,{
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
-                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
                     }),
                 })}
-            />);
+            />
+        );
         await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find(Modal.Title).text()).toBe('Edit samples for 3 Selected Samples');
@@ -158,7 +172,8 @@ describe('EntityLineageEditModal', () => {
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS),
-                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
                     }),
                 })}
             />
@@ -181,7 +196,8 @@ describe('EntityLineageEditModal', () => {
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_ALL_ALIQUOTS),
-                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
                     }),
                 })}
             />
@@ -203,7 +219,8 @@ describe('EntityLineageEditModal', () => {
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
-                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
                     }),
                 })}
             />
@@ -215,16 +232,17 @@ describe('EntityLineageEditModal', () => {
         wrapper.unmount();
     });
 
-    test("none allowed", async () => {
+    test('none allowed', async () => {
         const wrapper = mount(
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper(jest.fn,{
+                api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
-                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(NONE_ALLOWED_CONFIRMATION_DATA)),
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData(NONE_ALLOWED_CONFIRMATION_DATA)),
                     }),
                 })}
             />
@@ -232,21 +250,24 @@ describe('EntityLineageEditModal', () => {
         await waitForLifecycle(wrapper);
         validate(wrapper, true, false, false);
         expect(wrapper.find(Modal.Title).text()).toBe('Cannot Edit data');
-        expect(wrapper.find(Modal.Body).text()).toBe('All selected samples have a status that prevents updating of their lineage.');
+        expect(wrapper.find(Modal.Body).text()).toBe(
+            'All selected samples have a status that prevents updating of their lineage.'
+        );
         expect(wrapper.find(Button).last().text()).toBe('Dismiss');
         wrapper.unmount();
     });
 
-    test("none allowed with aliquots", async () => {
+    test('none allowed with aliquots', async () => {
         const wrapper = mount(
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper(jest.fn,{
-                    samples: getSamplesTestAPIWrapper(jest.fn,{
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS),
-                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(SOME_ALLOWED_CONFIRMATION_DATA)),
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData(SOME_ALLOWED_CONFIRMATION_DATA)),
                     }),
                 })}
             />
@@ -256,22 +277,24 @@ describe('EntityLineageEditModal', () => {
         expect(wrapper.find(Modal.Title).text()).toBe('Cannot Edit data');
         expect(wrapper.find(Modal.Body).text()).toBe(
             '2 aliquots were among the selections. ' +
-            'Lineage for aliquots cannot be changed. ' +
-            'The current status of 2 selected samples prevents updating of their lineage.');
+                'Lineage for aliquots cannot be changed. ' +
+                'The current status of 2 selected samples prevents updating of their lineage.'
+        );
         expect(wrapper.find(Button).last().text()).toBe('Dismiss');
         wrapper.unmount();
     });
 
-    test("none allowed with aliquots locked", async () => {
+    test('none allowed with aliquots locked', async () => {
         const wrapper = mount(
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper(jest.fn,{
-                    samples: getSamplesTestAPIWrapper(jest.fn,{
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS),
-                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(NONE_ALLOWED_CONFIRMATION_DATA)),
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData(NONE_ALLOWED_CONFIRMATION_DATA)),
                     }),
                 })}
             />
@@ -281,22 +304,24 @@ describe('EntityLineageEditModal', () => {
         expect(wrapper.find(Modal.Title).text()).toBe('Cannot Edit data');
         expect(wrapper.find(Modal.Body).text()).toBe(
             '2 aliquots were among the selections. ' +
-            'Lineage for aliquots cannot be changed. ' +
-            'All selected samples have a status that prevents updating of their lineage.');
+                'Lineage for aliquots cannot be changed. ' +
+                'All selected samples have a status that prevents updating of their lineage.'
+        );
         expect(wrapper.find(Button).last().text()).toBe('Dismiss');
         wrapper.unmount();
     });
 
-    test("some not allowed, without aliquots", async () => {
+    test('some not allowed, without aliquots', async () => {
         const wrapper = mount(
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper(jest.fn,{
-                    samples: getSamplesTestAPIWrapper(jest.fn,{
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
-                        getSampleOperationConfirmationData: () => Promise.resolve(new OperationConfirmationData(SOME_ALLOWED_CONFIRMATION_DATA)),
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData(SOME_ALLOWED_CONFIRMATION_DATA)),
                     }),
                 })}
             />
@@ -304,7 +329,9 @@ describe('EntityLineageEditModal', () => {
         await waitForLifecycle(wrapper);
         validate(wrapper, true, true, true);
         expect(wrapper.find(Modal.Title).text()).toBe('Edit data for 1 Selected Sample');
-        expect(wrapper.find("div.has-aliquots-alert").text()).toBe('The current status of 2 selected samples prevents updating of their lineage.');
+        expect(wrapper.find('div.has-aliquots-alert').text()).toBe(
+            'The current status of 2 selected samples prevents updating of their lineage.'
+        );
         expect(wrapper.find(Button).last().text()).toBe('Update data');
         wrapper.unmount();
     });

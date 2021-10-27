@@ -104,7 +104,7 @@ import {
     removeEntityParentType,
 } from './EntityParentTypeSelectors';
 
-const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description'];
+const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
 const ALIQUOT_NOUN_PLURAL = 'Aliquots';
 class EntityGridLoader implements IGridLoader {

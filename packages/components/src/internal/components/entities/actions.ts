@@ -127,14 +127,18 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
     return new Promise((resolve, reject) => {
         return getSelectedItemSamples(itemIds)
             .then(sampleIds => {
+                const filterArray = [
+                    Filter.create('RowId', sampleIds, Filter.Types.IN),
+                ];
+                const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
+                if (opFilter) {
+                    filterArray.push(opFilter);
+                }
                 return selectRows({
                     schemaName: 'exp',
                     queryName: 'materials',
                     columns: 'LSID,Name,RowId,SampleSet',
-                    filterArray: [
-                        Filter.create('RowId', sampleIds, Filter.Types.IN),
-                        getFilterForSampleOperation(SampleOperation.EditLineage)
-                    ],
+                    filterArray,
                     containerFilter: Query.containerFilter.currentPlusProjectAndShared,
                 })
                     .then(response => {
@@ -213,12 +217,16 @@ function initParents(
             const queryGridModel = getQueryGridModel(selectionKey);
 
             if (queryGridModel && queryGridModel.selectedLoaded) {
+                const filterArray = [
+                    Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)
+                ];
+                const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
+                if (opFilter) {
+                    filterArray.push(opFilter);
+                }
                 return getSelectedParents(
                     schemaQuery,
-                    [
-                        Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN),
-                        getFilterForSampleOperation(SampleOperation.EditLineage)
-                    ],
+                    filterArray,
                     isAliquotParent
                 )
                     .then(response => resolve(response))
@@ -231,12 +239,16 @@ function initParents(
                                 .then(response => resolve(response))
                                 .catch(reason => reject(reason));
                         }
+                        const filterArray = [
+                            Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)
+                        ];
+                        const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
+                        if (opFilter) {
+                            filterArray.push(opFilter);
+                        }
                         return getSelectedParents(
                             schemaQuery,
-                            [
-                                Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),
-                                getFilterForSampleOperation(SampleOperation.EditLineage)
-                            ],
+                            filterArray,
                             isAliquotParent
                         )
                             .then(response => resolve(response))
@@ -267,12 +279,16 @@ function initParents(
                 );
             }
 
+            const filterArray = [
+                Filter.create('RowId', value)
+            ];
+            const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
+            if (opFilter) {
+                filterArray.push(opFilter);
+            }
             return getSelectedParents(
                 SchemaQuery.create(schema, query),
-                [
-                    Filter.create('RowId', value),
-                    getFilterForSampleOperation(SampleOperation.EditLineage)
-                ],
+                filterArray,
                 isAliquotParent
             )
                 .then(response => resolve(response))

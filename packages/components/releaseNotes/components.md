@@ -7,6 +7,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Hide 'Archived' Assay designs from megaMenu
 * Show 'Active' Assay designs tab by default on Assay Overview Page
 
+### version 2.87.0
+*Released*: 27 October 2021
+* Bump @labkey/api dependency
+* Add AssayTaskInput
+* Update RunPropertiesPanel to render AssayTaskInput
+* Update resolveRenderer to use AssayTaskInput
+
+### 2.86.1
+*Released*: 26 October 2021
+* Auto-close confirm modal in case of error saving for 'ID/Name Settings' panel
+
 ### version 2.86.0
 *Released*: 22 October 2021
 * Item 9584: ManageSampleStatusesPanel for sample statuses CRUD operations

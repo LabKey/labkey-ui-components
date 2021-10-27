@@ -27,7 +27,7 @@ import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/
 import { SCHEMAS } from '../../schemas';
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { SiteUsersGridPanelImpl } from './SiteUsersGridPanel';
+import { UsersGridPanelImpl } from './UsersGridPanel';
 
 const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
@@ -37,7 +37,7 @@ beforeAll(() => {
     initQueryGridState();
 });
 
-describe('<SiteUsersGridPanel/>', () => {
+describe('<UsersGridPanel/>', () => {
     const DEFAULT_PROPS = {
         user: TEST_USER_APP_ADMIN,
         onCreateComplete: jest.fn(),
@@ -74,7 +74,7 @@ describe('<SiteUsersGridPanel/>', () => {
     };
 
     test('active users view', () => {
-        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} />;
+        const component = <UsersGridPanelImpl {...DEFAULT_PROPS} />;
 
         const wrapper = mount(component);
         expect(wrapper.find('GridPanel')).toHaveLength(1);
@@ -93,7 +93,7 @@ describe('<SiteUsersGridPanel/>', () => {
     });
 
     test('without delete or deactivate', () => {
-        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} user={TEST_USER_PROJECT_ADMIN} />;
+        const component = <UsersGridPanelImpl {...DEFAULT_PROPS} user={TEST_USER_PROJECT_ADMIN} />;
 
         const wrapper = mount(component);
         expect(wrapper.find('GridPanel')).toHaveLength(1);
@@ -112,7 +112,7 @@ describe('<SiteUsersGridPanel/>', () => {
     });
 
     test('without create, delete, or deactivate', () => {
-        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} user={TEST_USER_FOLDER_ADMIN} />;
+        const component = <UsersGridPanelImpl {...DEFAULT_PROPS} user={TEST_USER_FOLDER_ADMIN} />;
 
         const wrapper = mount(component);
         expect(wrapper.find('GridPanel')).toHaveLength(1);
@@ -131,7 +131,7 @@ describe('<SiteUsersGridPanel/>', () => {
     });
 
     test('inactive users view', () => {
-        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} />;
+        const component = <UsersGridPanelImpl {...DEFAULT_PROPS} />;
 
         const wrapper = mount(component);
         wrapper.setState({ usersView: 'inactive' });
@@ -152,7 +152,7 @@ describe('<SiteUsersGridPanel/>', () => {
     });
 
     test('all users view', () => {
-        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} />;
+        const component = <UsersGridPanelImpl {...DEFAULT_PROPS} />;
 
         const wrapper = mount(component);
         wrapper.setState({ usersView: 'all' });
@@ -173,14 +173,14 @@ describe('<SiteUsersGridPanel/>', () => {
     });
 
     test('showDetailsPanel false', () => {
-        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} showDetailsPanel={false} />;
+        const component = <UsersGridPanelImpl {...DEFAULT_PROPS} showDetailsPanel={false} />;
         const wrapper = mount(component);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(0);
         wrapper.unmount();
     });
 
     test('loading', () => {
-        const component = <SiteUsersGridPanelImpl {...DEFAULT_PROPS} queryModels={{}} />;
+        const component = <UsersGridPanelImpl {...DEFAULT_PROPS} queryModels={{}} />;
         const wrapper = mount(component);
         expect(wrapper.find('LoadingSpinner')).toHaveLength(1);
         expect(wrapper.find('GridPanel')).toHaveLength(0);

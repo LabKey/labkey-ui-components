@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD October 2021
+* Issue 43687: UsersGridPanel update to not default to root container path for site/app admin users
+  * instead just always use the given containerPath
+  * rename SiteUsersGridPanel to UsersGridPanel
+
 ### version 2.87.0
 *Released*: 27 October 2021
 * Bump @labkey/api dependency

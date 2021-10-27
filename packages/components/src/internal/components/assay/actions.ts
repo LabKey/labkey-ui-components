@@ -40,7 +40,11 @@ export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
     'ReplacedByRun',
     'DataOutputs',
     'DataOutputs/DataFileUrl',
-    'Batch'
+    'Batch',
+    // Below Columns are required for us to render the WorkflowTask in EditableDetails components
+    'WorkflowTask',
+    'WorkflowTask/Run',
+    'Protocol/RowId'
 ).toList();
 
 let assayDefinitionCache: { [key: string]: Promise<List<AssayDefinitionModel>> } = {};

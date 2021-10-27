@@ -19,6 +19,7 @@ import { Input } from 'formsy-react-components';
 import { addValidationRule, validationRules } from 'formsy-react';
 
 import { QueryColumn } from '../../..';
+import { AssayTaskInput } from './input/AssayTaskInput';
 
 import { LabelOverlay } from './LabelOverlay';
 import { AliasInput } from './input/AliasInput';
@@ -26,8 +27,9 @@ import { AliasInput } from './input/AliasInput';
 type InputRenderer = (
     col: QueryColumn,
     key: ReactText,
-    value?: any,
-    editing?: boolean,
+    data: any, // The data for the entire row/form section
+    value: any,
+    isDetailInput: boolean, // Indicates whether or not the input is being rendered inside an EditableDetailPanel
     allowFieldDisable?: boolean,
     initiallyDisabled?: boolean,
     onToggleDisable?: (disabled: boolean) => void
@@ -36,15 +38,16 @@ type InputRenderer = (
 const AliasInputRenderer: InputRenderer = (
     col: QueryColumn,
     key: ReactText,
-    value?: any,
-    editing?: boolean,
+    data: any,
+    value: any,
+    isDetailInput: boolean,
     allowFieldDisable = false,
     initiallyDisabled = false,
     onToggleDisable?: (disabled: boolean) => void
 ) => (
     <AliasInput
         col={col}
-        editing={editing}
+        isDetailInput={isDetailInput}
         key={key}
         value={value}
         allowDisable={allowFieldDisable}
@@ -56,8 +59,9 @@ const AliasInputRenderer: InputRenderer = (
 const AppendUnitsInputRenderer: InputRenderer = (
     col: QueryColumn,
     key: ReactText,
-    value?: any,
-    editing?: boolean,
+    data: any,
+    value: any,
+    isDetailInput: boolean,
     allowFieldDisable = false,
     initiallyDisabled = false
 ) => (
@@ -66,7 +70,7 @@ const AppendUnitsInputRenderer: InputRenderer = (
         disabled={initiallyDisabled}
         addonAfter={<span>{col.units}</span>}
         changeDebounceInterval={0}
-        elementWrapperClassName={editing ? [{ 'col-sm-9': false }, 'col-sm-12'] : undefined}
+        elementWrapperClassName={isDetailInput ? [{ 'col-sm-9': false }, 'col-sm-12'] : undefined}
         id={col.name}
         key={key}
         label={<LabelOverlay column={col} inputId={col.name} />}
@@ -76,6 +80,23 @@ const AppendUnitsInputRenderer: InputRenderer = (
         type="text"
         value={value}
         validations="isNumericWithError"
+    />
+);
+
+const ASSAY_ID_INDEX = 'Protocol/RowId';
+
+const AssayTaskInputRenderer: InputRenderer = (
+    col: QueryColumn,
+    key: ReactText,
+    data: any,
+    value: any,
+    isDetailInput: boolean
+) => (
+    <AssayTaskInput
+        assayId={data.getIn([ASSAY_ID_INDEX, 'value'])}
+        isDetailInput={isDetailInput}
+        name={col.name}
+        value={value}
     />
 );
 
@@ -93,6 +114,8 @@ export function resolveRenderer(column: QueryColumn): InputRenderer {
                 return AliasInputRenderer;
             case 'appendunitsinput':
                 return AppendUnitsInputRenderer;
+            case 'workflowtask':
+                return AssayTaskInputRenderer;
             default:
                 break;
         }

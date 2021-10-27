@@ -216,6 +216,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             return renderer(
                                 col,
                                 i,
+                                fieldValues,
                                 value,
                                 false,
                                 allowFieldDisable,

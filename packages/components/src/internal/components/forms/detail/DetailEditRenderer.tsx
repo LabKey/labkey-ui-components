@@ -58,7 +58,7 @@ export function resolveDetailEditRenderer(
     options?: RenderOptions,
     fileInputRenderer = detailNonEditableRenderer
 ): Renderer {
-    return data => {
+    return (data, row) => {
         const editable = col.isEditable();
 
         // If the column cannot be edited, return as soon as possible
@@ -67,13 +67,13 @@ export function resolveDetailEditRenderer(
             return detailNonEditableRenderer(col, data);
         }
 
-        let value = resolveDetailFieldValue(data, false);
+        let value = resolveDetailFieldValue(data, col.isLookup());
 
         if (col.inputRenderer) {
             const renderer = resolveRenderer(col);
 
             if (renderer) {
-                return renderer(col, col.name, value, true);
+                return renderer(col, col.name, row, value, true);
             }
 
             throw new Error(`"${col.inputRenderer}" is not a valid inputRenderer.`);

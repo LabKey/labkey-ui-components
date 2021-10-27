@@ -4,7 +4,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD October 2021
 * Item ...
-  * Add sample status column to picklist default view on creation, if sample status is enabled
+    * Add sample status column to picklist default view on creation, if sample status is enabled
+
+### 2.86.1
+*Released*: 26 October 2021
+* Auto-close confirm modal in case of error saving for 'ID/Name Settings' panel
 
 ### version 2.86.0
 *Released*: 22 October 2021

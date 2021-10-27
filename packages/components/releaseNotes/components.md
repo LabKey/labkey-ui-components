@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.87.0
-*Released*: ?? October 2021
+*Released*: 27 October 2021
 * Bump @labkey/api dependency
 * Add AssayTaskInput
 * Update RunPropertiesPanel to render AssayTaskInput

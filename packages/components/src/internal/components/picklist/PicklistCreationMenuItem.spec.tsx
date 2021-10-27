@@ -31,13 +31,8 @@ describe('PicklistCreationMenuItem', () => {
         const menuItem = wrapper.find(MenuItem);
         expect(menuItem).toHaveLength(1);
         expect(menuItem.text()).toBe(text);
-        const memoWrapper = wrapper.find(PicklistEditModal);
-        expect(memoWrapper).toHaveLength(1);
-        expect(memoWrapper.prop('selectionKey')).toBe(selectionKey);
-        expect(memoWrapper.prop('selectedQuantity')).toBe(selectedQuantity);
-        const modal = memoWrapper.find(Modal);
-        expect(modal).toHaveLength(1);
-        expect(modal.prop('show')).toBe(false);
+        expect(wrapper.find(PicklistEditModal).exists()).toBeFalsy();
+
         wrapper.unmount();
     });
 

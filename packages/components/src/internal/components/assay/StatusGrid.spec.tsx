@@ -1,37 +1,18 @@
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 
-import { IFilter } from '@labkey/api/dist/labkey/filter/Filter';
+import { Filter } from '@labkey/api';
 
-import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-
-import { TabbedGridPanel } from '../../..';
-
-import { StatusGrid, StatusGridImpl, StatusGridWithModels } from './StatusGrid';
-
-const IMPL_PROPS = {
-    actions: makeTestActions(),
-    queryModels: {
-        active: makeTestQueryModel(SchemaQuery.create('assay', 'AssayList')),
-        all: makeTestQueryModel(SchemaQuery.create('assay', 'AssayList')),
-    },
-};
+import { StatusGrid, StatusGridWithModels } from './StatusGrid';
 
 describe('StatusGrid', () => {
-    test('StatusGridImpl', () => {
-        const wrapper = mount(<StatusGridImpl {...IMPL_PROPS} />);
-
-        expect(wrapper.find(TabbedGridPanel)).toHaveLength(1);
-        wrapper.unmount();
-    });
-
-    const validate = (filter: IFilter[], filterType: string, value: string[], filterLength: number) => {
+    const validate = (filter: Filter.IFilter[], filterType: string, value: string[], filterLength: number) => {
         expect(filter.length).toBe(filterLength);
         expect(filter[0].getColumnName()).toBe('Type');
         expect(filter[0].getFilterType().getDisplayText()).toBe(filterType);
         expect(filter[0].getValue()).toEqual(value);
     };
+
     // If assayTypes exists, col filter on Type should be those in assayTypes
     test('StatusGrid assayTypes', () => {
         const wrapper = mount(<StatusGrid assayTypes={['General']} />);

@@ -210,9 +210,9 @@ export function MetadataInputFormatsInput(props: InputProps) {
 export const AssayStatusInput = props => {
     return (
         <AssayPropertiesInput
-            label="Status"
+            label="Active"
             appPropertiesOnly={props.appPropertiesOnly}
-            helpTipBody={<p> Rosaline: tbd </p>}
+            helpTipBody={<p> If disabled, this assay design will be considered archived, and will be hidden in certain views. </p>}
         >
             <input type="checkbox" id={FORM_IDS.STATUS} checked={props.model.status} onChange={props.onChange} />
         </AssayPropertiesInput>

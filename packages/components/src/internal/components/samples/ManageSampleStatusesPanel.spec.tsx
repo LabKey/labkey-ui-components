@@ -11,6 +11,8 @@ import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 import { SelectInput } from '../forms/input/SelectInput';
 import { ConfirmModal } from '../base/ConfirmModal';
 
+import { getTestAPIWrapper } from '../../APIWrapper';
+
 import { SampleState } from './models';
 import {
     ManageSampleStatusesPanel,
@@ -20,7 +22,6 @@ import {
 } from './ManageSampleStatusesPanel';
 
 // these have to be below other imports or results in circular dependency errors in running tests
-import { getTestAPIWrapper } from '../../APIWrapper';
 import { getSamplesTestAPIWrapper } from './APIWrapper';
 
 describe('ManageSampleStatusesPanel', () => {

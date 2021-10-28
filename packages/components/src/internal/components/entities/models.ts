@@ -16,20 +16,23 @@
 import { AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
 import { List, Map, OrderedMap, Record } from 'immutable';
 
+import { immerable } from 'immer';
+
 import { getEditorModel } from '../../global';
 import { gridShowError } from '../../actions';
 import {
     capitalizeFirstChar,
+    caseInsensitive,
     generateId,
     insertRows,
     InsertRowsResponse,
-    SelectInputOption,
     QueryColumn,
     QueryGridModel,
     QueryInfo,
     SampleCreationType,
-    SCHEMAS,
     SchemaQuery,
+    SCHEMAS,
+    SelectInputOption,
 } from '../../..';
 import { decodePart, encodePart } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
@@ -546,7 +549,7 @@ export interface EntityDataType {
     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
     listingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data instances (e.g., all the data class rows) available
     instanceSchemaName: string; // (e.g., samples) Name of the schema associated with an individual instance that can be used in conjunction with a name returned from the typeListingSchemaQuery listing
-    deleteConfirmationActionName: string; // action in ExperimentController used to get the delete confirmation data
+    operationConfirmationActionName: string; // action in ExperimentController used to get the confirmation data for performing operations on entities
     nounSingular: string;
     nounAsParentSingular: string;
     nounPlural: string;
@@ -564,4 +567,59 @@ export interface EntityDataType {
     editTypeAppUrlPrefix?: string; // the app url route prefix for the edit design page for the given data type
     importFileAction: string; // the action in the 'experiment' controller to use for file import for the given data type
     isFromSharedContainer?: boolean; // if the data type is defined in /Shared project
+}
+
+export class OperationConfirmationData {
+    [immerable]: true;
+
+    readonly allowed: any[];
+    readonly notAllowed: any[];
+    readonly idMap: { key: number; isAllowed: boolean };
+
+    constructor(values?: Partial<OperationConfirmationData>) {
+        Object.assign(this, values);
+        const idMap = {};
+        if (values?.allowed) {
+            values.allowed.forEach(allowed => {
+                idMap[caseInsensitive(allowed, 'rowId')] = true;
+            });
+        } else {
+            Object.assign(this, { allowed: [] });
+        }
+        if (values?.notAllowed) {
+            values.notAllowed.forEach(notAllowed => {
+                idMap[caseInsensitive(notAllowed, 'rowId')] = false;
+            });
+        } else {
+            Object.assign(this, { notAllowed: [] });
+        }
+        Object.assign(this, { idMap });
+    }
+
+    isIdAllowed(id: number | string): boolean {
+        const idNum = typeof id === 'string' ? parseInt(id) : id;
+        return this.idMap[idNum];
+    }
+
+    get allAllowed(): boolean {
+        return this.notAllowed.length === 0;
+    }
+
+    // Note that this returns false if there are no samples represented since we generally want
+    // noneAllowed to mean there are some samples but none are allowed.
+    get noneAllowed(): boolean {
+        return this.allowed.length === 0 && this.notAllowed.length > 0;
+    }
+
+    get anyAllowed(): boolean {
+        return this.allowed.length > 0;
+    }
+
+    get totalCount(): number {
+        return this.allowed.length + this.notAllowed.length;
+    }
+
+    get anyNotAllowed(): boolean {
+        return this.notAllowed.length > 0;
+    }
 }

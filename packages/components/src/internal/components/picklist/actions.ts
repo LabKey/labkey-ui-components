@@ -12,9 +12,11 @@ import { User } from '../base/models/User';
 import { AppURL, buildURL, createProductUrlFromParts } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
 import { resolveErrorMessage } from '../../util/messaging';
-import { SCHEMAS } from '../../../index';
+import { OperationConfirmationData, SCHEMAS } from '../../../index';
 
 import { PICKLIST_KEY } from '../../app/constants';
+
+import { isSampleStatusEnabled } from '../../app/utils';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
 import { isSampleStatusEnabled } from "../../app/utils";
@@ -97,6 +99,7 @@ export function createPicklist(
     name: string,
     description: string,
     shared: boolean,
+    statusData: OperationConfirmationData,
     selectionKey: string,
     sampleIds: string[]
 ): Promise<Picklist> {
@@ -131,7 +134,7 @@ export function createPicklist(
                 Promise.all([
                     getListIdFromDomainId(response.domainId),
                     setPicklistDefaultView(name),
-                    addSamplesToPicklist(name, selectionKey, sampleIds),
+                    addSamplesToPicklist(name, statusData, selectionKey, sampleIds),
                 ])
                     .then(responses => {
                         const [listId] = responses;
@@ -294,6 +297,7 @@ export function getSamplesNotInList(listName: string, selectionKey?: string, sam
 
 export function addSamplesToPicklist(
     listName: string,
+    statusData: OperationConfirmationData,
     selectionKey?: string,
     sampleIds?: string[]
 ): Promise<InsertRowsResponse> {
@@ -302,7 +306,9 @@ export function addSamplesToPicklist(
             .then(sampleIdsToAdd => {
                 let rows = List<any>();
                 sampleIdsToAdd.forEach(id => {
-                    rows = rows.push({ SampleID: id });
+                    if (statusData.isIdAllowed(id)) {
+                        rows = rows.push({ SampleID: id });
+                    }
                 });
                 if (rows.size > 0) {
                     insertRows({

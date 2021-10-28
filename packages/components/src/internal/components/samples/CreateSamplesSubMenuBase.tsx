@@ -30,6 +30,7 @@ interface CreateSamplesSubMenuProps {
     sampleWizardURL?: (targetSampleType?: string, parent?: string) => AppURL;
     getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
     allowPooledSamples?: boolean;
+    selectedItems?: Record<string, any>;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
@@ -47,6 +48,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         sampleWizardURL,
         getProductSampleWizardURL,
         isSelectingSamples,
+        selectedItems,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -67,13 +69,16 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     const useOnClick = parentKey !== undefined || (selectingSampleParents && selectedQuantity > 0);
 
+    const selectionKey = useMemo(() => {
+        let selectionKey: string = null;
+        if ((parentModel?.allowSelection && parentModel.selectedIds.size > 0) || parentQueryModel?.hasSelections) {
+            selectionKey = parentModel?.getId() || parentQueryModel?.id;
+        }
+        return selectionKey;
+    }, [parentModel, parentQueryModel]);
+
     const onSampleCreationMenuSelect = useCallback(
         (key: string) => {
-            let selectionKey: string = null;
-            if ((parentModel?.allowSelection && parentModel.selectedIds.size > 0) || parentQueryModel?.hasSelections) {
-                selectionKey = parentModel?.getId() || parentQueryModel?.id;
-            }
-
             let appURL: string | AppURL;
 
             if (sampleWizardURL) {
@@ -90,7 +95,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 return appURL;
             }
         },
-        [useOnClick, parentKey, parentModel, parentQueryModel, setSampleCreationURL, setSelectedOption]
+        [useOnClick, parentKey, selectionKey, setSampleCreationURL, setSelectedOption]
     );
 
     const onCancel = useCallback(() => {
@@ -111,7 +116,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     const sampleOptions = [DERIVATIVE_CREATION];
     if (allowPooledSamples) sampleOptions.push(POOLED_SAMPLE_CREATION);
-    if (selectedOption && selectedOption === menuCurrentChoice) sampleOptions.push({...ALIQUOT_CREATION, selected: true});
+    if (selectedOption && selectedOption === menuCurrentChoice)
+        sampleOptions.push({ ...ALIQUOT_CREATION, selected: true });
 
     return (
         <>
@@ -133,6 +139,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     options={parentType === App.SOURCES_KEY ? [CHILD_SAMPLE_CREATION] : sampleOptions}
                     onCancel={onCancel}
                     onSubmit={onSampleCreationSubmit}
+                    selectionKey={selectedItems ? undefined : selectionKey}
+                    selectedItems={selectedItems}
                 />
             )}
         </>

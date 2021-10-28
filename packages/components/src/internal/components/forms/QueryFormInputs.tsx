@@ -216,6 +216,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             return renderer(
                                 col,
                                 i,
+                                fieldValues,
                                 value,
                                 false,
                                 allowFieldDisable,
@@ -235,7 +236,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
                             const id = col.fieldKey + i + (componentKey ?? '');
-
                             return (
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}

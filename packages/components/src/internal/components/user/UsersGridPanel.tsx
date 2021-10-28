@@ -74,7 +74,7 @@ interface State {
 }
 
 // exported for jest testing
-export class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
+export class UsersGridPanelImpl extends PureComponent<Props, State> {
     static defaultProps = {
         showDetailsPanel: true,
         allowResetPassword: true,
@@ -136,7 +136,6 @@ export class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
         actions.addModel(
             {
                 id: this.getUsersModelId(),
-                containerPath: user.hasManageUsersPermission() ? '/' : undefined, // use root container for app admins to get all site users
                 schemaQuery: SCHEMAS.CORE_TABLES.USERS,
                 baseFilters,
                 omittedColumns: OMITTED_COLUMNS,
@@ -364,4 +363,4 @@ export class SiteUsersGridPanelImpl extends PureComponent<Props, State> {
     }
 }
 
-export const SiteUsersGridPanel = withQueryModels(SiteUsersGridPanelImpl);
+export const UsersGridPanel = withQueryModels(UsersGridPanelImpl);

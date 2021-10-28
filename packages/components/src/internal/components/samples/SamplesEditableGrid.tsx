@@ -171,18 +171,23 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
             editableGridDataForSelection,
             editableGridDataIdsForSelection,
             samplesGridOmittedColumns,
+            sampleTypeDomainFields,
+            aliquots,
         } = this.props;
 
         const { displayQueryModel } = this.props;
         const samplesSchemaQuery = this.getSchemaQuery();
 
+        const allAliquots = this.hasAliquots() && aliquots.length === displayQueryModel.selections.size;
         const editModel = getStateQueryGridModel(SAMPLES_EDIT_GRID_ID, samplesSchemaQuery, {
             editable: true,
             queryInfo: displayQueryModel.queryInfo,
             loader: new EditableGridLoaderFromSelection(
                 editableGridUpdateData,
                 editableGridDataForSelection,
-                editableGridDataIdsForSelection ?? List(Array.from(displayQueryModel.selections))
+                editableGridDataIdsForSelection ?? List(Array.from(displayQueryModel.selections)),
+                allAliquots ? [] : aliquots,
+                allAliquots ? undefined : sampleTypeDomainFields.metaFields
             ),
             requiredColumns: this.getSamplesGridRequiredColumns(),
             omittedColumns: samplesGridOmittedColumns ? samplesGridOmittedColumns : List<string>(),
@@ -368,10 +373,10 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
 
         const sampleIds = new Set();
         sampleRows.forEach(row => {
-            sampleIds.add(row['RowId']);
+            sampleIds.add(caseInsensitive(row, 'RowId'));
         });
         storageRows.forEach(row => {
-            const sampleId = row['RowId'];
+            const sampleId = caseInsensitive(row, 'RowId');
             if (noStorageSamples.indexOf(sampleId) === -1) sampleIds.add(sampleId);
         });
         const totalSamplesToUpdate = sampleIds.size;
@@ -523,15 +528,15 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getReadOnlyRows = (tabInd: number): List<string> => {
-        const { noStorageSamples, aliquots } = this.props;
+        const { aliquots, noStorageSamples } = this.props;
 
         if (tabInd === GridTab.Storage) {
             return List<string>(noStorageSamples);
         } else if (tabInd === GridTab.Lineage) {
             return List<string>(aliquots);
+        } else {
+            return undefined;
         }
-
-        return undefined;
     };
 
     getTabTitle = (tabInd: number): string => {
@@ -597,12 +602,23 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
                             onRemove={this.removeParentType}
                         />
                     </div>
+                    <div className="sample-status-warning">Lineage for aliquots cannot be changed.</div>
                     <hr />
                 </>
             );
+        } else if (tabInd === GridTab.Storage) {
+            return (
+                <div className="top-spacing sample-status-warning">
+                    Samples that are not currently in storage are not editable here.
+                </div>
+            );
+        } else {
+            return (
+                <div className="top-spacing sample-status-warning">
+                    Aliquot data inherited from the original sample cannot be updated here.
+                </div>
+            );
         }
-
-        return null;
     };
 
     render() {

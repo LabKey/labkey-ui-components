@@ -32,7 +32,7 @@ describe('SampleStatusTag', () => {
 
     const availableNoDescription = {
         label: 'Also available',
-        status: SampleStateType.Available,
+        statusType: SampleStateType.Available,
     };
 
     function validateIconOnly(wrapper: ReactWrapper, expectedClass: string) {
@@ -41,6 +41,7 @@ describe('SampleStatusTag', () => {
         const icon = helpTip.find('i');
         expect(icon.exists()).toBeTruthy();
         expect(icon.prop('className')).toContain(expectedClass);
+        expect(wrapper.find(LabelHelpTip).exists()).toBeTruthy(); // displays the label
     }
 
     function validateNotIconOnly(
@@ -83,6 +84,12 @@ describe('SampleStatusTag', () => {
 
     test('iconOnly, available', () => {
         const wrapper = mount(<SampleStatusTag status={availableStatus} iconOnly={true} />);
+        validateIconOnly(wrapper, 'alert-success');
+    });
+
+    test('iconOnly, no description', () => {
+        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        const wrapper = mount(<SampleStatusTag status={availableNoDescription} iconOnly={true} />);
         validateIconOnly(wrapper, 'alert-success');
     });
 

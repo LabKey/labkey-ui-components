@@ -2,7 +2,7 @@ import React from 'react';
 
 import { mount } from 'enzyme';
 
-import { NavItem } from 'react-bootstrap';
+import { Button, ModalBody, ModalTitle, NavItem } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR } from '../../../test/data/users';
 
@@ -17,6 +17,10 @@ import {
     PicklistItemsSummaryDisplay,
     PicklistList,
 } from './ChoosePicklistModal';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
+import { OperationConfirmationData } from '../entities/models';
+import { waitForLifecycle } from '../../testHelpers';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -36,7 +40,7 @@ const PUBLIC_EDITOR_PICKLIST = new Picklist({
     CreatedByDisplay: TEST_USER_EDITOR.displayName,
     listId: 15,
     Created: '2021-04-15',
-    Description: 'Editor\'s public picklist',
+    Description: "Editor's public picklist",
 });
 
 const PRIVATE_EDITOR_PICKLIST = new Picklist({
@@ -47,7 +51,7 @@ const PRIVATE_EDITOR_PICKLIST = new Picklist({
     CreatedByDisplay: TEST_USER_EDITOR.displayName,
     listId: 16,
     Created: '2021-04-16',
-    Description: 'Editor\'s private picklist',
+    Description: "Editor's private picklist",
 });
 
 const EMPTY_EDITOR_PICKLIST = new Picklist({
@@ -58,7 +62,7 @@ const EMPTY_EDITOR_PICKLIST = new Picklist({
     CreatedByDisplay: TEST_USER_EDITOR.displayName,
     listId: 17,
     Created: '2021-04-17',
-    Description: 'Empty editor\'s public picklist',
+    Description: "Empty editor's public picklist",
 });
 
 describe('PicklistList', () => {
@@ -147,7 +151,7 @@ describe('PicklistList', () => {
 
 describe('PicklistItemsSummaryDisplay', () => {
     test('empty counts by type', () => {
-        const wrapper = mount(<PicklistItemsSummaryDisplay countsByType={[]} picklist={EMPTY_EDITOR_PICKLIST}/>);
+        const wrapper = mount(<PicklistItemsSummaryDisplay countsByType={[]} picklist={EMPTY_EDITOR_PICKLIST} />);
         const emptyMessage = wrapper.find('.choices-detail__empty-message');
         expect(emptyMessage).toHaveLength(1);
         expect(emptyMessage.text()).toBe('This list is empty.');
@@ -156,7 +160,7 @@ describe('PicklistItemsSummaryDisplay', () => {
     });
 
     test('empty counts by type, non-zero item count', () => {
-        const wrapper = mount(<PicklistItemsSummaryDisplay countsByType={[]} picklist={PUBLIC_EDITOR_PICKLIST}/>);
+        const wrapper = mount(<PicklistItemsSummaryDisplay countsByType={[]} picklist={PUBLIC_EDITOR_PICKLIST} />);
         const emptyMessage = wrapper.find('.choices-detail__empty-message');
         expect(emptyMessage).toHaveLength(0);
         expect(wrapper.text()).toBe('Sample Counts' + PUBLIC_EDITOR_PICKLIST.ItemCount + ' samples');
@@ -177,7 +181,7 @@ describe('PicklistItemsSummaryDisplay', () => {
             },
         ];
         const wrapper = mount(
-            <PicklistItemsSummaryDisplay countsByType={countsByType} picklist={PUBLIC_EDITOR_PICKLIST}/>
+            <PicklistItemsSummaryDisplay countsByType={countsByType} picklist={PUBLIC_EDITOR_PICKLIST} />
         );
         const emptyMessage = wrapper.find('.choices-detail__empty-message');
         expect(emptyMessage).toHaveLength(0);
@@ -196,7 +200,7 @@ describe('PicklistItemsSummaryDisplay', () => {
 
 describe('PicklistDetails', () => {
     test('public picklist', () => {
-        const wrapper = mount(<PicklistDetails picklist={PUBLIC_EDITOR_PICKLIST}/>);
+        const wrapper = mount(<PicklistDetails picklist={PUBLIC_EDITOR_PICKLIST} />);
         const name = wrapper.find('.choice-details__name');
         expect(name).toHaveLength(1);
         expect(name.text()).toBe(PUBLIC_EDITOR_PICKLIST.name);
@@ -214,7 +218,7 @@ describe('PicklistDetails', () => {
     });
 
     test('private picklist', () => {
-        const wrapper = mount(<PicklistDetails picklist={PRIVATE_EDITOR_PICKLIST}/>);
+        const wrapper = mount(<PicklistDetails picklist={PRIVATE_EDITOR_PICKLIST} />);
         const name = wrapper.find('.choice-details__name');
         expect(name).toHaveLength(1);
         expect(name.text()).toBe(PRIVATE_EDITOR_PICKLIST.name);
@@ -234,7 +238,7 @@ describe('PicklistDetails', () => {
 describe('AddToPicklistNotification', () => {
     test('no samples added', () => {
         const wrapper = mount(
-            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={0} numSelected={4}/>
+            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={0} numSelected={4} />
         );
         expect(wrapper.text()).toBe(
             'No samples added to picklist "' + PUBLIC_EDITOR_PICKLIST.name + '". 4 samples were already in the list.'
@@ -247,7 +251,7 @@ describe('AddToPicklistNotification', () => {
 
     test('all samples added', () => {
         const wrapper = mount(
-            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={4} numSelected={4}/>
+            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={4} numSelected={4} />
         );
         expect(wrapper.text()).toBe('Successfully added 4 samples to picklist "' + PUBLIC_EDITOR_PICKLIST.name + '".');
         wrapper.unmount();
@@ -255,43 +259,43 @@ describe('AddToPicklistNotification', () => {
 
     test('some samples added', () => {
         const wrapper = mount(
-            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={2} numSelected={4}/>
+            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={2} numSelected={4} />
         );
         expect(wrapper.text()).toBe(
             'Successfully added 2 samples to picklist "' +
-            PUBLIC_EDITOR_PICKLIST.name +
-            '". 2 samples were already in the list.'
+                PUBLIC_EDITOR_PICKLIST.name +
+                '". 2 samples were already in the list.'
         );
         wrapper.unmount();
     });
 
     test('one sample added', () => {
         const wrapper = mount(
-            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={1} numSelected={4}/>
+            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={1} numSelected={4} />
         );
         expect(wrapper.text()).toBe(
             'Successfully added 1 sample to picklist "' +
-            PUBLIC_EDITOR_PICKLIST.name +
-            '". 3 samples were already in the list.'
+                PUBLIC_EDITOR_PICKLIST.name +
+                '". 3 samples were already in the list.'
         );
         wrapper.unmount();
     });
 
     test('one sample not added', () => {
         const wrapper = mount(
-            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={3} numSelected={4}/>
+            <AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={3} numSelected={4} />
         );
         expect(wrapper.text()).toBe(
             'Successfully added 3 samples to picklist "' +
-            PUBLIC_EDITOR_PICKLIST.name +
-            '". 1 sample was already in the list.'
+                PUBLIC_EDITOR_PICKLIST.name +
+                '". 1 sample was already in the list.'
         );
         wrapper.unmount();
     });
 });
 
 describe('ChoosePicklistModalDisplay', () => {
-    test('loading', () => {
+    test('loading', async () => {
         const wrapper = mount(
             <ChoosePicklistModalDisplay
                 picklists={[]}
@@ -302,11 +306,19 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2']}
                 numSelected={2}
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({ allowed: [1, 2], notAllowed: [] })),
+                    }),
+                })}
             />
         );
+
+        await waitForLifecycle(wrapper);
         const alert = wrapper.find('.alert-info');
         expect(alert).toHaveLength(1);
-        expect(alert.text()).toBe('Adding 2 samples to selected picklist.');
+        expect(alert.text()).toBe('Adding 2 samples to selected picklist. ');
         const input = wrapper.find('input');
         expect(input).toHaveLength(1);
         expect(input.prop('placeholder')).toBe('Find a picklist');
@@ -322,8 +334,8 @@ describe('ChoosePicklistModalDisplay', () => {
         wrapper.unmount();
     });
 
-    test('loading error', () => {
-        const errorText = 'Couldn\'t get your data';
+    test('loading error', async () => {
+        const errorText = "Couldn't get your data";
         const wrapper = mount(
             <ChoosePicklistModalDisplay
                 picklists={[]}
@@ -334,15 +346,23 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2']}
                 numSelected={2}
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({ allowed: [1, 2], notAllowed: [] })),
+                    }),
+                })}
             />
         );
+        await waitForLifecycle(wrapper);
+
         const alert = wrapper.find('.alert-danger');
         expect(alert).toHaveLength(1);
         expect(alert.text()).toBe(errorText);
         wrapper.unmount();
     });
 
-    test('adding one sample', () => {
+    test('adding one sample', async () => {
         const wrapper = mount(
             <ChoosePicklistModalDisplay
                 picklists={[]}
@@ -353,15 +373,23 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1']}
                 numSelected={1}
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({ allowed: [1], notAllowed: [] })),
+                    }),
+                })}
             />
         );
+        await waitForLifecycle(wrapper);
+
         const alert = wrapper.find('.alert-info');
         expect(alert).toHaveLength(1);
-        expect(alert.text()).toBe('Adding 1 sample to selected picklist.');
+        expect(alert.text()).toBe('Adding 1 sample to selected picklist. ');
         wrapper.unmount();
     });
 
-    test('with active item', () => {
+    test('with active item', async () => {
         const wrapper = mount(
             <ChoosePicklistModalDisplay
                 picklists={[PUBLIC_EDITOR_PICKLIST]}
@@ -372,12 +400,79 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1']}
                 numSelected={1}
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({ allowed: [1], notAllowed: [] })),
+                    }),
+                })}
             />
         );
+        await waitForLifecycle(wrapper);
 
         const picklistButtons = wrapper.find('.list-group-item');
         picklistButtons.at(0).simulate('click');
         expect(wrapper.find('.choice-details')).toHaveLength(1);
+        wrapper.unmount();
+    });
+
+    test('some not allowed', async () => {
+        const wrapper = mount(
+            <ChoosePicklistModalDisplay
+                picklists={[PUBLIC_EDITOR_PICKLIST]}
+                picklistLoadError={undefined}
+                loading={false}
+                onCancel={jest.fn()}
+                afterAddToPicklist={jest.fn()}
+                user={TEST_USER_EDITOR}
+                sampleIds={['1', '2', '3']}
+                numSelected={1}
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({ allowed: [1], notAllowed: [2, 3] })),
+                    }),
+                })}
+            />
+        );
+        await waitForLifecycle(wrapper);
+        const alert = wrapper.find('.alert-info');
+        expect(alert).toHaveLength(1);
+        expect(alert.text()).toBe(
+            'Adding 1 sample to selected picklist. ' +
+                'The current status of 2 selected samples prevents adding them to a picklist.'
+        );
+        wrapper.unmount();
+    });
+
+    test('none allowed', async () => {
+        const wrapper = mount(
+            <ChoosePicklistModalDisplay
+                picklists={[PUBLIC_EDITOR_PICKLIST]}
+                picklistLoadError={undefined}
+                loading={false}
+                onCancel={jest.fn()}
+                afterAddToPicklist={jest.fn()}
+                user={TEST_USER_EDITOR}
+                sampleIds={['1', '2', '3']}
+                numSelected={1}
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({ allowed: [], notAllowed: [1, 2, 3] })),
+                    }),
+                })}
+            />
+        );
+        await waitForLifecycle(wrapper);
+        const modalTitle = wrapper.find(ModalTitle);
+        expect(modalTitle.text()).toBe('Cannot Add to Picklist');
+        expect(wrapper.find(ModalBody).text()).toBe(
+            'All selected samples have a status that prevents adding them to a picklist.'
+        );
+        const buttons = wrapper.find(Button);
+        expect(buttons).toHaveLength(1);
+        expect(buttons.at(0).text()).toBe('Dismiss');
         wrapper.unmount();
     });
 });

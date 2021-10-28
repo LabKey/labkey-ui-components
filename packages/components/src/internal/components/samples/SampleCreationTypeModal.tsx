@@ -2,7 +2,17 @@ import React from 'react';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 import classNames from 'classnames';
 
-import { MAX_EDITABLE_GRID_ROWS } from '../../../index';
+import {
+    Alert,
+    filterSampleRowsForOperation,
+    getOperationNotPermittedMessage,
+    MAX_EDITABLE_GRID_ROWS,
+    SampleOperation,
+} from '../../..';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { OperationConfirmationData } from '../entities/models';
 
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
@@ -14,16 +24,27 @@ interface Props {
     showIcons: boolean;
     onCancel: () => void;
     onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
+    api?: ComponentsAPIWrapper;
+    selectionKey?: string;
+    selectedItems?: Record<string, any>;
 }
 
 interface State extends Record<string, any> {
     numPerParent: number;
     creationType: SampleCreationType;
     submitting: boolean;
+    statusData: OperationConfirmationData;
+    errorMessage: string;
 }
 
 export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     private readonly _maxPerParent;
+    // This is used because a user may cancel during the loading phase, in which case we don't want to update state
+    private _mounted: boolean;
+
+    static defaultProps = {
+        api: getDefaultAPIWrapper(),
+    };
 
     constructor(props: Props) {
         super(props);
@@ -32,9 +53,56 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
             creationType: props.options.find(option => option.selected)?.type || props.options[0].type,
             numPerParent: 1,
             submitting: false,
+            statusData: undefined,
+            errorMessage: undefined,
         };
         this._maxPerParent = MAX_EDITABLE_GRID_ROWS / props.parentCount;
     }
+
+    componentDidMount(): void {
+        this._mounted = true;
+        this.init();
+    }
+
+    componentWillUnmount(): void {
+        this._mounted = false;
+    }
+
+    init = async (): Promise<void> => {
+        const { api, selectedItems, selectionKey } = this.props;
+        if (selectedItems) {
+            const { rows, statusMessage, statusData } = filterSampleRowsForOperation(
+                selectedItems,
+                SampleOperation.EditLineage
+            );
+            if (this._mounted) {
+                this.setState({
+                    statusData,
+                    error: false,
+                });
+            }
+        } else {
+            try {
+                const confirmationData = await api.samples.getSampleOperationConfirmationData(
+                    SampleOperation.EditLineage,
+                    selectionKey
+                );
+                if (this._mounted) {
+                    this.setState({
+                        statusData: confirmationData,
+                        error: false,
+                    });
+                }
+            } catch (e) {
+                if (this._mounted) {
+                    this.setState({
+                        error: 'There was a problem retrieving the confirmation data.',
+                        isLoading: false,
+                    });
+                }
+            }
+        }
+    };
 
     onCancel = (): void => {
         this.props.onCancel();
@@ -46,7 +114,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     };
 
     onChooseOption = option => {
-        this.setState({creationType: option.type});
+        this.setState({ creationType: option.type });
     };
 
     isValidNumPerParent = (): boolean => {
@@ -124,11 +192,11 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
 
     render(): React.ReactNode {
         const { show, parentCount } = this.props;
-        const { submitting } = this.state;
+        const { submitting, statusData } = this.state;
 
         const parentNoun = parentCount > 1 ? 'Parents' : 'Parent';
         const canSubmit = !submitting && this.isValidNumPerParent();
-        const title = 'Create Samples from Selected ' + parentNoun;
+        const title = (statusData?.noneAllowed ? 'Cannot ' : '') + 'Create Samples from Selected ' + parentNoun;
         return (
             <Modal show={show} onHide={this.onCancel}>
                 <Modal.Header closeButton>
@@ -136,17 +204,39 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 </Modal.Header>
 
                 <Modal.Body>
-                    {this.renderOptions()}
-                    {this.renderNumPerParent()}
+                    {statusData?.noneAllowed &&
+                        getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
+                    {(statusData?.totalCount == 0 || statusData?.anyAllowed) && (
+                        <>
+                            {statusData?.anyNotAllowed && (
+                                <Alert bsStyle="warning">
+                                    {getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
+                                </Alert>
+                            )}
+                            {this.renderOptions()}
+                            {this.renderNumPerParent()}
+                        </>
+                    )}
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button bsStyle="default" className="pull-left" onClick={this.onCancel}>
-                        Cancel
-                    </Button>
-                    <Button bsStyle="success" onClick={this.onConfirm} disabled={!canSubmit}>
-                        Go to Sample Creation Grid
-                    </Button>
+                    {(statusData?.totalCount == 0 || statusData?.anyAllowed) && (
+                        <>
+                            <Button bsStyle="default" className="pull-left" onClick={this.onCancel}>
+                                Cancel
+                            </Button>
+                            <Button bsStyle="success" onClick={this.onConfirm} disabled={!canSubmit}>
+                                Go to Sample Creation Grid
+                            </Button>
+                        </>
+                    )}
+                    {statusData?.noneAllowed && (
+                        <>
+                            <Button bsStyle="default" onClick={this.onCancel}>
+                                Dismiss
+                            </Button>
+                        </>
+                    )}
                 </Modal.Footer>
             </Modal>
         );

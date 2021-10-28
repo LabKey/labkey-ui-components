@@ -3,8 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD October 2021
-* Item ...
-    * Add sample status column to picklist default view on creation, if sample status is enabled
+* Item 9537: Sample Status, Remove experimental feature flag
+    * Update isSampleStatusEnabled() check to be based on existence of SM module
+    * Add sample status column to allowed aliquot fields (for create, bulk insert/update dialogs)
+    * Sample URL resolver fix for LKB mixture batches
 
 ### version 2.88.1
 *Released*: 28 October 2021

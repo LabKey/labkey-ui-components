@@ -21,36 +21,8 @@ import { DomainDesign, FieldErrors } from '../models';
 
 // See ExpProtocol.Status in 'platform' repository.
 export enum Status {
-    true = 'true',
-    false = 'false',
-    Archived = 'Archived',
-    Active = 'Active'
-}
-
-type AssayStatusProps = {
-    [key in Status]: { booleanValue: boolean, stringValue: string }
-}
-
-export const AssayStatus: AssayStatusProps = {
-    [Status.true]: {
-        booleanValue: true,
-        stringValue: 'Active'
-    },
-
-    [Status.false]: {
-        booleanValue: false,
-        stringValue: 'Archived'
-    },
-
-    [Status.Archived]: {
-        booleanValue: false,
-        stringValue: 'Archived'
-    },
-
-    [Status.Active]: {
-        booleanValue: true,
-        stringValue: 'Active'
-    },
+    true = 'Active',
+    false = 'Archived',
 }
 
 export class AssayProtocolModel extends Record({
@@ -84,7 +56,7 @@ export class AssayProtocolModel extends Record({
     selectedDetectionMethod: undefined,
     selectedMetadataInputFormat: undefined,
     selectedPlateTemplate: undefined,
-    status: false,
+    status: Status.true,
     qcEnabled: undefined,
 }) {
     declare allowBackgroundUpload: boolean;
@@ -117,7 +89,7 @@ export class AssayProtocolModel extends Record({
     declare selectedDetectionMethod: string;
     declare selectedMetadataInputFormat: string;
     declare selectedPlateTemplate: string;
-    declare status: boolean;
+    declare status: Status;
     declare qcEnabled: boolean;
 
     static create(raw: any): AssayProtocolModel {
@@ -151,13 +123,6 @@ export class AssayProtocolModel extends Record({
             }
         }
 
-        if (raw.status === 'Active') {
-            raw.status = true;
-        } else if (raw.status === 'Archived') {
-            raw.status = false;
-        }
-        raw.status = AssayStatus[raw.status].booleanValue;
-
         return new AssayProtocolModel({ ...raw, name, domains });
     }
 
@@ -173,9 +138,11 @@ export class AssayProtocolModel extends Record({
         delete json.autoCopyTargetContainer;
         delete json.exception;
 
-        json.status = AssayStatus[json.status].stringValue;
-
         return json;
+    }
+
+    isActive(): boolean {
+        return this.status === Status.true;
     }
 
     getDomainByNameSuffix(name: string): DomainDesign {

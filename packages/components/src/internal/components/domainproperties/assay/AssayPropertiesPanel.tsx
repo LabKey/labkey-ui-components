@@ -13,7 +13,7 @@ import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BaseProperties
 
 import { isPremiumProductEnabled } from '../../../app/utils';
 
-import { AssayProtocolModel } from './models';
+import { AssayProtocolModel, Status } from './models';
 import {
     AssayStatusInput,
     AutoLinkCategoryInput,
@@ -106,6 +106,20 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
         );
     };
 
+    // Should 'status' enum be updated to include more options, field should be changed to a dropdown, and onValueChange used instead of onStatusChange
+    onStatusChange = evt => {
+        const { model } = this.props;
+
+        const id = evt.target.id;
+        const value = evt.target.checked;
+
+        const newModel = model.merge({
+            [id.replace(FORM_ID_PREFIX, '')]: Status[value],
+        }) as AssayProtocolModel;
+
+        this.updateValidStatus(newModel);
+    };
+
     onInputChange = evt => {
         const id = evt.target.id;
         let value = evt.target.value;
@@ -176,7 +190,7 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                     {isPremiumProductEnabled() && (
                         <AssayStatusInput
                             model={model}
-                            onChange={this.onInputChange}
+                            onChange={this.onStatusChange}
                             appPropertiesOnly={appPropertiesOnly}
                         />
                     )}

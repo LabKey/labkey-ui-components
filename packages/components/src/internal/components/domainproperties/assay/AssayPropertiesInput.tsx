@@ -212,9 +212,13 @@ export const AssayStatusInput = props => {
         <AssayPropertiesInput
             label="Active"
             appPropertiesOnly={props.appPropertiesOnly}
-            helpTipBody={<p> If disabled, this assay design will be considered archived, and will be hidden in certain views. </p>}
+            helpTipBody={
+                <p>
+                    If disabled, this assay design will be considered archived, and will be hidden in certain views.
+                </p>
+            }
         >
-            <input type="checkbox" id={FORM_IDS.STATUS} checked={props.model.status} onChange={props.onChange} />
+            <input type="checkbox" id={FORM_IDS.STATUS} checked={props.model.isActive()} onChange={props.onChange} />
         </AssayPropertiesInput>
     );
 };

@@ -4,7 +4,7 @@ import { Filter } from '@labkey/api';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { SCHEMAS, TabbedGridPanel } from '../../..';
-import {AssayStatus, Status} from "../domainproperties/assay/models";
+import { Status } from '../domainproperties/assay/models';
 
 const ACTIVE_GRID_ID = 'active';
 const ALL_GRID_ID = 'all';
@@ -25,7 +25,12 @@ export const StatusGridImpl: FC<InjectedQueryModels> = memo(props => {
     const { actions, queryModels } = props;
 
     return (
-        <TabbedGridPanel tabOrder={[ACTIVE_GRID_ID, ALL_GRID_ID]} actions={actions} queryModels={queryModels} asPanel={false} />
+        <TabbedGridPanel
+            tabOrder={[ACTIVE_GRID_ID, ALL_GRID_ID]}
+            actions={actions}
+            queryModels={queryModels}
+            asPanel={false}
+        />
     );
 });
 
@@ -41,7 +46,7 @@ export const StatusGrid: FC<OwnProps> = memo(props => {
             ? [Filter.create('Type', excludedAssayProviders, Filter.Types.NOT_IN)]
             : [];
 
-        const activeBaseFilter = allBaseFilter.concat([Filter.create('Status', AssayStatus[Status.Active].stringValue)]);
+        const activeBaseFilter = allBaseFilter.concat([Filter.create('Status', Status.true)]);
 
         return {
             [ACTIVE_GRID_ID]: {

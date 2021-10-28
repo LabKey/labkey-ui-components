@@ -20,9 +20,37 @@ import { Utils } from '@labkey/api';
 import { DomainDesign, FieldErrors } from '../models';
 
 // See ExpProtocol.Status in 'platform' repository.
-enum Status {
-    true = 'Active',
-    false = 'Archived',
+export enum Status {
+    true = 'true',
+    false = 'false',
+    Archived = 'Archived',
+    Active = 'Active'
+}
+
+type AssayStatusProps = {
+    [key in Status]: { booleanValue: boolean, stringValue: string }
+}
+
+export const AssayStatus: AssayStatusProps = {
+    [Status.true]: {
+        booleanValue: true,
+        stringValue: 'Active'
+    },
+
+    [Status.false]: {
+        booleanValue: false,
+        stringValue: 'Archived'
+    },
+
+    [Status.Archived]: {
+        booleanValue: false,
+        stringValue: 'Archived'
+    },
+
+    [Status.Active]: {
+        booleanValue: true,
+        stringValue: 'Active'
+    },
 }
 
 export class AssayProtocolModel extends Record({
@@ -128,6 +156,7 @@ export class AssayProtocolModel extends Record({
         } else if (raw.status === 'Archived') {
             raw.status = false;
         }
+        raw.status = AssayStatus[raw.status].booleanValue;
 
         return new AssayProtocolModel({ ...raw, name, domains });
     }
@@ -144,7 +173,7 @@ export class AssayProtocolModel extends Record({
         delete json.autoCopyTargetContainer;
         delete json.exception;
 
-        json.status = Status[json.status];
+        json.status = AssayStatus[json.status].stringValue;
 
         return json;
     }

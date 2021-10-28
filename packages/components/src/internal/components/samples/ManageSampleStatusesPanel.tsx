@@ -17,9 +17,10 @@ import { selectRows, updateRows, insertRows, deleteRows } from '../../query/api'
 import { caseInsensitive } from '../../util/utils';
 import { SCHEMAS } from '../../schemas';
 import { resolveErrorMessage } from '../../util/messaging';
-import { SampleState } from './models';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { SampleState } from './models';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = SchemaQuery.create('exp', 'SampleStateType');

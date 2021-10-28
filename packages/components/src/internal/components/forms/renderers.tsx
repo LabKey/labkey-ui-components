@@ -19,6 +19,7 @@ import { Input } from 'formsy-react-components';
 import { addValidationRule, validationRules } from 'formsy-react';
 
 import { QueryColumn } from '../../..';
+
 import { AssayTaskInput } from './input/AssayTaskInput';
 
 import { LabelOverlay } from './LabelOverlay';

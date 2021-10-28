@@ -2476,6 +2476,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                     <p>
                                                       <a
                                                         href="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
+                                                        rel="noreferrer"
                                                         target="_blank"
                                                       >
                                                         More info

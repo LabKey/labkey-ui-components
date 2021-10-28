@@ -184,7 +184,7 @@ describe('filterSampleRowsForOperation', () => {
     }
 
     test('all available', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         const data = {
             1: availableRow1,
             2: availableRow2,
@@ -193,7 +193,7 @@ describe('filterSampleRowsForOperation', () => {
     });
 
     test('all locked', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         const data = {
             30: lockedRow1,
             31: lockedRow2,
@@ -203,7 +203,7 @@ describe('filterSampleRowsForOperation', () => {
     });
 
     test('mixed statuses', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         const data = {
             30: lockedRow1,
             20: consumedRow1,

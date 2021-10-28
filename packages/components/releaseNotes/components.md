@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD October 2021
+### version 2.89.0
+*Released*: 28 October 2021
 * Item 9537: Sample Status, Remove experimental feature flag
     * Update isSampleStatusEnabled() check to be based on existence of SM module
     * Add sample status column to allowed aliquot fields (for create, bulk insert/update dialogs)

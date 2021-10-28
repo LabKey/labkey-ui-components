@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 43793: Use field descriptions as title attribute on grid column headers
+
 ### version 2.88.1
 *Released*: 28 October 2021
 * Issue 43687: UsersGridPanel update to not default to root container path for site/app admin users

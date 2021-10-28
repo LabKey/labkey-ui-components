@@ -19,7 +19,6 @@ import { PICKLIST_KEY } from '../../app/constants';
 import { isSampleStatusEnabled } from '../../app/utils';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
-import { isSampleStatusEnabled } from "../../app/utils";
 
 export function getPicklists(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {

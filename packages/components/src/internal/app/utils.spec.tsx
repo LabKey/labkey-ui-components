@@ -24,10 +24,12 @@ import {
     getStorageSectionConfig,
     hasPremiumModule,
     isBiologicsEnabled,
+    isCommunityDistribution,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
     isProductNavigationEnabled,
     isSampleManagerEnabled,
+    isSampleStatusEnabled,
     sampleManagerIsPrimaryApp,
     userCanDesignLocations,
     userCanDesignSourceTypes,
@@ -268,6 +270,13 @@ describe('utils', () => {
         expect(isFreezerManagementEnabled({inventory: {}, samplemanagement: {}, biologics: {}}, SAMPLE_MANAGER_APP_PROPERTIES.productId)).toBeTruthy();
     });
 
+    test('isSampleStatusEnabled', () => {
+        LABKEY.moduleContext = { api: { moduleNames: [] } };
+        expect(isSampleStatusEnabled()).toBeFalsy();
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
+        expect(isSampleStatusEnabled()).toBeTruthy();
+    });
+
     test('isProductNavigationEnabled', () => {
         LABKEY.moduleContext = {};
         expect(isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId)).toBeFalsy();
@@ -299,29 +308,31 @@ describe('utils', () => {
     });
 
     test('hasPremiumModule', () => {
-        const Component: FC = () => {
-            return <div>{hasPremiumModule() ? 'true' : 'false'}</div>;
-        };
-
         LABKEY.moduleContext = {};
-        let wrapper = mount(<Component />);
-        expect(wrapper.find('div').text()).toBe('false');
-        wrapper.unmount();
+        expect(hasPremiumModule()).toBeFalsy();
 
-        LABKEY.moduleContext = { api: { moduleNames: ['sampleManagement'] } };
-        wrapper = mount(<Component />);
-        expect(wrapper.find('div').text()).toBe('false');
-        wrapper.unmount();
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
+        expect(hasPremiumModule()).toBeFalsy();
 
         LABKEY.moduleContext = { api: { moduleNames: ['api', 'core', 'premium'] } };
-        wrapper = mount(<Component />);
-        expect(wrapper.find('div').text()).toBe('true');
-        wrapper.unmount();
+        expect(hasPremiumModule()).toBeTruthy();
 
         LABKEY.moduleContext = { api: {} };
-        wrapper = mount(<Component />);
-        expect(wrapper.find('div').text()).toBe('false');
-        wrapper.unmount();
+        expect(hasPremiumModule()).toBeFalsy();
+    });
+
+    test('isCommunityDistribution', () => {
+        LABKEY.moduleContext = {};
+        expect(isCommunityDistribution()).toBeTruthy();
+
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
+        expect(isCommunityDistribution()).toBeFalsy();
+
+        LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
+        expect(isCommunityDistribution()).toBeFalsy();
+
+        LABKEY.moduleContext = { api: { moduleNames: ['api'] } };
+        expect(isCommunityDistribution()).toBeTruthy();
     });
 
     test("isPremiumProductEnabled", () => {

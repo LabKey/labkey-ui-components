@@ -102,7 +102,7 @@ describe('SampleTypeDesigner', () => {
     });
 
     test('open fields panel, with barcodes', async () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['sampleManagement', 'api', 'core', 'premium'] } };
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement', 'api', 'core', 'premium'] } };
         const wrapped = mount(<SampleTypeDesigner {...BASE_PROPS} />);
         await sleep();
 

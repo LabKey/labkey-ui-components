@@ -7,6 +7,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Hide 'Archived' Assay designs from megaMenu
 * Show 'Active' Assay designs tab by default on Assay Overview Page
 
+### version 2.89.0
+*Released*: 28 October 2021
+* Item 9537: Sample Status, Remove experimental feature flag
+    * Update isSampleStatusEnabled() check to be based on existence of SM module
+    * Add sample status column to allowed aliquot fields (for create, bulk insert/update dialogs)
+    * Sample URL resolver fix for LKB mixture batches
+
 ### version 2.88.1
 *Released*: 28 October 2021
 * Issue 43687: UsersGridPanel update to not default to root container path for site/app admin users
@@ -31,7 +38,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update RunPropertiesPanel to render AssayTaskInput
 * Update resolveRenderer to use AssayTaskInput
 
-### 2.86.1
+### version 2.86.1
 *Released*: 26 October 2021
 * Auto-close confirm modal in case of error saving for 'ID/Name Settings' panel
 

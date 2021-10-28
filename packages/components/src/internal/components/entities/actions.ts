@@ -3,6 +3,7 @@ import { fromJS, List, Map } from 'immutable';
 
 import {
     buildURL,
+    getFilterForSampleOperation,
     getQueryGridModel,
     getSelected,
     importData,
@@ -10,6 +11,7 @@ import {
     naturalSort,
     QueryInfo,
     SampleCreationType,
+    SampleOperation,
     SchemaQuery,
     selectRows,
     SHARED_CONTAINER_PATH,
@@ -25,19 +27,23 @@ import {
     EntityTypeOption,
     IEntityTypeOption,
     IParentOption,
+    OperationConfirmationData,
 } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
+import { isSampleEntity } from './utils';
 
-export interface DeleteConfirmationData {
-    canDelete: any[];
-    cannotDelete: any[];
-}
-
-export function getDeleteConfirmationData(
+export function getOperationConfirmationData(
     selectionKey: string,
     dataType: EntityDataType,
-    rowIds?: string[]
-): Promise<DeleteConfirmationData> {
+    rowIds?: string[] | number[],
+    extraParams?: Record<string, any>
+): Promise<OperationConfirmationData> {
+    if (!selectionKey && !rowIds?.length) {
+        return new Promise(resolve => {
+            resolve(new OperationConfirmationData());
+        });
+    }
+
     return new Promise((resolve, reject) => {
         let params;
         if (selectionKey) {
@@ -49,35 +55,54 @@ export function getDeleteConfirmationData(
                 rowIds,
             };
         }
+        if (extraParams) {
+            params = Object.assign(params, extraParams);
+        }
         return Ajax.request({
-            url: buildURL('experiment', dataType.deleteConfirmationActionName),
+            url: buildURL('experiment', dataType.operationConfirmationActionName),
             method: 'POST',
             jsonData: params,
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
-                    resolve(response.data);
+                    resolve(new OperationConfirmationData(response.data));
                 } else {
+                    console.error('Response failure when getting operation confirmation data', response.exception);
                     reject(response.exception);
                 }
             }),
             failure: Utils.getCallbackWrapper(response => {
-                reject(response ? response.exception : 'Unknown error getting delete confirmation data.');
+                console.error('Error getting operation confirmation data', response);
+                reject(response ? response.exception : 'Unknown error getting operation confirmation data.');
             }),
         });
     });
 }
 
-export function getSampleDeleteConfirmationData(
+export function getDeleteConfirmationData(
     selectionKey: string,
-    rowIds?: string[]
-): Promise<DeleteConfirmationData> {
-    return getDeleteConfirmationData(selectionKey, SampleTypeDataType, rowIds);
+    dataType: EntityDataType,
+    rowIds?: string[] | number[]
+): Promise<OperationConfirmationData> {
+    if (isSampleEntity(dataType)) {
+        return getSampleOperationConfirmationData(SampleOperation.Delete, selectionKey, rowIds);
+    }
+    return getOperationConfirmationData(selectionKey, dataType, rowIds);
+}
+
+export function getSampleOperationConfirmationData(
+    operation: SampleOperation,
+    selectionKey: string,
+    rowIds?: string[] | number[]
+): Promise<OperationConfirmationData> {
+    return getOperationConfirmationData(selectionKey, SampleTypeDataType, rowIds, {
+        sampleOperation: SampleOperation[operation],
+    });
 }
 
 export function getDataDeleteConfirmationData(
     selectionKey: string,
-    rowIds?: string[]
-): Promise<DeleteConfirmationData> {
+    rowIds?: string[] | number[]
+): Promise<OperationConfirmationData> {
     return getDeleteConfirmationData(selectionKey, DataClassDataType, rowIds);
 }
 
@@ -108,11 +133,16 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
     return new Promise((resolve, reject) => {
         return getSelectedItemSamples(itemIds)
             .then(sampleIds => {
+                const filterArray = [Filter.create('RowId', sampleIds, Filter.Types.IN)];
+                const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
+                if (opFilter) {
+                    filterArray.push(opFilter);
+                }
                 return selectRows({
                     schemaName: 'exp',
                     queryName: 'materials',
                     columns: 'LSID,Name,RowId,SampleSet',
-                    filterArray: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+                    filterArray,
                     containerFilter: Query.containerFilter.currentPlusProjectAndShared,
                 })
                     .then(response => {
@@ -191,11 +221,12 @@ function initParents(
             const queryGridModel = getQueryGridModel(selectionKey);
 
             if (queryGridModel && queryGridModel.selectedLoaded) {
-                return getSelectedParents(
-                    schemaQuery,
-                    [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)],
-                    isAliquotParent
-                )
+                const filterArray = [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)];
+                const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
+                if (opFilter) {
+                    filterArray.push(opFilter);
+                }
+                return getSelectedParents(schemaQuery, filterArray, isAliquotParent)
                     .then(response => resolve(response))
                     .catch(reason => reject(reason));
             } else {
@@ -206,11 +237,12 @@ function initParents(
                                 .then(response => resolve(response))
                                 .catch(reason => reject(reason));
                         }
-                        return getSelectedParents(
-                            schemaQuery,
-                            [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)],
-                            isAliquotParent
-                        )
+                        const filterArray = [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)];
+                        const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
+                        if (opFilter) {
+                            filterArray.push(opFilter);
+                        }
+                        return getSelectedParents(schemaQuery, filterArray, isAliquotParent)
                             .then(response => resolve(response))
                             .catch(reason => reject(reason));
                     })
@@ -239,11 +271,12 @@ function initParents(
                 );
             }
 
-            return getSelectedParents(
-                SchemaQuery.create(schema, query),
-                [Filter.create('RowId', value)],
-                isAliquotParent
-            )
+            const filterArray = [Filter.create('RowId', value)];
+            const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
+            if (opFilter) {
+                filterArray.push(opFilter);
+            }
+            return getSelectedParents(SchemaQuery.create(schema, query), filterArray, isAliquotParent)
                 .then(response => resolve(response))
                 .catch(reason => reject(reason));
         } else {

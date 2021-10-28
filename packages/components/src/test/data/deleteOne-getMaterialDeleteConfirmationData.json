@@ -1,11 +1,11 @@
 {
   "data" : {
-    "canDelete" : [ {
+    "allowed" : [ {
       "Name" : "D-2.3.1",
       "RowId" : 351
     }
     ],
-    "cannotDelete" : [ {
+    "notAllowed" : [ {
       "Name" : "D-2.3",
       "RowId" : 350
     } ]

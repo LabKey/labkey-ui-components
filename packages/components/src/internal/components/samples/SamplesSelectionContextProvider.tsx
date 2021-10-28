@@ -4,7 +4,9 @@
  */
 import React from 'react';
 
-import { LoadingSpinner } from '../../..';
+import { LoadingSpinner, SampleOperation } from '../../..';
+
+import { getSampleOperationConfirmationData } from '../entities/actions';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import {
@@ -24,7 +26,7 @@ type Props = SamplesSelectionProviderProps;
 type State = SamplesSelectionResultProps;
 
 export const SamplesSelectionProvider = (Component: React.ComponentType) => {
-    class SamplesSelectionProviderImpl extends React.Component<Props, State> {
+    return class SamplesSelectionProviderImpl extends React.Component<Props, State> {
         state: Readonly<State> = {
             sampleTypeDomainFields: undefined,
             aliquots: undefined,
@@ -33,10 +35,12 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             sampleItems: undefined,
             sampleLineageKeys: undefined,
             sampleLineage: undefined,
+            editStatusData: undefined,
         };
 
         componentDidMount() {
             this.loadSampleTypeDomain();
+            this.loadEditConfirmationData();
             this.loadAliquotData();
             this.loadStorageData();
             this.loadLineageData();
@@ -44,6 +48,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
 
         componentDidUpdate(prevProps: Props): void {
             if (prevProps.selection !== this.props.selection) {
+                this.loadEditConfirmationData();
                 this.loadAliquotData();
                 this.loadStorageData();
                 this.loadLineageData();
@@ -53,12 +58,28 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
         loadSampleTypeDomain(): void {
             getGroupedSampleDomainFields(this.props.sampleSet)
                 .then(sampleTypeDomainFields => {
-                    this.setState(() => ({
+                    this.setState({
                         sampleTypeDomainFields,
-                    }));
+                    });
                 })
                 .catch(reason => {
-                    this.setState(() => ({ selectionInfoError: reason }));
+                    this.setState({ selectionInfoError: reason });
+                });
+        }
+
+        loadEditConfirmationData(): void {
+            const { selection, sampleSet } = this.props;
+            getSampleOperationConfirmationData(SampleOperation.EditMetadata, undefined, selection.toArray())
+                .then(editConfirmationData => {
+                    this.setState({
+                        editStatusData: editConfirmationData,
+                    });
+                })
+                .catch(error => {
+                    this.setState({
+                        selectionInfoError: error,
+                        editStatusData: undefined,
+                    });
                 });
         }
 
@@ -67,15 +88,15 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             if (determineAliquot && selection && selection.size > 0) {
                 getAliquotSampleIds(selection, sampleSet)
                     .then(aliquots => {
-                        this.setState(() => ({
+                        this.setState({
                             aliquots,
-                        }));
+                        });
                     })
                     .catch(error => {
-                        this.setState(() => ({
+                        this.setState({
                             aliquots: undefined,
                             selectionInfoError: error,
-                        }));
+                        });
                     });
             }
         }
@@ -85,15 +106,15 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             if (determineStorage && selection && selection.size > 0) {
                 getNotInStorageSampleIds(selection, sampleSet)
                     .then(samples => {
-                        this.setState(() => ({
+                        this.setState({
                             noStorageSamples: samples,
-                        }));
+                        });
                     })
                     .catch(error => {
-                        this.setState(() => ({
+                        this.setState({
                             noStorageSamples: undefined,
                             selectionInfoError: error,
-                        }));
+                        });
                     });
                 getSampleSelectionStorageData(selection)
                     .then(sampleItems => {
@@ -102,10 +123,10 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                         }));
                     })
                     .catch(error => {
-                        this.setState(() => ({
+                        this.setState({
                             sampleItems: undefined,
                             selectionInfoError: error,
-                        }));
+                        });
                     });
             }
         }
@@ -122,23 +143,30 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                         }));
                     })
                     .catch(error => {
-                        this.setState(() => ({
+                        this.setState({
                             sampleLineageKeys: undefined,
                             sampleLineage: undefined,
                             selectionInfoError: error,
-                        }));
+                        });
                     });
             }
         }
 
         render() {
             const { determineAliquot, determineStorage, determineLineage } = this.props;
-            const { aliquots, noStorageSamples, selectionInfoError, sampleTypeDomainFields, sampleLineage } =
-                this.state;
+            const {
+                aliquots,
+                noStorageSamples,
+                selectionInfoError,
+                sampleTypeDomainFields,
+                sampleLineage,
+                editStatusData,
+            } = this.state;
 
             let isLoaded = !!sampleTypeDomainFields;
             if (isLoaded && !selectionInfoError) {
                 if (
+                    !editStatusData ||
                     (determineAliquot && !aliquots) ||
                     (determineStorage && !noStorageSamples) ||
                     (determineLineage && !sampleLineage)
@@ -157,7 +185,5 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
                 return <LoadingSpinner />;
             }
         }
-    }
-
-    return SamplesSelectionProviderImpl;
+    };
 };

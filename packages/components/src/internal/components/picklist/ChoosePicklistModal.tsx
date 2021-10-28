@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Modal, Tab, Tabs } from 'react-bootstrap';
+import { Button, Modal, Tab, Tabs } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { Utils } from '@labkey/api';
@@ -15,6 +15,12 @@ import { createNotification } from '../notifications/actions';
 
 import { incrementClientSideMetricCount } from '../../actions';
 
+import { SampleOperation } from '../samples/constants';
+import { OperationConfirmationData } from '../entities/models';
+import { getOperationNotPermittedMessage } from '../samples/utils';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { Picklist } from './models';
 import {
     addSamplesToPicklist,
     getPicklistCountsBySampleType,
@@ -22,7 +28,6 @@ import {
     getPicklistUrl,
     SampleTypeCount,
 } from './actions';
-import { Picklist } from './models';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -209,6 +214,7 @@ interface ChoosePicklistModalDisplayProps {
 export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePicklistModalDisplayProps> = memo(
     props => {
         const {
+            api,
             picklists,
             loading,
             picklistLoadError,
@@ -226,6 +232,24 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         const [error, setError] = useState<string>(undefined);
         const [submitting, setSubmitting] = useState<boolean>(false);
         const [activeItem, setActiveItem] = useState<Picklist>(undefined);
+        const [validCount, setValidCount] = useState<number>(numSelected);
+        const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
+
+        useEffect(() => {
+            (async () => {
+                try {
+                    const data = await api.samples.getSampleOperationConfirmationData(
+                        SampleOperation.AddToPicklist,
+                        selectionKey,
+                        sampleIds
+                    );
+                    setStatusData(data);
+                    setValidCount(data.allowed.length);
+                } catch (reason) {
+                    setError(reason);
+                }
+            })();
+        }, [api, selectionKey, sampleIds]);
 
         const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
             setSearch(event.target.value.trim().toLowerCase());
@@ -258,7 +282,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         const onAddClicked = useCallback(async () => {
             setSubmitting(true);
             try {
-                const insertResponse = await addSamplesToPicklist(activeItem.name, selectionKey, sampleIds);
+                const insertResponse = await addSamplesToPicklist(activeItem.name, statusData, selectionKey, sampleIds);
                 setError(undefined);
                 setSubmitting(false);
                 incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
@@ -267,7 +291,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                         <AddedToPicklistNotification
                             picklist={activeItem}
                             numAdded={insertResponse.rows.length}
-                            numSelected={numSelected}
+                            numSelected={validCount}
                             currentProductId={currentProductId}
                             picklistProductId={picklistProductId}
                         />
@@ -280,7 +304,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 setSubmitting(false);
                 setError(resolveErrorMessage(e));
             }
-        }, [activeItem, selectionKey, setSubmitting, setError, sampleIds, numSelected]);
+        }, [activeItem, selectionKey, setSubmitting, setError, sampleIds, validCount]);
 
         const closeModal = useCallback(() => {
             setError(undefined);
@@ -309,7 +333,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             if (isSearching) {
                 suffix = ' matching your search';
             }
-            suffix += ' to add ' + (numSelected === 1 ? 'this sample to.' : 'these samples to.');
+            suffix += ' to add ' + (validCount === 1 ? 'this sample to.' : 'these samples to.');
             myEmptyMessage += suffix;
             teamEmptyMessage += suffix;
             if (!isSearching) {
@@ -326,18 +350,18 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             }
         }
 
-        return (
-            <Modal show bsSize="large" onHide={closeModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Choose a Picklist</Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <Alert bsStyle="danger">{picklistLoadError ?? error}</Alert>
+        let body;
+        let title;
+        let buttons;
+        if (statusData?.anyAllowed) {
+            title = 'Choose a Picklist';
+            body = (
+                <>
                     <div className="row">
                         <div className="col-md-12">
                             <Alert bsStyle="info">
-                                Adding {Utils.pluralize(numSelected, 'sample', 'samples')} to selected picklist.
+                                Adding {Utils.pluralize(validCount, 'sample', 'samples')} to selected picklist.{' '}
+                                {getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData)}
                             </Alert>
                         </div>
                     </div>
@@ -384,9 +408,10 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                             {activeItem !== undefined && <PicklistDetails picklist={activeItem} />}
                         </div>
                     </div>
-                </Modal.Body>
-
-                <Modal.Footer>
+                </>
+            );
+            buttons = (
+                <>
                     <div className="pull-left">
                         <button type="button" className="btn btn-default" onClick={closeModal}>
                             Cancel
@@ -403,7 +428,29 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                             {submitting ? 'Adding to Picklist...' : 'Add to Picklist'}
                         </button>
                     </div>
-                </Modal.Footer>
+                </>
+            );
+        } else {
+            title = 'Cannot Add to Picklist';
+            buttons = (
+                <Button bsClass="btn btn-default pull-right" onClick={closeModal}>
+                    Dismiss
+                </Button>
+            );
+            body = getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData);
+        }
+        return (
+            <Modal show bsSize="large" onHide={closeModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{title}</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    <Alert bsStyle="danger">{picklistLoadError ?? error}</Alert>
+                    {body}
+                </Modal.Body>
+
+                <Modal.Footer>{buttons}</Modal.Footer>
             </Modal>
         );
     }
@@ -419,6 +466,7 @@ interface ChoosePicklistModalProps {
     currentProductId?: string;
     picklistProductId?: string;
     metricFeatureArea?: string;
+    api?: ComponentsAPIWrapper;
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
@@ -440,3 +488,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
 
     return <ChoosePicklistModalDisplay {...props} picklists={items} picklistLoadError={error} loading={loading} />;
 });
+
+ChoosePicklistModal.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};

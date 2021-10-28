@@ -3678,6 +3678,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                     <p>
                                                       <a
                                                         href="https://www.labkey.org/Documentation/wiki-page.view?name=dataClass#name&referrer=inPage"
+                                                        rel="noreferrer"
                                                         target="_blank"
                                                       >
                                                         More info

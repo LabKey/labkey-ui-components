@@ -82,8 +82,10 @@ export class AssayWizardModel
         jobDescription: undefined,
         jobNotificationProvider: undefined,
         forceAsync: false,
+        workflowTask: undefined,
     })
-    implements FileAttachmentFormModel {
+    implements FileAttachmentFormModel
+{
     declare assayDef: AssayDefinitionModel;
     declare isError?: boolean;
     declare isInit: boolean;
@@ -113,6 +115,7 @@ export class AssayWizardModel
     declare jobDescription?: string;
     declare jobNotificationProvider?: string;
     declare forceAsync?: boolean;
+    declare workflowTask?: number;
 
     isFilesTab(currentStep: AssayUploadTabs): boolean {
         return currentStep === AssayUploadTabs.Files;
@@ -179,6 +182,7 @@ export class AssayWizardModel
             jobDescription,
             jobNotificationProvider,
             forceAsync,
+            workflowTask,
         } = this;
 
         const assayData: any = {
@@ -193,6 +197,7 @@ export class AssayWizardModel
             jobDescription,
             jobNotificationProvider,
             forceAsync,
+            workflowTask,
         };
 
         Object.keys(assayData).forEach(k => {

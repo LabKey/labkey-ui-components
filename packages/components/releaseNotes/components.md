@@ -5,6 +5,34 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * Update aliquot rollup column field
 
+### version 2.88.1
+*Released*: 28 October 2021
+* Issue 43687: UsersGridPanel update to not default to root container path for site/app admin users
+  * always use the given containerPath
+  * rename SiteUsersGridPanel to UsersGridPanel
+
+### version 2.88.0
+*Released*: 28 October 2021
+* Updates for restricting operations for selections of samples based on status
+  * `getMaterialDeleteConfirmationData.api` renamed to `getMaterialOperationConfirmationData.api` and return structure generalized
+  * Update `SamplesBulkUpdateForm` to provide alert when samples don't allow data updates.
+  * Update `AssayImportPanels` with alert about selected samples not allowing additional assay data to be associated with them
+  * Update `EditableGridLoaderFromSelection` to accept a set of ids that are not to be updated when loading data from the bulk edit form.
+  * Update various action modals with status alerts and to show only text and a dismiss button when nothing can be done from the selected samples
+  * Fix bug in `SampleStatusTag` for icon-only display of Available statuses.
+  * Add info headers in `SamplesEditableGrid` indicating why rows are not editable.
+
+### version 2.87.0
+*Released*: 27 October 2021
+* Bump @labkey/api dependency
+* Add AssayTaskInput
+* Update RunPropertiesPanel to render AssayTaskInput
+* Update resolveRenderer to use AssayTaskInput
+
+### 2.86.1
+*Released*: 26 October 2021
+* Auto-close confirm modal in case of error saving for 'ID/Name Settings' panel
+
 ### version 2.86.0
 *Released*: 22 October 2021
 * Item 9584: ManageSampleStatusesPanel for sample statuses CRUD operations

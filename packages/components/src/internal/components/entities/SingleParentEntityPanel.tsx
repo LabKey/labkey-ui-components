@@ -30,6 +30,7 @@ import { isSampleStatusEnabled } from '../../app/utils';
 import { getFilterForSampleOperation } from '../samples/utils';
 
 import { IEntityTypeOption } from './models';
+import { isSampleEntity } from './utils';
 
 interface OwnProps {
     chosenType: IEntityTypeOption;
@@ -113,7 +114,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                 .join(DELIMITER);
         }
         let queryFilters = List<Filter.IFilter>();
-        if (isSampleStatusEnabled() && parentDataType.instanceSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) {
+        if (isSampleStatusEnabled() && isSampleEntity(parentDataType)) {
             queryFilters = queryFilters.push(getFilterForSampleOperation(SampleOperation.EditLineage));
         }
         const labelClasses = 'col-sm-3 col-xs-12';

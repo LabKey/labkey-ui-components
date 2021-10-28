@@ -26,6 +26,7 @@ import {
     DataClassDataType,
     DomainDetails,
     FindField,
+    getFilterForSampleOperation,
     getSelectedData,
     getSelection,
     getStateModelId,
@@ -35,6 +36,7 @@ import {
     QueryConfig,
     resolveErrorMessage,
     SAMPLE_ID_FIND_FIELD,
+    SampleOperation,
     SampleTypeDataType,
     SchemaQuery,
     SCHEMAS,
@@ -222,7 +224,15 @@ export function getNotInStorageSampleIds(selection: List<any>, sampleType: strin
     return getFilteredSampleSelection(selection, sampleType, [Filter.create('StorageStatus', 'Not in storage')]);
 }
 
-export function getFilteredSampleSelection(
+export function getNotPermittedSampleIds(
+    selection: List<any>,
+    sampleType: string,
+    operation: SampleOperation
+): Promise<any[]> {
+    return getFilteredSampleSelection(selection, sampleType, [getFilterForSampleOperation(operation, false)]);
+}
+
+function getFilteredSampleSelection(
     selection: List<any>,
     sampleType: string,
     filters: Filter.IFilter[]
@@ -630,7 +640,7 @@ export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: s
     });
 }
 
-export function getSampleAliquotRows(sampleId: number | string): Promise<Record<string, any>[]> {
+export function getSampleAliquotRows(sampleId: number | string): Promise<Array<Record<string, any>>> {
     return new Promise((resolve, reject) => {
         Query.executeSql({
             sql:

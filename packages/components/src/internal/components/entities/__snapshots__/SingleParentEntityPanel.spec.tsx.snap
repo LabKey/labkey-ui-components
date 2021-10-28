@@ -7,7 +7,6 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
   index={0}
   parentDataType={
     Object {
-      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
@@ -25,6 +24,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       "nounAsParentSingular": "Parent",
       "nounPlural": "data",
       "nounSingular": "data",
+      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
       "typeListingSchemaQuery": Immutable.Record {
         "schemaName": "exp",
         "queryName": "DataClasses",
@@ -71,7 +71,6 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
     onValueChange={[Function]}
     parentDataType={
       Object {
-        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -89,6 +88,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         "nounAsParentSingular": "Parent",
         "nounPlural": "data",
         "nounSingular": "data",
+        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",
@@ -149,7 +149,6 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       onValueChange={[Function]}
       parentDataType={
         Object {
-          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived sample dependencies",
           "descriptionPlural": "parent types",
@@ -167,6 +166,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
           "nounAsParentSingular": "Parent",
           "nounPlural": "data",
           "nounSingular": "data",
+          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
           "typeListingSchemaQuery": Immutable.Record {
             "schemaName": "exp",
             "queryName": "DataClasses",
@@ -241,7 +241,6 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         onValueChange={[Function]}
         parentDataType={
           Object {
-            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived sample dependencies",
             "descriptionPlural": "parent types",
@@ -259,6 +258,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
             "nounAsParentSingular": "Parent",
             "nounPlural": "data",
             "nounSingular": "data",
+            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
             "typeListingSchemaQuery": Immutable.Record {
               "schemaName": "exp",
               "queryName": "DataClasses",
@@ -2675,7 +2675,6 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
   index={0}
   parentDataType={
     Object {
-      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
@@ -2693,6 +2692,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       "nounAsParentSingular": "Parent",
       "nounPlural": "data",
       "nounSingular": "data",
+      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
       "typeListingSchemaQuery": Immutable.Record {
         "schemaName": "exp",
         "queryName": "DataClasses",
@@ -2739,7 +2739,6 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
     onValueChange={[Function]}
     parentDataType={
       Object {
-        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -2757,6 +2756,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         "nounAsParentSingular": "Parent",
         "nounPlural": "data",
         "nounSingular": "data",
+        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",
@@ -2817,7 +2817,6 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       onValueChange={[Function]}
       parentDataType={
         Object {
-          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived sample dependencies",
           "descriptionPlural": "parent types",
@@ -2835,6 +2834,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
           "nounAsParentSingular": "Parent",
           "nounPlural": "data",
           "nounSingular": "data",
+          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
           "typeListingSchemaQuery": Immutable.Record {
             "schemaName": "exp",
             "queryName": "DataClasses",
@@ -2909,7 +2909,6 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         onValueChange={[Function]}
         parentDataType={
           Object {
-            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived sample dependencies",
             "descriptionPlural": "parent types",
@@ -2927,6 +2926,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
             "nounAsParentSingular": "Parent",
             "nounPlural": "data",
             "nounSingular": "data",
+            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
             "typeListingSchemaQuery": Immutable.Record {
               "schemaName": "exp",
               "queryName": "DataClasses",
@@ -3022,7 +3022,6 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       "appUrlPrefixParts": Array [
         "sources",
       ],
-      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
@@ -3040,6 +3039,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       "nounAsParentSingular": "Parent",
       "nounPlural": "data",
       "nounSingular": "data",
+      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
       "typeListingSchemaQuery": Immutable.Record {
         "schemaName": "exp",
         "queryName": "DataClasses",
@@ -3115,7 +3115,6 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         "appUrlPrefixParts": Array [
           "sources",
         ],
-        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -3133,6 +3132,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         "nounAsParentSingular": "Parent",
         "nounPlural": "data",
         "nounSingular": "data",
+        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",
@@ -3259,7 +3259,6 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "appUrlPrefixParts": Array [
             "sources",
           ],
-          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived sample dependencies",
           "descriptionPlural": "parent types",
@@ -3277,6 +3276,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "nounAsParentSingular": "Parent",
           "nounPlural": "data",
           "nounSingular": "data",
+          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
           "typeListingSchemaQuery": Immutable.Record {
             "schemaName": "exp",
             "queryName": "DataClasses",
@@ -3417,7 +3417,6 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "appUrlPrefixParts": Array [
               "sources",
             ],
-            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived sample dependencies",
             "descriptionPlural": "parent types",
@@ -3435,6 +3434,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "nounAsParentSingular": "Parent",
             "nounPlural": "data",
             "nounSingular": "data",
+            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
             "typeListingSchemaQuery": Immutable.Record {
               "schemaName": "exp",
               "queryName": "DataClasses",

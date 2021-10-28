@@ -107,7 +107,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
       "selectedDetectionMethod": undefined,
       "selectedMetadataInputFormat": undefined,
       "selectedPlateTemplate": undefined,
-      "status": false,
+      "status": "Active",
       "qcEnabled": undefined,
     }
   }
@@ -221,7 +221,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
         "selectedDetectionMethod": undefined,
         "selectedMetadataInputFormat": undefined,
         "selectedPlateTemplate": undefined,
-        "status": false,
+        "status": "Active",
         "qcEnabled": undefined,
       }
     }
@@ -362,7 +362,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                     "selectedDetectionMethod": undefined,
                     "selectedMetadataInputFormat": undefined,
                     "selectedPlateTemplate": undefined,
-                    "status": false,
+                    "status": "Active",
                     "qcEnabled": undefined,
                   }
                 }
@@ -627,7 +627,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                     "selectedDetectionMethod": undefined,
                     "selectedMetadataInputFormat": undefined,
                     "selectedPlateTemplate": undefined,
-                    "status": false,
+                    "status": "Active",
                     "qcEnabled": undefined,
                   }
                 }
@@ -887,7 +887,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                     "selectedDetectionMethod": undefined,
                     "selectedMetadataInputFormat": undefined,
                     "selectedPlateTemplate": undefined,
-                    "status": false,
+                    "status": "Active",
                     "qcEnabled": undefined,
                   }
                 }
@@ -1167,7 +1167,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
       "selectedDetectionMethod": undefined,
       "selectedMetadataInputFormat": undefined,
       "selectedPlateTemplate": undefined,
-      "status": false,
+      "status": "Active",
       "qcEnabled": undefined,
     }
   }
@@ -1281,7 +1281,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
         "selectedDetectionMethod": undefined,
         "selectedMetadataInputFormat": undefined,
         "selectedPlateTemplate": undefined,
-        "status": false,
+        "status": "Active",
         "qcEnabled": undefined,
       }
     }
@@ -1398,7 +1398,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           "selectedDetectionMethod": undefined,
           "selectedMetadataInputFormat": undefined,
           "selectedPlateTemplate": undefined,
-          "status": false,
+          "status": "Active",
           "qcEnabled": undefined,
         }
       }
@@ -1637,7 +1637,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -1902,7 +1902,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -2162,7 +2162,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -2457,7 +2457,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -2727,7 +2727,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -3011,7 +3011,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
       "selectedDetectionMethod": undefined,
       "selectedMetadataInputFormat": undefined,
       "selectedPlateTemplate": undefined,
-      "status": false,
+      "status": "Active",
       "qcEnabled": undefined,
     }
   }
@@ -3125,7 +3125,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
         "selectedDetectionMethod": undefined,
         "selectedMetadataInputFormat": undefined,
         "selectedPlateTemplate": undefined,
-        "status": false,
+        "status": "Active",
         "qcEnabled": undefined,
       }
     }
@@ -3242,7 +3242,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
           "selectedDetectionMethod": undefined,
           "selectedMetadataInputFormat": undefined,
           "selectedPlateTemplate": undefined,
-          "status": false,
+          "status": "Active",
           "qcEnabled": undefined,
         }
       }
@@ -3481,7 +3481,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -3746,7 +3746,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -4006,7 +4006,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -4301,7 +4301,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -4571,7 +4571,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -4788,7 +4788,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
       "selectedDetectionMethod": undefined,
       "selectedMetadataInputFormat": undefined,
       "selectedPlateTemplate": undefined,
-      "status": false,
+      "status": "Active",
       "qcEnabled": undefined,
     }
   }
@@ -4835,7 +4835,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
         "selectedDetectionMethod": undefined,
         "selectedMetadataInputFormat": undefined,
         "selectedPlateTemplate": undefined,
-        "status": false,
+        "status": "Active",
         "qcEnabled": undefined,
       }
     }
@@ -4885,7 +4885,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
           "selectedDetectionMethod": undefined,
           "selectedMetadataInputFormat": undefined,
           "selectedPlateTemplate": undefined,
-          "status": false,
+          "status": "Active",
           "qcEnabled": undefined,
         }
       }
@@ -5059,7 +5059,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -5257,7 +5257,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -5450,7 +5450,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -5678,7 +5678,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -5881,7 +5881,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -6167,7 +6167,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
       "selectedDetectionMethod": undefined,
       "selectedMetadataInputFormat": undefined,
       "selectedPlateTemplate": undefined,
-      "status": false,
+      "status": "Active",
       "qcEnabled": undefined,
     }
   }
@@ -6281,7 +6281,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
         "selectedDetectionMethod": undefined,
         "selectedMetadataInputFormat": undefined,
         "selectedPlateTemplate": undefined,
-        "status": false,
+        "status": "Active",
         "qcEnabled": undefined,
       }
     }
@@ -6398,7 +6398,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
           "selectedDetectionMethod": undefined,
           "selectedMetadataInputFormat": undefined,
           "selectedPlateTemplate": undefined,
-          "status": false,
+          "status": "Active",
           "qcEnabled": undefined,
         }
       }
@@ -6600,7 +6600,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -6865,7 +6865,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }
@@ -7125,7 +7125,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                   "selectedDetectionMethod": undefined,
                                   "selectedMetadataInputFormat": undefined,
                                   "selectedPlateTemplate": undefined,
-                                  "status": false,
+                                  "status": "Active",
                                   "qcEnabled": undefined,
                                 }
                               }

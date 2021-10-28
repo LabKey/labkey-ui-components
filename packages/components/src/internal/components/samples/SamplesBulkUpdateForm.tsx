@@ -82,7 +82,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
 
         let columns = OrderedMap<string, QueryColumn>();
 
-        // if all are aliquots, only show pk, aliquot specific and description columns
+        // if all are aliquots, only show pk, aliquot specific and description/samplestate columns
         if (aliquots && aliquots.length === this.getGridSelectionSize()) {
             originalQueryInfo.columns.forEach((column, key) => {
                 const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(column.fieldKey.toLowerCase()) > -1;

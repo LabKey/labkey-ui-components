@@ -247,14 +247,14 @@ export class SamplesResolver implements AppRouteResolver {
                                 .then(info => {
                                     if (info) {
                                         if (info.isMedia) {
-                                            // for supporting MIXTURE_BATCHES => batches
+                                            // for supporting MIXTURE_BATCHES => mixturebatches
                                             this.samples = this.samples.set(
                                                 sampleRowId,
                                                 List([
                                                     'media',
                                                     info.name.toLowerCase() ===
                                                     SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase()
-                                                        ? 'batches'
+                                                        ? 'mixturebatches'
                                                         : info.name,
                                                 ])
                                             );

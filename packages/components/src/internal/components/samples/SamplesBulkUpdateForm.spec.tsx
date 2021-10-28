@@ -18,6 +18,13 @@ describe('SamplesBulkUpdateForm', () => {
         shownInUpdateView: true,
         userEditable: true,
     });
+    const COLUMN_STATUS = new QueryColumn({
+        fieldKey: 'samplestate',
+        name: 'samplestate',
+        fieldKeyArray: ['samplestate'],
+        shownInUpdateView: true,
+        userEditable: true,
+    });
     const COLUMN_META = new QueryColumn({
         fieldKey: 'meta',
         name: 'meta',
@@ -38,6 +45,7 @@ describe('SamplesBulkUpdateForm', () => {
         schemaName: 'schema',
         columns: {
             description: COLUMN_DESCRIPTION,
+            samplestate: COLUMN_STATUS,
             meta: COLUMN_META,
             aliquotspecific: COLUMN_ALIQUOT,
         },
@@ -80,8 +88,9 @@ describe('SamplesBulkUpdateForm', () => {
     test('all selected are samples', () => {
         const wrapper = mount(<SamplesBulkUpdateFormBase {...DEFAULT_PROPS} />);
         const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(2);
+        expect(queryInfo.columns.size).toBe(3);
         expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
+        expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
         expect(queryInfo.columns.get('meta')).toBe(COLUMN_META);
         wrapper.unmount();
     });
@@ -93,9 +102,40 @@ describe('SamplesBulkUpdateForm', () => {
         };
         const wrapper = mount(<SamplesBulkUpdateFormBase {...props} />);
         const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(2);
+        expect(queryInfo.columns.size).toBe(3);
         expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
+        expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
         expect(queryInfo.columns.get('aliquotspecific')).toBe(COLUMN_ALIQUOT);
+
+        wrapper.unmount();
+    });
+
+    test('samples and one aliquot', () => {
+        const props = {
+            ...DEFAULT_PROPS,
+            aliquots: [1],
+        };
+        const wrapper = mount(<SamplesBulkUpdateFormBase {...props} />);
+        const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
+        expect(queryInfo.columns.size).toBe(3);
+        expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
+        expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
+        expect(queryInfo.columns.get('meta')).toBe(COLUMN_META);
+
+        wrapper.unmount();
+    });
+
+    test('samples and 2 aliquots', () => {
+        const props = {
+            ...DEFAULT_PROPS,
+            aliquots: [1, 2],
+        };
+        const wrapper = mount(<SamplesBulkUpdateFormBase {...props} />);
+        const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
+        expect(queryInfo.columns.size).toBe(3);
+        expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
+        expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
+        expect(queryInfo.columns.get('meta')).toBe(COLUMN_META);
 
         wrapper.unmount();
     });

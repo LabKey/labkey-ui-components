@@ -158,8 +158,8 @@ export function biologicsIsPrimaryApp(moduleContext?: any): boolean {
     return getPrimaryAppProperties(moduleContext)?.productId === BIOLOGICS_APP_PROPERTIES.productId;
 }
 
-export function isSampleStatusEnabled(moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.experiment?.['experimental-sample-status'] === true;
+export function isSampleStatusEnabled(): boolean {
+    return hasModule('SampleManagement');
 }
 
 export function getCurrentAppProperties(): AppProperties {

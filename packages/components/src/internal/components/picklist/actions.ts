@@ -70,14 +70,11 @@ export function setPicklistDefaultView(name: string): Promise<string> {
             { fieldKey: 'SampleID/StorageCol' },
             { fieldKey: 'SampleID/isAliquot' }
         );
+
         const jsonData = {
             schemaName: 'lists',
             queryName: name,
-            views: [
-                {
-                    columns,
-                },
-            ],
+            views: [{ columns }],
             shared: true,
         };
         return Ajax.request({

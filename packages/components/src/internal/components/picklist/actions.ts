@@ -68,7 +68,7 @@ export function setPicklistDefaultView(name: string): Promise<string> {
             { fieldKey: 'SampleID/StorageLocation' },
             { fieldKey: 'SampleID/StorageRow' },
             { fieldKey: 'SampleID/StorageCol' },
-            { fieldKey: 'SampleID/isAliquot' },
+            { fieldKey: 'SampleID/isAliquot' }
         );
 
         const jsonData = {

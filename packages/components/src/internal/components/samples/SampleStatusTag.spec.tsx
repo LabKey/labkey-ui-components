@@ -7,6 +7,10 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { SampleStatusTag } from './SampleStatusTag';
 import { SampleStateType } from './constants';
 
+beforeEach(() => {
+    LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
+});
+
 describe('SampleStatusTag', () => {
     const lockedStatus = {
         label: 'Locked for testing',
@@ -64,55 +68,46 @@ describe('SampleStatusTag', () => {
     });
 
     test('enabled, no label', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
         const wrapper = mount(<SampleStatusTag status={{ label: undefined, statusType: SampleStateType.Locked }} />);
         expect(wrapper.find('span').exists()).toBeFalsy();
     });
 
     test('iconOnly, locked', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
         const wrapper = mount(<SampleStatusTag status={lockedStatus} iconOnly={true} />);
         validateIconOnly(wrapper, 'alert-danger');
     });
 
     test('iconOnly, consumed', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
         const wrapper = mount(<SampleStatusTag status={consumedStatus} iconOnly={true} />);
         validateIconOnly(wrapper, 'alert-warning');
     });
 
     test('iconOnly, available', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
         const wrapper = mount(<SampleStatusTag status={availableStatus} iconOnly={true} />);
         validateIconOnly(wrapper, 'alert-success');
     });
 
     test('iconOnly, no description', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
         const wrapper = mount(<SampleStatusTag status={availableNoDescription} iconOnly={true} />);
         validateIconOnly(wrapper, 'alert-success');
     });
 
     test('not iconOnly, locked status type', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
         const wrapper = mount(<SampleStatusTag status={lockedStatus} />);
         validateNotIconOnly(wrapper, 'alert-danger', lockedStatus.label);
     });
 
     test('consumed status type', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
         const wrapper = mount(<SampleStatusTag status={consumedStatus} />);
         validateNotIconOnly(wrapper, 'alert-warning', consumedStatus.label);
     });
 
     test('available status type with description', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
         const wrapper = mount(<SampleStatusTag status={availableStatus} />);
         validateNotIconOnly(wrapper, 'alert-success', availableStatus.label);
     });
 
     test('available status type, no description', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
         const status = {
             label: 'Also available',
             statusType: SampleStateType.Available,

@@ -79,7 +79,7 @@ describe('getSampleDeleteMessage', () => {
     });
 
     test('cannot delete, status enabled', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
         expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
         expect(wrapper.text()).toContain(
@@ -98,13 +98,13 @@ describe('isSampleOperationPermitted', () => {
     });
 
     test('enabled, no status provided', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         expect(isSampleOperationPermitted(undefined, SampleOperation.EditMetadata)).toBeTruthy();
         expect(isSampleOperationPermitted(null, SampleOperation.EditLineage)).toBeTruthy();
     });
 
     test('enabled, with status type provided', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         expect(isSampleOperationPermitted(SampleStateType.Locked, SampleOperation.EditMetadata)).toBeFalsy();
         expect(isSampleOperationPermitted(SampleStateType.Locked, SampleOperation.AddToPicklist)).toBeTruthy();
         expect(isSampleOperationPermitted(SampleStateType.Consumed, SampleOperation.AddToStorage)).toBeFalsy();
@@ -120,12 +120,12 @@ describe('getFilterForSampleOperation', () => {
     });
 
     test('enabled, all allowed', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         expect(getFilterForSampleOperation(SampleOperation.AddToPicklist)).toBeNull();
     });
 
     test('enabled, some status does not allow', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         expect(getFilterForSampleOperation(SampleOperation.EditLineage)).toStrictEqual(
             Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, [SampleStateType.Locked], Filter.Types.NOT_IN)
         );
@@ -184,7 +184,7 @@ describe('filterSampleRowsForOperation', () => {
     }
 
     test('all available', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         const data = {
             1: availableRow1,
             2: availableRow2,
@@ -193,7 +193,7 @@ describe('filterSampleRowsForOperation', () => {
     });
 
     test('all locked', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         const data = {
             30: lockedRow1,
             31: lockedRow2,
@@ -203,7 +203,7 @@ describe('filterSampleRowsForOperation', () => {
     });
 
     test('mixed statuses', () => {
-        LABKEY.moduleContext = { experiment: { 'experimental-sample-status': true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         const data = {
             30: lockedRow1,
             20: consumedRow1,

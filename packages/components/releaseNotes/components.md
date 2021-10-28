@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.88.0
+*Released*: 28 October 2021
 * Updates for restricting operations for selections of samples based on status
   * `getMaterialDeleteConfirmationData.api` renamed to `getMaterialOperationConfirmationData.api` and return structure generalized
   * Update `SamplesBulkUpdateForm` to provide alert when samples don't allow data updates.

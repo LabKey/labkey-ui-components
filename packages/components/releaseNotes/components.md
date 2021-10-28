@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD October 2021
 * Issue 43687: UsersGridPanel update to not default to root container path for site/app admin users
-  * instead just always use the given containerPath
+  * always use the given containerPath
   * rename SiteUsersGridPanel to UsersGridPanel
 
 ### version 2.88.0

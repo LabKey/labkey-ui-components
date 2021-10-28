@@ -2,9 +2,13 @@ import React, { FC, memo, useMemo } from 'react';
 
 import { Filter } from '@labkey/api';
 
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
-import { SCHEMAS, TabbedGridPanel } from '../../../index';
 import { Status } from '../domainproperties/assay/models';
+
+import {SCHEMAS} from '../../schemas';
+
+import {TabbedGridPanel} from '../../../public/QueryModel/TabbedGridPanel';
+
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 const ACTIVE_GRID_ID = 'active';
 const ALL_GRID_ID = 'all';
@@ -46,7 +50,7 @@ export const StatusGrid: FC<OwnProps> = memo(props => {
             ? [Filter.create('Type', excludedAssayProviders, Filter.Types.NOT_IN)]
             : [];
 
-        const activeBaseFilter = allBaseFilter.concat([Filter.create('Status', Status.true)]);
+        const activeBaseFilter = allBaseFilter.concat([Filter.create('Status', Status.Active)]);
 
         return {
             [ACTIVE_GRID_ID]: {

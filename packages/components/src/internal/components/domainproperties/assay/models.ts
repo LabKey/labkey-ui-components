@@ -21,8 +21,8 @@ import { DomainDesign, FieldErrors } from '../models';
 
 // See ExpProtocol.Status in 'platform' repository.
 export enum Status {
-    true = 'Active',
-    false = 'Archived',
+    Active = 'Active',
+    Archived = 'Archived',
 }
 
 export class AssayProtocolModel extends Record({
@@ -56,7 +56,7 @@ export class AssayProtocolModel extends Record({
     selectedDetectionMethod: undefined,
     selectedMetadataInputFormat: undefined,
     selectedPlateTemplate: undefined,
-    status: Status.true,
+    status: Status.Active,
     qcEnabled: undefined,
 }) {
     declare allowBackgroundUpload: boolean;
@@ -142,7 +142,7 @@ export class AssayProtocolModel extends Record({
     }
 
     isActive(): boolean {
-        return this.status === Status.true;
+        return this.status === Status.Active;
     }
 
     getDomainByNameSuffix(name: string): DomainDesign {

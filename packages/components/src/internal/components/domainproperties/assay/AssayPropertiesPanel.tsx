@@ -111,10 +111,10 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
         const { model } = this.props;
 
         const id = evt.target.id;
-        const value = evt.target.checked;
+        const value = evt.target.checked ? Status.Active : Status.Archived;
 
         const newModel = model.merge({
-            [id.replace(FORM_ID_PREFIX, '')]: Status[value],
+            [id.replace(FORM_ID_PREFIX, '')]: value,
         }) as AssayProtocolModel;
 
         this.updateValidStatus(newModel);

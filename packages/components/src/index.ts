@@ -380,7 +380,7 @@ import { UserSelectInput } from './internal/components/forms/input/UserSelectInp
 import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
 import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
-import { SiteUsersGridPanel } from './internal/components/user/SiteUsersGridPanel';
+import { UsersGridPanel } from './internal/components/user/UsersGridPanel';
 import { UserProvider, useUserProperties } from './internal/components/user/UserProvider';
 import { UserLink } from './internal/components/user/UserLink';
 import { FieldEditorOverlay } from './internal/components/forms/FieldEditorOverlay';
@@ -840,7 +840,7 @@ export {
     UserProfile,
     UserLink,
     ChangePasswordModal,
-    SiteUsersGridPanel,
+    UsersGridPanel,
     InsufficientPermissionsPage,
     APPLICATION_SECURITY_ROLES,
     SITE_SECURITY_ROLES,

@@ -2,7 +2,8 @@ import React, { FC, memo, useMemo } from 'react';
 
 import { Filter } from '@labkey/api';
 
-import { SCHEMAS, TabbedGridPanel, withQueryModels, InjectedQueryModels } from '../../..';
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { SCHEMAS, TabbedGridPanel } from '../../../index';
 import { Status } from '../domainproperties/assay/models';
 
 const ACTIVE_GRID_ID = 'active';

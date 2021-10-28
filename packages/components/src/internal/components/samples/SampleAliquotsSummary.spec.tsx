@@ -23,7 +23,7 @@ const noAliquotVolume = {
 
 const zeroAliquotVolume = {
     AliquotVolume: {
-        value: null
+        value: 0
     },
     Units: {
         displayValue: null,

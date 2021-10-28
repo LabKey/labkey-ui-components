@@ -1,7 +1,14 @@
 import React, { FC, useMemo } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import { InjectedAssayModel, SubMenuItem, SubMenuItemProps, withAssayModels, QueryModel } from '../../..';
+import {
+    InjectedAssayModel,
+    SubMenuItem,
+    SubMenuItemProps,
+    withAssayModels,
+    QueryModel,
+    DisableableMenuItem,
+} from '../../..';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
 import { getImportItemsForAssayDefinitions } from './actions';
@@ -12,12 +19,14 @@ interface Props extends SubMenuItemProps {
     requireSelection: boolean;
     nounPlural?: string;
     providerType?: string;
+    disabled?: boolean;
 }
 
 // exported for jest testing
 export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props => {
     const {
         assayModel,
+        disabled,
         isLoaded = true,
         nounPlural = 'items',
         providerType,
@@ -40,6 +49,9 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         );
     }, [assayModel, isLoaded, providerType, queryModel]);
 
+    if (disabled) {
+        return <DisableableMenuItem operationPermitted={false} menuItemContent={text} />;
+    }
     if (!isLoaded) {
         return (
             <MenuItem disabled>

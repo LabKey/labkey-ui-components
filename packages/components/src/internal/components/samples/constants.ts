@@ -29,13 +29,12 @@ export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';
 export const SAMPLE_STATE_DESCRIPTION_COLUMN_NAME = 'SampleState/Description';
 
 export enum SampleOperation {
-    EditMetadata = 1,
+    EditMetadata,
     EditLineage,
     AddToStorage,
     UpdateStorageMetadata,
     RemoveFromStorage,
     AddToPicklist,
-    RemoveFromPicklist,
     Delete,
     AddToWorkflow,
     RemoveFromWorkflow,
@@ -61,7 +60,6 @@ export const permittedOps = {
         SampleOperation.EditLineage,
         SampleOperation.RemoveFromStorage,
         SampleOperation.AddToPicklist,
-        SampleOperation.RemoveFromPicklist,
         SampleOperation.Delete,
         SampleOperation.AddToWorkflow,
         SampleOperation.RemoveFromWorkflow,
@@ -69,5 +67,65 @@ export const permittedOps = {
         SampleOperation.LinkToStudy,
         SampleOperation.RecallFromStudy,
     ]),
-    [SampleStateType.Locked]: new Set([SampleOperation.AddToPicklist, SampleOperation.RemoveFromPicklist]),
+    [SampleStateType.Locked]: new Set([SampleOperation.AddToPicklist]),
+};
+
+export const STATUS_DATA_RETRIEVAL_ERROR = 'There was a problem retrieving the current sample status data.';
+
+export const operationRestrictionMessage = {
+    [SampleOperation.EditMetadata]: {
+        all: 'updating of their data without also changing the status',
+        singular: 'updating of its data',
+        plural: 'updating of their data',
+        recommendation: 'Either change the status here or remove these samples from your selection',
+    },
+    [SampleOperation.EditLineage]: {
+        all: 'updating of their lineage',
+        singular: 'updating of its lineage',
+        plural: 'updating of their lineage',
+    },
+    [SampleOperation.AddToStorage]: {
+        all: 'adding them to storage',
+        singular: 'adding it to storage',
+        plural: 'adding them to storage',
+    },
+    [SampleOperation.UpdateStorageMetadata]: {
+        all: 'updating their storage data',
+        singular: 'updating its storage data',
+        plural: 'updating their storage data',
+    },
+    [SampleOperation.RemoveFromStorage]: {
+        all: 'removing them from storage',
+        singular: 'removing it from storage',
+        plural: 'removing them from storage',
+    },
+    [SampleOperation.AddToPicklist]: {
+        all: 'adding them to a picklist',
+        singular: 'adding it to a picklist',
+        plural: 'adding them to a picklist',
+    },
+    // [SampleOperation.Delete]: {
+    //    Not needed because included from the server side response
+    // },
+    [SampleOperation.AddToWorkflow]: {
+        all: 'adding them to a job',
+        singular: 'adding it to a job',
+        plural: 'adding them to a job',
+    },
+    [SampleOperation.RemoveFromWorkflow]: {
+        all: 'removing them from a job',
+        singular: 'removing it from a job',
+        plural: 'removing them from a job',
+    },
+    [SampleOperation.AddAssayData]: {
+        all: 'adding associated assay data',
+        singular: 'adding associated assay data',
+        plural: 'adding associated assay data',
+    },
+    // [SampleOperation.LinkToStudy]: {
+    //    Not needed because check is done on LKS page
+    // },
+    // [SampleOperation.RecallFromStudy]: {
+    //    Not needed because only possible from LKS
+    // }
 };

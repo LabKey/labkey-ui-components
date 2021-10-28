@@ -269,7 +269,7 @@ import {
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
 } from './internal/components/notifications/messaging';
-import { GenerateEntityResponse } from './internal/components/entities/models';
+import { GenerateEntityResponse, OperationConfirmationData } from './internal/components/entities/models';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
@@ -285,7 +285,6 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
-    loadSelectedSamples,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
@@ -303,12 +302,14 @@ import { SampleAliquotsSummary } from './internal/components/samples/SampleAliqu
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 
 import {
+    filterSampleRowsForOperation,
+    getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
+    getOperationNotPermittedMessage,
     getSampleDeleteMessage,
     getSampleStatus,
     getSampleStatusType,
     isSampleOperationPermitted,
-    getFilterForSampleOperation,
 } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
@@ -399,7 +400,7 @@ import { fetchContainerSecurityPolicy } from './internal/components/permissions/
 import {
     extractEntityTypeOptionFromRow,
     getDataDeleteConfirmationData,
-    getSampleDeleteConfirmationData,
+    getSampleOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
     DataClassDataType,
@@ -878,6 +879,7 @@ export {
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
+    filterSampleRowsForOperation,
     isSampleOperationPermitted,
     getFilterForSampleOperation,
     getSampleDeleteMessage,
@@ -899,7 +901,6 @@ export {
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     createQueryConfigFilteredBySample,
-    loadSelectedSamples,
     getSelectedItemSamples,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,
@@ -935,6 +936,7 @@ export {
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     getFindSamplesByIdData,
     getOmittedSampleTypeColumns,
+    getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
     // entities
     EntityTypeDeleteConfirmModal,
@@ -945,9 +947,10 @@ export {
     ParentEntityEditPanel,
     extractEntityTypeOptionFromRow,
     GenerateEntityResponse,
+    OperationConfirmationData,
     AddEntityButton,
     RemoveEntityButton,
-    getSampleDeleteConfirmationData,
+    getSampleOperationConfirmationData,
     getDataDeleteConfirmationData,
     createEntityParentKey,
     getUniqueIdColumnMetadata,

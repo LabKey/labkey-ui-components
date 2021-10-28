@@ -15,17 +15,17 @@
  */
 import React, { PureComponent } from 'react';
 
-import { App, ConfirmModal, SCHEMAS } from '../../..';
+import { Alert, App, capitalizeFirstChar, ConfirmModal, SCHEMAS } from '../../..';
 
 import { helpLinkNode } from '../../util/helpLinks';
 
-import { DeleteConfirmationData } from './actions';
-import { EntityDataType } from './models';
+import { EntityDataType, OperationConfirmationData } from './models';
+import { isSampleEntity } from './utils';
 
 interface Props {
     onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
     onCancel: () => any;
-    confirmationData: DeleteConfirmationData;
+    confirmationData: OperationConfirmationData;
     entityDataType: EntityDataType;
     verb?: string;
 }
@@ -44,15 +44,20 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
     getConfirmationProperties(): { message: any; title: string; canDelete: boolean } {
         const { confirmationData, entityDataType, verb } = this.props;
         const { deleteHelpLinkTopic, nounSingular, nounPlural, dependencyText } = entityDataType;
+        const capNounSingular = capitalizeFirstChar(nounSingular);
+        const capNounPlural = capitalizeFirstChar(nounPlural);
 
         if (!confirmationData) return undefined;
 
         // TODO when experimental flag for sample status is removed, move this text into the SampleTypeDataType constant
-        const _dependencyText = App.isSampleStatusEnabled() && entityDataType.instanceSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA ? dependencyText + ' or status that prevents deletion' : dependencyText;
+        const _dependencyText =
+            App.isSampleStatusEnabled() && isSampleEntity(entityDataType)
+                ? dependencyText + ' or status that prevents deletion'
+                : dependencyText;
 
-        const numCanDelete = confirmationData.canDelete.length;
-        const numCannotDelete = confirmationData.cannotDelete.length;
-        const canDeleteNoun = numCanDelete === 1 ? nounSingular : nounPlural;
+        const numCanDelete = confirmationData.allowed.length;
+        const numCannotDelete = confirmationData.notAllowed.length;
+        const canDeleteNoun = numCanDelete === 1 ? capNounSingular : capNounPlural;
         const cannotDeleteNoun = numCannotDelete === 1 ? nounSingular : nounPlural;
         const totalNum = numCanDelete + numCannotDelete;
         const totalNoun = totalNum === 1 ? nounSingular : nounPlural;
@@ -106,16 +111,16 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
             message,
             title:
                 numCanDelete > 0
-                    ? 'Permanently delete ' + numCanDelete + ' ' + canDeleteNoun + '?'
+                    ? 'Permanently Delete ' + numCanDelete + ' ' + canDeleteNoun + '?'
                     : totalNum === 1
-                    ? 'Cannot delete ' + nounSingular
-                    : 'No ' + nounPlural + ' can be deleted',
+                    ? 'Cannot Delete ' + capNounSingular
+                    : 'No ' + capNounPlural + ' Can Be Deleted',
             canDelete: numCanDelete > 0,
         };
     }
 
     onConfirm = (): void => {
-        this.props.onConfirm?.(this.props.confirmationData.canDelete, this.props.confirmationData.cannotDelete);
+        this.props.onConfirm?.(this.props.confirmationData.allowed, this.props.confirmationData.notAllowed);
     };
 
     render() {

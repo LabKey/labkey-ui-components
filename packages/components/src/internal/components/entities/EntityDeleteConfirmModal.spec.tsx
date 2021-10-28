@@ -29,7 +29,7 @@ beforeAll(() => {
     initNotificationsState();
 
     mock.setup();
-    mock.post(/.*\/experiment\/?.*\/getMaterialDeleteConfirmationData.*/, (req, res) => {
+    mock.post(/.*\/experiment\/?.*\/getMaterialOperationConfirmationData.*/, (req, res) => {
         return res
             .status(200)
             .headers({ 'Content-Type': 'application/json' })
@@ -37,13 +37,13 @@ beforeAll(() => {
                 JSON.stringify({
                     success: true,
                     data: {
-                        canDelete: [
+                        allowed: [
                             {
                                 Name: 'D-2.3.1',
                                 RowId: 351,
                             },
                         ],
-                        cannotDelete: [],
+                        notAllowed: [],
                     },
                 })
             );

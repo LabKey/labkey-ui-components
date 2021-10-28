@@ -4,9 +4,9 @@ import { Filter } from '@labkey/api';
 
 import { Status } from '../domainproperties/assay/models';
 
-import {SCHEMAS} from '../../schemas';
+import { SCHEMAS } from '../../schemas';
 
-import {TabbedGridPanel} from '../../../public/QueryModel/TabbedGridPanel';
+import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 

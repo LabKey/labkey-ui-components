@@ -50,7 +50,7 @@ export class SampleAliquotsSummaryWithModels extends PureComponent<Props & Sampl
             .addParam('sampleAliquotType', ALIQUOT_FILTER_MODE.aliquots)
             .toHref();
 
-        const totalAliquotVolume = caseInsensitive(sampleRow, 'AliquotTotalVolume')?.displayValue?.toLocaleString();
+        const totalAliquotVolume = caseInsensitive(sampleRow, 'AliquotVolume')?.value?.toLocaleString();
         const units = caseInsensitive(sampleRow, 'Units')?.displayValue ?? caseInsensitive(sampleRow, 'Units')?.value;
         const totalAliquotVolumeDisplay =
             totalAliquotVolume != null ? totalAliquotVolume + (units ? ' ' + units : '') : undefined;

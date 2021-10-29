@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.89.2
+*Released*: 29 October 2021
+* Update aliquot rollup column field
+
 ### version 2.89.1
 *Released*: 29 October 2021
 * Issue 43793: Use field descriptions as title attribute on grid column headers

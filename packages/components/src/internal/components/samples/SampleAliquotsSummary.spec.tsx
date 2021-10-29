@@ -14,7 +14,7 @@ const DEFAULT_PROPS = {
 
 const noAliquotVolume = {
     AliquotVolume: {
-        value: null
+        value: null,
     },
     Units: {
         displayValue: null,
@@ -23,7 +23,7 @@ const noAliquotVolume = {
 
 const zeroAliquotVolume = {
     AliquotVolume: {
-        value: 0
+        value: 0,
     },
     Units: {
         displayValue: null,

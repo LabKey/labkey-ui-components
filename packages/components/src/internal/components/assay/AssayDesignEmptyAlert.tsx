@@ -14,7 +14,7 @@ export const AssayDesignEmptyAlert: FC<Props> = memo(props => {
         <EmptyAlertWithPermissions
             {...baseProps}
             actionURL={App.NEW_ASSAY_DESIGN_HREF}
-            message={message ?? 'No assays have been created.'}
+            message={message ?? 'No assays are currently active.'}
             permission={PermissionTypes.DesignAssay}
         />
     );

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.90.0
+*Released*: 29 October 2021
+* Support 'Status' setting on Assay Designs
+* Hide 'Archived' Assay designs from megaMenu
+* Show 'Active' Assay designs tab by default on Assay Overview Page
+
 ### version 2.89.2
 *Released*: 29 October 2021
 * Update aliquot rollup column field

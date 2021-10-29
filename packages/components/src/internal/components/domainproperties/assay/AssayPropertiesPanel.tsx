@@ -11,8 +11,11 @@ import {
 import { SectionHeading } from '../SectionHeading';
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 
-import { AssayProtocolModel } from './models';
+import { isPremiumProductEnabled } from '../../../app/utils';
+
+import { AssayProtocolModel, Status } from './models';
 import {
+    AssayStatusInput,
     AutoLinkCategoryInput,
     AutoLinkDataInput,
     BackgroundUploadInput,
@@ -47,6 +50,7 @@ export const FORM_IDS = {
     QC_ENABLED: FORM_ID_PREFIX + 'qcEnabled',
     SAVE_SCRIPT_FILES: FORM_ID_PREFIX + 'saveScriptFiles',
     PLATE_METADATA: FORM_ID_PREFIX + 'plateMetadata',
+    STATUS: FORM_ID_PREFIX + 'status',
 };
 const BOOLEAN_FIELDS = [
     FORM_IDS.BACKGROUND_UPLOAD,
@@ -55,6 +59,7 @@ const BOOLEAN_FIELDS = [
     FORM_IDS.QC_ENABLED,
     FORM_IDS.SAVE_SCRIPT_FILES,
     FORM_IDS.PLATE_METADATA,
+    FORM_IDS.STATUS,
 ];
 
 interface OwnProps {
@@ -99,6 +104,20 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                 }
             }
         );
+    };
+
+    // Should 'status' enum be updated to include more options, field should be changed to a dropdown, and onValueChange used instead of onStatusChange
+    onStatusChange = evt => {
+        const { model } = this.props;
+
+        const id = evt.target.id;
+        const value = evt.target.checked ? Status.Active : Status.Archived;
+
+        const newModel = model.merge({
+            [id.replace(FORM_ID_PREFIX, '')]: value,
+        }) as AssayProtocolModel;
+
+        this.updateValidStatus(newModel);
     };
 
     onInputChange = evt => {
@@ -167,6 +186,13 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                     )}
                     {!appPropertiesOnly && model.allowPlateMetadata && (
                         <PlateMetadataInput model={model} onChange={this.onInputChange} />
+                    )}
+                    {isPremiumProductEnabled() && (
+                        <AssayStatusInput
+                            model={model}
+                            onChange={this.onStatusChange}
+                            appPropertiesOnly={appPropertiesOnly}
+                        />
                     )}
                 </div>
             </>

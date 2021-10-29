@@ -12,7 +12,7 @@ describe('AssayDesignEmptyAlert', () => {
         const wrapper = mount(<AssayDesignEmptyAlert user={App.TEST_USER_ASSAY_DESIGNER} />);
 
         // Expect default message
-        expect(wrapper.find(EMPTY_ALERT).at(0).text()).toContain('No assays have been created.');
+        expect(wrapper.find(EMPTY_ALERT).at(0).text()).toContain('No assays are currently active.');
 
         // Expect link to design
         expect(wrapper.find(`${EMPTY_ALERT} a`).prop('href')).toEqual(App.NEW_ASSAY_DESIGN_HREF.toHref());

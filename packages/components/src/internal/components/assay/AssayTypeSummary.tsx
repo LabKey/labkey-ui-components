@@ -1,20 +1,10 @@
-import React, { FC, memo, useMemo, useState } from 'react';
+import React, { FC, memo, useState } from 'react';
 
-import { Filter } from '@labkey/api';
+import { AppURL, AssaysHeatMap, SelectViewInput, SelectView } from '../../..';
 
-import { GridPanelWithModel, SCHEMAS, AppURL, AssaysHeatMap, SelectViewInput, SelectView } from '../../..';
+import { StatusGrid } from './StatusGrid';
 
 const ASSAY_VIEWS = [SelectView.Grid, SelectView.Heatmap];
-
-const ASSAY_GRID_GRID_ID = 'assaytypes-grid-panel';
-
-const SAMPLE_QUERY_CONFIG = {
-    urlPrefix: 'assaysgrid',
-    isPaged: true,
-    id: ASSAY_GRID_GRID_ID,
-    schemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
-    bindURL: true,
-};
 
 interface AssayTypeSummaryProps {
     assayTypes?: string[];
@@ -25,17 +15,6 @@ interface AssayTypeSummaryProps {
 export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
     const { navigate, assayTypes, excludedAssayProviders } = props;
     const [selectedView, setSelectedView] = useState(SelectView.Grid);
-
-    const queryConfig = useMemo(() => {
-        return {
-            ...SAMPLE_QUERY_CONFIG,
-            baseFilters: assayTypes
-                ? [Filter.create('Type', assayTypes, Filter.Types.IN)]
-                : excludedAssayProviders
-                ? [Filter.create('Type', excludedAssayProviders, Filter.Types.NOT_IN)]
-                : undefined,
-        };
-    }, [assayTypes, excludedAssayProviders]);
 
     return (
         <>
@@ -49,12 +28,7 @@ export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
                 <AssaysHeatMap navigate={navigate} excludedAssayProviders={excludedAssayProviders} />
             )}
             {selectedView === SelectView.Grid && (
-                <GridPanelWithModel
-                    queryConfig={queryConfig}
-                    asPanel={false}
-                    showPagination={true}
-                    showChartMenu={false}
-                />
+                <StatusGrid assayTypes={assayTypes} excludedAssayProviders={excludedAssayProviders} />
             )}
         </>
     );

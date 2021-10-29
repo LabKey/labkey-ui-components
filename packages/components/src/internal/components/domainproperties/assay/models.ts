@@ -19,6 +19,12 @@ import { Utils } from '@labkey/api';
 
 import { DomainDesign, FieldErrors } from '../models';
 
+// See ExpProtocol.Status in 'platform' repository.
+export enum Status {
+    Active = 'Active',
+    Archived = 'Archived',
+}
+
 export class AssayProtocolModel extends Record({
     allowBackgroundUpload: false,
     allowEditableResults: false,
@@ -50,6 +56,7 @@ export class AssayProtocolModel extends Record({
     selectedDetectionMethod: undefined,
     selectedMetadataInputFormat: undefined,
     selectedPlateTemplate: undefined,
+    status: Status.Active,
     qcEnabled: undefined,
 }) {
     declare allowBackgroundUpload: boolean;
@@ -82,6 +89,7 @@ export class AssayProtocolModel extends Record({
     declare selectedDetectionMethod: string;
     declare selectedMetadataInputFormat: string;
     declare selectedPlateTemplate: string;
+    declare status: Status;
     declare qcEnabled: boolean;
 
     static create(raw: any): AssayProtocolModel {
@@ -131,6 +139,10 @@ export class AssayProtocolModel extends Record({
         delete json.exception;
 
         return json;
+    }
+
+    isActive(): boolean {
+        return this.status === Status.Active;
     }
 
     getDomainByNameSuffix(name: string): DomainDesign {

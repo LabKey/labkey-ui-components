@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: ## November 2021
 * getUsersWithPermissions: support alternate container paths
   * expose via UserSelectInput and useUsersWithPermissions
+* Export invalidateQueryDetailsCache
+  * Provides containerPath-sensitive cache clearing
 * Announcements: support supplying containerPath
 
 ### version 2.90.1

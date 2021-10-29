@@ -187,7 +187,11 @@ class GridHeader extends PureComponent<GridHeaderProps, any> {
                                 'grid-header-cell': headerCls === undefined,
                                 'phi-protected': raw?.phiProtected === true,
                             });
-                            const _title = raw?.phiProtected === true ? '(PHI protected data removed)' : undefined;
+                            let description = raw?.description || '';
+                             description = description + ' ' + (raw?.phiProtected === true ? '(PHI protected data removed)' : '');
+                             description = description.trim();
+                             if (!description)
+                                 description = undefined;
 
                             return (
                                 <th
@@ -195,7 +199,7 @@ class GridHeader extends PureComponent<GridHeaderProps, any> {
                                     key={index}
                                     onClick={this._handleClick.bind(this, column)}
                                     style={{ minWidth }}
-                                    title={_title}
+                                    title={description}
                                 >
                                     {headerCell ? headerCell(column, i, columns.size) : title}
                                 </th>

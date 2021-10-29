@@ -7,6 +7,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Hide 'Archived' Assay designs from megaMenu
 * Show 'Active' Assay designs tab by default on Assay Overview Page
 
+### version 2.89.2
+*Released*: 29 October 2021
+* Update aliquot rollup column field
+
+### version 2.89.1
+*Released*: 29 October 2021
+* Issue 43793: Use field descriptions as title attribute on grid column headers
+
 ### version 2.89.0
 *Released*: 28 October 2021
 * Item 9537: Sample Status, Remove experimental feature flag

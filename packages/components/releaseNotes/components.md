@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Ensure LK instances without LKSM do not call prefix-related actions
+
 ### version 2.90.0
 *Released*: 29 October 2021
 * Support 'Status' setting on Assay Designs

@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * Update aliquot rollup column field
 
+### version 2.89.1
+*Released*: 29 October 2021
+* Issue 43793: Use field descriptions as title attribute on grid column headers
+
 ### version 2.89.0
 *Released*: 28 October 2021
 * Item 9537: Sample Status, Remove experimental feature flag

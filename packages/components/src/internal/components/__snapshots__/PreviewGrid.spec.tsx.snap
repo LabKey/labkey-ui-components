@@ -43,6 +43,9 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
                 "minWidth": undefined,
               }
             }
+            title="Contains a short name for this data object
+If not provided, a unique name will be generated from the expression:
+null"
           >
             Name
           </th>
@@ -54,6 +57,7 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
                 "minWidth": undefined,
               }
             }
+            title="Contains a reference to a user-editable comment about this row"
           >
             Flag
           </th>
@@ -76,6 +80,7 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
                 "minWidth": undefined,
               }
             }
+            title="The expiration period in days."
           >
             Expiration Time
           </th>
@@ -252,6 +257,9 @@ exports[`PreviewGrid render PreviewGrid with different numCols and numRows 1`] =
                 "minWidth": undefined,
               }
             }
+            title="Contains a short name for this data object
+If not provided, a unique name will be generated from the expression:
+null"
           >
             Name
           </th>
@@ -263,6 +271,7 @@ exports[`PreviewGrid render PreviewGrid with different numCols and numRows 1`] =
                 "minWidth": undefined,
               }
             }
+            title="Contains a reference to a user-editable comment about this row"
           >
             Flag
           </th>

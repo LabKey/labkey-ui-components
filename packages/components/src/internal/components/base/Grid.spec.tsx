@@ -139,4 +139,31 @@ describe('Grid component', () => {
         const tree = renderer.create(<Grid data={gridData} messages={gridMessages} />).toJSON();
         expect(tree).toMatchSnapshot();
     });
+
+    test("with phi data", () => {
+        let columns = gridColumns.push(new GridColumn({
+            index: 'age',
+            title: 'Age',
+            raw: {
+                phiProtected: true,
+                description: 'Your age'
+            },
+        }));
+        columns = columns.push(new GridColumn({
+            index: 'teamPlayer',
+            title: 'Team Player',
+            raw: {
+                description: 'Are you a team player?'
+            }
+        }));
+        columns = columns.push(new GridColumn({
+            index: 'lefty',
+            title: 'Lefty',
+            raw: {
+                phiProtected: true
+            }
+        }));
+        const tree = renderer.create(<Grid data={gridData} columns={columns} />).toJSON();
+        expect(tree).toMatchSnapshot();
+    })
 });

@@ -1,6 +1,8 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { UserWithPermissions } from '@labkey/api';
+
 import { resolveErrorMessage } from '../../index';
+
 import { AnnouncementsAPIWrapper, getDefaultAnnouncementsAPIWrapper } from './APIWrapper';
 import { AnnouncementModel } from './model';
 import { Thread } from './Thread';

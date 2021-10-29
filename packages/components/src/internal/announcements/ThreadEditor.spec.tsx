@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
+
 import { waitForLifecycle } from '../testHelpers';
 
 import { applyList, applyTemplate, handleBulletedListEnter, olMapper, ThreadEditor, ulMapper } from './ThreadEditor';
@@ -23,7 +24,7 @@ describe('ThreadEditor', () => {
             body: expectedBody,
             discussionSrcIdentifier: expectedIdentifier,
             title: `${NOUN_SINGULAR} thread`,
-        }
+        };
 
         const expectedReplyThread = { ...expectedCreateThread, parent: expectedParent };
 
@@ -119,7 +120,9 @@ describe('ThreadEditor', () => {
         wrapper.find('.dropdown li a').at(1).simulate('click');
         await waitForLifecycle(wrapper);
         expect(renderContent).toHaveBeenCalledWith(body, expectedContainerPath);
-        expect(wrapper.find('.thread-editor-preview div').props().dangerouslySetInnerHTML).toEqual({ __html: renderedBody });
+        expect(wrapper.find('.thread-editor-preview div').props().dangerouslySetInnerHTML).toEqual({
+            __html: renderedBody,
+        });
         // Toolbar buttons should all be disabled when rendering previews.
         wrapper.find(TOOLBAR_BUTTON).forEach(button => expect(button.props().disabled).toEqual(true));
     });
@@ -168,9 +171,9 @@ describe('ThreadEditor', () => {
     test('applyTemplate', () => {
         const value = 'hello world';
         const element = { selectionStart: 6, selectionEnd: 11, value } as HTMLTextAreaElement;
-        expect(applyTemplate(element, '*', '*')).toEqual(['hello *world*', 7, 12])
-        expect(applyTemplate(element, '**', '**')).toEqual(['hello **world**', 8, 13])
-        expect(applyTemplate(element, '[', '](url)')).toEqual(['hello [world](url)', 7, 12])
+        expect(applyTemplate(element, '*', '*')).toEqual(['hello *world*', 7, 12]);
+        expect(applyTemplate(element, '**', '**')).toEqual(['hello **world**', 8, 13]);
+        expect(applyTemplate(element, '[', '](url)')).toEqual(['hello [world](url)', 7, 12]);
     });
     test('applyList', () => {
         const value = 'one\ntwo\n';

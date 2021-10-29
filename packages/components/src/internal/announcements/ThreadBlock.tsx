@@ -5,6 +5,7 @@ import { User, UserWithPermissions } from '@labkey/api';
 
 import { Alert, resolveErrorMessage } from '../..';
 import { UserAvatar } from '../components/UserAvatars';
+
 import { AnnouncementModel } from './model';
 import { ThreadEditor, ThreadEditorProps } from './ThreadEditor';
 import { ThreadAttachments } from './ThreadAttachments';
@@ -21,13 +22,15 @@ const DeleteThreadModal: FC<DeleteThreadModalProps> = ({ cancel, onDelete }) => 
         </Modal.Header>
 
         <Modal.Body>
-            Deleting this comment will also delete any replies to the original comment.
-            Are you sure you want to delete this thread?
+            Deleting this comment will also delete any replies to the original comment. Are you sure you want to delete
+            this thread?
         </Modal.Body>
 
         <Modal.Footer>
             <div className="pull-left">
-                <button className="btn btn-default" onClick={cancel}>Cancel</button>
+                <button className="btn btn-default" onClick={cancel}>
+                    Cancel
+                </button>
             </div>
 
             <div className="pull-right">
@@ -49,7 +52,7 @@ interface ThreadBlockHeaderProps {
 
 const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
     const { created, modified, onDelete, onEdit, user } = props;
-    const [ showDeleteModal, setShowDeleteModal ] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const formattedCreate = useMemo(() => moment(created).fromNow(), [created]);
     const isEdited = useMemo(() => {
@@ -72,14 +75,11 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
             </span>
             <div className="pull-right">
                 <span className="thread-block-header__date">
-                    {formattedCreate}{isEdited ? ' (Edited)' : ''}
+                    {formattedCreate}
+                    {isEdited ? ' (Edited)' : ''}
                 </span>
                 {(onDelete || onEdit) && (
-                    <Dropdown
-                        className="thread-block-header__menu"
-                        componentClass="span"
-                        id="thread-block-header-menu"
-                    >
+                    <Dropdown className="thread-block-header__menu" componentClass="span" id="thread-block-header-menu">
                         <Dropdown.Toggle useAnchor={true}>
                             <i className="fa fa-ellipsis-v" />
                         </Dropdown.Toggle>
@@ -127,11 +127,11 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
         thread,
         user,
     } = props;
-    const [ editing, setEditing ] = useState(false);
-    const [ error, setError ] = useState<string>(undefined);
-    const [ recentTimeout, setRecentTimeout ] = useState<number>(undefined);
-    const [ replying, setReplying ] = useState(false);
-    const [ showRecent, setShowRecent ] = useState(false);
+    const [editing, setEditing] = useState(false);
+    const [error, setError] = useState<string>(undefined);
+    const [recentTimeout, setRecentTimeout] = useState<number>(undefined);
+    const [replying, setReplying] = useState(false);
+    const [showRecent, setShowRecent] = useState(false);
 
     const threadBody = useMemo(() => ({ __html: thread.formattedHtml }), [thread.formattedHtml]);
     const allowDelete = !readOnly && user.canDelete;
@@ -177,9 +177,11 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
         onCreate?.(thread);
 
         setShowRecent(true);
-        setRecentTimeout(setTimeout(() => {
-            setShowRecent(false);
-        }, 10000) as any);
+        setRecentTimeout(
+            setTimeout(() => {
+                setShowRecent(false);
+            }, 10000) as any
+        );
     }, []);
 
     return (
@@ -201,7 +203,9 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                         <ThreadAttachments attachments={thread.attachments ?? []} />
 
                         {allowReply && (
-                            <span className="clickable-text thread-block__reply" onClick={onReply}>Reply</span>
+                            <span className="clickable-text thread-block__reply" onClick={onReply}>
+                                Reply
+                            </span>
                         )}
                         {showReplyToggle && (
                             <span className="clickable-text thread-block__toggle-reply" onClick={onToggleResponses}>

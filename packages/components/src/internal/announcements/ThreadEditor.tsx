@@ -383,7 +383,17 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         if (createdThread) {
             onCreate?.(createdThread);
         }
-    }, [containerPath, model, discussionSrcIdentifier, discussionSrcEntityType, parent, nounSingular, api, files, onCreate]);
+    }, [
+        containerPath,
+        model,
+        discussionSrcIdentifier,
+        discussionSrcEntityType,
+        parent,
+        nounSingular,
+        api,
+        files,
+        onCreate,
+    ]);
 
     const updateThread = useCallback(async () => {
         let updatedThread: AnnouncementModel;

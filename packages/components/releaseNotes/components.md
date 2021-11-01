@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.90.1
+*Released*: 1 November 2021
+* Previous release was built against an incorrect version of api-js which broke workflow task support included in 2.87.0
+
 ### version 2.90.0
 *Released*: 29 October 2021
 * Support 'Status' setting on Assay Designs

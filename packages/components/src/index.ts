@@ -287,8 +287,8 @@ import {
     getSelectedItemSamples,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
-import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
-import { SamplesEditableGridBase } from './internal/components/samples/SamplesEditableGrid';
+import { SamplesBulkUpdateForm } from './internal/components/samples/SamplesBulkUpdateForm';
+import { SamplesEditableGrid } from './internal/components/samples/SamplesEditableGrid';
 import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
 import { SampleDeleteMenuItem } from './internal/components/samples/SampleDeleteMenuItem';
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
@@ -913,14 +913,13 @@ export {
     SampleSetSummary,
     SampleCreationType,
     SampleSetDeleteModal,
-    SamplesBulkUpdateFormBase,
+    SamplesBulkUpdateForm,
     SampleDeleteMenuItem,
-    SamplesEditableGridBase,
+    SamplesEditableGrid,
     SampleLineageGraph,
     SampleDetailEditing,
     SampleCreationTypeModal,
     CreateSamplesSubMenuBase,
-    SamplesSelectionProvider,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
     GridAliquotViewSelector,
@@ -1364,3 +1363,4 @@ export type { AnnouncementModel, ThreadActions } from './internal/announcements/
 export type { AnnouncementsAPIWrapper } from './internal/announcements/APIWrapper';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
+export type { SamplesEditableGridProps } from './internal/components/samples/SamplesEditableGrid';

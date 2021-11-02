@@ -2,7 +2,7 @@
  * Copyright (c) 2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { ComponentType, ReactNode } from 'react';
 
 import { LoadingSpinner, SampleOperation } from '../../..';
 
@@ -16,6 +16,7 @@ import {
     getSampleSelectionLineageData,
     getSampleSelectionStorageData,
 } from './actions';
+import { isFreezerManagementEnabled } from '../../app/utils';
 
 const Context = React.createContext<SamplesSelectionResultProps>(undefined);
 const SamplesSelectionContextProvider = Context.Provider;
@@ -23,11 +24,11 @@ export const SamplesSelectionContextConsumer = Context.Consumer;
 
 type Props = SamplesSelectionProviderProps;
 
-type State = SamplesSelectionResultProps;
-
-export const SamplesSelectionProvider = (Component: React.ComponentType) => {
-    return class SamplesSelectionProviderImpl extends React.Component<Props, State> {
-        state: Readonly<State> = {
+export function SamplesSelectionProvider<T>(
+    WrappedComponent: ComponentType<T & Props & SamplesSelectionResultProps>
+): ComponentType<T> {
+    class SamplesSelectionProviderImpl extends React.Component<T & Props, SamplesSelectionResultProps> {
+        state: Readonly<SamplesSelectionResultProps> = {
             sampleTypeDomainFields: undefined,
             aliquots: undefined,
             noStorageSamples: undefined,
@@ -38,7 +39,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             editStatusData: undefined,
         };
 
-        componentDidMount() {
+        componentDidMount(): void {
             this.loadSampleTypeDomain();
             this.loadEditConfirmationData();
             this.loadAliquotData();
@@ -46,7 +47,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             this.loadLineageData();
         }
 
-        componentDidUpdate(prevProps: Props): void {
+        componentDidUpdate(prevProps: T & Props): void {
             if (prevProps.selection !== this.props.selection) {
                 this.loadEditConfirmationData();
                 this.loadAliquotData();
@@ -68,7 +69,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
         }
 
         loadEditConfirmationData(): void {
-            const { selection, sampleSet } = this.props;
+            const { selection } = this.props;
             getSampleOperationConfirmationData(SampleOperation.EditMetadata, undefined, selection.toArray())
                 .then(editConfirmationData => {
                     this.setState({
@@ -84,8 +85,8 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
         }
 
         loadAliquotData(): void {
-            const { determineAliquot, selection, sampleSet } = this.props;
-            if (determineAliquot && selection && selection.size > 0) {
+            const { selection, sampleSet } = this.props;
+            if (selection && selection.size > 0) {
                 getAliquotSampleIds(selection, sampleSet)
                     .then(aliquots => {
                         this.setState({
@@ -102,8 +103,8 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
         }
 
         loadStorageData(): void {
-            const { determineStorage, selection, sampleSet } = this.props;
-            if (determineStorage && selection && selection.size > 0) {
+            const { selection, sampleSet } = this.props;
+            if (isFreezerManagementEnabled() && selection && selection.size > 0) {
                 getNotInStorageSampleIds(selection, sampleSet)
                     .then(samples => {
                         this.setState({
@@ -132,8 +133,8 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
         }
 
         loadLineageData(): void {
-            const { determineLineage, selection, sampleSet } = this.props;
-            if (determineLineage && selection && selection.size > 0) {
+            const { selection, sampleSet } = this.props;
+            if (selection && selection.size > 0) {
                 getSampleSelectionLineageData(selection, sampleSet)
                     .then(response => {
                         const { key, models, orderedModels } = response;
@@ -152,8 +153,7 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             }
         }
 
-        render() {
-            const { determineAliquot, determineStorage, determineLineage } = this.props;
+        render(): ReactNode {
             const {
                 aliquots,
                 noStorageSamples,
@@ -167,9 +167,9 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             if (isLoaded && !selectionInfoError) {
                 if (
                     !editStatusData ||
-                    (determineAliquot && !aliquots) ||
-                    (determineStorage && !noStorageSamples) ||
-                    (determineLineage && !sampleLineage)
+                    !aliquots ||
+                    (isFreezerManagementEnabled() && !noStorageSamples) ||
+                    !sampleLineage
                 ) {
                     isLoaded = false;
                 }
@@ -178,12 +178,14 @@ export const SamplesSelectionProvider = (Component: React.ComponentType) => {
             if (isLoaded) {
                 return (
                     <SamplesSelectionContextProvider value={this.state}>
-                        <Component {...this.props} {...this.state} />
+                        <WrappedComponent {...this.props} {...this.state} />
                     </SamplesSelectionContextProvider>
                 );
             } else {
                 return <LoadingSpinner />;
             }
         }
-    };
-};
+    }
+
+    return SamplesSelectionProviderImpl;
+}

@@ -3,6 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.90.1
 *Released*: 1 November 2021
+* Item 9500: Improve Sample display when spanning types
+  * ...
+
+### version 2.90.1
+*Released*: 1 November 2021
 * Previous release was built against an incorrect version of api-js which broke workflow task support included in 2.87.0
 
 ### version 2.90.0

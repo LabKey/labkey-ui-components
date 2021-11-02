@@ -47,8 +47,10 @@ import {
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { getOriginalParentsFromSampleLineage } from './actions';
+import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
+import { isFreezerManagementEnabled } from '../../app/utils';
 
-interface OwnProps {
+export interface SamplesEditableGridProps {
     displayQueryModel: QueryModel;
     onGridEditCancel: () => any;
     onGridEditComplete: () => any;
@@ -57,8 +59,7 @@ interface OwnProps {
     editableGridUpdateData?: any;
     editableGridDataForSelection?: Map<string, any>;
     editableGridDataIdsForSelection?: List<any>;
-    canEditStorage: boolean;
-    samplesGridRequiredColumns: string[];
+    samplesGridRequiredColumns?: string[];
     samplesGridOmittedColumns?: List<string>;
     getConvertedStorageUpdateData?: (
         storageRows: any[],
@@ -72,7 +73,7 @@ interface OwnProps {
     combineParentTypes?: boolean;
 }
 
-type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultProps;
+type Props = SamplesEditableGridProps & SamplesSelectionProviderProps & SamplesSelectionResultProps;
 
 const STORAGE_UPDATE_FIELDS = ['StoredAmount', 'Units', 'FreezeThawCount'];
 const SAMPLES_EDIT_GRID_ID = 'update-samples-grid';
@@ -93,11 +94,14 @@ interface State {
     entityParentsMap: Map<string, List<EntityParentType>>;
 }
 
-// Usage: export const SamplesEditableGrid = connect<any, any, any>(undefined)(SamplesSelectionProvider(SamplesEditableGridBase));
-export class SamplesEditableGridBase extends React.Component<Props, State> {
+class SamplesEditableGridBase extends React.Component<Props, State> {
     private readOnlyColumns: List<string> = undefined;
 
     private _hasError: boolean;
+
+    static defaultProps = {
+        samplesGridRequiredColumns: ['description'],
+    };
 
     constructor(props: Props) {
         super(props);
@@ -271,7 +275,9 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     initStorageEditableGrid = (): void => {
-        if (this.props.canEditStorage) gridInit(this.getStorageEditorQueryGridModel(), true, this);
+        if (isFreezerManagementEnabled()) {
+            gridInit(this.getStorageEditorQueryGridModel(), true, this);
+        }
     };
 
     getLineageEditorQueryGridModel = (): QueryGridModel => {
@@ -442,14 +448,13 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
 
     getStorageUpdateData(storageRows: any[]) {
         const {
-            canEditStorage,
             sampleItems,
             sampleTypeDomainFields,
             noStorageSamples,
             selection,
             getConvertedStorageUpdateData,
         } = this.props;
-        if (!canEditStorage || storageRows.length === 0 || !getConvertedStorageUpdateData) return null;
+        if (!isFreezerManagementEnabled() || storageRows.length === 0 || !getConvertedStorageUpdateData) return null;
 
         const sampleTypeUnit = sampleTypeDomainFields.metricUnit;
 
@@ -622,13 +627,13 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     render() {
-        const { selectionData, onGridEditCancel, canEditStorage } = this.props;
+        const { selectionData, onGridEditCancel } = this.props;
 
         const samplesGrid = this.getSamplesEditorQueryGridModel();
         if (!samplesGrid || !samplesGrid.isLoaded) return <LoadingSpinner />;
 
         const models = [samplesGrid];
-        if (canEditStorage) {
+        if (isFreezerManagementEnabled()) {
             const storageGrid = this.getStorageEditorQueryGridModel();
             if (!storageGrid || !storageGrid.isLoaded) return <LoadingSpinner />;
 
@@ -663,6 +668,10 @@ export class SamplesEditableGridBase extends React.Component<Props, State> {
         );
     }
 }
+
+export const SamplesEditableGrid = SamplesSelectionProvider<SamplesEditableGridProps & SamplesSelectionProviderProps>(
+    SamplesEditableGridBase
+);
 
 // exported for jest testing
 export function getUpdatedLineageRows(

@@ -10,6 +10,7 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
+import { isSampleManagerEnabled } from "../../../app/utils";
 
 interface Props {
     nounSingular?: string;
@@ -59,7 +60,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
     }
 
     componentDidMount = async (): Promise<void> => {
-        if (this.state.model.isNew) {
+        if (this.state.model.isNew && isSampleManagerEnabled()) {
             const response = await this.props.loadNameExpressionOptions();
 
             this.setState(

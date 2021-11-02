@@ -76,7 +76,7 @@ import { BulkAddData } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
 
-import { getCurrentProductName } from '../../app/utils';
+import {getCurrentProductName, isSampleManagerEnabled} from '../../app/utils';
 
 import { fetchDomainDetails } from '../domainproperties/actions';
 
@@ -273,16 +273,18 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         const allowParents = this.allowParents();
 
-        try {
-            const nameIdSettings = await this.props.loadNameExpressionOptions();
-            this.setState({ allowUserSpecifiedNames: nameIdSettings.allowUserSpecifiedNames });
-        } catch (error) {
-            this.setState({
-                error: getActionErrorMessage(
-                    'There was a problem retrieving name expression options.',
-                    this.typeTextPlural
-                ),
-            });
+        if (isSampleManagerEnabled()) {
+            try {
+                const nameIdSettings = await this.props.loadNameExpressionOptions();
+                this.setState({ allowUserSpecifiedNames: nameIdSettings.allowUserSpecifiedNames });
+            } catch (error) {
+                this.setState({
+                    error: getActionErrorMessage(
+                        'There was a problem retrieving name expression options.',
+                        this.typeTextPlural
+                    ),
+                });
+            }
         }
 
         let { insertModel } = this.state;

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.##.#
-*Released*: ## November 2021
+### version 2.91.0
+*Released*: 2 November 2021
 * getUsersWithPermissions: support alternate container paths
   * expose via UserSelectInput and useUsersWithPermissions
 * Export invalidateQueryDetailsCache

@@ -4,7 +4,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.90.1
 *Released*: 1 November 2021
 * Item 9500: Improve Sample display when spanning types
-  * ...
+  * fix SamplesSelectionContextProvider typings so that we can wrap SamplesBulkUpdateForm and SamplesEditableGrid here in ui-components and export the
+  * remove SamplesSelectionContextProvider, SamplesBulkUpdateFormBase, and SamplesEditableGridBase from index.ts
+  * remove SamplesSelectionContextProvider determineAliquot, determineStorage, and determineLineage props as those are now the same for LKB and LKSM
+  * replace canEditStorage prop with call to isFreezerManagementEnabled()
 
 ### version 2.90.1
 *Released*: 1 November 2021

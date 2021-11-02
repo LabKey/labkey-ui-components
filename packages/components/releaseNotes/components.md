@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * remove SamplesSelectionContextProvider, SamplesBulkUpdateFormBase, and SamplesEditableGridBase from index.ts
   * remove SamplesSelectionContextProvider determineAliquot, determineStorage, and determineLineage props as those are now the same for LKB and LKSM
   * replace canEditStorage prop with call to isFreezerManagementEnabled()
+  * move SamplesTabbedGridPanel from LKSM to ui-components
 
 ### version 2.90.1
 *Released*: 1 November 2021

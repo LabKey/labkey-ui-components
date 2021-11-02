@@ -289,6 +289,7 @@ import {
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesBulkUpdateForm } from './internal/components/samples/SamplesBulkUpdateForm';
 import { SamplesEditableGrid } from './internal/components/samples/SamplesEditableGrid';
+import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
 import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
 import { SampleDeleteMenuItem } from './internal/components/samples/SampleDeleteMenuItem';
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
@@ -296,7 +297,6 @@ import { SampleSetSummary } from './internal/components/samples/SampleSetSummary
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
 import { CreateSamplesSubMenuBase } from './internal/components/samples/CreateSamplesSubMenuBase';
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
-import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
@@ -916,6 +916,7 @@ export {
     SamplesBulkUpdateForm,
     SampleDeleteMenuItem,
     SamplesEditableGrid,
+    SamplesTabbedGridPanel,
     SampleLineageGraph,
     SampleDetailEditing,
     SampleCreationTypeModal,
@@ -1340,6 +1341,7 @@ export type {
     SamplesSelectionProviderProps,
     SamplesSelectionResultProps,
     SampleStatus,
+    SampleGridButtonProps,
 } from './internal/components/samples/models';
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/AppURLResolver';

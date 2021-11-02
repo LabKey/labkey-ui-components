@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
+
 import { waitForLifecycle } from '../testHelpers';
 
 import { applyList, applyTemplate, handleBulletedListEnter, olMapper, ThreadEditor, ulMapper } from './ThreadEditor';
@@ -17,18 +18,20 @@ describe('ThreadEditor', () => {
         const expectedBody = '### I have been created!';
         const expectedIdentifier = 'abc-123';
         const expectedParent = 'parent-1';
+        const expectedContainerPath = '/FolderOne';
 
         const expectedCreateThread = {
             body: expectedBody,
             discussionSrcIdentifier: expectedIdentifier,
             title: `${NOUN_SINGULAR} thread`,
-        }
+        };
 
         const expectedReplyThread = { ...expectedCreateThread, parent: expectedParent };
 
         const wrapper = mount(
             <ThreadEditor
                 api={createTestAPIWrapper({ createThread })}
+                containerPath={expectedContainerPath}
                 discussionSrcIdentifier={expectedIdentifier}
                 nounPlural={NOUN_PLURAL}
                 nounSingular={NOUN_SINGULAR}
@@ -46,7 +49,7 @@ describe('ThreadEditor', () => {
 
         await waitForLifecycle(wrapper);
 
-        expect(createThread).toHaveBeenCalledWith(expectedCreateThread, [], false);
+        expect(createThread).toHaveBeenCalledWith(expectedCreateThread, [], false, expectedContainerPath);
         expect(onCreate).toHaveBeenCalledWith(THREAD);
 
         // supports reply
@@ -59,19 +62,21 @@ describe('ThreadEditor', () => {
 
         await waitForLifecycle(wrapper);
 
-        expect(createThread).toHaveBeenCalledWith(expectedReplyThread, [], true);
+        expect(createThread).toHaveBeenCalledWith(expectedReplyThread, [], true, expectedContainerPath);
         expect(onCreate).toHaveBeenCalledWith(THREAD);
     });
     test('updates thread', async () => {
         const updateThread = jest.fn().mockResolvedValue(THREAD);
         const onUpdate = jest.fn();
         const expectedBody = '**This is updated**';
+        const expectedContainerPath = '/FolderOne';
 
         const expectedUpdatedThread = { ...RESPONSE, body: expectedBody };
 
         const wrapper = mount(
             <ThreadEditor
                 api={createTestAPIWrapper({ updateThread })}
+                containerPath={expectedContainerPath}
                 nounPlural={NOUN_PLURAL}
                 nounSingular={NOUN_SINGULAR}
                 onUpdate={onUpdate}
@@ -91,11 +96,12 @@ describe('ThreadEditor', () => {
 
         await waitForLifecycle(wrapper);
 
-        expect(updateThread).toHaveBeenCalledWith(expectedUpdatedThread, []);
+        expect(updateThread).toHaveBeenCalledWith(expectedUpdatedThread, [], expectedContainerPath);
         expect(onUpdate).toHaveBeenCalledWith(THREAD);
     });
     test('renders preview', async () => {
         const body = '**This is a test preview**';
+        const expectedContainerPath = '/FolderOne';
         const renderedBody = '<div class="fake-class">This is a test preview</div>';
         // Note: the mocked response here doesn't have to match what would actually get rendered, we're not testing
         // our server response.
@@ -103,6 +109,7 @@ describe('ThreadEditor', () => {
         const wrapper = mount(
             <ThreadEditor
                 api={createTestAPIWrapper({ renderContent })}
+                containerPath={expectedContainerPath}
                 nounPlural={NOUN_PLURAL}
                 nounSingular={NOUN_SINGULAR}
                 user={COMMENTER}
@@ -112,8 +119,10 @@ describe('ThreadEditor', () => {
         wrapper.find(COMMENT_TEXTAREA).simulate('change', { target: { name: 'body', value: body } });
         wrapper.find('.dropdown li a').at(1).simulate('click');
         await waitForLifecycle(wrapper);
-        expect(renderContent).toHaveBeenCalledWith(body);
-        expect(wrapper.find('.thread-editor-preview div').props().dangerouslySetInnerHTML).toEqual({ __html: renderedBody });
+        expect(renderContent).toHaveBeenCalledWith(body, expectedContainerPath);
+        expect(wrapper.find('.thread-editor-preview div').props().dangerouslySetInnerHTML).toEqual({
+            __html: renderedBody,
+        });
         // Toolbar buttons should all be disabled when rendering previews.
         wrapper.find(TOOLBAR_BUTTON).forEach(button => expect(button.props().disabled).toEqual(true));
     });
@@ -162,9 +171,9 @@ describe('ThreadEditor', () => {
     test('applyTemplate', () => {
         const value = 'hello world';
         const element = { selectionStart: 6, selectionEnd: 11, value } as HTMLTextAreaElement;
-        expect(applyTemplate(element, '*', '*')).toEqual(['hello *world*', 7, 12])
-        expect(applyTemplate(element, '**', '**')).toEqual(['hello **world**', 8, 13])
-        expect(applyTemplate(element, '[', '](url)')).toEqual(['hello [world](url)', 7, 12])
+        expect(applyTemplate(element, '*', '*')).toEqual(['hello *world*', 7, 12]);
+        expect(applyTemplate(element, '**', '**')).toEqual(['hello **world**', 8, 13]);
+        expect(applyTemplate(element, '[', '](url)')).toEqual(['hello [world](url)', 7, 12]);
     });
     test('applyList', () => {
         const value = 'one\ntwo\n';

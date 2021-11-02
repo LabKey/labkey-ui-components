@@ -216,11 +216,12 @@ const ThreadEditorToolbar: FC<ThreadEditorToolbarProps> = memo(({ inputRef, setB
 });
 
 interface PreviewProps {
+    containerPath?: string;
     content: string;
-    renderContent: (content: string) => Promise<string>;
+    renderContent: (content: string, containerPath?: string) => Promise<string>;
 }
 
-const Preview: FC<PreviewProps> = memo(({ content, renderContent }) => {
+const Preview: FC<PreviewProps> = memo(({ containerPath, content, renderContent }) => {
     const [renderedContent, setRenderedContent] = useState<string>(undefined);
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [error, setError] = useState<string>(undefined);
@@ -231,7 +232,7 @@ const Preview: FC<PreviewProps> = memo(({ content, renderContent }) => {
             setLoadingState(LoadingState.LOADING);
 
             try {
-                const _renderedContent = await renderContent(content);
+                const _renderedContent = await renderContent(content, containerPath);
                 setError(undefined);
                 setRenderedContent(_renderedContent);
             } catch (e) {
@@ -240,7 +241,7 @@ const Preview: FC<PreviewProps> = memo(({ content, renderContent }) => {
                 setLoadingState(LoadingState.LOADED);
             }
         })();
-    }, [content]);
+    }, [containerPath, content]);
 
     return (
         <div className="thread-editor-preview">
@@ -253,6 +254,7 @@ const Preview: FC<PreviewProps> = memo(({ content, renderContent }) => {
 
 export interface ThreadEditorProps {
     api: AnnouncementsAPIWrapper;
+    containerPath?: string;
     discussionSrcIdentifier?: string;
     discussionSrcEntityType?: string;
     nounPlural: string;
@@ -268,6 +270,7 @@ export interface ThreadEditorProps {
 export const ThreadEditor: FC<ThreadEditorProps> = props => {
     const {
         api,
+        containerPath,
         discussionSrcIdentifier,
         discussionSrcEntityType,
         nounSingular,
@@ -326,7 +329,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
             // pre-existing attachment, delete from server
             setIsRemoving(true);
             try {
-                await api.deleteAttachment(attachment.parent, attachment.name);
+                await api.deleteAttachment(attachment.parent, attachment.name, containerPath);
                 const updatedAttachments = model.attachments.filter(att => att.name !== attachmentToRemove);
                 setModel({ ...model, attachments: updatedAttachments });
                 setAttachmentToRemove(undefined);
@@ -341,7 +344,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
             setFiles(files.filter(file => file.name !== attachmentToRemove));
             setAttachmentToRemove(undefined);
         }
-    }, [model, attachments, attachmentToRemove, files]);
+    }, [containerPath, model, attachments, attachmentToRemove, files]);
 
     const createThread = useCallback(async () => {
         const modelToCreate = { ...model };
@@ -370,7 +373,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         let createdThread: AnnouncementModel;
 
         try {
-            createdThread = await api.createThread(modelToCreate, files, parent !== undefined);
+            createdThread = await api.createThread(modelToCreate, files, parent !== undefined, containerPath);
         } catch (err) {
             setError(resolveErrorMessage(err, 'thread', 'create'));
         }
@@ -380,13 +383,23 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         if (createdThread) {
             onCreate?.(createdThread);
         }
-    }, [model, discussionSrcIdentifier, discussionSrcEntityType, parent, nounSingular, api, files, onCreate]);
+    }, [
+        containerPath,
+        model,
+        discussionSrcIdentifier,
+        discussionSrcEntityType,
+        parent,
+        nounSingular,
+        api,
+        files,
+        onCreate,
+    ]);
 
     const updateThread = useCallback(async () => {
         let updatedThread: AnnouncementModel;
 
         try {
-            updatedThread = await api.updateThread(model, files);
+            updatedThread = await api.updateThread(model, files, containerPath);
         } catch (err) {
             setError(resolveErrorMessage(err, 'thread', 'update'));
         }
@@ -396,7 +409,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         if (updatedThread) {
             onUpdate?.(updatedThread);
         }
-    }, [api, files, model, onUpdate]);
+    }, [api, containerPath, files, model, onUpdate]);
 
     const setBody = useCallback(
         (body, selectionStart?: number, selectionEnd?: number) => {
@@ -479,7 +492,9 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
                     </div>
                 )}
 
-                {view === EditorView.preview && <Preview content={model.body} renderContent={api.renderContent} />}
+                {view === EditorView.preview && (
+                    <Preview containerPath={containerPath} content={model.body} renderContent={api.renderContent} />
+                )}
 
                 <ThreadAttachments attachments={attachments} error={attachmentError} onRemove={openRemoveModal} />
 

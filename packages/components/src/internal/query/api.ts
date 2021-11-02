@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable';
+import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord, Set } from 'immutable';
 import { normalize, schema } from 'normalizr';
 import { AuditBehaviorTypes, Filter, Query, QueryDOM } from '@labkey/api';
 
@@ -30,8 +30,18 @@ import {
     ViewInfo,
 } from '../..';
 
-const queryDetailsCache: { [key: string]: Promise<QueryInfo> } = {};
+const queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
 
+function getQueryDetailsCacheKey(schemaQuery: SchemaQuery, containerPath?: string): string {
+    return '' + resolveSchemaQuery(schemaQuery) + (containerPath ? '|' + containerPath : '');
+}
+
+export function invalidateQueryDetailsCache(schemaQuery: SchemaQuery, containerPath?: string): void {
+    const key = getQueryDetailsCacheKey(schemaQuery, containerPath);
+    invalidateQueryDetailsCacheKey(key);
+}
+
+/** @deprecated Use invalidateQueryDetailsCache() instead */
 export function invalidateQueryDetailsCacheKey(key: string): void {
     delete queryDetailsCache[key];
 }
@@ -43,22 +53,23 @@ interface GetQueryDetailsOptions {
 }
 
 export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryInfo> {
-    const schemaQuery = SchemaQuery.create(options.schemaName, options.queryName);
-    const key = resolveSchemaQuery(schemaQuery);
+    const { containerPath, queryName, schemaName } = options;
+    const schemaQuery = SchemaQuery.create(schemaName, queryName);
+    const key = getQueryDetailsCacheKey(schemaQuery, containerPath);
 
     if (!queryDetailsCache[key]) {
         queryDetailsCache[key] = new Promise((resolve, reject) => {
             Query.getQueryDetails({
-                containerPath: options.containerPath,
-                schemaName: options.schemaName,
-                queryName: options.queryName,
+                containerPath,
+                schemaName,
+                queryName,
                 viewName: '*',
                 success: queryDetails => {
                     // getQueryDetails will return an exception parameter in cases
                     // where it is unable to resolve the tableInfo. This is deemed a 'success'
                     // by the request standards but here we reject as an outright failure
                     if (queryDetails.exception) {
-                        invalidateQueryDetailsCacheKey(key);
+                        invalidateQueryDetailsCache(schemaQuery, containerPath);
                         reject({
                             schemaQuery,
                             message: queryDetails.exception,
@@ -70,7 +81,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                 },
                 failure: (error, request) => {
                     console.error(error);
-                    invalidateQueryDetailsCacheKey(key);
+                    invalidateQueryDetailsCache(schemaQuery, containerPath);
                     reject({
                         message: error.exception,
                         exceptionClass: error.exceptionClass,
@@ -602,7 +613,7 @@ interface InsertRowError {
     errors: ErrorMessage[];
 }
 
-export class InsertRowsErrorResponse extends Record({
+export class InsertRowsErrorResponse extends ImmutableRecord({
     errors: undefined,
     errorCount: 0,
     exception: undefined,
@@ -629,7 +640,7 @@ export interface InsertRowsOptions {
     form?: FormData;
 }
 
-export class InsertRowsResponse extends Record({
+export class InsertRowsResponse extends ImmutableRecord({
     rows: Array<any>(),
     schemaQuery: undefined,
     error: undefined,

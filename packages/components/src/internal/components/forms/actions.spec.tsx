@@ -17,11 +17,13 @@ import { PermissionTypes } from '@labkey/api';
 import { mount } from 'enzyme';
 import { fromJS, List } from 'immutable';
 import React, { FC } from 'react';
+
 import { LoadingState } from '../../../public/LoadingState';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
 import { waitForLifecycle } from '../../testHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { User } from '../base/models/User';
+
 import { parseSelectedQuery, UsersLoader, useUsersWithPermissions } from './actions';
 
 // Tested components
@@ -79,12 +81,13 @@ describe('form actions', () => {
 
 describe('useUsersWithPermissions', () => {
     interface TestComponentProps {
+        containerPath: string;
         permissions: string | string[];
         loader: UsersLoader;
     }
 
-    const TestComponent: FC<TestComponentProps> = ({ permissions, loader }) => {
-        const { error, loadingState, users } = useUsersWithPermissions(permissions, loader);
+    const TestComponent: FC<TestComponentProps> = ({ containerPath, permissions, loader }) => {
+        const { error, loadingState, users } = useUsersWithPermissions(permissions, containerPath, loader);
         return (
             <div>
                 {loadingState !== LoadingState.LOADED && <LoadingSpinner />}
@@ -98,9 +101,7 @@ describe('useUsersWithPermissions', () => {
                     </div>
                 )}
                 {loadingState === LoadingState.LOADED && error !== undefined && (
-                    <div className="users-error">
-                        {error}
-                    </div>
+                    <div className="users-error">{error}</div>
                 )}
             </div>
         );
@@ -108,8 +109,11 @@ describe('useUsersWithPermissions', () => {
 
     test('state', async () => {
         const error = 'There was a problem retrieving users with the given permissions';
+        const containerPath = '/';
         const loader = jest.fn(async () => List<User>([TEST_USER_EDITOR, TEST_USER_READER]));
-        const wrapper = mount(<TestComponent permissions={[PermissionTypes.Read]} loader={loader} />);
+        const wrapper = mount(
+            <TestComponent containerPath={containerPath} permissions={[PermissionTypes.Read]} loader={loader} />
+        );
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
@@ -125,12 +129,15 @@ describe('useUsersWithPermissions', () => {
     });
 
     test('reload permissions', async () => {
+        const containerPath = '/';
         const loader = jest.fn(async () => List<User>([TEST_USER_EDITOR, TEST_USER_READER]));
-        const wrapper = mount(<TestComponent permissions={[PermissionTypes.Read]} loader={loader} />);
+        const wrapper = mount(
+            <TestComponent containerPath={containerPath} permissions={[PermissionTypes.Read]} loader={loader} />
+        );
         await waitForLifecycle(wrapper);
-        expect(loader).toHaveBeenCalledWith([PermissionTypes.Read]);
-        wrapper.setProps({ permissions: [PermissionTypes.Delete, PermissionTypes.Update]});
+        expect(loader).toHaveBeenCalledWith([PermissionTypes.Read], containerPath);
+        wrapper.setProps({ permissions: [PermissionTypes.Delete, PermissionTypes.Update] });
         await waitForLifecycle(wrapper);
-        expect(loader).toHaveBeenCalledWith([PermissionTypes.Delete, PermissionTypes.Update]);
+        expect(loader).toHaveBeenCalledWith([PermissionTypes.Delete, PermissionTypes.Update], containerPath);
     });
 });

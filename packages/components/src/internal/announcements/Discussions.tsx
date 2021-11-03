@@ -1,6 +1,8 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { UserWithPermissions } from '@labkey/api';
+
 import { resolveErrorMessage } from '../../index';
+
 import { AnnouncementsAPIWrapper, getDefaultAnnouncementsAPIWrapper } from './APIWrapper';
 import { AnnouncementModel } from './model';
 import { Thread } from './Thread';
@@ -9,6 +11,7 @@ import { ThreadEditor } from './ThreadEditor';
 interface Props {
     api?: AnnouncementsAPIWrapper;
     autoLoad?: boolean;
+    containerPath?: string;
     discussionSrcIdentifier: string;
     discussionSrcEntityType?: string;
     nounPlural?: string;
@@ -21,6 +24,7 @@ export const Discussions: FC<Props> = memo(props => {
     const {
         api,
         autoLoad,
+        containerPath,
         discussionSrcIdentifier,
         discussionSrcEntityType,
         nounPlural,
@@ -39,11 +43,11 @@ export const Discussions: FC<Props> = memo(props => {
 
     const loadDiscussions = useCallback(async () => {
         try {
-            setDiscussions(await api.getDiscussions(discussionSrcIdentifier));
+            setDiscussions(await api.getDiscussions(discussionSrcIdentifier, containerPath));
         } catch (err) {
             setError(resolveErrorMessage(err, 'discussion', 'discussions', 'load'));
         }
-    }, [api, discussionSrcIdentifier]);
+    }, [api, containerPath, discussionSrcIdentifier]);
 
     const onCancel = useCallback(() => {
         setShowEditor(false);
@@ -79,6 +83,7 @@ export const Discussions: FC<Props> = memo(props => {
             {discussions.map(thread => (
                 <Thread
                     api={api}
+                    containerPath={containerPath}
                     discussionSrcIdentifier={discussionSrcIdentifier}
                     discussionSrcEntityType={discussionSrcEntityType}
                     key={thread.rowId}
@@ -103,6 +108,7 @@ export const Discussions: FC<Props> = memo(props => {
             {allowCreateThread && showEditor && (
                 <ThreadEditor
                     api={api}
+                    containerPath={containerPath}
                     discussionSrcIdentifier={discussionSrcIdentifier}
                     discussionSrcEntityType={discussionSrcEntityType}
                     nounPlural={nounPlural}

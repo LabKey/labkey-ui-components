@@ -179,6 +179,7 @@ import {
     InsertOptions,
     insertRows,
     InsertRowsResponse,
+    invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
     searchRows,
     selectRows,
@@ -753,6 +754,7 @@ export {
     deleteRows,
     importData,
     getQueryDetails,
+    invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
     // editable grid related items
     MAX_EDITABLE_GRID_ROWS,

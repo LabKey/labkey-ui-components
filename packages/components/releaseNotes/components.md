@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.9X.TBD
+*Released*: TBD
+* Support initializing Ontology Browser to a concept via a URL parameter
+
 ### version 2.91.0
 *Released*: 2 November 2021
 * getUsersWithPermissions: support alternate container paths

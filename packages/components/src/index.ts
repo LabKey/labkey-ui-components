@@ -512,7 +512,7 @@ import {
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
-import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
+import { OntologyBrowserPage } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
 import { AppModel, LogoutReason } from './internal/app/models';
@@ -1269,7 +1269,7 @@ export {
     mountWithAppServerContextOptions,
     mountWithServerContextOptions,
     // Ontology
-    OntologyBrowserPanel,
+    OntologyBrowserPage,
     OntologyConceptOverviewPanel,
     OntologyBrowserFilterPanel,
     OntologyConceptPicker,

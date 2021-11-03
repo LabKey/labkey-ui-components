@@ -15,6 +15,7 @@ import {
     queryGridInvalidate,
     RequiresModelAndActions,
     resolveErrorMessage,
+    SampleTypeDataType,
     SchemaQuery,
     TabbedGridPanel,
     updateRows,
@@ -26,6 +27,7 @@ import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditable
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
 import { SampleGridButtonProps } from './models';
+import { TabbedGridPanelProps } from "../../../public/QueryModel/TabbedGridPanel";
 
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 
@@ -36,9 +38,8 @@ type EditableGridData = {
 };
 
 interface Props extends InjectedQueryModels {
-    advancedExportOptions?: Record<string, any>;
+    asPanel?: boolean;
     afterSampleActionComplete?: () => void;
-    alwaysShowTabs?: boolean;
     canPrintLabels?: boolean;
     createBtnParentType?: string;
     createBtnParentKey?: string;
@@ -48,13 +49,14 @@ interface Props extends InjectedQueryModels {
     modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
     showAliquotViewSelector?: boolean;
     sampleAliquotType?: ALIQUOT_FILTER_MODE; // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
+    tabbedGridPanelProps: Partial<TabbedGridPanelProps>;
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
     gridButtons: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     user: User;
 }
 
-const IS_ALIQUOT_COL = "IsAliquot";
+const IS_ALIQUOT_COL = 'IsAliquot';
 
 export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const {
@@ -62,8 +64,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         queryModels,
         modelId,
         user,
-        alwaysShowTabs,
-        advancedExportOptions,
+        asPanel,
         canPrintLabels,
         onPrintLabel,
         excludedCreateMenuKeys,
@@ -76,6 +77,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         samplesEditableGridProps,
         gridButtons,
         getSampleAuditBehaviorType,
+        tabbedGridPanelProps,
     } = props;
     const onLabelExport = {[EXPORT_TYPES.LABEL]: onPrintLabel};
 
@@ -85,7 +87,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const tabs = useMemo(() => {
         return modelId ? [modelId] : Object.keys(queryModels);
     }, [modelId, queryModels]);
-    const [ activeTabId, setActiveTabId ] = useState<string>(initialTabId ?? tabs[0]);
+    const [activeTabId, setActiveTabId] = useState<string>(initialTabId ?? tabs[0]);
 
     const activeModel = useMemo(() => queryModels[activeTabId], [activeTabId, queryModels]);
     const hasSelection = useMemo(() => activeModel.hasSelections, [activeModel.selections]);
@@ -191,8 +193,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
 
                 resolve();
             });
-        }
-        else {
+        } else {
             return updateRows({
                 schemaQuery,
                 rows,
@@ -203,15 +204,15 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                 gridIdInvalidate('update-samples-grid', true);
                 dismissNotifications(); // get rid of any error notifications that have already been created
                 withTimeout(() => {
-                    const noun = rows.length === 1 ? "sample" : "samples";
-                    createNotification("Successfully updated " + result.rows.length + " " + noun + ".");
+                    const noun = rows.length === 1 ? SampleTypeDataType.nounSingular : SampleTypeDataType.nounPlural;
+                    createNotification('Successfully updated ' + result.rows.length + ' ' + noun + '.');
                 });
 
             }).catch((reason) => {
                 dismissNotifications(); // get rid of any error notifications that have already been created
                 createNotification({
                     alertClass: 'danger',
-                    message:  resolveErrorMessage(reason, "sample", "samples", "update")
+                    message:  resolveErrorMessage(reason, SampleTypeDataType.nounSingular, SampleTypeDataType.nounPlural, 'update')
                 });
             });
         }
@@ -228,8 +229,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         toggleEditWithGridUpdate,
         onTabbedViewAliquotSelectorUpdate: onAliquotViewUpdate,
         user,
-        initAliquotMode: activeActiveAliquotMode
-    }
+        initAliquotMode: activeActiveAliquotMode,
+    };
 
     return (
         <>
@@ -251,10 +252,10 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                 />
             ) : (
                 <TabbedGridPanel
-                    title={'Samples'}
+                    {...tabbedGridPanelProps}
+                    title={asPanel ? 'Samples' : undefined}
                     actions={actions}
                     queryModels={queryModels}
-                    alwaysShowTabs={alwaysShowTabs}
                     activeModelId={activeTabId}
                     tabOrder={tabs}
                     onTabSelect={onTabSelect}
@@ -262,7 +263,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     buttonsComponentProps={gridButtonProps}
                     ButtonsComponentRight={showAliquotViewSelector ? SampleTabbedGridButtonsRight : undefined}
                     supportedExportTypes={canPrintLabels ? EXPORT_TYPES_WITH_LABEL : undefined}
-                    advancedExportOptions={advancedExportOptions}
                     onExport={canPrintLabels ? onLabelExport : undefined}
                 />
             )}
@@ -285,7 +285,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
 });
 
 SamplesTabbedGridPanel.defaultProps = {
-    alwaysShowTabs: false,
+    asPanel: true,
     canPrintLabels: false,
     excludedCreateMenuKeys: List<string>(),
     showAliquotViewSelector: true,

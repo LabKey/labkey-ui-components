@@ -26,23 +26,36 @@ export const OntologyBrowserPage: FC<OntologyBrowserProps> = memo( props => {
     const {initConceptCode, ...rest} = props;
     const [concept, setConcept] = useState<ConceptModel>();
     const [loading, setLoading] = useState<boolean>();
+    const [error, setError] = useState<string>();
 
     useEffect(() => {
         if (initConceptCode && !concept) {
             setLoading(true);
             (async () => {
-                const loadingConcept = await fetchConceptForCode(initConceptCode);
-                setConcept(loadingConcept);
-                setLoading(false);
+                try {
+                    const loadingConcept = await fetchConceptForCode(initConceptCode);
+                    setConcept(loadingConcept);
+                    setLoading(false);
+
+                } catch (e) {
+                    setError('Error: unable to load ontology concept information for ' + initConceptCode + ', code not found.');
+                    setConcept(null);
+                    setLoading(false);
+                }
             }) ();
         }
-    });
+    }, [initConceptCode]);
 
     if (loading){
         return <LoadingSpinner />;
     }
 
-    return <OntologyBrowserPanel {...rest} initConcept={concept} />
+    return (
+        <>
+            <Alert>{error}</Alert>
+            <OntologyBrowserPanel {...rest} initConcept={concept} />
+        </>
+    );
 });
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {

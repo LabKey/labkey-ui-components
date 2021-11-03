@@ -2,6 +2,8 @@ import { FindField } from './models';
 
 export const SAMPLE_INVENTORY_ITEM_SELECTION_KEY = 'inventoryItems';
 
+export const MAX_SELECTED_SAMPLES = 10000;
+
 export const FIND_BY_IDS_QUERY_PARAM = 'findByIdsKey';
 
 export const UNIQUE_ID_FIND_FIELD: FindField = {

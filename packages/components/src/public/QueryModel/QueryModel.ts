@@ -790,6 +790,10 @@ export class QueryModel {
         return !!this.queryInfo?.getShowInsertNewButton();
     }
 
+    get isAppEditable(): boolean {
+        return !!this.queryInfo?.isAppEditable();
+    }
+
     get isFiltered(): boolean {
         return (
             this.baseFilters?.length > 0 ||

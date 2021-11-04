@@ -27,7 +27,7 @@ import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditable
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
 import { SampleGridButtonProps } from './models';
-import { TabbedGridPanelProps } from "../../../public/QueryModel/TabbedGridPanel";
+import { TabbedGridPanelProps } from '../../../public/QueryModel/TabbedGridPanel';
 
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 
@@ -49,9 +49,10 @@ interface Props extends InjectedQueryModels {
     modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
     showAliquotViewSelector?: boolean;
     sampleAliquotType?: ALIQUOT_FILTER_MODE; // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
-    tabbedGridPanelProps: Partial<TabbedGridPanelProps>;
+    tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
-    gridButtons: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
+    gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
+    gridButtonProps?: any;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     user: User;
 }
@@ -76,6 +77,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         sampleAliquotType,
         samplesEditableGridProps,
         gridButtons,
+        gridButtonProps,
         getSampleAuditBehaviorType,
         tabbedGridPanelProps,
     } = props;
@@ -218,7 +220,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         }
     }, []);
 
-    const gridButtonProps = {
+    const _gridButtonProps = {
+        ...gridButtonProps,
         afterSampleDelete,
         afterSampleActionComplete: _afterSampleActionComplete,
         createBtnParentType: hasSelection ? undefined : createBtnParentType,
@@ -260,7 +263,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     tabOrder={tabs}
                     onTabSelect={onTabSelect}
                     ButtonsComponent={gridButtons}
-                    buttonsComponentProps={gridButtonProps}
+                    buttonsComponentProps={_gridButtonProps}
                     ButtonsComponentRight={showAliquotViewSelector ? SampleTabbedGridButtonsRight : undefined}
                     supportedExportTypes={canPrintLabels ? EXPORT_TYPES_WITH_LABEL : undefined}
                     onExport={canPrintLabels ? onLabelExport : undefined}

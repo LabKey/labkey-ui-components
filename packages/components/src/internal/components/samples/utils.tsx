@@ -10,6 +10,7 @@ import {
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleStateType,
+    SCHEMAS,
 } from '../../..';
 
 import { isSampleStatusEnabled } from '../../app/utils';
@@ -24,7 +25,7 @@ export function getOmittedSampleTypeColumns(user: User, omitCols?: string[]): st
     let cols: string[] = [];
 
     if (user.isGuest) {
-        cols.push('checkedOutBy');
+        cols.push(SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD);
     } else if (omitCols && !App.isFreezerManagementEnabled()) {
         cols = cols.concat(omitCols);
     }

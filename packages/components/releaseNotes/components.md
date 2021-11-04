@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * remove SamplesSelectionContextProvider determineAliquot, determineStorage, and determineLineage props as those are now the same for LKB and LKSM
     * replace canEditStorage prop with call to isFreezerManagementEnabled()
     * move SamplesTabbedGridPanel from LKSM to ui-components
+    * move CHECKED_OUT_BY_FIELD and INVENTORY_COLS constants to ui-components
 
 ### version 2.91.0
 *Released*: 2 November 2021

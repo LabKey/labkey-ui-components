@@ -17,27 +17,12 @@ import {
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
     SampleStateType,
+    SCHEMAS,
 } from '../../..';
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
 
-// Duplicated from inventory/packages/freezermanager/src/constants.ts
-export const CHECKED_OUT_BY_FIELD = 'checkedOutBy';
-export const INVENTORY_COLS = [
-    'LabelColor',
-    'DisplayUnit',
-    'StorageStatus',
-    'StoredAmountDisplay',
-    'StorageLocation',
-    'StorageRow',
-    'StorageCol',
-    'StoredAmount',
-    'Units',
-    'FreezeThawCount',
-    'EnteredStorage',
-    'CheckedOut',
-    'CheckedOutBy',
-    'StorageComment',
-];
+const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
+const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
 
 test('getOmittedSampleTypeColumns with inventoryCols omitted', () => {
     LABKEY.moduleContext = {};

@@ -509,13 +509,7 @@ import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBro
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
 import { AppModel, LogoutReason } from './internal/app/models';
-import {
-    PRIVATE_PICKLIST_CATEGORY,
-    PUBLIC_PICKLIST_CATEGORY,
-} from './internal/components/domainproperties/list/constants';
-import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './internal/components/picklist/models';
-import { PicklistEditModal } from './internal/components/picklist/PicklistEditModal';
-import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
+import { Picklist } from './internal/components/picklist/models';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
 import { PicklistListing } from './internal/components/picklist/PicklistListing';
@@ -523,12 +517,7 @@ import { PicklistOverview } from './internal/components/picklist/PicklistOvervie
 import { PicklistSubNav } from './internal/components/picklist/PicklistSubnav';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
-import {
-    deletePicklists,
-    getSelectedPicklistSamples,
-    removeSamplesFromPicklist,
-    updatePicklist,
-} from './internal/components/picklist/actions';
+import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
 
 import {
     AppReducers,
@@ -863,20 +852,11 @@ export {
     AddToPicklistMenuItem,
     PicklistButton,
     PicklistCreationMenuItem,
-    PicklistEditModal,
-    PicklistDeleteConfirm,
-    PUBLIC_PICKLIST_CATEGORY,
-    PRIVATE_PICKLIST_CATEGORY,
-    PICKLIST_KEY_COLUMN,
-    PICKLIST_SAMPLE_ID_COLUMN,
     Picklist,
     PicklistListing,
     PicklistOverview,
     PicklistSubNav,
-    deletePicklists,
     getSelectedPicklistSamples,
-    removeSamplesFromPicklist,
-    updatePicklist,
     // data class and sample type related items
     DataClassModel,
     deleteDataClass,

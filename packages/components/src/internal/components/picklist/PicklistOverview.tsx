@@ -8,7 +8,6 @@ import {
     AppURL,
     ConfirmModal,
     createNotification,
-    deletePicklists,
     getConfirmDeleteMessage,
     getListProperties,
     GridPanel,
@@ -20,22 +19,17 @@ import {
     NotFound,
     Page,
     PageDetailHeader,
-    Picklist,
-    PicklistDeleteConfirm,
-    PicklistEditModal,
-    PRIVATE_PICKLIST_CATEGORY,
-    PUBLIC_PICKLIST_CATEGORY,
+    QueryConfigMap,
     queryGridInvalidate,
     QueryModel,
-    removeSamplesFromPicklist,
     RequiresPermission,
     resolveErrorMessage,
     SchemaQuery,
     SCHEMAS,
     SelectionMenuItem,
-    updatePicklist,
     User,
 } from '../../..';
+
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import {
     InjectedQueryModels,
@@ -44,6 +38,11 @@ import {
 } from '../../../public/QueryModel/withQueryModels';
 
 import { SampleStorageButton } from '../samples/models';
+import { getPicklistFromId, deletePicklists, updatePicklist, removeSamplesFromPicklist } from './actions';
+import { Picklist } from './models';
+import { PUBLIC_PICKLIST_CATEGORY, PRIVATE_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
+import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
+import { PicklistEditModal } from './PicklistEditModal';
 
 interface OwnProps {
     user: User;

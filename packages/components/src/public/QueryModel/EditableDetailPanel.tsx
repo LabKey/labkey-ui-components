@@ -18,12 +18,13 @@ import {
     updateRows,
 } from '../..';
 
-interface Props extends RequiresModelAndActions {
+export interface EditableDetailPanelProps extends RequiresModelAndActions {
     appEditable?: boolean;
     asSubPanel?: boolean;
     auditBehavior?: AuditBehaviorTypes;
     cancelText?: string;
     canUpdate: boolean;
+    containerPath?: string;
     detailEditRenderer?: DetailRenderer;
     detailHeader?: ReactNode;
     detailRenderer?: DetailRenderer;
@@ -33,7 +34,7 @@ interface Props extends RequiresModelAndActions {
     queryColumns?: QueryColumn[];
     submitText?: string;
     title?: string;
-    useEditIcon: boolean;
+    useEditIcon?: boolean;
 }
 
 interface State {
@@ -43,7 +44,7 @@ interface State {
     warning: string;
 }
 
-export class EditableDetailPanel extends PureComponent<Props, State> {
+export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps, State> {
     static defaultProps = {
         useEditIcon: true,
         cancelText: 'Cancel',
@@ -84,7 +85,7 @@ export class EditableDetailPanel extends PureComponent<Props, State> {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     handleSubmit = async (values: Record<string, any>): Promise<void> => {
-        const { auditBehavior, model, onEditToggle, onUpdate } = this.props;
+        const { auditBehavior, containerPath, model, onEditToggle, onUpdate } = this.props;
         const { queryInfo } = model;
         const row = model.getRow();
         const updatedValues = extractChanges(queryInfo, fromJS(model.getRow()), values);
@@ -111,7 +112,12 @@ export class EditableDetailPanel extends PureComponent<Props, State> {
         });
 
         try {
-            await updateRows({ auditBehavior, rows: [updatedValues], schemaQuery: queryInfo.schemaQuery });
+            await updateRows({
+                auditBehavior,
+                containerPath,
+                rows: [updatedValues],
+                schemaQuery: queryInfo.schemaQuery,
+            });
 
             this.setState({ editing: false }, () => {
                 onUpdate?.(); // eslint-disable-line no-unused-expressions

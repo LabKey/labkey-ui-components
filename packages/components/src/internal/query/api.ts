@@ -15,10 +15,11 @@
  */
 import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord, Set } from 'immutable';
 import { normalize, schema } from 'normalizr';
-import { AuditBehaviorTypes, Filter, Query, QueryDOM } from '@labkey/api';
+import { AuditBehaviorTypes, Filter, getServerContext, Query, QueryDOM } from '@labkey/api';
 
 import { getQueryMetadata } from '../global';
 import { resolveKeyFromJson } from '../../public/SchemaQuery';
+import { biologicsIsPrimaryApp } from '../app/utils';
 import {
     caseInsensitive,
     QueryColumn,
@@ -390,6 +391,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                     requiredVersion: 17.1,
                     sql: userConfig.sql,
                     saveInSession: userConfig.saveInSession === true,
+                    containerFilter: userConfig.containerFilter ?? getContainerFilter(),
                     success: json => {
                         result = handleSelectRowsResponse(json);
                         schemaQuery = SchemaQuery.create(userConfig.schemaName, json.queryName);
@@ -422,6 +424,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                     method: 'POST',
                     // put on this another parameter!
                     columns: userConfig.columns ? userConfig.columns : '*',
+                    containerFilter: userConfig.containerFilter ?? getContainerFilter(),
                     success: json => {
                         result = handleSelectRowsResponse(json);
                         hasResults = true;
@@ -893,4 +896,18 @@ export function processRequest(response: any, request: any, reject: (reason?: an
     }
 
     return false;
+}
+
+export function getContainerFilter(): Query.ContainerFilter {
+    const { container, moduleContext } = getServerContext();
+
+    if (!biologicsIsPrimaryApp(moduleContext)) {
+        return undefined;
+    }
+
+    if (container.parentPath === '/') {
+        return Query.ContainerFilter.currentAndSubfolders;
+    }
+
+    return Query.ContainerFilter.currentPlusProjectAndShared;
 }

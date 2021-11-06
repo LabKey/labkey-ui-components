@@ -20,7 +20,7 @@ import {
     SampleOperation,
     SchemaQuery,
     TabbedGridPanel,
-    useServerContext,
+    User,
 } from '../../..';
 
 import { withAssayModels } from '../assay/withAssayModels';
@@ -47,6 +47,7 @@ interface Props {
     emptyAssayResultDisplay?: ReactNode;
     emptyAliquotViewMsg?: string;
     emptySampleViewMsg?: string;
+    user: User;
 }
 
 export const AssayResultPanel: FC = ({ children }) => {
@@ -63,19 +64,19 @@ const UNFILTERED_PREFIX = 'unfiltered-';
 const UNFILTERED_GRID_ID_PREFIX = UNFILTERED_PREFIX + ASSAY_GRID_ID_PREFIX;
 
 interface SampleAssayDetailButtonsOwnProps {
-    assayModel: AssayStateModel;
-    sampleModel: QueryModel;
     activeSampleAliquotType?: ALIQUOT_FILTER_MODE;
-    onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => any;
+    assayModel: AssayStateModel;
     isSourceSampleAssayGrid?: boolean;
+    onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => void;
+    sampleModel: QueryModel;
+    user: User;
 }
 
 type SampleAssayDetailButtonsProps = SampleAssayDetailButtonsOwnProps & RequiresModelAndActions;
 
 // exported for jest testing
 export const SampleAssayDetailButtons: FC<SampleAssayDetailButtonsProps> = props => {
-    const { assayModel, model, sampleModel } = props;
-    const { user } = useServerContext();
+    const { assayModel, model, sampleModel, user } = props;
 
     if (!user.hasInsertPermission()) {
         return null;
@@ -160,6 +161,7 @@ interface OwnProps {
     isSourceSampleAssayGrid?: boolean;
     onTabChange: (tabId: string) => any;
     activeTabId?: string;
+    user: User;
 }
 
 type SampleAssayDetailBodyProps = Props & InjectedAssayModel & OwnProps;
@@ -182,6 +184,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         emptySampleViewMsg,
         onTabChange,
         activeTabId,
+        user,
     } = props;
     const allModels = Object.values(queryModels);
     const allLoaded = allModels.every(model => !model.isLoading);
@@ -290,6 +293,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
                 onSampleAliquotTypeChange,
                 activeSampleAliquotType,
                 isSourceSampleAssayGrid,
+                user,
             }}
             ButtonsComponentRight={showAliquotViewSelector ? SampleAssayDetailButtonsRight : undefined}
             getEmptyText={getEmptyText}

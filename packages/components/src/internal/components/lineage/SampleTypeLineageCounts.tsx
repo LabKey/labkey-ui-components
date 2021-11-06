@@ -43,6 +43,6 @@ class CountsWithLineageImpl extends PureComponent<InjectedLineage> {
 const CountsWithLineage = withLineage<{}>(CountsWithLineageImpl, false, true, false);
 
 // Don't expose props from withLineage in public component
-export const SampleTypeLineageCounts: FunctionComponent<{ seed: string }> = props => {
-    return <CountsWithLineage lsid={props.seed} />;
+export const SampleTypeLineageCounts: FunctionComponent<{ seed: string, seedContainer?: string }> = props => {
+    return <CountsWithLineage lsid={props.seed} seedContainer={props.seedContainer} />;
 };

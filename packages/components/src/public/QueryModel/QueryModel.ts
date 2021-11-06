@@ -3,6 +3,7 @@ import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
 import {
+    caseInsensitive,
     GRID_CHECKBOX_OPTIONS,
     isLoading,
     LoadingState,
@@ -646,6 +647,14 @@ export class QueryModel {
 
         const row = this.rows[key];
         return flattenValues ? flattenValuesFromRow(row, this.queryInfo.getColumnFieldKeys()) : row;
+    }
+
+    /**
+     * Returns the value of a specific column in the first row.
+     * @param columnName Case insensitive name of the column.
+     */
+    getRowValue(columnName: string): any {
+        return caseInsensitive(this.getRow(), columnName)?.value;
     }
 
     /**

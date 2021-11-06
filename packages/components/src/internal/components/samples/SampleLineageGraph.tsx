@@ -16,7 +16,7 @@ import { LineageDepthLimitMessage } from '../lineage/LineageGraph';
 interface Props {
     sampleLsid: string;
     sampleID: string;
-    seedContainer: string;
+    seedContainer?: string;
     goToLineageGrid: () => void;
     onLineageNodeDblClick: (node: VisGraphNode) => void;
     groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>;

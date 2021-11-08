@@ -11,14 +11,6 @@ import { getConfirmDeleteMessage } from '../../util/messaging';
 import { Picklist } from './models';
 import { getPicklistDeleteData, PicklistDeletionData } from './actions';
 
-interface Props {
-    model: QueryModel;
-    user: User;
-    useSelection: boolean;
-    onConfirm: (listsToDelete: any[]) => void;
-    onCancel: () => void;
-}
-
 interface DeleteConfirmMessageProps {
     deletionData: PicklistDeletionData;
     numSelected: number;
@@ -103,18 +95,26 @@ export const PicklistDeleteConfirmMessage: FC<DeleteConfirmMessageProps> = memo(
     );
 });
 
+interface Props {
+    picklist?: Picklist; // provide either a picklist, for single delete, or a model for multi / selection delete
+    model?: QueryModel;
+    user: User;
+    onConfirm: (listsToDelete: any[]) => void;
+    onCancel: () => void;
+}
+
 export const PicklistDeleteConfirm: FC<Props> = memo(props => {
-    const { model, onConfirm, onCancel, useSelection, user } = props;
+    const { model, picklist, onConfirm, onCancel, user } = props;
     const [errorMessage, setErrorMessage] = useState(undefined);
     const [nounAndNumber, setNounAndNumber] = useState('Picklist');
     const [deletionData, setDeletionData] = useState<PicklistDeletionData>(undefined);
 
-    const numSelected = useSelection ? model.selections.size : 1;
+    const numSelected = model ? model.selections.size : 1;
     const noun = numSelected === 1 ? 'Picklist' : 'Picklists';
     const lcNoun = noun.toLowerCase();
 
     useEffect(() => {
-        if (useSelection) {
+        if (model) {
             getPicklistDeleteData(model, user)
                 .then(data => {
                     setNounAndNumber(data.numDeletable === 1 ? '1 Picklist' : data.numDeletable + ' Picklists');
@@ -131,7 +131,6 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
                 });
         } else {
             setNounAndNumber('This Picklist');
-            const picklist = Picklist.create(model.getRow());
             setDeletionData({
                 numDeletable: 1,
                 numNotDeletable: 0,
@@ -139,7 +138,7 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
                 deletableLists: [picklist],
             });
         }
-    }, [model, user]);
+    }, [picklist, model, lcNoun, user]);
 
     const onConfirmDelete = useCallback(() => {
         onConfirm(deletionData.deletableLists);

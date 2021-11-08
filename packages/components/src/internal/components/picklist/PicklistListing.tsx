@@ -150,7 +150,6 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
             {showDeleteModal && (
                 <PicklistDeleteConfirm
                     model={queryModels[activeTabId]}
-                    useSelection={true}
                     onConfirm={onPicklistDelete}
                     onCancel={hideDeleteConfirm}
                     user={user}

@@ -205,8 +205,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
 
             {showDeleteModal && (
                 <PicklistDeleteConfirm
-                    model={metadataQueryModel}
-                    useSelection={false}
+                    picklist={picklist}
                     onConfirm={deletePicklist}
                     onCancel={hideDeletePicklistConfirm}
                     user={user}

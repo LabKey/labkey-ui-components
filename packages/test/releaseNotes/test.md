@@ -1,6 +1,9 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
+### version 1.0.1
+* Regenerate lockfile so TC doesn't fail during install
+
 ### version 1.0.0
 *Released*: 1 June 2021
 * Package updates

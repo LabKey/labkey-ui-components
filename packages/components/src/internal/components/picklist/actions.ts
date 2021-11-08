@@ -12,7 +12,7 @@ import { User } from '../base/models/User';
 import { AppURL, buildURL, createProductUrlFromParts } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
 import { resolveErrorMessage } from '../../util/messaging';
-import { OperationConfirmationData, SCHEMAS } from '../../../index';
+import { caseInsensitive, OperationConfirmationData, SCHEMAS } from '../../../';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
@@ -452,3 +452,38 @@ export function getPicklistUrl(listId: number, picklistProductId?: string, curre
 
     return picklistUrl;
 }
+
+export const getPicklistFromId = async (listId: number): Promise<Picklist> => {
+    const listData = await selectRows({
+        schemaName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.schemaName,
+        queryName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.queryName,
+        requiredColumns: ['Category'],
+        filterArray: [Filter.create('listId', listId)],
+    });
+    let picklist = Picklist.create(listData.models[listData.key][listId]);
+
+    const listSampleTypeData = await selectRows({
+        schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
+        sql:
+            'SELECT SampleID.SampleSet as SampleType, GROUP_CONCAT(SampleID) AS SampleIds FROM "' +
+            picklist.name +
+            '" GROUP BY SampleID.SampleSet',
+        saveInSession: true,
+    });
+    const sampleIdsByType = convertPicklistSampleTypeData(
+        Object.values(listSampleTypeData.models[listSampleTypeData.key])
+    );
+    picklist = picklist.mutate({ sampleIdsByType });
+
+    return picklist;
+};
+
+const convertPicklistSampleTypeData = (data: Record<string, any>[]): Record<string, number[]> => {
+    const sampleIdsByType = {};
+    data.forEach(row => {
+        const sampleType = caseInsensitive(row, 'SampleType').displayValue;
+        const ids = caseInsensitive(row, 'SampleIds')[0]?.value.split(',');
+        sampleIdsByType[sampleType] = ids;
+    });
+    return sampleIdsByType;
+};

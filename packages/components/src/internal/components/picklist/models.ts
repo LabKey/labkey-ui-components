@@ -19,6 +19,7 @@ export class Picklist {
     readonly listId: number;
     readonly Description: string;
     readonly ItemCount: number;
+    readonly sampleIdsByType?: Record<string, number[]>;
 
     static create(data: any) {
         return new Picklist({

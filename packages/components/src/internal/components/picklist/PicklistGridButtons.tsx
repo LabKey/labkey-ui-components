@@ -25,8 +25,10 @@ export const PicklistGridButtons: FC<GridButtonProps & RequiresModelAndActions> 
     const [showRemoveFromPicklistConfirm, setShowRemoveFromPicklistConfirm] = useState<boolean>();
 
     const onRemoveFromPicklist = useCallback(() => {
-        setShowRemoveFromPicklistConfirm(true);
-    }, []);
+        if (model.hasSelections) {
+            setShowRemoveFromPicklistConfirm(true);
+        }
+    }, [model]);
 
     const onCancelRemoveFromList = useCallback(() => {
         setShowRemoveFromPicklistConfirm(false);

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.90.TBD
+*Released*: TBD November 2021
+* Issue 44250: Invalidate QueryInfo caches after change to NameIdSettings.allowUserSpecifiedNames
+
 ### version 2.90.2
 *Released*: 3 November 2021
 * Ensure LK instances without LKSM do not call prefix-related actions

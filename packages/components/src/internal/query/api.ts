@@ -30,7 +30,11 @@ import {
     ViewInfo,
 } from '../..';
 
-const queryDetailsCache: { [key: string]: Promise<QueryInfo> } = {};
+let queryDetailsCache: { [key: string]: Promise<QueryInfo> } = {};
+
+export function invalidateQueryDetailsCache(): void {
+    queryDetailsCache = {};
+}
 
 export function invalidateQueryDetailsCacheKey(key: string): void {
     delete queryDetailsCache[key];

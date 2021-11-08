@@ -8,6 +8,7 @@ import { Alert, ConfirmModal, LabelHelpTip, LoadingSpinner, RequiresPermission }
 import { sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
+import { invalidateQueryDetailsCache } from '../../query/api';
 
 const TITLE = 'ID/Name Settings';
 
@@ -97,6 +98,12 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
 
         try {
             await saveNameExpressionOptions('allowUserSpecifiedNames', !allowUserSpecifiedNames);
+
+            // Issue 44250: the sample type and data class queryInfo details for the name column will set the
+            // setShownInInsertView based on this allowUserSpecifiedNames setting so we need to invalidate the cache
+            // so that the updated information is retrieved for that table/query.
+            invalidateQueryDetailsCache();
+
             setState({
                 allowUserSpecifiedNames: !allowUserSpecifiedNames,
                 savingAllowUserSpecifiedNames: false,

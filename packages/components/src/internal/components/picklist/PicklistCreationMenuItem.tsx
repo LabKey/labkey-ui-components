@@ -52,8 +52,7 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
             {showModal && (
                 <PicklistEditModal
                     {...props}
-                    showNotification={true}
-                    show
+                    showNotification
                     onFinish={onFinish}
                     onCancel={onCancel}
                 />

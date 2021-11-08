@@ -98,7 +98,6 @@ describe('PicklistEditModal', () => {
     test('create empty picklist', () => {
         const wrapper = mount(
             <PicklistEditModal
-                show={true}
                 selectionKey="selection"
                 selectedQuantity={0}
                 onCancel={jest.fn()}
@@ -113,7 +112,6 @@ describe('PicklistEditModal', () => {
     test('create picklist from multiple selections', () => {
         const wrapper = mount(
             <PicklistEditModal
-                show={true}
                 selectionKey="selection"
                 selectedQuantity={2}
                 onCancel={jest.fn()}
@@ -128,7 +126,6 @@ describe('PicklistEditModal', () => {
     test('create picklist from one selection', () => {
         const wrapper = mount(
             <PicklistEditModal
-                show={true}
                 selectionKey="selection"
                 selectedQuantity={1}
                 onCancel={jest.fn()}
@@ -142,7 +139,7 @@ describe('PicklistEditModal', () => {
 
     test('create empty picklist from sampleIds', () => {
         const wrapper = mount(
-            <PicklistEditModal show={true} sampleIds={[]} onCancel={jest.fn()} onFinish={jest.fn()} />
+            <PicklistEditModal sampleIds={[]} onCancel={jest.fn()} onFinish={jest.fn()} />
         );
         validateText(wrapper, 'Create an Empty Picklist', 'Create Picklist');
 
@@ -151,7 +148,7 @@ describe('PicklistEditModal', () => {
 
     test('create picklist from one sampleId', () => {
         const wrapper = mount(
-            <PicklistEditModal show={true} sampleIds={['1']} onCancel={jest.fn()} onFinish={jest.fn()} />
+            <PicklistEditModal sampleIds={['1']} onCancel={jest.fn()} onFinish={jest.fn()} />
         );
         validateText(wrapper, 'Create a New Picklist with This Sample', 'Create Picklist');
 
@@ -160,7 +157,7 @@ describe('PicklistEditModal', () => {
 
     test('create picklist from multiple sampleIds', () => {
         const wrapper = mount(
-            <PicklistEditModal show={true} sampleIds={['1', '2']} onCancel={jest.fn()} onFinish={jest.fn()} />
+            <PicklistEditModal sampleIds={['1', '2']} onCancel={jest.fn()} onFinish={jest.fn()} />
         );
         validateText(wrapper, 'Create a New Picklist with These Samples', 'Create Picklist');
 
@@ -174,7 +171,7 @@ describe('PicklistEditModal', () => {
             Description: 'My test description',
         });
         const wrapper = mount(
-            <PicklistEditModal show={true} picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />
+            <PicklistEditModal picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />
         );
         validateText(wrapper, 'Update Picklist Data', 'Update Picklist');
         const labels = wrapper.find('label');
@@ -195,7 +192,7 @@ describe('PicklistEditModal', () => {
             Description: 'My test description',
         });
         const wrapper = mount(
-            <PicklistEditModal show={true} picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />
+            <PicklistEditModal picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />
         );
         expect(wrapper.find('input').at(1).prop('checked')).toBe(true);
         wrapper.unmount();
@@ -204,7 +201,6 @@ describe('PicklistEditModal', () => {
     test('Create picklist, none allowed', async () => {
         const wrapper = mount(
             <PicklistEditModal
-                show={true}
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
                 onFinish={jest.fn()}
@@ -226,7 +222,6 @@ describe('PicklistEditModal', () => {
     test('Create picklist, some allowed', async () => {
         const wrapper = mount(
             <PicklistEditModal
-                show={true}
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
                 onFinish={jest.fn()}
@@ -249,7 +244,6 @@ describe('PicklistEditModal', () => {
     test('Create picklist, all allowed', async () => {
         const wrapper = mount(
             <PicklistEditModal
-                show={true}
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
                 onFinish={jest.fn()}

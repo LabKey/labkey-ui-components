@@ -212,25 +212,13 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                     user={user}
                 />
             )}
-            <PicklistEditModal
-                show={showEditModal}
-                picklist={picklist}
-                onCancel={hideEditPicklistMetadataModal}
-                onFinish={afterSavePicklist}
-                showNotification={false}
-            />
-            {showRemoveFromPicklistConfirm && (
-                <ConfirmModal
-                    title="Remove from Picklist"
-                    onConfirm={onRemoveFromList}
-                    onCancel={onCancelRemoveFromList}
-                    confirmVariant="danger"
-                    confirmButtonText={'Yes, Remove ' + nounAndNumber}
-                    cancelButtonText="Cancel"
-                >
-                    Permanently remove the {selectedNounAndNumber} from this list?
-                    {getConfirmDeleteMessage('Removal')}
-                </ConfirmModal>
+            {showEditModal && (
+                <PicklistEditModal
+                    picklist={picklist}
+                    onCancel={hideEditPicklistMetadataModal}
+                    onFinish={afterSavePicklist}
+                    showNotification={false}
+                />
             )}
         </Page>
     );

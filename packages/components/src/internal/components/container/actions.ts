@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { List, Record } from 'immutable';
-import { Security } from '@labkey/api';
+import { List } from 'immutable';
 
-import { User } from '../base/models/User';
+import { ComponentsAPIWrapper } from '../../APIWrapper';
 import { isLoading, LoadingState } from '../../../public/LoadingState';
+import { useAppContext } from '../../AppContext';
 import { useServerContext } from '../base/ServerContext';
-import { resolveErrorMessage } from '../../util/messaging';
 import { Container } from '../base/models/Container';
+import { User } from '../base/models/User';
+import { resolveErrorMessage } from '../../util/messaging';
 
 function applyPermissions(container: Container, user: User): User {
     return user.merge({
@@ -15,55 +16,17 @@ function applyPermissions(container: Container, user: User): User {
     }) as User;
 }
 
-type FetchContainersResult = Promise<Record<string, Container>>;
-type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
-
-const FETCH_CONTAINERS_CACHE: Record<string, FetchContainersResult> = {};
-
-export function fetchContainers(options: FetchContainerOptions, cacheKey?: string): FetchContainersResult {
-    if (cacheKey && FETCH_CONTAINERS_CACHE[cacheKey]) {
-        return FETCH_CONTAINERS_CACHE[cacheKey];
-    }
-
-    const result: FetchContainersResult = new Promise((resolve, reject) => {
-        Security.getContainers({
-            ...options,
-            success: (hierarchy: Security.ContainerHierarchy) => {
-                const containers = [
-                    new Container(hierarchy),
-                    // TODO: Consider filtering filter(c => c.type === 'folder') or adding option to API to exclude hidden folders
-                    ...hierarchy.children.map(c => new Container(c)),
-                ];
-
-                const containerMap = containers.reduce((map, c) => {
-                    map[c.id] = c;
-                    map[c.path] = c;
-                    return map;
-                }, {});
-
-                resolve(containerMap);
-            },
-            failure: error => {
-                console.error('Failed to fetch containers', error);
-                reject(error);
-            },
-        });
-    });
-
-    if (cacheKey) {
-        FETCH_CONTAINERS_CACHE[cacheKey] = result;
-    }
-
-    return result;
-}
-
-export interface ViewContext {
+export interface ContainerUser {
     container: Container;
     user: User;
 }
 
-export async function getViewContext(containerIdOrPath: string, user: User): Promise<ViewContext> {
-    const containers = await fetchContainers(
+export async function getContainerUser(
+    containerIdOrPath: string,
+    user: User,
+    api: ComponentsAPIWrapper
+): Promise<ContainerUser> {
+    const containers = await api.security.fetchContainers(
         {
             containerPath: containerIdOrPath,
         },
@@ -75,16 +38,17 @@ export async function getViewContext(containerIdOrPath: string, user: User): Pro
     return { container, user: applyPermissions(container, user) };
 }
 
-interface UseViewContext extends ViewContext {
+interface UseContainerUser extends ContainerUser {
     error: string;
     isLoaded: boolean;
 }
 
-export function useViewContext(containerIdOrPath: string): UseViewContext {
+export function useContainerUser(containerIdOrPath: string): UseContainerUser {
     const [container, setContainer] = useState<Container>();
     const [error, setError] = useState<string>();
     const [contextUser, setContextUser] = useState<User>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const { api } = useAppContext();
     const { user } = useServerContext();
 
     useEffect(() => {
@@ -94,10 +58,10 @@ export function useViewContext(containerIdOrPath: string): UseViewContext {
             setError(undefined);
             setLoadingState(LoadingState.LOADING);
 
-            let containers = {};
+            let containers: Record<string, Container> = {};
 
             try {
-                containers = await fetchContainers(
+                containers = await api.security.fetchContainers(
                     {
                         containerPath: containerIdOrPath,
                     },
@@ -114,7 +78,7 @@ export function useViewContext(containerIdOrPath: string): UseViewContext {
             setContextUser(contextUser_);
             setLoadingState(LoadingState.LOADED);
         })();
-    }, [containerIdOrPath, user]);
+    }, [api, containerIdOrPath, user]);
 
     return { container, error, isLoaded: !isLoading(loadingState), user: contextUser };
 }

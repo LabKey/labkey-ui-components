@@ -420,17 +420,30 @@ export function deletePicklists(picklists: Picklist[], selectionKey?: string): P
     });
 }
 
-export function removeSamplesFromPicklist(picklist: Picklist, selectionModel: QueryModel): Promise<number> {
-    return new Promise((resolve, reject) => {
-        const rows = [];
-        selectionModel.selections.forEach(id => {
-            rows.push({ id });
+export const removeSamplesFromPicklist = async (picklist: Picklist, selectionModel: QueryModel): Promise<number> => {
+    const rows = [];
+    let selectedIds = selectionModel.selections;
+
+    // if the model is for the sample type, query to get the relevant list keys to delete.
+    if (selectionModel.schemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) {
+        const listResponse = await selectRows({
+            schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
+            queryName: picklist.name,
+            filterArray: [Filter.create('SampleID', [...selectionModel.selections], Filter.Types.IN)],
         });
+        selectedIds = listResponse.orderedModels[listResponse.key].toJS();
+    }
+
+    selectedIds.forEach(id => {
+        rows.push({ id });
+    });
+
+    return new Promise((resolve, reject) => {
         if (rows.length === 0) {
             resolve(0);
         } else {
             deleteRows({
-                schemaQuery: selectionModel.schemaQuery,
+                schemaQuery: SchemaQuery.create(SCHEMAS.PICKLIST_TABLES.SCHEMA, picklist.name),
                 rows,
             })
                 .then(response => {

@@ -1,17 +1,20 @@
 import React, { ComponentType, FC, memo, useCallback, useState } from 'react';
 import { PermissionTypes, Utils } from '@labkey/api';
 
-import { RequiresModelAndActions } from "../../../public/QueryModel/withQueryModels";
-import { User } from "../base/models/User";
-import { RequiresPermission } from "../base/Permissions";
-import { ManageDropdownButton } from "../buttons/ManageDropdownButton";
-import { SelectionMenuItem } from "../menus/SelectionMenuItem";
-import { Picklist } from "./models";
-import { SampleTypeDataType } from "../entities/constants";
-import { removeSamplesFromPicklist } from "./actions";
-import { createNotification } from "../notifications/actions";
-import { ConfirmModal } from "../base/ConfirmModal";
-import { getConfirmDeleteMessage } from "../../util/messaging";
+import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
+import { User } from '../base/models/User';
+import { RequiresPermission } from '../base/Permissions';
+import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
+import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+
+import { SampleTypeDataType } from '../entities/constants';
+
+import { createNotification, withTimeout } from '../notifications/actions';
+import { ConfirmModal } from '../base/ConfirmModal';
+import { getConfirmDeleteMessage } from '../../util/messaging';
+
+import { removeSamplesFromPicklist } from './actions';
+import { Picklist } from './models';
 
 interface GridButtonProps {
     user: User;
@@ -37,11 +40,14 @@ export const PicklistGridButtons: FC<GridButtonProps & RequiresModelAndActions> 
     const onRemoveFromList = useCallback(async () => {
         if (model?.hasSelections) {
             const numDeleted = await removeSamplesFromPicklist(picklist, model);
-            createNotification(
-                'Successfully removed ' + Utils.pluralize(numDeleted, 'sample', 'samples') + ' from this list.'
-            );
             afterSampleActionComplete();
             onCancelRemoveFromList();
+
+            withTimeout(() => {
+                createNotification(
+                    'Successfully removed ' + Utils.pluralize(numDeleted, 'sample', 'samples') + ' from this list.'
+                );
+            });
         }
     }, [model, picklist, afterSampleActionComplete, onCancelRemoveFromList]);
 
@@ -49,9 +55,7 @@ export const PicklistGridButtons: FC<GridButtonProps & RequiresModelAndActions> 
         return null;
     }
 
-    const nounAndNumber = model?.selections
-        ? Utils.pluralize(model.selections.size, 'Sample', 'Samples')
-        : undefined;
+    const nounAndNumber = model?.selections ? Utils.pluralize(model.selections.size, 'Sample', 'Samples') : undefined;
     const selectedNounAndNumber = model?.selections
         ? Utils.pluralize(model.selections.size, 'selected sample', 'selected samples')
         : undefined;

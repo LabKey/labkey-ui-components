@@ -42,7 +42,7 @@ interface OwnProps {
     params?: any;
     AdditionalGridButtons?: ComponentType<RequiresModelAndActions>;
     samplesEditableGridProps?: Partial<SamplesEditableGridProps>;
-    sampleExportOptions?: { [key: string]: any };
+    advancedExportOptions?: { [key: string]: any };
 }
 
 interface ImplProps {
@@ -58,7 +58,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
         actions,
         user,
         navigate,
-        sampleExportOptions,
+        advancedExportOptions,
         picklist,
         loadPicklist,
         AdditionalGridButtons,
@@ -189,7 +189,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                             afterSampleActionComplete={afterSampleActionComplete}
                             samplesEditableGridProps={samplesEditableGridProps}
                             tabbedGridPanelProps={{
-                                advancedExportOptions: sampleExportOptions,
+                                advancedExportOptions,
                                 alwaysShowTabs: true,
                             }}
                         />

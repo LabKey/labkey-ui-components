@@ -517,6 +517,7 @@ import { PicklistOverview } from './internal/components/picklist/PicklistOvervie
 import { PicklistSubNav } from './internal/components/picklist/PicklistSubnav';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
+import { RemoveFromPicklistMenuItem } from './internal/components/picklist/RemoveFromPicklistMenuItem';
 import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
 
 import {
@@ -850,6 +851,7 @@ export {
     useUserProperties,
     // sample picklist items
     AddToPicklistMenuItem,
+    RemoveFromPicklistMenuItem,
     PicklistButton,
     PicklistCreationMenuItem,
     Picklist,

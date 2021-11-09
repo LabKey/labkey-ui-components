@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, MenuItem } from 'react-bootstrap';
-import { AuditBehaviorTypes, Filter } from '@labkey/api';
+import { AuditBehaviorTypes } from '@labkey/api';
 import {
     App,
     AppURL,
@@ -31,7 +31,7 @@ import { Picklist } from './models';
 import { PUBLIC_PICKLIST_CATEGORY, PRIVATE_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistEditModal } from './PicklistEditModal';
-import { PicklistGridButtons } from "./PicklistGridButtons";
+import { PicklistGridButtons } from './PicklistGridButtons';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
@@ -47,7 +47,7 @@ interface OwnProps {
 
 interface ImplProps {
     picklist: Picklist;
-    loadPicklist: () => void;
+    loadPicklist: (incrementCounter: boolean) => void;
 }
 
 type Props = OwnProps & ImplProps & InjectedQueryModels;
@@ -64,13 +64,8 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
         AdditionalGridButtons,
         samplesEditableGridProps,
     } = props;
-    const { id } = props.params;
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
-
-    const itemsQueryModel = useMemo(() => {
-        return queryModels[PICKLIST_ITEMS_ID_PREFIX + id];
-    }, [id, queryModels]);
 
     const onDeletePicklistClick = useCallback(() => {
         setShowDeleteModal(true);
@@ -95,7 +90,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                     alertClass: 'danger',
                 });
             });
-    }, [picklist, navigate]);
+    }, [picklist, hideDeletePicklistConfirm, navigate]);
 
     const onEditPicklistMetadataClick = useCallback(() => {
         setShowEditModal(true);
@@ -106,10 +101,10 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
     }, []);
 
     const afterSavePicklist = useCallback(() => {
-        loadPicklist();
+        loadPicklist(false);
         createNotification('Successfully updated picklist metadata.');
         hideEditPicklistMetadataModal();
-    }, [loadPicklist]);
+    }, [hideEditPicklistMetadataModal, loadPicklist]);
 
     // Using a type for evt here causes difficulties.  It wants a FormEvent<Checkbox> but
     // then it doesn't recognize checked as a valid field on current target.
@@ -119,7 +114,9 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                 Category: evt.currentTarget.checked ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY,
             }) as Picklist;
             updatePicklist(updatedPicklist)
-                .then(loadPicklist)
+                .then(() => {
+                    loadPicklist(false);
+                })
                 .catch(reason => {
                     createNotification({
                         message:
@@ -136,11 +133,8 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
         invalidateLineageResults();
         queryGridInvalidate(SCHEMAS.EXP_TABLES.MATERIALS);
 
-        // actions.loadAllModels(true);
-        actions.replaceSelections(itemsQueryModel.id, []);
-        actions.loadModel(itemsQueryModel.id, true);
-        // loadPicklist();
-    }, [actions, itemsQueryModel]);
+        loadPicklist(true);
+    }, [loadPicklist]);
 
     const getSampleAuditBehaviorType = useCallback(() => AuditBehaviorTypes.DETAILED, []);
 
@@ -225,12 +219,19 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
 
 const PicklistOverviewWithQueryModels = withQueryModels<OwnProps & ImplProps>(PicklistOverviewImpl);
 
+// Keep a counter so that each time the loadPicklist() is called we re-render the tabbed grid panel and recreate the
+// queryConfigs. This is because the sample actions like "remove from picklist" can affect the queryConfig filter IN
+// clause and using the actions.setFilters() doesn't update the baseFilters but instead updates the user defined filters.
+let LOAD_PICKLIST_COUNTER = 0;
+
 export const PicklistOverview: FC<OwnProps> = memo(props => {
     const { params, user } = props;
     const listId = parseInt(params.id, 10);
     const [picklist, setPicklist] = useState<Picklist>();
 
-    const loadPicklist = useCallback(async () => {
+    const loadPicklist = useCallback(async (incrementCounter: boolean) => {
+        if (incrementCounter) LOAD_PICKLIST_COUNTER++;
+
         try {
             const updatedPicklist = await getPicklistFromId(listId);
             setPicklist(updatedPicklist);
@@ -241,7 +242,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
     }, [listId]);
 
     useEffect(() => {
-        loadPicklist();
+        loadPicklist(true);
     }, [loadPicklist]);
 
     const queryConfigs: QueryConfigMap = useMemo(
@@ -249,7 +250,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
             const configs = {};
 
             if (picklist) {
-                const gridId = PICKLIST_ITEMS_ID_PREFIX + listId;
+                const gridId = PICKLIST_ITEMS_ID_PREFIX + LOAD_PICKLIST_COUNTER;
                 configs[gridId] = {
                     id: gridId,
                     title: 'All Samples',
@@ -257,20 +258,22 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                     requiredColumns: ['Created'],
                 };
 
+                // add a queryConfig for each distinct sample type of the picklist samples, with an IN clause
+                // filter for the set of sample RowIds in that sample type
                 Object.keys(picklist.sampleIdsByType).sort().forEach(sampleType => {
-                    const id = `${PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX}${listId}|samples/${sampleType}`;
+                    const id = `${PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX}${LOAD_PICKLIST_COUNTER}|samples/${sampleType}`;
                     configs[id] = {
                         id,
                         title: sampleType,
                         schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
-                        baseFilters: [Filter.create('RowId', picklist.sampleIdsByType[sampleType], Filter.Types.IN)],
+                        baseFilters: [picklist.getSampleTypeFilter(sampleType)],
                     };
                 });
             }
 
             return configs;
         },
-        [listId, picklist]
+        [picklist]
     );
 
     if (!picklist) {
@@ -288,7 +291,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
     return (
         <PicklistOverviewWithQueryModels
             {...props}
-            key={listId}
+            key={LOAD_PICKLIST_COUNTER}
             autoLoad={false}
             queryConfigs={queryConfigs}
             picklist={picklist}

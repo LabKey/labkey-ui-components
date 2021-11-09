@@ -1,4 +1,5 @@
 import { Draft, immerable, produce } from 'immer';
+import { Filter } from '@labkey/api';
 
 import { User } from '../base/models/User';
 import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
@@ -54,6 +55,12 @@ export class Picklist {
 
     canRemoveItems(user: User): boolean {
         return this.isUserList(user) || (this.isPublic() && userCanManagePicklists(user));
+    }
+
+    getSampleTypeFilter(sampleType: string): Filter.IFilter {
+        return this.sampleIdsByType[sampleType]
+            ? Filter.create('RowId', this.sampleIdsByType[sampleType], Filter.Types.IN)
+            : undefined;
     }
 
     mutate(props: Partial<Picklist>): Picklist {

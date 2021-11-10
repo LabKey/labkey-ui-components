@@ -20,19 +20,23 @@ import { Filter } from '@labkey/api';
 import { QueryGridModel, QueryModel } from '../../..';
 import { replaceFilter } from '../../util/URL';
 import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from '../samples/SampleAliquotViewSelector';
+import { IS_ALIQUOT_COL } from '../samples/constants';
 
 interface Props {
     queryGridModel?: QueryGridModel;
     queryModel?: QueryModel;
-    updateFilter?: (filter: Filter.IFilter, filterColumnToRemove?: string, newModel?: ALIQUOT_FILTER_MODE) => void;
+    updateFilter?: (
+        filter: Filter.IFilter,
+        filterColumnToRemove?: string,
+        newModel?: ALIQUOT_FILTER_MODE,
+        queryModel?: QueryModel
+    ) => void;
     initAliquotMode?: ALIQUOT_FILTER_MODE; // allow to set aliquot filter from a init value
 }
 
 interface State {
     initAliquotModeSynced: boolean;
 }
-
-const IS_ALIQUOT_COL = 'IsAliquot';
 
 export class GridAliquotViewSelector extends Component<Props, State> {
     state: Readonly<State> = {
@@ -59,7 +63,7 @@ export class GridAliquotViewSelector extends Component<Props, State> {
     };
 
     updateAliquotFilter = (newMode: ALIQUOT_FILTER_MODE) => {
-        const { queryGridModel, updateFilter } = this.props;
+        const { queryGridModel, queryModel, updateFilter } = this.props;
 
         let newFilter: Filter.IFilter;
         if (newMode === ALIQUOT_FILTER_MODE.all || newMode === ALIQUOT_FILTER_MODE.none) newFilter = null;
@@ -68,7 +72,7 @@ export class GridAliquotViewSelector extends Component<Props, State> {
         if (queryGridModel) {
             replaceFilter(queryGridModel, IS_ALIQUOT_COL, newFilter);
         } else if (updateFilter) {
-            updateFilter(newFilter, IS_ALIQUOT_COL, newMode);
+            updateFilter(newFilter, IS_ALIQUOT_COL, newMode, queryModel);
         }
     };
 

@@ -23,11 +23,11 @@ import {
     withTimeout,
 } from '../../..';
 
+import { TabbedGridPanelProps } from '../../../public/QueryModel/TabbedGridPanel';
 import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
 import { SampleGridButtonProps } from './models';
-import { TabbedGridPanelProps } from '../../../public/QueryModel/TabbedGridPanel';
 
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 
@@ -56,8 +56,6 @@ interface Props extends InjectedQueryModels {
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     user: User;
 }
-
-const IS_ALIQUOT_COL = 'IsAliquot';
 
 export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const {
@@ -114,20 +112,18 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
 
     const [ activeActiveAliquotMode, setActiveAliquotMode ] = useState<string>(sampleAliquotType ?? ALIQUOT_FILTER_MODE.all);
 
-    const onAliquotViewUpdate = useCallback((aliquotFilter: Filter.IFilter, field, newAliquotMode: ALIQUOT_FILTER_MODE) => {
+    const onAliquotViewUpdate = useCallback((aliquotFilter: Filter.IFilter, aliquotColName: string, newAliquotMode: ALIQUOT_FILTER_MODE) => {
         setActiveAliquotMode(newAliquotMode);
         Object.values(queryModels).forEach(model => {
             const newFilters = model.filterArray.filter(filter => {
-                return IS_ALIQUOT_COL.toLowerCase() !== filter.getColumnName().toLowerCase();
+                return aliquotColName.toLowerCase() !== filter.getColumnName().toLowerCase();
             });
 
-            if (aliquotFilter)
-                newFilters.push(aliquotFilter);
+            if (aliquotFilter) newFilters.push(aliquotFilter);
 
             if (model.queryInfo) {
                 actions.setFilters(model.id, newFilters, true);
             }
-
         });
     }, [queryModels, actions]);
 
@@ -269,7 +265,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     onExport={canPrintLabels ? onLabelExport : undefined}
                 />
             )}
-            {showBulkUpdate &&
+            {showBulkUpdate && (
                 <SamplesBulkUpdateForm
                     selection={List(Array.from(activeModel.selections))}
                     sampleSet={activeModel.schemaQuery.queryName}
@@ -282,9 +278,9 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     editSelectionInGrid={onEditSelectionInGrid}
                     updateRows={onUpdateRows}
                 />
-            }
+            )}
         </>
-    )
+    );
 });
 
 SamplesTabbedGridPanel.defaultProps = {

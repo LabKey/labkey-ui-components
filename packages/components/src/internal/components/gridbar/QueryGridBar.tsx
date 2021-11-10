@@ -28,7 +28,6 @@ import { ViewSelector } from './ViewSelector';
 import { URLBox } from './URLBox';
 import { GridSelectionBanner } from './GridSelectionBanner';
 import { PageSizeSelector } from './PageSizeSelector';
-import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 
 type QueryGridBarButtonResolver = (model?: QueryGridModel) => React.ReactNode;
 export type QueryGridBarButtons = React.ReactNode | QueryGridBarButtonResolver;
@@ -37,7 +36,6 @@ interface QueryGridBarProps {
     buttons?: QueryGridBarButtons;
     model: QueryGridModel;
     showSampleComparisonReports?: boolean;
-    showSampleAliquotSelector?: boolean;
     onReportClicked?: Function;
     onCreateReportClicked?: Function;
     onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any;
@@ -62,7 +60,6 @@ export class QueryGridBar extends PureComponent<QueryGridBarProps> {
             buttons,
             model,
             showSampleComparisonReports,
-            showSampleAliquotSelector,
             onReportClicked,
             onCreateReportClicked,
             onSelectionChange,
@@ -102,9 +99,6 @@ export class QueryGridBar extends PureComponent<QueryGridBarProps> {
 
         const view = model?.showViewSelector ? <ViewSelector model={model} /> : null;
 
-        const aliquotView =
-            showSampleAliquotSelector && model ? <GridAliquotViewSelector queryGridModel={model} /> : null;
-
         let leftContent;
         if (buttons || chart) {
             leftContent = (
@@ -120,7 +114,6 @@ export class QueryGridBar extends PureComponent<QueryGridBarProps> {
                 {paging}
                 {pageSizeBtn}
                 {exportBtn}
-                {aliquotView}
                 {view}
             </span>
         );

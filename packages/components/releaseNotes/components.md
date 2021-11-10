@@ -11,7 +11,8 @@ Components, models, actions, and utility functions for LabKey applications and p
     * move SamplesTabbedGridPanel from LKSM to ui-components
     * move CHECKED_OUT_BY_FIELD and INVENTORY_COLS constants to ui-components
     * Picklist implementation using SamplesTabbedGridPanel
-    * split out RemoveFromPicklistMenuItem so it can be used on the app side like AddToPicklistMenuItem
+    * split out RemoveFromPicklistMenuItem so that it can be used on the app side like AddToPicklistMenuItem
+    * remove GridPanel internal usage of GridAliquotViewSelector, usages can still pass this in via ButtonsComponentRight
 
 ### version 2.91.0
 *Released*: 2 November 2021

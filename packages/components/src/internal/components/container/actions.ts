@@ -98,7 +98,7 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
 }
 
 export class ContainerActions {
-    useContainerUser(containerIdOrPath: string): UseContainerUser {
+    static useContainerUser(containerIdOrPath: string): UseContainerUser {
         return useContainerUser(containerIdOrPath);
     }
 }

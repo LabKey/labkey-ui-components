@@ -84,10 +84,12 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
             }
 
             const container_ = containers[containerIdOrPath];
-            const contextUser_ = applyPermissions(container_, user);
-
             setContainer(container_);
-            setContextUser(contextUser_);
+
+            if (container_) {
+                setContextUser(applyPermissions(container_, user));
+            }
+
             setLoadingState(LoadingState.LOADED);
         })();
     }, [api, containerIdOrPath, user]);

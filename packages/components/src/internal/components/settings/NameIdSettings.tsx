@@ -7,8 +7,9 @@ import { Alert, ConfirmModal, LabelHelpTip, LoadingSpinner, RequiresPermission }
 
 import { sampleManagerIsPrimaryApp } from '../../app/utils';
 
-import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
 import { invalidateQueryDetailsCache } from '../../query/api';
+
+import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
 
 const TITLE = 'ID/Name Settings';
 

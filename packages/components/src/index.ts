@@ -712,10 +712,18 @@ const App = {
     TEST_USER_APP_ADMIN,
 };
 
+const Hooks = {
+    useAppContext,
+    useContainerUser,
+    useEnterEscape,
+    useServerContext,
+};
+
 export {
     // internal application
     App,
     AppModel,
+    Hooks,
     LogoutReason,
     // global state functions
     initQueryGridState,

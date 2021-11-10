@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 2.91.1
+*Released*: 10 November 2021
 * Bump @labkey/api dependency
 
 ### version 2.91.0

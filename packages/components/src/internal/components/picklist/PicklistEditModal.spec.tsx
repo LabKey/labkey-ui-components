@@ -3,18 +3,13 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Button, Modal, ModalFooter, ModalTitle } from 'react-bootstrap';
 
-import {
-    Alert,
-    OperationConfirmationData,
-    Picklist,
-    PRIVATE_PICKLIST_CATEGORY,
-    PUBLIC_PICKLIST_CATEGORY,
-} from '../../../index';
+import { Alert, OperationConfirmationData, Picklist } from '../../../';
 
 import { PicklistEditModal } from './PicklistEditModal';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
 import { waitForLifecycle } from '../../testHelpers';
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 describe('PicklistEditModal', () => {
     const allAllowedStatus = new OperationConfirmationData({

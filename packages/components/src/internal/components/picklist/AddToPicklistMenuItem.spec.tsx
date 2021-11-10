@@ -12,7 +12,7 @@ import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 import { SAMPLE_STATE_TYPE_COLUMN_NAME } from '../samples/constants';
 
 import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
-import { PicklistEditModal } from './PicklistEditModal';
+import { ChoosePicklistModal } from './ChoosePicklistModal';
 
 beforeAll(() => {
     LABKEY.moduleContext.inventory = { productId: ['FreezerManager'] };
@@ -38,11 +38,12 @@ describe('AddToPicklistMenuItem', () => {
         const menuItem = wrapper.find(SelectionMenuItem);
         expect(menuItem).toHaveLength(1);
         expect(menuItem.text()).toBe(text);
-        const picklistModal = wrapper.find(PicklistEditModal);
+
+        validateMenuItemClick(wrapper, true);
+        const picklistModal = wrapper.find(ChoosePicklistModal);
         expect(picklistModal).toHaveLength(1);
         expect(picklistModal.prop('selectionKey')).toBe(queryModelWithSelections.id);
-        expect(picklistModal.prop('selectedQuantity')).toBe(2);
-        expect(picklistModal.prop('show')).toBe(false);
+        expect(picklistModal.prop('numSelected')).toBe(2);
         wrapper.unmount();
     });
 
@@ -60,10 +61,11 @@ describe('AddToPicklistMenuItem', () => {
         expect(menuItem).toHaveLength(1);
         expect(menuItem.text()).toBe(text);
 
-        const picklistModal = wrapper.find(PicklistEditModal);
+        validateMenuItemClick(wrapper, true);
+        const picklistModal = wrapper.find(ChoosePicklistModal);
         expect(picklistModal).toHaveLength(1);
         expect(picklistModal.prop('selectionKey')).toBe(undefined);
-        expect(picklistModal.prop('selectedQuantity')).toBe(1);
+        expect(picklistModal.prop('numSelected')).toBe(1);
         wrapper.unmount();
     });
 
@@ -79,13 +81,7 @@ describe('AddToPicklistMenuItem', () => {
         const menuItem = wrapper.find('MenuItem a');
         expect(menuItem).toHaveLength(1);
         menuItem.simulate('click');
-
-        const modal = wrapper.find(Modal);
-        expect(modal).toHaveLength(shouldOpen ? 2 : 1);
-        if (shouldOpen) {
-            expect(modal.at(0).prop('show')).toBe(true);
-            expect(modal.at(1).prop('show')).toBe(false);
-        }
+        expect(wrapper.find(Modal)).toHaveLength(shouldOpen ? 1 : 0);
     }
 
     test('modal open on click, queryModel selections', () => {

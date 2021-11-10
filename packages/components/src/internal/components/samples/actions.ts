@@ -56,7 +56,7 @@ import { isSampleStatusEnabled } from '../../app/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
-import { IS_ALIQUOT_FIELD } from './constants';
+import { IS_ALIQUOT_COL } from './constants';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
     const promises = [];
@@ -217,7 +217,7 @@ export function getGroupedSampleDomainFields(sampleType: string): Promise<Groupe
 }
 
 export function getAliquotSampleIds(selection: List<any>, sampleType: string): Promise<any[]> {
-    return getFilteredSampleSelection(selection, sampleType, [Filter.create('IsAliquot', true)]);
+    return getFilteredSampleSelection(selection, sampleType, [Filter.create(IS_ALIQUOT_COL, true)]);
 }
 
 export function getNotInStorageSampleIds(selection: List<any>, sampleType: string): Promise<any[]> {
@@ -726,7 +726,7 @@ export function getSampleAliquotsQueryConfig(
     aliquotRootLsid?: string,
     omitCols?: List<string>
 ): QueryConfig {
-    const omitCol = IS_ALIQUOT_FIELD;
+    const omitCol = IS_ALIQUOT_COL;
 
     return {
         id: getStateModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet)),

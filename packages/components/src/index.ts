@@ -501,6 +501,7 @@ import {
     SampleOperation,
     SampleStateType,
     UNIQUE_ID_FIND_FIELD,
+    IS_ALIQUOT_COL,
 } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -881,6 +882,7 @@ export {
     FIND_BY_IDS_QUERY_PARAM,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_ID_FIND_FIELD,
+    IS_ALIQUOT_COL,
     SampleTypeModel,
     deleteSampleSet,
     fetchSamples,

@@ -24,7 +24,7 @@ export const SAMPLE_ID_FIND_FIELD: FindField = {
     storageKeyPrefix: 's:',
 };
 
-export const IS_ALIQUOT_FIELD = 'isAliquot';
+export const IS_ALIQUOT_COL = 'IsAliquot';
 
 export const SAMPLE_STATE_COLUMN_NAME = 'SampleState';
 export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';

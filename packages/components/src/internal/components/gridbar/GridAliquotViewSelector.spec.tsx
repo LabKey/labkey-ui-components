@@ -9,6 +9,7 @@ import { Filter } from '@labkey/api';
 import { makeTestQueryModel, QueryGridModel, SchemaQuery } from '../../..';
 
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
+import { IS_ALIQUOT_COL } from '../samples/constants';
 
 describe('<GridAliquotViewSelector/>', () => {
     test('no queryGridModel or queryModel', () => {
@@ -59,7 +60,7 @@ describe('<GridAliquotViewSelector/>', () => {
             selectedLoaded: false,
             maxRows: undefined,
             totalRows: undefined,
-            filterArray: List([Filter.create('IsAliquot', false)]),
+            filterArray: List([Filter.create(IS_ALIQUOT_COL, false)]),
         });
         const component = <GridAliquotViewSelector queryGridModel={model} />;
         const wrapper = mount(component);
@@ -76,7 +77,7 @@ describe('<GridAliquotViewSelector/>', () => {
             selectedLoaded: false,
             maxRows: undefined,
             totalRows: undefined,
-            filterArray: List([Filter.create('IsAliquot', 'true')]),
+            filterArray: List([Filter.create(IS_ALIQUOT_COL, 'true')]),
         });
         const component = <GridAliquotViewSelector queryGridModel={model} />;
         const wrapper = mount(component);
@@ -100,7 +101,7 @@ describe('<GridAliquotViewSelector/>', () => {
     test('with queryModel, with filter', () => {
         let model = makeTestQueryModel(SchemaQuery.create('a', 'b'));
         model = model.mutate({
-            filterArray: [Filter.create('IsAliquot', true)],
+            filterArray: [Filter.create(IS_ALIQUOT_COL, true)],
         });
         const component = <GridAliquotViewSelector queryModel={model} />;
         const wrapper = mount(component);

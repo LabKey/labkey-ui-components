@@ -29,6 +29,7 @@ import { ParentEntityLineageColumns } from './constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { IS_ALIQUOT_COL } from '../samples/constants';
 
 interface Props {
     queryModel: QueryModel;
@@ -65,7 +66,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 const sampleData = await api.samples.getSampleSelectionLineageData(
                     List.of(...queryModel.selections),
                     queryModel.queryName,
-                    List.of('RowId', 'Name', 'LSID', 'IsAliquot').concat(ParentEntityLineageColumns).toArray()
+                    List.of('RowId', 'Name', 'LSID', IS_ALIQUOT_COL).concat(ParentEntityLineageColumns).toArray()
                 );
 
                 const { key, models } = sampleData;
@@ -73,7 +74,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 const aIds = [];
                 Object.keys(models[key]).forEach(id => {
                     const d = models[key][id];
-                    if (caseInsensitive(d, 'IsAliquot')['value']) {
+                    if (caseInsensitive(d, IS_ALIQUOT_COL)['value']) {
                         aIds.push(id);
                     } else {
                         if (confirmationData.isIdAllowed(id)) {

@@ -9,10 +9,22 @@ import { Container } from '../base/models/Container';
 import { User } from '../base/models/User';
 import { resolveErrorMessage } from '../../util/messaging';
 
+/**
+ * Applies the permissions on the container to the user. Only permission related User fields are mutated.
+ */
 function applyPermissions(container: Container, user: User): User {
-    return user.merge({
-        // TODO: isAdmin, canUpdate, etc...
-        permissionsList: List(container.effectivePermissions),
+    return user.withMutations(u => {
+        // Must set the permissionsList prior to configuring permission bits (e.g. "canDelete", "canUpdate", etc)
+        const u_ = u.set('permissionsList', List(container.effectivePermissions)) as User;
+
+        return u_.merge({
+            canDelete: u_.hasDeletePermission(),
+            canDeleteOwn: u_.hasDeletePermission(),
+            canInsert: u_.hasInsertPermission(),
+            canUpdate: u_.hasUpdatePermission(),
+            canUpdateOwn: u_.hasUpdatePermission(),
+            isAdmin: u_.hasAdminPermission(),
+        });
     }) as User;
 }
 

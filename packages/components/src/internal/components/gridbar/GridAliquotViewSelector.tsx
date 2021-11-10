@@ -60,18 +60,33 @@ export class GridAliquotViewSelector extends Component<Props, State> {
         }
     };
 
+    getAliquotColName = (): string => {
+        // account for the case where the aliquot column is in the queryModel via a lookup from the sample ID
+        const { queryModel } = this.props;
+        let aliquotColName = IS_ALIQUOT_COL;
+        if (!queryModel.getColumnByFieldKey(IS_ALIQUOT_COL)) {
+            aliquotColName = queryModel.allColumns?.find(
+                c => c.fieldKey.toLowerCase().indexOf('/' + IS_ALIQUOT_COL.toLowerCase()) > -1
+            )?.fieldKey;
+        }
+
+        return aliquotColName;
+    };
+
     updateAliquotFilter = (newMode: ALIQUOT_FILTER_MODE): void => {
         const { queryModel, updateFilter } = this.props;
 
         if (updateFilter) {
+            const aliquotColName = this.getAliquotColName();
+
             let newFilter: Filter.IFilter;
             if (newMode === ALIQUOT_FILTER_MODE.all || newMode === ALIQUOT_FILTER_MODE.none) {
                 newFilter = null;
             } else {
-                newFilter = Filter.create(IS_ALIQUOT_COL, newMode === ALIQUOT_FILTER_MODE.aliquots);
+                newFilter = Filter.create(aliquotColName, newMode === ALIQUOT_FILTER_MODE.aliquots);
             }
 
-            updateFilter(newFilter, IS_ALIQUOT_COL, newMode, queryModel);
+            updateFilter(newFilter, aliquotColName, newMode, queryModel);
         }
     };
 
@@ -80,8 +95,10 @@ export class GridAliquotViewSelector extends Component<Props, State> {
         let mode = ALIQUOT_FILTER_MODE.all;
         const filterArray = queryModel?.filterArray;
         if (filterArray) {
+            const aliquotColName = this.getAliquotColName();
+
             filterArray.forEach(filter => {
-                if (filter.getColumnName().toLowerCase() === IS_ALIQUOT_COL.toLowerCase()) {
+                if (filter.getColumnName().toLowerCase() === aliquotColName?.toLowerCase()) {
                     const filterType = filter.getFilterType();
                     const value = filter.getValue();
 

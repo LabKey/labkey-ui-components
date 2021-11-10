@@ -10,6 +10,7 @@ import {
     gridIdInvalidate,
     InjectedQueryModels,
     invalidateLineageResults,
+    IS_ALIQUOT_COL,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
     queryGridInvalidate,
@@ -112,14 +113,24 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
 
     const [ activeActiveAliquotMode, setActiveAliquotMode ] = useState<string>(sampleAliquotType ?? ALIQUOT_FILTER_MODE.all);
 
-    const onAliquotViewUpdate = useCallback((aliquotFilter: Filter.IFilter, aliquotColName: string, newAliquotMode: ALIQUOT_FILTER_MODE) => {
+    const onAliquotViewUpdate = useCallback((aliquotFilter: Filter.IFilter, filterAliquotColName: string, newAliquotMode: ALIQUOT_FILTER_MODE) => {
         setActiveAliquotMode(newAliquotMode);
         Object.values(queryModels).forEach(model => {
+            // account for the case where the aliquot column is in the queryModel via a lookup from the sample ID
+            let aliquotColName = IS_ALIQUOT_COL;
+            if (!model.getColumnByFieldKey(IS_ALIQUOT_COL)) {
+                aliquotColName = model.allColumns?.find(
+                    c => c.fieldKey?.toLowerCase().indexOf('/' + IS_ALIQUOT_COL.toLowerCase()) > -1
+                )?.fieldKey;
+            }
+
             const newFilters = model.filterArray.filter(filter => {
-                return aliquotColName.toLowerCase() !== filter.getColumnName().toLowerCase();
+                return aliquotColName?.toLowerCase() !== filter.getColumnName().toLowerCase();
             });
 
-            if (aliquotFilter) newFilters.push(aliquotFilter);
+            if (aliquotFilter && aliquotColName) {
+                newFilters.push(Filter.create(aliquotColName, newAliquotMode === ALIQUOT_FILTER_MODE.aliquots));
+            }
 
             if (model.queryInfo) {
                 actions.setFilters(model.id, newFilters, true);

@@ -1376,3 +1376,4 @@ export type { AppContext, ExtendableAppContext } from './internal/AppContext';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { SamplesEditableGridProps } from './internal/components/samples/SamplesEditableGrid';
+export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';

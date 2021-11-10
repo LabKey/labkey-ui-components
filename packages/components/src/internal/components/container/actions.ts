@@ -38,7 +38,7 @@ export async function getContainerUser(
     return { container, user: applyPermissions(container, user) };
 }
 
-interface UseContainerUser extends ContainerUser {
+export interface UseContainerUser extends ContainerUser {
     error: string;
     isLoaded: boolean;
 }

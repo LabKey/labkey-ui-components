@@ -19,8 +19,9 @@ import { loadNameExpressionOptions } from '../../settings/actions';
 
 import { PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 
+import { isSampleManagerEnabled } from '../../../app/utils';
+
 import { DataClassModel } from './models';
-import {isSampleManagerEnabled} from "../../../app/utils";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {

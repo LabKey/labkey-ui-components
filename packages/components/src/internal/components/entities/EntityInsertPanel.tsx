@@ -76,7 +76,7 @@ import { BulkAddData } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
 
-import {getCurrentProductName, isSampleManagerEnabled} from '../../app/utils';
+import { getCurrentProductName, isSampleManagerEnabled } from '../../app/utils';
 
 import { fetchDomainDetails } from '../domainproperties/actions';
 

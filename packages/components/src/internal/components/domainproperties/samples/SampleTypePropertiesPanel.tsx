@@ -42,11 +42,7 @@ import { ENTITY_FORM_IDS } from '../entities/constants';
 
 import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
-import {
-    getCurrentProductName,
-    isCommunityDistribution,
-    isSampleManagerEnabled
-} from '../../../app/utils';
+import { getCurrentProductName, isCommunityDistribution, isSampleManagerEnabled } from '../../../app/utils';
 
 import { loadNameExpressionOptions } from '../../settings/actions';
 

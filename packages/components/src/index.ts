@@ -716,7 +716,10 @@ const Hooks = {
     useAppContext,
     useContainerUser,
     useEnterEscape,
+    useRouteLeave,
     useServerContext,
+    useUserProperties,
+    useUsersWithPermissions,
 };
 
 export {

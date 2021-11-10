@@ -96,3 +96,7 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
 
     return { container, error, isLoaded: !isLoading(loadingState), user: contextUser };
 }
+
+export class ContainerActions {
+    useContainerUser = useContainerUser;
+}

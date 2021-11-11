@@ -98,9 +98,10 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
         setHasParentUpdates(entityParents.size > 0);
     }, []);
 
-    const onConfirm = useCallback(async () => {
+    const onConfirm = async (): Promise<void> => {
         setSubmitting(true);
 
+        // TODO: Configure "containerPath" for getOriginalParentsFromSampleLineage() call
         const { originalParents } = await getOriginalParentsFromSampleLineage(allowedForUpdate);
         const rows = getUpdatedLineageRowsForBulkEdit(
             allowedForUpdate,
@@ -132,7 +133,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
             onSuccess();
             createNotification(`No ${childEntityDataType.nounPlural} updated since no ${lcParentNounPlural} changed.`);
         }
-    }, [selectedParents, auditBehavior, childEntityDataType, queryModel, allowedForUpdate]);
+    };
 
     if (!queryModel || !statusData) {
         return null;
@@ -215,10 +216,8 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                             <ParentEntityEditPanel
                                 auditBehavior={auditBehavior}
                                 canUpdate={true}
-                                childQueryInfo={queryModel.queryInfo}
-                                childData={undefined}
+                                childSchemaQuery={queryModel.schemaQuery}
                                 parentDataTypes={parentEntityDataTypes}
-                                childName={undefined}
                                 childNounSingular={childEntityDataType.nounSingular}
                                 key={`parent${parentNounPlural}-${queryModel.id}`}
                                 onUpdate={onConfirm}

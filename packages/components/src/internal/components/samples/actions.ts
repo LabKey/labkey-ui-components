@@ -359,15 +359,16 @@ export function getSampleSelectionLineageData(
 }
 
 export const getOriginalParentsFromSampleLineage = async (
-    sampleLineage: Record<string, any>
+    sampleLineage: Record<string, any>,
+    containerPath?: string
 ): Promise<{
     originalParents: Record<string, List<EntityChoice>>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
 }> => {
     const originalParents = {};
     let parentTypeOptions = Map<string, List<IEntityTypeOption>>();
-    const dataClassTypeData = await getParentTypeDataForSample(DataClassDataType, Object.values(sampleLineage));
-    const sampleTypeData = await getParentTypeDataForSample(SampleTypeDataType, Object.values(sampleLineage));
+    const dataClassTypeData = await getParentTypeDataForSample(DataClassDataType, Object.values(sampleLineage), containerPath);
+    const sampleTypeData = await getParentTypeDataForSample(SampleTypeDataType, Object.values(sampleLineage), containerPath);
 
     // iterate through both Data Classes and Sample Types for finding sample parents
     [DataClassDataType, SampleTypeDataType].forEach(dataType => {
@@ -400,12 +401,13 @@ export const getOriginalParentsFromSampleLineage = async (
 
 export const getParentTypeDataForSample = async (
     parentDataType: EntityDataType,
-    samplesData: any[]
+    samplesData: any[],
+    containerPath?: string
 ): Promise<{
     parentTypeOptions: List<IEntityTypeOption>;
     parentIdData: Record<string, ParentIdData>;
 }> => {
-    const options = await getEntityTypeOptions(parentDataType);
+    const options = await getEntityTypeOptions(parentDataType, containerPath);
     const parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
 
     // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row
@@ -413,7 +415,7 @@ export const getParentTypeDataForSample = async (
     samplesData.forEach(sampleData => {
         parentIDs.push(...sampleData[parentDataType.inputColumnName].map(row => row.value));
     });
-    const parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs);
+    const parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs, containerPath);
 
     return { parentTypeOptions, parentIdData };
 };
@@ -425,10 +427,12 @@ export type ParentIdData = {
 
 function getParentRowIdAndDataType(
     parentDataType: EntityDataType,
-    parentIDs: string[]
+    parentIDs: string[],
+    containerPath?: string
 ): Promise<Record<string, ParentIdData>> {
     return new Promise((resolve, reject) => {
         selectRows({
+            containerPath,
             schemaName: parentDataType.listingSchemaQuery.schemaName,
             queryName: parentDataType.listingSchemaQuery.queryName,
             columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist

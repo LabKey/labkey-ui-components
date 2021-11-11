@@ -4,36 +4,12 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
 <ParentEntityEditPanel
   canUpdate={false}
   cancelText="Cancel"
-  childData={Object {}}
-  childName="Test"
   childNounSingular="Testing"
-  childQueryInfo={
+  childSchemaQuery={
     Immutable.Record {
-      "columns": Immutable.OrderedMap {},
-      "description": undefined,
-      "importTemplates": Immutable.List [],
-      "iconURL": "default",
-      "lastAction": undefined,
-      "name": undefined,
-      "pkCols": Immutable.List [],
       "schemaName": "samples",
-      "status": 2,
-      "title": undefined,
-      "titleColumn": undefined,
-      "views": Immutable.Map {},
-      "importUrlDisabled": undefined,
-      "importUrl": undefined,
-      "insertUrlDisabled": undefined,
-      "insertUrl": undefined,
-      "appEditableTable": false,
-      "isLoading": false,
-      "isMedia": false,
-      "queryLabel": undefined,
-      "schemaLabel": undefined,
-      "schemaQuery": undefined,
-      "showInsertNewButton": true,
-      "singular": undefined,
-      "plural": undefined,
+      "queryName": "example",
+      "viewName": undefined,
     }
   }
   includePanelHeader={true}
@@ -2187,36 +2163,12 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
 <ParentEntityEditPanel
   canUpdate={false}
   cancelText="Cancel"
-  childData={Object {}}
-  childName="Test"
   childNounSingular="Testing"
-  childQueryInfo={
+  childSchemaQuery={
     Immutable.Record {
-      "columns": Immutable.OrderedMap {},
-      "description": undefined,
-      "importTemplates": Immutable.List [],
-      "iconURL": "default",
-      "lastAction": undefined,
-      "name": undefined,
-      "pkCols": Immutable.List [],
       "schemaName": "samples",
-      "status": 2,
-      "title": undefined,
-      "titleColumn": undefined,
-      "views": Immutable.Map {},
-      "importUrlDisabled": undefined,
-      "importUrl": undefined,
-      "insertUrlDisabled": undefined,
-      "insertUrl": undefined,
-      "appEditableTable": false,
-      "isLoading": false,
-      "isMedia": false,
-      "queryLabel": undefined,
-      "schemaLabel": undefined,
-      "schemaQuery": undefined,
-      "showInsertNewButton": true,
-      "singular": undefined,
-      "plural": undefined,
+      "queryName": "example",
+      "viewName": undefined,
     }
   }
   includePanelHeader={true}
@@ -2581,36 +2533,12 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
 <ParentEntityEditPanel
   canUpdate={false}
   cancelText="Cancel"
-  childData={Object {}}
-  childName="Test"
   childNounSingular="Testing"
-  childQueryInfo={
+  childSchemaQuery={
     Immutable.Record {
-      "columns": Immutable.OrderedMap {},
-      "description": undefined,
-      "importTemplates": Immutable.List [],
-      "iconURL": "default",
-      "lastAction": undefined,
-      "name": undefined,
-      "pkCols": Immutable.List [],
       "schemaName": "samples",
-      "status": 2,
-      "title": undefined,
-      "titleColumn": undefined,
-      "views": Immutable.Map {},
-      "importUrlDisabled": undefined,
-      "importUrl": undefined,
-      "insertUrlDisabled": undefined,
-      "insertUrl": undefined,
-      "appEditableTable": false,
-      "isLoading": false,
-      "isMedia": false,
-      "queryLabel": undefined,
-      "schemaLabel": undefined,
-      "schemaQuery": undefined,
-      "showInsertNewButton": true,
-      "singular": undefined,
-      "plural": undefined,
+      "queryName": "example",
+      "viewName": undefined,
     }
   }
   includePanelHeader={true}

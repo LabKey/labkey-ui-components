@@ -16,7 +16,6 @@ import {
     RemoveEntityButton,
     SampleOperation,
     SchemaQuery,
-    SCHEMAS,
     SelectInput,
 } from '../../..';
 
@@ -41,6 +40,7 @@ interface OwnProps {
 interface Props {
     childNounSingular?: string;
     chosenValue?: string | any[];
+    containerPath?: string;
     editing?: boolean;
     index: number;
     onChangeParentType?: (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index: number) => void;
@@ -96,7 +96,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
     };
 
     renderParentSelection = (model: QueryModel): ReactNode => {
-        const { chosenType, chosenValue, parentLSIDs, parentTypeOptions, parentDataType, index } = this.props;
+        const { chosenType, chosenValue, containerPath, parentLSIDs, parentTypeOptions, parentDataType, index } = this.props;
 
         if (model?.rowsError || model?.queryInfoError) {
             return <Alert>{model.rowsError || model.queryInfoError}</Alert>;
@@ -148,6 +148,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         <QuerySelect
                             componentId={'parentEntityValue_' + chosenType.label} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
                             containerClass="row"
+                            containerPath={containerPath}
                             inputClass="col-sm-6"
                             label={capitalizeFirstChar(parentDataType.nounSingular) + ' IDs'}
                             labelClass={labelClasses + ' entity-insert--parent-label entity-insert--parent-select'}
@@ -253,7 +254,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
 const SingleParentEntityPanelBody = withQueryModels<Props & OwnProps>(SingleParentEntity);
 
 export const SingleParentEntityPanel: FC<Props> = memo(props => {
-    const { parentTypeOptions, parentLSIDs, parentEntityType } = props;
+    const { containerPath, parentTypeOptions, parentLSIDs, parentEntityType } = props;
     const [chosenType, setChosenType] = useState<IEntityTypeOption>(parentEntityType);
     const [chosenValue, setChosenValue] = useState<string | string[]>(props.chosenValue);
 
@@ -267,10 +268,11 @@ export const SingleParentEntityPanel: FC<Props> = memo(props => {
             model: {
                 baseFilters: parentLSIDs?.length > 0 ? [Filter.create('LSID', parentLSIDs, Filter.Types.IN)] : [],
                 bindURL: false,
+                containerPath,
                 schemaQuery: SchemaQuery.create(chosenType.schema, chosenType.query),
             },
         };
-    }, [chosenType, parentTypeOptions, parentLSIDs]);
+    }, [chosenType, containerPath, parentTypeOptions, parentLSIDs]);
 
     return (
         <SingleParentEntityPanelBody

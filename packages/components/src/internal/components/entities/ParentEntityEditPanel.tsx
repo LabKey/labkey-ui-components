@@ -3,19 +3,23 @@ import { Button, Panel } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
-import { AuditBehaviorTypes } from '@labkey/api';
+import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import {
     AddEntityButton,
     Alert,
     capitalizeFirstChar,
+    caseInsensitive,
     EntityDataType,
     getActionErrorMessage,
     LoadingSpinner,
     naturalSortByProperty,
+    ParentEntityRequiredColumns,
     Progress,
     QueryInfo,
     resolveErrorMessage,
+    SchemaQuery,
+    selectRows,
     updateRows,
 } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
@@ -32,10 +36,10 @@ interface Props {
     auditBehavior?: AuditBehaviorTypes;
     cancelText?: string;
     canUpdate: boolean;
-    childName: string;
     childNounSingular: string;
-    childQueryInfo: QueryInfo;
-    childData: Record<string, any>;
+    childContainerPath?: string;
+    childLSID?: string;
+    childSchemaQuery: SchemaQuery;
     onUpdate?: () => void;
     onEditToggle?: (editing: boolean) => void;
     parentDataTypes: EntityDataType[]; // Note: the first data type in the array will be used for labels, nouns, etc...
@@ -48,6 +52,9 @@ interface Props {
 }
 
 interface State {
+    childData: Record<string, any>;
+    childName: string;
+    childQueryInfo: QueryInfo;
     currentParents: List<EntityChoice>;
     editing: boolean;
     error: ReactNode;
@@ -67,6 +74,9 @@ export class ParentEntityEditPanel extends Component<Props, State> {
     };
 
     state: Readonly<State> = {
+        childData: undefined,
+        childName: undefined,
+        childQueryInfo: undefined,
         currentParents: undefined,
         editing: false,
         error: undefined,
@@ -82,7 +92,32 @@ export class ParentEntityEditPanel extends Component<Props, State> {
     }
 
     init = async (): Promise<void> => {
-        const { parentDataTypes, childData } = this.props;
+        const { parentDataTypes, childContainerPath, childLSID, childSchemaQuery } = this.props;
+
+        let childData: any;
+        let childQueryInfo: QueryInfo;
+
+        if (childLSID) {
+            try {
+                const { key, models, queries } = await selectRows({
+                    columns: ParentEntityRequiredColumns.toArray(),
+                    containerPath: childContainerPath,
+                    filterArray: [Filter.create('LSID', childLSID)],
+                    queryName: childSchemaQuery.queryName,
+                    schemaName: childSchemaQuery.schemaName,
+                });
+
+                const rows = models[key];
+                childQueryInfo = queries[key];
+                childData = rows[Object.keys(rows)[0]];
+            } catch (e) {
+                console.error(e);
+                this.setState({
+                    error: getActionErrorMessage('Unable to load parent data.', undefined, true),
+                });
+                return;
+            }
+        }
 
         let parentTypeOptions = List<IEntityTypeOption>();
         let originalParents = List<EntityChoice>();
@@ -90,7 +125,11 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         await Promise.all(
             parentDataTypes.map(async parentDataType => {
                 try {
-                    const typeData = await getParentTypeDataForSample(parentDataType, childData ? [childData] : []);
+                    const typeData = await getParentTypeDataForSample(
+                        parentDataType,
+                        childData ? [childData] : [],
+                        childContainerPath
+                    );
                     parentTypeOptions = parentTypeOptions.concat(typeData.parentTypeOptions) as List<IEntityTypeOption>;
                     originalParents = originalParents.concat(
                         getInitialParentChoices(
@@ -114,6 +153,9 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         );
 
         this.setState({
+            childData,
+            childName: caseInsensitive(childData, 'Name')?.value,
+            childQueryInfo,
             currentParents: originalParents,
             loading: false,
             editing: this.props.editOnly,
@@ -123,10 +165,6 @@ export class ParentEntityEditPanel extends Component<Props, State> {
             ),
         });
     };
-
-    compactEditDisplay(): boolean {
-        return this.props.childName == undefined;
-    }
 
     hasParents = (): boolean => {
         return this.state.currentParents && !this.state.currentParents.isEmpty();
@@ -203,12 +241,13 @@ export class ParentEntityEditPanel extends Component<Props, State> {
 
         this.setState({ submitting: true });
 
-        const { auditBehavior, onUpdate, childQueryInfo, childData } = this.props;
-        const { currentParents, originalParents } = this.state;
+        const { auditBehavior, childContainerPath, onUpdate } = this.props;
+        const { childData, childQueryInfo, currentParents, originalParents } = this.state;
 
         const schemaQuery = childQueryInfo.schemaQuery;
 
         return updateRows({
+            containerPath: childContainerPath,
             schemaQuery,
             rows: [getUpdatedRowForParentChanges(originalParents, currentParents, childData, childQueryInfo)],
             auditBehavior,
@@ -276,15 +315,16 @@ export class ParentEntityEditPanel extends Component<Props, State> {
     };
 
     renderParentData = (): ReactNode => {
-        const { parentDataTypes, childNounSingular, editOnly } = this.props;
-        const { editing } = this.state;
+        const { childContainerPath, parentDataTypes, childNounSingular } = this.props;
+        const { childName, editing } = this.state;
 
         if (this.hasParents()) {
             return this.state.currentParents
                 .map((choice, index) => (
                     <div key={choice.type ? choice.type.label + '-' + index : 'unknown-' + index}>
-                        {editing && (!this.compactEditDisplay() || index > 0) && <hr />}
+                        {editing && (childName || index > 0) && <hr />}
                         <SingleParentEntityPanel
+                            containerPath={childContainerPath}
                             parentDataType={parentDataTypes[0]}
                             parentTypeOptions={this.getParentTypeOptions(index)}
                             parentEntityType={choice.type}
@@ -304,9 +344,10 @@ export class ParentEntityEditPanel extends Component<Props, State> {
 
         return (
             <div>
-                {!this.compactEditDisplay() && <hr />}
+                {childName && <hr />}
                 <SingleParentEntityPanel
                     editing={editing}
+                    containerPath={childContainerPath}
                     parentTypeOptions={this.state.parentTypeOptions}
                     parentDataType={parentDataTypes[0]}
                     childNounSingular={childNounSingular}
@@ -369,13 +410,12 @@ export class ParentEntityEditPanel extends Component<Props, State> {
             parentDataTypes,
             title,
             canUpdate,
-            childName,
             hideButtons,
             submitText,
             editOnly,
             includePanelHeader,
         } = this.props;
-        const { editing, error, loading, submitting } = this.state;
+        const { childName, editing, error, loading, submitting } = this.state;
 
         const parentDataType = parentDataTypes[0];
 

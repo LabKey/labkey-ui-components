@@ -249,7 +249,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
         () => {
             const configs = {};
 
-            if (picklist) {
+            if (picklist?.listId) {
                 const gridId = PICKLIST_ITEMS_ID_PREFIX + LOAD_PICKLIST_COUNTER;
                 configs[gridId] = {
                     id: gridId,

@@ -473,7 +473,9 @@ export const getPicklistFromId = async (listId: number): Promise<Picklist> => {
         requiredColumns: ['Category'],
         filterArray: [Filter.create('listId', listId)],
     });
-    let picklist = Picklist.create(listData.models[listData.key][listId]);
+    const listRow = listData.models[listData.key][listId];
+    if (!listRow) return new Picklist(/* use empty picklist to signal not found */);
+    let picklist = Picklist.create(listRow);
 
     const listSampleTypeData = await selectRows({
         schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,

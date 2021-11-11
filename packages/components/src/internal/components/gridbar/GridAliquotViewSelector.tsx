@@ -63,14 +63,14 @@ export class GridAliquotViewSelector extends Component<Props, State> {
     getAliquotColName = (): string => {
         // account for the case where the aliquot column is in the queryModel via a lookup from the sample ID
         const { queryModel } = this.props;
-        let aliquotColName = IS_ALIQUOT_COL;
+        let aliquotColName;
         if (!queryModel.getColumnByFieldKey(IS_ALIQUOT_COL)) {
             aliquotColName = queryModel.allColumns?.find(
                 c => c.fieldKey.toLowerCase().indexOf('/' + IS_ALIQUOT_COL.toLowerCase()) > -1
             )?.fieldKey;
         }
 
-        return aliquotColName;
+        return aliquotColName ?? IS_ALIQUOT_COL;
     };
 
     updateAliquotFilter = (newMode: ALIQUOT_FILTER_MODE): void => {

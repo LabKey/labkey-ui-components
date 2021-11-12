@@ -4,8 +4,15 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { Alert } from '../base/Alert';
 
-import { PicklistDeleteConfirmMessage } from './PicklistDeleteConfirm';
+import { PicklistDeleteConfirm, PicklistDeleteConfirmMessage } from './PicklistDeleteConfirm';
 import { Picklist } from './models';
+import { TEST_USER_EDITOR } from '../../../test/data/users';
+import { ConfirmModal } from '../base/ConfirmModal';
+import { makeTestQueryModel } from "../../../public/QueryModel/testUtils";
+import { SchemaQuery } from "../../../public/SchemaQuery";
+import { LoadingSpinner } from "../base/LoadingSpinner";
+import { getTestPicklistAPIWrapper } from "./APIWrapper";
+import { waitForLifecycle } from "../../testHelpers";
 
 describe('PicklistDeleteConfirmMessage', () => {
     function validateText(
@@ -329,6 +336,96 @@ describe('PicklistDeleteConfirmMessage', () => {
             ['shared with your team members'],
             undefined
         );
+        wrapper.unmount();
+    });
+});
+
+describe('PicklistDeleteConfirm', () => {
+    const DEFAULT_PROPS = {
+        user: TEST_USER_EDITOR,
+        onConfirm: jest.fn,
+        onCancel: jest.fn,
+    };
+
+    function validate(wrapper: ReactWrapper, loading = false): void {
+        expect(wrapper.find(ConfirmModal)).toHaveLength(1);
+        expect(wrapper.find(PicklistDeleteConfirmMessage)).toHaveLength(loading ? 0 : 1);
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(loading ? 1 : 0);
+    }
+
+    test('with picklist prop', () => {
+        const picklist = new Picklist();
+        const wrapper = mount(<PicklistDeleteConfirm {...DEFAULT_PROPS} picklist={picklist} />);
+        validate(wrapper);
+        const modal = wrapper.find(ConfirmModal);
+        expect(modal.prop('title')).toBe('Delete This Picklist');
+        expect(modal.prop('confirmButtonText')).toBe('Yes, Delete This Picklist');
+        expect(modal.prop('onConfirm')).toBeDefined();
+        const message = wrapper.find(PicklistDeleteConfirmMessage);
+        expect(message.prop('numSelected')).toBe(1);
+        expect(message.prop('noun')).toBe('picklist');
+        wrapper.unmount();
+    });
+
+    test('with model selections', async () => {
+        let model = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+        model = model.mutate({ selections: new Set(['1', '2']) });
+        const wrapper = mount(
+            <PicklistDeleteConfirm
+                {...DEFAULT_PROPS}
+                model={model}
+                api={getTestPicklistAPIWrapper(jest.fn, {
+                    getPicklistDeleteData: () => Promise.resolve({
+                        numDeletable: 2,
+                        numNotDeletable: 0,
+                        numShared: 1,
+                        deletableLists: [],
+                    })
+                })}
+            />
+        );
+        validate(wrapper, true);
+        await waitForLifecycle(wrapper);
+        validate(wrapper);
+
+        const modal = wrapper.find(ConfirmModal);
+        expect(modal.prop('title')).toBe('Delete 2 Picklists');
+        expect(modal.prop('confirmButtonText')).toBe('Yes, Delete 2 Picklists');
+        expect(modal.prop('onConfirm')).toBeDefined();
+        const message = wrapper.find(PicklistDeleteConfirmMessage);
+        expect(message.prop('numSelected')).toBe(2);
+        expect(message.prop('noun')).toBe('picklists');
+        wrapper.unmount();
+    });
+
+    test('with model selections, none deletable', async () => {
+        let model = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+        model = model.mutate({ selections: new Set(['1', '2']) });
+        const wrapper = mount(
+            <PicklistDeleteConfirm
+                {...DEFAULT_PROPS}
+                model={model}
+                api={getTestPicklistAPIWrapper(jest.fn, {
+                    getPicklistDeleteData: () => Promise.resolve({
+                        numDeletable: 0,
+                        numNotDeletable: 2,
+                        numShared: 1,
+                        deletableLists: [],
+                    })
+                })}
+            />
+        );
+        validate(wrapper, true);
+        await waitForLifecycle(wrapper);
+        validate(wrapper);
+
+        const modal = wrapper.find(ConfirmModal);
+        expect(modal.prop('title')).toBe('Delete 0 Picklists');
+        expect(modal.prop('confirmButtonText')).toBe('Yes, Delete 0 Picklists');
+        expect(modal.prop('onConfirm')).toBeUndefined();
+        const message = wrapper.find(PicklistDeleteConfirmMessage);
+        expect(message.prop('numSelected')).toBe(2);
+        expect(message.prop('noun')).toBe('picklists');
         wrapper.unmount();
     });
 });

@@ -9,9 +9,7 @@ import {
     DERIVATIVE_CREATION,
     OperationConfirmationData,
     POOLED_SAMPLE_CREATION,
-} from '../../../index';
-
-import { getTestAPIWrapper } from '../../APIWrapper';
+} from '../../..';
 
 import { waitForLifecycle } from '../../testHelpers';
 
@@ -19,7 +17,7 @@ import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType } from './models';
 
-import { getSamplesTestAPIWrapper } from './APIWrapper';
+import { getTestSamplesAPIWrapper } from './APIWrapper';
 
 describe('<SampleCreationTypeModal/>', () => {
     function validateOption(wrapper: ReactWrapper, selected: boolean, type: SampleCreationType) {
@@ -86,10 +84,8 @@ describe('<SampleCreationTypeModal/>', () => {
                 showIcons={false}
                 onCancel={jest.fn()}
                 onSubmit={jest.fn()}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () => Promise.resolve(allAllowedStatus),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleOperationConfirmationData: () => Promise.resolve(allAllowedStatus),
                 })}
             />
         );
@@ -111,11 +107,9 @@ describe('<SampleCreationTypeModal/>', () => {
                 showIcons={false}
                 onCancel={jest.fn()}
                 onSubmit={jest.fn()}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(allAllowedStatus)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(allAllowedStatus)),
                 })}
             />
         );
@@ -139,11 +133,9 @@ describe('<SampleCreationTypeModal/>', () => {
                 showIcons={false}
                 onCancel={jest.fn()}
                 onSubmit={jest.fn()}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(allAllowedStatus)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(allAllowedStatus)),
                 })}
             />
         );
@@ -167,11 +159,9 @@ describe('<SampleCreationTypeModal/>', () => {
                 showIcons={false}
                 onCancel={jest.fn()}
                 onSubmit={jest.fn()}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(allAllowedStatus)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(allAllowedStatus)),
                 })}
             />
         );
@@ -195,11 +185,9 @@ describe('<SampleCreationTypeModal/>', () => {
                 showIcons={false}
                 onCancel={jest.fn()}
                 onSubmit={jest.fn()}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(allAllowedStatus)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(allAllowedStatus)),
                 })}
             />
         );
@@ -222,11 +210,9 @@ describe('<SampleCreationTypeModal/>', () => {
                 showIcons={false}
                 onCancel={jest.fn()}
                 onSubmit={jest.fn()}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(noneAllowedStatus)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(noneAllowedStatus)),
                 })}
             />
         );
@@ -250,11 +236,9 @@ describe('<SampleCreationTypeModal/>', () => {
                 showIcons={false}
                 onCancel={jest.fn()}
                 onSubmit={jest.fn()}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(someAllowedStatus)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(someAllowedStatus)),
                 })}
             />
         );

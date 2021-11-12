@@ -10,12 +10,11 @@ import {
     SampleOperation,
 } from '../../..';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 import { OperationConfirmationData } from '../entities/models';
 
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
+import { getDefaultSamplesAPIWrapper, SamplesAPIWrapper } from './APIWrapper';
 
 interface Props {
     show: boolean;
@@ -24,7 +23,7 @@ interface Props {
     showIcons: boolean;
     onCancel: () => void;
     onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
-    api?: ComponentsAPIWrapper;
+    api?: SamplesAPIWrapper;
     selectionKey?: string;
     selectedItems?: Record<string, any>;
 }
@@ -43,7 +42,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     private _mounted: boolean;
 
     static defaultProps = {
-        api: getDefaultAPIWrapper(),
+        api: getDefaultSamplesAPIWrapper(),
     };
 
     constructor(props: Props) {
@@ -83,7 +82,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
             }
         } else {
             try {
-                const confirmationData = await api.samples.getSampleOperationConfirmationData(
+                const confirmationData = await api.getSampleOperationConfirmationData(
                     SampleOperation.EditLineage,
                     selectionKey
                 );

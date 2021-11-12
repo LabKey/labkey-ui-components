@@ -126,6 +126,7 @@ export const TEST_USER_FOLDER_ADMIN = new User({
         PermissionTypes.DesignAssay,
         PermissionTypes.Insert,
         PermissionTypes.Update,
+        PermissionTypes.ManagePicklists,
         PermissionTypes.Admin,
     ]),
 });
@@ -154,6 +155,7 @@ export const TEST_USER_PROJECT_ADMIN = new User({
         PermissionTypes.DesignAssay,
         PermissionTypes.Insert,
         PermissionTypes.Update,
+        PermissionTypes.ManagePicklists,
         PermissionTypes.Admin,
         PermissionTypes.AddUser,
     ]),
@@ -183,6 +185,7 @@ export const TEST_USER_APP_ADMIN = new User({
         PermissionTypes.DesignAssay,
         PermissionTypes.Insert,
         PermissionTypes.Update,
+        PermissionTypes.ManagePicklists,
         PermissionTypes.Admin,
         PermissionTypes.UserManagement,
         PermissionTypes.ApplicationAdmin,

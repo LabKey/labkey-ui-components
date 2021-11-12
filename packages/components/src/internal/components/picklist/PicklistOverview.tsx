@@ -29,11 +29,12 @@ import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel
 
 import { PUBLIC_PICKLIST_CATEGORY, PRIVATE_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
-import { getPicklistFromId, deletePicklists, updatePicklist } from './actions';
+import { deletePicklists, updatePicklist } from './actions';
 import { Picklist } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistEditModal } from './PicklistEditModal';
 import { PicklistGridButtons } from './PicklistGridButtons';
+import { getDefaultPicklistAPIWrapper, PicklistAPIWrapper } from './APIWrapper';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
@@ -45,6 +46,7 @@ interface OwnProps {
     AdditionalGridButtons?: ComponentType<RequiresModelAndActions>;
     samplesEditableGridProps?: Partial<SamplesEditableGridProps>;
     advancedExportOptions?: { [key: string]: any };
+    api?: PicklistAPIWrapper;
 }
 
 interface ImplProps {
@@ -54,6 +56,7 @@ interface ImplProps {
 
 type Props = OwnProps & ImplProps & InjectedQueryModels;
 
+// exported for jest testing
 export const PicklistOverviewImpl: FC<Props> = memo(props => {
     const {
         queryModels,
@@ -162,9 +165,9 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                 {(picklist.isEditable(user) || picklist.isDeletable(user)) && (
                     <ManageDropdownButton id="picklistHeader" pullRight collapsed>
                         {picklist.isUserList(user) && (
-                            <MenuItem onClick={onEditPicklistMetadataClick}>Edit Picklist</MenuItem>
+                            <MenuItem onClick={onEditPicklistMetadataClick} className="picklistHeader-edit">Edit Picklist</MenuItem>
                         )}
-                        <MenuItem onClick={onDeletePicklistClick}>Delete Picklist</MenuItem>
+                        <MenuItem onClick={onDeletePicklistClick} className="picklistHeader-delete">Delete Picklist</MenuItem>
                     </ManageDropdownButton>
                 )}
             </PageDetailHeader>
@@ -198,7 +201,6 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                     </div>
                 </div>
             </div>
-
             {showDeleteModal && (
                 <PicklistDeleteConfirm
                     picklist={picklist}
@@ -219,7 +221,8 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
     );
 });
 
-const PicklistOverviewWithQueryModels = withQueryModels<OwnProps & ImplProps>(PicklistOverviewImpl);
+// exported for jest testing
+export const PicklistOverviewWithQueryModels = withQueryModels<OwnProps & ImplProps>(PicklistOverviewImpl);
 
 // Keep a counter so that each time the loadPicklist() is called we re-render the tabbed grid panel and recreate the
 // queryConfigs. This is because the sample actions like "remove from picklist" can affect the queryConfig filter IN
@@ -227,7 +230,7 @@ const PicklistOverviewWithQueryModels = withQueryModels<OwnProps & ImplProps>(Pi
 let LOAD_PICKLIST_COUNTER = 0;
 
 export const PicklistOverview: FC<OwnProps> = memo(props => {
-    const { params, user } = props;
+    const { params, user, api } = props;
     const listId = parseInt(params.id, 10);
     const [picklist, setPicklist] = useState<Picklist>();
 
@@ -236,7 +239,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
             if (incrementCounter) LOAD_PICKLIST_COUNTER++;
 
             try {
-                const updatedPicklist = await getPicklistFromId(listId);
+                const updatedPicklist = await api.getPicklistFromId(listId);
                 setPicklist(updatedPicklist);
             } catch (e) {
                 console.error('There was a problem retrieving the picklist data.', e);
@@ -303,3 +306,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
         />
     );
 });
+
+PicklistOverview.defaultProps = {
+    api: getDefaultPicklistAPIWrapper(),
+};

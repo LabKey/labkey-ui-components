@@ -6,13 +6,11 @@ import { mount, ReactWrapper } from 'enzyme';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { getTestAPIWrapper } from '../../APIWrapper';
-
 import { waitForLifecycle } from '../../testHelpers';
 
 import { Progress } from '../base/Progress';
 
-import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
+import { getTestSamplesAPIWrapper } from '../samples/APIWrapper';
 
 import { EntityLineageEditModal } from './EntityLineageEditModal';
 import { DataClassDataType, SampleTypeDataType } from './constants';
@@ -69,10 +67,8 @@ const DEFAULT_PROPS = {
     onSuccess: jest.fn,
     childEntityDataType: SampleTypeDataType,
     parentEntityDataTypes: [SampleTypeDataType, DataClassDataType],
-    api: getTestAPIWrapper(jest.fn, {
-        samples: getSamplesTestAPIWrapper(jest.fn, {
-            getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
-        }),
+    api: getTestSamplesAPIWrapper(jest.fn, {
+        getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
     }),
 };
 
@@ -148,12 +144,10 @@ describe('EntityLineageEditModal', () => {
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
                 })}
             />
         );
@@ -169,12 +163,10 @@ describe('EntityLineageEditModal', () => {
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS),
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS),
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
                 })}
             />
         );
@@ -193,12 +185,10 @@ describe('EntityLineageEditModal', () => {
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_ALL_ALIQUOTS),
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_ALL_ALIQUOTS),
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
                 })}
             />
         );
@@ -216,12 +206,10 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(ALL_ALLOWED_CONFIRMATION_DATA)),
                 })}
             />
         );
@@ -238,12 +226,10 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(NONE_ALLOWED_CONFIRMATION_DATA)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(NONE_ALLOWED_CONFIRMATION_DATA)),
                 })}
             />
         );
@@ -263,12 +249,10 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS),
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(SOME_ALLOWED_CONFIRMATION_DATA)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS),
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(SOME_ALLOWED_CONFIRMATION_DATA)),
                 })}
             />
         );
@@ -290,12 +274,10 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS),
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(NONE_ALLOWED_CONFIRMATION_DATA)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITH_ALIQUOTS),
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(NONE_ALLOWED_CONFIRMATION_DATA)),
                 })}
             />
         );
@@ -317,12 +299,10 @@ describe('EntityLineageEditModal', () => {
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
                 parentEntityDataTypes={[DataClassDataType, SampleTypeDataType]}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData(SOME_ALLOWED_CONFIRMATION_DATA)),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleSelectionLineageData: () => Promise.resolve(LINEAGE_DATA_WITHOUT_ALIQUOTS),
+                    getSampleOperationConfirmationData: () =>
+                        Promise.resolve(new OperationConfirmationData(SOME_ALLOWED_CONFIRMATION_DATA)),
                 })}
             />
         );

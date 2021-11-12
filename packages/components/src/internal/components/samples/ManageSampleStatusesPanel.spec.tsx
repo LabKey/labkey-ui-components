@@ -11,8 +11,6 @@ import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 import { SelectInput } from '../forms/input/SelectInput';
 import { ConfirmModal } from '../base/ConfirmModal';
 
-import { getTestAPIWrapper } from '../../APIWrapper';
-
 import { SampleState } from './models';
 import {
     ManageSampleStatusesPanel,
@@ -21,15 +19,12 @@ import {
     SampleStatusesListItem,
 } from './ManageSampleStatusesPanel';
 
-// these have to be below other imports or results in circular dependency errors in running tests
-import { getSamplesTestAPIWrapper } from './APIWrapper';
+import { getTestSamplesAPIWrapper } from './APIWrapper';
 
 describe('ManageSampleStatusesPanel', () => {
     const DEFAULT_PROPS = {
-        api: getTestAPIWrapper(jest.fn, {
-            samples: getSamplesTestAPIWrapper(jest.fn, {
-                getSampleStatuses: () => Promise.resolve([new SampleState()]),
-            }),
+        api: getTestSamplesAPIWrapper(jest.fn, {
+            getSampleStatuses: () => Promise.resolve([new SampleState()]),
         }),
     };
 
@@ -60,10 +55,8 @@ describe('ManageSampleStatusesPanel', () => {
         const wrapper = mount(
             <ManageSampleStatusesPanel
                 {...DEFAULT_PROPS}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleStatuses: () => Promise.resolve([]),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleStatuses: () => Promise.resolve([]),
                 })}
             />
         );
@@ -97,10 +90,8 @@ describe('ManageSampleStatusesPanel', () => {
         const wrapper = mount(
             <ManageSampleStatusesPanel
                 {...DEFAULT_PROPS}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleStatuses: () => Promise.reject({ exception: 'Failure' }),
-                    }),
+                api={getTestSamplesAPIWrapper(jest.fn, {
+                    getSampleStatuses: () => Promise.reject({ exception: 'Failure' }),
                 })}
             />
         );

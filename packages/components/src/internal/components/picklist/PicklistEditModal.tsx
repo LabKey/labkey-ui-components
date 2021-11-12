@@ -16,10 +16,10 @@ import { incrementClientSideMetricCount } from '../../actions';
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
+import { getDefaultSamplesAPIWrapper, SamplesAPIWrapper } from '../samples/APIWrapper';
 
 interface Props {
     selectionKey?: string; // pass in either selectionKey and selectedQuantity or sampleIds.
@@ -32,7 +32,7 @@ interface Props {
     currentProductId?: string;
     picklistProductId?: string;
     metricFeatureArea?: string;
-    api?: ComponentsAPIWrapper;
+    api?: SamplesAPIWrapper;
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
@@ -69,8 +69,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
 
     useEffect(() => {
-        api.samples
-            .getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
+        api.getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
             .then(data => {
                 setStatusData(data);
                 setValidCount(data.allowed.length);
@@ -231,5 +230,5 @@ export const PicklistEditModal: FC<Props> = memo(props => {
 });
 
 PicklistEditModal.defaultProps = {
-    api: getDefaultAPIWrapper(),
+    api: getDefaultSamplesAPIWrapper(),
 };

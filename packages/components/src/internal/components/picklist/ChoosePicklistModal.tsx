@@ -18,7 +18,6 @@ import { incrementClientSideMetricCount } from '../../actions';
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { Picklist } from './models';
 import {
@@ -28,6 +27,7 @@ import {
     getPicklistUrl,
     SampleTypeCount,
 } from './actions';
+import { getDefaultSamplesAPIWrapper, SamplesAPIWrapper } from '../samples/APIWrapper';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -238,7 +238,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         useEffect(() => {
             (async () => {
                 try {
-                    const data = await api.samples.getSampleOperationConfirmationData(
+                    const data = await api.getSampleOperationConfirmationData(
                         SampleOperation.AddToPicklist,
                         selectionKey,
                         sampleIds
@@ -466,7 +466,7 @@ interface ChoosePicklistModalProps {
     currentProductId?: string;
     picklistProductId?: string;
     metricFeatureArea?: string;
-    api?: ComponentsAPIWrapper;
+    api?: SamplesAPIWrapper;
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
@@ -490,5 +490,5 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
 });
 
 ChoosePicklistModal.defaultProps = {
-    api: getDefaultAPIWrapper(),
+    api: getDefaultSamplesAPIWrapper(),
 };

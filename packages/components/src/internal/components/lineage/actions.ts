@@ -93,9 +93,11 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
         .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.length === 1)
         .groupBy(n => SchemaQuery.create(n.schemaName, n.queryName))
         .map((nodes, schemaQuery) => {
-            const { fieldKey } = nodes.first().pkFilters[0];
+            const node = nodes.first();
+            const { fieldKey } = node.pkFilters[0];
 
             return selectRows({
+                containerPath: node.container,
                 schemaName: schemaQuery.schemaName,
                 queryName: schemaQuery.queryName,
                 // TODO: Is there a better way to determine set of columns? Can we follow convention for detail views?

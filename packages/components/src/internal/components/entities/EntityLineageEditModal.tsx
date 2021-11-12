@@ -22,14 +22,15 @@ import {
 
 import { getOriginalParentsFromSampleLineage } from '../samples/actions';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { IS_ALIQUOT_COL } from '../samples/constants';
+
 import { EntityChoice, EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun, getUpdatedLineageRowsForBulkEdit } from './utils';
 
 import { ParentEntityLineageColumns } from './constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
-
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-import { IS_ALIQUOT_COL } from '../samples/constants';
 
 interface Props {
     queryModel: QueryModel;

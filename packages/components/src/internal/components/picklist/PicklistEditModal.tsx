@@ -53,7 +53,10 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 
     const [description, setDescription] = useState<string>(picklist?.Description ?? '');
-    const onDescriptionChange = useCallback((evt: ChangeEvent<HTMLTextAreaElement>) => setDescription(evt.target.value), []);
+    const onDescriptionChange = useCallback(
+        (evt: ChangeEvent<HTMLTextAreaElement>) => setDescription(evt.target.value),
+        []
+    );
 
     const [shared, setShared] = useState<boolean>(picklist?.isPublic() ?? false);
     // Using a type for evt here causes difficulties.  It wants a FormEvent<Checkbox> but

@@ -7,8 +7,9 @@ import { Filter } from '@labkey/api';
 
 import { makeTestQueryModel, SchemaQuery } from '../../..';
 
-import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 import { IS_ALIQUOT_COL } from '../samples/constants';
+
+import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 
 describe('<GridAliquotViewSelector/>', () => {
     test('no queryModel', () => {

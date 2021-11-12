@@ -65,8 +65,8 @@ describe('SamplesTabbedGridPanel', () => {
         const wrapper = shallow(
             <SamplesTabbedGridPanel
                 {...DEFAULT_PROPS}
-                createBtnParentType={'testParentType'}
-                createBtnParentKey={'testParentKey'}
+                createBtnParentType="testParentType"
+                createBtnParentKey="testParentKey"
                 queryModels={{
                     tab1: makeTestQueryModel(SQ, QI).mutate({ selections: new Set() }),
                     tab2: makeTestQueryModel(SQ, QI),
@@ -84,8 +84,8 @@ describe('SamplesTabbedGridPanel', () => {
         const wrapper = shallow(
             <SamplesTabbedGridPanel
                 {...DEFAULT_PROPS}
-                createBtnParentType={'testParentType'}
-                createBtnParentKey={'testParentKey'}
+                createBtnParentType="testParentType"
+                createBtnParentKey="testParentKey"
                 queryModels={{
                     tab1: makeTestQueryModel(SQ, QI).mutate({ selections: new Set(['1']) }),
                     tab2: makeTestQueryModel(SQ, QI),
@@ -100,7 +100,7 @@ describe('SamplesTabbedGridPanel', () => {
     });
 
     test('call toggleEditWithGridUpdate without activeModel selections', () => {
-        let wrapper = shallow(
+        const wrapper = shallow(
             <SamplesTabbedGridPanel
                 {...DEFAULT_PROPS}
                 queryModels={{
@@ -118,7 +118,7 @@ describe('SamplesTabbedGridPanel', () => {
     });
 
     test('call toggleEditWithGridUpdate with activeModel selections', () => {
-        let wrapper = shallow(
+        const wrapper = shallow(
             <SamplesTabbedGridPanel
                 {...DEFAULT_PROPS}
                 queryModels={{
@@ -136,7 +136,7 @@ describe('SamplesTabbedGridPanel', () => {
     });
 
     test('call showBulkUpdate without activeModel selections', () => {
-        let wrapper = shallow(
+        const wrapper = shallow(
             <SamplesTabbedGridPanel
                 {...DEFAULT_PROPS}
                 queryModels={{
@@ -154,7 +154,7 @@ describe('SamplesTabbedGridPanel', () => {
     });
 
     test('call showBulkUpdate with activeModel selections', () => {
-        let wrapper = shallow(
+        const wrapper = shallow(
             <SamplesTabbedGridPanel
                 {...DEFAULT_PROPS}
                 queryModels={{
@@ -174,7 +174,7 @@ describe('SamplesTabbedGridPanel', () => {
     });
 
     test('onBulkUpdateComplete set selectionData', () => {
-        let wrapper = shallow(
+        const wrapper = shallow(
             <SamplesTabbedGridPanel
                 {...DEFAULT_PROPS}
                 queryModels={{
@@ -190,7 +190,7 @@ describe('SamplesTabbedGridPanel', () => {
         validate(wrapper, false, 'tab1', true);
 
         // call onBulkUpdateComplete with submitForEdit false, which does not puts the component in edit grid mode
-        wrapper.find(SamplesBulkUpdateForm).invoke('onBulkUpdateComplete')(fromJS({a:1}), false);
+        wrapper.find(SamplesBulkUpdateForm).invoke('onBulkUpdateComplete')(fromJS({ a: 1 }), false);
         wrapper.setProps({ actions: makeTestActions() }); // force re-render
         validate(wrapper);
 
@@ -199,19 +199,14 @@ describe('SamplesTabbedGridPanel', () => {
         wrapper.setProps({ actions: makeTestActions() }); // force re-render
 
         // call onBulkUpdateComplete with submitForEdit true, which puts the component in edit grid mode
-        wrapper.find(SamplesBulkUpdateForm).invoke('onBulkUpdateComplete')(fromJS({a:1}), true);
+        wrapper.find(SamplesBulkUpdateForm).invoke('onBulkUpdateComplete')(fromJS({ a: 1 }), true);
         wrapper.setProps({ actions: makeTestActions() }); // force re-render
         validate(wrapper, true);
         wrapper.unmount();
     });
 
     test('canPrintLabels false', () => {
-        const wrapper = shallow(
-            <SamplesTabbedGridPanel
-                {...DEFAULT_PROPS}
-                canPrintLabels={false}
-            />
-        );
+        const wrapper = shallow(<SamplesTabbedGridPanel {...DEFAULT_PROPS} canPrintLabels={false} />);
         validate(wrapper);
         expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeUndefined();
         expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeUndefined();
@@ -219,12 +214,7 @@ describe('SamplesTabbedGridPanel', () => {
     });
 
     test('canPrintLabels true', () => {
-        const wrapper = shallow(
-            <SamplesTabbedGridPanel
-                {...DEFAULT_PROPS}
-                canPrintLabels={true}
-            />
-        );
+        const wrapper = shallow(<SamplesTabbedGridPanel {...DEFAULT_PROPS} canPrintLabels={true} />);
         validate(wrapper);
         expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeDefined();
         expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeDefined();

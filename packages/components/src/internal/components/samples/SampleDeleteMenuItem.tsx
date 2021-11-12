@@ -4,6 +4,7 @@ import { MenuItem } from 'react-bootstrap';
 import { AuditBehaviorTypes } from '@labkey/api';
 
 import { EntityDeleteModal, SampleTypeDataType, QueryModel, SelectionMenuItem } from '../../..';
+
 import { MAX_SELECTED_SAMPLES } from './constants';
 
 interface Props {
@@ -18,16 +19,8 @@ interface Props {
 }
 
 export const SampleDeleteMenuItem: FC<Props> = memo(props => {
-    const {
-        key,
-        itemText,
-        queryModel,
-        verb,
-        beforeSampleDelete,
-        afterSampleDelete,
-        auditBehavior,
-        maxDeleteRows,
-    } = props;
+    const { key, itemText, queryModel, verb, beforeSampleDelete, afterSampleDelete, auditBehavior, maxDeleteRows } =
+        props;
     const [showConfirmDeleteSamples, setShowConfirmDeleteSamples] = useState<boolean>(false);
 
     const onClick = useCallback(() => {

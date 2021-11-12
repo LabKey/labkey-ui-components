@@ -14,10 +14,11 @@ import {
     QueryModel,
 } from '../../..';
 
+import { MAX_SELECTED_SAMPLES } from '../samples/constants';
+
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDataType } from './models';
 import { getEntityNoun } from './utils';
-import { MAX_SELECTED_SAMPLES } from '../samples/constants';
 
 interface Props {
     model?: QueryGridModel;

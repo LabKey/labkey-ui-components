@@ -25,6 +25,7 @@ import {
 } from '../../..';
 
 import { TabbedGridPanelProps } from '../../../public/QueryModel/TabbedGridPanel';
+
 import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
@@ -80,7 +81,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         getSampleAuditBehaviorType,
         tabbedGridPanelProps,
     } = props;
-    const onLabelExport = {[EXPORT_TYPES.LABEL]: onPrintLabel};
+    const onLabelExport = { [EXPORT_TYPES.LABEL]: onPrintLabel };
 
     const onTabSelect = useCallback((tab: string) => {
         setActiveTabId(tab);
@@ -97,46 +98,58 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         return selSize > 0 && selSize <= MAX_EDITABLE_GRID_ROWS;
     }, [activeModel.selections]);
 
-    const [ isEditing, setIsEditing ] = useState<boolean>();
-    const [ showBulkUpdate, setShowBulkUpdate ] = useState<boolean>();
-    const [ selectionData, setSelectionData ] = useState<Map<string, any>>();
+    const [isEditing, setIsEditing] = useState<boolean>();
+    const [showBulkUpdate, setShowBulkUpdate] = useState<boolean>();
+    const [selectionData, setSelectionData] = useState<Map<string, any>>();
 
-    const [ editableGridData, setEditableGridData ] = useState<EditableGridData>();
-    const onEditSelectionInGrid = useCallback((editableGridUpdateData: any, editableGridDataForSelection: Map<string, any>, editableGridDataIdsForSelection: List<any>) : Promise<any>  => {
-        setEditableGridData({
-            updateData: editableGridUpdateData,
-            dataForSelection: editableGridDataForSelection,
-            idsForSelection: editableGridDataIdsForSelection,
-        });
-        return new Promise<any>((resolve) => resolve(editableGridDataForSelection));
-    }, []);
-
-    const [ activeActiveAliquotMode, setActiveAliquotMode ] = useState<string>(sampleAliquotType ?? ALIQUOT_FILTER_MODE.all);
-
-    const onAliquotViewUpdate = useCallback((aliquotFilter: Filter.IFilter, filterAliquotColName: string, newAliquotMode: ALIQUOT_FILTER_MODE) => {
-        setActiveAliquotMode(newAliquotMode);
-        Object.values(queryModels).forEach(model => {
-            // account for the case where the aliquot column is in the queryModel via a lookup from the sample ID
-            let aliquotColName = IS_ALIQUOT_COL;
-            if (!model.getColumnByFieldKey(IS_ALIQUOT_COL)) {
-                aliquotColName = model.allColumns?.find(
-                    c => c.fieldKey?.toLowerCase().indexOf('/' + IS_ALIQUOT_COL.toLowerCase()) > -1
-                )?.fieldKey;
-            }
-
-            const newFilters = model.filterArray.filter(filter => {
-                return aliquotColName?.toLowerCase() !== filter.getColumnName().toLowerCase();
+    const [editableGridData, setEditableGridData] = useState<EditableGridData>();
+    const onEditSelectionInGrid = useCallback(
+        (
+            editableGridUpdateData: any,
+            editableGridDataForSelection: Map<string, any>,
+            editableGridDataIdsForSelection: List<any>
+        ): Promise<any> => {
+            setEditableGridData({
+                updateData: editableGridUpdateData,
+                dataForSelection: editableGridDataForSelection,
+                idsForSelection: editableGridDataIdsForSelection,
             });
+            return new Promise<any>(resolve => resolve(editableGridDataForSelection));
+        },
+        []
+    );
 
-            if (aliquotFilter && aliquotColName) {
-                newFilters.push(Filter.create(aliquotColName, newAliquotMode === ALIQUOT_FILTER_MODE.aliquots));
-            }
+    const [activeActiveAliquotMode, setActiveAliquotMode] = useState<string>(
+        sampleAliquotType ?? ALIQUOT_FILTER_MODE.all
+    );
 
-            if (model.queryInfo) {
-                actions.setFilters(model.id, newFilters, true);
-            }
-        });
-    }, [queryModels, actions]);
+    const onAliquotViewUpdate = useCallback(
+        (aliquotFilter: Filter.IFilter, filterAliquotColName: string, newAliquotMode: ALIQUOT_FILTER_MODE) => {
+            setActiveAliquotMode(newAliquotMode);
+            Object.values(queryModels).forEach(model => {
+                // account for the case where the aliquot column is in the queryModel via a lookup from the sample ID
+                let aliquotColName = IS_ALIQUOT_COL;
+                if (!model.getColumnByFieldKey(IS_ALIQUOT_COL)) {
+                    aliquotColName = model.allColumns?.find(
+                        c => c.fieldKey?.toLowerCase().indexOf('/' + IS_ALIQUOT_COL.toLowerCase()) > -1
+                    )?.fieldKey;
+                }
+
+                const newFilters = model.filterArray.filter(filter => {
+                    return aliquotColName?.toLowerCase() !== filter.getColumnName().toLowerCase();
+                });
+
+                if (aliquotFilter && aliquotColName) {
+                    newFilters.push(Filter.create(aliquotColName, newAliquotMode === ALIQUOT_FILTER_MODE.aliquots));
+                }
+
+                if (model.queryInfo) {
+                    actions.setFilters(model.id, newFilters, true);
+                }
+            });
+        },
+        [queryModels, actions]
+    );
 
     const onShowBulkUpdate = useCallback(() => {
         if (hasSelection) {
@@ -151,11 +164,14 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         });
     }, []);
 
-    const onBulkUpdateComplete = useCallback((data: Map<string, any>, submitForEdit = false) => {
-        setShowBulkUpdate(false);
-        setSelectionData(submitForEdit ? data : undefined);
-        actions.loadModel(activeModel.id, true);
-    }, [actions, activeModel.id]);
+    const onBulkUpdateComplete = useCallback(
+        (data: Map<string, any>, submitForEdit = false) => {
+            setShowBulkUpdate(false);
+            setSelectionData(submitForEdit ? data : undefined);
+            actions.loadModel(activeModel.id, true);
+        },
+        [actions, activeModel.id]
+    );
 
     const toggleEditWithGridUpdate = useCallback(() => {
         if (isEditing) {
@@ -180,21 +196,24 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         resetState();
     }, [actions, activeModel.id]);
 
-    const afterSampleDelete = useCallback((rowsToKeep: Array<any>) => {
-        const ids = [];
-        if (rowsToKeep.length > 0) {
-            rowsToKeep.forEach((row) => {
-                ids.push(row['RowId']);
-            });
-        }
-        actions.replaceSelections(activeModel.id, ids);
+    const afterSampleDelete = useCallback(
+        (rowsToKeep: Array<any>) => {
+            const ids = [];
+            if (rowsToKeep.length > 0) {
+                rowsToKeep.forEach(row => {
+                    ids.push(row['RowId']);
+                });
+            }
+            actions.replaceSelections(activeModel.id, ids);
 
-        _afterSampleActionComplete();
-    }, [actions, activeModel]);
+            _afterSampleActionComplete();
+        },
+        [actions, activeModel]
+    );
 
-    const onUpdateRows = useCallback((schemaQuery: SchemaQuery, rows: Array<any>) : Promise<void> => {
+    const onUpdateRows = useCallback((schemaQuery: SchemaQuery, rows: Array<any>): Promise<void> => {
         if (rows.length === 0) {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 dismissNotifications();
                 withTimeout(() => {
                     createNotification(NO_UPDATES_MESSAGE);
@@ -206,24 +225,31 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             return updateRows({
                 schemaQuery,
                 rows,
-                auditBehavior: getSampleAuditBehaviorType()
-            }).then((result) => {
-                queryGridInvalidate(schemaQuery);
-                invalidateLineageResults();
-                gridIdInvalidate('update-samples-grid', true);
-                dismissNotifications(); // get rid of any error notifications that have already been created
-                withTimeout(() => {
-                    const noun = rows.length === 1 ? SampleTypeDataType.nounSingular : SampleTypeDataType.nounPlural;
-                    createNotification('Successfully updated ' + result.rows.length + ' ' + noun + '.');
+                auditBehavior: getSampleAuditBehaviorType(),
+            })
+                .then(result => {
+                    queryGridInvalidate(schemaQuery);
+                    invalidateLineageResults();
+                    gridIdInvalidate('update-samples-grid', true);
+                    dismissNotifications(); // get rid of any error notifications that have already been created
+                    withTimeout(() => {
+                        const noun =
+                            rows.length === 1 ? SampleTypeDataType.nounSingular : SampleTypeDataType.nounPlural;
+                        createNotification('Successfully updated ' + result.rows.length + ' ' + noun + '.');
+                    });
+                })
+                .catch(reason => {
+                    dismissNotifications(); // get rid of any error notifications that have already been created
+                    createNotification({
+                        alertClass: 'danger',
+                        message: resolveErrorMessage(
+                            reason,
+                            SampleTypeDataType.nounSingular,
+                            SampleTypeDataType.nounPlural,
+                            'update'
+                        ),
+                    });
                 });
-
-            }).catch((reason) => {
-                dismissNotifications(); // get rid of any error notifications that have already been created
-                createNotification({
-                    alertClass: 'danger',
-                    message:  resolveErrorMessage(reason, SampleTypeDataType.nounSingular, SampleTypeDataType.nounPlural, 'update')
-                });
-            });
         }
     }, []);
 
@@ -244,7 +270,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
 
     return (
         <>
-            {(isEditing || selectionData) ? (
+            {isEditing || selectionData ? (
                 <SamplesEditableGrid
                     {...samplesEditableGridProps}
                     displayQueryModel={activeModel}

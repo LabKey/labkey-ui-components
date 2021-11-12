@@ -24,10 +24,11 @@ import {
     withQueryModels,
 } from '../../../public/QueryModel/withQueryModels';
 
+import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
+
 import { deletePicklists } from './actions';
 import { Picklist } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
-import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';

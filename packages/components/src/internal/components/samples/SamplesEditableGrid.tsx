@@ -45,10 +45,11 @@ import {
     removeEntityParentType,
 } from '../entities/EntityParentTypeSelectors';
 
+import { isFreezerManagementEnabled } from '../../app/utils';
+
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { getOriginalParentsFromSampleLineage } from './actions';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
-import { isFreezerManagementEnabled } from '../../app/utils';
 
 export interface SamplesEditableGridProps {
     displayQueryModel: QueryModel;
@@ -447,13 +448,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getStorageUpdateData(storageRows: any[]) {
-        const {
-            sampleItems,
-            sampleTypeDomainFields,
-            noStorageSamples,
-            selection,
-            getConvertedStorageUpdateData,
-        } = this.props;
+        const { sampleItems, sampleTypeDomainFields, noStorageSamples, selection, getConvertedStorageUpdateData } =
+            this.props;
         if (!isFreezerManagementEnabled() || storageRows.length === 0 || !getConvertedStorageUpdateData) return null;
 
         const sampleTypeUnit = sampleTypeDomainFields.metricUnit;

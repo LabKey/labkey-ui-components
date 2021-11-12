@@ -288,8 +288,6 @@ import {
     getSelectedItemSamples,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
-import { SamplesBulkUpdateForm } from './internal/components/samples/SamplesBulkUpdateForm';
-import { SamplesEditableGrid } from './internal/components/samples/SamplesEditableGrid';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
 import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
 import { SampleDeleteMenuItem } from './internal/components/samples/SampleDeleteMenuItem';

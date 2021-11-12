@@ -1,6 +1,7 @@
 import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, MenuItem } from 'react-bootstrap';
 import { AuditBehaviorTypes } from '@labkey/api';
+
 import {
     App,
     AppURL,
@@ -26,9 +27,10 @@ import {
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
+import { PUBLIC_PICKLIST_CATEGORY, PRIVATE_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
+
 import { getPicklistFromId, deletePicklists, updatePicklist } from './actions';
 import { Picklist } from './models';
-import { PUBLIC_PICKLIST_CATEGORY, PRIVATE_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistEditModal } from './PicklistEditModal';
 import { PicklistGridButtons } from './PicklistGridButtons';
@@ -229,38 +231,42 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
     const listId = parseInt(params.id, 10);
     const [picklist, setPicklist] = useState<Picklist>();
 
-    const loadPicklist = useCallback(async (incrementCounter: boolean) => {
-        if (incrementCounter) LOAD_PICKLIST_COUNTER++;
+    const loadPicklist = useCallback(
+        async (incrementCounter: boolean) => {
+            if (incrementCounter) LOAD_PICKLIST_COUNTER++;
 
-        try {
-            const updatedPicklist = await getPicklistFromId(listId);
-            setPicklist(updatedPicklist);
-        } catch (e) {
-            console.error('There was a problem retrieving the picklist data.', e);
-            setPicklist(new Picklist(/* use empty picklist to signal not found */));
-        }
-    }, [listId]);
+            try {
+                const updatedPicklist = await getPicklistFromId(listId);
+                setPicklist(updatedPicklist);
+            } catch (e) {
+                console.error('There was a problem retrieving the picklist data.', e);
+                setPicklist(new Picklist(/* use empty picklist to signal not found */));
+            }
+        },
+        [listId]
+    );
 
     useEffect(() => {
         loadPicklist(true);
     }, [loadPicklist]);
 
-    const queryConfigs: QueryConfigMap = useMemo(
-        () => {
-            const configs = {};
+    const queryConfigs: QueryConfigMap = useMemo(() => {
+        const configs = {};
 
-            if (picklist?.listId) {
-                const gridId = PICKLIST_ITEMS_ID_PREFIX + LOAD_PICKLIST_COUNTER;
-                configs[gridId] = {
-                    id: gridId,
-                    title: 'All Samples',
-                    schemaQuery: SchemaQuery.create(SCHEMAS.PICKLIST_TABLES.SCHEMA, picklist.name),
-                    requiredColumns: ['Created'],
-                };
+        if (picklist?.listId) {
+            const gridId = PICKLIST_ITEMS_ID_PREFIX + LOAD_PICKLIST_COUNTER;
+            configs[gridId] = {
+                id: gridId,
+                title: 'All Samples',
+                schemaQuery: SchemaQuery.create(SCHEMAS.PICKLIST_TABLES.SCHEMA, picklist.name),
+                requiredColumns: ['Created'],
+            };
 
-                // add a queryConfig for each distinct sample type of the picklist samples, with an IN clause
-                // filter for the set of sample RowIds in that sample type
-                Object.keys(picklist.sampleIdsByType).sort().forEach(sampleType => {
+            // add a queryConfig for each distinct sample type of the picklist samples, with an IN clause
+            // filter for the set of sample RowIds in that sample type
+            Object.keys(picklist.sampleIdsByType)
+                .sort()
+                .forEach(sampleType => {
                     const id = `${PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX}${LOAD_PICKLIST_COUNTER}|samples/${sampleType}`;
                     configs[id] = {
                         id,
@@ -269,12 +275,10 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                         baseFilters: [picklist.getSampleTypeFilter(sampleType)],
                     };
                 });
-            }
+        }
 
-            return configs;
-        },
-        [picklist]
-    );
+        return configs;
+    }, [picklist]);
 
     if (!picklist) {
         return <LoadingPage />;

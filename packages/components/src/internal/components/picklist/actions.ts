@@ -12,7 +12,7 @@ import { User } from '../base/models/User';
 import { AppURL, buildURL, createProductUrlFromParts } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
 import { resolveErrorMessage } from '../../util/messaging';
-import { caseInsensitive, OperationConfirmationData, SCHEMAS } from '../../../';
+import { caseInsensitive, OperationConfirmationData, SCHEMAS } from '../../..';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
@@ -454,7 +454,7 @@ export const removeSamplesFromPicklist = async (picklist: Picklist, selectionMod
                 });
         }
     });
-}
+};
 
 export function getPicklistUrl(listId: number, picklistProductId?: string, currentProductId?: string): string {
     let picklistUrl: string = AppURL.create(PICKLIST_KEY, listId).toHref();

@@ -2,6 +2,7 @@ import React, { ComponentType, FC, memo } from 'react';
 
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
 import { User } from '../base/models/User';
+
 import { Picklist } from './models';
 
 interface GridButtonProps {

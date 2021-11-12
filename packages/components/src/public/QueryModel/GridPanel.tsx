@@ -609,11 +609,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
                 <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
                     {showButtonBar && (
-                        <ButtonBar
-                            {...this.props}
-                            onViewSelect={this.onViewSelect}
-                            onExport={onExport}
-                        />
+                        <ButtonBar {...this.props} onViewSelect={this.onViewSelect} onExport={onExport} />
                     )}
 
                     {showOmniBox && (

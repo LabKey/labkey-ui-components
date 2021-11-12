@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
@@ -9,7 +9,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { getConfirmDeleteMessage } from '../../util/messaging';
 
 import { Picklist } from './models';
-import { getPicklistDeleteData, PicklistDeletionData } from './actions';
+import { PicklistDeletionData } from './actions';
+import { getDefaultPicklistAPIWrapper, PicklistAPIWrapper } from './APIWrapper';
 
 interface DeleteConfirmMessageProps {
     deletionData: PicklistDeletionData;
@@ -101,10 +102,11 @@ interface Props {
     user: User;
     onConfirm: (listsToDelete: any[]) => void;
     onCancel: () => void;
+    api?: PicklistAPIWrapper;
 }
 
 export const PicklistDeleteConfirm: FC<Props> = memo(props => {
-    const { model, picklist, onConfirm, onCancel, user } = props;
+    const { model, picklist, onConfirm, onCancel, user, api } = props;
     const [errorMessage, setErrorMessage] = useState(undefined);
     const [nounAndNumber, setNounAndNumber] = useState('Picklist');
     const [deletionData, setDeletionData] = useState<PicklistDeletionData>(undefined);
@@ -115,7 +117,7 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
 
     useEffect(() => {
         if (model) {
-            getPicklistDeleteData(model, user)
+            api.getPicklistDeleteData(model, user)
                 .then(data => {
                     setNounAndNumber(data.numDeletable === 1 ? '1 Picklist' : data.numDeletable + ' Picklists');
                     setDeletionData(data);
@@ -164,3 +166,7 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
         </ConfirmModal>
     );
 });
+
+PicklistDeleteConfirm.defaultProps = {
+    api: getDefaultPicklistAPIWrapper(),
+};

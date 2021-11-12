@@ -14,6 +14,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     * split out RemoveFromPicklistMenuItem so that it can be used on the app side like AddToPicklistMenuItem
     * remove GridPanel internal usage of GridAliquotViewSelector, usages can still pass this in via ButtonsComponentRight
 
+### version 2.91.1
+*Released*: 10 November 2021
+* Bump @labkey/api dependency
+
 ### version 2.91.0
 *Released*: 2 November 2021
 * getUsersWithPermissions: support alternate container paths

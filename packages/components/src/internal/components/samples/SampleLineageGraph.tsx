@@ -14,9 +14,9 @@ import { DEFAULT_LINEAGE_DISTANCE, SAMPLE_ALIQUOT_PROTOCOL_LSID } from '../linea
 import { LineageDepthLimitMessage } from '../lineage/LineageGraph';
 
 interface Props {
+    containerPath?: string;
     sampleLsid: string;
     sampleID: string;
-    seedContainer?: string;
     goToLineageGrid: () => void;
     onLineageNodeDblClick: (node: VisGraphNode) => void;
     groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>;
@@ -120,9 +120,9 @@ export class SampleLineageGraph extends PureComponent<Props, State> {
 
     render() {
         const {
+            containerPath,
             sampleLsid,
             sampleID,
-            seedContainer,
             goToLineageGrid,
             onLineageNodeDblClick,
             groupTitles,
@@ -142,13 +142,13 @@ export class SampleLineageGraph extends PureComponent<Props, State> {
                     {this.renderFilter()}
 
                     <LineageGraph
+                        containerPath={containerPath}
                         lsid={sampleLsid}
                         grouping={grouping}
                         filters={this.getLineageFilters()}
                         navigate={onLineageNodeDblClick}
                         groupTitles={groupTitles}
                         runProtocolLsid={this.getRunProtocolLsid()}
-                        seedContainer={seedContainer}
                     />
                     <LineageDepthLimitMessage maxDistance={grouping.childDepth} nodeName={sampleID} />
                 </Panel.Body>

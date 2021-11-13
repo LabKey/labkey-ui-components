@@ -32,7 +32,7 @@ import {
 
 let queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
 
-export function invalidateQueryDetailsCache(): void {
+export function invalidateFullQueryDetailsCache(): void {
     queryDetailsCache = {};
 }
 

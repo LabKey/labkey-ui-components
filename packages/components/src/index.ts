@@ -458,10 +458,7 @@ import {
 } from './internal/components/domainproperties/list/actions';
 import { fetchIssuesListDefDesign } from './internal/components/domainproperties/issues/actions';
 import { fetchDatasetDesign } from './internal/components/domainproperties/dataset/actions';
-import {
-    DEFAULT_SAMPLE_FIELD_CONFIG,
-    SampleTypeDesigner,
-} from './internal/components/domainproperties/samples/SampleTypeDesigner';
+import { SampleTypeDesigner } from './internal/components/domainproperties/samples/SampleTypeDesigner';
 import { ListDesignerPanels } from './internal/components/domainproperties/list/ListDesignerPanels';
 import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
@@ -493,14 +490,20 @@ import { DisableableMenuItem } from './internal/components/samples/DisableableMe
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
 import {
+    ALIQUOTED_FROM_COL,
+    DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
+    SAMPLE_DATA_EXPORT_CONFIG,
+    SAMPLE_EXPORT_CONFIG,
     SAMPLE_ID_FIND_FIELD,
+    SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
     SampleStateType,
-    UNIQUE_ID_FIND_FIELD,
+    UNIQUE_ID_FIND_FIELD
 } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -895,7 +898,12 @@ export {
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     FIND_BY_IDS_QUERY_PARAM,
     UNIQUE_ID_FIND_FIELD,
+    ALIQUOTED_FROM_COL,
+    SAMPLE_DATA_EXPORT_CONFIG,
+    SAMPLE_EXPORT_CONFIG,
     SAMPLE_ID_FIND_FIELD,
+    SAMPLE_INSERT_EXTRA_COLUMNS,
+    SAMPLE_STORAGE_COLUMNS,
     SampleTypeModel,
     deleteSampleSet,
     fetchSamples,

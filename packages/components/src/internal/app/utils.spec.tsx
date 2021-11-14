@@ -250,28 +250,7 @@ describe('utils', () => {
             samplemanagement: {},
             biologics: {},
         };
-        expect(isFreezerManagementEnabled()).toBeFalsy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-            samplemanagement: {},
-            biologics: { isFreezerManagerEnabled: false },
-        };
-        expect(isFreezerManagementEnabled()).toBeFalsy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-            samplemanagement: {},
-            biologics: { isFreezerManagerEnabled: true },
-        };
         expect(isFreezerManagementEnabled()).toBeTruthy();
-        expect(isFreezerManagementEnabled({ inventory: {}, samplemanagement: {}, biologics: {} })).toBeFalsy();
-        expect(
-            isFreezerManagementEnabled(
-                { inventory: {}, samplemanagement: {}, biologics: {} },
-                SAMPLE_MANAGER_APP_PROPERTIES.productId
-            )
-        ).toBeTruthy();
     });
 
     test('isSampleStatusEnabled', () => {
@@ -488,7 +467,7 @@ describe('getStorageSectionConfig', () => {
             getStorageSectionConfig(
                 TEST_USER_EDITOR,
                 BIOLOGICS_APP_PROPERTIES.productId,
-                { inventory: {}, biologics: { isFreezerManagerEnabled: false } },
+                { inventory: {}, biologics: {} },
                 2
             )
         ).toBe(undefined);
@@ -728,7 +707,7 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
             inventory: {},
             samplemanagement: {},
-            biologics: { isFreezerManagerEnabled: true },
+            biologics: {},
         });
         expect(configs.size).toBe(5);
         expect(configs.getIn([0, REGISTRY_KEY])).toBeDefined();
@@ -750,7 +729,7 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
             inventory: {},
             samplemanagement: {},
-            biologics: { 'experimental-biologics-requests-menu': true, isFreezerManagerEnabled: true },
+            biologics: {},
         });
         expect(configs.size).toBe(5);
         expect(configs.getIn([0, REGISTRY_KEY])).toBeDefined();

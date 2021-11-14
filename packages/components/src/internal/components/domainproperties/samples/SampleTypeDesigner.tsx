@@ -20,10 +20,11 @@ import {
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
+import { DEFAULT_SAMPLE_FIELD_CONFIG } from '../../samples/constants';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { SAMPLE_TYPE, UNIQUE_ID_TYPE } from '../PropDescType';
+import { UNIQUE_ID_TYPE } from '../PropDescType';
 
 import { hasModule, isCommunityDistribution } from '../../../app/utils';
 
@@ -31,16 +32,6 @@ import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { UniqueIdBanner } from './UniqueIdBanner';
 
-export const DEFAULT_SAMPLE_FIELD_CONFIG = {
-    required: true,
-    dataType: SAMPLE_TYPE,
-    conceptURI: SAMPLE_TYPE.conceptURI,
-    rangeURI: SAMPLE_TYPE.rangeURI,
-    lookupSchema: 'exp',
-    lookupQuery: 'Materials',
-    lookupType: { ...SAMPLE_TYPE },
-    name: 'SampleID',
-} as Partial<IDomainField>;
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,

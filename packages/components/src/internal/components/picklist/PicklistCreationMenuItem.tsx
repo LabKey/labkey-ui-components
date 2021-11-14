@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 
 import { MenuItem } from 'react-bootstrap';
 
-import { isFreezerManagementEnabled, userCanManagePicklists } from '../../app/utils';
+import { userCanManagePicklists } from '../../app/utils';
 
 import { User } from '../base/models/User';
 
@@ -40,7 +40,7 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
         setShowModal(true);
     };
 
-    if (!userCanManagePicklists(user) || !isFreezerManagementEnabled()) {
+    if (!userCanManagePicklists(user)) {
         return null;
     }
 

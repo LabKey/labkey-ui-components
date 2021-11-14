@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 10 November 2021
 * Bump @labkey/api dependency
 
+### version XXX
+*Released*: XXX
+* Remove isFreezerManagerEnabledInBiologics experimental flag
+
 ### version 2.91.0
 *Released*: 2 November 2021
 * getUsersWithPermissions: support alternate container paths

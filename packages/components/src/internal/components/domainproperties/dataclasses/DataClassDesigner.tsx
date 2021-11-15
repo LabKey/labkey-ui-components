@@ -8,6 +8,8 @@ import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
+import { isSampleManagerEnabled } from '../../../app/utils';
+
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
 
@@ -44,7 +46,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
         domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'data class' },
-        loadNameExpressionOptions: loadNameExpressionOptions,
+        loadNameExpressionOptions,
     };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
@@ -59,7 +61,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
     }
 
     componentDidMount = async (): Promise<void> => {
-        if (this.state.model.isNew) {
+        if (this.state.model.isNew && isSampleManagerEnabled()) {
             const response = await this.props.loadNameExpressionOptions();
 
             this.setState(

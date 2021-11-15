@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.91.2
+*Released*: 15 November 2021
+* Merge release21.11-SNAPSHOT to develop
+* Includes changes from versions 2.90.2 and 2.90.3
+
 ### version 2.91.1
 *Released*: 10 November 2021
 * Bump @labkey/api dependency
@@ -12,6 +17,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Export invalidateQueryDetailsCache
   * Provides containerPath-sensitive cache clearing
 * Announcements: support supplying containerPath
+
+### version 2.90.3
+*Released*: 10 November 2021
+* Issue 44250: Invalidate QueryInfo caches after change to NameIdSettings.allowUserSpecifiedNames
+
+### version 2.90.2
+*Released*: 3 November 2021
+* Ensure LK instances without LKSM do not call prefix-related actions
 
 ### version 2.90.1
 *Released*: 1 November 2021

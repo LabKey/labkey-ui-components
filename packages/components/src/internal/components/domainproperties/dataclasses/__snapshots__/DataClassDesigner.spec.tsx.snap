@@ -1472,24 +1472,7 @@ exports[`DataClassDesigner initModel 1`] = `
       Symbol(immer-draftable): true,
     }
   }
-  loadNameExpressionOptions={
-    [MockFunction] {
-      "calls": Array [
-        Array [],
-        Array [],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-      ],
-    }
-  }
+  loadNameExpressionOptions={[MockFunction]}
   onCancel={[MockFunction]}
   onComplete={[MockFunction]}
   testMode={true}
@@ -1819,24 +1802,7 @@ exports[`DataClassDesigner initModel 1`] = `
         Symbol(immer-draftable): true,
       }
     }
-    loadNameExpressionOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-          Array [],
-        ],
-        "results": Array [
-          Object {
-            "type": "return",
-            "value": Promise {},
-          },
-          Object {
-            "type": "return",
-            "value": Promise {},
-          },
-        ],
-      }
-    }
+    loadNameExpressionOptions={[MockFunction]}
     nounPlural="Data Classes"
     nounSingular="Data Class"
     onCancel={[MockFunction]}

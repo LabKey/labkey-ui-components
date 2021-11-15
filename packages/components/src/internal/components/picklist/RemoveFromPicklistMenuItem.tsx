@@ -12,7 +12,7 @@ import { User } from '../base/models/User';
 
 import { removeSamplesFromPicklist } from './actions';
 import { Picklist } from './models';
-import { isFreezerManagementEnabled, userCanManagePicklists } from "../../app/utils";
+import { isFreezerManagementEnabled, userCanManagePicklists } from '../../app/utils';
 
 interface Props {
     user: User;

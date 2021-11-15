@@ -225,9 +225,6 @@ export class AppURL extends Record({
  */
 export function spliceURL(parts: any[], newParts: any[], startIndex: number, numToReplace?: number): AppURL {
     parts.splice(startIndex, numToReplace === undefined ? 1 : numToReplace, ...newParts);
-    const decodedParts = [];
-    for (var i = 0; i < parts.length; i++) {
-        decodedParts.push(decodeURIComponent(parts[i]));
-    }
+    const decodedParts = parts.map(p => decodeURIComponent(p)).filter(p => !!p);
     return AppURL.create(...decodedParts);
 }

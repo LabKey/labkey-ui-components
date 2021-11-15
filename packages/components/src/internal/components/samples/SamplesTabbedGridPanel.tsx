@@ -49,7 +49,6 @@ interface Props extends InjectedQueryModels {
     initialTabId?: string; // use if you have multiple tabs but want to start on something other then the first one
     onPrintLabel?: () => void;
     modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
-    showAliquotViewSelector?: boolean;
     sampleAliquotType?: ALIQUOT_FILTER_MODE; // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
     tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
@@ -73,7 +72,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         initialTabId,
         createBtnParentType,
         createBtnParentKey,
-        showAliquotViewSelector,
         sampleAliquotType,
         samplesEditableGridProps,
         gridButtons,
@@ -299,7 +297,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     onTabSelect={onTabSelect}
                     ButtonsComponent={gridButtons}
                     buttonsComponentProps={_gridButtonProps}
-                    ButtonsComponentRight={showAliquotViewSelector ? SampleTabbedGridButtonsRight : undefined}
+                    ButtonsComponentRight={SampleTabbedGridButtonsRight}
                     supportedExportTypes={canPrintLabels ? EXPORT_TYPES_WITH_LABEL : undefined}
                     onExport={canPrintLabels ? onLabelExport : undefined}
                 />
@@ -326,7 +324,6 @@ SamplesTabbedGridPanel.defaultProps = {
     asPanel: true,
     canPrintLabels: false,
     excludedCreateMenuKeys: List<string>(),
-    showAliquotViewSelector: true,
 };
 
 SamplesTabbedGridPanel.displayName = 'SamplesTabbedGridPanel';

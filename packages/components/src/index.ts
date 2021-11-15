@@ -302,6 +302,8 @@ import { SampleAliquotDetailHeader } from './internal/components/samples/SampleA
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 
+import { AppContextProvider, useAppContext } from './internal/AppContext';
+
 import {
     filterSampleRowsForOperation,
     getFilterForSampleOperation,
@@ -471,7 +473,12 @@ import { ValidatorModal } from './internal/components/domainproperties/validatio
 import { RangeValidationOptions } from './internal/components/domainproperties/validation/RangeValidationOptions';
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
-import { makeQueryInfo, mountWithServerContextOptions, sleep } from './internal/testHelpers';
+import {
+    makeQueryInfo,
+    mountWithAppServerContextOptions,
+    mountWithServerContextOptions,
+    sleep,
+} from './internal/testHelpers';
 import { QueryModel } from './public/QueryModel/QueryModel';
 import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
@@ -1203,6 +1210,8 @@ export {
     // base models, enums, constants
     Container,
     User,
+    AppContextProvider,
+    useAppContext,
     ServerContextProvider,
     ServerContextConsumer,
     useServerContext,
@@ -1257,6 +1266,7 @@ export {
     sleep,
     createMockWithRouterProps,
     makeQueryInfo,
+    mountWithAppServerContextOptions,
     mountWithServerContextOptions,
     // Ontology
     OntologyBrowserPanel,
@@ -1364,5 +1374,6 @@ export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
 export type { AnnouncementModel, ThreadActions } from './internal/announcements/model';
 export type { AnnouncementsAPIWrapper } from './internal/announcements/APIWrapper';
+export type { AppContext } from './internal/AppContext';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';

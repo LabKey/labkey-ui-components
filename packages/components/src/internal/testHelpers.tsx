@@ -1,16 +1,18 @@
-import { ReactElement } from 'react';
+import React, { FC, ReactElement, useMemo } from 'react';
 import { act } from 'react-dom/test-utils';
 import { Map } from 'immutable';
 import { mount, MountRendererProps, ReactWrapper } from 'enzyme';
 import { LabKey, Query } from '@labkey/api';
 
-import { initQueryGridState, QueryInfo, ServerContextProvider } from '..';
+import { initQueryGridState, QueryInfo, ServerContext, ServerContextProvider } from '..';
 
 import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
 
 import { applyQueryMetadata, handleSelectRowsResponse } from './query/api';
 import { bindColumnRenderers } from './renderers';
 import { URL_MAPPERS, URLService } from './url/URLResolver';
+import { AppContext, AppContextProvider } from './AppContext';
+import { getTestAPIWrapper } from './APIWrapper';
 
 declare let LABKEY: LabKey;
 
@@ -79,6 +81,62 @@ export const makeTestData = (getQueryResponse): RowsResponse => {
         rowCount,
         rows: models[key],
     };
+};
+
+interface AppContextTestProviderProps {
+    appContext: Partial<AppContext>;
+    serverContext: Partial<ServerContext>;
+}
+
+export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => {
+    const { appContext, children, serverContext } = props;
+    const initialAppContext = useMemo(() => ({ api: getTestAPIWrapper(), ...appContext }), [appContext]);
+
+    return (
+        <ServerContextProvider initialContext={serverContext as ServerContext}>
+            <AppContextProvider initialContext={initialAppContext}>{children}</AppContextProvider>
+        </ServerContextProvider>
+    );
+};
+
+/**
+ * Use this if you're testing a component that requires a wrapping <AppContextProvider/> to provide context.
+ * This utility method provides the `MountRenderProps` that can be supplied to enzyme's mount() method. The specified
+ * `appContext` will be provided to the wrapped component under test. Additionally, with these options supplied
+ * the returned mounted component will still be the component under test (as opposed to <AppContextProvider/>).
+ * @param appContext The app context to be provided by the wrapping <AppContextProvider/>.
+ * @param serverContext The server context to be provided by the wrapping <ServerContextProvider/>.
+ * @param options Pass through for mount's rendering options.
+ */
+export const mountWithAppServerContextOptions = (
+    appContext?: Partial<AppContext>,
+    serverContext?: Partial<ServerContext>,
+    options?: MountRendererProps
+): MountRendererProps => {
+    return {
+        wrappingComponent: AppContextTestProvider,
+        wrappingComponentProps: { appContext, serverContext },
+        ...options,
+    };
+};
+
+/**
+ * Use this if you're testing a component that requires a wrapping <AppContextProvider/> to provide context.
+ * This test method wraps enzyme's mount() method and provides the wrapping component with "initialContext".
+ * With this the returned mounted component will still be the component under test
+ * (as opposed to <AppContextProvider/>).
+ * @param node The React node to mount
+ * @param initialContext The app context to be provided by the wrapping <AppContextProvider/>
+ * @param options Pass through for mount's rendering options
+ */
+export const mountWithAppServerContext = (
+    node: ReactElement,
+    appContext?: Partial<AppContext>,
+    serverContext?: Partial<ServerContext>,
+    options?: MountRendererProps
+): ReactWrapper => {
+    // NOTE: For internal package use only. Do not export externally as it will not work for external usages.
+    return mount(node, mountWithAppServerContextOptions(appContext, serverContext, options));
 };
 
 /**

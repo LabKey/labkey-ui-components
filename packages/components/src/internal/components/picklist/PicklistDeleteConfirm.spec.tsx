@@ -2,17 +2,18 @@ import React from 'react';
 
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert } from '../base/Alert';
+import { Alert, LoadingSpinner, makeTestQueryModel, SchemaQuery } from '../../..';
+
+import { TEST_USER_EDITOR } from '../../../test/data/users';
+
+import { ConfirmModal } from '../base/ConfirmModal';
+
+import { waitForLifecycle } from '../../testHelpers';
 
 import { PicklistDeleteConfirm, PicklistDeleteConfirmMessage } from './PicklistDeleteConfirm';
 import { Picklist } from './models';
-import { TEST_USER_EDITOR } from '../../../test/data/users';
-import { ConfirmModal } from '../base/ConfirmModal';
-import { makeTestQueryModel } from "../../../public/QueryModel/testUtils";
-import { SchemaQuery } from "../../../public/SchemaQuery";
-import { LoadingSpinner } from "../base/LoadingSpinner";
-import { getTestPicklistAPIWrapper } from "./APIWrapper";
-import { waitForLifecycle } from "../../testHelpers";
+
+import { getTestPicklistAPIWrapper } from './APIWrapper';
 
 describe('PicklistDeleteConfirmMessage', () => {
     function validateText(
@@ -168,7 +169,7 @@ describe('PicklistDeleteConfirmMessage', () => {
                     numDeletable: 1,
                     numNotDeletable: 3,
                     numShared: 1,
-                    deletableLists: [new Picklist({name: 'Public Deletable', listId: 1})],
+                    deletableLists: [new Picklist({ name: 'Public Deletable', listId: 1 })],
                 }}
                 numSelected={4}
                 noun="Picklist"
@@ -214,7 +215,7 @@ describe('PicklistDeleteConfirmMessage', () => {
                     numDeletable: 1,
                     numNotDeletable: 1,
                     numShared: 0,
-                    deletableLists: [new Picklist({name: 'Public Deletable', listId: 1})],
+                    deletableLists: [new Picklist({ name: 'Public Deletable', listId: 1 })],
                 }}
                 numSelected={2}
                 noun="Picklist"
@@ -375,12 +376,13 @@ describe('PicklistDeleteConfirm', () => {
                 {...DEFAULT_PROPS}
                 model={model}
                 api={getTestPicklistAPIWrapper(jest.fn, {
-                    getPicklistDeleteData: () => Promise.resolve({
-                        numDeletable: 2,
-                        numNotDeletable: 0,
-                        numShared: 1,
-                        deletableLists: [],
-                    })
+                    getPicklistDeleteData: () =>
+                        Promise.resolve({
+                            numDeletable: 2,
+                            numNotDeletable: 0,
+                            numShared: 1,
+                            deletableLists: [],
+                        }),
                 })}
             />
         );
@@ -406,12 +408,13 @@ describe('PicklistDeleteConfirm', () => {
                 {...DEFAULT_PROPS}
                 model={model}
                 api={getTestPicklistAPIWrapper(jest.fn, {
-                    getPicklistDeleteData: () => Promise.resolve({
-                        numDeletable: 0,
-                        numNotDeletable: 2,
-                        numShared: 1,
-                        deletableLists: [],
-                    })
+                    getPicklistDeleteData: () =>
+                        Promise.resolve({
+                            numDeletable: 0,
+                            numNotDeletable: 2,
+                            numShared: 1,
+                            deletableLists: [],
+                        }),
                 })}
             />
         );

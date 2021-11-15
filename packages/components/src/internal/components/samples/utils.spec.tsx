@@ -24,19 +24,16 @@ import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/uti
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
 
-test('getOmittedSampleTypeColumns with inventoryCols omitted', () => {
+test(' getOmittedSampleTypeColumn', () => {
     LABKEY.moduleContext = {};
     expect(isFreezerManagementEnabled()).toBeFalsy();
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_READER)).toStrictEqual([]);
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST, INVENTORY_COLS)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_READER, INVENTORY_COLS)).toStrictEqual(INVENTORY_COLS);
+    expect(getOmittedSampleTypeColumns(App.TEST_USER_READER)).toStrictEqual(INVENTORY_COLS);
+    expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST)).toStrictEqual([CHECKED_OUT_BY_FIELD].concat(INVENTORY_COLS));
 
     LABKEY.moduleContext = { inventory: {} };
     expect(isFreezerManagementEnabled()).toBeTruthy();
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_READER, INVENTORY_COLS)).toStrictEqual([]);
     expect(getOmittedSampleTypeColumns(App.TEST_USER_READER)).toStrictEqual([]);
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST, INVENTORY_COLS)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
+    expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
 });
 
 describe('getSampleDeleteMessage', () => {

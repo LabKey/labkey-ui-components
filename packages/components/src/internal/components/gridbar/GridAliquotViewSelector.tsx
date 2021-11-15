@@ -18,10 +18,12 @@ import React, { Component, ReactNode } from 'react';
 import { Filter } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { Actions } from '../../../public/QueryModel/withQueryModels';
 import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from '../samples/SampleAliquotViewSelector';
 import { IS_ALIQUOT_COL } from '../samples/constants';
 
 interface Props {
+    actions?: Actions;
     queryModel?: QueryModel;
     updateFilter?: (
         filter: Filter.IFilter,
@@ -74,19 +76,29 @@ export class GridAliquotViewSelector extends Component<Props, State> {
     };
 
     updateAliquotFilter = (newMode: ALIQUOT_FILTER_MODE): void => {
-        const { queryModel, updateFilter } = this.props;
+        const { queryModel, actions, updateFilter } = this.props;
+        const aliquotColName = this.getAliquotColName();
+
+        let newFilter: Filter.IFilter;
+        if (newMode === ALIQUOT_FILTER_MODE.all || newMode === ALIQUOT_FILTER_MODE.none) {
+            newFilter = null;
+        } else {
+            newFilter = Filter.create(aliquotColName, newMode === ALIQUOT_FILTER_MODE.aliquots);
+        }
 
         if (updateFilter) {
-            const aliquotColName = this.getAliquotColName();
-
-            let newFilter: Filter.IFilter;
-            if (newMode === ALIQUOT_FILTER_MODE.all || newMode === ALIQUOT_FILTER_MODE.none) {
-                newFilter = null;
-            } else {
-                newFilter = Filter.create(aliquotColName, newMode === ALIQUOT_FILTER_MODE.aliquots);
-            }
-
             updateFilter(newFilter, aliquotColName, newMode, queryModel);
+        }
+
+        if (queryModel?.queryInfo && actions) {
+            // keep any existing filters that do not match the aliquot column name
+            const updatedFilters = queryModel.filterArray.filter(filter => {
+                return aliquotColName.toLowerCase() !== filter.getColumnName().toLowerCase();
+            });
+
+            if (newFilter) updatedFilters.push(newFilter);
+
+            actions.setFilters(queryModel.id, updatedFilters, true);
         }
     };
 

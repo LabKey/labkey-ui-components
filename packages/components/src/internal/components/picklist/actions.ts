@@ -493,7 +493,8 @@ export const getPicklistFromId = async (listId: number): Promise<Picklist> => {
     return picklist;
 };
 
-const convertPicklistSampleTypeData = (data: Record<string, any>[]): Record<string, number[]> => {
+// exported for jest testing
+export const convertPicklistSampleTypeData = (data: Record<string, any>[]): Record<string, number[]> => {
     const sampleIdsByType = {};
     data.forEach(row => {
         const sampleType = caseInsensitive(row, 'SampleType').displayValue;

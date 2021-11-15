@@ -73,6 +73,8 @@ export const ALIQUOT_CREATION: SampleCreationTypeModel = {
 export interface SamplesSelectionProviderProps {
     selection: List<any>;
     sampleSet: string;
+    determineStorage?: boolean;
+    determineLineage?: boolean;
 }
 
 export interface SamplesSelectionResultProps {

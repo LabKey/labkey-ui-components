@@ -104,8 +104,8 @@ export function SamplesSelectionProvider<T>(
         }
 
         loadStorageData(): void {
-            const { selection, sampleSet } = this.props;
-            if (isFreezerManagementEnabled() && selection && selection.size > 0) {
+            const { selection, sampleSet, determineStorage } = this.props;
+            if (determineStorage && isFreezerManagementEnabled() && selection && selection.size > 0) {
                 getNotInStorageSampleIds(selection, sampleSet)
                     .then(samples => {
                         this.setState({
@@ -134,8 +134,8 @@ export function SamplesSelectionProvider<T>(
         }
 
         loadLineageData(): void {
-            const { selection, sampleSet } = this.props;
-            if (selection && selection.size > 0) {
+            const { selection, sampleSet, determineLineage } = this.props;
+            if (determineLineage && selection && selection.size > 0) {
                 getSampleSelectionLineageData(selection, sampleSet)
                     .then(response => {
                         const { key, models, orderedModels } = response;
@@ -155,6 +155,7 @@ export function SamplesSelectionProvider<T>(
         }
 
         render(): ReactNode {
+            const { determineStorage, determineLineage } = this.props;
             const {
                 aliquots,
                 noStorageSamples,
@@ -169,8 +170,8 @@ export function SamplesSelectionProvider<T>(
                 if (
                     !editStatusData ||
                     !aliquots ||
-                    (isFreezerManagementEnabled() && !noStorageSamples) ||
-                    !sampleLineage
+                    (determineStorage && isFreezerManagementEnabled() && !noStorageSamples) ||
+                    (determineLineage && !sampleLineage)
                 ) {
                     isLoaded = false;
                 }

@@ -273,6 +273,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             {isEditing || selectionData ? (
                 <SamplesEditableGrid
                     {...samplesEditableGridProps}
+                    determineLineage
+                    determineStorage
                     displayQueryModel={activeModel}
                     editableGridDataForSelection={editableGridData?.dataForSelection}
                     editableGridDataIdsForSelection={editableGridData?.idsForSelection}

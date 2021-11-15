@@ -12,6 +12,7 @@ import { User } from '../base/models/User';
 
 import { removeSamplesFromPicklist } from './actions';
 import { Picklist } from './models';
+import { isFreezerManagementEnabled, userCanManagePicklists } from "../../app/utils";
 
 interface Props {
     user: User;
@@ -47,6 +48,10 @@ export const RemoveFromPicklistMenuItem: FC<Props> = memo(props => {
             });
         }
     }, [model, picklist, afterSampleActionComplete, onHideRemoveFromList]);
+
+    if (!userCanManagePicklists(user) || !isFreezerManagementEnabled()) {
+        return null;
+    }
 
     const nounAndNumber = model?.selections ? Utils.pluralize(model.selections.size, 'Sample', 'Samples') : undefined;
     const selectedNounAndNumber = model?.selections

@@ -21,13 +21,14 @@ import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, Sa
 
 import { SampleStatus } from './models';
 
-export function getOmittedSampleTypeColumns(user: User, omitCols?: string[]): string[] {
+export function getOmittedSampleTypeColumns(user: User): string[] {
     let cols: string[] = [];
 
     if (user.isGuest) {
         cols.push(SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD);
-    } else if (omitCols && !App.isFreezerManagementEnabled()) {
-        cols = cols.concat(omitCols);
+    }
+    if (!App.isFreezerManagementEnabled()) {
+        cols = cols.concat(SCHEMAS.INVENTORY.INVENTORY_COLS);
     }
 
     return cols;
@@ -174,3 +175,7 @@ export function filterSampleRowsForOperation(
         statusData,
     };
 }
+
+export const shouldShowButtons = (action: string, hideButtons: string[]): boolean => {
+    return hideButtons === undefined || hideButtons.indexOf(action) === -1;
+};

@@ -291,6 +291,7 @@ import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/sa
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
 import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
 import { SampleDeleteMenuItem } from './internal/components/samples/SampleDeleteMenuItem';
+import { SamplesManageButton } from './internal/components/samples/SamplesManageButton';
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
@@ -901,6 +902,7 @@ export {
     SampleCreationType,
     SampleSetDeleteModal,
     SampleDeleteMenuItem,
+    SamplesManageButton,
     SamplesTabbedGridPanel,
     SampleLineageGraph,
     SampleDetailEditing,

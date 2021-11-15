@@ -783,3 +783,21 @@ export function getSampleStatuses(): Promise<SampleState[]> {
         });
     });
 }
+
+export function getSampleTypeRowId(name: string) : Promise<number> {
+    return new Promise((resolve, reject) => {
+        selectRows( {
+            schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
+            queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
+            columns: 'RowId,Name',
+            filterArray: [Filter.create('Name', name)]
+        }).then(response => {
+            const { models, key } = response;
+            const row = Object.values(models[key])[0];
+            resolve(caseInsensitive(row, 'RowId')?.value);
+        }).catch(reason => {
+            console.error(reason);
+            reject(resolveErrorMessage(reason));
+        });
+    });
+}

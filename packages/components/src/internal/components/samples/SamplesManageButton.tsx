@@ -81,7 +81,9 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                         <SampleDeleteMenuItem queryModel={model} afterSampleDelete={afterSampleDelete} />
                     </RequiresPermission>
                 )}
-                {shouldShowButtons(SamplesManageButtonSections.PICKLIST, hideButtons) && <AddToPicklistMenuItem queryModel={model} user={user} />}
+                {shouldShowButtons(SamplesManageButtonSections.PICKLIST, hideButtons) && (
+                    <AddToPicklistMenuItem queryModel={model} user={user} />
+                )}
                 {shouldShowButtons(SamplesManageButtonSections.EDIT, hideButtons) && (
                     <RequiresPermission perms={PermissionTypes.Update}>
                         <SelectionMenuItem
@@ -128,7 +130,7 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                             text="Link to Study in LabKey Server"
                             onClick={onLinkToStudy}
                             queryModel={model}
-                            nounPlural="samples"
+                            nounPlural={SampleTypeDataType.nounPlural}
                         />
                     </RequiresPermission>
                 )}

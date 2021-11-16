@@ -22,6 +22,7 @@ import {
     SchemaQuery,
     SCHEMAS,
     User,
+    withTimeout,
 } from '../../..';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
@@ -105,11 +106,17 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
         setShowEditModal(false);
     }, []);
 
-    const afterSavePicklist = useCallback(() => {
-        loadPicklist(false);
-        createNotification('Successfully updated picklist metadata.');
+    const afterSavePicklist = useCallback(updatedPicklist => {
+        // if picklist name changed, we need to pass true here to that the queryConfigs are updated
+        const nameChanged = picklist.name !== updatedPicklist.name;
+        loadPicklist(nameChanged);
+
         hideEditPicklistMetadataModal();
-    }, [hideEditPicklistMetadataModal, loadPicklist]);
+
+        withTimeout(() => {
+            createNotification('Successfully updated picklist metadata.');
+        });
+    }, [hideEditPicklistMetadataModal, loadPicklist, picklist]);
 
     // Using a type for evt here causes difficulties.  It wants a FormEvent<Checkbox> but
     // then it doesn't recognize checked as a valid field on current target.

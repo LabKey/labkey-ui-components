@@ -16,10 +16,12 @@ import {
     OperationConfirmationData,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
+    SamplesManageButtonSections,
     SampleStateType,
     SCHEMAS,
 } from '../../..';
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
+import { shouldShowButtons } from './utils';
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
@@ -355,5 +357,20 @@ describe('getOperationNotPermittedMessage', () => {
                 [351, 354, 356, 357]
             )
         ).toBe('The current status of 3 selected samples prevents updating of their lineage.');
+    });
+});
+
+describe('shouldShowButtons', () => {
+    test('undefined hideButtons', () => {
+        expect(shouldShowButtons(undefined, undefined)).toBeTruthy();
+        expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, undefined)).toBeTruthy();
+        expect(shouldShowButtons(undefined, [])).toBeTruthy();
+        expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, [])).toBeTruthy();
+    });
+
+    test('with hideButtons', () => {
+        expect(shouldShowButtons(undefined, [SamplesManageButtonSections.IMPORT])).toBeTruthy();
+        expect(shouldShowButtons(SamplesManageButtonSections.DELETE, [SamplesManageButtonSections.IMPORT])).toBeTruthy();
+        expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, [SamplesManageButtonSections.IMPORT])).toBeFalsy();
     });
 });

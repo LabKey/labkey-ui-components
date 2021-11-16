@@ -184,6 +184,6 @@ export enum SamplesManageButtonSections {
     PICKLIST = 'picklist',
 }
 
-export const shouldShowButtons = (action: SamplesManageButtonSections, hideButtons: string[]): boolean => {
+export const shouldShowButtons = (action: SamplesManageButtonSections, hideButtons: SamplesManageButtonSections[]): boolean => {
     return hideButtons === undefined || hideButtons.indexOf(action) === -1;
 };

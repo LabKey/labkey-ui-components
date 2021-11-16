@@ -906,7 +906,7 @@ export function getContainerFilter(): Query.ContainerFilter {
     }
 
     if (container.parentPath === '/') {
-        return Query.ContainerFilter.currentAndSubfolders;
+        return Query.ContainerFilter.currentAndSubfoldersPlusShared;
     }
 
     return Query.ContainerFilter.currentPlusProjectAndShared;

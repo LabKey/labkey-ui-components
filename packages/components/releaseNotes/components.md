@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.92.0
+*Released*: 16 November 2021
+* Introduce `AppContext`. A React context for serving global application context.
+* Provide test utilities for working with components that utilize `AppContext`.
+
 ### version 2.91.2
 *Released*: 15 November 2021
 * Merge release21.11-SNAPSHOT to develop

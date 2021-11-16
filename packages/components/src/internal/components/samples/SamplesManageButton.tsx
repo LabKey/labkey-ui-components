@@ -110,8 +110,7 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                                         onSuccess={afterSampleActionComplete}
                                     />
                                 );
-                            }
-                        )}
+                            })}
                         {combineParentTypes && (
                             <EntityLineageEditMenuItem
                                 childEntityDataType={SampleTypeDataType}

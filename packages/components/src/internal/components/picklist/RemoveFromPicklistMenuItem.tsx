@@ -10,9 +10,10 @@ import { getConfirmDeleteMessage } from '../../util/messaging';
 import { createNotification, withTimeout } from '../notifications/actions';
 import { User } from '../base/models/User';
 
+import { isFreezerManagementEnabled, userCanManagePicklists } from '../../app/utils';
+
 import { removeSamplesFromPicklist } from './actions';
 import { Picklist } from './models';
-import { isFreezerManagementEnabled, userCanManagePicklists } from '../../app/utils';
 
 interface Props {
     user: User;

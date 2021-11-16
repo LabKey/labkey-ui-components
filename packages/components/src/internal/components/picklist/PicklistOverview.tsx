@@ -165,9 +165,13 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                 {(picklist.isEditable(user) || picklist.isDeletable(user)) && (
                     <ManageDropdownButton id="picklistHeader" pullRight collapsed>
                         {picklist.isUserList(user) && (
-                            <MenuItem onClick={onEditPicklistMetadataClick} className="picklistHeader-edit">Edit Picklist</MenuItem>
+                            <MenuItem onClick={onEditPicklistMetadataClick} className="picklistHeader-edit">
+                                Edit Picklist
+                            </MenuItem>
                         )}
-                        <MenuItem onClick={onDeletePicklistClick} className="picklistHeader-delete">Delete Picklist</MenuItem>
+                        <MenuItem onClick={onDeletePicklistClick} className="picklistHeader-delete">
+                            Delete Picklist
+                        </MenuItem>
                     </ManageDropdownButton>
                 )}
             </PageDetailHeader>

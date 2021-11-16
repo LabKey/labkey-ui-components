@@ -1,5 +1,9 @@
 import { SamplesAPIWrapper, SamplesServerAPIWrapper, getSamplesTestAPIWrapper } from './components/samples/APIWrapper';
-import { PicklistAPIWrapper, PicklistServerAPIWrapper, getPicklistTestAPIWrapper } from './components/picklist/APIWrapper';
+import {
+    PicklistAPIWrapper,
+    PicklistServerAPIWrapper,
+    getPicklistTestAPIWrapper,
+} from './components/picklist/APIWrapper';
 
 export interface ComponentsAPIWrapper {
     // TODO add more wrappers for other functional areas of this package

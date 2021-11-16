@@ -5,9 +5,10 @@ import { ConfirmModal, makeTestQueryModel, Picklist, SchemaQuery, SelectionMenuI
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
 
-import { RemoveFromPicklistMenuItem } from './RemoveFromPicklistMenuItem';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
-import { mountWithServerContext } from "../../testHelpers";
+import { mountWithServerContext } from '../../testHelpers';
+
+import { RemoveFromPicklistMenuItem } from './RemoveFromPicklistMenuItem';
 
 beforeAll(() => {
     LABKEY.moduleContext = {
@@ -32,8 +33,7 @@ describe('RemoveFromPicklistMenuItem', () => {
     const DEFAULT_PROPS = {
         user: TEST_USER_EDITOR,
         afterSampleActionComplete: jest.fn,
-        model: makeTestQueryModel(SchemaQuery.create('schema', 'query'))
-            .mutate({ selections: new Set(['1', '2']) }),
+        model: makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ selections: new Set(['1', '2']) }),
     };
 
     function validate(wrapper: ReactWrapper, hasPerm = true, showConfirm = false): void {

@@ -14,6 +14,15 @@ Components, models, actions, and utility functions for LabKey applications and p
     * split out RemoveFromPicklistMenuItem so that it can be used on the app side like AddToPicklistMenuItem
     * remove GridPanel internal usage of GridAliquotViewSelector, usages can still pass this in via ButtonsComponentRight
 
+### version 2.93.0
+*Released*: 16 November 2021
+* Support initializing Ontology Browser to a concept via a URL parameter
+
+### version 2.92.0
+*Released*: 16 November 2021
+* Introduce `AppContext`. A React context for serving global application context.
+* Provide test utilities for working with components that utilize `AppContext`.
+
 ### version 2.91.2
 *Released*: 15 November 2021
 * Merge release21.11-SNAPSHOT to develop

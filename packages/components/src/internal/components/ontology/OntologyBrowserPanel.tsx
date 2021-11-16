@@ -13,6 +13,7 @@ import { OntologyTreeSearchContainer } from './OntologyTreeSearchContainer';
 export interface OntologyBrowserProps {
     asPanel?: boolean;
     initOntologyId?: string;
+    initConceptCode?: string;
     initConcept?: ConceptModel;
     initPath?: PathModel;
     onPathSelect?: (path: PathModel, concept: ConceptModel) => void;
@@ -20,6 +21,42 @@ export interface OntologyBrowserProps {
     filters?: Map<string, PathModel>;
     filterChangeHandler?: (filter: PathModel) => void;
 }
+
+export const OntologyBrowserPage: FC<OntologyBrowserProps> = memo( props => {
+    const {initConceptCode, ...rest} = props;
+    const [concept, setConcept] = useState<ConceptModel>();
+    const [loading, setLoading] = useState<boolean>();
+    const [error, setError] = useState<string>();
+
+    useEffect(() => {
+        if (initConceptCode && !concept) {
+            setLoading(true);
+            (async () => {
+                try {
+                    const loadingConcept = await fetchConceptForCode(initConceptCode);
+                    setConcept(loadingConcept);
+                    setLoading(false);
+
+                } catch (e) {
+                    setError('Error: unable to load ontology concept information for ' + initConceptCode + ', code not found.');
+                    setConcept(null);
+                    setLoading(false);
+                }
+            }) ();
+        }
+    }, [initConceptCode]);
+
+    if (loading){
+        return <LoadingSpinner />;
+    }
+
+    return (
+        <>
+            <Alert>{error}</Alert>
+            <OntologyBrowserPanel {...rest} initConcept={concept} />
+        </>
+    );
+});
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     const {

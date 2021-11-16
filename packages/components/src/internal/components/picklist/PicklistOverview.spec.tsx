@@ -28,10 +28,7 @@ const MULTI_SAMPLE_TYPE_PICKLIST = new Picklist({
     Description: 'desc 1',
     CreatedBy: 1100,
     Category: PUBLIC_PICKLIST_CATEGORY,
-    sampleIdsByType: {
-        type1: [1, 2],
-        type2: [3, 4, 5],
-    },
+    sampleTypes: ['type1', 'type2'],
 });
 
 const SINGLE_SAMPLE_TYPE_PICKLIST = new Picklist({
@@ -40,9 +37,7 @@ const SINGLE_SAMPLE_TYPE_PICKLIST = new Picklist({
     Description: 'desc 2',
     CreatedBy: 1100,
     Category: PUBLIC_PICKLIST_CATEGORY,
-    sampleIdsByType: {
-        type1: [1, 2],
-    },
+    sampleTypes: ['type1'],
 });
 
 beforeAll(() => {
@@ -85,11 +80,13 @@ describe('PicklistOverview', () => {
         expect(queryConfigs[1].title).toBe('type1');
         expect(queryConfigs[1].schemaQuery.toString()).toBe('samples|type1|');
         expect(queryConfigs[1].baseFilters.length).toBe(1);
-        expect(queryConfigs[1].baseFilters[0].getValue()).toStrictEqual([1, 2]);
+        expect(queryConfigs[1].baseFilters[0].getURLParameterName()).toBe('query.RowId~picklistsamples');
+        expect(queryConfigs[1].baseFilters[0].getValue()).toBe(1);
         expect(queryConfigs[2].title).toBe('type2');
         expect(queryConfigs[2].schemaQuery.toString()).toBe('samples|type2|');
         expect(queryConfigs[2].baseFilters.length).toBe(1);
-        expect(queryConfigs[2].baseFilters[0].getValue()).toStrictEqual([3, 4, 5]);
+        expect(queryConfigs[2].baseFilters[0].getURLParameterName()).toBe('query.RowId~picklistsamples');
+        expect(queryConfigs[2].baseFilters[0].getValue()).toBe(1);
 
         wrapper.unmount();
     });
@@ -116,7 +113,8 @@ describe('PicklistOverview', () => {
         expect(queryConfigs[1].title).toBe('type1');
         expect(queryConfigs[1].schemaQuery.toString()).toBe('samples|type1|');
         expect(queryConfigs[1].baseFilters.length).toBe(1);
-        expect(queryConfigs[1].baseFilters[0].getValue()).toStrictEqual([1, 2]);
+        expect(queryConfigs[1].baseFilters[0].getURLParameterName()).toBe('query.RowId~picklistsamples');
+        expect(queryConfigs[1].baseFilters[0].getValue()).toBe(2);
 
         wrapper.unmount();
     });
@@ -134,7 +132,7 @@ describe('PicklistOverview', () => {
                                     name: 'Test Picklist',
                                     CreatedBy: 1100,
                                     Category: PUBLIC_PICKLIST_CATEGORY,
-                                    sampleIdsByType: {},
+                                    sampleTypes: [],
                                 })
                             ),
                     }),
@@ -183,7 +181,7 @@ describe('PicklistOverview', () => {
                                     name: 'Test Picklist',
                                     CreatedBy: 1100,
                                     Category: PRIVATE_PICKLIST_CATEGORY,
-                                    sampleIdsByType: {},
+                                    sampleTypes: [],
                                 })
                             ),
                     }),
@@ -209,7 +207,7 @@ describe('PicklistOverview', () => {
                                     name: 'Test Picklist',
                                     CreatedBy: 1101, // this id is not the user id of the test user
                                     Category: PRIVATE_PICKLIST_CATEGORY,
-                                    sampleIdsByType: {},
+                                    sampleTypes: [],
                                 })
                             ),
                     }),
@@ -279,7 +277,7 @@ describe('PicklistOverviewImpl', () => {
             name: 'Test Picklist 1',
             CreatedBy: 1101, // test user id is 1100
             Category: PUBLIC_PICKLIST_CATEGORY,
-            sampleIdsByType: {},
+            sampleTypes: [],
         });
         const wrapper = mount(<PicklistOverviewImpl {...DEFAULT_PROPS} picklist={picklist} />);
         validate(wrapper, picklist, false, false);
@@ -292,7 +290,7 @@ describe('PicklistOverviewImpl', () => {
             name: 'Test Picklist 1',
             CreatedBy: 1100,
             Category: PRIVATE_PICKLIST_CATEGORY,
-            sampleIdsByType: {},
+            sampleTypes: [],
         });
         const wrapper = mount(<PicklistOverviewImpl {...DEFAULT_PROPS} picklist={picklist} />);
         validate(wrapper, picklist, true, true, true, false);

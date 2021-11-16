@@ -479,27 +479,20 @@ export const getPicklistFromId = async (listId: number): Promise<Picklist> => {
 
     const listSampleTypeData = await selectRows({
         schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
-        sql:
-            'SELECT SampleID.SampleSet as SampleType, GROUP_CONCAT(SampleID) AS SampleIds FROM "' +
-            picklist.name +
-            '" GROUP BY SampleID.SampleSet',
+        sql: 'SELECT DISTINCT SampleID.SampleSet as SampleType FROM "' + picklist.name + '"',
         saveInSession: true,
     });
-    const sampleIdsByType = convertPicklistSampleTypeData(
-        Object.values(listSampleTypeData.models[listSampleTypeData.key])
-    );
-    picklist = picklist.mutate({ sampleIdsByType });
+    const sampleTypes = convertPicklistSampleTypeData(Object.values(listSampleTypeData.models[listSampleTypeData.key]));
+    picklist = picklist.mutate({ sampleTypes });
 
     return picklist;
 };
 
 // exported for jest testing
-export const convertPicklistSampleTypeData = (data: Record<string, any>[]): Record<string, number[]> => {
-    const sampleIdsByType = {};
+export const convertPicklistSampleTypeData = (data: Record<string, any>[]): string[] => {
+    const sampleTypes = [];
     data.forEach(row => {
-        const sampleType = caseInsensitive(row, 'SampleType').displayValue;
-        const ids = caseInsensitive(row, 'SampleIds')[0]?.value.split(',');
-        sampleIdsByType[sampleType] = ids;
+        sampleTypes.push(caseInsensitive(row, 'SampleType').displayValue);
     });
-    return sampleIdsByType;
+    return sampleTypes;
 };

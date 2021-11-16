@@ -8,13 +8,13 @@ describe('convertPicklistSampleTypeData', () => {
 
     test('with sample types', () => {
         const response = convertPicklistSampleTypeData([
-            { SampleType: { displayValue: 'test1' }, SampleIds: [{ value: '' }] },
-            { SampleType: { displayValue: 'test2' }, SampleIds: [{ value: '1' }] },
-            { SampleType: { displayValue: 'test3' }, SampleIds: [{ value: '2,3' }] },
+            { SampleType: { displayValue: 'test1' } },
+            { SampleType: { displayValue: 'test2' } },
+            { SampleType: { displayValue: 'test3' } },
         ]);
         expect(Object.keys(response).length).toBe(3);
-        expect(response['test1']).toStrictEqual(['']);
-        expect(response['test2']).toStrictEqual(['1']);
-        expect(response['test3']).toStrictEqual(['2', '3']);
+        expect(response[0]).toBe('test1');
+        expect(response[1]).toBe('test2');
+        expect(response[2]).toBe('test3');
     });
 });

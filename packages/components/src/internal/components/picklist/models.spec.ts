@@ -87,11 +87,4 @@ describe('Picklist', () => {
             new Picklist({ CreatedBy: 1200, Category: PUBLIC_PICKLIST_CATEGORY }).canRemoveItems(TEST_USER_EDITOR)
         ).toBeTruthy();
     });
-
-    test('getSampleTypeFilter', () => {
-        const picklist = new Picklist({ sampleIdsByType: { test1: [], test2: [1], test3: [2, 3] } });
-        expect(picklist.getSampleTypeFilter('test1').getValue()).toStrictEqual([]);
-        expect(picklist.getSampleTypeFilter('test2').getValue()).toStrictEqual([1]);
-        expect(picklist.getSampleTypeFilter('test3').getValue()).toStrictEqual([2, 3]);
-    });
 });

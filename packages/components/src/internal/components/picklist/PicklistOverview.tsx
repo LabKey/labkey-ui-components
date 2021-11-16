@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, MenuItem } from 'react-bootstrap';
-import { AuditBehaviorTypes } from '@labkey/api';
+import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import {
     App,
@@ -31,7 +31,7 @@ import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel
 import { PUBLIC_PICKLIST_CATEGORY, PRIVATE_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 import { deletePicklists, updatePicklist } from './actions';
-import { Picklist } from './models';
+import { Picklist, PICKLIST_SAMPLES_FILTER } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistEditModal } from './PicklistEditModal';
 import { PicklistGridButtons } from './PicklistGridButtons';
@@ -276,17 +276,15 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 requiredColumns: ['Created'],
             };
 
-            // add a queryConfig for each distinct sample type of the picklist samples, with an IN clause
-            // filter for the set of sample RowIds in that sample type
-            Object.keys(picklist.sampleIdsByType)
-                .sort()
-                .forEach(sampleType => {
+            // add a queryConfig for each distinct sample type of the picklist samples, with an filter clause
+            // for the picklist id (which the server will turn into a sampleId IN clause)
+            [...picklist.sampleTypes].sort().forEach(sampleType => {
                     const id = `${PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX}${LOAD_PICKLIST_COUNTER}|samples/${sampleType}`;
                     configs[id] = {
                         id,
                         title: sampleType,
                         schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
-                        baseFilters: [picklist.getSampleTypeFilter(sampleType)],
+                        baseFilters: [Filter.create('RowId', picklist.listId, PICKLIST_SAMPLES_FILTER)],
                     };
                 });
         }

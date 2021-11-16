@@ -29,12 +29,13 @@ import { getImportItemsForAssayDefinitions } from '../assay/actions';
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
 import { getSampleStatusType } from './utils';
-import { getDefaultSamplesAPIWrapper, SamplesAPIWrapper } from './APIWrapper';
 
 interface Props {
-    api?: SamplesAPIWrapper;
+    api?: ComponentsAPIWrapper;
     sampleId?: string;
     sampleModel?: QueryModel;
     showAliquotViewSelector?: boolean;
@@ -333,7 +334,8 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     useEffect(() => {
         if (!showAliquotViewSelector || !sampleId) return;
 
-        api.getSampleAliquotRows(sampleId)
+        api.samples
+            .getSampleAliquotRows(sampleId)
             .then(aliquots => {
                 setAliquotRows(aliquots);
             })
@@ -348,7 +350,8 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     const [sampleAssayResultViewConfigs, setSampleAssayResultViewConfigs] =
         useState<SampleAssayResultViewConfig[]>(undefined);
     useEffect(() => {
-        api.getSampleAssayResultViewConfigs()
+        api.samples
+            .getSampleAssayResultViewConfigs()
             .then(setSampleAssayResultViewConfigs)
             .catch(() => {
                 setSampleAssayResultViewConfigs([]);
@@ -534,7 +537,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
 };
 
 SampleAssayDetailImpl.defaultProps = {
-    api: getDefaultSamplesAPIWrapper(),
+    api: getDefaultAPIWrapper(),
 };
 
 export const SampleAssayDetail = withAssayModels(SampleAssayDetailImpl);

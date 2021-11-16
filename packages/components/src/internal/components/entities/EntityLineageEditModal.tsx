@@ -29,7 +29,8 @@ import { getEntityNoun, getUpdatedLineageRowsForBulkEdit } from './utils';
 
 import { ParentEntityLineageColumns } from './constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
-import { getDefaultSamplesAPIWrapper, SamplesAPIWrapper } from '../samples/APIWrapper';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface Props {
     queryModel: QueryModel;
@@ -38,7 +39,7 @@ interface Props {
     childEntityDataType: EntityDataType;
     auditBehavior?: AuditBehaviorTypes;
     parentEntityDataTypes: EntityDataType[];
-    api?: SamplesAPIWrapper;
+    api?: ComponentsAPIWrapper;
 }
 
 export const EntityLineageEditModal: FC<Props> = memo(props => {
@@ -59,11 +60,11 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
 
         (async () => {
             try {
-                const confirmationData = await api.getSampleOperationConfirmationData(
+                const confirmationData = await api.samples.getSampleOperationConfirmationData(
                     SampleOperation.EditLineage,
                     queryModel.id
                 );
-                const sampleData = await api.getSampleSelectionLineageData(
+                const sampleData = await api.samples.getSampleSelectionLineageData(
                     List.of(...queryModel.selections),
                     queryModel.queryName,
                     List.of('RowId', 'Name', 'LSID', IS_ALIQUOT_COL).concat(ParentEntityLineageColumns).toArray()
@@ -248,7 +249,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
 });
 
 EntityLineageEditModal.defaultProps = {
-    api: getDefaultSamplesAPIWrapper(),
+    api: getDefaultAPIWrapper(),
 };
 
 EntityLineageEditModal.displayName = 'EntityLineageEditModal';

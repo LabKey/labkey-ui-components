@@ -5,7 +5,8 @@ import { Button, Modal, ModalFooter, ModalTitle } from 'react-bootstrap';
 
 import { Alert, OperationConfirmationData, Picklist } from '../../..';
 
-import { getTestSamplesAPIWrapper } from '../samples/APIWrapper';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
 import { waitForLifecycle } from '../../testHelpers';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
@@ -189,8 +190,10 @@ describe('PicklistEditModal', () => {
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
                 onFinish={jest.fn()}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleOperationConfirmationData: () => Promise.resolve(noneAllowedStatus),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () => Promise.resolve(noneAllowedStatus),
+                    }),
                 })}
             />
         );
@@ -208,8 +211,10 @@ describe('PicklistEditModal', () => {
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
                 onFinish={jest.fn()}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleOperationConfirmationData: () => Promise.resolve(someAllowedStatus),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () => Promise.resolve(someAllowedStatus),
+                    }),
                 })}
             />
         );
@@ -228,8 +233,10 @@ describe('PicklistEditModal', () => {
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
                 onFinish={jest.fn()}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleOperationConfirmationData: () => Promise.resolve(allAllowedStatus),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () => Promise.resolve(allAllowedStatus),
+                    }),
                 })}
             />
         );

@@ -44,12 +44,10 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
 }
 
-export const getDefaultSamplesAPIWrapper = (): SamplesAPIWrapper => new SamplesServerAPIWrapper();
-
 /**
  * Note: Intentionally does not use jest.fn() to avoid jest becoming an implicit external package dependency.
  */
-export function getTestSamplesAPIWrapper(
+export function getSamplesTestAPIWrapper(
     mockFn = (): any => () => {},
     overrides: Partial<SamplesAPIWrapper> = {}
 ): SamplesAPIWrapper {

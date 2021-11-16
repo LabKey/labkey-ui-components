@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, ReactWrapper, shallow } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { fromJS } from 'immutable';
 import { Button, SplitButton } from 'react-bootstrap';
 
@@ -15,6 +15,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
 import { TEST_USER_AUTHOR, TEST_USER_READER } from '../../../test/data/users';
+import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import {
@@ -26,7 +27,7 @@ import {
     SampleAssayDetailButtonsRight,
     SampleAssayDetailImpl,
 } from './SampleAssayDetail';
-import { getTestSamplesAPIWrapper } from './APIWrapper';
+import { getSamplesTestAPIWrapper } from './APIWrapper';
 
 const assayModel = new AssayStateModel({
     definitions: [
@@ -291,8 +292,10 @@ describe('SampleAssayDetailImpl', () => {
         const wrapper = mount(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleAssayResultViewConfigs: () => Promise.resolve([]),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleAssayResultViewConfigs: () => Promise.resolve([]),
+                    }),
                 })}
             />
         );
@@ -316,8 +319,10 @@ describe('SampleAssayDetailImpl', () => {
         const wrapper = mount(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleAssayResultViewConfigs: () => Promise.resolve([moduleAssayConfig]),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleAssayResultViewConfigs: () => Promise.resolve([moduleAssayConfig]),
+                    }),
                 })}
             />
         );
@@ -333,8 +338,10 @@ describe('SampleAssayDetailImpl', () => {
         const wrapper = mount(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleAssayResultViewConfigs: () => Promise.resolve([moduleAssayConfig]),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleAssayResultViewConfigs: () => Promise.resolve([moduleAssayConfig]),
+                    }),
                 })}
             />
         );
@@ -353,14 +360,16 @@ describe('SampleAssayDetailImpl', () => {
         const wrapper = mount(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleAssayResultViewConfigs: () =>
-                        Promise.resolve([
-                            {
-                                ...moduleAssayConfig,
-                                sampleRowKey: 'Name',
-                            },
-                        ]),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleAssayResultViewConfigs: () =>
+                            Promise.resolve([
+                                {
+                                    ...moduleAssayConfig,
+                                    sampleRowKey: 'Name',
+                                },
+                            ]),
+                    }),
                 })}
             />
         );

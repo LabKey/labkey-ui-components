@@ -13,7 +13,8 @@ import { waitForLifecycle } from '../../testHelpers';
 import { PicklistDeleteConfirm, PicklistDeleteConfirmMessage } from './PicklistDeleteConfirm';
 import { Picklist } from './models';
 
-import { getTestPicklistAPIWrapper } from './APIWrapper';
+import { getPicklistTestAPIWrapper } from './APIWrapper';
+import { getTestAPIWrapper } from '../../APIWrapper';
 
 describe('PicklistDeleteConfirmMessage', () => {
     function validateText(
@@ -375,14 +376,16 @@ describe('PicklistDeleteConfirm', () => {
             <PicklistDeleteConfirm
                 {...DEFAULT_PROPS}
                 model={model}
-                api={getTestPicklistAPIWrapper(jest.fn, {
-                    getPicklistDeleteData: () =>
-                        Promise.resolve({
-                            numDeletable: 2,
-                            numNotDeletable: 0,
-                            numShared: 1,
-                            deletableLists: [],
-                        }),
+                api={getTestAPIWrapper(jest.fn, {
+                    picklist: getPicklistTestAPIWrapper(jest.fn, {
+                        getPicklistDeleteData: () =>
+                            Promise.resolve({
+                                numDeletable: 2,
+                                numNotDeletable: 0,
+                                numShared: 1,
+                                deletableLists: [],
+                            }),
+                    }),
                 })}
             />
         );
@@ -407,14 +410,16 @@ describe('PicklistDeleteConfirm', () => {
             <PicklistDeleteConfirm
                 {...DEFAULT_PROPS}
                 model={model}
-                api={getTestPicklistAPIWrapper(jest.fn, {
-                    getPicklistDeleteData: () =>
-                        Promise.resolve({
-                            numDeletable: 0,
-                            numNotDeletable: 2,
-                            numShared: 1,
-                            deletableLists: [],
-                        }),
+                api={getTestAPIWrapper(jest.fn, {
+                    picklist: getPicklistTestAPIWrapper(jest.fn, {
+                        getPicklistDeleteData: () =>
+                            Promise.resolve({
+                                numDeletable: 0,
+                                numNotDeletable: 2,
+                                numShared: 1,
+                                deletableLists: [],
+                            }),
+                    }),
                 })}
             />
         );

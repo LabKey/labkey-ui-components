@@ -4,7 +4,6 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { PicklistOverview, PicklistOverviewImpl, PicklistOverviewWithQueryModels } from './PicklistOverview';
 import { TEST_USER_EDITOR, TEST_USER_READER } from "../../../test/data/users";
-import { getTestPicklistAPIWrapper } from "./APIWrapper";
 import { Picklist } from "./models";
 import { LoadingPage } from "../base/LoadingPage";
 import { NotFound } from "../base/NotFound";
@@ -18,6 +17,8 @@ import { PageDetailHeader } from "../forms/PageDetailHeader";
 import { ManageDropdownButton } from "../buttons/ManageDropdownButton";
 import { SamplesTabbedGridPanel } from "../samples/SamplesTabbedGridPanel";
 import { SchemaQuery } from "../../../public/SchemaQuery";
+import { getTestAPIWrapper } from "../../APIWrapper";
+import { getPicklistTestAPIWrapper } from "./APIWrapper";
 
 const MULTI_SAMPLE_TYPE_PICKLIST = new Picklist({
     listId: 1,
@@ -64,8 +65,10 @@ describe('PicklistOverview', () => {
         const wrapper = mount(
             <PicklistOverview
                 {...DEFAULT_PROPS}
-                api={getTestPicklistAPIWrapper(jest.fn, {
-                    getPicklistFromId: () => Promise.resolve(MULTI_SAMPLE_TYPE_PICKLIST),
+                api={getTestAPIWrapper(jest.fn, {
+                    picklist: getPicklistTestAPIWrapper(jest.fn, {
+                        getPicklistFromId: () => Promise.resolve(MULTI_SAMPLE_TYPE_PICKLIST),
+                    }),
                 })}
             />
         );
@@ -93,8 +96,10 @@ describe('PicklistOverview', () => {
         const wrapper = mount(
             <PicklistOverview
                 {...DEFAULT_PROPS}
-                api={getTestPicklistAPIWrapper(jest.fn, {
-                    getPicklistFromId: () => Promise.resolve(SINGLE_SAMPLE_TYPE_PICKLIST),
+                api={getTestAPIWrapper(jest.fn, {
+                    picklist: getPicklistTestAPIWrapper(jest.fn, {
+                        getPicklistFromId: () => Promise.resolve(SINGLE_SAMPLE_TYPE_PICKLIST),
+                    }),
                 })}
             />
         );
@@ -118,14 +123,16 @@ describe('PicklistOverview', () => {
         const wrapper = mount(
             <PicklistOverview
                 {...DEFAULT_PROPS}
-                api={getTestPicklistAPIWrapper(jest.fn, {
-                    getPicklistFromId: () => Promise.resolve(new Picklist({
-                        listId: 1,
-                        name: 'Test Picklist',
-                        CreatedBy: 1100,
-                        Category: PUBLIC_PICKLIST_CATEGORY,
-                        sampleIdsByType: {},
-                    })),
+                api={getTestAPIWrapper(jest.fn, {
+                    picklist: getPicklistTestAPIWrapper(jest.fn, {
+                        getPicklistFromId: () => Promise.resolve(new Picklist({
+                            listId: 1,
+                            name: 'Test Picklist',
+                            CreatedBy: 1100,
+                            Category: PUBLIC_PICKLIST_CATEGORY,
+                            sampleIdsByType: {},
+                        })),
+                    }),
                 })}
             />
         );
@@ -145,8 +152,10 @@ describe('PicklistOverview', () => {
         const wrapper = mount(
             <PicklistOverview
                 {...DEFAULT_PROPS}
-                api={getTestPicklistAPIWrapper(jest.fn, {
-                    getPicklistFromId: () => Promise.reject('error'),
+                api={getTestAPIWrapper(jest.fn, {
+                    picklist: getPicklistTestAPIWrapper(jest.fn, {
+                        getPicklistFromId: () => Promise.reject('error'),
+                    }),
                 })}
             />
         );
@@ -160,14 +169,16 @@ describe('PicklistOverview', () => {
         const wrapper = mount(
             <PicklistOverview
                 {...DEFAULT_PROPS}
-                api={getTestPicklistAPIWrapper(jest.fn, {
-                    getPicklistFromId: () => Promise.resolve(new Picklist({
-                        listId: 1,
-                        name: 'Test Picklist',
-                        CreatedBy: 1100,
-                        Category: PRIVATE_PICKLIST_CATEGORY,
-                        sampleIdsByType: {},
-                    })),
+                api={getTestAPIWrapper(jest.fn, {
+                    picklist: getPicklistTestAPIWrapper(jest.fn, {
+                        getPicklistFromId: () => Promise.resolve(new Picklist({
+                            listId: 1,
+                            name: 'Test Picklist',
+                            CreatedBy: 1100,
+                            Category: PRIVATE_PICKLIST_CATEGORY,
+                            sampleIdsByType: {},
+                        })),
+                    }),
                 })}
             />
         );
@@ -181,14 +192,16 @@ describe('PicklistOverview', () => {
         const wrapper = mount(
             <PicklistOverview
                 {...DEFAULT_PROPS}
-                api={getTestPicklistAPIWrapper(jest.fn, {
-                    getPicklistFromId: () => Promise.resolve(new Picklist({
-                        listId: 1,
-                        name: 'Test Picklist',
-                        CreatedBy: 1101, // this id is not the user id of the test user
-                        Category: PRIVATE_PICKLIST_CATEGORY,
-                        sampleIdsByType: {},
-                    })),
+                api={getTestAPIWrapper(jest.fn, {
+                    picklist: getPicklistTestAPIWrapper(jest.fn, {
+                        getPicklistFromId: () => Promise.resolve(new Picklist({
+                            listId: 1,
+                            name: 'Test Picklist',
+                            CreatedBy: 1101, // this id is not the user id of the test user
+                            Category: PRIVATE_PICKLIST_CATEGORY,
+                            sampleIdsByType: {},
+                        })),
+                    }),
                 })}
             />
         );

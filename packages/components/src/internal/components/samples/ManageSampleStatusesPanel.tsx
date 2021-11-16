@@ -18,8 +18,9 @@ import { caseInsensitive } from '../../util/utils';
 import { SCHEMAS } from '../../schemas';
 import { resolveErrorMessage } from '../../util/messaging';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { SampleState } from './models';
-import { getDefaultSamplesAPIWrapper, SamplesAPIWrapper } from './APIWrapper';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = SchemaQuery.create('exp', 'SampleStateType');
@@ -310,7 +311,7 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
 SampleStatusesList.displayName = 'SampleStatusesList';
 
 interface ManageSampleStatusesPanelProps {
-    api?: SamplesAPIWrapper;
+    api?: ComponentsAPIWrapper;
     titleCls?: string;
 }
 
@@ -325,7 +326,8 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
         (newStatusLabel?: string) => {
             setError(undefined);
 
-            api.getSampleStatuses()
+            api.samples
+                .getSampleStatuses()
                 .then(statuses => {
                     setStates(statuses);
                     if (newStatusLabel) setSelected(statuses.findIndex(state => state.label === newStatusLabel));
@@ -387,7 +389,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
 });
 
 ManageSampleStatusesPanel.defaultProps = {
-    api: getDefaultSamplesAPIWrapper(),
+    api: getDefaultAPIWrapper(),
 };
 
 ManageSampleStatusesPanel.displayName = 'ManageSampleStatusesPanel';

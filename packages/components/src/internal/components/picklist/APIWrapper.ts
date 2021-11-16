@@ -14,12 +14,10 @@ export class PicklistServerAPIWrapper implements PicklistAPIWrapper {
     getPicklistFromId = getPicklistFromId;
 }
 
-export const getDefaultPicklistAPIWrapper = (): PicklistAPIWrapper => new PicklistServerAPIWrapper();
-
 /**
  * Note: Intentionally does not use jest.fn() to avoid jest becoming an implicit external package dependency.
  */
-export function getTestPicklistAPIWrapper(
+export function getPicklistTestAPIWrapper(
     mockFn = (): any => () => {},
     overrides: Partial<PicklistAPIWrapper> = {}
 ): PicklistAPIWrapper {

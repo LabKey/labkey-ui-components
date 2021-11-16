@@ -34,7 +34,7 @@ import { Picklist } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistEditModal } from './PicklistEditModal';
 import { PicklistGridButtons } from './PicklistGridButtons';
-import { getDefaultPicklistAPIWrapper, PicklistAPIWrapper } from './APIWrapper';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
@@ -46,7 +46,7 @@ interface OwnProps {
     AdditionalGridButtons?: ComponentType<RequiresModelAndActions>;
     samplesEditableGridProps?: Partial<SamplesEditableGridProps>;
     advancedExportOptions?: { [key: string]: any };
-    api?: PicklistAPIWrapper;
+    api?: ComponentsAPIWrapper;
 }
 
 interface ImplProps {
@@ -239,7 +239,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
             if (incrementCounter) LOAD_PICKLIST_COUNTER++;
 
             try {
-                const updatedPicklist = await api.getPicklistFromId(listId);
+                const updatedPicklist = await api.picklist.getPicklistFromId(listId);
                 setPicklist(updatedPicklist);
             } catch (e) {
                 console.error('There was a problem retrieving the picklist data.', e);
@@ -308,5 +308,5 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
 });
 
 PicklistOverview.defaultProps = {
-    api: getDefaultPicklistAPIWrapper(),
+    api: getDefaultAPIWrapper(),
 };

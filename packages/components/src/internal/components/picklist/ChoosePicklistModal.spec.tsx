@@ -17,7 +17,8 @@ import {
     PicklistItemsSummaryDisplay,
     PicklistList,
 } from './ChoosePicklistModal';
-import { getTestSamplesAPIWrapper } from '../samples/APIWrapper';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
 import { OperationConfirmationData } from '../entities/models';
 import { waitForLifecycle } from '../../testHelpers';
 
@@ -305,9 +306,11 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2']}
                 numSelected={2}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleOperationConfirmationData: () =>
-                        Promise.resolve(new OperationConfirmationData({ allowed: [1, 2], notAllowed: [] })),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({ allowed: [1, 2], notAllowed: [] })),
+                    }),
                 })}
             />
         );
@@ -343,9 +346,11 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2']}
                 numSelected={2}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleOperationConfirmationData: () =>
-                        Promise.resolve(new OperationConfirmationData({ allowed: [1, 2], notAllowed: [] })),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({ allowed: [1, 2], notAllowed: [] })),
+                    }),
                 })}
             />
         );
@@ -368,9 +373,11 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1']}
                 numSelected={1}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleOperationConfirmationData: () =>
-                        Promise.resolve(new OperationConfirmationData({ allowed: [1], notAllowed: [] })),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({ allowed: [1], notAllowed: [] })),
+                    }),
                 })}
             />
         );
@@ -393,9 +400,11 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1']}
                 numSelected={1}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleOperationConfirmationData: () =>
-                        Promise.resolve(new OperationConfirmationData({ allowed: [1], notAllowed: [] })),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({ allowed: [1], notAllowed: [] })),
+                    }),
                 })}
             />
         );
@@ -418,9 +427,11 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2', '3']}
                 numSelected={1}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleOperationConfirmationData: () =>
-                        Promise.resolve(new OperationConfirmationData({ allowed: [1], notAllowed: [2, 3] })),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({ allowed: [1], notAllowed: [2, 3] })),
+                    }),
                 })}
             />
         );
@@ -445,9 +456,11 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2', '3']}
                 numSelected={1}
-                api={getTestSamplesAPIWrapper(jest.fn, {
-                    getSampleOperationConfirmationData: () =>
-                        Promise.resolve(new OperationConfirmationData({ allowed: [], notAllowed: [1, 2, 3] })),
+                api={getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({ allowed: [], notAllowed: [1, 2, 3] })),
+                    }),
                 })}
             />
         );

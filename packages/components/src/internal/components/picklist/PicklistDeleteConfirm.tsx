@@ -10,7 +10,7 @@ import { getConfirmDeleteMessage } from '../../util/messaging';
 
 import { Picklist } from './models';
 import { PicklistDeletionData } from './actions';
-import { getDefaultPicklistAPIWrapper, PicklistAPIWrapper } from './APIWrapper';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface DeleteConfirmMessageProps {
     deletionData: PicklistDeletionData;
@@ -102,7 +102,7 @@ interface Props {
     user: User;
     onConfirm: (listsToDelete: any[]) => void;
     onCancel: () => void;
-    api?: PicklistAPIWrapper;
+    api?: ComponentsAPIWrapper;
 }
 
 export const PicklistDeleteConfirm: FC<Props> = memo(props => {
@@ -117,7 +117,8 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
 
     useEffect(() => {
         if (model) {
-            api.getPicklistDeleteData(model, user)
+            api.picklist
+                .getPicklistDeleteData(model, user)
                 .then(data => {
                     setNounAndNumber(data.numDeletable === 1 ? '1 Picklist' : data.numDeletable + ' Picklists');
                     setDeletionData(data);
@@ -168,5 +169,5 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
 });
 
 PicklistDeleteConfirm.defaultProps = {
-    api: getDefaultPicklistAPIWrapper(),
+    api: getDefaultAPIWrapper(),
 };

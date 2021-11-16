@@ -8,7 +8,7 @@ import { Alert, BulkUpdateForm, makeTestQueryModel, QueryColumn, QueryInfo, Sche
 import { OperationConfirmationData } from '../entities/models';
 
 import { SamplesBulkUpdateAlert, SamplesBulkUpdateFormBase } from './SamplesBulkUpdateForm';
-import { getTestSamplesAPIWrapper } from './APIWrapper';
+import { getSamplesTestAPIWrapper } from './APIWrapper';
 
 describe('SamplesBulkUpdateForm', () => {
     const COLUMN_DESCRIPTION = new QueryColumn({
@@ -82,7 +82,7 @@ describe('SamplesBulkUpdateForm', () => {
         onBulkUpdateError: jest.fn,
         onBulkUpdateComplete: jest.fn,
         editSelectionInGrid: jest.fn,
-        api: getTestSamplesAPIWrapper(),
+        api: getSamplesTestAPIWrapper(),
     };
 
     test('all selected are samples', () => {

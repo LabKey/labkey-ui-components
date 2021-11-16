@@ -22,7 +22,7 @@ import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryMod
 
 import { SampleGridButtonProps } from './models';
 import { getSampleTypeRowId } from './actions';
-import { shouldShowButtons } from './utils';
+import { SamplesManageButtonSections, shouldShowButtons } from './utils';
 
 const SAMPLE_IMPORT_TAB_ID = 2;
 
@@ -71,18 +71,18 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
         >
             <ManageDropdownButton id="samples-manage-btn">
                 {props.children}
-                {shouldShowButtons('import', hideButtons) && showImportDataButton && (
+                {shouldShowButtons(SamplesManageButtonSections.IMPORT, hideButtons) && showImportDataButton && (
                     <RequiresPermission perms={PermissionTypes.Insert}>
                         <MenuItem href={importSampleHref}>Import Samples</MenuItem>
                     </RequiresPermission>
                 )}
-                {shouldShowButtons('delete', hideButtons) && (
+                {shouldShowButtons(SamplesManageButtonSections.DELETE, hideButtons) && (
                     <RequiresPermission perms={PermissionTypes.Delete}>
                         <SampleDeleteMenuItem queryModel={model} afterSampleDelete={afterSampleDelete} />
                     </RequiresPermission>
                 )}
-                {shouldShowButtons('picklist', hideButtons) && <AddToPicklistMenuItem queryModel={model} user={user} />}
-                {shouldShowButtons('edit', hideButtons) && (
+                {shouldShowButtons(SamplesManageButtonSections.PICKLIST, hideButtons) && <AddToPicklistMenuItem queryModel={model} user={user} />}
+                {shouldShowButtons(SamplesManageButtonSections.EDIT, hideButtons) && (
                     <RequiresPermission perms={PermissionTypes.Update}>
                         <SelectionMenuItem
                             id="update-samples-menu-item"
@@ -121,7 +121,7 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                         )}
                     </RequiresPermission>
                 )}
-                {showLinkToStudy && App.hasModule('study') && shouldShowButtons('linktostudy', hideButtons) && (
+                {showLinkToStudy && App.hasModule('study') && shouldShowButtons(SamplesManageButtonSections.LINKTOSTUDY, hideButtons) && (
                     <RequiresPermission perms={PermissionTypes.Insert}>
                         <SelectionMenuItem
                             id="link-to-study"

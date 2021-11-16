@@ -310,6 +310,7 @@ import {
     getSampleStatus,
     getSampleStatusType,
     isSampleOperationPermitted,
+    SamplesManageButtonSections,
 } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
@@ -903,6 +904,7 @@ export {
     SampleSetDeleteModal,
     SampleDeleteMenuItem,
     SamplesManageButton,
+    SamplesManageButtonSections,
     SamplesTabbedGridPanel,
     SampleLineageGraph,
     SampleDetailEditing,

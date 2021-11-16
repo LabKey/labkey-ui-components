@@ -176,6 +176,14 @@ export function filterSampleRowsForOperation(
     };
 }
 
-export const shouldShowButtons = (action: string, hideButtons: string[]): boolean => {
+export enum SamplesManageButtonSections {
+    DELETE = 'delete',
+    EDIT = 'edit',
+    IMPORT = 'import',
+    LINKTOSTUDY = 'linktostudy',
+    PICKLIST = 'picklist',
+}
+
+export const shouldShowButtons = (action: SamplesManageButtonSections, hideButtons: string[]): boolean => {
     return hideButtons === undefined || hideButtons.indexOf(action) === -1;
 };

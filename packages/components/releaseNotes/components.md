@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.93.0
+*Released*: 16 November 2021
+* Support initializing Ontology Browser to a concept via a URL parameter
+
 ### version 2.92.0
 *Released*: 16 November 2021
 * Introduce `AppContext`. A React context for serving global application context.

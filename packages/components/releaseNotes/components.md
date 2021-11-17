@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD November 2021
+### version 2.94.0
+*Released*: 17 November 2021
 * Item 9500: Improve Sample display when spanning types
     * fix SamplesSelectionContextProvider typings so that we can wrap SamplesBulkUpdateForm and SamplesEditableGrid here in ui-components and export the
     * remove SamplesSelectionContextProvider, SamplesBulkUpdateFormBase, and SamplesEditableGridBase from index.ts

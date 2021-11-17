@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { createContext, FC, useContext, useMemo } from 'react';
+import React, { createContext, PropsWithChildren, ReactElement, useContext, useMemo } from 'react';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
 
@@ -26,13 +26,34 @@ export interface AppContext {
     navigation?: NavigationSettings;
 }
 
-const Context = createContext<AppContext>(undefined);
+export type ExtendableAppContext<T> = T & AppContext;
 
-export interface AppContextProviderProps {
-    initialContext?: AppContext;
+// The "any" used here should be fine, it gets re-typed in useAppContext, so as long as you're using the
+const Context = createContext<ExtendableAppContext<any>>(undefined);
+
+export interface AppContextProviderProps<T> {
+    initialContext?: ExtendableAppContext<T>;
 }
 
-export const AppContextProvider: FC<AppContextProviderProps> = ({ children, initialContext }) => {
+/**
+ * AppContextProvider is a generic, where the type T is a type that extends AppContext. This allows consuming
+ * applications to add their own custom attributes to the AppContext. There are a few general rules to follow when
+ * adding new properties to the AppContext:
+ *   - Be judicious when adding something to the AppContext, only add something when you really need it accessible all
+ *     over your app, at any level in the React Component tree
+ *   - AppContext is not mutable by design, this is where static app-level pieces of configuration should live, the
+ *     AppContext state should never change during runtime
+ *   - If it needs to be accessed by anything in ui-components, then it should live on the AppContext in above
+ *   - If it is app specific, then it should live on the Type (T) that you pass to this component
+ *   - If it is app specific, and it's accessed by something in ui-components, then consider changing the design of
+ *       of your components so they do not depend on something app specific, or have them take an equivalent prop
+ *       that you pass to the component from your context aware app (feel free ask someone for help with this type
+ *       of design)
+ */
+export function AppContextProvider<T>({
+    children,
+    initialContext,
+}: PropsWithChildren<AppContextProviderProps<T>>): ReactElement {
     const value = useMemo<AppContext>(
         () => ({
             // Provide a default API so that external users don't have to specify it
@@ -45,12 +66,17 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({ children, init
     );
 
     return <Context.Provider value={value}>{children}</Context.Provider>;
-};
+}
 
-export const useAppContext = (): AppContext => {
-    const context = useContext(Context);
+/**
+ * To use the AppContext provided by a AppContextProvider, use this convenient hook. If you find yourself constantly
+ * grabbing the same attribute or two from useAppContext it may be convenient to create a wrapper around this hook
+ * that grabs only what you need, this is most helpful for our packages like Workflow.
+ */
+export function useAppContext<T>(): ExtendableAppContext<T> {
+    const context = useContext<ExtendableAppContext<T>>(Context);
     if (context === undefined) {
         throw new Error('useAppContext must be used within a AppContext.Provider');
     }
     return context;
-};
+}

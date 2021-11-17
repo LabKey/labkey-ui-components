@@ -250,6 +250,25 @@
   border-radius: 0;
 }
 
+.container-nav {
+    padding: 8px 0px 8px 10px;
+    min-width: 100px;
+    color: #9d9d9d;
+    position: relative;
+}
+.container-nav:before {
+    border-left: 1px solid #cbccce;
+    content: '';
+    height: 34px;
+    margin-top: -16px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+}
+.container-nav__name {
+    margin-left: 4px;
+}
+
 .navbar-inverse {
   min-height: 15px;
 
@@ -288,6 +307,7 @@
     display: inline-block;
     overflow-x: hidden;
     white-space: nowrap;
+    flex: 1;
 
     .navbar-nav {
       margin: 0;

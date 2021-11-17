@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-import React, { createRef, Component, ReactNode, RefObject } from 'react';
+import React, { ReactNode, FC, useRef, useState, useCallback, useEffect } from 'react';
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
-import $ from 'jquery';
 
-import { AppURL } from '../../..';
+import { AppURL, useAppContext, useServerContext } from '../../..';
 
 import NavItem, { ParentNavItem } from './NavItem';
 
 interface Props {
-    params?: any;
     noun?: ITab;
     tabs: List<ITab>;
-}
-
-interface State {
-    isScrollable: boolean;
 }
 
 export interface ITab {
@@ -39,132 +33,90 @@ export interface ITab {
     url: string | AppURL;
 }
 
-let activateTimer;
+export const SubNav: FC<Props> = ({ noun, tabs }) => {
+    const scrollable = useRef<HTMLDivElement>();
+    const { navigation } = useAppContext();
+    const { container  } = useServerContext();
+    const [isScrollable, setIsScrollable] = useState<boolean>(false);
+    const scroll = useCallback(offset => {
+        scrollable.current.scrollLeft = scrollable.current.scrollLeft + offset;
+    }, []);
+    const scrollLeft = useCallback(() => scroll(-300), [scroll]);
+    const scrollRight = useCallback(() => scroll(300), [scroll]);
+    const onItemActivate = useCallback(
+        (el: HTMLDivElement) => {
+            const scrollPos = scrollable.current.getBoundingClientRect();
+            const itemPos = el.getBoundingClientRect();
+            const leftEdge = scrollPos.left;
+            const rightEdge = scrollPos.left + scrollPos.width;
+            const itemLeft = itemPos.left;
+            const itemRight = itemPos.left + itemPos.width;
 
-export class SubNav extends Component<Props, State> {
-    private scrollable: RefObject<HTMLDivElement>;
-
-    constructor(props: Props) {
-        super(props);
-
-        this.scrollable = createRef();
-
-        this.state = {
-            isScrollable: false,
-        };
-    }
-
-    componentDidMount = (): void => {
-        this.onResize();
-        $(window).resize(this.onResize);
-    };
-
-    componentWillUnmount = (): void => {
-        $(window).off('resize', this.onResize);
-    };
-
-    componentDidUpdate = (): void => {
-        this.onResize();
-    };
-
-    shouldComponentUpdate(nextProps: Props) {
-        return true;
-    }
-
-    onItemActivate = (itemEl): void => {
-        if (this.state.isScrollable) {
-            clearTimeout(activateTimer);
-
-            activateTimer = window.setTimeout(() => {
-                activateTimer = null;
-                this.scrollTo(itemEl);
-            }, 25);
-        }
-    };
-
-    onResize = (): void => {
-        const el = this.scrollable.current;
+            if (itemLeft < leftEdge) {
+                scroll(itemLeft - leftEdge);
+            } else if (itemRight > rightEdge) {
+                scroll(itemRight - rightEdge);
+            }
+        },
+        [scroll]
+    );
+    const calculateIsScrollable = useCallback(() => {
+        const el = scrollable.current;
         const hasOverflow = el.offsetWidth < el.scrollWidth;
 
         if (hasOverflow) {
-            if (!this.state.isScrollable) {
-                this.setState({
-                    isScrollable: true,
-                });
-            }
+            setIsScrollable(true);
         } else {
-            if (this.state.isScrollable) {
-                this.setState({
-                    isScrollable: false,
-                });
-            }
+            setIsScrollable(false);
         }
-    };
+    }, []);
 
-    scroll = (scrollLeftDelta: number): void => {
-        $(this.scrollable.current).animate(
-            {
-                scrollLeft: this.scrollable.current.scrollLeft + scrollLeftDelta,
-            },
-            200
-        );
-    };
+    useEffect(() => {
+        window.addEventListener('resize', calculateIsScrollable);
+        return () => {
+            window.removeEventListener('resize', calculateIsScrollable);
+        };
+    }, [calculateIsScrollable]);
 
-    scrollLeft = (): void => {
-        this.scroll(-300);
-    };
+    useEffect(() => {
+        // Tabs can be loaded asynchronously, isScrollable is calculated based on the window size and size of the tabs,
+        // so we want to recalculate every time the tabs change
+        calculateIsScrollable();
+    }, [calculateIsScrollable, tabs]);
 
-    scrollRight = (): void => {
-        this.scroll(300);
-    };
+    return (
+        <nav className="navbar navbar-inverse no-margin-bottom sub-nav">
+            <div className="container">
+                {noun && <ParentNavItem to={noun.url}>{noun.text}</ParentNavItem>}
 
-    scrollTo = (itemEl): void => {
-        const scroll = $(this.scrollable.current);
-        const scrollPos = scroll.position();
-
-        const item = $(itemEl);
-        const itemPos = item.position();
-
-        const leftEdge = scrollPos.left;
-        const rightEdge = scrollPos.left + scroll.width();
-        const itemLeft = itemPos.left;
-        const itemRight = itemPos.left + item.width();
-
-        if (itemLeft < leftEdge) {
-            this.scroll(itemLeft - leftEdge);
-        } else if (itemRight > rightEdge) {
-            this.scroll(itemRight - rightEdge);
-        }
-    };
-
-    render = (): ReactNode => {
-        const { noun, tabs } = this.props;
-
-        return (
-            <nav className="navbar navbar-inverse no-margin-bottom sub-nav">
-                <div className="container">
-                    {noun && <ParentNavItem to={noun.url}>{noun.text}</ParentNavItem>}
-                    <div className="tab-scroll-ct" ref={this.scrollable}>
-                        <ul className="nav navbar-nav">
-                            {tabs.map((tab, i) => (
-                                <NavItem key={i} to={tab.url} onActive={this.onItemActivate}>
-                                    {tab.text}
-                                </NavItem>
-                            ))}
-                        </ul>
-                    </div>
-                    {this.state.isScrollable && (
-                        <div className="btn-group scroll-btn-group">
-                            <Button onClick={this.scrollLeft}>
-                                <i className="fa fa-chevron-left" />
-                            </Button>
-                            <Button onClick={this.scrollRight}>
-                                <i className="fa fa-chevron-right" />
-                            </Button>
-                        </div>
-                    )}
+                <div className="tab-scroll-ct" ref={scrollable}>
+                    <ul className="nav navbar-nav">
+                        {tabs.map(({ text, url }) => (
+                            <NavItem key={text} to={url} onActive={onItemActivate}>
+                                {text}
+                            </NavItem>
+                        ))}
+                    </ul>
                 </div>
-            </nav>
-        );
-    };
-}
+
+                {isScrollable && (
+                    <div className="btn-group scroll-btn-group">
+                        <Button onClick={scrollLeft}>
+                            <i className="fa fa-chevron-left" />
+                        </Button>
+                        <Button onClick={scrollRight}>
+                            <i className="fa fa-chevron-right" />
+                        </Button>
+                    </div>
+                )}
+
+                {navigation.showCurrentContainer && (
+                    <div className="container-nav">
+                        <span className="fa fa-folder-open" />
+                        <span className="container-nav__name">{container.name}</span>
+                    </div>
+                )}
+            </div>
+        </nav>
+    );
+};

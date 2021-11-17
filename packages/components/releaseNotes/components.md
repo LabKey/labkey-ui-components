@@ -1,6 +1,33 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.94.0
+*Released*: 17 November 2021
+* Item 9500: Improve Sample display when spanning types
+    * fix SamplesSelectionContextProvider typings so that we can wrap SamplesBulkUpdateForm and SamplesEditableGrid here in ui-components and export the
+    * remove SamplesSelectionContextProvider, SamplesBulkUpdateFormBase, and SamplesEditableGridBase from index.ts
+    * remove SamplesSelectionContextProvider determineAliquot, determineStorage, and determineLineage props as those are now the same for LKB and LKSM
+    * replace canEditStorage prop with call to isFreezerManagementEnabled()
+    * move SamplesTabbedGridPanel from LKSM to ui-components
+    * move CHECKED_OUT_BY_FIELD and INVENTORY_COLS constants to ui-components
+    * Picklist implementation using SamplesTabbedGridPanel
+    * split out RemoveFromPicklistMenuItem so that it can be used on the app side like AddToPicklistMenuItem
+    * remove GridPanel internal usage of GridAliquotViewSelector, usages can still pass this in via ButtonsComponentRight
+
+### version 2.93.0
+*Released*: 16 November 2021
+* Support initializing Ontology Browser to a concept via a URL parameter
+
+### version 2.92.0
+*Released*: 16 November 2021
+* Introduce `AppContext`. A React context for serving global application context.
+* Provide test utilities for working with components that utilize `AppContext`.
+
+### version 2.91.2
+*Released*: 15 November 2021
+* Merge release21.11-SNAPSHOT to develop
+* Includes changes from versions 2.90.2 and 2.90.3
+
 ### version 2.91.1
 *Released*: 10 November 2021
 * Bump @labkey/api dependency
@@ -16,6 +43,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Export invalidateQueryDetailsCache
   * Provides containerPath-sensitive cache clearing
 * Announcements: support supplying containerPath
+
+### version 2.90.3
+*Released*: 10 November 2021
+* Issue 44250: Invalidate QueryInfo caches after change to NameIdSettings.allowUserSpecifiedNames
+
+### version 2.90.2
+*Released*: 3 November 2021
+* Ensure LK instances without LKSM do not call prefix-related actions
 
 ### version 2.90.1
 *Released*: 1 November 2021

@@ -1,4 +1,4 @@
-import React, { FC, memo, useMemo } from 'react';
+import React, { FC, memo, ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 
 import {
@@ -15,15 +15,16 @@ import {
 import { OperationConfirmationData } from '../entities/models';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
+import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 
 interface OwnProps {
     queryModel: QueryModel;
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<void>;
-    hasValidMaxSelection: () => any;
+    hasValidMaxSelection: () => boolean;
     sampleSetLabel: string;
-    onCancel: () => any;
-    onBulkUpdateError: (message: string) => any;
-    onBulkUpdateComplete: (data: any, submitForEdit) => any;
+    onCancel: () => void;
+    onBulkUpdateError: (message: string) => void;
+    onBulkUpdateComplete: (data: any, submitForEdit) => void;
     editSelectionInGrid: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any;
 }
 
@@ -63,8 +64,7 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo(props => {
     );
 });
 
-// Usage:
-// export const SamplesBulkUpdateForm = connect<any, any, any>(undefined)(SamplesSelectionProvider(SamplesBulkUpdateFormBase));
+// exported for jest testing
 export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
     getGridSelectionSize = (): number => {
         return this.props.queryModel.selections.size;
@@ -107,7 +107,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
         return originalQueryInfo.merge({ columns }) as QueryInfo;
     }
 
-    render() {
+    render(): ReactNode {
         const {
             aliquots,
             updateRows,
@@ -146,3 +146,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
         );
     }
 }
+
+export const SamplesBulkUpdateForm = SamplesSelectionProvider<OwnProps & SamplesSelectionProviderProps>(
+    SamplesBulkUpdateFormBase
+);

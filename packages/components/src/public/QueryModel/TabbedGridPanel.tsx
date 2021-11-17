@@ -46,7 +46,7 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
     );
 });
 
-interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
+export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
     /**
      * The id of the model you want to render. Required if you are using onTabSelect. If passed when not using
      * onTabSelect it will be used as the initial active tab.

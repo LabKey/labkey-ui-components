@@ -10,6 +10,7 @@ import {
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleStateType,
+    SCHEMAS,
 } from '../../..';
 
 import { isSampleStatusEnabled } from '../../app/utils';
@@ -20,13 +21,14 @@ import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, Sa
 
 import { SampleStatus } from './models';
 
-export function getOmittedSampleTypeColumns(user: User, omitCols?: string[]): string[] {
+export function getOmittedSampleTypeColumns(user: User): string[] {
     let cols: string[] = [];
 
     if (user.isGuest) {
-        cols.push('checkedOutBy');
-    } else if (omitCols && !App.isFreezerManagementEnabled()) {
-        cols = cols.concat(omitCols);
+        cols.push(SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD);
+    }
+    if (!App.isFreezerManagementEnabled()) {
+        cols = cols.concat(SCHEMAS.INVENTORY.INVENTORY_COLS);
     }
 
     return cols;
@@ -173,3 +175,18 @@ export function filterSampleRowsForOperation(
         statusData,
     };
 }
+
+export enum SamplesManageButtonSections {
+    DELETE = 'delete',
+    EDIT = 'edit',
+    IMPORT = 'import',
+    LINKTOSTUDY = 'linktostudy',
+    PICKLIST = 'picklist',
+}
+
+export const shouldShowButtons = (
+    action: SamplesManageButtonSections,
+    hideButtons: SamplesManageButtonSections[]
+): boolean => {
+    return hideButtons === undefined || hideButtons.indexOf(action) === -1;
+};

@@ -9,7 +9,7 @@ import {
     DERIVATIVE_CREATION,
     OperationConfirmationData,
     POOLED_SAMPLE_CREATION,
-} from '../../../index';
+} from '../../..';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 

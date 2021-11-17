@@ -1,10 +1,13 @@
 import { ComponentType } from 'react';
 import { List } from 'immutable';
 import { Draft, immerable, produce } from 'immer';
+import { Filter } from '@labkey/api';
 
 import { OperationConfirmationData, QueryModel, User } from '../../..';
 
 import { SampleStateType } from './constants';
+import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
+import { SamplesManageButtonSections } from './utils';
 
 export enum SampleCreationType {
     Independents = 'New samples',
@@ -71,7 +74,6 @@ export const ALIQUOT_CREATION: SampleCreationTypeModel = {
 export interface SamplesSelectionProviderProps {
     selection: List<any>;
     sampleSet: string;
-    determineAliquot?: boolean;
     determineStorage?: boolean;
     determineLineage?: boolean;
 }
@@ -151,4 +153,18 @@ export class SampleState {
             Object.assign(draft, props);
         });
     }
+}
+
+export interface SampleGridButtonProps {
+    afterSampleActionComplete?: () => void;
+    afterSampleDelete?: (rowsToKeep: Array<any>) => void;
+    createBtnParentKey?: string;
+    createBtnParentType?: string;
+    excludedCreateMenuKeys?: List<string>;
+    hideButtons?: SamplesManageButtonSections[];
+    initAliquotMode?: ALIQUOT_FILTER_MODE;
+    onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
+    showBulkUpdate?: () => void;
+    toggleEditWithGridUpdate?: () => void;
+    user: User;
 }

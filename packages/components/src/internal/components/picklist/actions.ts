@@ -12,7 +12,7 @@ import { User } from '../base/models/User';
 import { AppURL, buildURL, createProductUrlFromParts } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
 import { resolveErrorMessage } from '../../util/messaging';
-import { OperationConfirmationData, SCHEMAS } from '../../../index';
+import { caseInsensitive, OperationConfirmationData, SCHEMAS } from '../../..';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
@@ -420,17 +420,30 @@ export function deletePicklists(picklists: Picklist[], selectionKey?: string): P
     });
 }
 
-export function removeSamplesFromPicklist(picklist: Picklist, selectionModel: QueryModel): Promise<number> {
-    return new Promise((resolve, reject) => {
-        const rows = [];
-        selectionModel.selections.forEach(id => {
-            rows.push({ id });
+export const removeSamplesFromPicklist = async (picklist: Picklist, selectionModel: QueryModel): Promise<number> => {
+    const rows = [];
+    let selectedIds = selectionModel.selections;
+
+    // if the model is for the sample type, query to get the relevant list keys to delete.
+    if (selectionModel.schemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) {
+        const listResponse = await selectRows({
+            schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
+            queryName: picklist.name,
+            filterArray: [Filter.create('SampleID', [...selectionModel.selections], Filter.Types.IN)],
         });
+        selectedIds = listResponse.orderedModels[listResponse.key].toJS();
+    }
+
+    selectedIds.forEach(id => {
+        rows.push({ id });
+    });
+
+    return new Promise((resolve, reject) => {
         if (rows.length === 0) {
             resolve(0);
         } else {
             deleteRows({
-                schemaQuery: selectionModel.schemaQuery,
+                schemaQuery: SchemaQuery.create(SCHEMAS.PICKLIST_TABLES.SCHEMA, picklist.name),
                 rows,
             })
                 .then(response => {
@@ -441,7 +454,7 @@ export function removeSamplesFromPicklist(picklist: Picklist, selectionModel: Qu
                 });
         }
     });
-}
+};
 
 export function getPicklistUrl(listId: number, picklistProductId?: string, currentProductId?: string): string {
     let picklistUrl: string = AppURL.create(PICKLIST_KEY, listId).toHref();
@@ -452,3 +465,34 @@ export function getPicklistUrl(listId: number, picklistProductId?: string, curre
 
     return picklistUrl;
 }
+
+export const getPicklistFromId = async (listId: number): Promise<Picklist> => {
+    const listData = await selectRows({
+        schemaName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.schemaName,
+        queryName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.queryName,
+        requiredColumns: ['Category'],
+        filterArray: [Filter.create('listId', listId)],
+    });
+    const listRow = listData.models[listData.key][listId];
+    if (!listRow) return new Picklist(/* use empty picklist to signal not found */);
+    let picklist = Picklist.create(listRow);
+
+    const listSampleTypeData = await selectRows({
+        schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
+        sql: 'SELECT DISTINCT SampleID.SampleSet as SampleType FROM "' + picklist.name + '"',
+        saveInSession: true,
+    });
+    const sampleTypes = convertPicklistSampleTypeData(Object.values(listSampleTypeData.models[listSampleTypeData.key]));
+    picklist = picklist.mutate({ sampleTypes });
+
+    return picklist;
+};
+
+// exported for jest testing
+export const convertPicklistSampleTypeData = (data: Record<string, any>[]): string[] => {
+    const sampleTypes = [];
+    data.forEach(row => {
+        sampleTypes.push(caseInsensitive(row, 'SampleType').displayValue);
+    });
+    return sampleTypes;
+};

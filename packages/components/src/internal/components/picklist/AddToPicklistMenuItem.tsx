@@ -95,16 +95,17 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     metricFeatureArea={metricFeatureArea}
                 />
             )}
-            <PicklistEditModal
-                selectionKey={id}
-                selectedQuantity={numSelected}
-                sampleIds={sampleIds}
-                show={showCreatePicklist}
-                onFinish={afterCreatePicklist}
-                onCancel={closeCreatePicklist}
-                showNotification={true}
-                metricFeatureArea={metricFeatureArea}
-            />
+            {showCreatePicklist && (
+                <PicklistEditModal
+                    selectionKey={id}
+                    selectedQuantity={numSelected}
+                    sampleIds={sampleIds}
+                    onFinish={afterCreatePicklist}
+                    onCancel={closeCreatePicklist}
+                    showNotification
+                    metricFeatureArea={metricFeatureArea}
+                />
+            )}
         </>
     );
 });

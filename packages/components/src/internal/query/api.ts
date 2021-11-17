@@ -30,7 +30,11 @@ import {
     ViewInfo,
 } from '../..';
 
-const queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
+let queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
+
+export function invalidateFullQueryDetailsCache(): void {
+    queryDetailsCache = {};
+}
 
 function getQueryDetailsCacheKey(schemaQuery: SchemaQuery, containerPath?: string): string {
     return '' + resolveSchemaQuery(schemaQuery) + (containerPath ? '|' + containerPath : '');

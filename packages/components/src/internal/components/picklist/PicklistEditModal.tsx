@@ -22,7 +22,6 @@ import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
 
 interface Props {
-    show: boolean;
     selectionKey?: string; // pass in either selectionKey and selectedQuantity or sampleIds.
     selectedQuantity?: number;
     sampleIds?: string[];
@@ -39,7 +38,6 @@ interface Props {
 export const PicklistEditModal: FC<Props> = memo(props => {
     const {
         api,
-        show,
         onCancel,
         onFinish,
         selectionKey,
@@ -51,21 +49,19 @@ export const PicklistEditModal: FC<Props> = memo(props => {
         picklistProductId,
         metricFeatureArea,
     } = props;
-    const [name, setName] = useState<string>(picklist ? picklist.name : '');
+    const [name, setName] = useState<string>(picklist?.name ?? '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 
-    const [description, setDescription] = useState<string>(picklist ? picklist.Description : '');
+    const [description, setDescription] = useState<string>(picklist?.Description ?? '');
     const onDescriptionChange = useCallback(
         (evt: ChangeEvent<HTMLTextAreaElement>) => setDescription(evt.target.value),
         []
     );
 
-    const [shared, setShared] = useState<boolean>(picklist ? picklist.isPublic() : false);
+    const [shared, setShared] = useState<boolean>(picklist?.isPublic() ?? false);
     // Using a type for evt here causes difficulties.  It wants a FormEvent<Checkbox> but
     // then it doesn't recognize checked as a valid field on current target.
-    const onSharedChanged = useCallback(evt => {
-        setShared(evt.currentTarget.checked);
-    }, []);
+    const onSharedChanged = useCallback(evt => setShared(evt.currentTarget.checked), []);
 
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [picklistError, setPicklistError] = useState<string>(undefined);
@@ -178,7 +174,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     }
 
     return (
-        <Modal show={show} onHide={onCancel}>
+        <Modal show={true} onHide={onCancel}>
             <Modal.Header closeButton>
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>

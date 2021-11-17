@@ -5,6 +5,8 @@ import { AuditBehaviorTypes } from '@labkey/api';
 
 import { EntityDeleteModal, SampleTypeDataType, QueryModel, SelectionMenuItem } from '../../..';
 
+import { MAX_SELECTED_SAMPLES } from './constants';
+
 interface Props {
     queryModel: QueryModel;
     key?: string;
@@ -17,16 +19,8 @@ interface Props {
 }
 
 export const SampleDeleteMenuItem: FC<Props> = memo(props => {
-    const {
-        key,
-        itemText,
-        queryModel,
-        verb,
-        beforeSampleDelete,
-        afterSampleDelete,
-        auditBehavior,
-        maxDeleteRows,
-    } = props;
+    const { key, itemText, queryModel, verb, beforeSampleDelete, afterSampleDelete, auditBehavior, maxDeleteRows } =
+        props;
     const [showConfirmDeleteSamples, setShowConfirmDeleteSamples] = useState<boolean>(false);
 
     const onClick = useCallback(() => {
@@ -62,7 +56,7 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
             {showConfirmDeleteSamples && (
                 <EntityDeleteModal
                     queryModel={queryModel}
-                    useSelected={true}
+                    useSelected
                     beforeDelete={beforeSampleDelete}
                     afterDelete={onDeleteComplete}
                     onCancel={onClose}
@@ -80,6 +74,6 @@ SampleDeleteMenuItem.defaultProps = {
     itemText: 'Delete Samples',
     key: 'delete-samples-menu-item',
     verb: 'deleted and removed from storage',
-    maxDeleteRows: 10000,
+    maxDeleteRows: MAX_SELECTED_SAMPLES,
     auditBehavior: AuditBehaviorTypes.DETAILED,
 };

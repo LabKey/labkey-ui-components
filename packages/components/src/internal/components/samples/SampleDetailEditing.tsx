@@ -23,6 +23,7 @@ import { DetailRenderer } from '../forms/detail/DetailDisplay';
 
 import { GroupedSampleFields } from './models';
 import { GroupedSampleDisplayColumns, getGroupedSampleDisplayColumns, getGroupedSampleDomainFields } from './actions';
+import { IS_ALIQUOT_COL } from './constants';
 
 interface Props {
     actions?: Actions;
@@ -116,7 +117,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
             schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
             baseFilters: [Filter.create('lsid', rootLsid)],
             requiredColumns: ['Name', 'Description'],
-            omittedColumns: ['IsAliquot'],
+            omittedColumns: [IS_ALIQUOT_COL],
         };
     };
 

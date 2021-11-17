@@ -19,6 +19,8 @@ import { loadNameExpressionOptions } from '../../settings/actions';
 
 import { PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 
+import { isSampleManagerEnabled } from '../../../app/utils';
+
 import { DataClassModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
@@ -61,11 +63,13 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
     state: Readonly<State> = { isValid: true, prefix: undefined, loadingError: undefined };
 
     componentDidMount = async (): Promise<void> => {
-        try {
-            const response = await loadNameExpressionOptions();
-            this.setState({ prefix: response.prefix ?? null });
-        } catch (error) {
-            this.setState({ loadingError: 'There was a problem retrieving the Naming Pattern prefix.' });
+        if (isSampleManagerEnabled()) {
+            try {
+                const response = await loadNameExpressionOptions();
+                this.setState({ prefix: response.prefix ?? null });
+            } catch (error) {
+                this.setState({ loadingError: 'There was a problem retrieving the Naming Pattern prefix.' });
+            }
         }
     };
 

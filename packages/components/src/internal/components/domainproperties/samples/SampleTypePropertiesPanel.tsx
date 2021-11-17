@@ -42,7 +42,7 @@ import { ENTITY_FORM_IDS } from '../entities/constants';
 
 import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
-import { getCurrentProductName, isCommunityDistribution } from '../../../app/utils';
+import { getCurrentProductName, isCommunityDistribution, isSampleManagerEnabled } from '../../../app/utils';
 
 import { loadNameExpressionOptions } from '../../settings/actions';
 
@@ -157,11 +157,13 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 this.setState(() => ({ containers: List<Container>() }));
             });
 
-        try {
-            const response = await loadNameExpressionOptions();
-            this.setState({ prefix: response.prefix ?? null });
-        } catch (error) {
-            this.setState({ loadingError: 'There was a problem retrieving the Naming Pattern prefix.' });
+        if (isSampleManagerEnabled()) {
+            try {
+                const response = await loadNameExpressionOptions();
+                this.setState({ prefix: response.prefix ?? null });
+            } catch (error) {
+                this.setState({ loadingError: 'There was a problem retrieving the Naming Pattern prefix.' });
+            }
         }
     };
 

@@ -288,19 +288,20 @@ import {
     getSelectedItemSamples,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
-import { SamplesBulkUpdateFormBase } from './internal/components/samples/SamplesBulkUpdateForm';
-import { SamplesEditableGridBase } from './internal/components/samples/SamplesEditableGrid';
+import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
 import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
 import { SampleDeleteMenuItem } from './internal/components/samples/SampleDeleteMenuItem';
+import { SamplesManageButton } from './internal/components/samples/SamplesManageButton';
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
 import { CreateSamplesSubMenuBase } from './internal/components/samples/CreateSamplesSubMenuBase';
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
-import { SamplesSelectionProvider } from './internal/components/samples/SamplesSelectionContextProvider';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
+
+import { AppContextProvider, useAppContext } from './internal/AppContext';
 
 import {
     filterSampleRowsForOperation,
@@ -311,6 +312,7 @@ import {
     getSampleStatus,
     getSampleStatusType,
     isSampleOperationPermitted,
+    SamplesManageButtonSections,
 } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
@@ -468,7 +470,12 @@ import { ValidatorModal } from './internal/components/domainproperties/validatio
 import { RangeValidationOptions } from './internal/components/domainproperties/validation/RangeValidationOptions';
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
-import { makeQueryInfo, mountWithServerContextOptions, sleep } from './internal/testHelpers';
+import {
+    makeQueryInfo,
+    mountWithAppServerContextOptions,
+    mountWithServerContextOptions,
+    sleep,
+} from './internal/testHelpers';
 import { QueryModel } from './public/QueryModel/QueryModel';
 import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
@@ -503,22 +510,17 @@ import {
     SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
     SampleStateType,
-    UNIQUE_ID_FIND_FIELD
+    UNIQUE_ID_FIND_FIELD,
+    IS_ALIQUOT_COL,
 } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
-import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
+import { OntologyBrowserPage } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
 import { AppModel, LogoutReason } from './internal/app/models';
-import {
-    PRIVATE_PICKLIST_CATEGORY,
-    PUBLIC_PICKLIST_CATEGORY,
-} from './internal/components/domainproperties/list/constants';
-import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './internal/components/picklist/models';
-import { PicklistEditModal } from './internal/components/picklist/PicklistEditModal';
-import { PicklistDeleteConfirm } from './internal/components/picklist/PicklistDeleteConfirm';
+import { Picklist } from './internal/components/picklist/models';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
 import { PicklistListing } from './internal/components/picklist/PicklistListing';
@@ -526,12 +528,8 @@ import { PicklistOverview } from './internal/components/picklist/PicklistOvervie
 import { PicklistSubNav } from './internal/components/picklist/PicklistSubnav';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
-import {
-    deletePicklists,
-    getSelectedPicklistSamples,
-    removeSamplesFromPicklist,
-    updatePicklist,
-} from './internal/components/picklist/actions';
+import { RemoveFromPicklistMenuItem } from './internal/components/picklist/RemoveFromPicklistMenuItem';
+import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
 
 import {
     AppReducers,
@@ -835,6 +833,9 @@ export {
     LabelOverlay,
     WizardNavButtons,
     FormSection,
+    AutoForm,
+    DateInput,
+    EditInlineField,
     // user/permissions related items
     getUsersWithPermissions,
     useUsersWithPermissions,
@@ -864,22 +865,14 @@ export {
     useUserProperties,
     // sample picklist items
     AddToPicklistMenuItem,
+    RemoveFromPicklistMenuItem,
     PicklistButton,
     PicklistCreationMenuItem,
-    PicklistEditModal,
-    PicklistDeleteConfirm,
-    PUBLIC_PICKLIST_CATEGORY,
-    PRIVATE_PICKLIST_CATEGORY,
-    PICKLIST_KEY_COLUMN,
-    PICKLIST_SAMPLE_ID_COLUMN,
     Picklist,
     PicklistListing,
     PicklistOverview,
     PicklistSubNav,
-    deletePicklists,
     getSelectedPicklistSamples,
-    removeSamplesFromPicklist,
-    updatePicklist,
     // data class and sample type related items
     DataClassModel,
     deleteDataClass,
@@ -904,6 +897,7 @@ export {
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_STORAGE_COLUMNS,
+    IS_ALIQUOT_COL,
     SampleTypeModel,
     deleteSampleSet,
     fetchSamples,
@@ -923,14 +917,14 @@ export {
     SampleSetSummary,
     SampleCreationType,
     SampleSetDeleteModal,
-    SamplesBulkUpdateFormBase,
     SampleDeleteMenuItem,
-    SamplesEditableGridBase,
+    SamplesManageButton,
+    SamplesManageButtonSections,
+    SamplesTabbedGridPanel,
     SampleLineageGraph,
     SampleDetailEditing,
     SampleCreationTypeModal,
     CreateSamplesSubMenuBase,
-    SamplesSelectionProvider,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
     GridAliquotViewSelector,
@@ -1113,6 +1107,7 @@ export {
     DEFAULT_FILE,
     FilesListing,
     FilesListingForm,
+    FileAttachmentArea,
     FileAttachmentEntry,
     FileAttachmentForm,
     FileTree,
@@ -1148,8 +1143,11 @@ export {
     getHelpLink,
     HelpLink,
     HELP_LINK_REFERRER,
+    HelpIcon,
     incrementClientSideMetricCount,
     SAMPLE_ALIQUOT_TOPIC,
+    Key,
+    useEnterEscape,
     // devTools functions
     applyDevTools,
     devToolsActive,
@@ -1211,6 +1209,8 @@ export {
     // base models, enums, constants
     Container,
     User,
+    AppContextProvider,
+    useAppContext,
     ServerContextProvider,
     ServerContextConsumer,
     useServerContext,
@@ -1265,20 +1265,14 @@ export {
     sleep,
     createMockWithRouterProps,
     makeQueryInfo,
+    mountWithAppServerContextOptions,
     mountWithServerContextOptions,
     // Ontology
-    OntologyBrowserPanel,
+    OntologyBrowserPage,
     OntologyConceptOverviewPanel,
     OntologyBrowserFilterPanel,
     OntologyConceptPicker,
     ConceptModel,
-    AutoForm,
-    HelpIcon,
-    Key,
-    useEnterEscape,
-    DateInput,
-    EditInlineField,
-    FileAttachmentArea,
     // UserAvatars
     UserAvatar,
     UserAvatars,
@@ -1351,6 +1345,7 @@ export type {
     SamplesSelectionProviderProps,
     SamplesSelectionResultProps,
     SampleStatus,
+    SampleGridButtonProps,
 } from './internal/components/samples/models';
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/AppURLResolver';
@@ -1372,5 +1367,7 @@ export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
 export type { AnnouncementModel, ThreadActions } from './internal/announcements/model';
 export type { AnnouncementsAPIWrapper } from './internal/announcements/APIWrapper';
+export type { AppContext } from './internal/AppContext';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
+export type { SamplesEditableGridProps } from './internal/components/samples/SamplesEditableGrid';

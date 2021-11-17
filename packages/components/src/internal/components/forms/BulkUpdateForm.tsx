@@ -13,9 +13,9 @@ import { QueryInfoForm } from './QueryInfoForm';
 interface Props {
     canSubmitForEdit: boolean;
     itemLabel?: string;
-    onComplete: (data: any, submitForEdit: boolean) => any;
-    onCancel: () => any;
-    onError?: (message: string) => any;
+    onComplete: (data: any, submitForEdit: boolean) => void;
+    onCancel: () => void;
+    onError?: (message: string) => void;
     onSubmitForEdit: (
         updateData: OrderedMap<string, any>,
         dataForSelection: Map<string, any>,

@@ -65,7 +65,7 @@ been investigation into the cost of upgrading packages that are out of date.
 
 ### Linting
 In an effort to maintain consistent formatting, use best practices and catch errors before they reach production, it
-is highly recommended to lint any files you've changed before merging them to master.
+is highly recommended to lint any files you've changed before merging them to develop.
 
 #### Commands
 
@@ -149,10 +149,10 @@ The next version you go to for a package should be based on the following guidel
 
 With that in mind, we want to make use of "prerelease" version numbers while a feature / story is being developed
 and only go to that next “release” version right before the feature branch on labkey-ui-components is ready to
-merge back to master.
+merge back to develop.
 
 Steps for package version numbering during feature branch development:
-1. Create your feature branch off of master, i.e. fb_feature_1, and add your changes.
+1. Create your feature branch off of develop, i.e. fb_feature_1, and add your changes.
 1. When you are ready to push an alpha version up to Artifactory so you can test it in your application and
 on TeamCity, run the `yarn publish` command from the @labkey/components package root directory. This command
 will then prompt you for a new alpha package version. Ex. if adding a new feature and the current version is `0.1.0`,
@@ -181,11 +181,11 @@ update the `package.json` file and commit that change.  Then you can do a `git p
 Note that for some of our premium npm packages, we are using `npm` to do the build/publish. In those cases, you'll need
 to update the package.json file version number manually before running `npm publish`.
 
-## Merging changes into master
+## Merging changes into develop
 
 1. Message the Frontend dev room chat about starting the pull request merge. This is to make sure two people aren't
 merging at the same time which might result in conflicting package version numbers.
-1. Do one final merge of the `master` branch into your feature branch for `labkey-ui-components`.
+1. Do one final merge of the `develop` branch into your feature branch for `labkey-ui-components`.
 1. Run one final lint of your changes, `yarn run lint-branch-fix`, and review the changes applied.
 1. Update the `releaseNotes/labkey/components.md` file with what will be your release version number and release date.
 1. Run the commands to build, test, and publish: `yarn build`, `yarn test`, `yarn publish`.
@@ -226,7 +226,7 @@ LabKey server. There are a few extra steps in this process, described below:
  That is, if the module uses `0.41.2`, but we have already produced `0.41.3` and `0.41.4`, you need to use `0.41.4` as the
  branch starting point since you'll presumably be making another bug fix release and can't use the versions already published.
 1. Once you know that package version number, track down the commit hash for it in
- the [github commit list](https://github.com/LabKey/labkey-ui-components/commits/master) off of the master branch.
+ the [github commit list](https://github.com/LabKey/labkey-ui-components/commits/develop) off of the develop branch.
 1. Create the release branch using that commit hash, `git checkout -b release20.3-SNAPSHOT <commit hash>`, and
  push that release branch to github.
 1. Create a new hotfix branch off of that new release branch, `git checkout -b 20.3_fb_myFeatureBranchWithFixes`.
@@ -237,15 +237,15 @@ LabKey server. There are a few extra steps in this process, described below:
  will be the next patch version off of the target package version for that release. For example if the veresion was at
   `0.31.3` then you will publish version `0.31.4`.
 1. After any related LabKey module changes have been merged from their repo's release branch to develop,
- create a new branch in `labkey-ui-components` off of master in order to merge forward your hotfix changes:
+ create a new branch in `labkey-ui-components` off of develop in order to merge forward your hotfix changes:
     1. Get the latest from the hotfix branch:
         1. `git checkout release20.3-SNAPSHOT`
         1. `git pull`
-    1. Checkout master so that you can branch off of it:
-        1. `git checkout master`
+    1. Checkout develop so that you can branch off of it:
+        1. `git checkout develop`
         1. `git pull`
     1. Create a new branch and merge in the hotfix changes:
         1. `git checkout -b fb_mergeFrom203`
         1. `git merge release20.3-SNAPSHOT`
-    1. Treat this new branch as a regular feature branch off of master (i.e. publish an alpha package to test in platform/etc.,
+    1. Treat this new branch as a regular feature branch off of develop (i.e. publish an alpha package to test in platform/etc.,
         review TeamCity results, get code review, merge as usual using the steps in the section above).

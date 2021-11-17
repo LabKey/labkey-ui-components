@@ -3690,7 +3690,6 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             showHeader={true}
             showOmniBox={false}
             showPagination={true}
-            showSampleAliquotSelector={false}
             showSampleComparisonReports={false}
             showViewMenu={true}
           >

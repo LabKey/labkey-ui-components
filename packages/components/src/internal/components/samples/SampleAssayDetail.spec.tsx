@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, ReactWrapper, shallow } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { fromJS } from 'immutable';
 import { Button, SplitButton } from 'react-bootstrap';
 

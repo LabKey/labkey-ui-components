@@ -1,17 +1,18 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
 
 import { Filter } from '@labkey/api';
 
-import { makeTestQueryModel, QueryGridModel, SchemaQuery } from '../../..';
+import { makeTestQueryModel, SchemaQuery } from '../../..';
+
+import { IS_ALIQUOT_COL } from '../samples/constants';
 
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 
 describe('<GridAliquotViewSelector/>', () => {
-    test('no queryGridModel or queryModel', () => {
+    test('no queryModel', () => {
         const component = <GridAliquotViewSelector />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toBe(null);
@@ -36,55 +37,6 @@ describe('<GridAliquotViewSelector/>', () => {
         const buttons = wrapper.find('.dropdown-toggle');
         expect(buttons.at(0).text().trim()).toEqual(all ? 'All Samples' : samples ? 'Samples Only' : 'Aliquots Only');
     }
-    test('with queryGridModel, no filter', () => {
-        const model = new QueryGridModel({
-            isLoaded: false,
-            isLoading: true,
-            selectedLoaded: false,
-            maxRows: undefined,
-            totalRows: undefined,
-        });
-        const component = <GridAliquotViewSelector queryGridModel={model} />;
-        const wrapper = mount(component);
-
-        verifyOptions(wrapper, true);
-
-        wrapper.unmount();
-    });
-
-    test('with queryGridModel, filtered to samples only', () => {
-        const model = new QueryGridModel({
-            isLoaded: false,
-            isLoading: true,
-            selectedLoaded: false,
-            maxRows: undefined,
-            totalRows: undefined,
-            filterArray: List([Filter.create('IsAliquot', false)]),
-        });
-        const component = <GridAliquotViewSelector queryGridModel={model} />;
-        const wrapper = mount(component);
-
-        verifyOptions(wrapper, false, true);
-
-        wrapper.unmount();
-    });
-
-    test('with queryGridModel, filtered to aliquots only', () => {
-        const model = new QueryGridModel({
-            isLoaded: false,
-            isLoading: true,
-            selectedLoaded: false,
-            maxRows: undefined,
-            totalRows: undefined,
-            filterArray: List([Filter.create('IsAliquot', 'true')]),
-        });
-        const component = <GridAliquotViewSelector queryGridModel={model} />;
-        const wrapper = mount(component);
-
-        verifyOptions(wrapper, false, false, true);
-
-        wrapper.unmount();
-    });
 
     test('with queryModel, without filter', () => {
         const model = makeTestQueryModel(SchemaQuery.create('a', 'b'));
@@ -97,15 +49,28 @@ describe('<GridAliquotViewSelector/>', () => {
         wrapper.unmount();
     });
 
-    test('with queryModel, with filter', () => {
+    test('with queryModel, filtered to aliquots only', () => {
         let model = makeTestQueryModel(SchemaQuery.create('a', 'b'));
         model = model.mutate({
-            filterArray: [Filter.create('IsAliquot', true)],
+            filterArray: [Filter.create(IS_ALIQUOT_COL, true)],
         });
         const component = <GridAliquotViewSelector queryModel={model} />;
         const wrapper = mount(component);
 
         verifyOptions(wrapper, false, false, true);
+
+        wrapper.unmount();
+    });
+
+    test('with queryModel, filtered to samples only', () => {
+        let model = makeTestQueryModel(SchemaQuery.create('a', 'b'));
+        model = model.mutate({
+            filterArray: [Filter.create(IS_ALIQUOT_COL, false)],
+        });
+        const component = <GridAliquotViewSelector queryModel={model} />;
+        const wrapper = mount(component);
+
+        verifyOptions(wrapper, false, true);
 
         wrapper.unmount();
     });

@@ -2,6 +2,8 @@ import { FindField } from './models';
 
 export const SAMPLE_INVENTORY_ITEM_SELECTION_KEY = 'inventoryItems';
 
+export const MAX_SELECTED_SAMPLES = 10000;
+
 export const FIND_BY_IDS_QUERY_PARAM = 'findByIdsKey';
 
 export const UNIQUE_ID_FIND_FIELD: FindField = {
@@ -22,7 +24,7 @@ export const SAMPLE_ID_FIND_FIELD: FindField = {
     storageKeyPrefix: 's:',
 };
 
-export const IS_ALIQUOT_FIELD = 'isAliquot';
+export const IS_ALIQUOT_COL = 'IsAliquot';
 
 export const SAMPLE_STATE_COLUMN_NAME = 'SampleState';
 export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';

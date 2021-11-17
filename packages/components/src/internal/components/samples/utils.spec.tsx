@@ -16,42 +16,29 @@ import {
     OperationConfirmationData,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
+    SamplesManageButtonSections,
     SampleStateType,
+    SCHEMAS,
 } from '../../..';
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
 
-// Duplicated from inventory/packages/freezermanager/src/constants.ts
-export const CHECKED_OUT_BY_FIELD = 'checkedOutBy';
-export const INVENTORY_COLS = [
-    'LabelColor',
-    'DisplayUnit',
-    'StorageStatus',
-    'StoredAmountDisplay',
-    'StorageLocation',
-    'StorageRow',
-    'StorageCol',
-    'StoredAmount',
-    'Units',
-    'FreezeThawCount',
-    'EnteredStorage',
-    'CheckedOut',
-    'CheckedOutBy',
-    'StorageComment',
-];
+import { shouldShowButtons } from './utils';
 
-test('getOmittedSampleTypeColumns with inventoryCols omitted', () => {
+const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
+const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
+
+test('getOmittedSampleTypeColumn', () => {
     LABKEY.moduleContext = {};
     expect(isFreezerManagementEnabled()).toBeFalsy();
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_READER)).toStrictEqual([]);
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST, INVENTORY_COLS)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_READER, INVENTORY_COLS)).toStrictEqual(INVENTORY_COLS);
+    expect(getOmittedSampleTypeColumns(App.TEST_USER_READER)).toStrictEqual(INVENTORY_COLS);
+    expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST)).toStrictEqual(
+        [CHECKED_OUT_BY_FIELD].concat(INVENTORY_COLS)
+    );
 
     LABKEY.moduleContext = { inventory: {} };
     expect(isFreezerManagementEnabled()).toBeTruthy();
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_READER, INVENTORY_COLS)).toStrictEqual([]);
     expect(getOmittedSampleTypeColumns(App.TEST_USER_READER)).toStrictEqual([]);
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST, INVENTORY_COLS)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
+    expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
 });
 
 describe('getSampleDeleteMessage', () => {
@@ -371,5 +358,22 @@ describe('getOperationNotPermittedMessage', () => {
                 [351, 354, 356, 357]
             )
         ).toBe('The current status of 3 selected samples prevents updating of their lineage.');
+    });
+});
+
+describe('shouldShowButtons', () => {
+    test('undefined hideButtons', () => {
+        expect(shouldShowButtons(undefined, undefined)).toBeTruthy();
+        expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, undefined)).toBeTruthy();
+        expect(shouldShowButtons(undefined, [])).toBeTruthy();
+        expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, [])).toBeTruthy();
+    });
+
+    test('with hideButtons', () => {
+        expect(shouldShowButtons(undefined, [SamplesManageButtonSections.IMPORT])).toBeTruthy();
+        expect(
+            shouldShowButtons(SamplesManageButtonSections.DELETE, [SamplesManageButtonSections.IMPORT])
+        ).toBeTruthy();
+        expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, [SamplesManageButtonSections.IMPORT])).toBeFalsy();
     });
 });

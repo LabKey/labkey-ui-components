@@ -587,6 +587,15 @@ export class QueryModel {
     }
 
     /**
+     * Gets a column by fieldKey.
+     * @param fieldKey: string
+     */
+    getColumnByFieldKey(fieldKey: string): QueryColumn {
+        const locFieldKey = fieldKey.toLowerCase();
+        return this.allColumns?.find(c => c.fieldKey?.toLowerCase() === locFieldKey);
+    }
+
+    /**
      * Gets a column by name. Implementation adapted from parseColumns in components/omnibox/utils.ts.
      * @param name: string
      */
@@ -788,6 +797,10 @@ export class QueryModel {
 
     get showInsertNewButton(): boolean {
         return !!this.queryInfo?.getShowInsertNewButton();
+    }
+
+    get isAppEditable(): boolean {
+        return !!this.queryInfo?.isAppEditable();
     }
 
     get isFiltered(): boolean {

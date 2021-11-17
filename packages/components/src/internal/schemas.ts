@@ -77,6 +77,23 @@ export const INVENTORY = {
     SCHEMA: INVENTORY_SCHEMA,
     ITEMS: SchemaQuery.create(INVENTORY_SCHEMA, 'Item'),
     SAMPLE_ITEMS: SchemaQuery.create(INVENTORY_SCHEMA, 'SampleItems'),
+    CHECKED_OUT_BY_FIELD: 'checkedOutBy',
+    INVENTORY_COLS: [
+        'LabelColor',
+        'DisplayUnit',
+        'StorageStatus',
+        'StoredAmountDisplay',
+        'StorageLocation',
+        'StorageRow',
+        'StorageCol',
+        'StoredAmount',
+        'Units',
+        'FreezeThawCount',
+        'EnteredStorage',
+        'CheckedOut',
+        'CheckedOutBy',
+        'StorageComment',
+    ],
 };
 
 // SAMPLE SETS

@@ -21,7 +21,6 @@ import {
     SampleStatusesListItem,
 } from './ManageSampleStatusesPanel';
 
-// these have to be below other imports or results in circular dependency errors in running tests
 import { getSamplesTestAPIWrapper } from './APIWrapper';
 
 describe('ManageSampleStatusesPanel', () => {

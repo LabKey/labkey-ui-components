@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, PureComponent } from 'react';
+import React, { FC, PureComponent } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 
@@ -143,14 +143,13 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
 const SampleAliquotsGridPanelWithModel = withQueryModels<Props>(SampleAliquotsGridPanelImpl);
 
 interface SampleAliquotsGridPanelProps extends Props {
-    omitCols?: string[];
     rootLsid?: string; // if sample is an aliquot, use the aliquot's root to find subaliquots
     sampleLsid: string;
     schemaQuery: SchemaQuery;
 }
 
 export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props => {
-    const { omitCols, sampleLsid, schemaQuery, rootLsid, user } = props;
+    const { sampleLsid, schemaQuery, rootLsid, user } = props;
     const id = getStateModelId(
         'sample-aliquots',
         SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery())
@@ -162,7 +161,7 @@ export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props =
             sampleLsid,
             true,
             rootLsid,
-            List(getOmittedSampleTypeColumns(user, omitCols))
+            List(getOmittedSampleTypeColumns(user))
         ),
     };
 

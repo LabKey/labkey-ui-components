@@ -1,7 +1,7 @@
 import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { AppURL, QueryColumn, SchemaQuery, WHERE_FILTER_TYPE } from '..';
+import { AppURL, QueryColumn, SchemaQuery, SCHEMAS, WHERE_FILTER_TYPE } from '..';
 
 import { AssayUploadTabs } from './constants';
 
@@ -126,7 +126,7 @@ export class AssayDefinitionModel extends Record({
     }
 
     hasLookup(targetSQ: SchemaQuery): boolean {
-        const isSampleSet = targetSQ.hasSchema('samples');
+        const isSampleSet = targetSQ.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA);
         const findLookup = (col: QueryColumn): boolean => {
             if (col.isLookup()) {
                 const lookupSQ = col.lookup.schemaQuery;

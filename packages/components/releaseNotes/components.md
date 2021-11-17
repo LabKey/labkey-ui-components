@@ -1,6 +1,19 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.94.0
+*Released*: 17 November 2021
+* Item 9500: Improve Sample display when spanning types
+    * fix SamplesSelectionContextProvider typings so that we can wrap SamplesBulkUpdateForm and SamplesEditableGrid here in ui-components and export the
+    * remove SamplesSelectionContextProvider, SamplesBulkUpdateFormBase, and SamplesEditableGridBase from index.ts
+    * remove SamplesSelectionContextProvider determineAliquot, determineStorage, and determineLineage props as those are now the same for LKB and LKSM
+    * replace canEditStorage prop with call to isFreezerManagementEnabled()
+    * move SamplesTabbedGridPanel from LKSM to ui-components
+    * move CHECKED_OUT_BY_FIELD and INVENTORY_COLS constants to ui-components
+    * Picklist implementation using SamplesTabbedGridPanel
+    * split out RemoveFromPicklistMenuItem so that it can be used on the app side like AddToPicklistMenuItem
+    * remove GridPanel internal usage of GridAliquotViewSelector, usages can still pass this in via ButtonsComponentRight
+
 ### version 2.93.0
 *Released*: 16 November 2021
 * Support initializing Ontology Browser to a concept via a URL parameter

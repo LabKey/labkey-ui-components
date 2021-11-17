@@ -17,22 +17,26 @@ import React, { Component, ReactNode } from 'react';
 
 import { Filter } from '@labkey/api';
 
-import { QueryGridModel, QueryModel } from '../../..';
-import { replaceFilter } from '../../util/URL';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { Actions } from '../../../public/QueryModel/withQueryModels';
 import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from '../samples/SampleAliquotViewSelector';
+import { IS_ALIQUOT_COL } from '../samples/constants';
 
 interface Props {
-    queryGridModel?: QueryGridModel;
+    actions?: Actions;
     queryModel?: QueryModel;
-    updateFilter?: (filter: Filter.IFilter, filterColumnToRemove?: string, newModel?: ALIQUOT_FILTER_MODE) => void;
+    updateFilter?: (
+        filter: Filter.IFilter,
+        filterColumnToRemove?: string,
+        newModel?: ALIQUOT_FILTER_MODE,
+        queryModel?: QueryModel
+    ) => void;
     initAliquotMode?: ALIQUOT_FILTER_MODE; // allow to set aliquot filter from a init value
 }
 
 interface State {
     initAliquotModeSynced: boolean;
 }
-
-const IS_ALIQUOT_COL = 'IsAliquot';
 
 export class GridAliquotViewSelector extends Component<Props, State> {
     state: Readonly<State> = {
@@ -58,27 +62,55 @@ export class GridAliquotViewSelector extends Component<Props, State> {
         }
     };
 
-    updateAliquotFilter = (newMode: ALIQUOT_FILTER_MODE) => {
-        const { queryGridModel, updateFilter } = this.props;
+    getAliquotColName = (): string => {
+        // account for the case where the aliquot column is in the queryModel via a lookup from the sample ID
+        const { queryModel } = this.props;
+        let aliquotColName;
+        if (!queryModel.getColumnByFieldKey(IS_ALIQUOT_COL)) {
+            aliquotColName = queryModel.allColumns?.find(
+                c => c.fieldKey.toLowerCase().indexOf('/' + IS_ALIQUOT_COL.toLowerCase()) > -1
+            )?.fieldKey;
+        }
+
+        return aliquotColName ?? IS_ALIQUOT_COL;
+    };
+
+    updateAliquotFilter = (newMode: ALIQUOT_FILTER_MODE): void => {
+        const { queryModel, actions, updateFilter } = this.props;
+        const aliquotColName = this.getAliquotColName();
 
         let newFilter: Filter.IFilter;
-        if (newMode === ALIQUOT_FILTER_MODE.all || newMode === ALIQUOT_FILTER_MODE.none) newFilter = null;
-        else newFilter = Filter.create(IS_ALIQUOT_COL, newMode === ALIQUOT_FILTER_MODE.aliquots);
+        if (newMode === ALIQUOT_FILTER_MODE.all || newMode === ALIQUOT_FILTER_MODE.none) {
+            newFilter = null;
+        } else {
+            newFilter = Filter.create(aliquotColName, newMode === ALIQUOT_FILTER_MODE.aliquots);
+        }
 
-        if (queryGridModel) {
-            replaceFilter(queryGridModel, IS_ALIQUOT_COL, newFilter);
-        } else if (updateFilter) {
-            updateFilter(newFilter, IS_ALIQUOT_COL, newMode);
+        if (updateFilter) {
+            updateFilter(newFilter, aliquotColName, newMode, queryModel);
+        }
+
+        if (queryModel?.queryInfo && actions) {
+            // keep any existing filters that do not match the aliquot column name
+            const updatedFilters = queryModel.filterArray.filter(filter => {
+                return aliquotColName.toLowerCase() !== filter.getColumnName().toLowerCase();
+            });
+
+            if (newFilter) updatedFilters.push(newFilter);
+
+            actions.setFilters(queryModel.id, updatedFilters, true);
         }
     };
 
     getAliquotFilterMode = (): ALIQUOT_FILTER_MODE => {
-        const { queryGridModel, queryModel } = this.props;
+        const { queryModel } = this.props;
         let mode = ALIQUOT_FILTER_MODE.all;
-        const filterArray = queryGridModel ? queryGridModel.filterArray : queryModel?.filterArray;
+        const filterArray = queryModel?.filterArray;
         if (filterArray) {
+            const aliquotColName = this.getAliquotColName();
+
             filterArray.forEach(filter => {
-                if (filter.getColumnName().toLowerCase() === IS_ALIQUOT_COL.toLowerCase()) {
+                if (filter.getColumnName().toLowerCase() === aliquotColName?.toLowerCase()) {
                     const filterType = filter.getFilterType();
                     const value = filter.getValue();
 
@@ -109,9 +141,9 @@ export class GridAliquotViewSelector extends Component<Props, State> {
     };
 
     render(): ReactNode {
-        const { queryGridModel, queryModel } = this.props;
+        const { queryModel } = this.props;
 
-        if (!queryGridModel && !queryModel) return null;
+        if (!queryModel) return null;
 
         return (
             <SampleAliquotViewSelector

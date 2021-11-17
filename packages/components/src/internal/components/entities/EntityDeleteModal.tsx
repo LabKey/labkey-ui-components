@@ -14,6 +14,8 @@ import {
     QueryModel,
 } from '../../..';
 
+import { MAX_SELECTED_SAMPLES } from '../samples/constants';
+
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDataType } from './models';
 import { getEntityNoun } from './utils';
@@ -139,5 +141,5 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
 
 EntityDeleteModal.defaultProps = {
     auditBehavior: AuditBehaviorTypes.DETAILED,
-    maxSelected: 10000,
+    maxSelected: MAX_SELECTED_SAMPLES,
 };

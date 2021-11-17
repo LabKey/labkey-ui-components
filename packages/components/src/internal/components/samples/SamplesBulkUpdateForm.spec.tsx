@@ -77,7 +77,7 @@ describe('SamplesBulkUpdateForm', () => {
         sampleLineage: undefined,
 
         updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise.resolve(),
-        hasValidMaxSelection: jest.fn,
+        hasValidMaxSelection: () => true,
         onCancel: jest.fn,
         onBulkUpdateError: jest.fn,
         onBulkUpdateComplete: jest.fn,

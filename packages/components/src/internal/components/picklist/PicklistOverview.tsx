@@ -106,17 +106,20 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
         setShowEditModal(false);
     }, []);
 
-    const afterSavePicklist = useCallback(updatedPicklist => {
-        // if picklist name changed, we need to pass true here to that the queryConfigs are updated
-        const nameChanged = picklist.name !== updatedPicklist.name;
-        loadPicklist(nameChanged);
+    const afterSavePicklist = useCallback(
+        updatedPicklist => {
+            // if picklist name changed, we need to pass true here to that the queryConfigs are updated
+            const nameChanged = picklist.name !== updatedPicklist.name;
+            loadPicklist(nameChanged);
 
-        hideEditPicklistMetadataModal();
+            hideEditPicklistMetadataModal();
 
-        withTimeout(() => {
-            createNotification('Successfully updated picklist metadata.');
-        });
-    }, [hideEditPicklistMetadataModal, loadPicklist, picklist]);
+            withTimeout(() => {
+                createNotification('Successfully updated picklist metadata.');
+            });
+        },
+        [hideEditPicklistMetadataModal, loadPicklist, picklist]
+    );
 
     // Using a type for evt here causes difficulties.  It wants a FormEvent<Checkbox> but
     // then it doesn't recognize checked as a valid field on current target.
@@ -279,14 +282,14 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
             // add a queryConfig for each distinct sample type of the picklist samples, with an filter clause
             // for the picklist id (which the server will turn into a sampleId IN clause)
             [...picklist.sampleTypes].sort().forEach(sampleType => {
-                    const id = `${PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX}${LOAD_PICKLIST_COUNTER}|samples/${sampleType}`;
-                    configs[id] = {
-                        id,
-                        title: sampleType,
-                        schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
-                        baseFilters: [Filter.create('RowId', picklist.listId, PICKLIST_SAMPLES_FILTER)],
-                    };
-                });
+                const id = `${PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX}${LOAD_PICKLIST_COUNTER}|samples/${sampleType}`;
+                configs[id] = {
+                    id,
+                    title: sampleType,
+                    schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
+                    baseFilters: [Filter.create('RowId', picklist.listId, PICKLIST_SAMPLES_FILTER)],
+                };
+            });
         }
 
         return configs;

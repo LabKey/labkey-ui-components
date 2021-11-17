@@ -122,21 +122,27 @@ describe('SamplesManageButton', () => {
             rowsLoadingState: LoadingState.LOADED,
         });
 
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} model={model} />, { user: TEST_USER_EDITOR });
+        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} model={model} />, {
+            user: TEST_USER_EDITOR,
+        });
         validate(wrapper, true, 2, 5, 5);
         wrapper.unmount();
     });
 
     test('showLinkToStudy with study module present', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['study'] } };
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} showLinkToStudy />, { user: TEST_USER_EDITOR });
+        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} showLinkToStudy />, {
+            user: TEST_USER_EDITOR,
+        });
         validate(wrapper, true, 2, 6, 7);
         wrapper.unmount();
     });
 
     test('showLinkToStudy without study module present', () => {
         LABKEY.moduleContext = { api: { moduleNames: [] } };
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} showLinkToStudy />, { user: TEST_USER_EDITOR });
+        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} showLinkToStudy />, {
+            user: TEST_USER_EDITOR,
+        });
         validate(wrapper);
         wrapper.unmount();
     });

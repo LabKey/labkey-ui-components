@@ -123,17 +123,19 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                         )}
                     </RequiresPermission>
                 )}
-                {showLinkToStudy && App.hasModule('study') && shouldShowButtons(SamplesManageButtonSections.LINKTOSTUDY, hideButtons) && (
-                    <RequiresPermission perms={PermissionTypes.Insert}>
-                        <SelectionMenuItem
-                            id="link-to-study"
-                            text="Link to Study in LabKey Server"
-                            onClick={onLinkToStudy}
-                            queryModel={model}
-                            nounPlural={SampleTypeDataType.nounPlural}
-                        />
-                    </RequiresPermission>
-                )}
+                {showLinkToStudy &&
+                    App.hasModule('study') &&
+                    shouldShowButtons(SamplesManageButtonSections.LINKTOSTUDY, hideButtons) && (
+                        <RequiresPermission perms={PermissionTypes.Insert}>
+                            <SelectionMenuItem
+                                id="link-to-study"
+                                text="Link to Study in LabKey Server"
+                                onClick={onLinkToStudy}
+                                queryModel={model}
+                                nounPlural={SampleTypeDataType.nounPlural}
+                            />
+                        </RequiresPermission>
+                    )}
             </ManageDropdownButton>
         </RequiresPermission>
     );

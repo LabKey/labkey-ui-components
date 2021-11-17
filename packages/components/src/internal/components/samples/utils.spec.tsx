@@ -21,6 +21,7 @@ import {
     SCHEMAS,
 } from '../../..';
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
+
 import { shouldShowButtons } from './utils';
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
@@ -370,7 +371,9 @@ describe('shouldShowButtons', () => {
 
     test('with hideButtons', () => {
         expect(shouldShowButtons(undefined, [SamplesManageButtonSections.IMPORT])).toBeTruthy();
-        expect(shouldShowButtons(SamplesManageButtonSections.DELETE, [SamplesManageButtonSections.IMPORT])).toBeTruthy();
+        expect(
+            shouldShowButtons(SamplesManageButtonSections.DELETE, [SamplesManageButtonSections.IMPORT])
+        ).toBeTruthy();
         expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, [SamplesManageButtonSections.IMPORT])).toBeFalsy();
     });
 });

@@ -17,8 +17,13 @@ import React, { createContext, FC, useContext, useMemo } from 'react';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
 
+export interface NavigationSettings {
+    showCurrentContainer: boolean;
+}
+
 export interface AppContext {
-    api: ComponentsAPIWrapper;
+    api?: ComponentsAPIWrapper;
+    navigation?: NavigationSettings;
 }
 
 const Context = createContext<AppContext>(undefined);
@@ -28,8 +33,16 @@ export interface AppContextProviderProps {
 }
 
 export const AppContextProvider: FC<AppContextProviderProps> = ({ children, initialContext }) => {
-    // Provide a default API so that external users don't have to specify it
-    const value = useMemo<AppContext>(() => ({ api: getDefaultAPIWrapper(), ...initialContext }), [initialContext]);
+    const value = useMemo<AppContext>(
+        () => ({
+            // Provide a default API so that external users don't have to specify it
+            api: getDefaultAPIWrapper(),
+            // By default we don't show the container in SubNav, but apps can override this
+            navigation: { showCurrentContainer: false },
+            ...initialContext,
+        }),
+        [initialContext]
+    );
 
     return <Context.Provider value={value}>{children}</Context.Provider>;
 };

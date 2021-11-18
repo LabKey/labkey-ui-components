@@ -112,6 +112,6 @@ module.exports = {
         'react', 'react-dom', 'reactn', 'react-bootstrap', 'immutable', 'jquery',
         '@labkey/api', 'react-treebeard', 'react-beautiful-dnd', 'react-datepicker', 'react-router',
         'react-bootstrap-toggle', 'date-fns', 'numeral', 'font-awesome', 'formsy-react', 'formsy-react-components',
-        'enzyme', 'moment', 'moment-jdateformatparser', 'moment-timezone', 'lodash', 'history',
+        'moment', 'moment-jdateformatparser', 'moment-timezone', 'lodash', 'history',
     ]
 };

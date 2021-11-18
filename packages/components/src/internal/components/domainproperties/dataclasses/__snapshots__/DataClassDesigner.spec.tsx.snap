@@ -8642,6 +8642,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "LAST_ENTERED",
                                                           ]
                                                         }
+                                                        domainContainerPath="3E40EE5E-91B7-1036-BF18-F5B7057C168C"
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
@@ -9470,6 +9471,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       >
                                                                         <DomainRowExpandedOptions
                                                                           appPropertiesOnly={false}
+                                                                          domainContainerPath="3E40EE5E-91B7-1036-BF18-F5B7057C168C"
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
@@ -11004,6 +11006,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "LAST_ENTERED",
                                                           ]
                                                         }
+                                                        domainContainerPath="3E40EE5E-91B7-1036-BF18-F5B7057C168C"
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
@@ -11804,6 +11807,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       >
                                                                         <DomainRowExpandedOptions
                                                                           appPropertiesOnly={false}
+                                                                          domainContainerPath="3E40EE5E-91B7-1036-BF18-F5B7057C168C"
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
@@ -13263,6 +13267,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "LAST_ENTERED",
                                                           ]
                                                         }
+                                                        domainContainerPath="3E40EE5E-91B7-1036-BF18-F5B7057C168C"
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
@@ -14045,6 +14050,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       >
                                                                         <DomainRowExpandedOptions
                                                                           appPropertiesOnly={false}
+                                                                          domainContainerPath="3E40EE5E-91B7-1036-BF18-F5B7057C168C"
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,

@@ -16,9 +16,9 @@ export interface InjectedBaseDomainDesignerProps {
     visitedPanels: List<number>;
     validatePanel: number;
     firstState: boolean;
-    setSubmitting: (submitting: boolean, callback?: () => any) => any;
-    onTogglePanel: (index: number, collapsed: boolean, callback: () => any) => any;
-    onFinish: (isValid: boolean, save: () => any) => any;
+    setSubmitting: (submitting: boolean, callback?: () => void) => void;
+    onTogglePanel: (index: number, collapsed: boolean, callback: () => void) => void;
+    onFinish: (isValid: boolean, save: () => void) => void;
 }
 
 interface State {
@@ -45,7 +45,7 @@ export function withBaseDomainDesigner<Props>(
             };
         }
 
-        onTogglePanel = (index: number, collapsed: boolean, callback: () => any) => {
+        onTogglePanel = (index: number, collapsed: boolean, callback: () => any): void => {
             const { visitedPanels, currentPanelIndex } = this.state;
             const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, index);
 
@@ -76,7 +76,7 @@ export function withBaseDomainDesigner<Props>(
             }
         };
 
-        onFinish = (isValid: boolean, save: () => any) => {
+        onFinish = (isValid: boolean, save: () => void): void => {
             const { visitedPanels, currentPanelIndex } = this.state;
             const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, currentPanelIndex);
 
@@ -97,13 +97,11 @@ export function withBaseDomainDesigner<Props>(
             );
         };
 
-        setSubmitting = (submitting: boolean, callback?: () => any) => {
+        setSubmitting = (submitting: boolean, callback?: () => void): void => {
             this.setState(
                 () => ({ submitting }),
                 () => {
-                    if (callback) {
-                        callback();
-                    }
+                    callback?.();
                 }
             );
         };
@@ -143,7 +141,7 @@ interface BaseDomainDesignerProps {
     saveBtnText?: string;
 }
 
-export class BaseDomainDesigner extends React.PureComponent<BaseDomainDesignerProps, any> {
+export class BaseDomainDesigner extends PureComponent<BaseDomainDesignerProps> {
     static defaultProps = {
         saveBtnText: 'Save',
     };

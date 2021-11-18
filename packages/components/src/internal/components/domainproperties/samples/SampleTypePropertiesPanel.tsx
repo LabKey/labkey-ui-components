@@ -97,20 +97,20 @@ interface State {
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
 
-const sampleSetAliasFilterFn = (alias: IParentAlias) => {
-    return alias.parentValue && alias.parentValue.schema === SCHEMAS.SAMPLE_SETS.SCHEMA;
+const sampleSetAliasFilterFn = (alias: IParentAlias): boolean => {
+    return alias.parentValue?.schema === SCHEMAS.SAMPLE_SETS.SCHEMA;
 };
 
-const sampleSetOptionFilterFn = (option: IParentOption) => {
-    return option && option.schema === SCHEMAS.SAMPLE_SETS.SCHEMA;
+const sampleSetOptionFilterFn = (option: IParentOption): boolean => {
+    return option?.schema === SCHEMAS.SAMPLE_SETS.SCHEMA;
 };
 
-const dataClassAliasFilterFn = (alias: IParentAlias) => {
-    return alias.parentValue && alias.parentValue.schema === SCHEMAS.DATA_CLASSES.SCHEMA;
+const dataClassAliasFilterFn = (alias: IParentAlias): boolean => {
+    return alias.parentValue?.schema === SCHEMAS.DATA_CLASSES.SCHEMA;
 };
 
-const dataClassOptionFilterFn = (option: IParentOption) => {
-    return option && option.schema === SCHEMAS.DATA_CLASSES.SCHEMA;
+const dataClassOptionFilterFn = (option: IParentOption): boolean => {
+    return option?.schema === SCHEMAS.DATA_CLASSES.SCHEMA;
 };
 
 class SampleTypePropertiesPanelImpl extends React.PureComponent<
@@ -148,18 +148,19 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
     }
 
     componentDidMount = async (): Promise<void> => {
-        getValidPublishTargets()
-            .then(containers => {
-                this.setState({ containers });
-            })
-            .catch(response => {
-                console.error('Unable to load valid study targets for Auto-Link Data to Study input.');
-                this.setState(() => ({ containers: List<Container>() }));
-            });
+        const { model } = this.props;
+
+        try {
+            const containers = await getValidPublishTargets(model.containerPath);
+            this.setState({ containers });
+        } catch (e) {
+            console.error('Unable to load valid study targets for Auto-Link Data to Study input.');
+            this.setState({ containers: List() });
+        }
 
         if (isSampleManagerEnabled()) {
             try {
-                const response = await loadNameExpressionOptions();
+                const response = await loadNameExpressionOptions(model.containerPath);
                 this.setState({ prefix: response.prefix ?? null });
             } catch (error) {
                 this.setState({ loadingError: 'There was a problem retrieving the Naming Pattern prefix.' });
@@ -197,14 +198,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         this.updateValidStatus(newModel);
     };
 
-    parentAliasChanges = (id: string, field: string, newValue: any): void => {
-        const { onParentAliasChange } = this.props;
-        onParentAliasChange(id, field, newValue);
-    };
-
     addParentAlias = (schema: string): void => {
-        const { onAddParentAlias } = this.props;
-
         // Generates a temporary id for add/delete of the import aliases
         const newId = generateId('sampletype-parent-import-alias-');
 
@@ -217,7 +211,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             isDupe: false,
         };
 
-        onAddParentAlias(newId, newParentAlias);
+        this.props.onAddParentAlias(newId, newParentAlias);
     };
 
     renderAddEntityHelper = (parentageLabel?: string): any => {
@@ -244,6 +238,8 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             dataClassAliasCaption,
             dataClassTypeCaption,
             dataClassParentageLabel,
+            onParentAliasChange,
+            onRemoveParentAlias,
         } = this.props;
         const { parentAliases } = model;
 
@@ -272,34 +268,27 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             helpMsg = PARENT_ALIAS_HELPER_TEXT.replace('parentage', dataClassParentageLabel);
         }
 
-        return filteredParentAliases.valueSeq().map((alias: IParentAlias) => {
-            return (
+        return filteredParentAliases
+            .valueSeq()
+            .map(alias => (
                 <SampleSetParentAliasRow
                     key={alias.id}
                     id={alias.id}
                     parentAlias={alias}
                     parentOptions={filteredParentOptions}
-                    onAliasChange={this.parentAliasChanges}
-                    onRemove={this.removeParentAlias}
+                    onAliasChange={onParentAliasChange}
+                    onRemove={onRemoveParentAlias}
                     updateDupeParentAliases={updateDupeParentAliases}
                     aliasCaption={aliasCaption}
                     parentTypeCaption={parentTypeCaption}
                     helpMsg={helpMsg}
                 />
-            );
-        });
+            ))
+            .toArray();
     };
 
-    removeParentAlias = (index: string): void => {
-        const { onRemoveParentAlias } = this.props;
-        onRemoveParentAlias(index);
-    };
-
-    containsDataClassOptions() {
-        const { parentOptions } = this.props;
-        if (!parentOptions || parentOptions.length === 0) return false;
-
-        return parentOptions.filter(dataClassOptionFilterFn).length > 0;
+    containsDataClassOptions(): boolean {
+        return this.props.parentOptions?.filter(dataClassOptionFilterFn).length > 0;
     }
 
     renderUniqueIdHelpText = (): ReactNode => {

@@ -100,10 +100,12 @@ export function setAssayDomainException(model: AssayProtocolModel, exception: Do
     return updatedModel;
 }
 
-export function getValidPublishTargets(): Promise<List<Container>> {
+export function getValidPublishTargets(containerPath?: string): Promise<List<Container>> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('assay', 'getValidPublishTargets.api'),
+            url: buildURL('assay', 'getValidPublishTargets.api', undefined, {
+                container: containerPath,
+            }),
             success: Utils.getCallbackWrapper(response => {
                 resolve(List<Container>(response.containers.map(container => new Container(container))));
             }),

@@ -280,8 +280,7 @@ export class DomainDesign
     }
 
     getDomainContainer(): string {
-        const currentContainer = getServerContext().container.id;
-        return this.container || currentContainer;
+        return this.container ?? getServerContext().container.id;
     }
 
     isSharedDomain(): boolean {
@@ -290,7 +289,7 @@ export class DomainDesign
     }
 
     findFieldIndexByName(fieldName: string): number {
-        return this.fields.findIndex((field: DomainField) => fieldName && field.name === fieldName);
+        return this.fields.findIndex(field => fieldName && field.name === fieldName);
     }
 
     getFieldDetails(): FieldDetails {
@@ -1310,6 +1309,11 @@ interface IColumnInfoLite {
     name?: string;
 }
 
+export interface LookupInfo {
+    name: string;
+    type: PropDescType;
+}
+
 export class ColumnInfoLite
     extends Record({
         friendlyType: undefined,
@@ -1390,8 +1394,8 @@ export class QueryInfoLite
         );
     }
 
-    getLookupInfo(rangeURI?: string): List<{ name: string; type: PropDescType }> {
-        let infos = List<{ name: string; type: PropDescType }>();
+    getLookupInfo(rangeURI?: string): List<LookupInfo> {
+        let infos = List<LookupInfo>();
 
         // allow for queries with only 1 primary key or with 2 primary key columns when one of them is container (see Issue 39879)
         let pkCols =

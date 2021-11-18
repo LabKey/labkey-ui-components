@@ -60,12 +60,17 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
 import { IS_ALIQUOT_COL } from './constants';
 
-export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
-    const promises = [];
+export function initSampleSetSelects(
+    isUpdate: boolean,
+    includeDataClasses: boolean,
+    containerPath: string
+): Promise<ISelectRowsResult[]> {
+    const promises: Array<Promise<ISelectRowsResult>> = [];
 
     // Get Sample Types
     promises.push(
         selectRows({
+            containerPath,
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
             queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
             columns: 'LSID, Name, RowId, Folder',
@@ -77,6 +82,7 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeD
     if (includeDataClasses) {
         promises.push(
             selectRows({
+                containerPath,
                 schemaName: SCHEMAS.EXP_TABLES.DATA_CLASSES.schemaName,
                 queryName: SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName,
                 columns: 'LSID, Name, RowId, Folder, Category',
@@ -85,22 +91,13 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeD
         );
     }
 
-    return new Promise<any[]>((resolve, reject) => {
-        return Promise.all(promises)
-            .then(responses => {
-                resolve(responses);
-            })
-            .catch(errorResponse => {
-                reject(errorResponse);
-            });
-    });
+    return Promise.all(promises);
 }
 
 export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     return new Promise<any>((resolve, reject) => {
         return Ajax.request({
             url: buildURL('experiment', 'getSampleTypeApi.api'),
-            method: 'GET',
             params: config,
             success: Utils.getCallbackWrapper(response => {
                 resolve(Map(response));
@@ -117,7 +114,6 @@ export function getSampleTypeDetails(query?: SchemaQuery, domainId?: number): Pr
     return new Promise((resolve, reject) => {
         return Domain.getDomainDetails({
             domainId,
-            containerPath: ActionURL.getContainer(),
             queryName: query ? query.getQuery() : undefined,
             schemaName: query ? query.getSchema() : undefined,
             domainKind: query === undefined && domainId === undefined ? 'SampleSet' : undefined,
@@ -367,8 +363,16 @@ export const getOriginalParentsFromSampleLineage = async (
 }> => {
     const originalParents = {};
     let parentTypeOptions = Map<string, List<IEntityTypeOption>>();
-    const dataClassTypeData = await getParentTypeDataForSample(DataClassDataType, Object.values(sampleLineage), containerPath);
-    const sampleTypeData = await getParentTypeDataForSample(SampleTypeDataType, Object.values(sampleLineage), containerPath);
+    const dataClassTypeData = await getParentTypeDataForSample(
+        DataClassDataType,
+        Object.values(sampleLineage),
+        containerPath
+    );
+    const sampleTypeData = await getParentTypeDataForSample(
+        SampleTypeDataType,
+        Object.values(sampleLineage),
+        containerPath
+    );
 
     // iterate through both Data Classes and Sample Types for finding sample parents
     [DataClassDataType, SampleTypeDataType].forEach(dataType => {

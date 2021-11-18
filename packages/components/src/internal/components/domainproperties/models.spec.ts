@@ -473,9 +473,9 @@ describe('DomainDesign', () => {
         expect(domain.hasInvalidNameField({ name: 'ABC' })).toBeTruthy();
     });
 
-    test('getDomainContainer', () => {
+    test('container', () => {
         const domain = DomainDesign.create({ name: 'Test Container' });
-        expect(domain.getDomainContainer()).toBe(undefined);
+        expect(domain.container).toBe(undefined);
 
         const domain2 = DomainDesign.create({ name: 'Test Container', container: 'SOMETHINGELSE' });
         expect(domain2.getDomainContainer()).toBe('SOMETHINGELSE');

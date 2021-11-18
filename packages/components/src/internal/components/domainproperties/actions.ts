@@ -17,7 +17,16 @@ import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
 
-import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL, DomainDetails, ConceptModel } from '../../..';
+import {
+    buildURL,
+    ConceptModel,
+    Container,
+    DomainDetails,
+    naturalSort,
+    naturalSortByProperty,
+    QueryColumn,
+    SchemaDetails,
+} from '../../..';
 
 import { processSchemas } from '../../schemas';
 
@@ -208,7 +217,7 @@ export function processQueries(payload: any): List<QueryInfoLite> {
     }
 
     return List<QueryInfoLite>(payload.queries.map(qi => QueryInfoLite.create(qi, payload.schemaName)))
-        .sort((a, b) => naturalSort(a.name, b.name))
+        .sort(naturalSortByProperty('name'))
         .toList();
 }
 
@@ -231,19 +240,16 @@ export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>
 }
 
 export function handleSchemas(payload: any): List<SchemaDetails> {
-    return processSchemas(payload)
-        .valueSeq()
-        .sort((a, b) => naturalSort(a.fullyQualifiedName, b.fullyQualifiedName))
-        .toList();
+    return processSchemas(payload).valueSeq().sort(naturalSortByProperty('fullyQualifiedName')).toList();
 }
 
-export function getAvailableTypes(domain: DomainDesign): List<PropDescType> {
-    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, [])) as List<PropDescType>;
+export function getAvailableTypes(domain: DomainDesign, ontologies = []): List<PropDescType> {
+    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies)).toList();
 }
 
 export async function getAvailableTypesForOntology(domain: DomainDesign): Promise<List<PropDescType>> {
-    const ontologies = await fetchOntologies();
-    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies)) as List<PropDescType>;
+    const ontologies = await fetchOntologies(domain.container);
+    return getAvailableTypes(domain, ontologies);
 }
 
 function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologies: OntologyModel[]): boolean {
@@ -296,10 +302,10 @@ export function fetchOntologies(containerPath?: string): Promise<OntologyModel[]
     });
 }
 
-export function getMaxPhiLevel(): Promise<string> {
+export function getMaxPhiLevel(containerPath: string): Promise<string> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('security', 'GetMaxPhiLevel.api'),
+            url: buildURL('security', 'getMaxPhiLevel.api', undefined, { container: containerPath }),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.maxPhiLevel);
             }),
@@ -349,6 +355,7 @@ export function saveDomain(
 
         if (domain.domainId) {
             Domain.save({
+                containerPath: domain.container,
                 domainId: domain.domainId,
                 options,
                 domainDesign: DomainDesign.serialize(domain),

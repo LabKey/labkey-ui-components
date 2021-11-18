@@ -36,7 +36,7 @@ export interface ITab {
 export const SubNav: FC<Props> = ({ noun, tabs }) => {
     const scrollable = useRef<HTMLDivElement>();
     const { navigation } = useAppContext();
-    const { container  } = useServerContext();
+    const { container } = useServerContext();
     const [isScrollable, setIsScrollable] = useState<boolean>(false);
     const scroll = useCallback(offset => {
         scrollable.current.scrollLeft = scrollable.current.scrollLeft + offset;
@@ -113,7 +113,9 @@ export const SubNav: FC<Props> = ({ noun, tabs }) => {
                 {navigation.showCurrentContainer && (
                     <div className="container-nav">
                         <span className="fa fa-folder-open" />
-                        <span className="container-nav__name">{container.name}</span>
+                        <span className="container-nav__name" title={container.name}>
+                            {container.name}
+                        </span>
                     </div>
                 )}
             </div>

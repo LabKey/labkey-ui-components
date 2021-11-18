@@ -451,28 +451,6 @@ describe('getCurrentAppProperties', () => {
 });
 
 describe('getStorageSectionConfig', () => {
-    test('FM not enabled', () => {
-        expect(getStorageSectionConfig(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId, {}, 2)).toBe(
-            undefined
-        );
-        expect(
-            getStorageSectionConfig(
-                TEST_USER_EDITOR,
-                BIOLOGICS_APP_PROPERTIES.productId,
-                { inventory: {}, biologics: {} },
-                2
-            )
-        ).toBe(undefined);
-        expect(
-            getStorageSectionConfig(
-                TEST_USER_EDITOR,
-                BIOLOGICS_APP_PROPERTIES.productId,
-                { inventory: {}, biologics: {} },
-                2
-            )
-        ).toBe(undefined);
-    });
-
     test('reader, inventory app', () => {
         const config = getStorageSectionConfig(
             TEST_USER_READER,
@@ -654,50 +632,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([4, USER_KEY])).toBeDefined();
     });
 
-    test('Biologics, no experimental features', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Biologics/biologics-app.view#',
-            }
-        );
-        const configs = getMenuSectionConfigs(TEST_USER_READER, BIOLOGICS_APP_PROPERTIES.productId, {
-            inventory: {},
-            samplemanagement: {},
-            biologics: {},
-        });
-        expect(configs.size).toBe(4);
-        expect(configs.getIn([0, REGISTRY_KEY])).toBeDefined();
-        expect(configs.getIn([1, SAMPLES_KEY])).toBeDefined();
-        expect(configs.getIn([2, ASSAYS_KEY])).toBeDefined();
-        expect(configs.getIn([3, WORKFLOW_KEY])).toBeDefined();
-        expect(configs.getIn([3, MEDIA_KEY])).toBeDefined();
-        expect(configs.getIn([3, NOTEBOOKS_KEY])).toBeDefined();
-    });
-
-    test('Biologics with Requests', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Biologics/biologics-app.view#',
-            }
-        );
-        const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
-            inventory: {},
-            samplemanagement: {},
-            biologics: { 'experimental-biologics-requests-menu': true },
-        });
-        expect(configs.size).toBe(5);
-        expect(configs.getIn([0, REGISTRY_KEY])).toBeDefined();
-        expect(configs.getIn([1, SAMPLES_KEY])).toBeDefined();
-        expect(configs.getIn([2, ASSAYS_KEY])).toBeDefined();
-        expect(configs.getIn([3, REQUESTS_KEY])).toBeDefined();
-        expect(configs.getIn([4, WORKFLOW_KEY])).toBeDefined();
-        expect(configs.getIn([4, MEDIA_KEY])).toBeDefined();
-        expect(configs.getIn([4, NOTEBOOKS_KEY])).toBeDefined();
-    });
-
-    test('Biologics with FM', () => {
+    test('Biologics', () => {
         window.location = Object.assign(
             { ...location },
             {
@@ -719,7 +654,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([4, NOTEBOOKS_KEY])).toBeDefined();
     });
 
-    test('Biologics with FM and Requests', () => {
+    test('Biologics with Requests', () => {
         window.location = Object.assign(
             { ...location },
             {
@@ -729,7 +664,7 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
             inventory: {},
             samplemanagement: {},
-            biologics: {},
+            biologics: {'experimental-biologics-requests-menu': true},
         });
         expect(configs.size).toBe(5);
         expect(configs.getIn([0, REGISTRY_KEY])).toBeDefined();

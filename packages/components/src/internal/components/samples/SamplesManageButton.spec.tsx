@@ -35,8 +35,8 @@ describe('SamplesManageButton', () => {
         wrapper: ReactWrapper,
         show = true,
         parentEntityItemCount = 2,
-        selMenuItemCount = 5,
-        menuItemCount = 6,
+        selMenuItemCount = 6,
+        menuItemCount = 7,
         deleteItemCount = 1,
         picklistItemCount = 1
     ): void {
@@ -83,7 +83,7 @@ describe('SamplesManageButton', () => {
         const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} combineParentTypes />, {
             user: TEST_USER_EDITOR,
         });
-        validate(wrapper, true, 1, 4, 5);
+        validate(wrapper, true, 1, 5, 6);
         wrapper.unmount();
     });
 
@@ -125,7 +125,7 @@ describe('SamplesManageButton', () => {
         const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} model={model} />, {
             user: TEST_USER_EDITOR,
         });
-        validate(wrapper, true, 2, 5, 5);
+        validate(wrapper, true, 2, 6, 6);
         wrapper.unmount();
     });
 
@@ -134,7 +134,7 @@ describe('SamplesManageButton', () => {
         const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} showLinkToStudy />, {
             user: TEST_USER_EDITOR,
         });
-        validate(wrapper, true, 2, 6, 7);
+        validate(wrapper, true, 2, 7, 8);
         wrapper.unmount();
     });
 

@@ -48,31 +48,72 @@ export interface AppContextProviderProps<T> {
  *   - If it is app specific, then it should live on the Type (T) that you pass to this component
  *   - If it is app specific, and it's accessed by something in ui-components, then consider changing the design of
  *       of your components so they do not depend on something app specific, or have them take an equivalent prop
- *       that you pass to the component from your context aware app (feel free ask someone for help with this type
- *       of design)
+ *       that you pass to the component from your context aware app (there should be a few examples of how to accomplish
+ *       this, ask around if you need an example)
+ *
+ * Example code:
+ * interface MyAppSettings {
+ *     specialFeatureEnabled: boolean;
+ * }
+ *
+ * // This interface is so we can namespace all of the settings for our App, keeping them  clearly separated from other
+ * // settings that may be on the context.
+ * interface WithMyAppSettings {
+ *     myAppSettings: MyAppSettings;
+ * }
+ *
+ * type MyAppSpecificContext = ExtendableAppContext<WithMyAppSettings>;
+ *
+ * const MY_APP_CONTEXT = {
+ *     myAppSettings: { specialFeatureEnabled: getSpecialFeatureFlagFromLocalStorage() };
+ * };
+ *
+ * const MyApp: FC = () => {
+ *     <AppContextProvider initialContext={MY_APP_CONTEXT}>
+ *         <MyComponentThatUsesContext />
+ *     </AppContextProvider>
+ * };
+ *
+ * const MyComponentThatUsesContext: FC = () => {
+ *     const { myAppSettings } = useAppContext<MyAppSpecificContext>();
+ *     const message = `Special Feature is ${myAppSettings.specialFeatureEnabled ? 'Enabled' : 'Disabled'}`
+ *     return <p>{message}</p>;
+ * };
  */
-export function AppContextProvider<T>({
-    children,
-    initialContext,
-}: PropsWithChildren<AppContextProviderProps<T>>): ReactElement {
-    const value = useMemo<AppContext>(
-        () => ({
-            // Provide a default API so that external users don't have to specify it
-            api: getDefaultAPIWrapper(),
-            // By default we don't show the container in SubNav, but apps can override this
-            navigation: { showCurrentContainer: false },
-            ...initialContext,
-        }),
-        [initialContext]
-    );
+export class AppContextProvider extends React.Component<PropsWithChildren<AppContextProviderProps<T>>> {
+    render(): ReactElement {
+        let {
+            children,
+            initialContext,
+        } = this.props;
+        const value = useMemo<AppContext>(
+            () => ({
+                // Provide a default API so that external users don't have to specify it
+                api: getDefaultAPIWrapper(),
+                // By default we don't show the container in SubNav, but apps can override this
+                navigation: { showCurrentContainer: false },
+                ...initialContext,
+            }),
+            [initialContext],
+        );
 
-    return <Context.Provider value={value}>{children}</Context.Provider>;
+        return <Context.Provider value={value}>{children}</Context.Provider>;
+    }
 }
 
 /**
  * To use the AppContext provided by a AppContextProvider, use this convenient hook. If you find yourself constantly
  * grabbing the same attribute or two from useAppContext it may be convenient to create a wrapper around this hook
- * that grabs only what you need, this is most helpful for our packages like Workflow.
+ * that grabs only what you need, this is most helpful for our packages like Workflow e.g.:
+ *
+ * const useMyAppContext = (): MyAppSettings => {
+ *     const appContext = useAppContext<MyAppSpecificContext>();
+ *     return appContext.myAppSettings;
+ * };
+ *
+ * Then, in your component:
+ *
+ * const { specialFeatureEnabled } = useMyAppContext();
  */
 export function useAppContext<T>(): ExtendableAppContext<T> {
     const context = useContext<ExtendableAppContext<T>>(Context);

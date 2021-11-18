@@ -28,7 +28,8 @@ export interface AppContext {
 
 export type ExtendableAppContext<T> = T & AppContext;
 
-// The "any" used here should be fine, it gets re-typed in useAppContext, so as long as you're using the
+// The "any" used here should be fine, it gets re-typed in useAppContext, so as long as you're using that and providing
+// a type (e.g. useAppContext<MyAppContextType>()) you'll be fine.
 const Context = createContext<ExtendableAppContext<any>>(undefined);
 
 export interface AppContextProviderProps<T> {

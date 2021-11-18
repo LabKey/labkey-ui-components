@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import { getServerContext } from '@labkey/api';
+import React, { FC, useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { AppContextProvider, ExtendableAppContext } from './AppContext';
-import { ServerContext, ServerContextProvider } from './components/base/ServerContext';
+import { ServerContextProvider, withAppUser } from './components/base/ServerContext';
 
 interface Props<T = {}> {
-    initialServerContext: ServerContext;
     initialAppContext?: ExtendableAppContext<T>;
     store: any;
     history: any;
@@ -17,7 +17,8 @@ interface Props<T = {}> {
  * at once, and reduce the level of nesting needed in our Route configurations.
  */
 export const AppContexts: FC<Props> = (props) => {
-    const { children, history, initialAppContext, initialServerContext, store } = props;
+    const { children, history, initialAppContext, store } = props;
+    const initialServerContext = useMemo(() => withAppUser(getServerContext()), []);
     return (
         <ServerContextProvider initialContext={initialServerContext}>
             <AppContextProvider initialContext={initialAppContext}>

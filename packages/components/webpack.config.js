@@ -6,6 +6,7 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const IgnorePlugin = require('webpack').IgnorePlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     entry: './src/index.ts',
@@ -104,7 +105,13 @@ module.exports = {
                 }
             ]
         }),
-        new IgnorePlugin(/^\.\/locale$/, /moment$/)
+        new IgnorePlugin(/^\.\/locale$/, /moment$/),
+        // new BundleAnalyzerPlugin(),
     ],
-    externals: ['react', 'react-dom', 'reactn', 'react-bootstrap', 'immutable', 'jquery']
+    externals: [
+        'react', 'react-dom', 'reactn', 'react-bootstrap', 'immutable', 'jquery',
+        '@labkey/api', 'react-treebeard', 'react-beautiful-dnd', 'react-datepicker', 'react-router',
+        'react-bootstrap-toggle', 'date-fns', 'numeral', 'font-awesome', 'formsy-react', 'formsy-react-components',
+        'enzyme', 'moment', 'moment-jdateformatparser', 'moment-timezone', 'lodash', 'history',
+    ]
 };

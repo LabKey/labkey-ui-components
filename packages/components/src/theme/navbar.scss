@@ -251,7 +251,7 @@
 }
 
 .container-nav {
-    padding: 8px 0px 8px 10px;
+    padding: 10px 0 8px 10px;
     min-width: 100px;
     color: #9d9d9d;
     position: relative;
@@ -260,13 +260,19 @@
     border-left: 1px solid $navbar-border-color;
     content: '';
     height: 34px;
-    margin-top: -16px;
+    margin-top: -17px;
     position: absolute;
     left: 0;
     top: 50%;
 }
 .container-nav__name {
+    float: right;
+    font-size: small;
     margin-left: 4px;
+    max-width: 165px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .navbar-inverse {
@@ -295,7 +301,7 @@
         border-left: 1px solid $navbar-border-color;
         content: '';
         height: 34px;
-        margin-top: -16px;
+        margin-top: -15px;
         position: absolute;
         right: 0;
         top: 50%;
@@ -340,7 +346,7 @@
       border-left: 1px solid $navbar-border-color;
       content: '';
       height: 34px;
-      margin-top: -18px;
+      margin-top: -17px;
       position: absolute;
       left: 0;
       top: 50%;

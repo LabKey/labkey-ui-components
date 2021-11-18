@@ -52,6 +52,7 @@ export interface AppContextProviderProps<T> {
  *       this, ask around if you need an example)
  *
  * Example code:
+ * ```ts
  * interface MyAppSettings {
  *     specialFeatureEnabled: boolean;
  * }
@@ -79,6 +80,7 @@ export interface AppContextProviderProps<T> {
  *     const message = `Special Feature is ${myAppSettings.specialFeatureEnabled ? 'Enabled' : 'Disabled'}`
  *     return <p>{message}</p>;
  * };
+ * ```
  */
 export function AppContextProvider<T>({
     children,
@@ -103,14 +105,16 @@ export function AppContextProvider<T>({
  * grabbing the same attribute or two from useAppContext it may be convenient to create a wrapper around this hook
  * that grabs only what you need, this is most helpful for our packages like Workflow e.g.:
  *
+ * ```ts
  * const useMyAppContext = (): MyAppSettings => {
  *     const appContext = useAppContext<MyAppSpecificContext>();
  *     return appContext.myAppSettings;
  * };
  *
- * Then, in your component:
+ * // Then, in your component:
  *
  * const { specialFeatureEnabled } = useMyAppContext();
+ * ```
  */
 export function useAppContext<T>(): ExtendableAppContext<T> {
     const context = useContext<ExtendableAppContext<T>>(Context);

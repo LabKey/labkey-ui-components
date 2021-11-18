@@ -257,7 +257,7 @@
     position: relative;
 }
 .container-nav:before {
-    border-left: 1px solid #cbccce;
+    border-left: 1px solid $navbar-border-color;
     content: '';
     height: 34px;
     margin-top: -16px;
@@ -292,7 +292,7 @@
       }
 
       &:after {
-        border-left: 1px solid #cbccce;
+        border-left: 1px solid $navbar-border-color;
         content: '';
         height: 34px;
         margin-top: -16px;
@@ -337,7 +337,7 @@
     display: inline-flex;
 
     &:before {
-      border-left: 1px solid #cbccce;
+      border-left: 1px solid $navbar-border-color;
       content: '';
       height: 34px;
       margin-top: -18px;

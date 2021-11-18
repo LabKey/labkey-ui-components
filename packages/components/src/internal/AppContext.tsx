@@ -80,25 +80,22 @@ export interface AppContextProviderProps<T> {
  *     return <p>{message}</p>;
  * };
  */
-export class AppContextProvider extends React.Component<PropsWithChildren<AppContextProviderProps<T>>> {
-    render(): ReactElement {
-        let {
-            children,
-            initialContext,
-        } = this.props;
-        const value = useMemo<AppContext>(
-            () => ({
-                // Provide a default API so that external users don't have to specify it
-                api: getDefaultAPIWrapper(),
-                // By default we don't show the container in SubNav, but apps can override this
-                navigation: { showCurrentContainer: false },
-                ...initialContext,
-            }),
-            [initialContext],
-        );
+export function AppContextProvider<T>({
+    children,
+    initialContext,
+}: PropsWithChildren<AppContextProviderProps<T>>): ReactElement {
+    const value = useMemo<AppContext>(
+        () => ({
+            // Provide a default API so that external users don't have to specify it
+            api: getDefaultAPIWrapper(),
+            // By default we don't show the container in SubNav, but apps can override this
+            navigation: { showCurrentContainer: false },
+            ...initialContext,
+        }),
+        [initialContext]
+    );
 
-        return <Context.Provider value={value}>{children}</Context.Provider>;
-    }
+    return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 
 /**

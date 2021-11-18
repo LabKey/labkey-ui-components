@@ -302,6 +302,7 @@ import { SampleAliquotsSummary } from './internal/components/samples/SampleAliqu
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
+import { AppContexts } from './internal/AppContexts';
 
 import {
     filterSampleRowsForOperation,
@@ -1207,6 +1208,7 @@ export {
     User,
     AppContextProvider,
     useAppContext,
+    AppContexts,
     ServerContextProvider,
     ServerContextConsumer,
     useServerContext,

@@ -147,6 +147,7 @@ export const DEFAULT_SAMPLE_FIELD_CONFIG = {
 } as Partial<IDomainField>;
 
 export const ALIQUOTED_FROM_COL = 'AliquotedFrom';
+const STATUS_COL = 'Status';
 
 export const SAMPLE_STORAGE_COLUMNS = ['StorageLocation','StorageRow','StorageCol','StoredAmount','Units','FreezeThawCount','EnteredStorage','CheckedOut','CheckedOutBy','StorageComment'];
 
@@ -154,7 +155,8 @@ export const SAMPLE_INSERT_EXTRA_COLUMNS = [...SAMPLE_STORAGE_COLUMNS, ALIQUOTED
 
 export const SAMPLE_EXPORT_CONFIG = {
     'exportAlias.name': DEFAULT_SAMPLE_FIELD_CONFIG.name,
-    'exportAlias.aliquotedFromLSID': ALIQUOTED_FROM_COL
+    'exportAlias.aliquotedFromLSID': ALIQUOTED_FROM_COL,
+    'exportAlias.sampleState': STATUS_COL
 };
 
 export const SAMPLE_DATA_EXPORT_CONFIG = {

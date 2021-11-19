@@ -173,6 +173,7 @@ import {
 } from './internal/global';
 import {
     deleteRows,
+    getContainerFilter,
     getQueryDetails,
     importData,
     InsertFormats,
@@ -731,6 +732,7 @@ export {
     // global state functions
     initQueryGridState,
     initNotificationsState,
+    getContainerFilter,
     getStateQueryGridModel,
     getStateModelId,
     getQueryGridModel,

@@ -140,15 +140,20 @@ export function deleteSampleSet(rowId: number): Promise<any> {
  * @param schemaQuery SchemaQuery which sources the request for rows
  * @param sampleColumn A QueryColumn used to map fieldKey, displayColumn, and keyColumn data
  * @param filterArray A collection of filters used when requesting rows
+ * @param displayValueKey Column name containing grid display value of Sample Type
+ * @param valueKey Column name containing grid value of Sample Type
  */
 export function fetchSamples(
     schemaQuery: SchemaQuery,
     sampleColumn: QueryColumn,
-    filterArray: Filter.IFilter[]
+    filterArray: Filter.IFilter[],
+    displayValueKey: string,
+    valueKey: string,
 ): Promise<OrderedMap<any, any>> {
     return selectRows({
         schemaName: schemaQuery.schemaName,
         queryName: schemaQuery.queryName,
+        columns: ['name', 'sampleId'],
         filterArray,
     }).then(response => {
         const { key, models, orderedModels } = response;
@@ -160,8 +165,8 @@ export function fetchSamples(
                 [id, sampleColumn.fieldKey],
                 List([
                     {
-                        displayValue: rows.getIn([id, sampleColumn.lookup.displayColumn, 'value']),
-                        value: rows.getIn([id, sampleColumn.lookup.keyColumn, 'value']),
+                        displayValue: rows.getIn([id, displayValueKey, 'value']),
+                        value: rows.getIn([id, valueKey, 'value']),
                     },
                 ])
             );
@@ -180,11 +185,25 @@ export function fetchSamples(
 export function loadSelectedSamples(location: any, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
     return getSelection(location).then(selection => {
         if (selection.resolved && selection.schemaQuery && selection.selected.length) {
-            return fetchSamples(selection.schemaQuery, sampleColumn, [
-                Filter.create('RowId', selection.selected, Filter.Types.IN),
-            ]);
+            return fetchSamples(
+                selection.schemaQuery,
+                sampleColumn,
+                [Filter.create('RowId', selection.selected, Filter.Types.IN)],
+                sampleColumn.lookup.displayColumn,
+                sampleColumn.lookup.keyColumn
+            );
         }
     });
+}
+
+export function loadJobSamples(location: any, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
+    return fetchSamples(
+        SchemaQuery.create('sampleManagement', 'inputSamples'),
+        sampleColumn,
+        [Filter.create('ApplicationType', 'ExperimentRun'), Filter.create('ApplicationRun', location.query.workflowJobId)],
+        'name',
+        'sampleId'
+    );
 }
 
 export function getGroupedSampleDomainFields(sampleType: string): Promise<GroupedSampleFields> {

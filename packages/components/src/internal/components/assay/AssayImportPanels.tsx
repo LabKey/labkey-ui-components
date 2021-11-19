@@ -57,7 +57,7 @@ import {
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { loadSelectedSamples } from '../samples/actions';
+import { loadJobSamples, loadSelectedSamples } from '../samples/actions';
 
 import { STATUS_DATA_RETRIEVAL_ERROR } from '../samples/constants';
 
@@ -75,6 +75,7 @@ import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { AssayUploadGridLoader } from './AssayUploadGridLoader';
 import { AssayWizardModel, IAssayUploadOptions } from './AssayWizardModel';
+import { isSampleManagerEnabled } from "../../app/utils";
 
 const BATCH_PROPERTIES_GRID_ID = 'assay-batchdetails';
 
@@ -93,6 +94,7 @@ interface OwnProps {
     maxInsertRows?: number;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any;
     loadSelections?: (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
+    loadJobSamples?:  (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
     showUploadTabs?: boolean;
     showQuerySelectPreviewOptions?: boolean;
     runDataPanelTitle?: string;
@@ -118,9 +120,10 @@ interface State {
     sampleStatusWarning: string;
 }
 
-class AssayImportPanelsBody extends Component<Props, State> {
+export class AssayImportPanelsBody extends Component<Props, State> {
     static defaultProps = {
         loadSelections: loadSelectedSamples,
+        loadJobSamples: loadJobSamples,
         showUploadTabs: true,
     };
 
@@ -145,6 +148,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             selectStep(parseInt(location.query.dataTab, 10));
         }
 
+        console.log("location", location);
         this.initModel(this.props);
     }
 
@@ -294,14 +298,18 @@ class AssayImportPanelsBody extends Component<Props, State> {
     }
 
     onGetQueryDetailsComplete = (): void => {
-        const { assayDefinition, location } = this.props;
+        const { assayDefinition, location, loadJobSamples, loadSelections } = this.props;
         const sampleColumnData = assayDefinition.getSampleColumn();
 
         if (sampleColumnData && location) {
             // If the assay has a sample column look up at Batch, Run, or Result level then we want to retrieve
             // the currently selected samples so we can pre-populate the fields in the wizard with the selected
             // samples.
-            this.props.loadSelections(location, sampleColumnData.column).then(samples => {
+            // Additionally, we want to pre-populate the fields in the wizard with samples if the job has samples
+            // associated with it, and the assay has a sample column.
+
+            const loadGridWithSamplesFn = (location.query?.workflowJobId && isSampleManagerEnabled()) ? loadJobSamples : loadSelections;
+            loadGridWithSamplesFn(location, sampleColumnData.column).then(samples => {
                 getSampleOperationConfirmationData(
                     SampleOperation.AddAssayData,
                     undefined,

@@ -148,6 +148,14 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
         constructor(props) {
             super(props);
 
+            // console.log("withFormSteps1", props.initialStep);
+            // console.log("withFormSteps2", defaultState);
+            // console.log("withFormSteps3", props.initialStep
+            //     ? props.initialStep
+            //     : defaultState && defaultState.currentStep !== undefined
+            //         ? defaultState.currentStep
+            //         : 1);
+
             this.nextStep = this.nextStep.bind(this);
             this.previousStep = this.previousStep.bind(this);
             this.selectStep = this.selectStep.bind(this);
@@ -186,6 +194,7 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
 
         selectStep(requestedStep?: number): boolean {
             const { currentStep, furthestStep } = this.state;
+            // console.log("selectStep", requestedStep);
 
             if (furthestStep >= requestedStep && currentStep !== requestedStep) {
                 this.setState({

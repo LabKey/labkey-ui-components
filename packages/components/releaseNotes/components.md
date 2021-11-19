@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Support auto-populating sample grid rows when importing run for a Job's Task's Assay
+
 ### version 2.94.0
 *Released*: 17 November 2021
 * Item 9500: Improve Sample display when spanning types

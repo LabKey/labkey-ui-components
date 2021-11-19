@@ -18,7 +18,7 @@ export const saveNameExpressionOptions = (key: string, value: string | boolean, 
     });
 };
 
-interface GetNameExpressionOptionsResponse {
+export interface GetNameExpressionOptionsResponse {
     allowUserSpecifiedNames: boolean;
     prefix: string;
 }

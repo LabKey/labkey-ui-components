@@ -18,6 +18,7 @@ export class QueryInfo extends Record({
     // canEditSharedViews: false,
     columns: OrderedMap<string, QueryColumn>(),
     description: undefined,
+    domainContainerPath: undefined,
     // editDefinitionUrl: undefined,
     importTemplates: List<any>(),
     // indices: Map<string, any>(),
@@ -59,6 +60,7 @@ export class QueryInfo extends Record({
     // declare canEditSharedViews: boolean;
     declare columns: OrderedMap<string, QueryColumn>;
     declare description: string;
+    declare domainContainerPath: string;
     // declare editDefinitionUrl: string;
     declare iconURL: string;
     declare importTemplates: List<any>;

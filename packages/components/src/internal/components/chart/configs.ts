@@ -50,6 +50,7 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
     SampleStatuses: {
         charts: [CHART_SELECTORS.All],
         colorPath: ['Color', 'value'],
+        groupPath: ['Status', 'value'],
         createText: 'Create Samples',
         createURL: () => App.NEW_SAMPLES_HREF,
         // getAppURL: row => AppURL.create(SAMPLES_KEY),

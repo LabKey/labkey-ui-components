@@ -14,6 +14,7 @@ interface ProcessChartOptions {
     countPath?: string[];
     idPath?: string[];
     namePath?: string[];
+    groupPath?: string[];
 }
 
 export function processChartData(response: ISelectRowsResult, options?: ProcessChartOptions): ChartDataProps {
@@ -21,6 +22,7 @@ export function processChartData(response: ISelectRowsResult, options?: ProcessC
     const colorPath = options?.colorPath;
     const idPath = options?.idPath ?? ['RowId', 'value'];
     const namePath = options?.namePath ?? ['Name', 'value'];
+    const groupPath = options?.groupPath;
 
     const rows = fromJS(response.models[response.key]);
 
@@ -29,16 +31,17 @@ export function processChartData(response: ISelectRowsResult, options?: ProcessC
         .map(row => ({
             count: row.getIn(countPath),
             id: row.getIn(idPath),
-            label: row.getIn(namePath),
+            x: row.getIn(namePath),
+            xSub: groupPath ? row.getIn(groupPath) : undefined,
         }))
-        .sortBy(row => row.label, naturalSort)
+        .sortBy(row => row.x, naturalSort)
         .toArray();
 
     let barFillColors;
     if (colorPath) {
         barFillColors = {};
         rows.forEach(row => {
-            barFillColors[row.getIn(namePath)] = row.getIn(colorPath);
+            barFillColors[row.getIn(groupPath ?? namePath)] = row.getIn(colorPath);
         });
     }
 
@@ -55,6 +58,7 @@ interface BarChartPlotConfigProps {
     data: any[];
     barFillColors?: Record<string, any>;
     onClick?: (evt: any, row: any) => void;
+    grouped?: boolean;
 }
 
 export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<string, any> {
@@ -68,9 +72,10 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
         defaultFillColor,
         defaultBorderColor,
         barFillColors,
+        grouped,
     } = props;
     const aes = {
-        x: 'label',
+        x: 'x',
         y: 'count',
     };
     const scales = {
@@ -96,6 +101,12 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
         };
     }
 
+    if (grouped) {
+        aes['x'] = 'xSub';
+        aes['xSub'] = 'x';
+        aes['color'] = 'x';
+    }
+
     return {
         renderTo,
         rendererType: 'd3',
@@ -109,12 +120,18 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
             color: defaultBorderColor,
             fill: defaultFillColor,
             showValues: true,
+            stacked: grouped,
+            // TODO
             clickFn: onClick,
+            // TODO
             hoverFn: function (row) {
                 return row.label + '\nClick to view details';
             },
         },
-        legendPos: 'none',
+        legendPos: !grouped ? 'none' : 'right',
+        legendData: !grouped ? undefined : Object.keys(barFillColors).map(text => {
+            return { text, color: barFillColors[text] };
+        }),
         aes,
         scales,
         data,

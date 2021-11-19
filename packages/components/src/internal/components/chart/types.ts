@@ -18,6 +18,7 @@ export interface ChartSelector {
 export interface ChartConfig {
     charts: ChartSelector[];
     colorPath?: string[];
+    groupPath?: string[];
     createText?: string;
     createURL?: () => AppURL;
     emptyStateMsg?: ReactNode;

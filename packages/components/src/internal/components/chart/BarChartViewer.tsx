@@ -190,6 +190,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
         } else {
             const { barFillColors, data } = processChartData(response, {
                 colorPath: selectedGroup.colorPath,
+                groupPath: selectedGroup.groupPath,
                 countPath: [currentChartOptions.name, 'value'],
             });
 
@@ -198,6 +199,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                     barFillColors={barFillColors}
                     data={data}
                     defaultBorderColor="#555"
+                    grouped={selectedGroup.groupPath !== undefined}
                     onClick={selectedGroup.getAppURL ? this.onBarClick : undefined}
                     title={`${selectedGroup.label} (${currentChartOptions.label})`}
                 />

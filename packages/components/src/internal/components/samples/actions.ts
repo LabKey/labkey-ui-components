@@ -153,7 +153,7 @@ export function fetchSamples(
     return selectRows({
         schemaName: schemaQuery.schemaName,
         queryName: schemaQuery.queryName,
-        columns: ['name', 'sampleId'],
+        columns: ['name', 'sampleId', 'RowId'],
         filterArray,
     }).then(response => {
         const { key, models, orderedModels } = response;

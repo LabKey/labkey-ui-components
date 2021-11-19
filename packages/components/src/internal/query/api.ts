@@ -19,7 +19,7 @@ import { AuditBehaviorTypes, Filter, getServerContext, Query, QueryDOM } from '@
 
 import { getQueryMetadata } from '../global';
 import { resolveKeyFromJson } from '../../public/SchemaQuery';
-import { biologicsIsPrimaryApp } from '../app/utils';
+import { isSubfolderDataEnabled } from '../app/utils';
 import {
     caseInsensitive,
     QueryColumn,
@@ -899,13 +899,11 @@ export function processRequest(response: any, request: any, reject: (reason?: an
 }
 
 export function getContainerFilter(): Query.ContainerFilter {
-    const { container, moduleContext } = getServerContext();
-
-    if (!biologicsIsPrimaryApp(moduleContext)) {
+    if (!isSubfolderDataEnabled()) {
         return undefined;
     }
 
-    if (container.parentPath === '/') {
+    if (getServerContext().container.parentPath === '/') {
         return Query.ContainerFilter.currentAndSubfoldersPlusShared;
     }
 

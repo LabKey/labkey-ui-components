@@ -304,7 +304,7 @@ import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAli
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
-import { ContainerActions, getContainerUser, useContainerUser } from './internal/components/container/actions';
+import { getContainerUser, useContainerUser } from './internal/components/container/actions';
 
 import {
     filterSampleRowsForOperation,
@@ -1223,8 +1223,6 @@ export {
     Container,
     User,
     getContainerUser,
-    useContainerUser,
-    ContainerActions,
     AppContextProvider,
     useAppContext,
     AppContexts,

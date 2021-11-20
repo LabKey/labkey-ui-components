@@ -148,7 +148,6 @@ export class AssayImportPanelsBody extends Component<Props, State> {
             selectStep(parseInt(location.query.dataTab, 10));
         }
 
-        console.log("location", location);
         this.initModel(this.props);
     }
 

@@ -497,7 +497,6 @@ import { DisableableMenuItem } from './internal/components/samples/DisableableMe
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
 import {
-    ALIQUOTED_FROM_COL,
     DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
     SAMPLE_DATA_EXPORT_CONFIG,
@@ -507,7 +506,6 @@ import {
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
-    SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
     SampleStateType,
     UNIQUE_ID_FIND_FIELD,
@@ -891,12 +889,10 @@ export {
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     FIND_BY_IDS_QUERY_PARAM,
     UNIQUE_ID_FIND_FIELD,
-    ALIQUOTED_FROM_COL,
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INSERT_EXTRA_COLUMNS,
-    SAMPLE_STORAGE_COLUMNS,
     IS_ALIQUOT_COL,
     SampleTypeModel,
     deleteSampleSet,

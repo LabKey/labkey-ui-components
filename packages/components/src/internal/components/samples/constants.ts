@@ -1,3 +1,9 @@
+import { Query } from '@labkey/api';
+
+import { IDomainField } from '../domainproperties/models';
+
+import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
+
 import { FindField } from './models';
 
 export const SAMPLE_INVENTORY_ITEM_SELECTION_KEY = 'inventoryItems';
@@ -131,3 +137,63 @@ export const operationRestrictionMessage = {
     //    Not needed because only possible from LKS
     // }
 };
+
+export const DEFAULT_SAMPLE_FIELD_CONFIG = {
+    required: true,
+    dataType: SAMPLE_TYPE,
+    conceptURI: SAMPLE_TYPE.conceptURI,
+    rangeURI: SAMPLE_TYPE.rangeURI,
+    lookupSchema: 'exp',
+    lookupQuery: 'Materials',
+    lookupType: { ...SAMPLE_TYPE },
+    name: 'SampleID',
+} as Partial<IDomainField>;
+
+export const ALIQUOTED_FROM_COL = 'AliquotedFrom';
+const STATUS_COL = 'Status';
+
+export const SAMPLE_STORAGE_COLUMNS = [
+    'StorageLocation',
+    'StorageRow',
+    'StorageCol',
+    'StoredAmount',
+    'Units',
+    'FreezeThawCount',
+    'EnteredStorage',
+    'CheckedOut',
+    'CheckedOutBy',
+    'StorageComment',
+];
+
+export const SAMPLE_INSERT_EXTRA_COLUMNS = [...SAMPLE_STORAGE_COLUMNS, ALIQUOTED_FROM_COL];
+
+export const SAMPLE_EXPORT_CONFIG = {
+    'exportAlias.name': DEFAULT_SAMPLE_FIELD_CONFIG.name,
+    'exportAlias.aliquotedFromLSID': ALIQUOTED_FROM_COL,
+    'exportAlias.sampleState': STATUS_COL,
+};
+
+export const SAMPLE_DATA_EXPORT_CONFIG = {
+    ...SAMPLE_EXPORT_CONFIG,
+    includeColumn: ['AliquotedFromLSID'],
+};
+
+export const SAMPLE_MANAGER_AUDIT_QUERIES = [
+    { value: 'attachmentauditevent', label: 'Attachment Events' },
+    { value: 'experimentauditevent', label: 'Assay Events' },
+    { value: 'domainauditevent', label: 'Domain Events' },
+    { value: 'domainpropertyauditevent', label: 'Domain Property Events' },
+    { value: 'queryupdateauditevent', label: 'Data Update Events', hasDetail: true },
+    { value: 'inventoryauditevent', label: 'Freezer Management Events', hasDetail: true },
+    { value: 'listauditevent', label: 'List Events' },
+    {
+        value: 'groupauditevent',
+        label: 'Roles and Assignment Events',
+        containerFilter: Query.ContainerFilter.allFolders,
+    },
+    { value: 'samplesetauditevent', label: 'Sample Type Events' },
+    { value: 'sampletimelineevent', label: 'Sample Timeline Events', hasDetail: true },
+    { value: 'samplesworkflowauditevent', label: 'Sample Workflow Events', hasDetail: true },
+    { value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true },
+    { value: 'userauditevent', label: 'User Events', containerFilter: Query.ContainerFilter.allFolders },
+];

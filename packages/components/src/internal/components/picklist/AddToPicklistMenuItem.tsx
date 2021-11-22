@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 
 import { User } from '../base/models/User';
-import { isFreezerManagementEnabled, userCanManagePicklists } from '../../app/utils';
+import { userCanManagePicklists } from '../../app/utils';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 
@@ -54,7 +54,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         }
     }, [queryModel, sampleIds]);
 
-    if (!userCanManagePicklists(user) || !isFreezerManagementEnabled()) {
+    if (!userCanManagePicklists(user)) {
         return null;
     }
 

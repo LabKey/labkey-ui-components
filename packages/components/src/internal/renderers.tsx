@@ -129,8 +129,8 @@ export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): O
             }
 
             // TODO: Just generate one function per type
-            return col.set('cell', data => {
-                return React.createElement(node, { data, col });
+            return col.set('cell', (data, row, col_, rowIndex, columnIndex) => {
+                return React.createElement(node, { data, row, col: col_, rowIndex, columnIndex });
             });
         }) as OrderedMap<string, QueryColumn>;
     }

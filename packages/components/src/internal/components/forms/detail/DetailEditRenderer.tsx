@@ -38,6 +38,7 @@ import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceR
 import { getUnFormattedNumber } from '../../../util/Date';
 
 import { _defaultRenderer, Renderer, RenderOptions } from './DetailDisplay';
+import { SampleStatusRenderer } from '../../../renderers/SampleStatusRenderer';
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
     // If the column cannot be edited, return the label as is
@@ -228,6 +229,9 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 break;
             case 'sourcetypeimportaliasrenderer':
                 renderer = d => <SourceTypeImportAliasRenderer data={d} />;
+                break;
+            case 'samplestatusrenderer':
+                renderer = (d, r) => <SampleStatusRenderer row={r} />
                 break;
             default:
                 break;

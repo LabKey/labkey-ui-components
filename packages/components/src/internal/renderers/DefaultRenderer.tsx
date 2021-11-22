@@ -23,6 +23,9 @@ import { MultiValueRenderer } from './MultiValueRenderer';
 interface Props {
     col?: QueryColumn;
     data: any;
+    row?: any;
+    rowIndex?: number;
+    columnIndex?: number;
 }
 
 /**

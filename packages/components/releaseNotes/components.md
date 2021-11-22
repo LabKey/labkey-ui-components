@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add `SampleStatusRenderer` for use in details display and grid display
+  *  Update `DefaultRenderer` to pass through all props to the cell call
+
 ### version 2.95.0
 *Released*: 22 November 2021
 * Remove isFreezerManagerEnabledInBiologics experimental flag

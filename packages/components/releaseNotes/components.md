@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add ExtendableAppContext
   * This allows downstream apps to extend AppContext and add their own attributes
 * Add NavigationSettings to AppContext
+* Add AppContexts component
 * Refactor SubNav
   * Renders the current container if configured in NavigationSettings
   * Re-written to be an FC

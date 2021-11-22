@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.95.0
+*Released*: 22 November 2021
+* Remove isFreezerManagerEnabledInBiologics experimental flag
+
 ### version 2.94.0
 *Released*: 17 November 2021
 * Item 9500: Improve Sample display when spanning types
@@ -31,10 +35,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.91.1
 *Released*: 10 November 2021
 * Bump @labkey/api dependency
-
-### version XXX
-*Released*: XXX
-* Remove isFreezerManagerEnabledInBiologics experimental flag
 
 ### version 2.91.0
 *Released*: 2 November 2021

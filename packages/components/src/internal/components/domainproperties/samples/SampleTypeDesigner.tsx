@@ -32,7 +32,6 @@ import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { UniqueIdBanner } from './UniqueIdBanner';
 
-
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
     value: '{{this_sample_set}}',

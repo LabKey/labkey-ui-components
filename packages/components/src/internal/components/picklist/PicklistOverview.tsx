@@ -36,6 +36,7 @@ import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistEditModal } from './PicklistEditModal';
 import { PicklistGridButtons } from './PicklistGridButtons';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { ALIQUOTED_FROM_COL } from "../samples/constants";
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
@@ -56,6 +57,12 @@ interface ImplProps {
 }
 
 type Props = OwnProps & ImplProps & InjectedQueryModels;
+
+export const PICKLIST_EXPORT_CONFIG = {
+    'exportAlias.SampleID/AliquotedFromLSID': ALIQUOTED_FROM_COL,
+    'exportAlias.AliquotedFromLSID': ALIQUOTED_FROM_COL,
+    includeColumn: ['SampleID/AliquotedFromLSID', 'AliquotedFromLSID']
+};
 
 // exported for jest testing
 export const PicklistOverviewImpl: FC<Props> = memo(props => {
@@ -80,6 +87,10 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
     const hideDeletePicklistConfirm = useCallback(() => {
         setShowDeleteModal(false);
     }, []);
+
+    const exportConfig = useMemo(() => {
+        return advancedExportOptions ? {...PICKLIST_EXPORT_CONFIG, ...advancedExportOptions} : PICKLIST_EXPORT_CONFIG;
+    }, [advancedExportOptions])
 
     const deletePicklist = useCallback(() => {
         deletePicklists([picklist])
@@ -208,7 +219,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                             afterSampleActionComplete={afterSampleActionComplete}
                             samplesEditableGridProps={samplesEditableGridProps}
                             tabbedGridPanelProps={{
-                                advancedExportOptions,
+                                advancedExportOptions: exportConfig,
                                 alwaysShowTabs: true,
                             }}
                         />
@@ -276,7 +287,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 id: gridId,
                 title: 'All Samples',
                 schemaQuery: SchemaQuery.create(SCHEMAS.PICKLIST_TABLES.SCHEMA, picklist.name),
-                requiredColumns: ['Created'],
+                requiredColumns: ['Created', 'SampleID/AliquotedFromLsid', 'AliquotedFromLSID'],
             };
 
             // add a queryConfig for each distinct sample type of the picklist samples, with an filter clause

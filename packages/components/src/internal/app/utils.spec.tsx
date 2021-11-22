@@ -664,7 +664,7 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
             inventory: {},
             samplemanagement: {},
-            biologics: {'experimental-biologics-requests-menu': true},
+            biologics: { 'experimental-biologics-requests-menu': true },
         });
         expect(configs.size).toBe(5);
         expect(configs.getIn([0, REGISTRY_KEY])).toBeDefined();

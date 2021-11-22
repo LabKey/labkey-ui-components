@@ -461,9 +461,9 @@ export function getCurrentProductName() {
 // TODO when isFreezerManagerEnabled goes away, we can put this data in the AppProperties constants instead
 export function getAppProductIds(appProductId: string): List<string> {
     let productIds = List.of(appProductId);
-    if (appProductId === SAMPLE_MANAGER_APP_PROPERTIES.productId
-        || appProductId == BIOLOGICS_APP_PROPERTIES.productId
-
+    if (
+        appProductId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||
+        appProductId == BIOLOGICS_APP_PROPERTIES.productId
     ) {
         productIds = productIds.push(FREEZER_MANAGER_APP_PROPERTIES.productId);
     }

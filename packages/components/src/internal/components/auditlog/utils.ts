@@ -9,7 +9,7 @@ import { Query } from '@labkey/api';
 import { AppURL } from '../../..';
 import { isSampleManagerEnabled } from '../../app/utils';
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
-import { SAMPLE_MANAGER_AUDIT_QUERIES } from "../samples/constants";
+import { SAMPLE_MANAGER_AUDIT_QUERIES } from '../samples/constants';
 
 export type AuditQuery = {
     containerFilter?: Query.ContainerFilter;

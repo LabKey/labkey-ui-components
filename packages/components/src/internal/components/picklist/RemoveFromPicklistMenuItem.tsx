@@ -10,7 +10,7 @@ import { getConfirmDeleteMessage } from '../../util/messaging';
 import { createNotification, withTimeout } from '../notifications/actions';
 import { User } from '../base/models/User';
 
-import { isFreezerManagementEnabled, userCanManagePicklists } from '../../app/utils';
+import { userCanManagePicklists } from '../../app/utils';
 
 import { removeSamplesFromPicklist } from './actions';
 import { Picklist } from './models';
@@ -50,7 +50,7 @@ export const RemoveFromPicklistMenuItem: FC<Props> = memo(props => {
         }
     }, [model, picklist, afterSampleActionComplete, onHideRemoveFromList]);
 
-    if (!userCanManagePicklists(user) || !isFreezerManagementEnabled()) {
+    if (!userCanManagePicklists(user)) {
         return null;
     }
 

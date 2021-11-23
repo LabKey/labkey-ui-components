@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
@@ -31,6 +31,7 @@ import {
     getSelection,
     getStateModelId,
     ISelectRowsResult,
+    Location,
     naturalSortByProperty,
     QueryColumn,
     QueryConfig,
@@ -140,19 +141,24 @@ export function deleteSampleSet(rowId: number): Promise<any> {
  * @param schemaQuery SchemaQuery which sources the request for rows
  * @param sampleColumn A QueryColumn used to map fieldKey, displayColumn, and keyColumn data
  * @param filterArray A collection of filters used when requesting rows
+ * @param displayValueKey Column name containing grid display value of Sample Type
+ * @param valueKey Column name containing grid value of Sample Type
  */
 export function fetchSamples(
     schemaQuery: SchemaQuery,
     sampleColumn: QueryColumn,
-    filterArray: Filter.IFilter[]
+    filterArray: Filter.IFilter[],
+    displayValueKey: string,
+    valueKey: string
 ): Promise<OrderedMap<any, any>> {
     return selectRows({
         schemaName: schemaQuery.schemaName,
         queryName: schemaQuery.queryName,
+        columns: ['RowId', displayValueKey, valueKey],
         filterArray,
     }).then(response => {
         const { key, models, orderedModels } = response;
-        const rows = fromJS(models[key]);
+        const rows = models[key];
         let data = OrderedMap<any, any>();
 
         orderedModels[key].forEach(id => {
@@ -160,8 +166,8 @@ export function fetchSamples(
                 [id, sampleColumn.fieldKey],
                 List([
                     {
-                        displayValue: rows.getIn([id, sampleColumn.lookup.displayColumn, 'value']),
-                        value: rows.getIn([id, sampleColumn.lookup.keyColumn, 'value']),
+                        displayValue: caseInsensitive(rows[id], displayValueKey)?.value,
+                        value: caseInsensitive(rows[id], valueKey)?.value,
                     },
                 ])
             );
@@ -177,13 +183,34 @@ export function fetchSamples(
  * @param location The location to search for the selectionKey on
  * @param sampleColumn A QueryColumn used to map data in [[fetchSamples]]
  */
-export function loadSelectedSamples(location: any, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
+export function loadSelectedSamples(location: Location, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
+    // If the "workflowJobId" URL parameter is specified, then fetch the samples associated with the workflow job.
+    if (location?.query?.workflowJobId) {
+        return fetchSamples(
+            SchemaQuery.create('sampleManagement', 'inputSamples'),
+            sampleColumn,
+            [
+                Filter.create('ApplicationType', 'ExperimentRun'),
+                Filter.create('ApplicationRun', location.query.workflowJobId),
+            ],
+            'Name',
+            'SampleId'
+        );
+    }
+
+    // Otherwise, load the samples from the selection.
     return getSelection(location).then(selection => {
         if (selection.resolved && selection.schemaQuery && selection.selected.length) {
-            return fetchSamples(selection.schemaQuery, sampleColumn, [
-                Filter.create('RowId', selection.selected, Filter.Types.IN),
-            ]);
+            return fetchSamples(
+                selection.schemaQuery,
+                sampleColumn,
+                [Filter.create('RowId', selection.selected, Filter.Types.IN)],
+                sampleColumn.lookup.displayColumn,
+                sampleColumn.lookup.keyColumn
+            );
         }
+
+        return OrderedMap();
     });
 }
 

@@ -719,7 +719,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                         hasBatchProperties={model.batchColumns.size > 0}
                     />
                 )}
-                <Alert bsStyle="info">{sampleStatusWarning}</Alert>
+                <Alert bsStyle="warning">{sampleStatusWarning}</Alert>
                 <BatchPropertiesPanel
                     model={model}
                     showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}

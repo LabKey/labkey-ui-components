@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.97.0
+*Released*: 23 November 2021
+* Support auto-populating sample grid rows when importing run for a Job's Task's Assay
+
 ### version 2.96.0
 *Released*: 23 November 2021
 * Issue 44226: add more packages to the list of externals in webpack.config.js for @labkey/components

@@ -6,6 +6,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 9703: Add support for LabKey Vis API stacked bar plot
   * supported groupPath for bar chart config
   * add legendData for group bar chart case
+  * other misc changes:
+    * add vertical separator for manage sample statuses
+    * update assay import sample status message to use warning instead of info alert display
 
 ### version 2.95.0
 *Released*: 22 November 2021

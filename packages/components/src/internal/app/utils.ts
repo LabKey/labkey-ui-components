@@ -113,15 +113,8 @@ export function userCanDesignLocations(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.Admin]);
 }
 
-export function isFreezerManagementEnabled(moduleContext?: any, currentProductId?: string): boolean {
-    return (
-        (moduleContext ?? getServerContext().moduleContext)?.inventory !== undefined &&
-        (!isBiologicsEnabled(moduleContext) ||
-            isFreezerManagerEnabledInBiologics(moduleContext) ||
-            // if looking at the SM app or FM within a Biologics folder but the FM in Biologics flag is off,
-            // you still want to see the Storage menu
-            (currentProductId && currentProductId !== BIOLOGICS_APP_PROPERTIES.productId))
-    );
+export function isFreezerManagementEnabled(moduleContext?: any): boolean {
+    return (moduleContext ?? getServerContext().moduleContext)?.inventory !== undefined;
 }
 
 export function isProductNavigationEnabled(productId: string): boolean {
@@ -185,10 +178,6 @@ export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
     }
 }
 
-function isFreezerManagerEnabledInBiologics(moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.biologics?.isFreezerManagerEnabled === true;
-}
-
 export function isRequestsEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_REQUESTS_MENU] === true;
 }
@@ -213,7 +202,7 @@ export function getStorageSectionConfig(
     moduleContext: any,
     maxItemsPerColumn: number
 ): MenuSectionConfig {
-    if (isFreezerManagementEnabled(moduleContext, currentProductId)) {
+    if (isFreezerManagementEnabled(moduleContext)) {
         const fmAppBase = getApplicationUrlBase(
             FREEZER_MANAGER_APP_PROPERTIES.moduleName,
             currentProductId,
@@ -474,7 +463,7 @@ export function getAppProductIds(appProductId: string): List<string> {
     let productIds = List.of(appProductId);
     if (
         appProductId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||
-        (appProductId == BIOLOGICS_APP_PROPERTIES.productId && isFreezerManagementEnabled())
+        appProductId == BIOLOGICS_APP_PROPERTIES.productId
     ) {
         productIds = productIds.push(FREEZER_MANAGER_APP_PROPERTIES.productId);
     }

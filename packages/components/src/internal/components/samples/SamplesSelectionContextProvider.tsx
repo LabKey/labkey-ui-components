@@ -8,8 +8,6 @@ import { LoadingSpinner, SampleOperation } from '../../..';
 
 import { getSampleOperationConfirmationData } from '../entities/actions';
 
-import { isFreezerManagementEnabled } from '../../app/utils';
-
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import {
     getAliquotSampleIds,
@@ -105,7 +103,7 @@ export function SamplesSelectionProvider<T>(
 
         loadStorageData(): void {
             const { selection, sampleSet, determineStorage } = this.props;
-            if (determineStorage && isFreezerManagementEnabled() && selection && selection.size > 0) {
+            if (determineStorage && selection && selection.size > 0) {
                 getNotInStorageSampleIds(selection, sampleSet)
                     .then(samples => {
                         this.setState({
@@ -170,7 +168,7 @@ export function SamplesSelectionProvider<T>(
                 if (
                     !editStatusData ||
                     !aliquots ||
-                    (determineStorage && isFreezerManagementEnabled() && !noStorageSamples) ||
+                    (determineStorage && !noStorageSamples) ||
                     (determineLineage && !sampleLineage)
                 ) {
                     isLoaded = false;

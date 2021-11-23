@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD November 2021
 * Issue 44226: add more packages to the list of externals in webpack.config.js for @labkey/components
 
+### version 2.95.0
+*Released*: 22 November 2021
+* Remove isFreezerManagerEnabledInBiologics experimental flag
+
 ### version 2.94.0
 *Released*: 17 November 2021
 * Item 9500: Improve Sample display when spanning types

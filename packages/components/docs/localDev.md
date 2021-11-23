@@ -127,7 +127,7 @@ yarn run lint-fix "./src/components/**/*"
 Periodically we should review the @labkey/components package bundle size to make sure that there
 aren't any inadvertent dependencies or files getting included in the bundle. To do this, we have
 used the `webpack-bundle-analyzer` npm package. See [docs](https://github.com/webpack-contrib/webpack-bundle-analyzer) for more details.
-1. `npm install webpack-bundle-analyzer`
+1. `yarn add -D webpack-bundle-analyzer`
 1. In the `components/webpack.config.js` file, add the following to the top of the page:
     `const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;`
 1. In that same file, add the following to the `plugins` array: `new BundleAnalyzerPlugin()`

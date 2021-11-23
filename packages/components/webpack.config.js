@@ -106,5 +106,31 @@ module.exports = {
         }),
         new IgnorePlugin(/^\.\/locale$/, /moment$/)
     ],
-    externals: ['react', 'react-dom', 'reactn', 'react-bootstrap', 'immutable', 'jquery']
+    externals: [
+        '@labkey/api',
+        'date-fns',
+        'font-awesome',
+        'formsy-react',
+        'formsy-react-components',
+        'history',
+        'immutable',
+        'jquery',
+        'lodash',
+        'moment',
+        'moment-jdateformatparser',
+        'moment-timezone',
+        'numeral',
+        'react',
+        'reactn',
+        'react-beautiful-dnd',
+        'react-bootstrap',
+        'react-bootstrap-toggle',
+        'react-datepicker',
+        'react-dom',
+        'react-redux',
+        'react-router',
+        'react-treebeard',
+        'redux-actions',
+        'xhr-mock',
+    ]
 };

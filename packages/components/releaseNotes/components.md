@@ -11,6 +11,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     * update assay import sample status message to use warning instead of info alert display
     * SamplesBulkUpdateForm update to only show aliquot-editable fields when any selected samples are aliquots
 
+### version 2.96.0
+*Released*: 23 November 2021
+* Issue 44226: add more packages to the list of externals in webpack.config.js for @labkey/components
+
 ### version 2.95.0
 *Released*: 22 November 2021
 * Remove isFreezerManagerEnabledInBiologics experimental flag

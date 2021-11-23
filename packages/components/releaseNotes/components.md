@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Add `SampleStatusRenderer` for use in details display and grid display
-  *  Update `DefaultRenderer` to pass through all props to the cell call
+  *  Update call to cell renderers to pass through all properties
 
 ### version 2.96.0
 *Released*: 23 November 2021

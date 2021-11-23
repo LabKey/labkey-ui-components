@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * other misc changes:
     * add vertical separator for manage sample statuses
     * update assay import sample status message to use warning instead of info alert display
+    * SamplesBulkUpdateForm update to only show aliquot-editable fields when any selected samples are aliquots
 
 ### version 2.95.0
 *Released*: 22 November 2021

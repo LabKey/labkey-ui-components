@@ -331,7 +331,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 modelUpdates.selectedSamples = validSamples;
 
                 if (samples.size > 0) {
-                    sampleStatusWarning = getOperationNotPermittedMessage(SampleOperation.AddAssayData, statusConfirmationData);
+                    sampleStatusWarning = getOperationNotPermittedMessage(
+                        SampleOperation.AddAssayData,
+                        statusConfirmationData
+                    );
                 }
             } catch (e) {
                 this.setState({ error: STATUS_DATA_RETRIEVAL_ERROR });

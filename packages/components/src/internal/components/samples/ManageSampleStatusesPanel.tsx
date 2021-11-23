@@ -369,7 +369,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                 {!states && <LoadingSpinner />}
                 {states && !error && (
                     <div className="row choices-container">
-                        <div className="col-lg-4 col-md-6">
+                        <div className="col-lg-4 col-md-6 choices-container-left-panel">
                             <SampleStatusesList states={states} selected={selected} onSelect={onSetSelected} />
                             <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />
                         </div>

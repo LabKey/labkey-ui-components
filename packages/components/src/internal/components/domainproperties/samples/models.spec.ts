@@ -1,6 +1,6 @@
-import { fromJS } from 'immutable';
+import { fromJS, Map } from 'immutable';
 
-import { DomainDetails } from '../models';
+import { DomainDesign, DomainDetails } from '../models';
 
 import { SampleTypeModel } from './models';
 
@@ -106,6 +106,15 @@ describe('SampleTypeModel', () => {
         expect(
             SampleTypeModel.create({ options: fromJS({ metricUnit: 'ml' }) } as DomainDetails, undefined).metricUnit
         ).toBe('ml');
+    });
+
+    test('containerPath', () => {
+        expect(SampleTypeModel.create().containerPath).toBeUndefined();
+        expect(SampleTypeModel.create({ containerPath: 'Bam' } as any).containerPath).toBeUndefined();
+
+        const expectedContainerPath = '/Some/Container/Path';
+        const model = SampleTypeModel.create().set('domain', DomainDesign.create({ container: expectedContainerPath })) as SampleTypeModel;
+        expect(model.containerPath).toEqual(expectedContainerPath);
     });
 
     // TODO add tests for getDuplicateAlias

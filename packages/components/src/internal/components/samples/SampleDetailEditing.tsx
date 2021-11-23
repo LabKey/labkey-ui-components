@@ -5,7 +5,6 @@ import { Alert, Panel } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
 import {
-    caseInsensitive,
     DefaultRenderer,
     DetailPanelWithModel,
     getActionErrorMessage,
@@ -81,8 +80,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
 
     getAliquotRootSampleQueryConfig = (): QueryConfig => {
         const { model, sampleSet } = this.props;
-
-        const rootLsid = caseInsensitive(model.getRow(), 'RootMaterialLSID')?.value;
+        const rootLsid = model.getRowValue('RootMaterialLSID');
 
         return {
             schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
@@ -113,9 +111,9 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
 
         const row = this.getRow();
 
-        const parent = caseInsensitive(row, 'AliquotedFromLSID/Name');
-        const root = caseInsensitive(row, 'rootmateriallsid/name');
-        const isAliquot = !!parent?.value;
+        const parent = model.getRowValue('AliquotedFromLSID/Name');
+        const root = model.getRowValue('rootmateriallsid/name');
+        const isAliquot = !!parent;
 
         const { aliquotHeaderDisplayColumns, displayColumns, editColumns } = this.getUpdateDisplayColumns(isAliquot);
 
@@ -141,7 +139,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                     <Panel>
                         <Panel.Heading>Original Sample Details</Panel.Heading>
                         <Panel.Body>
-                            {root?.value !== parent?.value && (
+                            {root !== parent && (
                                 <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-meta-table">
                                     <tbody>
                                         <tr key="originalSample">
@@ -153,10 +151,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                                     </tbody>
                                 </table>
                             )}
-                            <DetailPanelWithModel
-                                key={root?.value}
-                                queryConfig={this.getAliquotRootSampleQueryConfig()}
-                            />
+                            <DetailPanelWithModel key={root} queryConfig={this.getAliquotRootSampleQueryConfig()} />
                         </Panel.Body>
                     </Panel>
                 )}

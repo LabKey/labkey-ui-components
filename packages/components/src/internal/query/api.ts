@@ -898,14 +898,25 @@ export function processRequest(response: any, request: any, reject: (reason?: an
     return false;
 }
 
+/**
+ * Provides the default ContainerFilter to utilize when requesting data cross-folder.
+ * This ContainerFilter is applied to all `executeSql` and `selectRows` requests made via the methods
+ * provided by `@labkey/components`.
+ * @private
+ */
 export function getContainerFilter(): Query.ContainerFilter {
+    // Check experimental flag to see if cross-folder data support is enabled.
     if (!isSubfolderDataEnabled()) {
         return undefined;
     }
 
+    // When requesting data from a top-level folder context the ContainerFilter filters
+    // "down" the folder hierarchy for data.
     if (getServerContext().container.parentPath === '/') {
         return Query.ContainerFilter.currentAndSubfoldersPlusShared;
     }
 
+    // When requesting data from a sub-folder context the ContainerFilter filters
+    // "up" the folder hierarchy for data.
     return Query.ContainerFilter.currentPlusProjectAndShared;
 }

@@ -33,13 +33,13 @@ import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface Props {
+    api?: ComponentsAPIWrapper;
     queryModel: QueryModel;
     onCancel: () => void;
     onSuccess: () => void;
     childEntityDataType: EntityDataType;
     auditBehavior?: AuditBehaviorTypes;
     parentEntityDataTypes: EntityDataType[];
-    api?: ComponentsAPIWrapper;
 }
 
 export const EntityLineageEditModal: FC<Props> = memo(props => {
@@ -101,7 +101,6 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const onConfirm = async (): Promise<void> => {
         setSubmitting(true);
 
-        // TODO: Configure "containerPath" for getOriginalParentsFromSampleLineage() call
         const { originalParents } = await getOriginalParentsFromSampleLineage(allowedForUpdate);
         const rows = getUpdatedLineageRowsForBulkEdit(
             allowedForUpdate,

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { List } from 'immutable';
 import { PermissionTypes } from '@labkey/api';
 
-import { ComponentsAPIWrapper } from '../../APIWrapper';
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { useAppContext } from '../../AppContext';
 import { useServerContext } from '../base/ServerContext';
@@ -22,6 +21,7 @@ function applyPermissions(container: Container, user: User): User {
             permissionsList: List(container.effectivePermissions),
         }) as User;
 
+        // Update permission bits that are explicitly defined on the user.
         return contextUser.merge({
             canDelete: contextUser.hasDeletePermission(),
             canDeleteOwn: contextUser.hasDeletePermission(),
@@ -37,30 +37,45 @@ export interface ContainerUser {
     user: User;
 }
 
-export async function getContainerUser(
-    containerIdOrPath: string,
-    user: User,
-    api: ComponentsAPIWrapper
-): Promise<ContainerUser> {
-    const containers = await api.security.fetchContainers({ containerPath: containerIdOrPath });
-
-    if (containers.length > 0) {
-        const container = containers[0];
-
-        return {
-            container,
-            user: applyPermissions(container, user),
-        };
-    }
-
-    return undefined;
-}
-
 export interface UseContainerUser extends ContainerUser {
     error: string;
     isLoaded: boolean;
 }
 
+/**
+ * React hook that supplies the container, user, and the container-relative permissions for the user.
+ * @param containerIdOrPath The container id or container path to request.
+ * Example:
+ * ```tsx
+ * const SeeUserPermissions: React.FC = () => {
+ *    // This component takes a "containerPath" as a property.
+ *    const { containerPath } = props;
+ *
+ *    // Given the "containerPath" fetch the `container` and `user`.
+ *    const { container, error, isLoaded, user } = useContainerUser(containerPath);
+ *
+ *    if (!isLoaded) {
+ *        return <LoadingSpinner />;
+ *    }
+ *
+ *    // Display container information and utilize user permissions in the container to control display logic.
+ *    return (
+ *        <div>
+ *            <Alert>{error}</Alert>
+ *            {!!container && (
+ *                <>
+ *                    <span>Folder Name: {container.name}</span>
+ *                    <span>Folder Path: {container.path}</span>
+ *                    {user.hasInsertPermission() && <span>{user.displayName} can insert data into {container.path}.</span>>}
+ *                    {user.hasDeletePermission() && <span>{user.displayName} can delete data in {container.path}.</span>>}
+ *                    {user.hasDesignSampleSetsPermission() && <span>{user.displayName} can design sample types in {container.path}.</span>>}
+ *                </>
+ *            )}
+ *        </div>
+ *    );
+ * };
+ * ```
+ */
 export function useContainerUser(containerIdOrPath: string): UseContainerUser {
     const [container, setContainer] = useState<Container>();
     const [error, setError] = useState<string>();
@@ -76,19 +91,13 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
             setError(undefined);
             setLoadingState(LoadingState.LOADING);
 
-            let containers = [];
-
             try {
-                containers = await api.security.fetchContainers({ containerPath: containerIdOrPath });
+                const containers = await api.security.fetchContainers({ containerPath: containerIdOrPath });
+                const container_ = containers[0];
+                setContainer(container_);
+                setContextUser(applyPermissions(container_, user));
             } catch (e) {
                 setError(resolveErrorMessage(e));
-            }
-
-            const container_ = containers[0];
-            setContainer(container_);
-
-            if (container_) {
-                setContextUser(applyPermissions(container_, user));
             }
 
             setLoadingState(LoadingState.LOADED);

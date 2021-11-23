@@ -301,7 +301,7 @@ export function fetchOntologies(containerPath?: string): Promise<OntologyModel[]
     });
 }
 
-export function getMaxPhiLevel(containerPath: string): Promise<string> {
+export function getMaxPhiLevel(containerPath?: string): Promise<string> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('security', 'getMaxPhiLevel.api', undefined, { container: containerPath }),

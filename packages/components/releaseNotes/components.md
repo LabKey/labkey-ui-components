@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD November 2021
+### version 2.96.0
+*Released*: 23 November 2021
 * Issue 44226: add more packages to the list of externals in webpack.config.js for @labkey/components
 
 ### version 2.95.0

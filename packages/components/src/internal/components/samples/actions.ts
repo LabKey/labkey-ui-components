@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
@@ -31,6 +31,7 @@ import {
     getSelection,
     getStateModelId,
     ISelectRowsResult,
+    Location,
     naturalSortByProperty,
     QueryColumn,
     QueryConfig,
@@ -148,16 +149,16 @@ export function fetchSamples(
     sampleColumn: QueryColumn,
     filterArray: Filter.IFilter[],
     displayValueKey: string,
-    valueKey: string,
+    valueKey: string
 ): Promise<OrderedMap<any, any>> {
     return selectRows({
         schemaName: schemaQuery.schemaName,
         queryName: schemaQuery.queryName,
-        columns: ['name', 'sampleId', 'RowId'],
+        columns: ['RowId', displayValueKey, valueKey],
         filterArray,
     }).then(response => {
         const { key, models, orderedModels } = response;
-        const rows = fromJS(models[key]);
+        const rows = models[key];
         let data = OrderedMap<any, any>();
 
         orderedModels[key].forEach(id => {
@@ -165,8 +166,8 @@ export function fetchSamples(
                 [id, sampleColumn.fieldKey],
                 List([
                     {
-                        displayValue: rows.getIn([id, displayValueKey, 'value']),
-                        value: rows.getIn([id, valueKey, 'value']),
+                        displayValue: caseInsensitive(rows[id], displayValueKey)?.value,
+                        value: caseInsensitive(rows[id], valueKey)?.value,
                     },
                 ])
             );
@@ -182,7 +183,22 @@ export function fetchSamples(
  * @param location The location to search for the selectionKey on
  * @param sampleColumn A QueryColumn used to map data in [[fetchSamples]]
  */
-export function loadSelectedSamples(location: any, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
+export function loadSelectedSamples(location: Location, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
+    // If the "workflowJobId" URL parameter is specified, then fetch the samples associated with the workflow job.
+    if (location?.query?.workflowJobId) {
+        return fetchSamples(
+            SchemaQuery.create('sampleManagement', 'inputSamples'),
+            sampleColumn,
+            [
+                Filter.create('ApplicationType', 'ExperimentRun'),
+                Filter.create('ApplicationRun', location.query.workflowJobId),
+            ],
+            'Name',
+            'SampleId'
+        );
+    }
+
+    // Otherwise, load the samples from the selection.
     return getSelection(location).then(selection => {
         if (selection.resolved && selection.schemaQuery && selection.selected.length) {
             return fetchSamples(
@@ -193,17 +209,9 @@ export function loadSelectedSamples(location: any, sampleColumn: QueryColumn): P
                 sampleColumn.lookup.keyColumn
             );
         }
-    });
-}
 
-export function loadJobSamples(location: any, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
-    return fetchSamples(
-        SchemaQuery.create('sampleManagement', 'inputSamples'),
-        sampleColumn,
-        [Filter.create('ApplicationType', 'ExperimentRun'), Filter.create('ApplicationRun', location.query.workflowJobId)],
-        'name',
-        'sampleId'
-    );
+        return OrderedMap();
+    });
 }
 
 export function getGroupedSampleDomainFields(sampleType: string): Promise<GroupedSampleFields> {

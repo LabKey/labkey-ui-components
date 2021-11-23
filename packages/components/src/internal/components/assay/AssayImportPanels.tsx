@@ -57,7 +57,7 @@ import {
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { loadJobSamples, loadSelectedSamples } from '../samples/actions';
+import { loadSelectedSamples } from '../samples/actions';
 
 import { STATUS_DATA_RETRIEVAL_ERROR } from '../samples/constants';
 
@@ -75,7 +75,6 @@ import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { AssayUploadGridLoader } from './AssayUploadGridLoader';
 import { AssayWizardModel, IAssayUploadOptions } from './AssayWizardModel';
-import { isSampleManagerEnabled } from "../../app/utils";
 
 const BATCH_PROPERTIES_GRID_ID = 'assay-batchdetails';
 
@@ -93,8 +92,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     maxInsertRows?: number;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any;
-    loadSelections?: (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
-    loadJobSamples?:  (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
+    loadSelectedSamples?: (location: Location, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
     showUploadTabs?: boolean;
     showQuerySelectPreviewOptions?: boolean;
     runDataPanelTitle?: string;
@@ -122,8 +120,7 @@ interface State {
 
 export class AssayImportPanelsBody extends Component<Props, State> {
     static defaultProps = {
-        loadSelections: loadSelectedSamples,
-        loadJobSamples: loadJobSamples,
+        loadSelectedSamples,
         showUploadTabs: true,
     };
 
@@ -278,100 +275,77 @@ export class AssayImportPanelsBody extends Component<Props, State> {
                         runProperties: this.getRunPropertiesMap(),
                     }) as AssayWizardModel,
                 }),
-                () => {
-                    this.onInitModelComplete();
-                }
-            );
-        }
-    }
-
-    populateAssayRequest(runProperties): Map<string, any> {
-        // Need to pre-populate the run properties form with assayRequest if it is present on the URL (see issue 38711)
-        const assayRequest = this.props.location?.query.assayRequest;
-
-        if (assayRequest !== undefined) {
-            return runProperties.set('assayRequest', assayRequest);
-        }
-
-        return runProperties;
-    }
-
-    onGetQueryDetailsComplete = (): void => {
-        const { assayDefinition, location, loadJobSamples, loadSelections } = this.props;
-        const sampleColumnData = assayDefinition.getSampleColumn();
-
-        if (sampleColumnData && location) {
-            // If the assay has a sample column look up at Batch, Run, or Result level then we want to retrieve
-            // the currently selected samples so we can pre-populate the fields in the wizard with the selected
-            // samples.
-            // Additionally, we want to pre-populate the fields in the wizard with samples if the job has samples
-            // associated with it, and the assay has a sample column.
-
-            const loadGridWithSamplesFn = (location.query?.workflowJobId && isSampleManagerEnabled()) ? loadJobSamples : loadSelections;
-            loadGridWithSamplesFn(location, sampleColumnData.column).then(samples => {
-                getSampleOperationConfirmationData(
-                    SampleOperation.AddAssayData,
-                    undefined,
-                    samples ? Object.keys(samples.toJS()) : []
-                )
-                    .then(statusConfirmationData => {
-                        const validSamples = samples
-                            ? samples.filter((sample, key) => statusConfirmationData.isIdAllowed(key))
-                            : OrderedMap<any, any>();
-                        // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
-                        let runProperties = this.populateAssayRequest(this.getRunPropertiesMap());
-                        let batchProperties = this.getBatchPropertiesMap();
-                        if (sampleColumnData && validSamples && validSamples.size === 1) {
-                            const { column, domain } = sampleColumnData;
-                            const selectedSample = validSamples.first();
-                            const sampleValue = selectedSample.getIn([column.fieldKey, 0]).value;
-
-                            if (domain === AssayDomainTypes.RUN) {
-                                runProperties = runProperties.set(column.fieldKey, sampleValue);
-                            } else if (domain === AssayDomainTypes.BATCH) {
-                                batchProperties = batchProperties.set(column.fieldKey, sampleValue);
-                            }
-
-                            // Note: we do not do anything with the results domain here if samples are selected because that has to
-                            // be addressed by the AssayGridLoader, which grabs the sample data from the selectedSamples property.
-                        }
-
-                        this.setState(
-                            state => ({
-                                model: state.model.merge({
-                                    isInit: this.isRunPropertiesInit(this.props),
-                                    selectedSamples: validSamples,
-                                    batchProperties,
-                                    runProperties,
-                                }) as AssayWizardModel,
-                                sampleStatusWarning: samples
-                                    ? getOperationNotPermittedMessage(
-                                          SampleOperation.AddAssayData,
-                                          statusConfirmationData
-                                      )
-                                    : undefined,
-                            }),
-                            this.onInitModelComplete
-                        );
-                    })
-                    .catch(reason => {
-                        this.setState({
-                            error: STATUS_DATA_RETRIEVAL_ERROR,
-                        });
-                    });
-            });
-        } else {
-            this.setState(
-                state => ({
-                    model: state.model.merge({
-                        isInit: this.isRunPropertiesInit(this.props),
-                        batchProperties: this.getBatchPropertiesMap(),
-                        runProperties: this.populateAssayRequest(this.getRunPropertiesMap()),
-                    }) as AssayWizardModel,
-                }),
                 this.onInitModelComplete
             );
         }
+    }
+
+    onGetQueryDetailsComplete = async (): Promise<void> => {
+        const { assayDefinition, location } = this.props;
+        const sampleColumnData = assayDefinition.getSampleColumn();
+
+        let sampleStatusWarning: string;
+        const modelUpdates: Partial<AssayWizardModel> = {
+            batchProperties: this.getBatchPropertiesMap(),
+            isInit: this.isRunPropertiesInit(this.props),
+            runProperties: this.getRunPropertiesMap(),
+        };
+
+        // Issue 38711: Need to pre-populate the run properties form with assayRequest if it is present on the URL
+        if (location?.query?.assayRequest !== undefined) {
+            modelUpdates.runProperties = modelUpdates.runProperties.set('assayRequest', location.query.assayRequest);
+        }
+
+        if (sampleColumnData && location) {
+            try {
+                // If the assay has a sample column look up at Batch, Run, or Result level then we want to retrieve
+                // the currently selected samples so we can pre-populate the fields in the wizard with the selected
+                // samples.
+                // Additionally, we want to pre-populate the fields in the wizard with samples if the job has samples
+                // associated with it, and the assay has a sample column.
+                const { column, domain } = sampleColumnData;
+                const samples = await this.props.loadSelectedSamples(location, column);
+
+                const statusConfirmationData = await getSampleOperationConfirmationData(
+                    SampleOperation.AddAssayData,
+                    undefined,
+                    samples.keySeq().toArray()
+                );
+
+                // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
+                const validSamples = samples.filter((_, key) => statusConfirmationData.isIdAllowed(key)).toOrderedMap();
+
+                if (validSamples.size === 1) {
+                    const sampleValue = validSamples.first().getIn([column.fieldKey, 0]).value;
+
+                    if (domain === AssayDomainTypes.RUN) {
+                        modelUpdates.runProperties = modelUpdates.runProperties.set(column.fieldKey, sampleValue);
+                    } else if (domain === AssayDomainTypes.BATCH) {
+                        modelUpdates.batchProperties = modelUpdates.batchProperties.set(column.fieldKey, sampleValue);
+                    }
+
+                    // Note: we do not do anything with the results domain here if samples are selected because that has to
+                    // be addressed by the AssayGridLoader, which grabs the sample data from the selectedSamples property.
+                }
+
+                modelUpdates.selectedSamples = validSamples;
+
+                if (samples.size > 0) {
+                    sampleStatusWarning = getOperationNotPermittedMessage(SampleOperation.AddAssayData, statusConfirmationData);
+                }
+            } catch (e) {
+                this.setState({ error: STATUS_DATA_RETRIEVAL_ERROR });
+                return;
+            }
+        }
+
+        this.setState(
+            state => ({
+                model: state.model.merge(modelUpdates) as AssayWizardModel,
+                sampleStatusWarning,
+            }),
+            this.onInitModelComplete
+        );
     };
 
     onInitModelComplete(): void {

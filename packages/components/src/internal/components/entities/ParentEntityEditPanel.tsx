@@ -166,6 +166,10 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         });
     };
 
+    compactEditDisplay(): boolean {
+        return !this.state.childName;
+    }
+
     hasParents = (): boolean => {
         return this.state.currentParents && !this.state.currentParents.isEmpty();
     };
@@ -316,13 +320,13 @@ export class ParentEntityEditPanel extends Component<Props, State> {
 
     renderParentData = (): ReactNode => {
         const { childContainerPath, parentDataTypes, childNounSingular } = this.props;
-        const { childName, editing } = this.state;
+        const { editing } = this.state;
 
         if (this.hasParents()) {
             return this.state.currentParents
                 .map((choice, index) => (
                     <div key={choice.type ? choice.type.label + '-' + index : 'unknown-' + index}>
-                        {editing && (childName || index > 0) && <hr />}
+                        {editing && (!this.compactEditDisplay() || index > 0) && <hr />}
                         <SingleParentEntityPanel
                             containerPath={childContainerPath}
                             parentDataType={parentDataTypes[0]}
@@ -344,7 +348,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
 
         return (
             <div>
-                {childName && <hr />}
+                {!this.compactEditDisplay() && <hr />}
                 <SingleParentEntityPanel
                     editing={editing}
                     containerPath={childContainerPath}

@@ -118,7 +118,7 @@ interface State {
     sampleStatusWarning: string;
 }
 
-export class AssayImportPanelsBody extends Component<Props, State> {
+class AssayImportPanelsBody extends Component<Props, State> {
     static defaultProps = {
         loadSelectedSamples,
         showUploadTabs: true,

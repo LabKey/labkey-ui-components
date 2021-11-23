@@ -45,8 +45,6 @@ import {
     removeEntityParentType,
 } from '../entities/EntityParentTypeSelectors';
 
-import { isFreezerManagementEnabled } from '../../app/utils';
-
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { getOriginalParentsFromSampleLineage } from './actions';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
@@ -276,9 +274,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     initStorageEditableGrid = (): void => {
-        if (isFreezerManagementEnabled()) {
-            gridInit(this.getStorageEditorQueryGridModel(), true, this);
-        }
+        gridInit(this.getStorageEditorQueryGridModel(), true, this);
     };
 
     getLineageEditorQueryGridModel = (): QueryGridModel => {
@@ -450,7 +446,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     getStorageUpdateData(storageRows: any[]) {
         const { sampleItems, sampleTypeDomainFields, noStorageSamples, selection, getConvertedStorageUpdateData } =
             this.props;
-        if (!isFreezerManagementEnabled() || storageRows.length === 0 || !getConvertedStorageUpdateData) return null;
+        if (storageRows.length === 0 || !getConvertedStorageUpdateData) return null;
 
         const sampleTypeUnit = sampleTypeDomainFields.metricUnit;
 
@@ -629,16 +625,10 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         if (!samplesGrid || !samplesGrid.isLoaded) return <LoadingSpinner />;
 
         const models = [samplesGrid];
-        if (isFreezerManagementEnabled()) {
-            const storageGrid = this.getStorageEditorQueryGridModel();
-            if (!storageGrid || !storageGrid.isLoaded) return <LoadingSpinner />;
 
-            models.push(storageGrid);
-        } else {
-            // add a null to the models array so that the tabIndices line up for other parts of the render,
-            // this can be removed soon once LKB supports freezer management
-            models.push(null);
-        }
+        const storageGrid = this.getStorageEditorQueryGridModel();
+        if (!storageGrid || !storageGrid.isLoaded) return <LoadingSpinner />;
+        models.push(storageGrid);
 
         const lineageGrid = this.getLineageEditorQueryGridModel();
         if (!lineageGrid || !lineageGrid.isLoaded) return <LoadingSpinner />;

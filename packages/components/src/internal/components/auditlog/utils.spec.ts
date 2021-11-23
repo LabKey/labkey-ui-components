@@ -21,10 +21,11 @@ describe('utils', () => {
 
         LABKEY.moduleContext = {
             samplemanagement: {},
+            biologics: {},
         };
         auditQueries = getAuditQueries();
-        expect(auditQueries.length).toBe(12);
-        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(-1);
+        expect(auditQueries.length).toBe(13);
+        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(5);
 
         LABKEY.moduleContext = {};
         auditQueries = getAuditQueries();

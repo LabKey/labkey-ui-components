@@ -26,6 +26,7 @@ import {
     DataClassDataType,
     DomainDetails,
     FindField,
+    getContainerFilter,
     getSelectedData,
     getSelection,
     getStateModelId,
@@ -670,6 +671,7 @@ export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: s
 export function getSampleAliquotRows(sampleId: number | string): Promise<Array<Record<string, any>>> {
     return new Promise((resolve, reject) => {
         Query.executeSql({
+            containerFilter: getContainerFilter(),
             sql:
                 'SELECT m.RowId, m.Name\n' +
                 'FROM exp.materials m \n' +

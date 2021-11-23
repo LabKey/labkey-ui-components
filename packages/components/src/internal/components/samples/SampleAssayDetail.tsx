@@ -13,7 +13,6 @@ import {
     isSampleOperationPermitted,
     LoadingSpinner,
     naturalSortByProperty,
-    QueryConfig,
     QueryModel,
     RequiresModelAndActions,
     SampleAliquotViewSelector,
@@ -155,11 +154,11 @@ export const getSampleAssayDetailEmptyText = (
 };
 
 interface OwnProps {
-    onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => any;
+    onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => void;
     activeSampleAliquotType?: ALIQUOT_FILTER_MODE;
     showImportBtn?: boolean;
     isSourceSampleAssayGrid?: boolean;
-    onTabChange: (tabId: string) => any;
+    onTabChange: (tabId: string) => void;
     activeTabId?: string;
     user: User;
 }
@@ -191,10 +190,10 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
 
     useEffect(() => {
         actions.loadAllModels(true);
-    }, []);
+    }, [actions]);
 
-    const queryModelsWithData = useMemo(() => {
-        const models = {};
+    const { queryModelsWithData, tabOrder } = useMemo(() => {
+        const models: Record<string, QueryModel> = {};
         let targetQueryModels = Object.values(queryModels);
         const isFilteredView =
             showAliquotViewSelector &&
@@ -218,14 +217,14 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
                 models[targetModel.id] = targetModel;
             }
         });
-        return models;
-    }, [allLoaded, queryModels, showAliquotViewSelector, activeSampleAliquotType]);
 
-    const tabOrder = useMemo(() => {
-        return Object.values(queryModelsWithData)
-            .sort(naturalSortByProperty<QueryConfig>('title'))
-            .map((config: QueryConfig) => config.id);
-    }, [queryModelsWithData]);
+        return {
+            queryModelsWithData: models,
+            tabOrder: Object.values(models)
+                .sort(naturalSortByProperty('title'))
+                .map(model => model.id),
+        };
+    }, [activeSampleAliquotType, queryModels, showAliquotViewSelector]);
 
     const getEmptyText = useCallback(
         activeModel => {
@@ -349,7 +348,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
                     message: 'Unable to load sample aliquots. Your session may have expired.',
                 });
             });
-    }, [sampleId, showAliquotViewSelector]);
+    }, [api, sampleId, showAliquotViewSelector]);
 
     const [sampleAssayResultViewConfigs, setSampleAssayResultViewConfigs] =
         useState<SampleAssayResultViewConfig[]>(undefined);
@@ -360,7 +359,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             .catch(() => {
                 setSampleAssayResultViewConfigs([]);
             });
-    }, []);
+    }, [api]);
 
     const loadingDefinitions =
         isLoading(assayModel.definitionsLoadingState) || sampleAssayResultViewConfigs === undefined;

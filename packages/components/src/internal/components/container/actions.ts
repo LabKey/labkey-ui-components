@@ -42,16 +42,18 @@ export async function getContainerUser(
     user: User,
     api: ComponentsAPIWrapper
 ): Promise<ContainerUser> {
-    const containers = await api.security.fetchContainers(
-        {
-            containerPath: containerIdOrPath,
-        },
-        containerIdOrPath
-    );
+    const containers = await api.security.fetchContainers({ containerPath: containerIdOrPath });
 
-    const container = containers[containerIdOrPath];
+    if (containers.length > 0) {
+        const container = containers[0];
 
-    return { container, user: applyPermissions(container, user) };
+        return {
+            container,
+            user: applyPermissions(container, user),
+        };
+    }
+
+    return undefined;
 }
 
 export interface UseContainerUser extends ContainerUser {
@@ -74,20 +76,15 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
             setError(undefined);
             setLoadingState(LoadingState.LOADING);
 
-            let containers: Record<string, Container> = {};
+            let containers = [];
 
             try {
-                containers = await api.security.fetchContainers(
-                    {
-                        containerPath: containerIdOrPath,
-                    },
-                    containerIdOrPath
-                );
+                containers = await api.security.fetchContainers({ containerPath: containerIdOrPath });
             } catch (e) {
                 setError(resolveErrorMessage(e));
             }
 
-            const container_ = containers[containerIdOrPath];
+            const container_ = containers[0];
             setContainer(container_);
 
             if (container_) {

@@ -16,29 +16,35 @@ import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';
 import { ListDesignerPanels } from './ListDesignerPanels';
 
-const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
-const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
-
-const BASE_PROPS = {
-    onComplete: jest.fn(),
-    onCancel: jest.fn(),
-    testMode: true,
-};
-
 beforeAll(() => {
     initUnitTestMocks();
 });
 
 describe('ListDesignerPanel', () => {
-    test('new list', () => {
-        const listDesignerPanels = <ListDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />;
+    const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 
-        const tree = renderer.create(listDesignerPanels).toJSON();
+    function getDefaultProps() {
+        return {
+            initModel: emptyNewModel,
+            onComplete: jest.fn(),
+            onCancel: jest.fn(),
+            testMode: true,
+        };
+    }
+
+    test('new list', () => {
+        const listDesignerPanels = <ListDesignerPanels {...getDefaultProps()} />;
+
+        const tree = renderer.create(listDesignerPanels);
         expect(tree).toMatchSnapshot();
     });
 
     test('existing list', async () => {
-        const listDesignerPanels = mount(<ListDesignerPanels {...BASE_PROPS} initModel={populatedExistingModel} />);
+        const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
+
+        const listDesignerPanels = mount(
+            <ListDesignerPanels {...getDefaultProps()} initModel={populatedExistingModel} />
+        );
         await sleep();
 
         expect(listDesignerPanels).toMatchSnapshot();
@@ -46,7 +52,7 @@ describe('ListDesignerPanel', () => {
     });
 
     test('visible properties', async () => {
-        const listDesignerPanels = mount(<ListDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />);
+        const listDesignerPanels = mount(<ListDesignerPanels {...getDefaultProps()} />);
         await sleep();
 
         expect(listDesignerPanels.find(ListPropertiesPanel)).toHaveLength(1);
@@ -55,7 +61,7 @@ describe('ListDesignerPanel', () => {
     });
 
     test('open fields panel', async () => {
-        const listDesignerPanels = mount(<ListDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />);
+        const listDesignerPanels = mount(<ListDesignerPanels {...getDefaultProps()} />);
         await sleep();
 
         const panelHeader = listDesignerPanels.find('div#domain-header');

@@ -22,7 +22,6 @@ import {
     ConceptModel,
     Container,
     DomainDetails,
-    naturalSort,
     naturalSortByProperty,
     QueryColumn,
     SchemaDetails,

@@ -1,4 +1,5 @@
 import { fromJS } from 'immutable';
+import { getServerContext } from '@labkey/api';
 
 import { ISelectRowsResult, naturalSort } from '../../..';
 
@@ -62,9 +63,9 @@ interface BarChartPlotConfigProps {
 }
 
 export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<string, any> {
+    const vis = getServerContext().vis;
     const {
         renderTo,
-        title,
         data,
         onClick,
         height,
@@ -74,6 +75,11 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
         barFillColors,
         grouped,
     } = props;
+
+    let marginRight,
+        legendPos = 'none',
+        legendData;
+
     const aes = {
         x: 'x',
         y: 'count',
@@ -95,6 +101,7 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
 
         scales['color'] = {
             scaleType: 'discrete',
+            sortFn: vis.discreteSortFn,
             scale: function (key) {
                 return barFillColors[key] || defaultFillColor;
             },
@@ -105,6 +112,17 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
         aes['x'] = 'xSub';
         aes['xSub'] = 'x';
         aes['color'] = 'x';
+
+        scales['xSub'] = {
+            scaleType: 'discrete',
+            sortFn: vis.discreteSortFn,
+        };
+
+        marginRight = Math.max(...Object.keys(barFillColors).map(text => text.length)) > 10 ? undefined : 125;
+        legendPos = 'right';
+        legendData = Object.keys(barFillColors).map(text => {
+            return { text, color: barFillColors[text] };
+        });
     }
 
     return {
@@ -112,8 +130,11 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
         rendererType: 'd3',
         width,
         height,
+        margins: {
+            top: 50,
+            right: marginRight,
+        },
         labels: {
-            main: { value: title, visibility: 'hidden' },
             yLeft: { value: 'Count' },
         },
         options: {
@@ -121,17 +142,16 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
             fill: defaultFillColor,
             showValues: true,
             stacked: grouped,
-            // TODO
             clickFn: onClick,
-            // TODO
             hoverFn: function (row) {
-                return row.label + '\nClick to view details';
+                return (grouped ? row.subLabel + '\n' : '')
+                    + row.label + '\n'
+                    + 'Count: ' + row.value + '\n'
+                    + 'Click to view details';
             },
         },
-        legendPos: !grouped ? 'none' : 'right',
-        legendData: !grouped ? undefined : Object.keys(barFillColors).map(text => {
-            return { text, color: barFillColors[text] };
-        }),
+        legendPos,
+        legendData,
         aes,
         scales,
         data,

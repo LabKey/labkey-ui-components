@@ -51,8 +51,9 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
     },
     SampleStatuses: {
         charts: [
-            { name: 'TotalCount', label: 'All' },
-            { name: 'WithStatusCount', label: 'Only Samples with a Status' },
+            { name: 'TotalCount', label: 'All Statuses' },
+            { name: 'WithStatusCount', label: 'With a Status' },
+            { name: 'NoStatusCount', label: 'No Status' },
         ],
         colorPath: ['Color', 'value'],
         groupPath: ['Status', 'value'],

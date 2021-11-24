@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 
-import { caseInsensitive, DefaultRenderer, QueryColumn } from '../../..';
+import { DefaultRenderer, getSampleStatus, QueryColumn, SampleStatusTag } from '../../..';
 import { isSampleStatusEnabled } from '../../app/utils';
 
 import { SAMPLE_STATE_COLUMN_NAME } from './constants';
@@ -51,7 +51,14 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
                         {this.renderDetailRow('Aliquoted by', createdBy, 'aliquotedby')}
                         {this.renderDetailRow('Aliquot date', created, 'aliquoteddate')}
                         {this.renderDetailRow('Aliquot description', description, 'aliquoteddescription')}
-                        {isSampleStatusEnabled() && this.renderDetailRow('Aliquot status', status, 'aliquotedstatus')}
+                        {isSampleStatusEnabled() && (
+                            <tr key="aliquotedstatus">
+                                <td>Aliquot status</td>
+                                <td>
+                                    <SampleStatusTag status={getSampleStatus(newRow.toJS())}/>
+                                </td>
+                            </tr>
+                        )}
                         {aliquotHeaderDisplayColumns.map((aliquotCol, key) => {
                             return this.renderDetailRow(
                                 aliquotCol.caption,

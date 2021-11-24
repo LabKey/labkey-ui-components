@@ -466,7 +466,7 @@ export function getEntityTypeData(
             getEntityTypeOptions(entityDataType),
             // get all the parent schemaQuery data
             getChosenParentData(model, parentSchemaQueries, allowParents, isItemSamples),
-            ...parentSchemaQueries.map(getEntityTypeOptions).toArray(),
+            ...parentSchemaQueries.map(edt => getEntityTypeOptions(edt)).toArray(),
         ];
 
         let partial: Partial<EntityIdCreationModel> = {};

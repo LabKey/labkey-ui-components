@@ -250,6 +250,30 @@
   border-radius: 0;
 }
 
+.container-nav {
+    padding: 10px 0 8px 10px;
+    color: #9d9d9d;
+    position: relative;
+}
+.container-nav:before {
+    border-left: 1px solid $navbar-border-color;
+    content: '';
+    height: 34px;
+    margin-top: -17px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+}
+.container-nav__name {
+    float: right;
+    font-size: small;
+    margin-left: 4px;
+    max-width: 165px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .navbar-inverse {
   min-height: 15px;
 
@@ -273,10 +297,10 @@
       }
 
       &:after {
-        border-left: 1px solid #cbccce;
+        border-left: 1px solid $navbar-border-color;
         content: '';
         height: 34px;
-        margin-top: -16px;
+        margin-top: -15px;
         position: absolute;
         right: 0;
         top: 50%;
@@ -288,6 +312,7 @@
     display: inline-block;
     overflow-x: hidden;
     white-space: nowrap;
+    flex: 1;
 
     .navbar-nav {
       margin: 0;
@@ -317,10 +342,10 @@
     display: inline-flex;
 
     &:before {
-      border-left: 1px solid #cbccce;
+      border-left: 1px solid $navbar-border-color;
       content: '';
       height: 34px;
-      margin-top: -18px;
+      margin-top: -17px;
       position: absolute;
       left: 0;
       top: 50%;

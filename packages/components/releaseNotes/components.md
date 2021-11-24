@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.98.0
+*Released*: 24 November 2021
+* Add ExtendableAppContext
+  * This allows downstream apps to extend AppContext and add their own attributes
+* Add NavigationSettings to AppContext
+* Add AppContexts component
+* Refactor SubNav
+  * Renders the current container if configured in NavigationSettings
+  * Re-written to be an FC
+  * No longer depends on jQuery
+
 ### version 2.97.0
 *Released*: 23 November 2021
 * Support auto-populating sample grid rows when importing run for a Job's Task's Assay

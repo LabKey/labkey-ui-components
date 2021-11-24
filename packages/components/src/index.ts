@@ -302,6 +302,7 @@ import { SampleAliquotsSummary } from './internal/components/samples/SampleAliqu
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
+import { AppContexts } from './internal/AppContexts';
 
 import {
     filterSampleRowsForOperation,
@@ -1207,6 +1208,7 @@ export {
     User,
     AppContextProvider,
     useAppContext,
+    AppContexts,
     ServerContextProvider,
     ServerContextConsumer,
     useServerContext,
@@ -1363,7 +1365,7 @@ export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
 export type { AnnouncementModel, ThreadActions } from './internal/announcements/model';
 export type { AnnouncementsAPIWrapper } from './internal/announcements/APIWrapper';
-export type { AppContext } from './internal/AppContext';
+export type { AppContext, ExtendableAppContext } from './internal/AppContext';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { SamplesEditableGridProps } from './internal/components/samples/SamplesEditableGrid';

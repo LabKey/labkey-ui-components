@@ -118,7 +118,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
             const chart = this.getSelectedChartGroupCharts()[this.state.currentChart];
 
             // apply the created date filter if the chart definition has one
-            let url = getAppURL(row);
+            let url = getAppURL(row, evt);
 
             if (chart.filter !== undefined) {
                 const dt = moment().add(chart.filter, 'days').format(getDateFormat().toUpperCase());

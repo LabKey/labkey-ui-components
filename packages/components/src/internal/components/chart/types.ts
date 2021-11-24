@@ -23,7 +23,7 @@ export interface ChartConfig {
     createText?: string;
     createURL?: () => AppURL;
     emptyStateMsg?: ReactNode;
-    getAppURL?: (data: ChartData) => AppURL;
+    getAppURL?: (data: ChartData, evt?: any) => AppURL;
     itemCountFilters?: Filter.IFilter[];
     itemCountSQ: SchemaQuery;
     key: string;

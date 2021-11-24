@@ -59,13 +59,16 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         groupPath: ['Status', 'value'],
         createText: 'Create Samples',
         createURL: () => App.NEW_SAMPLES_HREF,
-        getAppURL: row => {
-            const url = AppURL.create(SAMPLES_KEY, row.subLabel);
-            if (row.label !== 'No Status') {
-                return url.addFilters(Filter.create('SampleState/Label', row.label));
-            } else {
-                return url.addFilters(Filter.create('SampleState/Label', null, Filter.Types.ISBLANK));
+        getAppURL: (row, evt) => {
+            let url = AppURL.create(SAMPLES_KEY, row.subLabel);
+            if (evt.target.tagName === 'rect') {
+                if (row.label !== 'No Status') {
+                    url = url.addFilters(Filter.create('SampleState/Label', row.label));
+                } else {
+                    url = url.addFilters(Filter.create('SampleState/Label', null, Filter.Types.ISBLANK));
+                }
             }
+            return url;
         },
         itemCountSQ: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
         key: SAMPLES_KEY,

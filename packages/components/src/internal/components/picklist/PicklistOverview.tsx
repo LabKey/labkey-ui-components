@@ -288,7 +288,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 id: gridId,
                 title: 'All Samples',
                 schemaQuery: SchemaQuery.create(SCHEMAS.PICKLIST_TABLES.SCHEMA, picklist.name),
-                // For picklists, we get a sample-related things via a lookup through SampleID.
+                // For picklists, we get sample-related things via a lookup through SampleID.
                 requiredColumns: [
                     'Created',
                     'SampleID/AliquotedFromLsid',

@@ -18,7 +18,7 @@ export const OntologyConceptPicker: FC<Props> = memo((props: Props) => {
     const { ontologyId, conceptSubtree, fieldLabel, onConceptSelection, fieldValue = '' } = props;
     const [concept, setConcept] = useState<ConceptModel>();
     const [subtreePath, setSubtreePath] = useState<PathModel>();
-    const [isLoadingSubtreePath, setIsLoadingSubtreePath] = useState<boolean>(conceptSubtree !== undefined);
+    const [isLoadingSubtreePath, setIsLoadingSubtreePath] = useState<boolean>(!!conceptSubtree);
     const [showPicker, setShowPicker] = useState<boolean>(false);
 
     useEffect(() => {

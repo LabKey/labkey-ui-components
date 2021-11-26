@@ -122,15 +122,15 @@ export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): O
     if (columns) {
         const columnRenderers: Map<string, any> = getQueryColumnRenderers();
 
-        return columns.map(col => {
+        return columns.map(queryCol => {
             let node = DefaultRenderer;
-            if (col && col.columnRenderer && columnRenderers.has(col.columnRenderer.toLowerCase())) {
-                node = columnRenderers.get(col.columnRenderer.toLowerCase());
+            if (queryCol && queryCol.columnRenderer && columnRenderers.has(queryCol.columnRenderer.toLowerCase())) {
+                node = columnRenderers.get(queryCol.columnRenderer.toLowerCase());
             }
 
             // TODO: Just generate one function per type
-            return col.set('cell', data => {
-                return React.createElement(node, { data, col });
+            return queryCol.set('cell', (data, row, col, rowIndex, columnIndex) => {
+                return React.createElement(node, { data, row, col: queryCol, rowIndex, columnIndex });
             });
         }) as OrderedMap<string, QueryColumn>;
     }

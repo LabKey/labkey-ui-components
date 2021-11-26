@@ -17,6 +17,7 @@ import {
     queryGridInvalidate,
     RequiresModelAndActions,
     resolveErrorMessage,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
     SamplesEditableGridProps,
     SamplesTabbedGridPanel,
     SchemaQuery,
@@ -28,7 +29,7 @@ import {
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { PUBLIC_PICKLIST_CATEGORY, PRIVATE_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 import { deletePicklists, updatePicklist } from './actions';
 import { Picklist, PICKLIST_SAMPLES_FILTER } from './models';
@@ -36,7 +37,7 @@ import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistEditModal } from './PicklistEditModal';
 import { PicklistGridButtons } from './PicklistGridButtons';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-import { ALIQUOTED_FROM_COL } from "../samples/constants";
+import { ALIQUOTED_FROM_COL } from '../samples/constants';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
@@ -287,7 +288,12 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 id: gridId,
                 title: 'All Samples',
                 schemaQuery: SchemaQuery.create(SCHEMAS.PICKLIST_TABLES.SCHEMA, picklist.name),
-                requiredColumns: ['Created', 'SampleID/AliquotedFromLsid', 'AliquotedFromLSID'],
+                // For picklists, we get sample-related things via a lookup through SampleID.
+                requiredColumns: [
+                    'Created',
+                    'SampleID/AliquotedFromLsid',
+                    ...SAMPLE_STATUS_REQUIRED_COLUMNS.map(name => "SampleID/" + name)
+                ],
             };
 
             // add a queryConfig for each distinct sample type of the picklist samples, with an filter clause
@@ -298,6 +304,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                     id,
                     title: sampleType,
                     schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
+                    requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
                     baseFilters: [Filter.create('RowId', picklist.listId, PICKLIST_SAMPLES_FILTER)],
                 };
             });

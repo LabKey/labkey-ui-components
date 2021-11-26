@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD November 2021
 * OntologyConceptPicker fix to wait for subtreePath model to load before showing find link
 
+### version 2.99.0
+*Released*: 26 November 2021
+* Add `SampleStatusRenderer` for use in details display and grid display
+  *  Update call to cell renderers to pass through all properties
+
 ### version 2.98.0
 *Released*: 24 November 2021
 * Add ExtendableAppContext

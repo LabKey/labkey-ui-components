@@ -214,6 +214,7 @@ import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
+import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
 import { AppendUnits } from './internal/renderers/AppendUnits';
 import { AttachmentCard } from './internal/renderers/AttachmentCard';
 import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
@@ -507,6 +508,7 @@ import {
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
     SampleOperation,
     SampleStateType,
     UNIQUE_ID_FIND_FIELD,
@@ -797,6 +799,7 @@ export {
     LabelColorRenderer,
     MultiValueRenderer,
     StorageStatusRenderer,
+    SampleStatusRenderer,
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
@@ -888,6 +891,7 @@ export {
     SampleStatusTag,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
     FIND_BY_IDS_QUERY_PARAM,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_DATA_EXPORT_CONFIG,

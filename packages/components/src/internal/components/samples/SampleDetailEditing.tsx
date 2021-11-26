@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { List, fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import { Alert, Panel } from 'react-bootstrap';
 
 import { AuditBehaviorTypes, Filter } from '@labkey/api';
@@ -14,6 +14,7 @@ import {
     LoadingPage,
     QueryConfig,
     QueryModel,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
     SampleAliquotDetailHeader,
     SchemaQuery,
     SCHEMAS,
@@ -22,7 +23,7 @@ import {
 import { DetailRenderer } from '../forms/detail/DetailDisplay';
 
 import { GroupedSampleFields } from './models';
-import { GroupedSampleDisplayColumns, getGroupedSampleDisplayColumns, getGroupedSampleDomainFields } from './actions';
+import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields, GroupedSampleDisplayColumns } from './actions';
 import { IS_ALIQUOT_COL } from './constants';
 
 interface Props {
@@ -116,7 +117,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         return {
             schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
             baseFilters: [Filter.create('lsid', rootLsid)],
-            requiredColumns: ['Name', 'Description'],
+            requiredColumns: ['Name', 'Description', ...SAMPLE_STATUS_REQUIRED_COLUMNS],
             omittedColumns: [IS_ALIQUOT_COL],
         };
     };

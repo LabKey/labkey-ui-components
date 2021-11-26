@@ -16,12 +16,13 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { PermissionTypes } from '@labkey/api';
 
-import { hasAllPermissions, SVGIcon, User } from '../../..';
+import { EditInlineField, hasAllPermissions, SVGIcon, User } from '../../..';
 
 import { FieldEditorOverlay, FieldEditorOverlayProps } from './FieldEditorOverlay';
 
 export interface PageDetailHeaderProps {
     description?: ReactNode;
+    onDescriptionChange?: (name: string, newValue: any) => void;
     fieldTriggerProps?: FieldEditorOverlayProps;
     iconAltText?: string;
     iconDir?: string;
@@ -48,13 +49,14 @@ export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
             iconDir,
             iconSrc,
             leftColumns,
+            onDescriptionChange,
             subTitle,
             title,
             user,
         } = this.props;
         const hasIcon = iconUrl || iconSrc;
 
-        if (fieldTriggerProps && !user) {
+        if ((onDescriptionChange || fieldTriggerProps) && !user) {
             throw Error('PageDetailHeader: If supplying "fieldTriggerProps", then "user" prop must be specified.');
         }
 
@@ -78,7 +80,19 @@ export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
                     <div className={hasIcon ? 'detail__header-icon--body-container' : ''}>
                         <h2 className="no-margin-top detail__header--name">{title}</h2>
                         {subTitle && <h4 className="test-loc-detail-subtitle">{subTitle}</h4>}
-                        {description && <span className="detail__header--desc">{description}</span>}
+                        {!onDescriptionChange && !fieldTriggerProps && <span className="detail__header--desc">{description}</span>}
+                        {onDescriptionChange &&
+                            <EditInlineField
+                                allowEdit={hasAllPermissions(user, [PermissionTypes.Update])}
+                                className={""} // don't want the padding
+                                label="Description"
+                                name="description"
+                                onChange={onDescriptionChange}
+                                placeholder="Description"
+                                type="textarea"
+                                value={description}
+                            />
+                        }
                         {fieldTriggerProps && (
                             <div className="text__truncate">
                                 <FieldEditorOverlay

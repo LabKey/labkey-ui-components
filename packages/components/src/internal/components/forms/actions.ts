@@ -18,15 +18,18 @@ import { fromJS, List, Map } from 'immutable';
 import { useCallback, useEffect, useState } from 'react';
 
 import {
+    caseInsensitive,
     getQueryDetails,
     ISelectRowsResult,
     LoadingState,
     naturalSort,
-    SelectInputOption,
     QueryInfo,
+    QueryModel,
     QuerySelectOwnProps,
     searchRows,
+    SelectInputOption,
     selectRows,
+    updateRows,
 } from '../../..';
 
 import { getUsers, setUsers } from '../../global';
@@ -426,4 +429,17 @@ export function useUsersWithPermissions(
     }, [load]);
 
     return { error, loadingState, users };
+}
+
+export function onSingleFieldEdit(model: QueryModel, name: string, value: any): Promise<any> {
+    const options: any = {
+        schemaQuery: model.schemaQuery,
+        rows: [
+            {
+                rowId: caseInsensitive(model.getRow(), 'rowId')?.value,
+                [name]: value,
+            },
+        ],
+    };
+    return updateRows(options);
 }

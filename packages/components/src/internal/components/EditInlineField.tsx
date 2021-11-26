@@ -11,6 +11,7 @@ import { useServerContext } from './base/ServerContext';
 interface Props {
     allowBlank?: boolean;
     allowEdit?: boolean;
+    className?: string;
     emptyText?: string;
     label?: string;
     name: string;
@@ -21,7 +22,7 @@ interface Props {
 }
 
 export const EditInlineField: FC<Props> = memo(props => {
-    const { allowBlank, allowEdit, emptyText, label, name, onChange, placeholder, type, value } = props;
+    const { allowBlank, allowEdit, className, emptyText, label, name, onChange, placeholder, type, value } = props;
     const { container } = useServerContext();
     const dateFormat = getDateFormat(container);
     const isDate = type === 'date';
@@ -114,7 +115,7 @@ export const EditInlineField: FC<Props> = memo(props => {
     // TODO: Pass through the dateFormat to the <DateInput/> so the format is consistent between viewing and editing.
     // See note on <DateInput/> regarding supporting date formats.
     return (
-        <div className="edit-inline-field">
+        <div className={className}>
             {state.editing && isDate && (
                 <DateInput
                     autoFocus
@@ -183,3 +184,7 @@ export const EditInlineField: FC<Props> = memo(props => {
         </div>
     );
 });
+
+EditInlineField.defaultProps = {
+    className: "edit-inline-field"
+}

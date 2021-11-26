@@ -109,6 +109,8 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
     }
 
     if (grouped) {
+        // in the stacked bar chart case, we actually will end up using the xSub variable for the x-axis categories
+        // and the x variable for the secondary category and legend (i.e. the bar chart stacked segments)
         aes['x'] = 'xSub';
         aes['xSub'] = 'x';
         aes['color'] = 'x';

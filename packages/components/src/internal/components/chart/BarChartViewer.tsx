@@ -89,8 +89,8 @@ export class BarChartViewer extends PureComponent<Props, State> {
                 const { itemCountFilters, itemCountSQ } = chartConfigs[currentGroup];
                 const itemCount = await fetchItemCount(itemCountSQ, itemCountFilters);
 
-                const { queryName, schemaName } = this.getSelectedChartGroup();
-                const response = await selectRows({ schemaName, queryName });
+                const { queryName, schemaName, sort } = this.getSelectedChartGroup();
+                const response = await selectRows({ schemaName, queryName, sort });
 
                 this.setState(state => ({
                     itemCounts: { ...state.itemCounts, [currentGroup]: itemCount },

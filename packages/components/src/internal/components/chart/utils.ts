@@ -122,7 +122,7 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
 
         marginRight = Math.max(...Object.keys(barFillColors).map(text => text.length)) > 10 ? undefined : 125;
         legendPos = 'right';
-        legendData = Object.keys(barFillColors).map(text => {
+        legendData = Object.keys(barFillColors).sort().map(text => {
             return { text, color: barFillColors[text] };
         });
     }

@@ -75,5 +75,6 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         label: 'Sample Count by Status',
         queryName: 'SampleStatusCounts',
         schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+        sort: '-Status,Name',
     },
 };

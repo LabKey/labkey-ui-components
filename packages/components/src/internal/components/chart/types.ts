@@ -31,4 +31,5 @@ export interface ChartConfig {
     namePath?: string[];
     queryName: string;
     schemaName: string;
+    sort?: string;
 }

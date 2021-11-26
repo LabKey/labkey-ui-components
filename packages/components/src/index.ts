@@ -214,6 +214,7 @@ import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
+import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
 import { AppendUnits } from './internal/renderers/AppendUnits';
 import { AttachmentCard } from './internal/renderers/AttachmentCard';
 import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
@@ -302,6 +303,7 @@ import { SampleAliquotsSummary } from './internal/components/samples/SampleAliqu
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
+import { AppContexts } from './internal/AppContexts';
 
 import {
     filterSampleRowsForOperation,
@@ -506,6 +508,7 @@ import {
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
     SampleOperation,
     SampleStateType,
     UNIQUE_ID_FIND_FIELD,
@@ -796,6 +799,7 @@ export {
     LabelColorRenderer,
     MultiValueRenderer,
     StorageStatusRenderer,
+    SampleStatusRenderer,
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
@@ -887,6 +891,7 @@ export {
     SampleStatusTag,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
     FIND_BY_IDS_QUERY_PARAM,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_DATA_EXPORT_CONFIG,
@@ -1207,6 +1212,7 @@ export {
     User,
     AppContextProvider,
     useAppContext,
+    AppContexts,
     ServerContextProvider,
     ServerContextConsumer,
     useServerContext,
@@ -1363,7 +1369,7 @@ export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
 export type { AnnouncementModel, ThreadActions } from './internal/announcements/model';
 export type { AnnouncementsAPIWrapper } from './internal/announcements/APIWrapper';
-export type { AppContext } from './internal/AppContext';
+export type { AppContext, ExtendableAppContext } from './internal/AppContext';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { SamplesEditableGridProps } from './internal/components/samples/SamplesEditableGrid';

@@ -66,14 +66,14 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
 }
 
 export function getSampleStatusType(row: any): SampleStateType {
-    return caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value;
+    return caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value || caseInsensitive(row, "SampleID/" + SAMPLE_STATE_TYPE_COLUMN_NAME)?.value;
 }
 
 export function getSampleStatus(row: any): SampleStatus {
     return {
-        label: caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME)?.displayValue,
+        label: caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME)?.displayValue || caseInsensitive(row, "SampleID/" + SAMPLE_STATE_COLUMN_NAME)?.displayValue,
         statusType: getSampleStatusType(row),
-        description: caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value,
+        description: caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value || caseInsensitive(row, "SampleID/" + SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value,
     };
 }
 

@@ -31,7 +31,7 @@ export const SampleStatusTag: FC<Props> = memo(props => {
     ) : (
         <span>{label}</span>
     );
-    const isAvailable = statusType === SampleStateType.Available;
+    const isAvailable = statusType === SampleStateType.Available || !statusType;
 
     return (
         <>

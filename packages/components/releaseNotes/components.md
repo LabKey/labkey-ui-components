@@ -12,6 +12,30 @@ Components, models, actions, and utility functions for LabKey applications and p
     * update assay import sample status message to use warning instead of info alert display
     * SamplesBulkUpdateForm update to only show aliquot-editable fields when any selected samples are aliquots
 
+### version 2.99.1
+*Released*: 26 November 2021
+* OntologyConceptPicker fix to wait for subtreePath model to load before showing find link
+
+### version 2.99.0
+*Released*: 26 November 2021
+* Add `SampleStatusRenderer` for use in details display and grid display
+  *  Update call to cell renderers to pass through all properties
+
+### version 2.98.0
+*Released*: 24 November 2021
+* Add ExtendableAppContext
+  * This allows downstream apps to extend AppContext and add their own attributes
+* Add NavigationSettings to AppContext
+* Add AppContexts component
+* Refactor SubNav
+  * Renders the current container if configured in NavigationSettings
+  * Re-written to be an FC
+  * No longer depends on jQuery
+
+### version 2.97.0
+*Released*: 23 November 2021
+* Support auto-populating sample grid rows when importing run for a Job's Task's Assay
+
 ### version 2.96.0
 *Released*: 23 November 2021
 * Issue 44226: add more packages to the list of externals in webpack.config.js for @labkey/components

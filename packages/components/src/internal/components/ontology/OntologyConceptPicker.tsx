@@ -18,6 +18,7 @@ export const OntologyConceptPicker: FC<Props> = memo((props: Props) => {
     const { ontologyId, conceptSubtree, fieldLabel, onConceptSelection, fieldValue = '' } = props;
     const [concept, setConcept] = useState<ConceptModel>();
     const [subtreePath, setSubtreePath] = useState<PathModel>();
+    const [isLoadingSubtreePath, setIsLoadingSubtreePath] = useState<boolean>(!!conceptSubtree);
     const [showPicker, setShowPicker] = useState<boolean>(false);
 
     useEffect(() => {
@@ -35,7 +36,14 @@ export const OntologyConceptPicker: FC<Props> = memo((props: Props) => {
 
     useEffect(() => {
         if (conceptSubtree) {
-            fetchPathModel(conceptSubtree).then(setSubtreePath);
+            fetchPathModel(conceptSubtree)
+                .then(pathModel => {
+                    setSubtreePath(pathModel);
+                    setIsLoadingSubtreePath(false);
+                })
+                .catch(() => {
+                    setIsLoadingSubtreePath(false);
+                });
         }
     }, [conceptSubtree]);
 
@@ -54,6 +62,10 @@ export const OntologyConceptPicker: FC<Props> = memo((props: Props) => {
 
     const label = concept?.label ?? null;
     const title = `Find ${fieldLabel} By Tree`;
+
+    if (isLoadingSubtreePath) {
+        return null;
+    }
 
     return (
         <>

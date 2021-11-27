@@ -24,7 +24,7 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
             CHART_SELECTORS.Today,
         ],
         // TODO: Use redirect AppURL.create('assays', row.id, 'overview')
-        getAppURL: row => AppURL.create(ASSAYS_KEY, 'general', row.label, 'overview'),
+        getAppURL: row => AppURL.create(ASSAYS_KEY, 'general', row.x, 'overview'),
         itemCountSQ: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
         key: ASSAYS_KEY,
         label: 'Assay Run Count by Assay',
@@ -42,7 +42,7 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         colorPath: ['Color', 'value'],
         createText: 'Create Samples',
         createURL: () => App.NEW_SAMPLES_HREF,
-        getAppURL: row => AppURL.create(SAMPLES_KEY, row.label),
+        getAppURL: row => AppURL.create(SAMPLES_KEY, row.x),
         itemCountSQ: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
         key: SAMPLES_KEY,
         label: 'Sample Count by Sample Type',
@@ -60,10 +60,10 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         createText: 'Create Samples',
         createURL: () => App.NEW_SAMPLES_HREF,
         getAppURL: (row, evt) => {
-            let url = AppURL.create(SAMPLES_KEY, row.subLabel);
+            let url = AppURL.create(SAMPLES_KEY, row.xSub);
             if (evt.target.tagName === 'rect') {
-                if (row.label !== 'No Status') {
-                    url = url.addFilters(Filter.create('SampleState/Label', row.label));
+                if (row.x !== 'No Status') {
+                    url = url.addFilters(Filter.create('SampleState/Label', row.x));
                 } else {
                     url = url.addFilters(Filter.create('SampleState/Label', null, Filter.Types.ISBLANK));
                 }

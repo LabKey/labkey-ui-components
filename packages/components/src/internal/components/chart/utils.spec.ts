@@ -3,6 +3,10 @@ import AssayRunCountsRowsJson from '../../../test/data/AssayRunCounts-getQueryRo
 
 import { getBarChartPlotConfig } from './utils';
 
+beforeEach(() => {
+    LABKEY.vis = {};
+});
+
 describe('processChartData', () => {
     const response = {
         key: '0',
@@ -12,9 +16,9 @@ describe('processChartData', () => {
     test('with data', () => {
         const { data } = processChartData(response, { countPath: ['TotalCount', 'value'] });
         expect(data.length).toBe(4);
-        expect(data[0].label).toBe('GPAT 1');
+        expect(data[0].x).toBe('GPAT 1');
         expect(data[0].count).toBe(6);
-        expect(data[3].label).toBe('GPAT 25 with a longer name then the rest');
+        expect(data[3].x).toBe('GPAT 25 with a longer name then the rest');
         expect(data[3].count).toBe(1);
     });
 
@@ -29,7 +33,7 @@ describe('processChartData', () => {
             namePath: ['RowId', 'value'],
         });
         expect(data.length).toBe(4);
-        expect(data[0].label).toBe(5051);
+        expect(data[0].x).toBe(5051);
     });
 
     test('barFillColors without colorPath', () => {

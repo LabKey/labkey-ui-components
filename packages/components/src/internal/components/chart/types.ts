@@ -5,8 +5,8 @@ import { AppURL, SchemaQuery } from '../../..';
 
 export interface ChartData {
     count: number;
-    label: string;
-    subLabel?: string;
+    x: string;
+    xSub?: string;
     id?: string | number;
 }
 

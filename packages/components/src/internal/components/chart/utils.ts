@@ -115,6 +115,13 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
         aes['xSub'] = 'x';
         aes['color'] = 'x';
 
+        scales['x'] = {
+            scaleType: 'discrete',
+            sortFn: function (a, b) {
+                // reverse the sorting so that the stacked bar chart segments match the legend
+                return vis.discreteSortFn(b, a);
+            },
+        };
         scales['xSub'] = {
             scaleType: 'discrete',
             sortFn: vis.discreteSortFn,

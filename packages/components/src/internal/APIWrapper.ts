@@ -4,19 +4,23 @@ import {
     PicklistServerAPIWrapper,
     getPicklistTestAPIWrapper,
 } from './components/picklist/APIWrapper';
-import { getSecurityTestAPIWrapper, SecurityAPI, SecurityAPIWrapper } from './components/security/SecurityAPI';
+import {
+    getSecurityTestAPIWrapper,
+    SecurityAPIWrapper,
+    ServerSecurityAPIWrapper,
+} from './components/security/APIWrapper';
 
 export interface ComponentsAPIWrapper {
     picklist: PicklistAPIWrapper;
     samples: SamplesAPIWrapper;
-    security: SecurityAPI;
+    security: SecurityAPIWrapper;
 }
 
 export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
     return {
         picklist: new PicklistServerAPIWrapper(),
         samples: new SamplesServerAPIWrapper(),
-        security: new SecurityAPIWrapper(),
+        security: new ServerSecurityAPIWrapper(),
     };
 }
 

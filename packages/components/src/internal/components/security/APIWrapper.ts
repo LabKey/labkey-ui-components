@@ -4,11 +4,11 @@ import { Container } from '../base/models/Container';
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
 
-export interface SecurityAPI {
+export interface SecurityAPIWrapper {
     fetchContainers: (options: FetchContainerOptions) => Promise<Container[]>;
 }
 
-export class SecurityAPIWrapper implements SecurityAPI {
+export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
     fetchContainers = (options: FetchContainerOptions): Promise<Container[]> => {
         return new Promise((resolve, reject) => {
             Security.getContainers({
@@ -37,8 +37,8 @@ function recurseContainerHierarchy(data: Security.ContainerHierarchy, container:
  */
 export function getSecurityTestAPIWrapper(
     mockFn = (): any => () => {},
-    overrides: Partial<SecurityAPI> = {}
-): SecurityAPI {
+    overrides: Partial<SecurityAPIWrapper> = {}
+): SecurityAPIWrapper {
     return {
         fetchContainers: mockFn(),
         ...overrides,

@@ -79,9 +79,7 @@ export interface IFieldChange {
     value: any;
 }
 
-export interface DomainOnChange {
-    (changes: List<IFieldChange>, index?: number, expand?: boolean): any;
-}
+export type DomainOnChange = (changes: List<IFieldChange>, index?: number, expand?: boolean) => void;
 
 export interface IBannerMessage {
     message: string;

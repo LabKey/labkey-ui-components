@@ -63,37 +63,37 @@ import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
 
 export interface DomainRowProps {
-    domainContainerPath?: string;
-    domainId?: number;
-    helpNoun: string;
-    expanded: boolean;
-    dragging: boolean;
-    expandTransition: number;
-    field: DomainField;
-    index: number;
-    maxPhiLevel: string;
+    appPropertiesOnly?: boolean;
     availableTypes: List<PropDescType>;
-    onChange: DomainOnChange;
-    fieldError?: DomainFieldError;
-    onDelete: (any) => void;
-    onExpand: (index?: number) => void;
-    showDefaultValueSettings: boolean;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
-    appPropertiesOnly?: boolean;
-    domainIndex: number;
-    successBsStyle?: string;
+    domainContainerPath?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
-    getDomainFields?: () => List<DomainField>;
+    domainId?: number;
+    domainIndex: number;
+    dragging: boolean;
+    expanded: boolean;
+    expandTransition: number;
+    field: DomainField;
     fieldDetailsInfo?: Record<string, string>;
+    fieldError?: DomainFieldError;
+    getDomainFields?: () => List<DomainField>;
+    helpNoun: string;
+    index: number;
     isDragDisabled?: boolean;
+    maxPhiLevel: string;
+    onChange: DomainOnChange;
+    onDelete: (index?: number) => void;
+    onExpand: (index?: number) => void;
+    showDefaultValueSettings: boolean;
+    successBsStyle?: string;
 }
 
 interface DomainRowState {
-    showAdv: boolean;
     closing: boolean;
-    showingModal: boolean;
     isDragDisabled: boolean;
+    showAdv: boolean;
+    showingModal: boolean;
 }
 
 /**
@@ -266,7 +266,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             });
         }
 
-        this.props.onChange(nameAndErrorList, index, false);
+        this.props.onChange(nameAndErrorList.asImmutable(), index, false);
     };
 
     onDataTypeChange = (evt: any): void => {
@@ -284,11 +284,11 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
     };
 
     onDelete = (): void => {
-        this.props.onDelete?.(this.props.index);
+        this.props.onDelete(this.props.index);
     };
 
     onExpand = (): void => {
-        this.props.onExpand?.(this.props.index);
+        this.props.onExpand(this.props.index);
     };
 
     onCollapsed = (): void => {

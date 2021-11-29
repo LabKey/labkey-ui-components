@@ -111,7 +111,7 @@ describe('getBarChartPlotConfig', () => {
         });
 
         expect(JSON.stringify(Object.keys(config.aes))).toBe('["x","y","color","xSub"]');
-        expect(JSON.stringify(Object.keys(config.scales))).toBe('["y","color","xSub"]');
+        expect(JSON.stringify(Object.keys(config.scales))).toBe('["y","color","x","xSub"]');
         expect(config.height).toBe(100);
         expect(config.width).toBe(100);
         expect(config.margins.top).toBe(50);

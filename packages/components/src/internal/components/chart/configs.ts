@@ -24,7 +24,8 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
             CHART_SELECTORS.Today,
         ],
         // TODO: Use redirect AppURL.create('assays', row.id, 'overview')
-        getAppURL: row => AppURL.create(ASSAYS_KEY, 'general', row.x, 'overview'),
+        getAppURL: row => AppURL.create(ASSAYS_KEY, 'general', row.x || row['label'], 'overview'),
+        filterDataRegionName: 'Runs',
         itemCountSQ: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
         key: ASSAYS_KEY,
         label: 'Assay Run Count by Assay',
@@ -42,7 +43,7 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         colorPath: ['Color', 'value'],
         createText: 'Create Samples',
         createURL: () => App.NEW_SAMPLES_HREF,
-        getAppURL: row => AppURL.create(SAMPLES_KEY, row.x),
+        getAppURL: row => AppURL.create(SAMPLES_KEY, row.x || row['label']),
         itemCountSQ: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
         key: SAMPLES_KEY,
         label: 'Sample Count by Sample Type',

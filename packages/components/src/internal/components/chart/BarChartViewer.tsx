@@ -112,7 +112,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
     };
 
     onBarClick = (evt: any, row: ChartData): void => {
-        const { getAppURL } = this.getSelectedChartGroup();
+        const { getAppURL, filterDataRegionName = 'query' } = this.getSelectedChartGroup();
 
         if (getAppURL) {
             const chart = this.getSelectedChartGroupCharts()[this.state.currentChart];
@@ -122,7 +122,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
 
             if (chart.filter !== undefined) {
                 const dt = moment().add(chart.filter, 'days').format(getDateFormat().toUpperCase());
-                url = url.addParam('query.Created~dategte', dt);
+                url = url.addParam(filterDataRegionName + '.Created~dategte', dt);
             }
 
             this.props.navigate(url);

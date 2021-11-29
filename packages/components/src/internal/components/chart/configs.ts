@@ -60,10 +60,11 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         createText: 'Create Samples',
         createURL: () => App.NEW_SAMPLES_HREF,
         getAppURL: (row, evt) => {
-            let url = AppURL.create(SAMPLES_KEY, row.xSub);
+            let url = AppURL.create(SAMPLES_KEY, row.xSub || row['subLabel']);
             if (evt.target.tagName === 'rect') {
-                if (row.x !== 'No Status') {
-                    url = url.addFilters(Filter.create('SampleState/Label', row.x));
+                const val = row.x || row['label'];
+                if (val !== 'No Status') {
+                    url = url.addFilters(Filter.create('SampleState/Label', val));
                 } else {
                     url = url.addFilters(Filter.create('SampleState/Label', null, Filter.Types.ISBLANK));
                 }
@@ -75,6 +76,6 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         label: 'Sample Count by Status',
         queryName: 'SampleStatusCounts',
         schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-        sort: '-Status,Name',
+        sort: '-Status',
     },
 };

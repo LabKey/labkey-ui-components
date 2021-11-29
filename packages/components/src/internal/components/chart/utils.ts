@@ -64,17 +64,8 @@ interface BarChartPlotConfigProps {
 
 export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<string, any> {
     const vis = getServerContext().vis;
-    const {
-        renderTo,
-        data,
-        onClick,
-        height,
-        width,
-        defaultFillColor,
-        defaultBorderColor,
-        barFillColors,
-        grouped,
-    } = props;
+    const { renderTo, data, onClick, height, width, defaultFillColor, defaultBorderColor, barFillColors, grouped } =
+        props;
 
     let marginRight,
         legendPos = 'none',
@@ -129,9 +120,11 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
 
         marginRight = Math.max(...Object.keys(barFillColors).map(text => text.length)) > 10 ? undefined : 125;
         legendPos = 'right';
-        legendData = Object.keys(barFillColors).sort().map(text => {
-            return { text, color: barFillColors[text] };
-        });
+        legendData = Object.keys(barFillColors)
+            .sort()
+            .map(text => {
+                return { text, color: barFillColors[text] };
+            });
     }
 
     return {
@@ -153,10 +146,15 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
             stacked: grouped,
             clickFn: onClick,
             hoverFn: function (row) {
-                return (grouped ? row.subLabel + '\n' : '')
-                    + row.label + '\n'
-                    + 'Count: ' + row.value + '\n'
-                    + 'Click to view details';
+                return (
+                    (grouped ? row.subLabel + '\n' : '') +
+                    row.label +
+                    '\n' +
+                    'Count: ' +
+                    row.value +
+                    '\n' +
+                    'Click to view details'
+                );
             },
         },
         legendPos,

@@ -10,11 +10,11 @@ beforeEach(() => {
 describe('processChartData', () => {
     const response = {
         key: '0',
-        models: {0: AssayRunCountsRowsJson},
+        models: { 0: AssayRunCountsRowsJson },
     } as ISelectRowsResult;
 
     test('with data', () => {
-        const {data} = processChartData(response, {countPath: ['TotalCount', 'value']});
+        const { data } = processChartData(response, { countPath: ['TotalCount', 'value'] });
         expect(data.length).toBe(4);
         expect(data[0].x).toBe('GPAT 1');
         expect(data[0].xSub).toBeUndefined();
@@ -25,12 +25,12 @@ describe('processChartData', () => {
     });
 
     test('without data', () => {
-        const {data} = processChartData(response, {countPath: ['TodayCount', 'value']});
+        const { data } = processChartData(response, { countPath: ['TodayCount', 'value'] });
         expect(data.length).toBe(0);
     });
 
     test('with alternate label field', () => {
-        const {data} = processChartData(response, {
+        const { data } = processChartData(response, {
             countPath: ['TotalCount', 'value'],
             namePath: ['RowId', 'value'],
         });
@@ -39,12 +39,12 @@ describe('processChartData', () => {
     });
 
     test('barFillColors without colorPath', () => {
-        const {barFillColors} = processChartData(response, {countPath: ['TodayCount', 'value']});
+        const { barFillColors } = processChartData(response, { countPath: ['TodayCount', 'value'] });
         expect(barFillColors).toBe(undefined);
     });
 
     test('barFillColors with colorPath', () => {
-        const {barFillColors} = processChartData(response, {
+        const { barFillColors } = processChartData(response, {
             colorPath: ['Color', 'value'],
             countPath: ['TotalCount', 'value'],
             namePath: ['Name', 'value'],

@@ -5,6 +5,7 @@ import { Alert, Panel } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
 import {
+    caseInsensitive,
     DefaultRenderer,
     DetailPanelWithModel,
     getActionErrorMessage,
@@ -110,10 +111,9 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         }
 
         const row = this.getRow();
-
-        const parent = model.getRowValue('AliquotedFromLSID/Name');
-        const root = model.getRowValue('rootmateriallsid/name');
-        const isAliquot = !!parent;
+        const parent = caseInsensitive(row, 'AliquotedFromLSID/Name');
+        const root = caseInsensitive(row, 'RootMaterialLSID/Name');
+        const isAliquot = !!parent?.value;
 
         const { aliquotHeaderDisplayColumns, displayColumns, editColumns } = this.getUpdateDisplayColumns(isAliquot);
 
@@ -139,7 +139,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                     <Panel>
                         <Panel.Heading>Original Sample Details</Panel.Heading>
                         <Panel.Body>
-                            {root !== parent && (
+                            {root?.value !== parent?.value && (
                                 <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-meta-table">
                                     <tbody>
                                         <tr key="originalSample">
@@ -151,7 +151,10 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                                     </tbody>
                                 </table>
                             )}
-                            <DetailPanelWithModel key={root} queryConfig={this.getAliquotRootSampleQueryConfig()} />
+                            <DetailPanelWithModel
+                                key={root?.value}
+                                queryConfig={this.getAliquotRootSampleQueryConfig()}
+                            />
                         </Panel.Body>
                     </Panel>
                 )}

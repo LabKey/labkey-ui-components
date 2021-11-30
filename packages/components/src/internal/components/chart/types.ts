@@ -5,7 +5,8 @@ import { AppURL, SchemaQuery } from '../../..';
 
 export interface ChartData {
     count: number;
-    label: string;
+    x: string;
+    xSub?: string;
     id?: string | number;
 }
 
@@ -18,10 +19,12 @@ export interface ChartSelector {
 export interface ChartConfig {
     charts: ChartSelector[];
     colorPath?: string[];
+    groupPath?: string[];
     createText?: string;
     createURL?: () => AppURL;
     emptyStateMsg?: ReactNode;
-    getAppURL?: (data: ChartData) => AppURL;
+    filterDataRegionName?: string;
+    getAppURL?: (data: ChartData, evt?: any) => AppURL;
     itemCountFilters?: Filter.IFilter[];
     itemCountSQ: SchemaQuery;
     key: string;
@@ -29,4 +32,5 @@ export interface ChartConfig {
     namePath?: string[];
     queryName: string;
     schemaName: string;
+    sort?: string;
 }

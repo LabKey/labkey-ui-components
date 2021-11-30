@@ -14,6 +14,7 @@ interface Props {
     defaultFillColor?: string;
     onClick?: (evt: any, row: any) => void;
     title: string;
+    grouped?: boolean;
 }
 
 export class BaseBarChart extends Component<Props> {
@@ -21,6 +22,7 @@ export class BaseBarChart extends Component<Props> {
         chartHeight: 350,
         defaultFillColor: '#236fa0',
         defaultBorderColor: '#236fa0',
+        grouped: false,
     };
 
     plotId: string;
@@ -55,18 +57,20 @@ export class BaseBarChart extends Component<Props> {
     };
 
     getPlotConfig = (): Record<string, any> => {
-        const { title, data, onClick, chartHeight, defaultFillColor, defaultBorderColor, barFillColors } = this.props;
+        const { title, data, onClick, chartHeight, defaultFillColor, defaultBorderColor, barFillColors, grouped } =
+            this.props;
 
         return getBarChartPlotConfig({
             renderTo: this.plotId,
             title,
             height: chartHeight,
-            width: this.getPlotElement().getBoundingClientRect().width + 50,
+            width: this.getPlotElement().getBoundingClientRect().width + (grouped ? 0 : 50),
             defaultFillColor,
             defaultBorderColor,
             onClick,
             data,
             barFillColors,
+            grouped,
         });
     };
 

@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.100.0
+*Released*: 29 November 2021
+* Item 9703: Add support for LabKey Vis API stacked bar plot
+  * supported groupPath for bar chart config
+  * add legendData for group bar chart case
+  * add sortFn and conditional margin values for the grouped plot legend text length
+  * other misc changes:
+    * add vertical separator for manage sample statuses
+    * update assay import sample status message to use warning instead of info alert display
+    * SamplesBulkUpdateForm update to only show aliquot-editable fields when any selected samples are aliquots
+
 ### version 2.99.1
 *Released*: 26 November 2021
 * OntologyConceptPicker fix to wait for subtreePath model to load before showing find link

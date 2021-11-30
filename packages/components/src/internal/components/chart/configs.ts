@@ -1,3 +1,5 @@
+import { Filter } from '@labkey/api';
+
 import { AppURL, App, SCHEMAS } from '../../..';
 
 import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
@@ -22,7 +24,8 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
             CHART_SELECTORS.Today,
         ],
         // TODO: Use redirect AppURL.create('assays', row.id, 'overview')
-        getAppURL: row => AppURL.create(ASSAYS_KEY, 'general', row.label, 'overview'),
+        getAppURL: row => AppURL.create(ASSAYS_KEY, 'general', row.x || row['label'], 'overview'),
+        filterDataRegionName: 'Runs',
         itemCountSQ: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
         key: ASSAYS_KEY,
         label: 'Assay Run Count by Assay',
@@ -40,7 +43,7 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         colorPath: ['Color', 'value'],
         createText: 'Create Samples',
         createURL: () => App.NEW_SAMPLES_HREF,
-        getAppURL: row => AppURL.create(SAMPLES_KEY, row.label),
+        getAppURL: row => AppURL.create(SAMPLES_KEY, row.x || row['label']),
         itemCountSQ: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
         key: SAMPLES_KEY,
         label: 'Sample Count by Sample Type',
@@ -48,12 +51,28 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
     },
     SampleStatuses: {
-        charts: [CHART_SELECTORS.All],
+        charts: [
+            { name: 'TotalCount', label: 'All Statuses' },
+            { name: 'WithStatusCount', label: 'With a Status' },
+            { name: 'NoStatusCount', label: 'No Status' },
+        ],
         colorPath: ['Color', 'value'],
+        groupPath: ['Status', 'value'],
         createText: 'Create Samples',
         createURL: () => App.NEW_SAMPLES_HREF,
-        // getAppURL: row => AppURL.create(SAMPLES_KEY),
-        itemCountSQ: SCHEMAS.CORE_TABLES.DATA_STATES,
+        getAppURL: (row, evt) => {
+            let url = AppURL.create(SAMPLES_KEY, row.xSub || row['subLabel']);
+            if (evt.target.tagName === 'rect') {
+                const val = row.x || row['label'];
+                if (val !== 'No Status') {
+                    url = url.addFilters(Filter.create('SampleState/Label', val));
+                } else {
+                    url = url.addFilters(Filter.create('SampleState/Label', null, Filter.Types.ISBLANK));
+                }
+            }
+            return url;
+        },
+        itemCountSQ: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
         key: SAMPLES_KEY,
         label: 'Sample Count by Status',
         queryName: 'SampleStatusCounts',

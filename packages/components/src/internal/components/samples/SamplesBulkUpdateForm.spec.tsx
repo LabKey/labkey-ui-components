@@ -120,7 +120,7 @@ describe('SamplesBulkUpdateForm', () => {
         expect(queryInfo.columns.size).toBe(3);
         expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
         expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
-        expect(queryInfo.columns.get('meta')).toBe(COLUMN_META);
+        expect(queryInfo.columns.get('aliquotspecific')).toBe(COLUMN_ALIQUOT);
 
         wrapper.unmount();
     });
@@ -135,7 +135,7 @@ describe('SamplesBulkUpdateForm', () => {
         expect(queryInfo.columns.size).toBe(3);
         expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
         expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
-        expect(queryInfo.columns.get('meta')).toBe(COLUMN_META);
+        expect(queryInfo.columns.get('aliquotspecific')).toBe(COLUMN_ALIQUOT);
 
         wrapper.unmount();
     });
@@ -143,10 +143,9 @@ describe('SamplesBulkUpdateForm', () => {
 
 describe('SamplesBulkUpdateAlert', () => {
     const SINGLE_ALIQUOT_WARN =
-        '1 aliquot was among the selections. Aliquot data is inherited from the original sample and cannot be updated here. ';
+        'Since 1 aliquot was among the selected samples, only the aliquot-editable fields are shown below. ';
     const MULTI_ALIQUOTS_WARN =
-        '2 aliquots were among the selections. Aliquot data is inherited from the original sample and cannot be updated here. ';
-    const ALL_ALIQUOTS_WARN = 'Aliquot data inherited from the original sample cannot be updated here. ';
+        'Since 2 aliquots were among the selected samples, only the aliquot-editable fields are shown below. ';
     const ONE_LOCKED_WARN =
         'The current status of 1 selected sample prevents updating of its data. Either change the status here or remove these samples from your selection.';
     const TWO_LOCKED_WARN =
@@ -173,7 +172,7 @@ describe('SamplesBulkUpdateAlert', () => {
             <SamplesBulkUpdateAlert aliquots={[1, 2]} numSelections={2} editStatusData={undefined} />
         );
         expect(wrapper.find(Alert).exists()).toBeTruthy();
-        expect(wrapper.text()).toBe(ALL_ALIQUOTS_WARN);
+        expect(wrapper.text()).toBe(MULTI_ALIQUOTS_WARN);
         wrapper.unmount();
     });
 
@@ -201,7 +200,7 @@ describe('SamplesBulkUpdateAlert', () => {
             />
         );
         expect(wrapper.find(Alert).exists()).toBeTruthy();
-        expect(wrapper.text()).toBe(ALL_ALIQUOTS_WARN + ONE_LOCKED_WARN);
+        expect(wrapper.text()).toBe(MULTI_ALIQUOTS_WARN + ONE_LOCKED_WARN);
         wrapper.unmount();
     });
 

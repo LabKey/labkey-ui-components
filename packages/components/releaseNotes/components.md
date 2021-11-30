@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD November 2021
+### version 2.100.0
+*Released*: 29 November 2021
 * Item 9703: Add support for LabKey Vis API stacked bar plot
   * supported groupPath for bar chart config
   * add legendData for group bar chart case

@@ -113,7 +113,10 @@ describe('SampleTypeModel', () => {
         expect(SampleTypeModel.create({ containerPath: 'Bam' } as any).containerPath).toBeUndefined();
 
         const expectedContainerPath = '/Some/Container/Path';
-        const model = SampleTypeModel.create().set('domain', DomainDesign.create({ container: expectedContainerPath })) as SampleTypeModel;
+        const model = SampleTypeModel.create().set(
+            'domain',
+            DomainDesign.create({ container: expectedContainerPath })
+        ) as SampleTypeModel;
         expect(model.containerPath).toEqual(expectedContainerPath);
     });
 

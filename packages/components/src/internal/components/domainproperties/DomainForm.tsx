@@ -1233,15 +1233,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             successBsStyle,
             domainFormDisplayOptions,
         } = this.props;
-        const {
-            expandedRowIndex,
-            expandTransition,
-            fieldDetails,
-            maxPhiLevel,
-            dragId,
-            availableTypes,
-            search,
-        } = this.state;
+        const { expandedRowIndex, expandTransition, fieldDetails, maxPhiLevel, dragId, availableTypes, search } =
+            this.state;
 
         return (
             <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>

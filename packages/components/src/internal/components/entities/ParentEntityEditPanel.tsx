@@ -409,16 +409,8 @@ export class ParentEntityEditPanel extends Component<Props, State> {
     };
 
     render() {
-        const {
-            cancelText,
-            parentDataTypes,
-            title,
-            canUpdate,
-            hideButtons,
-            submitText,
-            editOnly,
-            includePanelHeader,
-        } = this.props;
+        const { cancelText, parentDataTypes, title, canUpdate, hideButtons, submitText, editOnly, includePanelHeader } =
+            this.props;
         const { childName, editing, error, loading, submitting } = this.state;
 
         const parentDataType = parentDataTypes[0];

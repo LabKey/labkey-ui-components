@@ -96,7 +96,8 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
     };
 
     renderParentSelection = (model: QueryModel): ReactNode => {
-        const { chosenType, chosenValue, containerPath, parentLSIDs, parentTypeOptions, parentDataType, index } = this.props;
+        const { chosenType, chosenValue, containerPath, parentLSIDs, parentTypeOptions, parentDataType, index } =
+            this.props;
 
         if (model?.rowsError || model?.queryInfoError) {
             return <Alert>{model.rowsError || model.queryInfoError}</Alert>;

@@ -151,7 +151,8 @@ export class DomainDesign
         instructions: undefined,
         domainKindName: undefined,
     })
-    implements IDomainDesign {
+    implements IDomainDesign
+{
     declare name: string;
     declare container: string;
     declare description: string;
@@ -448,7 +449,8 @@ export class DomainIndex
         columns: List<string>(),
         type: undefined,
     })
-    implements IDomainIndex {
+    implements IDomainIndex
+{
     declare columns: List<string>;
     declare type: 'primary' | 'unique';
 
@@ -489,7 +491,8 @@ export class ConditionalFormat
         textColor: undefined,
         backgroundColor: undefined,
     })
-    implements IConditionalFormat {
+    implements IConditionalFormat
+{
     declare formatFilter: string;
     declare bold: boolean;
     declare italic: boolean;
@@ -537,7 +540,8 @@ export class PropertyValidatorProperties
     extends Record({
         failOnMatch: false,
     })
-    implements IPropertyValidatorProperties {
+    implements IPropertyValidatorProperties
+{
     declare failOnMatch: boolean;
 }
 
@@ -563,7 +567,8 @@ export class PropertyValidator
         rowId: undefined,
         expression: undefined,
     })
-    implements IPropertyValidator {
+    implements IPropertyValidator
+{
     declare type: string;
     declare name: string;
     declare properties: PropertyValidatorProperties;
@@ -729,7 +734,8 @@ export class DomainField
         derivationDataScope: undefined,
         selected: false,
     })
-    implements IDomainField {
+    implements IDomainField
+{
     declare conceptURI?: string;
     declare conditionalFormats: List<ConditionalFormat>;
     declare defaultScale?: string;
@@ -1319,7 +1325,8 @@ export class ColumnInfoLite
         jsonType: undefined,
         name: undefined,
     })
-    implements IColumnInfoLite {
+    implements IColumnInfoLite
+{
     declare friendlyType?: string;
     declare isKeyField?: boolean;
     declare jsonType?: string;
@@ -1366,7 +1373,8 @@ export class QueryInfoLite
         title: undefined,
         viewDataUrl: undefined,
     })
-    implements IQueryInfoLite {
+    implements IQueryInfoLite
+{
     declare canEdit?: boolean;
     declare canEditSharedViews?: boolean;
     declare columns?: List<ColumnInfoLite>;
@@ -1455,7 +1463,8 @@ export class DomainException
         domainName: undefined,
         errors: List<DomainFieldError>(),
     })
-    implements IDomainException {
+    implements IDomainException
+{
     declare exception: string;
     declare success: boolean;
     declare severity: string;
@@ -1614,7 +1623,8 @@ export class DomainFieldError
         newRowIndexes: undefined,
         extraInfo: undefined,
     })
-    implements IDomainFieldError {
+    implements IDomainFieldError
+{
     declare message: string;
     declare fieldName: string;
     declare propertyId?: number;

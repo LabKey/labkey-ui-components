@@ -4,7 +4,11 @@ import { buildURL } from '../../url/AppURL';
 import { handleRequestFailure } from '../../util/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
-export const saveNameExpressionOptions = (key: string, value: string | boolean, containerPath?: string): Promise<null> => {
+export const saveNameExpressionOptions = (
+    key: string,
+    value: string | boolean,
+    containerPath?: string
+): Promise<null> => {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'setNameExpressionOptions.api', undefined, {

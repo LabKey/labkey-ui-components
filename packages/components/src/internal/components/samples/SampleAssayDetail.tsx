@@ -40,8 +40,8 @@ interface Props {
     showAliquotViewSelector?: boolean;
     sampleAliquotType?: ALIQUOT_FILTER_MODE;
     sourceId?: number | string;
-    sourceSampleRows?: Record<string, any>[];
-    sourceAliquotRows?: Record<string, any>[];
+    sourceSampleRows?: Array<Record<string, any>>;
+    sourceAliquotRows?: Array<Record<string, any>>;
     emptyAssayDefDisplay?: ReactNode;
     emptyAssayResultDisplay?: ReactNode;
     emptyAliquotViewMsg?: string;
@@ -333,7 +333,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         return sampleId == null && sourceSampleRows != null;
     }, [sampleId, sourceSampleRows]);
 
-    const [aliquotRows, setAliquotRows] = useState<Record<string, any>[]>(undefined);
+    const [aliquotRows, setAliquotRows] = useState<Array<Record<string, any>>>(undefined);
     useEffect(() => {
         if (!showAliquotViewSelector || !sampleId) return;
 

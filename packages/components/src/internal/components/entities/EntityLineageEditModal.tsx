@@ -24,13 +24,13 @@ import { getOriginalParentsFromSampleLineage } from '../samples/actions';
 
 import { IS_ALIQUOT_COL } from '../samples/constants';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { EntityChoice, EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun, getUpdatedLineageRowsForBulkEdit } from './utils';
 
 import { ParentEntityLineageColumns } from './constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
-
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface Props {
     api?: ComponentsAPIWrapper;

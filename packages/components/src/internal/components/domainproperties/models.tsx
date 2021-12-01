@@ -79,9 +79,7 @@ export interface IFieldChange {
     value: any;
 }
 
-export interface DomainOnChange {
-    (changes: List<IFieldChange>, index?: number, expand?: boolean): any;
-}
+export type DomainOnChange = (changes: List<IFieldChange>, index?: number, expand?: boolean) => void;
 
 export interface IBannerMessage {
     message: string;
@@ -153,7 +151,8 @@ export class DomainDesign
         instructions: undefined,
         domainKindName: undefined,
     })
-    implements IDomainDesign {
+    implements IDomainDesign
+{
     declare name: string;
     declare container: string;
     declare description: string;
@@ -280,8 +279,7 @@ export class DomainDesign
     }
 
     getDomainContainer(): string {
-        const currentContainer = getServerContext().container.id;
-        return this.container || currentContainer;
+        return this.container ?? getServerContext().container.id;
     }
 
     isSharedDomain(): boolean {
@@ -290,7 +288,7 @@ export class DomainDesign
     }
 
     findFieldIndexByName(fieldName: string): number {
-        return this.fields.findIndex((field: DomainField) => fieldName && field.name === fieldName);
+        return this.fields.findIndex(field => fieldName && field.name === fieldName);
     }
 
     getFieldDetails(): FieldDetails {
@@ -451,7 +449,8 @@ export class DomainIndex
         columns: List<string>(),
         type: undefined,
     })
-    implements IDomainIndex {
+    implements IDomainIndex
+{
     declare columns: List<string>;
     declare type: 'primary' | 'unique';
 
@@ -492,7 +491,8 @@ export class ConditionalFormat
         textColor: undefined,
         backgroundColor: undefined,
     })
-    implements IConditionalFormat {
+    implements IConditionalFormat
+{
     declare formatFilter: string;
     declare bold: boolean;
     declare italic: boolean;
@@ -540,7 +540,8 @@ export class PropertyValidatorProperties
     extends Record({
         failOnMatch: false,
     })
-    implements IPropertyValidatorProperties {
+    implements IPropertyValidatorProperties
+{
     declare failOnMatch: boolean;
 }
 
@@ -566,7 +567,8 @@ export class PropertyValidator
         rowId: undefined,
         expression: undefined,
     })
-    implements IPropertyValidator {
+    implements IPropertyValidator
+{
     declare type: string;
     declare name: string;
     declare properties: PropertyValidatorProperties;
@@ -732,7 +734,8 @@ export class DomainField
         derivationDataScope: undefined,
         selected: false,
     })
-    implements IDomainField {
+    implements IDomainField
+{
     declare conceptURI?: string;
     declare conditionalFormats: List<ConditionalFormat>;
     declare defaultScale?: string;
@@ -1310,6 +1313,11 @@ interface IColumnInfoLite {
     name?: string;
 }
 
+export interface LookupInfo {
+    name: string;
+    type: PropDescType;
+}
+
 export class ColumnInfoLite
     extends Record({
         friendlyType: undefined,
@@ -1317,7 +1325,8 @@ export class ColumnInfoLite
         jsonType: undefined,
         name: undefined,
     })
-    implements IColumnInfoLite {
+    implements IColumnInfoLite
+{
     declare friendlyType?: string;
     declare isKeyField?: boolean;
     declare jsonType?: string;
@@ -1364,7 +1373,8 @@ export class QueryInfoLite
         title: undefined,
         viewDataUrl: undefined,
     })
-    implements IQueryInfoLite {
+    implements IQueryInfoLite
+{
     declare canEdit?: boolean;
     declare canEditSharedViews?: boolean;
     declare columns?: List<ColumnInfoLite>;
@@ -1390,8 +1400,8 @@ export class QueryInfoLite
         );
     }
 
-    getLookupInfo(rangeURI?: string): List<{ name: string; type: PropDescType }> {
-        let infos = List<{ name: string; type: PropDescType }>();
+    getLookupInfo(rangeURI?: string): List<LookupInfo> {
+        let infos = List<LookupInfo>();
 
         // allow for queries with only 1 primary key or with 2 primary key columns when one of them is container (see Issue 39879)
         let pkCols =
@@ -1453,7 +1463,8 @@ export class DomainException
         domainName: undefined,
         errors: List<DomainFieldError>(),
     })
-    implements IDomainException {
+    implements IDomainException
+{
     declare exception: string;
     declare success: boolean;
     declare severity: string;
@@ -1612,7 +1623,8 @@ export class DomainFieldError
         newRowIndexes: undefined,
         extraInfo: undefined,
     })
-    implements IDomainFieldError {
+    implements IDomainFieldError
+{
     declare message: string;
     declare fieldName: string;
     declare propertyId?: number;

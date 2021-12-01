@@ -24,22 +24,22 @@ import { getOriginalParentsFromSampleLineage } from '../samples/actions';
 
 import { IS_ALIQUOT_COL } from '../samples/constants';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { EntityChoice, EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun, getUpdatedLineageRowsForBulkEdit } from './utils';
 
 import { ParentEntityLineageColumns } from './constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 interface Props {
+    api?: ComponentsAPIWrapper;
     queryModel: QueryModel;
     onCancel: () => void;
     onSuccess: () => void;
     childEntityDataType: EntityDataType;
     auditBehavior?: AuditBehaviorTypes;
     parentEntityDataTypes: EntityDataType[];
-    api?: ComponentsAPIWrapper;
 }
 
 export const EntityLineageEditModal: FC<Props> = memo(props => {
@@ -98,7 +98,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
         setHasParentUpdates(entityParents.size > 0);
     }, []);
 
-    const onConfirm = useCallback(async () => {
+    const onConfirm = async (): Promise<void> => {
         setSubmitting(true);
 
         const { originalParents } = await getOriginalParentsFromSampleLineage(allowedForUpdate);
@@ -132,7 +132,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
             onSuccess();
             createNotification(`No ${childEntityDataType.nounPlural} updated since no ${lcParentNounPlural} changed.`);
         }
-    }, [selectedParents, auditBehavior, childEntityDataType, queryModel, allowedForUpdate]);
+    };
 
     if (!queryModel || !statusData) {
         return null;
@@ -215,10 +215,8 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                             <ParentEntityEditPanel
                                 auditBehavior={auditBehavior}
                                 canUpdate={true}
-                                childQueryInfo={queryModel.queryInfo}
-                                childData={undefined}
+                                childSchemaQuery={queryModel.schemaQuery}
                                 parentDataTypes={parentEntityDataTypes}
-                                childName={undefined}
                                 childNounSingular={childEntityDataType.nounSingular}
                                 key={`parent${parentNounPlural}-${queryModel.id}`}
                                 onUpdate={onConfirm}

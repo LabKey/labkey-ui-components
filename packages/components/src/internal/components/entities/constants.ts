@@ -57,6 +57,8 @@ export const ParentEntityLineageColumns = List.of('Inputs/Materials/First', 'Inp
 export const ParentEntityRequiredColumns = SCHEMAS.CBMB.concat(
     'LSID',
     'Name',
+    'Folder',
+    'RowId',
     'Description',
     'AliquotedFromLSID/Name',
     'RootMaterialLSID',

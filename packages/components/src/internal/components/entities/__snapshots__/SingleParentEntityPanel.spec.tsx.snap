@@ -3215,6 +3215,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             },
           ],
           "bindURL": false,
+          "containerPath": undefined,
           "schemaQuery": Immutable.Record {
             "schemaName": "exp.data",
             "queryName": "Second Source",
@@ -3359,6 +3360,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               },
             ],
             "bindURL": false,
+            "containerPath": undefined,
             "schemaQuery": Immutable.Record {
               "schemaName": "exp.data",
               "queryName": "Second Source",

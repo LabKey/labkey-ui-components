@@ -11,8 +11,9 @@ import {
     getHelpLink,
     initQueryGridState,
     IParentOption,
+    ISelectRowsResult,
     MetricUnitProps,
-    naturalSort,
+    naturalSortByProperty,
     resolveErrorMessage,
     SCHEMAS,
 } from '../../../..';
@@ -139,19 +140,18 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         };
     }
 
-    componentDidMount = (): void => {
+    componentDidMount = async (): Promise<void> => {
         const { includeDataClasses, setSubmitting } = this.props;
         const { model } = this.state;
 
-        initSampleSetSelects(!model.isNew(), model.name, includeDataClasses)
-            .then(results => {
-                this.initParentOptions(model, results);
-            })
-            .catch(error => {
-                setSubmitting(false, () => {
-                    this.setState(() => ({ error: resolveErrorMessage(error) }));
-                });
+        try {
+            const results = await initSampleSetSelects(!model.isNew(), includeDataClasses, model.containerPath);
+            this.initParentOptions(results);
+        } catch (error) {
+            setSubmitting(false, () => {
+                this.setState({ error: resolveErrorMessage(error) });
             });
+        }
     };
 
     formatLabel = (name: string, prefix: string, containerPath?: string): string => {
@@ -161,13 +161,15 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             : name;
     };
 
-    initParentOptions = (model: SampleTypeModel, responses: any[]): void => {
+    initParentOptions = (responses: ISelectRowsResult[]): void => {
         const { isValidParentOptionFn } = this.props;
-        let sets = List<IParentOption>();
-        responses.forEach(results => {
-            const domain = fromJS(results.models[results.key]);
+        const { model } = this.state;
+        const sets: IParentOption[] = [];
 
-            const isDataClass = results.key === DATA_CLASS_SCHEMA_KEY;
+        responses.forEach(result => {
+            const domain = fromJS(result.models[result.key]);
+
+            const isDataClass = result.key === DATA_CLASS_SCHEMA_KEY;
 
             const prefix = isDataClass ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
             const labelPrefix = isDataClass ? 'Data Class' : 'Sample Type';
@@ -182,7 +184,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     name === model.name && !isDataClass
                         ? NEW_SAMPLE_SET_OPTION.label
                         : this.formatLabel(name, labelPrefix, containerPath);
-                sets = sets.push({
+                sets.push({
                     value: prefix + name,
                     label,
                     schema: isDataClass ? SCHEMAS.DATA_CLASSES.SCHEMA : SCHEMAS.SAMPLE_SETS.SCHEMA,
@@ -192,22 +194,18 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         });
 
         if (model.isNew()) {
-            sets = sets.push(NEW_SAMPLE_SET_OPTION);
+            sets.push(NEW_SAMPLE_SET_OPTION);
         }
 
-        this.mapParentAliasOptions(model, sets.sortBy(p => p.label, naturalSort) as List<IParentOption>);
-    };
-
-    mapParentAliasOptions = (model: SampleTypeModel, results: List<IParentOption>): void => {
-        const options = results.toArray();
+        const parentOptions = sets.sort(naturalSortByProperty('label'));
 
         let parentAliases = Map<string, IParentAlias>();
 
-        if (model && model.importAliases) {
+        if (model?.importAliases) {
             const initialAlias = Map<string, string>(model.importAliases);
             initialAlias.forEach((val, key) => {
                 const newId = generateId('sampleset-parent-import-alias-');
-                const parentValue = options.find(opt => opt.value === val);
+                const parentValue = parentOptions.find(opt => opt.value === val);
                 if (!parentValue)
                     // parent option might have been filtered out by isValidParentOptionFn
                     return;
@@ -222,10 +220,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             });
         }
 
-        this.setState(() => ({
-            parentOptions: options,
+        this.setState({
             model: model.merge({ parentAliases }) as SampleTypeModel,
-        }));
+            parentOptions,
+        });
     };
 
     getImportAliasesAsMap(model: SampleTypeModel): Map<string, string> {
@@ -261,16 +259,12 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         );
     };
 
-    propertiesToggle = (collapsed, callback) => {
-        const { onTogglePanel } = this.props;
-
-        onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback);
+    propertiesToggle = (collapsed: boolean, callback: () => void): void => {
+        this.props.onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback);
     };
 
-    formToggle = (collapsed, callback) => {
-        const { onTogglePanel } = this.props;
-
-        onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback);
+    formToggle = (collapsed: boolean, callback: () => void): void => {
+        this.props.onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback);
     };
 
     updateAliasValue = (id: string, field: string, newValue: any): IParentAlias => {
@@ -356,14 +350,14 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         );
     };
 
-    onUniqueIdCancel = () => {
+    onUniqueIdCancel = (): void => {
         this.setState({
             showUniqueIdConfirmation: false,
             uniqueIdsConfirmed: false,
         });
     };
 
-    onUniqueIdConfirm = () => {
+    onUniqueIdConfirm = (): void => {
         this.setState(
             () => ({
                 showUniqueIdConfirmation: false,

@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
-import { LabelHelpTip } from '../../..';
+import { isLoading, LabelHelpTip, LoadingState } from '../../..';
 
 import { FIELD_EDITOR_SAMPLE_TYPES_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName, fetchQueries } from './actions';
 import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE } from './constants';
-import { encodeLookup, IDomainField, ITypeDependentProps, QueryInfoLite, SAMPLE_TYPE_OPTION_VALUE } from './models';
-import { PropDescType } from './PropDescType';
+import { encodeLookup, IDomainField, ITypeDependentProps, LookupInfo, SAMPLE_TYPE_OPTION_VALUE } from './models';
 
 import { SectionHeading } from './SectionHeading';
 
@@ -21,54 +20,45 @@ interface SampleFieldProps extends ITypeDependentProps {
     container: string;
 }
 
-export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, any> {
-    constructor(props) {
-        super(props);
+interface State {
+    loadingState: LoadingState;
+    sampleTypes: List<LookupInfo>;
+}
 
-        this.state = {
-            loading: false,
-            sampleTypes: List(),
-        };
-    }
-
-    onFieldChange = evt => {
-        const { onChange } = this.props;
-
-        const value = evt.target.value;
-
-        if (onChange) {
-            onChange(evt.target.id, value);
-        }
+export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
+    state: Readonly<State> = {
+        loadingState: LoadingState.INITIALIZED,
+        sampleTypes: List(),
     };
 
-    componentDidMount(): void {
-        this.loadData();
-    }
+    onFieldChange = (evt: any): void => {
+        this.props.onChange?.(evt.target.id, evt.target.value);
+    };
 
-    loadData = () => {
-        const {} = this.props;
+    componentDidMount = async (): Promise<void> => {
+        const { original } = this.props;
 
-        this.setState({
-            loading: true,
-        });
+        this.setState({ loadingState: LoadingState.LOADING });
 
-        fetchQueries(null, 'samples').then((sampleTypes: List<QueryInfoLite>): void => {
-            let infos = List<{ name: string; type: PropDescType }>();
+        try {
+            const queries = await fetchQueries(undefined, 'samples');
 
-            sampleTypes.forEach(q => {
-                infos = infos.concat(q.getLookupInfo(this.props.original.rangeURI)).toList();
-            });
+            const sampleTypes = queries
+                .reduce((list, q) => list.concat(q.getLookupInfo(original.rangeURI)).toList(), List<LookupInfo>())
+                .filter(st => st.type.isInteger()) // Remove rowId duplicates
+                .toList();
 
-            this.setState({
-                loading: false,
-                sampleTypes: infos,
-            });
-        });
+            this.setState({ loadingState: LoadingState.LOADED, sampleTypes });
+        } catch (e) {
+            console.error('Failed to load sample field information', e);
+            this.setState({ loadingState: LoadingState.LOADED });
+        }
     };
 
     render() {
         const { index, label, lockType, value, domainIndex } = this.props;
-        const { loading, sampleTypes } = this.state;
+        const { loadingState, sampleTypes } = this.state;
+        const isLoaded = !isLoading(loadingState);
 
         const id = createFormInputId(DOMAIN_FIELD_SAMPLE_TYPE, domainIndex, index);
 
@@ -112,12 +102,12 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                             onChange={this.onFieldChange}
                             value={value || ALL_SAMPLES_DISPLAY_TEXT}
                         >
-                            {loading && (
+                            {!isLoaded && (
                                 <option disabled key="_loading" value={value}>
                                     Loading...
                                 </option>
                             )}
-                            {!loading && (
+                            {isLoaded && (
                                 <option
                                     key={createFormInputId(
                                         DOMAIN_FIELD_SAMPLE_TYPE + '-option-' + index,
@@ -129,17 +119,17 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                                     All Samples
                                 </option>
                             )}
-                            {sampleTypes
-                                .filter(st => st.type.isInteger()) // Remove rowId duplicates
-                                .map(st => {
-                                    const encoded = encodeLookup(st.name, st.type);
-                                    return (
-                                        <option key={encoded} value={encoded}>
-                                            {st.name}
-                                        </option>
-                                    );
-                                })
-                                .toArray()}
+                            {isLoaded &&
+                                sampleTypes
+                                    .map(st => {
+                                        const encoded = encodeLookup(st.name, st.type);
+                                        return (
+                                            <option key={encoded} value={encoded}>
+                                                {st.name}
+                                            </option>
+                                        );
+                                    })
+                                    .toArray()}
                         </FormControl>
                     </Col>
                 </Row>

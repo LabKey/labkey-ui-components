@@ -1,6 +1,21 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.101.0
+*Released*: 30 November 2021
+* Add `getContainerFilter()` for resolving default container filter based on folder context.
+* Add `SecurityAPIWrapper` to support fetching containers. This is provided to components via `AppContext`.
+* Specify React hooks exported by `@labkey/components` on a `Hooks` object for easier mocking.
+* Update `ParentEntityEditPanel` to fetch and persist parent metadata. This allows the component to operate independent of the configuration of the model as supplied by the caller.
+* Update `EditableDetailPanel` to accept `containerPath`.
+* QueryModel
+    * Add `loadErrors` and `hasLoadErrors()` utilities to `QueryModel` to reduce the number of checks callers need to do to ensure errors are handled.
+    * Add `getRowValue()` utility method to `QueryModel` which allows for fetching the specific value of a row by column name (case-insensitive).
+* Domain Editing
+    * Add `domainContainerPath` prop to `QueryInfo` as now specified by `query-getQueryDetails.api` endpoint.
+    * Support requesting PHI level cross-folder.
+    * Make domain save requests against domain's folder.
+
 ### version 2.100.0
 *Released*: 29 November 2021
 * Item 9703: Add support for LabKey Vis API stacked bar plot

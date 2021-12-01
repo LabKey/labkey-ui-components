@@ -18,7 +18,7 @@ export interface LoadLineage {
 }
 
 export interface WithLineageOptions extends LoadLineage, LineageOptions {
-    seedContainer?: string;
+    containerPath?: string;
     lsid: string;
 }
 
@@ -40,7 +40,7 @@ export function withLineage<Props>(
         private _mounted = true;
 
         loadLineage = async (forceReload?: boolean): Promise<void> => {
-            const { distance, prefetchSeed, lsid, seedContainer } = this.props;
+            const { containerPath, distance, prefetchSeed, lsid } = this.props;
 
             // Lineage is already processed
             if (this.state.lineage && lsid === this.state.lineage.seed && !forceReload) {
@@ -61,7 +61,7 @@ export function withLineage<Props>(
             }
 
             try {
-                const result = await loadLineageResult(lsid, seedContainer, distance, this.props);
+                const result = await loadLineageResult(lsid, containerPath, distance, this.props);
 
                 let sampleStats: any;
                 if (allowLoadSampleStats) {
@@ -83,12 +83,12 @@ export function withLineage<Props>(
         };
 
         loadSeed = async (): Promise<void> => {
-            const { lsid, seedContainer } = this.props;
+            const { containerPath, lsid } = this.props;
 
             await this.updateLineage({ seedResultLoadingState: LoadingState.LOADING });
 
             try {
-                const seedResult = await loadSeedResult(lsid, seedContainer, this.props);
+                const seedResult = await loadSeedResult(lsid, containerPath, this.props);
 
                 await this.updateLineage({
                     seedResult,

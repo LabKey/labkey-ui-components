@@ -13,15 +13,6 @@ import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 import { OntologyLookupOptions } from './OntologyLookupOptions';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 
-const DEFAULT_PROPS = {
-    index: 0,
-    domainIndex: 0,
-    label: 'Test',
-    lockType: undefined,
-    onChange: jest.fn(),
-    onMultiChange: jest.fn(),
-};
-
 const field1 = DomainField.create({
     name: 'field1',
     conceptURI: ONTOLOGY_LOOKUP_TYPE.conceptURI,
@@ -56,6 +47,18 @@ beforeAll(() => {
 });
 
 describe('OntologyLookupOptions', () => {
+    function getDefaultProps() {
+        return {
+            domainContainerPath: '/Where/The/Domain/Lives',
+            index: 0,
+            domainIndex: 0,
+            label: 'Test',
+            lockType: undefined,
+            onChange: jest.fn(),
+            onMultiChange: jest.fn(),
+        };
+    }
+
     function validate(
         wrapper: ReactWrapper,
         disabled: boolean,
@@ -106,7 +109,9 @@ describe('OntologyLookupOptions', () => {
         const field = DomainField.create({});
         const domainFields = List.of(field);
 
-        const wrapper = mount(<OntologyLookupOptions {...DEFAULT_PROPS} field={field} domainFields={domainFields} />);
+        const wrapper = mount(
+            <OntologyLookupOptions {...getDefaultProps()} field={field} domainFields={domainFields} />
+        );
         await sleep();
         wrapper.update();
 
@@ -116,7 +121,9 @@ describe('OntologyLookupOptions', () => {
 
     test('with additional fields and ontology field props', async () => {
         const domainFields = List.of(field1, field2, field3, field4, field5, field6);
-        const wrapper = mount(<OntologyLookupOptions {...DEFAULT_PROPS} field={field1} domainFields={domainFields} />);
+        const wrapper = mount(
+            <OntologyLookupOptions {...getDefaultProps()} field={field1} domainFields={domainFields} />
+        );
         await sleep();
         wrapper.update();
 
@@ -128,7 +135,7 @@ describe('OntologyLookupOptions', () => {
         const domainFields = List.of(field1, field2, field3, field4, field5, field6);
         const wrapper = mount(
             <OntologyLookupOptions
-                {...DEFAULT_PROPS}
+                {...getDefaultProps()}
                 field={field1}
                 domainFields={domainFields}
                 lockType={DOMAIN_FIELD_FULLY_LOCKED}

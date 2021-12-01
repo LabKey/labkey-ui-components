@@ -173,6 +173,7 @@ import {
 } from './internal/global';
 import {
     deleteRows,
+    getContainerFilter,
     getQueryDetails,
     importData,
     InsertFormats,
@@ -304,6 +305,7 @@ import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAli
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
+import { useContainerUser } from './internal/components/container/actions';
 
 import {
     filterSampleRowsForOperation,
@@ -711,14 +713,26 @@ const App = {
     TEST_USER_APP_ADMIN,
 };
 
+const Hooks = {
+    useAppContext,
+    useContainerUser,
+    useEnterEscape,
+    useRouteLeave,
+    useServerContext,
+    useUserProperties,
+    useUsersWithPermissions,
+};
+
 export {
     // internal application
     App,
     AppModel,
+    Hooks,
     LogoutReason,
     // global state functions
     initQueryGridState,
     initNotificationsState,
+    getContainerFilter,
     getStateQueryGridModel,
     getStateModelId,
     getQueryGridModel,
@@ -1373,3 +1387,4 @@ export type { AppContext, ExtendableAppContext } from './internal/AppContext';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { SamplesEditableGridProps } from './internal/components/samples/SamplesEditableGrid';
+export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';

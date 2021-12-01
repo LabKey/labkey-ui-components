@@ -19,8 +19,9 @@ import { ActionURL, Experiment, Filter, getServerContext } from '@labkey/api';
 import { AppURL, createProductUrl } from '../..';
 import { LineageLinkMetadata } from '../components/lineage/types';
 
-import { AppRouteResolver } from './AppURLResolver';
 import { FREEZER_MANAGER_APP_PROPERTIES } from '../app/constants';
+
+import { AppRouteResolver } from './AppURLResolver';
 
 const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
 
@@ -211,9 +212,6 @@ class LookupMapper implements URLMapper {
                     return this.lookupResolvers[schemaKey](row, column, schema, query);
                 }
             }
-
-            if (lookup.get('containerPath') && lookup.get('containerPath') !== getServerContext().container.path)
-                return undefined;
 
             const parts = [
                 this.defaultPrefix,
@@ -469,28 +467,27 @@ export const PICKLIST_MAPPER = new ActionMapper('picklist', 'grid', row => {
     return false;
 });
 
-export const FREEZER_ITEM_SAMPLE_MAPPER =
-    new ActionMapper('query', 'executeQuery', row => {
-        const url = row.get('url');
-        if (url) {
-            const materialIdKey = 'query.MaterialId~eq';
-            const params = ActionURL.getParameters(url);
-            if (
-                params.schemaName &&
-                params.schemaName.toLowerCase() === 'inventory' &&
-                params.queryName &&
-                params.queryName.toLowerCase() === 'item' &&
-                params[materialIdKey] !== undefined
-            ) {
-                return createProductUrl(
-                    FREEZER_MANAGER_APP_PROPERTIES.productId,
-                    undefined,
-                    AppURL.create('rd', 'sampleItem', params[materialIdKey])
-                );
-            }
+export const FREEZER_ITEM_SAMPLE_MAPPER = new ActionMapper('query', 'executeQuery', row => {
+    const url = row.get('url');
+    if (url) {
+        const materialIdKey = 'query.MaterialId~eq';
+        const params = ActionURL.getParameters(url);
+        if (
+            params.schemaName &&
+            params.schemaName.toLowerCase() === 'inventory' &&
+            params.queryName &&
+            params.queryName.toLowerCase() === 'item' &&
+            params[materialIdKey] !== undefined
+        ) {
+            return createProductUrl(
+                FREEZER_MANAGER_APP_PROPERTIES.productId,
+                undefined,
+                AppURL.create('rd', 'sampleItem', params[materialIdKey])
+            );
         }
-        return false;
-    });
+    }
+    return false;
+});
 
 export const URL_MAPPERS = {
     ASSAY_MAPPERS,

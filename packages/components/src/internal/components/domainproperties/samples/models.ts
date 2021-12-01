@@ -37,11 +37,7 @@ export class SampleTypeModel extends Record({
     declare exception: string;
 
     static create(raw?: DomainDetails, name?: string): SampleTypeModel {
-        if (!raw) return new SampleTypeModel();
-
-        const domain = raw.domainDesign ? raw.domainDesign : DomainDesign.create({});
-
-        const { options } = raw;
+        const options = raw?.options;
         let importAliases = Map<string, string>();
         if (options) {
             const aliases = options.get('importAliases') || {};
@@ -52,11 +48,11 @@ export class SampleTypeModel extends Record({
             ...options?.toJS(),
             aliquotNameExpression: options?.get('aliquotNameExpression') || '',
             name,
-            nameReadOnly: raw.nameReadOnly,
+            nameReadOnly: raw?.nameReadOnly,
             importAliases,
             labelColor: options?.get('labelColor') || undefined, // helps to convert null to undefined
             metricUnit: options?.get('metricUnit') || undefined,
-            domain,
+            domain: raw?.domainDesign ?? DomainDesign.create({}),
         });
     }
 
@@ -129,6 +125,10 @@ export class SampleTypeModel extends Record({
         }
 
         return returnAliases ? dupeAliases : dupeIds;
+    }
+
+    get containerPath(): string {
+        return this.domain.container;
     }
 }
 

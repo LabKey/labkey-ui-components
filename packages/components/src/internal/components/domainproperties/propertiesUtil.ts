@@ -39,17 +39,17 @@ function isLegalNameChar(ch: string, first: boolean): boolean {
 
 export function isFieldPartiallyLocked(lockType: string): boolean {
     // with partially locked can't change name and type, but can change other properties
-    return lockType == DOMAIN_FIELD_PARTIALLY_LOCKED;
+    return lockType === DOMAIN_FIELD_PARTIALLY_LOCKED;
 }
 
 export function isFieldFullyLocked(lockType: string): boolean {
     // with fully locked, can't change any properties
-    return lockType == DOMAIN_FIELD_FULLY_LOCKED;
+    return lockType === DOMAIN_FIELD_FULLY_LOCKED;
 }
 
 export function isPrimaryKeyFieldLocked(lockType: string): boolean {
     // with PK locked, can't change type or required, but can change other properties
-    return lockType == DOMAIN_FIELD_PRIMARY_KEY_LOCKED;
+    return lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED;
 }
 
 export function generateBulkDeleteWarning(deletabilityInfo, undeletableNames) {
@@ -96,10 +96,10 @@ export function isFieldDeletable(field: DomainField): boolean {
 }
 
 export function getVisibleFieldCount(domain: DomainDesign): number {
-    return domain.fields.filter((field: DomainField) => field.visible).size;
+    return domain.fields.filter(field => field.visible).size;
 }
 
-export function compareStringsAlphabetically(a: string, b: string, direction): number {
+export function compareStringsAlphabetically(a: string, b: string, direction: string): number {
     const aStr = a ? a.toUpperCase() : '';
     const bStr = b ? b.toUpperCase() : '';
     const isAsc = direction === '+';

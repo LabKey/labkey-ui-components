@@ -15,10 +15,11 @@
  */
 import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord, Set } from 'immutable';
 import { normalize, schema } from 'normalizr';
-import { AuditBehaviorTypes, Filter, Query, QueryDOM } from '@labkey/api';
+import { AuditBehaviorTypes, Filter, getServerContext, Query, QueryDOM } from '@labkey/api';
 
 import { getQueryMetadata } from '../global';
 import { resolveKeyFromJson } from '../../public/SchemaQuery';
+import { isSubfolderDataEnabled } from '../app/utils';
 import {
     caseInsensitive,
     QueryColumn,
@@ -390,6 +391,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                     requiredVersion: 17.1,
                     sql: userConfig.sql,
                     saveInSession: userConfig.saveInSession === true,
+                    containerFilter: userConfig.containerFilter ?? getContainerFilter(),
                     success: json => {
                         result = handleSelectRowsResponse(json);
                         schemaQuery = SchemaQuery.create(userConfig.schemaName, json.queryName);
@@ -422,6 +424,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                     method: 'POST',
                     // put on this another parameter!
                     columns: userConfig.columns ? userConfig.columns : '*',
+                    containerFilter: userConfig.containerFilter ?? getContainerFilter(),
                     success: json => {
                         result = handleSelectRowsResponse(json);
                         hasResults = true;
@@ -893,4 +896,27 @@ export function processRequest(response: any, request: any, reject: (reason?: an
     }
 
     return false;
+}
+
+/**
+ * Provides the default ContainerFilter to utilize when requesting data cross-folder.
+ * This ContainerFilter is applied to all `executeSql` and `selectRows` requests made via the methods
+ * provided by `@labkey/components`.
+ * @private
+ */
+export function getContainerFilter(): Query.ContainerFilter {
+    // Check experimental flag to see if cross-folder data support is enabled.
+    if (!isSubfolderDataEnabled()) {
+        return undefined;
+    }
+
+    // When requesting data from a top-level folder context the ContainerFilter filters
+    // "down" the folder hierarchy for data.
+    if (getServerContext().container.parentPath === '/') {
+        return Query.ContainerFilter.currentAndSubfoldersPlusShared;
+    }
+
+    // When requesting data from a sub-folder context the ContainerFilter filters
+    // "up" the folder hierarchy for data.
+    return Query.ContainerFilter.currentPlusProjectAndShared;
 }

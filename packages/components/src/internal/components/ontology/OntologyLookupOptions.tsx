@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode, FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { ConceptModel, DomainField, IFieldChange, LabelHelpTip } from '../../..';
+import { DomainField, IFieldChange, LabelHelpTip } from '../../..';
 import { helpLinkNode, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
@@ -25,6 +25,7 @@ import { fetchParentPaths, getParentsConceptCodePath } from './actions';
 const LEARN_MORE = <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>;
 
 interface Props extends ITypeDependentProps {
+    domainContainerPath: string;
     field: DomainField;
     domainFields: List<DomainField>;
     onMultiChange: (changes: List<IFieldChange>) => void;
@@ -41,13 +42,11 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
         ontologies: [],
     };
 
-    componentDidMount(): void {
-        this.loadData();
-    }
+    componentDidMount = async (): Promise<void> => {
+        const { domainContainerPath } = this.props;
 
-    loadData = async (): Promise<void> => {
         try {
-            const newOntologies = await fetchOntologies();
+            const newOntologies = await fetchOntologies(domainContainerPath);
             this.setState(
                 () => ({
                     loading: false,

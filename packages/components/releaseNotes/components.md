@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.##.0
-*Released*: ## November 2021
+### version 2.101.0
+*Released*: 30 November 2021
 * Add `getContainerFilter()` for resolving default container filter based on folder context.
 * Add `SecurityAPIWrapper` to support fetching containers. This is provided to components via `AppContext`.
 * Specify React hooks exported by `@labkey/components` on a `Hooks` object for easier mocking.

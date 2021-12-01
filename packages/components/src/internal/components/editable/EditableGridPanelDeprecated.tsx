@@ -53,7 +53,7 @@ interface State {
     activeTab: number;
 }
 
-export class EditableGridPanel extends ReactN.Component<Props, State, GlobalAppState> {
+export class EditableGridPanelDeprecated extends ReactN.Component<Props, State, GlobalAppState> {
     constructor(props: Props) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);

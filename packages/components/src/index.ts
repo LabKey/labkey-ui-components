@@ -205,7 +205,7 @@ import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/u
 import { getHelpLink, HELP_LINK_REFERRER, HelpLink, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
 import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './internal/url/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
-import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
+import { EditableGridPanelDeprecated } from './internal/components/editable/EditableGridPanelDeprecated';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridLoader } from './internal/components/editable/EditableGridLoader';
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
@@ -776,7 +776,7 @@ export {
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
     EditableGridLoader,
-    EditableGridPanel,
+    EditableGridPanelDeprecated,
     EditableGridPanelForUpdate,
     EditableGridModal,
     EditorModel,

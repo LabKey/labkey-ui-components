@@ -28,7 +28,7 @@ import {
     capitalizeFirstChar,
     DomainDetails,
     EditableColumnMetadata,
-    EditableGridPanel,
+    EditableGridPanelDeprecated,
     FileAttachmentForm,
     FileSizeLimitProps,
     FormStep,
@@ -895,7 +895,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                 type={this.capTypeTextSingular}
                                 queryInfo={queryGridModel?.queryInfo}
                             />
-                            <EditableGridPanel
+                            <EditableGridPanelDeprecated
                                 addControlProps={{
                                     nounSingular: gridNounSingularCap,
                                     nounPlural: gridNounPluralCap,

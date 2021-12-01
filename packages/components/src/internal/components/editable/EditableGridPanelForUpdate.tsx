@@ -8,7 +8,7 @@ import { capitalizeFirstChar, getUpdatedDataFromGrid } from '../../util/utils';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 
-import { EditableGridPanel } from './EditableGridPanel';
+import { EditableGridPanelDeprecated } from './EditableGridPanelDeprecated';
 
 interface Props {
     model: QueryGridModel | List<QueryGridModel>;
@@ -149,7 +149,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
 
         return (
             <>
-                <EditableGridPanel
+                <EditableGridPanelDeprecated
                     title={`Edit selected ${pluralNoun}`}
                     bsStyle="info"
                     models={model}

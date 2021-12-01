@@ -21,7 +21,7 @@ import { Map } from 'immutable';
 import { Button } from 'react-bootstrap';
 
 import {
-    EditableGridPanel,
+    EditableGridPanelDeprecated,
     handleTabKeyOnTextArea,
     FormStep,
     FormTabs,
@@ -306,7 +306,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                         </Formsy>
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Grid} trackActive={false}>
-                                        <EditableGridPanel
+                                        <EditableGridPanelDeprecated
                                             model={queryGridModelForEditor}
                                             isSubmitting={wizardModel.isSubmitting}
                                             disabled={currentStep !== AssayUploadTabs.Grid}

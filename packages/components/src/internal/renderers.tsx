@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import classNames from 'classnames';
 import { OrderedMap, Map } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
@@ -96,7 +96,7 @@ export function headerCell(
 }
 
 export function headerSelectionCell(
-    handleSelection: any,
+    handleSelection: (event: ChangeEvent<HTMLInputElement>) => void,
     selectedState: GRID_CHECKBOX_OPTIONS,
     disabled: boolean,
     className?

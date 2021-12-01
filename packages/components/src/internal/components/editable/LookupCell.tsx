@@ -18,7 +18,6 @@ import { List, Map } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { modifyCell } from '../../actions';
 import { ValueDescriptor } from '../../models';
 import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { QueryColumn, QuerySelect, SchemaQuery } from '../../..';
@@ -65,11 +64,12 @@ export interface LookupCellProps {
     col: QueryColumn;
     colIdx: number;
     disabled?: boolean;
-    modelId: string;
+    // TODO: Susan maybe changed modifyCell to take multiple values? So should update method signature here?
+    modifyCell: (colIdx: number, rowIdx: number, newValue: ValueDescriptor, mod: MODIFICATION_TYPES) => void;
     rowIdx: number;
-    select: (modelId: string, colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => any;
+    // TODO: should be void function?
+    select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => any;
     values: List<ValueDescriptor>;
-    onCellModify?: () => any;
     filteredLookupValues?: List<string>;
     filteredLookupKeys?: List<any>;
 }
@@ -85,32 +85,25 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         items: any,
         selectedItems: Map<string, any>
     ): void => {
-        const { colIdx, modelId, rowIdx, onCellModify } = this.props;
+        const { colIdx, modifyCell, rowIdx, select } = this.props;
         if (this.isMultiValue()) {
             if (items.length == 0) {
-                modifyCell(modelId, colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
+                modifyCell(colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
             } else {
                 const valueDescriptors = items.map(item => ({ raw: item.value, display: item.label }));
-                modifyCell(modelId, colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
+                modifyCell(colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
             }
         } else {
             modifyCell(
-                modelId,
                 colIdx,
                 rowIdx,
-                [
-                    {
-                        raw: items?.value,
-                        display: items?.label,
-                    },
-                ],
+                [{ raw: items?.value, display: items?.label }],
                 MODIFICATION_TYPES.REPLACE
             );
         }
-        onCellModify?.();
 
         if (!this.isMultiValue()) {
-            this.props.select(modelId, colIdx, rowIdx);
+            select(colIdx, rowIdx);
         }
     };
 

@@ -18,7 +18,6 @@ import { Button, MenuItem, SplitButton } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
-import { LabelHelpTip } from '../../..';
 
 export type PlacementType = 'top' | 'bottom' | 'both';
 
@@ -31,9 +30,9 @@ export interface AddRowsControlProps {
     nounPlural?: string;
     nounSingular?: string;
     addText?: string;
-    onAdd: Function;
+    onAdd: (count: number) => void;
     quickAddText?: string;
-    onQuickAdd?: Function;
+    onQuickAdd?: (count: number) => void; // TODO: appears to be unused
     placement?: PlacementType;
     wrapperClass?: string;
     invalidCountMsg?: string;
@@ -207,7 +206,7 @@ interface RightClickToggleProps {
     bsRole?: any;
     onClick?: any;
 }
-
+// TODO: unused, remove
 export class RightClickToggle extends React.Component<RightClickToggleProps, any> {
     constructor(props) {
         super(props);

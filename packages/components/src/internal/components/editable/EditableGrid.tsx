@@ -13,42 +13,64 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { createRef, ReactNode, RefObject } from 'react';
-import ReactN from 'reactn';
+import classNames from 'classnames';
+import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode } from 'react';
 import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import { List, Map, OrderedMap, Set } from 'immutable';
-import $ from 'jquery';
 
 import {
     addRows,
     addRowsPerPivotValue,
     beginDrag,
-    clearSelection,
     copyEvent,
     endDrag,
+    genCellKey,
     inDrag,
     pasteEvent,
-    removeRow,
-    removeRows,
-    select,
     updateGridFromBulkForm,
 } from '../../actions';
-import { getQueryGridModel, GlobalAppState } from '../../global';
 
 import { headerSelectionCell } from '../../renderers';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
-import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, MAX_EDITABLE_GRID_ROWS } from '../../constants';
-import { Alert, DeleteIcon, Grid, GridColumn, LoadingSpinner, QueryColumn, QueryGridModel } from '../../..';
+import {
+    GRID_CHECKBOX_OPTIONS,
+    GRID_EDIT_INDEX,
+    GRID_SELECTION_INDEX,
+    MAX_EDITABLE_GRID_ROWS,
+    MODIFICATION_TYPES,
+    SELECTION_TYPES,
+} from '../../constants';
+import { Alert, cancelEvent, DeleteIcon, Grid, GridColumn, Key, QueryColumn, QueryInfo } from '../../..';
 
-import { blurActiveElement, capitalizeFirstChar, caseInsensitive } from '../../util/utils';
+import { blurActiveElement, capitalizeFirstChar, caseInsensitive, not } from '../../util/utils';
 
-import { EditorModel, ValueDescriptor } from '../../models';
+import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from '../../models';
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { Cell } from './Cell';
 import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
+
+function isCellEmpty(values: List<ValueDescriptor>): boolean {
+    return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
+}
+
+function moveDown(colIdx: number, rowIdx: number): { colIdx: number; rowIdx: number } {
+    return { colIdx, rowIdx: rowIdx + 1 };
+}
+
+function moveLeft(colIdx: number, rowIdx: number): { colIdx: number; rowIdx: number } {
+    return { colIdx: colIdx - 1, rowIdx };
+}
+
+function moveRight(colIdx: number, rowIdx: number): { colIdx: number; rowIdx: number } {
+    return { colIdx: colIdx + 1, rowIdx };
+}
+
+function moveUp(colIdx: number, rowIdx: number): { colIdx: number; rowIdx: number } {
+    return { colIdx, rowIdx: rowIdx - 1 };
+}
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
@@ -67,13 +89,17 @@ const COUNT_COL = new GridColumn({
 // the column index for cell values and cell messages does not include either the selection
 // column or the row number column, so we adjust the value passed to <Cell> to accommodate.
 function inputCellFactory(
-    model: QueryGridModel,
+    queryInfo: QueryInfo,
     editorModel: EditorModel,
-    allowSelection?: boolean,
-    hideCountCol?: boolean,
-    columnMetadata?: EditableColumnMetadata,
-    readonlyRows?: List<any>,
-    onCellModify?: () => any
+    allowSelection: boolean,
+    hideCountCol: boolean,
+    columnMetadata: EditableColumnMetadata,
+    readonlyRows: List<any>,
+    selectCell: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void,
+    modifyCell: (colIdx: number, rowIdx: number, newValue: ValueDescriptor, mod: MODIFICATION_TYPES) => void,
+    focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void,
+    clearSelection: () => void,
+    inDrag_: () => boolean
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
         let colOffset = 0;
@@ -81,13 +107,12 @@ function inputCellFactory(
         if (!hideCountCol) colOffset += 1;
 
         const colIdx = cn - colOffset;
-
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
-        let isReadonlyRow = false,
-            isReadonlyCell = false;
+        let isReadonlyRow = false;
+        let isReadonlyCell = false;
 
-        if (!isReadonlyCol && model && (readonlyRows || columnMetadata?.isReadOnlyCell)) {
-            const keyCols = model.getKeyColumns();
+        if (!isReadonlyCol && (readonlyRows || columnMetadata?.isReadOnlyCell)) {
+            const keyCols = queryInfo.getPkCols();
             if (keyCols.size == 1) {
                 const key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
                 if (readonlyRows) isReadonlyRow = key && readonlyRows.contains(key);
@@ -103,19 +128,22 @@ function inputCellFactory(
 
         return (
             <Cell
+                clearSelection={clearSelection}
                 col={c.raw}
                 colIdx={colIdx}
+                inDrag={inDrag_}
                 key={inputCellKey(c.raw, row)}
-                modelId={model.getId()}
                 placeholder={columnMetadata ? columnMetadata.placeholder : undefined}
                 readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
                 rowIdx={rn}
+                focusCell={focusCell}
                 focused={editorModel ? editorModel.isFocused(colIdx, rn) : false}
                 message={editorModel ? editorModel.getMessage(colIdx, rn) : undefined}
+                modifyCell={modifyCell}
+                selectCell={selectCell}
                 selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
                 selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
                 values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
-                onCellModify={onCellModify}
                 filteredLookupValues={columnMetadata ? columnMetadata.filteredLookupValues : undefined}
                 filteredLookupKeys={columnMetadata ? columnMetadata.filteredLookupKeys : undefined}
             />
@@ -151,51 +179,67 @@ export interface BulkAddData {
     validationMsg?: ReactNode;
 }
 
-export interface EditableGridProps {
+export interface SharedEditableGridProps {
+    addControlProps?: Partial<AddRowsControlProps>;
     allowAdd?: boolean;
     allowBulkAdd?: boolean;
     allowBulkRemove?: boolean;
     allowBulkUpdate?: boolean;
     allowFieldDisable?: boolean;
-    bordered?: boolean;
-    onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData;
-    bulkAddProps?: Partial<QueryInfoFormProps>;
-    bulkUpdateProps?: Partial<QueryInfoFormProps>;
-    condensed?: boolean;
-    addControlProps?: Partial<AddRowsControlProps>;
     allowRemove?: boolean;
+    bordered?: boolean;
+    bulkAddProps?: Partial<QueryInfoFormProps>;
     bulkAddText?: string;
     bulkRemoveText?: string;
+    bulkUpdateProps?: Partial<QueryInfoFormProps>;
     bulkUpdateText?: string;
     columnMetadata?: Map<string, EditableColumnMetadata>;
+    condensed?: boolean;
     disabled?: boolean;
-    forUpdate?: boolean;
-    readOnlyColumns?: List<string>;
-    removeColumnTitle?: string;
-    notDeletable?: List<any>; // list of key values that cannot be deleted.
-    readonlyRows?: List<any>; // list of key values for rows that are readonly.
-    striped?: boolean;
-    initialEmptyRowCount?: number;
-    model: QueryGridModel;
-    isSubmitting?: boolean;
-    onRowCountChange?: (rowCount?: number) => any;
     emptyGridMsg?: string;
-    maxTotalRows?: number;
+    forUpdate?: boolean;
+    insertColumns?: List<QueryColumn>;
     hideCountCol?: boolean;
+    isSubmitting?: boolean;
+    maxRows?: number;
+    notDeletable?: List<any>; // list of key values that cannot be deleted.
+    processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
+    readOnlyColumns?: List<string>;
+    readonlyRows?: List<any>; // list of key values for rows that are readonly.
+    removeColumnTitle?: string;
     rowNumColumn?: GridColumn;
-    onCellModify?: () => any;
-    getInsertColumns?: () => List<QueryColumn>;
-    getUpdateColumns?: () => List<QueryColumn>;
+    striped?: boolean;
+    updateColumns?: List<QueryColumn>;
+}
+
+export interface EditableGridProps extends SharedEditableGridProps {
+    data?: Map<any, Map<string, any>>;
+    dataKeys?: List<any>;
+    editorModel: EditorModel;
+    error: string;
+    onChange: (
+        editorModelChanges: Partial<EditorModelProps>,
+        dataKeys?: List<any>,
+        data?: Map<any, Map<string, any>>
+    ) => void;
+    queryInfo: QueryInfo;
 }
 
 export interface EditableGridState {
-    selected: Set<string>;
+    selected: Set<number>;
     selectedState: GRID_CHECKBOX_OPTIONS;
     showBulkAdd: boolean;
     showBulkUpdate: boolean;
+    showMask: boolean;
 }
 
-export class EditableGrid extends ReactN.PureComponent<EditableGridProps, EditableGridState, GlobalAppState> {
+// TODO: move paste events and related code into this component so we can remove them from actions.ts. This can probably
+//  be postponed though, we're far along enough to start work on a QM version of EditableGridPanel, it should only be
+//  done first if we know for sure it will assist with merging with Susan's work which as not been confirmed. We could
+//  confirm it by starting a merge and see if it makes merging other actions easier, if so back out of the merge, move
+//  the actions, then do the merge.
+
+export class EditableGrid extends PureComponent<EditableGridProps, EditableGridState> {
     static defaultProps = {
         allowAdd: true,
         allowBulkAdd: false,
@@ -216,7 +260,6 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         condensed: false,
         disabled: false,
         isSubmitting: false,
-        initialEmptyRowCount: 1,
         striped: false,
         maxTotalRows: MAX_EDITABLE_GRID_ROWS,
         hideCountCol: false,
@@ -224,159 +267,328 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
     };
 
     private maskDelay: number;
-    private readonly table: RefObject<any>;
-    private readonly wrapper: RefObject<any>;
 
     constructor(props: EditableGridProps) {
-        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
-
-        this.table = createRef();
-        this.wrapper = createRef();
-
         this.state = {
-            selected: Set<string>(),
+            selected: Set<number>(),
             selectedState: GRID_CHECKBOX_OPTIONS.NONE,
             showBulkAdd: false,
             showBulkUpdate: false,
+            showMask: false,
         };
     }
 
-    UNSAFE_componentWillMount(): void {
-        this.initModel(this.props);
-    }
-
-    UNSAFE_componentWillReceiveProps(nextProps: EditableGridProps): void {
-        this.initModel(nextProps);
-    }
-
-    initModel = (props: EditableGridProps): void => {
-        const { initialEmptyRowCount } = props;
-        const model = this.getModel(props);
-
-        if (model.isLoaded && !model.isError && model.data.size === 0 && this.props.initialEmptyRowCount > 0) {
-            addRows(model, initialEmptyRowCount);
-            this.onRowCountChange();
-        }
-    };
-
-    onRowCountChange = (): void => {
-        const { onRowCountChange } = this.props;
-        if (onRowCountChange) {
-            onRowCountChange();
-        }
-        const editorModel = this.getEditorModel();
-        if (editorModel.rowCount === 0 && this.props.initialEmptyRowCount > 0) {
-            addRows(this.getModel(this.props), this.props.initialEmptyRowCount);
-        }
-    };
-
     componentDidMount() {
-        document.addEventListener('click', this.onDocumentClick);
         document.addEventListener('copy', this.onCopy);
         document.addEventListener('paste', this.onPaste);
     }
 
     componentWillUnmount() {
-        document.removeEventListener('click', this.onDocumentClick);
         document.removeEventListener('copy', this.onCopy);
         document.removeEventListener('paste', this.onPaste);
     }
 
-    select = (row: Map<string, any>, evt): void => {
-        const key = row.get(GRID_EDIT_INDEX);
-        let selected = this.state.selected;
-        if (evt.currentTarget.checked) {
-            selected = selected.add(key);
-        } else {
-            selected = selected.remove(key);
-        }
-        let selectedState;
-        if (selected.size === 0) selectedState = GRID_CHECKBOX_OPTIONS.NONE;
-        else if (this.getModel(this.props).dataIds.size === selected.size) selectedState = GRID_CHECKBOX_OPTIONS.ALL;
-        else selectedState = GRID_CHECKBOX_OPTIONS.SOME;
+    select = (row: Map<string, any>, event: ChangeEvent<HTMLInputElement>): void => {
+        const checked = event.currentTarget.checked;
+
+        this.setState((state): EditableGridState => {
+            const { dataKeys } = this.props;
+            const key = row.get(GRID_EDIT_INDEX);
+            let selected = state.selected;
+
+            if (checked) {
+                selected = selected.add(key);
+            } else {
+                selected = selected.remove(key);
+            }
+
+            let selectedState;
+
+            if (selected.size === 0) {
+                selectedState = GRID_CHECKBOX_OPTIONS.NONE;
+            } else if (dataKeys.size === selected.size) {
+                selectedState = GRID_CHECKBOX_OPTIONS.ALL;
+            } else {
+                selectedState = GRID_CHECKBOX_OPTIONS.SOME;
+            }
+
+            return { ...state, selected, selectedState };
+        });
+    };
+
+    selectAll = (evt: ChangeEvent<HTMLInputElement>): void => {
+        const { dataKeys } = this.props;
+        const selected = evt.currentTarget.checked === true && this.state.selectedState !== GRID_CHECKBOX_OPTIONS.ALL;
         this.setState(() => {
             return {
-                selected,
-                selectedState,
+                selected: selected ? Set<number>(dataKeys.map((v, i) => i, Set<number>())) : Set<number>(),
+                selectedState: selected ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE,
             };
         });
     };
 
-    selectAll = (evt): void => {
-        const model = this.getModel(this.props);
-        if (model) {
-            const selected =
-                evt.currentTarget.checked === true && this.state.selectedState !== GRID_CHECKBOX_OPTIONS.ALL;
-            this.setState(() => {
-                return {
-                    selected: selected ? Set<string>(model.dataIds.toArray()) : Set<string>(),
-                    selectedState: selected ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE,
-                };
-            });
+    getColumns = (): List<QueryColumn> => {
+        const { editorModel, forUpdate, insertColumns, queryInfo, readOnlyColumns, updateColumns } = this.props;
+        return editorModel.getColumns(queryInfo, forUpdate, readOnlyColumns, insertColumns, updateColumns);
+    };
+
+    focusCell = (colIdx: number, rowIdx: number, clearValue?: boolean): void => {
+        const { editorModel, onChange } = this.props;
+        const cellKey = genCellKey(colIdx, rowIdx);
+        const changes: Partial<EditorModel> = {
+            cellMessages: editorModel.cellMessages.remove(cellKey),
+            focusColIdx: colIdx,
+            focusRowIdx: rowIdx,
+            focusValue: editorModel.getIn(['cellValues', cellKey]),
+            selectedColIdx: colIdx,
+            selectedRowIdx: rowIdx,
+        };
+
+        if (clearValue) {
+            changes.cellValues = editorModel.cellValues.set(cellKey, List<ValueDescriptor>());
+        }
+
+        onChange(changes);
+    };
+
+    clearSelection = (): void => {
+        const { onChange } = this.props;
+        onChange({ selectedColIdx: -1, selectedRowIdx: -1 });
+    };
+
+    applySelection = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES): Partial<EditorModel> => {
+        const { editorModel } = this.props;
+        const { colCount, rowCount } = editorModel;
+        let selectionCells = Set<string>();
+        const hasSelection = editorModel.hasSelection();
+        let selectedColIdx = colIdx;
+        let selectedRowIdx = rowIdx;
+
+        switch (selection) {
+            case SELECTION_TYPES.ALL:
+                for (let c = 0; c < colCount; c++) {
+                    for (let r = 0; r < rowCount; r++) {
+                        selectionCells = selectionCells.add(genCellKey(c, r));
+                    }
+                }
+                break;
+            case SELECTION_TYPES.AREA:
+                selectedColIdx = editorModel.selectedColIdx;
+                selectedRowIdx = editorModel.selectedRowIdx;
+
+                if (hasSelection) {
+                    const upperLeft = [Math.min(selectedColIdx, colIdx), Math.min(selectedRowIdx, rowIdx)];
+                    const bottomRight = [Math.max(selectedColIdx, colIdx), Math.max(selectedRowIdx, rowIdx)];
+                    const maxColumn = Math.min(bottomRight[0], colCount - 1);
+                    const maxRow = Math.min(bottomRight[1], rowCount - 1);
+
+                    for (let c = upperLeft[0]; c <= maxColumn; c++) {
+                        for (let r = upperLeft[1]; r <= maxRow; r++) {
+                            selectionCells = selectionCells.add(genCellKey(c, r));
+                        }
+                    }
+                }
+                break;
+            case SELECTION_TYPES.SINGLE:
+                selectionCells = editorModel.selectionCells.add(genCellKey(colIdx, rowIdx));
+                break;
+        }
+
+        if (selectionCells.size > 0) {
+            // if a cell was previously selected and there are remaining selectionCells then mark the previously
+            // selected cell as in "selection"
+            if (hasSelection) {
+                selectionCells = selectionCells.add(genCellKey(editorModel.selectedColIdx, editorModel.selectedRowIdx));
+            }
+        }
+
+        return { selectedColIdx, selectedRowIdx, selectionCells };
+    };
+
+    selectCell = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean): void => {
+        const { editorModel, onChange } = this.props;
+        const { cellValues, colCount, focusValue, rowCount } = editorModel;
+
+        if (colIdx < 0 || rowIdx < 0 || colIdx > colCount) {
+            // out of bounds, do nothing
+            return;
+        }
+
+        // 33855: select last row
+        if (rowIdx === rowCount) {
+            rowIdx = rowIdx - 1;
+        }
+
+        if (rowIdx < rowCount) {
+            const changes: Partial<EditorModel> = {
+                focusColIdx: -1,
+                focusRowIdx: -1,
+                ...this.applySelection(colIdx, rowIdx, selection),
+            };
+
+            if (resetValue) {
+                changes.focusValue = undefined;
+                changes.cellValues = cellValues.set(genCellKey(colIdx, rowIdx), focusValue);
+            }
+
+            onChange(changes);
         }
     };
 
-    getColumns = (): List<QueryColumn> => {
-        const { forUpdate, readOnlyColumns, getInsertColumns, getUpdateColumns } = this.props;
+    modifyCell = (colIdx: number, rowIdx: number, newValue: ValueDescriptor, mod: MODIFICATION_TYPES): void => {
+        const { editorModel, onChange } = this.props;
+        const { cellMessages, cellValues } = editorModel;
+        const cellKey = genCellKey(colIdx, rowIdx);
+        const keyPath = ['cellValues', cellKey];
+        const changes: Partial<EditorModel> = { cellMessages: cellMessages.delete(cellKey) };
 
-        const model = this.getModel(this.props);
-        return this.getEditorModel().getColumns(model, forUpdate, readOnlyColumns, getInsertColumns, getUpdateColumns);
+        if (mod === MODIFICATION_TYPES.ADD) {
+            const values: List<ValueDescriptor> = editorModel.getIn(keyPath);
+
+            if (values !== undefined) {
+                changes.cellValues = cellValues.set(cellKey, values.push(newValue));
+            } else {
+                changes.cellValues = cellValues.set(cellKey, List([newValue]));
+            }
+        } else if (mod === MODIFICATION_TYPES.REPLACE) {
+            changes.cellValues = cellValues.set(cellKey, List([newValue]));
+        } else if (mod === MODIFICATION_TYPES.REMOVE) {
+            let values: List<ValueDescriptor> = editorModel.getIn(keyPath);
+            const idx = values.findIndex(vd => vd.display === newValue.display);
+
+            if (idx > -1) {
+                values = values.remove(idx);
+            }
+
+            changes.cellValues = cellValues.set(cellKey, values);
+        } else if (mod == MODIFICATION_TYPES.REMOVE_ALL) {
+            if (editorModel.selectionCells.size > 0) {
+                // Remove all values and messages for the selected cells
+                changes.cellValues = editorModel.cellValues.reduce((result, value, key) => {
+                    if (editorModel.selectionCells.contains(key)) {
+                        return result.set(key, List());
+                    }
+                    return result.set(key, value);
+                }, Map<string, List<ValueDescriptor>>());
+                changes.cellMessages = editorModel.cellMessages.reduce((result, value, key) => {
+                    if (editorModel.selectionCells.contains(key)) {
+                        return result.remove(key);
+                    }
+                    return result.set(key, value);
+                }, Map<string, CellMessage>());
+            } else {
+                changes.cellValues = cellValues.set(cellKey, List());
+            }
+        }
+
+        onChange(changes);
     };
+
+    removeRows = (dataIdIndexes: Set<number>): void => {
+        const { dataKeys, editorModel, onChange } = this.props;
+        let deletedIds = Set<number>();
+        const updatedKeys = this.props.dataKeys.filter((_, i) => !dataIdIndexes.has(i)).toList();
+        const updatedData = this.props.data.reduce((result, value, key) => {
+            if (updatedKeys.has(key)) {
+                return result.set(key, value);
+            }
+
+            deletedIds = deletedIds.add(key);
+            return result;
+        }, Map<any, Map<string, any>>());
+        const cellReducer = (result, value, cellKey) => {
+            const [colIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
+
+            // If this value is part of a deleted row don't include it in the result.
+            if (dataIdIndexes.has(oldRowIdx)) return result;
+
+            const key = dataKeys.get(oldRowIdx);
+            const newRowIdx = updatedKeys.indexOf(key);
+            return result.set(genCellKey(colIdx, newRowIdx), value);
+        };
+        const cellMessages = editorModel.cellMessages.reduce(cellReducer, Map<string, CellMessage>());
+        const cellValues = editorModel.cellValues.reduce(cellReducer, Map<string, ValueDescriptor>());
+        const editorModelChanges = {
+            deletedIds: editorModel.deletedIds.merge(deletedIds),
+            focusColIdx: -1,
+            focusRowIdx: -1,
+            rowCount: editorModel.rowCount - dataIdIndexes.size,
+            selectedColIdx: -1,
+            selectedRowIdx: -1,
+            selectionCells: Set<string>(),
+            cellMessages,
+            cellValues,
+        };
+
+        onChange(editorModelChanges, updatedKeys, updatedData);
+
+        this.setState(() => ({
+            selected: Set<number>(),
+            selectedState: GRID_CHECKBOX_OPTIONS.NONE,
+        }));
+    };
+
+    removeSelected = (): void => {
+        this.removeRows(this.state.selected);
+    };
+
+    getLoweredColumnMetadata = (): Map<string, EditableColumnMetadata> =>
+        this.props.columnMetadata?.reduce(
+            (result, value, key) => result.set(key.toLowerCase(), value),
+            Map<string, EditableColumnMetadata>()
+        );
 
     generateColumns = (): List<GridColumn> => {
         const {
             allowBulkRemove,
             allowBulkUpdate,
             allowRemove,
+            editorModel,
             hideCountCol,
+            queryInfo,
             rowNumColumn,
             readonlyRows,
-            onCellModify,
         } = this.props;
-        const model = this.getModel(this.props);
-        const editorModel = this.getEditorModel();
         let gridColumns = List<GridColumn>();
 
         if (allowBulkRemove || allowBulkUpdate) {
             const selColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,
                 title: '&nbsp;',
-                cell: (selected: boolean, row) => {
-                    return (
-                        <input
-                            style={{ margin: '0 8px' }}
-                            checked={this.state.selected.contains(row.get(GRID_EDIT_INDEX))}
-                            type="checkbox"
-                            onChange={this.select.bind(this, row)}
-                        />
-                    );
-                },
+                cell: (selected: boolean, row) => (
+                    <input
+                        style={{ margin: '0 8px' }}
+                        checked={this.state.selected.contains(row.get(GRID_EDIT_INDEX))}
+                        type="checkbox"
+                        onChange={this.select.bind(this, row)}
+                    />
+                ),
             });
             gridColumns = gridColumns.push(selColumn);
         }
         if (!hideCountCol) gridColumns = gridColumns.push(rowNumColumn ? rowNumColumn : COUNT_COL);
 
-        const lowerColumnMetadata = this.props.columnMetadata
-            ? this.props.columnMetadata.reduce((lowerColumnMetadata, value, key) => {
-                  return lowerColumnMetadata.set(key.toLowerCase(), value);
-              }, Map<string, EditableColumnMetadata>())
-            : undefined;
+        const loweredColumnMetadata = this.getLoweredColumnMetadata();
 
         this.getColumns().forEach(qCol => {
-            const metadata = lowerColumnMetadata.get(qCol.fieldKey.toLowerCase());
+            const metadata = loweredColumnMetadata.get(qCol.fieldKey.toLowerCase());
             const metaCaption = metadata?.caption;
             gridColumns = gridColumns.push(
                 new GridColumn({
                     align: qCol.align,
                     cell: inputCellFactory(
-                        model,
+                        queryInfo,
                         editorModel,
                         allowBulkRemove || allowBulkUpdate,
                         hideCountCol,
                         metadata,
                         readonlyRows,
-                        onCellModify
+                        this.selectCell,
+                        this.modifyCell,
+                        this.focusCell,
+                        this.clearSelection,
+                        this.inDrag
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,
@@ -394,30 +606,24 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                     title: this.props.removeColumnTitle,
                     width: 45,
                     cell: (d, row: Map<string, any>, c, rn) => {
-                        const keyCols = model.getKeyColumns();
+                        const keyCols = queryInfo.getPkCols();
+                        const size = keyCols.size;
                         let canDelete = true;
-                        if (keyCols.size == 1) {
+
+                        if (size === 1) {
                             const key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
                             canDelete = !key || !this.props.notDeletable.contains(key);
                         } else {
                             console.warn(
-                                'Preventing deletion for models with ' +
-                                    keyCols.size +
-                                    ' keys is not currently supported.'
+                                `Preventing deletion for models with ${size} keys is not currently supported.`
                             );
                         }
 
-                        return canDelete ? (
+                        return (
                             <td key={'delete' + rn}>
-                                <DeleteIcon
-                                    onDelete={event => {
-                                        removeRow(model, d, rn);
-                                        this.onRowCountChange();
-                                    }}
-                                />
+                                {canDelete && <DeleteIcon onDelete={() => this.removeRows(Set([rn]))} />}
+                                {!canDelete && <>&nbsp;</>}
                             </td>
-                        ) : (
-                            <td key={'delete' + rn}>&nbsp;</td>
                         );
                     },
                 })
@@ -429,37 +635,29 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
 
     renderColumnHeader = (col: GridColumn, metadataKey: string, required?: boolean, format?: string): ReactNode => {
         const label = col.title;
-        const lowerColumnMetadata = this.props.columnMetadata
-            ? this.props.columnMetadata.reduce((lowerColumnMetadata, value, key) => {
-                  return lowerColumnMetadata.set(key.toLowerCase(), value);
-              }, Map<string, EditableColumnMetadata>())
+        const loweredColumnMetadata = this.getLoweredColumnMetadata();
+        const metadata = loweredColumnMetadata?.has(metadataKey.toLowerCase())
+            ? loweredColumnMetadata.get(metadataKey.toLowerCase())
             : undefined;
-        const metadata =
-            lowerColumnMetadata && lowerColumnMetadata.has(metadataKey.toLowerCase())
-                ? lowerColumnMetadata.get(metadataKey.toLowerCase())
-                : undefined;
-        const overlay =
-            metadata?.toolTip || format ? (
-                <OverlayTrigger
-                    placement="bottom"
-                    overlay={
-                        <Popover id={'popover-' + label} bsClass="popover">
-                            {metadata?.toolTip}
-                            {format && <div>Display Format: {format}</div>}
-                        </Popover>
-                    }
-                >
-                    <i className="fa fa-question-circle" />
-                </OverlayTrigger>
-            ) : undefined;
+        const showOverlay = metadata?.toolTip || format;
         return (
             <>
                 {label}
                 {required && <span className="required-symbol"> *</span>}
-                {overlay && (
+                {showOverlay && (
                     <>
                         &nbsp;
-                        {overlay}
+                        <OverlayTrigger
+                            placement="bottom"
+                            overlay={
+                                <Popover id={'popover-' + label} bsClass="popover">
+                                    {metadata?.toolTip}
+                                    {format && <div>Display Format: {format}</div>}
+                                </Popover>
+                            }
+                        >
+                            <i className="fa fa-question-circle" />
+                        </OverlayTrigger>
                     </>
                 )}
             </>
@@ -467,20 +665,22 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
     };
 
     headerCell = (col: GridColumn): ReactNode => {
-        const model = this.getModel(this.props);
-        if (
-            (this.props.allowBulkRemove || this.props.allowBulkUpdate) &&
-            col.index.toLowerCase() == GRID_SELECTION_INDEX
-        ) {
+        const { allowBulkRemove, allowBulkUpdate, queryInfo } = this.props;
+
+        if ((allowBulkRemove || allowBulkUpdate) && col.index.toLowerCase() == GRID_SELECTION_INDEX) {
             return headerSelectionCell(this.selectAll, this.state.selectedState, false);
         }
-        if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
-            const qColumn = model.queryInfo.getColumn(col.index);
+
+        if (queryInfo.getColumn(col.index)) {
+            const qColumn = queryInfo.getColumn(col.index);
             return this.renderColumnHeader(col, qColumn.fieldKey, qColumn.required, qColumn.format);
         }
+
         if (col && col.showHeader) {
             return this.renderColumnHeader(col, col.title, false);
         }
+
+        return null;
     };
 
     hideMask = (): void => {
@@ -488,64 +688,143 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         this.toggleMask(false);
     };
 
-    onDocumentClick = (event: any): void => {
-        const { disabled } = this.props;
-        const model = this.getModel(this.props);
+    inDrag = (): boolean => inDrag(this.props.editorModel.id);
 
-        if (
-            !disabled &&
-            this.table &&
-            this.table.current &&
-            !$.contains(this.table.current, event.target) &&
-            !$(event.target).parent('.cell-menu') &&
-            !inDrag(model.getId())
-        ) {
-            clearSelection(model.getId());
+    onCopy = (event: ClipboardEvent): void => {
+        const { editorModel, queryInfo } = this.props;
+        if (!this.props.disabled) {
+            copyEvent(editorModel, queryInfo.getInsertColumns(), event);
         }
     };
 
-    onCopy = (event: any): void => {
-        if (!this.props.disabled) {
-            copyEvent(this.props.model.getId(), event);
+    onKeyDown = (event: React.KeyboardEvent<HTMLElement>): void => {
+        const { disabled, editorModel } = this.props;
+
+        if (disabled || editorModel.hasFocus()) {
+            return;
+        }
+
+        const colIdx = editorModel.selectedColIdx;
+        const rowIdx = editorModel.selectedRowIdx;
+        let nextCol;
+        let nextRow;
+
+        switch (event.key) {
+            case Key.ARROW_LEFT:
+                if (event.ctrlKey) {
+                    const found = editorModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveLeft);
+                    if (found) {
+                        nextCol = found.colIdx;
+                        nextRow = found.rowIdx;
+                    } else {
+                        nextCol = 0;
+                        nextRow = rowIdx;
+                    }
+                } else {
+                    nextCol = colIdx - 1;
+                    nextRow = rowIdx;
+                }
+                break;
+
+            case Key.ARROW_UP:
+                if (event.ctrlKey) {
+                    const found = editorModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveUp);
+                    if (found) {
+                        nextCol = found.colIdx;
+                        nextRow = found.rowIdx;
+                    } else {
+                        nextCol = colIdx;
+                        nextRow = 0;
+                    }
+                } else {
+                    nextCol = colIdx;
+                    nextRow = rowIdx - 1;
+                }
+                break;
+
+            case Key.ARROW_RIGHT:
+                if (event.ctrlKey) {
+                    const found = editorModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveRight);
+                    if (found) {
+                        nextCol = found.colIdx;
+                        nextRow = found.rowIdx;
+                    } else {
+                        nextCol = editorModel.colCount - 1;
+                        nextRow = rowIdx;
+                    }
+                } else {
+                    nextCol = colIdx + 1;
+                    nextRow = rowIdx;
+                }
+                break;
+
+            case Key.ARROW_DOWN:
+                if (event.ctrlKey) {
+                    const found = editorModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveDown);
+                    if (found) {
+                        nextCol = found.colIdx;
+                        nextRow = found.rowIdx;
+                    } else {
+                        nextCol = colIdx;
+                        nextRow = editorModel.rowCount - 1;
+                    }
+                } else {
+                    nextCol = colIdx;
+                    nextRow = rowIdx + 1;
+                }
+                break;
+
+            case Key.HOME:
+                nextCol = 0;
+                nextRow = rowIdx;
+                break;
+
+            case Key.END:
+                nextCol = editorModel.colCount - 1;
+                nextRow = rowIdx;
+                break;
+
+            default:
+                // Ignore all other keys
+                break;
+        }
+
+        if (nextCol !== undefined && nextRow !== undefined) {
+            cancelEvent(event);
+            this.selectCell(nextCol, nextRow);
         }
     };
 
-    onKeyDown = (event: any): void => {
+    onMouseDown = (event: MouseEvent): void => {
         if (!this.props.disabled) {
-            select(this.props.model.getId(), event);
+            beginDrag(this.props.editorModel, event);
         }
     };
 
-    onMouseDown = (event: any): void => {
+    onMouseUp = (event: MouseEvent): void => {
         if (!this.props.disabled) {
-            beginDrag(this.props.model.getId(), event);
+            endDrag(this.props.editorModel, event);
         }
     };
 
-    onMouseUp = (event: any): void => {
-        if (!this.props.disabled) {
-            endDrag(this.props.model.getId(), event);
-        }
-    };
+    onPaste = async (event: ClipboardEvent): Promise<void> => {
+        const { allowAdd, columnMetadata, data, dataKeys, disabled, editorModel, onChange, queryInfo, readonlyRows } =
+            this.props;
 
-    onPaste = (event: any): void => {
-        if (!this.props.disabled) {
-            const modelId = this.props.model.getId();
-            const beforeRowCount = this.getEditorModel().rowCount;
-            pasteEvent(
-                modelId,
+        if (!disabled) {
+            this.showMask();
+            const changes = await pasteEvent(
+                editorModel,
+                dataKeys,
+                data,
+                queryInfo,
                 event,
-                this.showMask,
-                this.hideMask,
-                this.props.columnMetadata,
-                this.props.readonlyRows,
-                !this.props.allowAdd
+                columnMetadata,
+                readonlyRows,
+                !allowAdd
             );
-            const afterRowCount = this.getEditorModel().rowCount;
-            if (beforeRowCount !== afterRowCount) {
-                this.onRowCountChange();
-            }
-            if (this.props.onCellModify) this.props.onCellModify();
+            this.hideMask();
+            onChange(changes.editorModel, changes.dataKeys, changes.data);
         }
     };
 
@@ -554,21 +833,8 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         this.maskDelay = window.setTimeout(this.toggleMask.bind(this, true), 300);
     };
 
-    toggleMask = (show: boolean): void => {
-        if (this.wrapper && this.wrapper.current) {
-            $(this.wrapper.current).toggleClass('loading-mask', show === true);
-        }
-    };
-
-    onAddRows = (count: number): void => {
-        const model = this.getModel(this.props);
-        const editorModel = this.getEditorModel();
-        let toAdd = count;
-        if (this.props.maxTotalRows && count + editorModel.rowCount > this.props.maxTotalRows) {
-            toAdd = this.props.maxTotalRows - editorModel.rowCount;
-        }
-        addRows(model, toAdd);
-        this.onRowCountChange();
+    toggleMask = (showMask: boolean): void => {
+        this.setState({ showMask });
     };
 
     toggleBulkAdd = (): void => {
@@ -587,61 +853,106 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         );
     };
 
-    getModel(props: EditableGridProps): QueryGridModel {
-        const { model } = props;
-        return getQueryGridModel(model.getId());
-    }
-
-    getEditorModel = (): EditorModel => {
-        const modelId = this.props.model.getId();
-        return this.global.QueryGrid_editors.get(modelId);
+    getSelectedRowIndices = (): List<number> => {
+        return this.state.selected.toList();
     };
 
-    getSelectedRowIndexes = (): List<number> => {
-        const model = this.getModel(this.props);
-        const { selected } = this.state;
+    restoreBulkInsertData = (data: Map<string, any>): Map<string, any> => {
+        const allInsertCols = OrderedMap<string, any>().asMutable();
+        this.props.queryInfo.getInsertColumns().forEach(col => allInsertCols.set(col.name, undefined));
+        return allInsertCols.merge(data).asImmutable();
+    };
 
-        return model.data.reduce((indexes, dataMap, key) => {
-            if (selected.has(key)) {
-                return indexes.push(model.dataIds.indexOf(key));
+    bulkAdd = async (bulkData: OrderedMap<string, any>): Promise<void> => {
+        const { addControlProps, bulkAddProps, editorModel, data, dataKeys, onChange, processBulkData, queryInfo } =
+            this.props;
+        const { nounPlural } = addControlProps;
+        // numItems is a string because we rely on Formsy to grab the value for us (See QueryInfoForm for details). We
+        // need to parseInt the value because we add this variable to other numbers, if it's a string we'll add more
+        // rows than we want because 1 + "1" is "11" in JavaScript.
+        const numItems = parseInt(bulkData.get('numItems'), 10);
+        let pivotKey;
+        let pivotValues;
+
+        if (!numItems) {
+            return Promise.reject({ exception: 'Quantity unknown.  No ' + nounPlural + ' added.' });
+        }
+
+        if (processBulkData) {
+            const processedData = processBulkData(bulkData);
+            if (processedData.validationMsg) {
+                return Promise.reject({ exception: processedData.validationMsg });
             }
-            return indexes;
-        }, List<number>());
+            pivotKey = processedData.pivotKey;
+            pivotValues = processedData.pivotValues;
+        }
+
+        bulkData = bulkData.delete('numItems').delete('creationType');
+
+        if (bulkAddProps.columnFilter) {
+            bulkData = this.restoreBulkInsertData(bulkData);
+        }
+
+        if (pivotKey && pivotValues?.length > 0) {
+            const changes = await addRowsPerPivotValue(
+                editorModel,
+                dataKeys,
+                data,
+                queryInfo.getInsertColumns(),
+                numItems,
+                pivotKey,
+                pivotValues,
+                bulkData
+            );
+            onChange(changes.editorModel, changes.dataKeys, changes.data);
+        } else {
+            const changes = await addRows(editorModel, dataKeys, data, queryInfo.getInsertColumns(), numItems, bulkData);
+            onChange(changes.editorModel, changes.dataKeys, changes.data);
+        }
+
+        // Result of this promise passed to toggleBulkAdd, which doesn't expect anything to be passed
+        return Promise.resolve();
     };
 
-    removeSelectedRows = (): void => {
-        removeRows(this.getModel(this.props), this.getSelectedRowIndexes());
-        this.setState(() => ({
-            selected: Set<string>(),
-            selectedState: GRID_CHECKBOX_OPTIONS.NONE,
-        }));
-        this.onRowCountChange();
+    bulkUpdate = async (updatedData: OrderedMap<string, any>): Promise<void> => {
+        const { editorModel, queryInfo, onChange } = this.props;
+        const selectedIndices = this.getSelectedRowIndices();
+        const editorModelChanges = await updateGridFromBulkForm(editorModel, queryInfo, updatedData, selectedIndices);
+        onChange(editorModelChanges);
+        // The result of this promise is used by toggleBulkUpdate, which doesn't expect anything to be passed
+        return Promise.resolve();
+    };
+
+    addRows = async (count: number): Promise<void> => {
+        const { data, dataKeys, editorModel, onChange, queryInfo } = this.props;
+        const changes = await addRows(editorModel, dataKeys, data, queryInfo.getInsertColumns(), count);
+        onChange(changes.editorModel, changes.dataKeys, changes.data);
     };
 
     getAddControlProps = (): Partial<AddRowsControlProps> => {
-        const { addControlProps, maxTotalRows } = this.props;
-        const editorModel = this.getEditorModel();
-        if (maxTotalRows && editorModel.rowCount + addControlProps.maxCount > maxTotalRows) {
-            return { ...addControlProps, maxTotalCount: maxTotalRows, maxCount: maxTotalRows - editorModel.rowCount };
+        const { addControlProps, editorModel, maxRows } = this.props;
+        if (maxRows && editorModel.rowCount + addControlProps.maxCount > maxRows) {
+            return { ...addControlProps, maxTotalCount: maxRows, maxCount: maxRows - editorModel.rowCount };
         } else {
-            return { ...addControlProps, maxTotalCount: maxTotalRows };
+            return { ...addControlProps, maxTotalCount: maxRows };
         }
     };
 
     renderAddRowsControl = (placement: PlacementType): ReactNode => {
-        const { isSubmitting, maxTotalRows } = this.props;
+        const { editorModel, isSubmitting, maxRows } = this.props;
         return (
             <AddRowsControl
                 {...this.getAddControlProps()}
                 placement={placement}
-                disable={isSubmitting || (maxTotalRows && this.getEditorModel().rowCount >= maxTotalRows)}
-                onAdd={this.onAddRows}
+                disable={isSubmitting || (maxRows && editorModel.rowCount >= maxRows)}
+                onAdd={this.addRows}
             />
         );
     };
 
     renderTopControls = (): ReactNode => {
         const {
+            addControlProps,
             allowAdd,
             allowBulkAdd,
             allowBulkRemove,
@@ -649,120 +960,52 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             bulkAddText,
             bulkRemoveText,
             bulkUpdateText,
-            initialEmptyRowCount,
+            data,
             isSubmitting,
-            addControlProps,
+            maxRows,
         } = this.props;
-        const nounPlural = addControlProps ? addControlProps.nounPlural : 'rows';
-        const editorModel = this.getEditorModel();
+        const nounPlural = addControlProps?.nounPlural ?? 'rows';
         const showAddOnTop = allowAdd && this.getControlsPlacement() !== 'bottom';
-        const noValidSelection =
-            this.state.selected.size === 0 ||
-            (initialEmptyRowCount === 1 && editorModel.rowCount === 1 && !editorModel.hasData());
-        const model = this.getModel(this.props);
-        const canAddRows = !isSubmitting && model.data && model.data.size < this.props.maxTotalRows;
-
-        const removeBtn = (
-            <Button className="control-right" disabled={noValidSelection} onClick={this.removeSelectedRows}>
-                {bulkRemoveText}
-            </Button>
-        );
-
-        const addBtn = (
-            <Button
-                title={
-                    canAddRows
-                        ? 'Add multiple ' + nounPlural + ' with the same values'
-                        : 'The grid contains the maximum number of ' + nounPlural + '.'
-                }
-                disabled={!canAddRows}
-                onClick={this.toggleBulkAdd}
-            >
-                {bulkAddText}
-            </Button>
-        );
-
-        const updateBtn = (
-            <Button className="control-right" disabled={noValidSelection} onClick={this.toggleBulkUpdate}>
-                {bulkUpdateText}
-            </Button>
-        );
+        const invalidSel = this.state.selected.size === 0;
+        const canAddRows = !isSubmitting && data.size < maxRows;
+        const addTitle = canAddRows
+            ? 'Add multiple ' + nounPlural + ' with the same values'
+            : 'The grid contains the maximum number of ' + nounPlural + '.';
 
         return (
             <div className="row QueryGrid-bottom-spacing">
                 {showAddOnTop && <div className="col-sm-3">{this.renderAddRowsControl('top')}</div>}
                 <div className={showAddOnTop ? 'col-sm-9' : 'col-sm-12'}>
-                    {allowBulkAdd && <span className="control-right">{addBtn}</span>}
-                    {allowBulkUpdate && <span className="control-right">{updateBtn}</span>}
-                    {allowBulkRemove && <span className="control-right">{removeBtn}</span>}
+                    {allowBulkAdd && (
+                        <span className="control-right">
+                            <Button title={addTitle} disabled={!canAddRows} onClick={this.toggleBulkAdd}>
+                                {bulkAddText}
+                            </Button>
+                        </span>
+                    )}
+                    {allowBulkUpdate && (
+                        <span className="control-right">
+                            <Button className="control-right" disabled={invalidSel} onClick={this.toggleBulkUpdate}>
+                                {bulkUpdateText}
+                            </Button>
+                        </span>
+                    )}
+                    {allowBulkRemove && (
+                        <span className="control-right">
+                            <Button className="control-right" disabled={invalidSel} onClick={this.removeSelected}>
+                                {bulkRemoveText}
+                            </Button>
+                        </span>
+                    )}
                 </div>
             </div>
         );
     };
 
-    restoreBulkInsertData(model: QueryGridModel, data: Map<string, any>): Map<string, any> {
-        const allInsertCols = OrderedMap<string, any>().asMutable();
-        model.getInsertColumns().forEach(col => allInsertCols.set(col.name, undefined));
-        return allInsertCols.merge(data).asImmutable();
-    }
-
-    bulkAdd = async (data: OrderedMap<string, any>): Promise<any> => {
-        const { addControlProps, bulkAddProps, onBulkAdd } = this.props;
-        const { nounSingular, nounPlural } = addControlProps;
-        const model = this.getModel(this.props);
-
-        const numItems = data.get('numItems');
-
-        if (!numItems) {
-            return new Promise((resolve, reject) => {
-                reject({
-                    exception: 'Quantity unknown.  No ' + nounPlural + ' added.',
-                });
-            });
-        }
-
-        let bulkAddData;
-        let totalItems = 0;
-        if (onBulkAdd) {
-            bulkAddData = onBulkAdd(data);
-            if (bulkAddData.validationMsg) {
-                return new Promise((resolve, reject) => {
-                    reject({
-                        exception: bulkAddData.validationMsg,
-                    });
-                });
-            }
-            totalItems = bulkAddData.totalItems;
-        }
-
-        let updatedData = data.delete('numItems').delete('creationType');
-
-        if (totalItems === 0) totalItems = numItems;
-
-        if (bulkAddProps.columnFilter) {
-            updatedData = this.restoreBulkInsertData(model, updatedData);
-        }
-        if (bulkAddData?.pivotKey && bulkAddData?.pivotValues?.length > 0) {
-            await addRowsPerPivotValue(model, numItems, bulkAddData?.pivotKey, bulkAddData?.pivotValues, updatedData);
-        } else {
-            await addRows(model, numItems, updatedData);
-        }
-        this.onRowCountChange();
-        return new Promise(resolve => {
-            resolve({
-                success: true,
-                message: 'Added ' + totalItems + ' ' + (totalItems > 1 ? nounPlural : nounSingular),
-            });
-        });
-    };
-
     renderBulkAdd = (): ReactNode => {
-        const { addControlProps, allowFieldDisable, bulkAddProps, maxTotalRows } = this.props;
-        const model = this.getModel(this.props);
+        const { addControlProps, allowFieldDisable, bulkAddProps, data, maxRows, queryInfo } = this.props;
         const maxToAdd =
-            maxTotalRows && maxTotalRows - model.data.size < MAX_EDITABLE_GRID_ROWS
-                ? maxTotalRows - model.data.size
-                : MAX_EDITABLE_GRID_ROWS;
+            maxRows && maxRows - data.size < MAX_EDITABLE_GRID_ROWS ? maxRows - data.size : MAX_EDITABLE_GRID_ROWS;
         return (
             <QueryInfoForm
                 allowFieldDisable={allowFieldDisable}
@@ -775,7 +1018,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                 onHide={this.toggleBulkAdd}
                 onCancel={this.toggleBulkAdd}
                 onSuccess={this.toggleBulkAdd}
-                queryInfo={model.queryInfo.getInsertQueryInfo()}
+                queryInfo={queryInfo.getInsertQueryInfo()}
                 header={
                     !!bulkAddProps?.header && <div className="editable-grid__bulk-header">{bulkAddProps.header}</div>
                 }
@@ -788,75 +1031,85 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         );
     };
 
-    editSelectionInGrid = (updatedData: OrderedMap<string, any>): Promise<any> => {
-        const model = this.getModel(this.props);
-
-        return new Promise(resolve => {
-            const updatedGrid = updateGridFromBulkForm(model, updatedData, this.getSelectedRowIndexes());
-            resolve({
-                success: true,
-                updatedGrid,
-            });
-        });
-    };
-
     getControlsPlacement = (): PlacementType => {
         return this.props.addControlProps?.placement ?? 'bottom';
     };
 
+    getGridData = (): List<Map<string, any>> => {
+        // Note: the data here doesn't really matter, except for the GRID_EDIT_INDEX which is used for selection
+        // handlers. We dont' store any real data in the data/dataKeys attributes, instead we rip the actual values out
+        // of the EditorModel in inputCellFactory. This whole component should probably be refactored to not rely on
+        // data/dataKeys at all, but we'd need to figure out how to handle removeRows, which relies on dataKeys, and
+        // EditorModel.getRawData also requires data and datakeys.
+        const { editorModel } = this.props;
+        return List(
+            Array(editorModel.rowCount)
+                .fill(0)
+                .map((_, i) => Map<string, any>({ [GRID_EDIT_INDEX]: i }))
+        );
+    };
+
     render() {
-        const { addControlProps, allowAdd, bordered, bulkUpdateProps, condensed, emptyGridMsg, striped } = this.props;
-        const { showBulkAdd, showBulkUpdate } = this.state;
-        const model = this.getModel(this.props);
+        const {
+            addControlProps,
+            allowAdd,
+            editorModel,
+            error,
+            bordered,
+            bulkUpdateProps,
+            condensed,
+            data,
+            dataKeys,
+            emptyGridMsg,
+            queryInfo,
+            striped,
+        } = this.props;
+        const { showBulkAdd, showBulkUpdate, showMask } = this.state;
+        const wrapperClassName = classNames(EDITABLE_GRID_CONTAINER_CLS, { 'loading-mask': showMask });
 
-        if (!model || !model.isLoaded) {
-            return <LoadingSpinner />;
-        } else if (model.isLoaded) {
-            return (
-                <div>
-                    {this.renderTopControls()}
-                    <div
-                        className={EDITABLE_GRID_CONTAINER_CLS}
-                        onKeyDown={this.onKeyDown}
-                        onMouseDown={this.onMouseDown}
-                        onMouseUp={this.onMouseUp}
-                        ref={this.wrapper}
-                    >
-                        <Grid
-                            bordered={bordered}
-                            calcWidths
-                            cellular
-                            columns={this.generateColumns()}
-                            condensed={condensed}
-                            data={model.getDataEdit()}
-                            emptyText={emptyGridMsg}
-                            headerCell={this.headerCell}
-                            responsive={false}
-                            rowKey={GRID_EDIT_INDEX}
-                            striped={striped}
-                            tableRef={this.table}
-                        />
-                    </div>
-                    {allowAdd && this.getControlsPlacement() !== 'top' && this.renderAddRowsControl('bottom')}
-                    {model.isError && <Alert className="margin-top">{model.message ?? 'Something went wrong.'}</Alert>}
-                    {showBulkAdd && this.renderBulkAdd()}
-                    {showBulkUpdate && (
-                        <BulkAddUpdateForm
-                            model={model}
-                            columnFilter={bulkUpdateProps?.columnFilter}
-                            onCancel={this.toggleBulkUpdate}
-                            onHide={this.toggleBulkUpdate}
-                            onSubmitForEdit={this.editSelectionInGrid}
-                            onSuccess={this.toggleBulkUpdate}
-                            pluralNoun={addControlProps.nounPlural}
-                            selectedRowIndexes={this.getSelectedRowIndexes()}
-                            singularNoun={addControlProps.nounSingular}
-                        />
-                    )}
+        return (
+            <div>
+                {this.renderTopControls()}
+                <div
+                    className={wrapperClassName}
+                    onKeyDown={this.onKeyDown}
+                    onMouseDown={this.onMouseDown}
+                    onMouseUp={this.onMouseUp}
+                >
+                    <Grid
+                        bordered={bordered}
+                        calcWidths
+                        cellular
+                        columns={this.generateColumns()}
+                        condensed={condensed}
+                        data={this.getGridData()}
+                        emptyText={emptyGridMsg}
+                        headerCell={this.headerCell}
+                        responsive={false}
+                        rowKey={GRID_EDIT_INDEX}
+                        striped={striped}
+                    />
                 </div>
-            );
-        }
-
-        return null;
+                {allowAdd && this.getControlsPlacement() !== 'top' && this.renderAddRowsControl('bottom')}
+                {error && <Alert className="margin-top">{error}</Alert>}
+                {showBulkAdd && this.renderBulkAdd()}
+                {showBulkUpdate && (
+                    <BulkAddUpdateForm
+                        data={data}
+                        dataKeys={dataKeys}
+                        editorModel={editorModel}
+                        columnFilter={bulkUpdateProps?.columnFilter}
+                        onCancel={this.toggleBulkUpdate}
+                        onHide={this.toggleBulkUpdate}
+                        onSubmitForEdit={this.bulkUpdate}
+                        onSuccess={this.toggleBulkUpdate}
+                        pluralNoun={addControlProps.nounPlural}
+                        queryInfo={queryInfo}
+                        selectedRowIndexes={this.getSelectedRowIndices()}
+                        singularNoun={addControlProps.nounSingular}
+                    />
+                )}
+            </div>
+        );
     }
 }

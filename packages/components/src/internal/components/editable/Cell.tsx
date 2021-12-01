@@ -19,7 +19,6 @@ import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events';
-import { focusCell, inDrag, modifyCell, selectCell, unfocusCellSelection } from '../../actions';
 import { CellMessage, ValueDescriptor } from '../../models';
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 
@@ -30,19 +29,22 @@ import { getQueryColumnRenderers } from '../../global';
 import { LookupCell, LookupCellProps } from './LookupCell';
 
 interface Props {
+    clearSelection: () => void;
     col: QueryColumn;
     colIdx: number;
-    modelId: string;
+    inDrag: () => boolean;
     name?: string;
     placeholder?: string;
     readOnly?: boolean;
     rowIdx: number;
+    focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void;
     focused?: boolean;
     message?: CellMessage;
+    modifyCell: (colIdx: number, rowIdx: number, newValue: ValueDescriptor, mod: MODIFICATION_TYPES) => void;
+    selectCell: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
     selected?: boolean;
     selection?: boolean;
     values?: List<ValueDescriptor>;
-    onCellModify?: () => any;
     filteredLookupValues?: List<string>;
     filteredLookupKeys?: List<any>;
 }
@@ -73,16 +75,17 @@ export class Cell extends React.PureComponent<Props> {
     }
 
     handleSelectionBlur = (): void => {
-        if (this.props.selected) {
-            unfocusCellSelection(this.props.modelId);
+        const { clearSelection, selected } = this.props;
+
+        if (selected) {
+            clearSelection();
         }
     };
 
     handleBlur = (evt: any): void => {
         clearTimeout(this.changeTO);
-        const { colIdx, modelId, rowIdx, onCellModify } = this.props;
+        const { colIdx, rowIdx, modifyCell } = this.props;
         modifyCell(
-            modelId,
             colIdx,
             rowIdx,
             [
@@ -93,7 +96,6 @@ export class Cell extends React.PureComponent<Props> {
             ],
             MODIFICATION_TYPES.REPLACE
         );
-        if (onCellModify) onCellModify();
     };
 
     handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -101,9 +103,8 @@ export class Cell extends React.PureComponent<Props> {
 
         clearTimeout(this.changeTO);
         this.changeTO = window.setTimeout(() => {
-            const { colIdx, modelId, rowIdx, onCellModify } = this.props;
+            const { colIdx, rowIdx, modifyCell } = this.props;
             modifyCell(
-                modelId,
                 colIdx,
                 rowIdx,
                 [
@@ -114,7 +115,6 @@ export class Cell extends React.PureComponent<Props> {
                 ],
                 MODIFICATION_TYPES.REPLACE
             );
-            if (onCellModify) onCellModify();
         }, 250);
     };
 
@@ -126,12 +126,12 @@ export class Cell extends React.PureComponent<Props> {
         if (this.isReadOnly()) return;
 
         clearTimeout(this.clickTO);
-        const { colIdx, modelId, rowIdx } = this.props;
-        focusCell(modelId, colIdx, rowIdx);
+        const { colIdx, focusCell, rowIdx } = this.props;
+        focusCell(colIdx, rowIdx);
     };
 
     handleKeys = (event: React.KeyboardEvent<HTMLElement>) => {
-        const { colIdx, focused, modelId, rowIdx, selected, onCellModify } = this.props;
+        const { colIdx, focusCell, focused, modifyCell, rowIdx, selectCell, selected } = this.props;
 
         switch (event.keyCode) {
             case KEYS.Alt:
@@ -157,30 +157,29 @@ export class Cell extends React.PureComponent<Props> {
             case KEYS.Delete:
                 if (!focused && selected && !this.isReadOnly()) {
                     cancelEvent(event);
-                    modifyCell(modelId, colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
-                    if (onCellModify) onCellModify();
+                    modifyCell(colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
                 }
                 break;
             case KEYS.Tab:
                 if (selected) {
                     cancelEvent(event);
-                    selectCell(modelId, event.shiftKey ? colIdx - 1 : colIdx + 1, rowIdx);
+                    selectCell(event.shiftKey ? colIdx - 1 : colIdx + 1, rowIdx);
                 }
                 break;
             case KEYS.Enter:
                 // focus takes precedence
                 if (focused) {
                     cancelEvent(event);
-                    selectCell(modelId, colIdx, rowIdx + 1);
+                    selectCell(colIdx, rowIdx + 1);
                 } else if (selected) {
                     cancelEvent(event);
-                    focusCell(modelId, colIdx, rowIdx);
+                    focusCell(colIdx, rowIdx);
                 }
                 break;
             case KEYS.Escape:
                 if (focused) {
                     cancelEvent(event);
-                    selectCell(modelId, colIdx, rowIdx, undefined, true);
+                    selectCell(colIdx, rowIdx, undefined, true);
                 }
                 break;
             default:
@@ -188,34 +187,34 @@ export class Cell extends React.PureComponent<Props> {
                 if (!focused && !isCopy(event) && !isPaste(event)) {
                     if (isSelectAll(event)) {
                         cancelEvent(event);
-                        selectCell(modelId, colIdx, rowIdx, SELECTION_TYPES.ALL);
+                        selectCell(colIdx, rowIdx, SELECTION_TYPES.ALL);
                     } else {
                         // Do not cancel event here, otherwise, key capture will be lost
-                        focusCell(modelId, colIdx, rowIdx, !this.isReadOnly());
+                        focusCell(colIdx, rowIdx, !this.isReadOnly());
                     }
                 }
         }
     };
 
     handleMouseEnter = (event: any): void => {
-        const { colIdx, modelId, rowIdx } = this.props;
+        const { colIdx, inDrag, rowIdx, selectCell } = this.props;
 
-        if (inDrag(modelId)) {
+        if (inDrag()) {
             cancelEvent(event);
-            selectCell(modelId, colIdx, rowIdx, SELECTION_TYPES.AREA);
+            selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA);
         }
     };
 
     handleSelect = (event): void => {
-        const { colIdx, modelId, rowIdx, selected } = this.props;
+        const { colIdx, rowIdx, selectCell, selected } = this.props;
 
         if (event.ctrlKey || event.metaKey) {
-            selectCell(modelId, colIdx, rowIdx, SELECTION_TYPES.SINGLE);
+            selectCell(colIdx, rowIdx, SELECTION_TYPES.SINGLE);
         } else if (event.shiftKey) {
             cancelEvent(event);
-            selectCell(modelId, colIdx, rowIdx, SELECTION_TYPES.AREA);
+            selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA);
         } else if (!selected) {
-            selectCell(modelId, colIdx, rowIdx);
+            selectCell(colIdx, rowIdx);
         }
     };
 
@@ -225,13 +224,13 @@ export class Cell extends React.PureComponent<Props> {
             colIdx,
             focused,
             message,
-            modelId,
             placeholder,
+            modifyCell,
             rowIdx,
+            selectCell,
             selected,
             selection,
             values,
-            onCellModify,
             filteredLookupValues,
             filteredLookupKeys,
         } = this.props;
@@ -300,11 +299,10 @@ export class Cell extends React.PureComponent<Props> {
                 col,
                 colIdx,
                 disabled: this.isReadOnly(),
-                modelId,
+                modifyCell,
                 rowIdx,
                 select: selectCell,
                 values,
-                onCellModify,
                 filteredLookupValues,
                 filteredLookupKeys,
             };

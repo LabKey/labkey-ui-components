@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.102.0
+*Released*: 1 December 2021
+* Rename EditableGridPanel to EditableGridPanelDeprecated
+  * There will be a new version in a future release, and the deprecated version will eventually be removed
+
 ### version 2.101.0
 *Released*: 30 November 2021
 * Add `getContainerFilter()` for resolving default container filter based on folder context.

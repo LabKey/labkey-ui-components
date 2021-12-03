@@ -97,6 +97,16 @@ export function getUnFormattedNumber(n): number {
     return n ? numeral(n).value() : n;
 }
 
+// Issue 44398: see DateUtil.java getJsonDateTimeFormatString(), this function is to match the format, which is
+// provided by the LabKey server for the API response, from a JS Date object
+export function getJsonDateTimeFormatString(date: Date): string {
+    if (!date) return null;
+
+    const dateStr = date.toISOString().split('T')[0];
+    const timeStr = date.toTimeString().split(' ')[0];
+    return dateStr + ' ' + timeStr;
+}
+
 export function generateNameWithTimestamp(name: string): string {
     const date = new Date();
     const dateStr = date.toISOString().split('T')[0];

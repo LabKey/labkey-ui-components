@@ -101,10 +101,7 @@ export function getUnFormattedNumber(n): number {
 // provided by the LabKey server for the API response, from a JS Date object
 export function getJsonDateTimeFormatString(date: Date): string {
     if (!date) return null;
-
-    const dateStr = date.toISOString().split('T')[0];
-    const timeStr = date.toTimeString().split(' ')[0];
-    return dateStr + ' ' + timeStr;
+    return _formatDate(date, 'YYYY-MM-dd HH:mm:ss');
 }
 
 export function generateNameWithTimestamp(name: string): string {

@@ -46,6 +46,7 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
+    NameExpressionsValidationResults,
     QueryInfoLite,
     updateSampleField,
 } from './models';
@@ -367,6 +368,37 @@ export function saveDomain(
                 failure: failureHandler,
             });
         }
+    });
+}
+
+/**
+ * @param domain: DomainDesign to save
+ * @param kind: DomainKind if creating new Domain
+ * @param options: Options for creating new Domain
+ * @return Promise wrapped Domain API call.
+ */
+export function validateDomainNameExpressions(
+    domain: DomainDesign,
+    kind?: string,
+    options?: any
+): Promise<NameExpressionsValidationResults> {
+    return new Promise((resolve, reject) => {
+        function successHandler(response) {
+            resolve({
+                warnings: response['warnings'],
+                errors: response['errors']
+            });
+        }
+
+        Domain.validateNameExpressions({
+            options,
+            domainDesign: DomainDesign.serialize(domain),
+            kind,
+            success: successHandler,
+            failure: error => {
+                reject(error);
+            }
+        });
     });
 }
 

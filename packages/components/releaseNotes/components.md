@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Validate name expressions prior to saving SampleTypeDesinger
+
 ### version 2.102.0
 *Released*: 1 December 2021
 * Rename EditableGridPanel to EditableGridPanelDeprecated

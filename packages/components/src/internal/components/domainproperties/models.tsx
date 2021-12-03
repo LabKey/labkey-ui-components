@@ -1752,3 +1752,8 @@ export interface BulkDeleteConfirmInfo {
     deletableSelectedFields: number[];
     undeletableFields: number[];
 }
+
+export interface NameExpressionsValidationResults {
+    warnings: string[];
+    errors: string[];
+}

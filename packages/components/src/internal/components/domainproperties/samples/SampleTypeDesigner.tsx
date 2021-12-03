@@ -19,7 +19,7 @@ import {
 } from '../../../..';
 
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
-import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
+import {addDomainField, getDomainPanelStatus, saveDomain, validateDomainNameExpressions} from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
 import { DEFAULT_SAMPLE_FIELD_CONFIG } from '../../samples/constants';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
@@ -90,6 +90,8 @@ interface Props {
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
 
     aliquotNamePatternProps?: AliquotNamePatternProps;
+
+    validateNameExpressions?: boolean;
 }
 
 interface State {
@@ -98,6 +100,7 @@ interface State {
     error: React.ReactNode;
     showUniqueIdConfirmation: boolean;
     uniqueIdsConfirmed: boolean;
+    nameExpressionWarnings: string;
 }
 
 class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -112,6 +115,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         useTheme: false,
         showLinkToStudy: false,
         domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'sample type' },
+        validateNameExpressions: true
     };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
@@ -137,6 +141,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             error: undefined,
             showUniqueIdConfirmation: false,
             uniqueIdsConfirmed: undefined,
+            nameExpressionWarnings: undefined
         };
     }
 
@@ -367,6 +372,25 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         );
     };
 
+    onNameExpressionWarningCancel = (): void => {
+        const { setSubmitting } = this.props;
+
+        setSubmitting(false, () => {
+            this.setState({
+                nameExpressionWarnings: undefined
+            });
+        });
+    };
+
+    onNameExpressionWarningConfirm = (): void => {
+        this.setState(
+            () => ({
+                nameExpressionWarnings: undefined
+            }),
+            () => this.saveDomain(true)
+        );
+    };
+
     onFinish = (): void => {
         const { defaultSampleFieldConfig, setSubmitting, metricUnitProps } = this.props;
         const { model, uniqueIdsConfirmed } = this.state;
@@ -407,7 +431,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         }
     };
 
-    saveDomain = async () => {
+    saveDomain = async (hasConfirmedNameExpression?: boolean) => {
         const { beforeFinish, setSubmitting } = this.props;
         const { model } = this.state;
         const {
@@ -422,7 +446,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             autoLinkCategory,
         } = model;
 
-        if (beforeFinish) {
+        if (beforeFinish && !hasConfirmedNameExpression) {
             beforeFinish(model);
         }
 
@@ -452,12 +476,39 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         }
 
         try {
-            if (this.props.validateProperties) {
+            if (!hasConfirmedNameExpression && this.props.validateProperties) {
                 const response = await this.props.validateProperties(details);
                 if (response.error) {
                     const updatedModel = model.set('exception', response.error) as SampleTypeModel;
                     setSubmitting(false, () => {
                         this.setState(() => ({ model: updatedModel }));
+                    });
+                    return;
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            const exception = resolveErrorMessage(error);
+            setSubmitting(false, () => {
+                this.setState(() => ({ model: model.set('exception', exception) as SampleTypeModel }));
+            });
+            return;
+        }
+
+        try {
+            if (this.props.validateNameExpressions && !hasConfirmedNameExpression) {
+                const response = await validateDomainNameExpressions(domainDesign, Domain.KINDS.SAMPLE_TYPE, details);
+                if (response.errors?.length > 0) {
+                    const updatedModel = model.set('exception', response.errors?.join('\n')) as SampleTypeModel;
+                    setSubmitting(false, () => {
+                        this.setState(() => ({ model: updatedModel }));
+                    });
+                    return;
+                }
+                else if (response.warnings?.length > 0) {
+                    // TODO, group by name vs aliquot expression
+                    this.setState({
+                        nameExpressionWarnings: response.warnings?.join('. ')
                     });
                     return;
                 }
@@ -481,10 +532,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             const updatedModel = exception
                 ? (model.set('exception', exception) as SampleTypeModel)
                 : (model.merge({
-                      // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
-                      domain: domain.merge({ domainException: response.domainException }) as DomainDesign,
-                      exception: undefined,
-                  }) as SampleTypeModel);
+                    // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
+                    domain: domain.merge({ domainException: response.domainException }) as DomainDesign,
+                    exception: undefined,
+                }) as SampleTypeModel);
 
             setSubmitting(false, () => {
                 this.setState(() => ({ model: updatedModel }));
@@ -543,7 +594,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             showLinkToStudy,
             aliquotNamePatternProps,
         } = this.props;
-        const { error, model, parentOptions, showUniqueIdConfirmation } = this.state;
+        const { error, model, parentOptions, showUniqueIdConfirmation, nameExpressionWarnings } = this.state;
         const numNewUniqueIdFields = this.getNumNewUniqueIdFields();
         // For non-premium LKSM the showLinkToStudy will be true, but the study module will not be present.
         // We also don't want to always show the link to study even if the study module is available (the LKB case).
@@ -648,6 +699,18 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                         cancelButtonText="Cancel"
                     >
                         {confirmModalMessage}
+                    </ConfirmModal>
+                )}
+                {nameExpressionWarnings && (
+                    <ConfirmModal
+                        title={'Name Expression Warnings'}
+                        onCancel={this.onNameExpressionWarningCancel}
+                        onConfirm={this.onNameExpressionWarningConfirm}
+                        confirmButtonText="Save anyways..."
+                        confirmVariant="success"
+                        cancelButtonText="Cancel"
+                    >
+                        {nameExpressionWarnings}
                     </ConfirmModal>
                 )}
             </BaseDomainDesigner>

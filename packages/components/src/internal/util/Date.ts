@@ -100,7 +100,6 @@ export function getUnFormattedNumber(n): number {
 // Issue 44398: see DateUtil.java getJsonDateTimeFormatString(), this function is to match the format, which is
 // provided by the LabKey server for the API response, from a JS Date object
 export function getJsonDateTimeFormatString(date: Date): string {
-    if (!date) return null;
     return _formatDate(date, 'YYYY-MM-dd HH:mm:ss');
 }
 

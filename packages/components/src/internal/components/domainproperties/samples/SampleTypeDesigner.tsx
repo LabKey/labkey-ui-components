@@ -32,6 +32,7 @@ import { hasModule, isCommunityDistribution } from '../../../app/utils';
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { UniqueIdBanner } from './UniqueIdBanner';
+import { NameExpressionValidationModal } from "../validation/NameExpressionValidationModal";
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -100,7 +101,7 @@ interface State {
     error: React.ReactNode;
     showUniqueIdConfirmation: boolean;
     uniqueIdsConfirmed: boolean;
-    nameExpressionWarnings: string;
+    nameExpressionWarnings: string[];
 }
 
 class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -498,17 +499,13 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         try {
             if (this.props.validateNameExpressions && !hasConfirmedNameExpression) {
                 const response = await validateDomainNameExpressions(domainDesign, Domain.KINDS.SAMPLE_TYPE, details);
-                if (response.errors?.length > 0) {
+                if (response.errors?.length > 0 || response.warnings?.length > 0) {
                     const updatedModel = model.set('exception', response.errors?.join('\n')) as SampleTypeModel;
                     setSubmitting(false, () => {
-                        this.setState(() => ({ model: updatedModel }));
-                    });
-                    return;
-                }
-                else if (response.warnings?.length > 0) {
-                    // TODO, group by name vs aliquot expression
-                    this.setState({
-                        nameExpressionWarnings: response.warnings?.join('. ')
+                        this.setState(() => ({
+                            model: updatedModel,
+                            nameExpressionWarnings: response.warnings
+                        }));
                     });
                     return;
                 }
@@ -701,18 +698,12 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                         {confirmModalMessage}
                     </ConfirmModal>
                 )}
-                {nameExpressionWarnings && (
-                    <ConfirmModal
-                        title={'Name Expression Warnings'}
-                        onCancel={this.onNameExpressionWarningCancel}
-                        onConfirm={this.onNameExpressionWarningConfirm}
-                        confirmButtonText="Save anyways..."
-                        confirmVariant="success"
-                        cancelButtonText="Cancel"
-                    >
-                        {nameExpressionWarnings}
-                    </ConfirmModal>
-                )}
+                <NameExpressionValidationModal
+                    onHide={this.onNameExpressionWarningCancel}
+                    onConfirm={this.onNameExpressionWarningConfirm}
+                    warnings={nameExpressionWarnings}
+                    show={!!nameExpressionWarnings && !model.exception}
+                />
             </BaseDomainDesigner>
         );
     }

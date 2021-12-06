@@ -77,8 +77,8 @@ describe('formatDateTime', () => {
 
 describe('getJsonDateTimeFormatString', () => {
     test('without date', () => {
-        expect(getJsonDateTimeFormatString(undefined)).toBe(null);
-        expect(getJsonDateTimeFormatString(null)).toBe(null);
+        expect(getJsonDateTimeFormatString(undefined)).toBe(undefined);
+        expect(getJsonDateTimeFormatString(null)).toBe(undefined);
     });
 
     test('with date', () => {

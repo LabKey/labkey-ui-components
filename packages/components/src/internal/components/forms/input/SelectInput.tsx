@@ -516,6 +516,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
+            openMenuOnFocus: true,
             options,
             placeholder,
             promptTextCreator,

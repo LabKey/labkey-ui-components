@@ -335,23 +335,28 @@ $table-cell-selection-bg-color: #EDF3FF;
       }
     }
     .cell-menu {
-        position: relative;
-        height: 38px;
+        min-height: 38px;
         padding-top: 10px;
         width: 200px;
+    }
 
-        &:after {
-            z-index: 100;
-            font-family: FontAwesome;
-            font-size: 12px;
-            color: $light-gray;
-            //content: '\f0d7';
-            content: '\f078';
-            display: block;
-            position: absolute;
-            right: 5px;
-            top: 10px;
-        }
+    .cell-menu-selector {
+        color: $light-gray;
+        min-height: 38px;
+        //padding-top: 8px;
+        padding-right: 8px;
+        padding-left: 8px;
+        font-size: 12px;
+        float: right;
+    }
+
+    .cell-menu-separator {
+        align-self: stretch;
+        background-color: hsl(0, 0%, 80%);
+        margin-bottom: 8px;
+        margin-top: 8px;
+        width: 1px;
+        box-sizing: border-box;
     }
 
     .cell-placeholder {
@@ -377,18 +382,15 @@ $table-cell-selection-bg-color: #EDF3FF;
   }
 }
 
-.select-input__control {
-    height: 24px;
-    width: 200px;
-}
 
 .select-input-cell {
-    //margin-left: 15px;
     width: 200px;
 }
 
 .select-input-cell .select-input__control {
     border-style: none;
+    min-height: 24px;
+    width: 200px;
 }
 
 .select-input-cell-container {

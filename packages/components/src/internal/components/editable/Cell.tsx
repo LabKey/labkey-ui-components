@@ -27,7 +27,7 @@ import { QueryColumn } from '../../..';
 
 import { getQueryColumnRenderers } from '../../global';
 
-import { LookupCell, LookupCellProps } from './LookupCell';
+import { LookupCellWithQuerySelect, LookupCellWithSelectInput, LookupCellProps } from './LookupCell';
 
 interface Props {
     col: QueryColumn;
@@ -258,7 +258,20 @@ export class Cell extends React.PureComponent<Props> {
             };
 
             if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
-            const cell = <div {...displayProps}>{valueDisplay}</div>;
+            let cell;
+            if (col.isPublicLookup()) {
+                cell = (
+                    <div {...displayProps}>
+                        {valueDisplay}
+                        <span onClick={this.handleDblClick} className={"cell-menu-selector"}>
+                            <span className={"cell-menu-separator"}/>
+                            <i className="fa fa-chevron-down"/>
+                        </span>
+                    </div>
+                );
+            } else {
+                cell = <div {...displayProps}>{valueDisplay}</div>;
+            }
 
             if (message) {
                 return (
@@ -292,7 +305,8 @@ export class Cell extends React.PureComponent<Props> {
                 filteredLookupKeys,
             };
 
-            return <LookupCell {...lookupProps} />;
+            return <LookupCellWithQuerySelect {...lookupProps} />;
+            // return <LookupCellWithSelectInput {...lookupProps} />;
         }
 
         // Some cells have custom displays such as multi value comma separated values like alias so

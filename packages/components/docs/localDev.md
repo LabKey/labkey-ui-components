@@ -234,7 +234,7 @@ LabKey server. There are a few extra steps in this process, described below:
 1. Create the pull request from your new hotfix feature branch and set the target of the pull request to the release branch.
 1. After all code review and triage is complete and you are ready to merge, do the regular merge steps for
  `labkey-ui-components` (see the steps in the section above). Note that the new release version you will use for your changes
- will be the next patch version off of the target package version for that release. For example if the veresion was at
+ will be the next patch version off of the target package version for that release. For example, if the version was at
   `0.31.3` then you will publish version `0.31.4`.
 1. After any related LabKey module changes have been merged from their repo's release branch to develop,
  create a new branch in `labkey-ui-components` off of develop in order to merge forward your hotfix changes:

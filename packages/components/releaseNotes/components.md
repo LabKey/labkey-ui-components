@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Update LookupCell to use QuerySelect for display
+
 ### version 2.102.0
 *Released*: 1 December 2021
 * Rename EditableGridPanel to EditableGridPanelDeprecated

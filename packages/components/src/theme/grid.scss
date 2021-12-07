@@ -334,10 +334,30 @@ $table-cell-selection-bg-color: #EDF3FF;
         background-color: $state-warning-bg;
       }
     }
+    .cell-menu {
+        position: relative;
+        height: 38px;
+        padding-top: 10px;
+        width: 200px;
+
+        &:after {
+            z-index: 100;
+            font-family: FontAwesome;
+            font-size: 12px;
+            color: $light-gray;
+            //content: '\f0d7';
+            content: '\f078';
+            display: block;
+            position: absolute;
+            right: 5px;
+            top: 10px;
+        }
+    }
 
     .cell-placeholder {
       color: $light-gray;
     }
+
 
     .cell-read-only {
       background-color: $light-gray;
@@ -355,6 +375,25 @@ $table-cell-selection-bg-color: #EDF3FF;
       cursor: pointer;
     }
   }
+}
+
+.select-input__control {
+    height: 24px;
+    width: 200px;
+}
+
+.select-input-cell {
+    //margin-left: 15px;
+    width: 200px;
+}
+
+.select-input-cell .select-input__control {
+    border-style: none;
+}
+
+.select-input-cell-container {
+    margin-bottom: 0;
+    border-style: none;
 }
 
 // https://codepen.io/quanon/pen/WjXmWe

@@ -245,6 +245,7 @@ export class Cell extends React.PureComponent<Props> {
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,
                     'cell-read-only': this.isReadOnly(),
+                    'cell-menu': col.isPublicLookup(),
                     'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
                 }),
                 onDoubleClick: this.handleDblClick,

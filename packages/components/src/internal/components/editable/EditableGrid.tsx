@@ -328,7 +328,6 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             allowBulkRemove,
             allowBulkUpdate,
             allowRemove,
-            columnMetadata,
             hideCountCol,
             rowNumColumn,
             readonlyRows,

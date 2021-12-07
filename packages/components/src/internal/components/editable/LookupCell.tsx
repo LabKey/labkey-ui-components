@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { createRef, KeyboardEvent, ReactNode, RefObject } from 'react';
+import React, { createRef, FocusEvent, KeyboardEvent, ReactNode, RefObject } from 'react';
 import ReactN from 'reactn';
 import classNames from 'classnames';
 import { List } from 'immutable';
@@ -22,7 +22,7 @@ import { initLookup, modifyCell, searchLookup } from '../../actions';
 import { cancelEvent } from '../../events';
 import { LookupStore, ValueDescriptor } from '../../models';
 import { KEYS, LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
-import { QueryColumn } from '../../..';
+import { QueryColumn, SelectInput, SelectInputOption } from '../../..';
 import { GlobalAppState } from '../../global';
 
 import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
@@ -49,8 +49,8 @@ interface LookupCellState {
 
 export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellState, GlobalAppState> {
     private blurTO: number;
-    private changeTO: number;
-    private inputEl: RefObject<HTMLInputElement>;
+    // private changeTO: number;
+    // private inputEl: RefObject<HTMLInputElement>;
     private menuEl: RefObject<HTMLDivElement>;
     private wrapperEl: RefObject<HTMLDivElement>;
 
@@ -58,7 +58,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
-        this.inputEl = createRef<HTMLInputElement>();
+        // this.inputEl = createRef<HTMLInputElement>();
         this.menuEl = createRef<HTMLInputElement>();
         this.wrapperEl = createRef<HTMLInputElement>();
 
@@ -81,13 +81,13 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: LookupCellProps): void {
-        if (this.state.token && this.getOptions(nextProps).size === 1) {
-            this.setState({
-                activeOptionIdx: 0,
-            });
-        }
-    }
+    // UNSAFE_componentWillReceiveProps(nextProps: LookupCellProps): void {
+    //     if (this.state.token && this.getOptions(nextProps).size === 1) {
+    //         this.setState({
+    //             activeOptionIdx: 0,
+    //         });
+    //     }
+    // }
 
     componentWillUnmount(): void {
         try {
@@ -98,22 +98,22 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
         }
     }
 
-    cancelBlur = (): void => {
-        clearTimeout(this.blurTO);
-    };
-
-    clearInput = (): void => {
-        if (this.inputEl && this.inputEl.current) {
-            this.inputEl.current.value = '';
-        }
-
-        this.resetLookup();
-
-        this.setState({
-            activeOptionIdx: -1,
-            token: undefined,
-        });
-    };
+    // cancelBlur = (): void => {
+    //     clearTimeout(this.blurTO);
+    // };
+    //
+    // clearInput = (): void => {
+    //     if (this.inputEl?.current) {
+    //         this.inputEl.current.value = '';
+    //     }
+    //
+    //     this.resetLookup();
+    //
+    //     this.setState({
+    //         activeOptionIdx: -1,
+    //         token: undefined,
+    //     });
+    // };
 
     // As a part of the fix for #43051 the LookupCell needs to be able to attach scroll event listeners
     // to the grid container which is declared in EditableGrid. Handing down a React.RefObject would be preferred,
@@ -124,25 +124,25 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
         return this.wrapperEl.current?.closest(`.${EDITABLE_GRID_CONTAINER_CLS}`);
     };
 
-    focusInput = (): void => {
-        this.cancelBlur();
-        if (this.inputEl && this.inputEl.current) {
-            this.inputEl.current.focus();
-        }
-    };
+    // focusInput = (): void => {
+    //     this.cancelBlur();
+    //     if (this.inputEl && this.inputEl.current) {
+    //         this.inputEl.current.focus();
+    //     }
+    // };
 
-    hasInputValue(): boolean {
-        const { token } = this.state;
-        return token !== undefined && token !== '';
-    }
+    // hasInputValue(): boolean {
+    //     const { token } = this.state;
+    //     return token !== undefined && token !== '';
+    // }
 
-    highlight = (index: number): void => {
-        if (index >= -1 && index < this.getOptions(this.props).size) {
-            this.setState({
-                activeOptionIdx: index,
-            });
-        }
-    };
+    // highlight = (index: number): void => {
+    //     if (index >= -1 && index < this.getSelectInputOptions(this.props).length) {
+    //         this.setState({
+    //             activeOptionIdx: index,
+    //         });
+    //     }
+    // };
 
     isMultiValue = (): boolean => {
         return this.props.col.isJunctionLookup();
@@ -157,7 +157,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
         }
     };
 
-    onInputBlur = (): void => {
+    onInputBlur = (event: FocusEvent<HTMLElement>): void => {
         this.blurTO = window.setTimeout(() => {
             const { colIdx, modelId, rowIdx } = this.props;
             this.props.select(modelId, colIdx, rowIdx);
@@ -165,62 +165,13 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
         }, 200);
     };
 
-    onInputChange = (): void => {
-        clearTimeout(this.changeTO);
-        this.changeTO = window.setTimeout(() => {
-            let token;
+    onInputChange = (fieldName: string, formValue, selectedOptions, reactSelect): void => {
 
-            if (this.inputEl && this.inputEl.current) {
-                token = this.inputEl.current.value;
-            }
-
-            this.searchLookup(token);
-
-            this.setState({
-                activeOptionIdx: -1,
-                token,
-            });
-        }, 350);
-    };
-
-    onInputKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
-        const { colIdx, modelId, rowIdx, values, onCellModify } = this.props;
-        const { activeOptionIdx } = this.state;
-        const options = this.getOptions(this.props);
-
-        switch (event.keyCode) {
-            case KEYS.Backspace:
-                if (!this.hasInputValue() && values !== undefined && values.size) {
-                    modifyCell(modelId, colIdx, rowIdx, values.last(), MODIFICATION_TYPES.REMOVE);
-                    if (onCellModify) onCellModify();
-                }
-                break;
-            case KEYS.Enter:
-                if (this.state.activeOptionIdx > -1) {
-                    this.onItemClick(options.get(activeOptionIdx));
-                } else {
-                    this.clearInput();
-                    this.props.select(modelId, colIdx, rowIdx + 1);
-                }
-                break;
-            case KEYS.Escape:
-                this.clearInput();
-                this.props.select(modelId, colIdx, rowIdx, undefined, true);
-                break;
-            case KEYS.UpArrow:
-                this.highlight(activeOptionIdx - 1);
-                cancelEvent(event);
-                break;
-            case KEYS.DownArrow:
-                this.highlight(activeOptionIdx + 1);
-                cancelEvent(event);
-                break;
-        }
-    };
-
-    onItemClick = (vd: ValueDescriptor): void => {
         const { col, colIdx, modelId, rowIdx, onCellModify } = this.props;
-
+        const vd = {
+            raw: formValue,
+            display: selectedOptions?.label
+        }
         modifyCell(
             modelId,
             colIdx,
@@ -229,23 +180,95 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
             col.isJunctionLookup() ? MODIFICATION_TYPES.ADD : MODIFICATION_TYPES.REPLACE
         );
         if (onCellModify) onCellModify();
-        this.clearInput();
+        // this.clearInput();
 
         if (!this.isMultiValue()) {
             this.props.select(modelId, colIdx, rowIdx);
             return;
         }
 
-        this.focusInput();
+        // this.focusInput();
+        // clearTimeout(this.changeTO);
+        // this.changeTO = window.setTimeout(() => {
+        //     let token = selectedOptions?.label;
+        //
+        //     // if (this.inputEl?.current) {
+        //     //     token = this.inputEl.current.value;
+        //     // }
+        //     //
+        //     this.searchLookup(token);
+        //     this.props.select(modelId, colIdx, rowIdx);
+        //
+        //     this.setState({
+        //         activeOptionIdx: -1,
+        //         token,
+        //     });
+        // }, 350);
     };
 
-    onItemRemove = (vd: ValueDescriptor): void => {
-        const { modelId, colIdx, rowIdx, onCellModify } = this.props;
-        modifyCell(modelId, colIdx, rowIdx, vd, MODIFICATION_TYPES.REMOVE);
-        if (onCellModify) onCellModify();
+    // onInputKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
+    //     const { colIdx, modelId, rowIdx, values, onCellModify } = this.props;
+    //     const { activeOptionIdx } = this.state;
+    //     const options = this.getOptions(this.props);
+    //
+    //     switch (event.keyCode) {
+    //         case KEYS.Backspace:
+    //             if (!this.hasInputValue() && values !== undefined && values.size) {
+    //                 modifyCell(modelId, colIdx, rowIdx, values.last(), MODIFICATION_TYPES.REMOVE);
+    //                 if (onCellModify) onCellModify();
+    //             }
+    //             break;
+    //         case KEYS.Enter:
+    //             if (this.state.activeOptionIdx > -1) {
+    //                 this.onItemClick(options.get(activeOptionIdx));
+    //             } else {
+    //                 this.clearInput();
+    //                 this.props.select(modelId, colIdx, rowIdx + 1);
+    //             }
+    //             break;
+    //         case KEYS.Escape:
+    //             this.clearInput();
+    //             this.props.select(modelId, colIdx, rowIdx, undefined, true);
+    //             break;
+    //         case KEYS.UpArrow:
+    //             this.highlight(activeOptionIdx - 1);
+    //             cancelEvent(event);
+    //             break;
+    //         case KEYS.DownArrow:
+    //             this.highlight(activeOptionIdx + 1);
+    //             cancelEvent(event);
+    //             break;
+    //     }
+    // };
+    //
+    // onItemClick = (vd: ValueDescriptor): void => {
+    //     const { col, colIdx, modelId, rowIdx, onCellModify } = this.props;
+    //
+    //     modifyCell(
+    //         modelId,
+    //         colIdx,
+    //         rowIdx,
+    //         vd,
+    //         col.isJunctionLookup() ? MODIFICATION_TYPES.ADD : MODIFICATION_TYPES.REPLACE
+    //     );
+    //     if (onCellModify) onCellModify();
+    //     this.clearInput();
+    //
+    //     if (!this.isMultiValue()) {
+    //         this.props.select(modelId, colIdx, rowIdx);
+    //         return;
+    //     }
+    //
+    //     this.focusInput();
+    // };
 
-        this.focusInput();
-    };
+    // onItemRemove = (vd: ValueDescriptor): void => {
+    //     const { modelId, colIdx, rowIdx, onCellModify } = this.props;
+    //     modifyCell(modelId, colIdx, rowIdx, vd, MODIFICATION_TYPES.REMOVE);
+    //     if (onCellModify) onCellModify();
+    //
+    //     this.focusInput();
+    // };
 
     resetLookup = (): void => {
         this.searchLookup(undefined);
@@ -261,65 +284,65 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
         );
     };
 
-    renderOptions(): ReactNode {
-        const store = this.getStore();
+    // renderOptions(): ReactNode {
+    //     const store = this.getStore();
+    //
+    //     if (!store) {
+    //         return <a className="disabled list-group-item">Loading...</a>;
+    //     }
+    //
+    //     const options = this.getOptions(this.props);
+    //
+    //     return options
+    //         .slice(0, 10)
+    //         .reduce(
+    //             (list, vd, idx) =>
+    //                 list.push(
+    //                     <a
+    //                         className={classNames('list-group-item', { active: this.state.activeOptionIdx === idx })}
+    //                         key={idx}
+    //                         onClick={this.onItemClick.bind(this, vd)}
+    //                     >
+    //                         {vd.display}
+    //                     </a>
+    //                 ),
+    //             List<ReactNode>()
+    //         )
+    //         .push(
+    //             <a className="disabled list-group-item" key="resultmatcher">
+    //                 <i>
+    //                     {!store.isLoaded
+    //                         ? 'Loading...'
+    //                         : store.matchCount - (store.descriptors.size - options.size) + ' matching results'}
+    //                 </i>
+    //             </a>
+    //         )
+    //         .toArray();
+    // }
 
-        if (!store) {
-            return <a className="disabled list-group-item">Loading...</a>;
-        }
-
-        const options = this.getOptions(this.props);
-
-        return options
-            .slice(0, 10)
-            .reduce(
-                (list, vd, idx) =>
-                    list.push(
-                        <a
-                            className={classNames('list-group-item', { active: this.state.activeOptionIdx === idx })}
-                            key={idx}
-                            onClick={this.onItemClick.bind(this, vd)}
-                        >
-                            {vd.display}
-                        </a>
-                    ),
-                List<ReactNode>()
-            )
-            .push(
-                <a className="disabled list-group-item" key="resultmatcher">
-                    <i>
-                        {!store.isLoaded
-                            ? 'Loading...'
-                            : store.matchCount - (store.descriptors.size - options.size) + ' matching results'}
-                    </i>
-                </a>
-            )
-            .toArray();
-    }
-
-    renderValue(): ReactNode {
-        const { values } = this.props;
-
-        return (
-            <div>
-                {values
-                    .filter(vd => vd.raw !== undefined)
-                    .map((vd, i) => (
-                        <span
-                            className="btn btn-primary btn-sm"
-                            key={i}
-                            onClick={this.onItemRemove.bind(this, vd)}
-                            style={{ marginRight: '2px', padding: '1px 5px' }}
-                        >
-                            {vd.display}
-                            &nbsp;
-                            <i className="fa fa-close" />
-                        </span>
-                    ))
-                    .toArray()}
-            </div>
-        );
-    }
+    // renderValue(): ReactNode {
+    //     const { values } = this.props;
+    //
+    //     return (
+    //         <div>
+    //             {values
+    //                 .filter(vd => vd.raw !== undefined)
+    //                 .map((vd, i) => (
+    //                     <span
+    //                         className="btn btn-primary btn-sm"
+    //                         key={i}
+    //                         onClick={this.onItemRemove.bind(this, vd)}
+    //                         style={{ marginRight: '2px', padding: '1px 5px' }}
+    //                     >
+    //                         {vd.display}
+    //                         &nbsp;
+    //                         <i className="fa fa-close" />
+    //                     </span>
+    //                 ))
+    //                 .toArray()}
+    //         </div>
+    //     );
+    // }
 
     getStore(): LookupStore {
         const { col } = this.props;
@@ -343,24 +366,97 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
         return emptyList;
     }
 
+    loadOptions = (input: string): Promise<SelectInputOption[]> => {
+        searchLookup(
+            this.props.col,
+            2,
+            input,
+            this.props.filteredLookupValues,
+            this.props.filteredLookupKeys
+        );
+
+        return new Promise((resolve) => {
+            const { values } = this.props;
+            const store = this.getStore();
+            if (store) {
+                resolve(store.descriptors
+                    .filter(vd => {
+                        return !(values && values.some(v => v.raw === vd.raw && vd.display === vd.display));
+                    })
+                    .map(vd => (
+                        {
+                            label: vd.display,
+                            value: vd.raw
+                        }
+                    )).toArray());
+            } else {
+                resolve([]);
+            }
+        })
+
+    }
+    //
+    // getSelectInputOptions(props: LookupCellProps): any[] {
+    //     const { values } = props;
+    //     const store = this.getStore();
+    //
+    //     if (store) {
+    //         return store.descriptors
+    //             .filter(vd => {
+    //                 return !(values && values.some(v => v.raw === vd.raw && vd.display === vd.display));
+    //             })
+    //             .map(vd => (
+    //                 {
+    //                     label: vd.display,
+    //                     value: vd.raw
+    //                 }
+    //             )).toArray();
+    //     }
+    //
+    //     return [];
+    // }
+
     render(): ReactNode {
+        const { col, values } = this.props;
+
+        const isMultiple = this.isMultiValue();
+        const rawValues = values.filter(vd => vd.raw !== undefined).map(vd => ({
+            label: vd.display,
+            value: vd.raw
+        })).toArray();
         return (
-            <div className="cell-lookup" ref={this.wrapperEl}>
-                {this.renderValue()}
-                <input
-                    autoFocus
-                    className="cell-lookup-input"
-                    disabled={this.props.disabled}
-                    onBlur={this.onInputBlur}
-                    onChange={this.onInputChange}
-                    onKeyDown={this.onInputKeyDown}
-                    ref={this.inputEl}
-                    type="text"
-                />
-                <div className="cell-lookup-menu" ref={this.menuEl}>
-                    {this.renderOptions()}
-                </div>
-            </div>
+            <SelectInput
+                autoFocus
+                // autoValue={false}
+                disabled={this.props.disabled}
+                multiple={isMultiple}
+                containerClass="select-input-cell-container"
+                inputClass="select-input-cell"
+                placeholder=""
+                id={LookupStore.key(col)}
+                loadOptions={this.loadOptions}
+                onBlur={this.onInputBlur}
+                onChange={this.onInputChange}
+                valueKey={"value"}
+                labelKey={"label"}
+                value={isMultiple ? rawValues : rawValues[0]}
+            />
+            // <div className="cell-lookup" ref={this.wrapperEl}>
+            //     {this.renderValue()}
+            //     <input
+            //         autoFocus
+            //         className="cell-lookup-input"
+            //         disabled={this.props.disabled}
+            //         onBlur={this.onInputBlur}
+            //         onChange={this.onInputChange}
+            //         onKeyDown={this.onInputKeyDown}
+            //         ref={this.inputEl}
+            //         type="text"
+            //     />
+            //     <div className="cell-lookup-menu" ref={this.menuEl}>
+            //         {this.renderOptions()}
+            //     </div>
+            // </div>
         );
     }
 }

@@ -511,6 +511,8 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             isDisabled: disabled || this.state.isDisabled,
             isLoading,
             isMulti: multiple,
+            menuPlacement: 'auto',
+            menuPosition: 'fixed',
             name,
             noOptionsMessage: this.noOptionsMessage,
             onBlur: this.handleBlur,

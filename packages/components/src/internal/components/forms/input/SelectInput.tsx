@@ -512,7 +512,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             isLoading,
             isMulti: multiple,
             menuPlacement: 'auto',
-            menuPosition: 'fixed',
+            menuPosition: 'fixed', // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
             name,
             noOptionsMessage: this.noOptionsMessage,
             onBlur: this.handleBlur,

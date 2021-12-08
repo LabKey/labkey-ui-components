@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.TBD
+*Released*: TBD December 2021
+* Item 9627: TextChoiceInput and usage for rendering select input for DetailEditRenderer, QueryFormInputs, and EditableGrid cell
+
 ### version 2.102.0
 *Released*: 1 December 2021
 * Rename EditableGridPanel to EditableGridPanelDeprecated

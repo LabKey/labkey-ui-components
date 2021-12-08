@@ -18,7 +18,7 @@ export const UNIQUE_ID_FIND_FIELD: FindField = {
     name: 'uniqueIds',
     helpTextTitle: 'Barcode Fields',
     helpText:
-        'The ids provided will be matched against all fields marked as Barcodes and of type Unique ID as defined in your sample types.',
+        'The ids provided will be matched against all Unique ID fields or any fields marked as Barcodes as defined in your sample types.',
     label: 'Barcodes',
     storageKeyPrefix: 'u:',
 };

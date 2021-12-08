@@ -58,6 +58,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
             domainIndex,
             domainFormDisplayOptions,
             getDomainFields,
+            appPropertiesOnly,
         } = this.props;
 
         switch (field.dataType.name) {
@@ -76,6 +77,9 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                             scale={field.scale}
                             onChange={onChange}
                             lockType={field.lockType}
+                            scannable={field.scannable}
+                            appPropertiesOnly={appPropertiesOnly}
+                            showScannableOption={domainFormDisplayOptions?.showScannableOption}
                         />
                     );
                 } else {

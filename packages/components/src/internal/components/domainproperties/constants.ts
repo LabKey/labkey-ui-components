@@ -60,6 +60,7 @@ export const DOMAIN_FIELD_DERIVATION_DATA_SCOPE = 'derivationDataScope';
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
 export const DOMAIN_FIELD_CUSTOM_LENGTH = 'customLength';
 export const DOMAIN_FIELD_SCALE = 'scale';
+export const DOMAIN_FIELD_SCANABLE_OPTION = 'scannable'
 
 export const DOMAIN_COND_FORMAT = 'conditionalFormat';
 export const DOMAIN_REGEX_VALIDATOR = 'regexValidator';

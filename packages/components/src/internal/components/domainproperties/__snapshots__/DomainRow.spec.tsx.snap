@@ -372,6 +372,7 @@ exports[`DomainRow Sample Field 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   }
                 }
                 helpNoun="domain"
@@ -565,6 +566,7 @@ exports[`DomainRow Sample Field 1`] = `
                                     "principalConceptCode": undefined,
                                     "derivationDataScope": undefined,
                                     "selected": false,
+                                    "scannable": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -1157,6 +1159,7 @@ exports[`DomainRow Sample Field 1`] = `
                                       "principalConceptCode": undefined,
                                       "derivationDataScope": undefined,
                                       "selected": false,
+                                      "scannable": false,
                                     }
                                   }
                                   index={0}
@@ -1521,6 +1524,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={0}
@@ -2002,6 +2006,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={0}
@@ -2597,6 +2602,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   }
                 }
                 fieldError={
@@ -2802,6 +2808,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                     "principalConceptCode": undefined,
                                     "derivationDataScope": undefined,
                                     "selected": false,
+                                    "scannable": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -3589,6 +3596,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       "principalConceptCode": undefined,
                                       "derivationDataScope": undefined,
                                       "selected": false,
+                                      "scannable": false,
                                     }
                                   }
                                   index={1}
@@ -3709,6 +3717,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={1}
@@ -4190,6 +4199,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={1}
@@ -4785,6 +4795,7 @@ exports[`DomainRow date time field 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   }
                 }
                 helpNoun="domain"
@@ -4978,6 +4989,7 @@ exports[`DomainRow date time field 1`] = `
                                     "principalConceptCode": undefined,
                                     "derivationDataScope": undefined,
                                     "selected": false,
+                                    "scannable": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -5556,6 +5568,7 @@ exports[`DomainRow date time field 1`] = `
                                       "principalConceptCode": undefined,
                                       "derivationDataScope": undefined,
                                       "selected": false,
+                                      "scannable": false,
                                     }
                                   }
                                   index={0}
@@ -5905,6 +5918,7 @@ exports[`DomainRow date time field 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={0}
@@ -6386,6 +6400,7 @@ exports[`DomainRow date time field 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={0}
@@ -7120,6 +7135,7 @@ exports[`DomainRow decimal field 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   }
                 }
                 helpNoun="domain"
@@ -7313,6 +7329,7 @@ exports[`DomainRow decimal field 1`] = `
                                     "principalConceptCode": undefined,
                                     "derivationDataScope": undefined,
                                     "selected": false,
+                                    "scannable": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -7891,6 +7908,7 @@ exports[`DomainRow decimal field 1`] = `
                                       "principalConceptCode": undefined,
                                       "derivationDataScope": undefined,
                                       "selected": false,
+                                      "scannable": false,
                                     }
                                   }
                                   index={2}
@@ -8275,6 +8293,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={2}
@@ -8756,6 +8775,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={2}
@@ -9490,6 +9510,7 @@ exports[`DomainRow participant id field 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   }
                 }
                 helpNoun="domain"
@@ -9683,6 +9704,7 @@ exports[`DomainRow participant id field 1`] = `
                                     "principalConceptCode": undefined,
                                     "derivationDataScope": undefined,
                                     "selected": false,
+                                    "scannable": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -10285,6 +10307,7 @@ exports[`DomainRow participant id field 1`] = `
                                       "principalConceptCode": undefined,
                                       "derivationDataScope": undefined,
                                       "selected": false,
+                                      "scannable": false,
                                     }
                                   }
                                   index={0}
@@ -10405,6 +10428,7 @@ exports[`DomainRow participant id field 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={0}
@@ -10886,6 +10910,7 @@ exports[`DomainRow participant id field 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={0}
@@ -11620,6 +11645,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   }
                 }
                 fieldError={
@@ -11825,6 +11851,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     "principalConceptCode": undefined,
                                     "derivationDataScope": undefined,
                                     "selected": false,
+                                    "scannable": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -12501,6 +12528,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       "principalConceptCode": undefined,
                                       "derivationDataScope": undefined,
                                       "selected": false,
+                                      "scannable": false,
                                     }
                                   }
                                   index={1}
@@ -12621,6 +12649,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={1}
@@ -13102,6 +13131,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={1}
@@ -13697,6 +13727,7 @@ exports[`DomainRow string field test 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   }
                 }
                 helpNoun="domain"
@@ -13890,6 +13921,7 @@ exports[`DomainRow string field test 1`] = `
                                     "principalConceptCode": undefined,
                                     "derivationDataScope": undefined,
                                     "selected": false,
+                                    "scannable": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -14492,6 +14524,7 @@ exports[`DomainRow string field test 1`] = `
                                       "principalConceptCode": undefined,
                                       "derivationDataScope": undefined,
                                       "selected": false,
+                                      "scannable": false,
                                     }
                                   }
                                   index={1}
@@ -14523,6 +14556,7 @@ exports[`DomainRow string field test 1`] = `
                                             lockType="NotLocked"
                                             onChange={[Function]}
                                             scale={4000}
+                                            scannable={false}
                                           >
                                             <div>
                                               <Row
@@ -14922,6 +14956,7 @@ exports[`DomainRow string field test 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={1}
@@ -15403,6 +15438,7 @@ exports[`DomainRow string field test 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={1}
@@ -16137,6 +16173,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   }
                 }
                 helpNoun="domain"
@@ -16330,6 +16367,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                     "principalConceptCode": undefined,
                                     "derivationDataScope": undefined,
                                     "selected": false,
+                                    "scannable": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -16999,6 +17037,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                       "principalConceptCode": undefined,
                                       "derivationDataScope": undefined,
                                       "selected": false,
+                                      "scannable": false,
                                     }
                                   }
                                   index={1}
@@ -17030,6 +17069,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             lockType="NotLocked"
                                             onChange={[Function]}
                                             scale={4000}
+                                            scannable={false}
                                           >
                                             <div>
                                               <Row
@@ -17429,6 +17469,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={1}
@@ -17910,6 +17951,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "principalConceptCode": undefined,
                                                 "derivationDataScope": undefined,
                                                 "selected": false,
+                                                "scannable": false,
                                               }
                                             }
                                             index={1}

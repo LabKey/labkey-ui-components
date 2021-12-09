@@ -1044,6 +1044,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "principalConceptCode": undefined,
             "derivationDataScope": undefined,
             "selected": false,
+            "scannable": false,
           },
         ],
         "indices": Immutable.List [],
@@ -1202,6 +1203,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "principalConceptCode": undefined,
               "derivationDataScope": undefined,
               "selected": false,
+              "scannable": false,
             },
           ],
           "indices": Immutable.List [],
@@ -1333,6 +1335,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "principalConceptCode": undefined,
                 "derivationDataScope": undefined,
                 "selected": false,
+                "scannable": false,
               },
             ],
             "indices": Immutable.List [],
@@ -1472,6 +1475,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "principalConceptCode": undefined,
                   "derivationDataScope": undefined,
                   "selected": false,
+                  "scannable": false,
                 },
               ],
               "indices": Immutable.List [],
@@ -1630,6 +1634,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -1794,6 +1799,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "principalConceptCode": undefined,
                       "derivationDataScope": undefined,
                       "selected": false,
+                      "scannable": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -2156,6 +2162,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             "principalConceptCode": undefined,
                                             "derivationDataScope": undefined,
                                             "selected": false,
+                                            "scannable": false,
                                           },
                                         ],
                                         "indices": Immutable.List [],
@@ -2871,6 +2878,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "principalConceptCode": undefined,
                 "derivationDataScope": undefined,
                 "selected": false,
+                "scannable": false,
               },
             ],
             "indices": Immutable.List [],
@@ -2888,6 +2896,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           Object {
             "hideConditionalFormatting": true,
             "hideStudyPropertyTypes": true,
+            "showScannableOption": true,
           }
         }
         domainIndex={0}
@@ -3006,6 +3015,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -3023,6 +3033,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               Object {
                 "hideConditionalFormatting": true,
                 "hideStudyPropertyTypes": true,
+                "showScannableOption": true,
               }
             }
             domainIndex={0}
@@ -3852,6 +3863,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           Object {
                                                             "hideConditionalFormatting": true,
                                                             "hideStudyPropertyTypes": true,
+                                                            "showScannableOption": true,
                                                           }
                                                         }
                                                         domainId={null}
@@ -3944,6 +3956,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "principalConceptCode": undefined,
                                                             "derivationDataScope": undefined,
                                                             "selected": false,
+                                                            "scannable": false,
                                                           }
                                                         }
                                                         fieldDetailsInfo={Object {}}
@@ -4036,6 +4049,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                           Object {
                                                                             "hideConditionalFormatting": true,
                                                                             "hideStudyPropertyTypes": true,
+                                                                            "showScannableOption": true,
                                                                           }
                                                                         }
                                                                         domainId={null}
@@ -4125,6 +4139,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "principalConceptCode": undefined,
                                                                             "derivationDataScope": undefined,
                                                                             "selected": false,
+                                                                            "scannable": false,
                                                                           }
                                                                         }
                                                                         helpNoun="field designer"
@@ -4645,6 +4660,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             Object {
                                                                               "hideConditionalFormatting": true,
                                                                               "hideStudyPropertyTypes": true,
+                                                                              "showScannableOption": true,
                                                                             }
                                                                           }
                                                                           domainIndex={0}
@@ -4733,6 +4749,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "principalConceptCode": undefined,
                                                                               "derivationDataScope": undefined,
                                                                               "selected": false,
+                                                                              "scannable": false,
                                                                             }
                                                                           }
                                                                           getDomainFields={[Function]}
@@ -4760,12 +4777,15 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <TextFieldOptions
+                                                                                    appPropertiesOnly={true}
                                                                                     domainIndex={0}
                                                                                     index={0}
                                                                                     label="Text Options"
                                                                                     lockType="NotLocked"
                                                                                     onChange={[Function]}
                                                                                     scale={4000}
+                                                                                    scannable={false}
+                                                                                    showScannableOption={true}
                                                                                   >
                                                                                     <div>
                                                                                       <Row
@@ -5066,6 +5086,163 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                           </Col>
                                                                                         </div>
                                                                                       </Row>
+                                                                                      <Row
+                                                                                        bsClass="row"
+                                                                                        componentClass="div"
+                                                                                      >
+                                                                                        <div
+                                                                                          className="row"
+                                                                                        >
+                                                                                          <Col
+                                                                                            bsClass="col"
+                                                                                            componentClass="div"
+                                                                                            xs={3}
+                                                                                          >
+                                                                                            <div
+                                                                                              className="col-xs-3"
+                                                                                            >
+                                                                                              <div
+                                                                                                className="domain-field-label"
+                                                                                              >
+                                                                                                <DomainFieldLabel
+                                                                                                  helpTipBody="When using the Find Samples dialog from the search bar and choosing the
+                                        \\"Barcodes\\" option, text fields
+                                        that are designated as Barcode fields will be queried
+                                        along with any UniqueId fields for this sample type."
+                                                                                                  label="Barcode Field"
+                                                                                                >
+                                                                                                  Barcode 
+                                                                                                  <span
+                                                                                                    className="domain-no-wrap"
+                                                                                                  >
+                                                                                                    Field
+                                                                                                    <Component
+                                                                                                      customStyle={Object {}}
+                                                                                                      id="tooltip"
+                                                                                                      size="1x"
+                                                                                                      title="Barcode Field"
+                                                                                                    >
+                                                                                                      <span
+                                                                                                        className="label-help-target"
+                                                                                                        onMouseOut={[Function]}
+                                                                                                        onMouseOver={[Function]}
+                                                                                                      >
+                                                                                                        <FontAwesomeIcon
+                                                                                                          border={false}
+                                                                                                          className="label-help-icon"
+                                                                                                          fixedWidth={false}
+                                                                                                          flip={null}
+                                                                                                          icon={
+                                                                                                            Object {
+                                                                                                              "icon": Array [
+                                                                                                                512,
+                                                                                                                512,
+                                                                                                                Array [],
+                                                                                                                "f059",
+                                                                                                                "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                                                                              ],
+                                                                                                              "iconName": "question-circle",
+                                                                                                              "prefix": "fas",
+                                                                                                            }
+                                                                                                          }
+                                                                                                          inverse={false}
+                                                                                                          listItem={false}
+                                                                                                          mask={null}
+                                                                                                          pull={null}
+                                                                                                          pulse={false}
+                                                                                                          rotation={null}
+                                                                                                          size="1x"
+                                                                                                          spin={false}
+                                                                                                          style={Object {}}
+                                                                                                          swapOpacity={false}
+                                                                                                          symbol={false}
+                                                                                                          title=""
+                                                                                                          transform={null}
+                                                                                                        >
+                                                                                                          <svg
+                                                                                                            aria-hidden="true"
+                                                                                                            className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                                                                                            data-icon="question-circle"
+                                                                                                            data-prefix="fas"
+                                                                                                            focusable="false"
+                                                                                                            role="img"
+                                                                                                            style={Object {}}
+                                                                                                            viewBox="0 0 512 512"
+                                                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                                                          >
+                                                                                                            <path
+                                                                                                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                                                              fill="currentColor"
+                                                                                                              style={Object {}}
+                                                                                                            />
+                                                                                                          </svg>
+                                                                                                        </FontAwesomeIcon>
+                                                                                                        <Overlay
+                                                                                                          animation={[Function]}
+                                                                                                          placement="right"
+                                                                                                          rootClose={false}
+                                                                                                          show={false}
+                                                                                                        >
+                                                                                                          <Overlay
+                                                                                                            placement="right"
+                                                                                                            rootClose={false}
+                                                                                                            show={false}
+                                                                                                            transition={[Function]}
+                                                                                                          />
+                                                                                                        </Overlay>
+                                                                                                      </span>
+                                                                                                    </Component>
+                                                                                                  </span>
+                                                                                                </DomainFieldLabel>
+                                                                                              </div>
+                                                                                            </div>
+                                                                                          </Col>
+                                                                                        </div>
+                                                                                      </Row>
+                                                                                      <Row
+                                                                                        bsClass="row"
+                                                                                        componentClass="div"
+                                                                                      >
+                                                                                        <div
+                                                                                          className="row"
+                                                                                        >
+                                                                                          <Col
+                                                                                            bsClass="col"
+                                                                                            className="domain-text-options-col"
+                                                                                            componentClass="div"
+                                                                                            xs={12}
+                                                                                          >
+                                                                                            <div
+                                                                                              className="domain-text-options-col col-xs-12"
+                                                                                            >
+                                                                                              <FormControl
+                                                                                                bsClass="form-control"
+                                                                                                checked={false}
+                                                                                                className="domain-text-option-scannable"
+                                                                                                componentClass="input"
+                                                                                                disabled={false}
+                                                                                                id="domainpropertiesrow-scannable-0-0"
+                                                                                                name="domainpropertiesrow-scannable"
+                                                                                                onChange={[Function]}
+                                                                                                type="checkbox"
+                                                                                              >
+                                                                                                <input
+                                                                                                  checked={false}
+                                                                                                  className="domain-text-option-scannable form-control"
+                                                                                                  disabled={false}
+                                                                                                  id="domainpropertiesrow-scannable-0-0"
+                                                                                                  name="domainpropertiesrow-scannable"
+                                                                                                  onChange={[Function]}
+                                                                                                  type="checkbox"
+                                                                                                />
+                                                                                              </FormControl>
+                                                                                              <span>
+                                                                                                Search this field when scanning samples.
+                                                                                              </span>
+                                                                                            </div>
+                                                                                          </Col>
+                                                                                        </div>
+                                                                                      </Row>
                                                                                     </div>
                                                                                   </TextFieldOptions>
                                                                                 </div>
@@ -5166,6 +5343,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "principalConceptCode": undefined,
                                                                                         "derivationDataScope": undefined,
                                                                                         "selected": false,
+                                                                                        "scannable": false,
                                                                                       }
                                                                                     }
                                                                                     index={0}
@@ -5549,6 +5727,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                       Object {
                                                                                         "hideConditionalFormatting": true,
                                                                                         "hideStudyPropertyTypes": true,
+                                                                                        "showScannableOption": true,
                                                                                       }
                                                                                     }
                                                                                     domainIndex={0}
@@ -5637,6 +5816,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "principalConceptCode": undefined,
                                                                                         "derivationDataScope": undefined,
                                                                                         "selected": false,
+                                                                                        "scannable": false,
                                                                                       }
                                                                                     }
                                                                                     index={0}

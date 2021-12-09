@@ -89,6 +89,7 @@ const gridDataAppPropsOnlyConst = [
         selected: '',
         description: '',
         required: 'false',
+        scannable: 'false',
     },
 ];
 const gridDataConst = [
@@ -138,6 +139,7 @@ const nameCol = new GridColumn({
 const gridColumnsConst = [
     selectionCol,
     nameCol,
+    { index: 'scannable', caption: 'Scannable', sortable: true },
     { index: 'URL', caption: 'URL', sortable: true },
     { index: 'PHI', caption: 'PHI', sortable: true },
     { index: 'rangeURI', caption: 'Range URI', sortable: true },

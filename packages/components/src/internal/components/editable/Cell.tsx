@@ -305,7 +305,6 @@ export class Cell extends React.PureComponent<Props> {
             };
 
             return <LookupCell {...lookupProps} />;
-            // return <LookupCellWithSelectInput {...lookupProps} />;
         }
 
         // Some cells have custom displays such as multi value comma separated values like alias so

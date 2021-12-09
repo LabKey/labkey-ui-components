@@ -170,6 +170,7 @@ export interface SelectInputProps {
     onChange?: Function; // this is getting confused with formsy on change, need to separate
     onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
     onToggleDisable?: (disabled: boolean) => void;
+    openMenuOnFocus?: boolean;
     optionRenderer?: any;
     options?: any[];
     placeholder?: ReactNode;
@@ -216,6 +217,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         initiallyDisabled: false,
         inputClass: 'col-sm-9 col-xs-12',
         labelClass: 'control-label col-sm-3 text-left col-xs-12',
+        openMenuOnFocus: false,
         saveOnBlur: false,
         valueKey: 'value',
     };
@@ -479,6 +481,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             menuPosition,
             multiple,
             name,
+            openMenuOnFocus,
             optionRenderer,
             options,
             placeholder,
@@ -524,7 +527,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
-            openMenuOnFocus: true,
+            openMenuOnFocus,
             options,
             placeholder,
             promptTextCreator,

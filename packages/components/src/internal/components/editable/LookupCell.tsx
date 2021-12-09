@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FocusEvent, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 
-import { initLookup, modifyCell, searchLookup } from '../../actions';
+import { modifyCell } from '../../actions';
 import { LookupStore, ValueDescriptor } from '../../models';
 import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
-import { QueryColumn, QuerySelect, SchemaQuery, SelectInput, SelectInputOption } from '../../..';
+import { QueryColumn, QuerySelect, SchemaQuery } from '../../..';
 import { GlobalAppState } from '../../global';
-
-const emptyList = List<ValueDescriptor>();
 
 const customStyles = {
     control: (provided, state) => ({
@@ -75,29 +73,12 @@ export interface LookupCellProps {
     filteredLookupKeys?: List<any>;
 }
 
-interface LookupCellState {
-    token?: string;
-}
-
-export class LookupCellWithQuerySelect extends ReactN.Component<LookupCellProps, undefined, GlobalAppState> {
-    private blurTO: number;
-
-
+export class LookupCell extends ReactN.Component<LookupCellProps, undefined, GlobalAppState> {
     isMultiValue = (): boolean => {
         return this.props.col.isJunctionLookup();
     };
 
-    onInputBlur = (event: FocusEvent<HTMLElement>): void => {
-        console.log("onInputBlur");
-        // TODO this is not always called.  Is it needed?
-        this.blurTO = window.setTimeout(() => {
-            const { colIdx, modelId, rowIdx } = this.props;
-            this.props.select(modelId, colIdx, rowIdx);
-        }, 200);
-    };
-
     onInputChange = (fieldName: string, formValue: string | any[], items: any, selectedItems: Map<string, any>): void => {
-
         const { colIdx, modelId, rowIdx, onCellModify } = this.props;
         if (this.isMultiValue())
         {
@@ -173,7 +154,6 @@ export class LookupCellWithQuerySelect extends ReactN.Component<LookupCellProps,
                 openMenuOnFocus={!isMultiple} // If set to true for the multi-select case, it's not possible to tab out of the cell.
                 inputClass="select-input-cell"
                 placeholder=""
-                onBlur={this.onInputBlur}
                 onQSChange={this.onInputChange}
                 label={null}
                 preLoad={true}
@@ -183,142 +163,3 @@ export class LookupCellWithQuerySelect extends ReactN.Component<LookupCellProps,
     }
 }
 
-export class LookupCellWithSelectInput extends ReactN.Component<LookupCellProps, LookupCellState, GlobalAppState> {
-    private blurTO: number;
-
-    constructor(props: LookupCellProps) {
-        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
-        super(props);
-
-
-        this.state = {
-            token: undefined,
-        };
-    }
-
-    componentDidMount(): void {
-        const { col, filteredLookupValues, filteredLookupKeys } = this.props;
-        initLookup(col, LOOKUP_DEFAULT_SIZE, filteredLookupValues, filteredLookupKeys);
-    }
-
-    isMultiValue = (): boolean => {
-        return this.props.col.isJunctionLookup();
-    };
-
-    onInputBlur = (event: FocusEvent<HTMLElement>): void => {
-        this.blurTO = window.setTimeout(() => {
-            const { colIdx, modelId, rowIdx } = this.props;
-            this.props.select(modelId, colIdx, rowIdx);
-            this.resetLookup();
-        }, 200);
-    };
-
-    onInputChange = (fieldName: string, formValue, selectedOptions): void => {
-
-        const { col, colIdx, modelId, rowIdx, onCellModify } = this.props;
-        modifyCell(
-            modelId,
-            colIdx,
-            rowIdx,
-            [{
-                raw: formValue,
-                display: selectedOptions?.label
-            }],
-            col.isJunctionLookup() ? MODIFICATION_TYPES.ADD : MODIFICATION_TYPES.REPLACE
-        );
-        if (onCellModify) onCellModify();
-
-        if (!this.isMultiValue()) {
-            this.props.select(modelId, colIdx, rowIdx);
-            return;
-        }
-    };
-
-    resetLookup = (): void => {
-        this.searchLookup(undefined);
-    };
-
-    searchLookup = (token: string): void => {
-        searchLookup(
-            this.props.col,
-            LOOKUP_DEFAULT_SIZE,
-            token,
-            this.props.filteredLookupValues,
-            this.props.filteredLookupKeys
-        );
-    };
-
-    getStore(): LookupStore {
-        const { col } = this.props;
-
-        // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid_lookups.get(LookupStore.key(col));
-    }
-
-    getOptions(props: LookupCellProps): List<ValueDescriptor> {
-        const { values } = props;
-        const store = this.getStore();
-
-        if (store) {
-            return store.descriptors
-                .filter(vd => {
-                    return !(values && values.some(v => v.raw === vd.raw && vd.display === vd.display));
-                })
-                .toList();
-        }
-
-        return emptyList;
-    }
-
-    loadOptions = (input: string): Promise<SelectInputOption[]> => {
-        this.searchLookup(input);
-
-        return new Promise((resolve) => {
-            const { values } = this.props;
-            const store = this.getStore();
-            if (store) {
-                resolve(store.descriptors
-                    .filter(vd => {
-                        return !(values && values.some(v => v.raw === vd.raw && vd.display === vd.display));
-                    })
-                    .map(vd => (
-                        {
-                            label: vd.display,
-                            value: vd.raw
-                        }
-                    )).toArray());
-            } else {
-                resolve([]);
-            }
-        })
-
-    }
-
-    render(): ReactNode {
-        const { col, values } = this.props;
-
-        const isMultiple = this.isMultiValue();
-        const rawValues = values.filter(vd => vd.raw !== undefined).map(vd => ({
-            label: vd.display,
-            value: vd.raw
-        })).toArray();
-
-        return (
-            <SelectInput
-                autoFocus
-                disabled={this.props.disabled}
-                multiple={isMultiple}
-                containerClass="select-input-cell-container"
-                inputClass="select-input-cell"
-                placeholder=""
-                id={LookupStore.key(col)}
-                loadOptions={this.loadOptions}
-                onBlur={this.onInputBlur}
-                onChange={this.onInputChange}
-                valueKey={"value"}
-                labelKey={"label"}
-                value={isMultiple ? rawValues : rawValues[0]}
-            />
-        );
-    }
-}

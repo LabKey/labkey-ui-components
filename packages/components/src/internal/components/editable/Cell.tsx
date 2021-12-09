@@ -27,7 +27,7 @@ import { QueryColumn } from '../../..';
 
 import { getQueryColumnRenderers } from '../../global';
 
-import { LookupCellWithQuerySelect, LookupCellWithSelectInput, LookupCellProps } from './LookupCell';
+import { LookupCell, LookupCellProps } from './LookupCell';
 
 interface Props {
     col: QueryColumn;
@@ -304,7 +304,7 @@ export class Cell extends React.PureComponent<Props> {
                 filteredLookupKeys,
             };
 
-            return <LookupCellWithQuerySelect {...lookupProps} />;
+            return <LookupCell {...lookupProps} />;
             // return <LookupCellWithSelectInput {...lookupProps} />;
         }
 

@@ -290,6 +290,8 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             previewOptions,
             required,
             showLoading,
+            customTheme,
+            customStyles,
         } = this.props;
         const { defaultOptions, error, isLoading, model } = this.state;
 
@@ -308,6 +310,8 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                 label,
                 multiple,
                 name: this.props.name || this.props.componentId + '-error',
+                customTheme,
+                customStyles,
                 placeholder: `Error: ${error}`,
                 required,
                 type: 'text',
@@ -353,6 +357,8 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                 label,
                 multiple,
                 name: this.props.name || this.props.componentId + '-loader',
+                customTheme,
+                customStyles,
                 placeholder: 'Loading...',
                 required,
                 type: 'text',

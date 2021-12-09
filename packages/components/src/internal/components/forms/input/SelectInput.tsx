@@ -25,7 +25,7 @@ import { FieldLabel } from '../FieldLabel';
 
 import { generateId, QueryColumn } from '../../../..';
 
-const customStyles = {
+const _customStyles = {
     // ReactSelect v1 had a zIndex value of "1000" where as ReactSelect v4.3.1 has a value of "2"
     // which results in layout conflicts in our apps. This reverts to the v1 value.
     menu: provided => ({ ...provided, zIndex: 1000 }),
@@ -48,7 +48,7 @@ const customStyles = {
     },
 };
 
-const customTheme = theme => ({
+const _customTheme = theme => ({
     ...theme,
     colors: {
         ...theme.colors,
@@ -143,6 +143,8 @@ export interface SelectInputProps {
     clearable?: boolean;
     clearCacheOnChange?: boolean;
     containerClass?: string;
+    customTheme?: (theme) => any;
+    customStyles?: any;
     defaultOptions?: boolean | readonly any[];
     delimiter?: string;
     description?: string;
@@ -465,6 +467,8 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             backspaceRemovesValue,
             cacheOptions,
             clearable,
+            customTheme,
+            customStyles,
             defaultOptions,
             delimiter,
             disabled,
@@ -523,8 +527,8 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             placeholder,
             promptTextCreator,
             ref: 'reactSelect',
-            styles: customStyles,
-            theme: customTheme,
+            styles: { ...customStyles, ..._customStyles },
+            theme: customTheme || _customTheme,
             // ReactSelect only supports null for clearing the value (as opposed to undefined).
             // See https://stackoverflow.com/a/50417171.
             value: (this.props.autoValue ? this.state.selectedOptions : this.props.selectedOptions) ?? null,

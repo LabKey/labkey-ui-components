@@ -25,6 +25,43 @@ import { GlobalAppState } from '../../global';
 
 const emptyList = List<ValueDescriptor>();
 
+const customStyles = {
+    control: (provided, state) => ({
+        ...provided,
+        minHeight: 24,
+        borderRadius: 0,
+    }),
+    valueContainer: (provided, state) => ({
+        ...provided,
+        minHeight: 24,
+        padding: '0 4px',
+    }),
+    input: (provided, state) => ({
+        ...provided,
+        margin: '0px',
+    }),
+    indicatorsContainer: (provided, state) => ({
+        ...provided,
+        minHeight: 24,
+    }),
+};
+
+const customTheme = theme => ({
+    ...theme,
+    colors: {
+        ...theme.colors,
+        danger: '#D9534F',
+        primary: '#2980B9',
+        primary75: '#009BF9',
+        primary50: '#F2F9FC',
+        primary25: 'rgba(41, 128, 185, 0.1)',
+    },
+    spacing: {
+        ...theme.spacing,
+        baseUnit: 2,
+    },
+});
+
 export interface LookupCellProps {
     col: QueryColumn;
     colIdx: number;
@@ -102,6 +139,8 @@ export class LookupCellWithQuerySelect extends ReactN.Component<LookupCellProps,
                 maxRows={LOOKUP_DEFAULT_SIZE}
                 containerPath={lookup.containerPath}
                 containerClass="select-input-cell-container"
+                customTheme={customTheme}
+                customStyles={customStyles}
                 inputClass="select-input-cell"
                 placeholder=""
                 onBlur={this.onInputBlur}

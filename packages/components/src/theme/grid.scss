@@ -335,30 +335,27 @@ $table-cell-selection-bg-color: #EDF3FF;
       }
     }
     .cell-menu {
+        position: relative;
         min-height: 30px;
         width: 200px;
     }
+    .cell-menu-value {
+        width: 170px;
+        text-overflow: ellipsis;
+        overflow-y: clip;
+    }
 
     .cell-menu-selector {
+        position: absolute;
         color: $light-gray;
         min-height: 30px;
-        padding-right: 8px;
-        padding-left: 8px;
         font-size: 12px;
-        float: right;
+        right: 7px;
+        top: 8px;
 
         .fa {
             font-size: 14px;
         }
-    }
-
-    .cell-menu-separator {
-        align-self: stretch;
-        background-color: hsl(0, 0%, 80%);
-        margin-bottom: 8px;
-        margin-top: 8px;
-        width: 1px;
-        box-sizing: border-box;
     }
 
     .cell-placeholder {

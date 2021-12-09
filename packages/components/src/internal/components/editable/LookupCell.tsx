@@ -98,18 +98,46 @@ export class LookupCellWithQuerySelect extends ReactN.Component<LookupCellProps,
 
     onInputChange = (fieldName: string, formValue: string | any[], items: any, selectedItems: Map<string, any>): void => {
 
-        const { col, colIdx, modelId, rowIdx, onCellModify } = this.props;
-        const vd = {
-            raw: Array.isArray(items) ? items[items.length-1].value : items?.value,
-            display: Array.isArray(items) ? items[items.length-1].label : items?.label
+        const { colIdx, modelId, rowIdx, onCellModify } = this.props;
+        if (this.isMultiValue())
+        {
+            if (items.length == 0) {
+                modifyCell(
+                    modelId,
+                    colIdx,
+                    rowIdx,
+                    undefined,
+                    MODIFICATION_TYPES.REMOVE_ALL
+                );
+            }
+            else {
+                const valueDescriptors = []
+                for (let i = 0; i < items.length; i++) {
+                    valueDescriptors.push({
+                        raw: items[i].value,
+                        display: items[i].label
+                    });
+                }
+                modifyCell(
+                    modelId,
+                    colIdx,
+                    rowIdx,
+                    valueDescriptors,
+                    MODIFICATION_TYPES.REPLACE
+                );
+            }
+        } else {
+            modifyCell(
+                modelId,
+                colIdx,
+                rowIdx,
+                [{
+                    raw: items?.value,
+                    display: items?.label
+                }],
+                MODIFICATION_TYPES.REPLACE
+            );
         }
-        modifyCell(
-            modelId,
-            colIdx,
-            rowIdx,
-            vd,
-            col.isJunctionLookup() ? MODIFICATION_TYPES.ADD : MODIFICATION_TYPES.REPLACE
-        );
         if (onCellModify) onCellModify();
 
         if (!this.isMultiValue()) {
@@ -142,6 +170,7 @@ export class LookupCellWithQuerySelect extends ReactN.Component<LookupCellProps,
                 customTheme={customTheme}
                 customStyles={customStyles}
                 menuPosition="fixed" // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
+                openMenuOnFocus={!isMultiple} // If set to true for the multi-select case, it's not possible to tab out of the cell.
                 inputClass="select-input-cell"
                 placeholder=""
                 onBlur={this.onInputBlur}
@@ -187,15 +216,14 @@ export class LookupCellWithSelectInput extends ReactN.Component<LookupCellProps,
     onInputChange = (fieldName: string, formValue, selectedOptions): void => {
 
         const { col, colIdx, modelId, rowIdx, onCellModify } = this.props;
-        const vd = {
-            raw: formValue,
-            display: selectedOptions?.label
-        }
         modifyCell(
             modelId,
             colIdx,
             rowIdx,
-            vd,
+            [{
+                raw: formValue,
+                display: selectedOptions?.label
+            }],
             col.isJunctionLookup() ? MODIFICATION_TYPES.ADD : MODIFICATION_TYPES.REPLACE
         );
         if (onCellModify) onCellModify();

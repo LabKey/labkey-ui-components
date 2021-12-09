@@ -1694,7 +1694,7 @@ export function modifyCell(
     modelId: string,
     colIdx: number,
     rowIdx: number,
-    newValue: ValueDescriptor,
+    newValues: ValueDescriptor[],
     mod: MODIFICATION_TYPES
 ): void {
     const cellKey = genCellKey(colIdx, rowIdx);
@@ -1712,19 +1712,20 @@ export function modifyCell(
     if (mod === MODIFICATION_TYPES.ADD) {
         const values: List<ValueDescriptor> = model.getIn(keyPath);
         if (values !== undefined) {
-            updateCellValues(model, cellKey, values.push(newValue));
+            updateCellValues(model, cellKey, values.push(...newValues));
         } else {
-            updateCellValues(model, cellKey, VD.push(newValue));
+            updateCellValues(model, cellKey, VD.push(...newValues));
         }
     } else if (mod === MODIFICATION_TYPES.REPLACE) {
-        updateCellValues(model, cellKey, VD.push(newValue));
+        updateCellValues(model, cellKey, VD.push(...newValues));
     } else if (mod === MODIFICATION_TYPES.REMOVE) {
         let values: List<ValueDescriptor> = model.getIn(keyPath);
+        for (let v = 0; v < newValues.length; v++) {
+            const idx = values.findIndex(vd => vd.display === newValues[v].display && vd.raw === newValues[v].raw);
 
-        const idx = values.findIndex(vd => vd.display === newValue.display && vd.raw === vd.raw);
-
-        if (idx > -1) {
-            values = values.remove(idx);
+            if (idx > -1) {
+                values = values.remove(idx);
+            }
         }
 
         if (values.size) {

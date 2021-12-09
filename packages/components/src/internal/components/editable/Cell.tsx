@@ -85,10 +85,10 @@ export class Cell extends React.PureComponent<Props> {
             modelId,
             colIdx,
             rowIdx,
-            {
+            [{
                 display: evt.target.value,
                 raw: evt.target.value,
-            },
+            }],
             MODIFICATION_TYPES.REPLACE
         );
         if (onCellModify) onCellModify();
@@ -104,10 +104,10 @@ export class Cell extends React.PureComponent<Props> {
                 modelId,
                 colIdx,
                 rowIdx,
-                {
+                [{
                     display: event.target.value,
                     raw: event.target.value,
-                },
+                }],
                 MODIFICATION_TYPES.REPLACE
             );
             if (onCellModify) onCellModify();
@@ -262,9 +262,8 @@ export class Cell extends React.PureComponent<Props> {
             if (col.isPublicLookup()) {
                 cell = (
                     <div {...displayProps}>
-                        {valueDisplay}
-                        <span onClick={this.handleDblClick} className={"cell-menu-selector"}>
-                            <span className={"cell-menu-separator"}/>
+                        <div className="cell-menu-value">{valueDisplay}</div>
+                        <span onClick={this.handleDblClick} className="cell-menu-selector">
                             <i className="fa fa-chevron-down"/>
                         </span>
                     </div>

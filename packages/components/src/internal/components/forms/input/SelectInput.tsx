@@ -143,8 +143,8 @@ export interface SelectInputProps {
     clearable?: boolean;
     clearCacheOnChange?: boolean;
     containerClass?: string;
-    customTheme?: (theme) => any;
-    customStyles?: any;
+    customTheme?: (theme) => Record<string, any>;
+    customStyles?: Record<string, any>;
     defaultOptions?: boolean | readonly any[];
     delimiter?: string;
     description?: string;
@@ -162,6 +162,7 @@ export interface SelectInputProps {
     labelClass?: string;
     labelKey?: string;
     loadOptions?: (input: string) => Promise<SelectInputOption[]>;
+    menuPosition?: string;
     multiple?: boolean;
     name?: string;
     noResultsText?: string;
@@ -475,6 +476,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             filterOption,
             isLoading,
             labelKey,
+            menuPosition,
             multiple,
             name,
             optionRenderer,
@@ -516,7 +518,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             isLoading,
             isMulti: multiple,
             menuPlacement: 'auto',
-            menuPosition: 'fixed', // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
+            menuPosition,
             name,
             noOptionsMessage: this.noOptionsMessage,
             onBlur: this.handleBlur,

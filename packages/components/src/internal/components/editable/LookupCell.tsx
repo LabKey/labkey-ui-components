@@ -141,6 +141,7 @@ export class LookupCellWithQuerySelect extends ReactN.Component<LookupCellProps,
                 containerClass="select-input-cell-container"
                 customTheme={customTheme}
                 customStyles={customStyles}
+                menuPosition="fixed" // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
                 inputClass="select-input-cell"
                 placeholder=""
                 onBlur={this.onInputBlur}

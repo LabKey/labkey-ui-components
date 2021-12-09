@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version XXX
 *Released*: XXX
-* Validate name expressions prior to saving SampleTypeDesinger
+* SampleTypeDesigner and DataClassDesigner
+   * Validate name expressions prior to save
+   * Show name preview on hover
 
 ### version 2.102.0
 *Released*: 1 December 2021

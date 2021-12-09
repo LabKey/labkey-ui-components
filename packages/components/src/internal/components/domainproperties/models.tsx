@@ -1717,11 +1717,13 @@ export class DomainDetails extends Record({
     options: undefined,
     domainKindName: undefined,
     nameReadOnly: false,
+    namePreviews: undefined,
 }) {
     declare domainDesign: DomainDesign;
     declare options: Map<string, any>;
     declare domainKindName: string;
     declare nameReadOnly?: boolean;
+    declare namePreviews?: string[];
 
     static create(rawDesign: Map<string, any> = Map(), domainKindType: string = Domain.KINDS.UNKNOWN): DomainDetails {
         let design;
@@ -1730,7 +1732,8 @@ export class DomainDetails extends Record({
             const domainKindName = rawDesign.get('domainKindName', domainKindType);
             const options = Map(rawDesign.get('options'));
             const nameReadOnly = rawDesign.get('nameReadOnly');
-            design = new DomainDetails({ domainDesign, domainKindName, options, nameReadOnly });
+            const namePreviews = rawDesign.get('namePreviews');
+            design = new DomainDetails({ domainDesign, domainKindName, options, nameReadOnly, namePreviews });
         } else {
             design = new DomainDetails({
                 domainDesign: DomainDesign.create(null),
@@ -1756,4 +1759,5 @@ export interface BulkDeleteConfirmInfo {
 export interface NameExpressionsValidationResults {
     warnings: string[];
     errors: string[];
+    previews: string[];
 }

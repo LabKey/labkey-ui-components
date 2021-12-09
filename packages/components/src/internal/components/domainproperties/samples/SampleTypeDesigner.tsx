@@ -102,6 +102,8 @@ interface State {
     showUniqueIdConfirmation: boolean;
     uniqueIdsConfirmed: boolean;
     nameExpressionWarnings: string[];
+    namePreviewsLoading: boolean;
+    namePreviews: string[];
 }
 
 class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -142,7 +144,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             error: undefined,
             showUniqueIdConfirmation: false,
             uniqueIdsConfirmed: undefined,
-            nameExpressionWarnings: undefined
+            nameExpressionWarnings: undefined,
+            namePreviewsLoading: false,
+            namePreviews: undefined
         };
     }
 
@@ -439,12 +443,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             name,
             domain,
             description,
-            nameExpression,
-            aliquotNameExpression,
-            labelColor,
-            metricUnit,
-            autoLinkTargetContainerId,
-            autoLinkCategory,
         } = model;
 
         if (beforeFinish && !hasConfirmedNameExpression) {
@@ -456,16 +454,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             description,
         }) as DomainDesign;
 
-        const details = {
-            name,
-            nameExpression,
-            aliquotNameExpression,
-            labelColor,
-            metricUnit,
-            autoLinkTargetContainerId,
-            autoLinkCategory,
-            importAliases: this.getImportAliasesAsMap(model).toJS(),
-        };
+        const details = this.getDomainDetails();
 
         if (model.isNew()) {
             // Initialize a sampleId column, this is not displayed as part of the designer.
@@ -498,13 +487,14 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
         try {
             if (this.props.validateNameExpressions && !hasConfirmedNameExpression) {
-                const response = await validateDomainNameExpressions(domainDesign, Domain.KINDS.SAMPLE_TYPE, details);
+                const response = await validateDomainNameExpressions(domainDesign, Domain.KINDS.SAMPLE_TYPE, details, true);
                 if (response.errors?.length > 0 || response.warnings?.length > 0) {
                     const updatedModel = model.set('exception', response.errors?.join('\n')) as SampleTypeModel;
                     setSubmitting(false, () => {
                         this.setState(() => ({
                             model: updatedModel,
-                            nameExpressionWarnings: response.warnings
+                            nameExpressionWarnings: response.warnings,
+                            namePreviews: response.previews,
                         }));
                     });
                     return;
@@ -559,6 +549,67 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         return model.domain.fields.filter(field => field.isNew() && field.isUniqueIdField()).count();
     }
 
+    getDomainDetails = () => {
+        const { model } = this.state;
+
+        const {
+            name,
+            nameExpression,
+            aliquotNameExpression,
+            labelColor,
+            metricUnit,
+            autoLinkTargetContainerId,
+            autoLinkCategory,
+        } = model;
+
+
+        return {
+            name,
+            nameExpression,
+            aliquotNameExpression,
+            labelColor,
+            metricUnit,
+            autoLinkTargetContainerId,
+            autoLinkCategory,
+            importAliases: this.getImportAliasesAsMap(model).toJS(),
+        };
+    };
+
+    onNameFieldHover = async () => {
+        const { model, namePreviewsLoading } = this.state;
+
+        if (namePreviewsLoading)
+            return;
+
+        const {
+            name,
+            domain,
+            description
+        } = model;
+
+        let domainDesign = domain.merge({
+            name,
+            description,
+        }) as DomainDesign;
+
+        const details = this.getDomainDetails();
+
+        try {
+            if (this.props.validateNameExpressions) {
+                const response = await validateDomainNameExpressions(domainDesign, Domain.KINDS.SAMPLE_TYPE, details, true);
+                this.setState(() => ({
+                    namePreviewsLoading: false,
+                    namePreviews: response?.previews
+                }));
+            }
+        } catch (error) {
+            console.error(error);
+            this.setState(() => ({
+                namePreviewsLoading: false
+            }));
+        }
+    };
+
     render() {
         const {
             containerTop,
@@ -591,7 +642,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             showLinkToStudy,
             aliquotNamePatternProps,
         } = this.props;
-        const { error, model, parentOptions, showUniqueIdConfirmation, nameExpressionWarnings } = this.state;
+        const { error, model, parentOptions, showUniqueIdConfirmation, nameExpressionWarnings, namePreviews, namePreviewsLoading } = this.state;
         const numNewUniqueIdFields = this.getNumNewUniqueIdFields();
         // For non-premium LKSM the showLinkToStudy will be true, but the study module will not be present.
         // We also don't want to always show the link to study even if the study module is available (the LKB case).
@@ -657,6 +708,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     metricUnitProps={metricUnitProps}
                     onAddUniqueIdField={this.onAddUniqueIdField}
                     aliquotNamePatternProps={aliquotNamePatternProps}
+                    namePreviewsLoading={namePreviewsLoading}
+                    namePreviews={namePreviews}
+                    onNameFieldHover={this.onNameFieldHover}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}
@@ -702,6 +756,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     onHide={this.onNameExpressionWarningCancel}
                     onConfirm={this.onNameExpressionWarningConfirm}
                     warnings={nameExpressionWarnings}
+                    previews={namePreviews}
                     show={!!nameExpressionWarnings && !model.exception}
                 />
             </BaseDomainDesigner>

@@ -48,6 +48,8 @@ interface Props {
 interface State {
     model: DataClassModel;
     nameExpressionWarnings: string[];
+    namePreviews: string[];
+    namePreviewsLoading: boolean;
 }
 
 class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -56,6 +58,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         nounPlural: 'Data Classes',
         domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'data class' },
         loadNameExpressionOptions,
+        validateNameExpressions: true,
     };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
@@ -65,6 +68,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             {
                 model: props.initModel || DataClassModel.create({}),
                 nameExpressionWarnings: undefined,
+                namePreviews: undefined,
+                namePreviewsLoading: false,
             },
             () => {}
         );
@@ -116,13 +121,14 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }
 
         if (this.props.validateNameExpressions && !hasConfirmedNameExpression) {
-            validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options)
+            validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
                 .then(response => {
                     if (response.errors?.length > 0 || response.warnings?.length > 0) {
                         setSubmitting(false, () => {
                             this.saveModel({ exception: response.errors?.join('\n') });
                             this.setState({
-                                nameExpressionWarnings: response.warnings
+                                nameExpressionWarnings: response.warnings,
+                                namePreviews: response.previews
                             });
                         });
                         return;
@@ -219,6 +225,29 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         );
     };
 
+    onNameFieldHover = () => {
+        const { model, namePreviewsLoading } = this.state;
+
+        if (namePreviewsLoading)
+            return;
+
+        if (this.props.validateNameExpressions) {
+            validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
+                .then(response => {
+                    this.setState(() => ({
+                        namePreviewsLoading: false,
+                        namePreviews: response?.previews
+                    }));
+                })
+                .catch(response => {
+                    console.error(response);
+                    this.setState(() => ({
+                        namePreviewsLoading: false
+                    }));
+                });
+        }
+    };
+
     render(): ReactNode {
         const {
             onCancel,
@@ -242,7 +271,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             testMode,
             domainFormDisplayOptions,
         } = this.props;
-        const { model, nameExpressionWarnings } = this.state;
+        const { model, nameExpressionWarnings, namePreviews, namePreviewsLoading } = this.state;
 
         return (
             <BaseDomainDesigner
@@ -277,6 +306,9 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                         onTogglePanel(0, collapsed, callback);
                     }}
                     useTheme={useTheme}
+                    namePreviewsLoading={namePreviewsLoading}
+                    previewName={namePreviews?.[0]}
+                    onNameFieldHover={this.onNameFieldHover}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}
@@ -305,6 +337,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     onHide={this.onNameExpressionWarningCancel}
                     onConfirm={this.onNameExpressionWarningConfirm}
                     warnings={nameExpressionWarnings}
+                    previews={namePreviews}
                     show={!!nameExpressionWarnings && !model.exception}
                 />
             </BaseDomainDesigner>

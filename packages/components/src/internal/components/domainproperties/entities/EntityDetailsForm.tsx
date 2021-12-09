@@ -14,6 +14,7 @@ import {
     isExistingEntity,
 } from './actions';
 import { ENTITY_FORM_IDS } from './constants';
+import { NameExpressionPreview } from "../NameExpressionPreview";
 
 export interface EntityDetailsProps {
     noun: string;
@@ -24,6 +25,10 @@ export interface EntityDetailsProps {
     nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
     nameReadOnly?: boolean;
+    showPreviewName?: boolean;
+    previewName?: string;
+    namePreviewsLoading?: boolean;
+    onNameFieldHover?: () => any;
 }
 
 export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, any> {
@@ -37,6 +42,10 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
             data,
             nameReadOnly,
             warning,
+            showPreviewName,
+            previewName,
+            onNameFieldHover,
+            namePreviewsLoading
         } = this.props;
         const moreInfoLink = nameExpressionInfoUrl ? (
             <p>
@@ -87,15 +96,24 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                 </Row>
                 <Row className="margin-bottom">
                     <Col xs={2}>
-                        <DomainFieldLabel
-                            label="Naming Pattern"
-                            helpTipBody={
-                                <>
-                                    <p>Pattern used for generating unique IDs for this {noun.toLowerCase()}.</p>
-                                    {moreInfoLink}
-                                </>
-                            }
-                        />
+                        <div onMouseEnter={() => onNameFieldHover?.()}>
+                            <DomainFieldLabel
+                                label="Naming Pattern"
+                                helpTipBody={
+                                    <>
+                                        <p>Pattern used for generating unique IDs for this {noun.toLowerCase()}.</p>
+                                        {
+                                            showPreviewName &&
+                                            <NameExpressionPreview
+                                                previewName={previewName}
+                                                isPreviewLoading={namePreviewsLoading}
+                                            />
+                                        }
+                                        {moreInfoLink}
+                                    </>
+                                }
+                            />
+                        </div>
                     </Col>
                     <Col xs={10}>
                         <FormControl

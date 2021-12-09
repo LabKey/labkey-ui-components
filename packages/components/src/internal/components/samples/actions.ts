@@ -112,7 +112,8 @@ export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
 export function getSampleTypeDetails(
     query?: SchemaQuery,
     domainId?: number,
-    containerPath?: string
+    containerPath?: string,
+    includeNamePreview?: boolean,
 ): Promise<DomainDetails> {
     return new Promise((resolve, reject) => {
         return Domain.getDomainDetails({
@@ -121,6 +122,7 @@ export function getSampleTypeDetails(
             queryName: query ? query.getQuery() : undefined,
             schemaName: query ? query.getSchema() : undefined,
             domainKind: query === undefined && domainId === undefined ? 'SampleSet' : undefined,
+            includeNamePreview: !!includeNamePreview,
             success: response => {
                 resolve(DomainDetails.create(Map(response)));
             },

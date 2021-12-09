@@ -5,6 +5,7 @@ import { ConfirmModal } from '../../../..';
 export interface Props {
     title?: string;
     warnings: string[];
+    previews: string[];
     show: boolean;
     onHide: () => any;
     onConfirm: () => any;
@@ -22,7 +23,7 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
         };
 
         render() {
-            const { title, onHide, onConfirm, warnings, show } = this.props;
+            const { title, onHide, onConfirm, warnings, show, previews } = this.props;
 
             if (!show || !warnings || warnings.length === 0)
                 return null;
@@ -51,6 +52,7 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
             if (nameWarnings.length > 0) {
                 nameWarnDisplay = <div>
                     {hasMultiGroup && <p>Naming Expression Warning(s):</p>}
+                    <p>Example name generated: {previews[0]}</p>
                     <ul className="name-expression-warning-list">
                         {React.Children.map(nameWarnings, warning => (
                             <li>{warning}</li>
@@ -62,6 +64,7 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
             if (aliquotNameWarnings.length > 0) {
                 aliquotNameWarnDisplay = <div>
                     {hasMultiGroup && <p>Aliquot Naming Expression Warning(s):</p>}
+                    <p>Example aliquot name generated: {previews[1]}</p>
                     <ul className="aliquot-expression-warning-list">
                         {React.Children.map(aliquotNameWarnings, warning => (
                             <li>{warning}</li>

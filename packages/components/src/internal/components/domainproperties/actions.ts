@@ -380,13 +380,15 @@ export function saveDomain(
 export function validateDomainNameExpressions(
     domain: DomainDesign,
     kind?: string,
-    options?: any
+    options?: any,
+    includeNamePreview?: boolean
 ): Promise<NameExpressionsValidationResults> {
     return new Promise((resolve, reject) => {
         function successHandler(response) {
             resolve({
                 warnings: response['warnings'],
-                errors: response['errors']
+                errors: response['errors'],
+                previews: response['previews'],
             });
         }
 
@@ -394,6 +396,7 @@ export function validateDomainNameExpressions(
             options,
             domainDesign: DomainDesign.serialize(domain),
             kind,
+            includeNamePreview,
             success: successHandler,
             failure: error => {
                 reject(error);

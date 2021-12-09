@@ -20,8 +20,8 @@ import {
 
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
 import { AliasInput } from '../input/AliasInput';
-
 import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
+import { TextChoiceInput } from '../input/TextChoiceInput';
 
 describe('titleRenderer', () => {
     test('editable', () => {
@@ -53,6 +53,7 @@ describe('resolveDetailEditRenderer', () => {
         expect(wrapper.find(DatePickerInput)).toHaveLength(count['datepickerinput'] ?? 0);
         expect(wrapper.find(QueryDateInput)).toHaveLength(count['dateinput'] ?? 0);
         expect(wrapper.find(FileInput)).toHaveLength(count['fileinput'] ?? 0);
+        expect(wrapper.find(TextChoiceInput)).toHaveLength(count['textchoiceinput'] ?? 0);
         expect(wrapper.find(Input)).toHaveLength(count['input'] ?? 0);
     }
 
@@ -139,6 +140,13 @@ describe('resolveDetailEditRenderer', () => {
         const col = new QueryColumn({ ...default_props });
         const wrapper = mount(<Formsy>{resolveDetailEditRenderer(col)(Map())}</Formsy>);
         validate(wrapper, { input: 1 });
+        wrapper.unmount();
+    });
+
+    test('validValues', () => {
+        const col = new QueryColumn({ ...default_props, validValues: ['a', 'b', 'c'] });
+        const wrapper = mount(<Formsy>{resolveDetailEditRenderer(col)(Map())}</Formsy>);
+        validate(wrapper, { textchoiceinput: 1 });
         wrapper.unmount();
     });
 });

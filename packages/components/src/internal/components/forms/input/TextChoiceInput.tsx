@@ -10,9 +10,9 @@ interface Props extends SelectInputProps {
 export class TextChoiceInput extends DisableableInput<Props, DisableableInputState> {
     render(): ReactNode {
         const { queryColumn, placeholder, ...inputProps } = this.props;
-        const inputOptions = queryColumn.validValues.map(val => {
+        const inputOptions = queryColumn.validValues?.map(val => {
             return { label: val, value: val };
-        });
+        }) ?? [];
 
         return (
             <SelectInput

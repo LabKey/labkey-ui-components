@@ -28,8 +28,8 @@ import { TextInput } from './input/TextInput';
 import { CheckboxInput } from './input/CheckboxInput';
 import { FileInput } from './input/FileInput';
 import { SelectInput } from './input/SelectInput';
-
 import { DatePickerInput } from './input/DatePickerInput';
+import { TextChoiceInput } from './input/TextChoiceInput';
 import { FieldLabel } from './FieldLabel';
 
 beforeAll(() => {
@@ -51,10 +51,11 @@ describe('QueryFormInputs', () => {
             );
 
             expect(formWrapper.find('input').findWhere(input => input.prop('disabled'))).toHaveLength(0);
-            expect(formWrapper.find(TextInput)).toHaveLength(4);
+            expect(formWrapper.find(TextInput)).toHaveLength(3);
             expect(formWrapper.find(DatePickerInput)).toHaveLength(1);
             expect(formWrapper.find(CheckboxInput)).toHaveLength(1);
-            expect(formWrapper.find(SelectInput)).toHaveLength(0);
+            expect(formWrapper.find(TextChoiceInput)).toHaveLength(1);
+            expect(formWrapper.find(SelectInput)).toHaveLength(1); // this is from the TextChoiceInput
             // default properties don't render file inputs
             expect(formWrapper.find(FileInput)).toHaveLength(0);
 
@@ -71,8 +72,8 @@ describe('QueryFormInputs', () => {
                 <Formsy>
                     <QueryFormInputs
                         queryInfo={queryInfo}
-                        renderFieldLabel={(queryColumn: QueryColumn) => {
-                            return <div className="jest-field-label-test">{queryColumn.name}</div>;
+                        renderFieldLabel={(queryColumn: QueryColumn, label: string) => {
+                            return <div className="jest-field-label-test">{queryColumn?.name || label}</div>;
                         }}
                     />
                 </Formsy>
@@ -129,7 +130,7 @@ describe('QueryFormInputs', () => {
                 </Formsy>
             );
 
-            expect(formWrapper.find('input').findWhere(input => !input.prop('disabled'))).toHaveLength(5);
+            expect(formWrapper.find('input').findWhere(input => !input.prop('disabled'))).toHaveLength(6);
             expect(formWrapper.find('input').findWhere(input => input.prop('disabled'))).toHaveLength(1);
 
             formWrapper.unmount();

@@ -494,7 +494,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             this.table &&
             this.table.current &&
             !$.contains(this.table.current, event.target) &&
-            !$(event.target).parent('.cell-lookup') &&
+            !$(event.target).parent('.cell-menu') &&
             !inDrag(model.getId())
         ) {
             clearSelection(model.getId());

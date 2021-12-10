@@ -367,7 +367,7 @@ export class DomainDesign
         scrollFunction: (i: number) => void,
         domainKindName: string,
         appPropertiesOnly: boolean,
-        hasOntologyModule: boolean
+        hasOntologyModule: boolean,
     ): List<GridColumn | DomainPropertiesGridColumn> {
         const selectionCol = new GridColumn({
             index: GRID_SELECTION_INDEX,
@@ -427,6 +427,9 @@ export class DomainDesign
         }
         if (domainKindName !== VAR_LIST && domainKindName !== INT_LIST) {
             delete columns.isPrimaryKey;
+        }
+        if (!(appPropertiesOnly && domainKindName === 'SampleSet')) {
+            delete columns.scannable;
         }
 
         const unsortedColumns = List(

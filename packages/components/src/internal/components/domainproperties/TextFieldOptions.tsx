@@ -118,7 +118,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                             disabled={isFieldFullyLocked(lockType)}
                             checked={scannable}
                         />
-                        <span>Search this field when scanning samples.</span>
+                        <span>Search this field when scanning samples</span>
                     </Col>
                 </Row>
             </>

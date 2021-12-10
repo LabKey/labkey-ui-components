@@ -3852,6 +3852,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                               inputClass="col-sm-9 col-xs-12"
                                               labelClass="control-label col-sm-3 text-left col-xs-12"
                                               name="entity-category"
+                                              openMenuOnFocus={false}
                                               placeholder="Loading..."
                                               saveOnBlur={false}
                                               type="text"
@@ -3879,11 +3880,13 @@ exports[`DataClassDesigner initModel 1`] = `
                                                     id="selectinput-2"
                                                     isClearable={true}
                                                     isDisabled={true}
+                                                    menuPlacement="auto"
                                                     name="entity-category"
                                                     noOptionsMessage={[Function]}
                                                     onBlur={[Function]}
                                                     onChange={[Function]}
                                                     onFocus={[Function]}
+                                                    openMenuOnFocus={false}
                                                     placeholder="Loading..."
                                                     styles={
                                                       Object {
@@ -3929,7 +3932,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       loadingMessage={[Function]}
                                                       maxMenuHeight={300}
                                                       menuIsOpen={false}
-                                                      menuPlacement="bottom"
+                                                      menuPlacement="auto"
                                                       menuPosition="absolute"
                                                       menuShouldBlockScroll={false}
                                                       menuShouldScrollIntoView={true}
@@ -4013,7 +4016,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "loadingMessage": [Function],
                                                             "maxMenuHeight": 300,
                                                             "menuIsOpen": false,
-                                                            "menuPlacement": "bottom",
+                                                            "menuPlacement": "auto",
                                                             "menuPosition": "absolute",
                                                             "menuShouldBlockScroll": false,
                                                             "menuShouldScrollIntoView": true,
@@ -4145,7 +4148,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "loadingMessage": [Function],
                                                                   "maxMenuHeight": 300,
                                                                   "menuIsOpen": false,
-                                                                  "menuPlacement": "bottom",
+                                                                  "menuPlacement": "auto",
                                                                   "menuPosition": "absolute",
                                                                   "menuShouldBlockScroll": false,
                                                                   "menuShouldScrollIntoView": true,
@@ -4291,7 +4294,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "loadingMessage": [Function],
                                                                   "maxMenuHeight": 300,
                                                                   "menuIsOpen": false,
-                                                                  "menuPlacement": "bottom",
+                                                                  "menuPlacement": "auto",
                                                                   "menuPosition": "absolute",
                                                                   "menuShouldBlockScroll": false,
                                                                   "menuShouldScrollIntoView": true,
@@ -4434,7 +4437,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "loadingMessage": [Function],
                                                                         "maxMenuHeight": 300,
                                                                         "menuIsOpen": false,
-                                                                        "menuPlacement": "bottom",
+                                                                        "menuPlacement": "auto",
                                                                         "menuPosition": "absolute",
                                                                         "menuShouldBlockScroll": false,
                                                                         "menuShouldScrollIntoView": true,
@@ -4564,7 +4567,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "loadingMessage": [Function],
                                                                               "maxMenuHeight": 300,
                                                                               "menuIsOpen": false,
-                                                                              "menuPlacement": "bottom",
+                                                                              "menuPlacement": "auto",
                                                                               "menuPosition": "absolute",
                                                                               "menuShouldBlockScroll": false,
                                                                               "menuShouldScrollIntoView": true,
@@ -4705,7 +4708,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "loadingMessage": [Function],
                                                                               "maxMenuHeight": 300,
                                                                               "menuIsOpen": false,
-                                                                              "menuPlacement": "bottom",
+                                                                              "menuPlacement": "auto",
                                                                               "menuPosition": "absolute",
                                                                               "menuShouldBlockScroll": false,
                                                                               "menuShouldScrollIntoView": true,
@@ -4827,7 +4830,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "loadingMessage": [Function],
                                                                                 "maxMenuHeight": 300,
                                                                                 "menuIsOpen": false,
-                                                                                "menuPlacement": "bottom",
+                                                                                "menuPlacement": "auto",
                                                                                 "menuPosition": "absolute",
                                                                                 "menuShouldBlockScroll": false,
                                                                                 "menuShouldScrollIntoView": true,
@@ -5047,7 +5050,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "loadingMessage": [Function],
                                                                         "maxMenuHeight": 300,
                                                                         "menuIsOpen": false,
-                                                                        "menuPlacement": "bottom",
+                                                                        "menuPlacement": "auto",
                                                                         "menuPosition": "absolute",
                                                                         "menuShouldBlockScroll": false,
                                                                         "menuShouldScrollIntoView": true,
@@ -5172,7 +5175,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "loadingMessage": [Function],
                                                                               "maxMenuHeight": 300,
                                                                               "menuIsOpen": false,
-                                                                              "menuPlacement": "bottom",
+                                                                              "menuPlacement": "auto",
                                                                               "menuPosition": "absolute",
                                                                               "menuShouldBlockScroll": false,
                                                                               "menuShouldScrollIntoView": true,
@@ -5308,7 +5311,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "loadingMessage": [Function],
                                                                               "maxMenuHeight": 300,
                                                                               "menuIsOpen": false,
-                                                                              "menuPlacement": "bottom",
+                                                                              "menuPlacement": "auto",
                                                                               "menuPosition": "absolute",
                                                                               "menuShouldBlockScroll": false,
                                                                               "menuShouldScrollIntoView": true,
@@ -5612,6 +5615,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                               inputClass="col-sm-9 col-xs-12"
                                               labelClass="control-label col-sm-3 text-left col-xs-12"
                                               name="entity-sampleSet"
+                                              openMenuOnFocus={false}
                                               placeholder="Loading..."
                                               saveOnBlur={false}
                                               type="text"
@@ -5639,11 +5643,13 @@ exports[`DataClassDesigner initModel 1`] = `
                                                     id="selectinput-3"
                                                     isClearable={true}
                                                     isDisabled={true}
+                                                    menuPlacement="auto"
                                                     name="entity-sampleSet"
                                                     noOptionsMessage={[Function]}
                                                     onBlur={[Function]}
                                                     onChange={[Function]}
                                                     onFocus={[Function]}
+                                                    openMenuOnFocus={false}
                                                     placeholder="Loading..."
                                                     styles={
                                                       Object {
@@ -5689,7 +5695,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       loadingMessage={[Function]}
                                                       maxMenuHeight={300}
                                                       menuIsOpen={false}
-                                                      menuPlacement="bottom"
+                                                      menuPlacement="auto"
                                                       menuPosition="absolute"
                                                       menuShouldBlockScroll={false}
                                                       menuShouldScrollIntoView={true}
@@ -5773,7 +5779,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "loadingMessage": [Function],
                                                             "maxMenuHeight": 300,
                                                             "menuIsOpen": false,
-                                                            "menuPlacement": "bottom",
+                                                            "menuPlacement": "auto",
                                                             "menuPosition": "absolute",
                                                             "menuShouldBlockScroll": false,
                                                             "menuShouldScrollIntoView": true,
@@ -5905,7 +5911,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "loadingMessage": [Function],
                                                                   "maxMenuHeight": 300,
                                                                   "menuIsOpen": false,
-                                                                  "menuPlacement": "bottom",
+                                                                  "menuPlacement": "auto",
                                                                   "menuPosition": "absolute",
                                                                   "menuShouldBlockScroll": false,
                                                                   "menuShouldScrollIntoView": true,
@@ -6051,7 +6057,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   "loadingMessage": [Function],
                                                                   "maxMenuHeight": 300,
                                                                   "menuIsOpen": false,
-                                                                  "menuPlacement": "bottom",
+                                                                  "menuPlacement": "auto",
                                                                   "menuPosition": "absolute",
                                                                   "menuShouldBlockScroll": false,
                                                                   "menuShouldScrollIntoView": true,
@@ -6194,7 +6200,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "loadingMessage": [Function],
                                                                         "maxMenuHeight": 300,
                                                                         "menuIsOpen": false,
-                                                                        "menuPlacement": "bottom",
+                                                                        "menuPlacement": "auto",
                                                                         "menuPosition": "absolute",
                                                                         "menuShouldBlockScroll": false,
                                                                         "menuShouldScrollIntoView": true,
@@ -6324,7 +6330,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "loadingMessage": [Function],
                                                                               "maxMenuHeight": 300,
                                                                               "menuIsOpen": false,
-                                                                              "menuPlacement": "bottom",
+                                                                              "menuPlacement": "auto",
                                                                               "menuPosition": "absolute",
                                                                               "menuShouldBlockScroll": false,
                                                                               "menuShouldScrollIntoView": true,
@@ -6465,7 +6471,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "loadingMessage": [Function],
                                                                               "maxMenuHeight": 300,
                                                                               "menuIsOpen": false,
-                                                                              "menuPlacement": "bottom",
+                                                                              "menuPlacement": "auto",
                                                                               "menuPosition": "absolute",
                                                                               "menuShouldBlockScroll": false,
                                                                               "menuShouldScrollIntoView": true,
@@ -6587,7 +6593,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "loadingMessage": [Function],
                                                                                 "maxMenuHeight": 300,
                                                                                 "menuIsOpen": false,
-                                                                                "menuPlacement": "bottom",
+                                                                                "menuPlacement": "auto",
                                                                                 "menuPosition": "absolute",
                                                                                 "menuShouldBlockScroll": false,
                                                                                 "menuShouldScrollIntoView": true,
@@ -6807,7 +6813,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "loadingMessage": [Function],
                                                                         "maxMenuHeight": 300,
                                                                         "menuIsOpen": false,
-                                                                        "menuPlacement": "bottom",
+                                                                        "menuPlacement": "auto",
                                                                         "menuPosition": "absolute",
                                                                         "menuShouldBlockScroll": false,
                                                                         "menuShouldScrollIntoView": true,
@@ -6932,7 +6938,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "loadingMessage": [Function],
                                                                               "maxMenuHeight": 300,
                                                                               "menuIsOpen": false,
-                                                                              "menuPlacement": "bottom",
+                                                                              "menuPlacement": "auto",
                                                                               "menuPosition": "absolute",
                                                                               "menuShouldBlockScroll": false,
                                                                               "menuShouldScrollIntoView": true,
@@ -7068,7 +7074,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "loadingMessage": [Function],
                                                                               "maxMenuHeight": 300,
                                                                               "menuIsOpen": false,
-                                                                              "menuPlacement": "bottom",
+                                                                              "menuPlacement": "auto",
                                                                               "menuPosition": "absolute",
                                                                               "menuShouldBlockScroll": false,
                                                                               "menuShouldScrollIntoView": true,

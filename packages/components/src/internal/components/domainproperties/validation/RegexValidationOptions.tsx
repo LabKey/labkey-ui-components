@@ -36,7 +36,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
     labelWidth = 4;
     fieldWidth = 8;
 
-    static isValid = (validator: PropertyValidator) => {
+    static isValid = (validator: PropertyValidator): boolean => {
         return !!validator.get('expression') && !!validator.get('name');
     };
 
@@ -79,71 +79,6 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         );
     }
 
-    renderFailValidationCheckbox(value: boolean): ReactNode {
-        const { validatorIndex, domainIndex } = this.props;
-
-        return (
-            <Row>
-                <Col xs={this.labelWidth} />
-                <Col xs={this.fieldWidth} className="domain-validation-failOnMatch-row">
-                    <Checkbox
-                        id={createFormInputId(DOMAIN_VALIDATOR_FAILONMATCH, domainIndex, validatorIndex)}
-                        name={createFormInputName(DOMAIN_VALIDATOR_FAILONMATCH)}
-                        checked={value}
-                        onChange={this.onChange}
-                    >
-                        Fail validation when pattern matches field value
-                        <LabelHelpTip title="Fail when pattern matches?">
-                            By default, validation will fail if the field value does not match the specified regular
-                            expression. Check this box if you want validation to fail when the pattern matches the field
-                            value.
-                        </LabelHelpTip>
-                    </Checkbox>
-                </Col>
-            </Row>
-        );
-    }
-
-    renderName(value: string): ReactNode {
-        const { validatorIndex, domainIndex } = this.props;
-
-        return (
-            <Row>
-                <Col xs={this.labelWidth}>
-                    <div>Name *</div>
-                </Col>
-                <Col xs={this.fieldWidth}>
-                    <FormControl
-                        type="text"
-                        id={createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)}
-                        name={createFormInputName(DOMAIN_VALIDATOR_NAME)}
-                        value={value}
-                        onChange={this.onChange}
-                    />
-                </Col>
-            </Row>
-        );
-    }
-
-    renderRemoveValidator(): ReactNode {
-        const { validatorIndex, domainIndex } = this.props;
-
-        return (
-            <Row>
-                <Col xs={12}>
-                    <Button
-                        className="domain-validation-delete"
-                        name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
-                        id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
-                        onClick={this.onDelete}
-                    >
-                        Remove Validator
-                    </Button>
-                </Col>
-            </Row>
-        );
-    }
-
     onDelete = (): void => {
         const { onDelete, validatorIndex } = this.props;
         onDelete(validatorIndex);
@@ -174,23 +109,8 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         }
     };
 
-    renderCollapsed = (): ReactNode => {
-        const { validator } = this.props;
-
-        return (
-            <div>
-                {(validator.name ? validator.name : 'Regex Validator') +
-                    ': ' +
-                    (validator.expression ? validator.expression : 'Missing expression')}
-                <div className="domain-validator-collapse-icon" onClick={this.expandValidator}>
-                    <FontAwesomeIcon icon={faPencilAlt} />
-                </div>
-            </div>
-        );
-    };
-
     render(): ReactNode {
-        const { validatorIndex, expanded, validator } = this.props;
+        const { validatorIndex, expanded, validator, domainIndex } = this.props;
 
         return (
             <div className="domain-validator-panel" id={'domain-regex-validator-' + validatorIndex}>
@@ -216,12 +136,64 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                             'Error Message',
                             'The message that will be displayed to the user in the event that validation fails for this field.'
                         )}
-                        {this.renderFailValidationCheckbox(validator.properties.failOnMatch)}
-                        {this.renderName(validator.name)}
-                        {this.renderRemoveValidator()}
+                        <Row>
+                            <Col xs={this.labelWidth} />
+                            <Col xs={this.fieldWidth} className="domain-validation-failOnMatch-row">
+                                <Checkbox
+                                    id={createFormInputId(DOMAIN_VALIDATOR_FAILONMATCH, domainIndex, validatorIndex)}
+                                    name={createFormInputName(DOMAIN_VALIDATOR_FAILONMATCH)}
+                                    checked={validator.properties.failOnMatch}
+                                    onChange={this.onChange}
+                                >
+                                    Fail validation when pattern matches field value
+                                    <LabelHelpTip title="Fail when pattern matches?">
+                                        By default, validation will fail if the field value does not match the specified regular
+                                        expression. Check this box if you want validation to fail when the pattern matches the field
+                                        value.
+                                    </LabelHelpTip>
+                                </Checkbox>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={this.labelWidth}>
+                                <div>Name *</div>
+                            </Col>
+                            <Col xs={this.fieldWidth}>
+                                <FormControl
+                                    type="text"
+                                    id={createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)}
+                                    name={createFormInputName(DOMAIN_VALIDATOR_NAME)}
+                                    value={validator.name}
+                                    onChange={this.onChange}
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={12}>
+                                <Button
+                                    className="domain-validation-delete"
+                                    name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
+                                    id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
+                                    onClick={this.onDelete}
+                                >
+                                    Remove Validator
+                                </Button>
+                            </Col>
+                        </Row>
                     </div>
                 )}
-                {!expanded && <div>{this.renderCollapsed()}</div>}
+                {!expanded && (
+                    <div>
+                        <div>
+                            {(validator.name ? validator.name : 'Regex Validator') +
+                            ': ' +
+                            (validator.expression ? validator.expression : 'Missing expression')}
+                            <div className="domain-validator-collapse-icon" onClick={this.expandValidator}>
+                                <FontAwesomeIcon icon={faPencilAlt} />
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }

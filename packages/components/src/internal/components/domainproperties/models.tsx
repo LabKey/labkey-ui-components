@@ -543,6 +543,13 @@ export class PropertyValidatorProperties
     implements IPropertyValidatorProperties
 {
     declare failOnMatch: boolean;
+
+    constructor(values?: { [key: string]: any }) {
+        if (typeof values?.failOnMatch === 'string') {
+            values.failOnMatch = values.failOnMatch === 'true';
+        }
+        super(values);
+    }
 }
 
 export interface IPropertyValidator {
@@ -589,7 +596,7 @@ export class PropertyValidator
                 (type === 'Lookup' && rawPropertyValidator[i].type === 'Lookup')
             ) {
                 rawPropertyValidator[i]['properties'] = new PropertyValidatorProperties(
-                    fromJS(rawPropertyValidator[i]['properties'])
+                    rawPropertyValidator[i]['properties']
                 );
                 newPv = new PropertyValidator(rawPropertyValidator[i]);
 
@@ -601,7 +608,6 @@ export class PropertyValidator
                     ) as PropertyValidator;
                 }
 
-                // newPv = newPv.set("properties", new PropertyValidatorProperties(fromJS(rawPropertyValidator[i]['properties'])));
                 propValidators = propValidators.push(newPv);
             }
         }

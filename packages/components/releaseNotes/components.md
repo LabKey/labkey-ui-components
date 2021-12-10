@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 9758: ...
+  * RegEx validator modal fix for “Fail validation when pattern matches field value” checked state on initialization
+
 ### version 2.103.0
 *Released*: 10 December 2021
 * Item 9627: TextChoiceInput and usage for rendering select input for DetailEditRenderer and QueryFormInputs

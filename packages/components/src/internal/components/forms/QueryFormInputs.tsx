@@ -18,8 +18,6 @@ import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
 import { Utils } from '@labkey/api';
 
-import { initLookup } from '../../actions';
-
 import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo } from '../../..';
 
 import { resolveRenderer } from './renderers';

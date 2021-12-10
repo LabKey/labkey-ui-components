@@ -536,6 +536,32 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>)
     }
 }
 
+async function getLookupValueDescriptors(columns: QueryColumn[], rows: Map<any, Map<string, any>>, ids: List<any>): Promise<{ [colKey: string]: ValueDescriptor[] }>
+{
+    const descriptorMap = {};
+    // for each lookup column, find the unique values in the rows and query for those values when they look like ids
+    for (let cn = 0; cn < columns.length; cn++) {
+        const col = columns[cn];
+        let values = Set<any>();
+
+        if (col.isPublicLookup()) {
+            ids.forEach(id => {
+                const row = rows.get(id);
+                const value = row.get(col.fieldKey);
+                if (Utils.isNumber(value)) {
+                    values = values.add(value);
+                }
+            });
+            if (!values.isEmpty()) {
+                const { descriptors } = await findLookupValues(col, values.toArray());
+                descriptorMap[LookupStore.key(col)] = descriptors;
+            }
+        }
+    }
+
+    return descriptorMap;
+}
+
 async function loadDataForEditor(model: QueryGridModel, response?: any): Promise<void> {
     const rows: Map<any, Map<string, any>> = response ? response.data : Map<string, Map<string, any>>();
     const ids = response ? response.dataIds : List();
@@ -545,8 +571,10 @@ async function loadDataForEditor(model: QueryGridModel, response?: any): Promise
 
     const cellValues = Map<string, List<ValueDescriptor>>().asMutable();
 
+    const lookupValueDescriptors = await getLookupValueDescriptors(columns.toArray(), rows, ids);
+
     // data is initialized in column order
-    for (let cn = 0; cn < columns.size; cn++)  {
+    for (let cn = 0; cn < columns.size; cn++) {
         const col = columns.get(cn);
         let rn = 0; // restart index, cannot use index from "rows"
         for (const id of ids) {
@@ -571,8 +599,8 @@ async function loadDataForEditor(model: QueryGridModel, response?: any): Promise
                 // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid cell
                 let valueDescriptor = { display: value, raw: value };
                 if (col.isLookup() && Utils.isNumber(value)) {
-                    const { descriptors } = await findLookupValues(col, [value]);
-                    if (descriptors.length > 0) {
+                    const descriptors = lookupValueDescriptors[LookupStore.key(col)]
+                    if (descriptors) {
                         cellValues.set(cellKey, List(descriptors));
                     } else {
                         cellValues.set(cellKey, List([valueDescriptor]));
@@ -1819,119 +1847,6 @@ function applySelection(
     };
 }
 
-// TODO remove?
-export function initLookup(column: QueryColumn, maxRows: number, values?: List<string>, keys?: List<any>) {
-    if (shouldInitLookup(column, values)) {
-        const store = new LookupStore({
-            key: LookupStore.key(column),
-            isLoaded: false,
-            isLoading: true,
-        });
-        updateLookupStore(store, {}, false);
-
-        return searchLookup(column, maxRows, undefined, values, keys);
-    }
-
-    return Promise.resolve();
-}
-
-function shouldInitLookup(col: QueryColumn, values?: List<string>): boolean {
-    if (!col.isPublicLookup()) {
-        return false;
-    }
-
-    const lookup = getLookupStore(col);
-
-    if (!lookup) {
-        return true;
-    } else if (!lookup.isLoading && !lookup.isLoaded) {
-        return true;
-    } else if (values && !lookup.containsAll(values)) {
-        return true;
-    }
-
-    return false;
-}
-
-export function searchLookup(
-    column: QueryColumn,
-    maxRows: number,
-    token?: string,
-    values?: List<string>,
-    keys?: List<any>
-) {
-    let store = getLookupStore(column);
-
-    // prevent redundant search
-    if (store && (token !== store.lastToken || values || keys)) {
-        store = updateLookupStore(store, {
-            isLoaded: false,
-            isLoading: true,
-            lastToken: token,
-            loadCount: store.loadCount + 1,
-        });
-
-        const lookup = column.lookup;
-
-        const selectRowOptions: any = {
-            schemaName: lookup.schemaName,
-            queryName: lookup.queryName,
-            columns: [lookup.displayColumn, lookup.keyColumn].join(','),
-            containerPath: lookup.containerPath,
-            maxRows,
-            includeTotalCount: 'f',
-        };
-
-        if (values) {
-            selectRowOptions.filterArray = [
-                Filter.create(column.lookup.displayColumn, values.toArray(), Filter.Types.IN),
-            ];
-        }
-
-        if (keys) {
-            selectRowOptions.filterArray = [Filter.create(column.lookup.keyColumn, keys.toArray(), Filter.Types.IN)];
-        }
-
-        return searchRows(selectRowOptions, token, lookup.displayColumn)
-            .then(result => {
-                const { displayColumn, keyColumn } = column.lookup;
-                const { key, models, totalRows } = result;
-
-                if (models[key]) {
-                    const descriptors = fromJS(models[key])
-                        .reduce((list, row) => {
-                            const key = row.getIn([keyColumn, 'value']);
-
-                            if (key !== undefined && key !== null) {
-                                return list.push({
-                                    display:
-                                        row.getIn([displayColumn, 'displayValue']) ||
-                                        row.getIn([displayColumn, 'value']),
-                                    raw: key,
-                                });
-                            }
-                        }, List<ValueDescriptor>())
-                        .sortBy(vd => vd.display, naturalSort)
-                        .reduce((map, vd) => map.set(vd.raw, vd), OrderedMap<any, ValueDescriptor>());
-
-                    updateLookupStore(store, {
-                        isLoaded: true,
-                        isLoading: false,
-                        matchCount: totalRows,
-                        descriptors,
-                    });
-                }
-            })
-            .catch(reason => {
-                console.error(reason);
-                updateLookupStore(store, {
-                    isLoaded: true,
-                    isLoading: false,
-                });
-            });
-    }
-}
-
 export const findLookupValues = async (
     column: QueryColumn,
     lookupKeyValues: any[],
@@ -2753,7 +2668,7 @@ function pasteCellLoad(
                     let msg: CellMessage;
 
                     if (col && col.isPublicLookup()) {
-                        const { message, values } = parsePasteCellLookup(col, getLookup(col), value);
+                        const { message, values } = parsePasteCellLookup(col, lookupDescriptorMap[LookupStore.key(col)], value);
                         cv = values;
 
                         if (message) {

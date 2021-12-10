@@ -27,8 +27,8 @@ import { QueryDateInput } from './input/QueryDateInput';
 import { CheckboxInput } from './input/CheckboxInput';
 import { TextAreaInput } from './input/TextAreaInput';
 import { FileInput } from './input/FileInput';
-
 import { DatePickerInput } from './input/DatePickerInput';
+import { TextChoiceInput } from './input/TextChoiceInput';
 
 const LABEL_FIELD_SUFFIX = '::label';
 
@@ -265,6 +265,22 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 </React.Fragment>
                             );
                         }
+                    }
+
+                    if (col.validValues) {
+                        return (
+                            <TextChoiceInput
+                                key={i}
+                                formsy
+                                queryColumn={col}
+                                value={value}
+                                addLabelAsterisk={showAsteriskSymbol}
+                                allowDisable={allowFieldDisable}
+                                initiallyDisabled={shouldDisableField}
+                                onToggleDisable={this.onToggleDisable}
+                                renderFieldLabel={renderFieldLabel}
+                            />
+                        );
                     }
 
                     if (col.inputType === 'textarea') {

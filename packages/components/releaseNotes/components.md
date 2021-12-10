@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update LookupCell to use QuerySelect for display
 
+### version 2.103.0
+*Released*: 10 December 2021
+* Item 9627: TextChoiceInput and usage for rendering select input for DetailEditRenderer and QueryFormInputs
+
 ### version 2.102.0
 *Released*: 1 December 2021
 * Rename EditableGridPanel to EditableGridPanelDeprecated

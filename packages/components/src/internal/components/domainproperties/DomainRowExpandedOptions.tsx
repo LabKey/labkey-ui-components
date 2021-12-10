@@ -32,6 +32,7 @@ import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndVa
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
+import { TextChoiceOptions } from './TextChoiceOptions';
 
 interface IDomainRowExpandedOptionsProps {
     domainContainerPath?: string;
@@ -192,6 +193,16 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         field={field}
                         onChange={onChange}
                         onMultiChange={onMultiChange}
+                        lockType={field.lockType}
+                    />
+                );
+            case 'textChoice':
+                return (
+                    <TextChoiceOptions
+                        index={index}
+                        domainIndex={domainIndex}
+                        label="Text Choice Options"
+                        onChange={onChange}
                         lockType={field.lockType}
                     />
                 );

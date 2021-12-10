@@ -45,6 +45,7 @@ import {
     SEVERITY_LEVEL_WARN,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     STRING_RANGE_URI,
+    TEXT_CHOICE_CONCEPT_URI,
     UNLIMITED_TEXT_LENGTH,
     USER_RANGE_URI,
 } from './constants';
@@ -1015,6 +1016,10 @@ export class DomainField
         return this.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
     }
 
+    isTextChoiceField(): boolean {
+        return this.conceptURI === TEXT_CHOICE_CONCEPT_URI;
+    }
+
     static hasRangeValidation(field: DomainField): boolean {
         return (
             field.dataType === INTEGER_TYPE ||
@@ -1026,7 +1031,7 @@ export class DomainField
     }
 
     static hasRegExValidation(field: DomainField): boolean {
-        return field.dataType.isString() && !field.isUniqueIdField();
+        return field.dataType.isString() && !field.isUniqueIdField() && !field.isTextChoiceField();
     }
 
     static updateDefaultValues(field: DomainField): DomainField {

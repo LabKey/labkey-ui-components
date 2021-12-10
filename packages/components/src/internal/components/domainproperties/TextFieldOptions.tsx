@@ -1,8 +1,6 @@
 import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
-import classNames from 'classnames';
-
 import { createFormInputId, createFormInputName, getNameFromId } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
 import {

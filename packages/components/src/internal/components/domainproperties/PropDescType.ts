@@ -21,6 +21,7 @@ import {
     SAMPLE_TYPE_CONCEPT_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     STRING_RANGE_URI,
+    TEXT_CHOICE_CONCEPT_URI,
     TIME_RANGE_URI,
     USER_RANGE_URI,
     VISITID_CONCEPT_URI,
@@ -73,6 +74,10 @@ export class PropDescType
 
     static isUniqueIdField(conceptURI: string): boolean {
         return conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
+    }
+
+    static isTextChoice(name: string): boolean {
+        return name === TEXT_CHOICE_CONCEPT_URI || name === 'textChoice';
     }
 
     static isLookup(name: string): boolean {
@@ -168,6 +173,10 @@ export class PropDescType
 
     isUniqueId(): boolean {
         return PropDescType.isUniqueIdField(this.conceptURI);
+    }
+
+    isTextChoice(): boolean {
+        return PropDescType.isTextChoice(this.conceptURI);
     }
 }
 
@@ -283,6 +292,13 @@ export const UNIQUE_ID_TYPE = new PropDescType({
     conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
 });
 
+export const TEXT_CHOICE_TYPE = new PropDescType({
+    name: 'textChoice',
+    display: 'Text Choice',
+    rangeURI: STRING_RANGE_URI,
+    conceptURI: TEXT_CHOICE_CONCEPT_URI,
+});
+
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
     MULTILINE_TYPE,
@@ -301,6 +317,7 @@ export const PROP_DESC_TYPES = List([
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
     UNIQUE_ID_TYPE,
+    TEXT_CHOICE_TYPE,
 ]);
 
 export const READONLY_DESC_TYPES = List([BINARY_TYPE, DATE_TYPE, DECIMAL_TYPE, FLOAT_TYPE, LONG_TYPE, TIME_TYPE]);

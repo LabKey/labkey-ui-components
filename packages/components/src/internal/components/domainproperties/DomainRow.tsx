@@ -270,7 +270,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
     };
 
     onDataTypeChange = (evt: any): void => {
-        this.onFieldChange(evt, PropDescType.isLookup(evt.target.value));
+        this.onFieldChange(evt, PropDescType.isLookup(evt.target.value) || PropDescType.isTextChoice(evt.target.value));
     };
 
     onShowAdvanced = (): any => {

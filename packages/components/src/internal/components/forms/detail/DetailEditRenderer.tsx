@@ -37,9 +37,10 @@ import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceR
 
 import { getUnFormattedNumber } from '../../../util/Date';
 
-import { _defaultRenderer, Renderer, RenderOptions } from './DetailDisplay';
 import { SampleStatusRenderer } from '../../../renderers/SampleStatusRenderer';
 import { TextChoiceInput } from '../input/TextChoiceInput';
+
+import { _defaultRenderer, Renderer, RenderOptions } from './DetailDisplay';
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
     // If the column cannot be edited, return the label as is
@@ -112,14 +113,7 @@ export function resolveDetailEditRenderer(
         }
 
         if (col.validValues) {
-            return (
-                <TextChoiceInput
-                    formsy
-                    inputClass="col-sm-12"
-                    queryColumn={col}
-                    value={value}
-                />
-            );
+            return <TextChoiceInput formsy inputClass="col-sm-12" queryColumn={col} value={value} />;
         }
 
         if (col.inputType === 'textarea') {
@@ -243,7 +237,7 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 renderer = d => <SourceTypeImportAliasRenderer data={d} />;
                 break;
             case 'samplestatusrenderer':
-                renderer = (d, r) => <SampleStatusRenderer row={r} />
+                renderer = (d, r) => <SampleStatusRenderer row={r} />;
                 break;
             default:
                 break;

@@ -20,8 +20,10 @@ import {
 
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
 import { AliasInput } from '../input/AliasInput';
-import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
+
 import { TextChoiceInput } from '../input/TextChoiceInput';
+
+import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
 
 describe('titleRenderer', () => {
     test('editable', () => {

@@ -1,9 +1,10 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
+import { QueryColumn } from '../../../../public/QueryColumn';
+
 import { TextChoiceInput } from './TextChoiceInput';
 import { SelectInput } from './SelectInput';
-import { QueryColumn } from '../../../../public/QueryColumn';
 
 describe('TextChoiceInput', () => {
     const DEFAULT_PROPS = {
@@ -24,9 +25,7 @@ describe('TextChoiceInput', () => {
     });
 
     test('placeholder', () => {
-        const wrapper = mount(
-            <TextChoiceInput {...DEFAULT_PROPS} placeholder="testing" />
-        );
+        const wrapper = mount(<TextChoiceInput {...DEFAULT_PROPS} placeholder="testing" />);
         validate(wrapper, 'testing');
         wrapper.unmount();
     });
@@ -55,7 +54,11 @@ describe('TextChoiceInput', () => {
                 queryColumn={new QueryColumn({ validValues: ['a', 'b', 'c'] })}
             />
         );
-        validate(wrapper, 'test', [{ label: 'a', value: 'a' }, { label: 'b', value: 'b' }, { label: 'c', value: 'c' }]);
+        validate(wrapper, 'test', [
+            { label: 'a', value: 'a' },
+            { label: 'b', value: 'b' },
+            { label: 'c', value: 'c' },
+        ]);
         wrapper.unmount();
     });
 });

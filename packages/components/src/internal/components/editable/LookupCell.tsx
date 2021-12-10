@@ -22,6 +22,7 @@ import { LookupStore, ValueDescriptor } from '../../models';
 import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { QueryColumn, QuerySelect, SchemaQuery } from '../../..';
 import { GlobalAppState } from '../../global';
+import { Filter } from '@labkey/api';
 
 const customStyles = {
     control: (provided, state) => ({
@@ -129,7 +130,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, undefined, Glo
 
 
     render(): ReactNode {
-        const { col, values } = this.props;
+        const { col, values, filteredLookupKeys, filteredLookupValues } = this.props;
 
         const lookup = col.lookup;
         const isMultiple = this.isMultiValue();
@@ -138,10 +139,22 @@ export class LookupCell extends ReactN.Component<LookupCellProps, undefined, Glo
             vd.raw
         )).toArray()
 
+        let queryFilters = undefined;
+        if (filteredLookupValues) {
+            queryFilters = List([
+                Filter.create(col.lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN),
+            ]);
+        }
+
+        if (filteredLookupKeys) {
+            queryFilters = List([Filter.create(col.lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN)]);
+        }
+
         return (
             <QuerySelect
                 autoFocus
                 disabled={this.props.disabled}
+                queryFilters={queryFilters}
                 multiple={isMultiple}
                 schemaQuery={SchemaQuery.create(lookup.schemaName, lookup.queryName)}
                 componentId={LookupStore.key(col)}

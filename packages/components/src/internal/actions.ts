@@ -536,20 +536,20 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>)
     }
 }
 
-function loadDataForEditor(model: QueryGridModel, response?: any): void {
+async function loadDataForEditor(model: QueryGridModel, response?: any): Promise<void> {
     const rows: Map<any, Map<string, any>> = response ? response.data : Map<string, Map<string, any>>();
     const ids = response ? response.dataIds : List();
     const columns = model.queryInfo.columns.toList().filter(column => {
         return insertColumnFilter(column, false) || model.requiredColumns?.indexOf(column.fieldKey) > -1;
     });
 
-    const getLookup = (col: QueryColumn) => getLookupStore(col);
     const cellValues = Map<string, List<ValueDescriptor>>().asMutable();
 
     // data is initialized in column order
-    columns.forEach((col, cn) => {
+    for (let cn = 0; cn < columns.size; cn++)  {
+        const col = columns.get(cn);
         let rn = 0; // restart index, cannot use index from "rows"
-        ids.forEach(id => {
+        for (const id of ids) {
             const row = rows.get(id);
             const cellKey = genCellKey(cn, rn);
             const value = row.get(col.fieldKey);
@@ -571,14 +571,19 @@ function loadDataForEditor(model: QueryGridModel, response?: any): void {
                 // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid cell
                 let valueDescriptor = { display: value, raw: value };
                 if (col.isLookup() && Utils.isNumber(value)) {
-                    valueDescriptor = getLookupDisplayValue(col, getLookup(col), value).valueDescriptor;
+                    const descriptor = await findLookupValue(col, value);
+                    if (descriptor) {
+                        cellValues.set(cellKey, List([descriptor]));
+                    } else {
+                        cellValues.set(cellKey, List([valueDescriptor]));
+                    }
+                } else {
+                    cellValues.set(cellKey, List([valueDescriptor]));
                 }
-
-                cellValues.set(cellKey, List([valueDescriptor]));
             }
             rn++;
-        });
-    });
+        }
+    }
 
     const editorModel = getEditorModel(model.getId());
     updateEditorModel(editorModel, {
@@ -1926,14 +1931,38 @@ export function searchLookup(
     }
 }
 
-function getLookupDisplayValue(
+export const findLookupValue = async (
     column: QueryColumn,
-    lookup: LookupStore,
+    lookupKeyValue: any,
+): Promise<ValueDescriptor> => {
+    const lookup = column.lookup;
+
+    const result = await selectRows({
+        schemaName: lookup.schemaName,
+        queryName: lookup.queryName,
+        columns: [lookup.displayColumn, lookup.keyColumn].join(','),
+        containerPath: lookup.containerPath,
+        maxRows: 1,
+        includeTotalCount: 'f',
+        filterArray: [Filter.create(column.lookup.keyColumn, lookupKeyValue, Filter.Types.EQUAL)]
+    });
+    const {displayColumn} = column.lookup;
+    const {key, models} = result;
+
+    if (models[key]) {
+        return {
+            display: caseInsensitive(models[key][lookupKeyValue][displayColumn], 'displayValue') ||
+                caseInsensitive(models[key][lookupKeyValue][displayColumn], 'value'),
+            raw: lookupKeyValue
+        } as ValueDescriptor;
+    }
+    return undefined;
+};
+
+async function getLookupDisplayValue(
+    column: QueryColumn,
     value: any
-): {
-    message?: CellMessage;
-    valueDescriptor: ValueDescriptor;
-} {
+): Promise<{ message?: CellMessage; valueDescriptor: ValueDescriptor }> {
     if (value === undefined || value === null || typeof value === 'string') {
         return {
             valueDescriptor: {
@@ -1945,7 +1974,7 @@ function getLookupDisplayValue(
 
     let message: CellMessage;
 
-    const valueDescriptor = lookup.descriptors.find(d => d.raw && d.raw === value);
+    const valueDescriptor = await findLookupValue(column, value);
     if (!valueDescriptor) {
         message = {
             message: 'Could not find data for ' + value,
@@ -1966,20 +1995,20 @@ function getLookupDisplayValue(
  * @param rowMin the starting row for the new rows
  * @param colMin the starting column
  */
-export function updateEditorData(
+export async function updateEditorData(
     gridModel: QueryGridModel,
     rowData: List<any>,
     rowCount: number,
     rowMin = 0,
     colMin = 0
-): EditorModel {
+): Promise<EditorModel> {
     const editorModel = getEditorModel(gridModel.getId());
 
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
     let selectionCells = Set<string>();
 
-    const preparedData = prepareInsertRowDataFromBulkForm(gridModel, rowData, colMin);
+    const preparedData = await prepareInsertRowDataFromBulkForm(gridModel, rowData, colMin);
     const { values, messages } = preparedData;
 
     for (let rowIdx = rowMin; rowIdx < rowMin + rowCount; rowIdx++) {
@@ -2001,19 +2030,18 @@ export function updateEditorData(
     });
 }
 
-function prepareInsertRowDataFromBulkForm(
+async function prepareInsertRowDataFromBulkForm(
     gridModel: QueryGridModel,
     rowData: List<any>,
     colMin = 0
-): { values: List<List<ValueDescriptor>>; messages: List<CellMessage> } {
+): Promise<{ values: List<List<ValueDescriptor>>; messages: List<CellMessage> }> {
     const columns = gridModel.getInsertColumns();
-
-    const getLookup = (col: QueryColumn) => getLookupStore(col);
 
     let values = List<List<ValueDescriptor>>();
     let messages = List<CellMessage>();
 
-    rowData.forEach((data, cn) => {
+    for(let cn = 0; cn < rowData.size; cn++) {
+        const data = rowData.get(cn);
         const colIdx = colMin + cn;
         const col = columns.get(colIdx);
 
@@ -2024,18 +2052,14 @@ function prepareInsertRowDataFromBulkForm(
             // value had better be the rowId here, but it may be several in a comma-separated list.
             // If it's the display value, which happens to be a number, much confusion will arise.
             const values = data.toString().split(',');
-            values.forEach(val => {
+            for (const val of values) {
                 const intVal = parseInt(val, 10);
-                const { message, valueDescriptor } = getLookupDisplayValue(
-                    col,
-                    getLookup(col),
-                    isNaN(intVal) ? val : intVal
-                );
+                const { message, valueDescriptor } = await getLookupDisplayValue(col, isNaN(intVal) ? val : intVal);
                 cv = cv.push(valueDescriptor);
                 if (message) {
                     messages = messages.push(message);
                 }
-            });
+            }
         } else {
             cv = List([
                 {
@@ -2046,7 +2070,7 @@ function prepareInsertRowDataFromBulkForm(
         }
 
         values = values.push(cv);
-    });
+    }
 
     return {
         values,
@@ -2082,7 +2106,7 @@ export function pasteEvent(
     }
 }
 
-function pasteCell(
+async function pasteCell(
     modelId: string,
     colIdx: number,
     rowIdx: number,
@@ -2092,7 +2116,7 @@ function pasteCell(
     columnMetadata?: Map<string, EditableColumnMetadata>,
     readonlyRows?: List<any>,
     lockRowCount?: boolean
-): void {
+): Promise<void> {
     const gridModel = getQueryGridModel(modelId);
     let model = getEditorModel(modelId);
 
@@ -2108,7 +2132,7 @@ function pasteCell(
             model = beginPaste(model, paste.payload.data.size);
 
             if (paste.rowsToAdd > 0 && !lockRowCount) {
-                model = addRows(gridModel, paste.rowsToAdd);
+                model = await addRows(gridModel, paste.rowsToAdd);
             }
 
             const byColumnValues = getPasteValuesByColumn(paste);
@@ -2511,20 +2535,20 @@ function beginPaste(model: EditorModel, numRows: number): EditorModel {
     });
 }
 
-export function addRowsPerPivotValue(
+export async function addRowsPerPivotValue(
     model: QueryGridModel,
     numPerParent: number,
     pivotKey: string,
     pivotValues: string[],
     rowData: Map<string, any>
-): EditorModel {
+): Promise<EditorModel> {
     let editorModel = getEditorModel(model.getId());
     let data = model.data;
     let dataIds = model.dataIds;
     if (numPerParent > 0) {
-        pivotValues.forEach(value => {
+        for (const value of pivotValues) {
             rowData = rowData.set(pivotKey, value);
-            editorModel = updateEditorData(model, rowData.toList(), numPerParent, dataIds.size);
+            editorModel = await updateEditorData(model, rowData.toList(), numPerParent, dataIds.size);
             for (let i = 0; i < numPerParent; i++) {
                 // ensure we don't step on another ID
                 const id = GRID_EDIT_INDEX + ID_COUNTER++;
@@ -2532,7 +2556,7 @@ export function addRowsPerPivotValue(
                 data = data.set(id, rowData || EMPTY_ROW);
                 dataIds = dataIds.push(id);
             }
-        });
+        }
     }
 
     updateQueryGridModel(model, {
@@ -2544,12 +2568,12 @@ export function addRowsPerPivotValue(
     return editorModel;
 }
 
-export function addRows(model: QueryGridModel, count?: number, rowData?: Map<string, any>): EditorModel {
+export async function addRows(model: QueryGridModel, count?: number, rowData?: Map<string, any>): Promise<EditorModel> {
     let editorModel = getEditorModel(model.getId());
     if (count > 0) {
         if (model.editable) {
             if (rowData) {
-                editorModel = updateEditorData(model, rowData.toList(), count, model.getData().size);
+                editorModel = await updateEditorData(model, rowData.toList(), count, model.getData().size);
             } else {
                 editorModel = updateEditorModel(editorModel, {
                     rowCount: editorModel.rowCount + count,
@@ -2942,17 +2966,17 @@ export function removeAllRows(model: QueryGridModel): QueryGridModel {
     });
 }
 
-export function updateGridFromBulkForm(
+export async function updateGridFromBulkForm(
     gridModel: QueryGridModel,
     rowData: OrderedMap<string, any>,
     dataRowIndexes: List<number>
-): EditorModel {
+): Promise<EditorModel> {
     const editorModel = getEditorModel(gridModel.getId());
 
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
 
-    const preparedData = prepareUpdateRowDataFromBulkForm(gridModel, rowData);
+    const preparedData = await prepareUpdateRowDataFromBulkForm(gridModel, rowData);
     const { values, messages } = preparedData; // {3: 'x', 4: 'z}
 
     dataRowIndexes.forEach(rowIdx => {
@@ -2969,18 +2993,17 @@ export function updateGridFromBulkForm(
     });
 }
 
-function prepareUpdateRowDataFromBulkForm(
+async function prepareUpdateRowDataFromBulkForm(
     gridModel: QueryGridModel,
     rowData: OrderedMap<string, any>
-): { values: OrderedMap<number, List<ValueDescriptor>>; messages: OrderedMap<number, CellMessage> } {
+): Promise<{ values: OrderedMap<number, List<ValueDescriptor>>; messages: OrderedMap<number, CellMessage> }> {
     const columns = gridModel.getInsertColumns();
-
-    const getLookup = (col: QueryColumn) => getLookupStore(col);
 
     let values = OrderedMap<number, List<ValueDescriptor>>();
     let messages = OrderedMap<number, CellMessage>();
 
-    rowData.forEach((data, colKey) => {
+    for (const colKey of rowData.keySeq().toArray()) {
+        const data = rowData.get(colKey);
         let colIdx = -1;
         columns.forEach((col, ind) => {
             if (col.fieldKey === colKey) {
@@ -2997,18 +3020,14 @@ function prepareUpdateRowDataFromBulkForm(
             // value had better be the rowId here, but it may be several in a comma-separated list.
             // If it's the display value, which happens to be a number, much confusion will arise.
             const values = data.toString().split(',');
-            values.forEach(val => {
+            for (const val of values) {
                 const intVal = parseInt(val, 10);
-                const { message, valueDescriptor } = getLookupDisplayValue(
-                    col,
-                    getLookup(col),
-                    isNaN(intVal) ? val : intVal
-                );
+                const { message, valueDescriptor } = await getLookupDisplayValue(col, isNaN(intVal) ? val : intVal);
                 cv = cv.push(valueDescriptor);
                 if (message) {
                     messages = messages.set(colIdx, message);
                 }
-            });
+            }
         } else {
             cv = List([
                 {
@@ -3019,7 +3038,7 @@ function prepareUpdateRowDataFromBulkForm(
         }
 
         values = values.set(colIdx, cv);
-    });
+    }
 
     return {
         values,

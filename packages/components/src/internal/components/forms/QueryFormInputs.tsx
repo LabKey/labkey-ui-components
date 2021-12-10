@@ -229,7 +229,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
 
                     if (col.isPublicLookup()) {
-                        initLookup(col, undefined);
                         // undefined 'displayAsLookup' just respects the lookup.
                         // Must be explicitly false to prevent drop-down.
                         if (col.displayAsLookup !== false) {

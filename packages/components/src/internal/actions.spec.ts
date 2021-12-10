@@ -156,42 +156,42 @@ beforeEach(() => {
 });
 
 describe('updateEditorData', () => {
-    test('update empty grid', () => {
+    test('update empty grid', async () => {
         updateEditorModel(editor, emptyEditorGridModel, false);
-        updateEditorData(queryGridModel, rowData, 3);
+        await updateEditorData(queryGridModel, rowData, 3);
         const updatedEditor = getEditorModel(queryGridModel.getId());
         expect(updatedEditor.rowCount).toBe(3);
         expect(updatedEditor.cellValues.size).toBe(6);
         expect(updatedEditor.cellMessages.size).toBe(6);
     });
 
-    test('change one row in the middle', () => {
-        updateEditorModel(editor, editableGridWithData, false);
+    test('change one row in the middle', async () => {
+        await updateEditorModel(editor, editableGridWithData, false);
         const originalEditor = getEditorModel(queryGridModel.getId());
         expect(originalEditor.rowCount).toBe(3);
-        updateEditorData(queryGridModel, rowData, 1, 1);
+        await updateEditorData(queryGridModel, rowData, 1, 1);
         const updatedEditor = getEditorModel(queryGridModel.getId());
         expect(updatedEditor.rowCount).toBe(3);
         expect(updatedEditor.cellValues.get('0-1').get(0).display).toBe('S-5');
         expect(updatedEditor.cellValues.get('1-1').get(0).display).toBe('S-5 description');
     });
 
-    test('add one row at the end', () => {
+    test('add one row at the end', async () => {
         updateEditorModel(editor, editableGridWithData, false);
         const originalEditor = getEditorModel(queryGridModel.getId());
         expect(originalEditor.rowCount).toBe(3);
-        updateEditorData(queryGridModel, rowData, 1, originalEditor.rowCount);
+        await updateEditorData(queryGridModel, rowData, 1, originalEditor.rowCount);
         const updatedEditor = getEditorModel(queryGridModel.getId());
         expect(updatedEditor.rowCount).toBe(4);
         expect(updatedEditor.cellValues.get('0-3').get(0).display).toBe('S-5');
         expect(updatedEditor.cellValues.get('1-3').get(0).display).toBe('S-5 description');
     });
 
-    test('add multiple rows in the middle, increasing grid size', () => {
+    test('add multiple rows in the middle, increasing grid size', async () => {
         updateEditorModel(editor, editableGridWithData, false);
         const originalEditor = getEditorModel(queryGridModel.getId());
         expect(originalEditor.rowCount).toBe(3);
-        updateEditorData(queryGridModel, rowData, 3, 1);
+        await updateEditorData(queryGridModel, rowData, 3, 1);
         const updatedEditor = getEditorModel(queryGridModel.getId());
         expect(updatedEditor.rowCount).toBe(4);
         expect(updatedEditor.cellValues.get('0-1').get(0).display).toBe('S-5');
@@ -202,9 +202,9 @@ describe('updateEditorData', () => {
         expect(updatedEditor.cellValues.get('1-3').get(0).display).toBe('S-5 description');
     });
 
-    test('add multiple rows with column offset', () => {
+    test('add multiple rows with column offset', async () => {
         updateEditorModel(editor, editableGridWithData, false);
-        updateEditorData(queryGridModel, rowData.slice(1).toList(), 2, 1, 1);
+        await updateEditorData(queryGridModel, rowData.slice(1).toList(), 2, 1, 1);
         const updatedEditor = getEditorModel(queryGridModel.getId());
         expect(updatedEditor.rowCount).toBe(3);
 
@@ -214,7 +214,7 @@ describe('updateEditorData', () => {
         expect(updatedEditor.cellValues.get('1-2').get(0).display).toBe('S-5 description');
     });
 
-    test('lookup with undefined value', () => {
+    test('lookup with undefined value', async () => {
         const qgModel = new QueryGridModel({
             schema: schemaQ.schemaName,
             query: schemaQ.queryName,
@@ -250,7 +250,7 @@ describe('updateEditorData', () => {
         });
         const rowData = List<any>(['update name', 'update description', undefined, undefined, '', 'extra data']);
         updateEditorModel(editorModel, emptyGridModel, false);
-        updateEditorData(qgModel, rowData, 1);
+        await updateEditorData(qgModel, rowData, 1);
         const updatedEditor = getEditorModel(qgModel.getId());
         expect(updatedEditor.rowCount).toBe(1);
         expect(updatedEditor.cellValues.get('0-0').get(0).display).toBe('update name');

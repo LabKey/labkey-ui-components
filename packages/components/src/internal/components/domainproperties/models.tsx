@@ -367,7 +367,7 @@ export class DomainDesign
         scrollFunction: (i: number) => void,
         domainKindName: string,
         appPropertiesOnly: boolean,
-        hasOntologyModule: boolean,
+        hasOntologyModule: boolean
     ): List<GridColumn | DomainPropertiesGridColumn> {
         const selectionCol = new GridColumn({
             index: GRID_SELECTION_INDEX,

@@ -8,7 +8,8 @@ import { isFieldFullyLocked } from './propertiesUtil';
 import {
     DOMAIN_FIELD_CUSTOM_LENGTH,
     DOMAIN_FIELD_MAX_LENGTH,
-    DOMAIN_FIELD_SCALE, DOMAIN_FIELD_SCANABLE_OPTION,
+    DOMAIN_FIELD_SCALE,
+    DOMAIN_FIELD_SCANNABLE_OPTION,
     MAX_TEXT_LENGTH,
     UNLIMITED_TEXT_LENGTH,
 } from './constants';
@@ -86,19 +87,23 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
     };
 
     renderIsScannableOption = () => {
-        const {domainIndex, index, lockType, scannable = false, appPropertiesOnly, showScannableOption} = this.props;
-        if (!appPropertiesOnly || !showScannableOption)
-            return undefined;
+        const { domainIndex, index, lockType, scannable = false, appPropertiesOnly, showScannableOption } = this.props;
+        if (!appPropertiesOnly || !showScannableOption) return undefined;
 
         return (
             <>
                 <Row>
                     <Col xs={3}>
                         <div className="domain-field-label">
-                            <DomainFieldLabel label="Barcode Field" helpTipBody={"When using the Find Samples dialog from the search bar and choosing the\n" +
-                                "                                        \"Barcodes\" option, text fields\n" +
-                                "                                        that are designated as Barcode fields will be queried\n" +
-                                "                                        along with any UniqueId fields for this sample type."} />
+                            <DomainFieldLabel
+                                label="Barcode Field"
+                                helpTipBody={
+                                    'When using the Find Samples dialog from the search bar and choosing the\n' +
+                                    '                                        "Barcodes" option, text fields\n' +
+                                    '                                        that are designated as Barcode fields will be queried\n' +
+                                    '                                        along with any UniqueId fields for this sample type.'
+                                }
+                            />
                         </div>
                     </Col>
                 </Row>
@@ -106,8 +111,8 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                     <Col xs={12} className="domain-text-options-col">
                         <FormControl
                             type="checkbox"
-                            id={createFormInputId(DOMAIN_FIELD_SCANABLE_OPTION, domainIndex, index)}
-                            name={createFormInputName(DOMAIN_FIELD_SCANABLE_OPTION)}
+                            id={createFormInputId(DOMAIN_FIELD_SCANNABLE_OPTION, domainIndex, index)}
+                            name={createFormInputName(DOMAIN_FIELD_SCANNABLE_OPTION)}
                             className="domain-text-option-scannable"
                             onChange={this.handleScannableOptionToggle}
                             disabled={isFieldFullyLocked(lockType)}
@@ -118,7 +123,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                 </Row>
             </>
         );
-    }
+    };
 
     render() {
         const { index, label, scale, lockType, domainIndex } = this.props;

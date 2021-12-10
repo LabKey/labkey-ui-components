@@ -14,7 +14,6 @@ import { TextFieldOptions, TextFieldState } from './TextFieldOptions';
 
 const SCANNABLE_OPTION_CLASS = '.domain-text-option-scannable';
 
-
 describe('TextFieldOptions', () => {
     test('Text data type', () => {
         const maxLengthRadio = { id: createFormInputId(DOMAIN_FIELD_MAX_LENGTH, 1, 1) };
@@ -100,7 +99,7 @@ describe('TextFieldOptions', () => {
         textField.unmount();
     });
 
-    test("Scannable Option field not shown", () => {
+    test('Scannable Option field not shown', () => {
         const props = {
             index: 1,
             domainIndex: 1,
@@ -110,7 +109,7 @@ describe('TextFieldOptions', () => {
             lockType: DOMAIN_FIELD_NOT_LOCKED,
         };
 
-        //All cases below should not display the field
+        // All cases below should not display the field
         const textField = mount(<TextFieldOptions {...props} showScannableOption={false} appPropertiesOnly={false} />);
         expect(textField.find(SCANNABLE_OPTION_CLASS)).toHaveLength(0);
         textField.unmount();
@@ -124,7 +123,7 @@ describe('TextFieldOptions', () => {
         textField3.unmount();
     });
 
-    test("Scannable Option field shown and default false", () => {
+    test('Scannable Option field shown and default false', () => {
         const props = {
             index: 1,
             domainIndex: 1,
@@ -141,7 +140,7 @@ describe('TextFieldOptions', () => {
         textField.unmount();
     });
 
-    test("Scannable Option value", () => {
+    test('Scannable Option value', () => {
         const props = {
             index: 1,
             domainIndex: 1,
@@ -158,7 +157,6 @@ describe('TextFieldOptions', () => {
         expect(scannable.length).toEqual(1);
         expect(scannable.props().checked).toEqual(true);
         textField.unmount();
-
 
         const textField2 = mount(<TextFieldOptions {...props} scannable={false} />);
         const scannable2 = textField2.find(SCANNABLE_OPTION_CLASS).not({ bsClass: 'form-control' });

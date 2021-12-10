@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.103.0
 *Released*: 10 December 2021
-* Item 9627: TextChoiceInput and usage for rendering select input for DetailEditRenderer, QueryFormInputs, and EditableGrid cell
+* Item 9627: TextChoiceInput and usage for rendering select input for DetailEditRenderer and QueryFormInputs
 
 ### version 2.102.0
 *Released*: 1 December 2021

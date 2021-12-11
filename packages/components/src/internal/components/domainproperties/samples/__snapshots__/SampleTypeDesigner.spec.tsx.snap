@@ -5237,7 +5237,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                 />
                                                                                               </FormControl>
                                                                                               <span>
-                                                                                                Search this field when scanning samples.
+                                                                                                Search this field when scanning samples
                                                                                               </span>
                                                                                             </div>
                                                                                           </Col>

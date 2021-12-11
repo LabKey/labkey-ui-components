@@ -174,7 +174,8 @@
       "queryName" : "c6d720_vial",
       "schemaName" : "specimentables",
       "table" : "c6d720_vial"
-    }
+    },
+    "validValues" : ["S1", "S2", "S3"]
   }, {
     "ext" : { },
     "name" : "ParticipantID",

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Merge release21.12-SNAPSHOT to develop
+  * Includes changes from versions 2.101.1
+
 ### version 2.103.0
 *Released*: 10 December 2021
 * Item 9627: TextChoiceInput and usage for rendering select input for DetailEditRenderer and QueryFormInputs

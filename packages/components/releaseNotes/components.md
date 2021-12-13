@@ -3,7 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Update LookupCell to use QuerySelect for display
+* Update `LookupCell` to use `QuerySelect` for display
+* Remove `LookupStore`
 
 ### version 2.103.0
 *Released*: 10 December 2021

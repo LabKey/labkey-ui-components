@@ -57,21 +57,18 @@ import {
     EditorModel,
     EditorModelProps,
     getStateQueryGridModel,
-    LookupStore,
     ValueDescriptor,
     VisualizationConfigModel,
 } from './models';
 import { bindColumnRenderers } from './renderers';
 import {
     getEditorModel,
-    getLookupStore,
     getQueryGridModel,
     getQueryGridModelsForGridId,
     getQueryGridModelsForSchema,
     getQueryGridModelsForSchemaQuery,
     removeQueryGridModel,
     updateEditorModel,
-    updateLookupStore,
     updateQueryGridModel,
     updateSelections,
 } from './global';
@@ -554,7 +551,7 @@ async function getLookupValueDescriptors(columns: QueryColumn[], rows: Map<any, 
             });
             if (!values.isEmpty()) {
                 const { descriptors } = await findLookupValues(col, values.toArray());
-                descriptorMap[LookupStore.key(col)] = descriptors;
+                descriptorMap[col.getLookupKey()] = descriptors;
             }
         }
     }
@@ -599,7 +596,7 @@ async function loadDataForEditor(model: QueryGridModel, response?: any): Promise
                 // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid cell
                 let valueDescriptor = { display: value, raw: value };
                 if (col.isLookup() && Utils.isNumber(value)) {
-                    const descriptors = lookupValueDescriptors[LookupStore.key(col)]
+                    const descriptors = lookupValueDescriptors[col.getLookupKey()]
                     if (descriptors) {
                         cellValues.set(cellKey, List(descriptors));
                     } else {
@@ -2097,7 +2094,7 @@ async function pasteCell(
                     let descriptorMap = {};
                     results.forEach(result => {
                         const { column, descriptors } = result;
-                        descriptorMap[LookupStore.key(column)] = descriptors;
+                        descriptorMap[column.getLookupKey()] = descriptors;
                     })
                     return pasteCellLoad(
                         model,
@@ -2610,7 +2607,7 @@ function pasteCellLoad(
                         let msg: CellMessage;
 
                         if (col && col.isPublicLookup()) {
-                            const { message, values } = parsePasteCellLookup(col, lookupDescriptorMap[LookupStore.key(col)], value);
+                            const { message, values } = parsePasteCellLookup(col, lookupDescriptorMap[col.getLookupKey()], value);
                             cv = values;
 
                             if (message) {
@@ -2668,7 +2665,7 @@ function pasteCellLoad(
                     let msg: CellMessage;
 
                     if (col && col.isPublicLookup()) {
-                        const { message, values } = parsePasteCellLookup(col, lookupDescriptorMap[LookupStore.key(col)], value);
+                        const { message, values } = parsePasteCellLookup(col, lookupDescriptorMap[col.getLookupKey()], value);
                         cv = values;
 
                         if (message) {

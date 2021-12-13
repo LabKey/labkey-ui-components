@@ -18,7 +18,7 @@ import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 
 import { modifyCell } from '../../actions';
-import { LookupStore, ValueDescriptor } from '../../models';
+import { ValueDescriptor } from '../../models';
 import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { QueryColumn, QuerySelect, SchemaQuery } from '../../..';
 import { GlobalAppState } from '../../global';
@@ -157,7 +157,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, undefined, Glo
                 queryFilters={queryFilters}
                 multiple={isMultiple}
                 schemaQuery={SchemaQuery.create(lookup.schemaName, lookup.queryName)}
-                componentId={LookupStore.key(col)}
+                componentId={col.getLookupKey()}
                 maxRows={LOOKUP_DEFAULT_SIZE}
                 containerPath={lookup.containerPath}
                 containerClass="select-input-cell-container"

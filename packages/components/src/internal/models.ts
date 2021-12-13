@@ -743,34 +743,3 @@ export class EditorModel
         };
     }
 }
-
-export class LookupStore extends Record({
-    key: undefined,
-    descriptors: OrderedMap<any, ValueDescriptor>(),
-    isLoaded: false,
-    isLoading: false,
-    lastToken: '~~INITIAL_TOKEN~~',
-    loadCount: 0,
-    matchCount: 0,
-}) {
-    declare key: string;
-    declare descriptors: OrderedMap<any, ValueDescriptor>;
-    declare isLoaded: boolean;
-    declare isLoading: boolean;
-    declare lastToken: string;
-    declare loadCount: number;
-    declare matchCount: number;
-
-    static key(col: QueryColumn): string {
-        return [col.lookup.schemaName, col.lookup.queryName, col.fieldKey].join('|');
-    }
-
-    containsAll(values: List<string>): boolean {
-        const displayValues = this.descriptors.reduce(
-            (valueSet, descriptor) => valueSet.add(descriptor.display),
-            Set<string>()
-        );
-
-        return values.find(value => !displayValues.contains(value)) == undefined;
-    }
-}

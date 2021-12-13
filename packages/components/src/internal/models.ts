@@ -442,6 +442,8 @@ export class EditorModel
                                 return arr;
                             }, [])
                         );
+                    } else if (col.lookup.displayColumn == col.lookup.keyColumn) {
+                        row = row.set(col.name, values.size === 1 ? values.first().display : undefined);
                     } else {
                         row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
                     }

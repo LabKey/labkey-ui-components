@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Rename EditableGridPanel to EditableGridPanelDeprecated
   * There will be a new version in a future release, and the deprecated version will eventually be removed
 
+### version 2.101.1
+*Released*: 7 December 2021
+* Issue 44397: Add new date util function, getJsonDateTimeFormatString(), to be used by DatePickerInput and EditableGrid insert/update case
+
 ### version 2.101.0
 *Released*: 30 November 2021
 * Add `getContainerFilter()` for resolving default container filter based on folder context.

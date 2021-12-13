@@ -96,6 +96,7 @@ export class QueryColumn extends Record({
     // sqlType: undefined,
     type: undefined,
     userEditable: undefined,
+    validValues: undefined,
     // versionField: undefined,
 
     cell: undefined,
@@ -162,6 +163,7 @@ export class QueryColumn extends Record({
     // declare sqlType: string;
     declare type: string;
     declare userEditable: boolean;
+    declare validValues: string[];
     // declare versionField: boolean;
 
     declare cell: Function;

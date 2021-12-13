@@ -112,6 +112,31 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }
     };
 
+    finishSave = () => {
+        const { setSubmitting } = this.props;
+        const { model } = this.state;
+
+        saveDomain(model.domain, Domain.KINDS.DATA_CLASS, model.options, model.name)
+            .then(response => {
+                setSubmitting(false, () => {
+                    this.saveModel({ domain: response, exception: undefined }, () => {
+                        this.props.onComplete(this.state.model);
+                    });
+                });
+            })
+            .catch(response => {
+                const exception = resolveErrorMessage(response);
+
+                setSubmitting(false, () => {
+                    if (exception) {
+                        this.saveModel({ exception });
+                    } else {
+                        this.saveModel({ domain: response, exception: undefined });
+                    }
+                });
+            });
+    };
+
     saveDomain = (hasConfirmedNameExpression?: boolean): void => {
         const { setSubmitting, beforeFinish } = this.props;
         const { model } = this.state;
@@ -133,6 +158,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                         });
                         return;
                     }
+                    else
+                        this.finishSave();
                 })
                 .catch(response => {
                     const exception = resolveErrorMessage(response);
@@ -151,25 +178,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         if (this.props.validateNameExpressions && !hasConfirmedNameExpression)
             return;
 
-        saveDomain(model.domain, Domain.KINDS.DATA_CLASS, model.options, model.name)
-            .then(response => {
-                setSubmitting(false, () => {
-                    this.saveModel({ domain: response, exception: undefined }, () => {
-                        this.props.onComplete(this.state.model);
-                    });
-                });
-            })
-            .catch(response => {
-                const exception = resolveErrorMessage(response);
+        this.finishSave();
 
-                setSubmitting(false, () => {
-                    if (exception) {
-                        this.saveModel({ exception });
-                    } else {
-                        this.saveModel({ domain: response, exception: undefined });
-                    }
-                });
-            });
     };
 
     saveModel = (modelOrProps: DataClassModel | Partial<DataClassModelConfig>, callback?: () => void): void => {

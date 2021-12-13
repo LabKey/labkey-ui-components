@@ -24,7 +24,7 @@ import {
     DomainDetails,
     naturalSortByProperty,
     QueryColumn,
-    SchemaDetails,
+    SchemaDetails, SchemaQuery,
 } from '../../..';
 
 import { processSchemas } from '../../schemas';
@@ -1075,4 +1075,26 @@ export function getOntologyUpdatedFieldName(
         fieldChanged,
         !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined,
     ];
+}
+
+export function getDomainNamePreviews(
+    schemaQuery?: SchemaQuery,
+    domainId?: number,
+    containerPath?: string
+): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        return Domain.getDomainNamePreviews({
+            containerPath,
+            domainId,
+            queryName: schemaQuery?.getQuery(),
+            schemaName: schemaQuery?.getSchema(),
+            success: response => {
+                resolve(response['previews']);
+            },
+            failure: response => {
+                console.error(response);
+                reject(response);
+            },
+        });
+    });
 }

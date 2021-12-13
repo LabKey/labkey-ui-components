@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * SampleTypeDesigner and DataClassDesigner
    * Validate name expressions prior to save
    * Show name preview on hover
+* Added DesignerDetailPanel to show name preview for designer details panel
 
 ### version 2.102.0
 *Released*: 1 December 2021

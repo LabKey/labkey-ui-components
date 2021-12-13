@@ -843,13 +843,14 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 placeholder: '[generated id]',
                 toolTip:
                     "A generated Aliquot ID will be provided for Aliquots that don't have a user-provided ID in the grid.",
-            });
+            }); //TODO add preview
         } else if (!this.isNameRequired()) {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 readOnly: false,
                 placeholder: '[generated id]',
                 toolTip: `A generated ${nounSingular} ID will be provided for ${nounPlural} that don't have a user-provided ID in the grid.`,
             });
+            // TODO add preview
         } else {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 toolTip: `A ${nounSingular} ID is required for each ${nounSingular} since this ${this.typeTextSingular} has no naming pattern. You can provide a naming pattern by editing the ${this.typeTextSingular} design.`,

@@ -122,7 +122,6 @@ export function getSampleTypeDetails(
             queryName: query ? query.getQuery() : undefined,
             schemaName: query ? query.getSchema() : undefined,
             domainKind: query === undefined && domainId === undefined ? 'SampleSet' : undefined,
-            includeNamePreview: !!includeNamePreview,
             success: response => {
                 resolve(DomainDetails.create(Map(response)));
             },

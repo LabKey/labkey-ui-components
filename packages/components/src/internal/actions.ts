@@ -1858,7 +1858,7 @@ export const findLookupValues = async (
         queryName: lookup.queryName,
         columns: [lookup.displayColumn, lookup.keyColumn].join(','),
         containerPath: lookup.containerPath,
-        maxRows: 1,
+        maxRows: (lookupKeyValues?.length || 0) + (lookupValues?.length || 0),
         includeTotalCount: 'f',
     };
 

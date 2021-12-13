@@ -78,7 +78,7 @@ import { DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants'
 
 import { getCurrentProductName, isSampleManagerEnabled } from '../../app/utils';
 
-import { fetchDomainDetails } from '../domainproperties/actions';
+import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
 
 import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from '../samples/constants';
 
@@ -177,6 +177,8 @@ interface StateProps {
     fieldsWarningMsg: ReactNode;
     creationType: SampleCreationType;
     allowUserSpecifiedNames: boolean;
+    previewName: string;
+    previewAliquotName: string;
 }
 
 export class EntityInsertPanelImpl extends Component<Props, StateProps> {
@@ -215,6 +217,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             fieldsWarningMsg: undefined,
             creationType: props.creationType,
             allowUserSpecifiedNames: true,
+            previewName: undefined,
+            previewAliquotName: undefined,
         };
     }
 
@@ -351,6 +355,24 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     this.setState(
                         () => ({ insertModel, originalQueryInfo }),
                         () => {
+                            getDomainNamePreviews(schemaQuery)
+                                .then(previews => {
+                                    if (previews?.length > 0) {
+                                        this.setState(() => ({
+                                            previewName: previews[0],
+                                            previewAliquotName: previews.length > 1 ? previews[1] : null
+                                        }));
+                                    }
+                                })
+                                .catch((errors => {
+                                    console.error('Unable to retrieve name expression previews ', errors);
+                                    this.setState(() => ({
+                                        previewName: null,
+                                        previewAliquotName: null
+                                    }));
+                                }));
+
+
                             gridInit(this.getQueryGridModel(), true, this);
                         }
                     );
@@ -834,25 +856,32 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     getGeneratedIdColumnMetadata(): Map<string, EditableColumnMetadata> {
         const { entityDataType, nounSingular, nounPlural } = this.props;
-        const { creationType } = this.state;
+        const { creationType, previewName, previewAliquotName } = this.state;
         let columnMetadata = getUniqueIdColumnMetadata(this.getGridQueryInfo());
         if (creationType === SampleCreationType.Aliquots) {
+            let toolTip = "A generated Aliquot ID will be provided for Aliquots that don't have a user-provided ID in the grid.";
+            if (previewAliquotName)
+                toolTip += " Example aliquot name that will be generated from the current pattern: " + previewAliquotName;
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 caption: 'Aliquot ID',
                 readOnly: false,
                 placeholder: '[generated id]',
-                toolTip:
-                    "A generated Aliquot ID will be provided for Aliquots that don't have a user-provided ID in the grid.",
-            }); //TODO add preview
+                toolTip,
+                hideTitleTooltip: true
+            });
         } else if (!this.isNameRequired()) {
+            let toolTip = `A generated ${nounSingular} ID will be provided for ${nounPlural} that don't have a user-provided ID in the grid.`;
+            if (previewName)
+                toolTip += " Example name that will be generated from the current pattern: " + previewName;
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 readOnly: false,
                 placeholder: '[generated id]',
-                toolTip: `A generated ${nounSingular} ID will be provided for ${nounPlural} that don't have a user-provided ID in the grid.`,
+                toolTip,
+                hideTitleTooltip: true
             });
-            // TODO add preview
         } else {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
+                hideTitleTooltip: true,
                 toolTip: `A ${nounSingular} ID is required for each ${nounSingular} since this ${this.typeTextSingular} has no naming pattern. You can provide a naming pattern by editing the ${this.typeTextSingular} design.`,
             });
         }

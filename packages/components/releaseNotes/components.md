@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
    * Validate name expressions prior to save
    * Show name preview on hover
 * Added DesignerDetailPanel to show name preview for designer details panel
+* EntityInsertPanel: show name preview on tooltip, hide double tooltip
 
 ### version 2.103.0
 *Released*: 10 December 2021

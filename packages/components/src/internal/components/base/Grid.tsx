@@ -28,6 +28,7 @@ interface ColumnProps {
     title: string;
     width?: any;
     headerCls?: string;
+    hideTooltip?: boolean
 }
 
 export class GridColumn implements ColumnProps {
@@ -41,6 +42,7 @@ export class GridColumn implements ColumnProps {
     title: string;
     width: any;
     headerCls: string;
+    hideTooltip?: boolean
 
     constructor(config: ColumnProps) {
         this.align = config.align;
@@ -59,6 +61,7 @@ export class GridColumn implements ColumnProps {
 
         this.showHeader = config.showHeader !== false; // defaults to true
         this.tableCell = config.tableCell === true; // defaults to false
+        this.hideTooltip = config.hideTooltip === true; // defaults to false
 
         if (config.cell) {
             this.cell = config.cell;
@@ -171,7 +174,7 @@ class GridHeader extends PureComponent<GridHeaderProps, any> {
             <thead>
                 <tr>
                     {columns.map((column: GridColumn, i: number) => {
-                        const { headerCls, index, raw, title, width } = column;
+                        const { headerCls, index, raw, title, width, hideTooltip } = column;
                         let minWidth = width;
 
                         if (minWidth === undefined) {
@@ -199,7 +202,7 @@ class GridHeader extends PureComponent<GridHeaderProps, any> {
                                     key={index}
                                     onClick={this._handleClick.bind(this, column)}
                                     style={{ minWidth }}
-                                    title={description}
+                                    title={hideTooltip ? undefined : description}
                                 >
                                     {headerCell ? headerCell(column, i, columns.size) : title}
                                 </th>

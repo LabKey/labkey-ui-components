@@ -257,6 +257,16 @@ exports[`DomainRow Sample Field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -316,6 +326,7 @@ exports[`DomainRow Sample Field 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -509,6 +520,7 @@ exports[`DomainRow Sample Field 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -1101,6 +1113,7 @@ exports[`DomainRow Sample Field 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -1465,6 +1478,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -1946,6 +1960,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -2482,6 +2497,16 @@ exports[`DomainRow client side warning on field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -2541,6 +2566,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -2746,6 +2772,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -3179,6 +3206,12 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 Text
                                               </option>
                                               <option
+                                                key="textChoice"
+                                                value="textChoice"
+                                              >
+                                                Text Choice
+                                              </option>
+                                              <option
                                                 key="uniqueId"
                                                 value="uniqueId"
                                               >
@@ -3533,6 +3566,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -3653,6 +3687,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -4134,6 +4169,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -4670,6 +4706,16 @@ exports[`DomainRow date time field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -4729,6 +4775,7 @@ exports[`DomainRow date time field 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -4922,6 +4969,7 @@ exports[`DomainRow date time field 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -5500,6 +5548,7 @@ exports[`DomainRow date time field 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -5849,6 +5898,7 @@ exports[`DomainRow date time field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -6330,6 +6380,7 @@ exports[`DomainRow date time field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -7005,6 +7056,16 @@ exports[`DomainRow decimal field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -7064,6 +7125,7 @@ exports[`DomainRow decimal field 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": true,
                     "scale": 4000,
@@ -7257,6 +7319,7 @@ exports[`DomainRow decimal field 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": true,
                                     "scale": 4000,
@@ -7835,6 +7898,7 @@ exports[`DomainRow decimal field 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": true,
                                       "scale": 4000,
@@ -8219,6 +8283,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": true,
                                                 "scale": 4000,
@@ -8700,6 +8765,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": true,
                                                 "scale": 4000,
@@ -9375,6 +9441,16 @@ exports[`DomainRow participant id field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -9434,6 +9510,7 @@ exports[`DomainRow participant id field 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -9627,6 +9704,7 @@ exports[`DomainRow participant id field 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -10017,6 +10095,12 @@ exports[`DomainRow participant id field 1`] = `
                                               >
                                                 Text
                                               </option>
+                                              <option
+                                                key="textChoice"
+                                                value="textChoice"
+                                              >
+                                                Text Choice
+                                              </option>
                                             </select>
                                           </FormControl>
                                         </div>
@@ -10229,6 +10313,7 @@ exports[`DomainRow participant id field 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -10349,6 +10434,7 @@ exports[`DomainRow participant id field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -10830,6 +10916,7 @@ exports[`DomainRow participant id field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -11505,6 +11592,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -11564,6 +11661,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -11769,6 +11867,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -12202,6 +12301,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 Text
                                               </option>
                                               <option
+                                                key="textChoice"
+                                                value="textChoice"
+                                              >
+                                                Text Choice
+                                              </option>
+                                              <option
                                                 key="uniqueId"
                                                 value="uniqueId"
                                               >
@@ -12445,6 +12550,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -12565,6 +12671,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -13046,6 +13153,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -13582,6 +13690,16 @@ exports[`DomainRow string field test 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -13641,6 +13759,7 @@ exports[`DomainRow string field test 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -13834,6 +13953,7 @@ exports[`DomainRow string field test 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -14224,6 +14344,12 @@ exports[`DomainRow string field test 1`] = `
                                               >
                                                 Text
                                               </option>
+                                              <option
+                                                key="textChoice"
+                                                value="textChoice"
+                                              >
+                                                Text Choice
+                                              </option>
                                             </select>
                                           </FormControl>
                                         </div>
@@ -14436,6 +14562,7 @@ exports[`DomainRow string field test 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -14866,6 +14993,7 @@ exports[`DomainRow string field test 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -15347,6 +15475,7 @@ exports[`DomainRow string field test 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -16022,6 +16151,16 @@ exports[`DomainRow with empty domain form 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -16081,6 +16220,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": undefined,
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -16274,6 +16414,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": undefined,
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -16706,6 +16847,12 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 Text
                                               </option>
                                               <option
+                                                key="textChoice"
+                                                value="textChoice"
+                                              >
+                                                Text Choice
+                                              </option>
+                                              <option
                                                 key="uniqueId"
                                                 value="uniqueId"
                                               >
@@ -16943,6 +17090,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": undefined,
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -17373,6 +17521,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": undefined,
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -17854,6 +18003,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": undefined,
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,

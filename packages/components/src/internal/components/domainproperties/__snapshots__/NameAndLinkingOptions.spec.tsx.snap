@@ -33,6 +33,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "rangeValidators": Immutable.List [],
       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
       "regexValidators": Immutable.List [],
+      "textChoiceValidator": undefined,
       "recommendedVariable": false,
       "required": false,
       "scale": 4000,

@@ -27,6 +27,7 @@ exports[`RegexValidationOptions Regex Validator - collapsed 1`] = `
       "name": "Test Validator",
       "properties": Immutable.Record {
         "failOnMatch": true,
+        "validValues": undefined,
       },
       "errorMessage": "Test Validation Failure",
       "description": "This is my validator description",
@@ -131,6 +132,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
       "name": "Test Validator",
       "properties": Immutable.Record {
         "failOnMatch": true,
+        "validValues": undefined,
       },
       "errorMessage": "Test Validation Failure",
       "description": "This is my validator description",

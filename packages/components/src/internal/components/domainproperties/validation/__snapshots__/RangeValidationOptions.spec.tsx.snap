@@ -26,7 +26,8 @@ exports[`RangeValidationOptions Range Validator - collapsed 1`] = `
       "type": "Range",
       "name": "Test range validator",
       "properties": Immutable.Record {
-        "failOnMatch": "true",
+        "failOnMatch": true,
+        "validValues": undefined,
       },
       "errorMessage": "Range validation failed",
       "description": "This is a range validator",
@@ -130,7 +131,8 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
       "type": "Range",
       "name": "Test range validator",
       "properties": Immutable.Record {
-        "failOnMatch": "true",
+        "failOnMatch": true,
+        "validValues": undefined,
       },
       "errorMessage": "Range validation failed",
       "description": "This is a range validator",

@@ -988,6 +988,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "rangeValidators": Immutable.List [],
             "rangeURI": undefined,
             "regexValidators": Immutable.List [],
+            "textChoiceValidator": undefined,
             "recommendedVariable": false,
             "required": false,
             "scale": 4000,
@@ -1146,6 +1147,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "rangeValidators": Immutable.List [],
               "rangeURI": undefined,
               "regexValidators": Immutable.List [],
+              "textChoiceValidator": undefined,
               "recommendedVariable": false,
               "required": false,
               "scale": 4000,
@@ -1277,6 +1279,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "rangeValidators": Immutable.List [],
                 "rangeURI": undefined,
                 "regexValidators": Immutable.List [],
+                "textChoiceValidator": undefined,
                 "recommendedVariable": false,
                 "required": false,
                 "scale": 4000,
@@ -1416,6 +1419,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "rangeValidators": Immutable.List [],
                   "rangeURI": undefined,
                   "regexValidators": Immutable.List [],
+                  "textChoiceValidator": undefined,
                   "recommendedVariable": false,
                   "required": false,
                   "scale": 4000,
@@ -1574,6 +1578,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": undefined,
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -1738,6 +1743,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "rangeValidators": Immutable.List [],
                       "rangeURI": undefined,
                       "regexValidators": Immutable.List [],
+                      "textChoiceValidator": undefined,
                       "recommendedVariable": false,
                       "required": false,
                       "scale": 4000,
@@ -2100,6 +2106,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             "rangeValidators": Immutable.List [],
                                             "rangeURI": undefined,
                                             "regexValidators": Immutable.List [],
+                                            "textChoiceValidator": undefined,
                                             "recommendedVariable": false,
                                             "required": false,
                                             "scale": 4000,
@@ -2815,6 +2822,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "rangeValidators": Immutable.List [],
                 "rangeURI": undefined,
                 "regexValidators": Immutable.List [],
+                "textChoiceValidator": undefined,
                 "recommendedVariable": false,
                 "required": false,
                 "scale": 4000,
@@ -2950,6 +2958,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": undefined,
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -3845,6 +3854,16 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                               "lookupSchema": undefined,
                                                               "lookupQuery": undefined,
                                                             },
+                                                            Immutable.Record {
+                                                              "conceptURI": "http://www.labkey.org/types#textChoice",
+                                                              "display": "Text Choice",
+                                                              "name": "textChoice",
+                                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                              "alternateRangeURI": undefined,
+                                                              "shortDisplay": undefined,
+                                                              "lookupSchema": undefined,
+                                                              "lookupQuery": undefined,
+                                                            },
                                                           ]
                                                         }
                                                         defaultValueOptions={Immutable.List []}
@@ -3888,6 +3907,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "rangeValidators": Immutable.List [],
                                                             "rangeURI": undefined,
                                                             "regexValidators": Immutable.List [],
+                                                            "textChoiceValidator": undefined,
                                                             "recommendedVariable": false,
                                                             "required": false,
                                                             "scale": 4000,
@@ -4069,6 +4089,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "rangeValidators": Immutable.List [],
                                                                             "rangeURI": undefined,
                                                                             "regexValidators": Immutable.List [],
+                                                                            "textChoiceValidator": undefined,
                                                                             "recommendedVariable": false,
                                                                             "required": false,
                                                                             "scale": 4000,
@@ -4467,6 +4488,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         Text
                                                                                       </option>
                                                                                       <option
+                                                                                        key="textChoice"
+                                                                                        value="textChoice"
+                                                                                      >
+                                                                                        Text Choice
+                                                                                      </option>
+                                                                                      <option
                                                                                         key="users"
                                                                                         value="users"
                                                                                       >
@@ -4677,6 +4704,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "rangeValidators": Immutable.List [],
                                                                               "rangeURI": undefined,
                                                                               "regexValidators": Immutable.List [],
+                                                                              "textChoiceValidator": undefined,
                                                                               "recommendedVariable": false,
                                                                               "required": false,
                                                                               "scale": 4000,
@@ -5110,6 +5138,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "rangeValidators": Immutable.List [],
                                                                                         "rangeURI": undefined,
                                                                                         "regexValidators": Immutable.List [],
+                                                                                        "textChoiceValidator": undefined,
                                                                                         "recommendedVariable": false,
                                                                                         "required": false,
                                                                                         "scale": 4000,
@@ -5581,6 +5610,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "rangeValidators": Immutable.List [],
                                                                                         "rangeURI": undefined,
                                                                                         "regexValidators": Immutable.List [],
+                                                                                        "textChoiceValidator": undefined,
                                                                                         "recommendedVariable": false,
                                                                                         "required": false,
                                                                                         "scale": 4000,

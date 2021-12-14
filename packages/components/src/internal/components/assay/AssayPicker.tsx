@@ -250,7 +250,21 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                                     className="margin-bottom margin-top"
                                     eventKey={AssayPickerTabs.XAR_IMPORT_TAB}
                                 >
-                                    <AssayDesignUploadPanel onFileChange={onFileSelect} onFileRemove={onFileRemove} />
+                                    <AssayDesignUploadPanel onFileChange={onFileSelect} onFileRemove={onFileRemove} >
+                                        {showContainerSelect && (
+                                            <div className="margin-bottom">
+                                                <Row>
+                                                    <Col xs={6}>
+                                                        <AssayContainerLocation
+                                                            locations={containers}
+                                                            selected={assaySelectionModel.container}
+                                                            onChange={onContainerChange}
+                                                        />
+                                                    </Col>
+                                                </Row>
+                                            </div>
+                                        )}
+                                    </AssayDesignUploadPanel>
                                 </Tab.Pane>
                             )}
                         </Tab.Content>

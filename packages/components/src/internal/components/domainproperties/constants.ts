@@ -76,6 +76,7 @@ export const DOMAIN_VALIDATOR_FAILONMATCH = 'failOnMatch';
 export const DOMAIN_VALIDATOR_NAME = 'name';
 export const DOMAIN_VALIDATOR_REMOVE = 'removeValidator';
 export const DOMAIN_VALIDATOR_LOOKUP = 'lookupValidator';
+export const DOMAIN_VALIDATOR_TEXTCHOICE = 'textChoiceValidator';
 
 export const DOMAIN_VALIDATOR_BOLD = 'bold';
 export const DOMAIN_VALIDATOR_ITALIC = 'italic';
@@ -198,3 +199,5 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
 };
 
 export const DERIVATION_DATA_SCOPE_CHILD_ONLY = 'ChildOnly';
+
+export const MAX_VALID_TEXT_CHOICES = 200;

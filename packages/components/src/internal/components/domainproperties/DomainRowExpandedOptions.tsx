@@ -199,11 +199,12 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
             case 'textChoice':
                 return (
                     <TextChoiceOptions
-                        index={index}
                         domainIndex={domainIndex}
+                        index={index}
+                        field={field}
                         label="Text Choice Options"
-                        onChange={onChange}
                         lockType={field.lockType}
+                        onChange={onChange}
                     />
                 );
         }

@@ -535,23 +535,32 @@ export class ConditionalFormat
 
 export interface IPropertyValidatorProperties {
     failOnMatch: boolean;
+    validValues: string[];
 }
 
 export class PropertyValidatorProperties
     extends Record({
         failOnMatch: false,
+        validValues: undefined,
     })
     implements IPropertyValidatorProperties
 {
     declare failOnMatch: boolean;
+    declare validValues: string[];
 
     constructor(values?: { [key: string]: any }) {
         if (typeof values?.failOnMatch === 'string') {
             values.failOnMatch = values.failOnMatch === 'true';
         }
+        // see DomainUtil.getPropertyDescriptor() for where this property is added to the JSON field validator extChoice validator info
+        if (typeof values?.validValues === 'string') {
+            values.validValues = values.validValues.split('|');
+        }
         super(values);
     }
 }
+
+const EXPECTED_VALIDATOR_TYPES = ['Range', 'RegEx', 'TextChoice', 'Lookup'];
 
 export interface IPropertyValidator {
     type: string;
@@ -589,27 +598,24 @@ export class PropertyValidator
     static fromJS(rawPropertyValidator: any[], type: string): List<PropertyValidator> {
         let propValidators = List<PropertyValidator>();
 
-        let newPv;
-        for (let i = 0; i < rawPropertyValidator.length; i++) {
-            if (
-                (type === 'Range' && rawPropertyValidator[i].type === 'Range') ||
-                (type === 'RegEx' && rawPropertyValidator[i].type === 'RegEx') ||
-                (type === 'Lookup' && rawPropertyValidator[i].type === 'Lookup')
-            ) {
-                rawPropertyValidator[i]['properties'] = new PropertyValidatorProperties(
-                    rawPropertyValidator[i]['properties']
-                );
-                newPv = new PropertyValidator(rawPropertyValidator[i]);
+        if (EXPECTED_VALIDATOR_TYPES.indexOf(type) > -1) {
+            for (let i = 0; i < rawPropertyValidator.length; i++) {
+                if (rawPropertyValidator[i].type === type) {
+                    rawPropertyValidator[i]['properties'] = new PropertyValidatorProperties(
+                        rawPropertyValidator[i]['properties']
+                    );
+                    let newPv = new PropertyValidator(rawPropertyValidator[i]);
 
-                // Special case for filters HAS ANY VALUE not having a symbol
-                if (newPv.get('expression') !== undefined && newPv.get('expression') !== null) {
-                    newPv = newPv.set(
-                        'expression',
-                        newPv.get('expression').replace('~=', '~' + DOMAIN_FILTER_HASANYVALUE + '=')
-                    ) as PropertyValidator;
+                    // Special case for filters HAS ANY VALUE not having a symbol
+                    if (newPv.get('expression') !== undefined && newPv.get('expression') !== null) {
+                        newPv = newPv.set(
+                            'expression',
+                            newPv.get('expression').replace('~=', '~' + DOMAIN_FILTER_HASANYVALUE + '=')
+                        ) as PropertyValidator;
+                    }
+
+                    propValidators = propValidators.push(newPv);
                 }
-
-                propValidators = propValidators.push(newPv);
             }
         }
 
@@ -618,7 +624,13 @@ export class PropertyValidator
 
     static serialize(pvs: any[]): any {
         for (let i = 0; i < pvs.length; i++) {
-            pvs[i].expression = pvs[i].expression.replace(DOMAIN_FILTER_HASANYVALUE, '');
+            if (pvs[i].expression) {
+                pvs[i].expression = pvs[i].expression.replace(DOMAIN_FILTER_HASANYVALUE, '');
+            }
+
+            if (pvs[i]?.properties?.validValues) {
+                delete pvs[i].properties.validValues;
+            }
         }
 
         return pvs;
@@ -662,6 +674,7 @@ export interface IDomainField {
     rangeValidators: List<PropertyValidator>;
     rangeURI: string;
     regexValidators: List<PropertyValidator>;
+    textChoiceValidator?: PropertyValidator;
     required?: boolean;
     recommendedVariable?: boolean;
     scale?: number;
@@ -715,6 +728,7 @@ export class DomainField
         rangeValidators: List<PropertyValidator>(),
         rangeURI: undefined,
         regexValidators: List<PropertyValidator>(),
+        textChoiceValidator: undefined,
         recommendedVariable: false,
         required: false,
         scale: MAX_TEXT_LENGTH,
@@ -770,6 +784,7 @@ export class DomainField
     declare rangeValidators: List<PropertyValidator>;
     declare rangeURI: string;
     declare regexValidators: List<PropertyValidator>;
+    declare textChoiceValidator?: PropertyValidator;
     declare recommendedVariable: boolean;
     declare required?: boolean;
     declare scale?: number;
@@ -837,6 +852,11 @@ export class DomainField
                     'lookupValidator',
                     PropertyValidator.fromJS(rawField.propertyValidators, 'Lookup').get(0)
                 ) as DomainField;
+            }
+
+            const textChoice = PropertyValidator.fromJS(rawField.propertyValidators, 'TextChoice');
+            if (textChoice?.size > 0) {
+                field = field.set('textChoiceValidator', textChoice.get(0)) as DomainField;
             }
         }
 
@@ -939,13 +959,18 @@ export class DomainField
         if (json.rangeValidators) {
             json.propertyValidators = json.propertyValidators.concat(PropertyValidator.serialize(json.rangeValidators));
         }
-
         if (json.regexValidators) {
             json.propertyValidators = json.propertyValidators.concat(PropertyValidator.serialize(json.regexValidators));
         }
-
         if (json.lookupValidator) {
-            json.propertyValidators = json.propertyValidators.concat(json.lookupValidator);
+            json.propertyValidators = json.propertyValidators.concat(
+                PropertyValidator.serialize([json.lookupValidator])
+            );
+        }
+        if (json.textChoiceValidator) {
+            json.propertyValidators = json.propertyValidators.concat(
+                PropertyValidator.serialize([json.textChoiceValidator])
+            );
         }
 
         // Special case for users, needs different URI for uniqueness in UI but actually uses int URI
@@ -967,6 +992,7 @@ export class DomainField
         delete json.visible;
         delete json.rangeValidators;
         delete json.regexValidators;
+        delete json.textChoiceValidator;
         delete json.lookupValidator;
         delete json.disablePhiLevel;
         delete json.lockExistingField;

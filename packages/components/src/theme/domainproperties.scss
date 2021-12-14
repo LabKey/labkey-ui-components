@@ -756,3 +756,14 @@
 .domain-add-field-row {
     margin-top: 20px;
 }
+
+.domain-text-choices-left-panel {
+    border-right: 1px solid $list-group-border;
+}
+.domain-text-choices-list {
+    max-height: 255px; // 6 items plus their borders
+    overflow: auto;
+}
+.domain-text-choices-error {
+    color: $brand-danger;
+}

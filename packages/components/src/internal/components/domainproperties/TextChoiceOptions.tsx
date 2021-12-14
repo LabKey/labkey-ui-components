@@ -2,12 +2,15 @@ import React, { FC, memo, useCallback, useState } from 'react';
 import { Button, Col, FormGroup, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 
+import { ChoicesListItem } from '../base/ChoicesListItem';
+
+import { AddEntityButton } from '../buttons/AddEntityButton';
+
 import { DOMAIN_VALIDATOR_TEXTCHOICE, MAX_VALID_TEXT_CHOICES } from './constants';
 import { DEFAULT_TEXT_CHOICE_VALIDATOR, DomainField, ITypeDependentProps, PropertyValidator } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
-import { ChoicesListItem } from '../base/ChoicesListItem';
-import { AddEntityButton } from '../buttons/AddEntityButton';
+
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
 import { createFormInputId } from './actions';
 
@@ -27,35 +30,47 @@ export const TextChoiceOptions: FC<TextChoiceProps> = memo(props => {
     const [showAddValuesModal, setShowAddValuesModal] = useState<boolean>();
     const fieldId = createFormInputId(DOMAIN_VALIDATOR_TEXTCHOICE, domainIndex, index);
 
-    const onSelect = useCallback(index => {
-        setSelectedIndex(index);
-        setCurrentValue(validValues[index]);
-    }, [validValues]);
+    const onSelect = useCallback(
+        index => {
+            setSelectedIndex(index);
+            setCurrentValue(validValues[index]);
+        },
+        [validValues]
+    );
 
     const onValueChange = useCallback(evt => {
         setCurrentValue(evt.target.value);
     }, []);
 
-    const replaceValues = useCallback((newValues?: string[]) => {
-        setValidValues(newValues);
-        onChange(fieldId, new PropertyValidator({
-            ...field.textChoiceValidator,
-            ...DEFAULT_TEXT_CHOICE_VALIDATOR.toJS(),
-            expression: newValues.join('|'),
-            properties: { validValues: newValues },
-        }));
-    }, [field.textChoiceValidator, fieldId, onChange]);
+    const replaceValues = useCallback(
+        (newValues?: string[]) => {
+            setValidValues(newValues);
+            onChange(
+                fieldId,
+                new PropertyValidator({
+                    ...field.textChoiceValidator,
+                    ...DEFAULT_TEXT_CHOICE_VALIDATOR.toJS(),
+                    expression: newValues.join('|'),
+                    properties: { validValues: newValues },
+                })
+            );
+        },
+        [field.textChoiceValidator, fieldId, onChange]
+    );
 
-    const updateValue = useCallback((updatedValue?: string) => {
-        const newValues = [...validValues];
-        if (updatedValue !== undefined) {
-            newValues.splice(selectedIndex, 1, updatedValue);
-        } else {
-            newValues.splice(selectedIndex, 1);
-            onSelect(undefined); // clear selected index and value
-        }
-        replaceValues(newValues);
-    }, [validValues, replaceValues, selectedIndex, onSelect]);
+    const updateValue = useCallback(
+        (updatedValue?: string) => {
+            const newValues = [...validValues];
+            if (updatedValue !== undefined) {
+                newValues.splice(selectedIndex, 1, updatedValue);
+            } else {
+                newValues.splice(selectedIndex, 1);
+                onSelect(undefined); // clear selected index and value
+            }
+            replaceValues(newValues);
+        },
+        [validValues, replaceValues, selectedIndex, onSelect]
+    );
 
     const onApply = useCallback(() => {
         updateValue(currentValue);
@@ -69,10 +84,13 @@ export const TextChoiceOptions: FC<TextChoiceProps> = memo(props => {
         setShowAddValuesModal(!showAddValuesModal);
     }, [showAddValuesModal]);
 
-    const onApplyAddValues = useCallback((values: string[]) => {
-        replaceValues(validValues.concat(values));
-        toggleAddValues();
-    }, [replaceValues, validValues, toggleAddValues]);
+    const onApplyAddValues = useCallback(
+        (values: string[]) => {
+            replaceValues(validValues.concat(values));
+            toggleAddValues();
+        },
+        [replaceValues, validValues, toggleAddValues]
+    );
 
     return (
         <div>

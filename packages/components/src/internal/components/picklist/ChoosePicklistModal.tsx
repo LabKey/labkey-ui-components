@@ -39,9 +39,12 @@ interface PicklistListProps {
 // export for jest testing
 export const PicklistList: FC<PicklistListProps> = memo(props => {
     const { activeItem, emptyMessage, onSelect, showSharedIcon = false, items } = props;
-    const onClick = useCallback((index) => {
-        onSelect(items[index]);
-    }, [items, onSelect]);
+    const onClick = useCallback(
+        index => {
+            onSelect(items[index]);
+        },
+        [items, onSelect]
+    );
 
     return (
         <div className="list-group choices-list">
@@ -52,9 +55,10 @@ export const PicklistList: FC<PicklistListProps> = memo(props => {
                     key={item.listId}
                     label={item.name}
                     onSelect={onClick}
-                    componentRight={showSharedIcon && item.isPublic() && (
-                        <span className="fa fa-users pull-right" title="Team Picklist" />
-                    )}
+                    componentRight={
+                        showSharedIcon &&
+                        item.isPublic() && <span className="fa fa-users pull-right" title="Team Picklist" />
+                    }
                 />
             ))}
             {items.length === 0 && <p className="choices-list__empty-message">{emptyMessage}</p>}

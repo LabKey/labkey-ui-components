@@ -272,14 +272,20 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                     key={state.rowId}
                     label={state.label}
                     onSelect={onSelect}
-                    componentRight={state.inUse && (
-                        <LockIcon
-                            iconCls="pull-right choices-list__locked"
-                            body={<p>This sample status cannot change status type or be deleted because it is in use.</p>}
-                            id="sample-state-lock-icon"
-                            title="Sample Status Locked"
-                        />
-                    )}
+                    componentRight={
+                        state.inUse && (
+                            <LockIcon
+                                iconCls="pull-right choices-list__locked"
+                                body={
+                                    <p>
+                                        This sample status cannot change status type or be deleted because it is in use.
+                                    </p>
+                                }
+                                id="sample-state-lock-icon"
+                                title="Sample Status Locked"
+                            />
+                        )
+                    }
                 />
             ))}
             {states.length === 0 && <p className="choices-list__empty-message">No sample statuses defined.</p>}

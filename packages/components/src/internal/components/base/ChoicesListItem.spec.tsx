@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
+
 import { ChoicesListItem } from './ChoicesListItem';
 
 describe('ChoicesListItem', () => {
@@ -38,7 +39,11 @@ describe('ChoicesListItem', () => {
 
     test('component right', () => {
         const wrapper = mount(
-            <ChoicesListItem {...DEFAULT_PROPS} itemType="Type" componentRight={<div className="component-right">TEST</div>} />
+            <ChoicesListItem
+                {...DEFAULT_PROPS}
+                itemType="Type"
+                componentRight={<div className="component-right">TEST</div>}
+            />
         );
         validate(wrapper, false, true, 'AvailableTypeTEST');
         wrapper.unmount();

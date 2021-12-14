@@ -147,9 +147,9 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                                 >
                                     Fail validation when pattern matches field value
                                     <LabelHelpTip title="Fail when pattern matches?">
-                                        By default, validation will fail if the field value does not match the specified regular
-                                        expression. Check this box if you want validation to fail when the pattern matches the field
-                                        value.
+                                        By default, validation will fail if the field value does not match the specified
+                                        regular expression. Check this box if you want validation to fail when the
+                                        pattern matches the field value.
                                     </LabelHelpTip>
                                 </Checkbox>
                             </Col>
@@ -186,8 +186,8 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                     <div>
                         <div>
                             {(validator.name ? validator.name : 'Regex Validator') +
-                            ': ' +
-                            (validator.expression ? validator.expression : 'Missing expression')}
+                                ': ' +
+                                (validator.expression ? validator.expression : 'Missing expression')}
                             <div className="domain-validator-collapse-icon" onClick={this.expandValidator}>
                                 <FontAwesomeIcon icon={faPencilAlt} />
                             </div>

@@ -36,6 +36,7 @@ import { OntologyModel } from '../ontology/models';
 import { isCommunityDistribution } from '../../app/utils';
 
 import {
+    DEFAULT_TEXT_CHOICE_VALIDATOR,
     decodeLookup,
     DomainDesign,
     DomainException,
@@ -605,10 +606,15 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             conceptSubtree: undefined,
             conceptLabelColumn: undefined,
             conceptImportColumn: undefined,
+            textChoiceValidator: undefined,
         }) as DomainField;
 
         if (field.isNew()) {
             field = DomainField.updateDefaultValues(field);
+        }
+
+        if (field.isTextChoiceField()) {
+            field = field.merge({ textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR }) as DomainField;
         }
     }
 

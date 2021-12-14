@@ -3,13 +3,13 @@ import { Button, Col, FormGroup, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { DOMAIN_VALIDATOR_TEXTCHOICE, MAX_VALID_TEXT_CHOICES } from './constants';
-import { DomainField, ITypeDependentProps, PropertyValidator } from './models';
+import { DEFAULT_TEXT_CHOICE_VALIDATOR, DomainField, ITypeDependentProps, PropertyValidator } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 import { ChoicesListItem } from '../base/ChoicesListItem';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
-import { createFormInputId } from "./actions";
+import { createFormInputId } from './actions';
 
 const HELP_TIP_BODY = (
     <p>Add a set of text choice values to be used as drop-down options to restrict data entry into this field.</p>
@@ -40,10 +40,9 @@ export const TextChoiceOptions: FC<TextChoiceProps> = memo(props => {
         setValidValues(newValues);
         onChange(fieldId, new PropertyValidator({
             ...field.textChoiceValidator,
-            type: 'TextChoice',
-            name: 'Text Choice Validator',
+            ...DEFAULT_TEXT_CHOICE_VALIDATOR.toJS(),
             expression: newValues.join('|'),
-            properties: { validValues: newValues }
+            properties: { validValues: newValues },
         }));
     }, [field.textChoiceValidator, fieldId, onChange]);
 

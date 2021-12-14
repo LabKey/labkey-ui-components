@@ -637,6 +637,13 @@ export class PropertyValidator
     }
 }
 
+export const DEFAULT_TEXT_CHOICE_VALIDATOR = new PropertyValidator({
+    type: 'TextChoice',
+    name: 'Text Choice Validator',
+    expression: '',
+    properties: { validValues: [] },
+});
+
 interface ILookupConfig {
     lookupContainer?: string;
     lookupQuery?: string;

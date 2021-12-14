@@ -6,20 +6,15 @@ import { waitForLifecycle } from '../../testHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { Alert } from '../base/Alert';
-import { LockIcon } from '../base/LockIcon';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 import { SelectInput } from '../forms/input/SelectInput';
 import { ConfirmModal } from '../base/ConfirmModal';
+import { ChoicesListItem } from '../base/ChoicesListItem';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { SampleState } from './models';
-import {
-    ManageSampleStatusesPanel,
-    SampleStatusDetail,
-    SampleStatusesList,
-    SampleStatusesListItem,
-} from './ManageSampleStatusesPanel';
+import { ManageSampleStatusesPanel, SampleStatusDetail, SampleStatusesList } from './ManageSampleStatusesPanel';
 
 import { getSamplesTestAPIWrapper } from './APIWrapper';
 
@@ -148,7 +143,7 @@ describe('SampleStatusesList', () => {
     function validate(wrapper: ReactWrapper, count = 0): void {
         expect(wrapper.find('.choices-list__empty-message')).toHaveLength(count === 0 ? 1 : 0);
         expect(wrapper.find('.list-group')).toHaveLength(1);
-        expect(wrapper.find(SampleStatusesListItem)).toHaveLength(count);
+        expect(wrapper.find(ChoicesListItem)).toHaveLength(count);
     }
 
     test('no states', () => {
@@ -161,8 +156,8 @@ describe('SampleStatusesList', () => {
         const states = [new SampleState(), new SampleState()];
         const wrapper = mount(<SampleStatusesList {...DEFAULT_PROPS} states={states} />);
         validate(wrapper, states.length);
-        expect(wrapper.find(SampleStatusesListItem).first().prop('active')).toBe(false);
-        expect(wrapper.find(SampleStatusesListItem).last().prop('active')).toBe(false);
+        expect(wrapper.find(ChoicesListItem).first().prop('active')).toBe(false);
+        expect(wrapper.find(ChoicesListItem).last().prop('active')).toBe(false);
         wrapper.unmount();
     });
 
@@ -170,50 +165,8 @@ describe('SampleStatusesList', () => {
         const states = [new SampleState(), new SampleState()];
         const wrapper = mount(<SampleStatusesList {...DEFAULT_PROPS} states={states} selected={1} />);
         validate(wrapper, states.length);
-        expect(wrapper.find(SampleStatusesListItem).first().prop('active')).toBe(false);
-        expect(wrapper.find(SampleStatusesListItem).last().prop('active')).toBe(true);
-        wrapper.unmount();
-    });
-});
-
-describe('SampleStatusesListItem', () => {
-    const DEFAULT_PROPS = {
-        index: 0,
-        state: new SampleState({ label: 'Available', stateType: 'Available', inUse: false }),
-        onSelect: jest.fn,
-    };
-
-    function validate(wrapper: ReactWrapper, active = false, inUse = false, text = 'Available'): void {
-        expect(wrapper.find('button')).toHaveLength(1);
-        expect(wrapper.find('.active')).toHaveLength(active ? 1 : 0);
-        expect(wrapper.find('.choices-list__item-type')).toHaveLength(text !== 'Available' ? 1 : 0);
-        expect(wrapper.find(LockIcon)).toHaveLength(inUse ? 1 : 0);
-        expect(wrapper.find('button').text()).toBe(text);
-    }
-
-    test('default props', () => {
-        const wrapper = mount(<SampleStatusesListItem {...DEFAULT_PROPS} />);
-        validate(wrapper);
-        wrapper.unmount();
-    });
-
-    test('active', () => {
-        const wrapper = mount(<SampleStatusesListItem {...DEFAULT_PROPS} active />);
-        validate(wrapper, true);
-        wrapper.unmount();
-    });
-
-    test('stateType not same as label', () => {
-        const state = new SampleState({ label: 'Received', stateType: 'Available', inUse: false });
-        const wrapper = mount(<SampleStatusesListItem {...DEFAULT_PROPS} state={state} />);
-        validate(wrapper, false, false, 'ReceivedAvailable');
-        wrapper.unmount();
-    });
-
-    test('in use', () => {
-        const state = new SampleState({ label: 'Available', stateType: 'Available', inUse: true });
-        const wrapper = mount(<SampleStatusesListItem {...DEFAULT_PROPS} state={state} />);
-        validate(wrapper, false, true);
+        expect(wrapper.find(ChoicesListItem).first().prop('active')).toBe(false);
+        expect(wrapper.find(ChoicesListItem).last().prop('active')).toBe(true);
         wrapper.unmount();
     });
 });

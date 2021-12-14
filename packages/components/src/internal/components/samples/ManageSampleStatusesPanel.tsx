@@ -2,12 +2,12 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 
 import { FormGroup, Button } from 'react-bootstrap';
 import { List } from 'immutable';
-import classNames from 'classnames';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { LockIcon } from '../base/LockIcon';
 import { ConfirmModal } from '../base/ConfirmModal';
+import { ChoicesListItem } from '../base/ChoicesListItem';
 
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
@@ -252,37 +252,6 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
 });
 SampleStatusDetail.displayName = 'SampleStatusDetail';
 
-interface SampleStatusesListItemProps {
-    active?: boolean;
-    index: number;
-    onSelect: (index: number) => void;
-    state: SampleState;
-}
-
-// exported for jest testing
-export const SampleStatusesListItem: FC<SampleStatusesListItemProps> = memo(props => {
-    const { state, index, active, onSelect } = props;
-    const onClick = useCallback(() => {
-        onSelect(index);
-    }, [onSelect, index]);
-
-    return (
-        <button className={classNames('list-group-item', { active })} onClick={onClick} type="button">
-            {state.label}
-            {state.stateType !== state.label && <span className="choices-list__item-type">{state.stateType}</span>}
-            {state.inUse && (
-                <LockIcon
-                    iconCls="pull-right choices-list__locked"
-                    body={<p>This sample status cannot change status type or be deleted because it is in use.</p>}
-                    id="sample-state-lock-icon"
-                    title="Sample Status Locked"
-                />
-            )}
-        </button>
-    );
-});
-SampleStatusesListItem.displayName = 'SampleStatusesListItem';
-
 interface SampleStatusesListProps {
     onSelect: (index: number) => void;
     selected: number;
@@ -296,12 +265,21 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
     return (
         <div className="list-group">
             {states.map((state, index) => (
-                <SampleStatusesListItem
-                    key={state.rowId}
-                    state={state}
-                    index={index}
+                <ChoicesListItem
                     active={index === selected}
+                    index={index}
+                    itemType={state.stateType !== state.label && state.stateType}
+                    key={state.rowId}
+                    label={state.label}
                     onSelect={onSelect}
+                    componentRight={state.inUse && (
+                        <LockIcon
+                            iconCls="pull-right choices-list__locked"
+                            body={<p>This sample status cannot change status type or be deleted because it is in use.</p>}
+                            id="sample-state-lock-icon"
+                            title="Sample Status Locked"
+                        />
+                    )}
                 />
             ))}
             {states.length === 0 && <p className="choices-list__empty-message">No sample statuses defined.</p>}

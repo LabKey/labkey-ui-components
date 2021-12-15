@@ -32,72 +32,25 @@ const VALUE_IN_USE = (
     />
 );
 
-interface TextChoiceProps extends ITypeDependentProps {
+interface Props extends ITypeDependentProps {
     field: DomainField;
     queryName?: string;
     schemaName?: string;
 }
 
-export const TextChoiceOptions: FC<TextChoiceProps> = memo(props => {
-    const { label, field, onChange, domainIndex, index, schemaName, queryName } = props;
-    const [loading, setLoading] = useState<boolean>(true);
-    const [fieldValues, setFieldValues] = useState<string[]>([]);
-    const [validValues, setValidValues] = useState<string[]>(field.textChoiceValidator?.properties.validValues ?? []);
+interface ImplProps extends Props {
+    fieldValues: string[];
+    loading: boolean;
+    replaceValues: (newValues?: string[]) => void;
+    validValues: string[];
+}
+
+const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
+    const { label, field, loading, fieldValues, validValues, replaceValues } = props;
     const [selectedIndex, setSelectedIndex] = useState<number>();
     const [currentValue, setCurrentValue] = useState<string>();
     const [showAddValuesModal, setShowAddValuesModal] = useState<boolean>();
-    const fieldId = createFormInputId(DOMAIN_VALIDATOR_TEXTCHOICE, domainIndex, index);
     const currentInUse = fieldValues.indexOf(currentValue) > -1;
-
-    const replaceValues = useCallback(
-        (newValues?: string[]) => {
-            setValidValues(newValues);
-            onChange(
-                fieldId,
-                new PropertyValidator({
-                    ...field.textChoiceValidator,
-                    ...DEFAULT_TEXT_CHOICE_VALIDATOR.toJS(),
-                    expression: newValues.join('|'),
-                    properties: { validValues: newValues },
-                })
-            );
-        },
-        [field.textChoiceValidator, fieldId, onChange]
-    );
-
-    useEffect(
-        () => {
-            // for an existing field, we query for the distinct set of values in the Text column to be used for
-            // the initial set of values and/or setting fields as locked (i.e. in use)
-            if (!field.isNew() && schemaName && queryName) {
-                Query.selectDistinctRows({
-                    containerFilter: Query.ContainerFilter.allFolders, // to account for a shared domain at project or /Shared
-                    schemaName,
-                    queryName,
-                    column: field.name,
-                    sort: field.name,
-                    success: result => {
-                        const values = result.values.filter(value => value !== undefined && value !== null);
-                        setFieldValues(values);
-
-                        // if this is an existing text field that is being changed to a Text Choice data type,
-                        // then we will use the existing distinct values for that field as the initial options
-                        if (!field.textChoiceValidator?.rowId) {
-                            replaceValues(values);
-                        }
-
-                        setLoading(false);
-                    },
-                    failure: error => {
-                        console.error('Error fetching distinct values for the text field: ', error);
-                        setLoading(false);
-                    },
-                });
-            } else {
-                setLoading(false);
-            }
-        }, [/* none, only call once on mount*/]
-    );
 
     const onSelect = useCallback(
         ind => {
@@ -248,5 +201,73 @@ export const TextChoiceOptions: FC<TextChoiceProps> = memo(props => {
                 />
             )}
         </div>
+    );
+});
+
+export const TextChoiceOptions: FC<Props> = memo(props => {
+    const { field, onChange, domainIndex, index, schemaName, queryName } = props;
+    const [loading, setLoading] = useState<boolean>(true);
+    const [fieldValues, setFieldValues] = useState<string[]>([]);
+    const [validValues, setValidValues] = useState<string[]>(field.textChoiceValidator?.properties.validValues ?? []);
+    const fieldId = createFormInputId(DOMAIN_VALIDATOR_TEXTCHOICE, domainIndex, index);
+
+    const replaceValues = useCallback(
+        (newValues?: string[]) => {
+            setValidValues(newValues);
+            onChange(
+                fieldId,
+                new PropertyValidator({
+                    ...field.textChoiceValidator,
+                    ...DEFAULT_TEXT_CHOICE_VALIDATOR.toJS(),
+                    expression: newValues.join('|'),
+                    properties: { validValues: newValues },
+                })
+            );
+        },
+        [field.textChoiceValidator, fieldId, onChange]
+    );
+
+    useEffect(
+        () => {
+            // for an existing field, we query for the distinct set of values in the Text column to be used for
+            // the initial set of values and/or setting fields as locked (i.e. in use)
+            if (!field.isNew() && schemaName && queryName) {
+                Query.selectDistinctRows({
+                    containerFilter: Query.ContainerFilter.allFolders, // to account for a shared domain at project or /Shared
+                    schemaName,
+                    queryName,
+                    column: field.name,
+                    sort: field.name,
+                    success: result => {
+                        const values = result.values.filter(value => value !== undefined && value !== null);
+                        setFieldValues(values);
+
+                        // if this is an existing text field that is being changed to a Text Choice data type,
+                        // then we will use the existing distinct values for that field as the initial options
+                        if (!field.textChoiceValidator?.rowId) {
+                            replaceValues(values);
+                        }
+
+                        setLoading(false);
+                    },
+                    failure: error => {
+                        console.error('Error fetching distinct values for the text field: ', error);
+                        setLoading(false);
+                    },
+                });
+            } else {
+                setLoading(false);
+            }
+        }, [/* none, only call once on mount*/]
+    );
+
+    return (
+        <TextChoiceOptionsImpl
+            {...props}
+            fieldValues={fieldValues}
+            loading={loading}
+            replaceValues={replaceValues}
+            validValues={validValues}
+        />
     );
 });

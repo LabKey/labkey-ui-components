@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
-import ReactN from 'reactn';
+import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
 import { modifyCell } from '../../actions';
@@ -74,7 +73,7 @@ export interface LookupCellProps {
     filteredLookupKeys?: List<any>;
 }
 
-export class LookupCell extends ReactN.Component<LookupCellProps, undefined, GlobalAppState> {
+export class LookupCell extends PureComponent<LookupCellProps, undefined, GlobalAppState> {
     isMultiValue = (): boolean => {
         return this.props.col.isJunctionLookup();
     };
@@ -93,13 +92,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, undefined, Glo
                 );
             }
             else {
-                const valueDescriptors = []
-                for (let i = 0; i < items.length; i++) {
-                    valueDescriptors.push({
-                        raw: items[i].value,
-                        display: items[i].label
-                    });
-                }
+                const valueDescriptors = items.map(item => ({raw: item.value, display: item.label})).toArray();
                 modifyCell(
                     modelId,
                     colIdx,
@@ -120,11 +113,10 @@ export class LookupCell extends ReactN.Component<LookupCellProps, undefined, Glo
                 MODIFICATION_TYPES.REPLACE
             );
         }
-        if (onCellModify) onCellModify();
+        onCellModify?.();
 
         if (!this.isMultiValue()) {
             this.props.select(modelId, colIdx, rowIdx);
-            return;
         }
     };
 
@@ -134,7 +126,6 @@ export class LookupCell extends ReactN.Component<LookupCellProps, undefined, Glo
 
         const lookup = col.lookup;
         const isMultiple = this.isMultiValue();
-        lookup.keyColumn
         const rawValues = values.filter(vd => vd.raw !== undefined).map(vd => (
             vd.raw
         )).toArray()

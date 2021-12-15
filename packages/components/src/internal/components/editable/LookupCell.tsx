@@ -142,7 +142,7 @@ export class LookupCell extends PureComponent<LookupCellProps, undefined, Global
                 queryFilters={queryFilters}
                 multiple={isMultiple}
                 schemaQuery={SchemaQuery.create(lookup.schemaName, lookup.queryName)}
-                componentId={col.getLookupKey()}
+                componentId={col.lookupKey}
                 maxRows={LOOKUP_DEFAULT_SIZE}
                 containerPath={lookup.containerPath}
                 containerClass="select-input-cell-container"

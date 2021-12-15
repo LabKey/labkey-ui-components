@@ -921,7 +921,7 @@ describe('getUpdatedDataFromGrid', () => {
             Int: null,
             Bool: null,
             Data: null,
-            Date: new Date('2021-12-23 14:34'),
+            Date: '2021-12-23 14:34:00',
             RowId: '448',
         });
         expect(updatedData[1]).toStrictEqual({

@@ -9,6 +9,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Added DesignerDetailPanel to show name preview for designer details panel
 * EntityInsertPanel: show name preview on tooltip, hide double tooltip
 
+### version 2.103.1
+*Released*: 14 December 2021
+* Merge release21.12-SNAPSHOT to develop
+  * Includes changes from versions 2.101.1
+
 ### version 2.103.0
 *Released*: 10 December 2021
 * Item 9627: TextChoiceInput and usage for rendering select input for DetailEditRenderer and QueryFormInputs
@@ -17,6 +22,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 1 December 2021
 * Rename EditableGridPanel to EditableGridPanelDeprecated
   * There will be a new version in a future release, and the deprecated version will eventually be removed
+
+### version 2.101.1
+*Released*: 7 December 2021
+* Issue 44397: Add new date util function, getJsonDateTimeFormatString(), to be used by DatePickerInput and EditableGrid insert/update case
 
 ### version 2.101.0
 *Released*: 30 November 2021

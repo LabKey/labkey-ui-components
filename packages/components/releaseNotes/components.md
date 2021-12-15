@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.104.0
+*Released*: 15 December 2021
+* Add container select support to assay picker XAR import
+
 ### version 2.103.1
 *Released*: 14 December 2021
 * Merge release21.12-SNAPSHOT to develop

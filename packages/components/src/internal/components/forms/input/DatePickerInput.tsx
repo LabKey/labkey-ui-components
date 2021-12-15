@@ -25,6 +25,7 @@ import {
     datePlaceholder,
     getDateFormat,
     getDateTimeFormat,
+    getJsonDateTimeFormatString,
     getTimeFormat,
     isDateTimeCol,
     parseDate,
@@ -109,16 +110,18 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         return props.value ? parseDate(props.value) : undefined;
     }
 
-    onChange = (date): void => {
+    onChange = (date: Date): void => {
         this.setState(() => {
             return {
                 selectedDate: date,
             };
         });
 
-        if (this.props.onChange && Utils.isFunction(this.props.onChange)) this.props.onChange(date);
+        // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+        const _date = getJsonDateTimeFormatString(date);
 
-        if (this.props.formsy && Utils.isFunction(this.props.setValue)) this.props.setValue(date);
+        if (this.props.onChange && Utils.isFunction(this.props.onChange)) this.props.onChange(_date);
+        if (this.props.formsy && Utils.isFunction(this.props.setValue)) this.props.setValue(_date);
     };
 
     getDateFormat(): string {

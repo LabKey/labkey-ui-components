@@ -22,7 +22,7 @@ import { QueryInfo } from '../../public/QueryInfo';
 
 import { encodePart } from '../../public/SchemaQuery';
 
-import { parseDate } from './Date';
+import { getJsonDateTimeFormatString, parseDate } from './Date';
 
 const emptyList = List<string>();
 
@@ -377,14 +377,16 @@ export function getUpdatedDataFromGrid(
                 // Lookup columns store a list but grid only holds a single value
                 else if (List.isList(originalValue) && !Array.isArray(value)) {
                     if (originalValue.get(0).value !== value) {
-                        row[key] = (isDate ? parseDate(value) : value) ?? null;
+                        // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+                        row[key] = (isDate ? getJsonDateTimeFormatString(parseDate(value)) : value) ?? null;
                     }
                 } else if (!(originalValue == undefined && value == undefined) && originalValue !== value) {
                     // - only update if the value has changed
                     // - if the value is 'undefined', it will be removed from the update rows, so in order to
                     // erase an existing value we set the value to null in our update data
 
-                    row[key] = (isDate ? parseDate(value) : value) ?? null;
+                    // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+                    row[key] = (isDate ? getJsonDateTimeFormatString(parseDate(value)) : value) ?? null;
                 }
                 return row;
             }, {});

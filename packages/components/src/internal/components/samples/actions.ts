@@ -113,7 +113,7 @@ export function getSampleTypeDetails(
     query?: SchemaQuery,
     domainId?: number,
     containerPath?: string,
-    includeNamePreview?: boolean,
+    includeNamePreview?: boolean
 ): Promise<DomainDetails> {
     return new Promise((resolve, reject) => {
         return Domain.getDomainDetails({

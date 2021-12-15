@@ -2,7 +2,7 @@ import React, { FC, memo, ReactNode, useMemo } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Panel } from 'react-bootstrap';
 
-import {DefaultRenderer, LabelHelpTip, QueryColumn} from '../../../..';
+import { DefaultRenderer, LabelHelpTip, QueryColumn } from '../../../..';
 
 import { DETAIL_TABLE_CLASSES } from '../constants';
 
@@ -86,7 +86,7 @@ export interface DetailDisplaySharedProps extends RenderOptions {
     editingMode?: boolean;
     titleRenderer?: TitleRenderer;
     fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode;
-    fieldHelpTexts?: { [key: string] : string }
+    fieldHelpTexts?: { [key: string]: string };
 }
 
 interface DetailDisplayProps extends DetailDisplaySharedProps {
@@ -142,9 +142,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
                                                 <td>
                                                     {field.titleRenderer}
                                                     {labelHelp && (
-                                                        <LabelHelpTip title={field.title}>
-                                                            {labelHelp}
-                                                        </LabelHelpTip>
+                                                        <LabelHelpTip title={field.title}>{labelHelp}</LabelHelpTip>
                                                     )}
                                                 </td>
                                                 <td

@@ -6,6 +6,8 @@ import classNames from 'classnames';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
+import { NameExpressionPreview } from '../NameExpressionPreview';
+
 import { IEntityDetails } from './models';
 import {
     getEntityDescriptionValue,
@@ -14,7 +16,6 @@ import {
     isExistingEntity,
 } from './actions';
 import { ENTITY_FORM_IDS } from './constants';
-import { NameExpressionPreview } from "../NameExpressionPreview";
 
 export interface EntityDetailsProps {
     noun: string;
@@ -45,7 +46,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
             showPreviewName,
             previewName,
             onNameFieldHover,
-            namePreviewsLoading
+            namePreviewsLoading,
         } = this.props;
         const moreInfoLink = nameExpressionInfoUrl ? (
             <p>
@@ -102,13 +103,12 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                                 helpTipBody={
                                     <>
                                         <p>Pattern used for generating unique IDs for this {noun.toLowerCase()}.</p>
-                                        {
-                                            showPreviewName &&
+                                        {showPreviewName && (
                                             <NameExpressionPreview
                                                 previewName={previewName}
                                                 isPreviewLoading={namePreviewsLoading}
                                             />
-                                        }
+                                        )}
                                         {moreInfoLink}
                                     </>
                                 }

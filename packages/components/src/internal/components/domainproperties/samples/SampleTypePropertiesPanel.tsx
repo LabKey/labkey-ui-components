@@ -48,9 +48,10 @@ import { loadNameExpressionOptions } from '../../settings/actions';
 
 import { PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 
+import { NameExpressionPreview } from '../NameExpressionPreview';
+
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
-import { NameExpressionPreview } from "../NameExpressionPreview";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
@@ -329,7 +330,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             metricUnitProps,
             namePreviews,
             namePreviewsLoading,
-            onNameFieldHover
+            onNameFieldHover,
         } = this.props;
         const { isValid, containers, prefix, loadingError } = this.state;
 
@@ -424,29 +425,26 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 {showAliquotNameExpression && (
                     <Row className="margin-bottom">
                         <Col xs={2}>
-                            <div
-                                onMouseEnter={() => onNameFieldHover()}
-                            >
+                            <div onMouseEnter={() => onNameFieldHover()}>
                                 <DomainFieldLabel
                                     label="Aliquot Naming Pattern"
                                     helpTipBody={
                                         <>
                                             <p>Pattern used for generating unique Ids for Aliquots.</p>
                                             <p>
-                                                By default, the name of the aliquot will use the name of its parent followed
-                                                by a dash and a counter for that parent’s aliquots.
+                                                By default, the name of the aliquot will use the name of its parent
+                                                followed by a dash and a counter for that parent’s aliquots.
                                             </p>
                                             <p>
-                                                For example, if the original sample is S1, aliquots of that sample will be
-                                                named S1-1, S1-2, etc.
+                                                For example, if the original sample is S1, aliquots of that sample will
+                                                be named S1-1, S1-2, etc.
                                             </p>
-                                            {
-                                                model.aliquotNameExpression &&
+                                            {model.aliquotNameExpression && (
                                                 <NameExpressionPreview
                                                     previewName={namePreviews?.[1]}
                                                     isPreviewLoading={namePreviewsLoading}
                                                 />
-                                            }
+                                            )}
                                             <p>
                                                 <a
                                                     target="_blank"

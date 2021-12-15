@@ -24,7 +24,8 @@ import {
     DomainDetails,
     naturalSortByProperty,
     QueryColumn,
-    SchemaDetails, SchemaQuery,
+    SchemaDetails,
+    SchemaQuery,
 } from '../../..';
 
 import { processSchemas } from '../../schemas';
@@ -375,6 +376,7 @@ export function saveDomain(
  * @param domain: DomainDesign to save
  * @param kind: DomainKind if creating new Domain
  * @param options: Options for creating new Domain
+ * @param includeNamePreview
  * @return Promise wrapped Domain API call.
  */
 export function validateDomainNameExpressions(
@@ -400,7 +402,7 @@ export function validateDomainNameExpressions(
             success: successHandler,
             failure: error => {
                 reject(error);
-            }
+            },
         });
     });
 }

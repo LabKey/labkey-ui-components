@@ -1,14 +1,16 @@
 import React, { FC, memo, useEffect, useMemo, useState } from 'react';
-import {getDomainNamePreviews} from "./actions";
-import {DetailPanel, RequiresModelAndActions, SchemaQuery} from "../../..";
-import {DetailDisplay, DetailDisplaySharedProps} from "../forms/detail/DetailDisplay";
+
+import { DetailPanel, RequiresModelAndActions, SchemaQuery } from '../../..';
+import { DetailDisplay, DetailDisplaySharedProps } from '../forms/detail/DetailDisplay';
+
+import { getDomainNamePreviews } from './actions';
 
 interface Props extends DetailDisplaySharedProps, RequiresModelAndActions {
     schemaQuery: SchemaQuery;
     asPanel?: boolean;
 }
 
-export const DesignerDetailPanel : FC<Props> = memo((props) => {
+export const DesignerDetailPanel: FC<Props> = memo(props => {
     const { schemaQuery, asPanel, ...detailDisplayProps } = props;
     const [previews, setPreviews] = useState<{}>();
 
@@ -16,15 +18,16 @@ export const DesignerDetailPanel : FC<Props> = memo((props) => {
         if (schemaQuery) {
             setPreviews(undefined);
 
-            let previews = {};
+            const previews = {};
             try {
-
                 const results = await getDomainNamePreviews(schemaQuery);
                 if (results?.length > 0) {
-                    if (!!results[0])
-                        previews['nameexpression'] = "Example name that will be generated from the current pattern: " + results[0];
+                    if (results[0])
+                        previews['nameexpression'] =
+                            'Example name that will be generated from the current pattern: ' + results[0];
                     if (results?.length > 1 && !!results[1])
-                        previews['aliquotnameexpression'] = "Example aliquot name that will be generated from the current pattern: " + results[1];
+                        previews['aliquotnameexpression'] =
+                            'Example aliquot name that will be generated from the current pattern: ' + results[1];
                 }
 
                 setPreviews(previews);
@@ -38,11 +41,5 @@ export const DesignerDetailPanel : FC<Props> = memo((props) => {
         init();
     }, [schemaQuery]);
 
-    return (
-        <DetailPanel
-            asPanel={asPanel}
-            fieldHelpTexts={previews}
-            {...detailDisplayProps}
-        />
-    );
+    return <DetailPanel asPanel={asPanel} fieldHelpTexts={previews} {...detailDisplayProps} />;
 });

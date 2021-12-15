@@ -11,46 +11,45 @@ export interface Props {
     onConfirm: () => any;
 }
 
-const nameExpressionWarningPrefix = "Name Expression warning: ";
-const aliquotNameExpressionWarningPrefix = "Aliquot Name Expression warning: ";
+const nameExpressionWarningPrefix = 'Name Expression warning: ';
+const aliquotNameExpressionWarningPrefix = 'Aliquot Name Expression warning: ';
 
 export class NameExpressionValidationModal extends React.PureComponent<Props> {
+    onConfirm = () => {
+        const { onConfirm, onHide } = this.props;
+        onConfirm();
+        onHide();
+    };
 
-        onConfirm = () => {
-            const { onConfirm, onHide } = this.props;
-            onConfirm();
-            onHide();
-        };
+    render() {
+        const { title, onHide, onConfirm, warnings, show, previews } = this.props;
 
-        render() {
-            const { title, onHide, onConfirm, warnings, show, previews } = this.props;
+        if (!show || !warnings || warnings.length === 0) return null;
 
-            if (!show || !warnings || warnings.length === 0)
-                return null;
+        const nameWarnings = [],
+            aliquotNameWarnings = [];
+        warnings?.forEach(error => {
+            if (error.indexOf(nameExpressionWarningPrefix) === 0)
+                nameWarnings.push(error.substring(nameExpressionWarningPrefix.length));
+            else if (error.indexOf(aliquotNameExpressionWarningPrefix) === 0)
+                aliquotNameWarnings.push(error.substring(aliquotNameExpressionWarningPrefix.length));
+        });
 
-            const nameWarnings = [], aliquotNameWarnings = [];
-            warnings?.forEach(error => {
-                if (error.indexOf(nameExpressionWarningPrefix) === 0)
-                    nameWarnings.push(error.substring(nameExpressionWarningPrefix.length));
-                else if (error.indexOf(aliquotNameExpressionWarningPrefix) === 0)
-                    aliquotNameWarnings.push(error.substring(aliquotNameExpressionWarningPrefix.length));
-            });
+        let warnTitle = title,
+            hasMultiGroup = false;
+        if (!warnTitle) {
+            if (nameWarnings.length > 0 && aliquotNameWarnings.length > 0) {
+                hasMultiGroup = true;
+                warnTitle = 'Sample and Aliquot Naming Expression Warning(s)';
+            } else if (nameWarnings.length > 0) warnTitle = 'Naming Expression Warning(s)';
+            else if (aliquotNameWarnings.length > 0) warnTitle = 'Aliquot Naming Expression Warning(s)';
+        }
 
-            let warnTitle = title, hasMultiGroup = false;
-            if (!warnTitle) {
-                if (nameWarnings.length > 0 && aliquotNameWarnings.length > 0) {
-                    hasMultiGroup = true;
-                    warnTitle = 'Sample and Aliquot Naming Expression Warning(s)';
-                }
-                else if (nameWarnings.length > 0)
-                    warnTitle = 'Naming Expression Warning(s)';
-                else if (aliquotNameWarnings.length > 0)
-                    warnTitle = 'Aliquot Naming Expression Warning(s)';
-            }
-
-            let nameWarnDisplay = null, aliquotNameWarnDisplay = null;
-            if (nameWarnings.length > 0) {
-                nameWarnDisplay = <div>
+        let nameWarnDisplay = null,
+            aliquotNameWarnDisplay = null;
+        if (nameWarnings.length > 0) {
+            nameWarnDisplay = (
+                <div>
                     {hasMultiGroup && <p>Naming Expression Warning(s):</p>}
                     <p>Example name generated: {previews[0]}</p>
                     <ul className="name-expression-warning-list">
@@ -58,11 +57,13 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
                             <li>{warning}</li>
                         ))}
                     </ul>
-                    <br/>
-                </div>;
-            }
-            if (aliquotNameWarnings.length > 0) {
-                aliquotNameWarnDisplay = <div>
+                    <br />
+                </div>
+            );
+        }
+        if (aliquotNameWarnings.length > 0) {
+            aliquotNameWarnDisplay = (
+                <div>
                     {hasMultiGroup && <p>Aliquot Naming Expression Warning(s):</p>}
                     <p>Example aliquot name generated: {previews[1]}</p>
                     <ul className="aliquot-expression-warning-list">
@@ -70,23 +71,22 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
                             <li>{warning}</li>
                         ))}
                     </ul>
-                </div>;
-            }
-
-
-            return (
-                <ConfirmModal
-                    title={warnTitle}
-                    onCancel={onHide}
-                    onConfirm={onConfirm}
-                    confirmButtonText="Save anyways..."
-                    confirmVariant="danger"
-                    cancelButtonText="Cancel"
-                >
-                    {nameWarnDisplay}
-                    {aliquotNameWarnDisplay}
-                </ConfirmModal>
+                </div>
             );
         }
 
+        return (
+            <ConfirmModal
+                title={warnTitle}
+                onCancel={onHide}
+                onConfirm={onConfirm}
+                confirmButtonText="Save anyways..."
+                confirmVariant="danger"
+                cancelButtonText="Cancel"
+            >
+                {nameWarnDisplay}
+                {aliquotNameWarnDisplay}
+            </ConfirmModal>
+        );
+    }
 }

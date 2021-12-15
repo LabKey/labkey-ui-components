@@ -2,13 +2,9 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
 import { List } from 'immutable';
 
-import { Domain } from "@labkey/api";
+import { Domain } from '@labkey/api';
 
-import {
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
-    loadNameExpressionOptions,
-    resolveErrorMessage,
-} from '../../../..';
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, loadNameExpressionOptions, resolveErrorMessage } from '../../../..';
 import { DomainDesign, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, saveDomain, validateDomainNameExpressions } from '../actions';
@@ -16,9 +12,10 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 
 import { isSampleManagerEnabled } from '../../../app/utils';
 
+import { NameExpressionValidationModal } from '../validation/NameExpressionValidationModal';
+
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
-import { NameExpressionValidationModal } from "../validation/NameExpressionValidationModal";
 
 interface Props {
     nounSingular?: string;
@@ -153,13 +150,10 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                             this.saveModel({ exception: response.errors?.join('\n') });
                             this.setState({
                                 nameExpressionWarnings: response.warnings,
-                                namePreviews: response.previews
+                                namePreviews: response.previews,
                             });
                         });
-                        return;
-                    }
-                    else
-                        this.finishSave();
+                    } else this.finishSave();
                 })
                 .catch(response => {
                     const exception = resolveErrorMessage(response);
@@ -172,14 +166,11 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                         }
                     });
                 });
-
         }
 
-        if (this.props.validateNameExpressions && !hasConfirmedNameExpression)
-            return;
+        if (this.props.validateNameExpressions && !hasConfirmedNameExpression) return;
 
         this.finishSave();
-
     };
 
     saveModel = (modelOrProps: DataClassModel | Partial<DataClassModelConfig>, callback?: () => void): void => {
@@ -221,7 +212,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
 
         setSubmitting(false, () => {
             this.setState({
-                nameExpressionWarnings: undefined
+                nameExpressionWarnings: undefined,
             });
         });
     };
@@ -229,7 +220,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
     onNameExpressionWarningConfirm = (): void => {
         this.setState(
             () => ({
-                nameExpressionWarnings: undefined
+                nameExpressionWarnings: undefined,
             }),
             () => this.saveDomain(true)
         );
@@ -238,21 +229,20 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
     onNameFieldHover = () => {
         const { model, namePreviewsLoading } = this.state;
 
-        if (namePreviewsLoading)
-            return;
+        if (namePreviewsLoading) return;
 
         if (this.props.validateNameExpressions) {
             validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
                 .then(response => {
                     this.setState(() => ({
                         namePreviewsLoading: false,
-                        namePreviews: response?.previews
+                        namePreviews: response?.previews,
                     }));
                 })
                 .catch(response => {
                     console.error(response);
                     this.setState(() => ({
-                        namePreviewsLoading: false
+                        namePreviewsLoading: false,
                     }));
                 });
         }

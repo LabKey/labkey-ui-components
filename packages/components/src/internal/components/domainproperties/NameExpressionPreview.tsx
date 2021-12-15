@@ -1,4 +1,4 @@
-import React, { FC, } from 'react';
+import React, { FC } from 'react';
 
 import { LoadingSpinner } from '../../..';
 
@@ -12,18 +12,14 @@ export const NameExpressionPreview: FC<NameExpressionPreviewProps> = props => {
 
     const isValidExpression = isPreviewLoading || !!previewName;
     if (!isValidExpression) {
-        return (
-            <p>
-                Unable to generate example name from the current pattern. Check for syntax errors.
-            </p>
-        );
+        return <p>Unable to generate example name from the current pattern. Check for syntax errors.</p>;
     }
 
     return (
         <>
             <p>
                 Example name that will be generated from the current pattern:&nbsp;
-                {previewName ? previewName : <LoadingSpinner/>}
+                {previewName ? previewName : <LoadingSpinner />}
             </p>
         </>
     );

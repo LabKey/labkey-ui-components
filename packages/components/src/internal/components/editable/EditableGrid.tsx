@@ -141,7 +141,7 @@ export interface EditableColumnMetadata {
     filteredLookupKeys?: List<any>;
     caption?: string;
     isReadOnlyCell?: (rowKey: string) => boolean;
-    hideTitleTooltip?: boolean
+    hideTitleTooltip?: boolean;
 }
 
 export interface BulkAddData {
@@ -383,7 +383,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                     raw: qCol,
                     title: metaCaption ?? qCol.caption,
                     width: 100,
-                    hideTooltip: metadata?.hideTitleTooltip
+                    hideTooltip: metadata?.hideTitleTooltip,
                 })
             );
         });

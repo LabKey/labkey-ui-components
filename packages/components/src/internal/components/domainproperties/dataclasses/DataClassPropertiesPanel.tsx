@@ -162,7 +162,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             helpTopic,
             namePreviewsLoading,
             previewName,
-            onNameFieldHover
+            onNameFieldHover,
         } = this.props;
         const { isValid, prefix, loadingError } = this.state;
 

@@ -28,7 +28,7 @@ interface ColumnProps {
     title: string;
     width?: any;
     headerCls?: string;
-    hideTooltip?: boolean
+    hideTooltip?: boolean;
 }
 
 export class GridColumn implements ColumnProps {
@@ -42,7 +42,7 @@ export class GridColumn implements ColumnProps {
     title: string;
     width: any;
     headerCls: string;
-    hideTooltip?: boolean
+    hideTooltip?: boolean;
 
     constructor(config: ColumnProps) {
         this.align = config.align;
@@ -191,10 +191,10 @@ class GridHeader extends PureComponent<GridHeaderProps, any> {
                                 'phi-protected': raw?.phiProtected === true,
                             });
                             let description = raw?.description || '';
-                             description = description + ' ' + (raw?.phiProtected === true ? '(PHI protected data removed)' : '');
-                             description = description.trim();
-                             if (!description)
-                                 description = undefined;
+                            description =
+                                description + ' ' + (raw?.phiProtected === true ? '(PHI protected data removed)' : '');
+                            description = description.trim();
+                            if (!description) description = undefined;
 
                             return (
                                 <th

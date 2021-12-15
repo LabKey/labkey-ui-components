@@ -360,18 +360,17 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                     if (previews?.length > 0) {
                                         this.setState(() => ({
                                             previewName: previews[0],
-                                            previewAliquotName: previews.length > 1 ? previews[1] : null
+                                            previewAliquotName: previews.length > 1 ? previews[1] : null,
                                         }));
                                     }
                                 })
-                                .catch((errors => {
+                                .catch(errors => {
                                     console.error('Unable to retrieve name expression previews ', errors);
                                     this.setState(() => ({
                                         previewName: null,
-                                        previewAliquotName: null
+                                        previewAliquotName: null,
                                     }));
-                                }));
-
+                                });
 
                             gridInit(this.getQueryGridModel(), true, this);
                         }
@@ -859,25 +858,26 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { creationType, previewName, previewAliquotName } = this.state;
         let columnMetadata = getUniqueIdColumnMetadata(this.getGridQueryInfo());
         if (creationType === SampleCreationType.Aliquots) {
-            let toolTip = "A generated Aliquot ID will be provided for Aliquots that don't have a user-provided ID in the grid.";
+            let toolTip =
+                "A generated Aliquot ID will be provided for Aliquots that don't have a user-provided ID in the grid.";
             if (previewAliquotName)
-                toolTip += " Example aliquot name that will be generated from the current pattern: " + previewAliquotName;
+                toolTip +=
+                    ' Example aliquot name that will be generated from the current pattern: ' + previewAliquotName;
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 caption: 'Aliquot ID',
                 readOnly: false,
                 placeholder: '[generated id]',
                 toolTip,
-                hideTitleTooltip: true
+                hideTitleTooltip: true,
             });
         } else if (!this.isNameRequired()) {
             let toolTip = `A generated ${nounSingular} ID will be provided for ${nounPlural} that don't have a user-provided ID in the grid.`;
-            if (previewName)
-                toolTip += " Example name that will be generated from the current pattern: " + previewName;
+            if (previewName) toolTip += ' Example name that will be generated from the current pattern: ' + previewName;
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 readOnly: false,
                 placeholder: '[generated id]',
                 toolTip,
-                hideTitleTooltip: true
+                hideTitleTooltip: true,
             });
         } else {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {

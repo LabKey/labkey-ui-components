@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.103.0-fb-44329-assay-xar-path.3",
+  "version": "2.103.0-fb-44329-assay-xar-path.4",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

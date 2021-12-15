@@ -533,8 +533,11 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>)
     }
 }
 
-async function getLookupValueDescriptors(columns: QueryColumn[], rows: Map<any, Map<string, any>>, ids: List<any>): Promise<{ [colKey: string]: ValueDescriptor[] }>
-{
+async function getLookupValueDescriptors(
+    columns: QueryColumn[],
+    rows: Map<any, Map<string, any>>,
+    ids: List<any>
+): Promise<{ [colKey: string]: ValueDescriptor[] }> {
     const descriptorMap = {};
     // for each lookup column, find the unique values in the rows and query for those values when they look like ids
     for (let cn = 0; cn < columns.length; cn++) {
@@ -594,9 +597,9 @@ async function loadDataForEditor(model: QueryGridModel, response?: any): Promise
                 );
             } else {
                 // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid cell
-                let valueDescriptor = { display: value, raw: value };
+                const valueDescriptor = { display: value, raw: value };
                 if (col.isLookup() && Utils.isNumber(value)) {
-                    const descriptors = lookupValueDescriptors[col.getLookupKey()]
+                    const descriptors = lookupValueDescriptors[col.getLookupKey()];
                     if (descriptors) {
                         cellValues.set(cellKey, List(descriptors));
                     } else {
@@ -1860,9 +1863,7 @@ export const findLookupValues = async (
     };
 
     if (lookupValues) {
-        selectRowsOptions.filterArray = [
-            Filter.create(column.lookup.displayColumn, lookupValues, Filter.Types.IN),
-        ];
+        selectRowsOptions.filterArray = [Filter.create(column.lookup.displayColumn, lookupValues, Filter.Types.IN)];
     }
 
     if (lookupKeyValues) {
@@ -1870,8 +1871,8 @@ export const findLookupValues = async (
     }
 
     const result = await selectRows(selectRowsOptions);
-    const {displayColumn, keyColumn} = column.lookup;
-    const {key, models} = result;
+    const { displayColumn, keyColumn } = column.lookup;
+    const { key, models } = result;
 
     const descriptors = [];
     if (models[key]) {
@@ -1889,7 +1890,7 @@ export const findLookupValues = async (
     }
     return {
         column,
-        descriptors
+        descriptors,
     };
 };
 
@@ -1974,7 +1975,7 @@ async function prepareInsertRowDataFromBulkForm(
     let values = List<List<ValueDescriptor>>();
     let messages = List<CellMessage>();
 
-    for(let cn = 0; cn < rowData.size; cn++) {
+    for (let cn = 0; cn < rowData.size; cn++) {
         const data = rowData.get(cn);
         const colIdx = colMin + cn;
         const col = columns.get(colIdx);
@@ -2080,7 +2081,13 @@ async function pasteCell(
                         byColumnValues.get(index - paste.coordinates.colMin).size > 0
                     ) {
                         arr.push(
-                            findLookupValues(column, undefined, filteredLookup ? filteredLookup.toArray() : byColumnValues.get(index - paste.coordinates.colMin).toArray())
+                            findLookupValues(
+                                column,
+                                undefined,
+                                filteredLookup
+                                    ? filteredLookup.toArray()
+                                    : byColumnValues.get(index - paste.coordinates.colMin).toArray()
+                            )
                         );
                     } else if (filteredLookup) {
                         arr.push(findLookupValues(column, undefined, filteredLookup.toArray()));
@@ -2090,12 +2097,12 @@ async function pasteCell(
             }, []);
 
             Promise.all(columnLoaders)
-                .then((results) => {
-                    let descriptorMap = {};
+                .then(results => {
+                    const descriptorMap = {};
                     results.forEach(result => {
                         const { column, descriptors } = result;
                         descriptorMap[column.getLookupKey()] = descriptors;
-                    })
+                    });
                     return pasteCellLoad(
                         model,
                         gridModel,
@@ -2119,9 +2126,9 @@ async function pasteCell(
                         onComplete();
                     }
                 })
-                .catch((reason) => {
+                .catch(reason => {
                     console.error(reason);
-                })
+                });
         } else {
             const cellKey = genCellKey(colIdx, rowIdx);
             model = updateEditorModel(model, {
@@ -2607,7 +2614,11 @@ function pasteCellLoad(
                         let msg: CellMessage;
 
                         if (col && col.isPublicLookup()) {
-                            const { message, values } = parsePasteCellLookup(col, lookupDescriptorMap[col.getLookupKey()], value);
+                            const { message, values } = parsePasteCellLookup(
+                                col,
+                                lookupDescriptorMap[col.getLookupKey()],
+                                value
+                            );
                             cv = values;
 
                             if (message) {
@@ -2665,7 +2676,11 @@ function pasteCellLoad(
                     let msg: CellMessage;
 
                     if (col && col.isPublicLookup()) {
-                        const { message, values } = parsePasteCellLookup(col, lookupDescriptorMap[col.getLookupKey()], value);
+                        const { message, values } = parsePasteCellLookup(
+                            col,
+                            lookupDescriptorMap[col.getLookupKey()],
+                            value
+                        );
                         cv = values;
 
                         if (message) {

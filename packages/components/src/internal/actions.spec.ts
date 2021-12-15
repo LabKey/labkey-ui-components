@@ -309,10 +309,7 @@ describe('addColumns', () => {
     test('add at beginning', () => {
         updateQueryGridModel(queryGridModel, {}, undefined, false);
         updateEditorModel(editor, editableGridWithData, false);
-        addColumns(
-            queryGridModel,
-            OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]])
-        );
+        addColumns(queryGridModel, OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]]));
         const updatedEditor = getEditorModel(queryGridModel.getId());
         expect(updatedEditor.cellMessages.size).toBe(1);
         expect(updatedEditor.cellMessages.has('2-0')).toBe(true);
@@ -355,11 +352,7 @@ describe('addColumns', () => {
         updateQueryGridModel(queryGridModel, {}, undefined, false);
         const nameColIndex = queryGridModel.getColumnIndex('name');
         updateEditorModel(editor, editableGridWithData, false);
-        addColumns(
-            queryGridModel,
-            OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]]),
-            'Name'
-        );
+        addColumns(queryGridModel, OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]]), 'Name');
         const updatedEditor = getEditorModel(queryGridModel.getId());
 
         expect(updatedEditor.cellMessages.size).toBe(1);

@@ -85,10 +85,12 @@ export class Cell extends React.PureComponent<Props> {
             modelId,
             colIdx,
             rowIdx,
-            [{
-                display: evt.target.value,
-                raw: evt.target.value,
-            }],
+            [
+                {
+                    display: evt.target.value,
+                    raw: evt.target.value,
+                },
+            ],
             MODIFICATION_TYPES.REPLACE
         );
         if (onCellModify) onCellModify();
@@ -104,10 +106,12 @@ export class Cell extends React.PureComponent<Props> {
                 modelId,
                 colIdx,
                 rowIdx,
-                [{
-                    display: event.target.value,
-                    raw: event.target.value,
-                }],
+                [
+                    {
+                        display: event.target.value,
+                        raw: event.target.value,
+                    },
+                ],
                 MODIFICATION_TYPES.REPLACE
             );
             if (onCellModify) onCellModify();
@@ -264,7 +268,7 @@ export class Cell extends React.PureComponent<Props> {
                     <div {...displayProps}>
                         <div className="cell-menu-value">{valueDisplay}</div>
                         <span onClick={this.handleDblClick} className="cell-menu-selector">
-                            <i className="fa fa-chevron-down"/>
+                            <i className="fa fa-chevron-down" />
                         </span>
                     </div>
                 );

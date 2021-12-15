@@ -16,12 +16,13 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
+import { Filter } from '@labkey/api';
+
 import { modifyCell } from '../../actions';
 import { ValueDescriptor } from '../../models';
 import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { QueryColumn, QuerySelect, SchemaQuery } from '../../..';
 import { GlobalAppState } from '../../global';
-import { Filter } from '@labkey/api';
 
 const customStyles = {
     control: (provided, state) => ({
@@ -78,38 +79,31 @@ export class LookupCell extends PureComponent<LookupCellProps, undefined, Global
         return this.props.col.isJunctionLookup();
     };
 
-    onInputChange = (fieldName: string, formValue: string | any[], items: any, selectedItems: Map<string, any>): void => {
+    onInputChange = (
+        fieldName: string,
+        formValue: string | any[],
+        items: any,
+        selectedItems: Map<string, any>
+    ): void => {
         const { colIdx, modelId, rowIdx, onCellModify } = this.props;
-        if (this.isMultiValue())
-        {
+        if (this.isMultiValue()) {
             if (items.length == 0) {
-                modifyCell(
-                    modelId,
-                    colIdx,
-                    rowIdx,
-                    undefined,
-                    MODIFICATION_TYPES.REMOVE_ALL
-                );
-            }
-            else {
-                const valueDescriptors = items.map(item => ({raw: item.value, display: item.label})).toArray();
-                modifyCell(
-                    modelId,
-                    colIdx,
-                    rowIdx,
-                    valueDescriptors,
-                    MODIFICATION_TYPES.REPLACE
-                );
+                modifyCell(modelId, colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
+            } else {
+                const valueDescriptors = items.map(item => ({ raw: item.value, display: item.label })).toArray();
+                modifyCell(modelId, colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
             }
         } else {
             modifyCell(
                 modelId,
                 colIdx,
                 rowIdx,
-                [{
-                    raw: items?.value,
-                    display: items?.label
-                }],
+                [
+                    {
+                        raw: items?.value,
+                        display: items?.label,
+                    },
+                ],
                 MODIFICATION_TYPES.REPLACE
             );
         }
@@ -120,17 +114,17 @@ export class LookupCell extends PureComponent<LookupCellProps, undefined, Global
         }
     };
 
-
     render(): ReactNode {
         const { col, values, filteredLookupKeys, filteredLookupValues } = this.props;
 
         const lookup = col.lookup;
         const isMultiple = this.isMultiValue();
-        const rawValues = values.filter(vd => vd.raw !== undefined).map(vd => (
-            vd.raw
-        )).toArray()
+        const rawValues = values
+            .filter(vd => vd.raw !== undefined)
+            .map(vd => vd.raw)
+            .toArray();
 
-        let queryFilters = undefined;
+        let queryFilters;
         if (filteredLookupValues) {
             queryFilters = List([
                 Filter.create(col.lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN),
@@ -166,4 +160,3 @@ export class LookupCell extends PureComponent<LookupCellProps, undefined, Global
         );
     }
 }
-

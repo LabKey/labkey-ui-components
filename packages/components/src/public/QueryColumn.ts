@@ -287,8 +287,7 @@ export class QueryColumn extends Record({
     }
 
     getLookupKey(): string {
-        if (!this.lookup)
-            return undefined;
+        if (!this.lookup) return undefined;
 
         return [this.lookup.schemaName, this.lookup.queryName, this.fieldKey].join('|');
     }

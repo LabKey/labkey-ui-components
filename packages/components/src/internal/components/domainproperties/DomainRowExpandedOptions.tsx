@@ -35,7 +35,6 @@ import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptio
 import { TextChoiceOptions } from './TextChoiceOptions';
 
 interface IDomainRowExpandedOptionsProps {
-    domainContainerPath?: string;
     field: DomainField;
     index: number;
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => void;
@@ -46,12 +45,14 @@ interface IDomainRowExpandedOptionsProps {
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     getDomainFields?: () => List<DomainField>;
+    domainContainerPath?: string;
+    schemaName?: string;
+    queryName?: string;
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps> {
     typeDependentOptions = () => {
         const {
-            domainContainerPath,
             field,
             index,
             onChange,
@@ -59,6 +60,9 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
             domainIndex,
             domainFormDisplayOptions,
             getDomainFields,
+            domainContainerPath,
+            schemaName,
+            queryName,
         } = this.props;
 
         switch (field.dataType.name) {
@@ -205,6 +209,8 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         label="Text Choice Options"
                         lockType={field.lockType}
                         onChange={onChange}
+                        queryName={queryName}
+                        schemaName={schemaName}
                     />
                 );
         }

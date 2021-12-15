@@ -127,6 +127,8 @@ interface IDomainDesign {
     newDesignFields?: List<DomainField>; // set of fields to initialize a manually created design
     instructions?: string;
     domainKindName?: string;
+    schemaName?: string;
+    queryName?: string;
 }
 
 export class DomainDesign
@@ -151,6 +153,8 @@ export class DomainDesign
         newDesignFields: undefined,
         instructions: undefined,
         domainKindName: undefined,
+        schemaName: undefined,
+        queryName: undefined,
     })
     implements IDomainDesign
 {
@@ -174,6 +178,8 @@ export class DomainDesign
     declare newDesignFields?: List<DomainField>; // Returns a set of fields to initialize a manually created design
     declare instructions: string;
     declare domainKindName: string;
+    declare schemaName: string;
+    declare queryName: string;
 
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();

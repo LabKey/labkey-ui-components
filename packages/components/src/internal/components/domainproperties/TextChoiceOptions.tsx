@@ -20,6 +20,8 @@ const HELP_TIP_BODY = (
 
 interface TextChoiceProps extends ITypeDependentProps {
     field: DomainField;
+    queryName?: string;
+    schemaName?: string;
 }
 
 export const TextChoiceOptions: FC<TextChoiceProps> = memo(props => {

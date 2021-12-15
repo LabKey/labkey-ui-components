@@ -85,6 +85,8 @@ export interface DomainRowProps {
     onChange: DomainOnChange;
     onDelete: (index?: number) => void;
     onExpand: (index?: number) => void;
+    queryName?: string;
+    schemaName?: string;
     showDefaultValueSettings: boolean;
     successBsStyle?: string;
 }
@@ -417,7 +419,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
     render() {
         const { closing, isDragDisabled, showAdv, showingModal } = this.state;
         const {
-            domainContainerPath,
             index,
             field,
             expanded,
@@ -435,6 +436,9 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             successBsStyle,
             domainFormDisplayOptions,
             getDomainFields,
+            domainContainerPath,
+            schemaName,
+            queryName,
         } = this.props;
         const selected = field.selected;
 
@@ -519,7 +523,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                         >
                             <div>
                                 <DomainRowExpandedOptions
-                                    domainContainerPath={domainContainerPath}
                                     field={field}
                                     index={index}
                                     domainIndex={domainIndex}
@@ -530,6 +533,9 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     appPropertiesOnly={appPropertiesOnly}
                                     successBsStyle={successBsStyle}
                                     domainFormDisplayOptions={domainFormDisplayOptions}
+                                    domainContainerPath={domainContainerPath}
+                                    schemaName={schemaName}
+                                    queryName={queryName}
                                 />
                             </div>
                         </Collapse>

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Edit Sample Type and Data Class's Naming Pattern Prefix Expression alteration warning message
+
 ### version 2.104.0
 *Released*: 15 December 2021
 * Add container select support to assay picker XAR import

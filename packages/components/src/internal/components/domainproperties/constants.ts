@@ -179,7 +179,8 @@ export const FIELD_NAME_CHAR_WARNING_INFO =
     'SPSS, and MATLAB.';
 
 export const PROPERTIES_PANEL_ERROR_MSG = 'Contains errors or is missing required values.';
-export const PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG = 'Naming Pattern does not utilize the ID/Name prefix value';
+export const PREFIX_SUBSTITUTION_EXPRESSION = '${folderPrefix}'; // Must match FOLDER_PREFIX_EXPRESSION in platform/.../NameExpressionOptionService.java
+export const PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG = `Naming Pattern does not utilize the ID/Name prefix substitution token ${PREFIX_SUBSTITUTION_EXPRESSION}. The following prefix value will not be used`;
 
 export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideRequired: false,

@@ -46,7 +46,7 @@ import { getCurrentProductName, isCommunityDistribution, isSampleManagerEnabled 
 
 import { loadNameExpressionOptions } from '../../settings/actions';
 
-import {PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG} from '../constants';
+import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';

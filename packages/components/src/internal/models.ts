@@ -33,7 +33,7 @@ import { getQueryColumnRenderers, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './components/GridLoader';
 import { GRID_EDIT_INDEX } from './constants';
 import { IQueryGridModel } from './QueryGridModel';
-import { getDateTimeFormat, parseDate } from './util/Date';
+import { getDateTimeFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];
@@ -454,7 +454,9 @@ export class EditorModel
                             dateVal = parseDate(values.first().raw, getDateTimeFormat());
                         }
                     }
-                    row = row.set(col.name, dateVal);
+
+                    // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+                    row = row.set(col.name, getJsonDateTimeFormatString(dateVal));
                 } else {
                     row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
                 }

@@ -614,7 +614,13 @@ export function updateDataType(field: DomainField, value: any): DomainField {
         }
 
         if (field.isTextChoiceField()) {
-            field = field.merge({ textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR }) as DomainField;
+            // when changing a field to a Text Choice, add the default textChoiceValidator and remove all other propertyValidators
+            field = field.merge({
+                textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
+                lookupValidator: undefined,
+                rangeValidators: [],
+                regexValidators: [],
+            }) as DomainField;
         }
     }
 

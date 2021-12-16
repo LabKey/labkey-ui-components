@@ -607,12 +607,20 @@ export class PropertyValidator
     declare rowId?: number;
     declare expression?: string;
 
-    static fromJS(rawPropertyValidator: any[], type: string): List<PropertyValidator> {
+    static fromJS(rawPropertyValidator: any[], type: string, isNewField = false): List<PropertyValidator> {
         let propValidators = List<PropertyValidator>();
 
         if (EXPECTED_VALIDATOR_TYPES.indexOf(type) > -1) {
             for (let i = 0; i < rawPropertyValidator.length; i++) {
                 if (rawPropertyValidator[i].type === type) {
+                    const expressionStr = rawPropertyValidator[i].expression;
+                    const hasExpressionStr = expressionStr !== undefined && expressionStr !== null;
+
+                    // if we are loading a textChoiceValidator from JSON, we need to set the properties.validValues
+                    if (type === 'TextChoice' && !rawPropertyValidator[i]?.properties?.validValues) {
+                        rawPropertyValidator[i].properties.validValues = expressionStr?.split('|') ?? [];
+                    }
+
                     rawPropertyValidator[i]['properties'] = new PropertyValidatorProperties(
                         rawPropertyValidator[i]['properties']
                     );
@@ -622,12 +630,15 @@ export class PropertyValidator
                     newPv = newPv.set('shouldShowWarning', true) as PropertyValidator;
 
                     // Special case for filters HAS ANY VALUE not having a symbol
-                    if (newPv.get('expression') !== undefined && newPv.get('expression') !== null) {
+                    if (hasExpressionStr) {
                         newPv = newPv.set(
                             'expression',
-                            newPv.get('expression').replace('~=', '~' + DOMAIN_FILTER_HASANYVALUE + '=')
+                            expressionStr.replace('~=', '~' + DOMAIN_FILTER_HASANYVALUE + '=')
                         ) as PropertyValidator;
                     }
+
+                    // for new fields, clear any validator rowIds that come in from the JSON file import
+                    if (isNewField) newPv = newPv.set('rowId', undefined) as PropertyValidator;
 
                     propValidators = propValidators.push(newPv);
                 }
@@ -864,22 +875,19 @@ export class DomainField
         if (rawField.propertyValidators) {
             field = field.set(
                 'rangeValidators',
-                PropertyValidator.fromJS(rawField.propertyValidators, 'Range')
+                PropertyValidator.fromJS(rawField.propertyValidators, 'Range', field.isNew())
             ) as DomainField;
             field = field.set(
                 'regexValidators',
-                PropertyValidator.fromJS(rawField.propertyValidators, 'RegEx')
+                PropertyValidator.fromJS(rawField.propertyValidators, 'RegEx', field.isNew())
             ) as DomainField;
 
-            const lookups = PropertyValidator.fromJS(rawField.propertyValidators, 'Lookup');
+            const lookups = PropertyValidator.fromJS(rawField.propertyValidators, 'Lookup', field.isNew());
             if (lookups && lookups.size > 0) {
-                field = field.set(
-                    'lookupValidator',
-                    PropertyValidator.fromJS(rawField.propertyValidators, 'Lookup').get(0)
-                ) as DomainField;
+                field = field.set('lookupValidator', lookups.get(0)) as DomainField;
             }
 
-            const textChoice = PropertyValidator.fromJS(rawField.propertyValidators, 'TextChoice');
+            const textChoice = PropertyValidator.fromJS(rawField.propertyValidators, 'TextChoice', field.isNew());
             if (textChoice?.size > 0) {
                 field = field.set('textChoiceValidator', textChoice.get(0)) as DomainField;
             }

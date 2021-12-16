@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD December 2021
+### version 2.105.0
+*Released*: 16 December 2021
 * Item #9633: Add scannable option to SampleType text fields for LabKey apps
   * Added scannable field and value property to `TextFieldOptions`
   * Passed through appPropertiesOnly to `DomainRowExpandedOptions` and `TextFieldOptions`

@@ -12,7 +12,13 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { LockIcon } from '../base/LockIcon';
 
 import { DOMAIN_VALIDATOR_TEXTCHOICE, MAX_VALID_TEXT_CHOICES } from './constants';
-import { DEFAULT_TEXT_CHOICE_VALIDATOR, DomainField, ITypeDependentProps, PropertyValidator } from './models';
+import {
+    DEFAULT_TEXT_CHOICE_VALIDATOR,
+    DomainField,
+    getValidValuesFromArray,
+    ITypeDependentProps,
+    PropertyValidator,
+} from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 
@@ -41,7 +47,7 @@ interface Props extends ITypeDependentProps {
 interface ImplProps extends Props {
     fieldValues: string[];
     loading: boolean;
-    replaceValues: (newValues?: string[]) => void;
+    replaceValues: (newValues: string[]) => void;
     validValues: string[];
 }
 
@@ -212,11 +218,12 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
     const fieldId = createFormInputId(DOMAIN_VALIDATOR_TEXTCHOICE, domainIndex, index);
 
     const replaceValues = useCallback(
-        (newValues?: string[]) => {
+        (newValues: string[]) => {
             setValidValues(newValues);
             onChange(
                 fieldId,
                 new PropertyValidator({
+                    // keep the existing validator Id/props, if present, and override teh expression / properties
                     ...field.textChoiceValidator,
                     ...DEFAULT_TEXT_CHOICE_VALIDATOR.toJS(),
                     expression: newValues.join('|'),
@@ -239,7 +246,7 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
                     column: field.name,
                     sort: field.name,
                     success: result => {
-                        const values = result.values.filter(value => value !== undefined && value !== null);
+                        const values = getValidValuesFromArray(result.values);
                         setFieldValues(values);
 
                         // if this is an existing text field that is being changed to a Text Choice data type,

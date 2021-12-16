@@ -38,6 +38,8 @@ import {
     DOMAIN_FIELD_PARTIALLY_LOCKED,
     DOMAIN_FIELD_SELECTED,
     DOMAIN_FILTER_HASANYVALUE,
+    FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO,
+    FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG,
     INT_RANGE_URI,
     MAX_TEXT_LENGTH,
     SAMPLE_TYPE_CONCEPT_URI,
@@ -74,6 +76,7 @@ import {
     reorderSummaryColumns,
 } from './propertiesUtil';
 import { INT_LIST, VAR_LIST } from './list/constants';
+import { DomainRowWarning } from "./DomainRowWarning";
 
 export interface IFieldChange {
     id: string;
@@ -1102,7 +1105,7 @@ export class DomainField
         return concept?.getDisplayLabel() ?? this.principalConceptCode;
     }
 
-    getDetailsTextArray(fieldDetailsInfo?: { [key: string]: string }): any[] {
+    getDetailsTextArray(index: number, fieldDetailsInfo?: { [key: string]: string }): any[] {
         const details = [];
         let period = '';
 
@@ -1131,6 +1134,23 @@ export class DomainField
             period = '. ';
         } else if (this.dataType.isOntologyLookup() && this.sourceOntology) {
             details.push(period + this.sourceOntology);
+            period = '. ';
+        } else if (this.dataType.isTextChoice()) {
+            const validValuesStr = getValidValuesDetailStr(this.textChoiceValidator.properties.validValues);
+            details.push(period);
+            if (validValuesStr) {
+                details.push(validValuesStr);
+            } else {
+                details.push(
+                    <DomainRowWarning
+                        index={index}
+                        extraInfo={FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO}
+                        msg={FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG}
+                        name={this.name}
+                        severity={SEVERITY_LEVEL_WARN}
+                    />
+                );
+            }
             period = '. ';
         }
 
@@ -1161,6 +1181,23 @@ export class DomainField
 
         return details;
     }
+}
+
+export function getValidValuesFromArray(validValues: string[]): string[] {
+    return validValues?.filter(v => v !== null && v !== undefined && v !== '') ?? [];
+}
+
+function getValidValuesDetailStr(validValues: string[]): string {
+    const numToShow = 4;
+    const vals = getValidValuesFromArray(validValues);
+    if (vals.length > 0) {
+        let validValuesStr = vals.slice(0, numToShow).join(', ');
+        if (vals.length > numToShow) {
+            validValuesStr += ` (and ${vals.length - numToShow} more)`;
+        }
+        return validValuesStr;
+    }
+    return undefined;
 }
 
 export function decodeLookup(value: string): { queryName: string; rangeURI: string } {

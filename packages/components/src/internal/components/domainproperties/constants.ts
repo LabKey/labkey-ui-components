@@ -180,6 +180,11 @@ export const FIELD_NAME_CHAR_WARNING_INFO =
     'Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, ' +
     'SPSS, and MATLAB.';
 
+export const FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG = 'No text choice values provided';
+export const FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO =
+    'This field is defined as a "Text Choice" field, but no values have been provided. Use the "Add Values" button ' +
+    'in the "Text Choice Options" section to define the set of choices for this field.';
+
 export const PROPERTIES_PANEL_ERROR_MSG = 'Contains errors or is missing required values.';
 export const PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG = 'Naming Pattern does not utilize the ID/Name prefix value';
 

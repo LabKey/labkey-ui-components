@@ -19,11 +19,7 @@ import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
 
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { DeleteIcon, DragDropHandle, FieldExpansionToggle, LabelHelpTip, naturalSortByProperty } from '../../..';
+import { DeleteIcon, DragDropHandle, FieldExpansionToggle, naturalSortByProperty } from '../../..';
 
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -61,6 +57,7 @@ import {
 } from './propertiesUtil';
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
+import { DomainRowWarning } from './DomainRowWarning';
 
 export interface DomainRowProps {
     appPropertiesOnly?: boolean;
@@ -136,26 +133,19 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
      */
     getDetailsText = (): React.ReactNode => {
         const { field, index, fieldError, fieldDetailsInfo } = this.props;
-        const details = field.getDetailsTextArray(fieldDetailsInfo);
+        const details = field.getDetailsTextArray(index, fieldDetailsInfo);
 
         if (fieldError) {
             details.push(details.length > 0 ? '. ' : '');
             const msg = fieldError.severity + ': ' + fieldError.message;
             details.push(
-                <>
-                    {fieldError.extraInfo && (
-                        <LabelHelpTip
-                            iconComponent={
-                                <FontAwesomeIcon icon={faExclamationCircle} className="domain-warning-icon" />
-                            }
-                            title={fieldError.severity}
-                        >
-                            {fieldError.extraInfo}
-                        </LabelHelpTip>
-                    )}
-                    {fieldError.extraInfo && <span>&nbsp;</span>}
-                    <b key={field.name + '_' + index}>{msg}</b>
-                </>
+                <DomainRowWarning
+                    index={index}
+                    extraInfo={fieldError.extraInfo}
+                    msg={msg}
+                    name={field.name}
+                    severity={fieldError.severity}
+                />
             );
         }
 
@@ -237,14 +227,17 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         const { index, domainIndex } = this.props;
 
         const value = evt.target.value;
-        const nameAndErrorList = List<IFieldChange>().asMutable();
+        let nameAndErrorList = List<IFieldChange>();
 
         // set value for the field
-        nameAndErrorList.push({ id: createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index), value });
+        nameAndErrorList = nameAndErrorList.push({
+            id: createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index),
+            value,
+        });
 
         if (isLegalName(value) && !value.includes(' ')) {
             // set value to undefined for field error
-            nameAndErrorList.push({
+            nameAndErrorList = nameAndErrorList.push({
                 id: createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index),
                 value: undefined,
             });
@@ -262,13 +255,13 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             });
 
             // set value for field error
-            nameAndErrorList.push({
+            nameAndErrorList = nameAndErrorList.push({
                 id: createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index),
                 value: domainFieldError,
             });
         }
 
-        this.props.onChange(nameAndErrorList.asImmutable(), index, false);
+        this.props.onChange(nameAndErrorList, index, false);
     };
 
     onDataTypeChange = (evt: any): void => {

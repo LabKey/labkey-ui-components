@@ -1,8 +1,16 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { ActionURL, Container } from '@labkey/api';
+import { ActionURL } from '@labkey/api';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 
-import { Alert, buildURL, isLoading, LoadingSpinner, LoadingState, resolveErrorMessage } from '../../..';
+import {
+    Alert,
+    buildURL,
+    isLoading,
+    LoadingSpinner,
+    LoadingState,
+    resolveErrorMessage,
+    useServerContext,
+} from '../../..';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { getCurrentAppProperties } from '../../app/utils';
@@ -18,10 +26,9 @@ interface FolderMenuItem {
 interface Props {
     api?: ComponentsAPIWrapper;
     appProperties?: AppProperties;
-    container: Partial<Container>;
 }
 
-export const FolderMenu: FC<Props> = memo(({ api, appProperties, container }) => {
+export const FolderMenu: FC<Props> = memo(({ api, appProperties }) => {
     const { controllerName } = appProperties;
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -29,6 +36,7 @@ export const FolderMenu: FC<Props> = memo(({ api, appProperties, container }) =>
     const [items, setItems] = useState<FolderMenuItem[]>([]);
     const hasError = !!error;
     const isLoaded = !isLoading(loading);
+    const { container } = useServerContext();
 
     useEffect(() => {
         setLoading(LoadingState.LOADING);

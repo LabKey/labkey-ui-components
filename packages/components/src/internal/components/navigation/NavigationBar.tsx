@@ -15,7 +15,6 @@
  */
 import React, { FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
-import { Container } from '@labkey/api';
 
 import { User } from '../../..';
 
@@ -36,7 +35,6 @@ import { FolderMenu } from './FolderMenu';
 
 interface NavigationBarProps {
     brand?: ReactNode;
-    container: Partial<Container>;
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;
     model: ProductMenuModel;
     notificationsConfig?: ServerNotificationsConfig;
@@ -56,7 +54,6 @@ type Props = NavigationBarProps & UserMenuProps;
 export const NavigationBar: FC<Props> = memo(props => {
     const {
         brand,
-        container,
         extraDevItems,
         extraUserItems,
         menuSectionConfigs,
@@ -91,7 +88,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                         <span className="navbar-item pull-left">{brand}</span>
                         {showFolderMenu && (
                             <span className="navbar-item">
-                                <FolderMenu container={container} />
+                                <FolderMenu />
                             </span>
                         )}
                         {showNavMenu && !!model && (

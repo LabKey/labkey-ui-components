@@ -32,6 +32,7 @@ exports[`RegexValidationOptions Regex Validator - collapsed 1`] = `
       "errorMessage": "Test Validation Failure",
       "description": "This is my validator description",
       "new": true,
+      "shouldShowWarning": true,
       "rowId": 11266,
       "expression": "$[abc]",
     }
@@ -137,6 +138,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
       "errorMessage": "Test Validation Failure",
       "description": "This is my validator description",
       "new": true,
+      "shouldShowWarning": true,
       "rowId": 11266,
       "expression": "$[abc]",
     }

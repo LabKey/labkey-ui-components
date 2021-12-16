@@ -75,6 +75,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
         },
+        "name": "key",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
       },
       "updatedField": false,

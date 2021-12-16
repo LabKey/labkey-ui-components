@@ -1193,7 +1193,7 @@ export class DomainField
 }
 
 export function getValidValuesFromArray(validValues: string[]): string[] {
-    return validValues?.filter(v => v !== null && v !== undefined && v !== '') ?? [];
+    return validValues?.filter(v => v !== null && v !== undefined && v.trim() !== '') ?? [];
 }
 
 function getValidValuesDetailStr(validValues: string[]): string {

@@ -85,7 +85,9 @@ const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
     );
 
     const onApply = useCallback(() => {
-        updateValue(currentValue);
+        const val = currentValue.trim();
+        updateValue(val);
+        setCurrentValue(val);
     }, [updateValue, currentValue]);
 
     const onDelete = useCallback(() => {

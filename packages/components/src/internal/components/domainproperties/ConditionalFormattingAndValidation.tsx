@@ -118,64 +118,59 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<
         this.setState(state => ({ showRegex: !state.showRegex }), showingModal(this.state.showRegex));
     };
 
-    showHideRangeValidator = () => {
+    showHideRangeValidator = (): void => {
         const { showingModal } = this.props;
 
         this.setState(state => ({ showRange: !state.showRange }), showingModal(this.state.showRange));
     };
 
-    renderValidator = (range: boolean) => {
-        const { field, index, domainIndex, domainFormDisplayOptions } = this.props;
-
+    renderValidator = (range: boolean): ReactNode => {
+        const { field, index, domainIndex } = this.props;
         const validators = range ? field.rangeValidators : field.regexValidators;
         const count = validators ? validators.size : 0;
 
         return (
-            <>
-                {!domainFormDisplayOptions.hideValidators && (
-                    <div className={range ? '' : 'domain-validation-group'}>
-                        <div className="domain-field-label domain-no-wrap">
-                            <DomainFieldLabel
-                                label={'Create ' + (range ? 'Range' : 'Regular Expression') + ' Validator'}
-                                helpTipBody={
-                                    range ? this.getRangeValidatorHelpText() : this.getRegexValidatorHelpText()
-                                }
-                            />
-                        </div>
-                        <div>
-                            <Button
-                                className="domain-validation-button"
-                                name={createFormInputName(range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR)}
-                                id={createFormInputId(
-                                    range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR,
-                                    domainIndex,
-                                    index
-                                )}
-                                disabled={isFieldFullyLocked(field.lockType)}
-                                onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}
-                            >
-                                {count > 0 ? (range ? 'Edit Ranges' : 'Edit Regex') : range ? 'Add Range' : 'Add Regex'}
-                            </Button>
-                            {count === 0 ? (
-                                <span className="domain-text-label">None Set</span>
-                            ) : (
-                                <a
-                                    className="domain-validator-link"
-                                    onClick={
-                                        isFieldFullyLocked(field.lockType)
-                                            ? () => {}
-                                            : range
-                                            ? this.showHideRangeValidator
-                                            : this.showHideRegexValidator
-                                    }
-                                >
-                                    {'' + count + ' Active validator' + (count > 1 ? 's' : '')}
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                )}
-            </>
+            <div className={range ? '' : 'domain-validation-group'}>
+                <div className="domain-field-label domain-no-wrap">
+                    <DomainFieldLabel
+                        label={'Create ' + (range ? 'Range' : 'Regular Expression') + ' Validator'}
+                        helpTipBody={
+                            range ? this.getRangeValidatorHelpText() : this.getRegexValidatorHelpText()
+                        }
+                    />
+                </div>
+                <div>
+                    <Button
+                        className="domain-validation-button"
+                        name={createFormInputName(range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR)}
+                        id={createFormInputId(
+                            range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR,
+                            domainIndex,
+                            index
+                        )}
+                        disabled={isFieldFullyLocked(field.lockType)}
+                        onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}
+                    >
+                        {count > 0 ? (range ? 'Edit Ranges' : 'Edit Regex') : range ? 'Add Range' : 'Add Regex'}
+                    </Button>
+                    {count === 0 ? (
+                        <span className="domain-text-label">None Set</span>
+                    ) : (
+                        <a
+                            className="domain-validator-link"
+                            onClick={
+                                isFieldFullyLocked(field.lockType)
+                                    ? () => {}
+                                    : range
+                                    ? this.showHideRangeValidator
+                                    : this.showHideRegexValidator
+                            }
+                        >
+                            {'' + count + ' Active validator' + (count > 1 ? 's' : '')}
+                        </a>
+                    )}
+                </div>
+            </div>
         );
     };
 
@@ -227,8 +222,8 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<
         const RegexValidator = ValidatorModal(RegexValidationOptions);
 
         const showCondFormatSection = !domainFormDisplayOptions.hideConditionalFormatting;
-        const showRegexSection = DomainField.hasRegExValidation(field);
-        const showRangeSection = DomainField.hasRangeValidation(field);
+        const showRegexSection = !domainFormDisplayOptions.hideValidators && DomainField.hasRegExValidation(field);
+        const showRangeSection = !domainFormDisplayOptions.hideValidators && DomainField.hasRangeValidation(field);
         const showValidation = showRegexSection || showRangeSection;
         const title =
             (showCondFormatSection ? 'Conditional Formatting' : '') +

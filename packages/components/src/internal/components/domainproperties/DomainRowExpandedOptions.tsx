@@ -201,6 +201,9 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                     />
                 );
             case 'textChoice':
+                // don't show Text Choice options for query metadata editor
+                if (domainFormDisplayOptions?.hideValidators) return null;
+
                 return (
                     <TextChoiceOptions
                         domainIndex={domainIndex}

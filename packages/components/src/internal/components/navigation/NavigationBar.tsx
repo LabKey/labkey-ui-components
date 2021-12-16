@@ -15,6 +15,7 @@
  */
 import React, { FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
+import { Container } from '@labkey/api';
 
 import { User } from '../../..';
 
@@ -31,16 +32,18 @@ import { UserMenu, UserMenuProps } from './UserMenu';
 import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
 import { FindAndSearchDropdown } from './FindAndSearchDropdown';
+import { FolderMenu } from './FolderMenu';
 
 interface NavigationBarProps {
     brand?: ReactNode;
+    container: Partial<Container>;
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;
     model: ProductMenuModel;
     notificationsConfig?: ServerNotificationsConfig;
     onSearch?: (form: any) => void;
     onFindByIds?: (sessionkey: string) => void;
-    projectName?: string;
     searchPlaceholder?: string;
+    showFolderMenu?: boolean;
     showNavMenu?: boolean;
     showNotifications?: boolean;
     showProductNav?: boolean;
@@ -53,6 +56,7 @@ type Props = NavigationBarProps & UserMenuProps;
 export const NavigationBar: FC<Props> = memo(props => {
     const {
         brand,
+        container,
         extraDevItems,
         extraUserItems,
         menuSectionConfigs,
@@ -62,8 +66,8 @@ export const NavigationBar: FC<Props> = memo(props => {
         onFindByIds,
         onSignIn,
         onSignOut,
-        projectName,
         searchPlaceholder,
+        showFolderMenu,
         showNavMenu,
         showNotifications,
         showProductNav,
@@ -77,28 +81,26 @@ export const NavigationBar: FC<Props> = memo(props => {
     }, [onSearch]);
 
     const _showNotifications = showNotifications !== false && !!notificationsConfig && user && !user.isGuest;
-    const _showProductNav = shouldShowProductNavigation(user) && showProductNav !== false;
+    const _showProductNav = showProductNav !== false && shouldShowProductNavigation(user);
 
     return (
         <nav className="navbar navbar-container test-loc-nav-header">
             <div className="container">
                 <div className="row">
-                    <div className="navbar-left col-md-5 col-sm-4 col-xs-6">
+                    <div className="navbar-left col-lg-7 col-md-8 col-sm-8 col-xs-7">
                         <span className="navbar-item pull-left">{brand}</span>
-                        <span className="navbar-item-padded">
-                            {showNavMenu && !!model && (
+                        {showFolderMenu && (
+                            <span className="navbar-item">
+                                <FolderMenu container={container} />
+                            </span>
+                        )}
+                        {showNavMenu && !!model && (
+                            <span className="navbar-item">
                                 <ProductMenu model={model} sectionConfigs={menuSectionConfigs} />
-                            )}
-                        </span>
-                        {projectName && (
-                            <span className="navbar-item hidden-sm hidden-xs">
-                                <span className="project-name">
-                                    <i className="fa fa-folder-open-o" /> {projectName}{' '}
-                                </span>
                             </span>
                         )}
                     </div>
-                    <div className="navbar-right col-md-7 col-sm-8 col-xs-6">
+                    <div className="navbar-right col-lg-5 col-md-4 col-sm-4 col-xs-5">
                         {!!user && (
                             <div className="navbar-item pull-right">
                                 <UserMenu
@@ -124,7 +126,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                         )}
                         {showSearchBox && (
                             <div className="navbar-item pull-right">
-                                <div className="hidden-sm hidden-xs">
+                                <div className="hidden-md hidden-sm hidden-xs">
                                     <SearchBox
                                         onSearch={onSearch}
                                         placeholder={searchPlaceholder}
@@ -132,7 +134,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                                         findNounPlural="samples"
                                     />
                                 </div>
-                                <div className="visible-sm visible-xs">
+                                <div className="visible-md visible-sm visible-xs">
                                     {onFindByIds ? (
                                         <FindAndSearchDropdown
                                             className="navbar__xs-find-dropdown"
@@ -158,6 +160,7 @@ export const NavigationBar: FC<Props> = memo(props => {
 });
 
 NavigationBar.defaultProps = {
+    showFolderMenu: false,
     showNavMenu: true,
     showNotifications: true,
     showProductNav: true,

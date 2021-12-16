@@ -845,6 +845,7 @@ export class DomainField
                 original: {
                     dataType,
                     conceptURI: rawField.conceptURI,
+                    name: rawField.name,
                     rangeURI:
                         rawField.propertyId !== undefined || rawField.wrappedColumnName !== undefined
                             ? rawField.rangeURI // Issue 40795: need rangURI for alias field (query metadata) to get other available types in the datatype dropdown

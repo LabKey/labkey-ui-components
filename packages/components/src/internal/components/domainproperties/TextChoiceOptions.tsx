@@ -240,12 +240,13 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
             // for an existing field, we query for the distinct set of values in the Text column to be used for
             // the initial set of values and/or setting fields as locked (i.e. in use)
             if (!field.isNew() && schemaName && queryName) {
+                const fieldName = field.original?.name ?? field.name;
                 Query.selectDistinctRows({
                     containerFilter: Query.ContainerFilter.allFolders, // to account for a shared domain at project or /Shared
                     schemaName,
                     queryName,
-                    column: field.name,
-                    sort: field.name,
+                    column: fieldName,
+                    sort: fieldName,
                     success: result => {
                         const values = getValidValuesFromArray(result.values);
                         setFieldValues(values);

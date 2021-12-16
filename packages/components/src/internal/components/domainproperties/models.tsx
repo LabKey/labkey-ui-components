@@ -578,6 +578,7 @@ export interface IPropertyValidator {
     errorMessage?: string;
     description?: string;
     new: boolean;
+    shouldShowWarning: boolean;
     rowId?: number;
     expression?: string;
 }
@@ -590,6 +591,7 @@ export class PropertyValidator
         errorMessage: undefined,
         description: undefined,
         new: true,
+        shouldShowWarning: false,
         rowId: undefined,
         expression: undefined,
     })
@@ -601,6 +603,7 @@ export class PropertyValidator
     declare errorMessage?: string;
     declare description?: string;
     declare new: boolean;
+    declare shouldShowWarning: boolean;
     declare rowId?: number;
     declare expression?: string;
 
@@ -614,6 +617,9 @@ export class PropertyValidator
                         rawPropertyValidator[i]['properties']
                     );
                     let newPv = new PropertyValidator(rawPropertyValidator[i]);
+
+                    // if loading validator from DB, set shouldShowWarning initially
+                    newPv = newPv.set('shouldShowWarning', true) as PropertyValidator;
 
                     // Special case for filters HAS ANY VALUE not having a symbol
                     if (newPv.get('expression') !== undefined && newPv.get('expression') !== null) {
@@ -640,6 +646,8 @@ export class PropertyValidator
             if (pvs[i]?.properties?.validValues) {
                 delete pvs[i].properties.validValues;
             }
+
+            delete pvs[i].shouldShowWarning;
         }
 
         return pvs;
@@ -1136,11 +1144,11 @@ export class DomainField
             details.push(period + this.sourceOntology);
             period = '. ';
         } else if (this.dataType.isTextChoice()) {
-            const validValuesStr = getValidValuesDetailStr(this.textChoiceValidator.properties.validValues);
+            const validValuesStr = getValidValuesDetailStr(this.textChoiceValidator?.properties.validValues);
             details.push(period);
             if (validValuesStr) {
                 details.push(validValuesStr);
-            } else {
+            } else if (this.textChoiceValidator?.shouldShowWarning) {
                 details.push(
                     <DomainRowWarning
                         index={index}

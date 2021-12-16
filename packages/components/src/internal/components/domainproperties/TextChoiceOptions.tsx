@@ -226,6 +226,7 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
                     // keep the existing validator Id/props, if present, and override teh expression / properties
                     ...field.textChoiceValidator,
                     ...DEFAULT_TEXT_CHOICE_VALIDATOR.toJS(),
+                    shouldShowWarning: true,
                     expression: newValues.join('|'),
                     properties: { validValues: newValues },
                 })

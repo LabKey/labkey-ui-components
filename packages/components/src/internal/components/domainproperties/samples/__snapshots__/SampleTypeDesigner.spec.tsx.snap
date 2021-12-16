@@ -1054,6 +1054,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "newDesignFields": undefined,
         "instructions": undefined,
         "domainKindName": undefined,
+        "schemaName": undefined,
+        "queryName": undefined,
       },
       "options": Immutable.Map {},
       "domainKindName": "Unknown",
@@ -1213,6 +1215,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "newDesignFields": undefined,
           "instructions": undefined,
           "domainKindName": undefined,
+          "schemaName": undefined,
+          "queryName": undefined,
         },
         "options": Immutable.Map {},
         "domainKindName": "Unknown",
@@ -1347,6 +1351,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "newDesignFields": undefined,
             "instructions": undefined,
             "domainKindName": undefined,
+            "schemaName": undefined,
+            "queryName": undefined,
           },
         ]
       }
@@ -1487,6 +1493,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "newDesignFields": undefined,
               "instructions": undefined,
               "domainKindName": undefined,
+              "schemaName": undefined,
+              "queryName": undefined,
             },
             "autoLinkTargetContainerId": undefined,
             "autoLinkCategory": undefined,
@@ -1646,6 +1654,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "newDesignFields": undefined,
                 "instructions": undefined,
                 "domainKindName": undefined,
+                "schemaName": undefined,
+                "queryName": undefined,
               },
               "autoLinkTargetContainerId": undefined,
               "autoLinkCategory": undefined,
@@ -1811,6 +1821,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "newDesignFields": undefined,
                   "instructions": undefined,
                   "domainKindName": undefined,
+                  "schemaName": undefined,
+                  "queryName": undefined,
                 },
                 "autoLinkTargetContainerId": undefined,
                 "autoLinkCategory": undefined,
@@ -2174,6 +2186,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         "newDesignFields": undefined,
                                         "instructions": undefined,
                                         "domainKindName": undefined,
+                                        "schemaName": undefined,
+                                        "queryName": undefined,
                                       },
                                       "autoLinkTargetContainerId": undefined,
                                       "autoLinkCategory": undefined,
@@ -2890,6 +2904,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "newDesignFields": undefined,
             "instructions": undefined,
             "domainKindName": undefined,
+            "schemaName": undefined,
+            "queryName": undefined,
           }
         }
         domainFormDisplayOptions={
@@ -3026,6 +3042,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "newDesignFields": undefined,
                 "instructions": undefined,
                 "domainKindName": undefined,
+                "schemaName": undefined,
+                "queryName": undefined,
               }
             }
             domainFormDisplayOptions={

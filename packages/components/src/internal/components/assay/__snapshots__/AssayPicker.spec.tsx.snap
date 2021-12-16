@@ -1085,6 +1085,69 @@ exports[`AssayPicker AssayPicker 1`] = `
                                       </Col>
                                     </div>
                                   </Row>
+                                  <div
+                                    className="margin-bottom"
+                                  >
+                                    <Row
+                                      bsClass="row"
+                                      componentClass="div"
+                                    >
+                                      <div
+                                        className="row"
+                                      >
+                                        <Col
+                                          bsClass="col"
+                                          componentClass="div"
+                                          xs={6}
+                                        >
+                                          <div
+                                            className="col-xs-6"
+                                          >
+                                            <Memo()
+                                              locations={
+                                                Object {
+                                                  "ce3fb429-92f9-1038-8523-225b19648208": "Shared Folder",
+                                                  "ea7c355b-0b2e-1039-8359-225b19643884": "Current Folder (BiologicsAssayTest Project)",
+                                                }
+                                              }
+                                              onChange={[Function]}
+                                              selected="ea7c355b-0b2e-1039-8359-225b19643884"
+                                            >
+                                              <div
+                                                className="margin-bottom"
+                                              >
+                                                <b>
+                                                  Assay Location
+                                                </b>
+                                              </div>
+                                              <p>
+                                                Choose where the assay will be used and visible within subfolders.
+                                              </p>
+                                              <select
+                                                className="form-control"
+                                                id="assay-type-select-container"
+                                                onChange={[Function]}
+                                                value="ea7c355b-0b2e-1039-8359-225b19643884"
+                                              >
+                                                <option
+                                                  key="ea7c355b-0b2e-1039-8359-225b19643884"
+                                                  value="ea7c355b-0b2e-1039-8359-225b19643884"
+                                                >
+                                                  Current Folder (BiologicsAssayTest Project)
+                                                </option>
+                                                <option
+                                                  key="ce3fb429-92f9-1038-8523-225b19648208"
+                                                  value="ce3fb429-92f9-1038-8523-225b19648208"
+                                                >
+                                                  Shared Folder
+                                                </option>
+                                              </select>
+                                            </Memo()>
+                                          </div>
+                                        </Col>
+                                      </div>
+                                    </Row>
+                                  </div>
                                   <Row
                                     bsClass="row"
                                     componentClass="div"

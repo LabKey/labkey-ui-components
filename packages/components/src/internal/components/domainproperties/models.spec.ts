@@ -729,47 +729,47 @@ describe('DomainField', () => {
 
     test('getDetailsTextArray', () => {
         let field = DomainField.create({ propertyId: undefined, name: 'test' });
-        expect(field.getDetailsTextArray().join('')).toBe('New Field');
+        expect(field.getDetailsTextArray(0).join('')).toBe('New Field');
 
         field = field.merge({ propertyId: 0, updatedField: true }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated');
 
         field = field.merge({ dataType: SAMPLE_TYPE, lookupSchema: 'exp', lookupQuery: 'SampleType1' }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. SampleType1');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SampleType1');
 
         field = field.merge({ dataType: LOOKUP_TYPE }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. Current Folder > exp > SampleType1');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. Current Folder > exp > SampleType1');
 
         field = field.merge({ lookupContainer: 'Test Folder' }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. Test Folder > exp > SampleType1');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. Test Folder > exp > SampleType1');
 
         field = field.merge({ dataType: ONTOLOGY_LOOKUP_TYPE, sourceOntology: 'SRC' }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC');
 
         field = field.merge({ wrappedColumnName: 'Wrapped' }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC. Wrapped column - Wrapped');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC. Wrapped column - Wrapped');
 
         field = field.merge({ wrappedColumnName: undefined, isPrimaryKey: true }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC. Primary Key');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC. Primary Key');
 
         field = field.merge({ lockType: DOMAIN_FIELD_FULLY_LOCKED }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC. Primary Key. Locked');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC. Primary Key. Locked');
 
         field = field.merge({ principalConceptCode: 'abc:123' }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe(
+        expect(field.getDetailsTextArray(0).join('')).toBe(
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
         );
 
-        expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
+        expect(field.getDetailsTextArray(0, { test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked. Additional Info'
         );
         field = field.merge({ name: '' }) as DomainField;
-        expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
+        expect(field.getDetailsTextArray(0, { test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
         );
 
         CONCEPT_CACHE.set('abc:123', new ConceptModel({ code: 'abc:123', label: 'Concept display text' }));
-        expect(field.getDetailsTextArray().join('')).toBe(
+        expect(field.getDetailsTextArray(0).join('')).toBe(
             'Updated. SRC. Ontology Concept: Concept display text (abc:123). Primary Key. Locked'
         );
     });

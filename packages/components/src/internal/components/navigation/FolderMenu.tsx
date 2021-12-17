@@ -4,18 +4,19 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import {
     Alert,
+    AppContext,
     buildURL,
     isLoading,
     LoadingSpinner,
     LoadingState,
     resolveErrorMessage,
+    useAppContext,
     useServerContext,
 } from '../../..';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { getCurrentAppProperties } from '../../app/utils';
-import { AppProperties } from '../../app/models';
 import { blurActiveElement } from '../../util/utils';
+import { AppProperties } from '../../app/models';
 
 interface FolderMenuItem {
     href: string;
@@ -24,18 +25,18 @@ interface FolderMenuItem {
 }
 
 interface Props {
-    api?: ComponentsAPIWrapper;
     appProperties?: AppProperties;
 }
 
-export const FolderMenu: FC<Props> = memo(({ api, appProperties }) => {
-    const { controllerName } = appProperties;
+export const FolderMenu: FC<Props> = memo(({ appProperties }) => {
+    const { controllerName } = appProperties ?? getCurrentAppProperties();
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState<FolderMenuItem[]>([]);
     const hasError = !!error;
     const isLoaded = !isLoading(loading);
+    const { api } = useAppContext<AppContext>();
     const { container } = useServerContext();
 
     useEffect(() => {
@@ -54,7 +55,7 @@ export const FolderMenu: FC<Props> = memo(({ api, appProperties }) => {
                         returnUrl: false,
                     }),
                     id: folder.id,
-                    label: folder.name,
+                    label: folder.title,
                 }));
 
                 setItems(items_);
@@ -73,7 +74,7 @@ export const FolderMenu: FC<Props> = memo(({ api, appProperties }) => {
 
     return (
         <Dropdown className="nav-folder-menu" id="folder-menu" onToggle={toggleMenu} open={open}>
-            <Dropdown.Toggle className="nav-folder-menu__button">{container.name}</Dropdown.Toggle>
+            <Dropdown.Toggle className="nav-folder-menu__button">{container.title}</Dropdown.Toggle>
             <Dropdown.Menu>
                 <div className="navbar-connector" />
                 {hasError && <Alert>{error}</Alert>}
@@ -93,10 +94,5 @@ export const FolderMenu: FC<Props> = memo(({ api, appProperties }) => {
         </Dropdown>
     );
 });
-
-FolderMenu.defaultProps = {
-    api: getDefaultAPIWrapper(),
-    appProperties: getCurrentAppProperties(),
-};
 
 FolderMenu.displayName = 'FolderMenu';

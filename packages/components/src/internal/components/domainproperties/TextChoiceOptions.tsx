@@ -171,7 +171,7 @@ const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                     </div>
                                     <div className="col-sm-8">
                                         <input
-                                            className="form-control"
+                                            className="form-control full-width"
                                             disabled={currentInUse}
                                             name="value"
                                             onChange={onValueChange}

@@ -157,30 +157,28 @@ const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                             title={`Add Values (max ${MAX_VALID_TEXT_CHOICES})`}
                         />
                     </Col>
-                    <Col xs={6} lg={8}>
+                    <Col xs={6} lg={4}>
                         {validValues.length > 0 && selectedIndex === undefined && (
                             <p className="choices-detail__empty-message">
                                 Select a value from the list on the left to view details.
                             </p>
                         )}
                         {selectedIndex !== undefined && (
-                            <form className="form-horizontal content-form">
-                                <FormGroup>
-                                    <div className="col-sm-4">
-                                        <DomainFieldLabel label="Value" required />
-                                    </div>
-                                    <div className="col-sm-8">
-                                        <input
-                                            className="form-control full-width"
-                                            disabled={currentInUse}
-                                            name="value"
-                                            onChange={onValueChange}
-                                            placeholder="Enter a text choice value"
-                                            type="text"
-                                            value={currentValue ?? ''}
-                                        />
-                                    </div>
-                                </FormGroup>
+                            <>
+                                <div className="domain-field-label">
+                                    <DomainFieldLabel label="Value" required />
+                                </div>
+                                <div className="domain-field-padding-bottom">
+                                    <input
+                                        className="form-control full-width"
+                                        disabled={currentInUse}
+                                        name="value"
+                                        onChange={onValueChange}
+                                        placeholder="Enter a text choice value"
+                                        type="text"
+                                        value={currentValue ?? ''}
+                                    />
+                                </div>
                                 <div>
                                     <Button bsStyle="default" disabled={currentInUse} onClick={onDelete}>
                                         <span className="fa fa-trash" />
@@ -195,7 +193,7 @@ const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                         Apply
                                     </Button>
                                 </div>
-                            </form>
+                            </>
                         )}
                     </Col>
                 </Row>

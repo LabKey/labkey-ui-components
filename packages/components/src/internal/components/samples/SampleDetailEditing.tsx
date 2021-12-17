@@ -2,41 +2,29 @@ import React, { PureComponent } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert, Panel } from 'react-bootstrap';
 
-import { AuditBehaviorTypes, Filter } from '@labkey/api';
+import { Filter } from '@labkey/api';
 
 import {
-    Actions,
     caseInsensitive,
     DefaultRenderer,
     DetailPanelWithModel,
-    EditableDetailPanel,
     getActionErrorMessage,
     LoadingPage,
     QueryConfig,
-    QueryModel,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SampleAliquotDetailHeader,
     SchemaQuery,
     SCHEMAS,
 } from '../../..';
 
-import { DetailRenderer } from '../forms/detail/DetailDisplay';
+import { EditableDetailPanel, EditableDetailPanelProps } from '../../../public/QueryModel/EditableDetailPanel';
 
 import { GroupedSampleFields } from './models';
 import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields, GroupedSampleDisplayColumns } from './actions';
 import { IS_ALIQUOT_COL } from './constants';
 
-interface Props {
-    actions?: Actions;
-    auditBehavior: AuditBehaviorTypes;
-    canUpdate?: boolean;
-    detailEditRenderer?: DetailRenderer;
-    detailRenderer?: DetailRenderer;
-    onEditToggle?: (isEditing: boolean) => void;
-    onUpdate: () => void;
+interface Props extends EditableDetailPanelProps {
     sampleSet: string;
-    title: string;
-    queryModel?: QueryModel;
 }
 
 interface State {
@@ -45,33 +33,17 @@ interface State {
 }
 
 export class SampleDetailEditing extends PureComponent<Props, State> {
-    static defaultProps = {
-        canUpdate: false,
-    };
-
     state: Readonly<State> = {
         hasError: false,
         sampleTypeDomainFields: undefined,
     };
-
-    constructor(props: Props) {
-        super(props);
-
-        if (!props.queryModel) {
-            throw new Error('SampleDetailEditing: Requires that a "queryModel" be provided.');
-        } else if (props.queryModel && !props.actions) {
-            throw new Error('SampleDetailEditing: If a "queryModel" is specified, then "actions" are required.');
-        }
-    }
 
     componentDidMount(): void {
         this.loadSampleType();
     }
 
     componentDidUpdate(prevProps: Props): void {
-        const { sampleSet } = this.props;
-
-        if (sampleSet !== prevProps.sampleSet) {
+        if (this.props.sampleSet !== prevProps.sampleSet) {
             this.setState(
                 () => ({
                     sampleTypeDomainFields: undefined,
@@ -96,23 +68,20 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     };
 
     getRow = (): Record<string, any> => {
-        const { queryModel } = this.props;
-        return queryModel.getRow() ?? {};
+        return this.props.model.getRow() ?? {};
     };
 
     getUpdateDisplayColumns = (isAliquot: boolean): GroupedSampleDisplayColumns => {
         const {
-            queryModel: { detailColumns, updateColumns },
+            model: { detailColumns, updateColumns },
         } = this.props;
         const { sampleTypeDomainFields } = this.state;
         return getGroupedSampleDisplayColumns(detailColumns, updateColumns, sampleTypeDomainFields, isAliquot);
     };
 
     getAliquotRootSampleQueryConfig = (): QueryConfig => {
-        const { sampleSet } = this.props;
-
-        const row = this.getRow();
-        const rootLsid = caseInsensitive(row, 'RootMaterialLSID')?.value;
+        const { model, sampleSet } = this.props;
+        const rootLsid = model.getRowValue('RootMaterialLSID');
 
         return {
             schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
@@ -123,18 +92,11 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     };
 
     render() {
-        const {
-            actions,
-            auditBehavior,
-            canUpdate,
-            detailEditRenderer,
-            detailRenderer,
-            onEditToggle,
-            onUpdate,
-            queryModel,
-            title,
-        } = this.props;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { sampleSet, ...editableDetailPanelProps } = this.props;
         const { hasError, sampleTypeDomainFields } = this.state;
+        const { model, title } = editableDetailPanelProps;
+        let { detailHeader } = editableDetailPanelProps;
 
         if (hasError) {
             return (
@@ -144,61 +106,51 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
             );
         }
 
-        if (!sampleTypeDomainFields || (queryModel && queryModel.isLoading)) {
+        if (!sampleTypeDomainFields || model.isLoading) {
             return <LoadingPage title={title} />;
         }
 
         const row = this.getRow();
-
         const parent = caseInsensitive(row, 'AliquotedFromLSID/Name');
+        const root = caseInsensitive(row, 'RootMaterialLSID/Name');
         const isAliquot = !!parent?.value;
 
-        const root = caseInsensitive(row, 'rootmateriallsid/name');
-
-        const showRootSampleName = root?.value !== parent?.value;
-
         const { aliquotHeaderDisplayColumns, displayColumns, editColumns } = this.getUpdateDisplayColumns(isAliquot);
-        const detailHeader = isAliquot ? (
-            <SampleAliquotDetailHeader
-                aliquotHeaderDisplayColumns={List(aliquotHeaderDisplayColumns)}
-                row={fromJS(row)}
-            />
-        ) : null;
 
-        const parentDetailHeader = showRootSampleName ? (
-            <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-meta-table">
-                <tbody>
-                    <tr key="originalSample">
-                        <td>Original sample</td>
-                        <td>
-                            <DefaultRenderer data={fromJS(root)} />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        ) : null;
+        if (!detailHeader && isAliquot) {
+            detailHeader = (
+                <SampleAliquotDetailHeader
+                    aliquotHeaderDisplayColumns={List(aliquotHeaderDisplayColumns)}
+                    row={fromJS(row)}
+                />
+            );
+        }
 
         return (
             <>
                 <EditableDetailPanel
-                    actions={actions}
-                    auditBehavior={auditBehavior}
-                    canUpdate={canUpdate}
-                    detailEditRenderer={detailEditRenderer}
+                    {...editableDetailPanelProps}
                     detailHeader={detailHeader}
-                    detailRenderer={detailRenderer}
                     editColumns={editColumns}
-                    model={queryModel}
-                    onEditToggle={onEditToggle}
-                    onUpdate={onUpdate}
                     queryColumns={displayColumns}
-                    title={isAliquot ? 'Aliquot Details' : undefined}
+                    title={title ?? (isAliquot ? 'Aliquot Details' : undefined)}
                 />
                 {isAliquot && (
                     <Panel>
                         <Panel.Heading>Original Sample Details</Panel.Heading>
                         <Panel.Body>
-                            {parentDetailHeader}
+                            {root?.value !== parent?.value && (
+                                <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-meta-table">
+                                    <tbody>
+                                        <tr key="originalSample">
+                                            <td>Original sample</td>
+                                            <td>
+                                                <DefaultRenderer data={fromJS(root)} />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            )}
                             <DetailPanelWithModel
                                 key={root?.value}
                                 queryConfig={this.getAliquotRootSampleQueryConfig()}

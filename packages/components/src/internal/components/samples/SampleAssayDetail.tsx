@@ -13,14 +13,13 @@ import {
     isSampleOperationPermitted,
     LoadingSpinner,
     naturalSortByProperty,
-    QueryConfig,
     QueryModel,
     RequiresModelAndActions,
     SampleAliquotViewSelector,
     SampleOperation,
     SchemaQuery,
     TabbedGridPanel,
-    useServerContext,
+    User,
 } from '../../..';
 
 import { withAssayModels } from '../assay/withAssayModels';
@@ -41,12 +40,13 @@ interface Props {
     showAliquotViewSelector?: boolean;
     sampleAliquotType?: ALIQUOT_FILTER_MODE;
     sourceId?: number | string;
-    sourceSampleRows?: Record<string, any>[];
-    sourceAliquotRows?: Record<string, any>[];
+    sourceSampleRows?: Array<Record<string, any>>;
+    sourceAliquotRows?: Array<Record<string, any>>;
     emptyAssayDefDisplay?: ReactNode;
     emptyAssayResultDisplay?: ReactNode;
     emptyAliquotViewMsg?: string;
     emptySampleViewMsg?: string;
+    user: User;
 }
 
 export const AssayResultPanel: FC = ({ children }) => {
@@ -63,19 +63,19 @@ const UNFILTERED_PREFIX = 'unfiltered-';
 const UNFILTERED_GRID_ID_PREFIX = UNFILTERED_PREFIX + ASSAY_GRID_ID_PREFIX;
 
 interface SampleAssayDetailButtonsOwnProps {
-    assayModel: AssayStateModel;
-    sampleModel: QueryModel;
     activeSampleAliquotType?: ALIQUOT_FILTER_MODE;
-    onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => any;
+    assayModel: AssayStateModel;
     isSourceSampleAssayGrid?: boolean;
+    onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => void;
+    sampleModel: QueryModel;
+    user: User;
 }
 
 type SampleAssayDetailButtonsProps = SampleAssayDetailButtonsOwnProps & RequiresModelAndActions;
 
 // exported for jest testing
 export const SampleAssayDetailButtons: FC<SampleAssayDetailButtonsProps> = props => {
-    const { assayModel, model, sampleModel } = props;
-    const { user } = useServerContext();
+    const { assayModel, model, sampleModel, user } = props;
 
     if (!user.hasInsertPermission()) {
         return null;
@@ -154,12 +154,13 @@ export const getSampleAssayDetailEmptyText = (
 };
 
 interface OwnProps {
-    onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => any;
+    onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => void;
     activeSampleAliquotType?: ALIQUOT_FILTER_MODE;
     showImportBtn?: boolean;
     isSourceSampleAssayGrid?: boolean;
-    onTabChange: (tabId: string) => any;
+    onTabChange: (tabId: string) => void;
     activeTabId?: string;
+    user: User;
 }
 
 type SampleAssayDetailBodyProps = Props & InjectedAssayModel & OwnProps;
@@ -182,16 +183,17 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         emptySampleViewMsg,
         onTabChange,
         activeTabId,
+        user,
     } = props;
     const allModels = Object.values(queryModels);
     const allLoaded = allModels.every(model => !model.isLoading);
 
     useEffect(() => {
         actions.loadAllModels(true);
-    }, []);
+    }, [actions]);
 
-    const queryModelsWithData = useMemo(() => {
-        const models = {};
+    const { queryModelsWithData, tabOrder } = useMemo(() => {
+        const models: Record<string, QueryModel> = {};
         let targetQueryModels = Object.values(queryModels);
         const isFilteredView =
             showAliquotViewSelector &&
@@ -215,14 +217,14 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
                 models[targetModel.id] = targetModel;
             }
         });
-        return models;
-    }, [allLoaded, queryModels, showAliquotViewSelector, activeSampleAliquotType]);
 
-    const tabOrder = useMemo(() => {
-        return Object.values(queryModelsWithData)
-            .sort(naturalSortByProperty<QueryConfig>('title'))
-            .map((config: QueryConfig) => config.id);
-    }, [queryModelsWithData]);
+        return {
+            queryModelsWithData: models,
+            tabOrder: Object.values(models)
+                .sort(naturalSortByProperty('title'))
+                .map(model => model.id),
+        };
+    }, [activeSampleAliquotType, queryModels, showAliquotViewSelector]);
 
     const getEmptyText = useCallback(
         activeModel => {
@@ -290,6 +292,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
                 onSampleAliquotTypeChange,
                 activeSampleAliquotType,
                 isSourceSampleAssayGrid,
+                user,
             }}
             ButtonsComponentRight={showAliquotViewSelector ? SampleAssayDetailButtonsRight : undefined}
             getEmptyText={getEmptyText}
@@ -330,7 +333,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         return sampleId == null && sourceSampleRows != null;
     }, [sampleId, sourceSampleRows]);
 
-    const [aliquotRows, setAliquotRows] = useState<Record<string, any>[]>(undefined);
+    const [aliquotRows, setAliquotRows] = useState<Array<Record<string, any>>>(undefined);
     useEffect(() => {
         if (!showAliquotViewSelector || !sampleId) return;
 
@@ -345,7 +348,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
                     message: 'Unable to load sample aliquots. Your session may have expired.',
                 });
             });
-    }, [sampleId, showAliquotViewSelector]);
+    }, [api, sampleId, showAliquotViewSelector]);
 
     const [sampleAssayResultViewConfigs, setSampleAssayResultViewConfigs] =
         useState<SampleAssayResultViewConfig[]>(undefined);
@@ -356,7 +359,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             .catch(() => {
                 setSampleAssayResultViewConfigs([]);
             });
-    }, []);
+    }, [api]);
 
     const loadingDefinitions =
         isLoading(assayModel.definitionsLoadingState) || sampleAssayResultViewConfigs === undefined;

@@ -605,7 +605,7 @@ export function initQueryGridMocks(delayMs = undefined) {
 }
 
 export function initDomainPropertiesMocks() {
-    mock.get(/.*\/security\/?.*\/GetMaxPhiLevel.*/, jsonResponse(getMaxPhiLevelJson));
+    mock.get(/.*\/security\/?.*\/getMaxPhiLevel.*/, jsonResponse(getMaxPhiLevelJson));
 
     mock.get(/.*\/assay\/?.*\/getValidPublishTargets.*/, jsonResponse(getValidPublishTargetsJson));
 

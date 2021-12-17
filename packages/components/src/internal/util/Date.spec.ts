@@ -15,7 +15,7 @@
  */
 import { initUnitTests } from '../testHelpers';
 
-import { formatDate, formatDateTime, generateNameWithTimestamp } from './Date';
+import { formatDate, formatDateTime, generateNameWithTimestamp, getJsonDateTimeFormatString } from './Date';
 
 beforeAll(() => {
     initUnitTests();
@@ -72,5 +72,17 @@ describe('formatDateTime', () => {
     test('supports custom format', () => {
         expect(formatDateTime(datePOSIX, 'America/New_York', 'DDYYYYMM')).toBe('06202008');
         expect(formatDateTime(testDate, 'America/New_York', 'DDYYYYMM')).toBe('06202008');
+    });
+});
+
+describe('getJsonDateTimeFormatString', () => {
+    test('without date', () => {
+        expect(getJsonDateTimeFormatString(undefined)).toBe(undefined);
+        expect(getJsonDateTimeFormatString(null)).toBe(undefined);
+    });
+
+    test('with date', () => {
+        expect(getJsonDateTimeFormatString(new Date('2021-12-03 00:00'))).toBe('2021-12-03 00:00:00');
+        expect(getJsonDateTimeFormatString(new Date('2021-12-03 23:59'))).toBe('2021-12-03 23:59:00');
     });
 });

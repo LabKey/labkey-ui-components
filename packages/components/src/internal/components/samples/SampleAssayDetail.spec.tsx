@@ -59,6 +59,7 @@ const DEFAULT_PROPS = {
     sampleModel,
     model,
     actions: makeTestActions(),
+    user: TEST_USER_READER,
 };
 
 describe('SampleAssayDetailButtons', () => {
@@ -68,27 +69,21 @@ describe('SampleAssayDetailButtons', () => {
     }
 
     test('without insert perm', () => {
-        const wrapper = mountWithServerContext(<SampleAssayDetailButtons {...DEFAULT_PROPS} />, {
-            user: TEST_USER_READER,
-        });
+        const wrapper = mount(<SampleAssayDetailButtons {...DEFAULT_PROPS} />);
         validate(wrapper);
         wrapper.unmount();
     });
 
     test('currentAssayHref undefined', () => {
         const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ title: 'Other Assay' });
-        const wrapper = mountWithServerContext(<SampleAssayDetailButtons {...DEFAULT_PROPS} model={model} />, {
-            user: TEST_USER_AUTHOR,
-        });
+        const wrapper = mount(<SampleAssayDetailButtons {...DEFAULT_PROPS} model={model} user={TEST_USER_AUTHOR} />);
         validate(wrapper);
         wrapper.unmount();
     });
 
     test('multiple menu items', () => {
         const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ title: 'NAb Assay' });
-        const wrapper = mountWithServerContext(<SampleAssayDetailButtons {...DEFAULT_PROPS} model={model} />, {
-            user: TEST_USER_AUTHOR,
-        });
+        const wrapper = mount(<SampleAssayDetailButtons {...DEFAULT_PROPS} model={model} user={TEST_USER_AUTHOR} />);
         validate(wrapper, 2);
         expect(wrapper.find(SplitButton).prop('href')).toBe('test2');
         wrapper.unmount();
@@ -107,9 +102,8 @@ describe('SampleAssayDetailButtons', () => {
             definitionsLoadingState: LoadingState.LOADED,
         });
 
-        const wrapper = mountWithServerContext(
-            <SampleAssayDetailButtons {...DEFAULT_PROPS} assayModel={assayModel} />,
-            { user: TEST_USER_AUTHOR }
+        const wrapper = mount(
+            <SampleAssayDetailButtons {...DEFAULT_PROPS} assayModel={assayModel} user={TEST_USER_AUTHOR} />
         );
         validate(wrapper, 1);
         expect(wrapper.find(Button).prop('href')).toBe('test1');
@@ -172,6 +166,7 @@ const IMPL_PROPS = {
     onTabChange: jest.fn,
     actions: makeTestActions(),
     queryModels: {},
+    user: TEST_USER_READER,
 };
 
 describe('SampleAssayDetailBodyImpl', () => {

@@ -22,7 +22,7 @@ describe('AssayPicker', () => {
         // Verify all three tabs shown and standard assay selected
         expect(wrapper.find('.nav-tabs li')).toHaveLength(3);
         expect(wrapper.find('.nav-tabs li.active a#assay-picker-tabs-tab-standard')).toHaveLength(1);
-        expect(wrapper.find('#assay-type-select-container')).toHaveLength(1);
+        expect(wrapper.find('#assay-type-select-container')).toHaveLength(2); // Specialty tab doesn't show this option if no providers
 
         // Click import tab and verify it's shown
         expect(wrapper.find('.nav-tabs li.active a#assay-picker-tabs-tab-import')).toHaveLength(0);

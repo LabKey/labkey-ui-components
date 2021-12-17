@@ -4,17 +4,23 @@ import {
     PicklistServerAPIWrapper,
     getPicklistTestAPIWrapper,
 } from './components/picklist/APIWrapper';
+import {
+    getSecurityTestAPIWrapper,
+    SecurityAPIWrapper,
+    ServerSecurityAPIWrapper,
+} from './components/security/APIWrapper';
 
 export interface ComponentsAPIWrapper {
-    // TODO add more wrappers for other functional areas of this package
-    samples: SamplesAPIWrapper;
     picklist: PicklistAPIWrapper;
+    samples: SamplesAPIWrapper;
+    security: SecurityAPIWrapper;
 }
 
 export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
     return {
-        samples: new SamplesServerAPIWrapper(),
         picklist: new PicklistServerAPIWrapper(),
+        samples: new SamplesServerAPIWrapper(),
+        security: new ServerSecurityAPIWrapper(),
     };
 }
 
@@ -26,8 +32,9 @@ export function getTestAPIWrapper(
     overrides: Partial<ComponentsAPIWrapper> = {}
 ): ComponentsAPIWrapper {
     return {
-        samples: getSamplesTestAPIWrapper(mockFn, overrides.samples),
         picklist: getPicklistTestAPIWrapper(mockFn, overrides.picklist),
+        samples: getSamplesTestAPIWrapper(mockFn, overrides.samples),
+        security: getSecurityTestAPIWrapper(mockFn, overrides.security),
         ...overrides,
     };
 }

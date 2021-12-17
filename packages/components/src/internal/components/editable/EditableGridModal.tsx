@@ -6,7 +6,7 @@ import { getQueryGridModel } from '../../global';
 
 import { QueryGridModel, WizardNavButtons } from '../../..';
 
-import { EditableGridPanel } from './EditableGridPanel';
+import { EditableGridPanelDeprecated } from './EditableGridPanelDeprecated';
 import { EditableGridProps } from './EditableGrid';
 
 import { AddRowsControlProps } from './Controls';
@@ -71,7 +71,7 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <EditableGridPanel
+                    <EditableGridPanelDeprecated
                         addControlProps={this.props.addControlProps}
                         columnMetadata={this.props.columnMetadata}
                         notDeletable={this.props.notDeletable}

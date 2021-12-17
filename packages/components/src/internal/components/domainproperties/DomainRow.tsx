@@ -62,43 +62,44 @@ import {
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
 
-interface IDomainRowProps {
-    domainId?: number;
-    helpNoun: string;
-    expanded: boolean;
-    dragging: boolean;
-    expandTransition: number;
-    field: DomainField;
-    index: number;
-    maxPhiLevel: string;
+export interface DomainRowProps {
+    appPropertiesOnly?: boolean;
     availableTypes: List<PropDescType>;
-    onChange: DomainOnChange;
-    fieldError?: DomainFieldError;
-    onDelete: (any) => void;
-    onExpand: (index?: number) => void;
-    showDefaultValueSettings: boolean;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
-    appPropertiesOnly?: boolean;
-    domainIndex: number;
-    successBsStyle?: string;
+    domainContainerPath?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    domainId?: number;
+    domainIndex: number;
+    dragging: boolean;
+    expanded: boolean;
+    expandTransition: number;
+    field: DomainField;
+    fieldDetailsInfo?: Record<string, string>;
+    fieldError?: DomainFieldError;
     getDomainFields?: () => List<DomainField>;
-    fieldDetailsInfo?: { [key: string]: string };
+    helpNoun: string;
+    index: number;
     isDragDisabled?: boolean;
+    maxPhiLevel: string;
+    onChange: DomainOnChange;
+    onDelete: (index?: number) => void;
+    onExpand: (index?: number) => void;
+    showDefaultValueSettings: boolean;
+    successBsStyle?: string;
 }
 
-interface IDomainRowState {
-    showAdv: boolean;
+interface DomainRowState {
     closing: boolean;
-    showingModal: boolean;
     isDragDisabled: boolean;
+    showAdv: boolean;
+    showingModal: boolean;
 }
 
 /**
  * React component for one property in a domain
  */
-export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowState> {
+export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowState> {
     static defaultProps = {
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     };
@@ -117,11 +118,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     // Used in DomainPropertiesGrid
-    scrollIntoView = () => {
+    scrollIntoView = (): void => {
         this[`${this.props.index}_ref`].current.scrollIntoView({ behavior: 'smooth' });
     };
 
-    UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
+    UNSAFE_componentWillReceiveProps(nextProps: DomainRowProps): void {
         // if there was a prop change to isDragDisabled, need to call setDragDisabled
         if (nextProps.isDragDisabled !== this.props.isDragDisabled) {
             this.setDragDisabled(nextProps.isDragDisabled, false);
@@ -222,23 +223,16 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     };
 
     onSingleFieldChange = (id: string, value: any, index?: number, expand?: boolean): void => {
-        const { onChange } = this.props;
-
-        if (onChange) {
-            onChange(List([{ id, value } as IFieldChange]), index, expand === true);
-        }
+        const changes = List([{ id, value } as IFieldChange]);
+        this.props.onChange(changes, index, expand === true);
     };
 
     onMultiFieldChange = (changes: List<IFieldChange>): void => {
-        const { onChange, index } = this.props;
-
-        if (onChange) {
-            onChange(changes, index, true);
-        }
+        this.props.onChange(changes, this.props.index, true);
     };
 
-    onNameChange = evt => {
-        const { index, onChange, domainIndex } = this.props;
+    onNameChange = (evt: any): void => {
+        const { index, domainIndex } = this.props;
 
         const value = evt.target.value;
         const nameAndErrorList = List<IFieldChange>().asMutable();
@@ -272,57 +266,45 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             });
         }
 
-        if (onChange) {
-            onChange(nameAndErrorList, index, false);
-        }
+        this.props.onChange(nameAndErrorList.asImmutable(), index, false);
     };
 
-    onDataTypeChange = (evt: any): any => {
+    onDataTypeChange = (evt: any): void => {
         this.onFieldChange(evt, PropDescType.isLookup(evt.target.value));
     };
 
     onShowAdvanced = (): any => {
-        this.setState(() => ({ showAdv: true }));
-
+        this.setState({ showAdv: true });
         this.setDragDisabled(this.props.isDragDisabled, true);
     };
 
     onHideAdvanced = (): any => {
-        this.setState(() => ({ showAdv: false }));
-
+        this.setState({ showAdv: false });
         this.setDragDisabled(this.props.isDragDisabled, false);
     };
 
-    onDelete = (): any => {
-        const { index, onDelete } = this.props;
-
-        if (onDelete) {
-            onDelete(index);
-        }
+    onDelete = (): void => {
+        this.props.onDelete(this.props.index);
     };
 
-    onExpand = (): any => {
-        const { index, onExpand } = this.props;
-
-        if (onExpand) {
-            onExpand(index);
-        }
+    onExpand = (): void => {
+        this.props.onExpand(this.props.index);
     };
 
     onCollapsed = (): void => {
-        this.setState(() => ({ closing: false }));
+        this.setState({ closing: false });
     };
 
     onCollapsing = (): void => {
-        this.setState(() => ({ closing: true }));
+        this.setState({ closing: true });
     };
 
     setDragDisabled = (propDragDisabled: boolean, disabled: boolean): void => {
-        this.setState(() => ({ isDragDisabled: disabled || propDragDisabled }));
+        this.setState({ isDragDisabled: disabled || propDragDisabled });
     };
 
-    showingModal = (showing: boolean): void => {
-        this.setState(() => ({ showingModal: showing }));
+    showingModal = (showingModal: boolean): void => {
+        this.setState({ showingModal });
     };
 
     disableNameInput(field: DomainField): boolean {
@@ -435,6 +417,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     render() {
         const { closing, isDragDisabled, showAdv, showingModal } = this.state;
         const {
+            domainContainerPath,
             index,
             field,
             expanded,
@@ -536,6 +519,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         >
                             <div>
                                 <DomainRowExpandedOptions
+                                    domainContainerPath={domainContainerPath}
                                     field={field}
                                     index={index}
                                     domainIndex={domainIndex}

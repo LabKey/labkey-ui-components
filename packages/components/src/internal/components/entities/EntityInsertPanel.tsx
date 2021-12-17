@@ -28,7 +28,7 @@ import {
     capitalizeFirstChar,
     DomainDetails,
     EditableColumnMetadata,
-    EditableGridPanel,
+    EditableGridPanelDeprecated,
     FileAttachmentForm,
     FileSizeLimitProps,
     FormStep,
@@ -82,7 +82,7 @@ import { fetchDomainDetails } from '../domainproperties/actions';
 
 import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from '../samples/constants';
 
-import { loadNameExpressionOptions } from '../settings/actions';
+import { GetNameExpressionOptionsResponse, loadNameExpressionOptions } from '../settings/actions';
 
 import {
     EntityDataType,
@@ -139,6 +139,8 @@ interface OwnProps {
     fileImportParameters: Record<string, any>;
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
+    // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
+    loadNameExpressionOptions?: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
     maxEntities?: number;
     nounPlural: string;
     nounSingular: string;
@@ -148,8 +150,6 @@ interface OwnProps {
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => void;
     onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
     parentDataTypes?: List<EntityDataType>;
-    // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
-    loadNameExpressionOptions?: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
 }
 
 interface FromLocationProps {
@@ -895,7 +895,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                 type={this.capTypeTextSingular}
                                 queryInfo={queryGridModel?.queryInfo}
                             />
-                            <EditableGridPanel
+                            <EditableGridPanelDeprecated
                                 addControlProps={{
                                     nounSingular: gridNounSingularCap,
                                     nounPlural: gridNounPluralCap,

@@ -65,6 +65,10 @@ export class User extends Record(defaultUser) implements IUserProps {
         return new User(defaultUser);
     }
 
+    hasAdminPermission(): boolean {
+        return hasAllPermissions(this, [PermissionTypes.Admin], false);
+    }
+
     hasUpdatePermission(): boolean {
         return hasAllPermissions(this, [PermissionTypes.Update]);
     }

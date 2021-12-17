@@ -38,20 +38,16 @@ interface UpdateAlertProps {
 
 // exported for jest testing
 export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo(props => {
-    const { numSelections, aliquots, editStatusData } = props;
+    const { aliquots, editStatusData } = props;
 
     let aliquotsMsg;
-    if (aliquots && aliquots.length > 0) {
-        if (aliquots.length < numSelections) {
-            aliquotsMsg = (
-                <>
-                    {aliquots.length} aliquot{aliquots.length > 1 ? 's were' : ' was'} among the selections. Aliquot
-                    data is inherited from the original sample and cannot be updated here.{' '}
-                </>
-            );
-        } else {
-            aliquotsMsg = <>Aliquot data inherited from the original sample cannot be updated here. </>;
-        }
+    if (aliquots?.length > 0) {
+        aliquotsMsg = (
+            <>
+                Since {aliquots.length} aliquot{aliquots.length > 1 ? 's were' : ' was'} among the selected samples,
+                only the aliquot-editable fields are shown below.{' '}
+            </>
+        );
     }
 
     if (!aliquotsMsg && (!editStatusData || editStatusData.allAllowed)) return null;
@@ -82,8 +78,8 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
 
         let columns = OrderedMap<string, QueryColumn>();
 
-        // if all are aliquots, only show pk, aliquot specific and description/samplestate columns
-        if (aliquots && aliquots.length === this.getGridSelectionSize()) {
+        // if the selection includes any aliquots, only show pk, aliquot specific and description/samplestate columns
+        if (aliquots?.length > 0) {
             originalQueryInfo.columns.forEach((column, key) => {
                 const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(column.fieldKey.toLowerCase()) > -1;
                 if (

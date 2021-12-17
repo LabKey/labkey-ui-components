@@ -216,10 +216,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         if (!maxPhiLevel) {
             try {
-                const nextMaxPhiLevel = await getMaxPhiLevel();
+                const nextMaxPhiLevel = await getMaxPhiLevel(domain.container);
                 this.setState({ maxPhiLevel: nextMaxPhiLevel });
             } catch (error) {
-                console.error('Unable to retrieve max PHI level.');
+                console.error('Unable to retrieve max PHI level.', error);
             }
         }
 
@@ -833,11 +833,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
             if (!fieldErrors.isEmpty()) {
                 const errorsWithIndex = fieldErrors.filter(error => {
-                    return (
-                        error.rowIndexes.findIndex(idx => {
-                            return idx === index;
-                        }) >= 0
-                    );
+                    return error.rowIndexes.findIndex(idx => idx === index) >= 0;
                 });
                 return errorsWithIndex.get(0);
             }
@@ -1237,15 +1233,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             successBsStyle,
             domainFormDisplayOptions,
         } = this.props;
-        const {
-            expandedRowIndex,
-            expandTransition,
-            fieldDetails,
-            maxPhiLevel,
-            dragId,
-            availableTypes,
-            search,
-        } = this.state;
+        const { expandedRowIndex, expandTransition, fieldDetails, maxPhiLevel, dragId, availableTypes, search } =
+            this.state;
 
         return (
             <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
@@ -1268,6 +1257,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 ref={ref => {
                                                     this.refsArray[i] = ref;
                                                 }}
+                                                domainContainerPath={domain.container}
                                                 domainId={domain.domainId}
                                                 helpNoun={helpNoun}
                                                 key={'domain-row-key-' + i}

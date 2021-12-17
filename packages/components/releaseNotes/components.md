@@ -6,6 +6,63 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update `PageDetailHeader` with option to use `EditInlineField` instead of `FieldEditorOverlay`
 * Add simple action for doing update rows on a single field (callback helper for `EditInlineField`).
 
+### version 2.105.0
+*Released*: 16 December 2021
+* Item #9633: Add scannable option to SampleType text fields for LabKey apps
+  * Added scannable field and value property to `TextFieldOptions`
+  * Passed through appPropertiesOnly to `DomainRowExpandedOptions` and `TextFieldOptions`
+  * Added optional showScannableOption property to `DomainFormDisplayOptions`
+  * Added showScannableOption property to `SampleTypeDesigner`
+  * Added `scannable` property to `DomainField`
+
+### version 2.104.0
+*Released*: 15 December 2021
+* Add container select support to assay picker XAR import
+
+### version 2.103.1
+*Released*: 14 December 2021
+* Merge release21.12-SNAPSHOT to develop
+  * Includes changes from versions 2.101.1
+
+### version 2.103.0
+*Released*: 10 December 2021
+* Item 9627: TextChoiceInput and usage for rendering select input for DetailEditRenderer and QueryFormInputs
+
+### version 2.102.0
+*Released*: 1 December 2021
+* Rename EditableGridPanel to EditableGridPanelDeprecated
+  * There will be a new version in a future release, and the deprecated version will eventually be removed
+
+### version 2.101.1
+*Released*: 7 December 2021
+* Issue 44397: Add new date util function, getJsonDateTimeFormatString(), to be used by DatePickerInput and EditableGrid insert/update case
+
+### version 2.101.0
+*Released*: 30 November 2021
+* Add `getContainerFilter()` for resolving default container filter based on folder context.
+* Add `SecurityAPIWrapper` to support fetching containers. This is provided to components via `AppContext`.
+* Specify React hooks exported by `@labkey/components` on a `Hooks` object for easier mocking.
+* Update `ParentEntityEditPanel` to fetch and persist parent metadata. This allows the component to operate independent of the configuration of the model as supplied by the caller.
+* Update `EditableDetailPanel` to accept `containerPath`.
+* QueryModel
+    * Add `loadErrors` and `hasLoadErrors()` utilities to `QueryModel` to reduce the number of checks callers need to do to ensure errors are handled.
+    * Add `getRowValue()` utility method to `QueryModel` which allows for fetching the specific value of a row by column name (case-insensitive).
+* Domain Editing
+    * Add `domainContainerPath` prop to `QueryInfo` as now specified by `query-getQueryDetails.api` endpoint.
+    * Support requesting PHI level cross-folder.
+    * Make domain save requests against domain's folder.
+
+### version 2.100.0
+*Released*: 29 November 2021
+* Item 9703: Add support for LabKey Vis API stacked bar plot
+  * supported groupPath for bar chart config
+  * add legendData for group bar chart case
+  * add sortFn and conditional margin values for the grouped plot legend text length
+  * other misc changes:
+    * add vertical separator for manage sample statuses
+    * update assay import sample status message to use warning instead of info alert display
+    * SamplesBulkUpdateForm update to only show aliquot-editable fields when any selected samples are aliquots
+
 ### version 2.99.1
 *Released*: 26 November 2021
 * OntologyConceptPicker fix to wait for subtreePath model to load before showing find link

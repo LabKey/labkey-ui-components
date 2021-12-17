@@ -34,6 +34,7 @@ import { SampleFieldOptions } from './SampleFieldOptions';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
 
 interface IDomainRowExpandedOptionsProps {
+    domainContainerPath?: string;
     field: DomainField;
     index: number;
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => void;
@@ -49,6 +50,7 @@ interface IDomainRowExpandedOptionsProps {
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps> {
     typeDependentOptions = () => {
         const {
+            domainContainerPath,
             field,
             index,
             onChange,
@@ -56,6 +58,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
             domainIndex,
             domainFormDisplayOptions,
             getDomainFields,
+            appPropertiesOnly,
         } = this.props;
 
         switch (field.dataType.name) {
@@ -74,6 +77,9 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                             scale={field.scale}
                             onChange={onChange}
                             lockType={field.lockType}
+                            scannable={field.scannable}
+                            appPropertiesOnly={appPropertiesOnly}
+                            showScannableOption={domainFormDisplayOptions?.showScannableOption}
                         />
                     );
                 } else {
@@ -182,6 +188,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
 
                 return (
                     <OntologyLookupOptions
+                        domainContainerPath={domainContainerPath}
                         index={index}
                         domainIndex={domainIndex}
                         label="Ontology Lookup Options"

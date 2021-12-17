@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 
 import PanelHeading from 'react-bootstrap/lib/PanelHeading';
 
-import { Alert, DataClassDataType, LoadingSpinner, QueryInfo } from '../../..';
+import { Alert, DataClassDataType, LoadingSpinner, QueryInfo, SchemaQuery } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import { initUnitTestMocks } from '../../testHelperMocks';
 
@@ -18,24 +18,31 @@ beforeAll(() => {
 });
 
 describe('<ParentEntityEditPanel>', () => {
-    const queryInfo = new QueryInfo({
-        schemaName: 'samples',
-        queryName: 'example',
+    const schemaQuery = SchemaQuery.create('samples', 'example');
+    const queryInfo = QueryInfo.create({
+        schemaName: schemaQuery.schemaName,
+        queryName: schemaQuery.queryName,
     });
 
     test('error state', () => {
         const panel = mount(
             <ParentEntityEditPanel
-                childQueryInfo={queryInfo}
-                childData={{}}
                 canUpdate={false}
-                childName="Test"
                 childNounSingular="Testing"
+                childSchemaQuery={schemaQuery}
                 title="Test 123"
                 parentDataTypes={[DataClassDataType]}
             />
         );
-        panel.setState({ error: 'My error message', loading: false });
+
+        panel.setState({
+            childData: {},
+            childQueryInfo: queryInfo,
+            childName: 'Test',
+            error: 'My error message',
+            loading: false,
+        });
+
         const header = panel.find(DetailPanelHeader);
         expect(header).toHaveLength(1);
         expect(header.text()).toContain('Test 123');
@@ -48,16 +55,14 @@ describe('<ParentEntityEditPanel>', () => {
     test('loading state', () => {
         const panel = mount(
             <ParentEntityEditPanel
-                childQueryInfo={queryInfo}
-                childData={{}}
                 canUpdate={false}
-                childName="Test"
                 childNounSingular="Testing"
+                childSchemaQuery={schemaQuery}
                 title="Test 123"
                 parentDataTypes={[DataClassDataType]}
             />
         );
-        panel.setState({ loading: true });
+        panel.setState({ childName: 'Test', loading: true });
         expect(panel.find(LoadingSpinner)).toHaveLength(1);
         expect(panel).toMatchSnapshot();
         panel.unmount();
@@ -66,16 +71,15 @@ describe('<ParentEntityEditPanel>', () => {
     test('editing, no data', () => {
         const panel = mount(
             <ParentEntityEditPanel
-                childQueryInfo={queryInfo}
-                childData={{}}
                 canUpdate={false}
-                childName="Test"
                 childNounSingular="Testing"
+                childSchemaQuery={schemaQuery}
                 title="Test 123"
                 parentDataTypes={[DataClassDataType]}
             />
         );
         panel.setState({
+            childName: 'Test',
             loading: false,
             editing: true,
             originalParents: List<EntityChoice>(),
@@ -91,17 +95,16 @@ describe('<ParentEntityEditPanel>', () => {
     test('hideButtons', () => {
         const panel = mount(
             <ParentEntityEditPanel
-                childQueryInfo={queryInfo}
-                childData={{}}
                 canUpdate={true}
-                childName="Test"
                 childNounSingular="Testing"
+                childSchemaQuery={schemaQuery}
                 title="Test 123"
                 hideButtons={true}
                 parentDataTypes={[DataClassDataType]}
             />
         );
         panel.setState({
+            childName: 'Test',
             loading: false,
             editing: true,
             originalParents: List<EntityChoice>(),
@@ -113,17 +116,16 @@ describe('<ParentEntityEditPanel>', () => {
     test('excludePanelHeader', () => {
         const panel = mount(
             <ParentEntityEditPanel
-                childQueryInfo={queryInfo}
-                childData={{}}
                 canUpdate={true}
-                childName="Test"
                 childNounSingular="Testing"
+                childSchemaQuery={schemaQuery}
                 title="Test 123"
                 includePanelHeader={false}
                 parentDataTypes={[DataClassDataType]}
             />
         );
         panel.setState({
+            childName: 'Test',
             loading: false,
             originalParents: List<EntityChoice>(),
             currentParents: List<EntityChoice>(),

@@ -26,7 +26,7 @@ import {
     DataClassDataType,
     DomainDetails,
     FindField,
-    getFilterForSampleOperation,
+    getContainerFilter,
     getSelectedData,
     getSelection,
     getStateModelId,
@@ -38,7 +38,6 @@ import {
     resolveErrorMessage,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
-    SampleOperation,
     SampleTypeDataType,
     SchemaQuery,
     SCHEMAS,
@@ -60,12 +59,17 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
 import { IS_ALIQUOT_COL } from './constants';
 
-export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {
-    const promises = [];
+export function initSampleSetSelects(
+    isUpdate: boolean,
+    includeDataClasses: boolean,
+    containerPath: string
+): Promise<ISelectRowsResult[]> {
+    const promises: Array<Promise<ISelectRowsResult>> = [];
 
     // Get Sample Types
     promises.push(
         selectRows({
+            containerPath,
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
             queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
             columns: 'LSID, Name, RowId, Folder',
@@ -77,6 +81,7 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeD
     if (includeDataClasses) {
         promises.push(
             selectRows({
+                containerPath,
                 schemaName: SCHEMAS.EXP_TABLES.DATA_CLASSES.schemaName,
                 queryName: SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName,
                 columns: 'LSID, Name, RowId, Folder, Category',
@@ -85,22 +90,13 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeD
         );
     }
 
-    return new Promise<any[]>((resolve, reject) => {
-        return Promise.all(promises)
-            .then(responses => {
-                resolve(responses);
-            })
-            .catch(errorResponse => {
-                reject(errorResponse);
-            });
-    });
+    return Promise.all(promises);
 }
 
 export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     return new Promise<any>((resolve, reject) => {
         return Ajax.request({
             url: buildURL('experiment', 'getSampleTypeApi.api'),
-            method: 'GET',
             params: config,
             success: Utils.getCallbackWrapper(response => {
                 resolve(Map(response));
@@ -113,11 +109,15 @@ export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     });
 }
 
-export function getSampleTypeDetails(query?: SchemaQuery, domainId?: number): Promise<DomainDetails> {
+export function getSampleTypeDetails(
+    query?: SchemaQuery,
+    domainId?: number,
+    containerPath?: string
+): Promise<DomainDetails> {
     return new Promise((resolve, reject) => {
         return Domain.getDomainDetails({
+            containerPath,
             domainId,
-            containerPath: ActionURL.getContainer(),
             queryName: query ? query.getQuery() : undefined,
             schemaName: query ? query.getSchema() : undefined,
             domainKind: query === undefined && domainId === undefined ? 'SampleSet' : undefined,
@@ -252,14 +252,6 @@ export function getNotInStorageSampleIds(selection: List<any>, sampleType: strin
     return getFilteredSampleSelection(selection, sampleType, [Filter.create('StorageStatus', 'Not in storage')]);
 }
 
-export function getNotPermittedSampleIds(
-    selection: List<any>,
-    sampleType: string,
-    operation: SampleOperation
-): Promise<any[]> {
-    return getFilteredSampleSelection(selection, sampleType, [getFilterForSampleOperation(operation, false)]);
-}
-
 function getFilteredSampleSelection(
     selection: List<any>,
     sampleType: string,
@@ -359,15 +351,24 @@ export function getSampleSelectionLineageData(
 }
 
 export const getOriginalParentsFromSampleLineage = async (
-    sampleLineage: Record<string, any>
+    sampleLineage: Record<string, any>,
+    containerPath?: string
 ): Promise<{
     originalParents: Record<string, List<EntityChoice>>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
 }> => {
     const originalParents = {};
     let parentTypeOptions = Map<string, List<IEntityTypeOption>>();
-    const dataClassTypeData = await getParentTypeDataForSample(DataClassDataType, Object.values(sampleLineage));
-    const sampleTypeData = await getParentTypeDataForSample(SampleTypeDataType, Object.values(sampleLineage));
+    const dataClassTypeData = await getParentTypeDataForSample(
+        DataClassDataType,
+        Object.values(sampleLineage),
+        containerPath
+    );
+    const sampleTypeData = await getParentTypeDataForSample(
+        SampleTypeDataType,
+        Object.values(sampleLineage),
+        containerPath
+    );
 
     // iterate through both Data Classes and Sample Types for finding sample parents
     [DataClassDataType, SampleTypeDataType].forEach(dataType => {
@@ -400,12 +401,13 @@ export const getOriginalParentsFromSampleLineage = async (
 
 export const getParentTypeDataForSample = async (
     parentDataType: EntityDataType,
-    samplesData: any[]
+    samplesData: any[],
+    containerPath?: string
 ): Promise<{
     parentTypeOptions: List<IEntityTypeOption>;
     parentIdData: Record<string, ParentIdData>;
 }> => {
-    const options = await getEntityTypeOptions(parentDataType);
+    const options = await getEntityTypeOptions(parentDataType, containerPath);
     const parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
 
     // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row
@@ -413,7 +415,7 @@ export const getParentTypeDataForSample = async (
     samplesData.forEach(sampleData => {
         parentIDs.push(...sampleData[parentDataType.inputColumnName].map(row => row.value));
     });
-    const parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs);
+    const parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs, containerPath);
 
     return { parentTypeOptions, parentIdData };
 };
@@ -425,10 +427,12 @@ export type ParentIdData = {
 
 function getParentRowIdAndDataType(
     parentDataType: EntityDataType,
-    parentIDs: string[]
+    parentIDs: string[],
+    containerPath?: string
 ): Promise<Record<string, ParentIdData>> {
     return new Promise((resolve, reject) => {
         selectRows({
+            containerPath,
             schemaName: parentDataType.listingSchemaQuery.schemaName,
             queryName: parentDataType.listingSchemaQuery.queryName,
             columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
@@ -671,6 +675,7 @@ export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: s
 export function getSampleAliquotRows(sampleId: number | string): Promise<Array<Record<string, any>>> {
     return new Promise((resolve, reject) => {
         Query.executeSql({
+            containerFilter: getContainerFilter(),
             sql:
                 'SELECT m.RowId, m.Name\n' +
                 'FROM exp.materials m \n' +

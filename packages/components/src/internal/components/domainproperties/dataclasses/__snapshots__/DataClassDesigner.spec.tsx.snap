@@ -1283,6 +1283,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "principalConceptCode": undefined,
             "derivationDataScope": undefined,
             "selected": false,
+            "scannable": false,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1368,6 +1369,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "principalConceptCode": undefined,
             "derivationDataScope": undefined,
             "selected": false,
+            "scannable": false,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1453,6 +1455,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "principalConceptCode": undefined,
             "derivationDataScope": undefined,
             "selected": false,
+            "scannable": false,
           },
         ],
         "indices": Immutable.List [],
@@ -1613,6 +1616,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "principalConceptCode": undefined,
               "derivationDataScope": undefined,
               "selected": false,
+              "scannable": false,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1698,6 +1702,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "principalConceptCode": undefined,
               "derivationDataScope": undefined,
               "selected": false,
+              "scannable": false,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1783,6 +1788,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "principalConceptCode": undefined,
               "derivationDataScope": undefined,
               "selected": false,
+              "scannable": false,
             },
           ],
           "indices": Immutable.List [],
@@ -1929,6 +1935,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "principalConceptCode": undefined,
                 "derivationDataScope": undefined,
                 "selected": false,
+                "scannable": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -2014,6 +2021,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "principalConceptCode": undefined,
                 "derivationDataScope": undefined,
                 "selected": false,
+                "scannable": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -2099,6 +2107,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "principalConceptCode": undefined,
                 "derivationDataScope": undefined,
                 "selected": false,
+                "scannable": false,
               },
             ],
             "indices": Immutable.List [],
@@ -2238,6 +2247,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "principalConceptCode": undefined,
                   "derivationDataScope": undefined,
                   "selected": false,
+                  "scannable": false,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2323,6 +2333,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "principalConceptCode": undefined,
                   "derivationDataScope": undefined,
                   "selected": false,
+                  "scannable": false,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2408,6 +2419,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "principalConceptCode": undefined,
                   "derivationDataScope": undefined,
                   "selected": false,
+                  "scannable": false,
                 },
               ],
               "indices": Immutable.List [],
@@ -2555,6 +2567,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -2640,6 +2653,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -2725,6 +2739,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -2876,6 +2891,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "principalConceptCode": undefined,
                       "derivationDataScope": undefined,
                       "selected": false,
+                      "scannable": false,
                     },
                     Immutable.Record {
                       "conceptURI": null,
@@ -2961,6 +2977,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "principalConceptCode": undefined,
                       "derivationDataScope": undefined,
                       "selected": false,
+                      "scannable": false,
                     },
                     Immutable.Record {
                       "conceptURI": null,
@@ -3046,6 +3063,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "principalConceptCode": undefined,
                       "derivationDataScope": undefined,
                       "selected": false,
+                      "scannable": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -7345,6 +7363,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "principalConceptCode": undefined,
                 "derivationDataScope": undefined,
                 "selected": false,
+                "scannable": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -7430,6 +7449,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "principalConceptCode": undefined,
                 "derivationDataScope": undefined,
                 "selected": false,
+                "scannable": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -7515,6 +7535,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "principalConceptCode": undefined,
                 "derivationDataScope": undefined,
                 "selected": false,
+                "scannable": false,
               },
             ],
             "indices": Immutable.List [],
@@ -7671,6 +7692,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -7756,6 +7778,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -7841,6 +7864,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "principalConceptCode": undefined,
                     "derivationDataScope": undefined,
                     "selected": false,
+                    "scannable": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -8642,6 +8666,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "LAST_ENTERED",
                                                           ]
                                                         }
+                                                        domainContainerPath="3E40EE5E-91B7-1036-BF18-F5B7057C168C"
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
@@ -8760,6 +8785,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "principalConceptCode": undefined,
                                                             "derivationDataScope": undefined,
                                                             "selected": false,
+                                                            "scannable": false,
                                                           }
                                                         }
                                                         fieldDetailsInfo={Object {}}
@@ -8974,6 +9000,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "principalConceptCode": undefined,
                                                                             "derivationDataScope": undefined,
                                                                             "selected": false,
+                                                                            "scannable": false,
                                                                           }
                                                                         }
                                                                         helpNoun="field designer"
@@ -9470,6 +9497,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       >
                                                                         <DomainRowExpandedOptions
                                                                           appPropertiesOnly={false}
+                                                                          domainContainerPath="3E40EE5E-91B7-1036-BF18-F5B7057C168C"
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
@@ -9584,6 +9612,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "principalConceptCode": undefined,
                                                                               "derivationDataScope": undefined,
                                                                               "selected": false,
+                                                                              "scannable": false,
                                                                             }
                                                                           }
                                                                           getDomainFields={[Function]}
@@ -9611,12 +9640,14 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <TextFieldOptions
+                                                                                    appPropertiesOnly={false}
                                                                                     domainIndex={0}
                                                                                     index={0}
                                                                                     label="Text Options"
                                                                                     lockType="NotLocked"
                                                                                     onChange={[Function]}
                                                                                     scale={4000}
+                                                                                    scannable={false}
                                                                                   >
                                                                                     <div>
                                                                                       <Row
@@ -10028,6 +10059,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "principalConceptCode": undefined,
                                                                                         "derivationDataScope": undefined,
                                                                                         "selected": false,
+                                                                                        "scannable": false,
                                                                                       }
                                                                                     }
                                                                                     index={0}
@@ -10521,6 +10553,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "principalConceptCode": undefined,
                                                                                         "derivationDataScope": undefined,
                                                                                         "selected": false,
+                                                                                        "scannable": false,
                                                                                       }
                                                                                     }
                                                                                     index={0}
@@ -11004,6 +11037,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "LAST_ENTERED",
                                                           ]
                                                         }
+                                                        domainContainerPath="3E40EE5E-91B7-1036-BF18-F5B7057C168C"
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
@@ -11111,6 +11145,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "principalConceptCode": undefined,
                                                             "derivationDataScope": undefined,
                                                             "selected": false,
+                                                            "scannable": false,
                                                           }
                                                         }
                                                         fieldDetailsInfo={Object {}}
@@ -11314,6 +11349,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "principalConceptCode": undefined,
                                                                             "derivationDataScope": undefined,
                                                                             "selected": false,
+                                                                            "scannable": false,
                                                                           }
                                                                         }
                                                                         helpNoun="field designer"
@@ -11804,6 +11840,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       >
                                                                         <DomainRowExpandedOptions
                                                                           appPropertiesOnly={false}
+                                                                          domainContainerPath="3E40EE5E-91B7-1036-BF18-F5B7057C168C"
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
@@ -11907,6 +11944,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "principalConceptCode": undefined,
                                                                               "derivationDataScope": undefined,
                                                                               "selected": false,
+                                                                              "scannable": false,
                                                                             }
                                                                           }
                                                                           getDomainFields={[Function]}
@@ -12298,6 +12336,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "principalConceptCode": undefined,
                                                                                         "derivationDataScope": undefined,
                                                                                         "selected": false,
+                                                                                        "scannable": false,
                                                                                       }
                                                                                     }
                                                                                     index={1}
@@ -12780,6 +12819,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "principalConceptCode": undefined,
                                                                                         "derivationDataScope": undefined,
                                                                                         "selected": false,
+                                                                                        "scannable": false,
                                                                                       }
                                                                                     }
                                                                                     index={1}
@@ -13263,6 +13303,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "LAST_ENTERED",
                                                           ]
                                                         }
+                                                        domainContainerPath="3E40EE5E-91B7-1036-BF18-F5B7057C168C"
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
@@ -13370,6 +13411,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "principalConceptCode": undefined,
                                                             "derivationDataScope": undefined,
                                                             "selected": false,
+                                                            "scannable": false,
                                                           }
                                                         }
                                                         fieldDetailsInfo={Object {}}
@@ -13573,6 +13615,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "principalConceptCode": undefined,
                                                                             "derivationDataScope": undefined,
                                                                             "selected": false,
+                                                                            "scannable": false,
                                                                           }
                                                                         }
                                                                         helpNoun="field designer"
@@ -14045,6 +14088,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       >
                                                                         <DomainRowExpandedOptions
                                                                           appPropertiesOnly={false}
+                                                                          domainContainerPath="3E40EE5E-91B7-1036-BF18-F5B7057C168C"
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
@@ -14148,6 +14192,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "principalConceptCode": undefined,
                                                                               "derivationDataScope": undefined,
                                                                               "selected": false,
+                                                                              "scannable": false,
                                                                             }
                                                                           }
                                                                           getDomainFields={[Function]}
@@ -14501,6 +14546,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "principalConceptCode": undefined,
                                                                                         "derivationDataScope": undefined,
                                                                                         "selected": false,
+                                                                                        "scannable": false,
                                                                                       }
                                                                                     }
                                                                                     index={2}
@@ -14983,6 +15029,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "principalConceptCode": undefined,
                                                                                         "derivationDataScope": undefined,
                                                                                         "selected": false,
+                                                                                        "scannable": false,
                                                                                       }
                                                                                     }
                                                                                     index={2}

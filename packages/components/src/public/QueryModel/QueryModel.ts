@@ -3,6 +3,7 @@ import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
 import {
+    caseInsensitive,
     GRID_CHECKBOX_OPTIONS,
     isLoading,
     LoadingState,
@@ -502,6 +503,15 @@ export class QueryModel {
     }
 
     /**
+     * An array of load-related errors on this model. This specifically targets errors related to initializing and/or
+     * loading data. Subsequent errors that can occur (e.g. charting errors, selection errors, etc) are not included
+     * as those are intended to be handled explicitly.
+     */
+    get loadErrors(): string[] {
+        return [this.queryInfoError, this.rowsError].filter(e => !!e);
+    }
+
+    /**
      * Comma-delimited string of sorts from the [[QueryInfo]] sorts property. If the view has defined sorts, they
      * will be concatenated with the sorts property.
      */
@@ -649,6 +659,14 @@ export class QueryModel {
     }
 
     /**
+     * Returns the value of a specific column in the first row.
+     * @param columnName Case insensitive name of the column.
+     */
+    getRowValue(columnName: string): any {
+        return caseInsensitive(this.getRow(), columnName)?.value;
+    }
+
+    /**
      * Get the total page count for the results rows in this QueryModel based on the total row count and the
      * max rows per page value.
      */
@@ -685,6 +703,11 @@ export class QueryModel {
      */
     get hasData(): boolean {
         return this.rows !== undefined;
+    }
+
+    /** True if there are any load errors. */
+    get hasLoadErrors(): boolean {
+        return this.loadErrors.length > 0;
     }
 
     /**

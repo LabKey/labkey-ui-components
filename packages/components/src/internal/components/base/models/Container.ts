@@ -3,6 +3,7 @@ import { Container as IContainer } from '@labkey/api';
 
 const defaultContainer: Partial<IContainer> = {
     activeModules: [],
+    effectivePermissions: [],
     folderType: '',
     hasRestrictedActiveModule: false,
     id: '',
@@ -22,6 +23,7 @@ const defaultContainer: Partial<IContainer> = {
  */
 export class Container extends Record(defaultContainer) implements Partial<IContainer> {
     declare activeModules: string[];
+    declare effectivePermissions: string[];
     declare folderType: string;
     declare hasRestrictedActiveModule: boolean;
     declare id: string;

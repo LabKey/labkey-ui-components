@@ -30,7 +30,7 @@ import {
     TEXT_TYPE,
 } from './PropDescType';
 
-import { DomainRow } from './DomainRow';
+import { DomainRow, DomainRowProps } from './DomainRow';
 import {
     ATTACHMENT_RANGE_URI,
     DOMAIN_EDITABLE_DEFAULT,
@@ -75,31 +75,28 @@ const DEFAULT_OPTIONS = List<string>([
 ]);
 
 describe('DomainRow', () => {
-    test('with empty domain form', () => {
-        const field = DomainField.create({});
-        const tree = mount(
-            wrapDraggable(
-                <DomainRow
-                    key="domain-row-key-1"
-                    index={1}
-                    domainIndex={1}
-                    field={field}
-                    onChange={jest.fn()}
-                    onExpand={jest.fn()}
-                    onDelete={jest.fn()}
-                    expanded={false}
-                    expandTransition={EXPAND_TRANSITION}
-                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    availableTypes={PROP_DESC_TYPES}
-                    dragging={false}
-                    showDefaultValueSettings={true}
-                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
-                    defaultValueOptions={DEFAULT_OPTIONS}
-                    helpNoun="domain"
-                />
-            )
-        );
+    function getDefaultProps(): DomainRowProps {
+        return {
+            availableTypes: PROP_DESC_TYPES,
+            defaultDefaultValueType: DOMAIN_EDITABLE_DEFAULT,
+            defaultValueOptions: DEFAULT_OPTIONS,
+            domainIndex: 1,
+            dragging: false,
+            expanded: false,
+            expandTransition: EXPAND_TRANSITION,
+            field: DomainField.create({}),
+            helpNoun: 'domain',
+            index: 1,
+            maxPhiLevel: PHILEVEL_RESTRICTED_PHI,
+            onChange: jest.fn(),
+            onDelete: jest.fn(),
+            onExpand: jest.fn(),
+            showDefaultValueSettings: true,
+        };
+    }
 
+    test('with empty domain form', () => {
+        const tree = mount(wrapDraggable(<DomainRow {...getDefaultProps()} />));
         expect(tree).toMatchSnapshot();
         tree.unmount();
     });
@@ -118,26 +115,7 @@ describe('DomainRow', () => {
         });
 
         const row = mount(
-            wrapDraggable(
-                <DomainRow
-                    key="domain-row-key-1"
-                    index={_index}
-                    domainIndex={_domainIndex}
-                    field={field}
-                    onChange={jest.fn()}
-                    onExpand={jest.fn()}
-                    onDelete={jest.fn()}
-                    expanded={false}
-                    expandTransition={EXPAND_TRANSITION}
-                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    availableTypes={PROP_DESC_TYPES}
-                    dragging={false}
-                    showDefaultValueSettings={true}
-                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
-                    defaultValueOptions={DEFAULT_OPTIONS}
-                    helpNoun="domain"
-                />
-            )
+            wrapDraggable(<DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />)
         );
 
         const type = row.find({
@@ -180,26 +158,7 @@ describe('DomainRow', () => {
         });
 
         const row = mount(
-            wrapDraggable(
-                <DomainRow
-                    key="domain-row-key-1"
-                    index={_index}
-                    domainIndex={_domainIndex}
-                    field={field}
-                    onChange={jest.fn()}
-                    onExpand={jest.fn()}
-                    onDelete={jest.fn()}
-                    expanded={false}
-                    expandTransition={EXPAND_TRANSITION}
-                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    availableTypes={PROP_DESC_TYPES}
-                    dragging={false}
-                    showDefaultValueSettings={true}
-                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
-                    defaultValueOptions={DEFAULT_OPTIONS}
-                    helpNoun="domain"
-                />
-            )
+            wrapDraggable(<DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />)
         );
 
         const type = row.find({
@@ -242,26 +201,7 @@ describe('DomainRow', () => {
         });
 
         const row = mount(
-            wrapDraggable(
-                <DomainRow
-                    key="domain-row-key-1"
-                    index={_index}
-                    domainIndex={_domainIndex}
-                    field={field}
-                    onChange={jest.fn()}
-                    onExpand={jest.fn()}
-                    onDelete={jest.fn()}
-                    expanded={false}
-                    expandTransition={EXPAND_TRANSITION}
-                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    availableTypes={PROP_DESC_TYPES}
-                    dragging={false}
-                    showDefaultValueSettings={true}
-                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
-                    defaultValueOptions={DEFAULT_OPTIONS}
-                    helpNoun="domain"
-                />
-            )
+            wrapDraggable(<DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />)
         );
 
         const type = row.find({
@@ -304,26 +244,7 @@ describe('DomainRow', () => {
         });
 
         const row = mount(
-            wrapDraggable(
-                <DomainRow
-                    key="domain-row-key-1"
-                    index={_index}
-                    domainIndex={_domainIndex}
-                    field={field}
-                    onChange={jest.fn()}
-                    onExpand={jest.fn()}
-                    onDelete={jest.fn()}
-                    expanded={false}
-                    expandTransition={EXPAND_TRANSITION}
-                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    availableTypes={PROP_DESC_TYPES}
-                    dragging={false}
-                    showDefaultValueSettings={true}
-                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
-                    defaultValueOptions={DEFAULT_OPTIONS}
-                    helpNoun="domain"
-                />
-            )
+            wrapDraggable(<DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />)
         );
 
         const type = row.find({
@@ -376,24 +297,7 @@ describe('DomainRow', () => {
 
         const row = mount(
             wrapDraggable(
-                <DomainRow
-                    key="domain-row-key-1"
-                    index={_index}
-                    domainIndex={_domainIndex}
-                    field={field}
-                    onChange={jest.fn()}
-                    onExpand={jest.fn()}
-                    onDelete={jest.fn()}
-                    expanded={true}
-                    expandTransition={EXPAND_TRANSITION}
-                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    availableTypes={PROP_DESC_TYPES}
-                    dragging={false}
-                    showDefaultValueSettings={true}
-                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
-                    defaultValueOptions={DEFAULT_OPTIONS}
-                    helpNoun="domain"
-                />
+                <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} expanded />
             )
         );
 
@@ -451,26 +355,7 @@ describe('DomainRow', () => {
         });
 
         const row = mount(
-            wrapDraggable(
-                <DomainRow
-                    key="domain-row-key-1"
-                    index={_index}
-                    domainIndex={_domainIndex}
-                    field={field}
-                    onChange={jest.fn()}
-                    onExpand={jest.fn()}
-                    onDelete={jest.fn()}
-                    expanded={false}
-                    expandTransition={EXPAND_TRANSITION}
-                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    availableTypes={PROP_DESC_TYPES}
-                    dragging={false}
-                    showDefaultValueSettings={true}
-                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
-                    defaultValueOptions={DEFAULT_OPTIONS}
-                    helpNoun="domain"
-                />
-            )
+            wrapDraggable(<DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />)
         );
 
         const type = row.find({
@@ -518,27 +403,7 @@ describe('DomainRow', () => {
         });
 
         const row = mount(
-            wrapDraggable(
-                <DomainRow
-                    key="domain-row-key-1"
-                    index={1}
-                    domainIndex={1}
-                    field={field}
-                    fieldError={domainFieldError}
-                    onChange={jest.fn()}
-                    onExpand={jest.fn()}
-                    onDelete={jest.fn()}
-                    expanded={false}
-                    expandTransition={EXPAND_TRANSITION}
-                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    availableTypes={PROP_DESC_TYPES}
-                    dragging={false}
-                    showDefaultValueSettings={true}
-                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
-                    defaultValueOptions={DEFAULT_OPTIONS}
-                    helpNoun="domain"
-                />
-            )
+            wrapDraggable(<DomainRow {...getDefaultProps()} field={field} fieldError={domainFieldError} />)
         );
 
         // test row highlighting for a warning
@@ -578,27 +443,7 @@ describe('DomainRow', () => {
         });
 
         const row = mount(
-            wrapDraggable(
-                <DomainRow
-                    key="domain-row-key-1"
-                    index={1}
-                    domainIndex={1}
-                    field={field}
-                    fieldError={domainFieldError}
-                    onChange={jest.fn()}
-                    onExpand={jest.fn()}
-                    onDelete={jest.fn()}
-                    expanded={false}
-                    expandTransition={EXPAND_TRANSITION}
-                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    availableTypes={PROP_DESC_TYPES}
-                    dragging={false}
-                    showDefaultValueSettings={true}
-                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
-                    defaultValueOptions={DEFAULT_OPTIONS}
-                    helpNoun="domain"
-                />
-            )
+            wrapDraggable(<DomainRow {...getDefaultProps()} field={field} fieldError={domainFieldError} />)
         );
 
         // test row highlighting for error
@@ -626,51 +471,11 @@ describe('DomainRow', () => {
             propertyURI: 'test',
             selected: true,
         });
-        const treeSelected = mount(
-            wrapDraggable(
-                <DomainRow
-                    key="domain-row-key-1"
-                    index={1}
-                    domainIndex={1}
-                    field={field}
-                    onChange={jest.fn()}
-                    onExpand={jest.fn()}
-                    onDelete={jest.fn()}
-                    expanded={false}
-                    expandTransition={EXPAND_TRANSITION}
-                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    availableTypes={PROP_DESC_TYPES}
-                    dragging={false}
-                    showDefaultValueSettings={true}
-                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
-                    defaultValueOptions={DEFAULT_OPTIONS}
-                    helpNoun="domain"
-                />
-            )
-        );
+        const treeSelected = mount(wrapDraggable(<DomainRow {...getDefaultProps()} field={field} />));
         expect(treeSelected.find('.domain-field-check-icon').first().props().checked).toBeTruthy();
 
         const treeNonselected = mount(
-            wrapDraggable(
-                <DomainRow
-                    key="domain-row-key-1"
-                    index={1}
-                    domainIndex={1}
-                    field={field.set('selected', false) as DomainField}
-                    onChange={jest.fn()}
-                    onExpand={jest.fn()}
-                    onDelete={jest.fn()}
-                    expanded={false}
-                    expandTransition={EXPAND_TRANSITION}
-                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    availableTypes={PROP_DESC_TYPES}
-                    dragging={false}
-                    showDefaultValueSettings={true}
-                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
-                    defaultValueOptions={DEFAULT_OPTIONS}
-                    helpNoun="domain"
-                />
-            )
+            wrapDraggable(<DomainRow {...getDefaultProps()} field={field.set('selected', false) as DomainField} />)
         );
         expect(treeNonselected.find('.domain-field-check-icon').first().props().checked).toBeFalsy();
 

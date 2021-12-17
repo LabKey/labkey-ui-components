@@ -17,7 +17,15 @@ import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
 
-import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL, DomainDetails, ConceptModel } from '../../..';
+import {
+    buildURL,
+    ConceptModel,
+    Container,
+    DomainDetails,
+    naturalSortByProperty,
+    QueryColumn,
+    SchemaDetails,
+} from '../../..';
 
 import { processSchemas } from '../../schemas';
 
@@ -153,11 +161,7 @@ export function fetchDomainDetails(domainId: number, schemaName: string, queryNa
             schemaName,
             queryName,
             success: data => {
-                resolve(
-                    DomainDetails.create(
-                        Map<string, any>({ ...data })
-                    )
-                );
+                resolve(DomainDetails.create(Map<string, any>({ ...data })));
             },
             failure: error => {
                 reject(error);
@@ -208,7 +212,7 @@ export function processQueries(payload: any): List<QueryInfoLite> {
     }
 
     return List<QueryInfoLite>(payload.queries.map(qi => QueryInfoLite.create(qi, payload.schemaName)))
-        .sort((a, b) => naturalSort(a.name, b.name))
+        .sort(naturalSortByProperty('name'))
         .toList();
 }
 
@@ -231,19 +235,16 @@ export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>
 }
 
 export function handleSchemas(payload: any): List<SchemaDetails> {
-    return processSchemas(payload)
-        .valueSeq()
-        .sort((a, b) => naturalSort(a.fullyQualifiedName, b.fullyQualifiedName))
-        .toList();
+    return processSchemas(payload).valueSeq().sort(naturalSortByProperty('fullyQualifiedName')).toList();
 }
 
-export function getAvailableTypes(domain: DomainDesign): List<PropDescType> {
-    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, [])) as List<PropDescType>;
+export function getAvailableTypes(domain: DomainDesign, ontologies = []): List<PropDescType> {
+    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies)).toList();
 }
 
 export async function getAvailableTypesForOntology(domain: DomainDesign): Promise<List<PropDescType>> {
-    const ontologies = await fetchOntologies();
-    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies)) as List<PropDescType>;
+    const ontologies = await fetchOntologies(domain.container);
+    return getAvailableTypes(domain, ontologies);
 }
 
 function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologies: OntologyModel[]): boolean {
@@ -296,10 +297,10 @@ export function fetchOntologies(containerPath?: string): Promise<OntologyModel[]
     });
 }
 
-export function getMaxPhiLevel(): Promise<string> {
+export function getMaxPhiLevel(containerPath?: string): Promise<string> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('security', 'GetMaxPhiLevel.api'),
+            url: buildURL('security', 'getMaxPhiLevel.api', undefined, { container: containerPath }),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.maxPhiLevel);
             }),
@@ -349,6 +350,7 @@ export function saveDomain(
 
         if (domain.domainId) {
             Domain.save({
+                containerPath: domain.container,
                 domainId: domain.domainId,
                 options,
                 domainDesign: DomainDesign.serialize(domain),
@@ -603,6 +605,7 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             conceptSubtree: undefined,
             conceptLabelColumn: undefined,
             conceptImportColumn: undefined,
+            scannable: undefined,
         }) as DomainField;
 
         if (field.isNew()) {
@@ -935,7 +938,7 @@ export function getUpdatedVisitedPanelsList(visitedPanels: List<number>, index: 
     return updatedVisitedPanels;
 }
 
-function updateOntologyDomainCols (
+function updateOntologyDomainCols(
     fieldIndex: number,
     domainIndex: number,
     updatedDomain: DomainDesign,
@@ -971,11 +974,27 @@ export function updateOntologyFieldProperties(
     if (ontField.dataType.isOntologyLookup()) {
         // if the concept field prop is set and the field's name or data type has changed, update it based on the updatedDomain
         if (ontField.conceptImportColumn) {
-            updatedDomain = updateOntologyDomainCols(fieldIndex, domainIndex, updatedDomain, origDomain, removedFieldIndexes, DOMAIN_FIELD_ONTOLOGY_IMPORT_COL, ontField.conceptImportColumn);
+            updatedDomain = updateOntologyDomainCols(
+                fieldIndex,
+                domainIndex,
+                updatedDomain,
+                origDomain,
+                removedFieldIndexes,
+                DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
+                ontField.conceptImportColumn
+            );
         }
 
         if (ontField.conceptLabelColumn) {
-            updatedDomain = updateOntologyDomainCols(fieldIndex, domainIndex, updatedDomain, origDomain, removedFieldIndexes, DOMAIN_FIELD_ONTOLOGY_LABEL_COL, ontField.conceptLabelColumn);
+            updatedDomain = updateOntologyDomainCols(
+                fieldIndex,
+                domainIndex,
+                updatedDomain,
+                origDomain,
+                removedFieldIndexes,
+                DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
+                ontField.conceptLabelColumn
+            );
         }
     }
     return updatedDomain;
@@ -991,7 +1010,7 @@ export function getOntologyUpdatedFieldName(
 ): [boolean, string] {
     // Check if field name and/or index have changed
     let origFieldIndex = origDomain.findFieldIndexByName(propFieldName);
-    let updateFieldIndex = updatedDomain.findFieldIndexByName(propFieldName);
+    const updateFieldIndex = updatedDomain.findFieldIndexByName(propFieldName);
     const originalPropField = origDomain.fields.get(origFieldIndex);
 
     // check for a field removal prior to the ontology lookup field
@@ -1013,9 +1032,13 @@ export function getOntologyUpdatedFieldName(
     }
 
     const updatedPropField = updatedDomain.fields.get(origFieldIndex);
-    const fieldChanged = propFieldRemoved
-        || origFieldIndex !== updateFieldIndex
-        || originalPropField.rangeURI !== updatedPropField?.rangeURI;
+    const fieldChanged =
+        propFieldRemoved ||
+        origFieldIndex !== updateFieldIndex ||
+        originalPropField.rangeURI !== updatedPropField?.rangeURI;
 
-    return [fieldChanged, !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined];
+    return [
+        fieldChanged,
+        !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined,
+    ];
 }

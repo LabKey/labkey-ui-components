@@ -14,6 +14,7 @@ import { DEFAULT_LINEAGE_DISTANCE, SAMPLE_ALIQUOT_PROTOCOL_LSID } from '../linea
 import { LineageDepthLimitMessage } from '../lineage/LineageGraph';
 
 interface Props {
+    containerPath?: string;
     sampleLsid: string;
     sampleID: string;
     goToLineageGrid: () => void;
@@ -118,8 +119,15 @@ export class SampleLineageGraph extends PureComponent<Props, State> {
     }
 
     render() {
-        const { sampleLsid, sampleID, goToLineageGrid, onLineageNodeDblClick, groupTitles, groupingOptions } =
-            this.props;
+        const {
+            containerPath,
+            sampleLsid,
+            sampleID,
+            goToLineageGrid,
+            onLineageNodeDblClick,
+            groupTitles,
+            groupingOptions,
+        } = this.props;
 
         const grouping = {
             ...(groupingOptions ?? { childDepth: DEFAULT_LINEAGE_DISTANCE }),
@@ -134,6 +142,7 @@ export class SampleLineageGraph extends PureComponent<Props, State> {
                     {this.renderFilter()}
 
                     <LineageGraph
+                        containerPath={containerPath}
                         lsid={sampleLsid}
                         grouping={grouping}
                         filters={this.getLineageFilters()}

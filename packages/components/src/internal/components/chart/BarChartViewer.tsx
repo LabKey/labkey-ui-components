@@ -89,8 +89,8 @@ export class BarChartViewer extends PureComponent<Props, State> {
                 const { itemCountFilters, itemCountSQ } = chartConfigs[currentGroup];
                 const itemCount = await fetchItemCount(itemCountSQ, itemCountFilters);
 
-                const { queryName, schemaName } = this.getSelectedChartGroup();
-                const response = await selectRows({ schemaName, queryName });
+                const { queryName, schemaName, sort } = this.getSelectedChartGroup();
+                const response = await selectRows({ schemaName, queryName, sort });
 
                 this.setState(state => ({
                     itemCounts: { ...state.itemCounts, [currentGroup]: itemCount },
@@ -112,17 +112,17 @@ export class BarChartViewer extends PureComponent<Props, State> {
     };
 
     onBarClick = (evt: any, row: ChartData): void => {
-        const { getAppURL } = this.getSelectedChartGroup();
+        const { getAppURL, filterDataRegionName = 'query' } = this.getSelectedChartGroup();
 
         if (getAppURL) {
             const chart = this.getSelectedChartGroupCharts()[this.state.currentChart];
 
             // apply the created date filter if the chart definition has one
-            let url = getAppURL(row);
+            let url = getAppURL(row, evt);
 
             if (chart.filter !== undefined) {
                 const dt = moment().add(chart.filter, 'days').format(getDateFormat().toUpperCase());
-                url = url.addParam('query.Created~dategte', dt);
+                url = url.addParam(filterDataRegionName + '.Created~dategte', dt);
             }
 
             this.props.navigate(url);
@@ -190,6 +190,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
         } else {
             const { barFillColors, data } = processChartData(response, {
                 colorPath: selectedGroup.colorPath,
+                groupPath: selectedGroup.groupPath,
                 countPath: [currentChartOptions.name, 'value'],
             });
 
@@ -198,6 +199,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                     barFillColors={barFillColors}
                     data={data}
                     defaultBorderColor="#555"
+                    grouped={selectedGroup.groupPath !== undefined}
                     onClick={selectedGroup.getAppURL ? this.onBarClick : undefined}
                     title={`${selectedGroup.label} (${currentChartOptions.label})`}
                 />

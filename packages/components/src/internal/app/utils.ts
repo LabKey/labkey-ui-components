@@ -131,6 +131,10 @@ export function isSampleManagerNavigationEnabled(): boolean {
     return getServerContext().moduleContext?.biologics?.isBiologicsSampleManagerNavEnabled === true;
 }
 
+export function isSubfolderDataEnabled(): boolean {
+    return getServerContext().moduleContext?.biologics?.isSubfolderDataEnabled === true;
+}
+
 export function isSampleManagerEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.samplemanagement !== undefined;
 }

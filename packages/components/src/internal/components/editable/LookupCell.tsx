@@ -90,7 +90,7 @@ export class LookupCell extends PureComponent<LookupCellProps, undefined, Global
             if (items.length == 0) {
                 modifyCell(modelId, colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
             } else {
-                const valueDescriptors = items.map(item => ({ raw: item.value, display: item.label })).toArray();
+                const valueDescriptors = items.map(item => ({ raw: item.value, display: item.label }));
                 modifyCell(modelId, colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
             }
         } else {

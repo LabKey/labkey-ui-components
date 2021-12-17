@@ -607,6 +607,7 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             conceptSubtree: undefined,
             conceptLabelColumn: undefined,
             conceptImportColumn: undefined,
+            scannable: undefined,
             textChoiceValidator: undefined,
         }) as DomainField;
 

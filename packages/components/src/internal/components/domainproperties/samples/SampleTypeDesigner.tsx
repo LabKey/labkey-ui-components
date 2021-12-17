@@ -635,6 +635,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     domainFormDisplayOptions={{
                         ...domainFormDisplayOptions,
                         hideStudyPropertyTypes: !_showLinkToStudy,
+                        showScannableOption: true,
                     }}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}

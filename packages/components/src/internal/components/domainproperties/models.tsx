@@ -438,6 +438,9 @@ export class DomainDesign
         if (domainKindName !== VAR_LIST && domainKindName !== INT_LIST) {
             delete columns.isPrimaryKey;
         }
+        if (!(appPropertiesOnly && domainKindName === 'SampleSet')) {
+            delete columns.scannable;
+        }
 
         const unsortedColumns = List(
             Object.keys(columns).map(key => {
@@ -713,6 +716,7 @@ export interface IDomainField {
     required?: boolean;
     recommendedVariable?: boolean;
     scale?: number;
+    scannable?: boolean;
     URL?: string;
     shownInDetailsView?: boolean;
     shownInInsertView?: boolean;
@@ -789,6 +793,7 @@ export class DomainField
         principalConceptCode: undefined,
         derivationDataScope: undefined,
         selected: false,
+        scannable: false,
     })
     implements IDomainField
 {
@@ -823,6 +828,7 @@ export class DomainField
     declare recommendedVariable: boolean;
     declare required?: boolean;
     declare scale?: number;
+    declare scannable?: boolean;
     declare URL?: string;
     declare shownInDetailsView?: boolean;
     declare shownInInsertView?: boolean;
@@ -1799,6 +1805,7 @@ export interface IDomainFormDisplayOptions {
     hideImportExport?: boolean;
     hideConditionalFormatting?: boolean;
     hideInferFromFile?: boolean;
+    showScannableOption?: boolean;
 }
 
 export interface IDerivationDataScope {

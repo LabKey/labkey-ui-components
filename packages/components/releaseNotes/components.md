@@ -3,8 +3,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Item 9758: ...
+* Item 9758: Field editor "Text Choice" data type and UI to create, update, delete field options/values
   * RegEx validator modal fix for “Fail validation when pattern matches field value” checked state on initialization
+  * factor out ChoicesListItem to re-use in list group cases (TextChoiceOptions, ChoosePicklistModal, ManageSasmpleStatusesPanel)
+  * field editor row addition of "Text Choice" data type and "Text Choice Options" section in expanded row
+  * field editor row updates for selected "Text Choice" data type: reset some field options set for other types, hide regex validator UI, hide text options UI
+  * factor out DomainRowWarning to re-use between name special character type warnings and empty text choice values details display
+  * TextChoiceAddValuesModal for add case and check for max allowed values
+  * domain design model parsing for loading existing field property validators for text choice fields
 
 ### version 2.103.1
 *Released*: 14 December 2021

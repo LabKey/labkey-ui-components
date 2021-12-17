@@ -89,6 +89,7 @@ const gridDataAppPropsOnlyConst = [
         selected: '',
         description: '',
         required: 'false',
+        scannable: 'false',
     },
 ];
 const gridDataConst = [

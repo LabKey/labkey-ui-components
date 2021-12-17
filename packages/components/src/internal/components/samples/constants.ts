@@ -16,10 +16,10 @@ export const UNIQUE_ID_FIND_FIELD: FindField = {
     nounSingular: 'Barcode',
     nounPlural: 'Barcodes',
     name: 'uniqueIds',
-    helpTextTitle: 'Unique ID Fields',
+    helpTextTitle: 'Barcode Fields',
     helpText:
-        'The ids provided will be matched against all of the fields of type Unique ID defined in your sample types.',
-    label: 'Barcodes (Unique ID field)',
+        'The ids provided will be matched against all Unique ID fields or any fields marked as Barcodes as defined in your sample types.',
+    label: 'Barcodes',
     storageKeyPrefix: 'u:',
 };
 export const SAMPLE_ID_FIND_FIELD: FindField = {
@@ -36,7 +36,11 @@ export const SAMPLE_STATE_COLUMN_NAME = 'SampleState';
 export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';
 export const SAMPLE_STATE_DESCRIPTION_COLUMN_NAME = 'SampleState/Description';
 
-export const SAMPLE_STATUS_REQUIRED_COLUMNS = [SAMPLE_STATE_COLUMN_NAME, SAMPLE_STATE_TYPE_COLUMN_NAME, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME];
+export const SAMPLE_STATUS_REQUIRED_COLUMNS = [
+    SAMPLE_STATE_COLUMN_NAME,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+];
 
 export enum SampleOperation {
     EditMetadata,

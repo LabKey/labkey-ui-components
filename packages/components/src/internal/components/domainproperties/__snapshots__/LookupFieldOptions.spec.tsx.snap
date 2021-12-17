@@ -97,6 +97,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "principalConceptCode": undefined,
         "derivationDataScope": undefined,
         "selected": false,
+        "scannable": false,
       }
     }
   >
@@ -656,6 +657,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "principalConceptCode": undefined,
         "derivationDataScope": undefined,
         "selected": false,
+        "scannable": false,
       }
     }
   >
@@ -1318,6 +1320,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "principalConceptCode": undefined,
         "derivationDataScope": undefined,
         "selected": false,
+        "scannable": false,
       }
     }
   >
@@ -1980,6 +1983,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "principalConceptCode": undefined,
         "derivationDataScope": undefined,
         "selected": false,
+        "scannable": false,
       }
     }
   >

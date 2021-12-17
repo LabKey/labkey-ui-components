@@ -9948,6 +9948,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                           </Col>
                                                                                         </div>
                                                                                       </Row>
+                                                                                      <Memo()
+                                                                                        appPropertiesOnly={false}
+                                                                                        domainIndex={0}
+                                                                                        index={0}
+                                                                                        label="Text Options"
+                                                                                        lockType="NotLocked"
+                                                                                        onChange={[Function]}
+                                                                                        scale={4000}
+                                                                                        scannable={false}
+                                                                                      />
                                                                                     </div>
                                                                                   </TextFieldOptions>
                                                                                 </div>
@@ -11972,6 +11982,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NumericFieldOptions
+                                                                                    appPropertiesOnly={false}
                                                                                     defaultScale="LINEAR"
                                                                                     domainIndex={0}
                                                                                     format={null}
@@ -11979,6 +11990,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     label="Integer Options"
                                                                                     lockType="NotLocked"
                                                                                     onChange={[Function]}
+                                                                                    scannable={false}
                                                                                   >
                                                                                     <div>
                                                                                       <Row
@@ -12236,6 +12248,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                           </Col>
                                                                                         </div>
                                                                                       </Row>
+                                                                                      <Memo()
+                                                                                        appPropertiesOnly={false}
+                                                                                        defaultScale="LINEAR"
+                                                                                        domainIndex={0}
+                                                                                        format={null}
+                                                                                        index={1}
+                                                                                        label="Integer Options"
+                                                                                        lockType="NotLocked"
+                                                                                        onChange={[Function]}
+                                                                                        scannable={false}
+                                                                                      />
                                                                                     </div>
                                                                                   </NumericFieldOptions>
                                                                                 </div>

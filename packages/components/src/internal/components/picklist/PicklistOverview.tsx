@@ -175,7 +175,6 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
     return (
         <Page title={picklist?.name}>
             <PageDetailHeader
-                user={user}
                 iconDir="_images"
                 iconSrc="workflow"
                 title={picklist?.name}

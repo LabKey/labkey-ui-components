@@ -22,8 +22,6 @@ import { FieldEditorOverlay, FieldEditorOverlayProps } from './FieldEditorOverla
 
 export interface PageDetailHeaderProps {
     description?: ReactNode;
-    onDescriptionChange?: (name: string, newValue: any) => void;
-    fieldTriggerProps?: FieldEditorOverlayProps;
     iconAltText?: string;
     iconDir?: string;
     iconSrc?: string;
@@ -31,7 +29,6 @@ export interface PageDetailHeaderProps {
     leftColumns?: number;
     subTitle?: ReactNode;
     title: ReactNode;
-    user?: User;
 }
 
 export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
@@ -43,22 +40,15 @@ export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
         const {
             children,
             description,
-            fieldTriggerProps,
             iconAltText,
             iconUrl,
             iconDir,
             iconSrc,
             leftColumns,
-            onDescriptionChange,
             subTitle,
             title,
-            user,
         } = this.props;
         const hasIcon = iconUrl || iconSrc;
-
-        if ((onDescriptionChange || fieldTriggerProps) && !user) {
-            throw Error('PageDetailHeader: If supplying "fieldTriggerProps", then "user" prop must be specified.');
-        }
 
         return (
             <div className="page-header">
@@ -80,27 +70,7 @@ export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
                     <div className={hasIcon ? 'detail__header-icon--body-container' : ''}>
                         <h2 className="no-margin-top detail__header--name">{title}</h2>
                         {subTitle && <h4 className="test-loc-detail-subtitle">{subTitle}</h4>}
-                        {!onDescriptionChange && !fieldTriggerProps && <span className="detail__header--desc">{description}</span>}
-                        {onDescriptionChange &&
-                            <EditInlineField
-                                allowEdit={hasAllPermissions(user, [PermissionTypes.Update])}
-                                className={""} // don't want the padding
-                                label="Description"
-                                name="description"
-                                onChange={onDescriptionChange}
-                                placeholder="Description"
-                                type="textarea"
-                                value={description}
-                            />
-                        }
-                        {fieldTriggerProps && (
-                            <div className="text__truncate">
-                                <FieldEditorOverlay
-                                    {...fieldTriggerProps}
-                                    canUpdate={hasAllPermissions(user, [PermissionTypes.Update])}
-                                />
-                            </div>
-                        )}
+                        {description && <span className="detail__header--desc">{description}</span>}
                     </div>
                 </div>
                 {children && <div className="pull-right">{children}</div>}

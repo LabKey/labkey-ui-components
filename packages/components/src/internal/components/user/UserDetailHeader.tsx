@@ -23,7 +23,7 @@ export const UserDetailHeader: FC<Props> = props => {
     }, [description, user]);
 
     return (
-        <PageDetailHeader user={user} iconUrl={user.avatar} title={title} description={userDescription} leftColumns={9}>
+        <PageDetailHeader iconUrl={user.avatar} title={title} description={userDescription} leftColumns={9}>
             {showFolderTitle && !!container?.title && (
                 <div className="detail__header--desc">
                     <i className="fa fa-folder-open" />

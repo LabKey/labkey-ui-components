@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.106.0
+*Released*: 20 December 2021
 * Update `LookupCell` to use `QuerySelect` for display
 * Remove `LookupStore`
 

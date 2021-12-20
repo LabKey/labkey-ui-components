@@ -58,6 +58,7 @@ import {
     UNIQUE_ID_TYPE,
     BOOLEAN_TYPE,
     USERS_TYPE,
+    TEXT_CHOICE_TYPE,
 } from './PropDescType';
 import {
     CONCEPT_CODE_CONCEPT_URI,
@@ -335,6 +336,7 @@ describe('domain properties actions', () => {
             allowFileLinkProperties: true,
             allowAttachmentProperties: true,
             allowTimepointProperties: true,
+            allowTextChoiceProperties: true,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeTruthy();
@@ -345,6 +347,7 @@ describe('domain properties actions', () => {
         expect(available.contains(VISIT_DATE_TYPE)).toBeTruthy();
         expect(available.contains(VISIT_ID_TYPE)).toBeTruthy();
         expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
+        expect(available.contains(TEXT_CHOICE_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypes, no optional allowed', () => {
@@ -353,6 +356,7 @@ describe('domain properties actions', () => {
             allowFileLinkProperties: false,
             allowAttachmentProperties: false,
             allowTimepointProperties: false,
+            allowTextChoiceProperties: false,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeFalsy();
@@ -363,6 +367,7 @@ describe('domain properties actions', () => {
         expect(available.contains(VISIT_DATE_TYPE)).toBeFalsy();
         expect(available.contains(VISIT_ID_TYPE)).toBeFalsy();
         expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
+        expect(available.contains(TEXT_CHOICE_TYPE)).toBeFalsy();
     });
 
     test('getAvailableTypesForOntology', async () => {

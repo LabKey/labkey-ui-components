@@ -155,11 +155,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     const exception = resolveErrorMessage(response);
 
                     setSubmitting(false, () => {
-                        if (exception) {
-                            this.saveModel({ exception });
-                        } else {
-                            this.saveModel({ domain: response, exception: undefined });
-                        }
+                        this.saveModel({ exception });
                     });
                 });
         }

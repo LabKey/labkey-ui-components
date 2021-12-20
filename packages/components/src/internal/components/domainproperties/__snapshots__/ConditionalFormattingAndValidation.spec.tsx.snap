@@ -121,6 +121,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
       "principalConceptCode": undefined,
       "derivationDataScope": undefined,
       "selected": false,
+      "scannable": false,
     }
   }
   index={1}
@@ -595,6 +596,7 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
       "principalConceptCode": undefined,
       "derivationDataScope": undefined,
       "selected": false,
+      "scannable": false,
     }
   }
   index={1}
@@ -898,6 +900,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
       "principalConceptCode": undefined,
       "derivationDataScope": undefined,
       "selected": false,
+      "scannable": false,
     }
   }
   index={1}

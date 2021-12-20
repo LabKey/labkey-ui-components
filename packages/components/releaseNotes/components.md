@@ -6,6 +6,19 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update `LookupCell` to use `QuerySelect` for display
 * Remove `LookupStore`
 
+### version 2.105.0
+*Released*: 16 December 2021
+* Item #9633: Add scannable option to SampleType text fields for LabKey apps
+  * Added scannable field and value property to `TextFieldOptions`
+  * Passed through appPropertiesOnly to `DomainRowExpandedOptions` and `TextFieldOptions`
+  * Added optional showScannableOption property to `DomainFormDisplayOptions`
+  * Added showScannableOption property to `SampleTypeDesigner`
+  * Added `scannable` property to `DomainField`
+
+### version 2.104.0
+*Released*: 15 December 2021
+* Add container select support to assay picker XAR import
+
 ### version 2.103.1
 *Released*: 14 December 2021
 * Merge release21.12-SNAPSHOT to develop

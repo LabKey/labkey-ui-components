@@ -142,6 +142,7 @@ export function reorderSummaryColumns(a: DomainPropertiesGridColumn, b: DomainPr
         // Other expanded field options
         'conceptURI', // ParticipantId, Flag, Sample, and Ontology Lookup
         'scale',
+        'scannable',
         'description',
         'label',
         'importAliases',

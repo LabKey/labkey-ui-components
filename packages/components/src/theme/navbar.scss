@@ -100,7 +100,7 @@ $nav-menu-btn-width: 85px;
     }
 }
 
-@media (max-width: $screen-xs-max) {
+@media (max-width: 767px) { // $screen-xs-max
     .nav-folder-menu__button {
         max-width: 180px;
     }

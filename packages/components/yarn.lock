@@ -738,10 +738,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.7.1-fb-validateNamingPatten.3":
-  version "1.7.1-fb-validateNamingPatten.3"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.7.1-fb-validateNamingPatten.3.tgz#82b2660840def214e4089923c7f9db6ca5eff353"
-  integrity sha1-grJmCEDe8hTkCJkjx/nbbKXv81M=
+"@labkey/api@1.7.1-fb-validateNamingPatten.4":
+  version "1.7.1-fb-validateNamingPatten.4"
+  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.7.1-fb-validateNamingPatten.4.tgz#ba5b6d6acc0b6ad917994b8ddf66291e1076c3f0"
+  integrity sha1-ulttaswLatkXmUuN32YpHhB2w/A=
 
 "@labkey/eslint-config-base@0.0.11-fb-discussions.2":
   version "0.0.11-fb-discussions.2"

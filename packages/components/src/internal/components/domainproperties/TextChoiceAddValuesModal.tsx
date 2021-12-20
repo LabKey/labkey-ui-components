@@ -6,20 +6,20 @@ import { Utils } from '@labkey/api';
 import { MAX_VALID_TEXT_CHOICES } from './constants';
 
 interface Props {
-    title: string;
+    fieldName: string;
     onCancel: () => void;
     onApply: (values: string[]) => void;
     initialValueCount?: number;
 }
 
 export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
-    const { onCancel, onApply, title, initialValueCount = 0 } = props;
+    const { onCancel, onApply, fieldName, initialValueCount = 0 } = props;
     const [valueStr, setValueStr] = useState<string>('');
     const parsedValues = useMemo(() => {
         return valueStr?.trim().length > 0 ? valueStr.split('\n').map(v => v.trim()) : [];
     }, [valueStr]);
     const maxValuesToAdd = useMemo(() => MAX_VALID_TEXT_CHOICES - initialValueCount, [initialValueCount]);
-    const hasTitle = useMemo(() => title?.length > 0, [title]);
+    const hasFieldName = useMemo(() => fieldName?.length > 0, [fieldName]);
 
     const onChange = useCallback(evt => {
         setValueStr(evt.target.value);
@@ -34,13 +34,16 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
     return (
         <Modal show={true} onHide={onCancel}>
             <Modal.Header closeButton>
-                <Modal.Title>Add Text Choice Values {hasTitle && `for ${title}`}</Modal.Title>
+                <Modal.Title>Add Text Choice Values {hasFieldName && `for ${fieldName}`}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <p>
                     {`A total of ${Utils.pluralize(maxValuesToAdd, 'value', 'values')} can be added. `}
                     <span className={classNames({ 'domain-text-choices-error': parsedValues.length > maxValuesToAdd })}>
-                        The current text input includes {Utils.pluralize(parsedValues.length, 'value', 'values')}.
+                        {parsedValues.length === 1
+                            ? 'There is currently 1 new text choice value provided below.'
+                            : `There are currently ${parsedValues.length} new text choice values provided below.`
+                        }
                     </span>
                 </p>
                 <textarea

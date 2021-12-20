@@ -14,7 +14,7 @@ describe('ChoicesListItem', () => {
     function validate(wrapper: ReactWrapper, active = false, hasComponentRight = false, itemType = 'Available'): void {
         expect(wrapper.find('button')).toHaveLength(1);
         expect(wrapper.find('.active')).toHaveLength(active ? 1 : 0);
-        expect(wrapper.find('.choices-list__item-type')).toHaveLength(itemType !== 'Available' ? 1 : 0);
+        expect(wrapper.find('.choices-list__sub-label')).toHaveLength(itemType !== 'Available' ? 1 : 0);
         expect(wrapper.find('.component-right')).toHaveLength(hasComponentRight ? 1 : 0);
         expect(wrapper.find('button').text()).toBe(itemType);
     }
@@ -31,8 +31,8 @@ describe('ChoicesListItem', () => {
         wrapper.unmount();
     });
 
-    test('itemType', () => {
-        const wrapper = mount(<ChoicesListItem {...DEFAULT_PROPS} itemType="Received" />);
+    test('subLabel', () => {
+        const wrapper = mount(<ChoicesListItem {...DEFAULT_PROPS} subLabel="Received" />);
         validate(wrapper, false, false, 'AvailableReceived');
         wrapper.unmount();
     });
@@ -41,7 +41,7 @@ describe('ChoicesListItem', () => {
         const wrapper = mount(
             <ChoicesListItem
                 {...DEFAULT_PROPS}
-                itemType="Type"
+                subLabel="Type"
                 componentRight={<div className="component-right">TEST</div>}
             />
         );

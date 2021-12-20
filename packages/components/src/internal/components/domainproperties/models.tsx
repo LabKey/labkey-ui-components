@@ -565,7 +565,7 @@ export class PropertyValidatorProperties
 
     constructor(values?: { [key: string]: any }) {
         if (typeof values?.failOnMatch === 'string') {
-            values.failOnMatch = values.failOnMatch === 'true';
+            values.failOnMatch = values.failOnMatch.toLowerCase() === 'true';
         }
         // see DomainUtil.getPropertyDescriptor() for where this property is added to the JSON field validator extChoice validator info
         if (typeof values?.validValues === 'string') {

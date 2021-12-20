@@ -77,6 +77,8 @@ export class PropDescType
     }
 
     static isTextChoice(name: string): boolean {
+        // in the case of the field editor row data type select input change, the field input name is provided
+        // so check for that case here as well
         return name === TEXT_CHOICE_CONCEPT_URI || name === 'textChoice';
     }
 

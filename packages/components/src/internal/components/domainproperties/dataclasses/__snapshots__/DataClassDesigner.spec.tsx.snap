@@ -1209,7 +1209,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "lookupValidator": undefined,
             "measure": false,
             "mvEnabled": false,
-            "name": "TextFIeld",
+            "name": "TextField",
             "PHI": "NotPHI",
             "propertyId": 518195,
             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -1270,7 +1270,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lookupSchema": undefined,
                 "lookupQuery": undefined,
               },
-              "name": "TextFIeld",
+              "name": "TextField",
               "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
             },
             "updatedField": false,
@@ -1551,7 +1551,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "lookupValidator": undefined,
               "measure": false,
               "mvEnabled": false,
-              "name": "TextFIeld",
+              "name": "TextField",
               "PHI": "NotPHI",
               "propertyId": 518195,
               "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -1612,7 +1612,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "lookupSchema": undefined,
                   "lookupQuery": undefined,
                 },
-                "name": "TextFIeld",
+                "name": "TextField",
                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
               },
               "updatedField": false,
@@ -1879,7 +1879,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lookupValidator": undefined,
                 "measure": false,
                 "mvEnabled": false,
-                "name": "TextFIeld",
+                "name": "TextField",
                 "PHI": "NotPHI",
                 "propertyId": 518195,
                 "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -1940,7 +1940,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                   },
-                  "name": "TextFIeld",
+                  "name": "TextField",
                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                 },
                 "updatedField": false,
@@ -2200,7 +2200,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "lookupValidator": undefined,
                   "measure": false,
                   "mvEnabled": false,
-                  "name": "TextFIeld",
+                  "name": "TextField",
                   "PHI": "NotPHI",
                   "propertyId": 518195,
                   "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -2261,7 +2261,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
-                    "name": "TextFIeld",
+                    "name": "TextField",
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                   },
                   "updatedField": false,
@@ -2529,7 +2529,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lookupValidator": undefined,
                     "measure": false,
                     "mvEnabled": false,
-                    "name": "TextFIeld",
+                    "name": "TextField",
                     "PHI": "NotPHI",
                     "propertyId": 518195,
                     "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -2590,7 +2590,7 @@ exports[`DataClassDesigner initModel 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
-                      "name": "TextFIeld",
+                      "name": "TextField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     },
                     "updatedField": false,
@@ -2862,7 +2862,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "lookupValidator": undefined,
                       "measure": false,
                       "mvEnabled": false,
-                      "name": "TextFIeld",
+                      "name": "TextField",
                       "PHI": "NotPHI",
                       "propertyId": 518195,
                       "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -2923,7 +2923,7 @@ exports[`DataClassDesigner initModel 1`] = `
                           "lookupSchema": undefined,
                           "lookupQuery": undefined,
                         },
-                        "name": "TextFIeld",
+                        "name": "TextField",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       },
                       "updatedField": false,
@@ -7343,7 +7343,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lookupValidator": undefined,
                 "measure": false,
                 "mvEnabled": false,
-                "name": "TextFIeld",
+                "name": "TextField",
                 "PHI": "NotPHI",
                 "propertyId": 518195,
                 "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -7404,7 +7404,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                   },
-                  "name": "TextFIeld",
+                  "name": "TextField",
                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                 },
                 "updatedField": false,
@@ -7681,7 +7681,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lookupValidator": undefined,
                     "measure": false,
                     "mvEnabled": false,
-                    "name": "TextFIeld",
+                    "name": "TextField",
                     "PHI": "NotPHI",
                     "propertyId": 518195,
                     "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -7742,7 +7742,7 @@ exports[`DataClassDesigner initModel 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
-                      "name": "TextFIeld",
+                      "name": "TextField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     },
                     "updatedField": false,
@@ -8792,7 +8792,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "lookupValidator": undefined,
                                                             "measure": false,
                                                             "mvEnabled": false,
-                                                            "name": "TextFIeld",
+                                                            "name": "TextField",
                                                             "PHI": "NotPHI",
                                                             "propertyId": 518195,
                                                             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -8853,7 +8853,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                 "lookupSchema": undefined,
                                                                 "lookupQuery": undefined,
                                                               },
-                                                              "name": "TextFIeld",
+                                                              "name": "TextField",
                                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                             },
                                                             "updatedField": false,
@@ -9011,7 +9011,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "lookupValidator": undefined,
                                                                             "measure": false,
                                                                             "mvEnabled": false,
-                                                                            "name": "TextFIeld",
+                                                                            "name": "TextField",
                                                                             "PHI": "NotPHI",
                                                                             "propertyId": 518195,
                                                                             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -9072,7 +9072,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "lookupSchema": undefined,
                                                                                 "lookupQuery": undefined,
                                                                               },
-                                                                              "name": "TextFIeld",
+                                                                              "name": "TextField",
                                                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                                             },
                                                                             "updatedField": false,
@@ -9093,7 +9093,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         }
                                                                         helpNoun="field designer"
                                                                         index={0}
-                                                                        label="TextFIeld"
+                                                                        label="TextField"
                                                                         maxPhiLevel="NotPHI"
                                                                         onApply={[Function]}
                                                                         onHide={[Function]}
@@ -9349,7 +9349,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     name="domainpropertiesrow-name"
                                                                                     onChange={[Function]}
                                                                                     type="text"
-                                                                                    value="TextFIeld"
+                                                                                    value="TextField"
                                                                                   >
                                                                                     <input
                                                                                       className="form-control"
@@ -9358,7 +9358,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       name="domainpropertiesrow-name"
                                                                                       onChange={[Function]}
                                                                                       type="text"
-                                                                                      value="TextFIeld"
+                                                                                      value="TextField"
                                                                                     />
                                                                                   </FormControl>
                                                                                 </div>
@@ -9631,7 +9631,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "lookupValidator": undefined,
                                                                               "measure": false,
                                                                               "mvEnabled": false,
-                                                                              "name": "TextFIeld",
+                                                                              "name": "TextField",
                                                                               "PHI": "NotPHI",
                                                                               "propertyId": 518195,
                                                                               "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -9692,7 +9692,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "lookupSchema": undefined,
                                                                                   "lookupQuery": undefined,
                                                                                 },
-                                                                                "name": "TextFIeld",
+                                                                                "name": "TextField",
                                                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                                               },
                                                                               "updatedField": false,
@@ -10082,7 +10082,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "lookupValidator": undefined,
                                                                                         "measure": false,
                                                                                         "mvEnabled": false,
-                                                                                        "name": "TextFIeld",
+                                                                                        "name": "TextField",
                                                                                         "PHI": "NotPHI",
                                                                                         "propertyId": 518195,
                                                                                         "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -10143,7 +10143,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             "lookupSchema": undefined,
                                                                                             "lookupQuery": undefined,
                                                                                           },
-                                                                                          "name": "TextFIeld",
+                                                                                          "name": "TextField",
                                                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                                                         },
                                                                                         "updatedField": false,
@@ -10578,7 +10578,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "lookupValidator": undefined,
                                                                                         "measure": false,
                                                                                         "mvEnabled": false,
-                                                                                        "name": "TextFIeld",
+                                                                                        "name": "TextField",
                                                                                         "PHI": "NotPHI",
                                                                                         "propertyId": 518195,
                                                                                         "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -10639,7 +10639,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             "lookupSchema": undefined,
                                                                                             "lookupQuery": undefined,
                                                                                           },
-                                                                                          "name": "TextFIeld",
+                                                                                          "name": "TextField",
                                                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                                                         },
                                                                                         "updatedField": false,

@@ -61,7 +61,7 @@ const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
     const onSelect = useCallback(
         ind => {
             setSelectedIndex(ind);
-            setCurrentValue(validValues[ind]);
+            setCurrentValue(validValues?.[ind]);
         },
         [validValues]
     );
@@ -143,7 +143,7 @@ const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                         index={ind}
                                         key={ind}
                                         label={value}
-                                        itemType={value === '' && 'Empty Value'}
+                                        subLabel={value === '' ? 'Empty Value' : undefined}
                                         onSelect={onSelect}
                                         componentRight={inUse && VALUE_IN_USE}
                                     />
@@ -200,7 +200,7 @@ const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
             )}
             {showAddValuesModal && (
                 <TextChoiceAddValuesModal
-                    title={field.name}
+                    fieldName={field.name}
                     onCancel={toggleAddValues}
                     onApply={onApplyAddValues}
                     initialValueCount={validValues.length}
@@ -223,7 +223,7 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
             onChange(
                 fieldId,
                 new PropertyValidator({
-                    // keep the existing validator Id/props, if present, and override teh expression / properties
+                    // keep the existing validator Id/props, if present, and override the expression / properties
                     ...field.textChoiceValidator,
                     ...DEFAULT_TEXT_CHOICE_VALIDATOR.toJS(),
                     shouldShowWarning: true,
@@ -251,7 +251,8 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
                         const values = getValidValuesFromArray(result.values);
                         setFieldValues(values);
 
-                        // if this is an existing text field that is being changed to a Text Choice data type,
+                        // if this is new text choice validator (i.e. does not have a rowId) for an existing field
+                        // that is being changed to data type = Text Choice (that "is new field" check is above),
                         // then we will use the existing distinct values for that field as the initial options
                         if (!field.textChoiceValidator?.rowId) {
                             replaceValues(values);

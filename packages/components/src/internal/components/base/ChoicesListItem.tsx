@@ -5,13 +5,13 @@ interface Props {
     active: boolean;
     componentRight?: ReactNode;
     index: number;
-    itemType?: string;
     label: string;
+    subLabel?: string;
     onSelect: (index: number) => void;
 }
 
 export const ChoicesListItem: FC<Props> = memo(props => {
-    const { label, index, active, onSelect, itemType, componentRight } = props;
+    const { label, index, active, onSelect, subLabel, componentRight } = props;
     const onClick = useCallback(() => {
         onSelect(index);
     }, [onSelect, index]);
@@ -19,7 +19,7 @@ export const ChoicesListItem: FC<Props> = memo(props => {
     return (
         <button className={classNames('list-group-item', { active })} onClick={onClick} type="button">
             {label}
-            {itemType && <span className="choices-list__item-type">{itemType}</span>}
+            {subLabel && <span className="choices-list__sub-label">{subLabel}</span>}
             {componentRight}
         </button>
     );

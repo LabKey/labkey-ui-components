@@ -268,7 +268,7 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                 <ChoicesListItem
                     active={index === selected}
                     index={index}
-                    itemType={state.stateType !== state.label && state.stateType}
+                    subLabel={state.stateType !== state.label && state.stateType}
                     key={state.rowId}
                     label={state.label}
                     onSelect={onSelect}

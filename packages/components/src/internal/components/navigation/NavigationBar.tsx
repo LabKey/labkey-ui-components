@@ -84,7 +84,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         <nav className="navbar navbar-container test-loc-nav-header">
             <div className="container">
                 <div className="row">
-                    <div className="navbar-left col-lg-7 col-md-8 col-sm-8 col-xs-7">
+                    <div className="navbar-left col-xs-8 col-sm-8 col-lg-7">
                         <span className="navbar-item pull-left">{brand}</span>
                         {showFolderMenu && (
                             <span className="navbar-item">
@@ -97,7 +97,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                             </span>
                         )}
                     </div>
-                    <div className="navbar-right col-lg-5 col-md-4 col-sm-4 col-xs-5">
+                    <div className="navbar-right col-xs-4 col-sm-4 col-lg-5">
                         {!!user && (
                             <div className="navbar-item pull-right">
                                 <UserMenu
@@ -117,7 +117,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                             </div>
                         )}
                         {_showProductNav && (
-                            <div className="navbar-item pull-right navbar-item-product-navigation">
+                            <div className="navbar-item pull-right navbar-item-product-navigation hidden-xs">
                                 <ProductNavigation />
                             </div>
                         )}

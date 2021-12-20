@@ -46,7 +46,9 @@ export const FolderMenu: FC<Props> = memo(({ appProperties }) => {
         (async () => {
             try {
                 const folders = await api.security.fetchContainers({
-                    containerPath: container.type === 'project' ? container.path : container.parentPath,
+                    // Container metadata does not always provide "type" so inspecting the
+                    // "parentPath" to determine project vs folder.
+                    containerPath: container.parentPath === '/' ? container.path : container.parentPath,
                 });
 
                 const items_: FolderMenuItem[] = folders.map(folder => ({

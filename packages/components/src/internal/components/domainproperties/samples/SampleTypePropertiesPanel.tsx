@@ -341,7 +341,12 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
 
         let warning;
-        if (prefix && !model.isNew() && !model.nameExpression.includes(PREFIX_SUBSTITUTION_EXPRESSION)) {
+        if (
+            prefix &&
+            !model.isNew() &&
+            model.nameExpression &&
+            !model.nameExpression.includes(PREFIX_SUBSTITUTION_EXPRESSION)
+        ) {
             warning = `${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
         } else if (
             prefix &&

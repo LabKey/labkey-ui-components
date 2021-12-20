@@ -89,6 +89,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "principalConceptCode": undefined,
       "derivationDataScope": undefined,
       "selected": false,
+      "scannable": false,
     }
   }
   index={1}

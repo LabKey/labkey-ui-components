@@ -5,6 +5,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Edit Sample Type and Data Class's Naming Pattern Prefix Expression alteration warning message
 
+### version 2.105.0
+*Released*: 16 December 2021
+* Item #9633: Add scannable option to SampleType text fields for LabKey apps
+  * Added scannable field and value property to `TextFieldOptions`
+  * Passed through appPropertiesOnly to `DomainRowExpandedOptions` and `TextFieldOptions`
+  * Added optional showScannableOption property to `DomainFormDisplayOptions`
+  * Added showScannableOption property to `SampleTypeDesigner`
+  * Added `scannable` property to `DomainField`
+
 ### version 2.104.0
 *Released*: 15 December 2021
 * Add container select support to assay picker XAR import

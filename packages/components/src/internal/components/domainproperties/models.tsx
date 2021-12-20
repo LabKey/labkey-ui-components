@@ -120,6 +120,7 @@ interface IDomainDesign {
     allowFileLinkProperties: boolean;
     allowAttachmentProperties: boolean;
     allowFlagProperties: boolean;
+    allowTextChoiceProperties: boolean;
     allowTimepointProperties: boolean;
     showDefaultValueSettings: boolean;
     defaultDefaultValueType: string;
@@ -144,6 +145,7 @@ export class DomainDesign
         allowFileLinkProperties: false,
         allowAttachmentProperties: false,
         allowFlagProperties: true,
+        allowTextChoiceProperties: true,
         allowTimepointProperties: false,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
@@ -169,6 +171,7 @@ export class DomainDesign
     declare allowFileLinkProperties: boolean;
     declare allowAttachmentProperties: boolean;
     declare allowFlagProperties: boolean;
+    declare allowTextChoiceProperties: boolean;
     declare allowTimepointProperties: boolean;
     declare showDefaultValueSettings: boolean;
     declare defaultDefaultValueType: string;

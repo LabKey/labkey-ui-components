@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.106.0
+*Released*: 20 December 2021
+* Update `LookupCell` to use `QuerySelect` for display
+* Remove `LookupStore`
+
 ### version 2.105.0
 *Released*: 16 December 2021
 * Item #9633: Add scannable option to SampleType text fields for LabKey apps

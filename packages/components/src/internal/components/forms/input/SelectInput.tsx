@@ -25,7 +25,7 @@ import { FieldLabel } from '../FieldLabel';
 
 import { generateId, QueryColumn } from '../../../..';
 
-const customStyles = {
+const _customStyles = {
     // ReactSelect v1 had a zIndex value of "1000" where as ReactSelect v4.3.1 has a value of "2"
     // which results in layout conflicts in our apps. This reverts to the v1 value.
     menu: provided => ({ ...provided, zIndex: 1000 }),
@@ -48,7 +48,7 @@ const customStyles = {
     },
 };
 
-const customTheme = theme => ({
+const _customTheme = theme => ({
     ...theme,
     colors: {
         ...theme.colors,
@@ -143,6 +143,8 @@ export interface SelectInputProps {
     clearable?: boolean;
     clearCacheOnChange?: boolean;
     containerClass?: string;
+    customTheme?: (theme) => Record<string, any>;
+    customStyles?: Record<string, any>;
     defaultOptions?: boolean | readonly any[];
     delimiter?: string;
     description?: string;
@@ -160,6 +162,7 @@ export interface SelectInputProps {
     labelClass?: string;
     labelKey?: string;
     loadOptions?: (input: string) => Promise<SelectInputOption[]>;
+    menuPosition?: string;
     multiple?: boolean;
     name?: string;
     noResultsText?: string;
@@ -167,6 +170,7 @@ export interface SelectInputProps {
     onChange?: Function; // this is getting confused with formsy on change, need to separate
     onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
     onToggleDisable?: (disabled: boolean) => void;
+    openMenuOnFocus?: boolean;
     optionRenderer?: any;
     options?: any[];
     placeholder?: ReactNode;
@@ -213,6 +217,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         initiallyDisabled: false,
         inputClass: 'col-sm-9 col-xs-12',
         labelClass: 'control-label col-sm-3 text-left col-xs-12',
+        openMenuOnFocus: false,
         saveOnBlur: false,
         valueKey: 'value',
     };
@@ -465,14 +470,18 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             backspaceRemovesValue,
             cacheOptions,
             clearable,
+            customTheme,
+            customStyles,
             defaultOptions,
             delimiter,
             disabled,
             filterOption,
             isLoading,
             labelKey,
+            menuPosition,
             multiple,
             name,
+            openMenuOnFocus,
             optionRenderer,
             options,
             placeholder,
@@ -511,17 +520,20 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             isDisabled: disabled || this.state.isDisabled,
             isLoading,
             isMulti: multiple,
+            menuPlacement: 'auto',
+            menuPosition,
             name,
             noOptionsMessage: this.noOptionsMessage,
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
+            openMenuOnFocus,
             options,
             placeholder,
             promptTextCreator,
             ref: 'reactSelect',
-            styles: customStyles,
-            theme: customTheme,
+            styles: { ...customStyles, ..._customStyles },
+            theme: customTheme || _customTheme,
             // ReactSelect only supports null for clearing the value (as opposed to undefined).
             // See https://stackoverflow.com/a/50417171.
             value: (this.props.autoValue ? this.state.selectedOptions : this.props.selectedOptions) ?? null,

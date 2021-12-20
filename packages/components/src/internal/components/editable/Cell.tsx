@@ -85,10 +85,12 @@ export class Cell extends React.PureComponent<Props> {
             modelId,
             colIdx,
             rowIdx,
-            {
-                display: evt.target.value,
-                raw: evt.target.value,
-            },
+            [
+                {
+                    display: evt.target.value,
+                    raw: evt.target.value,
+                },
+            ],
             MODIFICATION_TYPES.REPLACE
         );
         if (onCellModify) onCellModify();
@@ -104,10 +106,12 @@ export class Cell extends React.PureComponent<Props> {
                 modelId,
                 colIdx,
                 rowIdx,
-                {
-                    display: event.target.value,
-                    raw: event.target.value,
-                },
+                [
+                    {
+                        display: event.target.value,
+                        raw: event.target.value,
+                    },
+                ],
                 MODIFICATION_TYPES.REPLACE
             );
             if (onCellModify) onCellModify();
@@ -245,6 +249,7 @@ export class Cell extends React.PureComponent<Props> {
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,
                     'cell-read-only': this.isReadOnly(),
+                    'cell-menu': col.isPublicLookup(),
                     'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
                 }),
                 onDoubleClick: this.handleDblClick,
@@ -257,7 +262,19 @@ export class Cell extends React.PureComponent<Props> {
             };
 
             if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
-            const cell = <div {...displayProps}>{valueDisplay}</div>;
+            let cell;
+            if (col.isPublicLookup()) {
+                cell = (
+                    <div {...displayProps}>
+                        <div className="cell-menu-value">{valueDisplay}</div>
+                        <span onClick={this.handleDblClick} className="cell-menu-selector">
+                            <i className="fa fa-chevron-down" />
+                        </span>
+                    </div>
+                );
+            } else {
+                cell = <div {...displayProps}>{valueDisplay}</div>;
+            }
 
             if (message) {
                 return (

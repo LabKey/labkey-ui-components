@@ -16,23 +16,21 @@
 
 import { List } from 'immutable';
 
-import { QueryColumn, QueryGridModel, SchemaQuery } from '..';
+import { QueryGridModel, SchemaQuery } from '..';
 
 import {
     getEditorModel,
-    getLookupStore,
     getQueryGridModel,
     getQueryGridModelsForSchema,
     getQueryGridModelsForSchemaQuery,
     removeQueryGridModel,
     resetQueryGridState,
     updateEditorModel,
-    updateLookupStore,
     updateQueryGridModel,
     updateSelections,
 } from './global';
 
-import { EditorModel, LookupStore } from './models';
+import { EditorModel } from './models';
 import { GRID_CHECKBOX_OPTIONS } from './constants';
 
 beforeEach(() => {
@@ -246,55 +244,5 @@ describe('editors', () => {
         expect(updatedModel.numPastedRows).toBe(8);
         expect(updatedModel.rowCount).toBe(14);
         expect(updatedModel.colCount).toBe(5);
-    });
-});
-
-describe('lookupStore', () => {
-    test('fail if not found', () => {
-        expect(() => updateLookupStore(new LookupStore(), {})).toThrow();
-    });
-
-    test('empty updates', () => {
-        const col = new QueryColumn({
-            fieldKey: 'field1',
-            lookup: {
-                schemaName: 'schema',
-                queryName: 'query',
-            },
-        });
-        const columnKey = 'schema|query|field1';
-        const updated = {
-            key: columnKey,
-        };
-        const store = new LookupStore(updated);
-
-        updateLookupStore(store, {}, false);
-        expect(getLookupStore(col)).toEqual(store);
-        updateLookupStore(store, {}, false);
-        expect(getLookupStore(col)).toEqual(store);
-    });
-
-    test('non-empty updates', () => {
-        const col = new QueryColumn({
-            fieldKey: 'field1',
-            lookup: {
-                schemaName: 'schema',
-                queryName: 'query',
-            },
-        });
-        const columnKey = 'schema|query|field1';
-        const store = new LookupStore({
-            key: columnKey,
-        });
-        const updates = {
-            key: columnKey,
-            loadCount: 5,
-        };
-        const updatedStore = new LookupStore(updates);
-
-        updateLookupStore(store, undefined, false);
-        expect(getLookupStore(col)).toEqual(store);
-        updateLookupStore(updatedStore, updates, false);
-        expect(getLookupStore(col)).toEqual(updatedStore);
     });
 });

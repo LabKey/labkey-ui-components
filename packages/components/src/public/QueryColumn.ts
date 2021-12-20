@@ -286,6 +286,12 @@ export class QueryColumn extends Record({
         return fieldKey;
     }
 
+    get lookupKey(): string {
+        if (!this.lookup) return undefined;
+
+        return [this.lookup.schemaName, this.lookup.queryName, this.fieldKey].join('|');
+    }
+
     get isFileInput(): boolean {
         return this.inputType === 'file';
     }

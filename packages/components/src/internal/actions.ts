@@ -2572,7 +2572,7 @@ function getPasteValuesByColumn(paste: IPasteModel): List<List<string>> {
 }
 
 function isReadOnly(column: QueryColumn, columnMetadata: Map<string, EditableColumnMetadata>): boolean {
-    const metadata: EditableColumnMetadata = columnMetadata && columnMetadata.get(column.fieldKey);
+    const metadata: EditableColumnMetadata = columnMetadata && column && columnMetadata.get(column.fieldKey);
     return (column && column.readOnly) || (metadata && metadata.readOnly);
 }
 

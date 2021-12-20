@@ -13,7 +13,7 @@ interface AssayDesignUploadPanelProps {
 }
 
 export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(props => {
-    const { onFileChange, onFileRemove } = props;
+    const { onFileChange, onFileRemove, children } = props;
 
     return (
         <div>
@@ -44,6 +44,7 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
                     />
                 </Col>
             </Row>
+            {children}
             <Row>
                 <Col xs={6}>
                     <div className="margin-top margin-bottom">

@@ -135,7 +135,6 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
                                 {fields
                                     .map((field, key) => {
                                         const labelHelp = fieldHelpTexts?.[key];
-                                        console.log(key);
                                         // 'data-caption' tag for test hooks
                                         return (
                                             <tr key={key}>

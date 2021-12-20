@@ -1094,7 +1094,6 @@ export function getDomainNamePreviews(
                 resolve(response['previews']);
             },
             failure: response => {
-                console.error(response);
                 reject(response);
             },
         });

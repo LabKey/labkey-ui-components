@@ -18,7 +18,7 @@ export const NameExpressionPreview: FC<NameExpressionPreviewProps> = props => {
     return (
         <>
             <p>
-                Example name that will be generated from the current pattern:&nbsp;
+                Example of name that will be generated from the current pattern:&nbsp;
                 {previewName ? previewName : <LoadingSpinner />}
             </p>
         </>

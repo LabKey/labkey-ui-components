@@ -863,6 +863,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             if (previewAliquotName)
                 toolTip +=
                     ' Example aliquot name that will be generated from the current pattern: ' + previewAliquotName;
+            else
+                toolTip += ' For example, if the original sample is S1, aliquots of that sample will be named S1-1, S1-2, etc.';
+
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 caption: 'Aliquot ID',
                 readOnly: false,

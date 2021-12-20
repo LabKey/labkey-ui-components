@@ -551,7 +551,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         return model.domain.fields.filter(field => field.isNew() && field.isUniqueIdField()).count();
     }
 
-    getDomainDetails = () => {
+    getDomainDetails = () : {[key: string] : any} => {
         const { model } = this.state;
 
         const {

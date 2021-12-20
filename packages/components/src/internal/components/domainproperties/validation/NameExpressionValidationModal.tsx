@@ -28,11 +28,11 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
 
         const nameWarnings = [],
             aliquotNameWarnings = [];
-        warnings?.forEach(error => {
-            if (error.indexOf(nameExpressionWarningPrefix) === 0)
-                nameWarnings.push(error.substring(nameExpressionWarningPrefix.length));
-            else if (error.indexOf(aliquotNameExpressionWarningPrefix) === 0)
-                aliquotNameWarnings.push(error.substring(aliquotNameExpressionWarningPrefix.length));
+        warnings?.forEach(warning => {
+            if (warning.indexOf(nameExpressionWarningPrefix) === 0)
+                nameWarnings.push(warning.substring(nameExpressionWarningPrefix.length));
+            else if (warning.indexOf(aliquotNameExpressionWarningPrefix) === 0)
+                aliquotNameWarnings.push(warning.substring(aliquotNameExpressionWarningPrefix.length));
         });
 
         let warnTitle = title,
@@ -40,9 +40,9 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
         if (!warnTitle) {
             if (nameWarnings.length > 0 && aliquotNameWarnings.length > 0) {
                 hasMultiGroup = true;
-                warnTitle = 'Sample and Aliquot Naming Expression Warning(s)';
-            } else if (nameWarnings.length > 0) warnTitle = 'Naming Expression Warning(s)';
-            else if (aliquotNameWarnings.length > 0) warnTitle = 'Aliquot Naming Expression Warning(s)';
+                warnTitle = 'Sample and Aliquot Naming Patten Warning(s)';
+            } else if (nameWarnings.length > 0) warnTitle = 'Naming Patten Warning(s)';
+            else if (aliquotNameWarnings.length > 0) warnTitle = 'Aliquot Naming Patten Warning(s)';
         }
 
         let nameWarnDisplay = null,
@@ -50,10 +50,10 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
         if (nameWarnings.length > 0) {
             nameWarnDisplay = (
                 <div>
-                    {hasMultiGroup && <p>Naming Expression Warning(s):</p>}
+                    {hasMultiGroup && <p>Naming Patten Warning(s):</p>}
                     <p>Example name generated: {previews[0]}</p>
                     <ul className="name-expression-warning-list">
-                        {React.Children.map(nameWarnings, warning => (
+                        {nameWarnings.map(warning => (
                             <li>{warning}</li>
                         ))}
                     </ul>
@@ -64,10 +64,10 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
         if (aliquotNameWarnings.length > 0) {
             aliquotNameWarnDisplay = (
                 <div>
-                    {hasMultiGroup && <p>Aliquot Naming Expression Warning(s):</p>}
+                    {hasMultiGroup && <p>Aliquot Naming Patten Warning(s):</p>}
                     <p>Example aliquot name generated: {previews[1]}</p>
                     <ul className="aliquot-expression-warning-list">
-                        {React.Children.map(aliquotNameWarnings, warning => (
+                        {aliquotNameWarnings.map(warning => (
                             <li>{warning}</li>
                         ))}
                     </ul>

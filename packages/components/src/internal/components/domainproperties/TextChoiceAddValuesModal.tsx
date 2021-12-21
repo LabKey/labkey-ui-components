@@ -10,15 +10,16 @@ interface Props {
     onCancel: () => void;
     onApply: (values: string[]) => void;
     initialValueCount?: number;
+    maxValueCount?: number;
 }
 
 export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
-    const { onCancel, onApply, fieldName, initialValueCount = 0 } = props;
+    const { onCancel, onApply, fieldName, initialValueCount = 0, maxValueCount = MAX_VALID_TEXT_CHOICES } = props;
     const [valueStr, setValueStr] = useState<string>('');
     const parsedValues = useMemo(() => {
         return valueStr?.trim().length > 0 ? valueStr.split('\n').map(v => v.trim()) : [];
     }, [valueStr]);
-    const maxValuesToAdd = useMemo(() => MAX_VALID_TEXT_CHOICES - initialValueCount, [initialValueCount]);
+    const maxValuesToAdd = useMemo(() => maxValueCount - initialValueCount, [initialValueCount]);
     const hasFieldName = useMemo(() => fieldName?.length > 0, [fieldName]);
 
     const onChange = useCallback(evt => {

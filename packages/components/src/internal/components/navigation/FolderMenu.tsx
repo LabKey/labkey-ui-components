@@ -76,7 +76,9 @@ export const FolderMenu: FC<Props> = memo(({ appProperties }) => {
 
     return (
         <Dropdown className="nav-folder-menu" id="folder-menu" onToggle={toggleMenu} open={open}>
-            <Dropdown.Toggle className="nav-folder-menu__button">{container.title}</Dropdown.Toggle>
+            <Dropdown.Toggle className="nav-folder-menu__button" title={container.title}>
+                {container.title}
+            </Dropdown.Toggle>
             <Dropdown.Menu>
                 <div className="navbar-connector" />
                 {hasError && <Alert>{error}</Alert>}

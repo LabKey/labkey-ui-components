@@ -329,7 +329,6 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             allowBulkRemove,
             allowBulkUpdate,
             allowRemove,
-            columnMetadata,
             hideCountCol,
             rowNumColumn,
             readonlyRows,
@@ -498,7 +497,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             this.table &&
             this.table.current &&
             !$.contains(this.table.current, event.target) &&
-            !$(event.target).parent('.cell-lookup') &&
+            !$(event.target).parent('.cell-menu') &&
             !inDrag(model.getId())
         ) {
             clearSelection(model.getId());
@@ -707,7 +706,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         return allInsertCols.merge(data).asImmutable();
     }
 
-    bulkAdd = (data: OrderedMap<string, any>): Promise<any> => {
+    bulkAdd = async (data: OrderedMap<string, any>): Promise<any> => {
         const { addControlProps, bulkAddProps, onBulkAdd } = this.props;
         const { nounSingular, nounPlural } = addControlProps;
         const model = this.getModel(this.props);
@@ -744,9 +743,9 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             updatedData = this.restoreBulkInsertData(model, updatedData);
         }
         if (bulkAddData?.pivotKey && bulkAddData?.pivotValues?.length > 0) {
-            addRowsPerPivotValue(model, numItems, bulkAddData?.pivotKey, bulkAddData?.pivotValues, updatedData);
+            await addRowsPerPivotValue(model, numItems, bulkAddData?.pivotKey, bulkAddData?.pivotValues, updatedData);
         } else {
-            addRows(model, numItems, updatedData);
+            await addRows(model, numItems, updatedData);
         }
         this.onRowCountChange();
         return new Promise(resolve => {

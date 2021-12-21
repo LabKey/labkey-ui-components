@@ -20,13 +20,12 @@ import { User } from '@labkey/api';
 import { naturalSort, NotificationItemModel, QueryColumn, QueryGridModel, resolveSchemaQuery, SchemaQuery } from '..';
 
 import { initBrowserHistoryState } from './util/global';
-import { EditorModel, LookupStore } from './models';
+import { EditorModel } from './models';
 import { GRID_CHECKBOX_OPTIONS } from './constants';
 
 export type GlobalAppState = {
     // src/global.ts
     QueryGrid_editors: Map<string, EditorModel>;
-    QueryGrid_lookups: Map<string, LookupStore>;
     QueryGrid_metadata: Map<string, any>;
     QueryGrid_models: Map<string, QueryGridModel>;
     QueryGrid_columnrenderers: Map<string, any>;
@@ -74,7 +73,6 @@ export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?
 export function resetQueryGridState(): void {
     setGlobal({
         QueryGrid_editors: Map<string, EditorModel>(),
-        QueryGrid_lookups: Map<string, LookupStore>(),
         QueryGrid_metadata: Map<string, any>(),
         QueryGrid_models: Map<string, QueryGridModel>(),
         QueryGrid_columnrenderers: Map<string, any>(),
@@ -174,12 +172,6 @@ export function removeQueryGridModel(model: QueryGridModel, connectedComponent?:
             }
         }
     );
-}
-
-export function lookupStoreInvalidate(col: QueryColumn): void {
-    setGlobal({
-        QueryGrid_lookups: getGlobalState('lookups').delete(LookupStore.key(col)),
-    });
 }
 
 /**
@@ -301,35 +293,6 @@ export function updateEditorModel(model: EditorModel, updates: any, failIfNotFou
     });
 
     return updatedModel;
-}
-
-/**
- * Get the latest LookupStore object from the global state for a given QueryColumn.
- * @param col QueryColumn to fetch
- */
-export function getLookupStore(col: QueryColumn): LookupStore {
-    const key = LookupStore.key(col);
-    return getGlobalState('lookups').get(key);
-}
-
-/**
- * Helper function for all callers/actions that would like to update information for a LookupStore in the global state.
- * @param store LookupStore in the global state to be updated, or to be added to global state if it does not already exist by col key
- * @param updates JS Object with the key/value pairs for updates to make to the store
- * @param failIfNotFound Boolean indicating if an error should be thrown if the store is not found in global state
- */
-export function updateLookupStore(store: LookupStore, updates: any, failIfNotFound = true): LookupStore {
-    if (failIfNotFound && !getGlobalState('lookups').has(store.key)) {
-        throw new Error('Unable to find LookupStore for col: ' + store.key);
-    }
-
-    const updatedStore = store.merge(updates) as LookupStore;
-
-    setGlobal({
-        QueryGrid_lookups: getGlobalState('lookups').set(store.key, updatedStore),
-    });
-
-    return updatedStore;
 }
 
 function getUsersCacheKey(permissions?: string | string[], containerPath?: string): string {

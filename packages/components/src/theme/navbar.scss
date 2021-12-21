@@ -401,18 +401,20 @@
     border-style: none;
   }
 
-  // this nonsense is necessary because the dropdown for the find-menu looks different in
-  // firefox than in other browsers Issue 43715
-  @-moz-document url-prefix() {
-    .navbar__search-input { height: 35px; }
-  }
+    // Issue 43715.  Since that issue was opened, Firefox and Chrome both seem to behave well, but
+    // Safari has a pixel height difference.  This styling to adjust the height of the input
+    // applies only to Safari browsers.
+    @media not all and (min-resolution:.001dpcm) {
+        @supports (-webkit-appearance:none) {
+            .navbar__search-input { height: 33px; }
+        }
+    }
 
   .navbar__input-group {
       width: 320px;
   }
   .navbar__find-and-search-button {
       border-color: $white;
-      padding-bottom: 7px; // also part of styling change necessary for Issue 43715
   }
 }
 

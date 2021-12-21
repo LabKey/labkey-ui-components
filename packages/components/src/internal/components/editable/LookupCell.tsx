@@ -13,21 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { createRef, KeyboardEvent, ReactNode, RefObject } from 'react';
-import ReactN from 'reactn';
-import classNames from 'classnames';
-import { List } from 'immutable';
+import React, { PureComponent, ReactNode } from 'react';
+import { List, Map } from 'immutable';
 
-import { initLookup, modifyCell, searchLookup } from '../../actions';
-import { cancelEvent } from '../../events';
-import { LookupStore, ValueDescriptor } from '../../models';
-import { KEYS, LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
-import { QueryColumn } from '../../..';
+import { Filter } from '@labkey/api';
+
+import { modifyCell } from '../../actions';
+import { ValueDescriptor } from '../../models';
+import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
+import { QueryColumn, QuerySelect, SchemaQuery } from '../../..';
 import { GlobalAppState } from '../../global';
 
-import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
+const customStyles = {
+    control: (provided, state) => ({
+        ...provided,
+        minHeight: 24,
+        borderRadius: 0,
+    }),
+    valueContainer: (provided, state) => ({
+        ...provided,
+        minHeight: 24,
+        padding: '0 4px',
+    }),
+    input: (provided, state) => ({
+        ...provided,
+        margin: '0px',
+    }),
+    indicatorsContainer: (provided, state) => ({
+        ...provided,
+        minHeight: 24,
+    }),
+};
 
-const emptyList = List<ValueDescriptor>();
+const customTheme = theme => ({
+    ...theme,
+    colors: {
+        ...theme.colors,
+        danger: '#D9534F',
+        primary: '#2980B9',
+        primary75: '#009BF9',
+        primary50: '#F2F9FC',
+        primary25: 'rgba(41, 128, 185, 0.1)',
+    },
+    spacing: {
+        ...theme.spacing,
+        baseUnit: 2,
+    },
+});
 
 export interface LookupCellProps {
     col: QueryColumn;
@@ -42,325 +74,89 @@ export interface LookupCellProps {
     filteredLookupKeys?: List<any>;
 }
 
-interface LookupCellState {
-    activeOptionIdx?: number;
-    token?: string;
-}
-
-export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellState, GlobalAppState> {
-    private blurTO: number;
-    private changeTO: number;
-    private inputEl: RefObject<HTMLInputElement>;
-    private menuEl: RefObject<HTMLDivElement>;
-    private wrapperEl: RefObject<HTMLDivElement>;
-
-    constructor(props: LookupCellProps) {
-        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
-        super(props);
-
-        this.inputEl = createRef<HTMLInputElement>();
-        this.menuEl = createRef<HTMLInputElement>();
-        this.wrapperEl = createRef<HTMLInputElement>();
-
-        this.state = {
-            activeOptionIdx: -1,
-            token: undefined,
-        };
-    }
-
-    componentDidMount(): void {
-        const { col, filteredLookupValues, filteredLookupKeys } = this.props;
-        initLookup(col, LOOKUP_DEFAULT_SIZE, filteredLookupValues, filteredLookupKeys);
-
-        try {
-            this.getContainerElement()?.addEventListener('scroll', this.onContainerScroll);
-            document.addEventListener('scroll', this.onContainerScroll);
-            this.onContainerScroll();
-        } catch (e) {
-            console.error('Failed to attach listeners for LookupCell scrolling.', e);
-        }
-    }
-
-    UNSAFE_componentWillReceiveProps(nextProps: LookupCellProps): void {
-        if (this.state.token && this.getOptions(nextProps).size === 1) {
-            this.setState({
-                activeOptionIdx: 0,
-            });
-        }
-    }
-
-    componentWillUnmount(): void {
-        try {
-            this.getContainerElement()?.removeEventListener('scroll', this.onContainerScroll);
-            document.removeEventListener('scroll', this.onContainerScroll);
-        } catch (e) {
-            console.error('Failed to detach listeners for LookupCell scrolling.', e);
-        }
-    }
-
-    cancelBlur = (): void => {
-        clearTimeout(this.blurTO);
-    };
-
-    clearInput = (): void => {
-        if (this.inputEl && this.inputEl.current) {
-            this.inputEl.current.value = '';
-        }
-
-        this.resetLookup();
-
-        this.setState({
-            activeOptionIdx: -1,
-            token: undefined,
-        });
-    };
-
-    // As a part of the fix for #43051 the LookupCell needs to be able to attach scroll event listeners
-    // to the grid container which is declared in EditableGrid. Handing down a React.RefObject would be preferred,
-    // however, this caused sluggish performance for the grid as this "container ref" was constantly updating and needs
-    // to be passed in as a prop to all Cells. In lieu of the ref approach this uses a DOM selector to located the
-    // nearest container element as designated by a CSS class.
-    getContainerElement = (): Element => {
-        return this.wrapperEl.current?.closest(`.${EDITABLE_GRID_CONTAINER_CLS}`);
-    };
-
-    focusInput = (): void => {
-        this.cancelBlur();
-        if (this.inputEl && this.inputEl.current) {
-            this.inputEl.current.focus();
-        }
-    };
-
-    hasInputValue(): boolean {
-        const { token } = this.state;
-        return token !== undefined && token !== '';
-    }
-
-    highlight = (index: number): void => {
-        if (index >= -1 && index < this.getOptions(this.props).size) {
-            this.setState({
-                activeOptionIdx: index,
-            });
-        }
-    };
-
+export class LookupCell extends PureComponent<LookupCellProps, undefined, GlobalAppState> {
     isMultiValue = (): boolean => {
         return this.props.col.isJunctionLookup();
     };
 
-    onContainerScroll = (): void => {
-        // Issue 43051: LookupCell menu manually updated to account for scrolled grid container
-        if (this.menuEl.current && this.wrapperEl.current) {
-            const rect = this.wrapperEl.current.getBoundingClientRect();
-            this.menuEl.current.style.left = `${rect.left + window.scrollX}px`;
-            this.menuEl.current.style.top = `${rect.bottom}px`;
-        }
-    };
-
-    onInputBlur = (): void => {
-        this.blurTO = window.setTimeout(() => {
-            const { colIdx, modelId, rowIdx } = this.props;
-            this.props.select(modelId, colIdx, rowIdx);
-            this.resetLookup();
-        }, 200);
-    };
-
-    onInputChange = (): void => {
-        clearTimeout(this.changeTO);
-        this.changeTO = window.setTimeout(() => {
-            let token;
-
-            if (this.inputEl && this.inputEl.current) {
-                token = this.inputEl.current.value;
+    onInputChange = (
+        fieldName: string,
+        formValue: string | any[],
+        items: any,
+        selectedItems: Map<string, any>
+    ): void => {
+        const { colIdx, modelId, rowIdx, onCellModify } = this.props;
+        if (this.isMultiValue()) {
+            if (items.length == 0) {
+                modifyCell(modelId, colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
+            } else {
+                const valueDescriptors = items.map(item => ({ raw: item.value, display: item.label }));
+                modifyCell(modelId, colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
             }
-
-            this.searchLookup(token);
-
-            this.setState({
-                activeOptionIdx: -1,
-                token,
-            });
-        }, 350);
-    };
-
-    onInputKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
-        const { colIdx, modelId, rowIdx, values, onCellModify } = this.props;
-        const { activeOptionIdx } = this.state;
-        const options = this.getOptions(this.props);
-
-        switch (event.keyCode) {
-            case KEYS.Backspace:
-                if (!this.hasInputValue() && values !== undefined && values.size) {
-                    modifyCell(modelId, colIdx, rowIdx, values.last(), MODIFICATION_TYPES.REMOVE);
-                    if (onCellModify) onCellModify();
-                }
-                break;
-            case KEYS.Enter:
-                if (this.state.activeOptionIdx > -1) {
-                    this.onItemClick(options.get(activeOptionIdx));
-                } else {
-                    this.clearInput();
-                    this.props.select(modelId, colIdx, rowIdx + 1);
-                }
-                break;
-            case KEYS.Escape:
-                this.clearInput();
-                this.props.select(modelId, colIdx, rowIdx, undefined, true);
-                break;
-            case KEYS.UpArrow:
-                this.highlight(activeOptionIdx - 1);
-                cancelEvent(event);
-                break;
-            case KEYS.DownArrow:
-                this.highlight(activeOptionIdx + 1);
-                cancelEvent(event);
-                break;
+        } else {
+            modifyCell(
+                modelId,
+                colIdx,
+                rowIdx,
+                [
+                    {
+                        raw: items?.value,
+                        display: items?.label,
+                    },
+                ],
+                MODIFICATION_TYPES.REPLACE
+            );
         }
-    };
-
-    onItemClick = (vd: ValueDescriptor): void => {
-        const { col, colIdx, modelId, rowIdx, onCellModify } = this.props;
-
-        modifyCell(
-            modelId,
-            colIdx,
-            rowIdx,
-            vd,
-            col.isJunctionLookup() ? MODIFICATION_TYPES.ADD : MODIFICATION_TYPES.REPLACE
-        );
-        if (onCellModify) onCellModify();
-        this.clearInput();
+        onCellModify?.();
 
         if (!this.isMultiValue()) {
             this.props.select(modelId, colIdx, rowIdx);
-            return;
         }
-
-        this.focusInput();
     };
-
-    onItemRemove = (vd: ValueDescriptor): void => {
-        const { modelId, colIdx, rowIdx, onCellModify } = this.props;
-        modifyCell(modelId, colIdx, rowIdx, vd, MODIFICATION_TYPES.REMOVE);
-        if (onCellModify) onCellModify();
-
-        this.focusInput();
-    };
-
-    resetLookup = (): void => {
-        this.searchLookup(undefined);
-    };
-
-    searchLookup = (token: string): void => {
-        searchLookup(
-            this.props.col,
-            LOOKUP_DEFAULT_SIZE,
-            token,
-            this.props.filteredLookupValues,
-            this.props.filteredLookupKeys
-        );
-    };
-
-    renderOptions(): ReactNode {
-        const store = this.getStore();
-
-        if (!store) {
-            return <a className="disabled list-group-item">Loading...</a>;
-        }
-
-        const options = this.getOptions(this.props);
-
-        return options
-            .slice(0, 10)
-            .reduce(
-                (list, vd, idx) =>
-                    list.push(
-                        <a
-                            className={classNames('list-group-item', { active: this.state.activeOptionIdx === idx })}
-                            key={idx}
-                            onClick={this.onItemClick.bind(this, vd)}
-                        >
-                            {vd.display}
-                        </a>
-                    ),
-                List<ReactNode>()
-            )
-            .push(
-                <a className="disabled list-group-item" key="resultmatcher">
-                    <i>
-                        {!store.isLoaded
-                            ? 'Loading...'
-                            : store.matchCount - (store.descriptors.size - options.size) + ' matching results'}
-                    </i>
-                </a>
-            )
-            .toArray();
-    }
-
-    renderValue(): ReactNode {
-        const { values } = this.props;
-
-        return (
-            <div>
-                {values
-                    .filter(vd => vd.raw !== undefined)
-                    .map((vd, i) => (
-                        <span
-                            className="btn btn-primary btn-sm"
-                            key={i}
-                            onClick={this.onItemRemove.bind(this, vd)}
-                            style={{ marginRight: '2px', padding: '1px 5px' }}
-                        >
-                            {vd.display}
-                            &nbsp;
-                            <i className="fa fa-close" />
-                        </span>
-                    ))
-                    .toArray()}
-            </div>
-        );
-    }
-
-    getStore(): LookupStore {
-        const { col } = this.props;
-
-        // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid_lookups.get(LookupStore.key(col));
-    }
-
-    getOptions(props: LookupCellProps): List<ValueDescriptor> {
-        const { values } = props;
-        const store = this.getStore();
-
-        if (store) {
-            return store.descriptors
-                .filter(vd => {
-                    return !(values && values.some(v => v.raw === vd.raw && vd.display === vd.display));
-                })
-                .toList();
-        }
-
-        return emptyList;
-    }
 
     render(): ReactNode {
+        const { col, values, filteredLookupKeys, filteredLookupValues } = this.props;
+
+        const lookup = col.lookup;
+        const isMultiple = this.isMultiValue();
+        const rawValues = values
+            .filter(vd => vd.raw !== undefined)
+            .map(vd => vd.raw)
+            .toArray();
+
+        let queryFilters;
+        if (filteredLookupValues) {
+            queryFilters = List([
+                Filter.create(col.lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN),
+            ]);
+        }
+
+        if (filteredLookupKeys) {
+            queryFilters = List([Filter.create(col.lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN)]);
+        }
+
         return (
-            <div className="cell-lookup" ref={this.wrapperEl}>
-                {this.renderValue()}
-                <input
-                    autoFocus
-                    className="cell-lookup-input"
-                    disabled={this.props.disabled}
-                    onBlur={this.onInputBlur}
-                    onChange={this.onInputChange}
-                    onKeyDown={this.onInputKeyDown}
-                    ref={this.inputEl}
-                    type="text"
-                />
-                <div className="cell-lookup-menu" ref={this.menuEl}>
-                    {this.renderOptions()}
-                </div>
-            </div>
+            <QuerySelect
+                autoFocus
+                disabled={this.props.disabled}
+                queryFilters={queryFilters}
+                multiple={isMultiple}
+                schemaQuery={SchemaQuery.create(lookup.schemaName, lookup.queryName)}
+                componentId={col.lookupKey}
+                maxRows={LOOKUP_DEFAULT_SIZE}
+                containerPath={lookup.containerPath}
+                containerClass="select-input-cell-container"
+                customTheme={customTheme}
+                customStyles={customStyles}
+                menuPosition="fixed" // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
+                openMenuOnFocus={!isMultiple} // If set to true for the multi-select case, it's not possible to tab out of the cell.
+                inputClass="select-input-cell"
+                placeholder=""
+                onQSChange={this.onInputChange}
+                label={null}
+                preLoad={true}
+                value={isMultiple ? rawValues : rawValues[0]}
+            />
         );
     }
 }

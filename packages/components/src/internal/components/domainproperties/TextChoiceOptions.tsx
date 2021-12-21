@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Button, Col, FormGroup, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Query } from '@labkey/api';
 
@@ -49,10 +49,20 @@ interface ImplProps extends Props {
     loading: boolean;
     replaceValues: (newValues: string[]) => void;
     validValues: string[];
+    maxValueCount?: number;
 }
 
-const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
-    const { label, field, loading, fieldValues, validValues, replaceValues } = props;
+// exported for jest testing
+export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
+    const {
+        label,
+        field,
+        loading,
+        fieldValues,
+        validValues,
+        replaceValues,
+        maxValueCount = MAX_VALID_TEXT_CHOICES,
+    } = props;
     const [selectedIndex, setSelectedIndex] = useState<number>();
     const [currentValue, setCurrentValue] = useState<string>();
     const [showAddValuesModal, setShowAddValuesModal] = useState<boolean>();
@@ -151,10 +161,10 @@ const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                             })}
                         </div>
                         <AddEntityButton
-                            disabled={validValues.length >= MAX_VALID_TEXT_CHOICES}
+                            disabled={validValues.length >= maxValueCount}
                             entity="Values"
                             onClick={toggleAddValues}
-                            title={`Add Values (max ${MAX_VALID_TEXT_CHOICES})`}
+                            title={`Add Values (max ${maxValueCount})`}
                         />
                     </Col>
                     <Col xs={6} lg={4}>

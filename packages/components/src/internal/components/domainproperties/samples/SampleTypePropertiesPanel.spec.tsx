@@ -23,10 +23,11 @@ import { DomainDetails, DomainPanelStatus } from '../models';
 
 import { sleep } from '../../../testHelpers';
 
+import { DomainFieldLabel } from '../DomainFieldLabel';
+
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
-import { DomainFieldLabel } from "../DomainFieldLabel";
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,
@@ -223,28 +224,30 @@ describe('<SampleTypePropertiesPanel/>', () => {
             fromJS({
                 options: Map<string, any>({
                     rowId: 1,
-                    aliquotNameExpression: aliquotNameExpVal
+                    aliquotNameExpression: aliquotNameExpVal,
                 }),
                 domainKindName: 'SampleType',
                 domainDesign: sampleTypeModel.get('domain'),
             })
         );
 
-        const component = <SampleTypePropertiesPanel
-            {...BASE_PROPS}
-            model={SampleTypeModel.create(data)}
-            appPropertiesOnly={false}
-            aliquotNamePatternProps={{
-                showAliquotNameExpression: true
-            }}
-            namePreviews={[null, 'S-parentSample-1']}
-        />;
+        const component = (
+            <SampleTypePropertiesPanel
+                {...BASE_PROPS}
+                model={SampleTypeModel.create(data)}
+                appPropertiesOnly={false}
+                aliquotNamePatternProps={{
+                    showAliquotNameExpression: true,
+                }}
+                namePreviews={[null, 'S-parentSample-1']}
+            />
+        );
 
         const wrapper = mount(component);
 
         expect(wrapper.find(DomainFieldLabel)).toHaveLength(5);
         const aliquotField = wrapper.find(DomainFieldLabel).at(3);
-        expect(aliquotField.text()).toEqual("Aliquot Naming Pattern");
+        expect(aliquotField.text()).toEqual('Aliquot Naming Pattern');
         expect(wrapper).toMatchSnapshot();
         wrapper.unmount();
     });

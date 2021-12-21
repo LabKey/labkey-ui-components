@@ -2,9 +2,10 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { fromJS } from 'immutable';
 
+import { mount } from 'enzyme';
+
 import { EntityDetailsForm } from './EntityDetailsForm';
 import { IEntityDetails } from './models';
-import { mount } from "enzyme";
 
 describe('<EntityDetailsForm/>', () => {
     test('default properties', () => {
@@ -80,13 +81,13 @@ describe('<EntityDetailsForm/>', () => {
                 })}
                 onNameFieldHover={onNameFieldHover}
                 showPreviewName={true}
-                previewName={"abc"}
+                previewName="abc"
             />
         );
 
         const wrapper = mount(component);
 
-        const nameExpressionLabel = wrapper.find(".name-expression-label-div span.domain-no-wrap");
+        const nameExpressionLabel = wrapper.find('.name-expression-label-div span.domain-no-wrap');
         expect(nameExpressionLabel).toHaveLength(1);
         expect(wrapper).toMatchSnapshot();
     });

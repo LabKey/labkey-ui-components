@@ -91,11 +91,15 @@ export const SubNav: FC<Props> = ({ noun, tabs }) => {
 
                 <div className="tab-scroll-ct" ref={scrollable}>
                     <ul className="nav navbar-nav">
-                        {tabs.map(({ text, url }) => (
-                            <NavItem key={text} to={url} onActive={onItemActivate}>
-                                {text}
-                            </NavItem>
-                        ))}
+                        {tabs
+                            .filter(tab => !!tab.text)
+                            .map(({ text, url }, i) => (
+                                // neither "text" nor "url" are consistently unique
+                                // eslint-disable-next-line react/no-array-index-key
+                                <NavItem key={i} to={url} onActive={onItemActivate}>
+                                    {text}
+                                </NavItem>
+                            ))}
                     </ul>
                 </div>
 

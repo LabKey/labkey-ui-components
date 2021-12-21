@@ -43,7 +43,7 @@ import {
     updateDataType,
     updateDomainField,
 } from './actions';
-import { DomainDesign, DomainException, DomainField } from './models';
+import { DEFAULT_TEXT_CHOICE_VALIDATOR, DomainDesign, DomainException, DomainField } from './models';
 import {
     ATTACHMENT_TYPE,
     DATETIME_TYPE,
@@ -68,6 +68,7 @@ import {
     FIELD_NAME_CHAR_WARNING_MSG,
     FLAG_CONCEPT_URI,
     INT_RANGE_URI,
+    MAX_TEXT_LENGTH,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
@@ -657,6 +658,45 @@ describe('domain properties actions', () => {
         expect(field.conceptSubtree).toBeUndefined();
         expect(field.conceptLabelColumn).toBeUndefined();
         expect(field.conceptImportColumn).toBeUndefined();
+    });
+
+    test('updateDataType clear textChoiceValidator props on change', () => {
+        let field = DomainField.create({
+            rangeURI: TEXT_CHOICE_TYPE.rangeURI,
+            conceptURI: TEXT_CHOICE_TYPE.conceptURI,
+            propertyValidators: [DEFAULT_TEXT_CHOICE_VALIDATOR.toJS()],
+        });
+        expect(field.dataType).toBe(TEXT_CHOICE_TYPE);
+        expect(field.textChoiceValidator).toBeDefined();
+
+        field = updateDataType(field, 'boolean');
+        expect(field.dataType).toBe(BOOLEAN_TYPE);
+        expect(field.textChoiceValidator).toBeUndefined();
+    });
+
+    test('updateDataType textChoice', () => {
+        let field = DomainField.create({
+            propertyValidators: [
+                { type: 'Range', name: 'Range Validator', expression: '' },
+                { type: 'RegEx', name: 'RegEx Validator', expression: '' },
+                { type: 'Lookup', name: 'Lookup Validator', expression: '' },
+            ],
+            scale: 10,
+        });
+        expect(field.dataType).toBe(TEXT_TYPE);
+        expect(field.scale).toBe(10);
+        expect(field.lookupValidator).toBeDefined();
+        expect(field.rangeValidators.size).toBe(1);
+        expect(field.regexValidators.size).toBe(1);
+        expect(field.textChoiceValidator).toBeUndefined();
+
+        field = updateDataType(field, 'textChoice');
+        expect(field.dataType).toBe(TEXT_CHOICE_TYPE);
+        expect(field.scale).toBe(MAX_TEXT_LENGTH);
+        expect(field.lookupValidator).toBeUndefined();
+        expect(field.rangeValidators.size).toBe(0);
+        expect(field.regexValidators.size).toBe(0);
+        expect(field.textChoiceValidator).toBe(DEFAULT_TEXT_CHOICE_VALIDATOR);
     });
 
     test('updateDataType isLookup', () => {

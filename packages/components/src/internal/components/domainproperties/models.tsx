@@ -1213,7 +1213,7 @@ export function getValidValuesFromArray(validValues: string[]): string[] {
     return validValues?.filter(v => v !== null && v !== undefined && v.trim() !== '') ?? [];
 }
 
-function getValidValuesDetailStr(validValues: string[]): string {
+export function getValidValuesDetailStr(validValues: string[]): string {
     const numToShow = 4;
     const vals = getValidValuesFromArray(validValues);
     if (vals.length > 0) {

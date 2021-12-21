@@ -97,7 +97,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                 </Row>
                 <Row className="margin-bottom">
                     <Col xs={2}>
-                        <div onMouseEnter={() => onNameFieldHover?.()}>
+                        <div className="name-expression-label-div" onMouseEnter={() => onNameFieldHover?.()}>
                             <DomainFieldLabel
                                 label="Naming Pattern"
                                 helpTipBody={

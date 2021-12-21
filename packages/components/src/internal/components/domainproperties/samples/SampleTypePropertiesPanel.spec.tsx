@@ -26,6 +26,7 @@ import { sleep } from '../../../testHelpers';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
+import { DomainFieldLabel } from "../DomainFieldLabel";
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,
@@ -102,6 +103,8 @@ describe('<SampleTypePropertiesPanel/>', () => {
         // Link to Study fields should not be visible since allowTimepointProperties: false
         expect(wrapper.text()).not.toContain('Auto-Link Data to Study');
         expect(wrapper.text()).not.toContain('Linked Dataset Category');
+
+        expect(wrapper.find(DomainFieldLabel)).toHaveLength(3);
 
         wrapper.unmount();
     });
@@ -211,6 +214,38 @@ describe('<SampleTypePropertiesPanel/>', () => {
         await sleep();
 
         expect(wrapper.find(UniqueIdBanner)).toHaveLength(1);
+        wrapper.unmount();
+    });
+
+    test('with aliquot preview name', async () => {
+        const aliquotNameExpVal = 'S-${${AliquotedFrom.:withCounter}}';
+        const data = DomainDetails.create(
+            fromJS({
+                options: Map<string, any>({
+                    rowId: 1,
+                    aliquotNameExpression: aliquotNameExpVal
+                }),
+                domainKindName: 'SampleType',
+                domainDesign: sampleTypeModel.get('domain'),
+            })
+        );
+
+        const component = <SampleTypePropertiesPanel
+            {...BASE_PROPS}
+            model={SampleTypeModel.create(data)}
+            appPropertiesOnly={false}
+            aliquotNamePatternProps={{
+                showAliquotNameExpression: true
+            }}
+            namePreviews={[null, 'S-parentSample-1']}
+        />;
+
+        const wrapper = mount(component);
+
+        expect(wrapper.find(DomainFieldLabel)).toHaveLength(5);
+        const aliquotField = wrapper.find(DomainFieldLabel).at(3);
+        expect(aliquotField.text()).toEqual("Aliquot Naming Pattern");
+        expect(wrapper).toMatchSnapshot();
         wrapper.unmount();
     });
 });

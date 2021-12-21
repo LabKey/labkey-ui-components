@@ -20,6 +20,7 @@ import {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayStateModel,
+    Container,
     GENERAL_ASSAY_PROVIDER_NAME,
     IFile,
     LoadingState,
@@ -401,4 +402,30 @@ export const TEST_ASSAY_STATE_MODEL = new AssayStateModel({
         AssayDefinitionModel.create({ id: 5, name: 'Luminex', type: 'Luminex' }),
         AssayDefinitionModel.create({ id: 4, name: 'Protein', type: 'Protein Expression Matrix' }),
     ],
+});
+
+export const TEST_PROJECT_CONTAINER = new Container({
+    activeModules: ['a', 'b', 'c'],
+    id: 'a685712e-0900-103a-9486-0131958dce60',
+    isContainerTab: false,
+    isWorkbook: false,
+    name: 'TestProjectContainer',
+    parentId: '785eb92a-95aa-1039-9db0-ffabf47c5c38',
+    parentPath: '/',
+    path: '/TestProjectContainer',
+    title: 'Test Project Container',
+    type: 'project',
+});
+
+export const TEST_FOLDER_CONTAINER = new Container({
+    activeModules: ['a', 'b', 'c'],
+    id: 'b685712f-0800-103a-9286-0131958dcf60',
+    isContainerTab: false,
+    isWorkbook: false,
+    name: 'TestFolderContainer',
+    parentId: TEST_PROJECT_CONTAINER.id,
+    parentPath: TEST_PROJECT_CONTAINER.path,
+    path: `${TEST_PROJECT_CONTAINER.path}/TestFolderContainer`,
+    title: 'Test Folder Container',
+    type: 'folder',
 });

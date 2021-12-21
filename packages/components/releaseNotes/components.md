@@ -11,6 +11,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * factor out DomainRowWarning to re-use between name special character type warnings and empty text choice values details display
     * TextChoiceAddValuesModal for add case and check for max allowed values
     * domain design model parsing for loading existing field property validators for text choice fields
+    * show TextChoiceInput in EditableGrid cell for column with validValues
 
 ### version 2.106.0
 *Released*: 20 December 2021

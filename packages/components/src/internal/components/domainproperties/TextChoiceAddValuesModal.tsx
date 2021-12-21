@@ -48,9 +48,10 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
                     </span>
                 </p>
                 <textarea
-                    placeholder="Enter new text choices values..."
                     rows={8}
-                    cols={78}
+                    cols={50}
+                    className="full-width"
+                    placeholder="Enter new text choices values..."
                     onChange={onChange}
                     value={valueStr}
                 />

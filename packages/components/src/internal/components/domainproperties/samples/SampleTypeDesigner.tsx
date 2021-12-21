@@ -34,6 +34,7 @@ import { NameExpressionValidationModal } from '../validation/NameExpressionValid
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { UniqueIdBanner } from './UniqueIdBanner';
+import {ComponentsAPIWrapper, getDefaultAPIWrapper} from "../../../APIWrapper";
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -52,6 +53,7 @@ const SAMPLE_SET_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-
 const SAMPLE_SET_HELP_TOPIC = 'createSampleType';
 
 interface Props {
+    api?: ComponentsAPIWrapper;
     onChange?: (model: SampleTypeModel) => void;
     onCancel: () => void;
     onComplete: (response: DomainDesign) => void;
@@ -109,6 +111,7 @@ interface State {
 
 class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     static defaultProps = {
+        api: getDefaultAPIWrapper(),
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
         includeDataClasses: false,
         useSeparateDataClassesAliasMenu: false,
@@ -438,7 +441,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     };
 
     saveDomain = async (hasConfirmedNameExpression?: boolean) => {
-        const { beforeFinish, setSubmitting } = this.props;
+        const { beforeFinish, setSubmitting, api } = this.props;
         const { model } = this.state;
         const { name, domain, description } = model;
 
@@ -484,7 +487,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
         try {
             if (this.props.validateNameExpressions && !hasConfirmedNameExpression) {
-                const response = await validateDomainNameExpressions(
+                const response = await api.domain.validateDomainNameExpressions(
                     domainDesign,
                     Domain.KINDS.SAMPLE_TYPE,
                     details,
@@ -577,6 +580,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     };
 
     onNameFieldHover = async () => {
+        const { api } = this.props;
         const { model, namePreviewsLoading } = this.state;
 
         if (namePreviewsLoading) return;
@@ -592,7 +596,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
         try {
             if (this.props.validateNameExpressions) {
-                const response = await validateDomainNameExpressions(
+                const response = await api.domain.validateDomainNameExpressions(
                     domainDesign,
                     Domain.KINDS.SAMPLE_TYPE,
                     details,

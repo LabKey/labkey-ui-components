@@ -16,8 +16,10 @@ import { NameExpressionValidationModal } from '../validation/NameExpressionValid
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
+import {ComponentsAPIWrapper, getDefaultAPIWrapper} from "../../../APIWrapper";
 
 interface Props {
+    api?: ComponentsAPIWrapper;
     nounSingular?: string;
     nounPlural?: string;
     nameExpressionInfoUrl?: string;
@@ -51,6 +53,7 @@ interface State {
 
 class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     static defaultProps = {
+        api: getDefaultAPIWrapper(),
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
         domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'data class' },
@@ -131,7 +134,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
     };
 
     saveDomain = (hasConfirmedNameExpression?: boolean): void => {
-        const { setSubmitting, beforeFinish } = this.props;
+        const { setSubmitting, beforeFinish, api } = this.props;
         const { model } = this.state;
 
         if (beforeFinish) {
@@ -139,7 +142,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }
 
         if (this.props.validateNameExpressions && !hasConfirmedNameExpression) {
-            validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
+            api.domain.validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
                 .then(response => {
                     if (response.errors?.length > 0 || response.warnings?.length > 0) {
                         setSubmitting(false, () => {
@@ -219,12 +222,13 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
     };
 
     onNameFieldHover = () => {
+        const { api } = this.props;
         const { model, namePreviewsLoading } = this.state;
 
         if (namePreviewsLoading) return;
 
         if (this.props.validateNameExpressions) {
-            validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
+            api.domain.validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
                 .then(response => {
                     this.setState(() => ({
                         namePreviewsLoading: false,

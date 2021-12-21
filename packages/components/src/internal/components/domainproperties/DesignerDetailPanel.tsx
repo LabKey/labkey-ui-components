@@ -1,17 +1,18 @@
-import React, { FC, memo, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useEffect, useState } from 'react';
 
 import { DetailPanel, RequiresModelAndActions, SchemaQuery } from '../../..';
-import { DetailDisplay, DetailDisplaySharedProps } from '../forms/detail/DetailDisplay';
+import { DetailDisplaySharedProps } from '../forms/detail/DetailDisplay';
 
-import { getDomainNamePreviews } from './actions';
+import {ComponentsAPIWrapper, getDefaultAPIWrapper} from "../../APIWrapper";
 
 interface Props extends DetailDisplaySharedProps, RequiresModelAndActions {
+    api?: ComponentsAPIWrapper;
     schemaQuery: SchemaQuery;
     asPanel?: boolean;
 }
 
 export const DesignerDetailPanel: FC<Props> = memo(props => {
-    const { schemaQuery, asPanel, ...detailDisplayProps } = props;
+    const { api, schemaQuery, asPanel, ...detailDisplayProps } = props;
     const [previews, setPreviews] = useState<{}>();
 
     const init = async () => {
@@ -20,7 +21,7 @@ export const DesignerDetailPanel: FC<Props> = memo(props => {
 
             const previews = {};
             try {
-                const results = await getDomainNamePreviews(schemaQuery);
+                const results = await api.domain.getDomainNamePreviews(schemaQuery);
                 if (results?.length > 0) {
                     if (results[0])
                         previews['nameexpression'] =
@@ -43,3 +44,7 @@ export const DesignerDetailPanel: FC<Props> = memo(props => {
 
     return <DetailPanel asPanel={asPanel} fieldHelpTexts={previews} {...detailDisplayProps} />;
 });
+
+DesignerDetailPanel.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};

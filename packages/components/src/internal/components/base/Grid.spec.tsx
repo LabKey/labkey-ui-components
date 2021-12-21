@@ -163,7 +163,28 @@ describe('Grid component', () => {
                 phiProtected: true
             }
         }));
+        columns = columns.push(new GridColumn({
+            index: 'weight',
+            title: 'Weight',
+            raw: {
+                description: 'Your weight'
+            },
+            hideTooltip: true
+        }));
         const tree = renderer.create(<Grid data={gridData} columns={columns} />).toJSON();
         expect(tree).toMatchSnapshot();
     })
+
+    test('hide tooltip', () => {
+        const columns = gridColumns.push(new GridColumn({
+            index: 'weight',
+            title: 'Weight',
+            raw: {
+                description: 'Your weight'
+            },
+            hideTooltip: true
+        }));
+        const tree = renderer.create(<Grid data={gridData} columns={columns} />).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 });

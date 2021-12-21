@@ -9,11 +9,13 @@ import {
     SecurityAPIWrapper,
     ServerSecurityAPIWrapper,
 } from './components/security/APIWrapper';
+import {DomainPropertiesAPIWrapper, getDomainPropertiesTestAPIWrapper} from "./components/domainproperties/APIWrapper";
 
 export interface ComponentsAPIWrapper {
     picklist: PicklistAPIWrapper;
     samples: SamplesAPIWrapper;
     security: SecurityAPIWrapper;
+    domain: DomainPropertiesAPIWrapper;
 }
 
 export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
@@ -21,6 +23,7 @@ export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
         picklist: new PicklistServerAPIWrapper(),
         samples: new SamplesServerAPIWrapper(),
         security: new ServerSecurityAPIWrapper(),
+        domain: new DomainPropertiesAPIWrapper(),
     };
 }
 
@@ -35,6 +38,7 @@ export function getTestAPIWrapper(
         picklist: getPicklistTestAPIWrapper(mockFn, overrides.picklist),
         samples: getSamplesTestAPIWrapper(mockFn, overrides.samples),
         security: getSecurityTestAPIWrapper(mockFn, overrides.security),
+        domain: getDomainPropertiesTestAPIWrapper(mockFn, overrides.domain),
         ...overrides,
     };
 }

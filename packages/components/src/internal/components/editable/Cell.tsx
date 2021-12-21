@@ -235,6 +235,7 @@ export class Cell extends React.PureComponent<Props> {
             filteredLookupValues,
             filteredLookupKeys,
         } = this.props;
+        const showLookup = col.isPublicLookup() || col.validValues;
 
         if (!focused) {
             let valueDisplay = values
@@ -249,7 +250,7 @@ export class Cell extends React.PureComponent<Props> {
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,
                     'cell-read-only': this.isReadOnly(),
-                    'cell-menu': col.isPublicLookup(),
+                    'cell-menu': showLookup,
                     'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
                 }),
                 onDoubleClick: this.handleDblClick,
@@ -263,7 +264,7 @@ export class Cell extends React.PureComponent<Props> {
 
             if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
             let cell;
-            if (col.isPublicLookup()) {
+            if (showLookup) {
                 cell = (
                     <div {...displayProps}>
                         <div className="cell-menu-value">{valueDisplay}</div>
@@ -294,7 +295,7 @@ export class Cell extends React.PureComponent<Props> {
             return cell;
         }
 
-        if (col.isPublicLookup()) {
+        if (showLookup) {
             const lookupProps: LookupCellProps = {
                 col,
                 colIdx,

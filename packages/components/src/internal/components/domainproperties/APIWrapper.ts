@@ -1,19 +1,16 @@
-import { SchemaQuery } from "../../../public/SchemaQuery";
-import { getDomainNamePreviews, validateDomainNameExpressions } from "./actions";
-import { DomainDesign, NameExpressionsValidationResults } from "./models";
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { getDomainNamePreviews, validateDomainNameExpressions } from './actions';
+import { DomainDesign, NameExpressionsValidationResults } from './models';
 
 export interface DomainPropertiesAPIWrapper {
-    getDomainNamePreviews: (
-        schemaQuery?: SchemaQuery,
-        domainId?: number,
-        containerPath?: string
-    ) => Promise<string[]>,
+    getDomainNamePreviews: (schemaQuery?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<string[]>;
     validateDomainNameExpressions: (
         domain: DomainDesign,
         kind?: string,
         options?: any,
         includeNamePreview?: boolean
-    ) => Promise<NameExpressionsValidationResults>
+    ) => Promise<NameExpressionsValidationResults>;
 }
 
 export class DomainPropertiesAPIWrapper implements DomainPropertiesAPIWrapper {

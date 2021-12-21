@@ -31,10 +31,11 @@ import { hasModule, isCommunityDistribution } from '../../../app/utils';
 
 import { NameExpressionValidationModal } from '../validation/NameExpressionValidationModal';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
+
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { UniqueIdBanner } from './UniqueIdBanner';
-import {ComponentsAPIWrapper, getDefaultAPIWrapper} from "../../../APIWrapper";
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,

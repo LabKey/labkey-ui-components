@@ -9,7 +9,10 @@ import {
     SecurityAPIWrapper,
     ServerSecurityAPIWrapper,
 } from './components/security/APIWrapper';
-import {DomainPropertiesAPIWrapper, getDomainPropertiesTestAPIWrapper} from "./components/domainproperties/APIWrapper";
+import {
+    DomainPropertiesAPIWrapper,
+    getDomainPropertiesTestAPIWrapper,
+} from './components/domainproperties/APIWrapper';
 
 export interface ComponentsAPIWrapper {
     picklist: PicklistAPIWrapper;

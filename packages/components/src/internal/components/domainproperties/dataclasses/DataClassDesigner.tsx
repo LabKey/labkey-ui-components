@@ -14,9 +14,10 @@ import { isSampleManagerEnabled } from '../../../app/utils';
 
 import { NameExpressionValidationModal } from '../validation/NameExpressionValidationModal';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
+
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
-import {ComponentsAPIWrapper, getDefaultAPIWrapper} from "../../../APIWrapper";
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -142,7 +143,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }
 
         if (this.props.validateNameExpressions && !hasConfirmedNameExpression) {
-            api.domain.validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
+            api.domain
+                .validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
                 .then(response => {
                     if (response.errors?.length > 0 || response.warnings?.length > 0) {
                         setSubmitting(false, () => {
@@ -228,7 +230,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         if (namePreviewsLoading) return;
 
         if (this.props.validateNameExpressions) {
-            api.domain.validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
+            api.domain
+                .validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
                 .then(response => {
                     this.setState(() => ({
                         namePreviewsLoading: false,

@@ -14,7 +14,7 @@ export interface ScannableProps extends ITypeDependentProps{
 
 export const ScannableOption: FC<ScannableProps> = memo(props => {
     const { domainIndex, index, lockType, scannable = false, appPropertiesOnly, showScannableOption, onChange } = props;
-    if (!appPropertiesOnly || !showScannableOption) return undefined;
+    if (!appPropertiesOnly || !showScannableOption) return null;
 
     const handleOptionToggle = useCallback((event: any): void => {
         const {id, checked} = event.target;

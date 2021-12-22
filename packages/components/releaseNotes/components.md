@@ -13,6 +13,14 @@ Components, models, actions, and utility functions for LabKey applications and p
     * domain design model parsing for loading existing field property validators for text choice fields
     * show TextChoiceInput in EditableGrid cell for column with validValues
 
+### version 2.107.1
+*Released*: 22 December 2021
+* Remove experimental feature flag for enabling SM product navigation in Biologics folders
+
+### version 2.107.0
+*Released*: 21 December 2021
+* FolderMenu: menu provided in NavigationBar to allow users to navigate between folders
+
 ### version 2.106.0
 *Released*: 20 December 2021
 * Update `LookupCell` to use `QuerySelect` for display

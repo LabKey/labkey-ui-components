@@ -22,11 +22,11 @@ describe('NameExpressionValidationModal', () => {
     };
 
     const warnings = [
-        'Name Expression warning: No ending parentheses found.',
-        'Name Expression warning: Invalid starting value xyz.',
+        'Name Pattern warning: No ending parentheses found.',
+        'Name Pattern warning: Invalid starting value xyz.',
     ];
     const aliquotWarnings = [
-        "Aliquot Name Expression warning: The 'withCounter' substitution pattern starting at position 27 should be enclosed in ${}.",
+        "Aliquot Name Pattern warning: The 'withCounter' substitution pattern starting at position 27 should be enclosed in ${}.",
     ];
 
     test('name and aliquot name warnings', () => {

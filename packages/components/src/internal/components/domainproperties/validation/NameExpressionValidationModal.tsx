@@ -11,8 +11,8 @@ export interface Props {
     onConfirm: () => any;
 }
 
-const nameExpressionWarningPrefix = 'Name Expression warning: ';
-const aliquotNameExpressionWarningPrefix = 'Aliquot Name Expression warning: ';
+const nameExpressionWarningPrefix = 'Name Pattern warning: ';
+const aliquotNameExpressionWarningPrefix = 'Aliquot Name Pattern warning: ';
 
 export class NameExpressionValidationModal extends React.PureComponent<Props> {
     onConfirm = () => {

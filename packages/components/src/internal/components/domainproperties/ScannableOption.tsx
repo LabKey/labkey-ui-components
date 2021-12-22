@@ -30,7 +30,7 @@ export const ScannableOption: FC<ScannableProps> = memo(props => {
                             label="Barcode Field"
                             helpTipBody={
                                 'When using the Find Samples dialog from the search bar and choosing the\n' +
-                                '                                        "Barcodes" option, text fields\n' +
+                                '                                        "Barcodes" option, fields\n' +
                                 '                                        that are designated as Barcode fields will be queried\n' +
                                 '                                        along with any UniqueId fields for this sample type.'
                             }

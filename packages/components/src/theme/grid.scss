@@ -193,9 +193,9 @@
   min-width: 100%;
 }
 
-$table-cell-border-width: 2px;
+$table-cell-border-width: 1px;
 $table-cell-border: $table-cell-border-width solid transparent;
-$table-cell-selected-border: $table-cell-border-width solid darkblue;
+$table-cell-selected-border: $table-cell-border-width solid #2980b9;
 $table-cell-selected-box-shadow: 0 3px 3px darkgrey;
 $table-cell-selection-bg-color: #EDF3FF;
 
@@ -207,7 +207,7 @@ $table-cell-selection-bg-color: #EDF3FF;
   }
 
   & > tbody > tr.grid-empty > td {
-      height: 24px;
+      height: 30px;
   }
 
   & > tbody > tr > td {
@@ -237,8 +237,8 @@ $table-cell-selection-bg-color: #EDF3FF;
       cursor: default;
       outline: none;
       overflow: hidden;
-      padding: 2px 1px 2px 2px;
-      height: 24px;
+      padding: 7px 1px 2px 2px;
+      height: 30px;
       white-space: nowrap;
 
       &.size-limited {
@@ -259,59 +259,14 @@ $table-cell-selection-bg-color: #EDF3FF;
     }
 
     .cellular-input {
-      border: $table-cell-border;
+      border: $table-cell-selected-border;
       outline: none;
-      padding: 2px 1px 2px 2px;
+      padding: 6px 2px;
       width: 100%;
 
       &:focus {
         border: $table-cell-selected-border;
-        box-shadow: $table-cell-selected-box-shadow;
         outline: none;
-      }
-    }
-
-    .cell-lookup {
-      border: $table-cell-selected-border;
-      box-shadow: $table-cell-selected-box-shadow;
-      outline: none;
-
-      .cell-lookup-input {
-        border: none;
-        outline: none;
-      }
-
-      .cell-lookup-menu {
-        background-color: #fff;
-        min-width: 240px;
-        margin: 0;
-        z-index: 1000;
-        list-style: none;
-
-        border: 1px solid #e6e6e6;
-        padding: 0;
-        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.05);
-        border-radius: 3px;
-
-        position: fixed;
-
-        & > li {
-          height: 38px;
-          min-height: 38px;
-          max-height: 38px;
-          padding: 0 12px 0 20px;
-          display: flex;
-          align-items: center;
-          flex-direction: row;
-
-          cursor: pointer;
-          line-height: 1.4;
-          margin: 0;
-          border: 0;
-          outline: 0;
-          vertical-align: baseline;
-          list-style: none;
-        }
       }
     }
 
@@ -335,6 +290,31 @@ $table-cell-selection-bg-color: #EDF3FF;
       }
     }
 
+    .cell-menu {
+        position: relative;
+        min-height: 30px;
+        width: 200px;
+    }
+
+    .cell-menu-value {
+        width: 170px;
+        text-overflow: ellipsis;
+        overflow-y: clip;
+    }
+
+    .cell-menu-selector {
+        position: absolute;
+        color: $light-gray;
+        min-height: 30px;
+        font-size: 12px;
+        right: 7px;
+        top: 8px;
+
+        .fa {
+            font-size: 14px;
+        }
+    }
+
     .cell-placeholder {
       color: $light-gray;
     }
@@ -355,6 +335,22 @@ $table-cell-selection-bg-color: #EDF3FF;
       cursor: pointer;
     }
   }
+}
+
+
+.select-input-cell {
+    width: 200px;
+}
+
+.select-input-cell .select-input__control {
+    border-style: none;
+    min-height: 30px;
+    width: 200px;
+}
+
+.select-input-cell-container {
+    margin-bottom: 0;
+    border-style: none;
 }
 
 // https://codepen.io/quanon/pen/WjXmWe

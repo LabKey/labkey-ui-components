@@ -53,8 +53,8 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
                     {hasMultiGroup && <p>Naming Patten Warning(s):</p>}
                     <p>Example name generated: {previews[0]}</p>
                     <ul className="name-expression-warning-list">
-                        {nameWarnings.map(warning => (
-                            <li>{warning}</li>
+                        {nameWarnings.map((warning, ind) => (
+                            <li key={ind + ''}>{warning}</li>
                         ))}
                     </ul>
                     <br />
@@ -67,8 +67,8 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
                     {hasMultiGroup && <p>Aliquot Naming Patten Warning(s):</p>}
                     <p>Example aliquot name generated: {previews[1]}</p>
                     <ul className="aliquot-expression-warning-list">
-                        {aliquotNameWarnings.map(warning => (
-                            <li>{warning}</li>
+                        {aliquotNameWarnings.map((warning, ind) => (
+                            <li key={ind + ''}>{warning}</li>
                         ))}
                     </ul>
                 </div>

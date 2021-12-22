@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Foundational work for Sample Finder feature devleopment.
+  * Add experimental feature flag
+  * Update FindAndSearch menu
+
 ### version 2.107.1
 *Released*: 22 December 2021
 * Remove experimental feature flag for enabling SM product navigation in Biologics folders

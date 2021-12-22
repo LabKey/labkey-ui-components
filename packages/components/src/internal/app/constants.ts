@@ -81,6 +81,7 @@ export const NOTIFICATION_TIMEOUT = 500;
 export const SERVER_NOTIFICATION_MAX_ROWS = 8;
 
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
+export const EXPERIMENTAL_SAMPLE_FINDER = 'experimental-sample-finder';
 
 export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     productId: BIOLOGICS_PRODUCT_ID,

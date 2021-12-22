@@ -9,6 +9,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Added DesignerDetailPanel to show name preview for designer details panel
 * EntityInsertPanel: show name preview on tooltip, hide double tooltip
 
+### version 2.107.1
+*Released*: 22 December 2021
+* Remove experimental feature flag for enabling SM product navigation in Biologics folders
+
 ### version 2.107.0
 *Released*: 21 December 2021
 * FolderMenu: menu provided in NavigationBar to allow users to navigate between folders

@@ -119,16 +119,12 @@ export function isFreezerManagementEnabled(moduleContext?: any): boolean {
 
 export function isProductNavigationEnabled(productId: string): boolean {
     if (productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
-        return isSampleManagerEnabled() && (!isBiologicsEnabled() || isSampleManagerNavigationEnabled());
+        return isSampleManagerEnabled() && !isBiologicsEnabled();
     } else if (productId === BIOLOGICS_APP_PROPERTIES.productId) {
         return isBiologicsEnabled();
     }
 
     return false;
-}
-
-export function isSampleManagerNavigationEnabled(): boolean {
-    return getServerContext().moduleContext?.biologics?.isBiologicsSampleManagerNavEnabled === true;
 }
 
 export function isSubfolderDataEnabled(): boolean {

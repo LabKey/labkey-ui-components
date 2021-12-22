@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.108.0
+*Released*: 22 December 2021
 * Item 9758: Field editor "Text Choice" data type and UI to create, update, delete field options/values
     * RegEx validator modal fix for “Fail validation when pattern matches field value” checked state on initialization
     * factor out ChoicesListItem to re-use in list group cases (TextChoiceOptions, ChoosePicklistModal, ManageSasmpleStatusesPanel)

@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
 import { MAX_VALID_TEXT_CHOICES } from './constants';
+import { getValidValuesFromArray } from './models';
 
 interface Props {
     fieldName: string;
@@ -18,10 +19,7 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
     const [valueStr, setValueStr] = useState<string>('');
     const parsedValues = useMemo(() => {
         return valueStr?.trim().length > 0
-            ? valueStr
-                  .split('\n')
-                  .map(v => v.trim())
-                  .filter(v => v !== '')
+            ? getValidValuesFromArray(valueStr.split('\n').map(v => v.trim()))
             : [];
     }, [valueStr]);
     const maxValuesToAdd = useMemo(() => maxValueCount - initialValueCount, [initialValueCount]);

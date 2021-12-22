@@ -30,14 +30,14 @@ describe('TextChoiceAddValuesModal', () => {
     test('default props', () => {
         const wrapper = mount(<TextChoiceAddValuesModal {...DEFAULT_PROPS} />);
         validate(wrapper);
-        validateCounterText(wrapper, '200 values', '0 new text choice values');
+        validateCounterText(wrapper, '200 values', '0 new values');
         wrapper.unmount();
     });
 
     test('initialValueCount', () => {
         const wrapper = mount(<TextChoiceAddValuesModal {...DEFAULT_PROPS} initialValueCount={70} />);
         validate(wrapper);
-        validateCounterText(wrapper, '130 values', '0 new text choice values');
+        validateCounterText(wrapper, '130 values', '0 new values');
         wrapper.unmount();
     });
 
@@ -51,17 +51,17 @@ describe('TextChoiceAddValuesModal', () => {
         const wrapper = mount(<TextChoiceAddValuesModal {...DEFAULT_PROPS} />);
         validate(wrapper);
         expect(wrapper.find('.btn-success').prop('disabled')).toBeTruthy();
-        validateCounterText(wrapper, '200 values', '0 new text choice values');
+        validateCounterText(wrapper, '200 values', '0 new values');
 
         wrapper.find('textarea').simulate('change', { target: { value: 'a' } });
         validate(wrapper);
         expect(wrapper.find('.btn-success').prop('disabled')).toBeFalsy();
-        validateCounterText(wrapper, '200 values', '1 new text choice value');
+        validateCounterText(wrapper, '200 values', '1 new value');
 
         wrapper.find('textarea').simulate('change', { target: { value: 'a\nb\n\n' } });
         validate(wrapper);
         expect(wrapper.find('.btn-success').prop('disabled')).toBeFalsy();
-        validateCounterText(wrapper, '200 values', '2 new text choice values');
+        validateCounterText(wrapper, '200 values', '2 new values');
 
         wrapper.unmount();
     });
@@ -69,15 +69,15 @@ describe('TextChoiceAddValuesModal', () => {
     test('success button disabled after max reached', () => {
         const wrapper = mount(<TextChoiceAddValuesModal {...DEFAULT_PROPS} maxValueCount={2} />);
         expect(wrapper.find('.btn-success').prop('disabled')).toBeTruthy();
-        validateCounterText(wrapper, '2 values', '0 new text choice values');
+        validateCounterText(wrapper, '2 values', '0 new values');
 
         wrapper.find('textarea').simulate('change', { target: { value: 'a\nb' } });
         expect(wrapper.find('.btn-success').prop('disabled')).toBeFalsy();
-        validateCounterText(wrapper, '2 values', '2 new text choice values');
+        validateCounterText(wrapper, '2 values', '2 new values');
 
         wrapper.find('textarea').simulate('change', { target: { value: 'a\nb\nc' } });
         expect(wrapper.find('.btn-success').prop('disabled')).toBeTruthy();
-        validateCounterText(wrapper, '2 values', '3 new text choice values');
+        validateCounterText(wrapper, '2 values', '3 new values');
 
         wrapper.unmount();
     });
@@ -85,11 +85,11 @@ describe('TextChoiceAddValuesModal', () => {
     test('initial already equal to max', () => {
         const wrapper = mount(<TextChoiceAddValuesModal {...DEFAULT_PROPS} initialValueCount={2} maxValueCount={2} />);
         expect(wrapper.find('.btn-success').prop('disabled')).toBeTruthy();
-        validateCounterText(wrapper, '0 values', '0 new text choice values');
+        validateCounterText(wrapper, '0 values', '0 new values');
 
         wrapper.find('textarea').simulate('change', { target: { value: 'a\nb' } });
         expect(wrapper.find('.btn-success').prop('disabled')).toBeTruthy();
-        validateCounterText(wrapper, '0 values', '2 new text choice values');
+        validateCounterText(wrapper, '0 values', '2 new values');
 
         wrapper.unmount();
     });

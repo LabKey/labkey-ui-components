@@ -54,7 +54,7 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
                     rows={8}
                     cols={50}
                     className="textarea-fullwidth textarea-noresize"
-                    placeholder="Enter new text choices values..."
+                    placeholder="Enter new values..."
                     onChange={onChange}
                     value={valueStr}
                 />
@@ -64,8 +64,8 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
                     })}
                 >
                     {parsedValues.length === 1
-                        ? '1 new text choice value provided.'
-                        : `${parsedValues.length} new text choice values provided.`}
+                        ? '1 new value provided.'
+                        : `${parsedValues.length} new values provided.`}
                 </div>
             </Modal.Body>
             <Modal.Footer>

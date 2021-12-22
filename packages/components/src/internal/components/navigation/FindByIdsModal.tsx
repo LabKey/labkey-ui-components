@@ -48,7 +48,7 @@ interface Props {
 export const FindByIdsModal: FC<Props> = memo(props => {
     const { show, onCancel, onFind, nounPlural, sessionKey, initialField } = props;
 
-    const [fieldType, setFieldType] = useState<FindField>(initialField);
+    const [fieldType, setFieldType] = useState<FindField>(initialField || UNIQUE_ID_FIND_FIELD);
     const [idString, setIdString] = useState<string>(undefined);
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [error, setError] = useState<ReactNode>(undefined);

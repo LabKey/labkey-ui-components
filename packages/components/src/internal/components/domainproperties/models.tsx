@@ -1210,7 +1210,10 @@ export class DomainField
 }
 
 export function getValidValuesFromArray(validValues: string[]): string[] {
-    return validValues?.filter(v => v !== null && v !== undefined && v.trim() !== '') ?? [];
+    // filter out any empty string values
+    const vals = validValues?.filter(v => v !== null && v !== undefined && v.trim() !== '') ?? [];
+    // remove duplicates
+    return [...new Set(vals)];
 }
 
 export function getValidValuesDetailStr(validValues: string[]): string {
@@ -1220,6 +1223,9 @@ export function getValidValuesDetailStr(validValues: string[]): string {
         let validValuesStr = vals.slice(0, numToShow).join(', ');
         if (vals.length > numToShow) {
             validValuesStr += ` (and ${vals.length - numToShow} more)`;
+        }
+        if (validValuesStr.length > 80) {
+            validValuesStr = vals.length + ' values';
         }
         return validValuesStr;
     }

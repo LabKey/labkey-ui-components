@@ -273,20 +273,9 @@ describe('utils', () => {
 
         LABKEY.moduleContext = {
             samplemanagement: {},
-            biologics: {
-                isBiologicsSampleManagerNavEnabled: false,
-            },
+            biologics: {},
         };
         expect(isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId)).toBeFalsy();
-        expect(isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId)).toBeTruthy();
-
-        LABKEY.moduleContext = {
-            samplemanagement: {},
-            biologics: {
-                isBiologicsSampleManagerNavEnabled: true,
-            },
-        };
-        expect(isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId)).toBeTruthy();
         expect(isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId)).toBeTruthy();
     });
 

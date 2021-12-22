@@ -113,7 +113,15 @@ export function resolveDetailEditRenderer(
         }
 
         if (col.validValues) {
-            return <TextChoiceInput formsy inputClass="col-sm-12" queryColumn={col} value={value} />;
+            return (
+                <TextChoiceInput
+                    formsy
+                    inputClass="col-sm-12"
+                    queryColumn={col}
+                    value={value}
+                    placeholder="Select or type to search..."
+                />
+            );
         }
 
         if (col.inputType === 'textarea') {

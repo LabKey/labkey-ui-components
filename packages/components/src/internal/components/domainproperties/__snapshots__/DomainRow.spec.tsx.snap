@@ -257,6 +257,16 @@ exports[`DomainRow Sample Field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -316,6 +326,7 @@ exports[`DomainRow Sample Field 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -357,6 +368,7 @@ exports[`DomainRow Sample Field 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "sampleField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                     },
                     "updatedField": false,
@@ -510,6 +522,7 @@ exports[`DomainRow Sample Field 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -551,6 +564,7 @@ exports[`DomainRow Sample Field 1`] = `
                                         "lookupSchema": undefined,
                                         "lookupQuery": undefined,
                                       },
+                                      "name": "sampleField",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                     },
                                     "updatedField": false,
@@ -1103,6 +1117,7 @@ exports[`DomainRow Sample Field 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -1144,6 +1159,7 @@ exports[`DomainRow Sample Field 1`] = `
                                           "lookupSchema": undefined,
                                           "lookupQuery": undefined,
                                         },
+                                        "name": "sampleField",
                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                       },
                                       "updatedField": false,
@@ -1203,6 +1219,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                   "lookupSchema": undefined,
                                                   "lookupQuery": undefined,
                                                 },
+                                                "name": "sampleField",
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                               }
                                             }
@@ -1468,6 +1485,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -1509,6 +1527,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "sampleField",
                                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                 },
                                                 "updatedField": false,
@@ -1950,6 +1969,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -1991,6 +2011,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "sampleField",
                                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                 },
                                                 "updatedField": false,
@@ -2487,6 +2508,16 @@ exports[`DomainRow client side warning on field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -2546,6 +2577,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -2587,6 +2619,7 @@ exports[`DomainRow client side warning on field 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "#ColumnAwesome",
                       "rangeURI": undefined,
                     },
                     "updatedField": false,
@@ -2752,6 +2785,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -2793,6 +2827,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                         "lookupSchema": undefined,
                                         "lookupQuery": undefined,
                                       },
+                                      "name": "#ColumnAwesome",
                                       "rangeURI": undefined,
                                     },
                                     "updatedField": false,
@@ -3186,6 +3221,12 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 Text
                                               </option>
                                               <option
+                                                key="textChoice"
+                                                value="textChoice"
+                                              >
+                                                Text Choice
+                                              </option>
+                                              <option
                                                 key="uniqueId"
                                                 value="uniqueId"
                                               >
@@ -3273,122 +3314,130 @@ exports[`DomainRow client side warning on field 1`] = `
                                     >
                                       New Field
                                       . 
-                                      <Component
-                                        customStyle={Object {}}
-                                        iconComponent={
-                                          <FontAwesomeIcon
-                                            border={false}
-                                            className="domain-warning-icon"
-                                            fixedWidth={false}
-                                            flip={null}
-                                            icon={
-                                              Object {
-                                                "icon": Array [
-                                                  512,
-                                                  512,
-                                                  Array [],
-                                                  "f06a",
-                                                  "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z",
-                                                ],
-                                                "iconName": "exclamation-circle",
-                                                "prefix": "fas",
-                                              }
-                                            }
-                                            inverse={false}
-                                            listItem={false}
-                                            mask={null}
-                                            pull={null}
-                                            pulse={false}
-                                            rotation={null}
-                                            size={null}
-                                            spin={false}
-                                            swapOpacity={false}
-                                            symbol={false}
-                                            title=""
-                                            transform={null}
-                                          />
-                                        }
-                                        id="tooltip"
-                                        size="1x"
-                                        title="Warning"
+                                      <Memo()
+                                        extraInfo="SQL queries, R scripts, and other code are easiest to write when field names contain only a combination of letters, numbers, and underscores, and start with a letter or underscore. Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, SPSS, and MATLAB."
+                                        index={1}
+                                        msg="Warning: Field name contains special characters."
+                                        name="#ColumnAwesome"
+                                        severity="Warning"
                                       >
-                                        <span
-                                          className="label-help-target"
-                                          onMouseOut={[Function]}
-                                          onMouseOver={[Function]}
-                                        >
-                                          <FontAwesomeIcon
-                                            border={false}
-                                            className="domain-warning-icon"
-                                            fixedWidth={false}
-                                            flip={null}
-                                            icon={
-                                              Object {
-                                                "icon": Array [
-                                                  512,
-                                                  512,
-                                                  Array [],
-                                                  "f06a",
-                                                  "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z",
-                                                ],
-                                                "iconName": "exclamation-circle",
-                                                "prefix": "fas",
+                                        <Component
+                                          customStyle={Object {}}
+                                          iconComponent={
+                                            <FontAwesomeIcon
+                                              border={false}
+                                              className="domain-warning-icon"
+                                              fixedWidth={false}
+                                              flip={null}
+                                              icon={
+                                                Object {
+                                                  "icon": Array [
+                                                    512,
+                                                    512,
+                                                    Array [],
+                                                    "f06a",
+                                                    "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z",
+                                                  ],
+                                                  "iconName": "exclamation-circle",
+                                                  "prefix": "fas",
+                                                }
                                               }
-                                            }
-                                            inverse={false}
-                                            listItem={false}
-                                            mask={null}
-                                            pull={null}
-                                            pulse={false}
-                                            rotation={null}
-                                            size={null}
-                                            spin={false}
-                                            swapOpacity={false}
-                                            symbol={false}
-                                            title=""
-                                            transform={null}
+                                              inverse={false}
+                                              listItem={false}
+                                              mask={null}
+                                              pull={null}
+                                              pulse={false}
+                                              rotation={null}
+                                              size={null}
+                                              spin={false}
+                                              swapOpacity={false}
+                                              symbol={false}
+                                              title=""
+                                              transform={null}
+                                            />
+                                          }
+                                          id="tooltip"
+                                          size="1x"
+                                          title="Warning"
+                                        >
+                                          <span
+                                            className="label-help-target"
+                                            onMouseOut={[Function]}
+                                            onMouseOver={[Function]}
                                           >
-                                            <svg
-                                              aria-hidden="true"
-                                              className="svg-inline--fa fa-exclamation-circle fa-w-16 domain-warning-icon"
-                                              data-icon="exclamation-circle"
-                                              data-prefix="fas"
-                                              focusable="false"
-                                              role="img"
-                                              style={Object {}}
-                                              viewBox="0 0 512 512"
-                                              xmlns="http://www.w3.org/2000/svg"
+                                            <FontAwesomeIcon
+                                              border={false}
+                                              className="domain-warning-icon"
+                                              fixedWidth={false}
+                                              flip={null}
+                                              icon={
+                                                Object {
+                                                  "icon": Array [
+                                                    512,
+                                                    512,
+                                                    Array [],
+                                                    "f06a",
+                                                    "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z",
+                                                  ],
+                                                  "iconName": "exclamation-circle",
+                                                  "prefix": "fas",
+                                                }
+                                              }
+                                              inverse={false}
+                                              listItem={false}
+                                              mask={null}
+                                              pull={null}
+                                              pulse={false}
+                                              rotation={null}
+                                              size={null}
+                                              spin={false}
+                                              swapOpacity={false}
+                                              symbol={false}
+                                              title=""
+                                              transform={null}
                                             >
-                                              <path
-                                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
-                                                fill="currentColor"
+                                              <svg
+                                                aria-hidden="true"
+                                                className="svg-inline--fa fa-exclamation-circle fa-w-16 domain-warning-icon"
+                                                data-icon="exclamation-circle"
+                                                data-prefix="fas"
+                                                focusable="false"
+                                                role="img"
                                                 style={Object {}}
-                                              />
-                                            </svg>
-                                          </FontAwesomeIcon>
-                                          <Overlay
-                                            animation={[Function]}
-                                            placement="right"
-                                            rootClose={false}
-                                            show={false}
-                                          >
+                                                viewBox="0 0 512 512"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                              >
+                                                <path
+                                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
+                                                  fill="currentColor"
+                                                  style={Object {}}
+                                                />
+                                              </svg>
+                                            </FontAwesomeIcon>
                                             <Overlay
+                                              animation={[Function]}
                                               placement="right"
                                               rootClose={false}
                                               show={false}
-                                              transition={[Function]}
-                                            />
-                                          </Overlay>
+                                            >
+                                              <Overlay
+                                                placement="right"
+                                                rootClose={false}
+                                                show={false}
+                                                transition={[Function]}
+                                              />
+                                            </Overlay>
+                                          </span>
+                                        </Component>
+                                        <span>
+                                           
                                         </span>
-                                      </Component>
-                                      <span>
-                                         
-                                      </span>
-                                      <b
-                                        key="#ColumnAwesome_1"
-                                      >
-                                        Warning: Field name contains special characters.
-                                      </b>
+                                        <b
+                                          key="#ColumnAwesome_1"
+                                        >
+                                          Warning: Field name contains special characters.
+                                        </b>
+                                      </Memo()>
                                     </div>
                                     <div
                                       className="domain-field-buttons"
@@ -3540,6 +3589,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -3581,6 +3631,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                           "lookupSchema": undefined,
                                           "lookupQuery": undefined,
                                         },
+                                        "name": "#ColumnAwesome",
                                         "rangeURI": undefined,
                                       },
                                       "updatedField": false,
@@ -3661,6 +3712,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -3702,6 +3754,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "#ColumnAwesome",
                                                   "rangeURI": undefined,
                                                 },
                                                 "updatedField": false,
@@ -4143,6 +4196,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -4184,6 +4238,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "#ColumnAwesome",
                                                   "rangeURI": undefined,
                                                 },
                                                 "updatedField": false,
@@ -4680,6 +4735,16 @@ exports[`DomainRow date time field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -4739,6 +4804,7 @@ exports[`DomainRow date time field 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -4780,6 +4846,7 @@ exports[`DomainRow date time field 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "dateTimeField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                     },
                     "updatedField": false,
@@ -4933,6 +5000,7 @@ exports[`DomainRow date time field 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -4974,6 +5042,7 @@ exports[`DomainRow date time field 1`] = `
                                         "lookupSchema": undefined,
                                         "lookupQuery": undefined,
                                       },
+                                      "name": "dateTimeField",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                     },
                                     "updatedField": false,
@@ -5512,6 +5581,7 @@ exports[`DomainRow date time field 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -5553,6 +5623,7 @@ exports[`DomainRow date time field 1`] = `
                                           "lookupSchema": undefined,
                                           "lookupQuery": undefined,
                                         },
+                                        "name": "dateTimeField",
                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                       },
                                       "updatedField": false,
@@ -5862,6 +5933,7 @@ exports[`DomainRow date time field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -5903,6 +5975,7 @@ exports[`DomainRow date time field 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "dateTimeField",
                                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                 },
                                                 "updatedField": false,
@@ -6344,6 +6417,7 @@ exports[`DomainRow date time field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -6385,6 +6459,7 @@ exports[`DomainRow date time field 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "dateTimeField",
                                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                 },
                                                 "updatedField": false,
@@ -7020,6 +7095,16 @@ exports[`DomainRow decimal field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -7079,6 +7164,7 @@ exports[`DomainRow decimal field 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": true,
                     "scale": 4000,
@@ -7120,6 +7206,7 @@ exports[`DomainRow decimal field 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "decimalField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                     },
                     "updatedField": false,
@@ -7273,6 +7360,7 @@ exports[`DomainRow decimal field 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": true,
                                     "scale": 4000,
@@ -7314,6 +7402,7 @@ exports[`DomainRow decimal field 1`] = `
                                         "lookupSchema": undefined,
                                         "lookupQuery": undefined,
                                       },
+                                      "name": "decimalField",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                     },
                                     "updatedField": false,
@@ -7852,6 +7941,7 @@ exports[`DomainRow decimal field 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": true,
                                       "scale": 4000,
@@ -7893,6 +7983,7 @@ exports[`DomainRow decimal field 1`] = `
                                           "lookupSchema": undefined,
                                           "lookupQuery": undefined,
                                         },
+                                        "name": "decimalField",
                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                       },
                                       "updatedField": false,
@@ -8246,6 +8337,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": true,
                                                 "scale": 4000,
@@ -8287,6 +8379,7 @@ exports[`DomainRow decimal field 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "decimalField",
                                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                 },
                                                 "updatedField": false,
@@ -8728,6 +8821,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": true,
                                                 "scale": 4000,
@@ -8769,6 +8863,7 @@ exports[`DomainRow decimal field 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "decimalField",
                                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                 },
                                                 "updatedField": false,
@@ -9404,6 +9499,16 @@ exports[`DomainRow participant id field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -9463,6 +9568,7 @@ exports[`DomainRow participant id field 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -9504,6 +9610,7 @@ exports[`DomainRow participant id field 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "participantField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     },
                     "updatedField": false,
@@ -9657,6 +9764,7 @@ exports[`DomainRow participant id field 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -9698,6 +9806,7 @@ exports[`DomainRow participant id field 1`] = `
                                         "lookupSchema": undefined,
                                         "lookupQuery": undefined,
                                       },
+                                      "name": "participantField",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                     },
                                     "updatedField": false,
@@ -10048,6 +10157,12 @@ exports[`DomainRow participant id field 1`] = `
                                               >
                                                 Text
                                               </option>
+                                              <option
+                                                key="textChoice"
+                                                value="textChoice"
+                                              >
+                                                Text Choice
+                                              </option>
                                             </select>
                                           </FormControl>
                                         </div>
@@ -10260,6 +10375,7 @@ exports[`DomainRow participant id field 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -10301,6 +10417,7 @@ exports[`DomainRow participant id field 1`] = `
                                           "lookupSchema": undefined,
                                           "lookupQuery": undefined,
                                         },
+                                        "name": "participantField",
                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                       },
                                       "updatedField": false,
@@ -10381,6 +10498,7 @@ exports[`DomainRow participant id field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -10422,6 +10540,7 @@ exports[`DomainRow participant id field 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "participantField",
                                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                 },
                                                 "updatedField": false,
@@ -10863,6 +10982,7 @@ exports[`DomainRow participant id field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -10904,6 +11024,7 @@ exports[`DomainRow participant id field 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "participantField",
                                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                 },
                                                 "updatedField": false,
@@ -11539,6 +11660,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -11598,6 +11729,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -11639,6 +11771,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "modified",
                       "rangeURI": undefined,
                     },
                     "updatedField": false,
@@ -11804,6 +11937,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -11845,6 +11979,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         "lookupSchema": undefined,
                                         "lookupQuery": undefined,
                                       },
+                                      "name": "modified",
                                       "rangeURI": undefined,
                                     },
                                     "updatedField": false,
@@ -12238,6 +12373,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 Text
                                               </option>
                                               <option
+                                                key="textChoice"
+                                                value="textChoice"
+                                              >
+                                                Text Choice
+                                              </option>
+                                              <option
                                                 key="uniqueId"
                                                 value="uniqueId"
                                               >
@@ -12325,11 +12466,18 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     >
                                       New Field
                                       . 
-                                      <b
-                                        key="modified_1"
+                                      <Memo()
+                                        index={1}
+                                        msg="Error: 'modified' is a reserved field name in 'CancerCuringStudy'"
+                                        name="modified"
+                                        severity="Error"
                                       >
-                                        Error: 'modified' is a reserved field name in 'CancerCuringStudy'
-                                      </b>
+                                        <b
+                                          key="modified_1"
+                                        >
+                                          Error: 'modified' is a reserved field name in 'CancerCuringStudy'
+                                        </b>
+                                      </Memo()>
                                     </div>
                                     <div
                                       className="domain-field-buttons"
@@ -12481,6 +12629,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -12522,6 +12671,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                           "lookupSchema": undefined,
                                           "lookupQuery": undefined,
                                         },
+                                        "name": "modified",
                                         "rangeURI": undefined,
                                       },
                                       "updatedField": false,
@@ -12602,6 +12752,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -12643,6 +12794,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "modified",
                                                   "rangeURI": undefined,
                                                 },
                                                 "updatedField": false,
@@ -13084,6 +13236,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -13125,6 +13278,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "modified",
                                                   "rangeURI": undefined,
                                                 },
                                                 "updatedField": false,
@@ -13621,6 +13775,16 @@ exports[`DomainRow string field test 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -13680,6 +13844,7 @@ exports[`DomainRow string field test 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -13721,6 +13886,7 @@ exports[`DomainRow string field test 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "stringField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     },
                     "updatedField": false,
@@ -13874,6 +14040,7 @@ exports[`DomainRow string field test 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -13915,6 +14082,7 @@ exports[`DomainRow string field test 1`] = `
                                         "lookupSchema": undefined,
                                         "lookupQuery": undefined,
                                       },
+                                      "name": "stringField",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                     },
                                     "updatedField": false,
@@ -14265,6 +14433,12 @@ exports[`DomainRow string field test 1`] = `
                                               >
                                                 Text
                                               </option>
+                                              <option
+                                                key="textChoice"
+                                                value="textChoice"
+                                              >
+                                                Text Choice
+                                              </option>
                                             </select>
                                           </FormControl>
                                         </div>
@@ -14477,6 +14651,7 @@ exports[`DomainRow string field test 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -14518,6 +14693,7 @@ exports[`DomainRow string field test 1`] = `
                                           "lookupSchema": undefined,
                                           "lookupQuery": undefined,
                                         },
+                                        "name": "stringField",
                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                       },
                                       "updatedField": false,
@@ -14918,6 +15094,7 @@ exports[`DomainRow string field test 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -14959,6 +15136,7 @@ exports[`DomainRow string field test 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "stringField",
                                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                 },
                                                 "updatedField": false,
@@ -15400,6 +15578,7 @@ exports[`DomainRow string field test 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -15441,6 +15620,7 @@ exports[`DomainRow string field test 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": "stringField",
                                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                 },
                                                 "updatedField": false,
@@ -16076,6 +16256,16 @@ exports[`DomainRow with empty domain form 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#textChoice",
+                      "display": "Text Choice",
+                      "name": "textChoice",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -16135,6 +16325,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": undefined,
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -16176,6 +16367,7 @@ exports[`DomainRow with empty domain form 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": undefined,
                       "rangeURI": undefined,
                     },
                     "updatedField": false,
@@ -16329,6 +16521,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                     "rangeValidators": Immutable.List [],
                                     "rangeURI": undefined,
                                     "regexValidators": Immutable.List [],
+                                    "textChoiceValidator": undefined,
                                     "recommendedVariable": false,
                                     "required": false,
                                     "scale": 4000,
@@ -16370,6 +16563,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         "lookupSchema": undefined,
                                         "lookupQuery": undefined,
                                       },
+                                      "name": undefined,
                                       "rangeURI": undefined,
                                     },
                                     "updatedField": false,
@@ -16762,6 +16956,12 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 Text
                                               </option>
                                               <option
+                                                key="textChoice"
+                                                value="textChoice"
+                                              >
+                                                Text Choice
+                                              </option>
+                                              <option
                                                 key="uniqueId"
                                                 value="uniqueId"
                                               >
@@ -16999,6 +17199,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                       "rangeValidators": Immutable.List [],
                                       "rangeURI": undefined,
                                       "regexValidators": Immutable.List [],
+                                      "textChoiceValidator": undefined,
                                       "recommendedVariable": false,
                                       "required": false,
                                       "scale": 4000,
@@ -17040,6 +17241,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                           "lookupSchema": undefined,
                                           "lookupQuery": undefined,
                                         },
+                                        "name": undefined,
                                         "rangeURI": undefined,
                                       },
                                       "updatedField": false,
@@ -17440,6 +17642,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": undefined,
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -17481,6 +17684,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": undefined,
                                                   "rangeURI": undefined,
                                                 },
                                                 "updatedField": false,
@@ -17922,6 +18126,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "rangeValidators": Immutable.List [],
                                                 "rangeURI": undefined,
                                                 "regexValidators": Immutable.List [],
+                                                "textChoiceValidator": undefined,
                                                 "recommendedVariable": false,
                                                 "required": false,
                                                 "scale": 4000,
@@ -17963,6 +18168,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     "lookupSchema": undefined,
                                                     "lookupQuery": undefined,
                                                   },
+                                                  "name": undefined,
                                                   "rangeURI": undefined,
                                                 },
                                                 "updatedField": false,

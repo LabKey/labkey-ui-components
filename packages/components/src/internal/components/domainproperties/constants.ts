@@ -77,6 +77,7 @@ export const DOMAIN_VALIDATOR_FAILONMATCH = 'failOnMatch';
 export const DOMAIN_VALIDATOR_NAME = 'name';
 export const DOMAIN_VALIDATOR_REMOVE = 'removeValidator';
 export const DOMAIN_VALIDATOR_LOOKUP = 'lookupValidator';
+export const DOMAIN_VALIDATOR_TEXTCHOICE = 'textChoiceValidator';
 
 export const DOMAIN_VALIDATOR_BOLD = 'bold';
 export const DOMAIN_VALIDATOR_ITALIC = 'italic';
@@ -142,6 +143,7 @@ export const VISITID_CONCEPT_URI = 'http://cpas.labkey.com/Study#VisitId';
 export const SAMPLE_TYPE_CONCEPT_URI = 'http://www.labkey.org/exp/xml#sample';
 export const CONCEPT_CODE_CONCEPT_URI = 'http://www.labkey.org/types#conceptCode';
 export const STORAGE_UNIQUE_ID_CONCEPT_URI = 'http://www.labkey.org/types#storageUniqueId';
+export const TEXT_CHOICE_CONCEPT_URI = 'http://www.labkey.org/types#textChoice';
 export const CREATED_TIMESTAMP_CONCEPT_URI = 'http://www.labkey.org/types#createdTimestamp';
 export const MODIFIED_TIMESTAMP_CONCEPT_URI = 'http://www.labkey.org/types#modifiedTimestamp';
 
@@ -179,6 +181,11 @@ export const FIELD_NAME_CHAR_WARNING_INFO =
     'Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, ' +
     'SPSS, and MATLAB.';
 
+export const FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG = 'No text choice values defined';
+export const FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO =
+    'This field is defined as a "Text Choice" field, but no values have been added. Expand the field and use the ' +
+    '"Add Values" button to define the set of choices for this field.';
+
 export const PROPERTIES_PANEL_ERROR_MSG = 'Contains errors or is missing required values.';
 export const PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG = 'Naming Pattern does not utilize the ID/Name prefix value';
 
@@ -198,3 +205,5 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
 };
 
 export const DERIVATION_DATA_SCOPE_CHILD_ONLY = 'ChildOnly';
+
+export const MAX_VALID_TEXT_CHOICES = 200;

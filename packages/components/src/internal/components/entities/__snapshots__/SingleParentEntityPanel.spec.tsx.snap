@@ -360,6 +360,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                 labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--type-select"
                 name="entityType0"
                 onChange={[Function]}
+                openMenuOnFocus={false}
                 options={
                   Array [
                     Object {
@@ -507,11 +508,13 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                       id="selectinput-0"
                       isClearable={true}
                       isDisabled={false}
+                      menuPlacement="auto"
                       name="entityType0"
                       noOptionsMessage={[Function]}
                       onBlur={[Function]}
                       onChange={[Function]}
                       onFocus={[Function]}
+                      openMenuOnFocus={false}
                       options={
                         Array [
                           Object {
@@ -585,7 +588,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                         loadingMessage={[Function]}
                         maxMenuHeight={300}
                         menuIsOpen={false}
-                        menuPlacement="bottom"
+                        menuPlacement="auto"
                         menuPosition="absolute"
                         menuShouldBlockScroll={false}
                         menuShouldScrollIntoView={true}
@@ -723,7 +726,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                               "loadingMessage": [Function],
                               "maxMenuHeight": 300,
                               "menuIsOpen": false,
-                              "menuPlacement": "bottom",
+                              "menuPlacement": "auto",
                               "menuPosition": "absolute",
                               "menuShouldBlockScroll": false,
                               "menuShouldScrollIntoView": true,
@@ -907,7 +910,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     "loadingMessage": [Function],
                                     "maxMenuHeight": 300,
                                     "menuIsOpen": false,
-                                    "menuPlacement": "bottom",
+                                    "menuPlacement": "auto",
                                     "menuPosition": "absolute",
                                     "menuShouldBlockScroll": false,
                                     "menuShouldScrollIntoView": true,
@@ -1105,7 +1108,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     "loadingMessage": [Function],
                                     "maxMenuHeight": 300,
                                     "menuIsOpen": false,
-                                    "menuPlacement": "bottom",
+                                    "menuPlacement": "auto",
                                     "menuPosition": "absolute",
                                     "menuShouldBlockScroll": false,
                                     "menuShouldScrollIntoView": true,
@@ -1300,7 +1303,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           "loadingMessage": [Function],
                                           "maxMenuHeight": 300,
                                           "menuIsOpen": false,
-                                          "menuPlacement": "bottom",
+                                          "menuPlacement": "auto",
                                           "menuPosition": "absolute",
                                           "menuShouldBlockScroll": false,
                                           "menuShouldScrollIntoView": true,
@@ -1482,7 +1485,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "loadingMessage": [Function],
                                                 "maxMenuHeight": 300,
                                                 "menuIsOpen": false,
-                                                "menuPlacement": "bottom",
+                                                "menuPlacement": "auto",
                                                 "menuPosition": "absolute",
                                                 "menuShouldBlockScroll": false,
                                                 "menuShouldScrollIntoView": true,
@@ -1675,7 +1678,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "loadingMessage": [Function],
                                                 "maxMenuHeight": 300,
                                                 "menuIsOpen": false,
-                                                "menuPlacement": "bottom",
+                                                "menuPlacement": "auto",
                                                 "menuPosition": "absolute",
                                                 "menuShouldBlockScroll": false,
                                                 "menuShouldScrollIntoView": true,
@@ -1849,7 +1852,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "loadingMessage": [Function],
                                                   "maxMenuHeight": 300,
                                                   "menuIsOpen": false,
-                                                  "menuPlacement": "bottom",
+                                                  "menuPlacement": "auto",
                                                   "menuPosition": "absolute",
                                                   "menuShouldBlockScroll": false,
                                                   "menuShouldScrollIntoView": true,
@@ -2121,7 +2124,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           "loadingMessage": [Function],
                                           "maxMenuHeight": 300,
                                           "menuIsOpen": false,
-                                          "menuPlacement": "bottom",
+                                          "menuPlacement": "auto",
                                           "menuPosition": "absolute",
                                           "menuShouldBlockScroll": false,
                                           "menuShouldScrollIntoView": true,
@@ -2298,7 +2301,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "loadingMessage": [Function],
                                                 "maxMenuHeight": 300,
                                                 "menuIsOpen": false,
-                                                "menuPlacement": "bottom",
+                                                "menuPlacement": "auto",
                                                 "menuPosition": "absolute",
                                                 "menuShouldBlockScroll": false,
                                                 "menuShouldScrollIntoView": true,
@@ -2486,7 +2489,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "loadingMessage": [Function],
                                                 "maxMenuHeight": 300,
                                                 "menuIsOpen": false,
-                                                "menuPlacement": "bottom",
+                                                "menuPlacement": "auto",
                                                 "menuPosition": "absolute",
                                                 "menuShouldBlockScroll": false,
                                                 "menuShouldScrollIntoView": true,

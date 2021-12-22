@@ -76,7 +76,7 @@ import {
     reorderSummaryColumns,
 } from './propertiesUtil';
 import { INT_LIST, VAR_LIST } from './list/constants';
-import { DomainRowWarning } from "./DomainRowWarning";
+import { DomainRowWarning } from './DomainRowWarning';
 
 export interface IFieldChange {
     id: string;

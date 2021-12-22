@@ -769,47 +769,47 @@ describe('DomainField', () => {
     });
 
     test('getDetailsTextArray', () => {
-        let field = DomainField.create({propertyId: undefined, name: 'test'});
+        let field = DomainField.create({ propertyId: undefined, name: 'test' });
         expect(field.getDetailsTextArray(0).join('')).toBe('New Field');
 
-        field = field.merge({propertyId: 0, updatedField: true}) as DomainField;
+        field = field.merge({ propertyId: 0, updatedField: true }) as DomainField;
         expect(field.getDetailsTextArray(0).join('')).toBe('Updated');
 
-        field = field.merge({dataType: SAMPLE_TYPE, lookupSchema: 'exp', lookupQuery: 'SampleType1'}) as DomainField;
+        field = field.merge({ dataType: SAMPLE_TYPE, lookupSchema: 'exp', lookupQuery: 'SampleType1' }) as DomainField;
         expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SampleType1');
 
-        field = field.merge({dataType: LOOKUP_TYPE}) as DomainField;
+        field = field.merge({ dataType: LOOKUP_TYPE }) as DomainField;
         expect(field.getDetailsTextArray(0).join('')).toBe('Updated. Current Folder > exp > SampleType1');
 
-        field = field.merge({lookupContainer: 'Test Folder'}) as DomainField;
+        field = field.merge({ lookupContainer: 'Test Folder' }) as DomainField;
         expect(field.getDetailsTextArray(0).join('')).toBe('Updated. Test Folder > exp > SampleType1');
 
-        field = field.merge({dataType: ONTOLOGY_LOOKUP_TYPE, sourceOntology: 'SRC'}) as DomainField;
+        field = field.merge({ dataType: ONTOLOGY_LOOKUP_TYPE, sourceOntology: 'SRC' }) as DomainField;
         expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC');
 
-        field = field.merge({wrappedColumnName: 'Wrapped'}) as DomainField;
+        field = field.merge({ wrappedColumnName: 'Wrapped' }) as DomainField;
         expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC. Wrapped column - Wrapped');
 
-        field = field.merge({wrappedColumnName: undefined, isPrimaryKey: true}) as DomainField;
+        field = field.merge({ wrappedColumnName: undefined, isPrimaryKey: true }) as DomainField;
         expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC. Primary Key');
 
-        field = field.merge({lockType: DOMAIN_FIELD_FULLY_LOCKED}) as DomainField;
+        field = field.merge({ lockType: DOMAIN_FIELD_FULLY_LOCKED }) as DomainField;
         expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC. Primary Key. Locked');
 
-        field = field.merge({principalConceptCode: 'abc:123'}) as DomainField;
+        field = field.merge({ principalConceptCode: 'abc:123' }) as DomainField;
         expect(field.getDetailsTextArray(0).join('')).toBe(
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
         );
 
-        expect(field.getDetailsTextArray(0, {test: 'Additional Info'}).join('')).toBe(
+        expect(field.getDetailsTextArray(0, { test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked. Additional Info'
         );
-        field = field.merge({name: ''}) as DomainField;
-        expect(field.getDetailsTextArray(0, {test: 'Additional Info'}).join('')).toBe(
+        field = field.merge({ name: '' }) as DomainField;
+        expect(field.getDetailsTextArray(0, { test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
         );
 
-        CONCEPT_CACHE.set('abc:123', new ConceptModel({code: 'abc:123', label: 'Concept display text'}));
+        CONCEPT_CACHE.set('abc:123', new ConceptModel({ code: 'abc:123', label: 'Concept display text' }));
         expect(field.getDetailsTextArray(0).join('')).toBe(
             'Updated. SRC. Ontology Concept: Concept display text (abc:123). Primary Key. Locked'
         );
@@ -854,18 +854,46 @@ describe('DomainField', () => {
     });
 
     test('hasRegExValidation', () => {
-        expect(DomainField.hasRegExValidation(DomainField.create({ name: 'foo', rangeURI: INTEGER_TYPE.rangeURI }))).toBeFalsy();
-        expect(DomainField.hasRegExValidation(DomainField.create({ name: 'foo', rangeURI: TEXT_CHOICE_TYPE.rangeURI, conceptURI: TEXT_CHOICE_TYPE.conceptURI }))).toBeFalsy();
-        expect(DomainField.hasRegExValidation(DomainField.create({ name: 'foo', rangeURI: UNIQUE_ID_TYPE.rangeURI, conceptURI: UNIQUE_ID_TYPE.conceptURI }))).toBeFalsy();
+        expect(
+            DomainField.hasRegExValidation(DomainField.create({ name: 'foo', rangeURI: INTEGER_TYPE.rangeURI }))
+        ).toBeFalsy();
+        expect(
+            DomainField.hasRegExValidation(
+                DomainField.create({
+                    name: 'foo',
+                    rangeURI: TEXT_CHOICE_TYPE.rangeURI,
+                    conceptURI: TEXT_CHOICE_TYPE.conceptURI,
+                })
+            )
+        ).toBeFalsy();
+        expect(
+            DomainField.hasRegExValidation(
+                DomainField.create({
+                    name: 'foo',
+                    rangeURI: UNIQUE_ID_TYPE.rangeURI,
+                    conceptURI: UNIQUE_ID_TYPE.conceptURI,
+                })
+            )
+        ).toBeFalsy();
         expect(DomainField.hasRegExValidation(DomainField.create({}))).toBeTruthy();
     });
 
     test('hasRangeValidation', () => {
-        expect(DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI }))).toBeFalsy();
-        expect(DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: BOOLEAN_TYPE.rangeURI }))).toBeFalsy();
-        expect(DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: INTEGER_TYPE.rangeURI }))).toBeTruthy();
-        expect(DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: DOUBLE_TYPE.rangeURI }))).toBeTruthy();
-        expect(DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: DATETIME_TYPE.rangeURI }))).toBeTruthy();
+        expect(
+            DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI }))
+        ).toBeFalsy();
+        expect(
+            DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: BOOLEAN_TYPE.rangeURI }))
+        ).toBeFalsy();
+        expect(
+            DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: INTEGER_TYPE.rangeURI }))
+        ).toBeTruthy();
+        expect(
+            DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: DOUBLE_TYPE.rangeURI }))
+        ).toBeTruthy();
+        expect(
+            DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: DATETIME_TYPE.rangeURI }))
+        ).toBeTruthy();
     });
 
     // TODO add other test cases for DomainField.serialize code
@@ -902,9 +930,10 @@ describe('PropertyValidator', () => {
         expect(pvs.size).toBe(1);
         expect(pvs.get(0).properties.validValues).toStrictEqual([]);
 
-        pvs = PropertyValidator.fromJS([
-            { type: 'TextChoice', name: 'Text Choice Validator', expression: 'a|b', properties: {} }
-        ], 'TextChoice');
+        pvs = PropertyValidator.fromJS(
+            [{ type: 'TextChoice', name: 'Text Choice Validator', expression: 'a|b', properties: {} }],
+            'TextChoice'
+        );
         expect(pvs.size).toBe(1);
         expect(pvs.get(0).properties.validValues).toStrictEqual(['a', 'b']);
     });
@@ -971,27 +1000,38 @@ describe('getValidValuesDetailStr', () => {
 
     test('with values', () => {
         expect(getValidValuesDetailStr(['a'])).toBe('a');
-        expect(getValidValuesDetailStr(['a','b'])).toBe('a, b');
-        expect(getValidValuesDetailStr(['a','b','c'])).toBe('a, b, c');
-        expect(getValidValuesDetailStr(['a','b','c','d'])).toBe('a, b, c, d');
-        expect(getValidValuesDetailStr(['a','b','c','d','e'])).toBe('a, b, c, d (and 1 more)');
-        expect(getValidValuesDetailStr(['a','b','c','d','e','f'])).toBe('a, b, c, d (and 2 more)');
+        expect(getValidValuesDetailStr(['a', 'b'])).toBe('a, b');
+        expect(getValidValuesDetailStr(['a', 'b', 'c'])).toBe('a, b, c');
+        expect(getValidValuesDetailStr(['a', 'b', 'c', 'd'])).toBe('a, b, c, d');
+        expect(getValidValuesDetailStr(['a', 'b', 'c', 'd', 'e'])).toBe('a, b, c, d (and 1 more)');
+        expect(getValidValuesDetailStr(['a', 'b', 'c', 'd', 'e', 'f'])).toBe('a, b, c, d (and 2 more)');
     });
 
     test('with extra long values', () => {
-        expect(getValidValuesDetailStr([
-            'aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa a'
-        ])).toBe('1 value');
+        expect(
+            getValidValuesDetailStr([
+                'aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa a',
+            ])
+        ).toBe('1 value');
 
-        expect(getValidValuesDetailStr([
-            'aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa',
-            'bbbbbbbbb bbbbbbbbb bbbbbbbbb bbbbbbbbb bbbbbbbbb',
-        ])).toBe('2 values');
+        expect(
+            getValidValuesDetailStr([
+                'aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa',
+                'bbbbbbbbb bbbbbbbbb bbbbbbbbb bbbbbbbbb bbbbbbbbb',
+            ])
+        ).toBe('2 values');
 
-        expect(getValidValuesDetailStr([
-            'a', 'b', 'c', 'd', 'e', 'f',
-            'aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa a'
-        ])).toBe('a, b, c, d (and 3 more)');
+        expect(
+            getValidValuesDetailStr([
+                'a',
+                'b',
+                'c',
+                'd',
+                'e',
+                'f',
+                'aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa a',
+            ])
+        ).toBe('a, b, c, d (and 3 more)');
     });
 });
 

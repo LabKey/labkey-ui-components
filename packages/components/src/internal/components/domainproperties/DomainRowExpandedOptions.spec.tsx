@@ -14,7 +14,8 @@ import {
     INTEGER_TYPE,
     MULTILINE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
-    SAMPLE_TYPE, TEXT_CHOICE_TYPE,
+    SAMPLE_TYPE,
+    TEXT_CHOICE_TYPE,
     TEXT_TYPE,
 } from './PropDescType';
 import { TextFieldOptions } from './TextFieldOptions';

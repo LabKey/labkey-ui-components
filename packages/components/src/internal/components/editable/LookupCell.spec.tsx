@@ -6,8 +6,9 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 import { QuerySelect } from '../forms/QuerySelect';
 
-import { LookupCell } from './LookupCell';
 import { ValueDescriptor } from '../../models';
+
+import { LookupCell } from './LookupCell';
 
 describe('LookupCell', () => {
     const DEFAULT_PROPS = {
@@ -52,7 +53,7 @@ describe('LookupCell', () => {
             <LookupCell
                 {...DEFAULT_PROPS}
                 col={QueryColumn.create({
-                    lookup: { schemaName: 'schema', queryName: 'query', multiValued: 'junction' }
+                    lookup: { schemaName: 'schema', queryName: 'query', multiValued: 'junction' },
                 })}
             />
         );

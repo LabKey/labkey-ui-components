@@ -1,8 +1,9 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { DomainRowWarning } from './DomainRowWarning';
-import { LabelHelpTip } from "../base/LabelHelpTip";
 
 describe('DomainRowWarning', () => {
     const DEFAULT_PROPS = {

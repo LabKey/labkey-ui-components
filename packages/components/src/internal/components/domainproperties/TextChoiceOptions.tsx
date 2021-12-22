@@ -11,6 +11,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { LockIcon } from '../base/LockIcon';
 
+import { DisableableButton } from '../buttons/DisableableButton';
+
 import { DOMAIN_VALIDATOR_TEXTCHOICE, MAX_VALID_TEXT_CHOICES } from './constants';
 import {
     DEFAULT_TEXT_CHOICE_VALIDATOR,
@@ -24,11 +26,8 @@ import { DomainFieldLabel } from './DomainFieldLabel';
 
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
 import { createFormInputId } from './actions';
-import { DisableableButton } from '../buttons/DisableableButton';
 
-const HELP_TIP_BODY = (
-    <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>
-);
+const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;
 
 const IN_USE_TITLE = 'Text Choice In Use';
 const IN_USE_TIP = 'This text choice value cannot be changed or deleted because it is in use.';

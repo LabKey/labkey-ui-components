@@ -21,9 +21,7 @@ describe('TextChoiceAddValuesModal', () => {
     }
 
     function validateCounterText(wrapper: ReactWrapper, totalStr: string, newStr: string): void {
-        expect(wrapper.find('p').text()).toBe(
-            `Enter each value on a new line. ${totalStr} can be added.`
-        );
+        expect(wrapper.find('p').text()).toBe(`Enter each value on a new line. ${totalStr} can be added.`);
         expect(wrapper.find('.text-choice-value-count').text()).toBe(`${newStr} provided.`);
     }
 

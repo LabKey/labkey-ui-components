@@ -48,10 +48,7 @@ describe('TextChoiceInput', () => {
 
     test('validValues, with values', () => {
         const wrapper = mount(
-            <TextChoiceInput
-                {...DEFAULT_PROPS}
-                queryColumn={new QueryColumn({ validValues: ['a', 'b', 'c'] })}
-            />
+            <TextChoiceInput {...DEFAULT_PROPS} queryColumn={new QueryColumn({ validValues: ['a', 'b', 'c'] })} />
         );
         validate(wrapper, undefined, [
             { label: 'a', value: 'a' },

@@ -1,12 +1,15 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { LoadingSpinner, DomainFieldLabel, AddEntityButton } from "../../..";
+import { LoadingSpinner, DomainFieldLabel, AddEntityButton } from '../../..';
+
+import { ChoicesListItem } from '../base/ChoicesListItem';
+
+import { waitForLifecycle } from '../../testHelpers';
+
 import { TextChoiceOptionsImpl } from './TextChoiceOptions';
-import { DomainField } from "./models";
-import { ChoicesListItem } from "../base/ChoicesListItem";
-import { SectionHeading } from "./SectionHeading";
-import { waitForLifecycle } from "../../testHelpers";
+import { DomainField } from './models';
+import { SectionHeading } from './SectionHeading';
 
 describe('TextChoiceOptions', () => {
     const DEFAULT_PROPS = {
@@ -41,7 +44,9 @@ describe('TextChoiceOptions', () => {
             expect(wrapper.find(ChoicesListItem)).toHaveLength(validValues);
             expect(wrapper.find('.choices-list__locked')).toHaveLength(inUse);
             expect(wrapper.find(AddEntityButton)).toHaveLength(1);
-            expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(validValues > 0 && !hasSelection ? 1 : 0);
+            expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(
+                validValues > 0 && !hasSelection ? 1 : 0
+            );
             expect(wrapper.find('input')).toHaveLength(hasSelection ? 1 : 0);
             expect(wrapper.find('button')).toHaveLength(validValues + (hasSelection ? 2 : 0));
         }
@@ -114,7 +119,9 @@ describe('TextChoiceOptions', () => {
     });
 
     test('with inUse values', async () => {
-        const wrapper = mount(<TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={['b']} />);
+        const wrapper = mount(
+            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={['b']} />
+        );
         validate(wrapper, false, 2, 1);
 
         // select the in use value and check right hand items
@@ -127,7 +134,9 @@ describe('TextChoiceOptions', () => {
     });
 
     test('delete button disabled', async () => {
-        const wrapper = mount(<TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={['b']} />);
+        const wrapper = mount(
+            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={['b']} />
+        );
         validate(wrapper, false, 2, 1);
 
         // first value, not in use

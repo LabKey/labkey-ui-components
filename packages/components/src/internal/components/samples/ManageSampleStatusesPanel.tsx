@@ -20,8 +20,9 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { DisableableButton } from '../buttons/DisableableButton';
+
 import { SampleState } from './models';
-import { DisableableButton } from "../buttons/DisableableButton";
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = SchemaQuery.create('exp', 'SampleStateType');

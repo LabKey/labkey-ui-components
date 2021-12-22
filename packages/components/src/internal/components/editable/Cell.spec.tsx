@@ -72,9 +72,7 @@ describe('Cell', () => {
     });
 
     test('with focus', () => {
-        const cell = mount(
-            <Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} focused selected />
-        );
+        const cell = mount(<Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} focused selected />);
         expect(cell.find('div')).toHaveLength(0);
         expect(cell.find('input')).toHaveLength(1);
         expect(cell.find(LookupCell)).toHaveLength(0);

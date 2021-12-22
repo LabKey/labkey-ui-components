@@ -18,9 +18,7 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
     const { onCancel, onApply, fieldName, initialValueCount = 0, maxValueCount = MAX_VALID_TEXT_CHOICES } = props;
     const [valueStr, setValueStr] = useState<string>('');
     const parsedValues = useMemo(() => {
-        return valueStr?.trim().length > 0
-            ? getValidValuesFromArray(valueStr.split('\n').map(v => v.trim()))
-            : [];
+        return valueStr?.trim().length > 0 ? getValidValuesFromArray(valueStr.split('\n').map(v => v.trim())) : [];
     }, [valueStr]);
     const maxValuesToAdd = useMemo(() => maxValueCount - initialValueCount, [initialValueCount]);
     const hasFieldName = useMemo(() => fieldName?.length > 0, [fieldName]);

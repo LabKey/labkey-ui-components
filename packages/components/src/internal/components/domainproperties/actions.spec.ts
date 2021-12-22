@@ -546,8 +546,7 @@ describe('domain properties actions', () => {
 
         const emptinessError = {
             success: false,
-            msg:
-                'No field definitions were found in the imported json file. Please check the file contents and try again.',
+            msg: 'No field definitions were found in the imported json file. Please check the file contents and try again.',
         };
         expect(processJsonImport('[]', domain)).toStrictEqual(emptinessError);
         expect(processJsonImport('{}', domain)).toStrictEqual(emptinessError);
@@ -558,13 +557,11 @@ describe('domain properties actions', () => {
 
         const primaryKeyErrorAssay = {
             success: false,
-            msg:
-                "Error on importing field 'undefined': Assay domain type does not support fields with an externally defined Primary Key.",
+            msg: "Error on importing field 'undefined': Assay domain type does not support fields with an externally defined Primary Key.",
         };
         const primaryKeyError = {
             success: false,
-            msg:
-                "Error on importing field 'undefined': This domain type does not support fields with an externally defined Primary Key.",
+            msg: "Error on importing field 'undefined': This domain type does not support fields with an externally defined Primary Key.",
         };
         expect(
             processJsonImport(

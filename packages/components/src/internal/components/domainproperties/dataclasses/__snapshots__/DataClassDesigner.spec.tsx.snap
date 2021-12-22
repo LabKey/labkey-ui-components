@@ -1180,6 +1180,7 @@ exports[`DataClassDesigner initModel 1`] = `
         "allowFileLinkProperties": false,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "allowTextChoiceProperties": true,
         "allowTimepointProperties": false,
         "showDefaultValueSettings": false,
         "defaultDefaultValueType": "FIXED_EDITABLE",
@@ -1208,7 +1209,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "lookupValidator": undefined,
             "measure": false,
             "mvEnabled": false,
-            "name": "TextFIeld",
+            "name": "TextField",
             "PHI": "NotPHI",
             "propertyId": 518195,
             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -1227,6 +1228,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "rangeValidators": Immutable.List [],
             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
             "regexValidators": Immutable.List [],
+            "textChoiceValidator": undefined,
             "recommendedVariable": false,
             "required": true,
             "scale": 4000,
@@ -1268,6 +1270,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lookupSchema": undefined,
                 "lookupQuery": undefined,
               },
+              "name": "TextField",
               "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
             },
             "updatedField": false,
@@ -1313,6 +1316,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "rangeValidators": Immutable.List [],
             "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
             "regexValidators": Immutable.List [],
+            "textChoiceValidator": undefined,
             "recommendedVariable": false,
             "required": false,
             "scale": 4000,
@@ -1354,6 +1358,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lookupSchema": undefined,
                 "lookupQuery": undefined,
               },
+              "name": "IntField",
               "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
             },
             "updatedField": false,
@@ -1399,6 +1404,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "rangeValidators": Immutable.List [],
             "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
             "regexValidators": Immutable.List [],
+            "textChoiceValidator": undefined,
             "recommendedVariable": false,
             "required": false,
             "scale": 4000,
@@ -1440,6 +1446,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lookupSchema": undefined,
                 "lookupQuery": undefined,
               },
+              "name": "DateField",
               "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
             },
             "updatedField": false,
@@ -1465,6 +1472,8 @@ exports[`DataClassDesigner initModel 1`] = `
         "newDesignFields": undefined,
         "instructions": null,
         "domainKindName": undefined,
+        "schemaName": null,
+        "queryName": null,
       },
       "domainId": 0,
       "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -1513,6 +1522,7 @@ exports[`DataClassDesigner initModel 1`] = `
           "allowFileLinkProperties": false,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "allowTextChoiceProperties": true,
           "allowTimepointProperties": false,
           "showDefaultValueSettings": false,
           "defaultDefaultValueType": "FIXED_EDITABLE",
@@ -1541,7 +1551,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "lookupValidator": undefined,
               "measure": false,
               "mvEnabled": false,
-              "name": "TextFIeld",
+              "name": "TextField",
               "PHI": "NotPHI",
               "propertyId": 518195,
               "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -1560,6 +1570,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "rangeValidators": Immutable.List [],
               "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
               "regexValidators": Immutable.List [],
+              "textChoiceValidator": undefined,
               "recommendedVariable": false,
               "required": true,
               "scale": 4000,
@@ -1601,6 +1612,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "lookupSchema": undefined,
                   "lookupQuery": undefined,
                 },
+                "name": "TextField",
                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
               },
               "updatedField": false,
@@ -1646,6 +1658,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "rangeValidators": Immutable.List [],
               "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
               "regexValidators": Immutable.List [],
+              "textChoiceValidator": undefined,
               "recommendedVariable": false,
               "required": false,
               "scale": 4000,
@@ -1687,6 +1700,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "lookupSchema": undefined,
                   "lookupQuery": undefined,
                 },
+                "name": "IntField",
                 "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
               },
               "updatedField": false,
@@ -1732,6 +1746,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "rangeValidators": Immutable.List [],
               "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
               "regexValidators": Immutable.List [],
+              "textChoiceValidator": undefined,
               "recommendedVariable": false,
               "required": false,
               "scale": 4000,
@@ -1773,6 +1788,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "lookupSchema": undefined,
                   "lookupQuery": undefined,
                 },
+                "name": "DateField",
                 "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
               },
               "updatedField": false,
@@ -1798,6 +1814,8 @@ exports[`DataClassDesigner initModel 1`] = `
           "newDesignFields": undefined,
           "instructions": null,
           "domainKindName": undefined,
+          "schemaName": null,
+          "queryName": null,
         },
         "domainId": 0,
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -1832,6 +1850,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "allowFileLinkProperties": false,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "allowTextChoiceProperties": true,
             "allowTimepointProperties": false,
             "showDefaultValueSettings": false,
             "defaultDefaultValueType": "FIXED_EDITABLE",
@@ -1860,7 +1879,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lookupValidator": undefined,
                 "measure": false,
                 "mvEnabled": false,
-                "name": "TextFIeld",
+                "name": "TextField",
                 "PHI": "NotPHI",
                 "propertyId": 518195,
                 "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -1879,6 +1898,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "rangeValidators": Immutable.List [],
                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                 "regexValidators": Immutable.List [],
+                "textChoiceValidator": undefined,
                 "recommendedVariable": false,
                 "required": true,
                 "scale": 4000,
@@ -1920,6 +1940,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                   },
+                  "name": "TextField",
                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                 },
                 "updatedField": false,
@@ -1965,6 +1986,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "rangeValidators": Immutable.List [],
                 "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                 "regexValidators": Immutable.List [],
+                "textChoiceValidator": undefined,
                 "recommendedVariable": false,
                 "required": false,
                 "scale": 4000,
@@ -2006,6 +2028,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                   },
+                  "name": "IntField",
                   "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                 },
                 "updatedField": false,
@@ -2051,6 +2074,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "rangeValidators": Immutable.List [],
                 "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                 "regexValidators": Immutable.List [],
+                "textChoiceValidator": undefined,
                 "recommendedVariable": false,
                 "required": false,
                 "scale": 4000,
@@ -2092,6 +2116,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                   },
+                  "name": "DateField",
                   "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                 },
                 "updatedField": false,
@@ -2117,6 +2142,8 @@ exports[`DataClassDesigner initModel 1`] = `
             "newDesignFields": undefined,
             "instructions": null,
             "domainKindName": undefined,
+            "schemaName": null,
+            "queryName": null,
           },
         ]
       }
@@ -2144,6 +2171,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "allowFileLinkProperties": false,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "allowTextChoiceProperties": true,
               "allowTimepointProperties": false,
               "showDefaultValueSettings": false,
               "defaultDefaultValueType": "FIXED_EDITABLE",
@@ -2172,7 +2200,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "lookupValidator": undefined,
                   "measure": false,
                   "mvEnabled": false,
-                  "name": "TextFIeld",
+                  "name": "TextField",
                   "PHI": "NotPHI",
                   "propertyId": 518195,
                   "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -2191,6 +2219,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "rangeValidators": Immutable.List [],
                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                   "regexValidators": Immutable.List [],
+                  "textChoiceValidator": undefined,
                   "recommendedVariable": false,
                   "required": true,
                   "scale": 4000,
@@ -2232,6 +2261,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    "name": "TextField",
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                   },
                   "updatedField": false,
@@ -2277,6 +2307,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "rangeValidators": Immutable.List [],
                   "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                   "regexValidators": Immutable.List [],
+                  "textChoiceValidator": undefined,
                   "recommendedVariable": false,
                   "required": false,
                   "scale": 4000,
@@ -2318,6 +2349,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    "name": "IntField",
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                   },
                   "updatedField": false,
@@ -2363,6 +2395,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "rangeValidators": Immutable.List [],
                   "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                   "regexValidators": Immutable.List [],
+                  "textChoiceValidator": undefined,
                   "recommendedVariable": false,
                   "required": false,
                   "scale": 4000,
@@ -2404,6 +2437,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    "name": "DateField",
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                   },
                   "updatedField": false,
@@ -2429,6 +2463,8 @@ exports[`DataClassDesigner initModel 1`] = `
               "newDesignFields": undefined,
               "instructions": null,
               "domainKindName": undefined,
+              "schemaName": null,
+              "queryName": null,
             },
             "domainId": 0,
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -2464,6 +2500,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "allowFileLinkProperties": false,
                 "allowAttachmentProperties": true,
                 "allowFlagProperties": true,
+                "allowTextChoiceProperties": true,
                 "allowTimepointProperties": false,
                 "showDefaultValueSettings": false,
                 "defaultDefaultValueType": "FIXED_EDITABLE",
@@ -2492,7 +2529,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lookupValidator": undefined,
                     "measure": false,
                     "mvEnabled": false,
-                    "name": "TextFIeld",
+                    "name": "TextField",
                     "PHI": "NotPHI",
                     "propertyId": 518195,
                     "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -2511,6 +2548,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": true,
                     "scale": 4000,
@@ -2552,6 +2590,7 @@ exports[`DataClassDesigner initModel 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "TextField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     },
                     "updatedField": false,
@@ -2597,6 +2636,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -2638,6 +2678,7 @@ exports[`DataClassDesigner initModel 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "IntField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                     },
                     "updatedField": false,
@@ -2683,6 +2724,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -2724,6 +2766,7 @@ exports[`DataClassDesigner initModel 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "DateField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                     },
                     "updatedField": false,
@@ -2749,6 +2792,8 @@ exports[`DataClassDesigner initModel 1`] = `
                 "newDesignFields": undefined,
                 "instructions": null,
                 "domainKindName": undefined,
+                "schemaName": null,
+                "queryName": null,
               },
               "domainId": 0,
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -2788,6 +2833,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "allowFileLinkProperties": false,
                   "allowAttachmentProperties": true,
                   "allowFlagProperties": true,
+                  "allowTextChoiceProperties": true,
                   "allowTimepointProperties": false,
                   "showDefaultValueSettings": false,
                   "defaultDefaultValueType": "FIXED_EDITABLE",
@@ -2816,7 +2862,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "lookupValidator": undefined,
                       "measure": false,
                       "mvEnabled": false,
-                      "name": "TextFIeld",
+                      "name": "TextField",
                       "PHI": "NotPHI",
                       "propertyId": 518195,
                       "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -2835,6 +2881,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "rangeValidators": Immutable.List [],
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "regexValidators": Immutable.List [],
+                      "textChoiceValidator": undefined,
                       "recommendedVariable": false,
                       "required": true,
                       "scale": 4000,
@@ -2876,6 +2923,7 @@ exports[`DataClassDesigner initModel 1`] = `
                           "lookupSchema": undefined,
                           "lookupQuery": undefined,
                         },
+                        "name": "TextField",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       },
                       "updatedField": false,
@@ -2921,6 +2969,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "rangeValidators": Immutable.List [],
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                       "regexValidators": Immutable.List [],
+                      "textChoiceValidator": undefined,
                       "recommendedVariable": false,
                       "required": false,
                       "scale": 4000,
@@ -2962,6 +3011,7 @@ exports[`DataClassDesigner initModel 1`] = `
                           "lookupSchema": undefined,
                           "lookupQuery": undefined,
                         },
+                        "name": "IntField",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                       },
                       "updatedField": false,
@@ -3007,6 +3057,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "rangeValidators": Immutable.List [],
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                       "regexValidators": Immutable.List [],
+                      "textChoiceValidator": undefined,
                       "recommendedVariable": false,
                       "required": false,
                       "scale": 4000,
@@ -3048,6 +3099,7 @@ exports[`DataClassDesigner initModel 1`] = `
                           "lookupSchema": undefined,
                           "lookupQuery": undefined,
                         },
+                        "name": "DateField",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                       },
                       "updatedField": false,
@@ -3073,6 +3125,8 @@ exports[`DataClassDesigner initModel 1`] = `
                   "newDesignFields": undefined,
                   "instructions": null,
                   "domainKindName": undefined,
+                  "schemaName": null,
+                  "queryName": null,
                 },
                 "domainId": 0,
                 "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -7266,6 +7320,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "allowFileLinkProperties": false,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "allowTextChoiceProperties": true,
             "allowTimepointProperties": false,
             "showDefaultValueSettings": false,
             "defaultDefaultValueType": "FIXED_EDITABLE",
@@ -7294,7 +7349,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lookupValidator": undefined,
                 "measure": false,
                 "mvEnabled": false,
-                "name": "TextFIeld",
+                "name": "TextField",
                 "PHI": "NotPHI",
                 "propertyId": 518195,
                 "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -7313,6 +7368,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "rangeValidators": Immutable.List [],
                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                 "regexValidators": Immutable.List [],
+                "textChoiceValidator": undefined,
                 "recommendedVariable": false,
                 "required": true,
                 "scale": 4000,
@@ -7354,6 +7410,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                   },
+                  "name": "TextField",
                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                 },
                 "updatedField": false,
@@ -7399,6 +7456,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "rangeValidators": Immutable.List [],
                 "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                 "regexValidators": Immutable.List [],
+                "textChoiceValidator": undefined,
                 "recommendedVariable": false,
                 "required": false,
                 "scale": 4000,
@@ -7440,6 +7498,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                   },
+                  "name": "IntField",
                   "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                 },
                 "updatedField": false,
@@ -7485,6 +7544,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "rangeValidators": Immutable.List [],
                 "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                 "regexValidators": Immutable.List [],
+                "textChoiceValidator": undefined,
                 "recommendedVariable": false,
                 "required": false,
                 "scale": 4000,
@@ -7526,6 +7586,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                   },
+                  "name": "DateField",
                   "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                 },
                 "updatedField": false,
@@ -7551,6 +7612,8 @@ exports[`DataClassDesigner initModel 1`] = `
             "newDesignFields": undefined,
             "instructions": null,
             "domainKindName": undefined,
+            "schemaName": null,
+            "queryName": null,
           }
         }
         domainFormDisplayOptions={
@@ -7595,6 +7658,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "allowFileLinkProperties": false,
                 "allowAttachmentProperties": true,
                 "allowFlagProperties": true,
+                "allowTextChoiceProperties": true,
                 "allowTimepointProperties": false,
                 "showDefaultValueSettings": false,
                 "defaultDefaultValueType": "FIXED_EDITABLE",
@@ -7623,7 +7687,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lookupValidator": undefined,
                     "measure": false,
                     "mvEnabled": false,
-                    "name": "TextFIeld",
+                    "name": "TextField",
                     "PHI": "NotPHI",
                     "propertyId": 518195,
                     "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -7642,6 +7706,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": true,
                     "scale": 4000,
@@ -7683,6 +7748,7 @@ exports[`DataClassDesigner initModel 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "TextField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     },
                     "updatedField": false,
@@ -7728,6 +7794,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -7769,6 +7836,7 @@ exports[`DataClassDesigner initModel 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "IntField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                     },
                     "updatedField": false,
@@ -7814,6 +7882,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -7855,6 +7924,7 @@ exports[`DataClassDesigner initModel 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "DateField",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                     },
                     "updatedField": false,
@@ -7880,6 +7950,8 @@ exports[`DataClassDesigner initModel 1`] = `
                 "newDesignFields": undefined,
                 "instructions": null,
                 "domainKindName": undefined,
+                "schemaName": null,
+                "queryName": null,
               }
             }
             domainFormDisplayOptions={
@@ -8663,6 +8735,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                               "lookupSchema": undefined,
                                                               "lookupQuery": undefined,
                                                             },
+                                                            Immutable.Record {
+                                                              "conceptURI": "http://www.labkey.org/types#textChoice",
+                                                              "display": "Text Choice",
+                                                              "name": "textChoice",
+                                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                              "alternateRangeURI": undefined,
+                                                              "shortDisplay": undefined,
+                                                              "lookupSchema": undefined,
+                                                              "lookupQuery": undefined,
+                                                            },
                                                           ]
                                                         }
                                                         defaultDefaultValueType="FIXED_EDITABLE"
@@ -8716,7 +8798,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "lookupValidator": undefined,
                                                             "measure": false,
                                                             "mvEnabled": false,
-                                                            "name": "TextFIeld",
+                                                            "name": "TextField",
                                                             "PHI": "NotPHI",
                                                             "propertyId": 518195,
                                                             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -8735,6 +8817,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "rangeValidators": Immutable.List [],
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                             "regexValidators": Immutable.List [],
+                                                            "textChoiceValidator": undefined,
                                                             "recommendedVariable": false,
                                                             "required": true,
                                                             "scale": 4000,
@@ -8776,6 +8859,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                 "lookupSchema": undefined,
                                                                 "lookupQuery": undefined,
                                                               },
+                                                              "name": "TextField",
                                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                             },
                                                             "updatedField": false,
@@ -8804,6 +8888,8 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         onChange={[Function]}
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
+                                                        queryName={null}
+                                                        schemaName={null}
                                                         showDefaultValueSettings={false}
                                                         successBsStyle="success"
                                                       >
@@ -8931,7 +9017,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "lookupValidator": undefined,
                                                                             "measure": false,
                                                                             "mvEnabled": false,
-                                                                            "name": "TextFIeld",
+                                                                            "name": "TextField",
                                                                             "PHI": "NotPHI",
                                                                             "propertyId": 518195,
                                                                             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -8950,6 +9036,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "rangeValidators": Immutable.List [],
                                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                                             "regexValidators": Immutable.List [],
+                                                                            "textChoiceValidator": undefined,
                                                                             "recommendedVariable": false,
                                                                             "required": true,
                                                                             "scale": 4000,
@@ -8991,6 +9078,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "lookupSchema": undefined,
                                                                                 "lookupQuery": undefined,
                                                                               },
+                                                                              "name": "TextField",
                                                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                                             },
                                                                             "updatedField": false,
@@ -9011,7 +9099,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         }
                                                                         helpNoun="field designer"
                                                                         index={0}
-                                                                        label="TextFIeld"
+                                                                        label="TextField"
                                                                         maxPhiLevel="NotPHI"
                                                                         onApply={[Function]}
                                                                         onHide={[Function]}
@@ -9267,7 +9355,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     name="domainpropertiesrow-name"
                                                                                     onChange={[Function]}
                                                                                     type="text"
-                                                                                    value="TextFIeld"
+                                                                                    value="TextField"
                                                                                   >
                                                                                     <input
                                                                                       className="form-control"
@@ -9276,7 +9364,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       name="domainpropertiesrow-name"
                                                                                       onChange={[Function]}
                                                                                       type="text"
-                                                                                      value="TextFIeld"
+                                                                                      value="TextField"
                                                                                     />
                                                                                   </FormControl>
                                                                                 </div>
@@ -9335,6 +9423,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         value="string"
                                                                                       >
                                                                                         Text
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="textChoice"
+                                                                                        value="textChoice"
+                                                                                      >
+                                                                                        Text Choice
                                                                                       </option>
                                                                                     </select>
                                                                                   </FormControl>
@@ -9543,7 +9637,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "lookupValidator": undefined,
                                                                               "measure": false,
                                                                               "mvEnabled": false,
-                                                                              "name": "TextFIeld",
+                                                                              "name": "TextField",
                                                                               "PHI": "NotPHI",
                                                                               "propertyId": 518195,
                                                                               "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -9562,6 +9656,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "rangeValidators": Immutable.List [],
                                                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                                               "regexValidators": Immutable.List [],
+                                                                              "textChoiceValidator": undefined,
                                                                               "recommendedVariable": false,
                                                                               "required": true,
                                                                               "scale": 4000,
@@ -9603,6 +9698,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "lookupSchema": undefined,
                                                                                   "lookupQuery": undefined,
                                                                                 },
+                                                                                "name": "TextField",
                                                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                                               },
                                                                               "updatedField": false,
@@ -9625,6 +9721,8 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           index={0}
                                                                           onChange={[Function]}
                                                                           onMultiChange={[Function]}
+                                                                          queryName={null}
+                                                                          schemaName={null}
                                                                           showingModal={[Function]}
                                                                           successBsStyle="success"
                                                                         >
@@ -9990,7 +10088,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "lookupValidator": undefined,
                                                                                         "measure": false,
                                                                                         "mvEnabled": false,
-                                                                                        "name": "TextFIeld",
+                                                                                        "name": "TextField",
                                                                                         "PHI": "NotPHI",
                                                                                         "propertyId": 518195,
                                                                                         "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -10009,6 +10107,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "rangeValidators": Immutable.List [],
                                                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                                                         "regexValidators": Immutable.List [],
+                                                                                        "textChoiceValidator": undefined,
                                                                                         "recommendedVariable": false,
                                                                                         "required": true,
                                                                                         "scale": 4000,
@@ -10050,6 +10149,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             "lookupSchema": undefined,
                                                                                             "lookupQuery": undefined,
                                                                                           },
+                                                                                          "name": "TextField",
                                                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                                                         },
                                                                                         "updatedField": false,
@@ -10484,7 +10584,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "lookupValidator": undefined,
                                                                                         "measure": false,
                                                                                         "mvEnabled": false,
-                                                                                        "name": "TextFIeld",
+                                                                                        "name": "TextField",
                                                                                         "PHI": "NotPHI",
                                                                                         "propertyId": 518195,
                                                                                         "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
@@ -10503,6 +10603,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "rangeValidators": Immutable.List [],
                                                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                                                         "regexValidators": Immutable.List [],
+                                                                                        "textChoiceValidator": undefined,
                                                                                         "recommendedVariable": false,
                                                                                         "required": true,
                                                                                         "scale": 4000,
@@ -10544,6 +10645,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             "lookupSchema": undefined,
                                                                                             "lookupQuery": undefined,
                                                                                           },
+                                                                                          "name": "TextField",
                                                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                                                                         },
                                                                                         "updatedField": false,
@@ -11034,6 +11136,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                               "lookupSchema": undefined,
                                                               "lookupQuery": undefined,
                                                             },
+                                                            Immutable.Record {
+                                                              "conceptURI": "http://www.labkey.org/types#textChoice",
+                                                              "display": "Text Choice",
+                                                              "name": "textChoice",
+                                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                              "alternateRangeURI": undefined,
+                                                              "shortDisplay": undefined,
+                                                              "lookupSchema": undefined,
+                                                              "lookupQuery": undefined,
+                                                            },
                                                           ]
                                                         }
                                                         defaultDefaultValueType="FIXED_EDITABLE"
@@ -11095,6 +11207,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "rangeValidators": Immutable.List [],
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                             "regexValidators": Immutable.List [],
+                                                            "textChoiceValidator": undefined,
                                                             "recommendedVariable": false,
                                                             "required": false,
                                                             "scale": 4000,
@@ -11136,6 +11249,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                 "lookupSchema": undefined,
                                                                 "lookupQuery": undefined,
                                                               },
+                                                              "name": "IntField",
                                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                             },
                                                             "updatedField": false,
@@ -11164,6 +11278,8 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         onChange={[Function]}
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
+                                                        queryName={null}
+                                                        schemaName={null}
                                                         showDefaultValueSettings={false}
                                                         successBsStyle="success"
                                                       >
@@ -11299,6 +11415,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "rangeValidators": Immutable.List [],
                                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                                             "regexValidators": Immutable.List [],
+                                                                            "textChoiceValidator": undefined,
                                                                             "recommendedVariable": false,
                                                                             "required": false,
                                                                             "scale": 4000,
@@ -11340,6 +11457,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "lookupSchema": undefined,
                                                                                 "lookupQuery": undefined,
                                                                               },
+                                                                              "name": "IntField",
                                                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                                             },
                                                                             "updatedField": false,
@@ -11894,6 +12012,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "rangeValidators": Immutable.List [],
                                                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                                               "regexValidators": Immutable.List [],
+                                                                              "textChoiceValidator": undefined,
                                                                               "recommendedVariable": false,
                                                                               "required": false,
                                                                               "scale": 4000,
@@ -11935,6 +12054,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "lookupSchema": undefined,
                                                                                   "lookupQuery": undefined,
                                                                                 },
+                                                                                "name": "IntField",
                                                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                                               },
                                                                               "updatedField": false,
@@ -11957,6 +12077,8 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           index={1}
                                                                           onChange={[Function]}
                                                                           onMultiChange={[Function]}
+                                                                          queryName={null}
+                                                                          schemaName={null}
                                                                           showingModal={[Function]}
                                                                           successBsStyle="success"
                                                                         >
@@ -12286,6 +12408,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "rangeValidators": Immutable.List [],
                                                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                                                         "regexValidators": Immutable.List [],
+                                                                                        "textChoiceValidator": undefined,
                                                                                         "recommendedVariable": false,
                                                                                         "required": false,
                                                                                         "scale": 4000,
@@ -12327,6 +12450,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             "lookupSchema": undefined,
                                                                                             "lookupQuery": undefined,
                                                                                           },
+                                                                                          "name": "IntField",
                                                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                                                         },
                                                                                         "updatedField": false,
@@ -12769,6 +12893,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "rangeValidators": Immutable.List [],
                                                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                                                         "regexValidators": Immutable.List [],
+                                                                                        "textChoiceValidator": undefined,
                                                                                         "recommendedVariable": false,
                                                                                         "required": false,
                                                                                         "scale": 4000,
@@ -12810,6 +12935,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             "lookupSchema": undefined,
                                                                                             "lookupQuery": undefined,
                                                                                           },
+                                                                                          "name": "IntField",
                                                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
                                                                                         },
                                                                                         "updatedField": false,
@@ -13300,6 +13426,16 @@ exports[`DataClassDesigner initModel 1`] = `
                                                               "lookupSchema": undefined,
                                                               "lookupQuery": undefined,
                                                             },
+                                                            Immutable.Record {
+                                                              "conceptURI": "http://www.labkey.org/types#textChoice",
+                                                              "display": "Text Choice",
+                                                              "name": "textChoice",
+                                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                              "alternateRangeURI": undefined,
+                                                              "shortDisplay": undefined,
+                                                              "lookupSchema": undefined,
+                                                              "lookupQuery": undefined,
+                                                            },
                                                           ]
                                                         }
                                                         defaultDefaultValueType="FIXED_EDITABLE"
@@ -13361,6 +13497,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "rangeValidators": Immutable.List [],
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                             "regexValidators": Immutable.List [],
+                                                            "textChoiceValidator": undefined,
                                                             "recommendedVariable": false,
                                                             "required": false,
                                                             "scale": 4000,
@@ -13402,6 +13539,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                 "lookupSchema": undefined,
                                                                 "lookupQuery": undefined,
                                                               },
+                                                              "name": "DateField",
                                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                             },
                                                             "updatedField": false,
@@ -13430,6 +13568,8 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         onChange={[Function]}
                                                         onDelete={[Function]}
                                                         onExpand={[Function]}
+                                                        queryName={null}
+                                                        schemaName={null}
                                                         showDefaultValueSettings={false}
                                                         successBsStyle="success"
                                                       >
@@ -13565,6 +13705,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "rangeValidators": Immutable.List [],
                                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                                             "regexValidators": Immutable.List [],
+                                                                            "textChoiceValidator": undefined,
                                                                             "recommendedVariable": false,
                                                                             "required": false,
                                                                             "scale": 4000,
@@ -13606,6 +13747,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 "lookupSchema": undefined,
                                                                                 "lookupQuery": undefined,
                                                                               },
+                                                                              "name": "DateField",
                                                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                                             },
                                                                             "updatedField": false,
@@ -14142,6 +14284,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "rangeValidators": Immutable.List [],
                                                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                                               "regexValidators": Immutable.List [],
+                                                                              "textChoiceValidator": undefined,
                                                                               "recommendedVariable": false,
                                                                               "required": false,
                                                                               "scale": 4000,
@@ -14183,6 +14326,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "lookupSchema": undefined,
                                                                                   "lookupQuery": undefined,
                                                                                 },
+                                                                                "name": "DateField",
                                                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                                               },
                                                                               "updatedField": false,
@@ -14205,6 +14349,8 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           index={2}
                                                                           onChange={[Function]}
                                                                           onMultiChange={[Function]}
+                                                                          queryName={null}
+                                                                          schemaName={null}
                                                                           showingModal={[Function]}
                                                                           successBsStyle="success"
                                                                         >
@@ -14496,6 +14642,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "rangeValidators": Immutable.List [],
                                                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                                                         "regexValidators": Immutable.List [],
+                                                                                        "textChoiceValidator": undefined,
                                                                                         "recommendedVariable": false,
                                                                                         "required": false,
                                                                                         "scale": 4000,
@@ -14537,6 +14684,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             "lookupSchema": undefined,
                                                                                             "lookupQuery": undefined,
                                                                                           },
+                                                                                          "name": "DateField",
                                                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                                                         },
                                                                                         "updatedField": false,
@@ -14979,6 +15127,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "rangeValidators": Immutable.List [],
                                                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                                                         "regexValidators": Immutable.List [],
+                                                                                        "textChoiceValidator": undefined,
                                                                                         "recommendedVariable": false,
                                                                                         "required": false,
                                                                                         "scale": 4000,
@@ -15020,6 +15169,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             "lookupSchema": undefined,
                                                                                             "lookupQuery": undefined,
                                                                                           },
+                                                                                          "name": "DateField",
                                                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                                                                                         },
                                                                                         "updatedField": false,

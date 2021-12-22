@@ -1257,7 +1257,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 ref={ref => {
                                                     this.refsArray[i] = ref;
                                                 }}
-                                                domainContainerPath={domain.container}
                                                 domainId={domain.domainId}
                                                 helpNoun={helpNoun}
                                                 key={'domain-row-key-' + i}
@@ -1284,6 +1283,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                     !valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled
                                                 }
                                                 domainFormDisplayOptions={domainFormDisplayOptions}
+                                                domainContainerPath={domain.container}
+                                                schemaName={domain.schemaName}
+                                                queryName={domain.queryName}
                                             />
                                         );
                                     })}

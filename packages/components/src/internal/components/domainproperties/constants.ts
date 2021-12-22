@@ -183,8 +183,8 @@ export const FIELD_NAME_CHAR_WARNING_INFO =
 
 export const FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG = 'No text choice values defined';
 export const FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO =
-    'This field is defined as a "Text Choice" field, but no values have been defined. Use the "Add Values" button ' +
-    'in the "Text Choice Options" section to define the set of choices for this field.';
+    'This field is defined as a "Text Choice" field, but no values have been added. Expand the field and use the ' +
+    '"Add Values" button to define the set of choices for this field.';
 
 export const PROPERTIES_PANEL_ERROR_MSG = 'Contains errors or is missing required values.';
 export const PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG = 'Naming Pattern does not utilize the ID/Name prefix value';

@@ -21,11 +21,14 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { SampleState } from './models';
+import { DisableableButton } from "../buttons/DisableableButton";
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = SchemaQuery.create('exp', 'SampleStateType');
 const DEFAULT_TYPE_OPTIONS = [{ value: 'Available' }, { value: 'Consumed' }, { value: 'Locked' }];
 const NEW_STATUS_INDEX = -1;
+const SAMPLE_STATUS_LOCKED_TITLE = 'Sample Status Locked';
+const SAMPLE_STATUS_LOCKED_TIP = 'This sample status cannot change status type or be deleted because it is in use.';
 
 interface SampleStatusDetailProps {
     addNew: boolean;
@@ -211,14 +214,15 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     </FormGroup>
                     <div>
                         {!addNew && (
-                            <Button
+                            <DisableableButton
                                 bsStyle="default"
-                                disabled={updatedState.inUse || saving}
+                                disabledMsg={updatedState.inUse || saving ? SAMPLE_STATUS_LOCKED_TIP : undefined}
                                 onClick={onToggleDeleteConfirm}
+                                title={SAMPLE_STATUS_LOCKED_TITLE}
                             >
                                 <span className="fa fa-trash" />
                                 <span>&nbsp;Delete</span>
-                            </Button>
+                            </DisableableButton>
                         )}
                         {addNew && (
                             <Button bsStyle="default" disabled={saving} onClick={onCancel}>
@@ -276,13 +280,9 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                         state.inUse && (
                             <LockIcon
                                 iconCls="pull-right choices-list__locked"
-                                body={
-                                    <p>
-                                        This sample status cannot change status type or be deleted because it is in use.
-                                    </p>
-                                }
+                                body={SAMPLE_STATUS_LOCKED_TIP}
                                 id="sample-state-lock-icon"
-                                title="Sample Status Locked"
+                                title={SAMPLE_STATUS_LOCKED_TITLE}
                             />
                         )
                     }

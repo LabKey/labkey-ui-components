@@ -17,7 +17,12 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
     const { onCancel, onApply, fieldName, initialValueCount = 0, maxValueCount = MAX_VALID_TEXT_CHOICES } = props;
     const [valueStr, setValueStr] = useState<string>('');
     const parsedValues = useMemo(() => {
-        return valueStr?.trim().length > 0 ? valueStr.split('\n').map(v => v.trim()) : [];
+        return valueStr?.trim().length > 0
+            ? valueStr
+                  .split('\n')
+                  .map(v => v.trim())
+                  .filter(v => v !== '')
+            : [];
     }, [valueStr]);
     const maxValuesToAdd = useMemo(() => maxValueCount - initialValueCount, [initialValueCount]);
     const hasFieldName = useMemo(() => fieldName?.length > 0, [fieldName]);
@@ -39,22 +44,22 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
             </Modal.Header>
             <Modal.Body>
                 <p>
-                    {`A total of ${Utils.pluralize(maxValuesToAdd, 'value', 'values')} can be added. `}
-                    <span className={classNames({ 'domain-text-choices-error': parsedValues.length > maxValuesToAdd })}>
-                        {parsedValues.length === 1
-                            ? 'There is currently 1 new text choice value provided below.'
-                            : `There are currently ${parsedValues.length} new text choice values provided below.`
-                        }
-                    </span>
+                    {`Enter each value on a new line. ${Utils.pluralize(maxValuesToAdd, 'value', 'values')} can be added. `}
                 </p>
                 <textarea
                     rows={8}
                     cols={50}
-                    className="full-width"
+                    className="textarea-fullwidth textarea-noresize"
                     placeholder="Enter new text choices values..."
                     onChange={onChange}
                     value={valueStr}
                 />
+                <div className={classNames({ 'domain-text-choices-error': parsedValues.length > maxValuesToAdd })}>
+                    {parsedValues.length === 1
+                        ? '1 new text choice value provided.'
+                        : `${parsedValues.length} new text choice values provided.`
+                    }
+                </div>
             </Modal.Body>
             <Modal.Footer>
                 <div className="pull-left">

@@ -24,17 +24,21 @@ import { DomainFieldLabel } from './DomainFieldLabel';
 
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
 import { createFormInputId } from './actions';
+import { DisableableButton } from '../buttons/DisableableButton';
 
 const HELP_TIP_BODY = (
-    <p>Add a set of text choice values to be used as drop-down options to restrict data entry into this field.</p>
+    <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>
 );
+
+const IN_USE_TITLE = 'Text Choice In Use';
+const IN_USE_TIP = 'This text choice value cannot be changed or deleted because it is in use.';
 
 const VALUE_IN_USE = (
     <LockIcon
         iconCls="pull-right choices-list__locked"
-        body={<p>This text choice value cannot be changed or deleted because it is in use.</p>}
+        body={IN_USE_TIP}
         id="text-choice-value-lock-icon"
-        title="Text Choice In Use"
+        title={IN_USE_TITLE}
     />
 );
 
@@ -176,7 +180,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                         {selectedIndex !== undefined && (
                             <>
                                 <div className="domain-field-label">
-                                    <DomainFieldLabel label="Value" required />
+                                    <DomainFieldLabel label="Value" />
                                 </div>
                                 <div className="domain-field-padding-bottom">
                                     <input
@@ -190,10 +194,15 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                     />
                                 </div>
                                 <div>
-                                    <Button bsStyle="default" disabled={currentInUse} onClick={onDelete}>
+                                    <DisableableButton
+                                        bsStyle="default"
+                                        disabledMsg={currentInUse ? IN_USE_TIP : undefined}
+                                        onClick={onDelete}
+                                        title={IN_USE_TITLE}
+                                    >
                                         <span className="fa fa-trash" />
                                         <span>&nbsp;Delete</span>
-                                    </Button>
+                                    </DisableableButton>
                                     <Button
                                         bsStyle="success"
                                         className="pull-right"

@@ -184,6 +184,7 @@
   display: table-cell;
   padding-top: 15px;
   width: 100%;
+  overflow-wrap: anywhere;
 };
 
 .domain-field-buttons-expanded {
@@ -767,6 +768,10 @@
 .domain-text-choices-list {
     max-height: 255px; // 6 items plus their borders
     overflow: auto;
+
+    .list-group-item {
+        overflow-wrap: anywhere;
+    }
 }
 .domain-text-choices-error {
     color: $brand-danger;

@@ -58,7 +58,8 @@ describe('TextChoiceAddValuesModal', () => {
         expect(wrapper.find('.btn-success').prop('disabled')).toBeFalsy();
         validateCounterText(wrapper, '200 values', '1 new value');
 
-        wrapper.find('textarea').simulate('change', { target: { value: 'a\nb\n\n' } });
+        // empty rows and duplicates (after trim) should be removed
+        wrapper.find('textarea').simulate('change', { target: { value: 'a\n\na\na \n a\nb' } });
         validate(wrapper);
         expect(wrapper.find('.btn-success').prop('disabled')).toBeFalsy();
         validateCounterText(wrapper, '200 values', '2 new values');

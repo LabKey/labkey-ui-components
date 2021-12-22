@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, Record } from 'immutable';
-import { Domain, getServerContext } from '@labkey/api';
+import { Domain, getServerContext, Utils } from '@labkey/api';
 import React, { ReactNode } from 'react';
 
 import { Checkbox } from 'react-bootstrap';
@@ -1225,7 +1225,7 @@ export function getValidValuesDetailStr(validValues: string[]): string {
             validValuesStr += ` (and ${vals.length - numToShow} more)`;
         }
         if (validValuesStr.length > 80) {
-            validValuesStr = vals.length + ' values';
+            validValuesStr = Utils.pluralize(vals.length, 'value', 'values');
         }
         return validValuesStr;
     }

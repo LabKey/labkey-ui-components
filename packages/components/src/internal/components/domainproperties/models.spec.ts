@@ -47,7 +47,8 @@ import {
     DEFAULT_TEXT_CHOICE_VALIDATOR,
     DomainDesign,
     DomainField,
-    FieldErrors, getValidValuesDetailStr,
+    FieldErrors,
+    getValidValuesDetailStr,
     getValidValuesFromArray,
     isPropertyTypeAllowed,
     PropertyValidatorProperties,
@@ -975,7 +976,23 @@ describe('getValidValuesDetailStr', () => {
         expect(getValidValuesDetailStr(['a','b','c','d'])).toBe('a, b, c, d');
         expect(getValidValuesDetailStr(['a','b','c','d','e'])).toBe('a, b, c, d (and 1 more)');
         expect(getValidValuesDetailStr(['a','b','c','d','e','f'])).toBe('a, b, c, d (and 2 more)');
-    })
+    });
+
+    test('with extra long values', () => {
+        expect(getValidValuesDetailStr([
+            'aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa a'
+        ])).toBe('1 value');
+
+        expect(getValidValuesDetailStr([
+            'aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa',
+            'bbbbbbbbb bbbbbbbbb bbbbbbbbb bbbbbbbbb bbbbbbbbb',
+        ])).toBe('2 values');
+
+        expect(getValidValuesDetailStr([
+            'a', 'b', 'c', 'd', 'e', 'f',
+            'aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa a'
+        ])).toBe('a, b, c, d (and 3 more)');
+    });
 });
 
 describe('getValidValuesFromArray', () => {
@@ -987,5 +1004,9 @@ describe('getValidValuesFromArray', () => {
 
     test('filter', () => {
         expect(getValidValuesFromArray(['a', null, undefined, '', ' ', 'b'])).toStrictEqual(['a', 'b']);
+    });
+
+    test('remove duplicates', () => {
+        expect(getValidValuesFromArray(['a', 'a', 'a', 'b'])).toStrictEqual(['a', 'b']);
     });
 });

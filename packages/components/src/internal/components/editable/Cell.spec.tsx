@@ -24,6 +24,7 @@ import { sleep } from '../../testHelpers';
 import { initUnitTestMocks } from '../../testHelperMocks';
 
 import { Cell } from './Cell';
+import { LookupCell } from './LookupCell';
 
 const GRID_ID = 'CellTestModel';
 const SCHEMA_NAME = 'lists';
@@ -66,15 +67,15 @@ describe('Cell', () => {
         const cell = mount(<Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} />);
         expect(cell.find('div')).toHaveLength(1);
         expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find(LookupCell)).toHaveLength(0);
         cell.unmount();
     });
 
     test('with focus', () => {
-        const cell = mount(
-            <Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} focused={true} selected={true} />
-        );
+        const cell = mount(<Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} focused selected />);
         expect(cell.find('div')).toHaveLength(0);
         expect(cell.find('input')).toHaveLength(1);
+        expect(cell.find(LookupCell)).toHaveLength(0);
         cell.unmount();
     });
 
@@ -86,6 +87,7 @@ describe('Cell', () => {
         expect(div).toHaveLength(1);
         expect(div.text()).toBe('placeholder text');
         expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find(LookupCell)).toHaveLength(0);
         cell.unmount();
     });
 
@@ -97,11 +99,12 @@ describe('Cell', () => {
                 modelId={MODEL_ID}
                 placeholder="placeholder text"
                 rowIdx={3}
-                selected={true}
-                focused={true}
+                selected
+                focused
             />
         );
         expect(cell.find('div')).toHaveLength(0);
+        expect(cell.find(LookupCell)).toHaveLength(0);
         const input = cell.find('input');
         expect(input).toHaveLength(1);
         expect(input.prop('placeholder')).toBe('placeholder text');
@@ -109,9 +112,10 @@ describe('Cell', () => {
     });
 
     test('readOnly property', () => {
-        const cell = mount(<Cell col={queryColumn} colIdx={3} modelId={MODEL_ID} readOnly={true} rowIdx={3} />);
+        const cell = mount(<Cell col={queryColumn} colIdx={3} modelId={MODEL_ID} readOnly rowIdx={3} />);
         expect(cell.find('div')).toHaveLength(1);
         expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find(LookupCell)).toHaveLength(0);
         cell.unmount();
     });
 
@@ -123,6 +127,7 @@ describe('Cell', () => {
         const cell = mount(<Cell col={roColumn} colIdx={4} modelId={MODEL_ID} readOnly={false} rowIdx={3} />);
         expect(cell.find('div')).toHaveLength(1);
         expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find(LookupCell)).toHaveLength(0);
         cell.unmount();
     });
 
@@ -133,7 +138,7 @@ describe('Cell', () => {
                 colIdx={3}
                 modelId={MODEL_ID}
                 placeholder="readOnly placeholder"
-                readOnly={true}
+                readOnly
                 rowIdx={3}
             />
         );
@@ -142,6 +147,80 @@ describe('Cell', () => {
         expect(div).toHaveLength(1);
         expect(div.text()).toBe('readOnly placeholder');
         expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find(LookupCell)).toHaveLength(0);
+        cell.unmount();
+    });
+
+    test('col is lookup, not public', () => {
+        const lookupCol = QueryColumn.create({
+            name: 'test',
+            lookup: { isPublic: false },
+        });
+        const cell = mount(<Cell col={lookupCol} colIdx={1} modelId={MODEL_ID} rowIdx={2} />);
+        expect(cell.find('div')).toHaveLength(1);
+        expect(cell.find('.cell-menu')).toHaveLength(0);
+        expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find(LookupCell)).toHaveLength(0);
+        cell.unmount();
+    });
+
+    test('col is lookup, public', () => {
+        const lookupCol = QueryColumn.create({
+            name: 'test',
+            lookup: { isPublic: true },
+        });
+        const cell = mount(<Cell col={lookupCol} colIdx={1} modelId={MODEL_ID} rowIdx={2} />);
+        expect(cell.find('div')).toHaveLength(2);
+        expect(cell.find('.cell-menu')).toHaveLength(1);
+        expect(cell.find('.cell-menu-value')).toHaveLength(1);
+        expect(cell.find('.cell-menu-selector')).toHaveLength(1);
+        expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find(LookupCell)).toHaveLength(0);
+        cell.unmount();
+    });
+
+    test('col is lookup, public and focused', () => {
+        const lookupCol = QueryColumn.create({
+            name: 'test',
+            lookup: { isPublic: true },
+        });
+        const cell = mount(<Cell col={lookupCol} colIdx={1} modelId={MODEL_ID} rowIdx={2} focused selected />);
+        expect(cell.find('div')).toHaveLength(11);
+        expect(cell.find('.cell-menu')).toHaveLength(0);
+        expect(cell.find('.cell-menu-value')).toHaveLength(0);
+        expect(cell.find('.cell-menu-selector')).toHaveLength(0);
+        expect(cell.find('input')).toHaveLength(1);
+        expect(cell.find(LookupCell)).toHaveLength(1);
+        cell.unmount();
+    });
+
+    test('col has validValues', () => {
+        const lookupCol = QueryColumn.create({
+            name: 'test',
+            validValues: ['a', 'b'],
+        });
+        const cell = mount(<Cell col={lookupCol} colIdx={1} modelId={MODEL_ID} rowIdx={2} />);
+        expect(cell.find('div')).toHaveLength(2);
+        expect(cell.find('.cell-menu')).toHaveLength(1);
+        expect(cell.find('.cell-menu-value')).toHaveLength(1);
+        expect(cell.find('.cell-menu-selector')).toHaveLength(1);
+        expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find(LookupCell)).toHaveLength(0);
+        cell.unmount();
+    });
+
+    test('col has validValues and focused', () => {
+        const lookupCol = QueryColumn.create({
+            name: 'test',
+            validValues: ['a', 'b'],
+        });
+        const cell = mount(<Cell col={lookupCol} colIdx={1} modelId={MODEL_ID} rowIdx={2} focused selected />);
+        expect(cell.find('div')).toHaveLength(11);
+        expect(cell.find('.cell-menu')).toHaveLength(0);
+        expect(cell.find('.cell-menu-value')).toHaveLength(0);
+        expect(cell.find('.cell-menu-selector')).toHaveLength(0);
+        expect(cell.find('input')).toHaveLength(1);
+        expect(cell.find(LookupCell)).toHaveLength(1);
         cell.unmount();
     });
 });

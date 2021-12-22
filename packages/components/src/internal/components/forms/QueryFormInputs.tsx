@@ -279,6 +279,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 initiallyDisabled={shouldDisableField}
                                 onToggleDisable={this.onToggleDisable}
                                 renderFieldLabel={renderFieldLabel}
+                                placeholder="Select or type to search..."
                             />
                         );
                     }

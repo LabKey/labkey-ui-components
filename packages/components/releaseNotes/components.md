@@ -9,6 +9,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Added DesignerDetailPanel to show name preview for designer details panel
 * EntityInsertPanel: show name preview on tooltip, hide double tooltip
 
+### version 2.108.0
+*Released*: 22 December 2021
+* Item 9758: Field editor "Text Choice" data type and UI to create, update, delete field options/values
+    * RegEx validator modal fix for “Fail validation when pattern matches field value” checked state on initialization
+    * factor out ChoicesListItem to re-use in list group cases (TextChoiceOptions, ChoosePicklistModal, ManageSasmpleStatusesPanel)
+    * field editor row addition of "Text Choice" data type and "Text Choice Options" section in expanded row
+    * field editor row updates for selected "Text Choice" data type: reset some field options set for other types, hide regex validator UI, hide text options UI
+    * factor out DomainRowWarning to re-use between name special character type warnings and empty text choice values details display
+    * TextChoiceAddValuesModal for add case and check for max allowed values
+    * domain design model parsing for loading existing field property validators for text choice fields
+    * show TextChoiceInput in EditableGrid cell for column with validValues
+
 ### version 2.107.1
 *Released*: 22 December 2021
 * Remove experimental feature flag for enabling SM product navigation in Biologics folders

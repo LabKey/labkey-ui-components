@@ -22,7 +22,7 @@ import { modifyCell } from '../../actions';
 import { ValueDescriptor } from '../../models';
 import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { QueryColumn, QuerySelect, SchemaQuery } from '../../..';
-import { GlobalAppState } from '../../global';
+import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 
 const customStyles = {
     control: (provided, state) => ({
@@ -74,7 +74,7 @@ export interface LookupCellProps {
     filteredLookupKeys?: List<any>;
 }
 
-export class LookupCell extends PureComponent<LookupCellProps, undefined, GlobalAppState> {
+export class LookupCell extends PureComponent<LookupCellProps> {
     isMultiValue = (): boolean => {
         return this.props.col.isJunctionLookup();
     };
@@ -117,22 +117,40 @@ export class LookupCell extends PureComponent<LookupCellProps, undefined, Global
     render(): ReactNode {
         const { col, values, filteredLookupKeys, filteredLookupValues } = this.props;
 
-        const lookup = col.lookup;
-        const isMultiple = this.isMultiValue();
         const rawValues = values
             .filter(vd => vd.raw !== undefined)
             .map(vd => vd.raw)
             .toArray();
 
+        if (col.validValues) {
+            return (
+                <TextChoiceInput
+                    autoFocus
+                    queryColumn={col}
+                    disabled={this.props.disabled}
+                    containerClass="select-input-cell-container"
+                    customTheme={customTheme}
+                    customStyles={customStyles}
+                    menuPosition="fixed" // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
+                    openMenuOnFocus={true}
+                    inputClass="select-input-cell"
+                    placeholder=""
+                    onChange={this.onInputChange}
+                    showLabel={false}
+                    value={rawValues[0]}
+                />
+            );
+        }
+
+        const lookup = col.lookup;
+        const isMultiple = this.isMultiValue();
         let queryFilters;
         if (filteredLookupValues) {
-            queryFilters = List([
-                Filter.create(col.lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN),
-            ]);
+            queryFilters = List([Filter.create(lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN)]);
         }
 
         if (filteredLookupKeys) {
-            queryFilters = List([Filter.create(col.lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN)]);
+            queryFilters = List([Filter.create(lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN)]);
         }
 
         return (

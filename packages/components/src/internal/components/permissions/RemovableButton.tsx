@@ -6,7 +6,7 @@ import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { Tip } from '../../..';
+import { DisableableButton } from '../buttons/DisableableButton';
 
 interface Props {
     id: number;
@@ -73,19 +73,9 @@ export class RemovableButton extends React.PureComponent<Props, State> {
             <>
                 {onRemove ? (
                     <ButtonGroup className={btnGroupCls.join(' ')}>
-                        {disabledMsg ? (
-                            <Tip caption={disabledMsg}>
-                                <div className="disabled-button-with-tooltip">
-                                    <Button bsStyle={bsStyle} disabled={true}>
-                                        <i className="fa fa-remove" />
-                                    </Button>
-                                </div>
-                            </Tip>
-                        ) : (
-                            <Button bsStyle={bsStyle} onClick={this.onRemoveClick}>
-                                <i className="fa fa-remove" />
-                            </Button>
-                        )}
+                        <DisableableButton disabledMsg={disabledMsg} onClick={this.onRemoveClick} bsStyle={bsStyle}>
+                            <i className="fa fa-remove" />
+                        </DisableableButton>
                         {btn}
                     </ButtonGroup>
                 ) : (

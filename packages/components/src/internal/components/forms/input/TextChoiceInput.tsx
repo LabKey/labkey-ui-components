@@ -23,7 +23,7 @@ export class TextChoiceInput extends DisableableInput<Props, DisableableInputSta
                 label={queryColumn.caption}
                 name={queryColumn.fieldKey}
                 options={inputOptions}
-                placeholder={placeholder || 'Select or type to search...'}
+                placeholder={placeholder}
                 required={queryColumn.required}
             />
         );

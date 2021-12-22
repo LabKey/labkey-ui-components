@@ -37,6 +37,7 @@ import { OntologyModel } from '../ontology/models';
 import { isCommunityDistribution } from '../../app/utils';
 
 import {
+    DEFAULT_TEXT_CHOICE_VALIDATOR,
     decodeLookup,
     DomainDesign,
     DomainException,
@@ -61,6 +62,7 @@ import {
     VISIT_ID_TYPE,
     PropDescType,
     UNIQUE_ID_TYPE,
+    TEXT_CHOICE_TYPE,
 } from './PropDescType';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -74,6 +76,7 @@ import {
     DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     DOMAIN_FIELD_SAMPLE_TYPE,
     DOMAIN_FIELD_TYPE,
+    MAX_TEXT_LENGTH,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
@@ -271,6 +274,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     if (type === UNIQUE_ID_TYPE && (isCommunityDistribution() || domain.domainKindName !== Domain.KINDS.SAMPLE_TYPE)) {
+        return false;
+    }
+
+    if (type === TEXT_CHOICE_TYPE && !domain.allowTextChoiceProperties) {
         return false;
     }
 
@@ -643,10 +650,23 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             conceptLabelColumn: undefined,
             conceptImportColumn: undefined,
             scannable: undefined,
+            textChoiceValidator: undefined,
         }) as DomainField;
 
         if (field.isNew()) {
             field = DomainField.updateDefaultValues(field);
+        }
+
+        if (field.isTextChoiceField()) {
+            // when changing a field to a Text Choice, add the default textChoiceValidator and
+            // remove/reset all other propertyValidators and other text option settings
+            field = field.merge({
+                textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
+                lookupValidator: undefined,
+                rangeValidators: [],
+                regexValidators: [],
+                scale: MAX_TEXT_LENGTH,
+            }) as DomainField;
         }
     }
 

@@ -110,9 +110,10 @@ export const FindByIdsModal: FC<Props> = memo(props => {
                     onFieldChange={onFieldTypeChange}
                 />
                 <textarea
-                    placeholder={`List ${fieldType.nounPlural} here`}
                     rows={8}
                     cols={50}
+                    className="textarea-fullwidth textarea-noresize"
+                    placeholder={`List ${fieldType.nounPlural} here`}
                     onChange={onIdTextChange}
                     value={idString}
                 />

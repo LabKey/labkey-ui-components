@@ -120,28 +120,4 @@ describe('ProductAppsDrawer', () => {
         );
         expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrl')).toBe(DEFAULT_ICON_URL);
     });
-
-    test('iconUrl, all enabled', () => {
-        LABKEY.moduleContext = {
-            samplemanagement: {},
-            biologics: {
-                isBiologicsSampleManagerNavEnabled: true,
-            },
-        };
-        // create them after setting the module context to properly set the disabled flags
-        const products = [
-            new ProductModel({ productId: SAMPLE_MANAGER_APP_PROPERTIES.productId, productName: 'LKSM Name' }),
-            new ProductModel({ productId: BIOLOGICS_APP_PROPERTIES.productId, productName: 'LKB Name' }),
-            new ProductModel({ productId: 'other', productName: 'Other Name' }),
-        ];
-        const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={products} />);
-        validate(wrapper, 4);
-        expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrl')).toBe(
-            '/labkey/sampleManagement/images/' + SAMPLE_MANAGER_PRODUCT_ICON
-        );
-        expect(wrapper.find(ProductAppMenuItem).at(2).prop('iconUrl')).toBe(
-            '/labkey/biologics/images/' + BIOLOGICS_PRODUCT_ICON
-        );
-        expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrl')).toBe(DEFAULT_ICON_URL);
-    });
 });

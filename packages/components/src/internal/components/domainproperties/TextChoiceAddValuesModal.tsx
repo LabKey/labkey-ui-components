@@ -44,7 +44,11 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
             </Modal.Header>
             <Modal.Body>
                 <p>
-                    {`Enter each value on a new line. ${Utils.pluralize(maxValuesToAdd, 'value', 'values')} can be added. `}
+                    {`Enter each value on a new line. ${Utils.pluralize(
+                        maxValuesToAdd,
+                        'value',
+                        'values'
+                    )} can be added.`}
                 </p>
                 <textarea
                     rows={8}
@@ -54,11 +58,14 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
                     onChange={onChange}
                     value={valueStr}
                 />
-                <div className={classNames({ 'domain-text-choices-error': parsedValues.length > maxValuesToAdd })}>
+                <div
+                    className={classNames('text-choice-value-count', {
+                        'domain-text-choices-error': parsedValues.length > maxValuesToAdd,
+                    })}
+                >
                     {parsedValues.length === 1
                         ? '1 new text choice value provided.'
-                        : `${parsedValues.length} new text choice values provided.`
-                    }
+                        : `${parsedValues.length} new text choice values provided.`}
                 </div>
             </Modal.Body>
             <Modal.Footer>

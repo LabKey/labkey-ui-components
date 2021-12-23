@@ -274,6 +274,7 @@ import {
 import { GenerateEntityResponse, OperationConfirmationData } from './internal/components/entities/models';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
+import { SampleFinderSection } from './internal/components/search/SampleFinderSection';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { loadNameExpressionOptions } from './internal/components/settings/actions';
 import { searchUsingIndex } from './internal/components/search/actions';
@@ -978,6 +979,7 @@ export {
     SearchResultCard,
     SearchResultsPanel,
     searchUsingIndex,
+    SampleFinderSection,
     // settings
     NameIdSettings,
     loadNameExpressionOptions,

@@ -123,3 +123,77 @@ $circle-size: 12 * $scale;
 .cards__block-disabled {
   background: linear-gradient(0.15turn, #aaa, #eee) no-repeat center;
 }
+
+.filter-card {
+    width: 330px;
+    margin-left:8px;
+    margin-right: 8px;
+    display: inline;
+
+    &.empty {
+        height: 228px;
+    }
+}
+
+.filter-cards__card {
+    display: block;
+    //width: 330px;
+    border-radius: 2px;
+    height: $card-min-height;
+    background: white;
+    padding: 0;
+    transition: all 250ms;
+    font-size: 14px;
+
+
+    @include shadow(1);
+
+    &:hover,&:focus {
+        text-decoration: none;
+
+        @include shadow(3);
+        transform: translateY(-5px);
+        cursor: pointer;
+
+        .cards__card-content {
+            color: #555;
+        }
+        .cards__card-title {
+            color: #333;
+        }
+    }
+}
+
+.filter-card__empty-content {
+    padding-top: 63px;
+    text-align: center;
+
+    &.empty {
+        color: $gray-light;
+        font-weight: 300;
+        font-size: 37px;
+    }
+}
+
+.filter-card__header {
+    padding: 18px 0 18px 20px;
+    font-size: 20px;
+    line-height: 23px;
+    color: white;
+    height: 59px;
+}
+
+.filter-card__header-primary {
+    background-color: $brand-primary;
+}
+.filter-card__header-success {
+    background-color: $brand-success;
+}
+
+.filter-hint {
+    padding-top: 30px;
+    color: $gray-light;
+    font-weight: 400;
+    font-size: 22px;
+}
+

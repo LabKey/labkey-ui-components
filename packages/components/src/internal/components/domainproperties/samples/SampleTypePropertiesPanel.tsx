@@ -48,6 +48,8 @@ import { loadNameExpressionOptions } from '../../settings/actions';
 
 import { PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 
+import { NameExpressionPreview } from '../NameExpressionPreview';
+
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
 
@@ -78,6 +80,9 @@ interface OwnProps {
     dataClassParentageLabel?: string;
     metricUnitProps?: MetricUnitProps;
     aliquotNamePatternProps?: AliquotNamePatternProps;
+    namePreviews?: string[];
+    onNameFieldHover?: () => any;
+    namePreviewsLoading?: boolean;
 }
 
 // Splitting these out to clarify where they end-up
@@ -323,6 +328,9 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             appPropertiesOnly,
             showLinkToStudy,
             metricUnitProps,
+            namePreviews,
+            namePreviewsLoading,
+            onNameFieldHover,
         } = this.props;
         const { isValid, containers, prefix, loadingError } = this.state;
 
@@ -409,35 +417,47 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                     warning={warning}
+                    showPreviewName={!!model.nameExpression}
+                    onNameFieldHover={onNameFieldHover}
+                    namePreviewsLoading={namePreviewsLoading}
+                    previewName={namePreviews?.[0]}
                 />
                 {showAliquotNameExpression && (
                     <Row className="margin-bottom">
                         <Col xs={2}>
-                            <DomainFieldLabel
-                                label="Aliquot Naming Pattern"
-                                helpTipBody={
-                                    <>
-                                        <p>Pattern used for generating unique Ids for Aliquots.</p>
-                                        <p>
-                                            By default, the name of the aliquot will use the name of its parent followed
-                                            by a dash and a counter for that parent’s aliquots.
-                                        </p>
-                                        <p>
-                                            For example, if the original sample is S1, aliquots of that sample will be
-                                            named S1-1, S1-2, etc.
-                                        </p>
-                                        <p>
-                                            <a
-                                                target="_blank"
-                                                href={aliquotNameExpressionInfoUrl ?? ALIQUOT_HELP_LINK}
-                                                rel="noreferrer"
-                                            >
-                                                More info
-                                            </a>
-                                        </p>
-                                    </>
-                                }
-                            />
+                            <div onMouseEnter={() => onNameFieldHover()}>
+                                <DomainFieldLabel
+                                    label="Aliquot Naming Pattern"
+                                    helpTipBody={
+                                        <>
+                                            <p>Pattern used for generating unique Ids for Aliquots.</p>
+                                            <p>
+                                                By default, the name of the aliquot will use the name of its parent
+                                                followed by a dash and a counter for that parent’s aliquots.
+                                            </p>
+                                            <p>
+                                                For example, if the original sample is S1, aliquots of that sample will
+                                                be named S1-1, S1-2, etc.
+                                            </p>
+                                            {model.aliquotNameExpression && (
+                                                <NameExpressionPreview
+                                                    previewName={namePreviews?.[1]}
+                                                    isPreviewLoading={namePreviewsLoading}
+                                                />
+                                            )}
+                                            <p>
+                                                <a
+                                                    target="_blank"
+                                                    href={aliquotNameExpressionInfoUrl ?? ALIQUOT_HELP_LINK}
+                                                    rel="noreferrer"
+                                                >
+                                                    More info
+                                                </a>
+                                            </p>
+                                        </>
+                                    }
+                                />
+                            </div>
                         </Col>
                         <Col xs={10}>
                             <FormControl

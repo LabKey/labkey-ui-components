@@ -2,7 +2,7 @@ import React, { FC, memo, ReactNode, useMemo } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Panel } from 'react-bootstrap';
 
-import { DefaultRenderer, QueryColumn } from '../../../..';
+import { DefaultRenderer, LabelHelpTip, QueryColumn } from '../../../..';
 
 import { DETAIL_TABLE_CLASSES } from '../constants';
 
@@ -86,6 +86,7 @@ export interface DetailDisplaySharedProps extends RenderOptions {
     editingMode?: boolean;
     titleRenderer?: TitleRenderer;
     fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode;
+    fieldHelpTexts?: { [key: string]: string };
 }
 
 interface DetailDisplayProps extends DetailDisplaySharedProps {
@@ -94,7 +95,7 @@ interface DetailDisplayProps extends DetailDisplaySharedProps {
 }
 
 export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
-    const { asPanel, data, displayColumns, editingMode, useDatePicker, fileInputRenderer } = props;
+    const { asPanel, data, displayColumns, editingMode, useDatePicker, fileInputRenderer, fieldHelpTexts } = props;
 
     const detailRenderer = useMemo(() => {
         if (editingMode) {
@@ -133,10 +134,16 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
                             <tbody>
                                 {fields
                                     .map((field, key) => {
+                                        const labelHelp = fieldHelpTexts?.[key];
                                         // 'data-caption' tag for test hooks
                                         return (
                                             <tr key={key}>
-                                                <td>{field.titleRenderer}</td>
+                                                <td>
+                                                    {field.titleRenderer}
+                                                    {labelHelp && (
+                                                        <LabelHelpTip title={field.title}>{labelHelp}</LabelHelpTip>
+                                                    )}
+                                                </td>
                                                 <td
                                                     className="text__wrap"
                                                     data-caption={field.title}

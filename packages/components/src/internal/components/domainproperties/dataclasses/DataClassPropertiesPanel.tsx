@@ -39,6 +39,9 @@ interface OwnProps extends BasePropertiesPanelProps {
     nameExpressionPlaceholder?: string;
     nounSingular?: string;
     nounPlural?: string;
+    previewName?: string;
+    onNameFieldHover?: () => any;
+    namePreviewsLoading?: boolean;
 }
 
 type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
@@ -157,6 +160,9 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             nameExpressionInfoUrl,
             nameExpressionPlaceholder,
             helpTopic,
+            namePreviewsLoading,
+            previewName,
+            onNameFieldHover,
         } = this.props;
         const { isValid, prefix, loadingError } = this.state;
 
@@ -199,6 +205,10 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                     warning={warning}
+                    showPreviewName={!!model.nameExpression}
+                    namePreviewsLoading={namePreviewsLoading}
+                    previewName={previewName}
+                    onNameFieldHover={onNameFieldHover}
                 />
                 {!appPropertiesOnly && this.renderCategorySelect()}
                 {!appPropertiesOnly && this.renderSampleTypeSelect()}

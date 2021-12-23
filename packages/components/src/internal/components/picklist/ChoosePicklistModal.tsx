@@ -1,13 +1,12 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Modal, Tab, Tabs } from 'react-bootstrap';
-import classNames from 'classnames';
 
 import { Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 import { formatDate, parseDate } from '../../util/Date';
 import { Alert } from '../base/Alert';
-
+import { ChoicesListItem } from '../base/ChoicesListItem';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
@@ -40,20 +39,27 @@ interface PicklistListProps {
 // export for jest testing
 export const PicklistList: FC<PicklistListProps> = memo(props => {
     const { activeItem, emptyMessage, onSelect, showSharedIcon = false, items } = props;
+    const onClick = useCallback(
+        index => {
+            onSelect(items[index]);
+        },
+        [items, onSelect]
+    );
+
     return (
         <div className="list-group choices-list">
-            {items.map(item => (
-                <button
-                    className={classNames('list-group-item', { active: activeItem?.listId === item.listId })}
+            {items.map((item, index) => (
+                <ChoicesListItem
+                    active={activeItem?.listId === item.listId}
+                    index={index}
                     key={item.listId}
-                    onClick={onSelect.bind(this, item)}
-                    type="button"
-                >
-                    {item.name}
-                    {showSharedIcon && item.isPublic() && (
-                        <span className="fa fa-users pull-right" title="Team Picklist" />
-                    )}
-                </button>
+                    label={item.name}
+                    onSelect={onClick}
+                    componentRight={
+                        showSharedIcon &&
+                        item.isPublic() && <span className="fa fa-users pull-right" title="Team Picklist" />
+                    }
+                />
             ))}
             {items.length === 0 && <p className="choices-list__empty-message">{emptyMessage}</p>}
         </div>

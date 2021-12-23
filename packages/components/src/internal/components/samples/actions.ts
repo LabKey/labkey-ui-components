@@ -112,7 +112,8 @@ export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
 export function getSampleTypeDetails(
     query?: SchemaQuery,
     domainId?: number,
-    containerPath?: string
+    containerPath?: string,
+    includeNamePreview?: boolean
 ): Promise<DomainDetails> {
     return new Promise((resolve, reject) => {
         return Domain.getDomainDetails({

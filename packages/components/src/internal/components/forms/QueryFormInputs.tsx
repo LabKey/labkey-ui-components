@@ -18,8 +18,6 @@ import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
 import { Utils } from '@labkey/api';
 
-import { initLookup } from '../../actions';
-
 import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo } from '../../..';
 
 import { resolveRenderer } from './renderers';
@@ -229,7 +227,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
 
                     if (col.isPublicLookup()) {
-                        initLookup(col, undefined);
                         // undefined 'displayAsLookup' just respects the lookup.
                         // Must be explicitly false to prevent drop-down.
                         if (col.displayAsLookup !== false) {
@@ -282,6 +279,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 initiallyDisabled={shouldDisableField}
                                 onToggleDisable={this.onToggleDisable}
                                 renderFieldLabel={renderFieldLabel}
+                                placeholder="Select or type to search..."
                             />
                         );
                     }

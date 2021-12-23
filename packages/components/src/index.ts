@@ -167,7 +167,6 @@ import {
     getQueryGridModel,
     initQueryGridState,
     invalidateUsers,
-    lookupStoreInvalidate,
     removeQueryGridModel,
     updateEditorModel,
 } from './internal/global';
@@ -469,6 +468,7 @@ import { ListDesignerPanels } from './internal/components/domainproperties/list/
 import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
+import { DesignerDetailPanel } from './internal/components/domainproperties/DesignerDetailPanel';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { ValidatorModal } from './internal/components/domainproperties/validation/ValidatorModal';
 import { RangeValidationOptions } from './internal/components/domainproperties/validation/RangeValidationOptions';
@@ -553,6 +553,7 @@ import {
     isRequestsEnabled,
     isSampleManagerEnabled,
     isSampleStatusEnabled,
+    isSubfolderDataEnabled,
     registerWebSocketListeners,
     sampleManagerIsPrimaryApp,
     useMenuSectionConfigs,
@@ -649,6 +650,7 @@ const App = {
     isPremiumProductEnabled,
     sampleManagerIsPrimaryApp,
     isSampleStatusEnabled,
+    isSubfolderDataEnabled,
     getPrimaryAppProperties,
     hasPremiumModule,
     hasModule,
@@ -737,7 +739,6 @@ export {
     getStateModelId,
     getQueryGridModel,
     getEditorModel,
-    lookupStoreInvalidate,
     removeQueryGridModel,
     invalidateUsers,
     clearSelected,
@@ -1083,6 +1084,7 @@ export {
     setDomainFields,
     DomainDesign,
     DomainField,
+    DesignerDetailPanel,
     DomainFieldLabel,
     ValidatorModal,
     RangeValidationOptions,

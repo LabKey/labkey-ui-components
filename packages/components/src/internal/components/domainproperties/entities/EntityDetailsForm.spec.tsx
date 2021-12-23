@@ -2,6 +2,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { fromJS } from 'immutable';
 
+import { mount } from 'enzyme';
+
 import { EntityDetailsForm } from './EntityDetailsForm';
 import { IEntityDetails } from './models';
 
@@ -62,5 +64,31 @@ describe('<EntityDetailsForm/>', () => {
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
+    });
+
+    test('with previewName', () => {
+        const onNameFieldHover = jest.fn();
+
+        const component = (
+            <EntityDetailsForm
+                noun="Entity"
+                onFormChange={jest.fn()}
+                data={fromJS({
+                    rowId: 1,
+                    name: 'Test Entity Name',
+                    description: 'Test Entity Description',
+                    nameExpression: 'Test Name Expression',
+                })}
+                onNameFieldHover={onNameFieldHover}
+                showPreviewName={true}
+                previewName="abc"
+            />
+        );
+
+        const wrapper = mount(component);
+
+        const nameExpressionLabel = wrapper.find('.name-expression-label-div span.domain-no-wrap');
+        expect(nameExpressionLabel).toHaveLength(1);
+        expect(wrapper).toMatchSnapshot();
     });
 });

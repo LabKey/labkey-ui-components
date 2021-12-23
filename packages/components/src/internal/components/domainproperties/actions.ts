@@ -25,6 +25,7 @@ import {
     naturalSortByProperty,
     QueryColumn,
     SchemaDetails,
+    SchemaQuery,
 } from '../../..';
 
 import { processSchemas } from '../../schemas';
@@ -47,6 +48,7 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
+    NameExpressionsValidationResults,
     QueryInfoLite,
     updateSampleField,
 } from './models';
@@ -374,6 +376,41 @@ export function saveDomain(
                 failure: failureHandler,
             });
         }
+    });
+}
+
+/**
+ * @param domain: DomainDesign to save
+ * @param kind: DomainKind if creating new Domain
+ * @param options: Options for creating new Domain
+ * @param includeNamePreview
+ * @return Promise wrapped Domain API call.
+ */
+export function validateDomainNameExpressions(
+    domain: DomainDesign,
+    kind?: string,
+    options?: any,
+    includeNamePreview?: boolean
+): Promise<NameExpressionsValidationResults> {
+    return new Promise((resolve, reject) => {
+        function successHandler(response) {
+            resolve({
+                warnings: response['warnings'],
+                errors: response['errors'],
+                previews: response['previews'],
+            });
+        }
+
+        Domain.validateNameExpressions({
+            options,
+            domainDesign: DomainDesign.serialize(domain),
+            kind,
+            includeNamePreview,
+            success: successHandler,
+            failure: error => {
+                reject(error);
+            },
+        });
     });
 }
 
@@ -1061,4 +1098,25 @@ export function getOntologyUpdatedFieldName(
         fieldChanged,
         !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined,
     ];
+}
+
+export function getDomainNamePreviews(
+    schemaQuery?: SchemaQuery,
+    domainId?: number,
+    containerPath?: string
+): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        return Domain.getDomainNamePreviews({
+            containerPath,
+            domainId,
+            queryName: schemaQuery?.getQuery(),
+            schemaName: schemaQuery?.getSchema(),
+            success: response => {
+                resolve(response['previews']);
+            },
+            failure: response => {
+                reject(response);
+            },
+        });
+    });
 }

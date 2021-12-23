@@ -7,6 +7,14 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Refactored scannable option from `TextFieldOptions` into new `ScannableOption` component
     * Added ScannableOption to `NumericFieldOptions`
 
+### version 2.109.0
+*Released*: 23 December 2021
+* SampleTypeDesigner and DataClassDesigner
+   * Validate name expressions prior to save
+   * Show name preview on hover
+* Added DesignerDetailPanel to show name preview for designer details panel
+* EntityInsertPanel: show name preview on tooltip, hide double tooltip
+
 ### version 2.108.0
 *Released*: 22 December 2021
 * Item 9758: Field editor "Text Choice" data type and UI to create, update, delete field options/values

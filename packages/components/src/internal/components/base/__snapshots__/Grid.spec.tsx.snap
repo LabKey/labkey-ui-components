@@ -1,5 +1,221 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Grid component hide tooltip 1`] = `
+<div
+  className="table-responsive"
+>
+  <div
+    className="grid-messages"
+  />
+  <table
+    className="table table-striped table-bordered"
+  >
+    <thead>
+      <tr>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Player Name
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Number
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Position
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Weight
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        className=""
+      >
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Dee Gordon
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          9
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          2B
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        />
+      </tr>
+      <tr
+        className=""
+      >
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Mike Zunino
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          3
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          C
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        />
+      </tr>
+      <tr
+        className=""
+      >
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Kyle Seager
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          15
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          3B
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        />
+      </tr>
+      <tr
+        className=""
+      >
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Zero
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          0
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Bench
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        />
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
 exports[`Grid component loading text and action 1`] = `
 <div
   className="table-responsive"
@@ -920,6 +1136,17 @@ exports[`Grid component with phi data 1`] = `
         >
           Lefty
         </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Weight
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -953,6 +1180,13 @@ exports[`Grid component with phi data 1`] = `
         >
           2B
         </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        />
         <td
           style={
             Object {
@@ -1026,6 +1260,13 @@ exports[`Grid component with phi data 1`] = `
             }
           }
         />
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        />
       </tr>
       <tr
         className=""
@@ -1078,6 +1319,13 @@ exports[`Grid component with phi data 1`] = `
             }
           }
         />
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        />
       </tr>
       <tr
         className=""
@@ -1109,6 +1357,13 @@ exports[`Grid component with phi data 1`] = `
         >
           Bench
         </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        />
         <td
           style={
             Object {

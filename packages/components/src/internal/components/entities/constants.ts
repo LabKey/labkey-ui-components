@@ -30,6 +30,7 @@ export const SampleTypeDataType: EntityDataType = {
     insertColumnNamePrefix: 'MaterialInputs/',
     editTypeAppUrlPrefix: SAMPLE_TYPE_KEY,
     importFileAction: 'importSamples',
+    filterCardHeaderClass: "filter-card__header-success",
 };
 
 export const DataClassDataType: EntityDataType = {
@@ -50,6 +51,7 @@ export const DataClassDataType: EntityDataType = {
     inputTypeValueField: 'rowId',
     insertColumnNamePrefix: 'DataInputs/',
     importFileAction: 'importData',
+    filterCardHeaderClass: 'filter-card__header-primary',
 };
 
 export const ParentEntityLineageColumns = List.of('Inputs/Materials/First', 'Inputs/Data/First');

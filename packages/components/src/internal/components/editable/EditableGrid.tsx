@@ -96,7 +96,7 @@ function inputCellFactory(
     columnMetadata: EditableColumnMetadata,
     readonlyRows: List<any>,
     selectCell: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void,
-    modifyCell: (colIdx: number, rowIdx: number, newValue: ValueDescriptor, mod: MODIFICATION_TYPES) => void,
+    modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void,
     focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void,
     clearSelection: () => void,
     inDrag_: () => boolean
@@ -436,7 +436,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
-    modifyCell = (colIdx: number, rowIdx: number, newValue: ValueDescriptor, mod: MODIFICATION_TYPES): void => {
+    modifyCell = (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES): void => {
         const { editorModel, onChange } = this.props;
         const { cellMessages, cellValues } = editorModel;
         const cellKey = genCellKey(colIdx, rowIdx);
@@ -447,18 +447,21 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             const values: List<ValueDescriptor> = editorModel.getIn(keyPath);
 
             if (values !== undefined) {
-                changes.cellValues = cellValues.set(cellKey, values.push(newValue));
+                changes.cellValues = cellValues.set(cellKey, values.push(...newValues));
             } else {
-                changes.cellValues = cellValues.set(cellKey, List([newValue]));
+                changes.cellValues = cellValues.set(cellKey, List(newValues));
             }
         } else if (mod === MODIFICATION_TYPES.REPLACE) {
-            changes.cellValues = cellValues.set(cellKey, List([newValue]));
+            changes.cellValues = cellValues.set(cellKey, List(newValues));
         } else if (mod === MODIFICATION_TYPES.REMOVE) {
             let values: List<ValueDescriptor> = editorModel.getIn(keyPath);
-            const idx = values.findIndex(vd => vd.display === newValue.display);
 
-            if (idx > -1) {
-                values = values.remove(idx);
+            for (let v = 0; v < newValues.length; v++) {
+                const idx = values.findIndex(vd => vd.display === newValues[v].display && vd.raw === newValues[v].raw);
+
+                if (idx > -1) {
+                    values = values.remove(idx);
+                }
             }
 
             changes.cellValues = cellValues.set(cellKey, values);

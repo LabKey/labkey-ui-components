@@ -64,11 +64,9 @@ export interface LookupCellProps {
     col: QueryColumn;
     colIdx: number;
     disabled?: boolean;
-    // TODO: Susan maybe changed modifyCell to take multiple values? So should update method signature here?
-    modifyCell: (colIdx: number, rowIdx: number, newValue: ValueDescriptor, mod: MODIFICATION_TYPES) => void;
+    modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
     rowIdx: number;
-    // TODO: should be void function?
-    select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => any;
+    select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
     values: List<ValueDescriptor>;
     filteredLookupValues?: List<string>;
     filteredLookupKeys?: List<any>;
@@ -79,27 +77,17 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         return this.props.col.isJunctionLookup();
     };
 
-    onInputChange = (
-        fieldName: string,
-        formValue: string | any[],
-        items: any,
-        selectedItems: Map<string, any>
-    ): void => {
+    onInputChange = (fieldName: string, formValue: string | any[], items: any): void => {
         const { colIdx, modifyCell, rowIdx, select } = this.props;
         if (this.isMultiValue()) {
-            if (items.length == 0) {
+            if (items.length === 0) {
                 modifyCell(colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
             } else {
                 const valueDescriptors = items.map(item => ({ raw: item.value, display: item.label }));
                 modifyCell(colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
             }
         } else {
-            modifyCell(
-                colIdx,
-                rowIdx,
-                [{ raw: items?.value, display: items?.label }],
-                MODIFICATION_TYPES.REPLACE
-            );
+            modifyCell(colIdx, rowIdx, [{ raw: items?.value, display: items?.label }], MODIFICATION_TYPES.REPLACE);
         }
 
         if (!this.isMultiValue()) {

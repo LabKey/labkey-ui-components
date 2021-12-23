@@ -40,7 +40,7 @@ interface Props {
     focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void;
     focused?: boolean;
     message?: CellMessage;
-    modifyCell: (colIdx: number, rowIdx: number, newValue: ValueDescriptor, mod: MODIFICATION_TYPES) => void;
+    modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
     selectCell: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
     selected?: boolean;
     selection?: boolean;

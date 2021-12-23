@@ -333,11 +333,12 @@ class AssayImportPanelsBody extends Component<Props, State> {
         );
     };
 
-    onInitModelComplete = (): void => {
+    onInitModelComplete = async (): Promise<void> => {
         const runPropsRow = this.getRunPropsQueryModel()?.getRow();
         const isReimport = this.isReimport();
         const fileName = getRunPropertiesFileName(runPropsRow);
         const runName = runPropsRow ? caseInsensitive(runPropsRow, 'Name').value : undefined;
+        const gridData = await this.state.model.getInitialGridData();
 
         // Issue 38237: set the runName and comments for the re-import case
         this.setState(state => {
@@ -345,7 +346,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 runName: isReimport && runName === fileName ? undefined : runName, // Issue 39328
                 comment: runPropsRow ? caseInsensitive(runPropsRow, 'Comments').value : '',
             }) as AssayWizardModel;
-            const gridData = model.getInitialGridData();
             return {
                 model,
                 dataModel: state.dataModel.mutate({
@@ -550,8 +550,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }
     };
 
-    onSuccessContinue = (response: AssayUploadResultModel, isAsync?: boolean): void => {
+    onSuccessContinue = async (response: AssayUploadResultModel, isAsync?: boolean): Promise<void> => {
         this.props.onSave?.(response, isAsync);
+        const initialGridData = await this.state.model.getInitialGridData();
 
         // Reset the data for the AssayWizardModel and dataModel
         this.setState(state => {
@@ -566,7 +567,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 runProperties: Map<string, any>(),
                 // Note: leave batchProperties alone since those are preserved in this case
             }) as AssayWizardModel;
-            const initialGridData = model.getInitialGridData();
             const dataModel = state.dataModel.mutate(initialGridData.queryModel);
             const editorModel = state.editorModel.merge(initialGridData.editorModel) as EditorModel;
             return { dataModel, editorModel, model };

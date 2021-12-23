@@ -530,7 +530,7 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>)
     }
 }
 
-async function getLookupValueDescriptors(
+export async function getLookupValueDescriptors(
     columns: QueryColumn[],
     rows: Map<any, Map<string, any>>,
     ids: List<any>
@@ -1621,59 +1621,6 @@ function getCopyValue(model: EditorModel, insertColumns: List<QueryColumn>): str
     return copyValue;
 }
 
-export function focusCell(modelId: string, colIdx: number, rowIdx: number, clearValue?: boolean): void {
-    const cellKey = genCellKey(colIdx, rowIdx);
-    const model = getEditorModel(modelId);
-
-    const props: Partial<EditorModelProps> = {
-        cellMessages: model.cellMessages.remove(cellKey),
-        focusColIdx: colIdx,
-        focusRowIdx: rowIdx,
-        focusValue: model.getIn(['cellValues', cellKey]),
-        selectedColIdx: colIdx,
-        selectedRowIdx: rowIdx,
-    };
-
-    if (clearValue) {
-        props.cellValues = model.cellValues.set(cellKey, List<ValueDescriptor>());
-    }
-
-    updateEditorModel(model, props);
-}
-
-export function selectCell(
-    modelId: string,
-    colIdx: number,
-    rowIdx: number,
-    selection?: SELECTION_TYPES,
-    resetValue?: boolean
-): void {
-    const model = getEditorModel(modelId);
-
-    // check bounds
-    if (model && colIdx >= 0 && rowIdx >= 0 && colIdx < model.colCount) {
-        // 33855: select last row
-        if (rowIdx === model.rowCount) {
-            rowIdx = rowIdx - 1;
-        }
-
-        if (rowIdx < model.rowCount) {
-            const props: Partial<EditorModelProps> = {
-                focusColIdx: -1,
-                focusRowIdx: -1,
-                ...applySelection(model as EditorModel, colIdx, rowIdx, selection),
-            };
-
-            if (resetValue) {
-                props.focusValue = undefined;
-                props.cellValues = model.cellValues.set(genCellKey(colIdx, rowIdx), model.focusValue);
-            }
-
-            updateEditorModel(model, props);
-        }
-    }
-}
-
 export function unfocusCellSelection(modelId: string): void {
     updateEditorModel(getEditorModel(modelId), {
         selectedColIdx: -1,
@@ -1685,130 +1632,6 @@ function updateCellValues(model: EditorModel, cellKey: string, values: List<Valu
     updateEditorModel(model, {
         cellValues: model.cellValues.set(cellKey, values),
     });
-}
-
-export function modifyCell(
-    modelId: string,
-    colIdx: number,
-    rowIdx: number,
-    newValues: ValueDescriptor[],
-    mod: MODIFICATION_TYPES
-): void {
-    const cellKey = genCellKey(colIdx, rowIdx);
-    const keyPath = ['cellValues', cellKey];
-    const VD = List<ValueDescriptor>();
-
-    let model = getEditorModel(modelId);
-    if (!model) {
-        console.warn("No model available for id '" + modelId + "'");
-        return;
-    }
-
-    model = updateEditorModel(model, { cellMessages: model.cellMessages.delete(cellKey) });
-
-    if (mod === MODIFICATION_TYPES.ADD) {
-        const values: List<ValueDescriptor> = model.getIn(keyPath);
-        if (values !== undefined) {
-            updateCellValues(model, cellKey, values.push(...newValues));
-        } else {
-            updateCellValues(model, cellKey, VD.push(...newValues));
-        }
-    } else if (mod === MODIFICATION_TYPES.REPLACE) {
-        updateCellValues(model, cellKey, VD.push(...newValues));
-    } else if (mod === MODIFICATION_TYPES.REMOVE) {
-        let values: List<ValueDescriptor> = model.getIn(keyPath);
-        for (let v = 0; v < newValues.length; v++) {
-            const idx = values.findIndex(vd => vd.display === newValues[v].display && vd.raw === newValues[v].raw);
-
-            if (idx > -1) {
-                values = values.remove(idx);
-            }
-        }
-
-        if (values.size) {
-            updateCellValues(model, cellKey, values);
-        } else {
-            updateCellValues(model, cellKey, VD);
-        }
-    } else if (mod == MODIFICATION_TYPES.REMOVE_ALL) {
-        if (model.selectionCells.size > 0) {
-            updateEditorModel(model, {
-                cellValues: model.cellValues.reduce((map, vd, cellKey) => {
-                    if (model.selectionCells.contains(cellKey)) {
-                        return map.set(cellKey, VD);
-                    }
-                    return map.set(cellKey, vd);
-                }, Map<string, List<ValueDescriptor>>()),
-                cellMessages: model.cellMessages.reduce((map, msg, cellKey) => {
-                    if (model.selectionCells.contains(cellKey)) {
-                        return map.remove(cellKey);
-                    }
-                    return map.set(cellKey, msg);
-                }, Map<string, CellMessage>()),
-            });
-        } else {
-            updateCellValues(model, cellKey, VD);
-        }
-    }
-}
-
-function applySelection(
-    model: EditorModel,
-    colIdx: number,
-    rowIdx: number,
-    selection?: SELECTION_TYPES
-): Partial<EditorModelProps> {
-    let selectionCells = Set<string>().asMutable();
-    const hasSelection = model.hasSelection();
-
-    let selectedColIdx = colIdx;
-    let selectedRowIdx = rowIdx;
-
-    switch (selection) {
-        case SELECTION_TYPES.ALL:
-            for (let c = 0; c < model.colCount; c++) {
-                for (let r = 0; r < model.rowCount; r++) {
-                    selectionCells.add(genCellKey(c, r));
-                }
-            }
-            break;
-        case SELECTION_TYPES.AREA:
-            selectedColIdx = model.selectedColIdx;
-            selectedRowIdx = model.selectedRowIdx;
-
-            if (hasSelection) {
-                const upperLeft = [Math.min(model.selectedColIdx, colIdx), Math.min(model.selectedRowIdx, rowIdx)];
-
-                const bottomRight = [Math.max(model.selectedColIdx, colIdx), Math.max(model.selectedRowIdx, rowIdx)];
-
-                const maxColumn = Math.min(bottomRight[0], model.colCount - 1);
-                const maxRow = Math.min(bottomRight[1], model.rowCount - 1);
-
-                for (let c = upperLeft[0]; c <= maxColumn; c++) {
-                    for (let r = upperLeft[1]; r <= maxRow; r++) {
-                        selectionCells.add(genCellKey(c, r));
-                    }
-                }
-            }
-            break;
-        case SELECTION_TYPES.SINGLE:
-            selectionCells = model.selectionCells.add(genCellKey(colIdx, rowIdx));
-            break;
-    }
-
-    if (selectionCells.size > 0) {
-        // if a cell was previously selected and there are remaining selectionCells then mark the previously
-        // selected cell as in "selection"
-        if (hasSelection) {
-            selectionCells.add(genCellKey(model.selectedColIdx, model.selectedRowIdx));
-        }
-    }
-
-    return {
-        selectedColIdx,
-        selectedRowIdx,
-        selectionCells: selectionCells.asImmutable(),
-    };
 }
 
 const findLookupValues = async (
@@ -2021,8 +1844,8 @@ async function pasteCell(
                         undefined,
                         filteredLookup
                             ? filteredLookup.toArray()
-                            : byColumnValues.get(index - paste.coordinates.colMin).toArray(),
-                    ),
+                            : byColumnValues.get(index - paste.coordinates.colMin).toArray()
+                    )
                 );
             } else if (filteredLookup) {
                 arr.push(findLookupValues(column, undefined, filteredLookup.toArray()));
@@ -2030,8 +1853,22 @@ async function pasteCell(
             return arr;
         }, []);
 
-        await Promise.all(columnLoaders);
-        return pasteCellLoad(dataKeys, data, queryInfo, editorModel, paste, columnMetadata, readonlyRows, lockRowCount);
+        const results = await Promise.all(columnLoaders);
+        const descriptorMap = results.reduce((reduction, result) => {
+            const { column, descriptors } = result;
+            reduction[column.lookupKey] = descriptors;
+        }, {});
+        return pasteCellLoad(
+            dataKeys,
+            data,
+            queryInfo,
+            editorModel,
+            paste,
+            descriptorMap,
+            columnMetadata,
+            readonlyRows,
+            lockRowCount
+        );
     } else {
         const cellKey = genCellKey(selectedColIdx, selectedRowIdx);
         return {
@@ -2544,13 +2381,13 @@ function pasteCellLoad(
                     let cv: List<ValueDescriptor>;
                     let msg: CellMessage;
 
-                        if (col && col.isPublicLookup()) {
-                            const { message, values } = parsePasteCellLookup(
-                                col,
-                                lookupDescriptorMap[col.lookupKey],
-                                value
-                            );
-                            cv = values;
+                    if (col && col.isPublicLookup()) {
+                        const { message, values } = parsePasteCellLookup(
+                            col,
+                            lookupDescriptorMap[col.lookupKey],
+                            value
+                        );
+                        cv = values;
 
                         if (message) {
                             msg = message;

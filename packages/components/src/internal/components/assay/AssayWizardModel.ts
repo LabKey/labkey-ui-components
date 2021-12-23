@@ -11,9 +11,8 @@ import {
     QueryInfo,
     QueryModel,
 } from '../../..';
-import { genCellKey, getLookupDisplayValue } from '../../actions';
+import { genCellKey, getLookupDisplayValue, getLookupValueDescriptors } from '../../actions';
 import { AssayUploadTabs } from '../../constants';
-import { getLookupStore } from '../../global';
 import { ValueDescriptor } from '../../models';
 import { generateNameWithTimestamp } from '../../util/Date';
 
@@ -247,11 +246,17 @@ export class AssayWizardModel
         return { rows, orderedRows: Object.keys(rows) };
     }
 
-    getInitialEditorModelData(queryModelData: Partial<QueryModel>): Partial<EditorModel> {
-        // TODO: this will need to be re-written to match the changes Susan made to loadDataForEditor, OR, we make a
-        //  version of that method that can be used by this class so we don't have any duplicate code.
+    // TODO: this method is essentially a duplicate of loadDataForEditor. We should probably make a version that can be
+    //  shared because we're going to need this outside of Assays when we convert more usages of
+    //  EditableGridPanelDeprecated
+    async getInitialEditorModelData(queryModelData: Partial<QueryModel>): Promise<Partial<EditorModel>> {
         const { orderedRows, rows } = queryModelData;
         const columns = this.queryInfo.getInsertColumns();
+        const lookupValueDescriptors = await getLookupValueDescriptors(
+            columns.toArray(),
+            fromJS(rows),
+            fromJS(orderedRows)
+        );
         let cellValues = Map<string, List<ValueDescriptor>>();
 
         // data is initialized in column order
@@ -271,14 +276,18 @@ export class AssayWizardModel
                         )
                     );
                 } else {
+                    let cellValue = List([{ display: value, raw: value }]);
+
                     // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid
                     // cell
-                    let valueDescriptor = { display: value, raw: value };
                     if (col.isLookup() && Utils.isNumber(value)) {
-                        valueDescriptor = getLookupDisplayValue(col, getLookupStore(col), value).valueDescriptor;
+                        const descriptors = lookupValueDescriptors[col.lookupKey];
+                        if (descriptors) {
+                            cellValue = List(descriptors.filter(descriptor => descriptor.raw === value));
+                        }
                     }
 
-                    cellValues = cellValues.set(cellKey, List([valueDescriptor]));
+                    cellValues = cellValues.set(cellKey, cellValue);
                 }
             });
         });
@@ -295,9 +304,9 @@ export class AssayWizardModel
      * This method instantiates the initial data used in the editable grid during assay upload, it includes data for
      * an EditorModel and QueryModel.
      */
-    getInitialGridData(): { editorModel: Partial<EditorModel>; queryModel: Partial<QueryModel> } {
+    async getInitialGridData(): Promise<{ editorModel: Partial<EditorModel>; queryModel: Partial<QueryModel> }> {
         const queryModelData = this.getInitialQueryModelData();
-        const editorModelData = this.getInitialEditorModelData(queryModelData);
+        const editorModelData = await this.getInitialEditorModelData(queryModelData);
         return { editorModel: editorModelData, queryModel: queryModelData };
     }
 }

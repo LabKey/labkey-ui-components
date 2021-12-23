@@ -114,9 +114,15 @@ export class EditableGridPanelDeprecated extends ReactN.Component<Props, State, 
         }
     };
 
-    addRows = (count: number): void => {
+    addRows = async (count: number): Promise<void> => {
         const queryGridModel = this.getModel();
-        const changes = addRows(this.getEditorModel(), queryGridModel.dataIds, queryGridModel.data, queryGridModel.getInsertColumns(), count);
+        const changes = await addRows(
+            this.getEditorModel(),
+            queryGridModel.dataIds,
+            queryGridModel.data,
+            queryGridModel.getInsertColumns(),
+            count
+        );
         this.updateModels(changes.editorModel, changes.dataKeys, changes.data);
     };
 

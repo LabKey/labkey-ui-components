@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 2.109.0
+*Released*: 23 December 2021
 * SampleTypeDesigner and DataClassDesigner
    * Validate name expressions prior to save
    * Show name preview on hover

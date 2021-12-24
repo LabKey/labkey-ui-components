@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "4.0.1-fb-updatenodenpm.0",
+  "version": "4.0.1-fb-updatenodenpm.1",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

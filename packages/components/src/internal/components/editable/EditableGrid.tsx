@@ -261,7 +261,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         disabled: false,
         isSubmitting: false,
         striped: false,
-        maxTotalRows: MAX_EDITABLE_GRID_ROWS,
+        maxRows: MAX_EDITABLE_GRID_ROWS,
         hideCountCol: false,
         rowNumColumn: COUNT_COL,
     };

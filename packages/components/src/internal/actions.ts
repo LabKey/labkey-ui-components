@@ -1832,23 +1832,25 @@ async function pasteCell(
         const byColumnValues = getPasteValuesByColumn(paste);
         // prior to load, ensure lookup column stores are loaded
         const columnLoaders: any[] = queryInfo.getInsertColumns().reduce((arr, column, index) => {
-            const filteredLookup = getColumnFilteredLookup(column, columnMetadata);
-            if (
-                index >= paste.coordinates.colMin &&
-                index <= paste.coordinates.colMax &&
-                byColumnValues.get(index - paste.coordinates.colMin).size > 0
-            ) {
-                arr.push(
-                    findLookupValues(
-                        column,
-                        undefined,
-                        filteredLookup
-                            ? filteredLookup.toArray()
-                            : byColumnValues.get(index - paste.coordinates.colMin).toArray()
-                    )
-                );
-            } else if (filteredLookup) {
-                arr.push(findLookupValues(column, undefined, filteredLookup.toArray()));
+            if (column.isPublicLookup()) {
+                const filteredLookup = getColumnFilteredLookup(column, columnMetadata);
+                if (
+                    index >= paste.coordinates.colMin &&
+                    index <= paste.coordinates.colMax &&
+                    byColumnValues.get(index - paste.coordinates.colMin).size > 0
+                ) {
+                    arr.push(
+                        findLookupValues(
+                            column,
+                            undefined,
+                            filteredLookup
+                                ? filteredLookup.toArray()
+                                : byColumnValues.get(index - paste.coordinates.colMin).toArray()
+                        )
+                    );
+                } else if (filteredLookup) {
+                    arr.push(findLookupValues(column, undefined, filteredLookup.toArray()));
+                }
             }
             return arr;
         }, []);
@@ -1857,6 +1859,7 @@ async function pasteCell(
         const descriptorMap = results.reduce((reduction, result) => {
             const { column, descriptors } = result;
             reduction[column.lookupKey] = descriptors;
+            return reduction;
         }, {});
         return pasteCellLoad(
             dataKeys,

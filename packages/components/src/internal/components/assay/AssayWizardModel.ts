@@ -266,7 +266,7 @@ export class AssayWizardModel
                 const cellKey = genCellKey(cn, rn);
                 const value = row[col.fieldKey];
 
-                if (List.isList(value)) {
+                if (Array.isArray(value)) {
                     // assume to be list of {displayValue, value} objects
                     cellValues = cellValues.set(
                         cellKey,

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.111.0
+*Released*: 24 December 2021
+* Edit Sample Type and Data Class's Naming Pattern Prefix Expression alteration warning message
+
 ### version 2.110.0
 *Released*: 23 December 2021
 * Item #9633: Add scannable option to SampleType numeric fields for LabKey apps

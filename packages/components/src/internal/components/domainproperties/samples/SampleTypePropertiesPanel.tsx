@@ -46,7 +46,7 @@ import { getCurrentProductName, isCommunityDistribution, isSampleManagerEnabled 
 
 import { loadNameExpressionOptions } from '../../settings/actions';
 
-import { PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
+import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 
 import { NameExpressionPreview } from '../NameExpressionPreview';
 
@@ -349,13 +349,18 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
 
         let warning;
-        if (prefix && !model.isNew() && !model.nameExpression.startsWith(prefix)) {
+        if (
+            prefix &&
+            !model.isNew() &&
+            model.nameExpression &&
+            !model.nameExpression.includes(PREFIX_SUBSTITUTION_EXPRESSION)
+        ) {
             warning = `${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
         } else if (
             prefix &&
             showAliquotNameExpression &&
             model.aliquotNameExpression &&
-            !model.aliquotNameExpression.startsWith(prefix)
+            !model.aliquotNameExpression.includes(PREFIX_SUBSTITUTION_EXPRESSION)
         ) {
             warning = `Aliquot ${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
         } else if (loadingError !== undefined) {

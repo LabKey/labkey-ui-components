@@ -8030,6 +8030,7 @@ exports[`DomainRow decimal field 1`] = `
                                             label="Decimal Options"
                                             lockType="NotLocked"
                                             onChange={[Function]}
+                                            scannable={false}
                                           >
                                             <div>
                                               <Row
@@ -8285,6 +8286,14 @@ exports[`DomainRow decimal field 1`] = `
                                                   </Col>
                                                 </div>
                                               </Row>
+                                              <Memo()
+                                                domainIndex={1}
+                                                index={2}
+                                                label="Decimal Options"
+                                                lockType="NotLocked"
+                                                onChange={[Function]}
+                                                scannable={false}
+                                              />
                                             </div>
                                           </NumericFieldOptions>
                                         </div>
@@ -15033,6 +15042,15 @@ exports[`DomainRow string field test 1`] = `
                                                   </Col>
                                                 </div>
                                               </Row>
+                                              <Memo()
+                                                domainIndex={1}
+                                                index={1}
+                                                label="Text Options"
+                                                lockType="NotLocked"
+                                                onChange={[Function]}
+                                                scale={4000}
+                                                scannable={false}
+                                              />
                                             </div>
                                           </TextFieldOptions>
                                         </div>
@@ -17572,6 +17590,15 @@ exports[`DomainRow with empty domain form 1`] = `
                                                   </Col>
                                                 </div>
                                               </Row>
+                                              <Memo()
+                                                domainIndex={1}
+                                                index={1}
+                                                label="Text Options"
+                                                lockType="NotLocked"
+                                                onChange={[Function]}
+                                                scale={4000}
+                                                scannable={false}
+                                              />
                                             </div>
                                           </TextFieldOptions>
                                         </div>

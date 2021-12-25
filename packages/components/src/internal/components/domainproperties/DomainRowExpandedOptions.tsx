@@ -145,6 +145,9 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         defaultScale={field.defaultScale}
                         onChange={onChange}
                         lockType={field.lockType}
+                        scannable={field.scannable}
+                        appPropertiesOnly={appPropertiesOnly}
+                        showScannableOption={domainFormDisplayOptions?.showScannableOption}
                     />
                 );
             case 'double':
@@ -157,6 +160,9 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         defaultScale={field.defaultScale}
                         onChange={onChange}
                         lockType={field.lockType}
+                        scannable={field.scannable}
+                        appPropertiesOnly={appPropertiesOnly}
+                        showScannableOption={domainFormDisplayOptions?.showScannableOption}
                     />
                 );
             case 'lookup':

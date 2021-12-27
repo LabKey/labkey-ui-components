@@ -313,6 +313,10 @@ $table-cell-selection-bg-color: #EDF3FF;
         .fa {
             font-size: 14px;
         }
+
+        &:hover {
+            color: $gray;
+        }
     }
 
     .cell-placeholder {

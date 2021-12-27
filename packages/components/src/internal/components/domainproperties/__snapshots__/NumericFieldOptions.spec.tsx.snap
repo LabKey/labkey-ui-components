@@ -308,6 +308,15 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
         </Col>
       </div>
     </Row>
+    <Memo()
+      defaultScale="LOG"
+      domainIndex={1}
+      format="#.##"
+      index={1}
+      label="Numeric Field Options"
+      lockType="NotLocked"
+      onChange={[MockFunction]}
+    />
   </div>
 </NumericFieldOptions>
 `;

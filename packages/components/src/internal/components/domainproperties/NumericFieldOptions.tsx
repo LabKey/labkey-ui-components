@@ -6,11 +6,11 @@ import { HelpLink, JavaDocsLink, NUMBER_FORMATS_TOPIC } from '../../util/helpLin
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';
 import { DEFAULT_SCALE_LINEAR, DEFAULT_SCALE_LOG, DOMAIN_FIELD_DEFAULT_SCALE, DOMAIN_FIELD_FORMAT } from './constants';
-import { ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
+import { ScannableOption, ScannableProps } from './ScannableOption';
 
-interface NumericFieldProps extends ITypeDependentProps {
+interface NumericFieldProps extends ScannableProps {
     format: string;
     defaultScale: string;
 }
@@ -103,6 +103,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
                         </FormControl>
                     </Col>
                 </Row>
+                <ScannableOption {...this.props} />
             </div>
         );
     }

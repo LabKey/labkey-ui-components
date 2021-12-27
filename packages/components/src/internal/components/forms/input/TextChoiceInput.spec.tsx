@@ -11,7 +11,7 @@ describe('TextChoiceInput', () => {
         queryColumn: new QueryColumn(),
     };
 
-    function validate(wrapper: ReactWrapper, placeholder = 'Select or type to search...', options = []): void {
+    function validate(wrapper: ReactWrapper, placeholder?: string, options = []): void {
         const input = wrapper.find(SelectInput);
         expect(input).toHaveLength(1);
         expect(input.prop('placeholder')).toBe(placeholder);
@@ -48,13 +48,9 @@ describe('TextChoiceInput', () => {
 
     test('validValues, with values', () => {
         const wrapper = mount(
-            <TextChoiceInput
-                {...DEFAULT_PROPS}
-                placeholder="test"
-                queryColumn={new QueryColumn({ validValues: ['a', 'b', 'c'] })}
-            />
+            <TextChoiceInput {...DEFAULT_PROPS} queryColumn={new QueryColumn({ validValues: ['a', 'b', 'c'] })} />
         );
-        validate(wrapper, 'test', [
+        validate(wrapper, undefined, [
             { label: 'a', value: 'a' },
             { label: 'b', value: 'b' },
             { label: 'c', value: 'c' },

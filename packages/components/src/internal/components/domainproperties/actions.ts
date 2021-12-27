@@ -25,6 +25,7 @@ import {
     naturalSortByProperty,
     QueryColumn,
     SchemaDetails,
+    SchemaQuery,
 } from '../../..';
 
 import { processSchemas } from '../../schemas';
@@ -36,6 +37,7 @@ import { OntologyModel } from '../ontology/models';
 import { isCommunityDistribution } from '../../app/utils';
 
 import {
+    DEFAULT_TEXT_CHOICE_VALIDATOR,
     decodeLookup,
     DomainDesign,
     DomainException,
@@ -46,6 +48,7 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
+    NameExpressionsValidationResults,
     QueryInfoLite,
     updateSampleField,
 } from './models';
@@ -59,6 +62,7 @@ import {
     VISIT_ID_TYPE,
     PropDescType,
     UNIQUE_ID_TYPE,
+    TEXT_CHOICE_TYPE,
 } from './PropDescType';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -72,6 +76,7 @@ import {
     DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     DOMAIN_FIELD_SAMPLE_TYPE,
     DOMAIN_FIELD_TYPE,
+    MAX_TEXT_LENGTH,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
@@ -272,6 +277,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
         return false;
     }
 
+    if (type === TEXT_CHOICE_TYPE && !domain.allowTextChoiceProperties) {
+        return false;
+    }
+
     return true;
 }
 
@@ -367,6 +376,41 @@ export function saveDomain(
                 failure: failureHandler,
             });
         }
+    });
+}
+
+/**
+ * @param domain: DomainDesign to save
+ * @param kind: DomainKind if creating new Domain
+ * @param options: Options for creating new Domain
+ * @param includeNamePreview
+ * @return Promise wrapped Domain API call.
+ */
+export function validateDomainNameExpressions(
+    domain: DomainDesign,
+    kind?: string,
+    options?: any,
+    includeNamePreview?: boolean
+): Promise<NameExpressionsValidationResults> {
+    return new Promise((resolve, reject) => {
+        function successHandler(response) {
+            resolve({
+                warnings: response['warnings'],
+                errors: response['errors'],
+                previews: response['previews'],
+            });
+        }
+
+        Domain.validateNameExpressions({
+            options,
+            domainDesign: DomainDesign.serialize(domain),
+            kind,
+            includeNamePreview,
+            success: successHandler,
+            failure: error => {
+                reject(error);
+            },
+        });
     });
 }
 
@@ -606,10 +650,23 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             conceptLabelColumn: undefined,
             conceptImportColumn: undefined,
             scannable: undefined,
+            textChoiceValidator: undefined,
         }) as DomainField;
 
         if (field.isNew()) {
             field = DomainField.updateDefaultValues(field);
+        }
+
+        if (field.isTextChoiceField()) {
+            // when changing a field to a Text Choice, add the default textChoiceValidator and
+            // remove/reset all other propertyValidators and other text option settings
+            field = field.merge({
+                textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
+                lookupValidator: undefined,
+                rangeValidators: [],
+                regexValidators: [],
+                scale: MAX_TEXT_LENGTH,
+            }) as DomainField;
         }
     }
 
@@ -1041,4 +1098,25 @@ export function getOntologyUpdatedFieldName(
         fieldChanged,
         !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined,
     ];
+}
+
+export function getDomainNamePreviews(
+    schemaQuery?: SchemaQuery,
+    domainId?: number,
+    containerPath?: string
+): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        return Domain.getDomainNamePreviews({
+            containerPath,
+            domainId,
+            queryName: schemaQuery?.getQuery(),
+            schemaName: schemaQuery?.getSchema(),
+            success: response => {
+                resolve(response['previews']);
+            },
+            failure: response => {
+                reject(response);
+            },
+        });
+    });
 }

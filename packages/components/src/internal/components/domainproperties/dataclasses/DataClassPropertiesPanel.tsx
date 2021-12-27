@@ -17,7 +17,7 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { loadNameExpressionOptions } from '../../settings/actions';
 
-import { PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
+import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 
 import { isSampleManagerEnabled } from '../../../app/utils';
 
@@ -39,6 +39,9 @@ interface OwnProps extends BasePropertiesPanelProps {
     nameExpressionPlaceholder?: string;
     nounSingular?: string;
     nounPlural?: string;
+    previewName?: string;
+    onNameFieldHover?: () => any;
+    namePreviewsLoading?: boolean;
 }
 
 type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
@@ -157,11 +160,19 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             nameExpressionInfoUrl,
             nameExpressionPlaceholder,
             helpTopic,
+            namePreviewsLoading,
+            previewName,
+            onNameFieldHover,
         } = this.props;
         const { isValid, prefix, loadingError } = this.state;
 
         let warning;
-        if (prefix && !model.isNew && model.nameExpression && !model.nameExpression.startsWith(prefix)) {
+        if (
+            prefix &&
+            !model.isNew &&
+            model.nameExpression &&
+            !model.nameExpression.includes(PREFIX_SUBSTITUTION_EXPRESSION)
+        ) {
             warning = `${PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG}: "${prefix}".`;
         } else if (loadingError !== undefined) {
             warning = loadingError;
@@ -194,6 +205,10 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                     warning={warning}
+                    showPreviewName={!!model.nameExpression}
+                    namePreviewsLoading={namePreviewsLoading}
+                    previewName={previewName}
+                    onNameFieldHover={onNameFieldHover}
                 />
                 {!appPropertiesOnly && this.renderCategorySelect()}
                 {!appPropertiesOnly && this.renderSampleTypeSelect()}

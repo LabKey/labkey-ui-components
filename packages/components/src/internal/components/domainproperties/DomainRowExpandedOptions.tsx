@@ -32,9 +32,9 @@ import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndVa
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
+import { TextChoiceOptions } from './TextChoiceOptions';
 
 interface IDomainRowExpandedOptionsProps {
-    domainContainerPath?: string;
     field: DomainField;
     index: number;
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => void;
@@ -45,12 +45,14 @@ interface IDomainRowExpandedOptionsProps {
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     getDomainFields?: () => List<DomainField>;
+    domainContainerPath?: string;
+    schemaName?: string;
+    queryName?: string;
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps> {
     typeDependentOptions = () => {
         const {
-            domainContainerPath,
             field,
             index,
             onChange,
@@ -59,6 +61,9 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
             domainFormDisplayOptions,
             getDomainFields,
             appPropertiesOnly,
+            domainContainerPath,
+            schemaName,
+            queryName,
         } = this.props;
 
         switch (field.dataType.name) {
@@ -140,6 +145,9 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         defaultScale={field.defaultScale}
                         onChange={onChange}
                         lockType={field.lockType}
+                        scannable={field.scannable}
+                        appPropertiesOnly={appPropertiesOnly}
+                        showScannableOption={domainFormDisplayOptions?.showScannableOption}
                     />
                 );
             case 'double':
@@ -152,6 +160,9 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         defaultScale={field.defaultScale}
                         onChange={onChange}
                         lockType={field.lockType}
+                        scannable={field.scannable}
+                        appPropertiesOnly={appPropertiesOnly}
+                        showScannableOption={domainFormDisplayOptions?.showScannableOption}
                     />
                 );
             case 'lookup':
@@ -197,6 +208,22 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         onChange={onChange}
                         onMultiChange={onMultiChange}
                         lockType={field.lockType}
+                    />
+                );
+            case 'textChoice':
+                // don't show Text Choice options for query metadata editor
+                if (domainFormDisplayOptions?.hideValidators) return null;
+
+                return (
+                    <TextChoiceOptions
+                        domainIndex={domainIndex}
+                        index={index}
+                        field={field}
+                        label="Text Choice Options"
+                        lockType={field.lockType}
+                        onChange={onChange}
+                        queryName={queryName}
+                        schemaName={schemaName}
                     />
                 );
         }

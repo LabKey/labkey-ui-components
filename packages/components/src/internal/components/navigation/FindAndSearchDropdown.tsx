@@ -4,10 +4,10 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { capitalizeFirstChar } from '../../util/utils';
 
 import { FindByIdsModal } from './FindByIdsModal';
-import { isSampleFinderEnabled } from '../../app/utils';
+import { getCurrentAppProperties, getPrimaryAppProperties, isSampleFinderEnabled } from '../../app/utils';
 import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from '../samples/constants';
 import { FindField } from '../samples/models';
-import { AppURL } from '../../url/AppURL';
+import { AppURL, createProductUrl } from '../../url/AppURL';
 import { FIND_SAMPLES_KEY } from '../../app/constants';
 
 interface Props {
@@ -62,7 +62,7 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
                     </>
                 )}
                 {isSampleFinderEnabled() && (
-                    <MenuItem key="sampleFinder" href={AppURL.create(FIND_SAMPLES_KEY, "filtered").toHref()}>
+                    <MenuItem key="sampleFinder" href={createProductUrl(getPrimaryAppProperties().productId, getCurrentAppProperties().productId, AppURL.create(FIND_SAMPLES_KEY, "filtered").toHref()) as string}>
                         <i className="fa fa-sitemap" /> Sample Finder
                     </MenuItem>
                 )}

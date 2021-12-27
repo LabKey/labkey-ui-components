@@ -42,6 +42,7 @@ export const EntityFieldFilterModal: FC<Props> = memo((props) => {
                     schemaQuery={entityDataType.typeListingSchemaQuery}
                     onQSChange={onFilterChange}
                     value={selectedParentType}
+                    valueColumn={"Name"}
                     label={entityDataType.nounAsParentSingular}
                 />
             </Modal.Body>

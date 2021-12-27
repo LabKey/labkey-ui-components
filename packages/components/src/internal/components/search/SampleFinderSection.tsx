@@ -27,23 +27,33 @@ export const SampleFinderSection: FC<Props> = memo((props) => {
     }, []);
 
     const onFilterEdit = useCallback((index: number) => {
-        console.log("onFilterEdit: Not yet implemented.");
+        console.log("onFilterEdit for index " + index + ": Not yet implemented.");
+        setShowFilterModal(true);
+    }, [filterCards]);
+
+    const onFilterDelete = useCallback((index: number) => {
+        const newFilterCards = [...filterCards];
+        newFilterCards.splice(index, 1);
+        setFilterCards(newFilterCards);
     }, [filterCards]);
 
     const onFilterClose = () => {
         setShowFilterModal(false);
     };
 
-    const onFind = (schemaQuery: SchemaQuery, filterArray: Filter.IFilter[])  => {
+    const onFind = useCallback((schemaQuery: SchemaQuery, filterArray: Filter.IFilter[])  => {
         onFilterClose();
-        filterCards.push({
+        let newFilterCards = [...filterCards];
+        newFilterCards.push({
             schemaQuery,
-            entityDataType: Object.assign({}, chosenEntityType, {filterArray}),
+            filterArray,
+            entityDataType: chosenEntityType,
             index: filterCards.length,
-            onEdit: onFilterEdit
+            onAdd: onAddEntity,
+            onDelete: onFilterDelete,
         });
-        setFilterCards(filterCards);
-    }
+        setFilterCards(newFilterCards);
+    }, [setFilterCards, filterCards, onFilterEdit, onFilterDelete, chosenEntityType]);
 
     let hintText = "Start by adding ";
     let names = parentEntityDataTypes.map(entityType => entityType.nounAsParentSingular).join(", ");
@@ -52,7 +62,6 @@ export const SampleFinderSection: FC<Props> = memo((props) => {
         names = names.substr(0, lastComma) + " or " + names.substr(lastComma + 1);
     }
     hintText += names + " properties.";
-
     return (
         <Section title={SAMPLE_FINDER_TITLE} caption={SAMPLE_FINDER_CAPTION} context={(
             <div>
@@ -67,11 +76,10 @@ export const SampleFinderSection: FC<Props> = memo((props) => {
         >
             {filterCards.length == 0 ?
                 <>
-                    <FilterCards cards={parentEntityDataTypes.map((entityDataType) => ({
+                    <FilterCards className="empty" cards={parentEntityDataTypes.map((entityDataType) => ({
                         entityDataType,
                         onAdd: onAddEntity
                     }))} />
-                    {/*<br/>*/}
                     <div className="filter-hint">{hintText}</div>
                 </>
                 :

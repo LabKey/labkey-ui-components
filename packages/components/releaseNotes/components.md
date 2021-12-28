@@ -6,7 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Foundational work for Sample Finder feature development.
   * Add experimental feature flag
   * Update FindAndSearch menu
-  * Move SearchBox and related componets into the search directory
+  * Move SearchBox and related components into the search directory
 
 ### version 2.111.0
 *Released*: 24 December 2021

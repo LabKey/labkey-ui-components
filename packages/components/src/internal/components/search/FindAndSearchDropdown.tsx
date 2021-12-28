@@ -8,7 +8,7 @@ import { getCurrentAppProperties, getPrimaryAppProperties, isSampleFinderEnabled
 import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from '../samples/constants';
 import { FindField } from '../samples/models';
 import { AppURL, createProductUrl } from '../../url/AppURL';
-import { FIND_SAMPLES_KEY } from '../../app/constants';
+import { FIND_SAMPLES_BY_FILTER_KEY, SEARCH_KEY } from '../../app/constants';
 
 interface Props {
     title: ReactNode;
@@ -62,7 +62,7 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
                     </>
                 )}
                 {isSampleFinderEnabled() && (
-                    <MenuItem key="sampleFinder" href={createProductUrl(getPrimaryAppProperties().productId, getCurrentAppProperties().productId, AppURL.create(FIND_SAMPLES_KEY, "filtered").toHref()) as string}>
+                    <MenuItem key="sampleFinder" href={createProductUrl(getPrimaryAppProperties().productId, getCurrentAppProperties().productId, AppURL.create(SEARCH_KEY, FIND_SAMPLES_BY_FILTER_KEY).toHref()) as string}>
                         <i className="fa fa-sitemap" /> Sample Finder
                     </MenuItem>
                 )}

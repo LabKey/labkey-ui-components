@@ -224,6 +224,8 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         onChange={onChange}
                         queryName={queryName}
                         schemaName={schemaName}
+                        lockedForDomain={domainFormDisplayOptions.textChoiceLockedForDomain}
+                        lockedSqlFragment={domainFormDisplayOptions.textChoiceLockedSqlFragment}
                     />
                 );
         }

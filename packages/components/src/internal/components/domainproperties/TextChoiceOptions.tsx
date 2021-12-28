@@ -17,7 +17,7 @@ import { DOMAIN_VALIDATOR_TEXTCHOICE, MAX_VALID_TEXT_CHOICES } from './constants
 import {
     DEFAULT_TEXT_CHOICE_VALIDATOR,
     DomainField,
-    getValidValuesFromArray,
+    isValidTextChoiceValue,
     ITypeDependentProps,
     PropertyValidator,
 } from './models';
@@ -31,14 +31,26 @@ import { DisableableInput } from "../forms/DisableableInput";
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;
 
 const IN_USE_TITLE = 'Text Choice In Use';
-const IN_USE_TIP = 'This text choice value cannot be changed or deleted because it is in use.';
-
+const IN_USE_TIP = 'This text choice value cannot be deleted because it is in use.';
 const VALUE_IN_USE = (
     <LockIcon
         iconCls="pull-right choices-list__locked"
         body={IN_USE_TIP}
         id="text-choice-value-lock-icon"
         title={IN_USE_TITLE}
+        unlocked
+    />
+);
+
+const LOCKED_TITLE = 'Text Choice In Use and Locked';
+const LOCKED_TIP =
+    'This text choice value cannot be deleted because it is in use and cannot be edited because one or more usages are for read-only items.';
+const VALUE_LOCKED = (
+    <LockIcon
+        iconCls="pull-right choices-list__locked choices-list__locked-pad-right"
+        body={LOCKED_TIP}
+        id="text-choice-value-lock-icon"
+        title={LOCKED_TITLE}
     />
 );
 
@@ -46,10 +58,12 @@ interface Props extends ITypeDependentProps {
     field: DomainField;
     queryName?: string;
     schemaName?: string;
+    lockedForDomain?: boolean;
+    lockedSqlFragment?: string;
 }
 
 interface ImplProps extends Props {
-    fieldValues: string[];
+    fieldValues: Record<string, boolean>; // mapping existing field values (existence in object signals "in use") to locked status for value (only applicable to some domain types)
     loading: boolean;
     replaceValues: (newValues: string[]) => void;
     validValues: string[];
@@ -66,11 +80,13 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
         validValues,
         replaceValues,
         maxValueCount = MAX_VALID_TEXT_CHOICES,
+        lockedForDomain,
     } = props;
     const [selectedIndex, setSelectedIndex] = useState<number>();
     const [currentValue, setCurrentValue] = useState<string>();
     const [showAddValuesModal, setShowAddValuesModal] = useState<boolean>();
-    const currentInUse = fieldValues.indexOf(currentValue) > -1;
+    const currentInUse = fieldValues.hasOwnProperty(currentValue);
+    const currentLocked = currentInUse && (lockedForDomain || (fieldValues[currentValue] ?? false));
 
     const onSelect = useCallback(
         ind => {
@@ -150,7 +166,8 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                     >
                         <div className="list-group domain-text-choices-list">
                             {validValues.map((value, ind) => {
-                                const inUse = fieldValues.indexOf(value) > -1;
+                                const inUse = fieldValues.hasOwnProperty(value);
+                                const locked = inUse && (lockedForDomain || (fieldValues[value] ?? false));
                                 return (
                                     <ChoicesListItem
                                         active={ind === selectedIndex}
@@ -159,7 +176,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                         label={value}
                                         subLabel={value === '' ? 'Empty Value' : undefined}
                                         onSelect={onSelect}
-                                        componentRight={inUse && VALUE_IN_USE}
+                                        componentRight={locked ? VALUE_LOCKED : inUse ? VALUE_IN_USE : null}
                                     />
                                 );
                             })}
@@ -196,9 +213,9 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                 <div>
                                     <DisableableButton
                                         bsStyle="default"
-                                        disabledMsg={currentInUse ? IN_USE_TIP : undefined}
+                                        disabledMsg={currentLocked ? LOCKED_TIP : currentInUse ? IN_USE_TIP : undefined}
                                         onClick={onDelete}
-                                        title={IN_USE_TITLE}
+                                        title={currentLocked ? LOCKED_TITLE : IN_USE_TITLE}
                                     >
                                         <span className="fa fa-trash" />
                                         <span>&nbsp;Delete</span>
@@ -230,9 +247,17 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
 });
 
 export const TextChoiceOptions: FC<Props> = memo(props => {
-    const { field, onChange, domainIndex, index, schemaName, queryName } = props;
+    const {
+        field,
+        onChange,
+        domainIndex,
+        index,
+        schemaName,
+        queryName,
+        lockedSqlFragment = 'FALSE',
+    } = props;
     const [loading, setLoading] = useState<boolean>(true);
-    const [fieldValues, setFieldValues] = useState<string[]>([]);
+    const [fieldValues, setFieldValues] = useState<Record<string, boolean>>({});
     const [validValues, setValidValues] = useState<string[]>(field.textChoiceValidator?.properties.validValues ?? []);
     const fieldId = createFormInputId(DOMAIN_VALIDATOR_TEXTCHOICE, domainIndex, index);
 
@@ -260,21 +285,24 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
             // the initial set of values and/or setting fields as locked (i.e. in use)
             if (!field.isNew() && schemaName && queryName) {
                 const fieldName = field.original?.name ?? field.name;
-                Query.selectDistinctRows({
+                Query.executeSql({
                     containerFilter: Query.ContainerFilter.allFolders, // to account for a shared domain at project or /Shared
                     schemaName,
-                    queryName,
-                    column: fieldName,
-                    sort: fieldName,
-                    success: result => {
-                        const values = getValidValuesFromArray(result.values);
+                    sql: `SELECT ${lockedSqlFragment} AS IsLocked, "${fieldName}" FROM "${queryName}" GROUP BY "${fieldName}"`,
+                    success: response => {
+                        const values = response.rows
+                                .filter(row => isValidTextChoiceValue(row[fieldName]))
+                                .reduce((prev, current) => {
+                                    prev[current[fieldName]] = current['IsLocked'] === 1;
+                                    return prev;
+                                }, {});
                         setFieldValues(values);
 
                         // if this is new text choice validator (i.e. does not have a rowId) for an existing field
                         // that is being changed to data type = Text Choice (that "is new field" check is above),
                         // then we will use the existing distinct values for that field as the initial options
                         if (!field.textChoiceValidator?.rowId) {
-                            replaceValues(values);
+                            replaceValues(Object.keys(values).sort());
                         }
 
                         setLoading(false);

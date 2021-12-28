@@ -1209,9 +1209,13 @@ export class DomainField
     }
 }
 
+export function isValidTextChoiceValue(v: string): boolean {
+    return v !== null && v !== undefined && v.trim() !== '';
+}
+
 export function getValidValuesFromArray(validValues: string[]): string[] {
     // filter out any empty string values
-    const vals = validValues?.filter(v => v !== null && v !== undefined && v.trim() !== '') ?? [];
+    const vals = validValues?.filter(isValidTextChoiceValue) ?? [];
     // remove duplicates
     return [...new Set(vals)];
 }
@@ -1815,6 +1819,8 @@ export interface IDomainFormDisplayOptions {
     hideConditionalFormatting?: boolean;
     hideInferFromFile?: boolean;
     showScannableOption?: boolean;
+    textChoiceLockedForDomain?: boolean;
+    textChoiceLockedSqlFragment?: string;
 }
 
 export interface IDerivationDataScope {

@@ -211,6 +211,9 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                         protocolModel.providerName !== 'General' || !domain.isNameSuffixMatch('Data');
                     const hideFilePropertyType = !domain.isNameSuffixMatch('Batch') && !domain.isNameSuffixMatch('Run');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
+                    const textChoiceLockedForDomain =
+                        (domain.isNameSuffixMatch('Run') && !protocolModel.editableRuns) ||
+                        (domain.isNameSuffixMatch('Data') && !protocolModel.editableResults);
 
                     return (
                         <DomainForm
@@ -246,6 +249,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                                 domainKindDisplayName: 'assay design',
                                 hideFilePropertyType,
                                 hideInferFromFile,
+                                textChoiceLockedForDomain,
                             }}
                         >
                             <div>{domain.description}</div>

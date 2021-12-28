@@ -26,7 +26,8 @@ import { DomainFieldLabel } from './DomainFieldLabel';
 
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
 import { createFormInputId } from './actions';
-import { DisableableInput } from "../forms/DisableableInput";
+import { DisableableInput } from '../forms/DisableableInput';
+import { Alert } from "../base/Alert";
 
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;
 
@@ -84,21 +85,33 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
     } = props;
     const [selectedIndex, setSelectedIndex] = useState<number>();
     const [currentValue, setCurrentValue] = useState<string>();
+    const [currentError, setCurrentError] = useState<string>();
     const [showAddValuesModal, setShowAddValuesModal] = useState<boolean>();
     const currentInUse = fieldValues.hasOwnProperty(currentValue);
     const currentLocked = currentInUse && (lockedForDomain || (fieldValues[currentValue] ?? false));
+
+    const isValueDuplicate = useCallback((val: string): boolean => {
+        return validValues.indexOf(val) !== -1;
+    }, [validValues]);
 
     const onSelect = useCallback(
         ind => {
             setSelectedIndex(ind);
             setCurrentValue(validValues?.[ind]);
+            setCurrentError(undefined);
         },
         [validValues]
     );
 
     const onValueChange = useCallback(evt => {
-        setCurrentValue(evt.target.value);
-    }, []);
+        const updatedVal = evt.target.value;
+        setCurrentValue(updatedVal);
+        setCurrentError(
+            updatedVal.trim() !== validValues[selectedIndex] && isValueDuplicate(updatedVal.trim())
+                ? 'The current value already exists in the list.'
+                : undefined
+        );
+    }, [validValues, selectedIndex]);
 
     const updateValue = useCallback(
         (updatedValue?: string) => {
@@ -116,8 +129,11 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
 
     const onApply = useCallback(() => {
         const val = currentValue.trim();
-        updateValue(val);
-        setCurrentValue(val);
+        if (!isValueDuplicate(val)) {
+            updateValue(val);
+            setCurrentValue(val);
+            setCurrentError(undefined);
+        }
     }, [updateValue, currentValue]);
 
     const onDelete = useCallback(() => {
@@ -130,7 +146,9 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
 
     const onApplyAddValues = useCallback(
         (values: string[]) => {
-            replaceValues(validValues.concat(values));
+            // filter out any duplicates from the already included values
+            const filteredVals = values.filter(v => !isValueDuplicate(v));
+            replaceValues(validValues.concat(filteredVals));
             toggleAddValues();
         },
         [replaceValues, validValues, toggleAddValues]
@@ -210,7 +228,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                         value={currentValue ?? ''}
                                     />
                                 </div>
-                                <div>
+                                <div className="domain-field-padding-bottom">
                                     <DisableableButton
                                         bsStyle="default"
                                         disabledMsg={currentLocked ? LOCKED_TIP : currentInUse ? IN_USE_TIP : undefined}
@@ -223,12 +241,15 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                     <Button
                                         bsStyle="success"
                                         className="pull-right"
-                                        disabled={currentValue === validValues[selectedIndex]}
+                                        disabled={
+                                            currentError !== undefined || currentValue === validValues[selectedIndex]
+                                        }
                                         onClick={onApply}
                                     >
                                         Apply
                                     </Button>
                                 </div>
+                                {currentError && <Alert bsStyle="danger">{currentError}</Alert>}
                             </>
                         )}
                     </Col>

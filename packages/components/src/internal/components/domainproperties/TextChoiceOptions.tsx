@@ -1,16 +1,13 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Query } from '@labkey/api';
 
+import { Alert } from '../base/Alert';
 import { ChoicesListItem } from '../base/ChoicesListItem';
-
 import { AddEntityButton } from '../buttons/AddEntityButton';
-
 import { LoadingSpinner } from '../base/LoadingSpinner';
-
 import { LockIcon } from '../base/LockIcon';
-
 import { DisableableButton } from '../buttons/DisableableButton';
 
 import { DOMAIN_VALIDATOR_TEXTCHOICE, MAX_VALID_TEXT_CHOICES } from './constants';
@@ -27,7 +24,6 @@ import { DomainFieldLabel } from './DomainFieldLabel';
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
 import { createFormInputId } from './actions';
 import { DisableableInput } from '../forms/DisableableInput';
-import { Alert } from "../base/Alert";
 
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;
 
@@ -87,8 +83,21 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
     const [currentValue, setCurrentValue] = useState<string>();
     const [currentError, setCurrentError] = useState<string>();
     const [showAddValuesModal, setShowAddValuesModal] = useState<boolean>();
-    const currentInUse = fieldValues.hasOwnProperty(currentValue);
-    const currentLocked = currentInUse && (lockedForDomain || (fieldValues[currentValue] ?? false));
+
+    // keep a map from the updated values for the in use field values to their original values
+    const [fieldValueUpdates, setFieldValueUpdates] = useState<Record<string, string>>({});
+    useEffect(() => {
+        setFieldValueUpdates(
+            Object.keys(fieldValues).reduce((prev, current) => {
+                prev[current] = current;
+                return prev;
+            }, {})
+        );
+    }, [fieldValues]);
+
+    const selectedValue = useMemo(() => validValues[selectedIndex], [validValues, selectedIndex]);
+    const currentInUse = fieldValueUpdates.hasOwnProperty(currentValue);
+    const currentLocked = currentInUse && (lockedForDomain || (fieldValues[fieldValueUpdates[currentValue]] ?? false));
 
     const isValueDuplicate = useCallback((val: string): boolean => {
         return validValues.indexOf(val) !== -1;
@@ -107,7 +116,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
         const updatedVal = evt.target.value;
         setCurrentValue(updatedVal);
         setCurrentError(
-            updatedVal.trim() !== validValues[selectedIndex] && isValueDuplicate(updatedVal.trim())
+            updatedVal.trim() !== selectedValue && isValueDuplicate(updatedVal.trim())
                 ? 'The current value already exists in the list.'
                 : undefined
         );
@@ -118,13 +127,21 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
             const newValues = [...validValues];
             if (updatedValue !== undefined) {
                 newValues.splice(selectedIndex, 1, updatedValue);
+
+                // if one of the "in use" field values was updated, we need to update the fieldValueUpdates mapping object
+                if (fieldValueUpdates[selectedValue]) {
+                    const newFieldValueUpdates = { ...fieldValueUpdates };
+                    newFieldValueUpdates[updatedValue] = fieldValueUpdates[selectedValue];
+                    delete newFieldValueUpdates[selectedValue];
+                    setFieldValueUpdates(newFieldValueUpdates);
+                }
             } else {
                 newValues.splice(selectedIndex, 1);
                 onSelect(undefined); // clear selected index and value
             }
             replaceValues(newValues);
         },
-        [validValues, replaceValues, selectedIndex, onSelect]
+        [validValues, selectedValue, replaceValues, selectedIndex, onSelect, fieldValueUpdates]
     );
 
     const onApply = useCallback(() => {
@@ -184,8 +201,10 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                     >
                         <div className="list-group domain-text-choices-list">
                             {validValues.map((value, ind) => {
-                                const inUse = fieldValues.hasOwnProperty(value);
-                                const locked = inUse && (lockedForDomain || (fieldValues[value] ?? false));
+                                const inUse = fieldValueUpdates.hasOwnProperty(value);
+                                const locked =
+                                    inUse && (lockedForDomain || (fieldValues[fieldValueUpdates[value]] ?? false));
+
                                 return (
                                     <ChoicesListItem
                                         active={ind === selectedIndex}
@@ -241,14 +260,17 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                     <Button
                                         bsStyle="success"
                                         className="pull-right"
-                                        disabled={
-                                            currentError !== undefined || currentValue === validValues[selectedIndex]
-                                        }
+                                        disabled={currentError !== undefined || currentValue === selectedValue}
                                         onClick={onApply}
                                     >
                                         Apply
                                     </Button>
                                 </div>
+                                {fieldValueUpdates[selectedValue] !== undefined && selectedValue !== fieldValueUpdates[selectedValue] && (
+                                    <div className="domain-field-padding-bottom">
+                                        Rows with value <b>{fieldValueUpdates[selectedValue]}</b> will be updated to <b>{selectedValue}</b> upon save.
+                                    </div>
+                                )}
                                 {currentError && <Alert bsStyle="danger">{currentError}</Alert>}
                             </>
                         )}
@@ -268,15 +290,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
 });
 
 export const TextChoiceOptions: FC<Props> = memo(props => {
-    const {
-        field,
-        onChange,
-        domainIndex,
-        index,
-        schemaName,
-        queryName,
-        lockedSqlFragment = 'FALSE',
-    } = props;
+    const { field, onChange, domainIndex, index, schemaName, queryName, lockedSqlFragment = 'FALSE' } = props;
     const [loading, setLoading] = useState<boolean>(true);
     const [fieldValues, setFieldValues] = useState<Record<string, boolean>>({});
     const [validValues, setValidValues] = useState<string[]>(field.textChoiceValidator?.properties.validValues ?? []);

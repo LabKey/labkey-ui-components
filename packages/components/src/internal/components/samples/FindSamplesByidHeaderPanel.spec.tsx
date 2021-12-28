@@ -9,7 +9,7 @@ import { LoadingState } from '../../../public/LoadingState';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { FindByIdsModal } from '../navigation/FindByIdsModal';
+import { FindByIdsModal } from '../search/FindByIdsModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import {

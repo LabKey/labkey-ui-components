@@ -26,6 +26,7 @@ import { DomainFieldLabel } from './DomainFieldLabel';
 
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
 import { createFormInputId } from './actions';
+import { DisableableInput } from "../forms/DisableableInput";
 
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;
 
@@ -182,13 +183,13 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                     <DomainFieldLabel label="Value" />
                                 </div>
                                 <div className="domain-field-padding-bottom">
-                                    <input
+                                    <DisableableInput
                                         className="form-control full-width"
-                                        disabled={currentInUse}
+                                        disabledMsg={currentLocked ? LOCKED_TIP : undefined}
                                         name="value"
                                         onChange={onValueChange}
                                         placeholder="Enter a text choice value"
-                                        type="text"
+                                        title={LOCKED_TITLE}
                                         value={currentValue ?? ''}
                                     />
                                 </div>

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item #9782: Field editor "Text Choice" support for updating in use values
+  * ...
+
 ### version 2.111.0
 *Released*: 24 December 2021
 * Edit Sample Type and Data Class's Naming Pattern Prefix Expression alteration warning message

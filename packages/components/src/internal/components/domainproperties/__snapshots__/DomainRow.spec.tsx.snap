@@ -8030,7 +8030,6 @@ exports[`DomainRow decimal field 1`] = `
                                             label="Decimal Options"
                                             lockType="NotLocked"
                                             onChange={[Function]}
-                                            scannable={false}
                                           >
                                             <div>
                                               <Row
@@ -8292,7 +8291,6 @@ exports[`DomainRow decimal field 1`] = `
                                                 label="Decimal Options"
                                                 lockType="NotLocked"
                                                 onChange={[Function]}
-                                                scannable={false}
                                               />
                                             </div>
                                           </NumericFieldOptions>

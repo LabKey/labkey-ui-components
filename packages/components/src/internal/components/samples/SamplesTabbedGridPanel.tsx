@@ -290,6 +290,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                 <TabbedGridPanel
                     {...tabbedGridPanelProps}
                     title={asPanel ? 'Samples' : undefined}
+                    asPanel={asPanel}
                     actions={actions}
                     queryModels={queryModels}
                     activeModelId={activeTabId}

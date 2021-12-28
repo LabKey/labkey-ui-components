@@ -160,9 +160,10 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         defaultScale={field.defaultScale}
                         onChange={onChange}
                         lockType={field.lockType}
-                        scannable={field.scannable}
-                        appPropertiesOnly={appPropertiesOnly}
-                        showScannableOption={domainFormDisplayOptions?.showScannableOption}
+                        ////Issue #44567: Hide scannable option due to matching issues with floating point representation.
+                        // scannable={field.scannable}
+                        // appPropertiesOnly={appPropertiesOnly}
+                        // showScannableOption={false}
                     />
                 );
             case 'lookup':

@@ -137,9 +137,10 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
 
         if (!protocolModel.editableRuns) {
             const domain = protocolModel.getDomainByNameSuffix('Run');
-            const hasFieldValueUpdates = domain.fields.find(field => {
-                return field.textChoiceValidator?.extraProperties?.valueUpdates !== undefined;
-            }) !== undefined;
+            const hasFieldValueUpdates =
+                domain.fields.find(field => {
+                    return field.textChoiceValidator?.extraProperties?.valueUpdates !== undefined;
+                }) !== undefined;
             if (hasFieldValueUpdates) {
                 return 'Text choice value updates are not allowed when assay does not allow "Editable Runs".';
             }
@@ -147,9 +148,10 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
 
         if (!protocolModel.editableResults) {
             const domain = protocolModel.getDomainByNameSuffix('Data');
-            const hasFieldValueUpdates = domain.fields.find(field => {
-                return field.textChoiceValidator?.extraProperties?.valueUpdates !== undefined;
-            }) !== undefined;
+            const hasFieldValueUpdates =
+                domain.fields.find(field => {
+                    return field.textChoiceValidator?.extraProperties?.valueUpdates !== undefined;
+                }) !== undefined;
             if (hasFieldValueUpdates) {
                 return 'Text choice value updates are not allowed when assay does not allow "Editable Results".';
             }

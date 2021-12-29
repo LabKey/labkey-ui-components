@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.111.1
+*Released*: 29 December 2021
 * Issue #44567: Hide scannable option for floating point fields due to improper matching.
 
 ### version 2.111.0

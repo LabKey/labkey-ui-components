@@ -12,6 +12,7 @@ import { SCHEMAS } from '../../schemas';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { User } from '../base/models/User';
 import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
+import { getFinderStartText } from './utils';
 
 const SAMPLE_FINDER_TITLE = "Find Samples";
 const SAMPLE_FINDER_CAPTION = "Find samples that meet all of these criteria";
@@ -25,6 +26,26 @@ interface SampleFinderSamplesGridProps {
 interface Props extends SampleFinderSamplesGridProps {
     parentEntityDataTypes: EntityDataType[];
 }
+
+interface SampleFinderHeaderProps {
+    parentEntityDataTypes: EntityDataType[],
+    onAddEntity: (entityType: EntityDataType) => void;
+}
+
+export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props => {
+    const { parentEntityDataTypes, onAddEntity } = props;
+
+    return (
+        <div>
+            Search by:
+            {parentEntityDataTypes.map((parentEntityType) => (
+                <button key={parentEntityType.nounSingular} className="btn btn-default margin-left" onClick={() => { onAddEntity(parentEntityType) }}>
+                    <i className="fa fa-plus-circle container--addition-icon" /> {capitalizeFirstChar(parentEntityType.nounAsParentSingular)} Properties
+                </button>
+            ))}
+        </div>
+    )
+});
 
 export const SampleFinderSection: FC<Props> = memo((props) => {
     const { parentEntityDataTypes, ...gridProps } = props;
@@ -67,23 +88,9 @@ export const SampleFinderSection: FC<Props> = memo((props) => {
         setFilterCards(newFilterCards);
     }, [setFilterCards, filterCards, onFilterEdit, onFilterDelete, chosenEntityType]);
 
-    let hintText = "Start by adding ";
-    let names = parentEntityDataTypes.map(entityType => entityType.nounAsParentSingular).join(", ");
-    const lastComma = names.lastIndexOf(",");
-    if (lastComma >= 0) {
-        names = names.substr(0, lastComma) + " or " + names.substr(lastComma + 1);
-    }
-    hintText += names + " properties.";
     return (
         <Section title={SAMPLE_FINDER_TITLE} caption={SAMPLE_FINDER_CAPTION} context={(
-            <div>
-                Search by:
-                {parentEntityDataTypes.map((parentEntityType) => (
-                    <button className="btn btn-default margin-left" onClick={() => { onAddEntity(parentEntityType) }}>
-                        <i className="fa fa-plus-circle container--addition-icon" /> {capitalizeFirstChar(parentEntityType.nounAsParentSingular)} Properties
-                    </button>
-                ))}
-            </div>
+            <SampleFinderHeaderButtons parentEntityDataTypes={parentEntityDataTypes} onAddEntity={onAddEntity}/>
         )}
         >
             {filterCards.length == 0 ?
@@ -92,7 +99,7 @@ export const SampleFinderSection: FC<Props> = memo((props) => {
                         entityDataType,
                         onAdd: onAddEntity
                     }))} />
-                    <div className="filter-hint">{hintText}</div>
+                    <div className="filter-hint">{getFinderStartText(parentEntityDataTypes)}</div>
                 </>
                 :
                 <>
@@ -116,7 +123,6 @@ export const SampleFinderSection: FC<Props> = memo((props) => {
 
 interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
     cards: FilterCardProps[];
-
 }
 
 export const SampleFinderSamplesImpl: FC<SampleFinderSamplesProps & InjectedQueryModels> = memo(props => {

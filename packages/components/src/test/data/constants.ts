@@ -21,14 +21,17 @@ import {
     AssayDomainTypes,
     AssayStateModel,
     Container,
+    EntityDataType,
     GENERAL_ASSAY_PROVIDER_NAME,
     IFile,
     LoadingState,
     QueryInfo,
+    SchemaQuery,
 } from '../..';
 import { AssayWizardModel } from '../../internal/components/assay/AssayWizardModel';
 
 import assayWizardJSON from './assayWizardModel.json';
+import { DELETE_SAMPLES_TOPIC } from '../../internal/util/helpLinks';
 
 export const GRID_DATA = Map<any, Map<string, any>>({
     '1': Map<string, any>({
@@ -429,3 +432,25 @@ export const TEST_FOLDER_CONTAINER = new Container({
     title: 'Test Folder Container',
     type: 'folder',
 });
+
+export const TestTypeDataType: EntityDataType = {
+    typeListingSchemaQuery: SchemaQuery.create("TestListing", "query"),
+    listingSchemaQuery: SchemaQuery.create("Test", "query"),
+    instanceSchemaName: "TestSchema",
+    operationConfirmationActionName: "test-delete-confirmation.api",
+    nounSingular: 'test',
+    nounPlural: 'tests',
+    nounAsParentSingular: 'test Parent',
+    typeNounSingular: 'Test Type',
+    descriptionSingular: 'parent test type',
+    descriptionPlural: 'parent test types',
+    uniqueFieldKey: 'Name',
+    dependencyText: 'test data dependencies',
+    deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
+    inputColumnName: 'Inputs/Materials/First',
+    inputTypeValueField: 'lsid',
+    insertColumnNamePrefix: 'MaterialInputs/',
+    editTypeAppUrlPrefix: "Test",
+    importFileAction: 'importSamples',
+    filterCardHeaderClass: "filter-card__header-success",
+};

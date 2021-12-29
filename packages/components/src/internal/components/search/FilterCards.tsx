@@ -14,6 +14,7 @@ export interface FilterCardProps {
     onDelete?: (index: number) => void;
 }
 
+// exported for jest testing
 export const FilterCard: FC<FilterCardProps> = memo(props => {
     const { entityDataType, filterArray, index, onAdd, onDelete, onEdit, schemaQuery } = props;
 
@@ -37,7 +38,7 @@ export const FilterCard: FC<FilterCardProps> = memo(props => {
                 <div className={"filter-card__header " + entityDataType.filterCardHeaderClass}>
                     <div className={"pull-left"}>
                     <div className={"secondary-text"}>{capitalizeFirstChar(entityDataType.nounAsParentSingular)}</div>
-                    <div className={"primary-text"}>{capitalizeFirstChar(schemaQuery.queryName)}</div>
+                    <div className={"primary-text"}>{schemaQuery.queryName}</div>
                     </div>
                     <div className={"pull-right actions"}>
                         {onEdit && <i className={"fa fa-pencil action-icon"} onClick={() => onEdit(index)}/>}

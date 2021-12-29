@@ -135,29 +135,24 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
     getTextChoiceUpdatesValidMsg(): string {
         const { protocolModel } = this.state;
 
-        if (!protocolModel.editableRuns) {
-            const domain = protocolModel.getDomainByNameSuffix('Run');
-            const hasFieldValueUpdates =
-                domain.fields.find(field => {
-                    return field.textChoiceValidator?.extraProperties?.valueUpdates !== undefined;
-                }) !== undefined;
-            if (hasFieldValueUpdates) {
-                return 'Text choice value updates are not allowed when assay does not allow "Editable Runs".';
-            }
+        const runDomain = protocolModel.getDomainByNameSuffix('Run');
+        if (!protocolModel.editableRuns && this.domainHasTextChoiceUpdates(runDomain)) {
+            return 'Text choice value updates are not allowed when assay does not allow "Editable Runs".';
         }
 
-        if (!protocolModel.editableResults) {
-            const domain = protocolModel.getDomainByNameSuffix('Data');
-            const hasFieldValueUpdates =
-                domain.fields.find(field => {
-                    return field.textChoiceValidator?.extraProperties?.valueUpdates !== undefined;
-                }) !== undefined;
-            if (hasFieldValueUpdates) {
-                return 'Text choice value updates are not allowed when assay does not allow "Editable Results".';
-            }
+        const dataDomain = protocolModel.getDomainByNameSuffix('Data');
+        if (!protocolModel.editableResults && this.domainHasTextChoiceUpdates(dataDomain)) {
+            return 'Text choice value updates are not allowed when assay does not allow "Editable Results".';
         }
 
         return undefined;
+    }
+
+    domainHasTextChoiceUpdates(domain: DomainDesign): boolean {
+        return (
+            domain.fields.find(field => field.textChoiceValidator?.extraProperties?.valueUpdates !== undefined) !==
+            undefined
+        );
     }
 
     onAssayPropertiesChange = (model: AssayProtocolModel) => {

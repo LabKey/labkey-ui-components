@@ -133,6 +133,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesProps & InjectedQuer
             <h4>Filtering and sample-type tabs coming soon...</h4>
             <SamplesTabbedGridPanel
                 {...props}
+                withTitle={false}
                 asPanel={false}
                 actions={actions}
                 queryModels={queryModels}

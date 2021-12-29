@@ -56,6 +56,7 @@ interface Props extends InjectedQueryModels {
     gridButtonProps?: any;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     user: User;
+    withTitle?: boolean;
 }
 
 export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
@@ -78,6 +79,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         gridButtonProps,
         getSampleAuditBehaviorType,
         tabbedGridPanelProps,
+        withTitle,
     } = props;
     const onLabelExport = { [EXPORT_TYPES.LABEL]: onPrintLabel };
 
@@ -289,7 +291,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             ) : (
                 <TabbedGridPanel
                     {...tabbedGridPanelProps}
-                    title={asPanel ? 'Samples' : undefined}
+                    title={withTitle ? 'Samples' : undefined}
                     asPanel={asPanel}
                     actions={actions}
                     queryModels={queryModels}
@@ -323,6 +325,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
 
 SamplesTabbedGridPanel.defaultProps = {
     asPanel: true,
+    withTitle: true,
     canPrintLabels: false,
     excludedCreateMenuKeys: List<string>(),
 };

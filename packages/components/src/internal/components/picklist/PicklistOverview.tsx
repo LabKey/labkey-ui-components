@@ -210,7 +210,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                             </>
                         )}
                         <SamplesTabbedGridPanel
-                            asPanel={false}
+                            withTitle={false}
                             actions={actions}
                             queryModels={queryModels}
                             user={user}

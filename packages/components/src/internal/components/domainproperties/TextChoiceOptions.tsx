@@ -62,7 +62,7 @@ interface Props extends ITypeDependentProps {
 interface ImplProps extends Props {
     fieldValues: Record<string, boolean>; // mapping existing field values (existence in object signals "in use") to locked status for value (only applicable to some domain types)
     loading: boolean;
-    replaceValues: (newValues: string[]) => void;
+    replaceValues: (newValues: string[], valueUpdates?: Record<string, string>) => void;
     validValues: string[];
     maxValueCount?: number;
 }
@@ -96,7 +96,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
     }, [fieldValues]);
 
     const selectedValue = useMemo(() => validValues[selectedIndex], [validValues, selectedIndex]);
-    const currentInUse = fieldValueUpdates.hasOwnProperty(currentValue);
+    const currentInUse = fieldValueUpdates.hasOwnProperty(selectedValue);
     const currentLocked = currentInUse && (lockedForDomain || (fieldValues[fieldValueUpdates[currentValue]] ?? false));
 
     const isValueDuplicate = useCallback((val: string): boolean => {
@@ -125,12 +125,13 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
     const updateValue = useCallback(
         (updatedValue?: string) => {
             const newValues = [...validValues];
+            const newFieldValueUpdates = { ...fieldValueUpdates };
+
             if (updatedValue !== undefined) {
                 newValues.splice(selectedIndex, 1, updatedValue);
 
                 // if one of the "in use" field values was updated, we need to update the fieldValueUpdates mapping object
                 if (fieldValueUpdates[selectedValue]) {
-                    const newFieldValueUpdates = { ...fieldValueUpdates };
                     newFieldValueUpdates[updatedValue] = fieldValueUpdates[selectedValue];
                     delete newFieldValueUpdates[selectedValue];
                     setFieldValueUpdates(newFieldValueUpdates);
@@ -139,7 +140,8 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                 newValues.splice(selectedIndex, 1);
                 onSelect(undefined); // clear selected index and value
             }
-            replaceValues(newValues);
+
+            replaceValues(newValues, newFieldValueUpdates);
         },
         [validValues, selectedValue, replaceValues, selectedIndex, onSelect, fieldValueUpdates]
     );
@@ -165,10 +167,10 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
         (values: string[]) => {
             // filter out any duplicates from the already included values
             const filteredVals = values.filter(v => !isValueDuplicate(v));
-            replaceValues(validValues.concat(filteredVals));
+            replaceValues(validValues.concat(filteredVals), fieldValueUpdates);
             toggleAddValues();
         },
-        [replaceValues, validValues, toggleAddValues]
+        [replaceValues, validValues, toggleAddValues, fieldValueUpdates]
     );
 
     return (
@@ -268,7 +270,9 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                 </div>
                                 {fieldValueUpdates[selectedValue] !== undefined && selectedValue !== fieldValueUpdates[selectedValue] && (
                                     <div className="domain-field-padding-bottom">
-                                        Rows with value <b>{fieldValueUpdates[selectedValue]}</b> will be updated to <b>{selectedValue}</b> upon save.
+                                        <Alert bsStyle="info">
+                                            Rows with value <b>{fieldValueUpdates[selectedValue]}</b> will be updated to <b>{selectedValue}</b> upon save.
+                                        </Alert>
                                     </div>
                                 )}
                                 {currentError && <Alert bsStyle="danger">{currentError}</Alert>}
@@ -297,8 +301,16 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
     const fieldId = createFormInputId(DOMAIN_VALIDATOR_TEXTCHOICE, domainIndex, index);
 
     const replaceValues = useCallback(
-        (newValues: string[]) => {
+        (newValues: string[], newValueUpdates?: Record<string, string>) => {
             setValidValues(newValues);
+
+            const valueUpdates = Object.keys(newValueUpdates ?? {}).reduce((prev, curr) => {
+                if (curr !== newValueUpdates[curr]) {
+                    prev[newValueUpdates[curr]] = curr;
+                }
+                return prev;
+            }, {});
+
             onChange(
                 fieldId,
                 new PropertyValidator({
@@ -308,6 +320,7 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
                     shouldShowWarning: true,
                     expression: newValues.join('|'),
                     properties: { validValues: newValues },
+                    extraProperties: { valueUpdates },
                 })
             );
         },

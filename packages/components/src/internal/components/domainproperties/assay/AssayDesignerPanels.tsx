@@ -86,12 +86,16 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         const { setSubmitting } = this.props;
         const { protocolModel } = this.state;
         const appIsValidMsg = this.getAppIsValidMsg();
-        const isValid = protocolModel.isValid() && appIsValidMsg === undefined;
+        const textChoiceValidMsg = this.getTextChoiceUpdatesValidMsg();
+        const isValid = protocolModel.isValid() && textChoiceValidMsg === undefined && appIsValidMsg === undefined;
 
         this.props.onFinish(isValid, this.saveDomain);
 
         if (!isValid) {
-            const exception = appIsValidMsg !== undefined ? appIsValidMsg : protocolModel.getFirstDomainFieldError();
+            const exception =
+                appIsValidMsg !== undefined
+                    ? appIsValidMsg
+                    : textChoiceValidMsg ?? protocolModel.getFirstDomainFieldError();
             const updatedModel = protocolModel.set('exception', exception) as AssayProtocolModel;
             setSubmitting(false, () => {
                 this.setState(() => ({ protocolModel: updatedModel }));
@@ -126,6 +130,32 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         const { protocolModel } = this.state;
 
         return !appIsValidMsg ? undefined : appIsValidMsg(protocolModel);
+    }
+
+    getTextChoiceUpdatesValidMsg(): string {
+        const { protocolModel } = this.state;
+
+        if (!protocolModel.editableRuns) {
+            const domain = protocolModel.getDomainByNameSuffix('Run');
+            const hasFieldValueUpdates = domain.fields.find(field => {
+                return field.textChoiceValidator?.extraProperties?.valueUpdates !== undefined;
+            }) !== undefined;
+            if (hasFieldValueUpdates) {
+                return 'Text choice value updates are not allowed when assay does not allow "Editable Runs".';
+            }
+        }
+
+        if (!protocolModel.editableResults) {
+            const domain = protocolModel.getDomainByNameSuffix('Data');
+            const hasFieldValueUpdates = domain.fields.find(field => {
+                return field.textChoiceValidator?.extraProperties?.valueUpdates !== undefined;
+            }) !== undefined;
+            if (hasFieldValueUpdates) {
+                return 'Text choice value updates are not allowed when assay does not allow "Editable Results".';
+            }
+        }
+
+        return undefined;
     }
 
     onAssayPropertiesChange = (model: AssayProtocolModel) => {

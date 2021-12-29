@@ -551,17 +551,20 @@ export class ConditionalFormat
 export interface IPropertyValidatorProperties {
     failOnMatch: boolean;
     validValues: string[];
+    valueUpdates: Record<string, string>;
 }
 
 export class PropertyValidatorProperties
     extends Record({
         failOnMatch: false,
         validValues: undefined,
+        valueUpdates: undefined,
     })
     implements IPropertyValidatorProperties
 {
     declare failOnMatch: boolean;
     declare validValues: string[];
+    declare valueUpdates: Record<string, string>;
 
     constructor(values?: { [key: string]: any }) {
         if (typeof values?.failOnMatch === 'string') {
@@ -581,6 +584,7 @@ export interface IPropertyValidator {
     type: string;
     name: string;
     properties: PropertyValidatorProperties;
+    extraProperties: PropertyValidatorProperties;
     errorMessage?: string;
     description?: string;
     new: boolean;
@@ -594,6 +598,7 @@ export class PropertyValidator
         type: undefined,
         name: undefined,
         properties: new PropertyValidatorProperties(),
+        extraProperties: new PropertyValidatorProperties(),
         errorMessage: undefined,
         description: undefined,
         new: true,
@@ -606,6 +611,7 @@ export class PropertyValidator
     declare type: string;
     declare name: string;
     declare properties: PropertyValidatorProperties;
+    declare extraProperties: PropertyValidatorProperties;
     declare errorMessage?: string;
     declare description?: string;
     declare new: boolean;

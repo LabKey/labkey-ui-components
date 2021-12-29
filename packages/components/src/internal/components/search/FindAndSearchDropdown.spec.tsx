@@ -7,6 +7,16 @@ import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 import { EXPERIMENTAL_SAMPLE_FINDER } from '../../app/constants';
 
 describe('FindAndSearchDropdown', () => {
+    const { location } = window;
+
+    beforeAll(() => {
+        delete window.location;
+    });
+
+    afterAll(() => {
+        window.location = location;
+    });
+
     test('search but no find', () => {
         const wrapper = mount(<FindAndSearchDropdown title="Test title" onSearch={jest.fn} />);
         expect(wrapper.find('DropdownToggle').text().trim()).toBe('Test title');
@@ -27,6 +37,12 @@ describe('FindAndSearchDropdown', () => {
     });
 
     test('with sample finder', () => {
+        window.location = Object.assign(
+            { ...location },
+            {
+                pathname: 'labkey/Sam Man/samplemanager-app.view#',
+            }
+        );
         LABKEY.moduleContext = {
             api: {
                 moduleNames: ['samplemanagement', 'study', 'premium'],

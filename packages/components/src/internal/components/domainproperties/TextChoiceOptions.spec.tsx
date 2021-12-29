@@ -15,7 +15,7 @@ describe('TextChoiceOptions', () => {
     const DEFAULT_PROPS = {
         label: 'Test Label',
         field: DomainField.create({}),
-        fieldValues: [],
+        fieldValues: {},
         loading: false,
         replaceValues: jest.fn,
         validValues: [],
@@ -120,7 +120,22 @@ describe('TextChoiceOptions', () => {
 
     test('with inUse values', async () => {
         const wrapper = mount(
-            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={['b']} />
+            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={{ b:  false }} />
+        );
+        validate(wrapper, false, 2, 1);
+
+        // select the in use value and check right hand items
+        wrapper.find(ChoicesListItem).last().simulate('click');
+        await waitForLifecycle(wrapper);
+        validate(wrapper, false, 2, 1, true);
+        expect(wrapper.find('input').prop('disabled')).toBeFalsy();
+
+        wrapper.unmount();
+    });
+
+    test('with locked values', async () => {
+        const wrapper = mount(
+            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={{ b:  true }} />
         );
         validate(wrapper, false, 2, 1);
 
@@ -135,7 +150,7 @@ describe('TextChoiceOptions', () => {
 
     test('delete button disabled', async () => {
         const wrapper = mount(
-            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={['b']} />
+            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={{ b: false }} />
         );
         validate(wrapper, false, 2, 1);
 

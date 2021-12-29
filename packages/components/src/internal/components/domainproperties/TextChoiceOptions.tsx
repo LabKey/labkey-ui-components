@@ -87,7 +87,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
     const [currentError, setCurrentError] = useState<string>();
     const [showAddValuesModal, setShowAddValuesModal] = useState<boolean>();
 
-    // keep a map from the updated values for the in use field values to their original values
+    // keep a map from the updated values for the in-use field values to their original values
     const [fieldValueUpdates, setFieldValueUpdates] = useState<Record<string, string>>({});
     useEffect(() => {
         setFieldValueUpdates(

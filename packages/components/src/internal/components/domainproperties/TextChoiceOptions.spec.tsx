@@ -128,7 +128,7 @@ describe('TextChoiceOptions', () => {
         );
         validate(wrapper, false, 2, 1);
 
-        // select the in use value and check right hand items
+        // select the in-use value and check right hand items
         wrapper.find(ChoicesListItem).last().simulate('click');
         await waitForLifecycle(wrapper);
         validate(wrapper, false, 2, 1, true);
@@ -147,7 +147,7 @@ describe('TextChoiceOptions', () => {
         );
         validate(wrapper, false, 2, 1);
 
-        // select the in use value and check right hand items
+        // select the locked value and check right hand items
         wrapper.find(ChoicesListItem).last().simulate('click');
         await waitForLifecycle(wrapper);
         validate(wrapper, false, 2, 1, true);

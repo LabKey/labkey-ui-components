@@ -1,6 +1,6 @@
 import React, { ReactNode, PureComponent } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
-import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faUnlock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
@@ -24,7 +24,7 @@ export class LockIcon extends PureComponent<Props> {
                 }
             >
                 <span className={'domain-field-lock-icon' + (iconCls ? ' ' + iconCls : '')}>
-                    <FontAwesomeIcon icon={unlocked ? faLockOpen : faLock} />
+                    <FontAwesomeIcon icon={unlocked ? faUnlock : faLock} />
                 </span>
             </OverlayTrigger>
         );

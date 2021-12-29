@@ -10,6 +10,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { LockIcon } from '../base/LockIcon';
 import { DisableableButton } from '../buttons/DisableableButton';
 
+import { DisableableInput } from '../forms/DisableableInput';
+
 import { DOMAIN_VALIDATOR_TEXTCHOICE, MAX_VALID_TEXT_CHOICES } from './constants';
 import {
     DEFAULT_TEXT_CHOICE_VALIDATOR,
@@ -23,7 +25,6 @@ import { DomainFieldLabel } from './DomainFieldLabel';
 
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
 import { createFormInputId } from './actions';
-import { DisableableInput } from '../forms/DisableableInput';
 
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;
 
@@ -99,11 +100,15 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
 
     const selectedValue = useMemo(() => validValues[selectedIndex], [validValues, selectedIndex]);
     const currentInUse = fieldValueUpdates.hasOwnProperty(selectedValue);
-    const currentLocked = currentInUse && (lockedForDomain || (fieldValues[fieldValueUpdates[selectedValue]]?.locked ?? false));
+    const currentLocked =
+        currentInUse && (lockedForDomain || (fieldValues[fieldValueUpdates[selectedValue]]?.locked ?? false));
 
-    const isValueDuplicate = useCallback((val: string): boolean => {
-        return validValues.indexOf(val) !== -1;
-    }, [validValues]);
+    const isValueDuplicate = useCallback(
+        (val: string): boolean => {
+            return validValues.indexOf(val) !== -1;
+        },
+        [validValues]
+    );
 
     const onSelect = useCallback(
         ind => {
@@ -114,15 +119,18 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
         [validValues]
     );
 
-    const onValueChange = useCallback(evt => {
-        const updatedVal = evt.target.value;
-        setCurrentValue(updatedVal);
-        setCurrentError(
-            updatedVal.trim() !== selectedValue && isValueDuplicate(updatedVal.trim())
-                ? `"${updatedVal.trim()}" already exists in the list of values.`
-                : undefined
-        );
-    }, [validValues, selectedIndex]);
+    const onValueChange = useCallback(
+        evt => {
+            const updatedVal = evt.target.value;
+            setCurrentValue(updatedVal);
+            setCurrentError(
+                updatedVal.trim() !== selectedValue && isValueDuplicate(updatedVal.trim())
+                    ? `"${updatedVal.trim()}" already exists in the list of values.`
+                    : undefined
+            );
+        },
+        [validValues, selectedIndex]
+    );
 
     const updateValue = useCallback(
         (updatedValue?: string) => {
@@ -207,7 +215,8 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                             {validValues.map((value, ind) => {
                                 const inUse = fieldValueUpdates.hasOwnProperty(value);
                                 const locked =
-                                    inUse && (lockedForDomain || (fieldValues[fieldValueUpdates[value]]?.locked ?? false));
+                                    inUse &&
+                                    (lockedForDomain || (fieldValues[fieldValueUpdates[value]]?.locked ?? false));
 
                                 return (
                                     <ChoicesListItem
@@ -264,18 +273,28 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                     <Button
                                         bsStyle="success"
                                         className="pull-right"
-                                        disabled={currentError !== undefined || currentValue === selectedValue || currentValue === ''}
+                                        disabled={
+                                            currentError !== undefined ||
+                                            currentValue === selectedValue ||
+                                            currentValue === ''
+                                        }
                                         onClick={onApply}
                                     >
                                         Apply
                                     </Button>
                                 </div>
-                                {fieldValueUpdates[selectedValue] !== undefined && selectedValue !== fieldValueUpdates[selectedValue] && (
-                                    <Alert bsStyle="info">
-                                        {Utils.pluralize(fieldValues[fieldValueUpdates[selectedValue]].count, 'row', 'rows')}{' '}
-                                        with value <b>{fieldValueUpdates[selectedValue]}</b> will be updated to <b>{selectedValue}</b> on save.
-                                    </Alert>
-                                )}
+                                {fieldValueUpdates[selectedValue] !== undefined &&
+                                    selectedValue !== fieldValueUpdates[selectedValue] && (
+                                        <Alert bsStyle="info">
+                                            {Utils.pluralize(
+                                                fieldValues[fieldValueUpdates[selectedValue]].count,
+                                                'row',
+                                                'rows'
+                                            )}{' '}
+                                            with value <b>{fieldValueUpdates[selectedValue]}</b> will be updated to{' '}
+                                            <b>{selectedValue}</b> on save.
+                                        </Alert>
+                                    )}
                                 {currentError && <Alert bsStyle="danger">{currentError}</Alert>}
                             </>
                         )}
@@ -340,14 +359,14 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
                     sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
                     success: response => {
                         const values = response.rows
-                                .filter(row => isValidTextChoiceValue(row[fieldName]))
-                                .reduce((prev, current) => {
-                                    prev[current[fieldName]] = {
-                                        count: current['RowCount'],
-                                        locked: current['IsLocked'] === 1,
-                                    };
-                                    return prev;
-                                }, {});
+                            .filter(row => isValidTextChoiceValue(row[fieldName]))
+                            .reduce((prev, current) => {
+                                prev[current[fieldName]] = {
+                                    count: current['RowCount'],
+                                    locked: current['IsLocked'] === 1,
+                                };
+                                return prev;
+                            }, {});
                         setFieldValues(values);
 
                         // if this is new text choice validator (i.e. does not have a rowId) for an existing field

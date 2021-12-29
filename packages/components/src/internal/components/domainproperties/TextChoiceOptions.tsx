@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import classNames from 'classnames';
-import { Query } from '@labkey/api';
+import { Query, Utils } from '@labkey/api';
 
 import { Alert } from '../base/Alert';
 import { ChoicesListItem } from '../base/ChoicesListItem';
@@ -44,7 +44,7 @@ const LOCKED_TIP =
     'This text choice value cannot be deleted because it is in use and cannot be edited because one or more usages are for read-only items.';
 const VALUE_LOCKED = (
     <LockIcon
-        iconCls="pull-right choices-list__locked choices-list__locked-pad-right"
+        iconCls="pull-right choices-list__locked"
         body={LOCKED_TIP}
         id="text-choice-value-lock-icon"
         title={LOCKED_TITLE}
@@ -60,7 +60,9 @@ interface Props extends ITypeDependentProps {
 }
 
 interface ImplProps extends Props {
-    fieldValues: Record<string, boolean>; // mapping existing field values (existence in object signals "in use") to locked status for value (only applicable to some domain types)
+    // mapping existing field values (existence in this object signals "in use") to locked status (only applicable
+    // to some domain types) and row count for the given value
+    fieldValues: Record<string, Record<string, any>>;
     loading: boolean;
     replaceValues: (newValues: string[], valueUpdates?: Record<string, string>) => void;
     validValues: string[];
@@ -97,7 +99,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
 
     const selectedValue = useMemo(() => validValues[selectedIndex], [validValues, selectedIndex]);
     const currentInUse = fieldValueUpdates.hasOwnProperty(selectedValue);
-    const currentLocked = currentInUse && (lockedForDomain || (fieldValues[fieldValueUpdates[currentValue]] ?? false));
+    const currentLocked = currentInUse && (lockedForDomain || (fieldValues[fieldValueUpdates[selectedValue]]?.locked ?? false));
 
     const isValueDuplicate = useCallback((val: string): boolean => {
         return validValues.indexOf(val) !== -1;
@@ -117,7 +119,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
         setCurrentValue(updatedVal);
         setCurrentError(
             updatedVal.trim() !== selectedValue && isValueDuplicate(updatedVal.trim())
-                ? 'The current value already exists in the list.'
+                ? `"${updatedVal.trim()}" already exists in the list of values.`
                 : undefined
         );
     }, [validValues, selectedIndex]);
@@ -205,7 +207,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                             {validValues.map((value, ind) => {
                                 const inUse = fieldValueUpdates.hasOwnProperty(value);
                                 const locked =
-                                    inUse && (lockedForDomain || (fieldValues[fieldValueUpdates[value]] ?? false));
+                                    inUse && (lockedForDomain || (fieldValues[fieldValueUpdates[value]]?.locked ?? false));
 
                                 return (
                                     <ChoicesListItem
@@ -262,18 +264,17 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                     <Button
                                         bsStyle="success"
                                         className="pull-right"
-                                        disabled={currentError !== undefined || currentValue === selectedValue}
+                                        disabled={currentError !== undefined || currentValue === selectedValue || currentValue === ''}
                                         onClick={onApply}
                                     >
                                         Apply
                                     </Button>
                                 </div>
                                 {fieldValueUpdates[selectedValue] !== undefined && selectedValue !== fieldValueUpdates[selectedValue] && (
-                                    <div className="domain-field-padding-bottom">
-                                        <Alert bsStyle="info">
-                                            Rows with value <b>{fieldValueUpdates[selectedValue]}</b> will be updated to <b>{selectedValue}</b> upon save.
-                                        </Alert>
-                                    </div>
+                                    <Alert bsStyle="info">
+                                        {Utils.pluralize(fieldValues[fieldValueUpdates[selectedValue]].count, 'row', 'rows')}{' '}
+                                        with value <b>{fieldValueUpdates[selectedValue]}</b> will be updated to <b>{selectedValue}</b> on save.
+                                    </Alert>
                                 )}
                                 {currentError && <Alert bsStyle="danger">{currentError}</Alert>}
                             </>
@@ -296,7 +297,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
 export const TextChoiceOptions: FC<Props> = memo(props => {
     const { field, onChange, domainIndex, index, schemaName, queryName, lockedSqlFragment = 'FALSE' } = props;
     const [loading, setLoading] = useState<boolean>(true);
-    const [fieldValues, setFieldValues] = useState<Record<string, boolean>>({});
+    const [fieldValues, setFieldValues] = useState<Record<string, Record<string, any>>>({});
     const [validValues, setValidValues] = useState<string[]>(field.textChoiceValidator?.properties.validValues ?? []);
     const fieldId = createFormInputId(DOMAIN_VALIDATOR_TEXTCHOICE, domainIndex, index);
 
@@ -336,12 +337,15 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
                 Query.executeSql({
                     containerFilter: Query.ContainerFilter.allFolders, // to account for a shared domain at project or /Shared
                     schemaName,
-                    sql: `SELECT ${lockedSqlFragment} AS IsLocked, "${fieldName}" FROM "${queryName}" GROUP BY "${fieldName}"`,
+                    sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
                     success: response => {
                         const values = response.rows
                                 .filter(row => isValidTextChoiceValue(row[fieldName]))
                                 .reduce((prev, current) => {
-                                    prev[current[fieldName]] = current['IsLocked'] === 1;
+                                    prev[current[fieldName]] = {
+                                        count: current['RowCount'],
+                                        locked: current['IsLocked'] === 1,
+                                    };
                                     return prev;
                                 }, {});
                         setFieldValues(values);

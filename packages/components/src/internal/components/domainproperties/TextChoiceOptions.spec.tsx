@@ -120,7 +120,7 @@ describe('TextChoiceOptions', () => {
 
     test('with inUse values', async () => {
         const wrapper = mount(
-            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={{ b:  false }} />
+            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={{ b:  { locked: false, count: 1 } }} />
         );
         validate(wrapper, false, 2, 1);
 
@@ -135,7 +135,7 @@ describe('TextChoiceOptions', () => {
 
     test('with locked values', async () => {
         const wrapper = mount(
-            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={{ b:  true }} />
+            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={{ b: { locked: true, count: 1 } }} />
         );
         validate(wrapper, false, 2, 1);
 
@@ -150,7 +150,7 @@ describe('TextChoiceOptions', () => {
 
     test('delete button disabled', async () => {
         const wrapper = mount(
-            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={{ b: false }} />
+            <TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} fieldValues={{ b: { locked: false, count: 1 } }} />
         );
         validate(wrapper, false, 2, 1);
 

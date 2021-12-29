@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * send text choice value updates for in-use values to the server as part of POST to update domain
   * prevent text choice updates and add values modal apply for duplicates and empty strings
 
+### version 2.111.1
+*Released*: 29 December 2021
+* Issue #44567: Hide scannable option for floating point fields due to improper matching.
+
 ### version 2.111.0
 *Released*: 24 December 2021
 * Edit Sample Type and Data Class's Naming Pattern Prefix Expression alteration warning message

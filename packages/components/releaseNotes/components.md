@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.112.0
+*Released*: 30 December 2021
 * Item #9782: Text Choice data type support for field editor updates to in-use values
   * update to query to get in-use text choice values so that it includes "locked" and row count
   * provide SQL fragment from sample type domain for how to determine "locked" text choice values

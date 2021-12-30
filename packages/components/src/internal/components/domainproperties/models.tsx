@@ -670,6 +670,10 @@ export class PropertyValidator
                 delete pvs[i].properties.validValues;
             }
 
+            if (pvs[i]?.extraProperties && !pvs[i].extraProperties.valueUpdates) {
+                delete pvs[i].extraProperties;
+            }
+
             delete pvs[i].shouldShowWarning;
         }
 

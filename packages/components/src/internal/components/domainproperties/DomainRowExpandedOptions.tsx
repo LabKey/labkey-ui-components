@@ -160,7 +160,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         defaultScale={field.defaultScale}
                         onChange={onChange}
                         lockType={field.lockType}
-                        ////Issue #44567: Hide scannable option due to matching issues with floating point representation.
+                        // Issue #44567: Hide scannable option due to matching issues with floating point representation.
                         showScannableOption={false}
                     />
                 );

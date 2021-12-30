@@ -32,7 +32,7 @@ describe('TextChoiceOptions', () => {
         inUse = 0,
         hasSelection = false,
         hasValueUpdate = false,
-        hasValueError = false,
+        hasValueError = false
     ): void {
         expect(wrapper.find(SectionHeading)).toHaveLength(1);
         expect(wrapper.find(SectionHeading).prop('title')).toBe('Test Label');
@@ -162,7 +162,9 @@ describe('TextChoiceOptions', () => {
         await waitForLifecycle(wrapper);
 
         validate(wrapper, false, 2, 1, true, true);
-        expect(wrapper.find('.domain-text-choices-info').hostNodes().text()).toBe('1 row with value b will be updated to bb on save.');
+        expect(wrapper.find('.domain-text-choices-info').hostNodes().text()).toBe(
+            '1 row with value b will be updated to bb on save.'
+        );
 
         wrapper.unmount();
     });
@@ -187,12 +189,7 @@ describe('TextChoiceOptions', () => {
     });
 
     test('value update error checks', async () => {
-        const wrapper = mount(
-            <TextChoiceOptionsImpl
-                {...DEFAULT_PROPS}
-                validValues={['a', 'b']}
-            />
-        );
+        const wrapper = mount(<TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'b']} />);
 
         wrapper.find(ChoicesListItem).last().simulate('click');
         await waitForLifecycle(wrapper);

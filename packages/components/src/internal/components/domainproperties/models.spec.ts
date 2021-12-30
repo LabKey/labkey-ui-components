@@ -62,6 +62,10 @@ import {
     DOMAIN_FIELD_PARTIALLY_LOCKED,
     INT_RANGE_URI,
     MULTILINE_RANGE_URI,
+    PHILEVEL_NOT_PHI,
+    PHILEVEL_FULL_PHI,
+    PHILEVEL_LIMITED_PHI,
+    PHILEVEL_RESTRICTED_PHI,
     SAMPLE_TYPE_CONCEPT_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     STRING_RANGE_URI,
@@ -712,6 +716,13 @@ describe('DomainField', () => {
         expect(f2.isSaved()).toBeFalsy();
         const f3 = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI, propertyId: 1 });
         expect(f3.isSaved()).toBeTruthy();
+    });
+
+    test('isPHI', () => {
+        expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_NOT_PHI }).isPHI()).toBeFalsy();
+        expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_LIMITED_PHI }).isPHI()).toBeTruthy();
+        expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_FULL_PHI }).isPHI()).toBeTruthy();
+        expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_RESTRICTED_PHI }).isPHI()).toBeTruthy();
     });
 
     test('updateDefaultValues', () => {

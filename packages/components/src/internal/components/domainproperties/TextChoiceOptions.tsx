@@ -285,7 +285,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                 </div>
                                 {fieldValueUpdates[selectedValue] !== undefined &&
                                     selectedValue !== fieldValueUpdates[selectedValue] && (
-                                        <Alert bsStyle="info">
+                                        <Alert bsStyle="info" className="domain-text-choices-info">
                                             {Utils.pluralize(
                                                 fieldValues[fieldValueUpdates[selectedValue]].count,
                                                 'row',

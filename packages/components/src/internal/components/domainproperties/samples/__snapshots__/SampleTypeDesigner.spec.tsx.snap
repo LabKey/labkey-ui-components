@@ -2986,6 +2986,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "hideConditionalFormatting": true,
             "hideStudyPropertyTypes": true,
             "showScannableOption": true,
+            "textChoiceLockedSqlFragment": "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
           }
         }
         domainIndex={0}
@@ -3128,6 +3129,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "hideConditionalFormatting": true,
                 "hideStudyPropertyTypes": true,
                 "showScannableOption": true,
+                "textChoiceLockedSqlFragment": "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
               }
             }
             domainIndex={0}
@@ -3968,6 +3970,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "hideConditionalFormatting": true,
                                                             "hideStudyPropertyTypes": true,
                                                             "showScannableOption": true,
+                                                            "textChoiceLockedSqlFragment": "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
                                                           }
                                                         }
                                                         domainId={null}
@@ -4156,6 +4159,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "hideConditionalFormatting": true,
                                                                             "hideStudyPropertyTypes": true,
                                                                             "showScannableOption": true,
+                                                                            "textChoiceLockedSqlFragment": "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
                                                                           }
                                                                         }
                                                                         domainId={null}
@@ -4775,6 +4779,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "hideConditionalFormatting": true,
                                                                               "hideStudyPropertyTypes": true,
                                                                               "showScannableOption": true,
+                                                                              "textChoiceLockedSqlFragment": "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
                                                                             }
                                                                           }
                                                                           domainIndex={0}
@@ -5858,6 +5863,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "hideConditionalFormatting": true,
                                                                                         "hideStudyPropertyTypes": true,
                                                                                         "showScannableOption": true,
+                                                                                        "textChoiceLockedSqlFragment": "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
                                                                                       }
                                                                                     }
                                                                                     domainIndex={0}

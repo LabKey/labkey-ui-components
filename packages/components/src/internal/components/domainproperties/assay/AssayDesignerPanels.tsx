@@ -86,12 +86,16 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         const { setSubmitting } = this.props;
         const { protocolModel } = this.state;
         const appIsValidMsg = this.getAppIsValidMsg();
-        const isValid = protocolModel.isValid() && appIsValidMsg === undefined;
+        const textChoiceValidMsg = this.getTextChoiceUpdatesValidMsg();
+        const isValid = protocolModel.isValid() && textChoiceValidMsg === undefined && appIsValidMsg === undefined;
 
         this.props.onFinish(isValid, this.saveDomain);
 
         if (!isValid) {
-            const exception = appIsValidMsg !== undefined ? appIsValidMsg : protocolModel.getFirstDomainFieldError();
+            const exception =
+                appIsValidMsg !== undefined
+                    ? appIsValidMsg
+                    : textChoiceValidMsg ?? protocolModel.getFirstDomainFieldError();
             const updatedModel = protocolModel.set('exception', exception) as AssayProtocolModel;
             setSubmitting(false, () => {
                 this.setState(() => ({ protocolModel: updatedModel }));
@@ -126,6 +130,31 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         const { protocolModel } = this.state;
 
         return !appIsValidMsg ? undefined : appIsValidMsg(protocolModel);
+    }
+
+    getTextChoiceUpdatesValidMsg(): string {
+        const { protocolModel } = this.state;
+
+        const runDomain = protocolModel.getDomainByNameSuffix('Run');
+        if (runDomain && !protocolModel.editableRuns && this.domainHasTextChoiceUpdates(runDomain)) {
+            return 'Text choice value updates are not allowed when assay does not allow "Editable Runs".';
+        }
+
+        const dataDomain = protocolModel.getDomainByNameSuffix('Data');
+        if (dataDomain && !protocolModel.editableResults && this.domainHasTextChoiceUpdates(dataDomain)) {
+            return 'Text choice value updates are not allowed when assay does not allow "Editable Results".';
+        }
+
+        return undefined;
+    }
+
+    domainHasTextChoiceUpdates(domain: DomainDesign): boolean {
+        return (
+            domain.fields.find(field => {
+                const valueUpdates = field.textChoiceValidator?.extraProperties?.valueUpdates ?? {};
+                return Object.keys(valueUpdates).length > 0;
+            }) !== undefined
+        );
     }
 
     onAssayPropertiesChange = (model: AssayProtocolModel) => {
@@ -211,6 +240,10 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                         protocolModel.providerName !== 'General' || !domain.isNameSuffixMatch('Data');
                     const hideFilePropertyType = !domain.isNameSuffixMatch('Batch') && !domain.isNameSuffixMatch('Run');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
+                    const textChoiceLockedForDomain = !(
+                        (domain.isNameSuffixMatch('Run') && protocolModel.editableRuns) ||
+                        (domain.isNameSuffixMatch('Data') && protocolModel.editableResults)
+                    );
 
                     return (
                         <DomainForm
@@ -246,6 +279,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                                 domainKindDisplayName: 'assay design',
                                 hideFilePropertyType,
                                 hideInferFromFile,
+                                textChoiceLockedForDomain,
                             }}
                         >
                             <div>{domain.description}</div>

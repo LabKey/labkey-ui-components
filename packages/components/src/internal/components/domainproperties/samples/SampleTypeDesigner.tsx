@@ -19,7 +19,7 @@ import {
 } from '../../../..';
 
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
-import { addDomainField, getDomainPanelStatus, saveDomain, validateDomainNameExpressions } from '../actions';
+import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
 import { DEFAULT_SAMPLE_FIELD_CONFIG } from '../../samples/constants';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
@@ -752,6 +752,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                         ...domainFormDisplayOptions,
                         hideStudyPropertyTypes: !_showLinkToStudy,
                         showScannableOption: true,
+                        textChoiceLockedSqlFragment:
+                            "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
                     }}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}

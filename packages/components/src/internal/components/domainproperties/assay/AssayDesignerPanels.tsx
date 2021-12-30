@@ -150,8 +150,10 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
 
     domainHasTextChoiceUpdates(domain: DomainDesign): boolean {
         return (
-            domain.fields.find(field => field.textChoiceValidator?.extraProperties?.valueUpdates !== undefined) !==
-            undefined
+            domain.fields.find(field => {
+                const valueUpdates = field.textChoiceValidator?.extraProperties?.valueUpdates ?? {};
+                return Object.keys(valueUpdates).length > 0;
+            }) !== undefined
         );
     }
 
@@ -238,9 +240,10 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                         protocolModel.providerName !== 'General' || !domain.isNameSuffixMatch('Data');
                     const hideFilePropertyType = !domain.isNameSuffixMatch('Batch') && !domain.isNameSuffixMatch('Run');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
-                    const textChoiceLockedForDomain =
-                        (domain.isNameSuffixMatch('Run') && !protocolModel.editableRuns) ||
-                        (domain.isNameSuffixMatch('Data') && !protocolModel.editableResults);
+                    const textChoiceLockedForDomain = !(
+                        (domain.isNameSuffixMatch('Run') && protocolModel.editableRuns) ||
+                        (domain.isNameSuffixMatch('Data') && protocolModel.editableResults)
+                    );
 
                     return (
                         <DomainForm

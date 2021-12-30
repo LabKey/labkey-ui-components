@@ -24,7 +24,7 @@ import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
-import { createFormInputId } from './actions';
+import { createFormInputId, getTextChoiceInUseValues } from './actions';
 
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;
 
@@ -352,21 +352,8 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
             // for an existing field, we query for the distinct set of values in the Text column to be used for
             // the initial set of values and/or setting fields as locked (i.e. in use)
             if (!field.isNew() && schemaName && queryName) {
-                const fieldName = field.original?.name ?? field.name;
-                Query.executeSql({
-                    containerFilter: Query.ContainerFilter.allFolders, // to account for a shared domain at project or /Shared
-                    schemaName,
-                    sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
-                    success: response => {
-                        const values = response.rows
-                            .filter(row => isValidTextChoiceValue(row[fieldName]))
-                            .reduce((prev, current) => {
-                                prev[current[fieldName]] = {
-                                    count: current['RowCount'],
-                                    locked: current['IsLocked'] === 1,
-                                };
-                                return prev;
-                            }, {});
+                getTextChoiceInUseValues(field, schemaName, queryName, lockedSqlFragment)
+                    .then(values => {
                         setFieldValues(values);
 
                         // if this is new text choice validator (i.e. does not have a rowId) for an existing field
@@ -377,12 +364,10 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
                         }
 
                         setLoading(false);
-                    },
-                    failure: error => {
-                        console.error('Error fetching distinct values for the text field: ', error);
+                    })
+                    .catch(() => {
                         setLoading(false);
-                    },
-                });
+                    });
             } else {
                 setLoading(false);
             }

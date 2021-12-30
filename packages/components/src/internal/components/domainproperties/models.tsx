@@ -42,6 +42,7 @@ import {
     FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG,
     INT_RANGE_URI,
     MAX_TEXT_LENGTH,
+    PHILEVEL_NOT_PHI,
     SAMPLE_TYPE_CONCEPT_URI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
@@ -1096,6 +1097,10 @@ export class DomainField
 
     isTextChoiceField(): boolean {
         return this.conceptURI === TEXT_CHOICE_CONCEPT_URI;
+    }
+
+    isPHI(): boolean {
+        return this.PHI !== PHILEVEL_NOT_PHI;
     }
 
     static hasRangeValidation(field: DomainField): boolean {

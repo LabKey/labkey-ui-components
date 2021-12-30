@@ -97,6 +97,8 @@ interface Props {
     aliquotNamePatternProps?: AliquotNamePatternProps;
 
     validateNameExpressions?: boolean;
+
+    showGenIdBanner?: boolean;
 }
 
 interface State {
@@ -647,6 +649,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             domainFormDisplayOptions,
             showLinkToStudy,
             aliquotNamePatternProps,
+            initModel,
+            showGenIdBanner
         } = this.props;
         const {
             error,
@@ -672,6 +676,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             'Values for ' +
             (numNewUniqueIdFields !== 1 ? 'these fields' : 'this field') +
             ' will be created for all existing samples.';
+
+        const options = initModel?.get('options');
 
         return (
             <BaseDomainDesigner
@@ -725,6 +731,12 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     namePreviewsLoading={namePreviewsLoading}
                     namePreviews={namePreviews}
                     onNameFieldHover={this.onNameFieldHover}
+                    nameExpressionGenIdProps={(showGenIdBanner && options) ? {
+                        dataTypeName: options.get('name'),
+                        dataTypeLSID: options.get('lsid'),
+                        rowId: options.get('rowId'),
+                        kindName: 'SampleSet'
+                    } : undefined}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}

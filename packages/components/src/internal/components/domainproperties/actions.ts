@@ -15,7 +15,7 @@
  */
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
-import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
+import { Ajax, Domain, Experiment, Query, Security, Utils } from '@labkey/api';
 
 import {
     buildURL,
@@ -1113,6 +1113,48 @@ export function getDomainNamePreviews(
             schemaName: schemaQuery?.getSchema(),
             success: response => {
                 resolve(response['previews']);
+            },
+            failure: response => {
+                reject(response);
+            },
+        });
+    });
+}
+
+export function getGenId(rowId: number, kindName: 'SampleSet' | "DataClass", containerPath?: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+
+        Experiment.getGenId({
+            containerPath,
+            rowId,
+            kindName,
+            success: response => {
+                if (response.success) {
+                    resolve(response['genId']);
+                } else {
+                    reject({ error: 'Unable to get genId' });
+                }
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+}
+
+export function setGenId(rowId: number, kindName: 'SampleSet' | "DataClass", genId: number, containerPath?: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        return Experiment.setGenId({
+            containerPath,
+            rowId,
+            kindName,
+            genId,
+            success: response => {
+                if (response.success) {
+                    resolve(response);
+                } else {
+                    reject({ error: response.error });
+                }
             },
             failure: response => {
                 reject(response);

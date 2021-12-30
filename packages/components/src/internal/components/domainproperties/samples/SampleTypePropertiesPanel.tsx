@@ -52,6 +52,7 @@ import { NameExpressionPreview } from '../NameExpressionPreview';
 
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
+import { NameExpressionGenIdProps } from "../NameExpressionGenIdBanner";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
@@ -83,6 +84,7 @@ interface OwnProps {
     namePreviews?: string[];
     onNameFieldHover?: () => any;
     namePreviewsLoading?: boolean;
+    nameExpressionGenIdProps?: NameExpressionGenIdProps;
 }
 
 // Splitting these out to clarify where they end-up
@@ -331,6 +333,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             namePreviews,
             namePreviewsLoading,
             onNameFieldHover,
+            nameExpressionGenIdProps,
         } = this.props;
         const { isValid, containers, prefix, loadingError } = this.state;
 
@@ -426,6 +429,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     onNameFieldHover={onNameFieldHover}
                     namePreviewsLoading={namePreviewsLoading}
                     previewName={namePreviews?.[0]}
+                    nameExpressionGenIdProps={nameExpressionGenIdProps}
                 />
                 {showAliquotNameExpression && (
                     <Row className="margin-bottom">

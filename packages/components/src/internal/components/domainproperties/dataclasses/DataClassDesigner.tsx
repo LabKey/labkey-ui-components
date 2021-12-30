@@ -43,6 +43,7 @@ interface Props {
     // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
     loadNameExpressionOptions?: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
     validateNameExpressions?: boolean;
+    showGenIdBanner?: boolean;
 }
 
 interface State {
@@ -273,6 +274,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             helpTopic,
             testMode,
             domainFormDisplayOptions,
+            showGenIdBanner,
         } = this.props;
         const { model, nameExpressionWarnings, namePreviews, namePreviewsLoading } = this.state;
 
@@ -312,6 +314,11 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     namePreviewsLoading={namePreviewsLoading}
                     previewName={namePreviews?.[0]}
                     onNameFieldHover={this.onNameFieldHover}
+                    nameExpressionGenIdProps={showGenIdBanner ? {
+                        dataTypeName: model.name,
+                        rowId: model.rowId,
+                        kindName: 'DataClass'
+                    } : undefined}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}

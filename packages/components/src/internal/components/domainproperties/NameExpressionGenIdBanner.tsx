@@ -1,17 +1,17 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Button, FormControl } from "react-bootstrap";
+import { Button, Col, FormControl, Row } from "react-bootstrap";
 
 import { Query } from "@labkey/api";
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-import { Alert, ConfirmModal, LoadingSpinner } from '../../..';
+import { Alert, ConfirmModal, createNotification, LoadingSpinner } from '../../..';
 
 export interface NameExpressionGenIdProps {
     api?: ComponentsAPIWrapper;
     dataTypeName: string; //sampletype or dataclass name
-    dataTypeLSID: string;
     rowId: number;
     kindName: 'SampleSet' | "DataClass";
+    dataTypeLSID?: string;
 }
 
 export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => {
@@ -25,19 +25,27 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
     const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
 
     const init = async () => {
-        if (rowId && kindName && dataTypeLSID) {
-            const dataCountSql = 'SELECT COUNT(*) AS DataCount FROM ' + (kindName === 'SampleSet' ? 'material' : 'data') + " WHERE cpas = " + dataTypeLSID;
+        if (rowId && kindName) {
+            let dataCountSql = 'SELECT COUNT(*) AS DataCount FROM ';
+
+            if (kindName === 'SampleSet') {
+                dataCountSql += "materials WHERE sampleset = '" + dataTypeLSID + "'";
+            }
+            else {
+                dataCountSql += "data WHERE dataclass = " + rowId;
+            }
 
             Query.executeSql({
                 schemaName: "exp",
                 sql: dataCountSql,
                 success: (async (data) => {
-                    setCanReset(data.rows[0].DataCount === 0);
+                    const canResetGen = data.rows[0].DataCount === 0;
+                    setCanReset(canResetGen);
 
                     try {
-                        const genId = await api.domain.getGenId(rowId, kindName);
+                        const genId = await api.domain.getGenId(rowId, kindName) + 1; // when creating new data, seq.next() will be used, so display the next number to users instead of current
                         setCurrentGenId(genId);
-                        const minNewGenId = canReset ? 1 : currentGenId;
+                        const minNewGenId = canResetGen ? 1 : genId;
                         setMinNewGenId(minNewGenId);
                         setNewGenId(minNewGenId);
                     } catch (reason) {
@@ -73,11 +81,13 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
         }
 
         try {
-            await api.domain.setGenId(rowId, kindName, newGenId ?? minNewGenId);
+            await api.domain.setGenId(rowId, kindName, (newGenId ?? minNewGenId) - 1  /* Reset to N-1 so seq.next will be N. */);
+            createNotification('Successfully updated genId.');
+            init();
             setShowEditDialog(false);
         } catch (reason) {
             console.error(reason);
-            setError(reason);
+            setError(reason?.exception);
         }
     }, [rowId, kindName, newGenId]);
 
@@ -92,25 +102,27 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
 
     const onResetConfirm = useCallback(async () => {
         try {
-            await api.domain.setGenId(rowId, kindName, 1);
+            await api.domain.setGenId(rowId, kindName, 0 /* Reset to 0 so seq.next will be 1. */);
+            createNotification('Successfully resetted genId.');
+            init();
+            setShowResetDialog(false);
         } catch (reason) {
             console.error(reason);
-            setError(reason);
+            setError(reason?.exception);
         }
     }, [rowId, kindName]);
 
-    if (!currentGenId)
+    if (currentGenId === undefined)
         return <LoadingSpinner/>;
 
     return (
         <>
-            {error && <Alert>{error}</Alert>}
             <Alert bsStyle="info" className="genid-alert">
-                Current genId: ${currentGenId}
+                Current genId: {currentGenId}
                 <Button className="pull-right alert-button edit-genid-btn" bsStyle="info" onClick={onEditClick}>
                     Edit genId
                 </Button>
-                {(canReset && currentGenId > 0) && <Button className="pull-right alert-button reset-genid-btn" bsStyle="info" onClick={onResetClick}>
+                {(canReset && currentGenId > 1) && <Button className="pull-right alert-button reset-genid-btn" bsStyle="info" onClick={onResetClick}>
                     Reset genId
                 </Button>}
             </Alert>
@@ -122,19 +134,10 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                     onConfirm={onResetConfirm}
                     title={`Are you sure you want to reset genId for ${dataTypeName}?`}
                 >
+                    {error && <Alert>{error}</Alert>}
                     <div>
-                        The current genId is at ${currentGenId}. Resetting will reset genId back to 1 and cannot be undone.
+                        The current genId is at {currentGenId}. Resetting will reset genId back to 1 and cannot be undone.
                     </div>
-                    <FormControl
-                        className="update-genId-input "
-                        min={minNewGenId}
-                        step={1}
-                        name={"newgenidval"}
-                        onChange={(event:any) => setNewGenId(event?.target?.value)}
-                        type="number"
-                        value={newGenId ?? minNewGenId}
-                        placeholder={"Enter new genId..."}
-                    />
                 </ConfirmModal>
             }
             {showEditDialog &&
@@ -143,11 +146,28 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                     confirmButtonText="Update"
                     onCancel={onEditCancel}
                     onConfirm={onEditConfirm}
-                    title={`Are you sure you want to reset genId for ${dataTypeName}?`}
+                    title={`Are you sure you want to update genId for ${dataTypeName}?`}
                 >
-                    <span>
-                        The current genId is at ${currentGenId}. Updating genId will allow new samples to use a new start value (min ${minNewGenId}). This action cannot be undone.
-                    </span>
+                    {error && <Alert>{error}</Alert>}
+                    <div>
+                        The current genId is at {currentGenId}. Updating genId will allow new {kindName === 'SampleSet' ? 'sample' : 'data'} to use a new start value (min {minNewGenId}). This action cannot be undone.
+                    </div>
+                    <Row className="margin-top">
+                        <Col xs={5}>
+                            <FormControl
+                                className="update-genId-input "
+                                min={minNewGenId}
+                                step={1}
+                                name={"newgenidval"}
+                                onChange={(event:any) => setNewGenId(event?.target?.value)}
+                                type="number"
+                                value={newGenId ?? minNewGenId}
+                                placeholder={"Enter new genId..."}
+                            />
+                        </Col>
+                        <Col xs={7}/>
+                    </Row>
+
                 </ConfirmModal>
             }
         </>

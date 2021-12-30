@@ -16,6 +16,7 @@ import {
     isExistingEntity,
 } from './actions';
 import { ENTITY_FORM_IDS } from './constants';
+import { NameExpressionGenIdBanner, NameExpressionGenIdProps } from "../NameExpressionGenIdBanner";
 
 export interface EntityDetailsProps {
     noun: string;
@@ -30,6 +31,7 @@ export interface EntityDetailsProps {
     previewName?: string;
     namePreviewsLoading?: boolean;
     onNameFieldHover?: () => any;
+    nameExpressionGenIdProps?: NameExpressionGenIdProps;
 }
 
 export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, any> {
@@ -47,6 +49,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
             previewName,
             onNameFieldHover,
             namePreviewsLoading,
+            nameExpressionGenIdProps,
         } = this.props;
         const moreInfoLink = nameExpressionInfoUrl ? (
             <p>
@@ -95,6 +98,14 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                         />
                     </Col>
                 </Row>
+                {nameExpressionGenIdProps && (
+                    <Row className="margin-top">
+                        <Col xs={2}/>
+                        <Col xs={10}>
+                            <NameExpressionGenIdBanner {...nameExpressionGenIdProps} />
+                        </Col>
+                    </Row>
+                )}
                 <Row className="margin-bottom">
                     <Col xs={2}>
                         <div className="name-expression-label-div" onMouseEnter={() => onNameFieldHover?.()}>

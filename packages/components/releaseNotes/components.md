@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Added getGenId and setGenId utils
+* Added NameExpressionGenIdBanner
+
 ### version 2.111.0
 *Released*: 24 December 2021
 * Edit Sample Type and Data Class's Naming Pattern Prefix Expression alteration warning message

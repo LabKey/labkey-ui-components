@@ -136,12 +136,12 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         const { protocolModel } = this.state;
 
         const runDomain = protocolModel.getDomainByNameSuffix('Run');
-        if (!protocolModel.editableRuns && this.domainHasTextChoiceUpdates(runDomain)) {
+        if (runDomain && !protocolModel.editableRuns && this.domainHasTextChoiceUpdates(runDomain)) {
             return 'Text choice value updates are not allowed when assay does not allow "Editable Runs".';
         }
 
         const dataDomain = protocolModel.getDomainByNameSuffix('Data');
-        if (!protocolModel.editableResults && this.domainHasTextChoiceUpdates(dataDomain)) {
+        if (dataDomain && !protocolModel.editableResults && this.domainHasTextChoiceUpdates(dataDomain)) {
             return 'Text choice value updates are not allowed when assay does not allow "Editable Results".';
         }
 

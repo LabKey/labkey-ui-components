@@ -276,7 +276,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                         disabled={
                                             currentError !== undefined ||
                                             currentValue === selectedValue ||
-                                            currentValue === ''
+                                            currentValue.trim() === ''
                                         }
                                         onClick={onApply}
                                     >

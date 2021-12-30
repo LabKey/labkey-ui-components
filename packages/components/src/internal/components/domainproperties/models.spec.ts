@@ -51,6 +51,7 @@ import {
     getValidValuesDetailStr,
     getValidValuesFromArray,
     isPropertyTypeAllowed,
+    isValidTextChoiceValue,
     PropertyValidatorProperties,
 } from './models';
 import {
@@ -1048,5 +1049,21 @@ describe('getValidValuesFromArray', () => {
 
     test('remove duplicates', () => {
         expect(getValidValuesFromArray(['a', 'a', 'a', 'b'])).toStrictEqual(['a', 'b']);
+    });
+});
+
+describe('isValidTextChoiceValue', () => {
+    test('empty', () => {
+        expect(isValidTextChoiceValue(undefined)).toBeFalsy();
+        expect(isValidTextChoiceValue(null)).toBeFalsy();
+        expect(isValidTextChoiceValue('')).toBeFalsy();
+        expect(isValidTextChoiceValue(' ')).toBeFalsy();
+    });
+
+    test('valid', () => {
+        expect(isValidTextChoiceValue('a')).toBeTruthy();
+        expect(isValidTextChoiceValue(' a')).toBeTruthy();
+        expect(isValidTextChoiceValue('a ')).toBeTruthy();
+        expect(isValidTextChoiceValue(' a ')).toBeTruthy();
     });
 });

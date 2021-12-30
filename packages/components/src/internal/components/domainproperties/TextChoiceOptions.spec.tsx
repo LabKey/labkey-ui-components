@@ -30,7 +30,9 @@ describe('TextChoiceOptions', () => {
         isLoading = false,
         validValues = 0,
         inUse = 0,
-        hasSelection = false
+        hasSelection = false,
+        hasValueUpdate = false,
+        hasValueError = false,
     ): void {
         expect(wrapper.find(SectionHeading)).toHaveLength(1);
         expect(wrapper.find(SectionHeading).prop('title')).toBe('Test Label');
@@ -49,6 +51,8 @@ describe('TextChoiceOptions', () => {
             );
             expect(wrapper.find('input')).toHaveLength(hasSelection ? 1 : 0);
             expect(wrapper.find('button')).toHaveLength(validValues + (hasSelection ? 2 : 0));
+            expect(wrapper.find('.domain-text-choices-info').hostNodes()).toHaveLength(hasValueUpdate ? 1 : 0);
+            expect(wrapper.find('.alert-danger')).toHaveLength(hasValueError ? 1 : 0);
         }
     }
 
@@ -137,6 +141,32 @@ describe('TextChoiceOptions', () => {
         wrapper.unmount();
     });
 
+    test('with inUse value update info', async () => {
+        const wrapper = mount(
+            <TextChoiceOptionsImpl
+                {...DEFAULT_PROPS}
+                validValues={['a', 'b']}
+                fieldValues={{ b: { locked: false, count: 1 } }}
+            />
+        );
+        validate(wrapper, false, 2, 1);
+
+        // select the in-use value, change it, and apply
+        wrapper.find(ChoicesListItem).last().simulate('click');
+        await waitForLifecycle(wrapper);
+        wrapper.find('input').simulate('change', { target: { name: 'value', value: 'bb' } });
+        await waitForLifecycle(wrapper);
+        wrapper.find('.btn-success').simulate('click');
+        await waitForLifecycle(wrapper);
+        wrapper.setProps({ validValues: ['a', 'bb'] });
+        await waitForLifecycle(wrapper);
+
+        validate(wrapper, false, 2, 1, true, true);
+        expect(wrapper.find('.domain-text-choices-info').hostNodes().text()).toBe('1 row with value b will be updated to bb on save.');
+
+        wrapper.unmount();
+    });
+
     test('with locked values', async () => {
         const wrapper = mount(
             <TextChoiceOptionsImpl
@@ -152,6 +182,36 @@ describe('TextChoiceOptions', () => {
         await waitForLifecycle(wrapper);
         validate(wrapper, false, 2, 1, true);
         expect(wrapper.find('input').prop('disabled')).toBeTruthy();
+
+        wrapper.unmount();
+    });
+
+    test('value update error checks', async () => {
+        const wrapper = mount(
+            <TextChoiceOptionsImpl
+                {...DEFAULT_PROPS}
+                validValues={['a', 'b']}
+            />
+        );
+
+        wrapper.find(ChoicesListItem).last().simulate('click');
+        await waitForLifecycle(wrapper);
+        validate(wrapper, false, 2, 0, true);
+
+        // don't allow empty string
+        wrapper.find('input').simulate('change', { target: { name: 'value', value: 'bb' } });
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.btn-success').prop('disabled')).toBeFalsy();
+        wrapper.find('input').simulate('change', { target: { name: 'value', value: '   ' } });
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.btn-success').prop('disabled')).toBeTruthy();
+
+        // don't allow duplicates
+        wrapper.find('input').simulate('change', { target: { name: 'value', value: ' a ' } });
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.btn-success').prop('disabled')).toBeTruthy();
+        validate(wrapper, false, 2, 0, true, false, true);
+        expect(wrapper.find('.alert-danger').text()).toBe('"a" already exists in the list of values.');
 
         wrapper.unmount();
     });

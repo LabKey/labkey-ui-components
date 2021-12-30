@@ -21,8 +21,9 @@ import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING
 
 import { isSampleManagerEnabled } from '../../../app/utils';
 
+import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
+
 import { DataClassModel } from './models';
-import { NameExpressionGenIdProps } from "../NameExpressionGenIdBanner";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {
@@ -165,7 +166,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             namePreviewsLoading,
             previewName,
             onNameFieldHover,
-            nameExpressionGenIdProps
+            nameExpressionGenIdProps,
         } = this.props;
         const { isValid, prefix, loadingError } = this.state;
 

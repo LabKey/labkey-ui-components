@@ -11,8 +11,13 @@ export interface DomainPropertiesAPIWrapper {
         options?: any,
         includeNamePreview?: boolean
     ) => Promise<NameExpressionsValidationResults>;
-    getGenId: (rowId: number, kindName: 'SampleSet' | "DataClass", containerPath?: string) => Promise<number>;
-    setGenId: (rowId: number, kindName: 'SampleSet' | "DataClass", genId: number, containerPath?: string) => Promise<any>;
+    getGenId: (rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string) => Promise<number>;
+    setGenId: (
+        rowId: number,
+        kindName: 'SampleSet' | 'DataClass',
+        genId: number,
+        containerPath?: string
+    ) => Promise<any>;
 }
 
 export class DomainPropertiesAPIWrapper implements DomainPropertiesAPIWrapper {

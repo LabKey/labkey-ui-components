@@ -1,16 +1,16 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Button, Col, FormControl, Row } from "react-bootstrap";
+import { Button, Col, FormControl, Row } from 'react-bootstrap';
 
-import { Query } from "@labkey/api";
+import { Query } from '@labkey/api';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { Alert, ConfirmModal, createNotification, LoadingSpinner } from '../../..';
 
 export interface NameExpressionGenIdProps {
     api?: ComponentsAPIWrapper;
-    dataTypeName: string; //sampletype or dataclass name
+    dataTypeName: string; // sampletype or dataclass name
     rowId: number;
-    kindName: 'SampleSet' | "DataClass";
+    kindName: 'SampleSet' | 'DataClass';
     dataTypeLSID?: string;
 }
 
@@ -19,7 +19,7 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
     const [currentGenId, setCurrentGenId] = useState<number>(undefined);
     const [newGenId, setNewGenId] = useState<number>(undefined);
     const [minNewGenId, setMinNewGenId] = useState<number>(undefined);
-    const [error, setError] = useState<String>(undefined);
+    const [error, setError] = useState<string>(undefined);
     const [canReset, setCanReset] = useState<boolean>(false);
     const [showResetDialog, setShowResetDialog] = useState<boolean>(false);
     const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
@@ -30,20 +30,19 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
 
             if (kindName === 'SampleSet') {
                 dataCountSql += "materials WHERE sampleset = '" + dataTypeLSID + "'";
-            }
-            else {
-                dataCountSql += "data WHERE dataclass = " + rowId;
+            } else {
+                dataCountSql += 'data WHERE dataclass = ' + rowId;
             }
 
             Query.executeSql({
-                schemaName: "exp",
+                schemaName: 'exp',
                 sql: dataCountSql,
-                success: (async (data) => {
+                success: async data => {
                     const canResetGen = data.rows[0].DataCount === 0;
                     setCanReset(canResetGen);
 
                     try {
-                        const genId = await api.domain.getGenId(rowId, kindName) + 1; // when creating new data, seq.next() will be used, so display the next number to users instead of current
+                        const genId = (await api.domain.getGenId(rowId, kindName)) + 1; // when creating new data, seq.next() will be used, so display the next number to users instead of current
                         setCurrentGenId(genId);
                         const minNewGenId = canResetGen ? 1 : genId;
                         setMinNewGenId(minNewGenId);
@@ -51,12 +50,11 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                     } catch (reason) {
                         console.error(reason);
                     }
-                }),
-                failure: (error => {
+                },
+                failure: error => {
                     console.error(error);
-                })
+                },
             });
-
         }
     };
 
@@ -81,7 +79,11 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
         }
 
         try {
-            await api.domain.setGenId(rowId, kindName, (newGenId ?? minNewGenId) - 1  /* Reset to N-1 so seq.next will be N. */);
+            await api.domain.setGenId(
+                rowId,
+                kindName,
+                (newGenId ?? minNewGenId) - 1 /* Reset to N-1 so seq.next will be N. */
+            );
             createNotification('Successfully updated genId.');
             init();
             setShowEditDialog(false);
@@ -112,8 +114,7 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
         }
     }, [rowId, kindName]);
 
-    if (currentGenId === undefined)
-        return <LoadingSpinner/>;
+    if (currentGenId === undefined) return <LoadingSpinner />;
 
     return (
         <>
@@ -122,11 +123,13 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                 <Button className="pull-right alert-button edit-genid-btn" bsStyle="info" onClick={onEditClick}>
                     Edit genId
                 </Button>
-                {(canReset && currentGenId > 1) && <Button className="pull-right alert-button reset-genid-btn" bsStyle="info" onClick={onResetClick}>
-                    Reset genId
-                </Button>}
+                {canReset && currentGenId > 1 && (
+                    <Button className="pull-right alert-button reset-genid-btn" bsStyle="info" onClick={onResetClick}>
+                        Reset genId
+                    </Button>
+                )}
             </Alert>
-            {showResetDialog &&
+            {showResetDialog && (
                 <ConfirmModal
                     cancelButtonText="Cancel"
                     confirmButtonText="Reset"
@@ -136,11 +139,12 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                 >
                     {error && <Alert>{error}</Alert>}
                     <div>
-                        The current genId is at {currentGenId}. Resetting will reset genId back to 1 and cannot be undone.
+                        The current genId is at {currentGenId}. Resetting will reset genId back to 1 and cannot be
+                        undone.
                     </div>
                 </ConfirmModal>
-            }
-            {showEditDialog &&
+            )}
+            {showEditDialog && (
                 <ConfirmModal
                     cancelButtonText="Cancel"
                     confirmButtonText="Update"
@@ -150,7 +154,9 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                 >
                     {error && <Alert>{error}</Alert>}
                     <div>
-                        The current genId is at {currentGenId}. Updating genId will allow new {kindName === 'SampleSet' ? 'sample' : 'data'} to use a new start value (min {minNewGenId}). This action cannot be undone.
+                        The current genId is at {currentGenId}. Updating genId will allow new{' '}
+                        {kindName === 'SampleSet' ? 'sample' : 'data'} to use a new start value (min {minNewGenId}).
+                        This action cannot be undone.
                     </div>
                     <Row className="margin-top">
                         <Col xs={5}>
@@ -158,18 +164,17 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                                 className="update-genId-input "
                                 min={minNewGenId}
                                 step={1}
-                                name={"newgenidval"}
-                                onChange={(event:any) => setNewGenId(event?.target?.value)}
+                                name="newgenidval"
+                                onChange={(event: any) => setNewGenId(event?.target?.value)}
                                 type="number"
                                 value={newGenId ?? minNewGenId}
-                                placeholder={"Enter new genId..."}
+                                placeholder="Enter new genId..."
                             />
                         </Col>
-                        <Col xs={7}/>
+                        <Col xs={7} />
                     </Row>
-
                 </ConfirmModal>
-            }
+            )}
         </>
     );
 };

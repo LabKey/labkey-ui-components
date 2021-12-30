@@ -1121,9 +1121,8 @@ export function getDomainNamePreviews(
     });
 }
 
-export function getGenId(rowId: number, kindName: 'SampleSet' | "DataClass", containerPath?: string): Promise<number> {
+export function getGenId(rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string): Promise<number> {
     return new Promise((resolve, reject) => {
-
         Experiment.getGenId({
             containerPath,
             rowId,
@@ -1142,7 +1141,12 @@ export function getGenId(rowId: number, kindName: 'SampleSet' | "DataClass", con
     });
 }
 
-export function setGenId(rowId: number, kindName: 'SampleSet' | "DataClass", genId: number, containerPath?: string): Promise<any> {
+export function setGenId(
+    rowId: number,
+    kindName: 'SampleSet' | 'DataClass',
+    genId: number,
+    containerPath?: string
+): Promise<any> {
     return new Promise((resolve, reject) => {
         return Experiment.setGenId({
             containerPath,

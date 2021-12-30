@@ -50,9 +50,10 @@ import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING
 
 import { NameExpressionPreview } from '../NameExpressionPreview';
 
+import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
+
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
-import { NameExpressionGenIdProps } from "../NameExpressionGenIdBanner";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');

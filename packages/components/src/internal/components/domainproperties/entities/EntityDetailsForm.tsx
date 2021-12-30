@@ -8,6 +8,8 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { NameExpressionPreview } from '../NameExpressionPreview';
 
+import { NameExpressionGenIdBanner, NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
+
 import { IEntityDetails } from './models';
 import {
     getEntityDescriptionValue,
@@ -16,7 +18,6 @@ import {
     isExistingEntity,
 } from './actions';
 import { ENTITY_FORM_IDS } from './constants';
-import { NameExpressionGenIdBanner, NameExpressionGenIdProps } from "../NameExpressionGenIdBanner";
 
 export interface EntityDetailsProps {
     noun: string;
@@ -100,7 +101,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                 </Row>
                 {nameExpressionGenIdProps && (
                     <Row className="margin-top">
-                        <Col xs={2}/>
+                        <Col xs={2} />
                         <Col xs={10}>
                             <NameExpressionGenIdBanner {...nameExpressionGenIdProps} />
                         </Col>

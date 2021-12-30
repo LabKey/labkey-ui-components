@@ -314,11 +314,15 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     namePreviewsLoading={namePreviewsLoading}
                     previewName={namePreviews?.[0]}
                     onNameFieldHover={this.onNameFieldHover}
-                    nameExpressionGenIdProps={showGenIdBanner ? {
-                        dataTypeName: model.name,
-                        rowId: model.rowId,
-                        kindName: 'DataClass'
-                    } : undefined}
+                    nameExpressionGenIdProps={
+                        showGenIdBanner
+                            ? {
+                                  dataTypeName: model.name,
+                                  rowId: model.rowId,
+                                  kindName: 'DataClass',
+                              }
+                            : undefined
+                    }
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}

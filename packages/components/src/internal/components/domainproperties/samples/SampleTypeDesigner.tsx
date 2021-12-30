@@ -650,7 +650,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             showLinkToStudy,
             aliquotNamePatternProps,
             initModel,
-            showGenIdBanner
+            showGenIdBanner,
         } = this.props;
         const {
             error,
@@ -731,12 +731,16 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     namePreviewsLoading={namePreviewsLoading}
                     namePreviews={namePreviews}
                     onNameFieldHover={this.onNameFieldHover}
-                    nameExpressionGenIdProps={(showGenIdBanner && options) ? {
-                        dataTypeName: options.get('name'),
-                        dataTypeLSID: options.get('lsid'),
-                        rowId: options.get('rowId'),
-                        kindName: 'SampleSet'
-                    } : undefined}
+                    nameExpressionGenIdProps={
+                        showGenIdBanner && options
+                            ? {
+                                  dataTypeName: options.get('name'),
+                                  dataTypeLSID: options.get('lsid'),
+                                  rowId: options.get('rowId'),
+                                  kindName: 'SampleSet',
+                              }
+                            : undefined
+                    }
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}

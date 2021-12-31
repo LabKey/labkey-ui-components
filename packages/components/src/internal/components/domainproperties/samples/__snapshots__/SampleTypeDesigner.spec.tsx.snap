@@ -1086,6 +1086,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "domain": DomainPropertiesAPIWrapper {
           "getDomainNamePreviews": [Function],
           "getGenId": [Function],
+          "hasExistingDomainData": [Function],
           "setGenId": [Function],
           "validateDomainNameExpressions": [Function],
         },

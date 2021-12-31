@@ -620,6 +620,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
     render() {
         const {
+            api,
             containerTop,
             useTheme,
             appPropertiesOnly,
@@ -738,6 +739,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                                   dataTypeLSID: options.get('lsid'),
                                   rowId: options.get('rowId'),
                                   kindName: 'SampleSet',
+                                  api: api
                               }
                             : undefined
                     }

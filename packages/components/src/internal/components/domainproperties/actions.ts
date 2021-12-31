@@ -1208,6 +1208,30 @@ export function getGenId(rowId: number, kindName: 'SampleSet' | 'DataClass', con
     });
 }
 
+export function hasExistingDomainData(kindName: 'SampleSet' | 'DataClass', dataTypeLSID?: string, rowId?: number): Promise<boolean> {
+    let dataCountSql = 'SELECT COUNT(*) AS DataCount FROM ';
+
+    if (kindName === 'SampleSet') {
+        dataCountSql += "materials WHERE sampleset = '" + dataTypeLSID + "'";
+    } else {
+        dataCountSql += 'data WHERE dataclass = ' + rowId;
+    }
+
+    return new Promise((resolve, reject) => {
+        Query.executeSql({
+            schemaName: 'exp',
+            sql: dataCountSql,
+            success: async data => {
+                resolve(data.rows[0].DataCount === 0);
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+
+}
+
 export function setGenId(
     rowId: number,
     kindName: 'SampleSet' | 'DataClass',

@@ -1,10 +1,9 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Button, Col, FormControl, Row } from 'react-bootstrap';
 
-import { Query } from '@labkey/api';
+import { Alert, ConfirmModal, createNotification, LoadingSpinner } from '../../..';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-import { Alert, ConfirmModal, createNotification, LoadingSpinner } from '../../..';
 
 export interface NameExpressionGenIdProps {
     api?: ComponentsAPIWrapper;
@@ -26,35 +25,23 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
 
     const init = async () => {
         if (rowId && kindName) {
-            let dataCountSql = 'SELECT COUNT(*) AS DataCount FROM ';
+            try {
+                const hasData = await api.domain.hasExistingDomainData(kindName, dataTypeLSID, rowId);
+                const canResetGen = !hasData;
+                setCanReset(canResetGen);
 
-            if (kindName === 'SampleSet') {
-                dataCountSql += "materials WHERE sampleset = '" + dataTypeLSID + "'";
-            } else {
-                dataCountSql += 'data WHERE dataclass = ' + rowId;
+                try {
+                    const genId = (await api.domain.getGenId(rowId, kindName)) + 1; // when creating new data, seq.next() will be used, so display the next number to users instead of current
+                    setCurrentGenId(genId);
+                    const minNewGenId = canResetGen ? 1 : genId;
+                    setMinNewGenId(minNewGenId);
+                    setNewGenId(minNewGenId);
+                } catch (reason) {
+                    console.error(reason);
+                }
+            } catch (reason) {
+                console.error(reason);
             }
-
-            Query.executeSql({
-                schemaName: 'exp',
-                sql: dataCountSql,
-                success: async data => {
-                    const canResetGen = data.rows[0].DataCount === 0;
-                    setCanReset(canResetGen);
-
-                    try {
-                        const genId = (await api.domain.getGenId(rowId, kindName)) + 1; // when creating new data, seq.next() will be used, so display the next number to users instead of current
-                        setCurrentGenId(genId);
-                        const minNewGenId = canResetGen ? 1 : genId;
-                        setMinNewGenId(minNewGenId);
-                        setNewGenId(minNewGenId);
-                    } catch (reason) {
-                        console.error(reason);
-                    }
-                },
-                failure: error => {
-                    console.error(error);
-                },
-            });
         }
     };
 

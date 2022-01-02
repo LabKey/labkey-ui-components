@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap } from 'immutable';
-import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
+import { ActionURL, Ajax, AuditBehaviorTypes, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
@@ -44,6 +44,7 @@ import {
     selectRows,
     SHARED_CONTAINER_PATH,
     UNIQUE_ID_FIND_FIELD,
+    updateRows,
 } from '../../..';
 
 import { findMissingValues } from '../../util/utils';
@@ -836,5 +837,21 @@ export function getSampleTypeRowId(name: string): Promise<number> {
                 console.error(reason);
                 reject(resolveErrorMessage(reason));
             });
+    });
+}
+
+export function updateSamplesStatus(sampleIds: number[], newStatus: number, auditBehavior?: AuditBehaviorTypes ): Promise<any> {
+    let updatedRows = [];
+    [...sampleIds].forEach((sampleId) => {
+        updatedRows.push({
+            rowId: sampleId,
+            sampleState: newStatus
+        });
+    });
+
+    return updateRows({
+        schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_STATUS,
+        rows: updatedRows,
+        auditBehavior: auditBehavior ?? AuditBehaviorTypes.DETAILED
     });
 }

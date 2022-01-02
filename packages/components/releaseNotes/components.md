@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Added DiscardConsumedSamplesModal
+* Modified SamplesEditableGrid to allow discarding consumed samples
+* Modified SampleDetailEditing to allow discarding consumed sample
+
 ### version 2.112.0
 *Released*: 30 December 2021
 * Item #9782: Text Choice data type support for field editor updates to in-use values

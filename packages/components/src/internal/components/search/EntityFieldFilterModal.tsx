@@ -26,10 +26,13 @@ export const EntityFieldFilterModal: FC<Props> = memo((props) => {
         onFind(SchemaQuery.create(entityDataType.instanceSchemaName, selectedParentType), []);
     }, [onFind, selectedParentType]);
 
-    const onFilterChange = (id: string, value: any): void => {
+    const onFilterChange = (id: string, value: string): void => {
         setSelectedParentType(value);
     };
 
+    // TODO when populating types, adjust container filter to include the proper set of sample types
+    //  (current + project + shared, in most cases).  For LKB, check if we should filter out any of the
+    //  registry data types or the media types.
     return (
         <Modal show onHide={closeModal}>
             <Modal.Header closeButton>

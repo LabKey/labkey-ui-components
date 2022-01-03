@@ -784,7 +784,7 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
 };
 
 export const AssayImportPanels = withFormSteps(AssayImportPanelsBodyImpl, {
-    currentStep: AssayUploadTabs.Grid, // FIXME: DO NOT COMMIT
+    currentStep: AssayUploadTabs.Files,
     furthestStep: AssayUploadTabs.Grid,
     hasDependentSteps: false,
 });

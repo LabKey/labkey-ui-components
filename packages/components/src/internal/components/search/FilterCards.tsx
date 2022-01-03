@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 import { EntityDataType } from '../entities/models';
 import { Filter } from '@labkey/api';
 import { capitalizeFirstChar } from '../../util/utils';
@@ -10,18 +10,33 @@ export interface FilterCardProps {
     schemaQuery?: SchemaQuery;
     index?: number;
     onAdd: (entityDataType: EntityDataType) => void;
-    onEdit?: (index: number) => void;
-    onDelete?: (index: number) => void;
+}
+
+interface FilterEditProps extends FilterCardProps {
+    onDelete: (index) => void;
+    onEdit: (index) => void;
 }
 
 // exported for jest testing
-export const FilterCard: FC<FilterCardProps> = memo(props => {
+export const FilterCard: FC<FilterEditProps> = memo(props => {
     const { entityDataType, filterArray, index, onAdd, onDelete, onEdit, schemaQuery } = props;
+
+    const _onAdd = useCallback(() => {
+        onAdd(entityDataType);
+    }, [onAdd, entityDataType]);
+
+    const _onEdit = useCallback(() => {
+       onEdit(index);
+    }, [onEdit, index]);
+
+    const _onDelete = useCallback(() => {
+        onDelete(index);
+    }, [onDelete, index]);
 
     if (!schemaQuery) {
         return (
             <>
-                <div className="filter-cards__card" onClick={() => onAdd(entityDataType)}>
+                <div className="filter-cards__card" onClick={_onAdd}>
                     <div className={"filter-card__header without-secondary " + entityDataType.filterCardHeaderClass}>
                         <div className={"primary-text"}>{capitalizeFirstChar(entityDataType.nounAsParentSingular)} Properties</div>
                     </div>
@@ -41,8 +56,8 @@ export const FilterCard: FC<FilterCardProps> = memo(props => {
                     <div className={"primary-text"}>{schemaQuery.queryName}</div>
                     </div>
                     <div className={"pull-right actions"}>
-                        {onEdit && <i className={"fa fa-pencil action-icon"} onClick={() => onEdit(index)}/>}
-                        {onDelete && <i className={"fa fa-trash action-icon"} onClick={() => onDelete(index)}/>}
+                        {onEdit && <i className={"fa fa-pencil action-icon"} onClick={_onEdit}/>}
+                        {onDelete && <i className={"fa fa-trash action-icon"} onClick={_onDelete}/>}
                     </div>
                 </div>
                 <div className="filter-card__card-content">
@@ -64,12 +79,14 @@ export const FilterCard: FC<FilterCardProps> = memo(props => {
 interface Props {
     cards: FilterCardProps[];
     className?: string;
+    onFilterDelete?: (index) => void;
+    onFilterEdit?: (index) => void;
 }
 
 export const FilterCards: FC<Props> = props => (
     <div className={"filter-cards " + props.className}>
         {props.cards.map((cardProps, i) => (
-            <FilterCard {...cardProps} index={i} key={i}/>
+            <FilterCard {...cardProps} onDelete={props.onFilterDelete} onEdit={props.onFilterEdit} index={i} key={i}/>
         ))}
     </div>
 );

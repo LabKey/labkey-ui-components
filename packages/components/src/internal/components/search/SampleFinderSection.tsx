@@ -15,7 +15,7 @@ import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
 import { getFinderStartText } from './utils';
 
 const SAMPLE_FINDER_TITLE = "Find Samples";
-const SAMPLE_FINDER_CAPTION = "Find samples that meet all of these criteria";
+const SAMPLE_FINDER_CAPTION = "Find samples that meet all the criteria defined below";
 
 interface SampleFinderSamplesGridProps {
     user: User;
@@ -50,19 +50,17 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
 export const SampleFinderSection: FC<Props> = memo((props) => {
     const { parentEntityDataTypes, ...gridProps } = props;
 
-    const [showFilterModal, setShowFilterModal] = useState<boolean>(false);
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
     const [filterCards, setFilterCards] = useState<FilterCardProps[]>([]);
 
     const onAddEntity = useCallback((entityType: EntityDataType) => {
         setChosenEntityType(entityType);
-        setShowFilterModal(true);
     }, []);
 
     const onFilterEdit = useCallback((index: number) => {
         console.log("onFilterEdit for index " + index + ": Not yet implemented.");
-        setShowFilterModal(true);
-    }, [filterCards]);
+        setChosenEntityType(parentEntityDataTypes[index]);
+    }, [parentEntityDataTypes]);
 
     const onFilterDelete = useCallback((index: number) => {
         const newFilterCards = [...filterCards];
@@ -71,22 +69,21 @@ export const SampleFinderSection: FC<Props> = memo((props) => {
     }, [filterCards]);
 
     const onFilterClose = () => {
-        setShowFilterModal(false);
+        setChosenEntityType(undefined);
     };
 
     const onFind = useCallback((schemaQuery: SchemaQuery, filterArray: Filter.IFilter[])  => {
-        onFilterClose();
+
         let newFilterCards = [...filterCards];
         newFilterCards.push({
             schemaQuery,
             filterArray,
             entityDataType: chosenEntityType,
-            index: filterCards.length,
             onAdd: onAddEntity,
-            onDelete: onFilterDelete,
         });
+        onFilterClose();
         setFilterCards(newFilterCards);
-    }, [setFilterCards, filterCards, onFilterEdit, onFilterDelete, chosenEntityType]);
+    }, [filterCards, onFilterEdit, onFilterDelete, chosenEntityType]);
 
     return (
         <Section title={SAMPLE_FINDER_TITLE} caption={SAMPLE_FINDER_CAPTION} context={(
@@ -103,14 +100,14 @@ export const SampleFinderSection: FC<Props> = memo((props) => {
                 </>
                 :
                 <>
-                    <FilterCards cards={filterCards} />
+                    <FilterCards cards={filterCards} onFilterDelete={onFilterDelete} />
                     <SampleFinderSamples
                         {...gridProps}
                         cards={filterCards}
                     />
                 </>
             }
-            {showFilterModal && (
+            {chosenEntityType !== undefined && (
                 <EntityFieldFilterModal
                     onCancel={onFilterClose}
                     entityDataType={chosenEntityType}
@@ -125,7 +122,7 @@ interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
     cards: FilterCardProps[];
 }
 
-export const SampleFinderSamplesImpl: FC<SampleFinderSamplesProps & InjectedQueryModels> = memo(props => {
+export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryModels> = memo(props => {
     const { actions, queryModels } = props;
 
     return(
@@ -146,13 +143,11 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesProps & InjectedQuer
     )
 });
 
-// exported for jest testing
-export const SampleFinderSamplesWithQueryModels = withQueryModels<SampleFinderSamplesProps>(SampleFinderSamplesImpl);
+const SampleFinderSamplesWithQueryModels = withQueryModels<SampleFinderSamplesGridProps>(SampleFinderSamplesImpl);
 
 
-// exported for jest testing
-export const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo((props) => {
-    const { cards } = props;
+const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo((props) => {
+    const { cards, ...gridProps} = props;
 
     const baseFilters = [];
     // TODO this is not really correct.  Probably there will be a specialized filter type used for these lineage queries.
@@ -175,7 +170,7 @@ export const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo((props) =>
 
     return (
         <SampleFinderSamplesWithQueryModels
-            {...props}
+            {...gridProps}
             autoLoad={false}
             queryConfigs={queryConfigs}
         />

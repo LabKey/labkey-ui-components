@@ -325,6 +325,26 @@ export function getSampleSelectionStorageData(selection: List<any>): Promise<Rec
     });
 }
 
+export function getSampleStorageId(sampleRowId: number): Promise<number> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaName: 'inventory',
+            queryName: 'ItemSamples',
+            columns: 'RowId, SampleId',
+            filterArray: [Filter.create('SampleId', sampleRowId)],
+        })
+            .then(response => {
+                const { key } = response;
+                const rowId = response.orderedModels[key]?.get(0);
+                resolve(rowId); // allow rowId to be undefined, which means sample is not in storage
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
+
 export function getSampleSelectionLineageData(
     selection: List<any>,
     sampleType: string,

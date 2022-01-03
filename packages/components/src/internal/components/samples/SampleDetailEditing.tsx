@@ -36,6 +36,7 @@ interface Props extends EditableDetailPanelProps {
 
 interface State {
     hasError: boolean;
+    sampleStorageItemId: number;
     sampleTypeDomainFields: GroupedSampleFields;
     showDiscardDialog: boolean;
     editing: boolean;
@@ -51,6 +52,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
 
     state: Readonly<State> = {
         hasError: false,
+        sampleStorageItemId: undefined,
         sampleTypeDomainFields: undefined,
         showDiscardDialog: false,
         editing: false,
@@ -60,7 +62,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     };
 
     componentDidMount(): void {
-        this.loadSampleType();
+        this.init();
     }
 
     componentDidUpdate(prevProps: Props): void {
@@ -71,18 +73,19 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                     hasError: false,
                 }),
                 () => {
-                    this.loadSampleType();
+                    this.init();
                 }
             );
         }
     }
 
-    loadSampleType = async (): Promise<void> => {
+    init = async (): Promise<void> => {
         const { sampleSet, api } = this.props;
 
         try {
             const sampleTypeDomainFields = await getGroupedSampleDomainFields(sampleSet);
             const statuses = await api.samples.getSampleStatuses();
+            const sampleStorageItemId = await api.samples.getSampleStorageId(this.getSampleId());
 
             let consumedStatusIds = [];
             statuses.forEach(status => {
@@ -96,6 +99,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
             this.setState({
                 sampleTypeDomainFields,
                 consumedStatusIds,
+                sampleStorageItemId,
                 hasError: false
             });
         } catch (e) {
@@ -105,6 +109,11 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
 
     getRow = (): Record<string, any> => {
         return this.props.model.getRow() ?? {};
+    };
+
+    getSampleId = () => {
+        const row = this.getRow();
+        return caseInsensitive(row, "RowId")?.value;
     };
 
     getUpdateDisplayColumns = (isAliquot: boolean): GroupedSampleDisplayColumns => {
@@ -153,7 +162,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     onConfirmConsumedSamplesDialog = async (shouldDiscard: boolean, comment: string) => {
         const { auditBehavior, containerPath, model, onUpdate } = this.props;
         const { queryInfo } = model;
-        const { pendingUpdatedValues } = this.state;
+        const { pendingUpdatedValues, sampleStorageItemId } = this.state;
 
         try {
             await updateRows({
@@ -174,10 +183,9 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
 
         if (shouldDiscard) {
             try {
-                const sampleItemId = -1; //TODO query for itemId
                 await deleteRows({
                     schemaQuery: SCHEMAS.INVENTORY.ITEMS,
-                    rows: [{RowId: sampleItemId}],
+                    rows: [{RowId: sampleStorageItemId}],
                     auditBehavior: AuditBehaviorTypes.DETAILED,
                     auditUserComment: comment
                 })

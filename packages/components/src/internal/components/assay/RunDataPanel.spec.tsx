@@ -1,42 +1,17 @@
+import { mount } from 'enzyme';
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
-
-import { getQueryGridModel } from '../../global';
-import { getStateQueryGridModel } from '../../models';
-import { gridInit } from '../../actions';
-import { FormTabs, withFormSteps, WithFormStepsProps } from '../../..';
+import { FormTabs, LoadingState, QueryModel, withFormSteps, WithFormStepsProps } from '../../..';
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
-import { initUnitTestMocks } from '../../testHelperMocks';
 import { AssayUploadTabs } from '../../constants';
+import { EditorModel } from '../../models';
 
 import { RunDataPanel } from './RunDataPanel';
 
-let MODEL_ID_NOT_LOADED;
-let MODEL_ID_LOADED;
-
-beforeAll(() => {
-    initUnitTestMocks();
-
-    let model = getStateQueryGridModel('jest-test-0', ASSAY_WIZARD_MODEL.queryInfo.schemaQuery, {
-        editable: true,
-        allowSelection: false,
-        bindURL: false,
-    });
-    MODEL_ID_NOT_LOADED = model.getId();
-
-    model = getStateQueryGridModel('jest-test-1', ASSAY_WIZARD_MODEL.queryInfo.schemaQuery, {
-        editable: true,
-        allowSelection: false,
-        bindURL: false,
-    });
-
-    gridInit(model, false);
-    MODEL_ID_LOADED = model.getId();
-});
+let MODEL_ID_NOT_LOADED = 'not loaded';
+let MODEL_ID_LOADED = 'loaded';
 
 interface OwnProps {
-    fullWidth?: boolean;
     allowBulkRemove?: boolean;
     showTabs?: boolean;
 }
@@ -44,20 +19,32 @@ type Props = OwnProps & WithFormStepsProps;
 
 class RunDataPanelWrapperImpl extends React.Component<Props, any> {
     render() {
-        const { currentStep, fullWidth, allowBulkRemove, showTabs } = this.props;
-        const gridModel = getQueryGridModel(MODEL_ID_LOADED);
+        const { currentStep, allowBulkRemove, showTabs } = this.props;
+        const { queryInfo } = ASSAY_WIZARD_MODEL;
+        const queryModel = new QueryModel({
+            id: MODEL_ID_LOADED,
+            schemaQuery: queryInfo.schemaQuery,
+        }).mutate({
+            rows: {},
+            orderedRows: [],
+            rowsLoadingState: LoadingState.LOADED,
+            queryInfoLoadingState: LoadingState.LOADED,
+            queryInfo,
+        });
+        const editorModel = new EditorModel({ id: MODEL_ID_LOADED });
 
         return (
             <RunDataPanel
-                currentStep={currentStep}
-                wizardModel={ASSAY_WIZARD_MODEL}
-                queryGridModelForEditor={gridModel}
-                onFileChange={jest.fn}
-                onFileRemoval={jest.fn}
-                onTextChange={jest.fn}
-                fullWidth={fullWidth}
                 allowBulkRemove={allowBulkRemove}
+                currentStep={currentStep}
+                editorModel={editorModel}
+                onFileChange={jest.fn()}
+                onFileRemoval={jest.fn()}
+                onGridChange={jest.fn()}
+                onTextChange={jest.fn()}
+                queryModel={queryModel}
                 showTabs={showTabs}
+                wizardModel={ASSAY_WIZARD_MODEL}
             />
         );
     }
@@ -71,14 +58,21 @@ const RunDataPanelWrapper = withFormSteps(RunDataPanelWrapperImpl, {
 
 describe('<RunDataPanel/>', () => {
     test('loading state based on gridModel', () => {
+        const queryModel = new QueryModel({
+            id: MODEL_ID_LOADED,
+            schemaQuery: ASSAY_WIZARD_MODEL.queryInfo.schemaQuery,
+        });
+        const editorModel = new EditorModel({ id: MODEL_ID_NOT_LOADED });
         const component = (
             <RunDataPanel
                 currentStep={AssayUploadTabs.Files}
+                editorModel={editorModel}
+                onFileChange={jest.fn()}
+                onFileRemoval={jest.fn()}
+                onGridChange={jest.fn()}
+                onTextChange={jest.fn()}
+                queryModel={queryModel}
                 wizardModel={ASSAY_WIZARD_MODEL}
-                queryGridModelForEditor={getQueryGridModel(MODEL_ID_NOT_LOADED)}
-                onFileChange={jest.fn}
-                onFileRemoval={jest.fn}
-                onTextChange={jest.fn}
             />
         );
 

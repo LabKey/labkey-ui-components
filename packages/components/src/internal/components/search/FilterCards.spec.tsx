@@ -10,7 +10,7 @@ describe("FilterCard", () => {
 
     const capParentNoun = capitalizeFirstChar(TestTypeDataType.nounAsParentSingular);
     test("no schemaQuery", () => {
-        const wrapper = mount(<FilterCard entityDataType={TestTypeDataType} onAdd={jest.fn}/>);
+        const wrapper = mount(<FilterCard entityDataType={TestTypeDataType} onAdd={jest.fn} onDelete={jest.fn} onEdit={jest.fn}/>);
         const header = wrapper.find('.filter-card__header');
         expect(header.prop("className")).toContain("without-secondary");
         expect(header.prop("className")).toContain(TestTypeDataType.filterCardHeaderClass);

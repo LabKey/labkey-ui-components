@@ -32,7 +32,7 @@ $circle-size: 12 * $scale;
   margin-bottom: $scale * 2;
 
   .cards__card-content {
-    color: #777;
+    color: $gray-light;
     margin: ($scale * 2) ($scale * 3);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -42,7 +42,7 @@ $circle-size: 12 * $scale;
   .cards__card-title {
     text-transform: uppercase;
     font-size: 16px;
-    color: #555;
+    color: $gray;
     margin-bottom: $scale;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -60,10 +60,10 @@ $circle-size: 12 * $scale;
     cursor: pointer;
 
     .cards__card-content {
-      color: #555;
+      color: $gray;
     }
     .cards__card-title {
-      color: #333;
+      color: $gray-dark;
     }
   }
 
@@ -72,10 +72,10 @@ $circle-size: 12 * $scale;
     transform: translateY(-2px);
 
     .cards__card-content {
-      color: #555;
+      color: $gray;
     }
     .cards__card-title {
-      color: #333;
+      color: $gray-dark;
     }
   }
 }
@@ -134,11 +134,17 @@ $circle-size: 12 * $scale;
     &.empty {
         justify-content: center;
         margin-top: 100px;
+
+        @media (max-width: $screen-md-min) {
+            margin-top: 15px;
+        }
+    }
+    @media (max-width: $screen-md-min) {
+        flex-wrap: wrap;
     }
 }
 
 .filter-cards__card {
-    //display: block;
     min-width: 330px;
     border-radius: 2px;
     height: $card-min-height;
@@ -147,6 +153,7 @@ $circle-size: 12 * $scale;
     transition: all 250ms;
     font-size: 14px;
     margin-right: 15px;
+    margin-top: 8px;
 
 
     @include shadow(1);
@@ -159,10 +166,10 @@ $circle-size: 12 * $scale;
         cursor: pointer;
 
         .cards__card-content {
-            color: #555;
+            color: $gray;
         }
         .cards__card-title {
-            color: #333;
+            color: $gray-dark;
         }
     }
 }

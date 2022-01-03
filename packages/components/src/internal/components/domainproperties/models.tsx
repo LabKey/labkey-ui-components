@@ -42,6 +42,7 @@ import {
     FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG,
     INT_RANGE_URI,
     MAX_TEXT_LENGTH,
+    PHILEVEL_NOT_PHI,
     SAMPLE_TYPE_CONCEPT_URI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
@@ -551,17 +552,20 @@ export class ConditionalFormat
 export interface IPropertyValidatorProperties {
     failOnMatch: boolean;
     validValues: string[];
+    valueUpdates: Record<string, string>;
 }
 
 export class PropertyValidatorProperties
     extends Record({
         failOnMatch: false,
         validValues: undefined,
+        valueUpdates: undefined,
     })
     implements IPropertyValidatorProperties
 {
     declare failOnMatch: boolean;
     declare validValues: string[];
+    declare valueUpdates: Record<string, string>;
 
     constructor(values?: { [key: string]: any }) {
         if (typeof values?.failOnMatch === 'string') {
@@ -581,6 +585,7 @@ export interface IPropertyValidator {
     type: string;
     name: string;
     properties: PropertyValidatorProperties;
+    extraProperties: PropertyValidatorProperties;
     errorMessage?: string;
     description?: string;
     new: boolean;
@@ -594,6 +599,7 @@ export class PropertyValidator
         type: undefined,
         name: undefined,
         properties: new PropertyValidatorProperties(),
+        extraProperties: new PropertyValidatorProperties(),
         errorMessage: undefined,
         description: undefined,
         new: true,
@@ -606,6 +612,7 @@ export class PropertyValidator
     declare type: string;
     declare name: string;
     declare properties: PropertyValidatorProperties;
+    declare extraProperties: PropertyValidatorProperties;
     declare errorMessage?: string;
     declare description?: string;
     declare new: boolean;
@@ -662,6 +669,10 @@ export class PropertyValidator
 
             if (pvs[i]?.properties?.validValues) {
                 delete pvs[i].properties.validValues;
+            }
+
+            if (pvs[i]?.extraProperties && !pvs[i].extraProperties.valueUpdates) {
+                delete pvs[i].extraProperties;
             }
 
             delete pvs[i].shouldShowWarning;
@@ -1088,6 +1099,10 @@ export class DomainField
         return this.conceptURI === TEXT_CHOICE_CONCEPT_URI;
     }
 
+    isPHI(): boolean {
+        return this.PHI !== PHILEVEL_NOT_PHI;
+    }
+
     static hasRangeValidation(field: DomainField): boolean {
         return (
             field.dataType === INTEGER_TYPE ||
@@ -1209,9 +1224,13 @@ export class DomainField
     }
 }
 
+export function isValidTextChoiceValue(v: string): boolean {
+    return v !== null && v !== undefined && v.trim() !== '';
+}
+
 export function getValidValuesFromArray(validValues: string[]): string[] {
     // filter out any empty string values
-    const vals = validValues?.filter(v => v !== null && v !== undefined && v.trim() !== '') ?? [];
+    const vals = validValues?.filter(isValidTextChoiceValue) ?? [];
     // remove duplicates
     return [...new Set(vals)];
 }
@@ -1815,6 +1834,8 @@ export interface IDomainFormDisplayOptions {
     hideConditionalFormatting?: boolean;
     hideInferFromFile?: boolean;
     showScannableOption?: boolean;
+    textChoiceLockedForDomain?: boolean;
+    textChoiceLockedSqlFragment?: string;
 }
 
 export interface IDerivationDataScope {

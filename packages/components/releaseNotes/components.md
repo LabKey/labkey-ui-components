@@ -8,6 +8,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Update FindAndSearch menu
   * Move SearchBox and related components into the search directory
 
+### version 2.112.0
+*Released*: 30 December 2021
+* Item #9782: Text Choice data type support for field editor updates to in-use values
+  * update to query to get in-use text choice values so that it includes "locked" and row count
+  * provide SQL fragment from sample type domain for how to determine "locked" text choice values
+  * update text choice listing icons and selected value display for info on updates and hover text
+  * send text choice value updates for in-use values to the server as part of POST to update domain
+  * prevent text choice updates and add values modal apply for duplicates and empty strings
+
 ### version 2.111.1
 *Released*: 29 December 2021
 * Issue #44567: Hide scannable option for floating point fields due to improper matching.

@@ -15,7 +15,7 @@
  */
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
-import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
+import { Ajax, Domain, Query, Security, Utils, Filter } from '@labkey/api';
 
 import {
     buildURL,
@@ -51,6 +51,7 @@ import {
     NameExpressionsValidationResults,
     QueryInfoLite,
     updateSampleField,
+    isValidTextChoiceValue,
 } from './models';
 import {
     ATTACHMENT_TYPE,
@@ -1118,5 +1119,71 @@ export function getDomainNamePreviews(
                 reject(response);
             },
         });
+    });
+}
+
+export function getTextChoiceInUseValues(
+    field: DomainField,
+    schemaName: string,
+    queryName: string,
+    lockedSqlFragment: string
+): Promise<Record<string, any>> {
+    return new Promise((resolve, reject) => {
+        const containerFilter = Query.ContainerFilter.allFolders; // to account for a shared domain at project or /Shared
+        const fieldName = field.original?.name ?? field.name;
+
+        // if the field is set as PHI, we need the query to include the RowId for logging, so we have to do the aggregate client side
+        if (field.isPHI()) {
+            Query.selectRows({
+                containerFilter,
+                schemaName,
+                queryName,
+                columns: 'RowId,SampleState/StatusType,' + fieldName,
+                filterArray: [Filter.create(fieldName, undefined, Filter.Types.NONBLANK)],
+                maxRows: -1,
+                success: response => {
+                    const values = {};
+                    response.rows.forEach(row => {
+                        const value = row[fieldName];
+                        if (isValidTextChoiceValue(value)) {
+                            if (!values[value]) {
+                                values[value] = { count: 0, locked: false };
+                            }
+                            values[value].count++;
+                            values[value].locked =
+                                values[value].locked || row['SampleState/StatusType'] === 'Locked';
+                        }
+                    });
+                    resolve(values);
+                },
+                failure: error => {
+                    console.error('Error fetching distinct values for the text field: ', error);
+                    reject(error);
+                },
+            });
+        } else {
+            Query.executeSql({
+                containerFilter,
+                schemaName,
+                sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
+                success: response => {
+                    const values = response.rows
+                        .filter(row => isValidTextChoiceValue(row[fieldName]))
+                        .reduce((prev, current) => {
+                            prev[current[fieldName]] = {
+                                count: current['RowCount'],
+                                locked: current['IsLocked'] === 1,
+                            };
+                            return prev;
+                        }, {});
+
+                    resolve(values);
+                },
+                failure: error => {
+                    console.error('Error fetching distinct values for the text field: ', error);
+                    reject(error);
+                },
+            });
+        }
     });
 }

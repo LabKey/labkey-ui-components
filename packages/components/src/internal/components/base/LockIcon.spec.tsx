@@ -17,7 +17,7 @@ describe('<LockIcon/>', () => {
     });
 
     test('custom properties', () => {
-        const component = <LockIcon {...DEFAULT_PROPS} iconCls="jest-testing-cls" />;
+        const component = <LockIcon {...DEFAULT_PROPS} iconCls="jest-testing-cls" unlocked />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });

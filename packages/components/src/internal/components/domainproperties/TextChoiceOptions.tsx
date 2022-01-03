@@ -1,23 +1,22 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import classNames from 'classnames';
-import { Query } from '@labkey/api';
+import { Query, Utils } from '@labkey/api';
 
+import { Alert } from '../base/Alert';
 import { ChoicesListItem } from '../base/ChoicesListItem';
-
 import { AddEntityButton } from '../buttons/AddEntityButton';
-
 import { LoadingSpinner } from '../base/LoadingSpinner';
-
 import { LockIcon } from '../base/LockIcon';
-
 import { DisableableButton } from '../buttons/DisableableButton';
+
+import { DisableableInput } from '../forms/DisableableInput';
 
 import { DOMAIN_VALIDATOR_TEXTCHOICE, MAX_VALID_TEXT_CHOICES } from './constants';
 import {
     DEFAULT_TEXT_CHOICE_VALIDATOR,
     DomainField,
-    getValidValuesFromArray,
+    isValidTextChoiceValue,
     ITypeDependentProps,
     PropertyValidator,
 } from './models';
@@ -25,19 +24,31 @@ import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
-import { createFormInputId } from './actions';
+import { createFormInputId, getTextChoiceInUseValues } from './actions';
 
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;
 
 const IN_USE_TITLE = 'Text Choice In Use';
-const IN_USE_TIP = 'This text choice value cannot be changed or deleted because it is in use.';
-
+const IN_USE_TIP = 'This text choice value cannot be deleted because it is in use.';
 const VALUE_IN_USE = (
     <LockIcon
         iconCls="pull-right choices-list__locked"
         body={IN_USE_TIP}
         id="text-choice-value-lock-icon"
         title={IN_USE_TITLE}
+        unlocked
+    />
+);
+
+const LOCKED_TITLE = 'Text Choice In Use and Locked';
+const LOCKED_TIP =
+    'This text choice value cannot be deleted because it is in use and cannot be edited because one or more usages are for read-only items.';
+const VALUE_LOCKED = (
+    <LockIcon
+        iconCls="pull-right choices-list__locked"
+        body={LOCKED_TIP}
+        id="text-choice-value-lock-icon"
+        title={LOCKED_TITLE}
     />
 );
 
@@ -45,12 +56,16 @@ interface Props extends ITypeDependentProps {
     field: DomainField;
     queryName?: string;
     schemaName?: string;
+    lockedForDomain?: boolean;
+    lockedSqlFragment?: string;
 }
 
 interface ImplProps extends Props {
-    fieldValues: string[];
+    // mapping existing field values (existence in this object signals "in use") to locked status (only applicable
+    // to some domain types) and row count for the given value
+    fieldValues: Record<string, Record<string, any>>;
     loading: boolean;
-    replaceValues: (newValues: string[]) => void;
+    replaceValues: (newValues: string[], valueUpdates?: Record<string, string>) => void;
     validValues: string[];
     maxValueCount?: number;
 }
@@ -65,42 +80,89 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
         validValues,
         replaceValues,
         maxValueCount = MAX_VALID_TEXT_CHOICES,
+        lockedForDomain,
     } = props;
     const [selectedIndex, setSelectedIndex] = useState<number>();
     const [currentValue, setCurrentValue] = useState<string>();
+    const [currentError, setCurrentError] = useState<string>();
     const [showAddValuesModal, setShowAddValuesModal] = useState<boolean>();
-    const currentInUse = fieldValues.indexOf(currentValue) > -1;
+
+    // keep a map from the updated values for the in-use field values to their original values
+    const [fieldValueUpdates, setFieldValueUpdates] = useState<Record<string, string>>({});
+    useEffect(() => {
+        setFieldValueUpdates(
+            Object.keys(fieldValues).reduce((prev, current) => {
+                prev[current] = current;
+                return prev;
+            }, {})
+        );
+    }, [fieldValues]);
+
+    const selectedValue = useMemo(() => validValues[selectedIndex], [validValues, selectedIndex]);
+    const currentInUse = fieldValueUpdates.hasOwnProperty(selectedValue);
+    const currentLocked =
+        currentInUse && (lockedForDomain || (fieldValues[fieldValueUpdates[selectedValue]]?.locked ?? false));
+
+    const isValueDuplicate = useCallback(
+        (val: string): boolean => {
+            return validValues.indexOf(val) !== -1;
+        },
+        [validValues]
+    );
 
     const onSelect = useCallback(
         ind => {
             setSelectedIndex(ind);
             setCurrentValue(validValues?.[ind]);
+            setCurrentError(undefined);
         },
         [validValues]
     );
 
-    const onValueChange = useCallback(evt => {
-        setCurrentValue(evt.target.value);
-    }, []);
+    const onValueChange = useCallback(
+        evt => {
+            const updatedVal = evt.target.value;
+            setCurrentValue(updatedVal);
+            setCurrentError(
+                updatedVal.trim() !== selectedValue && isValueDuplicate(updatedVal.trim())
+                    ? `"${updatedVal.trim()}" already exists in the list of values.`
+                    : undefined
+            );
+        },
+        [validValues, selectedIndex]
+    );
 
     const updateValue = useCallback(
         (updatedValue?: string) => {
             const newValues = [...validValues];
+            const newFieldValueUpdates = { ...fieldValueUpdates };
+
             if (updatedValue !== undefined) {
                 newValues.splice(selectedIndex, 1, updatedValue);
+
+                // if one of the "in use" field values was updated, we need to update the fieldValueUpdates mapping object
+                if (fieldValueUpdates[selectedValue]) {
+                    newFieldValueUpdates[updatedValue] = fieldValueUpdates[selectedValue];
+                    delete newFieldValueUpdates[selectedValue];
+                    setFieldValueUpdates(newFieldValueUpdates);
+                }
             } else {
                 newValues.splice(selectedIndex, 1);
                 onSelect(undefined); // clear selected index and value
             }
-            replaceValues(newValues);
+
+            replaceValues(newValues, newFieldValueUpdates);
         },
-        [validValues, replaceValues, selectedIndex, onSelect]
+        [validValues, selectedValue, replaceValues, selectedIndex, onSelect, fieldValueUpdates]
     );
 
     const onApply = useCallback(() => {
         const val = currentValue.trim();
-        updateValue(val);
-        setCurrentValue(val);
+        if (!isValueDuplicate(val)) {
+            updateValue(val);
+            setCurrentValue(val);
+            setCurrentError(undefined);
+        }
     }, [updateValue, currentValue]);
 
     const onDelete = useCallback(() => {
@@ -113,10 +175,12 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
 
     const onApplyAddValues = useCallback(
         (values: string[]) => {
-            replaceValues(validValues.concat(values));
+            // filter out any duplicates from the already included values
+            const filteredVals = values.filter(v => !isValueDuplicate(v));
+            replaceValues(validValues.concat(filteredVals), fieldValueUpdates);
             toggleAddValues();
         },
-        [replaceValues, validValues, toggleAddValues]
+        [replaceValues, validValues, toggleAddValues, fieldValueUpdates]
     );
 
     return (
@@ -149,7 +213,11 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                     >
                         <div className="list-group domain-text-choices-list">
                             {validValues.map((value, ind) => {
-                                const inUse = fieldValues.indexOf(value) > -1;
+                                const inUse = fieldValueUpdates.hasOwnProperty(value);
+                                const locked =
+                                    inUse &&
+                                    (lockedForDomain || (fieldValues[fieldValueUpdates[value]]?.locked ?? false));
+
                                 return (
                                     <ChoicesListItem
                                         active={ind === selectedIndex}
@@ -158,7 +226,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                         label={value}
                                         subLabel={value === '' ? 'Empty Value' : undefined}
                                         onSelect={onSelect}
-                                        componentRight={inUse && VALUE_IN_USE}
+                                        componentRight={locked ? VALUE_LOCKED : inUse ? VALUE_IN_USE : null}
                                     />
                                 );
                             })}
@@ -182,22 +250,22 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                     <DomainFieldLabel label="Value" />
                                 </div>
                                 <div className="domain-field-padding-bottom">
-                                    <input
+                                    <DisableableInput
                                         className="form-control full-width"
-                                        disabled={currentInUse}
+                                        disabledMsg={currentLocked ? LOCKED_TIP : undefined}
                                         name="value"
                                         onChange={onValueChange}
                                         placeholder="Enter a text choice value"
-                                        type="text"
+                                        title={LOCKED_TITLE}
                                         value={currentValue ?? ''}
                                     />
                                 </div>
-                                <div>
+                                <div className="domain-field-padding-bottom">
                                     <DisableableButton
                                         bsStyle="default"
-                                        disabledMsg={currentInUse ? IN_USE_TIP : undefined}
+                                        disabledMsg={currentLocked ? LOCKED_TIP : currentInUse ? IN_USE_TIP : undefined}
                                         onClick={onDelete}
-                                        title={IN_USE_TITLE}
+                                        title={currentLocked ? LOCKED_TITLE : IN_USE_TITLE}
                                     >
                                         <span className="fa fa-trash" />
                                         <span>&nbsp;Delete</span>
@@ -205,12 +273,29 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                     <Button
                                         bsStyle="success"
                                         className="pull-right"
-                                        disabled={currentValue === validValues[selectedIndex]}
+                                        disabled={
+                                            currentError !== undefined ||
+                                            currentValue === selectedValue ||
+                                            currentValue.trim() === ''
+                                        }
                                         onClick={onApply}
                                     >
                                         Apply
                                     </Button>
                                 </div>
+                                {fieldValueUpdates[selectedValue] !== undefined &&
+                                    selectedValue !== fieldValueUpdates[selectedValue] && (
+                                        <Alert bsStyle="info" className="domain-text-choices-info">
+                                            {Utils.pluralize(
+                                                fieldValues[fieldValueUpdates[selectedValue]].count,
+                                                'row',
+                                                'rows'
+                                            )}{' '}
+                                            with value <b>{fieldValueUpdates[selectedValue]}</b> will be updated to{' '}
+                                            <b>{selectedValue}</b> on save.
+                                        </Alert>
+                                    )}
+                                {currentError && <Alert bsStyle="danger">{currentError}</Alert>}
                             </>
                         )}
                     </Col>
@@ -229,15 +314,23 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
 });
 
 export const TextChoiceOptions: FC<Props> = memo(props => {
-    const { field, onChange, domainIndex, index, schemaName, queryName } = props;
+    const { field, onChange, domainIndex, index, schemaName, queryName, lockedSqlFragment = 'FALSE' } = props;
     const [loading, setLoading] = useState<boolean>(true);
-    const [fieldValues, setFieldValues] = useState<string[]>([]);
+    const [fieldValues, setFieldValues] = useState<Record<string, Record<string, any>>>({});
     const [validValues, setValidValues] = useState<string[]>(field.textChoiceValidator?.properties.validValues ?? []);
     const fieldId = createFormInputId(DOMAIN_VALIDATOR_TEXTCHOICE, domainIndex, index);
 
     const replaceValues = useCallback(
-        (newValues: string[]) => {
+        (newValues: string[], newValueUpdates?: Record<string, string>) => {
             setValidValues(newValues);
+
+            const valueUpdates = Object.keys(newValueUpdates ?? {}).reduce((prev, curr) => {
+                if (curr !== newValueUpdates[curr]) {
+                    prev[newValueUpdates[curr]] = curr;
+                }
+                return prev;
+            }, {});
+
             onChange(
                 fieldId,
                 new PropertyValidator({
@@ -247,6 +340,7 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
                     shouldShowWarning: true,
                     expression: newValues.join('|'),
                     properties: { validValues: newValues },
+                    extraProperties: { valueUpdates },
                 })
             );
         },
@@ -258,31 +352,22 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
             // for an existing field, we query for the distinct set of values in the Text column to be used for
             // the initial set of values and/or setting fields as locked (i.e. in use)
             if (!field.isNew() && schemaName && queryName) {
-                const fieldName = field.original?.name ?? field.name;
-                Query.selectDistinctRows({
-                    containerFilter: Query.ContainerFilter.allFolders, // to account for a shared domain at project or /Shared
-                    schemaName,
-                    queryName,
-                    column: fieldName,
-                    sort: fieldName,
-                    success: result => {
-                        const values = getValidValuesFromArray(result.values);
+                getTextChoiceInUseValues(field, schemaName, queryName, lockedSqlFragment)
+                    .then(values => {
                         setFieldValues(values);
 
                         // if this is new text choice validator (i.e. does not have a rowId) for an existing field
                         // that is being changed to data type = Text Choice (that "is new field" check is above),
                         // then we will use the existing distinct values for that field as the initial options
                         if (!field.textChoiceValidator?.rowId) {
-                            replaceValues(values);
+                            replaceValues(Object.keys(values).sort());
                         }
 
                         setLoading(false);
-                    },
-                    failure: error => {
-                        console.error('Error fetching distinct values for the text field: ', error);
+                    })
+                    .catch(() => {
                         setLoading(false);
-                    },
-                });
+                    });
             } else {
                 setLoading(false);
             }

@@ -30,8 +30,9 @@ import {
 } from '../..';
 import { AssayWizardModel } from '../../internal/components/assay/AssayWizardModel';
 
-import assayWizardJSON from './assayWizardModel.json';
 import { DELETE_SAMPLES_TOPIC } from '../../internal/util/helpLinks';
+
+import assayWizardJSON from './assayWizardModel.json';
 
 export const GRID_DATA = Map<any, Map<string, any>>({
     '1': Map<string, any>({
@@ -434,10 +435,10 @@ export const TEST_FOLDER_CONTAINER = new Container({
 });
 
 export const TestTypeDataType: EntityDataType = {
-    typeListingSchemaQuery: SchemaQuery.create("TestListing", "query"),
-    listingSchemaQuery: SchemaQuery.create("Test", "query"),
-    instanceSchemaName: "TestSchema",
-    operationConfirmationActionName: "test-delete-confirmation.api",
+    typeListingSchemaQuery: SchemaQuery.create('TestListing', 'query'),
+    listingSchemaQuery: SchemaQuery.create('Test', 'query'),
+    instanceSchemaName: 'TestSchema',
+    operationConfirmationActionName: 'test-delete-confirmation.api',
     nounSingular: 'test',
     nounPlural: 'tests',
     nounAsParentSingular: 'test Parent',
@@ -450,7 +451,7 @@ export const TestTypeDataType: EntityDataType = {
     inputColumnName: 'Inputs/Materials/First',
     inputTypeValueField: 'lsid',
     insertColumnNamePrefix: 'MaterialInputs/',
-    editTypeAppUrlPrefix: "Test",
+    editTypeAppUrlPrefix: 'Test',
     importFileAction: 'importSamples',
-    filterCardHeaderClass: "filter-card__header-success",
+    filterCardHeaderClass: 'filter-card__header-success',
 };

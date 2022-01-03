@@ -30,7 +30,7 @@ export const SampleTypeDataType: EntityDataType = {
     insertColumnNamePrefix: 'MaterialInputs/',
     editTypeAppUrlPrefix: SAMPLE_TYPE_KEY,
     importFileAction: 'importSamples',
-    filterCardHeaderClass: "filter-card__header-success",
+    filterCardHeaderClass: 'filter-card__header-success',
 };
 
 export const DataClassDataType: EntityDataType = {

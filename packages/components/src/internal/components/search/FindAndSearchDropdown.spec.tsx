@@ -3,8 +3,9 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MenuItem } from 'react-bootstrap';
 
-import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 import { EXPERIMENTAL_SAMPLE_FINDER } from '../../app/constants';
+
+import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 
 describe('FindAndSearchDropdown', () => {
     const { location } = window;

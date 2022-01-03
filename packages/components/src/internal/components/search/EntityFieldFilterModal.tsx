@@ -1,9 +1,11 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Modal } from 'react-bootstrap';
+
+import { Filter } from '@labkey/api';
+
 import { EntityDataType } from '../entities/models';
 import { capitalizeFirstChar } from '../../util/utils';
 import { QuerySelect } from '../forms/QuerySelect';
-import { Filter } from '@labkey/api';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 interface Props {
@@ -12,10 +14,10 @@ interface Props {
     onFind: (schemaQuery: SchemaQuery, filterArray: Filter.IFilter[]) => void;
 }
 
-export const EntityFieldFilterModal: FC<Props> = memo((props) => {
+export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const { entityDataType, onCancel, onFind } = props;
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
-    const [ selectedParentType, setSelectedParentType ] = useState<string>(undefined);
+    const [selectedParentType, setSelectedParentType] = useState<string>(undefined);
 
     const closeModal = useCallback(() => {
         onCancel();
@@ -45,7 +47,7 @@ export const EntityFieldFilterModal: FC<Props> = memo((props) => {
                     schemaQuery={entityDataType.typeListingSchemaQuery}
                     onQSChange={onFilterChange}
                     value={selectedParentType}
-                    valueColumn={"Name"}
+                    valueColumn="Name"
                     label={entityDataType.nounAsParentSingular}
                 />
             </Modal.Body>
@@ -57,16 +59,11 @@ export const EntityFieldFilterModal: FC<Props> = memo((props) => {
                 </div>
 
                 <div className="pull-right">
-                    <button
-                        type="button"
-                        className="btn btn-success"
-                        onClick={_onFind}
-                        disabled={!selectedParentType}
-                    >
+                    <button type="button" className="btn btn-success" onClick={_onFind} disabled={!selectedParentType}>
                         Find Samples
                     </button>
                 </div>
             </Modal.Footer>
         </Modal>
-    )
-})
+    );
+});

@@ -197,7 +197,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     }, [actions, activeModel.id]);
 
     const afterSampleDelete = useCallback(
-        (rowsToKeep: Array<any>) => {
+        (rowsToKeep: any[]) => {
             const ids = [];
             if (rowsToKeep.length > 0) {
                 rowsToKeep.forEach(row => {
@@ -211,7 +211,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         [actions, activeModel]
     );
 
-    const onUpdateRows = useCallback((schemaQuery: SchemaQuery, rows: Array<any>): Promise<void> => {
+    const onUpdateRows = useCallback((schemaQuery: SchemaQuery, rows: any[]): Promise<void> => {
         if (rows.length === 0) {
             return new Promise(resolve => {
                 dismissNotifications();

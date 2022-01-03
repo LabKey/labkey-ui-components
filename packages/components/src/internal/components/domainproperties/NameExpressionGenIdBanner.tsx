@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Button, Col, FormControl, Row } from 'react-bootstrap';
 
-import { Alert, ConfirmModal, createNotification, LoadingSpinner } from '../../..';
+import { Alert, ConfirmModal, createNotification, LoadingSpinner, resolveErrorMessage } from '../../..';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
@@ -76,7 +76,7 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
             setShowEditDialog(false);
         } catch (reason) {
             console.error(reason);
-            setError(reason?.exception);
+            setError(resolveErrorMessage(reason, 'genId', 'genId', 'edit'));
         }
     }, [rowId, kindName, newGenId]);
 
@@ -92,12 +92,12 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
     const onResetConfirm = useCallback(async () => {
         try {
             await api.domain.setGenId(rowId, kindName, 0 /* Reset to 0 so seq.next will be 1. */);
-            createNotification('Successfully resetted genId.');
+            createNotification('Successfully reset genId.');
             init();
             setShowResetDialog(false);
         } catch (reason) {
             console.error(reason);
-            setError(reason?.exception);
+            setError(resolveErrorMessage(reason, 'genId', 'genId', 'reset'));
         }
     }, [rowId, kindName]);
 
@@ -142,7 +142,7 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                     {error && <Alert>{error}</Alert>}
                     <div>
                         The current genId is at {currentGenId}. Updating genId will allow new{' '}
-                        {kindName === 'SampleSet' ? 'sample' : 'data'} to use a new start value (min {minNewGenId}).
+                        {kindName === 'SampleSet' ? 'samples' : 'data'} to use a new start value (min {minNewGenId}).
                         This action cannot be undone.
                     </div>
                     <Row className="margin-top">

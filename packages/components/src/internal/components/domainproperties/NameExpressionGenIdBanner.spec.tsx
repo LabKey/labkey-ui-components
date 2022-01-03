@@ -23,7 +23,7 @@ describe('NameExpressionGenIdBanner', () => {
             />
         );
         await sleep();
-        await sleep();
+        await sleep(); // wait for 2 async calls
         expect(tree).toMatchSnapshot();
         tree.unmount();
     });

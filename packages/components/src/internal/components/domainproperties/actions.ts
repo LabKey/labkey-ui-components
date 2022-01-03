@@ -1222,7 +1222,7 @@ export function hasExistingDomainData(kindName: 'SampleSet' | 'DataClass', dataT
             schemaName: 'exp',
             sql: dataCountSql,
             success: async data => {
-                resolve(data.rows[0].DataCount === 0);
+                resolve(data.rows[0].DataCount !== 0);
             },
             failure: error => {
                 reject(error);

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD January 2022
+* Item 9846: Text Choice value type ahead search
+
 ### version 2.113.0
 *Released*: 4 January 2022
 * Foundational work for Sample Finder feature development.

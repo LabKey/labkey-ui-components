@@ -1,7 +1,7 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import classNames from 'classnames';
-import { Query, Utils } from '@labkey/api';
+import { Utils } from '@labkey/api';
 
 import { Alert } from '../base/Alert';
 import { ChoicesListItem } from '../base/ChoicesListItem';
@@ -16,7 +16,6 @@ import { DOMAIN_VALIDATOR_TEXTCHOICE, MAX_VALID_TEXT_CHOICES } from './constants
 import {
     DEFAULT_TEXT_CHOICE_VALIDATOR,
     DomainField,
-    isValidTextChoiceValue,
     ITypeDependentProps,
     PropertyValidator,
 } from './models';
@@ -26,6 +25,7 @@ import { DomainFieldLabel } from './DomainFieldLabel';
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
 import { createFormInputId, getTextChoiceInUseValues } from './actions';
 
+const VALUE_SEARCH_COUNT = 2;
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;
 
 const IN_USE_TITLE = 'Text Choice In Use';
@@ -86,6 +86,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
     const [currentValue, setCurrentValue] = useState<string>();
     const [currentError, setCurrentError] = useState<string>();
     const [showAddValuesModal, setShowAddValuesModal] = useState<boolean>();
+    const [search, setSearch] = useState<string>('');
 
     // keep a map from the updated values for the in-use field values to their original values
     const [fieldValueUpdates, setFieldValueUpdates] = useState<Record<string, string>>({});
@@ -152,6 +153,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
             }
 
             replaceValues(newValues, newFieldValueUpdates);
+            setSearch('');
         },
         [validValues, selectedValue, replaceValues, selectedIndex, onSelect, fieldValueUpdates]
     );
@@ -179,9 +181,15 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
             const filteredVals = values.filter(v => !isValueDuplicate(v));
             replaceValues(validValues.concat(filteredVals), fieldValueUpdates);
             toggleAddValues();
+            setSearch('');
         },
         [replaceValues, validValues, toggleAddValues, fieldValueUpdates]
     );
+
+    const searchStr = useMemo(() => search.trim().toLowerCase(), [search]);
+    const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        setSearch(event.target.value);
+    }, []);
 
     return (
         <div>
@@ -212,7 +220,19 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                         className={classNames({ 'domain-text-choices-left-panel': validValues.length > 0 })}
                     >
                         <div className="list-group domain-text-choices-list">
+                            {validValues.length > VALUE_SEARCH_COUNT && (
+                                <input
+                                    autoFocus
+                                    className="form-control domain-text-choices-search"
+                                    onChange={onSearchChange}
+                                    placeholder="Find a value"
+                                    value={search}
+                                />
+                            )}
                             {validValues.map((value, ind) => {
+                                const matchSearch = searchStr === '' || value.toLowerCase().indexOf(searchStr) > -1;
+                                if (!matchSearch) return null;
+
                                 const inUse = fieldValueUpdates.hasOwnProperty(value);
                                 const locked =
                                     inUse &&

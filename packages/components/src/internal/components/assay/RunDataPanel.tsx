@@ -234,7 +234,7 @@ export class RunDataPanel extends React.Component<Props, State> {
         const isLoading = !wizardModel.isInit || !queryGridModelForEditor || !queryGridModelForEditor.isLoaded;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
 
-        let cutPastePlaceholder = 'Paste in a tab-separated set of values (including column headers).';
+        const cutPastePlaceholder = 'Paste in a tab-separated set of values (including column headers).';
         return (
             <div className={'panel panel-default ' + (fullWidth ? 'full-width' : '')}>
                 <div className="panel-heading">{title}</div>

@@ -558,7 +558,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
                         : getActionErrorMessage(errorPrefix, 'referenced samples or assay design', false)
                 );
             });
-
     };
 
     onSuccessContinue = (response: AssayUploadResultModel, isAsync?: boolean): void => {

@@ -489,7 +489,11 @@ import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPan
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
-import { BACKGROUND_IMPORT_MIN_FILE_SIZE, BACKGROUND_IMPORT_MIN_ROW_SIZE, DATA_IMPORT_FILE_SIZE_LIMITS } from './internal/components/pipeline/constants';
+import {
+    BACKGROUND_IMPORT_MIN_FILE_SIZE,
+    BACKGROUND_IMPORT_MIN_ROW_SIZE,
+    DATA_IMPORT_FILE_SIZE_LIMITS,
+} from './internal/components/pipeline/constants';
 import { PipelineJobDetailPage } from './internal/components/pipeline/PipelineJobDetailPage';
 import { PipelineJobsListingPage } from './internal/components/pipeline/PipelineJobsListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';

@@ -31,13 +31,15 @@ import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { ALIQUOTED_FROM_COL } from '../samples/constants';
+
 import { deletePicklists, updatePicklist } from './actions';
 import { Picklist, PICKLIST_SAMPLES_FILTER } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistEditModal } from './PicklistEditModal';
 import { PicklistGridButtons } from './PicklistGridButtons';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-import { ALIQUOTED_FROM_COL } from '../samples/constants';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
@@ -62,7 +64,7 @@ type Props = OwnProps & ImplProps & InjectedQueryModels;
 export const PICKLIST_EXPORT_CONFIG = {
     'exportAlias.SampleID/AliquotedFromLSID': ALIQUOTED_FROM_COL,
     'exportAlias.AliquotedFromLSID': ALIQUOTED_FROM_COL,
-    includeColumn: ['SampleID/AliquotedFromLSID', 'AliquotedFromLSID']
+    includeColumn: ['SampleID/AliquotedFromLSID', 'AliquotedFromLSID'],
 };
 
 // exported for jest testing
@@ -90,8 +92,8 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
     }, []);
 
     const exportConfig = useMemo(() => {
-        return advancedExportOptions ? {...PICKLIST_EXPORT_CONFIG, ...advancedExportOptions} : PICKLIST_EXPORT_CONFIG;
-    }, [advancedExportOptions])
+        return advancedExportOptions ? { ...PICKLIST_EXPORT_CONFIG, ...advancedExportOptions } : PICKLIST_EXPORT_CONFIG;
+    }, [advancedExportOptions]);
 
     const deletePicklist = useCallback(() => {
         deletePicklists([picklist])
@@ -210,7 +212,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                             </>
                         )}
                         <SamplesTabbedGridPanel
-                            asPanel={false}
+                            withTitle={false}
                             actions={actions}
                             queryModels={queryModels}
                             user={user}
@@ -292,7 +294,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 requiredColumns: [
                     'Created',
                     'SampleID/AliquotedFromLsid',
-                    ...SAMPLE_STATUS_REQUIRED_COLUMNS.map(name => "SampleID/" + name)
+                    ...SAMPLE_STATUS_REQUIRED_COLUMNS.map(name => 'SampleID/' + name),
                 ],
             };
 

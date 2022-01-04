@@ -13,12 +13,7 @@ import { DisableableButton } from '../buttons/DisableableButton';
 import { DisableableInput } from '../forms/DisableableInput';
 
 import { DOMAIN_VALIDATOR_TEXTCHOICE, MAX_VALID_TEXT_CHOICES } from './constants';
-import {
-    DEFAULT_TEXT_CHOICE_VALIDATOR,
-    DomainField,
-    ITypeDependentProps,
-    PropertyValidator,
-} from './models';
+import { DEFAULT_TEXT_CHOICE_VALIDATOR, DomainField, ITypeDependentProps, PropertyValidator } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 

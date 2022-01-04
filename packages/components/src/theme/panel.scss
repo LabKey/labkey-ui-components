@@ -13,6 +13,10 @@
         &.panel-content-flex {
             display: flex;
             justify-content: space-between;
+
+            @media (max-width: $screen-md-min) {
+                flex-wrap: wrap;
+            }
         }
 
         &.panel-content-large {

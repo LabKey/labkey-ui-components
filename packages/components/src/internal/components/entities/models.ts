@@ -567,6 +567,7 @@ export interface EntityDataType {
     editTypeAppUrlPrefix?: string; // the app url route prefix for the edit design page for the given data type
     importFileAction: string; // the action in the 'experiment' controller to use for file import for the given data type
     isFromSharedContainer?: boolean; // if the data type is defined in /Shared project
+    filterCardHeaderClass?: string; // css class to use for styling the header in the display of cards for Sample Finder
 }
 
 export class OperationConfirmationData {

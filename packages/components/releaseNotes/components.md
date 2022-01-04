@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.113.0
+*Released*: 4 January 2022
+* Foundational work for Sample Finder feature development.
+  * Add experimental feature flag
+  * Update FindAndSearch menu
+  * Move SearchBox and related components into the search directory
+
 ### version 2.112.0
 *Released*: 30 December 2021
 * Item #9782: Text Choice data type support for field editor updates to in-use values

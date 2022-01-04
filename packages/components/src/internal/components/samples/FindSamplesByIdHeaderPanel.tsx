@@ -9,7 +9,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { Alert } from '../base/Alert';
-import { FindByIdsModal } from '../navigation/FindByIdsModal';
+import { FindByIdsModal } from '../search/FindByIdsModal';
 import { Section } from '../base/Section';
 
 import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from './constants';

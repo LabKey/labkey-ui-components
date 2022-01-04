@@ -27,6 +27,7 @@ export const ASSAYS_KEY = 'assays';
 export const ASSAY_DESIGN_KEY = 'assayDesign';
 export const SAMPLES_KEY = 'samples';
 export const SAMPLE_TYPE_KEY = 'sampleType';
+export const SEARCH_KEY = 'search';
 export const SOURCES_KEY = 'sources';
 export const SOURCE_TYPE_KEY = 'sourceType';
 export const WORKFLOW_KEY = 'workflow';
@@ -35,13 +36,15 @@ export const BOXES_KEY = 'boxes';
 export const HOME_KEY = 'home';
 export const USER_KEY = 'user';
 export const PICKLIST_KEY = 'picklist';
-export const FIND_SAMPLES_KEY = 'findSamples';
+export const FIND_SAMPLES_BY_ID_KEY = 'samplesById';
+export const FIND_SAMPLES_BY_FILTER_KEY = 'samplesByFilter';
 export const REQUESTS_KEY = 'requests';
 export const MEDIA_KEY = 'media';
 export const NOTEBOOKS_KEY = 'notebooks';
 export const REGISTRY_KEY = 'registry';
 
-export const FIND_SAMPLES_HREF = AppURL.create(FIND_SAMPLES_KEY);
+export const FIND_SAMPLES_BY_ID_HREF = AppURL.create(SEARCH_KEY, FIND_SAMPLES_BY_ID_KEY);
+export const FIND_SAMPLES_BY_FILTER_HREF = AppURL.create(SEARCH_KEY, FIND_SAMPLES_BY_FILTER_KEY);
 export const NEW_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new');
 export const NEW_SOURCE_TYPE_HREF = AppURL.create(SOURCE_TYPE_KEY, 'new');
 export const NEW_SAMPLE_TYPE_HREF = AppURL.create(SAMPLE_TYPE_KEY, 'new');
@@ -81,6 +84,7 @@ export const NOTIFICATION_TIMEOUT = 500;
 export const SERVER_NOTIFICATION_MAX_ROWS = 8;
 
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
+export const EXPERIMENTAL_SAMPLE_FINDER = 'experimental-sample-finder';
 
 export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     productId: BIOLOGICS_PRODUCT_ID,

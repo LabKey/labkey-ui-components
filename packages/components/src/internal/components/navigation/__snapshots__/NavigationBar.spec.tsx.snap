@@ -115,6 +115,26 @@ exports[`<NavigationBar/> with findByIds 1`] = `
                             />
                              Find 
                             Samples
+                             by Barcode
+                          </a>
+                        </li>
+                        <li
+                          className=""
+                          role="presentation"
+                        >
+                          <a
+                            href="#"
+                            onClick={[Function]}
+                            onKeyDown={[Function]}
+                            role="menuitem"
+                            tabIndex="-1"
+                          >
+                            <i
+                              className="fa fa-hashtag"
+                            />
+                             Find 
+                            Samples
+                             by ID
                           </a>
                         </li>
                       </ul>
@@ -166,9 +186,11 @@ exports[`<NavigationBar/> with findByIds 1`] = `
                     tabIndex="-1"
                   >
                     <i
-                      className="fa fa-search"
+                      className="fa fa-barcode"
                     />
-                     Search
+                     Find 
+                    Samples
+                     by Barcode
                   </a>
                 </li>
                 <li
@@ -183,10 +205,28 @@ exports[`<NavigationBar/> with findByIds 1`] = `
                     tabIndex="-1"
                   >
                     <i
-                      className="fa fa-barcode"
+                      className="fa fa-hashtag"
                     />
                      Find 
                     Samples
+                     by ID
+                  </a>
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="fa fa-search"
+                    />
+                     Search
                   </a>
                 </li>
               </ul>

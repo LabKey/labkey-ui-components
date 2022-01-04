@@ -63,7 +63,6 @@ interface Props {
     allowBulkUpdate?: boolean;
     title: string;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
-    maxInsertRows?: number;
     onGridDataChange?: (dirty: boolean, changeType: IMPORT_DATA_FORM_TYPES) => any;
     showTabs?: boolean;
     maxEditableGridRowMsg?: string;
@@ -228,7 +227,6 @@ export class RunDataPanel extends React.Component<Props, State> {
             allowBulkInsert,
             allowBulkUpdate,
             title,
-            maxInsertRows,
             showTabs,
             maxEditableGridRowMsg,
         } = this.props;
@@ -237,9 +235,6 @@ export class RunDataPanel extends React.Component<Props, State> {
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
 
         let cutPastePlaceholder = 'Paste in a tab-separated set of values (including column headers).';
-        if (maxInsertRows) {
-            cutPastePlaceholder += '  Maximum number of data rows allowed is ' + maxInsertRows + '.';
-        }
         return (
             <div className={'panel panel-default ' + (fullWidth ? 'full-width' : '')}>
                 <div className="panel-heading">{title}</div>
@@ -328,7 +323,6 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             }}
                                             initialEmptyRowCount={0}
                                             emptyGridMsg="Start by adding the quantity of assay data rows you want to create."
-                                            maxTotalRows={this.props.maxInsertRows}
                                             onRowCountChange={this.onRowCountChange}
                                         />
                                     </FormStep>

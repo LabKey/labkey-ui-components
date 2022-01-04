@@ -4,6 +4,7 @@ import { Button, Col, FormControl, Row } from 'react-bootstrap';
 import { Alert, ConfirmModal, createNotification, LoadingSpinner, resolveErrorMessage } from '../../..';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { isNotificationsEnabled } from "../notifications/global";
 
 export interface NameExpressionGenIdProps {
     api?: ComponentsAPIWrapper;
@@ -71,7 +72,8 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                 kindName,
                 (newGenId ?? minNewGenId) - 1 /* Reset to N-1 so seq.next will be N. */
             );
-            createNotification('Successfully updated genId.');
+            if (isNotificationsEnabled())
+                createNotification('Successfully updated genId.');
             init();
             setShowEditDialog(false);
         } catch (reason) {
@@ -92,7 +94,8 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
     const onResetConfirm = useCallback(async () => {
         try {
             await api.domain.setGenId(rowId, kindName, 0 /* Reset to 0 so seq.next will be 1. */);
-            createNotification('Successfully reset genId.');
+            if (isNotificationsEnabled())
+                createNotification('Successfully reset genId.');
             init();
             setShowResetDialog(false);
         } catch (reason) {

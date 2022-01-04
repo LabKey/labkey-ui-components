@@ -420,19 +420,7 @@ export class EditorModel
                 if (renderer?.getEditableRawValue) {
                     row = row.set(col.name, renderer.getEditableRawValue(values));
                 } else if (col.isLookup()) {
-                    if (col.isExpInput() || col.isAliquotParent()) {
-                        let sep = '';
-                        row = row.set(
-                            col.name,
-                            values.reduce((str, vd) => {
-                                if (vd.display !== undefined && vd.display !== null) {
-                                    str += sep + vd.display;
-                                    sep = ', ';
-                                }
-                                return str;
-                            }, '')
-                        );
-                    } else if (col.isJunctionLookup()) {
+                    if (col.isJunctionLookup() || col.isExpInput() || col.isAliquotParent()) {
                         row = row.set(
                             col.name,
                             values.reduce((arr, vd) => {

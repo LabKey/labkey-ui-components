@@ -1,9 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { getTestAPIWrapper } from '../../APIWrapper';
-
 import { sleep } from '../../testHelpers';
+
+import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { NameExpressionGenIdBanner } from './NameExpressionGenIdBanner';
 import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';

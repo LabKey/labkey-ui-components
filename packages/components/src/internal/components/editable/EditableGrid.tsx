@@ -909,7 +909,14 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             );
             onChange(changes.editorModel, changes.dataKeys, changes.data);
         } else {
-            const changes = await addRows(editorModel, dataKeys, data, queryInfo.getInsertColumns(), numItems, bulkData);
+            const changes = await addRows(
+                editorModel,
+                dataKeys,
+                data,
+                queryInfo.getInsertColumns(),
+                numItems,
+                bulkData
+            );
             onChange(changes.editorModel, changes.dataKeys, changes.data);
         }
 
@@ -1038,19 +1045,15 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         return this.props.addControlProps?.placement ?? 'bottom';
     };
 
-    getGridData = (): List<Map<string, any>> => {
-        // Note: the data here doesn't really matter, except for the GRID_EDIT_INDEX which is used for selection
-        // handlers. We dont' store any real data in the data/dataKeys attributes, instead we rip the actual values out
-        // of the EditorModel in inputCellFactory. This whole component should probably be refactored to not rely on
-        // data/dataKeys at all, but we'd need to figure out how to handle removeRows, which relies on dataKeys, and
-        // EditorModel.getRawData also requires data and datakeys.
-        const { editorModel } = this.props;
-        return List(
-            Array(editorModel.rowCount)
-                .fill(0)
-                .map((_, i) => Map<string, any>({ [GRID_EDIT_INDEX]: i }))
-        );
-    };
+    getGridData(): List<Map<string, any>> {
+        const { data, dataKeys } = this.props;
+        return dataKeys
+            .map((key, index) => {
+                const rowIndexData = { [GRID_EDIT_INDEX]: index };
+                return data.get(key)?.merge(rowIndexData) ?? Map<string, any>(rowIndexData);
+            })
+            .toList();
+    }
 
     render() {
         const {

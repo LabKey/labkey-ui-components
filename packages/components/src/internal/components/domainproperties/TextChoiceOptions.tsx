@@ -20,7 +20,7 @@ import { DomainFieldLabel } from './DomainFieldLabel';
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
 import { createFormInputId, getTextChoiceInUseValues } from './actions';
 
-const VALUE_SEARCH_COUNT = 2;
+const MIN_VALUES_FOR_SEARCH_COUNT = 2;
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;
 
 const IN_USE_TITLE = 'Text Choice In Use';
@@ -215,7 +215,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                         className={classNames({ 'domain-text-choices-left-panel': validValues.length > 0 })}
                     >
                         <div className="list-group domain-text-choices-list">
-                            {validValues.length > VALUE_SEARCH_COUNT && (
+                            {validValues.length > MIN_VALUES_FOR_SEARCH_COUNT && (
                                 <input
                                     autoFocus
                                     className="form-control domain-text-choices-search"

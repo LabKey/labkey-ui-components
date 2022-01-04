@@ -50,6 +50,8 @@ import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING
 
 import { NameExpressionPreview } from '../NameExpressionPreview';
 
+import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
+
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
 
@@ -83,6 +85,7 @@ interface OwnProps {
     namePreviews?: string[];
     onNameFieldHover?: () => any;
     namePreviewsLoading?: boolean;
+    nameExpressionGenIdProps?: NameExpressionGenIdProps;
 }
 
 // Splitting these out to clarify where they end-up
@@ -331,6 +334,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             namePreviews,
             namePreviewsLoading,
             onNameFieldHover,
+            nameExpressionGenIdProps,
         } = this.props;
         const { isValid, containers, prefix, loadingError } = this.state;
 
@@ -426,6 +430,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     onNameFieldHover={onNameFieldHover}
                     namePreviewsLoading={namePreviewsLoading}
                     previewName={namePreviews?.[0]}
+                    nameExpressionGenIdProps={nameExpressionGenIdProps}
                 />
                 {showAliquotNameExpression && (
                     <Row className="margin-bottom">

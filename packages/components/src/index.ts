@@ -274,6 +274,7 @@ import {
 import { GenerateEntityResponse, OperationConfirmationData } from './internal/components/entities/models';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
+import { SampleFinderSection } from './internal/components/search/SampleFinderSection';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { loadNameExpressionOptions } from './internal/components/settings/actions';
 import { searchUsingIndex } from './internal/components/search/actions';
@@ -375,7 +376,7 @@ import { EntityTypeDeleteConfirmModal } from './internal/components/entities/Ent
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './internal/components/navigation/HeaderWrapper';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
-import { FindByIdsModal } from './internal/components/navigation/FindByIdsModal';
+import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
 import { SubNav } from './internal/components/navigation/SubNav';
@@ -504,6 +505,7 @@ import { ManageSampleStatusesPanel } from './internal/components/samples/ManageS
 import {
     DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
+    IS_ALIQUOT_COL,
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_ID_FIND_FIELD,
@@ -515,7 +517,6 @@ import {
     SampleOperation,
     SampleStateType,
     UNIQUE_ID_FIND_FIELD,
-    IS_ALIQUOT_COL,
 } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -590,8 +591,9 @@ import {
     BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
     EXPERIMENTAL_REQUESTS_MENU,
-    FIND_SAMPLES_HREF,
-    FIND_SAMPLES_KEY,
+    FIND_SAMPLES_BY_FILTER_KEY,
+    FIND_SAMPLES_BY_ID_HREF,
+    FIND_SAMPLES_BY_ID_KEY,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
@@ -607,6 +609,7 @@ import {
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLE_TYPE_KEY,
     SAMPLES_KEY,
+    SEARCH_KEY,
     SECURITY_LOGOUT,
     SECURITY_SERVER_UNAVAILABLE,
     SECURITY_SESSION_TIMEOUT,
@@ -683,10 +686,12 @@ const App = {
     ASSAYS_KEY,
     ASSAY_DESIGN_KEY,
     EXPERIMENTAL_REQUESTS_MENU,
-    FIND_SAMPLES_KEY,
+    FIND_SAMPLES_BY_ID_KEY,
+    FIND_SAMPLES_BY_FILTER_KEY,
     PICKLIST_KEY,
     SAMPLES_KEY,
     SAMPLE_TYPE_KEY,
+    SEARCH_KEY,
     SOURCES_KEY,
     SOURCE_TYPE_KEY,
     WORKFLOW_KEY,
@@ -698,7 +703,7 @@ const App = {
     NEW_SOURCE_TYPE_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_ASSAY_DESIGN_HREF,
-    FIND_SAMPLES_HREF,
+    FIND_SAMPLES_BY_ID_HREF,
     PICKLIST_HOME_HREF,
     WORKFLOW_HOME_HREF,
     NEW_FREEZER_DESIGN_HREF,
@@ -981,6 +986,7 @@ export {
     SearchResultCard,
     SearchResultsPanel,
     searchUsingIndex,
+    SampleFinderSection,
     // settings
     NameIdSettings,
     loadNameExpressionOptions,

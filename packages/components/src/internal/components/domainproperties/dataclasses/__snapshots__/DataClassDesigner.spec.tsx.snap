@@ -1504,6 +1504,9 @@ exports[`DataClassDesigner initModel 1`] = `
       Object {
         "domain": DomainPropertiesAPIWrapper {
           "getDomainNamePreviews": [Function],
+          "getGenId": [Function],
+          "hasExistingDomainData": [Function],
+          "setGenId": [Function],
           "validateDomainNameExpressions": [Function],
         },
         "picklist": PicklistServerAPIWrapper {

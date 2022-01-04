@@ -25,12 +25,15 @@ import { ProductNavigation } from '../productnavigation/ProductNavigation';
 
 import { shouldShowProductNavigation } from '../productnavigation/utils';
 
+import { SearchBox } from '../search/SearchBox';
+
+import { FindAndSearchDropdown } from '../search/FindAndSearchDropdown';
+
 import { ProductMenu } from './ProductMenu';
-import { SearchBox } from './SearchBox';
 import { UserMenu, UserMenuProps } from './UserMenu';
 import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
-import { FindAndSearchDropdown } from './FindAndSearchDropdown';
+
 import { FolderMenu } from './FolderMenu';
 
 interface NavigationBarProps {

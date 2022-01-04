@@ -75,15 +75,21 @@ describe('NumericFieldOptions', () => {
         };
 
         // All cases below should not display the field
-        const textField = mount(<NumericFieldOptions {...props} showScannableOption={false} appPropertiesOnly={false} />);
+        const textField = mount(
+            <NumericFieldOptions {...props} showScannableOption={false} appPropertiesOnly={false} />
+        );
         expect(textField.find(SCANNABLE_OPTION_CLASS)).toHaveLength(0);
         textField.unmount();
 
-        const textField2 = mount(<NumericFieldOptions {...props} showScannableOption={true} appPropertiesOnly={false} />);
+        const textField2 = mount(
+            <NumericFieldOptions {...props} showScannableOption={true} appPropertiesOnly={false} />
+        );
         expect(textField2.find(SCANNABLE_OPTION_CLASS)).toHaveLength(0);
         textField2.unmount();
 
-        const textField3 = mount(<NumericFieldOptions {...props} showScannableOption={false} appPropertiesOnly={true} />);
+        const textField3 = mount(
+            <NumericFieldOptions {...props} showScannableOption={false} appPropertiesOnly={true} />
+        );
         expect(textField3.find(SCANNABLE_OPTION_CLASS)).toHaveLength(0);
         textField3.unmount();
     });
@@ -137,5 +143,4 @@ describe('NumericFieldOptions', () => {
         expect(scannable2.props().checked).toEqual(false);
         textField2.unmount();
     });
-
 });

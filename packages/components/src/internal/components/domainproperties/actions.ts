@@ -15,7 +15,7 @@
  */
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
-import { Ajax, Domain, Query, Security, Utils, Filter } from '@labkey/api';
+import { Ajax, Domain, Experiment, Query, Security, Utils, Filter } from '@labkey/api';
 
 import {
     buildURL,
@@ -1150,8 +1150,7 @@ export function getTextChoiceInUseValues(
                                 values[value] = { count: 0, locked: false };
                             }
                             values[value].count++;
-                            values[value].locked =
-                                values[value].locked || row['SampleState/StatusType'] === 'Locked';
+                            values[value].locked = values[value].locked || row['SampleState/StatusType'] === 'Locked';
                         }
                     });
                     resolve(values);
@@ -1185,5 +1184,78 @@ export function getTextChoiceInUseValues(
                 },
             });
         }
+    });
+}
+
+export function getGenId(rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+        Experiment.getGenId({
+            containerPath,
+            rowId,
+            kindName,
+            success: response => {
+                if (response.success) {
+                    resolve(response['genId']);
+                } else {
+                    reject({ error: 'Unable to get genId' });
+                }
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+}
+
+export function hasExistingDomainData(
+    kindName: 'SampleSet' | 'DataClass',
+    dataTypeLSID?: string,
+    rowId?: number
+): Promise<boolean> {
+    let dataCountSql = 'SELECT COUNT(*) AS DataCount FROM ';
+
+    if (kindName === 'SampleSet') {
+        dataCountSql += "materials WHERE sampleset = '" + dataTypeLSID + "'";
+    } else {
+        dataCountSql += 'data WHERE dataclass = ' + rowId;
+    }
+
+    return new Promise((resolve, reject) => {
+        Query.executeSql({
+            schemaName: 'exp',
+            sql: dataCountSql,
+            success: async data => {
+                resolve(data.rows[0].DataCount !== 0);
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+}
+
+export function setGenId(
+    rowId: number,
+    kindName: 'SampleSet' | 'DataClass',
+    genId: number,
+    containerPath?: string
+): Promise<any> {
+    return new Promise((resolve, reject) => {
+        return Experiment.setGenId({
+            containerPath,
+            rowId,
+            kindName,
+            genId,
+            success: response => {
+                if (response.success) {
+                    resolve(response);
+                } else {
+                    reject({ error: response.error });
+                }
+            },
+            failure: response => {
+                reject(response);
+            },
+        });
     });
 }

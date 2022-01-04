@@ -21,6 +21,8 @@ import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING
 
 import { isSampleManagerEnabled } from '../../../app/utils';
 
+import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
+
 import { DataClassModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
@@ -42,6 +44,7 @@ interface OwnProps extends BasePropertiesPanelProps {
     previewName?: string;
     onNameFieldHover?: () => any;
     namePreviewsLoading?: boolean;
+    nameExpressionGenIdProps?: NameExpressionGenIdProps;
 }
 
 type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
@@ -163,6 +166,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             namePreviewsLoading,
             previewName,
             onNameFieldHover,
+            nameExpressionGenIdProps,
         } = this.props;
         const { isValid, prefix, loadingError } = this.state;
 
@@ -209,6 +213,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     namePreviewsLoading={namePreviewsLoading}
                     previewName={previewName}
                     onNameFieldHover={onNameFieldHover}
+                    nameExpressionGenIdProps={nameExpressionGenIdProps}
                 />
                 {!appPropertiesOnly && this.renderCategorySelect()}
                 {!appPropertiesOnly && this.renderSampleTypeSelect()}

@@ -1150,8 +1150,7 @@ export function getTextChoiceInUseValues(
                                 values[value] = { count: 0, locked: false };
                             }
                             values[value].count++;
-                            values[value].locked =
-                                values[value].locked || row['SampleState/StatusType'] === 'Locked';
+                            values[value].locked = values[value].locked || row['SampleState/StatusType'] === 'Locked';
                         }
                     });
                     resolve(values);
@@ -1208,7 +1207,11 @@ export function getGenId(rowId: number, kindName: 'SampleSet' | 'DataClass', con
     });
 }
 
-export function hasExistingDomainData(kindName: 'SampleSet' | 'DataClass', dataTypeLSID?: string, rowId?: number): Promise<boolean> {
+export function hasExistingDomainData(
+    kindName: 'SampleSet' | 'DataClass',
+    dataTypeLSID?: string,
+    rowId?: number
+): Promise<boolean> {
     let dataCountSql = 'SELECT COUNT(*) AS DataCount FROM ';
 
     if (kindName === 'SampleSet') {
@@ -1229,7 +1232,6 @@ export function hasExistingDomainData(kindName: 'SampleSet' | 'DataClass', dataT
             },
         });
     });
-
 }
 
 export function setGenId(

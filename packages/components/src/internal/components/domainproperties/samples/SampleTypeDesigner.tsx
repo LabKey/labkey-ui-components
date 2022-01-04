@@ -739,7 +739,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                                   dataTypeLSID: options.get('lsid'),
                                   rowId: options.get('rowId'),
                                   kindName: 'SampleSet',
-                                  api: api
+                                  api,
                               }
                             : undefined
                     }

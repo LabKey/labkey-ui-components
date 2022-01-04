@@ -1,19 +1,20 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { NameExpressionGenIdBanner } from "./NameExpressionGenIdBanner";
-import {getTestAPIWrapper} from "../../APIWrapper";
-import {getDomainPropertiesTestAPIWrapper} from "./APIWrapper";
-import {sleep} from "../../testHelpers";
+import { getTestAPIWrapper } from '../../APIWrapper';
+
+import { sleep } from '../../testHelpers';
+
+import { NameExpressionGenIdBanner } from './NameExpressionGenIdBanner';
+import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';
 
 describe('NameExpressionGenIdBanner', () => {
-
     test('with existing data', async () => {
         const tree = renderer.create(
             <NameExpressionGenIdBanner
                 dataTypeName="Data1"
                 rowId={100}
-                kindName='DataClass'
+                kindName="DataClass"
                 api={getTestAPIWrapper(jest.fn, {
                     domain: getDomainPropertiesTestAPIWrapper(jest.fn, {
                         hasExistingDomainData: () => Promise.resolve(true),
@@ -33,7 +34,7 @@ describe('NameExpressionGenIdBanner', () => {
             <NameExpressionGenIdBanner
                 dataTypeName="Data1"
                 rowId={100}
-                kindName='DataClass'
+                kindName="DataClass"
                 api={getTestAPIWrapper(jest.fn, {
                     domain: getDomainPropertiesTestAPIWrapper(jest.fn, {
                         hasExistingDomainData: () => Promise.resolve(false),
@@ -53,7 +54,7 @@ describe('NameExpressionGenIdBanner', () => {
             <NameExpressionGenIdBanner
                 dataTypeName="Data1"
                 rowId={100}
-                kindName='DataClass'
+                kindName="DataClass"
                 api={getTestAPIWrapper(jest.fn, {
                     domain: getDomainPropertiesTestAPIWrapper(jest.fn, {
                         hasExistingDomainData: () => Promise.resolve(false),
@@ -67,5 +68,4 @@ describe('NameExpressionGenIdBanner', () => {
         expect(tree).toMatchSnapshot();
         tree.unmount();
     });
-
 });

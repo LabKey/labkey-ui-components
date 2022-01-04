@@ -1,6 +1,12 @@
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { getDomainNamePreviews, validateDomainNameExpressions, getGenId, setGenId, hasExistingDomainData } from './actions';
+import {
+    getDomainNamePreviews,
+    validateDomainNameExpressions,
+    getGenId,
+    setGenId,
+    hasExistingDomainData,
+} from './actions';
 import { DomainDesign, NameExpressionsValidationResults } from './models';
 
 export interface DomainPropertiesAPIWrapper {
@@ -18,7 +24,11 @@ export interface DomainPropertiesAPIWrapper {
         genId: number,
         containerPath?: string
     ) => Promise<any>;
-    hasExistingDomainData: (kindName: 'SampleSet' | 'DataClass', dataTypeLSID?: string, rowId?: number) => Promise<boolean>;
+    hasExistingDomainData: (
+        kindName: 'SampleSet' | 'DataClass',
+        dataTypeLSID?: string,
+        rowId?: number
+    ) => Promise<boolean>;
 }
 
 export class DomainPropertiesAPIWrapper implements DomainPropertiesAPIWrapper {

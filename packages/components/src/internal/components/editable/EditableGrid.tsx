@@ -233,12 +233,6 @@ export interface EditableGridState {
     showMask: boolean;
 }
 
-// TODO: move paste events and related code into this component so we can remove them from actions.ts. This can probably
-//  be postponed though, we're far along enough to start work on a QM version of EditableGridPanel, it should only be
-//  done first if we know for sure it will assist with merging with Susan's work which as not been confirmed. We could
-//  confirm it by starting a merge and see if it makes merging other actions easier, if so back out of the merge, move
-//  the actions, then do the merge.
-
 export class EditableGrid extends PureComponent<EditableGridProps, EditableGridState> {
     static defaultProps = {
         allowAdd: true,
@@ -410,7 +404,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { editorModel, onChange } = this.props;
         const { cellValues, colCount, focusValue, rowCount } = editorModel;
 
-        if (colIdx < 0 || rowIdx < 0 || colIdx > colCount) {
+        if (colIdx < 0 || rowIdx < 0 || colIdx >= colCount) {
             // out of bounds, do nothing
             return;
         }

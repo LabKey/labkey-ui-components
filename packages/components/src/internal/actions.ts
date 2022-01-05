@@ -476,45 +476,6 @@ export function reloadQueryGridModel(model: QueryGridModel): void {
     gridLoad(newModel);
 }
 
-// Takes a List<Filter.IFilter> and remove each filter from the grid model
-// Alternately, the 'all' flag can be set to true to remove all filters. This
-// setting takes precedence over the filters list.
-// TODO: appears unused, remove
-export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilter>, all = false): void {
-    if (model.bindURL) {
-        replaceParameters(getLocation(), getFilterParameters(filters, true));
-    } else {
-        let newModel = model;
-        if (model.filterArray.count()) {
-            if (all) {
-                newModel = updateQueryGridModel(newModel, {
-                    selectedLoaded: false,
-                    ...QueryGridModel.EMPTY_SELECTION,
-                    filterArray: List<any>(),
-                });
-            } else if (filters && filters.count()) {
-                const urls = filters.reduce((urls, filter: any) => {
-                    return urls.add(filter.getURLParameterName() + filter.getURLParameterValue());
-                }, Set());
-
-                const filtered = model.filterArray.filter((f: any) => {
-                    return !urls.has(f.getURLParameterName() + f.getURLParameterValue());
-                });
-
-                if (filtered.count() < model.filterArray.count()) {
-                    newModel = updateQueryGridModel(newModel, {
-                        selectedLoaded: false,
-                        ...QueryGridModel.EMPTY_SELECTION,
-                        filterArray: filtered.toList(),
-                    });
-                }
-            }
-        }
-
-        gridLoad(newModel);
-    }
-}
-
 export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>): void {
     if (model.bindURL) {
         replaceParameters(getLocation(), getFilterParameters(filters));
@@ -2254,7 +2215,6 @@ export async function addRowsPerPivotValue(
     if (numPerParent > 0) {
         for (const value of pivotValues) {
             rowData = rowData.set(pivotKey, value);
-            // TODO: addRowsToEditorModel may need to be re-evaluated based on changes made to updateEditorData.
             const changes = await addRowsToEditorModel(
                 rowCount,
                 cellMessages,
@@ -2287,7 +2247,6 @@ export async function addRows(
     let editorModelChanges: Partial<EditorModel>;
 
     if (rowData) {
-        // TODO: addRowsToEditorModel may need to be re-evaluated based on changes made to updateEditorData.
         editorModelChanges = await addRowsToEditorModel(
             editorModel.rowCount,
             editorModel.cellMessages,

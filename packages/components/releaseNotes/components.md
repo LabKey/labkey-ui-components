@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.115.1
+*Released*: 5 January 2022
+* Escape typings of some built-in React HTML types
+
 ### version 2.115.0
 *Released*: 5 January 2022
 * Item 9846: Text Choice value type ahead search

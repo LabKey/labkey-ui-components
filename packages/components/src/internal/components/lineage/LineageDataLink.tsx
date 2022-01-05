@@ -11,7 +11,7 @@ export class LineageDataLink extends PureComponent<
         }
 
         return (
-            <a {...this.props} className="show-on-hover lineage-data-link lineage-data-link--text">
+            <a {...this.props as any} className="show-on-hover lineage-data-link lineage-data-link--text">
                 {children}
             </a>
         );

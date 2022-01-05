@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD January 2022
+### version 2.115.0
+*Released*: 5 January 2022
 * Item 9846: Text Choice value type ahead search
 
 ### version 2.114.0

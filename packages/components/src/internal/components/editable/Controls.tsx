@@ -32,7 +32,6 @@ export interface AddRowsControlProps {
     addText?: string;
     onAdd: (count: number) => void;
     quickAddText?: string;
-    onQuickAdd?: (count: number) => void; // TODO: appears to be unused
     placement?: PlacementType;
     wrapperClass?: string;
     invalidCountMsg?: string;
@@ -67,7 +66,6 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         this.onAdd = this.onAdd.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.onChange = this.onChange.bind(this);
-        this.onQuickAdd = this.onQuickAdd.bind(this);
 
         this.addCount = React.createRef();
     }
@@ -121,41 +119,24 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         return count !== undefined && !this.isValid(count);
     }
 
-    onQuickAdd() {
-        const { onQuickAdd } = this.props;
-        if (onQuickAdd) {
-            onQuickAdd(this.state.count);
-        }
-    }
-
     renderButton() {
-        const { disable, quickAddText, onQuickAdd, addText, nounSingular, nounPlural, invalidCountMsg } = this.props;
+        const { disable, quickAddText, addText, nounSingular, nounPlural, invalidCountMsg } = this.props;
         const { count } = this.state;
 
         const title = addText + ' ' + (count === 1 ? nounSingular : nounPlural);
         const disabledMsg = invalidCountMsg ? invalidCountMsg : ('Maximum number of ' + nounPlural + ' reached.');
         return (
             <span className="input-group-btn">
-                {quickAddText && onQuickAdd ? (
-                    <SplitButton id="addRowsDropdown" onClick={this.onAdd} title={title} bsStyle="primary">
-                        <MenuItem onClick={this.onQuickAdd}>{quickAddText}</MenuItem>
-                    </SplitButton>
-                ) : (
-                    <Button
-                        bsStyle="primary"
-                        title={disable ? disabledMsg : undefined}
-                        disabled={disable || this.hasError()}
-                        onClick={this.onAdd}
-                    >
-                        {title}
-                    </Button>
-                )}
+                <Button
+                    bsStyle="primary"
+                    title={disable ? disabledMsg : undefined}
+                    disabled={disable || this.hasError()}
+                    onClick={this.onAdd}
+                >
+                    {title}
+                </Button>
             </span>
         );
-    }
-
-    shouldRenderHelpText() {
-        return this.props.maxCount || this.props.maxTotalCount;
     }
 
     getMaxRowsToAdd() {
@@ -197,33 +178,6 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                         {invalidCountMsg ? invalidCountMsg : errorMsg}
                     </span>
                 )}
-            </div>
-        );
-    }
-}
-
-interface RightClickToggleProps {
-    bsRole?: any;
-    onClick?: any;
-}
-// TODO: unused, remove
-export class RightClickToggle extends React.Component<RightClickToggleProps, any> {
-    constructor(props) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick(e) {
-        if (e.button === 2 || e.buttons === 2) {
-            e.preventDefault();
-            this.props.onClick(e);
-        }
-    }
-
-    render() {
-        return (
-            <div className="cellular-count-content" onClick={this.handleClick} onContextMenu={this.handleClick}>
-                {this.props.children}
             </div>
         );
     }

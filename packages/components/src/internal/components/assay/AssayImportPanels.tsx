@@ -502,7 +502,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             getJobDescription,
             jobNotificationProvider,
             assayProtocol,
-            location
+            location,
         } = this.props;
         const { model } = this.state;
         let data = model.prepareFormData(currentStep, this.getDataGridModel());

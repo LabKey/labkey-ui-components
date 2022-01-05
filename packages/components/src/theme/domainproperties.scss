@@ -17,10 +17,6 @@
   cursor: pointer;
 }
 
-.domain-form-search {
-  margin-bottom: 20px;
-};
-
 .domain-toolbar-export-btn-icon {
     color: $brand-primary;
 }
@@ -779,3 +775,7 @@
 .domain-text-choices-info {
     overflow-wrap: anywhere;
 }
+
+.domain-text-choices-search {
+    margin-bottom: 10px;
+};

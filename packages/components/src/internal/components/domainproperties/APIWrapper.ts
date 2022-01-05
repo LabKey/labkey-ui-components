@@ -1,6 +1,12 @@
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { getDomainNamePreviews, validateDomainNameExpressions } from './actions';
+import {
+    getDomainNamePreviews,
+    validateDomainNameExpressions,
+    getGenId,
+    setGenId,
+    hasExistingDomainData,
+} from './actions';
 import { DomainDesign, NameExpressionsValidationResults } from './models';
 
 export interface DomainPropertiesAPIWrapper {
@@ -11,11 +17,26 @@ export interface DomainPropertiesAPIWrapper {
         options?: any,
         includeNamePreview?: boolean
     ) => Promise<NameExpressionsValidationResults>;
+    getGenId: (rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string) => Promise<number>;
+    setGenId: (
+        rowId: number,
+        kindName: 'SampleSet' | 'DataClass',
+        genId: number,
+        containerPath?: string
+    ) => Promise<any>;
+    hasExistingDomainData: (
+        kindName: 'SampleSet' | 'DataClass',
+        dataTypeLSID?: string,
+        rowId?: number
+    ) => Promise<boolean>;
 }
 
 export class DomainPropertiesAPIWrapper implements DomainPropertiesAPIWrapper {
     getDomainNamePreviews = getDomainNamePreviews;
     validateDomainNameExpressions = validateDomainNameExpressions;
+    getGenId = getGenId;
+    setGenId = setGenId;
+    hasExistingDomainData = hasExistingDomainData;
 }
 
 /**
@@ -28,6 +49,9 @@ export function getDomainPropertiesTestAPIWrapper(
     return {
         getDomainNamePreviews: mockFn(),
         validateDomainNameExpressions: mockFn(),
+        getGenId: mockFn(),
+        setGenId: mockFn(),
+        hasExistingDomainData: mockFn(),
         ...overrides,
     };
 }

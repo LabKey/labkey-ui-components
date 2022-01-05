@@ -49,10 +49,11 @@ describe('TextChoiceOptions', () => {
             expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(
                 validValues > 0 && !hasSelection ? 1 : 0
             );
-            expect(wrapper.find('input')).toHaveLength(hasSelection ? 1 : 0);
+            expect(wrapper.find('input.full-width')).toHaveLength(hasSelection ? 1 : 0);
             expect(wrapper.find('button')).toHaveLength(validValues + (hasSelection ? 2 : 0));
             expect(wrapper.find('.domain-text-choices-info').hostNodes()).toHaveLength(hasValueUpdate ? 1 : 0);
             expect(wrapper.find('.alert-danger')).toHaveLength(hasValueError ? 1 : 0);
+            expect(wrapper.find('input.domain-text-choices-search')).toHaveLength(validValues > 2 ? 1 : 0);
         }
     }
 
@@ -90,13 +91,13 @@ describe('TextChoiceOptions', () => {
         wrapper.find(ChoicesListItem).first().simulate('click');
         await waitForLifecycle(wrapper);
 
-        expect(wrapper.find('input').prop('value')).toBe('a');
-        expect(wrapper.find('input').prop('disabled')).toBeFalsy();
+        expect(wrapper.find('input.full-width').prop('value')).toBe('a');
+        expect(wrapper.find('input.full-width').prop('disabled')).toBeFalsy();
         expect(wrapper.find('.btn-success').prop('disabled')).toBeTruthy();
 
-        wrapper.find('input').simulate('change', { target: { name: 'value', value: 'aa' } });
+        wrapper.find('input.full-width').simulate('change', { target: { name: 'value', value: 'aa' } });
         await waitForLifecycle(wrapper);
-        expect(wrapper.find('input').prop('value')).toBe('aa');
+        expect(wrapper.find('input.full-width').prop('value')).toBe('aa');
         expect(wrapper.find('.btn-success').prop('disabled')).toBeFalsy();
 
         wrapper.unmount();
@@ -136,7 +137,7 @@ describe('TextChoiceOptions', () => {
         wrapper.find(ChoicesListItem).last().simulate('click');
         await waitForLifecycle(wrapper);
         validate(wrapper, false, 2, 1, true);
-        expect(wrapper.find('input').prop('disabled')).toBeFalsy();
+        expect(wrapper.find('input.full-width').prop('disabled')).toBeFalsy();
 
         wrapper.unmount();
     });
@@ -154,7 +155,7 @@ describe('TextChoiceOptions', () => {
         // select the in-use value, change it, and apply
         wrapper.find(ChoicesListItem).last().simulate('click');
         await waitForLifecycle(wrapper);
-        wrapper.find('input').simulate('change', { target: { name: 'value', value: 'bb' } });
+        wrapper.find('input.full-width').simulate('change', { target: { name: 'value', value: 'bb' } });
         await waitForLifecycle(wrapper);
         wrapper.find('.btn-success').simulate('click');
         await waitForLifecycle(wrapper);
@@ -183,7 +184,7 @@ describe('TextChoiceOptions', () => {
         wrapper.find(ChoicesListItem).last().simulate('click');
         await waitForLifecycle(wrapper);
         validate(wrapper, false, 2, 1, true);
-        expect(wrapper.find('input').prop('disabled')).toBeTruthy();
+        expect(wrapper.find('input.full-width').prop('disabled')).toBeTruthy();
 
         wrapper.unmount();
     });
@@ -196,15 +197,15 @@ describe('TextChoiceOptions', () => {
         validate(wrapper, false, 2, 0, true);
 
         // don't allow empty string
-        wrapper.find('input').simulate('change', { target: { name: 'value', value: 'bb' } });
+        wrapper.find('input.full-width').simulate('change', { target: { name: 'value', value: 'bb' } });
         await waitForLifecycle(wrapper);
         expect(wrapper.find('.btn-success').prop('disabled')).toBeFalsy();
-        wrapper.find('input').simulate('change', { target: { name: 'value', value: '   ' } });
+        wrapper.find('input.full-width').simulate('change', { target: { name: 'value', value: '   ' } });
         await waitForLifecycle(wrapper);
         expect(wrapper.find('.btn-success').prop('disabled')).toBeTruthy();
 
         // don't allow duplicates
-        wrapper.find('input').simulate('change', { target: { name: 'value', value: ' a ' } });
+        wrapper.find('input.full-width').simulate('change', { target: { name: 'value', value: ' a ' } });
         await waitForLifecycle(wrapper);
         expect(wrapper.find('.btn-success').prop('disabled')).toBeTruthy();
         validate(wrapper, false, 2, 0, true, false, true);
@@ -240,6 +241,38 @@ describe('TextChoiceOptions', () => {
         const wrapper = mount(<TextChoiceOptionsImpl {...DEFAULT_PROPS} maxValueCount={2} validValues={['a', 'b']} />);
         validate(wrapper, false, 2);
         expect(wrapper.find(AddEntityButton).prop('disabled')).toBeTruthy();
+        wrapper.unmount();
+    });
+
+    test('search', async () => {
+        const wrapper = mount(<TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'aa', 'aaa', 'b']} />);
+        validate(wrapper, false, 4);
+        wrapper.find('input.domain-text-choices-search').simulate('change', { target: { name: 'value', value: ' a ' } });
+        await waitForLifecycle(wrapper);
+        let values = wrapper.find(ChoicesListItem);
+        expect(values).toHaveLength(3);
+        expect(values.at(0).text()).toBe('a');
+        expect(values.at(1).text()).toBe('aa');
+        expect(values.at(2).text()).toBe('aaa');
+        wrapper.find('input.domain-text-choices-search').simulate('change', { target: { name: 'value', value: 'b' } });
+        await waitForLifecycle(wrapper);
+        values = wrapper.find(ChoicesListItem);
+        expect(values).toHaveLength(1);
+        expect(values.at(0).text()).toBe('b');
+        wrapper.find('input.domain-text-choices-search').simulate('change', { target: { name: 'value', value: 'AA' } });
+        await waitForLifecycle(wrapper);
+        values = wrapper.find(ChoicesListItem);
+        expect(values).toHaveLength(2);
+        expect(values.at(0).text()).toBe('aa');
+        expect(values.at(1).text()).toBe('aaa');
+        wrapper.find('input.domain-text-choices-search').simulate('change', { target: { name: 'value', value: '' } });
+        await waitForLifecycle(wrapper);
+        values = wrapper.find(ChoicesListItem);
+        expect(values).toHaveLength(4);
+        expect(values.at(0).text()).toBe('a');
+        expect(values.at(1).text()).toBe('aa');
+        expect(values.at(2).text()).toBe('aaa');
+        expect(values.at(3).text()).toBe('b');
         wrapper.unmount();
     });
 });

@@ -26,6 +26,8 @@ import {
     AssayDomainTypes,
     AssayProtocolModel,
     AssayUploadResultModel,
+    BACKGROUND_IMPORT_MIN_FILE_SIZE,
+    BACKGROUND_IMPORT_MIN_ROW_SIZE,
     caseInsensitive,
     dismissNotifications,
     FileSizeLimitProps,
@@ -100,9 +102,6 @@ interface OwnProps {
     jobNotificationProvider?: string;
     assayProtocol?: AssayProtocolModel;
     backgroundUpload?: boolean; // assay design setting
-    allowAsyncImport?: boolean;
-    asyncFileSize?: number;
-    asyncRowSize?: number;
 }
 
 type Props = OwnProps & WithFormStepsProps & InjectedQueryModels;
@@ -503,9 +502,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             getJobDescription,
             jobNotificationProvider,
             assayProtocol,
-            allowAsyncImport,
-            asyncFileSize,
-            asyncRowSize,
+            location
         } = this.props;
         const { model } = this.state;
         let data = model.prepareFormData(currentStep, this.getDataGridModel());
@@ -521,7 +518,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
             .then(processedData => {
                 const backgroundUpload = assayProtocol?.backgroundUpload;
                 let forceAsync = false;
-                if (allowAsyncImport && !backgroundUpload && assayProtocol?.allowBackgroundUpload) {
+                if (!backgroundUpload && assayProtocol?.allowBackgroundUpload) {
+                    const asyncFileSize = location.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE;
+                    const asyncRowSize = location.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_ROW_SIZE;
                     if (
                         (processedData.maxFileSize && processedData.maxFileSize >= asyncFileSize) ||
                         (processedData.maxRowCount && processedData.maxRowCount >= asyncRowSize)
@@ -661,7 +660,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
             showUploadTabs,
             showQuerySelectPreviewOptions,
             runDataPanelTitle,
-            allowAsyncImport,
         } = this.props;
         const { duplicateFileResponse, model, showRenameModal, sampleStatusWarning } = this.state;
 
@@ -712,9 +710,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     allowBulkInsert={allowBulkInsert}
                     allowBulkUpdate={allowBulkUpdate}
                     maxEditableGridRowMsg={
-                        allowAsyncImport
-                            ? "A max of 1,000 rows are allowed. Please use the 'Upload Files' or 'Copy-and-Paste Data' tab if you need to import more than 1,000 rows."
-                            : undefined
+                        "A max of 1,000 rows are allowed. Please use the 'Upload Files' or 'Copy-and-Paste Data' tab if you need to import more than 1,000 rows."
                     }
                     fileSizeLimits={this.props.fileSizeLimits}
                     onGridDataChange={this.props.onDataChange}

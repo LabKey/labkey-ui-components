@@ -203,7 +203,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         return flattenQueryModelRow(model?.getRow());
     };
 
-    isRunPropertiesInit = (): boolean => {
+    runAndBatchPropsLoaded = (): boolean => {
         // if not reimporting, we don't need batch/run properties to display in the form
         const runQueryModel = this.getRunPropsQueryModel();
         const batchQueryModel = this.getBatchPropsQueryModel();
@@ -230,7 +230,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     model: new AssayWizardModel({
                         // Initialization is done if the assay does not have a sample column and we aren't getting the
                         // run properties to show for reimport
-                        isInit: sampleColumnData === undefined && this.isRunPropertiesInit(),
+                        isInit: sampleColumnData === undefined && this.runAndBatchPropsLoaded(),
                         assayDef: assayDefinition,
                         batchColumns: assayDefinition.getDomainColumns(AssayDomainTypes.BATCH),
                         runColumns: assayDefinition.getDomainColumns(AssayDomainTypes.RUN),
@@ -249,10 +249,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
     ensureRunAndBatchProperties = (): void => {
         const { isInit, queryInfo } = this.state.model;
-        const runQueryModel = this.getRunPropsQueryModel();
-        const batchQueryModel = this.getBatchPropsQueryModel();
 
-        if (!isInit && queryInfo && this.isReimport() && !runQueryModel?.isLoading && !batchQueryModel?.isLoading) {
+        if (!isInit && queryInfo && this.isReimport() && this.runAndBatchPropsLoaded()) {
             // if this is a re-import and the batch/run props are now loaded, put them into the state model
             this.setState(
                 state => ({
@@ -274,7 +272,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         let sampleStatusWarning: string;
         const modelUpdates: Partial<AssayWizardModel> = {
             batchProperties: this.getBatchPropertiesMap(),
-            isInit: this.isRunPropertiesInit(),
+            isInit: this.runAndBatchPropsLoaded(),
             runProperties: this.getRunPropertiesMap(),
         };
 

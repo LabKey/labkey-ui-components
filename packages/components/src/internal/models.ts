@@ -296,11 +296,9 @@ export interface EditorModelProps {
     cellValues: CellValues;
     colCount: number;
     id: string;
-    isPasting: boolean; // TODO: remove this attribute
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
-    numPastedRows: number; // TODO: remove this attribute
     rowCount: number;
     selectedColIdx: number;
     selectedRowIdx: number;

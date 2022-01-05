@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD January 2022
 * Item 9846: Text Choice value type ahead search
 
+### version 2.114.0
+*Released*: 4 January 2022
+* Added getGenId and setGenId utils
+* Added NameExpressionGenIdBanner
+
 ### version 2.113.0
 *Released*: 4 January 2022
 * Foundational work for Sample Finder feature development.

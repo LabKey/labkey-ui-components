@@ -454,7 +454,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 }
             })
             .catch(() => {
-                this.setState(() => ({
+                this.setState({
                     error: getActionErrorMessage('There was a problem checking for duplicate file names.', 'assay run'),
                 }));
             });
@@ -607,7 +607,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     onCancelRename = (): void => {
-        this.setState(() => ({ showRenameModal: false, duplicateFileResponse: undefined, importAgain: undefined }));
+        this.setState({ showRenameModal: false, duplicateFileResponse: undefined, importAgain: undefined });
     };
 
     onRenameConfirm = (): void => {

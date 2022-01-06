@@ -5,7 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: ??
 * Refactor EditableGrid to be QueryGridModel agnostic
 * Add EditableGridPanel component, which is compatible with QueryModel
-* Refactor AssayImportPanels/RunDataPanel to use EditableGridPanel, no longer user QueryGridModel
+* Refactor AssayImportPanels/RunDataPanel to use EditableGridPanel and no longer use QueryGridModel
 * Delete AssayUploadGridLoader
   * EditableGridPanel removes the need for overloading GridLoaders to instantiate models
 

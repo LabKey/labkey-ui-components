@@ -111,7 +111,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
         let value = chosenValue ?? undefined;
         if (!value && model?.hasData && parentLSIDs?.length > 0) {
             value = Object.values(model.rows)
-                .map(row => caseInsensitive(row, 'Name').value)
+                .map(row => caseInsensitive(row, 'RowId').value)
                 .join(DELIMITER);
         }
         let queryFilters = List<Filter.IFilter>();
@@ -161,7 +161,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                             queryFilters={queryFilters}
                             showLoading
                             value={value}
-                            valueColumn="Name"
+                            valueColumn="RowId"
                         />
                         {!chosenValue && (
                             <div className="row top-spacing edit-parent-danger">

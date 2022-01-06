@@ -1526,7 +1526,7 @@ function initEditorModel(model: QueryGridModel): void {
     updateEditorModel(newModel, {}, false);
 }
 
-export function copyEvent(editorModel: EditorModel, insertColumns: List<QueryColumn>, event: any): void {
+export function copyEvent(editorModel: EditorModel, insertColumns: QueryColumn[], event: any): void {
     if (editorModel && !editorModel.hasFocus() && editorModel.hasSelection()) {
         cancelEvent(event);
         setCopyValue(event, getCopyValue(editorModel, insertColumns));
@@ -1548,7 +1548,7 @@ function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
     return value;
 }
 
-function getCopyValue(model: EditorModel, insertColumns: List<QueryColumn>): string {
+function getCopyValue(model: EditorModel, insertColumns: QueryColumn[]): string {
     let copyValue = '';
     const EOL = '\n';
 
@@ -2460,6 +2460,7 @@ function getReadonlyRowCount(
 ): number {
     const pkCols = queryInfo.getPkCols();
 
+    // Rows with multiple PKs are always read-only
     if (pkCols.size !== 1) {
         return rowCount - startRowInd;
     }

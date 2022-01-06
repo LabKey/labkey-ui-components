@@ -28,20 +28,24 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { LookupCell, LookupCellProps } from './LookupCell';
 
-interface Props {
+export interface CellActions {
     clearSelection: () => void;
+    focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void;
+    inDrag: () => boolean; // Not really an action, but useful to be part of this interface
+    modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
+    selectCell: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
+}
+
+interface Props {
+    cellActions: CellActions;
     col: QueryColumn;
     colIdx: number;
-    inDrag: () => boolean;
     name?: string;
     placeholder?: string;
     readOnly?: boolean;
     rowIdx: number;
-    focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void;
     focused?: boolean;
     message?: CellMessage;
-    modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
-    selectCell: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
     selected?: boolean;
     selection?: boolean;
     values?: List<ValueDescriptor>;
@@ -75,17 +79,17 @@ export class Cell extends React.PureComponent<Props> {
     }
 
     handleSelectionBlur = (): void => {
-        const { clearSelection, selected } = this.props;
+        const { cellActions, selected } = this.props;
 
         if (selected) {
-            clearSelection();
+            cellActions.clearSelection();
         }
     };
 
     handleBlur = (evt: any): void => {
         clearTimeout(this.changeTO);
-        const { colIdx, rowIdx, modifyCell } = this.props;
-        modifyCell(
+        const { colIdx, rowIdx, cellActions } = this.props;
+        cellActions.modifyCell(
             colIdx,
             rowIdx,
             [
@@ -103,8 +107,8 @@ export class Cell extends React.PureComponent<Props> {
 
         clearTimeout(this.changeTO);
         this.changeTO = window.setTimeout(() => {
-            const { colIdx, rowIdx, modifyCell } = this.props;
-            modifyCell(
+            const { colIdx, rowIdx, cellActions } = this.props;
+            cellActions.modifyCell(
                 colIdx,
                 rowIdx,
                 [
@@ -126,12 +130,13 @@ export class Cell extends React.PureComponent<Props> {
         if (this.isReadOnly()) return;
 
         clearTimeout(this.clickTO);
-        const { colIdx, focusCell, rowIdx } = this.props;
-        focusCell(colIdx, rowIdx);
+        const { colIdx, cellActions, rowIdx } = this.props;
+        cellActions.focusCell(colIdx, rowIdx);
     };
 
     handleKeys = (event: React.KeyboardEvent<HTMLElement>) => {
-        const { colIdx, focusCell, focused, modifyCell, rowIdx, selectCell, selected } = this.props;
+        const { cellActions, colIdx, focused, rowIdx, selected } = this.props;
+        const { focusCell, modifyCell, selectCell } = cellActions;
 
         switch (event.keyCode) {
             case KEYS.Alt:
@@ -197,16 +202,17 @@ export class Cell extends React.PureComponent<Props> {
     };
 
     handleMouseEnter = (event: any): void => {
-        const { colIdx, inDrag, rowIdx, selectCell } = this.props;
+        const { cellActions, colIdx, rowIdx } = this.props;
 
-        if (inDrag()) {
+        if (cellActions.inDrag()) {
             cancelEvent(event);
-            selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA);
+            cellActions.selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA);
         }
     };
 
     handleSelect = (event): void => {
-        const { colIdx, rowIdx, selectCell, selected } = this.props;
+        const { cellActions, colIdx, rowIdx, selected } = this.props;
+        const { selectCell } = cellActions;
 
         if (event.ctrlKey || event.metaKey) {
             selectCell(colIdx, rowIdx, SELECTION_TYPES.SINGLE);
@@ -220,14 +226,13 @@ export class Cell extends React.PureComponent<Props> {
 
     render() {
         const {
+            cellActions,
             col,
             colIdx,
             focused,
             message,
             placeholder,
-            modifyCell,
             rowIdx,
-            selectCell,
             selected,
             selection,
             values,
@@ -299,9 +304,9 @@ export class Cell extends React.PureComponent<Props> {
                 col,
                 colIdx,
                 disabled: this.isReadOnly(),
-                modifyCell,
+                modifyCell: cellActions.modifyCell,
                 rowIdx,
-                select: selectCell,
+                select: cellActions.selectCell,
                 values,
                 filteredLookupValues,
                 filteredLookupKeys,

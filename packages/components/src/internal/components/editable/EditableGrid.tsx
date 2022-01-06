@@ -49,7 +49,7 @@ import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from '../
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
-import { Cell } from './Cell';
+import { Cell, CellActions } from './Cell';
 import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
@@ -95,11 +95,7 @@ function inputCellFactory(
     hideCountCol: boolean,
     columnMetadata: EditableColumnMetadata,
     readonlyRows: List<any>,
-    selectCell: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void,
-    modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void,
-    focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void,
-    clearSelection: () => void,
-    inDrag_: () => boolean
+    cellActions: CellActions
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
         let colOffset = 0;
@@ -128,19 +124,15 @@ function inputCellFactory(
 
         return (
             <Cell
-                clearSelection={clearSelection}
+                cellActions={cellActions}
                 col={c.raw}
                 colIdx={colIdx}
-                inDrag={inDrag_}
                 key={inputCellKey(c.raw, row)}
                 placeholder={columnMetadata ? columnMetadata.placeholder : undefined}
                 readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
                 rowIdx={rn}
-                focusCell={focusCell}
                 focused={editorModel ? editorModel.isFocused(colIdx, rn) : false}
                 message={editorModel ? editorModel.getMessage(colIdx, rn) : undefined}
-                modifyCell={modifyCell}
-                selectCell={selectCell}
                 selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
                 selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
                 values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
@@ -262,8 +254,17 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     private maskDelay: number;
 
+    cellActions: CellActions;
+
     constructor(props: EditableGridProps) {
         super(props);
+        this.cellActions = {
+            clearSelection: this.clearSelection,
+            focusCell: this.focusCell,
+            inDrag: this.inDrag,
+            modifyCell: this.modifyCell,
+            selectCell: this.selectCell,
+        };
         this.state = {
             selected: Set<number>(),
             selectedState: GRID_CHECKBOX_OPTIONS.NONE,
@@ -581,11 +582,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         hideCountCol,
                         metadata,
                         readonlyRows,
-                        this.selectCell,
-                        this.modifyCell,
-                        this.focusCell,
-                        this.clearSelection,
-                        this.inDrag
+                        this.cellActions
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,
@@ -690,7 +687,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     onCopy = (event: ClipboardEvent): void => {
         const { editorModel, queryInfo } = this.props;
         if (!this.props.disabled) {
-            copyEvent(editorModel, queryInfo.getInsertColumns(), event);
+            copyEvent(editorModel, queryInfo.getInsertColumns().toArray(), event);
         }
     };
 

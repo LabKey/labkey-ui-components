@@ -456,7 +456,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             .catch(() => {
                 this.setState({
                     error: getActionErrorMessage('There was a problem checking for duplicate file names.', 'assay run'),
-                }));
+                });
             });
     };
 

@@ -67,7 +67,7 @@ export interface QueryInfoFormProps {
     submitText?: string;
     title?: string;
     useDatePicker?: boolean;
-    onAdditionalFormDataChange?: (name: string, value: any)=>any;
+    onAdditionalFormDataChange?: (name: string, value: any) => any;
 }
 
 interface State {

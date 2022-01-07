@@ -1,32 +1,45 @@
 import React, { FC, memo, ReactNode, ReactText, useCallback, useEffect, useState, useMemo } from 'react';
 
-import {Alert, QueryColumn, QuerySelect, SampleStateType} from '../../../..';
-import {ComponentsAPIWrapper, getDefaultAPIWrapper} from "../../../APIWrapper";
+import { Alert, QueryColumn, QuerySelect, SampleStateType } from '../../../..';
 import {
     DISCARD_CONSUMED_CHECKBOX_FIELD,
     DISCARD_CONSUMED_COMMENT_FIELD,
-    DiscardConsumedSamplesPanel
-} from "../../samples/DiscardConsumedSamplesPanel";
+    DiscardConsumedSamplesPanel,
+} from '../../samples/DiscardConsumedSamplesPanel';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
 
 interface SampleStatusInputProps {
     api?: ComponentsAPIWrapper;
     allowDisable?: boolean;
     col: QueryColumn;
-    data: any,
-    key: ReactText,
+    data: any;
+    key: ReactText;
     isDetailInput?: boolean;
     initiallyDisabled: boolean;
     onToggleDisable?: (disabled: boolean) => void;
     value?: string | Array<Record<string, any>>;
-    onQSChange?: (name: string, value: string | any[], items: any) => void,
-    renderLabelField?: (col: QueryColumn) => ReactNode,
-    showAsteriskSymbol?: boolean,
-    onAdditionalFormDataChange?: (name: string, value: any)=>any;
+    onQSChange?: (name: string, value: string | any[], items: any) => void;
+    renderLabelField?: (col: QueryColumn) => ReactNode;
+    showAsteriskSymbol?: boolean;
+    onAdditionalFormDataChange?: (name: string, value: any) => any;
     inputClass?: string;
 }
 
 export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
-    const { api, showAsteriskSymbol, allowDisable, col, key, initiallyDisabled, onToggleDisable, value, onQSChange, renderLabelField, onAdditionalFormDataChange, inputClass } = props;
+    const {
+        api,
+        showAsteriskSymbol,
+        allowDisable,
+        col,
+        key,
+        initiallyDisabled,
+        onToggleDisable,
+        value,
+        onQSChange,
+        renderLabelField,
+        onAdditionalFormDataChange,
+        inputClass,
+    } = props;
     const [consumedStatuses, setConsumedStatuses] = useState<number[]>(undefined);
     const [error, setError] = useState<string>(undefined);
     const [showDiscardPanel, setShowDiscardPanel] = useState<boolean>(false);
@@ -35,11 +48,10 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
     const loadConsumedStatuses = async (): Promise<void> => {
         try {
             const statuses = await api.samples.getSampleStatuses();
-            let consumedStatusIds = [];
+            const consumedStatusIds = [];
             statuses.forEach(status => {
-                if (status.stateType == SampleStateType.Consumed)
-                    consumedStatusIds.push(status.rowId);
-            })
+                if (status.stateType == SampleStateType.Consumed) consumedStatusIds.push(status.rowId);
+            });
             setConsumedStatuses(consumedStatusIds);
         } catch (error) {
             console.error(error.exception);
@@ -51,17 +63,22 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         loadConsumedStatuses();
     }, []);
 
-    const onChange = useCallback((name: string, newValue: any, items: any) => {
-        onQSChange?.(name, newValue, items);
+    const onChange = useCallback(
+        (name: string, newValue: any, items: any) => {
+            onQSChange?.(name, newValue, items);
 
-        const isConsumed = consumedStatuses.indexOf(newValue) > -1 && value !== newValue;
-        const isInStorage = onAdditionalFormDataChange?.(DISCARD_CONSUMED_CHECKBOX_FIELD, shouldDiscard && isConsumed);
-        const showPanel = isInStorage && isConsumed;
-        setShowDiscardPanel(showPanel);
+            const isConsumed = consumedStatuses.indexOf(newValue) > -1 && value !== newValue;
+            const isInStorage = onAdditionalFormDataChange?.(
+                DISCARD_CONSUMED_CHECKBOX_FIELD,
+                shouldDiscard && isConsumed
+            );
+            const showPanel = isInStorage && isConsumed;
+            setShowDiscardPanel(showPanel);
+        },
+        [onQSChange, consumedStatuses]
+    );
 
-    }, [onQSChange, consumedStatuses]);
-
-    const onCommentChange = useCallback((event) => {
+    const onCommentChange = useCallback(event => {
         const updatedComment = event.target.value;
         onAdditionalFormDataChange?.(DISCARD_CONSUMED_COMMENT_FIELD, updatedComment);
     }, []);
@@ -72,24 +89,26 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
     }, [shouldDiscard]);
 
     const discardPanel = useMemo(() => {
-        const panel = <DiscardConsumedSamplesPanel
-            shouldDiscard={shouldDiscard}
-            onCommentChange={onCommentChange}
-            toggleShouldDiscard={toggleShouldDiscard}
-            discardTitle={`Discard sample${allowDisable ? '(s)' : ''}?`}
-        />;
+        const panel = (
+            <DiscardConsumedSamplesPanel
+                shouldDiscard={shouldDiscard}
+                onCommentChange={onCommentChange}
+                toggleShouldDiscard={toggleShouldDiscard}
+                discardTitle={`Discard sample${allowDisable ? '(s)' : ''}?`}
+            />
+        );
 
         if (allowDisable) {
-            return  (<>
-                <div className="row">
-                    <div className="col-sm-3 col-xs-12"/>
-                    <div className="col-sm-9 col-xs-12">
-                        <div className="left-spacing right-spacing">
-                            {panel}
+            return (
+                <>
+                    <div className="row">
+                        <div className="col-sm-3 col-xs-12" />
+                        <div className="col-sm-9 col-xs-12">
+                            <div className="left-spacing right-spacing">{panel}</div>
                         </div>
                     </div>
-                </div>
-            </>);
+                </>
+            );
         }
         return panel;
     }, [shouldDiscard, onCommentChange, toggleShouldDiscard, allowDisable]);
@@ -125,9 +144,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 />
             </React.Fragment>
             {error && <Alert>{error}</Alert>}
-            {showDiscardPanel &&
-                <>{discardPanel}</>
-            }
+            {showDiscardPanel && <>{discardPanel}</>}
         </>
     );
 });

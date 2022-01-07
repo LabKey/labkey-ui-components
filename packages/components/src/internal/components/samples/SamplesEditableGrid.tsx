@@ -49,11 +49,12 @@ import {
     removeEntityParentType,
 } from '../entities/EntityParentTypeSelectors';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { getOriginalParentsFromSampleLineage } from './actions';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
-import { DiscardConsumedSamplesModal } from "./DiscardConsumedSamplesModal";
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from "../../APIWrapper";
+import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;
@@ -153,14 +154,13 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         this.props.api.samples
             .getSampleStatuses()
             .then(statuses => {
-                let consumedStatusIds = [];
+                const consumedStatusIds = [];
                 statuses.forEach(status => {
-                    if (status.stateType == SampleStateType.Consumed)
-                        consumedStatusIds.push(status.rowId);
-                })
+                    if (status.stateType == SampleStateType.Consumed) consumedStatusIds.push(status.rowId);
+                });
                 this.setState({
-                    consumedStatusIds
-                })
+                    consumedStatusIds,
+                });
             })
             .catch(() => {
                 this._hasError = true;
@@ -374,13 +374,13 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 sampleRows = data.updatedRows;
                 sampleSchemaQuery = data.schemaQuery;
 
-                sampleRows.forEach((row) => {
-                    if(consumedStatusIds.indexOf(caseInsensitive(row, 'sampleState')) > -1) {
+                sampleRows.forEach(row => {
+                    if (consumedStatusIds.indexOf(caseInsensitive(row, 'sampleState')) > -1) {
                         const sampleId = caseInsensitive(row, 'RowId');
                         const existingStorageItem = sampleItems[sampleId];
                         if (existingStorageItem) {
                             discardStorageRows.push({
-                                rowId: existingStorageItem.rowId
+                                rowId: existingStorageItem.rowId,
                             });
                         }
                     }
@@ -406,7 +406,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     pendingUpdateDataRows: updateDataRows,
                     showDiscardDialog: App.isFreezerManagementEnabled(),
                     discardSamplesCount: discardStorageRows.length,
-                    totalEditCount: totalSamplesToUpdate
+                    totalEditCount: totalSamplesToUpdate,
                 });
                 resolve(false);
             });
@@ -488,11 +488,14 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                                 schemaQuery: SCHEMAS.INVENTORY.ITEMS,
                                 rows: discardStorageRows,
                                 auditBehavior: AuditBehaviorTypes.DETAILED,
-                                auditUserComment: discardSamplesComment
-                            })
-                            discardSuccessMsg = ' and discarded ' + discardStorageRows.length + (discardStorageRows.length > 1 ? ' samples' : ' sample') + ' from storage'
-                        }
-                        catch (error) {
+                                auditUserComment: discardSamplesComment,
+                            });
+                            discardSuccessMsg =
+                                ' and discarded ' +
+                                discardStorageRows.length +
+                                (discardStorageRows.length > 1 ? ' samples' : ' sample') +
+                                ' from storage';
+                        } catch (error) {
                             console.error(error);
                             this._hasError = true;
                             dismissNotifications();
@@ -502,15 +505,12 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                             });
                             resolve(error);
                         }
-
                     }
-
 
                     if (sampleSchemaQuery) {
                         if (invalidateSampleQueries) {
                             invalidateSampleQueries(sampleSchemaQuery);
-                        }
-                        else {
+                        } else {
                             queryGridInvalidate(sampleSchemaQuery);
                             invalidateLineageResults();
                         }
@@ -523,7 +523,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     gridIdInvalidate(SAMPLES_LINEAGE_EDIT_GRID_ID, true);
                     dismissNotifications(); // get rid of any error notifications that have already been created
 
-                    createNotification('Successfully updated ' + totalSamplesToUpdate + ' ' + noun + discardSuccessMsg + '.');
+                    createNotification(
+                        'Successfully updated ' + totalSamplesToUpdate + ' ' + noun + discardSuccessMsg + '.'
+                    );
 
                     resolve(result);
                 },
@@ -715,23 +717,26 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         }
     };
 
-    onConfirmConsumedSamplesDialog = (shouldDiscard: boolean, comment: string) : any => {
+    onConfirmConsumedSamplesDialog = (shouldDiscard: boolean, comment: string): any => {
         const { pendingUpdateDataRows } = this.state;
-        this.setState({
-            discardConsumed: shouldDiscard,
-            discardSamplesComment: comment,
-            showDiscardDialog: false,
-        }, () => {
-            this.onGridEditComplete();
-            return this.updateAllTabRows(pendingUpdateDataRows, true);
-        });
-    }
+        this.setState(
+            {
+                discardConsumed: shouldDiscard,
+                discardSamplesComment: comment,
+                showDiscardDialog: false,
+            },
+            () => {
+                this.onGridEditComplete();
+                return this.updateAllTabRows(pendingUpdateDataRows, true);
+            }
+        );
+    };
 
-    onDismissConsumedSamplesDialog = () : any => {
+    onDismissConsumedSamplesDialog = (): any => {
         this.setState({
             showDiscardDialog: false,
         });
-    }
+    };
 
     render() {
         const { selectionData, onGridEditCancel } = this.props;
@@ -752,14 +757,14 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
         return (
             <>
-                {showDiscardDialog &&
+                {showDiscardDialog && (
                     <DiscardConsumedSamplesModal
                         consumedSampleCount={discardSamplesCount}
                         totalSampleCount={totalEditCount}
                         onConfirm={this.onConfirmConsumedSamplesDialog}
                         onCancel={this.onDismissConsumedSamplesDialog}
                     />
-                }
+                )}
                 <EditableGridPanelForUpdate
                     model={List<QueryGridModel>(models)}
                     selectionData={selectionData}
@@ -777,7 +782,6 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     getTabHeader={this.getTabHeader}
                 />
             </>
-
         );
     }
 }

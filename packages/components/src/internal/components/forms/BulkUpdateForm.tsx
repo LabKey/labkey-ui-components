@@ -32,7 +32,7 @@ interface Props {
     uniqueFieldKey?: string;
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
     header?: ReactNode;
-    onAdditionalFormDataChange?: (name: string, value: any)=>any;
+    onAdditionalFormDataChange?: (name: string, value: any) => any;
 }
 
 interface State {
@@ -137,7 +137,8 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
 
     render() {
         const { isLoadingDataForSelection, dataForSelection } = this.state;
-        const { canSubmitForEdit, onCancel, onComplete, pluralNoun, queryInfo, onAdditionalFormDataChange } = this.props;
+        const { canSubmitForEdit, onCancel, onComplete, pluralNoun, queryInfo, onAdditionalFormDataChange } =
+            this.props;
         const fieldValues =
             isLoadingDataForSelection || !dataForSelection ? undefined : getCommonDataValues(dataForSelection);
 

@@ -35,7 +35,7 @@ export interface EditableDetailPanelProps extends RequiresModelAndActions {
     submitText?: string;
     title?: string;
     useEditIcon?: boolean;
-    onAdditionalFormDataChange?: (name: string, value: any)=>any;
+    onAdditionalFormDataChange?: (name: string, value: any) => any;
 }
 
 interface State {

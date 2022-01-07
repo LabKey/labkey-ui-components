@@ -1,11 +1,11 @@
-import React, { FC, memo } from "react";
-import { Col, Row} from "react-bootstrap";
+import React, { FC, memo } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 interface Props {
-    shouldDiscard: boolean
+    shouldDiscard: boolean;
     onCommentChange: (event) => any;
     toggleShouldDiscard: () => any;
-    discardTitle?: string
+    discardTitle?: string;
 }
 
 export const DISCARD_CONSUMED_CHECKBOX_FIELD = 'discardcheckbox';
@@ -16,23 +16,24 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
 
     return (
         <>
-            {
-                <Row>
-                    <Col xs={5}>
-                        <div className="form-group">
-                            <div className="form-check">
-                                <input className="form-check-input" type="checkbox"
-                                       id={DISCARD_CONSUMED_CHECKBOX_FIELD}
-                                       name={DISCARD_CONSUMED_CHECKBOX_FIELD}
-                                       onChange={toggleShouldDiscard}
-                                       checked={shouldDiscard}/>
-                                <span className="left-spacing">{discardTitle}</span>
-                            </div>
+            <Row>
+                <Col xs={5}>
+                    <div className="form-group">
+                        <div className="form-check">
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                id={DISCARD_CONSUMED_CHECKBOX_FIELD}
+                                name={DISCARD_CONSUMED_CHECKBOX_FIELD}
+                                onChange={toggleShouldDiscard}
+                                checked={shouldDiscard}
+                            />
+                            <span className="left-spacing">{discardTitle}</span>
                         </div>
-                    </Col>
-                    <Col xs={7}/>
-                </Row>
-            }
+                    </div>
+                </Col>
+                <Col xs={7} />
+            </Row>
             <div className="form-group">
                 <div className="storage-item-data">Reason for discarding</div>
                 <textarea
@@ -46,8 +47,8 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
                 />
             </div>
         </>
-    )
-})
+    );
+});
 
 DiscardConsumedSamplesPanel.defaultProps = {
     discardTitle: 'Discard sample',

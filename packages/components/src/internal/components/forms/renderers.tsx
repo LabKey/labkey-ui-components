@@ -24,7 +24,7 @@ import { AssayTaskInput } from './input/AssayTaskInput';
 
 import { LabelOverlay } from './LabelOverlay';
 import { AliasInput } from './input/AliasInput';
-import { SampleStatusInput } from "./input/SampleStatusInput";
+import { SampleStatusInput } from './input/SampleStatusInput';
 
 type InputRenderer = (
     col: QueryColumn,
@@ -38,8 +38,8 @@ type InputRenderer = (
     onQSChange?: (name: string, value: string | any[], items: any) => void,
     renderLabelField?: (col: QueryColumn) => ReactNode,
     showAsteriskSymbol?: boolean,
-    onAdditionalFormDataChange?: (name: string, value: any)=>any,
-    inputClass?: string,
+    onAdditionalFormDataChange?: (name: string, value: any) => any,
+    inputClass?: string
 ) => ReactNode;
 
 const AliasInputRenderer: InputRenderer = (
@@ -102,24 +102,26 @@ const SampleStatusInputRenderer: InputRenderer = (
     onQSChange?: (name: string, value: string | any[], items: any) => void,
     renderLabelField?: (col: QueryColumn) => ReactNode,
     showAsteriskSymbol?: boolean,
-    onAdditionalFormDataChange?: (name: string, value: any)=>any,
-    inputClass?: string,
+    onAdditionalFormDataChange?: (name: string, value: any) => any,
+    inputClass?: string
 ) => {
-    return <SampleStatusInput
-        col={col}
-        key={key}
-        data={data}
-        value={value}
-        allowDisable={allowFieldDisable}
-        initiallyDisabled={initiallyDisabled}
-        onToggleDisable={onToggleDisable}
-        onQSChange={onQSChange}
-        renderLabelField={renderLabelField}
-        showAsteriskSymbol={showAsteriskSymbol}
-        onAdditionalFormDataChange={onAdditionalFormDataChange}
-        inputClass={inputClass}
-    />
-}
+    return (
+        <SampleStatusInput
+            col={col}
+            key={key}
+            data={data}
+            value={value}
+            allowDisable={allowFieldDisable}
+            initiallyDisabled={initiallyDisabled}
+            onToggleDisable={onToggleDisable}
+            onQSChange={onQSChange}
+            renderLabelField={renderLabelField}
+            showAsteriskSymbol={showAsteriskSymbol}
+            onAdditionalFormDataChange={onAdditionalFormDataChange}
+            inputClass={inputClass}
+        />
+    );
+};
 
 const ASSAY_ID_INDEX = 'Protocol/RowId';
 

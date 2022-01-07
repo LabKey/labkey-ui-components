@@ -65,7 +65,7 @@ interface QueryFormInputsProps {
     showLabelAsterisk?: boolean; // only used if checkRequiredFields is false, to show * for fields that are originally required
     showQuerySelectPreviewOptions?: boolean;
     useDatePicker?: boolean;
-    onAdditionalFormDataChange?: (name: string, value: any)=>any;
+    onAdditionalFormDataChange?: (name: string, value: any) => any;
 }
 
 interface State {

@@ -860,18 +860,22 @@ export function getSampleTypeRowId(name: string): Promise<number> {
     });
 }
 
-export function updateSamplesStatus(sampleIds: number[], newStatus: number, auditBehavior?: AuditBehaviorTypes ): Promise<any> {
-    let updatedRows = [];
-    [...sampleIds].forEach((sampleId) => {
+export function updateSamplesStatus(
+    sampleIds: number[],
+    newStatus: number,
+    auditBehavior?: AuditBehaviorTypes
+): Promise<any> {
+    const updatedRows = [];
+    [...sampleIds].forEach(sampleId => {
         updatedRows.push({
             rowId: sampleId,
-            sampleState: newStatus
+            sampleState: newStatus,
         });
     });
 
     return updateRows({
         schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_STATUS,
         rows: updatedRows,
-        auditBehavior: auditBehavior ?? AuditBehaviorTypes.DETAILED
+        auditBehavior: auditBehavior ?? AuditBehaviorTypes.DETAILED,
     });
 }

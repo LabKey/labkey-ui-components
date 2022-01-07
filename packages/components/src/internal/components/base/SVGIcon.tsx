@@ -110,7 +110,7 @@ export class SVGIcon extends PureComponent<Props> {
 
         return (
             <img
-                {...imgProps(this.props)}
+                {...imgProps(this.props) as any}
                 alt={alt ? alt : iconSrc + '-icon'}
                 src={iconURL(iconDir, iconSrc, this.getTheme())}
             />

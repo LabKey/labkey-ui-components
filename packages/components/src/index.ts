@@ -499,7 +499,7 @@ import { PipelineJobsListingPage } from './internal/components/pipeline/Pipeline
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
 import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
-import { renderWorkflowLinkMsg, getSuccessMsg } from './internal/components/pipeline/utils';
+import { getImportNotificationMsg } from './internal/components/pipeline/utils';
 import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
@@ -1300,8 +1300,7 @@ export {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
-    renderWorkflowLinkMsg,
-    getSuccessMsg,
+    getImportNotificationMsg,
     // Test Helpers
     sleep,
     createMockWithRouterProps,

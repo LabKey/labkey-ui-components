@@ -71,6 +71,12 @@ import {
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
 } from './constants';
+import { initUnitTestMocks } from '../../testHelperMocks';
+import { initOnotologyMocks } from '../../mock';
+
+beforeAll(() => {
+    initUnitTestMocks([initOnotologyMocks]);
+});
 
 const GRID_DATA = DomainDesign.create({
     fields: [
@@ -521,7 +527,7 @@ describe('DomainDesign', () => {
 
     test('getDomainContainer', () => {
         const domain = DomainDesign.create({ name: 'Test Container' });
-        expect(domain.getDomainContainer()).toBe(undefined);
+        expect(domain.getDomainContainer()).toBe('testContainerEntityId');
 
         const domain2 = DomainDesign.create({ name: 'Test Container', container: 'SOMETHINGELSE' });
         expect(domain2.getDomainContainer()).toBe('SOMETHINGELSE');

@@ -35,10 +35,7 @@ export interface EditableDetailPanelProps extends RequiresModelAndActions {
     submitText?: string;
     title?: string;
     useEditIcon?: boolean;
-    usePropsEditing?: boolean;
-    propsEditing?: boolean;
-    propsError?: string;
-    canCompleteSubmit?: (row: any) => boolean;
+    onAdditionalFormDataChange?: (name: string, value: any)=>any;
 }
 
 interface State {
@@ -63,17 +60,12 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
     };
 
     toggleEditing = (): void => {
-        if (!this.props.usePropsEditing) {
-            this.setState(
-                state => ({ editing: !state.editing, warning: undefined, error: undefined }),
-                () => {
-                    this.props.onEditToggle?.(this.state.editing);
-                }
-            );
-        }
-        else
-            this.props.onEditToggle?.(!this.props.propsEditing);
-
+        this.setState(
+            state => ({ editing: !state.editing, warning: undefined, error: undefined }),
+            () => {
+                this.props.onEditToggle?.(this.state.editing);
+            }
+        );
     };
 
     disableSubmitButton = (): void => {
@@ -94,7 +86,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     handleSubmit = async (values: Record<string, any>): Promise<void> => {
-        const { auditBehavior, containerPath, model, onEditToggle, onUpdate, usePropsEditing, canCompleteSubmit } = this.props;
+        const { auditBehavior, containerPath, model, onEditToggle, onUpdate } = this.props;
         const { queryInfo } = model;
         const row = model.getRow();
         const updatedValues = extractChanges(queryInfo, fromJS(model.getRow()), values);
@@ -120,10 +112,6 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             }
         });
 
-        if (canCompleteSubmit && !canCompleteSubmit(updatedValues)) {
-            return;
-        }
-
         try {
             await updateRows({
                 auditBehavior,
@@ -132,16 +120,10 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                 schemaQuery: queryInfo.schemaQuery,
             });
 
-
-            if (!usePropsEditing) {
-                this.setState({ editing: false }, () => {
-                    onUpdate?.(); // eslint-disable-line no-unused-expressions
-                    onEditToggle?.(false); // eslint-disable-line no-unused-expressions
-                });
-            }
-            else
-                onUpdate?.();
-
+            this.setState({ editing: false }, () => {
+                onUpdate?.(); // eslint-disable-line no-unused-expressions
+                onEditToggle?.(false); // eslint-disable-line no-unused-expressions
+            });
         } catch (error) {
             this.setState({
                 error: resolveErrorMessage(error, 'data', undefined, 'update'),
@@ -166,14 +148,10 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             submitText,
             title,
             useEditIcon,
-            usePropsEditing,
-            propsEditing,
-            propsError,
+            onAdditionalFormDataChange,
         } = this.props;
         const { canSubmit, editing, error, warning } = this.state;
         const isEditable = !model.isLoading && model.hasRows && (model.queryInfo?.isAppEditable() || appEditable);
-
-        const isEditing = usePropsEditing ? propsEditing : editing;
 
         const panel = (
             <div className={`panel ${editing ? 'panel-info' : 'panel-default'}`}>
@@ -182,7 +160,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                         useEditIcon={useEditIcon}
                         isEditable={isEditable}
                         canUpdate={canUpdate}
-                        editing={isEditing}
+                        editing={editing}
                         title={title}
                         onClickFn={this.toggleEditing}
                         warning={warning}
@@ -191,26 +169,27 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                 <div className="panel-body">
                     <div className="detail__editing">
-                        {(error || propsError) && <Alert>{error ?? propsError}</Alert>}
+                        {error && <Alert>{error}</Alert>}
 
-                        {!isEditing && (detailHeader ?? null)}
+                        {!editing && (detailHeader ?? null)}
 
                         <DetailPanel
                             actions={actions}
                             detailEditRenderer={detailEditRenderer}
                             detailRenderer={detailRenderer}
                             editColumns={editColumns}
-                            editingMode={isEditing}
+                            editingMode={editing}
                             model={model}
                             queryColumns={queryColumns}
                             fileInputRenderer={this.fileInputRenderer}
+                            onAdditionalFormDataChange={onAdditionalFormDataChange}
                         />
                     </div>
                 </div>
             </div>
         );
 
-        if (isEditing) {
+        if (editing) {
             return (
                 <Formsy
                     onChange={this.handleFormChange}

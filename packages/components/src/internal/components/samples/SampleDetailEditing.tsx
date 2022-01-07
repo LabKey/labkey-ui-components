@@ -6,6 +6,7 @@ import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import {
     caseInsensitive,
+    createNotification,
     DefaultRenderer,
     deleteRows,
     DetailPanelWithModel,
@@ -15,10 +16,8 @@ import {
     resolveErrorMessage,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SampleAliquotDetailHeader,
-    SampleStateType,
     SchemaQuery,
-    SCHEMAS,
-    updateRows,
+    SCHEMAS, withTimeout,
 } from '../../..';
 
 import { EditableDetailPanel, EditableDetailPanelProps } from '../../../public/QueryModel/EditableDetailPanel';
@@ -26,8 +25,8 @@ import { EditableDetailPanel, EditableDetailPanelProps } from '../../../public/Q
 import { GroupedSampleFields } from './models';
 import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields, GroupedSampleDisplayColumns } from './actions';
 import { IS_ALIQUOT_COL } from './constants';
-import { DiscardConsumedSamplesModal } from "./DiscardConsumedSamplesModal";
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from "../../APIWrapper";
+import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from "./DiscardConsumedSamplesPanel";
 
 interface Props extends EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;
@@ -38,11 +37,8 @@ interface State {
     hasError: boolean;
     sampleStorageItemId: number;
     sampleTypeDomainFields: GroupedSampleFields;
-    showDiscardDialog: boolean;
-    editing: boolean;
-    consumedStatusIds: number[];
-    error: string;
-    pendingUpdatedValues: any;
+    shouldDiscard: boolean;
+    discardComment: string;
 }
 
 export class SampleDetailEditing extends PureComponent<Props, State> {
@@ -54,11 +50,8 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         hasError: false,
         sampleStorageItemId: undefined,
         sampleTypeDomainFields: undefined,
-        showDiscardDialog: false,
-        editing: false,
-        consumedStatusIds: undefined,
-        pendingUpdatedValues: undefined,
-        error: undefined,
+        shouldDiscard: false,
+        discardComment: undefined,
     };
 
     componentDidMount(): void {
@@ -84,24 +77,9 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
 
         try {
             const sampleTypeDomainFields = await getGroupedSampleDomainFields(sampleSet);
-            const statuses = await api.samples.getSampleStatuses();
             const sampleStorageItemId = await api.samples.getSampleStorageId(this.getSampleId());
 
-            let consumedStatusIds = [];
-            statuses.forEach(status => {
-                if (status.stateType == SampleStateType.Consumed)
-                    consumedStatusIds.push(status.rowId);
-            })
-            this.setState({
-                consumedStatusIds
-            })
-
-            this.setState({
-                sampleTypeDomainFields,
-                consumedStatusIds,
-                sampleStorageItemId,
-                hasError: false
-            });
+            this.setState({ sampleTypeDomainFields, sampleStorageItemId, hasError: false });
         } catch (e) {
             this.setState({ hasError: true });
         }
@@ -136,50 +114,10 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         };
     };
 
-    checkCanCompleteSubmit = (row: any) : boolean => {
-        const { consumedStatusIds } = this.state;
+    handleSave = async () => {
+        const { shouldDiscard, discardComment, sampleStorageItemId } = this.state;
 
-        if (consumedStatusIds.indexOf(caseInsensitive(row, 'SampleState')) > -1) {
-            this.setState({
-                pendingUpdatedValues: row,
-                showDiscardDialog: true,
-                error: undefined,
-            });
-            return false;
-        }
-
-        return true;
-    };
-
-    onDismissConsumedSamplesDialog = () : any => {
-        this.setState({
-            showDiscardDialog: false,
-            editing: false,
-            error: undefined,
-        });
-    };
-
-    onConfirmConsumedSamplesDialog = async (shouldDiscard: boolean, comment: string) => {
-        const { auditBehavior, containerPath, model, onUpdate } = this.props;
-        const { queryInfo } = model;
-        const { pendingUpdatedValues, sampleStorageItemId } = this.state;
-
-        try {
-            await updateRows({
-                auditBehavior,
-                containerPath,
-                rows: [pendingUpdatedValues],
-                schemaQuery: queryInfo.schemaQuery,
-            });
-
-
-        }
-        catch (error) {
-            this.setState({
-                error: resolveErrorMessage(error, 'data', undefined, 'update'),
-            });
-            return;
-        }
+        this.props.onUpdate?.();
 
         if (shouldDiscard) {
             try {
@@ -187,35 +125,39 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                     schemaQuery: SCHEMAS.INVENTORY.ITEMS,
                     rows: [{RowId: sampleStorageItemId}],
                     auditBehavior: AuditBehaviorTypes.DETAILED,
-                    auditUserComment: comment
+                    auditUserComment: discardComment
                 })
+                withTimeout(() => {
+                    createNotification("Successfully updated and discarded sample from storage.")
+                });
             }
             catch (error) {
-                this.setState({
-                    error: resolveErrorMessage(error, 'data', undefined, 'discard'),
+                const errorMsg = resolveErrorMessage(error, 'sample', 'sample', 'discard');
+                withTimeout(() => {
+                    createNotification({ message: errorMsg, alertClass: 'danger' });
                 });
-                return;
             }
         }
-
-        onUpdate?.()
-
-        this.setState({
-            showDiscardDialog: false,
-            editing: false,
-            error: undefined,
-        });
-
     };
 
-    onEditToggle = () => {
-        this.setState(state => ({ editing: !state.editing}));
+    onDiscardConsumedPanelChange = (field: string, value: any) => {
+        const { sampleStorageItemId } = this.state;
+
+        if (!sampleStorageItemId || sampleStorageItemId <= 0)
+            return false; // if sample is not in storage, skip showing discard panel
+
+        if (field === DISCARD_CONSUMED_CHECKBOX_FIELD)
+            this.setState(() => ({shouldDiscard: value}));
+        else if (field === DISCARD_CONSUMED_COMMENT_FIELD)
+            this.setState(() => ({discardComment: value}));
+
+        return true;
     };
 
     render() {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { sampleSet, ...editableDetailPanelProps } = this.props;
-        const { hasError, sampleTypeDomainFields, showDiscardDialog, editing, error } = this.state;
+        const { hasError, sampleTypeDomainFields } = this.state;
         const { model, title } = editableDetailPanelProps;
         let { detailHeader } = editableDetailPanelProps;
 
@@ -236,8 +178,6 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         const root = caseInsensitive(row, 'RootMaterialLSID/Name');
         const isAliquot = !!parent?.value;
 
-        const notInStorage = caseInsensitive(row, 'StorageStatus') === 'Not in storage';
-
         const { aliquotHeaderDisplayColumns, displayColumns, editColumns } = this.getUpdateDisplayColumns(isAliquot);
 
         if (!detailHeader && isAliquot) {
@@ -251,25 +191,14 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
 
         return (
             <>
-                {showDiscardDialog &&
-                    <DiscardConsumedSamplesModal
-                        consumedSampleCount={1}
-                        totalSampleCount={1}
-                        onConfirm={this.onConfirmConsumedSamplesDialog}
-                        onCancel={this.onDismissConsumedSamplesDialog}
-                    />
-                }
                 <EditableDetailPanel
                     {...editableDetailPanelProps}
                     detailHeader={detailHeader}
                     editColumns={editColumns}
                     queryColumns={displayColumns}
                     title={title ?? (isAliquot ? 'Aliquot Details' : undefined)}
-                    canCompleteSubmit={notInStorage ? undefined : this.checkCanCompleteSubmit}
-                    onEditToggle={this.onEditToggle}
-                    propsEditing={editing}
-                    propsError={error}
-                    usePropsEditing={!notInStorage}
+                    onAdditionalFormDataChange={this.onDiscardConsumedPanelChange}
+                    onUpdate={this.handleSave}
                 />
                 {isAliquot && (
                     <Panel>

@@ -3,9 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version XXX
 *Released*: XXX
-* Added DiscardConsumedSamplesModal
-* Modified SamplesEditableGrid to allow discarding consumed samples
-* Modified SampleDetailEditing to allow discarding consumed sample
+* Item #9810: Consumed Status/Discarding Sample
+  * Added DiscardConsumedSamples, DiscardConsumedSamplesModal and SampleStatusInput components
+  * Modified SamplesEditableGrid, SamplesBulkUpdateForm and SampleDetailEditing to allow discarding consumed samples
 
 ### version 2.114.0
 *Released*: 4 January 2022

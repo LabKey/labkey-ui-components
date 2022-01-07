@@ -59,7 +59,8 @@ function detailNonEditableRenderer(col: QueryColumn, data: any): ReactNode {
 export function resolveDetailEditRenderer(
     col: QueryColumn,
     options?: RenderOptions,
-    fileInputRenderer = detailNonEditableRenderer
+    fileInputRenderer = detailNonEditableRenderer,
+    onAdditionalFormDataChange?: (name: string, value: any)=>any
 ): Renderer {
     return (data, row) => {
         const editable = col.isEditable();
@@ -76,7 +77,7 @@ export function resolveDetailEditRenderer(
             const renderer = resolveRenderer(col);
 
             if (renderer) {
-                return renderer(col, col.name, row, value, true);
+                return renderer(col, col.name, row, value, true, false, false, null, null, null, false, onAdditionalFormDataChange); //TODO
             }
 
             throw new Error(`"${col.inputRenderer}" is not a valid inputRenderer.`);

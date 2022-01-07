@@ -64,8 +64,8 @@ interface DetailPanelBodyProps extends DetailDisplaySharedProps {
 }
 
 const DetailPanelWithModelBodyImpl: FC<DetailPanelBodyProps & InjectedQueryModels> = memo(
-    ({ queryModels, ...rest }) => {
-        return <DetailPanel {...rest} model={queryModels.model} />;
+    ({ queryModels, onAdditionalFormDataChange, ...rest }) => {
+        return <DetailPanel onAdditionalFormDataChange={onAdditionalFormDataChange} {...rest} model={queryModels.model} />;
     }
 );
 

@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Share asynchronous upload functionality across LKB and LKSM by pulling relevant code into ui-components
 
+### version 2.115.1
+*Released*: 5 January 2022
+* Escape typings of some built-in React HTML types
+
 ### version 2.115.0
 *Released*: 5 January 2022
 * Item 9846: Text Choice value type ahead search

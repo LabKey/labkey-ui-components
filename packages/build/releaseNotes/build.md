@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version 5.0.0
+*Released*: 5 January 2022
+* Migrate webpack-dev-server from v3 to v4
+* Update webpack, npm v8 compatible package-lock.json
+
 ### version 4.0.1
 *Released*: 1 September 2021
 * Dependabot package updates

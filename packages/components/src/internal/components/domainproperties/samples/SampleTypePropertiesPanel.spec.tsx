@@ -28,6 +28,11 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
+import { initUnitTestMocks } from '../../../testHelperMocks';
+
+beforeAll(() => {
+    initUnitTestMocks();
+});
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,

@@ -10,21 +10,16 @@ import { CheckboxInput } from '../forms/input/CheckboxInput';
 
 import { AssayWizardModel } from './AssayWizardModel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
+import { initUnitTestMocks } from '../../testHelperMocks';
 
 beforeAll(() => {
-    LABKEY.container = {
-        formats: {
-            dateFormat: 'yyyy-MM-dd',
-            dateTimeFormat: 'yyyy-MM-dd HH:mm',
-            numberFormat: null,
-        },
-    };
+    initUnitTestMocks();
 });
 
 describe('<RunPropertiesPanel/>', () => {
     test('model without run domain fields', () => {
         const model = ASSAY_WIZARD_MODEL.set('runColumns', OrderedMap<string, QueryColumn>()) as AssayWizardModel;
-        const component = <RunPropertiesPanel model={model} onChange={() => {}} />;
+        const component = <RunPropertiesPanel model={model} onChange={jest.fn} />;
 
         const wrapper = mount(component);
         expect(wrapper.find('.panel')).toHaveLength(1);
@@ -34,7 +29,7 @@ describe('<RunPropertiesPanel/>', () => {
     });
 
     test('check form input types', () => {
-        const component = <RunPropertiesPanel model={ASSAY_WIZARD_MODEL} onChange={() => {}} />;
+        const component = <RunPropertiesPanel model={ASSAY_WIZARD_MODEL} onChange={jest.fn} />;
 
         const wrapper = mount(component);
         expect(wrapper.find('.panel')).toHaveLength(1);

@@ -7,6 +7,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Added DiscardConsumedSamples, DiscardConsumedSamplesModal and SampleStatusInput components
   * Modified SamplesEditableGrid, SamplesBulkUpdateForm and SampleDetailEditing to allow discarding consumed samples
 
+### version 2.115.2
+*Released*: 7 January 2022
+* Fix unhandled promises
+  * most are addressed by adding test mock initialization
+  * address <AssignmentOptions/> in Issues by refactoring how erroneous requests are handled
+
 ### version 2.115.1
 *Released*: 5 January 2022
 * Escape typings of some built-in React HTML types

@@ -16,8 +16,6 @@ export function initUnitTestMocks(extraMocks?: Array<() => void>, metadata?: Map
     initQueryGridMocks();
     initDomainPropertiesMocks();
     initUserPropsMocks();
-    if (extraMocks) {
-        extraMocks.forEach(extraMock => extraMock());
-    }
+    extraMocks?.forEach(extraMock => extraMock());
     mock.use(proxy);
 }

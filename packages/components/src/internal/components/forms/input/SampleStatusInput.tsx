@@ -7,6 +7,7 @@ import {
     DISCARD_CONSUMED_COMMENT_FIELD,
     DiscardConsumedSamplesPanel
 } from "../../samples/DiscardConsumedSamplesPanel";
+import classNames from "classnames";
 
 interface SampleStatusInputProps {
     api?: ComponentsAPIWrapper;
@@ -22,10 +23,11 @@ interface SampleStatusInputProps {
     renderLabelField?: (col: QueryColumn) => ReactNode,
     showAsteriskSymbol?: boolean,
     onAdditionalFormDataChange?: (name: string, value: any)=>any;
+    inputClass?: string;
 }
 
 export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
-    const { api, showAsteriskSymbol, allowDisable, col, key, initiallyDisabled, onToggleDisable, value, onQSChange, renderLabelField, onAdditionalFormDataChange } = props;
+    const { api, showAsteriskSymbol, allowDisable, col, key, initiallyDisabled, onToggleDisable, value, onQSChange, renderLabelField, onAdditionalFormDataChange, inputClass } = props;
     const [consumedStatuses, setConsumedStatuses] = useState<number[]>(undefined);
     const [error, setError] = useState<string>(undefined);
     const [showDiscardPanel, setShowDiscardPanel] = useState<boolean>(false);
@@ -97,16 +99,20 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                     showLabel
                     value={value}
                     valueColumn={col.lookup.keyColumn}
+                    inputClass={inputClass}
                 />
             </React.Fragment>
             {error && <Alert>{error}</Alert>}
             {showDiscardPanel &&
-                <DiscardConsumedSamplesPanel
-                    shouldDiscard={shouldDiscard}
-                    onCommentChange={onCommentChange}
-                    toggleShouldDiscard={toggleShouldDiscard}
-                    discardTitle={`Discard sample${initiallyDisabled ? '(s)' : ''}?`}
-                />
+                <div className={classNames({ 'left-spacing right-spacing': allowDisable })}>
+                    <DiscardConsumedSamplesPanel
+                        shouldDiscard={shouldDiscard}
+                        onCommentChange={onCommentChange}
+                        toggleShouldDiscard={toggleShouldDiscard}
+                        discardTitle={`Discard sample${initiallyDisabled ? '(s)' : ''}?`}
+                    />
+                </div>
+
             }
         </>
     );

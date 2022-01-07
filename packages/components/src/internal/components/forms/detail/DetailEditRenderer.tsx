@@ -77,7 +77,7 @@ export function resolveDetailEditRenderer(
             const renderer = resolveRenderer(col);
 
             if (renderer) {
-                return renderer(col, col.name, row, value, true, false, false, null, null, null, false, onAdditionalFormDataChange); //TODO
+                return renderer(col, col.name, row, value, true, false, false, null, null, null, false, onAdditionalFormDataChange, 'col-sm-12');
             }
 
             throw new Error(`"${col.inputRenderer}" is not a valid inputRenderer.`);

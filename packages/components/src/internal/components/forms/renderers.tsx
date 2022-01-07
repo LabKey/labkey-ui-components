@@ -39,6 +39,7 @@ type InputRenderer = (
     renderLabelField?: (col: QueryColumn) => ReactNode,
     showAsteriskSymbol?: boolean,
     onAdditionalFormDataChange?: (name: string, value: any)=>any,
+    inputClass?: string,
 ) => ReactNode;
 
 const AliasInputRenderer: InputRenderer = (
@@ -102,6 +103,7 @@ const SampleStatusInputRenderer: InputRenderer = (
     renderLabelField?: (col: QueryColumn) => ReactNode,
     showAsteriskSymbol?: boolean,
     onAdditionalFormDataChange?: (name: string, value: any)=>any,
+    inputClass?: string,
 ) => {
     return <SampleStatusInput
         col={col}
@@ -115,6 +117,7 @@ const SampleStatusInputRenderer: InputRenderer = (
         renderLabelField={renderLabelField}
         showAsteriskSymbol={showAsteriskSymbol}
         onAdditionalFormDataChange={onAdditionalFormDataChange}
+        inputClass={inputClass}
     />
 }
 

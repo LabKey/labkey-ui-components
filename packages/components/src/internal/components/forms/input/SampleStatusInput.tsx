@@ -1,4 +1,4 @@
-import React, {FC, memo, ReactNode, ReactText, useCallback, useEffect, useState} from 'react';
+import React, { FC, memo, ReactNode, ReactText, useCallback, useEffect, useState, useMemo } from 'react';
 
 import {Alert, QueryColumn, QuerySelect, SampleStateType} from '../../../..';
 import {ComponentsAPIWrapper, getDefaultAPIWrapper} from "../../../APIWrapper";
@@ -7,7 +7,6 @@ import {
     DISCARD_CONSUMED_COMMENT_FIELD,
     DiscardConsumedSamplesPanel
 } from "../../samples/DiscardConsumedSamplesPanel";
-import classNames from "classnames";
 
 interface SampleStatusInputProps {
     api?: ComponentsAPIWrapper;
@@ -72,6 +71,29 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         onAdditionalFormDataChange?.(DISCARD_CONSUMED_CHECKBOX_FIELD, shouldDiscard && showDiscardPanel);
     }, [shouldDiscard]);
 
+    const discardPanel = useMemo(() => {
+        const panel = <DiscardConsumedSamplesPanel
+            shouldDiscard={shouldDiscard}
+            onCommentChange={onCommentChange}
+            toggleShouldDiscard={toggleShouldDiscard}
+            discardTitle={`Discard sample${allowDisable ? '(s)' : ''}?`}
+        />;
+
+        if (allowDisable) {
+            return  (<>
+                <div className="row">
+                    <div className="col-sm-3 col-xs-12"/>
+                    <div className="col-sm-9 col-xs-12">
+                        <div className="left-spacing right-spacing">
+                            {panel}
+                        </div>
+                    </div>
+                </div>
+            </>);
+        }
+        return panel;
+    }, [shouldDiscard, onCommentChange, toggleShouldDiscard, allowDisable]);
+
     return (
         <>
             <React.Fragment key={key}>
@@ -104,15 +126,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
             </React.Fragment>
             {error && <Alert>{error}</Alert>}
             {showDiscardPanel &&
-                <div className={classNames({ 'left-spacing right-spacing': allowDisable })}>
-                    <DiscardConsumedSamplesPanel
-                        shouldDiscard={shouldDiscard}
-                        onCommentChange={onCommentChange}
-                        toggleShouldDiscard={toggleShouldDiscard}
-                        discardTitle={`Discard sample${initiallyDisabled ? '(s)' : ''}?`}
-                    />
-                </div>
-
+                <>{discardPanel}</>
             }
         </>
     );

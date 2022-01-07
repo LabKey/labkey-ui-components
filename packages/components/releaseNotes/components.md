@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.115.#
-*Released*: # January 2022
+### version 2.115.2
+*Released*: 7 January 2022
 * Fix unhandled promises
   * most are addressed by adding test mock initialization
   * address <AssignmentOptions/> in Issues by refactoring how erroneous requests are handled

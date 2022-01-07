@@ -4,6 +4,7 @@ import { mount } from 'enzyme';
 
 import { DomainDesign, DomainPanelStatus } from '../models';
 
+import { initUnitTestMocks } from '../../../testHelperMocks';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
 import { AssayProtocolModel } from './models';
 
@@ -24,6 +25,10 @@ import {
     SaveScriptDataInput,
     TransformScriptsInput,
 } from './AssayPropertiesInput';
+
+beforeAll(() => {
+    initUnitTestMocks();
+});
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,

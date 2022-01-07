@@ -3,8 +3,6 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
-import produce from 'immer';
-
 import { SectionHeading } from '../SectionHeading';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
@@ -59,38 +57,29 @@ export class BasicPropertiesFields extends PureComponent<IssuesListDefBasicPrope
 }
 
 export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, AssignmentOptionsState> {
-    constructor(props: any) {
-        super(props);
-
-        this.state = produce(
-            {
-                coreGroups: undefined,
-                coreUsers: undefined,
-            },
-            () => {}
-        );
-    }
-
-    handleGroupChange = (groupId: number) => {
-        this.getFilteredCoreUsers(groupId);
+    state: Readonly<AssignmentOptionsState> = {
+        coreGroups: undefined,
+        coreUsers: undefined,
     };
 
-    componentDidMount() {
-        getProjectGroups().then(coreGroupsData => {
-            this.setState(() => ({
-                coreGroups: coreGroupsData,
-            }));
-        });
+    componentDidMount = async (): Promise<void> => {
+        try {
+            const coreGroups = await getProjectGroups();
+            this.setState({ coreGroups });
+        } catch (e) {
+            console.error('AssignmentOptions: failed to load initialize project groups', e);
+        }
 
-        this.getFilteredCoreUsers(this.props.model.assignedToGroup);
-    }
+        await this.loadUsersForGroup(this.props.model.assignedToGroup);
+    };
 
-    getFilteredCoreUsers = (groupId: any): any => {
-        getUsersForGroup(groupId).then(coreUsersData => {
-            this.setState(() => ({
-                coreUsers: coreUsersData,
-            }));
-        });
+    loadUsersForGroup = async (groupId: number): Promise<void> => {
+        try {
+            const coreUsers = await getUsersForGroup(groupId);
+            this.setState({ coreUsers });
+        } catch (e) {
+            console.error(`AssignmentOptions: failed to load users for group ${groupId}`, e);
+        }
     };
 
     render() {
@@ -104,7 +93,7 @@ export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, Ass
                     model={model}
                     coreGroups={coreGroups}
                     onSelect={onSelect}
-                    onGroupChange={this.handleGroupChange}
+                    onGroupChange={this.loadUsersForGroup}
                 />
                 <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onSelect={onSelect} />
             </Col>

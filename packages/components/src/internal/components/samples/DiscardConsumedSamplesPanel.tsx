@@ -51,5 +51,5 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
 });
 
 DiscardConsumedSamplesPanel.defaultProps = {
-    discardTitle: 'Discard sample',
+    discardTitle: 'Discard sample?',
 };

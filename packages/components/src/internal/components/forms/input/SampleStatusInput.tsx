@@ -1,21 +1,25 @@
 import React, { FC, memo, ReactNode, ReactText, useCallback, useEffect, useState, useMemo } from 'react';
 
-import { Alert, QueryColumn, QuerySelect, SampleStateType } from '../../../..';
 import {
     DISCARD_CONSUMED_CHECKBOX_FIELD,
     DISCARD_CONSUMED_COMMENT_FIELD,
     DiscardConsumedSamplesPanel,
 } from '../../samples/DiscardConsumedSamplesPanel';
+
+import {Alert} from "../../base/Alert";
+import {QueryColumn} from "../../../../public/QueryColumn";
+import {QuerySelect} from "../QuerySelect";
+import {SampleStateType} from "../../samples/constants";
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
 
 interface SampleStatusInputProps {
     api?: ComponentsAPIWrapper;
-    allowDisable?: boolean;
     col: QueryColumn;
     data: any;
     key: ReactText;
     isDetailInput?: boolean;
-    initiallyDisabled: boolean;
+    allowDisable?: boolean;
+    initiallyDisabled?: boolean;
     onToggleDisable?: (disabled: boolean) => void;
     value?: string | Array<Record<string, any>>;
     onQSChange?: (name: string, value: string | any[], items: any) => void;
@@ -23,6 +27,8 @@ interface SampleStatusInputProps {
     showAsteriskSymbol?: boolean;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     inputClass?: string;
+    formsy?: boolean; // for jest test
+    forceShowDiscard?: boolean; // workaround for jest test due to difficulty getting QuerySelect to work with jest
 }
 
 export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
@@ -39,6 +45,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         renderLabelField,
         onAdditionalFormDataChange,
         inputClass,
+        formsy,
     } = props;
     const [consumedStatuses, setConsumedStatuses] = useState<number[]>(undefined);
     const [error, setError] = useState<string>(undefined);
@@ -101,7 +108,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         if (allowDisable) {
             return (
                 <>
-                    <div className="row">
+                    <div className="row sample-bulk-update-discard-panel">
                         <div className="col-sm-3 col-xs-12" />
                         <div className="col-sm-9 col-xs-12">
                             <div className="left-spacing right-spacing">{panel}</div>
@@ -121,9 +128,9 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                     addLabelAsterisk={showAsteriskSymbol}
                     allowDisable={allowDisable}
                     componentId={col.fieldKey + key}
-                    containerPath={col.lookup.containerPath}
-                    displayColumn={col.lookup.displayColumn}
-                    formsy
+                    containerPath={col.lookup?.containerPath}
+                    displayColumn={col.lookup?.displayColumn}
+                    formsy={formsy}
                     initiallyDisabled={initiallyDisabled}
                     joinValues={col.isJunctionLookup()}
                     label={col.caption}
@@ -144,11 +151,12 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 />
             </React.Fragment>
             {error && <Alert>{error}</Alert>}
-            {showDiscardPanel && <>{discardPanel}</>}
+            {(showDiscardPanel || props.forceShowDiscard) && <>{discardPanel}</>}
         </>
     );
 });
 
 SampleStatusInput.defaultProps = {
     api: getDefaultAPIWrapper(),
+    formsy: true,
 };

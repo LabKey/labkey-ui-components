@@ -1,10 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { DiscardConsumedSamplesPanel } from "./DiscardConsumedSamplesPanel";
+import { DiscardConsumedSamplesPanel } from './DiscardConsumedSamplesPanel';
 
 describe('DiscardConsumedSamplesPanel', () => {
-
     test('discard enabled', () => {
         const wrapper = mount(
             <DiscardConsumedSamplesPanel
@@ -33,5 +32,4 @@ describe('DiscardConsumedSamplesPanel', () => {
         expect(wrapper.text()).toContain('Discard sample?');
         wrapper.unmount();
     });
-
 });

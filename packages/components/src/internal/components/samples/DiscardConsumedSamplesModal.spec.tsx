@@ -1,11 +1,16 @@
 import React from 'react';
-import {mount, ReactWrapper} from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 
-import { DiscardConsumedSamplesModal } from "./DiscardConsumedSamplesModal";
+import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 
 describe('DiscardConsumedSamplesModal', () => {
-
-    function validate(modal: ReactWrapper, expectedTitle: string, expectedContent: string, expectedFinishText: string, isDiscard: boolean): void {
+    function validate(
+        modal: ReactWrapper,
+        expectedTitle: string,
+        expectedContent: string,
+        expectedFinishText: string,
+        isDiscard: boolean
+    ): void {
         expect(modal.find('.modal-title').text()).toBe(expectedTitle);
 
         expect(modal.find('.modal-body').text()).toContain(expectedContent);
@@ -27,11 +32,13 @@ describe('DiscardConsumedSamplesModal', () => {
             />
         );
 
-        validate(wrapper,
+        validate(
+            wrapper,
             'Setting Sample to Consumed',
             'You are updating 1 sample and setting it to consumed. Would you like to also discard the consumed sample from storage?Yes, discard the sample',
             'Save changes and discard consumed sample',
-            true);
+            true
+        );
 
         wrapper.unmount();
     });
@@ -46,11 +53,13 @@ describe('DiscardConsumedSamplesModal', () => {
             />
         );
 
-        validate(wrapper,
+        validate(
+            wrapper,
             'Setting 2 Samples to Consumed',
             'You are updating 2 samples and setting them to consumed. Would you like to also discard the 2 consumed samples from storage?Yes, discard the samples',
             'Save changes and discard consumed samples',
-            true);
+            true
+        );
 
         wrapper.unmount();
     });
@@ -65,11 +74,13 @@ describe('DiscardConsumedSamplesModal', () => {
             />
         );
 
-        validate(wrapper,
+        validate(
+            wrapper,
             'Setting Sample to Consumed',
             'You are updating 2 samples and setting 1 in storage sample to consumed. Would you like to also discard the consumed sample from storage?Yes, discard the sample',
             'Save changes and discard consumed sample',
-            true);
+            true
+        );
 
         wrapper.unmount();
     });
@@ -84,11 +95,13 @@ describe('DiscardConsumedSamplesModal', () => {
             />
         );
 
-        validate(wrapper,
+        validate(
+            wrapper,
             'Setting 2 Samples to Consumed',
             'You are updating 3 samples and setting 2 in storage samples to consumed. Would you like to also discard the 2 consumed samples from storage?Yes, discard the samples',
             'Save changes and discard consumed samples',
-            true);
+            true
+        );
 
         wrapper.unmount();
     });
@@ -104,11 +117,13 @@ describe('DiscardConsumedSamplesModal', () => {
         );
 
         wrapper.setState({ shouldDiscard: false });
-        validate(wrapper,
+        validate(
+            wrapper,
             'Setting Sample to Consumed',
             'You are updating 1 sample and setting it to consumed. Would you like to also discard the consumed sample from storage?Yes, discard the sample',
             'Update Sample Only',
-            false);
+            false
+        );
 
         wrapper.unmount();
     });
@@ -124,14 +139,14 @@ describe('DiscardConsumedSamplesModal', () => {
         );
 
         wrapper.setState({ shouldDiscard: false });
-        validate(wrapper,
+        validate(
+            wrapper,
             'Setting Sample to Consumed',
             'You are updating 3 samples and setting 1 in storage sample to consumed. Would you like to also discard the consumed sample from storage?Yes, discard the sample',
             'Update Samples Only',
-            false);
+            false
+        );
 
         wrapper.unmount();
     });
-
-
 });

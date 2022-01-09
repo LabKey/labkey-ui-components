@@ -1,18 +1,21 @@
-import {mount} from "enzyme";
-import {fromJS} from "immutable";
+import { mount } from 'enzyme';
+import { fromJS } from 'immutable';
 
-import {SampleState} from "../../samples/models";
-import {SampleStateType} from "../../samples/constants";
+import React from 'react';
 
-import React from "react";
-import {QueryColumn} from "../../../../public/QueryColumn";
-import {SampleStatusInput} from "./SampleStatusInput";
-import {DiscardConsumedSamplesPanel} from "../../samples/DiscardConsumedSamplesPanel";
-import {waitForLifecycle} from "../../../testHelpers";
+import { SampleStateType } from '../../samples/constants';
 
-import {getSamplesTestAPIWrapper} from "../../samples/APIWrapper";
+import { SampleState } from '../../samples/models';
+import { QueryColumn } from '../../../../public/QueryColumn';
 
-import {getTestAPIWrapper} from "../../../APIWrapper";
+import { DiscardConsumedSamplesPanel } from '../../samples/DiscardConsumedSamplesPanel';
+import { waitForLifecycle } from '../../../testHelpers';
+
+import { getSamplesTestAPIWrapper } from '../../samples/APIWrapper';
+
+import { getTestAPIWrapper } from '../../../APIWrapper';
+
+import { SampleStatusInput } from './SampleStatusInput';
 
 const COLUMN_STATUS = new QueryColumn({
     fieldKey: 'samplestate',
@@ -20,39 +23,40 @@ const COLUMN_STATUS = new QueryColumn({
     fieldKeyArray: ['samplestate'],
     shownInUpdateView: true,
     userEditable: true,
-    lookup: { containerPath: '/Look', keyColumn: 'RowId', displayColumn: '"Label"', query: '"SampleStatus"' }
+    lookup: { containerPath: '/Look', keyColumn: 'RowId', displayColumn: '"Label"', query: '"SampleStatus"' },
 });
 
 const INIT_EMPTY = fromJS({
     displayValue: undefined,
-    value: undefined
+    value: undefined,
 });
 
 const INIT_CONSUMED = fromJS({
     displayValue: 'Consumed',
-    value: 200
+    value: 200,
 });
 
 const DEFAULT_PROPS = {
     api: getTestAPIWrapper(jest.fn, {
         samples: getSamplesTestAPIWrapper(jest.fn, {
-            getSampleStatuses: () => Promise.resolve([
-                new SampleState({rowId: 100, label: 'Available', stateType: SampleStateType.Available}),
-                new SampleState({rowId: 200, label: 'Consumed', stateType: SampleStateType.Consumed}),
-                new SampleState({rowId: 300, label: 'UsedUp', stateType: SampleStateType.Consumed}),
-            ]),
+            getSampleStatuses: () =>
+                Promise.resolve([
+                    new SampleState({ rowId: 100, label: 'Available', stateType: SampleStateType.Available }),
+                    new SampleState({ rowId: 200, label: 'Consumed', stateType: SampleStateType.Consumed }),
+                    new SampleState({ rowId: 300, label: 'UsedUp', stateType: SampleStateType.Consumed }),
+                ]),
         }),
     }),
     col: COLUMN_STATUS,
     data: INIT_EMPTY,
     key: 'status-key',
-    onAdditionalFormDataChange: () => {return true;}
+    onAdditionalFormDataChange: () => {
+        return true;
+    },
 };
 
 describe('SampleStatusInput', () => {
-
     test('initial value is blank', async () => {
-
         const component = mount(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} />);
         await waitForLifecycle(component);
 
@@ -61,7 +65,6 @@ describe('SampleStatusInput', () => {
     });
 
     test('initial value is Consumed', async () => {
-
         const component = mount(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} data={INIT_CONSUMED} />);
         await waitForLifecycle(component);
 
@@ -70,11 +73,7 @@ describe('SampleStatusInput', () => {
     });
 
     test('show discard', async () => {
-        const component = mount(<SampleStatusInput
-            {...DEFAULT_PROPS}
-            formsy={false}
-            forceShowDiscard={true}
-        />);
+        const component = mount(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} forceShowDiscard={true} />);
 
         await waitForLifecycle(component);
 
@@ -82,16 +81,12 @@ describe('SampleStatusInput', () => {
         expect(discardPanel).toHaveLength(1);
 
         expect(component.find('.sample-bulk-update-discard-panel')).toHaveLength(0);
-
     });
 
     test('show discard, with allowDisable true (bulk edit)', async () => {
-        const component = mount(<SampleStatusInput
-            {...DEFAULT_PROPS}
-            formsy={false}
-            forceShowDiscard={true}
-            allowDisable={true}
-        />);
+        const component = mount(
+            <SampleStatusInput {...DEFAULT_PROPS} formsy={false} forceShowDiscard={true} allowDisable={true} />
+        );
 
         await waitForLifecycle(component);
 
@@ -99,7 +94,5 @@ describe('SampleStatusInput', () => {
         expect(discardPanel).toHaveLength(1);
 
         expect(component.find('.sample-bulk-update-discard-panel')).toHaveLength(1);
-
     });
-
 });

@@ -6,10 +6,10 @@ import {
     DiscardConsumedSamplesPanel,
 } from '../../samples/DiscardConsumedSamplesPanel';
 
-import {Alert} from "../../base/Alert";
-import {QueryColumn} from "../../../../public/QueryColumn";
-import {QuerySelect} from "../QuerySelect";
-import {SampleStateType} from "../../samples/constants";
+import { Alert } from '../../base/Alert';
+import { QueryColumn } from '../../../../public/QueryColumn';
+import { QuerySelect } from '../QuerySelect';
+import { SampleStateType } from '../../samples/constants';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
 
 interface SampleStatusInputProps {

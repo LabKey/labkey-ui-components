@@ -73,7 +73,7 @@ export class DiscardConsumedSamplesModal extends React.PureComponent<Props, Stat
                 <Modal.Header closeButton>
                     <Modal.Title>
                         {'Setting' +
-                            (consumedSampleCount > 1 ? (' ' + consumedSampleCount) : '') +
+                            (consumedSampleCount > 1 ? ' ' + consumedSampleCount : '') +
                             ' ' +
                             this._noun +
                             ' to Consumed'}
@@ -85,7 +85,7 @@ export class DiscardConsumedSamplesModal extends React.PureComponent<Props, Stat
                             <b>
                                 You are updating {totalSampleCount} {this._lcNounTotal} and setting{' '}
                                 {consumedNounDisplay} to consumed. Would you like to also discard the
-                                {consumedSampleCount > 1 ? (' ' + consumedSampleCount) : ''} consumed {this._lcNoun} from
+                                {consumedSampleCount > 1 ? ' ' + consumedSampleCount : ''} consumed {this._lcNoun} from
                                 storage?
                             </b>
                         </div>

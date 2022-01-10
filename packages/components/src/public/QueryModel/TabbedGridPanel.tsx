@@ -40,7 +40,7 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
         <li className={className}>
             <a onClick={onClick}>
                 {title || queryInfo?.queryLabel || queryInfo?.name}
-                {showRowCount && <> ({rowCount})</>}
+                {showRowCount && rowCount !== undefined && <> ({rowCount})</>}
             </a>
         </li>
     );

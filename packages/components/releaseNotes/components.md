@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Update `SampleTypeTabbedGridPanel` to show row count on tabs
+
 ### version 2.116.0
 *Released*: 10 January 2022
 * Refactor EditableGrid to be QueryGridModel agnostic

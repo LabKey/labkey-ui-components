@@ -303,6 +303,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     ButtonsComponentRight={SampleTabbedGridButtonsRight}
                     supportedExportTypes={canPrintLabels ? EXPORT_TYPES_WITH_LABEL : undefined}
                     onExport={canPrintLabels ? onLabelExport : undefined}
+                    showRowCountOnTabs={true}
                 />
             )}
             {showBulkUpdate && (

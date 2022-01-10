@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import Formsy from 'formsy-react';
 import { Textarea } from 'formsy-react-components';
-import { Map } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { Button } from 'react-bootstrap';
 
 import {
-    EditableGridPanelDeprecated,
     handleTabKeyOnTextArea,
     FormStep,
     FormTabs,
@@ -30,15 +29,16 @@ import {
     FileAttachmentForm,
     Alert,
     FileSizeLimitProps,
-    getEditorModel,
-    IMPORT_DATA_FORM_TYPES,
-    QueryGridModel,
+    QueryModel,
+    EditorModel,
 } from '../../..';
 
 import { AssayUploadTabs } from '../../constants';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
+import { EditorModelProps } from '../../models';
 
 import { helpLinkNode, DATA_IMPORT_TOPIC } from '../../util/helpLinks';
+import { EditableGridPanel } from '../editable/EditableGridPanel';
 
 import { getServerFilePreview } from './utils';
 
@@ -49,23 +49,27 @@ const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 const PREVIEW_ROW_COUNT = 3;
 
 interface Props {
-    currentStep: number;
-    wizardModel: AssayWizardModel;
-    runPropertiesRow?: Record<string, any>;
-    queryGridModelForEditor: QueryGridModel;
-    onFileChange: (attachments: Map<string, File>) => any;
-    onFileRemoval: (attachmentName: string) => any;
-    onTextChange: (inputName: string, value: any) => any;
     acceptedPreviewFileFormats?: string;
-    fullWidth?: boolean;
     allowBulkRemove?: boolean;
     allowBulkInsert?: boolean;
     allowBulkUpdate?: boolean;
-    title: string;
+    currentStep: number;
+    editorModel: EditorModel;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
-    onGridDataChange?: (dirty: boolean, changeType: IMPORT_DATA_FORM_TYPES) => any;
+    onFileChange: (attachments: Map<string, File>) => any;
+    onFileRemoval: (attachmentName: string) => any;
+    onGridChange: (
+        editorModelChanges: Partial<EditorModelProps>,
+        dataKeys?: List<any>,
+        data?: Map<any, Map<string, any>>
+    ) => void;
+    onTextChange: (value: any) => any;
+    queryModel: QueryModel;
+    runPropertiesRow?: Record<string, any>;
     showTabs?: boolean;
+    title: string;
     maxEditableGridRowMsg?: string;
+    wizardModel: AssayWizardModel;
 }
 
 interface PreviousRunData {
@@ -76,15 +80,13 @@ interface PreviousRunData {
 }
 
 interface State {
-    attachments?: Map<string, File>;
-    message?: React.ReactNode;
+    message?: ReactNode;
     messageStyle?: string;
     previousRunData?: PreviousRunData;
 }
 
-export class RunDataPanel extends React.Component<Props, State> {
+export class RunDataPanel extends PureComponent<Props, State> {
     static defaultProps = {
-        fullWidth: true,
         allowBulkRemove: false,
         allowBulkInsert: false,
         allowBulkUpdate: false,
@@ -100,25 +102,27 @@ export class RunDataPanel extends React.Component<Props, State> {
         };
     }
 
-    isRerun() {
-        return this.props.wizardModel.runId !== undefined;
-    }
-
-    UNSAFE_componentWillMount(): void {
+    componentDidMount(): void {
         this.initPreviewData();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
-        if (nextProps.wizardModel.runId != this.props.wizardModel.runId) {
+    componentDidUpdate(prevProps: Props): void {
+        const { wizardModel } = this.props;
+
+        if (prevProps.wizardModel.runId !== wizardModel.runId) {
             this.setState(() => ({
-                previousRunData: nextProps.wizardModel.usePreviousRunFile ? { isLoaded: false } : undefined,
+                previousRunData: wizardModel.usePreviousRunFile ? { isLoaded: false } : undefined,
             }));
         } else {
             this.initPreviewData();
         }
     }
 
-    initPreviewData() {
+    isRerun = (): boolean => {
+        return this.props.wizardModel.runId !== undefined;
+    };
+
+    initPreviewData = (): void => {
         const { previousRunData } = this.state;
         const { wizardModel, runPropertiesRow } = this.props;
 
@@ -173,70 +177,60 @@ export class RunDataPanel extends React.Component<Props, State> {
                 }
             }
         }
-    }
-
-    resetMessage = () => {
-        this.setState(state => ({
-            message: undefined,
-        }));
     };
 
-    onFileChange = (attachments: Map<string, File>) => {
+    resetMessage = (): void => {
+        this.setState(() => ({ message: undefined }));
+    };
+
+    onFileChange = (attachments: Map<string, File>): void => {
         this.setState(
-            () => ({
-                message: undefined,
-            }),
-            () => {
-                this.props.onFileChange(attachments);
-            }
+            () => ({ message: undefined }),
+            () => this.props.onFileChange(attachments)
         );
     };
 
-    onFileRemove = (attachmentName: string) => {
+    onFileRemove = (attachmentName: string): void => {
         this.setState(
-            state => ({
-                message: undefined,
-                attachments: undefined,
-                previousRunData: undefined,
-            }),
+            () => ({ message: undefined, previousRunData: undefined }),
             () => this.props.onFileRemoval(attachmentName)
         );
     };
 
-    onTabChange = () => {
+    onTabChange = (): void => {
         this.resetMessage();
     };
 
-    onRowCountChange = (rowCount: number) => {
-        const { queryGridModelForEditor } = this.props;
-        const editorModel = getEditorModel(queryGridModelForEditor.getId());
-        if (this.props.onGridDataChange) {
-            this.props.onGridDataChange(editorModel && editorModel.rowCount > 0, IMPORT_DATA_FORM_TYPES.GRID);
-        }
+    onTextChange = (fieldName: string, value: string): void => {
+        this.props.onTextChange(value);
+    };
+
+    clearText = (): void => {
+        this.props.onTextChange('');
     };
 
     render() {
         const {
-            currentStep,
-            queryGridModelForEditor,
-            wizardModel,
-            onTextChange,
             acceptedPreviewFileFormats,
-            fullWidth,
-            allowBulkRemove,
             allowBulkInsert,
+            allowBulkRemove,
             allowBulkUpdate,
+            currentStep,
+            editorModel,
+            maxEditableGridRowMsg,
+            maxRows,
+            queryModel,
             title,
             showTabs,
-            maxEditableGridRowMsg,
+            wizardModel,
         } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
-        const isLoading = !wizardModel.isInit || !queryGridModelForEditor || !queryGridModelForEditor.isLoaded;
+        const isLoading = !wizardModel.isInit || queryModel.isLoading;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
 
         const cutPastePlaceholder = 'Paste in a tab-separated set of values (including column headers).';
         return (
-            <div className={'panel panel-default ' + (fullWidth ? 'full-width' : '')}>
+            <div className="panel panel-default">
                 <div className="panel-heading">{title}</div>
                 <div className="panel-body">
                     {isLoading ? (
@@ -283,6 +277,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                         )}
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Copy}>
+                                        {/* TODO: Seems to be a highly unnecessary usage of Formsy */}
                                         <Formsy>
                                             <Textarea
                                                 changeDebounceInterval={0}
@@ -291,39 +286,39 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                 label=""
                                                 labelClassName={[{ 'col-sm-3': false }, 'hidden']}
                                                 name="rundata"
-                                                onChange={(field, value) => onTextChange('text', value)}
+                                                onChange={this.onTextChange}
                                                 onKeyDown={handleTabKeyOnTextArea}
                                                 placeholder={cutPastePlaceholder}
                                                 rows={10}
                                                 value={wizardModel.dataText}
                                             />
-                                            <Button onClick={() => onTextChange('text', '')}>Clear</Button>
+                                            <Button onClick={this.clearText}>Clear</Button>
                                         </Formsy>
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Grid} trackActive={false}>
-                                        <EditableGridPanelDeprecated
-                                            model={queryGridModelForEditor}
-                                            isSubmitting={wizardModel.isSubmitting}
-                                            disabled={currentStep !== AssayUploadTabs.Grid}
-                                            allowBulkRemove={allowBulkRemove}
-                                            allowBulkAdd={allowBulkInsert}
-                                            bulkAddText="Bulk Insert"
-                                            bulkAddProps={{
-                                                title: 'Bulk Insert Assay Rows',
-                                                header: 'Add a batch of assay data rows that will share the properties set below.',
-                                            }}
-                                            allowBulkUpdate={allowBulkUpdate}
-                                            bordered={true}
-                                            striped={true}
+                                        <EditableGridPanel
                                             addControlProps={{
                                                 placement: 'top',
                                                 nounPlural: 'rows',
                                                 nounSingular: 'row',
                                                 invalidCountMsg: maxEditableGridRowMsg,
                                             }}
-                                            initialEmptyRowCount={0}
+                                            allowBulkAdd={allowBulkInsert}
+                                            allowBulkRemove={allowBulkRemove}
+                                            allowBulkUpdate={allowBulkUpdate}
+                                            bordered
+                                            bulkAddText="Bulk Insert"
+                                            bulkAddProps={{
+                                                title: 'Bulk Insert Assay Rows',
+                                                header: 'Add a batch of assay data rows that will share the properties set below.',
+                                            }}
+                                            disabled={currentStep !== AssayUploadTabs.Grid}
+                                            editorModel={editorModel}
                                             emptyGridMsg="Start by adding the quantity of assay data rows you want to create."
-                                            onRowCountChange={this.onRowCountChange}
+                                            isSubmitting={wizardModel.isSubmitting}
+                                            model={queryModel}
+                                            onChange={this.props.onGridChange}
+                                            striped
                                         />
                                     </FormStep>
                                 </div>

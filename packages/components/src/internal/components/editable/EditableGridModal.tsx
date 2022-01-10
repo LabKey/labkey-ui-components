@@ -21,6 +21,7 @@ interface Props extends EditableGridProps {
     saveText?: string;
     savingText?: string;
     isSaving?: boolean;
+    model: QueryGridModel;
 }
 
 export class EditableGridModal extends React.PureComponent<Props, any> {

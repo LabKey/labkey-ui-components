@@ -951,16 +951,16 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                     creationTypeOptions: bulkCreationTypeOptions,
                                     countText: `New ${gridNounPlural}`,
                                 }}
-                                onBulkAdd={onBulkAdd}
+                                processBulkData={onBulkAdd}
                                 bulkUpdateProps={{ columnFilter: this.columnFilter }}
                                 bulkRemoveText={'Remove ' + gridNounPluralCap}
                                 columnMetadata={columnMetadata}
-                                onRowCountChange={this.onRowCountChange}
-                                model={queryGridModel}
-                                initialEmptyRowCount={0}
                                 emptyGridMsg={`Start by adding the quantity of ${gridNounPlural} you want to create.`}
-                                maxTotalRows={this.props.maxEntities}
-                                getInsertColumns={this.getInsertColumns}
+                                initialEmptyRowCount={0}
+                                insertColumns={this.getInsertColumns()}
+                                model={queryGridModel}
+                                maxRows={this.props.maxEntities}
+                                onRowCountChange={this.onRowCountChange}
                             />
                         </>
                     )}

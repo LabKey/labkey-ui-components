@@ -13,39 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map } from 'immutable';
+import { fromJS } from 'immutable';
 import { Utils } from '@labkey/api';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
-import { getStateQueryGridModel, gridInit, initQueryGridState, QueryInfo, SchemaQuery } from '../../..';
+import { EditorModel, LoadingState, QueryModel } from '../../..';
 import { AssayUploadTabs } from '../../constants';
 
 import { AssayWizardModel, parseDataTextToRunRows } from './AssayWizardModel';
 
 const DATA_TEXT = 'test1\ttest2\n1\t2';
 
-let GRID_MODEL;
-beforeAll(() => {
-    initQueryGridState();
-
-    GRID_MODEL = getStateQueryGridModel('jest-test', SchemaQuery.create('schema', 'query'), {
-        editable: true,
-        queryInfo: new QueryInfo(),
-        loader: {
-            fetch: () => {
-                return new Promise(resolve => {
-                    resolve({
-                        data: Map<any, Map<string, any>>(),
-                        dataIds: List<any>(),
-                    });
-                });
-            },
-        },
-    });
-
-    gridInit(GRID_MODEL, true);
+const { queryInfo } = ASSAY_WIZARD_MODEL;
+const queryModel = new QueryModel({
+    id: 'queryModel',
+    schemaQuery: queryInfo.schemaQuery,
+}).mutate({
+    rows: {},
+    orderedRows: [],
+    rowsLoadingState: LoadingState.LOADED,
+    queryInfoLoadingState: LoadingState.LOADED,
+    queryInfo,
 });
+const editorModel = new EditorModel({ id: 'queryModel' });
 
 describe('AssayWizardModel', () => {
     test('getRunName', () => {
@@ -70,9 +61,8 @@ describe('AssayWizardModel', () => {
     });
 
     test('prepareFormData Files tab', () => {
-        let model = ASSAY_WIZARD_MODEL;
-        model = model.set('dataText', DATA_TEXT) as AssayWizardModel;
-        const data = model.prepareFormData(AssayUploadTabs.Files, GRID_MODEL);
+        const model = ASSAY_WIZARD_MODEL.set('dataText', DATA_TEXT) as AssayWizardModel;
+        const data = model.prepareFormData(AssayUploadTabs.Files, editorModel, queryModel);
 
         expect(data.assayId).toBe(model.assayDef.id);
         expect(data.name.indexOf(model.assayDef.name) === 0).toBeTruthy();
@@ -81,9 +71,8 @@ describe('AssayWizardModel', () => {
     });
 
     test('prepareFormData Copy tab', () => {
-        let model = ASSAY_WIZARD_MODEL;
-        model = model.set('dataText', DATA_TEXT) as AssayWizardModel;
-        const data = model.prepareFormData(AssayUploadTabs.Copy, GRID_MODEL);
+        const model = ASSAY_WIZARD_MODEL.set('dataText', DATA_TEXT) as AssayWizardModel;
+        const data = model.prepareFormData(AssayUploadTabs.Copy, editorModel, queryModel);
 
         expect(data.assayId).toBe(model.assayDef.id);
         expect(data.name.indexOf(model.assayDef.name) === 0).toBeTruthy();
@@ -94,9 +83,8 @@ describe('AssayWizardModel', () => {
     });
 
     test('prepareFormData Grid tab', () => {
-        let model = ASSAY_WIZARD_MODEL;
-        model = model.set('dataText', DATA_TEXT) as AssayWizardModel;
-        const data = model.prepareFormData(AssayUploadTabs.Grid, GRID_MODEL);
+        const model = ASSAY_WIZARD_MODEL.set('dataText', DATA_TEXT) as AssayWizardModel;
+        const data = model.prepareFormData(AssayUploadTabs.Grid, editorModel, queryModel);
 
         expect(data.assayId).toBe(model.assayDef.id);
         expect(data.name.indexOf(model.assayDef.name) === 0).toBeTruthy();

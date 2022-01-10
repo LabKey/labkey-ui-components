@@ -149,11 +149,10 @@ export function getProcessedSearchHits(
 export function getFinderSampleTypeNames(containerFilter: Query.ContainerFilter = undefined): Promise<string[]> {
     return new Promise((resolve, reject) => {
         Query.executeSql({
-            // TODO currenlty this retrieves all sample types in this container. should this change to a select on exp.materialSource for the given container?  That will
-            //  return all sample types, whether they have samples or not.  Here we return only sample types
-            //  that have at least one sample, but we are not taking the filters into account at all.  We
-            //  might change this to a filter over exp.materials using the filter array, which would return the
-            //  sample types that have at least one sample matching the criteria.
+            // TODO currently this retrieves all sample types for the given container filter. Should this be changed?
+            //  Could return only sample types that have samples or we could try to incorporate the filters
+            //  and get only samples types with samples that match those criteria.
+            //
             // sql: 'SELECT DISTINCT SampleSet.Name as SampleType FROM materials GROUP BY SampleSet.Name',
             sql: 'SELECT Name as SampleType FROM SampleSets',
             containerFilter,

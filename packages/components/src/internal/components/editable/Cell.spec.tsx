@@ -21,11 +21,6 @@ import { QueryColumn } from '../../..';
 import { Cell } from './Cell';
 import { LookupCell } from './LookupCell';
 
-const GRID_ID = 'CellTestModel';
-const SCHEMA_NAME = 'lists';
-const QUERY_NAME = 'MixtureTypes';
-const MODEL_ID = (GRID_ID + '|' + SCHEMA_NAME + '/' + QUERY_NAME).toLowerCase();
-
 let actions;
 
 beforeAll(() => {
@@ -36,10 +31,7 @@ beforeAll(() => {
     };
 });
 
-const queryColumn = QueryColumn.create({
-    lookup: undefined,
-    name: 'myColumn',
-});
+const queryColumn = QueryColumn.create({ lookup: undefined, name: 'myColumn' });
 
 describe('Cell', () => {
     test('default props', () => {

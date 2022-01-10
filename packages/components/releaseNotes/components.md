@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.1??.0
-*Released*: ??
+### version 2.116.0
+*Released*: 10 January 2022
 * Refactor EditableGrid to be QueryGridModel agnostic
 * Add EditableGridPanel component, which is compatible with QueryModel
 * Refactor AssayImportPanels/RunDataPanel to use EditableGridPanel and no longer use QueryGridModel

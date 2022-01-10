@@ -16,7 +16,7 @@
 import React from 'react';
 
 import { shallow } from 'enzyme';
-import {Button, MenuItem} from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 
 import { AddRowsControl } from './Controls';
 
@@ -39,25 +39,6 @@ describe('Controls', () => {
         inputWrapper.simulate('change', { target: { value: 1 } });
         wrapper.update();
         expect(wrapper.find('.text-danger')).toHaveLength(1);
-    });
-
-    test('with quick-add', () => {
-        const quickAddFn = jest.fn();
-        const addFn = jest.fn();
-        const wrapper = shallow(
-            <AddRowsControl
-                initialCount={4}
-                maxCount={10}
-                minCount={3}
-                quickAddText="quick add"
-                onQuickAdd={quickAddFn}
-                onAdd={addFn}
-            />
-        );
-        const menuItemWrapper = wrapper.find(MenuItem);
-        expect(menuItemWrapper).toHaveLength(1);
-        menuItemWrapper.simulate('click');
-        expect(quickAddFn).toHaveBeenCalledTimes(1);
     });
 
     test('invalid row count', () => {

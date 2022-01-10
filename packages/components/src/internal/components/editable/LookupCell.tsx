@@ -18,7 +18,6 @@ import { List, Map } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { modifyCell } from '../../actions';
 import { ValueDescriptor } from '../../models';
 import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { QueryColumn, QuerySelect, SchemaQuery } from '../../..';
@@ -65,11 +64,10 @@ export interface LookupCellProps {
     col: QueryColumn;
     colIdx: number;
     disabled?: boolean;
-    modelId: string;
+    modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
     rowIdx: number;
-    select: (modelId: string, colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => any;
+    select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
     values: List<ValueDescriptor>;
-    onCellModify?: () => any;
     filteredLookupValues?: List<string>;
     filteredLookupKeys?: List<any>;
 }
@@ -79,38 +77,21 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         return this.props.col.isJunctionLookup();
     };
 
-    onInputChange = (
-        fieldName: string,
-        formValue: string | any[],
-        items: any,
-        selectedItems: Map<string, any>
-    ): void => {
-        const { colIdx, modelId, rowIdx, onCellModify } = this.props;
+    onInputChange = (fieldName: string, formValue: string | any[], items: any): void => {
+        const { colIdx, modifyCell, rowIdx, select } = this.props;
         if (this.isMultiValue()) {
-            if (items.length == 0) {
-                modifyCell(modelId, colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
+            if (items.length === 0) {
+                modifyCell(colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
             } else {
                 const valueDescriptors = items.map(item => ({ raw: item.value, display: item.label }));
-                modifyCell(modelId, colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
+                modifyCell(colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
             }
         } else {
-            modifyCell(
-                modelId,
-                colIdx,
-                rowIdx,
-                [
-                    {
-                        raw: items?.value,
-                        display: items?.label,
-                    },
-                ],
-                MODIFICATION_TYPES.REPLACE
-            );
+            modifyCell(colIdx, rowIdx, [{ raw: items?.value, display: items?.label }], MODIFICATION_TYPES.REPLACE);
         }
-        onCellModify?.();
 
         if (!this.isMultiValue()) {
-            this.props.select(modelId, colIdx, rowIdx);
+            select(colIdx, rowIdx);
         }
     };
 

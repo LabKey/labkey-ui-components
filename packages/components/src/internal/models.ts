@@ -21,6 +21,7 @@ import {
     getQueryGridModel,
     QueryColumn,
     QueryGridModel,
+    QueryInfo,
     resolveSchemaQuery,
     SchemaQuery,
     ViewInfo,
@@ -295,15 +296,30 @@ export interface EditorModelProps {
     cellValues: CellValues;
     colCount: number;
     id: string;
-    isPasting: boolean;
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
-    numPastedRows: number;
     rowCount: number;
     selectedColIdx: number;
     selectedRowIdx: number;
     selectionCells: Set<string>;
+}
+
+// This is a model agnostic form of QueryGridModel.getPkData
+function getPkData(queryInfo: QueryInfo, row: Map<string, any>) {
+    const data = {};
+    queryInfo.getPkCols().forEach(pkCol => {
+        const pkVal = row.getIn([pkCol.fieldKey]);
+
+        if (pkVal !== undefined && pkVal !== null) {
+            // when backing an editable grid, the data is a simple value, but when
+            // backing a grid, it is a Map, which has type 'object'.
+            data[pkCol.fieldKey] = typeof pkVal === 'object' ? pkVal.get('value') : pkVal;
+        } else {
+            console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
+        }
+    });
+    return data;
 }
 
 export class EditorModel
@@ -372,40 +388,36 @@ export class EditorModel
     }
 
     getColumns(
-        model: QueryGridModel,
+        queryInfo: QueryInfo,
         forUpdate?: boolean,
         readOnlyColumns?: List<string>,
-        getInsertColumns?: () => List<QueryColumn>,
-        getUpdateColumns?: () => List<QueryColumn>
+        insertColumns?: List<QueryColumn>,
+        updateColumns?: List<QueryColumn>
     ): List<QueryColumn> {
         let columns;
+
         if (forUpdate) {
-            if (getUpdateColumns) columns = getUpdateColumns();
-            if (!columns)
-                // getUpdateColumns might return null
-                columns = model.getUpdateColumns(readOnlyColumns);
+            columns = updateColumns ? updateColumns : queryInfo.getUpdateColumns(readOnlyColumns);
         } else {
-            if (getInsertColumns) {
-                columns = getInsertColumns();
-            } else {
-                columns = model.getInsertColumns();
-            }
+            columns = insertColumns ? insertColumns : queryInfo.getInsertColumns();
         }
 
         // file input columns are not supported in the editable grid, so remove them
         return columns.filter(col => !col.isFileInput);
     }
 
-    getRawData(
-        model: QueryGridModel,
+    getRawDataFromGridData(
+        data: Map<any, Map<string, any>>,
+        dataKeys: List<any>,
+        queryInfo: QueryInfo,
         displayValues = true,
         forUpdate = false,
         readOnlyColumns?: List<string>
     ): List<Map<string, any>> {
-        let data = List<Map<string, any>>();
-        const columns = this.getColumns(model, forUpdate, readOnlyColumns);
+        let rawData = List<Map<string, any>>();
+        const columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns);
 
-        for (let rn = 0; rn < model.data.size; rn++) {
+        for (let rn = 0; rn < dataKeys.size; rn++) {
             let row = Map<string, any>();
             columns.forEach((col, cn) => {
                 const values = this.getValue(cn, rn);
@@ -445,7 +457,7 @@ export class EditorModel
                     } else if (col.lookup.displayColumn == col.lookup.keyColumn) {
                         row = row.set(col.name, values.size === 1 ? values.first().display : undefined);
                     } else {
-                        row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
+                        row = row.set(col.name, values.size === 1 ? values.first()?.raw : undefined);
                     }
                 } else if (col.jsonType === 'date' && !displayValues) {
                     let dateVal;
@@ -463,14 +475,32 @@ export class EditorModel
                     row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
                 }
             });
+
             if (forUpdate) {
-                row = row.merge(model.getPkData(model.dataIds.get(rn)));
+                const gridRow = data.get(dataKeys.get(rn));
+                row = row.merge(getPkData(queryInfo, gridRow));
             }
 
-            data = data.push(row);
+            rawData = rawData.push(row);
         }
 
-        return data;
+        return rawData;
+    }
+
+    getRawData(
+        model: QueryGridModel,
+        displayValues = true,
+        forUpdate = false,
+        readOnlyColumns?: List<string>
+    ): List<Map<string, any>> {
+        return this.getRawDataFromGridData(
+            model.data,
+            model.dataIds,
+            model.queryInfo,
+            displayValues,
+            forUpdate,
+            readOnlyColumns
+        );
     }
 
     /**

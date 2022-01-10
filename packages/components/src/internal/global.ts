@@ -129,7 +129,7 @@ export function getQueryGridModelsForGridId(gridIdPrefix: string): List<QueryGri
  */
 export function updateQueryGridModel(
     model: QueryGridModel,
-    updates: any,
+    updates: Partial<QueryGridModel>,
     connectedComponent?: React.Component,
     failIfNotFound = true
 ): QueryGridModel {
@@ -139,17 +139,11 @@ export function updateQueryGridModel(
 
     const updatedModel = model.merge(updates) as QueryGridModel;
 
-    setGlobal(
-        {
-            QueryGrid_models: getGlobalState('models').set(model.getId(), updatedModel),
-        },
-
-        () => {
-            if (connectedComponent) {
-                connectedComponent.forceUpdate();
-            }
+    setGlobal({ QueryGrid_models: getGlobalState('models').set(model.getId(), updatedModel) }, () => {
+        if (connectedComponent) {
+            connectedComponent.forceUpdate();
         }
-    );
+    });
 
     return updatedModel;
 }

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 44511: Allow type changes from numeric and boolean to string in domain designers
+
 ### version 2.116.0
 *Released*: 10 January 2022
 * Refactor EditableGrid to be QueryGridModel agnostic

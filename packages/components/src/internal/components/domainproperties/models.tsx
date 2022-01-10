@@ -30,18 +30,18 @@ import { getConceptForCode } from '../ontology/actions';
 import { hasPremiumModule } from '../../app/utils';
 
 import {
-    ALL_SAMPLES_DISPLAY_TEXT,
+    ALL_SAMPLES_DISPLAY_TEXT, DECIMAL_RANGE_URI,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_NOT_LOCKED,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
     DOMAIN_FIELD_SELECTED,
-    DOMAIN_FILTER_HASANYVALUE,
+    DOMAIN_FILTER_HASANYVALUE, DOUBLE_RANGE_URI,
     FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO,
-    FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG,
-    INT_RANGE_URI,
-    MAX_TEXT_LENGTH,
+    FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG, FLOAT_RANGE_URI,
+    INT_RANGE_URI, LONG_RANGE_URI,
+    MAX_TEXT_LENGTH, MULTILINE_RANGE_URI,
     PHILEVEL_NOT_PHI,
     SAMPLE_TYPE_CONCEPT_URI,
     SEVERITY_LEVEL_ERROR,
@@ -1334,6 +1334,12 @@ export function resolveAvailableTypes(
         .filter(type => {
             // Can always return to the original type for field
             if (type.name === field.dataType.name) return true;
+            if ((type.rangeURI === STRING_RANGE_URI || type.rangeURI === MULTILINE_RANGE_URI) && !type.conceptURI) return true;
+            // allow integer -> decimal
+            if ((type.rangeURI === DOUBLE_RANGE_URI || type.rangeURI === FLOAT_RANGE_URI || type.rangeURI === DECIMAL_RANGE_URI) &&
+                (field.dataType.rangeURI === INT_RANGE_URI || field.dataType.rangeURI === LONG_RANGE_URI))
+                return true;
+
 
             if (!acceptablePropertyType(type, rangeURI)) return false;
 

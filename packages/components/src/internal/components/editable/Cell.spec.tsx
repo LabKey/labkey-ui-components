@@ -43,14 +43,14 @@ const queryColumn = QueryColumn.create({
 
 describe('Cell', () => {
     test('default props', () => {
-        const cell = mount(<Cell {...actions} col={queryColumn} colIdx={1} rowIdx={2} />);
+        const cell = mount(<Cell cellActions={actions} col={queryColumn} colIdx={1} rowIdx={2} />);
         expect(cell.find('div')).toHaveLength(1);
         expect(cell.find('input')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
 
     test('with focus', () => {
-        const cell = mount(<Cell {...actions} col={queryColumn} colIdx={1} rowIdx={2} focused selected />);
+        const cell = mount(<Cell cellActions={actions} col={queryColumn} colIdx={1} rowIdx={2} focused selected />);
         expect(cell.find('div')).toHaveLength(0);
         expect(cell.find('input')).toHaveLength(1);
         expect(cell.find(LookupCell)).toHaveLength(0);
@@ -58,7 +58,7 @@ describe('Cell', () => {
 
     test('with placeholder', () => {
         const cell = mount(
-            <Cell {...actions} col={queryColumn} colIdx={2} placeholder="placeholder text" rowIdx={3} />
+            <Cell cellActions={actions} col={queryColumn} colIdx={2} placeholder="placeholder text" rowIdx={3} />
         );
         const div = cell.find('div');
         expect(div).toHaveLength(1);
@@ -70,10 +70,9 @@ describe('Cell', () => {
     test('with placeholder while focused', () => {
         const cell = mount(
             <Cell
-                {...actions}
+                cellActions={actions}
                 col={queryColumn}
                 colIdx={2}
-                modelId={MODEL_ID}
                 placeholder="placeholder text"
                 rowIdx={3}
                 selected
@@ -88,7 +87,7 @@ describe('Cell', () => {
     });
 
     test('readOnly property', () => {
-        const cell = mount(<Cell {...actions} col={queryColumn} colIdx={3} readOnly rowIdx={3} />);
+        const cell = mount(<Cell cellActions={actions} col={queryColumn} colIdx={3} readOnly rowIdx={3} />);
         expect(cell.find('div')).toHaveLength(1);
         expect(cell.find('input')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
@@ -96,7 +95,7 @@ describe('Cell', () => {
 
     test('column is readOnly', () => {
         const roColumn = QueryColumn.create({ readOnly: true, name: 'roColumn' });
-        const cell = mount(<Cell {...actions} col={roColumn} colIdx={4} readOnly={false} rowIdx={3} />);
+        const cell = mount(<Cell cellActions={actions} col={roColumn} colIdx={4} readOnly={false} rowIdx={3} />);
         expect(cell.find('div')).toHaveLength(1);
         expect(cell.find('input')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
@@ -105,10 +104,9 @@ describe('Cell', () => {
     test('with placeholder and readOnly', () => {
         const cell = mount(
             <Cell
-                {...actions}
+                cellActions={actions}
                 col={queryColumn}
                 colIdx={3}
-                modelId={MODEL_ID}
                 placeholder="readOnly placeholder"
                 readOnly
                 rowIdx={3}
@@ -124,7 +122,7 @@ describe('Cell', () => {
 
     test('col is lookup, not public', () => {
         const lookupCol = QueryColumn.create({ name: 'test', lookup: { isPublic: false } });
-        const cell = mount(<Cell {...actions} col={lookupCol} colIdx={1} rowIdx={2} />);
+        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} />);
         expect(cell.find('div')).toHaveLength(1);
         expect(cell.find('.cell-menu')).toHaveLength(0);
         expect(cell.find('input')).toHaveLength(0);
@@ -142,25 +140,25 @@ describe('Cell', () => {
 
     test('col is lookup, public', () => {
         const lookupCol = QueryColumn.create({ name: 'test', lookup: { isPublic: true } });
-        const cell = mount(<Cell {...actions} col={lookupCol} colIdx={1} rowIdx={2} />);
+        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} />);
         expectLookup(cell);
     });
 
     test('col is lookup, public and focused', () => {
         const lookupCol = QueryColumn.create({ name: 'test', lookup: { isPublic: true } });
-        const cell = mount(<Cell {...actions} col={lookupCol} colIdx={1} rowIdx={2} focused selected />);
+        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} focused selected />);
         expectLookup(cell, true);
     });
 
     test('col has validValues', () => {
         const lookupCol = QueryColumn.create({ name: 'test', validValues: ['a', 'b'] });
-        const cell = mount(<Cell {...actions} col={lookupCol} colIdx={1} rowIdx={2} />);
+        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} />);
         expectLookup(cell);
     });
 
     test('col has validValues and focused', () => {
         const lookupCol = QueryColumn.create({ name: 'test', validValues: ['a', 'b'] });
-        const cell = mount(<Cell {...actions} col={lookupCol} colIdx={1} rowIdx={2} focused selected />);
+        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} focused selected />);
         expect(cell.find('div')).toHaveLength(11);
         expect(cell.find('.cell-menu')).toHaveLength(0);
         expect(cell.find('.cell-menu-value')).toHaveLength(0);

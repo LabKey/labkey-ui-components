@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
 import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
@@ -18,6 +18,12 @@ import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 import { FilterCardProps, FilterCards } from './FilterCards';
 import { getFinderStartText } from './utils';
+import { getOmittedSampleTypeColumns } from '../samples/utils';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { getFinderSampleTypeNames } from './actions';
+import { resolveErrorMessage } from '../../util/messaging';
+import { Alert } from '../base/Alert';
+import { getContainerFilter } from '../../query/api';
 
 const SAMPLE_FINDER_TITLE = 'Find Samples';
 const SAMPLE_FINDER_CAPTION = 'Find samples that meet all the criteria defined below';
@@ -146,7 +152,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
 
     return (
         <>
-            <h4>Filtering and sample-type tabs coming soon...</h4>
+            <h4>Proper Filtering coming soon...</h4>
             <SamplesTabbedGridPanel
                 {...props}
                 withTitle={false}
@@ -165,26 +171,58 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
 const SampleFinderSamplesWithQueryModels = withQueryModels<SampleFinderSamplesGridProps>(SampleFinderSamplesImpl);
 
 const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
-    const { cards, ...gridProps } = props;
+    const { cards, user, ...gridProps } = props;
+    const [queryConfigs, setQueryConfigs] = useState<any>(undefined);
+    const [errors, setErrors] = useState<string>(undefined);
 
-    const baseFilters = [];
-    // TODO this is not really correct.  Probably there will be a specialized filter type used for these lineage queries.
-    // cards.forEach(card => {
-    //     if (card.filterArray.length) {
-    //         baseFilters.push(...card.filterArray);
-    //     } else  {
-    //         baseFilters.push(card.entityDataType.inputColumnName.replace("First", card.schemaQuery.queryName), null, Filter.Types.NONBLANK);
-    //     }
-    // });
+    useEffect(() => {
+        const omittedColumns = getOmittedSampleTypeColumns(user);
+        const baseFilters = [];
+        // TODO this is not really correct.  Probably there will be a specialized filter type used for these lineage queries.
+        cards.forEach(card => {
+            if (card.filterArray.length) {
+                baseFilters.push(...card.filterArray);
+            } else  {
+                baseFilters.push(Filter.create(card.entityDataType.inputColumnName.replace("First", card.schemaQuery.queryName), null, Filter.Types.NONBLANK));
+            }
+        });
+        const configs = {
+            allSamples: {
+                id: 'allSamples',
+                title: 'All Samples',
+                schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
+                requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
+                baseFilters,
+            },
+        };
+        (async () => {
+            try {
+                const names = await getFinderSampleTypeNames(getContainerFilter());
+                names.forEach(name => {
+                    const id = 'sampleFinder|samples/' + name;
+                    configs[id] = {
+                        id,
+                        title: name,
+                        schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name),
+                        requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
+                        omittedColumns,
+                        baseFilters,
+                    }
+                });
+                setQueryConfigs(configs);
+            }
+            catch (error) {
+                setErrors(resolveErrorMessage(error))
+            }
+        })();
 
-    const queryConfigs = {
-        allSamples: {
-            id: 'allSamples',
-            title: 'All Samples',
-            schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
-            requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-        },
-    };
+    }, [cards, user])
 
-    return <SampleFinderSamplesWithQueryModels {...gridProps} autoLoad={false} queryConfigs={queryConfigs} />;
+    if (errors)
+        return <Alert>{errors}</Alert>;
+
+    if (!queryConfigs)
+        return <LoadingSpinner/>;
+
+    return <SampleFinderSamplesWithQueryModels user={user} {...gridProps} autoLoad queryConfigs={queryConfigs} />;
 });

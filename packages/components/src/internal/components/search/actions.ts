@@ -1,7 +1,7 @@
-import { List, Map } from 'immutable';
-import { Ajax, Utils } from '@labkey/api';
+import { Map } from 'immutable';
+import { Ajax, Query, Utils } from '@labkey/api';
 
-import { buildURL, URLResolver } from '../../..';
+import { buildURL, resolveErrorMessage, SCHEMAS, URLResolver } from '../../..';
 import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 
 import { SearchIdData, SearchResultCardData } from './models';
@@ -144,4 +144,29 @@ export function getProcessedSearchHits(
                   };
               })
         : undefined;
+}
+
+export function getFinderSampleTypeNames(containerFilter: Query.ContainerFilter = undefined): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        Query.executeSql({
+            // TODO currenlty this retrieves all sample types in this container. should this change to a select on exp.materialSource for the given container?  That will
+            //  return all sample types, whether they have samples or not.  Here we return only sample types
+            //  that have at least one sample, but we are not taking the filters into account at all.  We
+            //  might change this to a filter over exp.materials using the filter array, which would return the
+            //  sample types that have at least one sample matching the criteria.
+            // sql: 'SELECT DISTINCT SampleSet.Name as SampleType FROM materials GROUP BY SampleSet.Name',
+            sql: 'SELECT Name as SampleType FROM SampleSets',
+            containerFilter,
+            sort: 'SampleType',
+            schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.getSchema(),
+            success: data => {
+                console.log(data);
+                resolve(data.rows.map(row => row['SampleType']));
+            },
+            failure: reason => {
+                console.error("Problem retrieving filtered sample types", reason);
+                reject("There was a problem retrieving the filtered sample types. " + resolveErrorMessage(reason));
+            }
+        });
+    });
 }

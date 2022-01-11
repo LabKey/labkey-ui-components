@@ -62,7 +62,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
             setConsumedStatuses(consumedStatusIds);
         } catch (error) {
             console.error(error.exception);
-            setError('Error loading sample statuses');
+            setError('Error loading sample statuses. If you want to discard ' + (allowDisable /* bulk update */ ? 'any samples' : 'the sample') +  ' being updated to a Consumed status, you will have to do that separately.');
         }
     };
 
@@ -88,71 +88,69 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
     const onCommentChange = useCallback(event => {
         const updatedComment = event.target.value;
         onAdditionalFormDataChange?.(DISCARD_CONSUMED_COMMENT_FIELD, updatedComment);
-    }, []);
+    }, [onAdditionalFormDataChange]);
 
     const toggleShouldDiscard = useCallback(() => {
         setShouldDiscard(!shouldDiscard);
         onAdditionalFormDataChange?.(DISCARD_CONSUMED_CHECKBOX_FIELD, shouldDiscard && showDiscardPanel);
-    }, [shouldDiscard]);
+    }, [shouldDiscard, onAdditionalFormDataChange, showDiscardPanel]);
 
     const discardPanel = useMemo(() => {
+        const isBulkForm = allowDisable;
+
         const panel = (
             <DiscardConsumedSamplesPanel
                 shouldDiscard={shouldDiscard}
                 onCommentChange={onCommentChange}
                 toggleShouldDiscard={toggleShouldDiscard}
-                discardTitle={`Discard sample${allowDisable ? '(s)' : ''}?`}
+                discardTitle={`Discard sample${isBulkForm ? '(s)' : ''}?`}
             />
         );
 
-        if (allowDisable) {
+        if (isBulkForm) {
             return (
-                <>
-                    <div className="row sample-bulk-update-discard-panel">
-                        <div className="col-sm-3 col-xs-12" />
-                        <div className="col-sm-9 col-xs-12">
-                            <div className="left-spacing right-spacing">{panel}</div>
-                        </div>
+                <div className="row sample-bulk-update-discard-panel">
+                    <div className="col-sm-3 col-xs-12" />
+                    <div className="col-sm-9 col-xs-12">
+                        <div className="left-spacing right-spacing">{panel}</div>
                     </div>
-                </>
+                </div>
             );
         }
         return panel;
     }, [shouldDiscard, onCommentChange, toggleShouldDiscard, allowDisable]);
 
     return (
-        <>
-            <React.Fragment key={key}>
-                {renderLabelField?.(col)}
-                <QuerySelect
-                    addLabelAsterisk={showAsteriskSymbol}
-                    allowDisable={allowDisable}
-                    componentId={col.fieldKey + key}
-                    containerPath={col.lookup?.containerPath}
-                    displayColumn={col.lookup?.displayColumn}
-                    formsy={formsy}
-                    initiallyDisabled={initiallyDisabled}
-                    joinValues={col.isJunctionLookup()}
-                    label={col.caption}
-                    loadOnFocus
-                    maxRows={10}
-                    multiple={col.isJunctionLookup()}
-                    name={col.fieldKey}
-                    onQSChange={onChange}
-                    onToggleDisable={onToggleDisable}
-                    placeholder="Select or type to search..."
-                    previewOptions={true}
-                    required={col.required}
-                    schemaQuery={col.lookup.schemaQuery}
-                    showLabel
-                    value={value}
-                    valueColumn={col.lookup.keyColumn}
-                    inputClass={inputClass}
-                />
-            </React.Fragment>
+        <React.Fragment key={key}>
+            {renderLabelField?.(col)}
+            <QuerySelect
+                addLabelAsterisk={showAsteriskSymbol}
+                allowDisable={allowDisable}
+                componentId={col.fieldKey + key}
+                containerPath={col.lookup?.containerPath}
+                displayColumn={col.lookup?.displayColumn}
+                formsy={formsy}
+                initiallyDisabled={initiallyDisabled}
+                joinValues={col.isJunctionLookup()}
+                label={col.caption}
+                loadOnFocus
+                maxRows={10}
+                multiple={col.isJunctionLookup()}
+                name={col.fieldKey}
+                onQSChange={onChange}
+                onToggleDisable={onToggleDisable}
+                placeholder="Select or type to search..."
+                previewOptions={true}
+                required={col.required}
+                schemaQuery={col.lookup?.schemaQuery}
+                showLabel
+                value={value}
+                valueColumn={col.lookup?.keyColumn}
+                inputClass={inputClass}
+            />
             {error && <Alert>{error}</Alert>}
             {(showDiscardPanel || props.forceShowDiscard) && <>{discardPanel}</>}
-        </>
+        </React.Fragment>
     );
 });
 

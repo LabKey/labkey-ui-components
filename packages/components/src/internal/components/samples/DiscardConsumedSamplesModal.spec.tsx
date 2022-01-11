@@ -36,7 +36,7 @@ describe('DiscardConsumedSamplesModal', () => {
             wrapper,
             'Setting Sample to Consumed',
             'You are updating 1 sample and setting it to consumed. Would you like to also discard the consumed sample from storage?Yes, discard the sample',
-            'Save changes and discard consumed sample',
+            'Yes, Discard Sample',
             true
         );
 
@@ -57,7 +57,7 @@ describe('DiscardConsumedSamplesModal', () => {
             wrapper,
             'Setting 2 Samples to Consumed',
             'You are updating 2 samples and setting them to consumed. Would you like to also discard the 2 consumed samples from storage?Yes, discard the samples',
-            'Save changes and discard consumed samples',
+            'Yes, Discard Samples',
             true
         );
 
@@ -77,8 +77,8 @@ describe('DiscardConsumedSamplesModal', () => {
         validate(
             wrapper,
             'Setting Sample to Consumed',
-            'You are updating 2 samples and setting 1 in storage sample to consumed. Would you like to also discard the consumed sample from storage?Yes, discard the sample',
-            'Save changes and discard consumed sample',
+            'You are updating 2 samples and setting 1 in-storage sample to consumed. Would you like to also discard the consumed sample from storage?Yes, discard the sample',
+            'Yes, Discard Sample',
             true
         );
 
@@ -98,8 +98,8 @@ describe('DiscardConsumedSamplesModal', () => {
         validate(
             wrapper,
             'Setting 2 Samples to Consumed',
-            'You are updating 3 samples and setting 2 in storage samples to consumed. Would you like to also discard the 2 consumed samples from storage?Yes, discard the samples',
-            'Save changes and discard consumed samples',
+            'You are updating 3 samples and setting 2 in-storage samples to consumed. Would you like to also discard the 2 consumed samples from storage?Yes, discard the samples',
+            'Yes, Discard Samples',
             true
         );
 
@@ -142,7 +142,7 @@ describe('DiscardConsumedSamplesModal', () => {
         validate(
             wrapper,
             'Setting Sample to Consumed',
-            'You are updating 3 samples and setting 1 in storage sample to consumed. Would you like to also discard the consumed sample from storage?Yes, discard the sample',
+            'You are updating 3 samples and setting 1 in-storage sample to consumed. Would you like to also discard the consumed sample from storage?Yes, discard the sample',
             'Update Samples Only',
             false
         );

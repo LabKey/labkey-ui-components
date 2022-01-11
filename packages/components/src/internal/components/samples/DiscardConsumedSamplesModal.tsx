@@ -51,8 +51,8 @@ export class DiscardConsumedSamplesModal extends React.PureComponent<Props, Stat
 
     onConfirm = () => {
         const { shouldDiscard, comment } = this.state;
-        this.props.onConfirm(shouldDiscard, comment);
         this.setState(state => ({ submitting: true }));
+        this.props.onConfirm(shouldDiscard, comment);
     };
 
     render() {
@@ -60,14 +60,14 @@ export class DiscardConsumedSamplesModal extends React.PureComponent<Props, Stat
         const { shouldDiscard, submitting } = this.state;
 
         const confirmBtnText = shouldDiscard
-            ? 'Save changes and discard consumed ' + this._lcNoun
+            ? 'Yes, Discard ' + this._noun
             : 'Update ' + this._nounTotal + ' Only';
         const consumedNounDisplay =
             totalSampleCount === consumedSampleCount
                 ? totalSampleCount > 1
                     ? 'them'
                     : 'it'
-                : `${consumedSampleCount} in storage ${this._lcNoun}`;
+                : `${consumedSampleCount} in-storage ${this._lcNoun}`;
         return (
             <Modal show={true} onHide={this.onCancel}>
                 <Modal.Header closeButton>

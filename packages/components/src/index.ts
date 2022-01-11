@@ -24,7 +24,11 @@ import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColu
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
 import { InferDomainResponse } from './public/InferDomainResponse';
-import { getServerFilePreview, inferDomainFromFile, getAssayImportNotificationMsg } from './internal/components/assay/utils';
+import {
+    getServerFilePreview,
+    inferDomainFromFile,
+    getAssayImportNotificationMsg,
+} from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';

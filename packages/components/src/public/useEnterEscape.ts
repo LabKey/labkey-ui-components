@@ -6,10 +6,14 @@ import { useCallback, KeyboardEvent } from 'react';
  */
 export enum Key {
     ARROW_DOWN = 'ArrowDown',
+    ARROW_LEFT = 'ArrowLeft',
+    ARROW_RIGHT = 'ArrowRight',
     ARROW_UP = 'ArrowUp',
     BACKSPACE = 'Backspace',
+    END = 'End',
     ENTER = 'Enter',
     ESCAPE = 'Escape',
+    HOME = 'Home',
 }
 
 type KeyHandler = (evt: KeyboardEvent) => void;

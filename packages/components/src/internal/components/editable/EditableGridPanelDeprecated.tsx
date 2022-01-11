@@ -19,21 +19,23 @@ import { Panel } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import classNames from 'classnames';
 
-import { gridInit } from '../../actions';
+import { addRows, gridInit } from '../../actions';
 
 import {
     EditableColumnMetadata,
+    EditorModel,
     getUniqueIdColumnMetadata,
     LoadingSpinner,
     QueryColumn,
     QueryGridModel,
 } from '../../..';
 
-import { GlobalAppState } from '../../global';
+import { GlobalAppState, updateEditorModel, updateQueryGridModel } from '../../global';
 
-import { EditableGrid, EditableGridProps } from './EditableGrid';
+import { EditableGrid, SharedEditableGridProps } from './EditableGrid';
 
-interface Props extends EditableGridProps {
+interface Props extends SharedEditableGridProps {
+    model: QueryGridModel;
     models?: QueryGridModel | List<QueryGridModel>;
     title?: string;
     bsStyle?: any;
@@ -47,13 +49,21 @@ interface Props extends EditableGridProps {
     getIdField?: (tabId?: number) => string;
     getTabTitle?: (tabId?: number) => string;
     getTabHeader?: (tabId?: number) => ReactNode;
+    initialEmptyRowCount?: number;
+    onCellModify?: () => void;
+    onRowCountChange?: (rowCount?: number) => any;
 }
 
 interface State {
     activeTab: number;
+    rowsInitialized: boolean;
 }
 
 export class EditableGridPanelDeprecated extends ReactN.Component<Props, State, GlobalAppState> {
+    static defaultProps = {
+        initialEmptyRowCount: 1,
+    };
+
     constructor(props: Props) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
@@ -64,60 +74,116 @@ export class EditableGridPanelDeprecated extends ReactN.Component<Props, State, 
 
         this.state = {
             activeTab: props.activeTab, // initially set to undefined until a tab is clicked
+            // If we don't track this bit we will call addRows more than once because ReactN seems to take its sweet
+            // time to process the changes emitted from this component.
+            rowsInitialized: false,
         };
     }
 
-    componentDidMount() {
-        this.initModel(this.props);
+    componentDidMount(): void {
+        this.initModel();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
-        this.initModel(nextProps);
+    componentDidUpdate(): void {
+        this.initModel();
     }
 
-    initModel(props: Props) {
-        const model = this.getActiveModel(props);
+    updateModels = (
+        editorModelChanges: Partial<EditorModel>,
+        dataKeys?: List<any>,
+        data?: Map<any, Map<string, any>>
+    ): void => {
+        const { onCellModify, onRowCountChange } = this.props;
+        const editorModel = this.getEditorModel();
+        const newRowCount = editorModelChanges.rowCount - editorModel.rowCount;
 
-        // make sure each QueryGridModel is initialized
+        updateEditorModel(editorModel, editorModelChanges);
+
+        if (dataKeys !== undefined && data !== undefined) {
+            updateQueryGridModel(this.getModel(), { data, dataIds: dataKeys });
+        }
+
+        // TODO: look at consumers that pass onRowCountChange and see if it's necessary, since in this scenario we also
+        //  trigger onCellModify below, and onCellModify may be doing the same thing (e.g. setting dirty state)
+        if (newRowCount > 0) {
+            onRowCountChange?.();
+        }
+
+        if (newRowCount > 0 || editorModelChanges.cellValues !== undefined) {
+            onCellModify?.();
+        }
+    };
+
+    addRows = async (count: number): Promise<void> => {
+        const queryGridModel = this.getModel();
+        const changes = await addRows(
+            this.getEditorModel(),
+            queryGridModel.dataIds,
+            queryGridModel.data,
+            queryGridModel.getInsertColumns(),
+            count
+        );
+        this.updateModels(changes.editorModel, changes.dataKeys, changes.data);
+    };
+
+    initModel = (): void => {
+        const model = this.getActiveModel();
+        const { rowsInitialized } = this.state;
+        const { initialEmptyRowCount } = this.props;
+
+        // make sure the active QueryGridModel is initialized
         if (model && !model.isLoaded && !model.isLoading) {
             gridInit(model, false);
         }
-    }
 
-    getModel(): QueryGridModel {
-        const model = this.getActiveModel(this.props);
+        // If the model is loaded, but we don't have the amount of rows we're supposed to initialize with, we add the
+        // rows to the model.
+        //
+        if (model.isLoaded && !model.isError && model.data.size === 0 && initialEmptyRowCount > 0 && !rowsInitialized) {
+            this.setState({ rowsInitialized: true });
+            this.addRows(initialEmptyRowCount);
+        }
+    };
+
+    getModel = (): QueryGridModel => {
+        const model = this.getActiveModel();
 
         // need to access this.global directly to connect this component to the re-render cycle
         return this.global.QueryGrid_models.get(model.getId());
-    }
+    };
 
-    getModelsAsList(props: Props): List<QueryGridModel> {
-        const { model, models } = props;
+    getEditorModel = (): EditorModel => {
+        // need to access this.global directly to connect this component to the re-render cycle
+        return this.global.QueryGrid_editors.get(this.getModel().getId());
+    };
+
+    getModelsAsList = (): List<QueryGridModel> => {
+        const { model, models } = this.props;
         if (models) return List.isList(models) ? List(models.toArray()) : List<QueryGridModel>([models]);
 
         return List<QueryGridModel>([model]);
-    }
+    };
 
-    getActiveModel(props: Props): QueryGridModel {
+    getActiveModel = (): QueryGridModel => {
         const { activeTab } = this.state;
-        const models = this.getModelsAsList(props);
+        const models = this.getModelsAsList();
 
         return models.get(activeTab) ?? models.get(0);
-    }
+    };
 
-    hasTabs(): boolean {
-        const models = this.getModelsAsList(this.props);
+    hasTabs = (): boolean => {
+        const models = this.getModelsAsList();
         return models.size > 1;
-    }
+    };
 
-    setActiveTab(id: number) {
+    setActiveTab = (id: number) => {
         this.setState({ activeTab: id });
-    }
+    };
 
-    renderTabs() {
+    renderTabs = (): ReactNode => {
         const { getTabTitle } = this.props;
-        const models = this.getModelsAsList(this.props);
-        const activeModel = this.getActiveModel(this.props);
+        const models = this.getModelsAsList();
+        const activeModel = this.getActiveModel();
 
         return this.hasTabs() ? (
             <ul className="nav nav-tabs">
@@ -140,25 +206,29 @@ export class EditableGridPanelDeprecated extends ReactN.Component<Props, State, 
                 })}
             </ul>
         ) : null;
-    }
+    };
+
+    getUpdateColumns = (): List<QueryColumn> => {
+        return this.props.getUpdateColumns(this.state.activeTab);
+    };
 
     render() {
         const { bsStyle, className, title } = this.props;
         const {
-            readOnlyColumns,
-            readonlyRows,
             columnMetadata,
-            getUpdateColumns,
             getColumnMetadata,
             getReadOnlyRows,
             getReadOnlyColumns,
             getTabHeader,
+            getUpdateColumns,
+            processBulkData,
+            readOnlyColumns,
+            readonlyRows,
         } = this.props;
         const { activeTab } = this.state;
-
         const model = this.getModel();
 
-        if (!model) {
+        if (!model || !model.isLoaded) {
             return <LoadingSpinner />;
         }
 
@@ -172,23 +242,27 @@ export class EditableGridPanelDeprecated extends ReactN.Component<Props, State, 
         let activeReadOnlyColumns = readOnlyColumns;
         if (getReadOnlyColumns) activeReadOnlyColumns = getReadOnlyColumns(activeTab);
 
-        let activeGetUpdateColumnsFn = getUpdateColumns;
-        if (getUpdateColumns)
-            activeGetUpdateColumnsFn = () => {
-                return getUpdateColumns(activeTab);
-            };
+        const updateColumns = getUpdateColumns ? this.getUpdateColumns() : undefined;
 
-        const gridProps = {
-            ...this.props,
-            model,
-            readOnlyColumns: activeReadOnlyColumns,
-            readonlyRows: activeReadOnlyRows,
-            columnMetadata: activeColumnMetadata,
-            getUpdateColumns: activeGetUpdateColumnsFn,
-        };
+        const editableGrid = (
+            <EditableGrid
+                {...this.props}
+                columnMetadata={activeColumnMetadata}
+                data={model.data}
+                dataKeys={model.dataIds}
+                editorModel={this.getEditorModel()}
+                error={model.isError ? model.message ?? 'Something went wrong' : undefined}
+                processBulkData={processBulkData}
+                onChange={this.updateModels}
+                queryInfo={model.queryInfo}
+                readOnlyColumns={activeReadOnlyColumns}
+                readonlyRows={activeReadOnlyRows}
+                updateColumns={updateColumns}
+            />
+        );
 
         if (!title) {
-            return <EditableGrid {...gridProps} />;
+            return editableGrid;
         }
 
         return (
@@ -197,7 +271,7 @@ export class EditableGridPanelDeprecated extends ReactN.Component<Props, State, 
                 <Panel.Body className="table-responsive">
                     {this.renderTabs()}
                     {getTabHeader && getTabHeader(activeTab)}
-                    <EditableGrid {...gridProps} />
+                    {editableGrid}
                 </Panel.Body>
             </Panel>
         );

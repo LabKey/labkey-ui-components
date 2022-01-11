@@ -703,34 +703,31 @@ describe('EditorModel', () => {
         });
 
         test('getColumns without queryInfo', () => {
-            const gridModel = new QueryGridModel({});
             const editorModel = new EditorModel({});
-            expect(editorModel.getColumns(gridModel).size).toBe(0);
-            expect(editorModel.getColumns(gridModel, true).size).toBe(0);
+            const queryInfo = new QueryInfo();
+            expect(editorModel.getColumns(queryInfo).size).toBe(0);
+            expect(editorModel.getColumns(queryInfo, true).size).toBe(0);
         });
 
         test('getColumns forInsert', () => {
-            const gridModel = new QueryGridModel({ queryInfo: QUERY_INFO });
             const editorModel = new EditorModel({});
-            const columns = editorModel.getColumns(gridModel);
+            const columns = editorModel.getColumns(QUERY_INFO);
             expect(columns.size).toBe(2);
             expect(columns.get(0)).toBe(COLUMN_CAN_INSERT_AND_UPDATE);
             expect(columns.get(1)).toBe(COLUMN_CAN_INSERT);
         });
 
         test('getColumns forUpdate', () => {
-            const gridModel = new QueryGridModel({ queryInfo: QUERY_INFO });
             const editorModel = new EditorModel({});
-            const columns = editorModel.getColumns(gridModel, true);
+            const columns = editorModel.getColumns(QUERY_INFO, true);
             expect(columns.size).toBe(2);
             expect(columns.get(0)).toBe(COLUMN_CAN_INSERT_AND_UPDATE);
             expect(columns.get(1)).toBe(COLUMN_CAN_UPDATE);
         });
 
         test('getColumns readOnlyColumns', () => {
-            const gridModel = new QueryGridModel({ queryInfo: QUERY_INFO });
             const editorModel = new EditorModel({});
-            const columns = editorModel.getColumns(gridModel, true, List(['neither']));
+            const columns = editorModel.getColumns(QUERY_INFO, true, List(['neither']));
             expect(columns.size).toBe(3);
             expect(columns.get(0)).toBe(COLUMN_CAN_INSERT_AND_UPDATE);
             expect(columns.get(1)).toBe(COLUMN_CAN_UPDATE);
@@ -739,11 +736,13 @@ describe('EditorModel', () => {
         });
 
         test('getColumns getInsertColumns', () => {
-            const gridModel = new QueryGridModel({ queryInfo: QUERY_INFO });
             const editorModel = new EditorModel({});
-            const columns = editorModel.getColumns(gridModel, false, undefined, () => {
-                return List([COLUMN_CANNOT_INSERT_AND_UPDATE, COLUMN_CAN_INSERT]);
-            });
+            const columns = editorModel.getColumns(
+                QUERY_INFO,
+                false,
+                undefined,
+                List([COLUMN_CANNOT_INSERT_AND_UPDATE, COLUMN_CAN_INSERT])
+            );
             expect(columns.size).toBe(2);
             expect(columns.get(0)).toBe(COLUMN_CANNOT_INSERT_AND_UPDATE);
             expect(columns.get(1)).toBe(COLUMN_CAN_INSERT);

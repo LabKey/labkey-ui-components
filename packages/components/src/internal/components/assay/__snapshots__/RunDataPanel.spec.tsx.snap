@@ -2,7 +2,7 @@
 
 exports[`<RunDataPanel/> custom display props 1`] = `
 <div
-  className="panel panel-default full-width"
+  className="panel panel-default"
 >
   <div
     className="panel-heading"
@@ -302,7 +302,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                         }
                         title="When a matching specimen exists in a study, can be used to identify subject and timepoint for assay. Alternately, supply ParticipantID and either VisitID or Date."
                       >
-                        Specimen ID
+                        SampleID
                       </th>
                       <th
                         className="grid-header-cell"
@@ -340,28 +340,6 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                       >
                         Date
                       </th>
-                      <th
-                        className="grid-header-cell"
-                        onClick={[Function]}
-                        style={
-                          Object {
-                            "minWidth": "100px",
-                          }
-                        }
-                      >
-                        Healthy
-                      </th>
-                      <th
-                        className="grid-header-cell"
-                        onClick={[Function]}
-                        style={
-                          Object {
-                            "minWidth": "100px",
-                          }
-                        }
-                      >
-                        Text Area
-                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -369,7 +347,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                       className="grid-empty"
                     >
                       <td
-                        colSpan={8}
+                        colSpan={6}
                       >
                         Start by adding the quantity of assay data rows you want to create.
                       </td>
@@ -391,7 +369,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
 
 exports[`<RunDataPanel/> default props 1`] = `
 <div
-  className="panel panel-default full-width"
+  className="panel panel-default"
 >
   <div
     className="panel-heading"
@@ -662,7 +640,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                         }
                         title="When a matching specimen exists in a study, can be used to identify subject and timepoint for assay. Alternately, supply ParticipantID and either VisitID or Date."
                       >
-                        Specimen ID
+                        SampleID
                       </th>
                       <th
                         className="grid-header-cell"
@@ -700,28 +678,6 @@ exports[`<RunDataPanel/> default props 1`] = `
                       >
                         Date
                       </th>
-                      <th
-                        className="grid-header-cell"
-                        onClick={[Function]}
-                        style={
-                          Object {
-                            "minWidth": "100px",
-                          }
-                        }
-                      >
-                        Healthy
-                      </th>
-                      <th
-                        className="grid-header-cell"
-                        onClick={[Function]}
-                        style={
-                          Object {
-                            "minWidth": "100px",
-                          }
-                        }
-                      >
-                        Text Area
-                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -729,7 +685,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                       className="grid-empty"
                     >
                       <td
-                        colSpan={7}
+                        colSpan={5}
                       >
                         Start by adding the quantity of assay data rows you want to create.
                       </td>
@@ -751,7 +707,7 @@ exports[`<RunDataPanel/> default props 1`] = `
 
 exports[`<RunDataPanel/> loading state based on gridModel 1`] = `
 <div
-  className="panel panel-default full-width"
+  className="panel panel-default"
 >
   <div
     className="panel-heading"

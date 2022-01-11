@@ -2,7 +2,7 @@
  * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
 interface IFormStepContext {
@@ -147,11 +147,6 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
     class WithFormSteps extends React.Component<any, any> {
         constructor(props) {
             super(props);
-
-            this.nextStep = this.nextStep.bind(this);
-            this.previousStep = this.previousStep.bind(this);
-            this.selectStep = this.selectStep.bind(this);
-
             this.state = {
                 currentStep: props.initialStep
                     ? props.initialStep
@@ -167,24 +162,24 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
             };
         }
 
-        nextStep() {
+        nextStep = (): void => {
             const { currentStep, furthestStep } = this.state;
 
             this.setState({
                 currentStep: currentStep + 1,
                 furthestStep: currentStep + 1 >= furthestStep ? currentStep + 1 : furthestStep,
             });
-        }
+        };
 
-        previousStep() {
+        previousStep = (): void => {
             const { currentStep } = this.state;
 
             this.setState({
                 currentStep: currentStep - 1,
             });
-        }
+        };
 
-        selectStep(requestedStep?: number): boolean {
+        selectStep = (requestedStep?: number): boolean => {
             const { currentStep, furthestStep } = this.state;
 
             if (furthestStep >= requestedStep && currentStep !== requestedStep) {
@@ -196,9 +191,9 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
             }
 
             return false;
-        }
+        };
 
-        render() {
+        render(): ReactNode {
             return (
                 <FormStepContextProvider value={this.state}>
                     <Component

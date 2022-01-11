@@ -7,6 +7,14 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Added DiscardConsumedSamples, DiscardConsumedSamplesModal and SampleStatusInput components
   * Modified SamplesEditableGrid, SamplesBulkUpdateForm and SampleDetailEditing to allow discarding consumed samples
 
+### version 2.116.0
+*Released*: 10 January 2022
+* Refactor EditableGrid to be QueryGridModel agnostic
+* Add EditableGridPanel component, which is compatible with QueryModel
+* Refactor AssayImportPanels/RunDataPanel to use EditableGridPanel and no longer use QueryGridModel
+* Delete AssayUploadGridLoader
+  * EditableGridPanel removes the need for overloading GridLoaders to instantiate models
+
 ### version 2.115.2
 *Released*: 7 January 2022
 * Fix unhandled promises

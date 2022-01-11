@@ -1,13 +1,16 @@
 import { Ajax, Utils } from '@labkey/api';
 
-import {AppURL, buildURL} from '../../url/AppURL';
+import React from 'react';
+
+import { AppURL, buildURL } from '../../url/AppURL';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
 import { processRequest } from '../../query/api';
-import {AssayUploadResultModel} from "./models";
-import {AssayDefinitionModel} from "../../AssayDefinitionModel";
-import {App} from "../../../index";
-import React from "react";
-import {getPipelineLinkMsg, getWorkflowLinkMsg} from "../pipeline/utils";
+
+import { AssayDefinitionModel } from '../../AssayDefinitionModel';
+import { App } from '../../../index';
+import { getPipelineLinkMsg, getWorkflowLinkMsg } from '../pipeline/utils';
+
+import { AssayUploadResultModel } from './models';
 
 export function inferDomainFromFile(
     file: File,

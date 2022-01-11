@@ -4,8 +4,11 @@ import { Filter } from '@labkey/api';
 const SAMPLES_IMPORT_PIPELINE_PROVIDER = 'Samples Import';
 const SOURCES_IMPORT_PIPELINE_PROVIDER = 'Sources Import';
 
-export const PROVIDERS = [SAMPLES_IMPORT_PIPELINE_PROVIDER, SOURCES_IMPORT_PIPELINE_PROVIDER, 'General'];
-export const PIPELINE_PROVIDER_FILTER = Filter.create('Provider', PROVIDERS, Filter.Types.IN);
+const PROVIDERS_LKB = [SAMPLES_IMPORT_PIPELINE_PROVIDER, 'General'];
+export const PIPELINE_PROVIDER_FILTER_LKB = Filter.create('Provider', PROVIDERS_LKB, Filter.Types.IN);
+
+const PROVIDERS_LKSM = [...PROVIDERS_LKB, SOURCES_IMPORT_PIPELINE_PROVIDER];
+export const PIPELINE_PROVIDER_FILTER_LKSM = Filter.create('Provider', PROVIDERS_LKSM, Filter.Types.IN);
 
 export const ACTIVE_JOB_INDICATOR_CLS = 'fa-spinner fa-pulse';
 

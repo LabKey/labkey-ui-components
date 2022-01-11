@@ -24,7 +24,7 @@ import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColu
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
 import { InferDomainResponse } from './public/InferDomainResponse';
-import { getServerFilePreview, inferDomainFromFile } from './internal/components/assay/utils';
+import { getServerFilePreview, inferDomainFromFile, getAssayImportNotificationMsg } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
@@ -499,7 +499,6 @@ import { PipelineJobsListingPage } from './internal/components/pipeline/Pipeline
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
 import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
-import { getImportNotificationMsg } from './internal/components/pipeline/utils';
 import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
@@ -1300,7 +1299,7 @@ export {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
-    getImportNotificationMsg,
+    getAssayImportNotificationMsg,
     // Test Helpers
     sleep,
     createMockWithRouterProps,

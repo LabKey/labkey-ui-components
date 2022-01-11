@@ -56,6 +56,7 @@ interface Props {
     currentStep: number;
     editorModel: EditorModel;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
+    maxRows?: number;
     onFileChange: (attachments: Map<string, File>) => any;
     onFileRemoval: (attachmentName: string) => any;
     onGridChange: (
@@ -228,7 +229,10 @@ export class RunDataPanel extends PureComponent<Props, State> {
         const isLoading = !wizardModel.isInit || queryModel.isLoading;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
 
-        const cutPastePlaceholder = 'Paste in a tab-separated set of values (including column headers).';
+        let cutPastePlaceholder = 'Paste in a tab-separated set of values (including column headers).';
+        if (maxRows) {
+            cutPastePlaceholder += '  Maximum number of data rows allowed is ' + maxRows + '.';
+        }
         return (
             <div className="panel panel-default">
                 <div className="panel-heading">{title}</div>
@@ -316,6 +320,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             editorModel={editorModel}
                                             emptyGridMsg="Start by adding the quantity of assay data rows you want to create."
                                             isSubmitting={wizardModel.isSubmitting}
+                                            maxRows={this.props.maxRows}
                                             model={queryModel}
                                             onChange={this.props.onGridChange}
                                             striped

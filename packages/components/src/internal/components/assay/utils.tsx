@@ -1,8 +1,13 @@
 import { Ajax, Utils } from '@labkey/api';
 
-import { buildURL } from '../../url/AppURL';
+import {AppURL, buildURL} from '../../url/AppURL';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
 import { processRequest } from '../../query/api';
+import {AssayUploadResultModel} from "./models";
+import {AssayDefinitionModel} from "../../AssayDefinitionModel";
+import {App} from "../../../index";
+import React from "react";
+import {getPipelineLinkMsg, getWorkflowLinkMsg} from "../pipeline/utils";
 
 export function inferDomainFromFile(
     file: File,
@@ -58,4 +63,57 @@ export function getServerFilePreview(file: string, numLinesToInclude: number): P
             }),
         });
     });
+}
+
+function getAssayImportSuccessMsg(
+    response: AssayUploadResultModel,
+    isBackgroundJob: boolean,
+    reimport: boolean,
+    assayDefinition: AssayDefinitionModel = null
+): JSX.Element {
+    if (!isBackgroundJob) {
+        const msg = `Successfully ${reimport ? 're-imported' : 'created'} assay run`;
+        if (assayDefinition) {
+            // Displayed if 'Save and Import Another Run' chosen
+            const href = AppURL.create(
+                App.ASSAYS_KEY,
+                assayDefinition.type,
+                assayDefinition.name,
+                'runs',
+                response.runId
+            ).toHref();
+            return (
+                <>
+                    {msg} <a href={href}>#{response.runId}</a>.{' '}
+                </>
+            );
+        } else {
+            // Displayed if 'Save and Finish' chosen
+            return <> {msg}.{' '} </>;
+        }
+    } else {
+        return (
+            <>
+                Successfully started {reimport ? 're-importing' : 'creating'} assay run. You'll be notified when it's
+                done.{' '}
+            </>
+        );
+    }
+}
+
+export function getAssayImportNotificationMsg(
+    response: AssayUploadResultModel,
+    isBackgroundJob: boolean,
+    reimport: boolean,
+    assayDefinition: AssayDefinitionModel,
+    workflowJobId?: string,
+    workflowTaskId?: string
+): JSX.Element {
+    return (
+        <span>
+            {getAssayImportSuccessMsg(response, isBackgroundJob, reimport, assayDefinition)}
+            {isBackgroundJob ? getPipelineLinkMsg(response) : null}
+            {!assayDefinition ? getWorkflowLinkMsg(workflowJobId, workflowTaskId) : null}
+        </span>
+    );
 }

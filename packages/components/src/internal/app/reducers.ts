@@ -15,6 +15,7 @@ import {
     SECURITY_SERVER_UNAVAILABLE,
     SECURITY_SESSION_TIMEOUT,
     SET_RELOAD_REQUIRED,
+    UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     USER_PERMISSIONS_REQUEST,
     USER_PERMISSIONS_SUCCESS,
@@ -37,6 +38,12 @@ export type AppReducerState = AppModel;
 export const AppReducers = handleActions<AppReducerState, any>(
     {
         [SET_RELOAD_REQUIRED]: (state: AppReducerState) => state.set('reloadRequired', true),
+
+        [UPDATE_USER]: (state: AppReducerState, action: any) => {
+            return state.merge({
+                user: state.user.merge(action.userProps),
+            });
+        },
 
         [UPDATE_USER_DISPLAY_NAME]: (state: AppReducerState, action: any) => {
             return state.merge({

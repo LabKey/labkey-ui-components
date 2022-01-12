@@ -33,6 +33,7 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
     const className = classNames({
         active: isActive,
         'pull-right': pullRight,
+        'no-data': showRowCount && !rowCount,
     });
     const onClick = useCallback(() => onSelect(id), [id, onSelect]);
 

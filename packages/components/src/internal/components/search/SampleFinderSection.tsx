@@ -75,6 +75,8 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
     );
 });
 
+const LOCAL_STORAGE_KEY = "FinderFilterCards";
+
 export const SampleFinderSection: FC<Props> = memo(props => {
     const { parentEntityDataTypes, ...gridProps } = props;
 
@@ -82,15 +84,23 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
     const [filterCards, setFilterCards] = useState<FilterCardProps[]>([]);
 
+    useEffect(() => {
+        const storedCardsStr = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (storedCardsStr) {
+            setFilterCards(JSON.parse(storedCardsStr));
+        }
+    }, []);
+
     const onAddEntity = useCallback((entityType: EntityDataType) => {
-        setFilterChangeCounter(filterChangeCounter+1);
         setChosenEntityType(entityType);
-    }, [filterChangeCounter]);
+    }, []);
 
     const onFilterEdit = useCallback(
         (index: number) => {
             setFilterChangeCounter(filterChangeCounter+1);
             setChosenEntityType(parentEntityDataTypes[index]);
+            // This is just a reminder to do this when editing is implemented (if localStorage is still used)
+            // localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newFilterCards));
         },
         [parentEntityDataTypes, filterChangeCounter]
     );
@@ -100,6 +110,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             const newFilterCards = [...filterCards];
             newFilterCards.splice(index, 1);
             setFilterCards(newFilterCards);
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newFilterCards));
             setFilterChangeCounter(filterChangeCounter+1);
         },
         [filterCards, filterChangeCounter]
@@ -121,6 +132,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             });
             onFilterClose();
             setFilterCards(newFilterCards);
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newFilterCards));
         },
         [filterCards, onFilterEdit, onFilterDelete, chosenEntityType]
     );
@@ -166,7 +178,6 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
     const { actions, queryModels, gridButtons, excludedCreateMenuKeys } = props;
     return (
         <>
-            <h4>Proper Filtering coming soon...</h4>
             <SamplesTabbedGridPanel
                 {...props}
                 withTitle={false}
@@ -177,6 +188,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 gridButtons={gridButtons}
                 gridButtonProps={{
                     excludedManageMenuKeys: [SamplesManageButtonSections.IMPORT],
+                    excludeStartJob: true,
                 }}
                 tabbedGridPanelProps={{
                     alwaysShowTabs: true,
@@ -195,6 +207,7 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
     const [errors, setErrors] = useState<string>(undefined);
 
     useEffect(() => {
+        setQueryConfigs(undefined);
         const omittedColumns = getOmittedSampleTypeColumns(user);
         const baseFilters = [];
         const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
@@ -203,6 +216,7 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
                 .replace("Inputs", 'MultiValuedInputs')
                 .replace("First", card.schemaQuery.queryName);
             requiredColumns.push(cardColumnName);
+
             // TODO need to add columns referenced in filters
             if (card.filterArray.length) {
                 baseFilters.push(...card.filterArray);
@@ -210,15 +224,14 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
                 baseFilters.push(Filter.create( cardColumnName + "/lsid$SName", null, Filter.Types.NONBLANK));
             }
         });
-        console.log("SampleFinderSamples: useEffect filterChangeCounter " + filterChangeCounter);
-        const allSamplesKey = 'sampleFinder|allSamples-' + filterChangeCounter;
-        // const allSamplesKey = 'sampleFinder|allSamples';
+        const allSamplesKey = 'sampleFinder' + '-' + filterChangeCounter + '|exp/materials';
         const configs: { [key: string]: QueryConfig } = {
             [allSamplesKey]: {
                 id: allSamplesKey,
                 title: 'All Samples',
                 schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
                 requiredColumns,
+                omittedColumns: ['Run'],
                 baseFilters,
             },
         };
@@ -226,8 +239,7 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
             try {
                 const names = await getFinderSampleTypeNames(getContainerFilter());
                 names.forEach(name => {
-                    // const id = 'sampleFinder|samples/' + name;
-                    const id = 'sampleFinder|samples/' + name + '-' + filterChangeCounter;
+                    const id = 'sampleFinder' + '-' + filterChangeCounter + '|samples/' + name ;
                     configs[id] = {
                         id,
                         title: name,
@@ -238,7 +250,6 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
                     }
                 });
                 setQueryConfigs(configs);
-                console.log('configs', configs);
             }
             catch (error) {
                 setErrors(resolveErrorMessage(error))

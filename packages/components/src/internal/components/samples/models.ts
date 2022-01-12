@@ -162,6 +162,7 @@ export interface SampleGridButtonProps {
     createBtnParentType?: string;
     excludedCreateMenuKeys?: List<string>;
     hideButtons?: SamplesManageButtonSections[];
+    excludeStartJob?: boolean;
     initAliquotMode?: ALIQUOT_FILTER_MODE;
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
     showBulkUpdate?: () => void;

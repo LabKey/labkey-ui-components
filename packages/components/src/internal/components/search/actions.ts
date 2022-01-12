@@ -149,18 +149,13 @@ export function getProcessedSearchHits(
 export function getFinderSampleTypeNames(containerFilter: Query.ContainerFilter = undefined): Promise<string[]> {
     return new Promise((resolve, reject) => {
         Query.executeSql({
-            // TODO currently this retrieves all sample types for the given container filter. Should this be changed?
-            //  Could return only sample types that have samples or we could try to incorporate the filters
-            //  and get only samples types with samples that match those criteria.
-            //
-            // sql: 'SELECT DISTINCT SampleSet.Name as SampleType FROM materials GROUP BY SampleSet.Name',
-            sql: 'SELECT Name as SampleType FROM SampleSets',
+            // Retrieves all sample types for the given container filter, whether there are samples in them or not.
+            sql: 'SELECT Name FROM SampleSets',
             containerFilter,
-            sort: 'SampleType',
+            sort: 'Name',
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.getSchema(),
             success: data => {
-                console.log(data);
-                resolve(data.rows.map(row => row['SampleType']));
+                resolve(data.rows.map(row => row['Name']));
             },
             failure: reason => {
                 console.error("Problem retrieving filtered sample types", reason);

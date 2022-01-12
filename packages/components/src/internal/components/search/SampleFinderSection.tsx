@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { ComponentType, FC, memo, useCallback, useEffect, useState } from 'react';
 
 import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
@@ -10,7 +10,11 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
 import { SAMPLE_DATA_EXPORT_CONFIG, SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
 import { SCHEMAS } from '../../schemas';
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import {
+    InjectedQueryModels,
+    RequiresModelAndActions,
+    withQueryModels
+} from '../../../public/QueryModel/withQueryModels';
 import { User } from '../base/models/User';
 import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
 
@@ -18,12 +22,15 @@ import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 import { FilterCardProps, FilterCards } from './FilterCards';
 import { getFinderStartText } from './utils';
-import { getOmittedSampleTypeColumns } from '../samples/utils';
+import { getOmittedSampleTypeColumns, SamplesManageButtonSections } from '../samples/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { getFinderSampleTypeNames } from './actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
 import { getContainerFilter } from '../../query/api';
+import { SampleGridButtonProps } from '../samples/models';
+import { List } from 'immutable';
+import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 
 const SAMPLE_FINDER_TITLE = 'Find Samples';
 const SAMPLE_FINDER_CAPTION = 'Find samples that meet all the criteria defined below';
@@ -32,6 +39,9 @@ interface SampleFinderSamplesGridProps {
     user: User;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
+    excludedCreateMenuKeys?: List<string>;
+    gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
+    gridButtonProps?: any;
 }
 
 interface Props extends SampleFinderSamplesGridProps {
@@ -68,19 +78,21 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
 export const SampleFinderSection: FC<Props> = memo(props => {
     const { parentEntityDataTypes, ...gridProps } = props;
 
+    const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
     const [filterCards, setFilterCards] = useState<FilterCardProps[]>([]);
 
     const onAddEntity = useCallback((entityType: EntityDataType) => {
+        setFilterChangeCounter(filterChangeCounter+1);
         setChosenEntityType(entityType);
-    }, []);
+    }, [filterChangeCounter]);
 
     const onFilterEdit = useCallback(
         (index: number) => {
-            console.log('onFilterEdit for index ' + index + ': Not yet implemented.');
+            setFilterChangeCounter(filterChangeCounter+1);
             setChosenEntityType(parentEntityDataTypes[index]);
         },
-        [parentEntityDataTypes]
+        [parentEntityDataTypes, filterChangeCounter]
     );
 
     const onFilterDelete = useCallback(
@@ -88,12 +100,14 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             const newFilterCards = [...filterCards];
             newFilterCards.splice(index, 1);
             setFilterCards(newFilterCards);
+            setFilterChangeCounter(filterChangeCounter+1);
         },
-        [filterCards]
+        [filterCards, filterChangeCounter]
     );
 
     const onFilterClose = () => {
         setChosenEntityType(undefined);
+        setFilterChangeCounter(filterChangeCounter+1);
     };
 
     const onFind = useCallback(
@@ -133,7 +147,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             ) : (
                 <>
                     <FilterCards cards={filterCards} onFilterDelete={onFilterDelete} />
-                    <SampleFinderSamples {...gridProps} cards={filterCards} />
+                    <SampleFinderSamples {...gridProps} cards={filterCards} filterChangeCounter={filterChangeCounter} />
                 </>
             )}
             {chosenEntityType !== undefined && (
@@ -145,11 +159,11 @@ export const SampleFinderSection: FC<Props> = memo(props => {
 
 interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
     cards: FilterCardProps[];
+    filterChangeCounter: number;
 }
 
 export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryModels> = memo(props => {
-    const { actions, queryModels } = props;
-
+    const { actions, queryModels, gridButtons, excludedCreateMenuKeys } = props;
     return (
         <>
             <h4>Proper Filtering coming soon...</h4>
@@ -159,6 +173,11 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 asPanel={false}
                 actions={actions}
                 queryModels={queryModels}
+                excludedCreateMenuKeys={excludedCreateMenuKeys}
+                gridButtons={gridButtons}
+                gridButtonProps={{
+                    excludedManageMenuKeys: [SamplesManageButtonSections.IMPORT],
+                }}
                 tabbedGridPanelProps={{
                     alwaysShowTabs: true,
                     advancedExportOptions: SAMPLE_DATA_EXPORT_CONFIG,
@@ -171,27 +190,35 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
 const SampleFinderSamplesWithQueryModels = withQueryModels<SampleFinderSamplesGridProps>(SampleFinderSamplesImpl);
 
 const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
-    const { cards, user, ...gridProps } = props;
+    const { cards, filterChangeCounter, user, ...gridProps } = props;
     const [queryConfigs, setQueryConfigs] = useState<any>(undefined);
     const [errors, setErrors] = useState<string>(undefined);
 
     useEffect(() => {
         const omittedColumns = getOmittedSampleTypeColumns(user);
         const baseFilters = [];
-        // TODO this is not really correct.  Probably there will be a specialized filter type used for these lineage queries.
+        const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
         cards.forEach(card => {
+            const cardColumnName = card.entityDataType.inputColumnName
+                .replace("Inputs", 'MultiValuedInputs')
+                .replace("First", card.schemaQuery.queryName);
+            requiredColumns.push(cardColumnName);
+            // TODO need to add columns referenced in filters
             if (card.filterArray.length) {
                 baseFilters.push(...card.filterArray);
             } else  {
-                baseFilters.push(Filter.create(card.entityDataType.inputColumnName.replace("First", card.schemaQuery.queryName), null, Filter.Types.NONBLANK));
+                baseFilters.push(Filter.create( cardColumnName + "/lsid$SName", null, Filter.Types.NONBLANK));
             }
         });
-        const configs = {
-            allSamples: {
-                id: 'allSamples',
+        console.log("SampleFinderSamples: useEffect filterChangeCounter " + filterChangeCounter);
+        const allSamplesKey = 'sampleFinder|allSamples-' + filterChangeCounter;
+        // const allSamplesKey = 'sampleFinder|allSamples';
+        const configs: { [key: string]: QueryConfig } = {
+            [allSamplesKey]: {
+                id: allSamplesKey,
                 title: 'All Samples',
                 schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
-                requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
+                requiredColumns,
                 baseFilters,
             },
         };
@@ -199,24 +226,26 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
             try {
                 const names = await getFinderSampleTypeNames(getContainerFilter());
                 names.forEach(name => {
-                    const id = 'sampleFinder|samples/' + name;
+                    // const id = 'sampleFinder|samples/' + name;
+                    const id = 'sampleFinder|samples/' + name + '-' + filterChangeCounter;
                     configs[id] = {
                         id,
                         title: name,
                         schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name),
-                        requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
+                        requiredColumns,
                         omittedColumns,
                         baseFilters,
                     }
                 });
                 setQueryConfigs(configs);
+                console.log('configs', configs);
             }
             catch (error) {
                 setErrors(resolveErrorMessage(error))
             }
         })();
 
-    }, [cards, user])
+    }, [cards, user, filterChangeCounter])
 
     if (errors)
         return <Alert>{errors}</Alert>;
@@ -224,5 +253,5 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
     if (!queryConfigs)
         return <LoadingSpinner/>;
 
-    return <SampleFinderSamplesWithQueryModels user={user} {...gridProps} autoLoad queryConfigs={queryConfigs} />;
+    return <SampleFinderSamplesWithQueryModels key={filterChangeCounter} user={user} {...gridProps} autoLoad queryConfigs={queryConfigs} />;
 });

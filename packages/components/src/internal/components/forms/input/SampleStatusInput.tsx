@@ -91,8 +91,9 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
     }, [onAdditionalFormDataChange]);
 
     const toggleShouldDiscard = useCallback(() => {
-        setShouldDiscard(!shouldDiscard);
-        onAdditionalFormDataChange?.(DISCARD_CONSUMED_CHECKBOX_FIELD, shouldDiscard && showDiscardPanel);
+        const updatedShouldDiscard = !shouldDiscard;
+        setShouldDiscard(updatedShouldDiscard);
+        onAdditionalFormDataChange?.(DISCARD_CONSUMED_CHECKBOX_FIELD, updatedShouldDiscard && showDiscardPanel);
     }, [shouldDiscard, onAdditionalFormDataChange, showDiscardPanel]);
 
     const discardPanel = useMemo(() => {

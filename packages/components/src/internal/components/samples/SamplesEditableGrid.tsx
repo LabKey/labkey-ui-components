@@ -482,8 +482,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 success: async result => {
                     this._hasError = false;
                     let discardSuccessMsg = '';
+                    const doDiscard = discardStorageRows?.length > 0 && discardConsumed;
 
-                    if (discardStorageRows?.length > 0 && discardConsumed) {
+                    if (doDiscard) {
                         try {
                             await deleteRows({
                                 schemaQuery: SCHEMAS.INVENTORY.ITEMS,
@@ -517,7 +518,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                         }
                     }
 
-                    if (convertedStorageData?.normalizedRows.length > 0) queryGridInvalidate(INVENTORY_ITEM_QS);
+                    if (convertedStorageData?.normalizedRows.length > 0 || doDiscard) queryGridInvalidate(INVENTORY_ITEM_QS);
 
                     gridIdInvalidate(SAMPLES_EDIT_GRID_ID, true);
                     gridIdInvalidate(SAMPLES_STORAGE_EDIT_GRID_ID, true);
@@ -527,6 +528,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     createNotification(
                         'Successfully updated ' + totalSamplesToUpdate + ' ' + noun + discardSuccessMsg + '.'
                     );
+
+                    this.onGridEditComplete();
 
                     resolve(result);
                 },
@@ -727,7 +730,6 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 showDiscardDialog: false,
             },
             () => {
-                this.onGridEditComplete();
                 return this.updateAllTabRows(pendingUpdateDataRows, true);
             }
         );

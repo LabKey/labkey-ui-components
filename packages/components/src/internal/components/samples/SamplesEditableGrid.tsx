@@ -388,30 +388,6 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             }
         });
 
-        const sampleIds = new Set();
-        sampleRows.forEach(row => {
-            const sampleId = caseInsensitive(row, 'RowId');
-            sampleIds.add(sampleId);
-        });
-        storageRows.forEach(row => {
-            const sampleId = caseInsensitive(row, 'RowId');
-            if (noStorageSamples.indexOf(sampleId) === -1) sampleIds.add(sampleId);
-        });
-        const totalSamplesToUpdate = sampleIds.size;
-        const noun = totalSamplesToUpdate === 1 ? 'sample' : 'samples';
-
-        if (!skipConfirmDiscard && App.isFreezerManagementEnabled() && discardStorageRows.length > 0) {
-            return new Promise(resolve => {
-                this.setState({
-                    pendingUpdateDataRows: updateDataRows,
-                    showDiscardDialog: App.isFreezerManagementEnabled(),
-                    discardSamplesCount: discardStorageRows.length,
-                    totalEditCount: totalSamplesToUpdate,
-                });
-                resolve(false);
-            });
-        }
-
         // combine sampleRows and lineageRows so that only one update command is used, i.e. so that we only get
         // one audit entry for the update of a given sample
         if (lineageRows.length > 0) {
@@ -432,6 +408,31 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 }
             });
         }
+
+        const sampleIds = new Set();
+        sampleRows.forEach(row => {
+            const sampleId = caseInsensitive(row, 'RowId');
+            sampleIds.add(sampleId);
+        });
+        storageRows.forEach(row => {
+            const sampleId = caseInsensitive(row, 'RowId');
+            if (noStorageSamples.indexOf(sampleId) === -1) sampleIds.add(sampleId);
+        });
+        let totalSamplesToUpdate = sampleIds.size;
+        let noun = totalSamplesToUpdate === 1 ? 'sample' : 'samples';
+
+        if (!skipConfirmDiscard && App.isFreezerManagementEnabled() && discardStorageRows.length > 0) {
+            return new Promise(resolve => {
+                this.setState({
+                    pendingUpdateDataRows: updateDataRows,
+                    showDiscardDialog: App.isFreezerManagementEnabled(),
+                    discardSamplesCount: discardStorageRows.length,
+                    totalEditCount: totalSamplesToUpdate,
+                });
+                resolve(false);
+            });
+        }
+
 
         if (storageRows.length === 0 && sampleRows.length === 0) {
             return new Promise(resolve => {

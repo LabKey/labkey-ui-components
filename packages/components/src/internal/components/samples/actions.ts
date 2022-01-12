@@ -861,6 +861,7 @@ export function getSampleTypeRowId(name: string): Promise<number> {
 }
 
 export function updateSamplesStatus(
+    sampleType: string,
     sampleIds: number[],
     newStatus: number,
     auditBehavior?: AuditBehaviorTypes
@@ -874,7 +875,7 @@ export function updateSamplesStatus(
     });
 
     return updateRows({
-        schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_STATUS,
+        schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
         rows: updatedRows,
         auditBehavior: auditBehavior ?? AuditBehaviorTypes.DETAILED,
     });

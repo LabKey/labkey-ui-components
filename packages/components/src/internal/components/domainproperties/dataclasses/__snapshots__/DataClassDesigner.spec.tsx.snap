@@ -1519,6 +1519,7 @@ exports[`DataClassDesigner initModel 1`] = `
           "getSampleOperationConfirmationData": [Function],
           "getSampleSelectionLineageData": [Function],
           "getSampleStatuses": [Function],
+          "getSampleStorageId": [Function],
         },
         "security": ServerSecurityAPIWrapper {
           "fetchContainers": [Function],

@@ -67,6 +67,7 @@ export interface QueryInfoFormProps {
     submitText?: string;
     title?: string;
     useDatePicker?: boolean;
+    onAdditionalFormDataChange?: (name: string, value: any) => any;
 }
 
 interface State {
@@ -351,6 +352,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             includeCountField,
             maxCount,
             countText,
+            onAdditionalFormDataChange,
         } = this.props;
 
         if (!queryInfo || queryInfo.isLoading) {
@@ -392,6 +394,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                             queryInfo={queryInfo}
                             columnFilter={columnFilter}
                             fieldValues={fieldValues}
+                            onAdditionalFormDataChange={onAdditionalFormDataChange}
                         />
                         {footer}
                         {showErrorsAtBottom && this.renderError()}

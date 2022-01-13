@@ -62,7 +62,11 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
             setConsumedStatuses(consumedStatusIds);
         } catch (error) {
             console.error(error.exception);
-            setError('Error loading sample statuses. If you want to discard ' + (allowDisable /* bulk update */ ? 'any samples' : 'the sample') +  ' being updated to a Consumed status, you will have to do that separately.');
+            setError(
+                'Error loading sample statuses. If you want to discard ' +
+                    (allowDisable /* bulk update */ ? 'any samples' : 'the sample') +
+                    ' being updated to a Consumed status, you will have to do that separately.'
+            );
         }
     };
 
@@ -85,10 +89,13 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         [onQSChange, consumedStatuses]
     );
 
-    const onCommentChange = useCallback(event => {
-        const updatedComment = event.target.value;
-        onAdditionalFormDataChange?.(DISCARD_CONSUMED_COMMENT_FIELD, updatedComment);
-    }, [onAdditionalFormDataChange]);
+    const onCommentChange = useCallback(
+        event => {
+            const updatedComment = event.target.value;
+            onAdditionalFormDataChange?.(DISCARD_CONSUMED_COMMENT_FIELD, updatedComment);
+        },
+        [onAdditionalFormDataChange]
+    );
 
     const toggleShouldDiscard = useCallback(() => {
         const updatedShouldDiscard = !shouldDiscard;

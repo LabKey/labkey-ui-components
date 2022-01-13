@@ -59,9 +59,7 @@ export class DiscardConsumedSamplesModal extends React.PureComponent<Props, Stat
         const { consumedSampleCount, totalSampleCount } = this.props;
         const { shouldDiscard, submitting } = this.state;
 
-        const confirmBtnText = shouldDiscard
-            ? 'Yes, Discard ' + this._noun
-            : 'Update ' + this._nounTotal + ' Only';
+        const confirmBtnText = shouldDiscard ? 'Yes, Discard ' + this._noun : 'Update ' + this._nounTotal + ' Only';
         const consumedNounDisplay =
             totalSampleCount === consumedSampleCount
                 ? totalSampleCount > 1

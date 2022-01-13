@@ -166,7 +166,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 this._hasError = true;
                 createNotification({
                     alertClass: 'danger',
-                    message: 'Error loading sample statuses. If you want to discard any samples being updated to a Consumed status, you will have to do that separately.',
+                    message:
+                        'Error loading sample statuses. If you want to discard any samples being updated to a Consumed status, you will have to do that separately.',
                 });
             });
     }
@@ -418,8 +419,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             const sampleId = caseInsensitive(row, 'RowId');
             if (noStorageSamples.indexOf(sampleId) === -1) sampleIds.add(sampleId);
         });
-        let totalSamplesToUpdate = sampleIds.size;
-        let noun = totalSamplesToUpdate === 1 ? 'sample' : 'samples';
+        const totalSamplesToUpdate = sampleIds.size;
+        const noun = totalSamplesToUpdate === 1 ? 'sample' : 'samples';
 
         if (!skipConfirmDiscard && App.isFreezerManagementEnabled() && discardStorageRows.length > 0) {
             return new Promise(resolve => {
@@ -432,7 +433,6 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 resolve(false);
             });
         }
-
 
         if (storageRows.length === 0 && sampleRows.length === 0) {
             return new Promise(resolve => {
@@ -518,7 +518,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                         }
                     }
 
-                    if (convertedStorageData?.normalizedRows.length > 0 || doDiscard) queryGridInvalidate(INVENTORY_ITEM_QS);
+                    if (convertedStorageData?.normalizedRows.length > 0 || doDiscard)
+                        queryGridInvalidate(INVENTORY_ITEM_QS);
 
                     gridIdInvalidate(SAMPLES_EDIT_GRID_ID, true);
                     gridIdInvalidate(SAMPLES_STORAGE_EDIT_GRID_ID, true);

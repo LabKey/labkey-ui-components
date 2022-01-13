@@ -166,7 +166,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 this._hasError = true;
                 createNotification({
                     alertClass: 'danger',
-                    message: 'Error: Unable to load sample statuses.',
+                    message: 'Error loading sample statuses. If you want to discard any samples being updated to a Consumed status, you will have to do that separately.',
                 });
             });
     }

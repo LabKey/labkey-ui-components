@@ -7,6 +7,7 @@ import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
 import { FindField } from './models';
 
 export const SAMPLE_INVENTORY_ITEM_SELECTION_KEY = 'inventoryItems';
+export const EXP_MATERIALS_SELECTION_KEY = 'allSampleTypes';
 
 export const MAX_SELECTED_SAMPLES = 10000;
 

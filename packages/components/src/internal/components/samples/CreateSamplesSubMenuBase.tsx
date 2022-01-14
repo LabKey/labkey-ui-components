@@ -13,13 +13,14 @@ import {
     QueryModel,
     SampleCreationType,
     SampleCreationTypeModal,
+    SchemaQuery,
     SubMenu,
 } from '../../..';
 
 interface CreateSamplesSubMenuProps {
     getOptions: (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => List<MenuOption>;
     maxParentPerSample: number;
-    isSelectingSamples: (schemaName: string) => boolean;
+    isSelectingSamples: (schemaQuery: SchemaQuery) => boolean;
     navigate: (url: string | AppURL) => any;
     menuCurrentChoice?: string;
     menuText?: string;
@@ -56,11 +57,13 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     const selectedQuantity = parentModel?.selectedQuantity ?? parentQueryModel?.selections.size ?? 1;
 
-    const schemaName = parentModel?.schema?.toLowerCase() ?? parentQueryModel?.schemaName?.toLowerCase();
+    const schemaQuery = parentModel ?
+        SchemaQuery.create(parentModel.schema.toLowerCase(), parentModel.query)
+        : parentQueryModel.schemaQuery;
 
     const selectingSampleParents = useMemo(() => {
-        return isSelectingSamples(schemaName);
-    }, [isSelectingSamples, schemaName]);
+        return isSelectingSamples(schemaQuery);
+    }, [isSelectingSamples, schemaQuery]);
 
     let disabledMsg: string;
     if (selectedQuantity > maxParentPerSample) {

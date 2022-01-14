@@ -1519,6 +1519,7 @@ exports[`DataClassDesigner initModel 1`] = `
           "getSampleOperationConfirmationData": [Function],
           "getSampleSelectionLineageData": [Function],
           "getSampleStatuses": [Function],
+          "getSampleStorageId": [Function],
         },
         "security": ServerSecurityAPIWrapper {
           "fetchContainers": [Function],
@@ -11837,6 +11838,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       value="int"
                                                                                     >
                                                                                       <option
+                                                                                        key="double"
+                                                                                        value="double"
+                                                                                      >
+                                                                                        Decimal (floating point)
+                                                                                      </option>
+                                                                                      <option
                                                                                         key="int"
                                                                                         value="int"
                                                                                       >
@@ -11849,10 +11856,22 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         Lookup
                                                                                       </option>
                                                                                       <option
+                                                                                        key="multiLine"
+                                                                                        value="multiLine"
+                                                                                      >
+                                                                                        Multi-Line Text
+                                                                                      </option>
+                                                                                      <option
                                                                                         key="sample"
                                                                                         value="sample"
                                                                                       >
                                                                                         Sample
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="string"
+                                                                                        value="string"
+                                                                                      >
+                                                                                        Text
                                                                                       </option>
                                                                                       <option
                                                                                         key="users"
@@ -14144,6 +14163,18 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         value="dateTime"
                                                                                       >
                                                                                         Date Time
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="multiLine"
+                                                                                        value="multiLine"
+                                                                                      >
+                                                                                        Multi-Line Text
+                                                                                      </option>
+                                                                                      <option
+                                                                                        key="string"
+                                                                                        value="string"
+                                                                                      >
+                                                                                        Text
                                                                                       </option>
                                                                                     </select>
                                                                                   </FormControl>

@@ -24,7 +24,11 @@ import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColu
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
 import { InferDomainResponse } from './public/InferDomainResponse';
-import { getServerFilePreview, inferDomainFromFile } from './internal/components/assay/utils';
+import {
+    getServerFilePreview,
+    inferDomainFromFile,
+    getAssayImportNotificationMsg,
+} from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
@@ -288,6 +292,7 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
+    updateSamplesStatus,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
@@ -490,7 +495,15 @@ import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPan
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
+import {
+    BACKGROUND_IMPORT_MIN_FILE_SIZE,
+    BACKGROUND_IMPORT_MIN_ROW_SIZE,
+    DATA_IMPORT_FILE_SIZE_LIMITS,
+} from './internal/components/pipeline/constants';
+import { PipelineJobDetailPage } from './internal/components/pipeline/PipelineJobDetailPage';
+import { PipelineJobsListingPage } from './internal/components/pipeline/PipelineJobsListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
+import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
 import {
     ALIQUOT_CREATION,
@@ -512,6 +525,7 @@ import {
     SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+    SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SampleOperation,
@@ -911,6 +925,7 @@ export {
     SampleOperation,
     SampleStateType,
     SampleStatusTag,
+    SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -929,6 +944,7 @@ export {
     createQueryGridModelFilteredBySample,
     createQueryConfigFilteredBySample,
     getSelectedItemSamples,
+    updateSamplesStatus,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,
     getDeleteSharedSampleTypeUrl,
@@ -1287,6 +1303,13 @@ export {
     // pipeline
     PipelineJobsPage,
     PipelineStatusDetailPage,
+    PipelineJobDetailPage,
+    PipelineJobsListingPage,
+    PipelineSubNav,
+    BACKGROUND_IMPORT_MIN_FILE_SIZE,
+    BACKGROUND_IMPORT_MIN_ROW_SIZE,
+    DATA_IMPORT_FILE_SIZE_LIMITS,
+    getAssayImportNotificationMsg,
     // Test Helpers
     sleep,
     createMockWithRouterProps,

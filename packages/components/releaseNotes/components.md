@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.118.0
+*Released*: 14 January 2022
 * Issue 44511: Allow type changes from numeric and boolean to string in domain designers
 
 ### version 2.117.1

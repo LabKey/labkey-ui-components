@@ -2,44 +2,62 @@ import React, { PureComponent } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert, Panel } from 'react-bootstrap';
 
-import { Filter } from '@labkey/api';
+import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import {
     caseInsensitive,
+    createNotification,
     DefaultRenderer,
+    deleteRows,
     DetailPanelWithModel,
     getActionErrorMessage,
     LoadingPage,
     QueryConfig,
+    resolveErrorMessage,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SampleAliquotDetailHeader,
     SchemaQuery,
     SCHEMAS,
+    withTimeout,
 } from '../../..';
 
 import { EditableDetailPanel, EditableDetailPanelProps } from '../../../public/QueryModel/EditableDetailPanel';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { GroupedSampleFields } from './models';
 import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields, GroupedSampleDisplayColumns } from './actions';
 import { IS_ALIQUOT_COL } from './constants';
+import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
 
 interface Props extends EditableDetailPanelProps {
+    api?: ComponentsAPIWrapper;
     sampleSet: string;
 }
 
 interface State {
     hasError: boolean;
+    sampleStorageItemId: number;
     sampleTypeDomainFields: GroupedSampleFields;
+    shouldDiscard: boolean;
+    discardComment: string;
 }
 
 export class SampleDetailEditing extends PureComponent<Props, State> {
+    static defaultProps = {
+        api: getDefaultAPIWrapper(),
+    };
+
     state: Readonly<State> = {
         hasError: false,
+        sampleStorageItemId: undefined,
         sampleTypeDomainFields: undefined,
+        shouldDiscard: false,
+        discardComment: undefined,
     };
 
     componentDidMount(): void {
-        this.loadSampleType();
+        this.init();
     }
 
     componentDidUpdate(prevProps: Props): void {
@@ -50,18 +68,20 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                     hasError: false,
                 }),
                 () => {
-                    this.loadSampleType();
+                    this.init();
                 }
             );
         }
     }
 
-    loadSampleType = async (): Promise<void> => {
-        const { sampleSet } = this.props;
+    init = async (): Promise<void> => {
+        const { sampleSet, api } = this.props;
 
         try {
             const sampleTypeDomainFields = await getGroupedSampleDomainFields(sampleSet);
-            this.setState({ sampleTypeDomainFields, hasError: false });
+            const sampleStorageItemId = await api.samples.getSampleStorageId(this.getSampleId());
+
+            this.setState({ sampleTypeDomainFields, sampleStorageItemId, hasError: false });
         } catch (e) {
             this.setState({ hasError: true });
         }
@@ -69,6 +89,11 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
 
     getRow = (): Record<string, any> => {
         return this.props.model.getRow() ?? {};
+    };
+
+    getSampleId = () => {
+        const row = this.getRow();
+        return caseInsensitive(row, 'RowId')?.value;
     };
 
     getUpdateDisplayColumns = (isAliquot: boolean): GroupedSampleDisplayColumns => {
@@ -89,6 +114,42 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
             requiredColumns: ['Name', 'Description', ...SAMPLE_STATUS_REQUIRED_COLUMNS],
             omittedColumns: [IS_ALIQUOT_COL],
         };
+    };
+
+    handleSave = async () => {
+        const { shouldDiscard, discardComment, sampleStorageItemId } = this.state;
+
+        this.props.onUpdate?.();
+
+        if (shouldDiscard) {
+            try {
+                await deleteRows({
+                    schemaQuery: SCHEMAS.INVENTORY.ITEMS,
+                    rows: [{ RowId: sampleStorageItemId }],
+                    auditBehavior: AuditBehaviorTypes.DETAILED,
+                    auditUserComment: discardComment,
+                });
+                withTimeout(() => {
+                    createNotification('Successfully updated and discarded sample from storage.');
+                });
+            } catch (error) {
+                const errorMsg = resolveErrorMessage(error, 'sample', 'sample', 'discard');
+                withTimeout(() => {
+                    createNotification({ message: errorMsg, alertClass: 'danger' });
+                });
+            }
+        }
+    };
+
+    onDiscardConsumedPanelChange = (field: string, value: any) => {
+        const { sampleStorageItemId } = this.state;
+
+        if (!sampleStorageItemId || sampleStorageItemId <= 0) return false; // if sample is not in storage, skip showing discard panel
+
+        if (field === DISCARD_CONSUMED_CHECKBOX_FIELD) this.setState(() => ({ shouldDiscard: value }));
+        else if (field === DISCARD_CONSUMED_COMMENT_FIELD) this.setState(() => ({ discardComment: value }));
+
+        return true;
     };
 
     render() {
@@ -134,6 +195,8 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                     editColumns={editColumns}
                     queryColumns={displayColumns}
                     title={title ?? (isAliquot ? 'Aliquot Details' : undefined)}
+                    onAdditionalFormDataChange={this.onDiscardConsumedPanelChange}
+                    onUpdate={this.handleSave}
                 />
                 {isAliquot && (
                     <Panel>

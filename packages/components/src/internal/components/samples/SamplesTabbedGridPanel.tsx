@@ -317,6 +317,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     onBulkUpdateComplete={onBulkUpdateComplete}
                     editSelectionInGrid={onEditSelectionInGrid}
                     updateRows={onUpdateRows}
+                    determineStorage // determine storage for discard consumed samples
                 />
             )}
         </>

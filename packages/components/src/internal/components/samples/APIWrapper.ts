@@ -11,6 +11,7 @@ import {
     getSampleAssayResultViewConfigs,
     getSampleSelectionLineageData,
     getSampleStatuses,
+    getSampleStorageId,
     SampleAssayResultViewConfig,
 } from './actions';
 import { SampleState } from './models';
@@ -34,6 +35,8 @@ export interface SamplesAPIWrapper {
         selectionKey: string,
         rowIds?: number[] | string[]
     ) => Promise<OperationConfirmationData>;
+
+    getSampleStorageId: (sampleRowId: number) => Promise<number>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
@@ -42,6 +45,7 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleSelectionLineageData = getSampleSelectionLineageData;
     getSampleStatuses = getSampleStatuses;
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
+    getSampleStorageId = getSampleStorageId;
 }
 
 /**
@@ -57,6 +61,7 @@ export function getSamplesTestAPIWrapper(
         getSampleSelectionLineageData: mockFn(),
         getSampleStatuses: mockFn(),
         getSampleOperationConfirmationData: mockFn(),
+        getSampleStorageId: mockFn,
         ...overrides,
     };
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap } from 'immutable';
-import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
+import { ActionURL, Ajax, AuditBehaviorTypes, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
@@ -44,6 +44,7 @@ import {
     selectRows,
     SHARED_CONTAINER_PATH,
     UNIQUE_ID_FIND_FIELD,
+    updateRows,
 } from '../../..';
 
 import { findMissingValues } from '../../util/utils';
@@ -316,6 +317,26 @@ export function getSampleSelectionStorageData(selection: List<any>): Promise<Rec
                     };
                 });
                 resolve(filteredSampleItems);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
+
+export function getSampleStorageId(sampleRowId: number): Promise<number> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaName: 'inventory',
+            queryName: 'ItemSamples',
+            columns: 'RowId, SampleId',
+            filterArray: [Filter.create('SampleId', sampleRowId)],
+        })
+            .then(response => {
+                const { key } = response;
+                const rowId = response.orderedModels[key]?.get(0);
+                resolve(rowId); // allow rowId to be undefined, which means sample is not in storage
             })
             .catch(reason => {
                 console.error(reason);
@@ -836,5 +857,26 @@ export function getSampleTypeRowId(name: string): Promise<number> {
                 console.error(reason);
                 reject(resolveErrorMessage(reason));
             });
+    });
+}
+
+export function updateSamplesStatus(
+    sampleType: string,
+    sampleIds: number[],
+    newStatus: number,
+    auditBehavior?: AuditBehaviorTypes
+): Promise<any> {
+    const updatedRows = [];
+    [...sampleIds].forEach(sampleId => {
+        updatedRows.push({
+            rowId: sampleId,
+            sampleState: newStatus,
+        });
+    });
+
+    return updateRows({
+        schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
+        rows: updatedRows,
+        auditBehavior: auditBehavior ?? AuditBehaviorTypes.DETAILED,
     });
 }

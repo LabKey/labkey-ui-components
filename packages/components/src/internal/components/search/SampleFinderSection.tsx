@@ -23,7 +23,7 @@ import { FilterCardProps, FilterCards } from './FilterCards';
 import { getFinderStartText, getFinderViewColumnsConfig } from './utils';
 import { SamplesManageButtonSections } from '../samples/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { getSampleFinderQueryConfigs, saveFinderGridView } from './actions';
+import { getSampleFinderQueryConfigs, removeFinderGridView, saveFinderGridView } from './actions';
 import { Alert } from '../base/Alert';
 import { SampleGridButtonProps } from '../samples/models';
 import { List } from 'immutable';
@@ -175,8 +175,8 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const allLoaded = Object.values(queryModels).filter(model => model.isLoading).length == 0;
-        if (allLoaded) {
+        const allModelsLoaded = Object.values(queryModels).filter(model => model.isLoading).length == 0;
+        if (allModelsLoaded && isLoading) {
             const promises = [];
             Object.values(queryModels).forEach(queryModel => {
                 const {hasUpdates, columns} = getFinderViewColumnsConfig(queryModel);
@@ -185,27 +185,32 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 }
             });
             Promise.all(promises).then(() => {
+                console.log("DONE saving all finder views.");
+                setIsLoading(false);
+            }).catch(reason => {
+                console.log("Error saving all finder views.", reason);
                 setIsLoading(false);
             });
         }
     }, [queryModels]);
-    //
-    // useEffect(() => {
-    //     return () => {
-    //         if (queryModels) {
-    //             for (const queryModel of Object.values(queryModels)) {
-    //                 (async () => {
-    //                     try {
-    //                         await removeFinderGridView(queryModel);
-    //                     }
-    //                     catch (error) {
-    //                         // ignore; already logged
-    //                     }
-    //                 })();
-    //             }
-    //         }
-    //     }
-    // }, []);
+
+
+    useEffect(() => {
+        return () => {
+            if (queryModels) {
+                for (const queryModel of Object.values(queryModels)) {
+                    (async () => {
+                        try {
+                            await removeFinderGridView(queryModel);
+                        }
+                        catch (error) {
+                            // ignore; already logged
+                        }
+                    })();
+                }
+            }
+        }
+    }, []);
 
     if (isLoading)
         return <LoadingSpinner />;

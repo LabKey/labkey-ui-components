@@ -24,7 +24,11 @@ import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColu
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
 import { InferDomainResponse } from './public/InferDomainResponse';
-import { getServerFilePreview, inferDomainFromFile } from './internal/components/assay/utils';
+import {
+    getServerFilePreview,
+    inferDomainFromFile,
+    getAssayImportNotificationMsg,
+} from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
@@ -490,7 +494,15 @@ import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPan
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
+import {
+    BACKGROUND_IMPORT_MIN_FILE_SIZE,
+    BACKGROUND_IMPORT_MIN_ROW_SIZE,
+    DATA_IMPORT_FILE_SIZE_LIMITS,
+} from './internal/components/pipeline/constants';
+import { PipelineJobDetailPage } from './internal/components/pipeline/PipelineJobDetailPage';
+import { PipelineJobsListingPage } from './internal/components/pipeline/PipelineJobsListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
+import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
 import {
     ALIQUOT_CREATION,
@@ -1289,6 +1301,13 @@ export {
     // pipeline
     PipelineJobsPage,
     PipelineStatusDetailPage,
+    PipelineJobDetailPage,
+    PipelineJobsListingPage,
+    PipelineSubNav,
+    BACKGROUND_IMPORT_MIN_FILE_SIZE,
+    BACKGROUND_IMPORT_MIN_ROW_SIZE,
+    DATA_IMPORT_FILE_SIZE_LIMITS,
+    getAssayImportNotificationMsg,
     // Test Helpers
     sleep,
     createMockWithRouterProps,

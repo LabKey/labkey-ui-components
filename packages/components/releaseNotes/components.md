@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.118.1
+*Released*: 14 January 2022
+* Share asynchronous upload functionality across LKB and LKSM by pulling relevant code into ui-components
+
 ### version 2.117.1
 *Released*: 13 January 2022
 * Item #9810: Consumed Status/Discarding Sample

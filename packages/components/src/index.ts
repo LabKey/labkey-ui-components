@@ -317,6 +317,7 @@ import {
     getSampleStatusType,
     isSampleOperationPermitted,
     SamplesManageButtonSections,
+    isSamplesSchema,
 } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
@@ -901,6 +902,7 @@ export {
     fetchDataClass,
     filterSampleRowsForOperation,
     isSampleOperationPermitted,
+    isSamplesSchema,
     getFilterForSampleOperation,
     getSampleDeleteMessage,
     getSampleStatus,

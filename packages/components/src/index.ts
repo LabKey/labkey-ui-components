@@ -292,6 +292,7 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
+    updateSamplesStatus,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
@@ -523,6 +524,7 @@ import {
     SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+    SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SampleOperation,
@@ -921,6 +923,7 @@ export {
     SampleOperation,
     SampleStateType,
     SampleStatusTag,
+    SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -939,6 +942,7 @@ export {
     createQueryGridModelFilteredBySample,
     createQueryConfigFilteredBySample,
     getSelectedItemSamples,
+    updateSamplesStatus,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,
     getDeleteSharedSampleTypeUrl,

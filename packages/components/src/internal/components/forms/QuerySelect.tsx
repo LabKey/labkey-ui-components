@@ -130,7 +130,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     fireQSChangeOnInit?: boolean;
     loadOnFocus?: boolean;
     maxRows?: number;
-    onQSChange?: (name: string, value: string | any[], items: any, selectedItems: Map<string, any>) => void;
+    onQSChange?: (name: string, value: string | number | any[], items: any, selectedItems: Map<string, any>) => void;
     onInitValue?: (value: any, selectedValues: List<any>) => void;
     preLoad?: boolean;
     previewOptions?: boolean;

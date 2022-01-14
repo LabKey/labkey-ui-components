@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Share asynchronous upload functionality across LKB and LKSM by pulling relevant code into ui-components
 
+### version 2.117.1
+*Released*: 13 January 2022
+* Item #9810: Consumed Status/Discarding Sample
+  * Added DiscardConsumedSamples, DiscardConsumedSamplesModal and SampleStatusInput components
+  * Modified SamplesEditableGrid, SamplesBulkUpdateForm and SampleDetailEditing to allow discarding consumed samples
+
 ### version 2.116.0
 *Released*: 10 January 2022
 * Refactor EditableGrid to be QueryGridModel agnostic

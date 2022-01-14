@@ -35,6 +35,7 @@ export interface EditableDetailPanelProps extends RequiresModelAndActions {
     submitText?: string;
     title?: string;
     useEditIcon?: boolean;
+    onAdditionalFormDataChange?: (name: string, value: any) => any;
 }
 
 interface State {
@@ -147,6 +148,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             submitText,
             title,
             useEditIcon,
+            onAdditionalFormDataChange,
         } = this.props;
         const { canSubmit, editing, error, warning } = this.state;
         const isEditable = !model.isLoading && model.hasRows && (model.queryInfo?.isAppEditable() || appEditable);
@@ -180,6 +182,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                             model={model}
                             queryColumns={queryColumns}
                             fileInputRenderer={this.fileInputRenderer}
+                            onAdditionalFormDataChange={onAdditionalFormDataChange}
                         />
                     </div>
                 </div>

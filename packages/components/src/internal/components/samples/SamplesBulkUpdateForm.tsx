@@ -1,6 +1,8 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 
+import { AuditBehaviorTypes } from '@labkey/api';
+
 import {
     BulkUpdateForm,
     getOperationNotPermittedMessage,
@@ -10,12 +12,17 @@ import {
     SampleOperation,
     SchemaQuery,
     Alert,
+    deleteRows,
+    SCHEMAS,
+    createNotification,
+    resolveErrorMessage,
 } from '../../..';
 
 import { OperationConfirmationData } from '../entities/models';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
+import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
 
 interface OwnProps {
     queryModel: QueryModel;
@@ -60,8 +67,22 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo(props => {
     );
 });
 
+interface State {
+    shouldDiscard: boolean;
+    discardComment: string;
+}
+
 // exported for jest testing
-export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
+export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State> {
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            shouldDiscard: false,
+            discardComment: undefined,
+        };
+    }
+
     getGridSelectionSize = (): number => {
         return this.props.queryModel.selections.size;
     };
@@ -103,6 +124,56 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
         return originalQueryInfo.merge({ columns }) as QueryInfo;
     }
 
+    onComplete = (data: any, submitForEdit: boolean) => {
+        const { onBulkUpdateComplete, sampleItems } = this.props;
+        const { shouldDiscard, discardComment } = this.state;
+
+        if (shouldDiscard) {
+            const discardStorageRows = [];
+
+            Object.keys(sampleItems).forEach(sampleId => {
+                const storageItem = sampleItems[sampleId];
+                if (storageItem) {
+                    discardStorageRows.push({
+                        rowId: storageItem.rowId,
+                    });
+                }
+            });
+
+            deleteRows({
+                schemaQuery: SCHEMAS.INVENTORY.ITEMS,
+                rows: discardStorageRows,
+                auditBehavior: AuditBehaviorTypes.DETAILED,
+                auditUserComment: discardComment,
+            })
+                .then(response => {
+                    createNotification(
+                        'Successfully discard ' +
+                            discardStorageRows.length +
+                            ' sample' +
+                            (discardStorageRows.length > 1 ? 's' : '') +
+                            ' from storage.'
+                    );
+                    onBulkUpdateComplete?.(data, submitForEdit);
+                })
+                .catch(error => {
+                    const errorMsg = resolveErrorMessage(error, 'sample', 'sample', 'discard');
+                    createNotification({ message: errorMsg, alertClass: 'danger' });
+                });
+        } else onBulkUpdateComplete?.(data, submitForEdit);
+    };
+
+    onDiscardConsumedPanelChange = (field: string, value: any) => {
+        const { sampleItems } = this.props;
+
+        if (!sampleItems || Object.keys(sampleItems).length === 0) return false; // if no samples are in storage, skip showing discard panel
+
+        if (field === DISCARD_CONSUMED_CHECKBOX_FIELD) this.setState(() => ({ shouldDiscard: value }));
+        else if (field === DISCARD_CONSUMED_COMMENT_FIELD) this.setState(() => ({ discardComment: value }));
+
+        return true;
+    };
+
     render(): ReactNode {
         const {
             aliquots,
@@ -127,7 +198,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
                 canSubmitForEdit={hasValidMaxSelection()}
                 onCancel={onCancel}
                 onError={onBulkUpdateError}
-                onComplete={onBulkUpdateComplete}
+                onComplete={this.onComplete}
                 onSubmitForEdit={editSelectionInGrid}
                 sortString={queryModel.sorts.join(',')}
                 updateRows={updateRows}
@@ -138,6 +209,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props> {
                         editStatusData={editStatusData}
                     />
                 }
+                onAdditionalFormDataChange={this.onDiscardConsumedPanelChange}
             />
         );
     }

@@ -217,7 +217,6 @@ export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Prom
             success: Utils.getCallbackWrapper(response => {
                 // since we have a new view, we need to reload queryDetails to bring in that view
                 invalidateQueryDetailsCache(schemaQuery);
-                console.log("Saved view ", schemaQuery.toJS(), columns, response);
                 resolve(true);
             }),
             failure: Utils.getCallbackWrapper(response => {

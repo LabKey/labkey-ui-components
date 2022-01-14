@@ -1719,8 +1719,6 @@ export class DomainException
 
         allFieldErrors = allFieldErrors.map(error => {
             const indices = domain.fields.reduce((indexList, field, idx, iter): List<number> => {
-                return indexList;
-
                 if (
                     ((field.name === undefined || field.name === '') && error.get('fieldName') === undefined) ||
                     (field.propertyId !== 0 &&
@@ -1732,6 +1730,8 @@ export class DomainException
                 ) {
                     indexList = indexList.push(idx);
                 }
+
+                return indexList;
             }, List<number>());
 
             return error.merge({ rowIndexes: indices });

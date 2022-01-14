@@ -1,10 +1,25 @@
 import { Map } from 'immutable';
-import { Ajax, Query, Utils } from '@labkey/api';
+import { Ajax, Filter, Query, Utils } from '@labkey/api';
 
-import { buildURL, resolveErrorMessage, SCHEMAS, URLResolver } from '../../..';
+import {
+    buildURL,
+    getContainerFilter,
+    getOmittedSampleTypeColumns,
+    invalidateQueryDetailsCache,
+    QueryConfig,
+    QueryModel,
+    resolveErrorMessage,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
+    SchemaQuery,
+    SCHEMAS,
+    URLResolver
+} from '../../..';
 import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 
 import { SearchIdData, SearchResultCardData } from './models';
+import { FilterCardProps } from './FilterCards';
+import { getFilterCardColumnName } from './utils';
+import { User } from '../base/models/User';
 
 export function searchUsingIndex(
     userConfig,
@@ -162,5 +177,106 @@ export function getFinderSampleTypeNames(containerFilter: Query.ContainerFilter 
                 reject("There was a problem retrieving the filtered sample types. " + resolveErrorMessage(reason));
             }
         });
+    });
+}
+
+const SAMPLE_FINDER_VIEW_NAME = "~~Sample Finder~~";
+
+export function removeFinderGridView(model: QueryModel): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        if (model.queryInfo?.views?.has(SAMPLE_FINDER_VIEW_NAME)) {
+            Query.deleteQueryView({
+                schemaName: model.schemaQuery.schemaName,
+                queryName: model.schemaQuery.queryName,
+                viewName: SAMPLE_FINDER_VIEW_NAME,
+                revert: true,
+                success: () => {
+                    resolve(true);
+                },
+                failure: (error) => {
+                    console.error("There was a problem deleting the session view.", error);
+                    reject(resolveErrorMessage(error));
+                }
+            });
+        }
+        resolve(true); // nothing to delete, so we're very successful.
+    });
+}
+
+export function saveFinderGridView(columns: any, schemaQuery: SchemaQuery): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        const jsonData = {
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+            views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns }],
+        };
+        return Ajax.request({
+            url: buildURL('query', 'saveQueryViews.api'),
+            method: 'POST',
+            jsonData,
+            success: Utils.getCallbackWrapper(response => {
+                // since we have a new view, we need to reload queryDetails to bring in that view
+                invalidateQueryDetailsCache(schemaQuery);
+                console.log("Saved view ", schemaQuery.toJS(), columns, response);
+                resolve(true);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(
+                    'There was a problem creating the view for the data grid. ' + resolveErrorMessage(response)
+                );
+            }),
+        });
+    });
+}
+
+export function getSampleFinderQueryConfigs(user: User, cards: FilterCardProps[], filterChangeCounter: number): Promise<{[key: string]: QueryConfig}> {
+    const omittedColumns = getOmittedSampleTypeColumns(user);
+    const baseFilters = [];
+    const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
+    cards.forEach(card => {
+        if (card.filterArray.length) {
+            card.filterArray.forEach(filter => {
+                requiredColumns.push(filter.getColumnName());
+            });
+            baseFilters.push(...card.filterArray);
+        } else {
+            const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
+
+            requiredColumns.push(cardColumnName);
+            baseFilters.push(Filter.create(cardColumnName + "/lsid$SName", null, Filter.Types.NONBLANK));
+        }
+    });
+    const allSamplesKey = 'sampleFinder' + '-' + filterChangeCounter + '|exp/materials';
+    const configs: { [key: string]: QueryConfig } = {
+        [allSamplesKey]: {
+            id: allSamplesKey,
+            title: 'All Samples',
+            schemaQuery: SchemaQuery.create(SCHEMAS.EXP_TABLES.MATERIALS.schemaName, SCHEMAS.EXP_TABLES.MATERIALS.queryName, SAMPLE_FINDER_VIEW_NAME),
+            requiredColumns,
+            omittedColumns: ['Run'],
+            baseFilters,
+        },
+    };
+    return new Promise(async (resolve, reject) => {
+        try {
+            const names = await getFinderSampleTypeNames(getContainerFilter());
+            for (const name of names) {
+                const id = 'sampleFinder' + '-' + filterChangeCounter + '|samples/' + name;
+                const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
+                configs[id] = {
+                    id,
+                    title: name,
+                    schemaQuery,
+                    requiredColumns,
+                    omittedColumns,
+                    baseFilters,
+                };
+            }
+            resolve(configs);
+        }
+        catch (error) {
+            reject(resolveErrorMessage(error))
+        }
     });
 }

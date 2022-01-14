@@ -3,7 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.118.0
 *Released*: 14 January 2022
-* Issue 44511: Allow type changes from numeric and boolean to string in domain designers
+* Issue 44511: Ability to change a field's data type to known safe alternatives
+
+### version 2.118.1
+*Released*: 14 January 2022
+* Share asynchronous upload functionality across LKB and LKSM by pulling relevant code into ui-components
 
 ### version 2.117.1
 *Released*: 13 January 2022

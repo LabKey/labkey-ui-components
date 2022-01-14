@@ -104,6 +104,7 @@ import { Grid, GridColumn } from './internal/components/base/Grid';
 import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
 import { ContentGroup, ContentGroupLabel } from './internal/components/base/ContentGroup';
+import { getTitleDisplay } from "./internal/components/base/utils";
 import { FileAttachmentForm } from './public/files/FileAttachmentForm';
 import { DEFAULT_FILE } from './internal/components/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
@@ -321,6 +322,7 @@ import {
     getSampleStatus,
     getSampleStatusType,
     isSampleOperationPermitted,
+    getSampleSetMenuItem,
     SamplesManageButtonSections,
 } from './internal/components/samples/utils';
 import {
@@ -498,12 +500,14 @@ import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
+    ACTIVE_JOB_INDICATOR_CLS,
 } from './internal/components/pipeline/constants';
 import { PipelineJobDetailPage } from './internal/components/pipeline/PipelineJobDetailPage';
 import { PipelineJobsListingPage } from './internal/components/pipeline/PipelineJobsListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
 import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
+import { hasActiveJob } from "./internal/components/pipeline/utils";
 import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
@@ -915,6 +919,7 @@ export {
     fetchDataClass,
     filterSampleRowsForOperation,
     isSampleOperationPermitted,
+    getSampleSetMenuItem,
     getFilterForSampleOperation,
     getSampleDeleteMessage,
     getSampleStatus,
@@ -1231,6 +1236,7 @@ export {
     GridColumn,
     ContentGroup,
     ContentGroupLabel,
+    getTitleDisplay,
     Section,
     ConfirmModal,
     Cards,
@@ -1301,12 +1307,14 @@ export {
     // pipeline
     PipelineJobsPage,
     PipelineStatusDetailPage,
+    hasActiveJob,
     PipelineJobDetailPage,
     PipelineJobsListingPage,
     PipelineSubNav,
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
+    ACTIVE_JOB_INDICATOR_CLS,
     getAssayImportNotificationMsg,
     // Test Helpers
     sleep,

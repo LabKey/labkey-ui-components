@@ -1,7 +1,21 @@
 import React, { ReactNode } from 'react';
+import {Utils} from "@labkey/api";
 
 import { AppURL } from '../../url/AppURL';
-import { App, AssayUploadResultModel } from '../../../index';
+import {App, AssayUploadResultModel, ProductMenuModel} from '../../../index';
+
+export function hasActiveJob(menu: ProductMenuModel, sectionKey: string, itemLabel: string) : boolean {
+    if (!menu.isLoaded)
+        return false;
+
+    const section = menu.getSection(sectionKey);
+    if (section) {
+        const menuItem = section.items.find((set) => Utils.caseInsensitiveEquals(set.get('label'), itemLabel));
+        return menuItem?.hasActiveJob;
+    }
+
+    return false;
+}
 
 export function getPipelineLinkMsg(response: AssayUploadResultModel): ReactNode {
     return (

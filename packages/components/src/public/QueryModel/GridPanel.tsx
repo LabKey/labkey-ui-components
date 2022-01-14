@@ -265,7 +265,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         if (model.viewName) {
             const view = queryInfo.views.get(viewName.toLowerCase())?.label ?? viewName;
-            actionValues.push(this.omniBoxActions.view.actionValueFromView(view));
+            // Don't display internal views in the OmniBox
+            if (view.indexOf('~~') !== 0)
+                actionValues.push(this.omniBoxActions.view.actionValueFromView(view));
         }
 
         sorts.forEach((sort): void => {

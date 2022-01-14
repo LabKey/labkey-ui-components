@@ -203,7 +203,7 @@ export function removeFinderGridView(model: QueryModel): Promise<boolean> {
     });
 }
 
-export function saveFinderGridView(columns: any, schemaQuery: SchemaQuery): Promise<boolean> {
+export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Promise<boolean> {
     return new Promise((resolve, reject) => {
         const jsonData = {
             schemaName: schemaQuery.schemaName,
@@ -264,6 +264,8 @@ export function getSampleFinderQueryConfigs(user: User, cards: FilterCardProps[]
             for (const name of names) {
                 const id = 'sampleFinder' + '-' + filterChangeCounter + '|samples/' + name;
                 const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
+                // create the view first, without extra columns, so loading can proceed
+                await saveFinderGridView(schemaQuery, [{fieldKey: "Name"}]);
                 configs[id] = {
                     id,
                     title: name,

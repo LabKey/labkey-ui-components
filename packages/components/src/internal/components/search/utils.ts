@@ -19,17 +19,25 @@ export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQu
         .replace("First", schemaQuery.queryName);
 }
 
+const FIRST_COLUMNS_IN_VIEW = ["Name", "SampleSet"];
+
 export function getFinderViewColumnsConfig(queryModel: QueryModel): {hasUpdates: boolean, columns: any} {
     const defaultDisplayColumns = queryModel.queryInfo?.getDisplayColumns().toArray();
     const displayColumnKeys = defaultDisplayColumns.map(col => (col.fieldKey));
     const columnKeys = [];
+    FIRST_COLUMNS_IN_VIEW.forEach(fieldKey => {
+        if (displayColumnKeys.indexOf(fieldKey) >= 0) {
+            columnKeys.push(fieldKey);
+        }
+    })
     let hasUpdates = false;
     queryModel.requiredColumns.forEach(fieldKey => {
-        if (displayColumnKeys.indexOf(fieldKey) == -1 && SAMPLE_STATUS_REQUIRED_COLUMNS.indexOf(fieldKey) == -1) {
+        if (displayColumnKeys.indexOf(fieldKey) == -1 && SAMPLE_STATUS_REQUIRED_COLUMNS.indexOf(fieldKey) === -1) {
             columnKeys.push(fieldKey);
             hasUpdates = true;
         }
     });
-    columnKeys.push(...defaultDisplayColumns.map(col => (col.fieldKey)));
+    columnKeys.push(...defaultDisplayColumns.filter(col => FIRST_COLUMNS_IN_VIEW.indexOf(col.fieldKey) === -1).map(col => (col.fieldKey)));
     return { hasUpdates, columns: columnKeys.map(fieldKey => ({fieldKey})) };
 }
+

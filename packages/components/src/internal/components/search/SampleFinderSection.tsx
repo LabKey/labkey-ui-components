@@ -178,12 +178,12 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
         const allLoaded = Object.values(queryModels).filter(model => model.isLoading).length == 0;
         if (allLoaded) {
             const promises = [];
-            for (const queryModel of Object.values(queryModels)) {
+            Object.values(queryModels).forEach(queryModel => {
                 const {hasUpdates, columns} = getFinderViewColumnsConfig(queryModel);
                 if (hasUpdates) {
-                    promises.push(saveFinderGridView(columns, queryModel.schemaQuery));
+                    promises.push(saveFinderGridView(queryModel.schemaQuery, columns));
                 }
-            }
+            });
             Promise.all(promises).then(() => {
                 setIsLoading(false);
             });

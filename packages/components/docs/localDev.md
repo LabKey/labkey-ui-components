@@ -186,7 +186,7 @@ to update the package.json file version number manually before running `npm publ
 1. Do one final merge of the `develop` branch into your feature branch for `labkey-ui-components`.
 2. Run one final lint of your changes, `yarn run lint-branch-fix`, and review the changes applied.
 3. Update the `releaseNotes/labkey/components.md` file with what will be your release version number and release date.
-4. Run the commands to build and test, and publish: `yarn build`, `yarn test`, `yarn publish`.
+4. Run the commands to build and test: `yarn build`, `yarn test`.
 5. Push your final set of commits from `labkey-ui-components` to GitHub so that TeamCity can do a final run of the jest tests.
 6. Message the Frontend dev room chat about starting the pull request merge. This is to make sure two people aren't
    merging at the same time which might result in conflicting package version numbers.

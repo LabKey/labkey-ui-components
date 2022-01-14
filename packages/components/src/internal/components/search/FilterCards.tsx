@@ -11,12 +11,12 @@ export interface FilterCardProps {
     filterArray?: Filter.IFilter[]; // the filters to be used in conjunction with the schemaQuery
     schemaQuery?: SchemaQuery;
     index?: number;
-    onAdd: (entityDataType: EntityDataType) => void;
 }
 
 interface FilterEditProps extends FilterCardProps {
     onDelete: (index) => void;
     onEdit: (index) => void;
+    onAdd: (entityDataType: EntityDataType) => void;
 }
 
 // exported for jest testing
@@ -81,12 +81,13 @@ interface Props {
     className?: string;
     onFilterDelete?: (index) => void;
     onFilterEdit?: (index) => void;
+    onAddEntity: (entityDataType: EntityDataType) => void;
 }
 
 export const FilterCards: FC<Props> = props => (
     <div className={'filter-cards ' + props.className}>
         {props.cards.map((cardProps, i) => (
-            <FilterCard {...cardProps} onDelete={props.onFilterDelete} onEdit={props.onFilterEdit} index={i} key={i} />
+            <FilterCard {...cardProps} onAdd={props.onAddEntity} onDelete={props.onFilterDelete} onEdit={props.onFilterEdit} index={i} key={i} />
         ))}
     </div>
 );

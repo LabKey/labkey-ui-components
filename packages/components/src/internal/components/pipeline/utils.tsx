@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, { ReactNode } from 'react';
 
 import { AppURL } from '../../url/AppURL';
 import { App, AssayUploadResultModel } from '../../../index';

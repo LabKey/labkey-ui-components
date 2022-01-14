@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
 
+import { WithRouterProps } from 'react-router';
+
 import { biologicsIsPrimaryApp, sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { PipelineJobsPage } from './PipelineJobsPage';
 import { PIPELINE_PROVIDER_FILTER_LKB, PIPELINE_PROVIDER_FILTER_LKSM } from './constants';
-import { WithRouterProps } from "react-router";
 
 export const PipelineJobsListingPage: FC<WithRouterProps> = props => {
     const baseFilters = sampleManagerIsPrimaryApp()

@@ -1,6 +1,6 @@
 import { Ajax, Utils } from '@labkey/api';
 
-import React, {ReactNode} from 'react';
+import React, { ReactNode } from 'react';
 
 import { AppURL, buildURL } from '../../url/AppURL';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';

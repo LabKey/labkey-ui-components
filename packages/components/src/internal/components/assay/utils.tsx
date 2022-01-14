@@ -1,6 +1,6 @@
 import { Ajax, Utils } from '@labkey/api';
 
-import React from 'react';
+import React, {ReactNode} from 'react';
 
 import { AppURL, buildURL } from '../../url/AppURL';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
@@ -69,11 +69,11 @@ export function getServerFilePreview(file: string, numLinesToInclude: number): P
 }
 
 function getAssayImportSuccessMsg(
-    response: AssayUploadResultModel,
+    runId: number,
     isBackgroundJob: boolean,
     reimport: boolean,
     assayDefinition: AssayDefinitionModel = null
-): JSX.Element {
+): ReactNode {
     if (!isBackgroundJob) {
         const msg = `Successfully ${reimport ? 're-imported' : 'created'} assay run`;
         if (assayDefinition) {
@@ -83,11 +83,11 @@ function getAssayImportSuccessMsg(
                 assayDefinition.type,
                 assayDefinition.name,
                 'runs',
-                response.runId
+                runId
             ).toHref();
             return (
                 <>
-                    {msg} <a href={href}>#{response.runId}</a>.{' '}
+                    {msg} <a href={href}>#{runId}</a>.{' '}
                 </>
             );
         } else {
@@ -111,10 +111,10 @@ export function getAssayImportNotificationMsg(
     assayDefinition: AssayDefinitionModel,
     workflowJobId?: string,
     workflowTaskId?: string
-): JSX.Element {
+): ReactNode {
     return (
         <span>
-            {getAssayImportSuccessMsg(response, isBackgroundJob, reimport, assayDefinition)}
+            {getAssayImportSuccessMsg(response.runId, isBackgroundJob, reimport, assayDefinition)}
             {isBackgroundJob ? getPipelineLinkMsg(response) : null}
             {!assayDefinition ? getWorkflowLinkMsg(workflowJobId, workflowTaskId) : null}
         </span>

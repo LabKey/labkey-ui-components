@@ -4,12 +4,9 @@ import { biologicsIsPrimaryApp, sampleManagerIsPrimaryApp } from '../../app/util
 
 import { PipelineJobsPage } from './PipelineJobsPage';
 import { PIPELINE_PROVIDER_FILTER_LKB, PIPELINE_PROVIDER_FILTER_LKSM } from './constants';
+import { WithRouterProps } from "react-router";
 
-interface Props {
-    params: any;
-}
-
-export const PipelineJobsListingPage: FC<Props> = props => {
+export const PipelineJobsListingPage: FC<WithRouterProps> = props => {
     const baseFilters = sampleManagerIsPrimaryApp()
         ? [PIPELINE_PROVIDER_FILTER_LKSM]
         : biologicsIsPrimaryApp

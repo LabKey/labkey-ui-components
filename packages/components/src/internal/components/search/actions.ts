@@ -205,7 +205,7 @@ export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Prom
         const jsonData = {
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
-            views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns }],
+            views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns, hidden: true }],
         };
         return Ajax.request({
             url: buildURL('query', 'saveQueryViews.api'),

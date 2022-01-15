@@ -180,7 +180,7 @@ export function getFinderSampleTypeNames(containerFilter: Query.ContainerFilter 
     });
 }
 
-const SAMPLE_FINDER_VIEW_NAME = "~~Sample Finder~~";
+const SAMPLE_FINDER_VIEW_NAME = "Sample Finder";
 
 export function removeFinderGridView(model: QueryModel): Promise<boolean> {
     return new Promise((resolve, reject) => {
@@ -202,27 +202,23 @@ export function removeFinderGridView(model: QueryModel): Promise<boolean> {
 
 export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Promise<boolean> {
     return new Promise((resolve, reject) => {
-        const jsonData = {
+        Query.saveQueryViews({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
+            // Mark the view as hidden so it doesn't show up in LKS
             views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns, hidden: true }],
-        };
-        return Ajax.request({
-            url: buildURL('query', 'saveQueryViews.api'),
-            method: 'POST',
-            jsonData,
-            success: Utils.getCallbackWrapper(response => {
+            success: () => {
                 // since we have a new view, we need to reload queryDetails to bring in that view
                 invalidateQueryDetailsCache(schemaQuery);
                 console.log("saved view ", schemaQuery.queryName, columns);
                 resolve(true);
-            }),
-            failure: Utils.getCallbackWrapper(response => {
+            },
+            failure: response => {
                 console.error(response);
                 reject(
                     'There was a problem creating the view for the data grid. ' + resolveErrorMessage(response)
                 );
-            }),
+            },
         });
     });
 }

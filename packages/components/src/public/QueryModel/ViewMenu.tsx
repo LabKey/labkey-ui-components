@@ -19,7 +19,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         const defaultView = views.find(view => view.isDefault);
         const validViews = views.filter(
             // Issue 42628: Hide Biologics details view override in view menu
-            view => view.name.indexOf('~~') !== 0 && view.name !== ViewInfo.BIO_DETAIL_NAME
+            view => !view.hidden && view.name.indexOf('~~') !== 0 && view.name !== ViewInfo.BIO_DETAIL_NAME
         );
         const publicViews = validViews.filter(view => !view.isDefault && view.shared);
         const privateViews = validViews.filter(view => !view.isDefault && !view.shared);

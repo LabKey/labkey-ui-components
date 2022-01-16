@@ -181,24 +181,31 @@ update the `package.json` file and commit that change.  Then you can do a `git p
 Note that for some of our premium npm packages, we are using `npm` to do the build/publish. In those cases, you'll need
 to update the package.json file version number manually before running `npm publish`.
 
-## Merging changes into develop
+## Merging labkey-ui-components changes into develop
 
-1. Message the Frontend dev room chat about starting the pull request merge. This is to make sure two people aren't
-merging at the same time which might result in conflicting package version numbers.
 1. Do one final merge of the `develop` branch into your feature branch for `labkey-ui-components`.
-1. Run one final lint of your changes, `yarn run lint-branch-fix`, and review the changes applied.
-1. Update the `releaseNotes/labkey/components.md` file with what will be your release version number and release date.
-1. Run the commands to build, test, and publish: `yarn build`, `yarn test`, `yarn publish`.
-1. Push your final set of commits from `labkey-ui-components` to github so that TeamCity can do a final run of the jest tests.
+2. Run one final lint of your changes, `yarn run lint-branch-fix`, and review the changes applied.
+3. Update the `releaseNotes/labkey/components.md` file with what will be your release version number and release date.
+4. Run the commands to build and test: `yarn build`, `yarn test`.
+5. Push your final set of commits from `labkey-ui-components` to GitHub so that TeamCity can do a final run of the jest tests.
+6. Message the Frontend dev room chat about starting the pull request merge. This is to make sure two people aren't
+   merging at the same time which might result in conflicting package version numbers.
+7. Check on the [TeamCity](https://teamcity.labkey.org) build status and jest test status (also shown in the PR).
+8. Merge the pull requests for `labkey-ui-components`.
+9. Run the command to publish: `yarn publish`.
+10. Message the Frontend dev room chat that the merge is complete.
+
+## Reference the new labkey-ui-components version in LabKey modules
 1. Update any LabKey module `package.json` files where you are using / applying these changes with this final release version
 number (then do the regular `npm install` for that module, build, etc. and push those `package.json` and `package-lock.json` file
 changes to github as well).
-1. Remove any of the alpha package versions from [Artifactory](https://artifactory.labkey.com/artifactory/webapp/#/home)
+2. Merge the PRs for your LabKey module changes.
+3. Remove any of the alpha package versions from [Artifactory](https://artifactory.labkey.com/artifactory/webapp/#/home)
 that you had published during development for this feature branch.
-    - To do this all at once and for all packages, use the `prugeNpmAlphaVersions` gradle task as follows:
-    ```commandline
-        ./gradlew purgeNpmAlphaVersions -PalphaPrefix=fb-feature-1
-    ```
+   - To do this all at once and for all packages, use the `prugeNpmAlphaVersions` gradle task as follows:
+   ```commandline
+       ./gradlew purgeNpmAlphaVersions -PalphaPrefix=fb-feature-1
+   ```
    This will walk through **all the `@labkey` packages** and find those whose version numbers include this alpha prefix
    (i.e., those that match the pattern .*-alphaPrefix\\..\*).  If you want to see what would be deleted without
    actually doing the deletion attach a `-PdryRun` property to the command
@@ -210,10 +217,6 @@ that you had published during development for this feature branch.
     of the `libs-client-local` artifact.
        1. Right click on the name of the alpha package version in the tree on the left and choose `delete` (or use the
     `Actions > Delete` in the upper right), note that you must be logged in to see this option.
-
-1. Check on the [TeamCity](https://teamcity.labkey.org) build status and jest test status.
-1. Merge the pull requests for `labkey-ui-components` and any of your related LabKey modules / repos.
-1. Message the Frontend dev room chat that the merge is complete.
 
 ## Making hotfix patches to a release branch
 

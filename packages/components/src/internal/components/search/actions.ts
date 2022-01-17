@@ -200,18 +200,15 @@ export function removeFinderGridView(model: QueryModel): Promise<boolean> {
     });
 }
 
-export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Promise<boolean> {
+export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Promise<SchemaQuery> {
     return new Promise((resolve, reject) => {
         Query.saveQueryViews({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
-            // Mark the view as hidden so it doesn't show up in LKS
+            // Mark the view as hidden, so it doesn't show up in LKS and in the grid view menus
             views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns, hidden: true }],
             success: () => {
-                // since we have a new view, we need to reload queryDetails to bring in that view
-                invalidateQueryDetailsCache(schemaQuery);
-                console.log("saved view ", schemaQuery.queryName, columns);
-                resolve(true);
+                resolve(schemaQuery);
             },
             failure: response => {
                 console.error(response);
@@ -237,7 +234,7 @@ export function getSampleFinderQueryConfigs(user: User, cards: FilterCardProps[]
             const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
 
             requiredColumns.push(cardColumnName);
-            baseFilters.push(Filter.create(cardColumnName + "/lsid$SName", null, Filter.Types.NONBLANK));
+            baseFilters.push(Filter.create(cardColumnName + "/Name", null, Filter.Types.NONBLANK));
         }
     });
     const allSamplesKey = 'sampleFinder' + '-' + filterChangeCounter + '|exp/materials';
@@ -257,9 +254,6 @@ export function getSampleFinderQueryConfigs(user: User, cards: FilterCardProps[]
             for (const name of names) {
                 const id = 'sampleFinder' + '-' + filterChangeCounter + '|samples/' + name;
                 const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
-                // create the view first, without extra columns, so loading can proceed
-                await saveFinderGridView(schemaQuery, [{fieldKey: "Name"}]);
-                console.log("creating config for " + name);
                 configs[id] = {
                     id,
                     title: name,
@@ -269,7 +263,6 @@ export function getSampleFinderQueryConfigs(user: User, cards: FilterCardProps[]
                     baseFilters,
                 };
             }
-            console.log("Resolving configs", configs);
             resolve(configs);
         }
         catch (error) {

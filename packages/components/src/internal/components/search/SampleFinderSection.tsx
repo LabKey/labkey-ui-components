@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, useCallback, useEffect, useState } from 'react';
 
-import { AuditBehaviorTypes, Filter } from '@labkey/api';
+import { ActionURL, AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import { capitalizeFirstChar } from '../../util/utils';
 import { EntityDataType } from '../entities/models';
@@ -28,6 +28,7 @@ import { Alert } from '../base/Alert';
 import { SampleGridButtonProps } from '../samples/models';
 import { List } from 'immutable';
 import { QueryConfig } from '../../../public/QueryModel/QueryModel';
+import { invalidateQueryDetailsCache } from '../../query/api';
 
 const SAMPLE_FINDER_TITLE = 'Find Samples';
 const SAMPLE_FINDER_CAPTION = 'Find samples that meet all the criteria defined below';
@@ -72,7 +73,11 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
     );
 });
 
-const LOCAL_STORAGE_KEY = "FinderFilterCards";
+const LOCAL_STORAGE_KEY_PREFIX = "FinderFilterCards";
+
+function getLocalStorageKey(): string {
+    return LOCAL_STORAGE_KEY_PREFIX + ActionURL.getContainer();
+}
 
 export const SampleFinderSection: FC<Props> = memo(props => {
     const { parentEntityDataTypes, ...gridProps } = props;
@@ -82,7 +87,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const [filterCards, setFilterCards] = useState<FilterCardProps[]>([]);
 
     useEffect(() => {
-        const storedCardsStr = localStorage.getItem(LOCAL_STORAGE_KEY);
+        const storedCardsStr = localStorage.getItem(getLocalStorageKey());
         if (storedCardsStr) {
             setFilterCards(JSON.parse(storedCardsStr));
         }
@@ -107,7 +112,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             const newFilterCards = [...filterCards];
             newFilterCards.splice(index, 1);
             setFilterCards(newFilterCards);
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newFilterCards));
+            localStorage.setItem(getLocalStorageKey(), JSON.stringify(newFilterCards));
             setFilterChangeCounter(filterChangeCounter+1);
         },
         [filterCards, filterChangeCounter]
@@ -128,7 +133,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             });
             onFilterClose();
             setFilterCards(newFilterCards);
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newFilterCards));
+            localStorage.setItem(getLocalStorageKey(), JSON.stringify(newFilterCards));
         },
         [filterCards, onFilterEdit, onFilterDelete, chosenEntityType]
     );
@@ -184,11 +189,14 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                     promises.push(saveFinderGridView(queryModel.schemaQuery, columns));
                 }
             });
-            Promise.all(promises).then(() => {
-                console.log("DONE saving all finder views.");
+            Promise.all(promises).then((schemaQueries) => {
+                // since we have updated views, we need to invalidate the details cache so we pick up the new views
+                schemaQueries.forEach(schemaQuery => {
+                    invalidateQueryDetailsCache(schemaQuery);
+                });
                 setIsLoading(false);
             }).catch(reason => {
-                console.log("Error saving all finder views.", reason);
+                console.error("Error saving all finder views.", reason);
                 setIsLoading(false);
             });
         }
@@ -250,7 +258,16 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
             try {
                 setQueryConfigs(undefined);
                 const configs = await getSampleFinderQueryConfigs(user, cards, filterChangeCounter);
-                setQueryConfigs(configs);
+                const promises = [];
+                for (let config of Object.values(configs)) {
+                    promises.push(saveFinderGridView(config.schemaQuery, [{fieldKey: "Name"}]));
+                }
+                Promise.all(promises).then((schemaQueries) => {
+                    schemaQueries.forEach(schemaQuery => {
+                        invalidateQueryDetailsCache(schemaQuery);
+                    });
+                    setQueryConfigs(configs);
+                });
             }
             catch (error) {
                 setErrors(error);

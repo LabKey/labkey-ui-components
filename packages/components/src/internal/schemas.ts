@@ -107,6 +107,13 @@ export const SAMPLE_SETS = {
     SAMPLES: SchemaQuery.create(SAMPLE_SET_SCHEMA, 'Samples'),
 };
 
+// SAMPLE MANAGEMENT
+const SAMPLE_MANAGEMENT_SCHEMA = 'sampleManagement';
+export const SAMPLE_MANAGEMENT = {
+    SCHEMA: SAMPLE_MANAGEMENT_SCHEMA,
+    SOURCE_SAMPLES: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, "SourceSamples"),
+}
+
 // STUDY
 const STUDY_SCHEMA = 'study';
 export const STUDY_TABLES = {
@@ -138,6 +145,7 @@ export const SCHEMAS = {
     INVENTORY,
     LIST_METADATA_TABLES,
     PICKLIST_TABLES,
+    SAMPLE_MANAGEMENT,
 };
 
 export function fetchSchemas(schemaName?: string): Promise<List<Map<string, SchemaDetails>>> {

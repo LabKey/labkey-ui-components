@@ -193,10 +193,13 @@ export const shouldShowButtons = (
 };
 
 export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
-    const lcSchemaName = schemaQuery.schemaName.toLowerCase();
+    const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
     if (lcSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA)
         return true;
 
-    const lcQueryName = schemaQuery.queryName.toLowerCase();
-    return lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA && lcQueryName === SCHEMAS.EXP_TABLES.MATERIALS.queryName.toLowerCase();
+    const lcQueryName = schemaQuery?.queryName?.toLowerCase();
+    if (lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA && lcQueryName === SCHEMAS.EXP_TABLES.MATERIALS.queryName.toLowerCase())
+        return true;
+
+    return (lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase());
 }

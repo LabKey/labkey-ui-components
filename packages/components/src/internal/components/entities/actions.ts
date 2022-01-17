@@ -3,11 +3,13 @@ import { fromJS, List, Map } from 'immutable';
 
 import {
     buildURL,
+    caseInsensitive,
     getFilterForSampleOperation,
     getQueryGridModel,
     getSelected,
     importData,
     InsertOptions,
+    isSamplesSchema,
     naturalSort,
     QueryInfo,
     SampleCreationType,
@@ -112,15 +114,25 @@ function getSelectedParents(
     isAliquotParent?: boolean
 ): Promise<List<EntityParentType>> {
     return new Promise((resolve, reject) => {
+        const isSampleParent = isSamplesSchema(schemaQuery);
+        let columns = "LSID,Name,RowId";
+        if (isSampleParent) {
+            columns += ",SampleSet";
+        }
         return selectRows({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
-            columns: 'LSID,Name,RowId',
+            columns,
             filterArray,
             containerFilter: Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(response => {
-                resolve(resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent));
+                if (isSampleParent) {
+                    resolve(resolveSampleParentTypes(response, isAliquotParent));
+                }
+                else {
+                    resolve(resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent));
+                }
             })
             .catch(reason => {
                 console.error("There was a problem getting the selected parents' data", reason);
@@ -146,7 +158,7 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
                     containerFilter: Query.containerFilter.currentPlusProjectAndShared,
                 })
                     .then(response => {
-                        resolve(resolveSampleParentType(response, isAliquotParent));
+                        resolve(resolveSampleParentTypes(response, isAliquotParent));
                     })
                     .catch(reason => {
                         console.error("There was a problem getting the selected parents' data", reason);
@@ -160,7 +172,7 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
     });
 }
 
-function resolveSampleParentType(response: any, isAliquotParent?: boolean): List<EntityParentType> {
+function resolveSampleParentTypes(response: any, isAliquotParent?: boolean): List<EntityParentType> {
     const { key, models, orderedModels } = response;
     const rows = fromJS(models[key]);
 
@@ -168,10 +180,10 @@ function resolveSampleParentType(response: any, isAliquotParent?: boolean): List
 
     // The transformation done here makes the entities compatible with the editable grid
     orderedModels[key].forEach(id => {
-        const row = rows.get(id);
-        const displayValue = row.getIn(['Name', 'value']);
-        const sampleType = row.getIn(['SampleSet', 'displayValue']);
-        const value = row.getIn(['RowId', 'value']);
+        const row = rows.get(id).toJS();
+        const displayValue = caseInsensitive(row, 'Name')?.value;
+        const sampleType = caseInsensitive(row, 'SampleSet')?.displayValue;
+        const value = caseInsensitive(row, 'RowId')?.value;
 
         if (!groups[sampleType]) groups[sampleType] = [];
 
@@ -232,6 +244,7 @@ function initParents(
             } else {
                 return getSelected(selectionKey)
                     .then(selectionResponse => {
+
                         if (isItemSamples) {
                             return getSelectedSampleParentsFromItems(selectionResponse.selected, isAliquotParent)
                                 .then(response => resolve(response))
@@ -319,15 +332,16 @@ export function extractEntityTypeOptionFromRow(
     lowerCaseValue = true,
     entityDataType?: EntityDataType
 ): IEntityTypeOption {
-    const name = row.getIn(['Name', 'value']);
+    const rowObj = row.toJS();
+    const name = caseInsensitive(rowObj, 'Name').value;
     return {
         label: name,
-        lsid: row.getIn(['LSID', 'value']),
-        rowId: row.getIn(['RowId', 'value']),
+        lsid: caseInsensitive(rowObj,'LSID').value,
+        rowId: caseInsensitive(rowObj, 'RowId').value,
         value: lowerCaseValue ? name.toLowerCase() : name, // we match values on lower case because (at least) when parsed from an id they are lower case
         query: name,
         entityDataType,
-        isFromSharedContainer: row.getIn(['Folder/Path', 'value']) === SHARED_CONTAINER_PATH,
+        isFromSharedContainer: caseInsensitive(rowObj, 'Folder/Path').value === SHARED_CONTAINER_PATH,
     };
 }
 

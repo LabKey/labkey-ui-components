@@ -57,9 +57,9 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     const selectedQuantity = parentModel?.selectedQuantity ?? parentQueryModel?.selections.size ?? 1;
 
-    const schemaQuery = parentModel ?
+    const schemaQuery = parentModel?.schema ?
         SchemaQuery.create(parentModel.schema.toLowerCase(), parentModel.query)
-        : parentQueryModel.schemaQuery;
+        : parentQueryModel?.schemaQuery;
 
     const selectingSampleParents = useMemo(() => {
         return isSelectingSamples(schemaQuery);

@@ -161,6 +161,7 @@ export interface SampleGridButtonProps {
     createBtnParentKey?: string;
     createBtnParentType?: string;
     excludedCreateMenuKeys?: List<string>;
+    excludedManageMenuKeys?: SamplesManageButtonSections[];
     hideButtons?: SamplesManageButtonSections[];
     excludeStartJob?: boolean;
     initAliquotMode?: ALIQUOT_FILTER_MODE;

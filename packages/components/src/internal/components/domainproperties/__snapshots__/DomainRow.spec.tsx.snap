@@ -880,6 +880,12 @@ exports[`DomainRow Sample Field 1`] = `
                                               value="sample"
                                             >
                                               <option
+                                                key="double"
+                                                value="double"
+                                              >
+                                                Decimal (floating point)
+                                              </option>
+                                              <option
                                                 key="int"
                                                 value="int"
                                               >
@@ -892,16 +898,34 @@ exports[`DomainRow Sample Field 1`] = `
                                                 Lookup
                                               </option>
                                               <option
+                                                key="multiLine"
+                                                value="multiLine"
+                                              >
+                                                Multi-Line Text
+                                              </option>
+                                              <option
                                                 key="sample"
                                                 value="sample"
                                               >
                                                 Sample
                                               </option>
                                               <option
+                                                key="string"
+                                                value="string"
+                                              >
+                                                Text
+                                              </option>
+                                              <option
                                                 key="users"
                                                 value="users"
                                               >
                                                 User
+                                              </option>
+                                              <option
+                                                key="visitId"
+                                                value="visitId"
+                                              >
+                                                Visit ID
                                               </option>
                                             </select>
                                           </FormControl>
@@ -5364,6 +5388,18 @@ exports[`DomainRow date time field 1`] = `
                                                 Date Time
                                               </option>
                                               <option
+                                                key="multiLine"
+                                                value="multiLine"
+                                              >
+                                                Multi-Line Text
+                                              </option>
+                                              <option
+                                                key="string"
+                                                value="string"
+                                              >
+                                                Text
+                                              </option>
+                                              <option
                                                 key="visitDate"
                                                 value="visitDate"
                                               >
@@ -7722,6 +7758,18 @@ exports[`DomainRow decimal field 1`] = `
                                                 value="double"
                                               >
                                                 Decimal (floating point)
+                                              </option>
+                                              <option
+                                                key="multiLine"
+                                                value="multiLine"
+                                              >
+                                                Multi-Line Text
+                                              </option>
+                                              <option
+                                                key="string"
+                                                value="string"
+                                              >
+                                                Text
                                               </option>
                                               <option
                                                 key="visitId"

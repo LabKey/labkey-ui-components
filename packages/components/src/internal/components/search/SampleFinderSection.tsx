@@ -82,7 +82,6 @@ function getLocalStorageKey(): string {
 export const SampleFinderSection: FC<Props> = memo(props => {
     const { parentEntityDataTypes, ...gridProps } = props;
 
-    const [finderId, setFinderId] = useState<number>(undefined);
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
     const [filters, setFilters] = useState<FilterProps[]>([]);
@@ -94,12 +93,6 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             if (finderSessionData.filters) {
                 setFilters(finderSessionData.filters);
             }
-            if (finderSessionData.finderId !== undefined) {
-                setFinderId(finderSessionData.finderId);
-            }
-            else {
-                setFinderId(getNextSampleFinderId());
-            }
             if (finderSessionData.filterChangeCounter !== undefined) {
                 setFilterChangeCounter(finderSessionData.filterChangeCounter);
             }
@@ -107,13 +100,12 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     }, []);
 
     const getSelectionKeyPrefix = (): string => {
-        return 'sampleFinder-' + finderId + '-' + filterChangeCounter;
+        return 'sampleFinder-' + filterChangeCounter;
     };
 
-    const updateSessionStorage = (filterChangeCounter: number, filters: FilterProps[], finderId: number) => {
+    const updateSessionStorage = (filterChangeCounter: number, filters: FilterProps[]) => {
         sessionStorage.setItem(getLocalStorageKey(), JSON.stringify({
             filterChangeCounter,
-            finderId,
             filters
         }));
     };
@@ -127,9 +119,9 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             setFilterChangeCounter(filterChangeCounter+1);
             setChosenEntityType(parentEntityDataTypes[index]);
             // TODO update filters as well
-            updateSessionStorage(filterChangeCounter+1, filters, finderId);
+            updateSessionStorage(filterChangeCounter + 1, filters);
         },
-        [parentEntityDataTypes, filterChangeCounter, finderId]
+        [parentEntityDataTypes, filterChangeCounter]
     );
 
     const onFilterDelete = useCallback(
@@ -138,9 +130,9 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             newFilterCards.splice(index, 1);
             setFilters(newFilterCards);
             setFilterChangeCounter(filterChangeCounter+1);
-            updateSessionStorage(filterChangeCounter+1, newFilterCards, finderId);
+            updateSessionStorage(filterChangeCounter + 1, newFilterCards);
         },
-        [filters, filterChangeCounter, finderId]
+        [filters, filterChangeCounter]
     );
 
     const onFilterClose = () => {
@@ -159,9 +151,9 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             onFilterClose();
             setFilterChangeCounter(filterChangeCounter+1);
             setFilters(newFilterCards);
-            updateSessionStorage(filterChangeCounter+1, newFilterCards, finderId);
+            updateSessionStorage(filterChangeCounter + 1, newFilterCards);
         },
-        [filters, finderId, onFilterEdit, onFilterDelete, chosenEntityType]
+        [filters, onFilterEdit, onFilterDelete, chosenEntityType]
     );
 
     return (

@@ -6,14 +6,14 @@ import { EntityDataType } from '../entities/models';
 import { capitalizeFirstChar } from '../../util/utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-export interface FilterCardProps {
+export interface FilterProps {
     entityDataType: EntityDataType;
     filterArray?: Filter.IFilter[]; // the filters to be used in conjunction with the schemaQuery
     schemaQuery?: SchemaQuery;
     index?: number;
 }
 
-interface FilterEditProps extends FilterCardProps {
+interface FilterEditProps extends FilterProps {
     onDelete: (index) => void;
     onEdit: (index) => void;
     onAdd: (entityDataType: EntityDataType) => void;
@@ -77,7 +77,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
 });
 
 interface Props {
-    cards: FilterCardProps[];
+    cards: FilterProps[];
     className?: string;
     onFilterDelete?: (index) => void;
     onFilterEdit?: (index) => void;

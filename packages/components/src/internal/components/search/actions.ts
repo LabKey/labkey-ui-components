@@ -5,7 +5,6 @@ import {
     buildURL,
     getContainerFilter,
     getOmittedSampleTypeColumns,
-    invalidateQueryDetailsCache,
     QueryConfig,
     QueryModel,
     resolveErrorMessage,
@@ -17,7 +16,7 @@ import {
 import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 
 import { SearchIdData, SearchResultCardData } from './models';
-import { FilterCardProps } from './FilterCards';
+import { FilterProps } from './FilterCards';
 import { getFilterCardColumnName } from './utils';
 import { User } from '../base/models/User';
 
@@ -184,19 +183,21 @@ const SAMPLE_FINDER_VIEW_NAME = "Sample Finder";
 
 export function removeFinderGridView(model: QueryModel): Promise<boolean> {
     return new Promise((resolve, reject) => {
-        Query.deleteQueryView({
-            schemaName: model.schemaQuery.schemaName,
-            queryName: model.schemaQuery.queryName,
-            viewName: SAMPLE_FINDER_VIEW_NAME,
-            revert: true,
-            success: () => {
-                resolve(true);
-            },
-            failure: (error) => {
-                console.error("There was a problem deleting the session view.", error);
-                reject(resolveErrorMessage(error));
-            }
-        });
+        if (!model.isLoading) {
+            Query.deleteQueryView({
+                schemaName: model.schemaQuery.schemaName,
+                queryName: model.schemaQuery.queryName,
+                viewName: SAMPLE_FINDER_VIEW_NAME,
+                revert: true,
+                success: () => {
+                    resolve(true);
+                },
+                failure: (error) => {
+                    console.error("There was a problem deleting the Sample Finder view.", error);
+                    reject(resolveErrorMessage(error));
+                }
+            });
+        }
     });
 }
 
@@ -220,7 +221,11 @@ export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Prom
     });
 }
 
-export function getSampleFinderQueryConfigs(user: User, cards: FilterCardProps[], filterChangeCounter: number): Promise<{[key: string]: QueryConfig}> {
+function getSampleFinderConfigId(finderId: string, suffix: string): string {
+    return finderId + "|" + suffix;
+}
+
+export function getSampleFinderQueryConfigs(user: User, cards: FilterProps[], finderId: string): Promise<{[key: string]: QueryConfig}> {
     const omittedColumns = getOmittedSampleTypeColumns(user);
     const baseFilters = [];
     const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
@@ -237,7 +242,7 @@ export function getSampleFinderQueryConfigs(user: User, cards: FilterCardProps[]
             baseFilters.push(Filter.create(cardColumnName + "/Name", null, Filter.Types.NONBLANK));
         }
     });
-    const allSamplesKey = 'sampleFinder' + '-' + filterChangeCounter + '|exp/materials';
+    const allSamplesKey = getSampleFinderConfigId(finderId,'exp/materials');
     const configs: { [key: string]: QueryConfig } = {
         [allSamplesKey]: {
             id: allSamplesKey,
@@ -252,7 +257,7 @@ export function getSampleFinderQueryConfigs(user: User, cards: FilterCardProps[]
         try {
             const names = await getFinderSampleTypeNames(getContainerFilter());
             for (const name of names) {
-                const id = 'sampleFinder' + '-' + filterChangeCounter + '|samples/' + name;
+                const id = getSampleFinderConfigId(finderId, 'samples/' + name);
                 const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
                 configs[id] = {
                     id,

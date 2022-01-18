@@ -41,3 +41,10 @@ export function getFinderViewColumnsConfig(queryModel: QueryModel): {hasUpdates:
     return { hasUpdates, columns: columnKeys.map(fieldKey => ({fieldKey})) };
 }
 
+
+let SAMPLE_FINDER_COUNTER = 0;
+
+export function getNextSampleFinderId(): number {
+    return SAMPLE_FINDER_COUNTER++;
+}
+

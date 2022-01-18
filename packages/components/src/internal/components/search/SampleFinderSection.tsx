@@ -38,7 +38,7 @@ interface SampleFinderSamplesGridProps {
     user: User;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
-    excludedCreateMenuKeys?: List<string>;
+    excludedCreateMenuKeys?: string[];
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     gridButtonProps?: any;
 }
@@ -258,7 +258,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 asPanel={false}
                 actions={actions}
                 queryModels={queryModels}
-                excludedCreateMenuKeys={excludedCreateMenuKeys}
+                excludedCreateMenuKeys={List<string>(excludedCreateMenuKeys)}
                 gridButtons={gridButtons}
                 gridButtonProps={{
                     excludedManageMenuKeys: [SamplesManageButtonSections.IMPORT],
@@ -289,10 +289,7 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
                 for (let config of Object.values(configs)) {
                     promises.push(saveFinderGridView(config.schemaQuery, [{fieldKey: "Name"}]));
                 }
-                Promise.all(promises).then((schemaQueries) => {
-                    // schemaQueries.forEach(schemaQuery => {
-                    //     invalidateQueryDetailsCache(schemaQuery);
-                    // });
+                Promise.all(promises).then(() => {
                     setQueryConfigs(configs);
                 });
             }

@@ -19,8 +19,8 @@ import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
 
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
-import { FilterProps, FilterCards } from './FilterCards';
-import { getFinderStartText, getFinderViewColumnsConfig, getNextSampleFinderId } from './utils';
+import { FilterCards, FilterProps } from './FilterCards';
+import { getFinderStartText, getFinderViewColumnsConfig } from './utils';
 import { SamplesManageButtonSections } from '../samples/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { getSampleFinderQueryConfigs, removeFinderGridView, saveFinderGridView } from './actions';

@@ -166,6 +166,8 @@ function applyLineageIOMetadata(
         dataOutputs: item.dataOutputs.map(_applyItem),
         materialInputs: item.materialInputs.map(_applyItem),
         materialOutputs: item.materialOutputs.map(_applyItem),
+        objectInputs: item.objectInputs.map(_applyItem),
+        objectOutputs: item.objectOutputs.map(_applyItem),
     };
 }
 

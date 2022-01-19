@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.90.4
+*Released*: TBD
+* Item 9818: Lineage graph details panel updates to show object input/outputs and run step provenance map
+
 ### version 2.90.3
 *Released*: 10 November 2021
 * Issue 44250: Invalidate QueryInfo caches after change to NameIdSettings.allowUserSpecifiedNames

@@ -95,6 +95,8 @@ export class DetailsListLineageIO extends PureComponent<DetailsListLineageIOProp
                 <DetailsListLineageItems items={item.materialInputs} title="Material Inputs" />
                 <DetailsListLineageItems items={item.dataOutputs} title="Data Outputs" />
                 <DetailsListLineageItems items={item.materialOutputs} title="Material Outputs" />
+                <DetailsListLineageItems items={item.objectInputs} title="Object Inputs" />
+                <DetailsListLineageItems items={item.objectOutputs} title="Object Outputs" />
             </>
         );
     }
@@ -118,7 +120,7 @@ export class DetailsListSteps extends PureComponent<DetailsListStepProps> {
                 {node.steps.map((step, i) => (
                     <div className="lineage-name" key={`${node.lsid}.step.${i}`}>
                         <SVGIcon className="lineage-sm-icon" iconSrc={step.iconProps.iconURL} />
-                        <span className="spacer-right">{step.name}</span>
+                        <span className="spacer-right">{step.protocol?.name || step.name}</span>
                         <LineageDataLink
                             onClick={() => {
                                 onSelect(i);

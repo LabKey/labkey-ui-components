@@ -147,53 +147,56 @@ export class ListResolver implements AppRouteResolver {
         return /\/q\/lists\/(\d+$|\d+\/)/.test(route);
     }
 
-    fetch(parts: any[]): Promise<AppURL | boolean> {
+    async fetch(parts: any[]): Promise<AppURL | boolean> {
         // ["q", "lists", "44", ...]
         const listIdIndex = 2;
-        const listIdNum: number = parseInt(parts[listIdIndex], 10);
+        const listIdNum = parseInt(parts[listIdIndex], 10);
 
         if (isNaN(listIdNum)) {
             // skip it
-            return Promise.resolve(true);
+            return true;
         } else if (this.lists.has(listIdNum)) {
             // resolve it
             const newParts = [this.lists.get(listIdNum)];
-            return Promise.resolve(spliceURL(parts, newParts, listIdIndex));
+            return spliceURL(parts, newParts, listIdIndex);
         } else if (this.fetched) {
             // skip it
-            return Promise.resolve(true);
-        } else {
-            // fetch it
-            return new Promise(resolve => {
-                return selectRows({
-                    schemaName: SCHEMAS.LIST_METADATA_TABLES.SCHEMA,
-                    queryName: SCHEMAS.LIST_METADATA_TABLES.LIST_MANAGER.queryName,
-                    columns: 'ListId,Name',
-                }).then(result => {
-                    this.fetched = true;
-
-                    // fulfill local cache
-                    const allLists = Map<number, string>().asMutable();
-                    const lists = result.models[result.key];
-                    for (var i in lists) {
-                        if (lists.hasOwnProperty(i)) {
-                            allLists.set(lists[i].ListId.value, lists[i].Name.value.toLowerCase());
-                        }
-                    }
-                    this.lists = allLists.asImmutable();
-
-                    // respond
-                    if (this.lists.has(listIdNum)) {
-                        // resolve it
-                        const newParts = [this.lists.get(listIdNum)];
-                        return resolve(spliceURL(parts, newParts, listIdIndex));
-                    }
-
-                    // skip it
-                    return resolve(true);
-                });
-            });
+            return true;
         }
+
+        // fetch it
+        try {
+            // TODO: Fetch "container" and incorporate into key. On the link construction side need to parse out the folder.
+            const result = await selectRows({
+                schemaName: SCHEMAS.LIST_METADATA_TABLES.LIST_MANAGER.schemaName,
+                queryName: SCHEMAS.LIST_METADATA_TABLES.LIST_MANAGER.queryName,
+                columns: 'ListId,Name',
+            });
+
+            this.fetched = true;
+
+            // fulfill local cache
+            const allLists = Map<number, string>().asMutable();
+            const lists = result.models[result.key];
+            for (var i in lists) {
+                if (lists.hasOwnProperty(i)) {
+                    allLists.set(lists[i].ListId.value, lists[i].Name.value.toLowerCase());
+                }
+            }
+            this.lists = allLists.asImmutable();
+
+            // respond
+            if (this.lists.has(listIdNum)) {
+                // resolve it
+                const newParts = [this.lists.get(listIdNum)];
+                return spliceURL(parts, newParts, listIdIndex);
+            }
+        } catch (e) {
+            // skip it
+        }
+
+        // skip it
+        return true;
     }
 }
 

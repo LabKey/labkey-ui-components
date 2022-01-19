@@ -282,7 +282,7 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
         }).catch(reason => {
             setErrors(reason);
         });
-    }, [cards, user, selectionKeyPrefix])
+    }, [cards, user, sampleTypeNames, selectionKeyPrefix])
 
     if (errors)
         return <Alert>{errors}</Alert>;

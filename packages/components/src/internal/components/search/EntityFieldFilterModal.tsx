@@ -7,6 +7,7 @@ import { EntityDataType } from '../entities/models';
 import { capitalizeFirstChar } from '../../util/utils';
 import { QuerySelect } from '../forms/QuerySelect';
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import { EntityFieldFilterParentSelector } from "./EntityFieldFilterParentSelector";
 
 interface Props {
     entityDataType: EntityDataType;
@@ -35,21 +36,15 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     // TODO when populating types, adjust container filter to include the proper set of sample types
     //  (current + project + shared, in most cases).  For LKB, check if we should filter out any of the
     //  registry data types or the media types.
+
     return (
-        <Modal show onHide={closeModal}>
+        <Modal show bsSize="lg" onHide={closeModal}>
             <Modal.Header closeButton>
                 <Modal.Title>Select Sample {capParentNoun} Properties</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <QuerySelect
-                    componentId={entityDataType.nounSingular}
-                    name={entityDataType.nounSingular}
-                    schemaQuery={entityDataType.typeListingSchemaQuery}
-                    onQSChange={onFilterChange}
-                    value={selectedParentType}
-                    valueColumn="Name"
-                    label={entityDataType.nounAsParentSingular}
-                />
+                <EntityFieldFilterParentSelector
+                    entityDataType={entityDataType} />
             </Modal.Body>
             <Modal.Footer>
                 <div className="pull-left">

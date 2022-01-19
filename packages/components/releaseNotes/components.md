@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Item 9815: Sample Finder v1 - Filter dialog field expression filters
+    * Add EntityFieldFilterParentSelector
+
 ### version 2.119.0
 *Released*: 14 January 2022
 * Issue 44511: Ability to change a field's data type to known safe alternatives

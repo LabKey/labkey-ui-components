@@ -552,6 +552,7 @@ export interface EntityDataType {
     operationConfirmationActionName: string; // action in ExperimentController used to get the confirmation data for performing operations on entities
     nounSingular: string;
     nounAsParentSingular: string;
+    nounAsParentPlural: string;
     nounPlural: string;
     typeNounSingular: string;
     descriptionSingular: string; // (e.g., parent sample type) used in EntityInsertPanel for a message about how many of these types are available

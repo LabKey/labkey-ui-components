@@ -14,15 +14,12 @@ interface ViewMenuProps {
 export class ViewMenu extends PureComponent<ViewMenuProps> {
     render(): ReactNode {
         const { model, hideEmptyViewMenu, onViewSelect } = this.props;
-        const { isLoading, views, viewName } = model;
+        const { isLoading, views, viewName, visibleViews } = model;
         const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
         const defaultView = views.find(view => view.isDefault);
-        const validViews = views.filter(
-            // Issue 42628: Hide Biologics details view override in view menu
-            view => !view.hidden && view.name.indexOf('~~') !== 0 && view.name !== ViewInfo.BIO_DETAIL_NAME
-        );
-        const publicViews = validViews.filter(view => !view.isDefault && view.shared);
-        const privateViews = validViews.filter(view => !view.isDefault && !view.shared);
+
+        const publicViews = visibleViews.filter(view => view.shared);
+        const privateViews = visibleViews.filter(view => !view.shared);
         const noViews = publicViews.length === 0 && privateViews.length === 0;
         const _hideEmptyViewMenu = getQueryMetadata().get('hideEmptyViewMenu', hideEmptyViewMenu);
         const hidden = _hideEmptyViewMenu && noViews;

@@ -18,7 +18,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { gridSelectView } from '../../actions';
-import { generateId, naturalSort, QueryGridModel, ViewInfo } from '../../..';
+import { generateId, naturalSortByProperty, QueryGridModel, ViewInfo } from '../../..';
 
 const emptyList = List<ReactNode>();
 
@@ -59,15 +59,11 @@ export class ViewSelector extends Component<Props> {
         if (model.queryInfo) {
             const items = List<ReactNode>().asMutable();
 
-            const valid = model.queryInfo.views.filter(
-                view =>
-                    // Issue 42628: Hide Biologics details view override in view menu
-                    view && !view.hidden && !view.isDefault && view.name.indexOf('~~') !== 0 && view.name !== ViewInfo.BIO_DETAIL_NAME
-            );
+            const visibleViews = model.queryInfo.getVisibleViews();
 
-            const publicViews = valid.filter(view => view.shared).sortBy(v => v.label, naturalSort);
+            const publicViews = visibleViews.filter(view => view.shared).sort(naturalSortByProperty('label'));
 
-            const privateViews = valid.filter(view => !view.shared).sortBy(v => v.label, naturalSort);
+            const privateViews = visibleViews.filter(view => !view.shared).sort(naturalSortByProperty('label'));
 
             const defaultView = model.queryInfo.views.find(view => view.isDefault);
 
@@ -75,26 +71,26 @@ export class ViewSelector extends Component<Props> {
                 items.push(this.createItem(defaultView, 'default-view'));
             }
 
-            if (privateViews.size) {
+            if (privateViews.length) {
                 items.push(
                     <MenuItem header key="private-header">
                         My Saved Views
                     </MenuItem>
                 );
 
-                privateViews.valueSeq().forEach((view, i) => {
+                privateViews.forEach((view, i) => {
                     items.push(this.createItem(view, `private-${i}`));
                 });
             }
 
-            if (publicViews.size) {
+            if (publicViews.length) {
                 items.push(
                     <MenuItem header key="public-header">
                         All Saved Views
                     </MenuItem>
                 );
 
-                publicViews.valueSeq().forEach((view, i) => {
+                publicViews.forEach((view, i) => {
                     items.push(this.createItem(view, `public-${i}`));
                 });
             }

@@ -3,7 +3,7 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { insertColumnFilter, LastActionStatus, QueryColumn, QuerySort, SchemaQuery, ViewInfo } from '..';
+import { insertColumnFilter, LastActionStatus, naturalSort, QueryColumn, QuerySort, SchemaQuery, ViewInfo } from '..';
 
 import { toLowerSafe } from '../internal/util/utils';
 
@@ -301,6 +301,18 @@ export class QueryInfo extends Record({
         }
 
         return List<QuerySort>();
+    }
+
+    /**
+     * An array of [[ViewInfo]] objects that are visible for a user to choose in the view menu. Note that the returned
+     * array will be sorted by view label.
+     */
+    getVisibleViews(): ViewInfo[] {
+        return this.views.sortBy(v => v.label, naturalSort).toArray().filter(
+            view =>
+                // Issue 42628: Hide Biologics details view override in view menu
+                view && !view.hidden && !view.isDefault && view.name.indexOf('~~') !== 0 && view.name !== ViewInfo.BIO_DETAIL_NAME
+        );
     }
 
     getView(view: string): ViewInfo {

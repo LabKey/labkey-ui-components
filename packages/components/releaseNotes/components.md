@@ -6,6 +6,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update `SampleTypeTabbedGridPanel` to show row count on tabs
 * Added utility `isSamplesSchema` to check for `exp.materials` and `samples.X`
 * Updates to `SampleFinderSection` for showing filtered tabbed grids
+* Fix for Issue #44339 to allow create operations on selections from the All Samples grid in the tabbed grid.
+* Consolidate logic for ViewSelector and ViewsMenu for finding views to include in menu
 
 ### version 2.119.0
 *Released*: 14 January 2022

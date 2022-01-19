@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, PureComponent, ReactNode, useCallback, useState } from 'react';
+import React, { FC, memo, PureComponent, ReactNode, useCallback, useState, useMemo } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
 import { List } from "immutable";
 
@@ -18,6 +18,7 @@ import { LineageDetail } from './LineageDetail';
 import { DetailHeader, NodeDetailHeader } from './NodeDetailHeader';
 import { DetailsListLineageIO, DetailsListNodes, DetailsListSteps } from './DetailsList';
 import { Grid, GridColumn } from "../../base/Grid";
+import { hasModule } from "../../../app/utils";
 
 interface LineageNodeDetailProps {
     highlightNode?: string;
@@ -170,6 +171,7 @@ const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
     const [tabKey, setTabKey] = useState<number>(1);
     const step = node.steps.get(stepIdx);
     const stepName = step.protocol?.name || step.name;
+    const hasProvenanceModule = useMemo(() => hasModule('provenance'), []);
 
     const changeTab = useCallback((newTabKey: number) => {
         setTabKey(newTabKey);
@@ -194,9 +196,11 @@ const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
                     <LineageDetail item={step} />
                     <DetailsListLineageIO item={step} />
                 </Tab>
-                <Tab eventKey={2} title="Provenance Map">
-                    <RunStepProvenanceMap item={step} />
-                </Tab>
+                {hasProvenanceModule && (
+                    <Tab eventKey={2} title="Provenance Map">
+                        <RunStepProvenanceMap item={step} />
+                    </Tab>
+                )}
             </Tabs>
         </div>
     );

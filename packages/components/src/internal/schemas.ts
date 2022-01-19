@@ -108,7 +108,7 @@ export const SAMPLE_SETS = {
 };
 
 // SAMPLE MANAGEMENT
-const SAMPLE_MANAGEMENT_SCHEMA = 'sampleManagement';
+const SAMPLE_MANAGEMENT_SCHEMA = 'samplemanagement';
 export const SAMPLE_MANAGEMENT = {
     SCHEMA: SAMPLE_MANAGEMENT_SCHEMA,
     SOURCE_SAMPLES: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, "SourceSamples"),

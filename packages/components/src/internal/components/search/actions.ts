@@ -3,7 +3,6 @@ import { Ajax, Filter, Query, Utils } from '@labkey/api';
 
 import {
     buildURL,
-    getContainerFilter,
     getOmittedSampleTypeColumns,
     QueryConfig,
     QueryModel,
@@ -160,25 +159,6 @@ export function getProcessedSearchHits(
         : undefined;
 }
 
-export function getFinderSampleTypeNames(containerFilter: Query.ContainerFilter = undefined): Promise<string[]> {
-    return new Promise((resolve, reject) => {
-        Query.executeSql({
-            // Retrieves all sample types for the given container filter, whether there are samples in them or not.
-            sql: 'SELECT Name FROM SampleSets',
-            containerFilter,
-            sort: 'Name',
-            schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.getSchema(),
-            success: data => {
-                resolve(data.rows.map(row => row['Name']));
-            },
-            failure: reason => {
-                console.error("Problem retrieving filtered sample types", reason);
-                reject("There was a problem retrieving the filtered sample types. " + resolveErrorMessage(reason));
-            }
-        });
-    });
-}
-
 const SAMPLE_FINDER_VIEW_NAME = "Sample Finder";
 
 export function removeFinderGridView(model: QueryModel): Promise<boolean> {
@@ -225,8 +205,8 @@ function getSampleFinderConfigId(finderId: string, suffix: string): string {
     return finderId + "|" + suffix;
 }
 
-export function getSampleFinderQueryConfigs(user: User, cards: FilterProps[], finderId: string): Promise<{[key: string]: QueryConfig}> {
-    const omittedColumns = getOmittedSampleTypeColumns(user);
+// exported for jest testing
+export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<QueryConfig>  {
     const baseFilters = [];
     const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
     cards.forEach(card => {
@@ -242,36 +222,36 @@ export function getSampleFinderQueryConfigs(user: User, cards: FilterProps[], fi
             baseFilters.push(Filter.create(cardColumnName + "/Name", null, Filter.Types.NONBLANK));
         }
     });
+    return {
+        requiredColumns,
+        baseFilters
+    };
+}
+
+export function getSampleFinderQueryConfigs(user: User, sampleTypeNames: string[], cards: FilterProps[], finderId: string): {[key: string]: QueryConfig} {
+    const omittedColumns = getOmittedSampleTypeColumns(user);
+    const commonConfig = getSampleFinderCommonConfigs(cards);
     const allSamplesKey = getSampleFinderConfigId(finderId,'exp/materials');
     const configs: { [key: string]: QueryConfig } = {
         [allSamplesKey]: {
             id: allSamplesKey,
             title: 'All Samples',
             schemaQuery: SchemaQuery.create(SCHEMAS.EXP_TABLES.MATERIALS.schemaName, SCHEMAS.EXP_TABLES.MATERIALS.queryName, SAMPLE_FINDER_VIEW_NAME),
-            requiredColumns,
             omittedColumns: ['Run'],
-            baseFilters,
+            ...commonConfig
         },
     };
-    return new Promise(async (resolve, reject) => {
-        try {
-            const names = await getFinderSampleTypeNames(getContainerFilter());
-            for (const name of names) {
-                const id = getSampleFinderConfigId(finderId, 'samples/' + name);
-                const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
-                configs[id] = {
-                    id,
-                    title: name,
-                    schemaQuery,
-                    requiredColumns,
-                    omittedColumns,
-                    baseFilters,
-                };
-            }
-            resolve(configs);
-        }
-        catch (error) {
-            reject(resolveErrorMessage(error))
-        }
-    });
+
+    for (const name of sampleTypeNames) {
+        const id = getSampleFinderConfigId(finderId, 'samples/' + name);
+        const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
+        configs[id] = {
+            id,
+            title: name,
+            schemaQuery,
+            omittedColumns,
+            ...commonConfig,
+        };
+    }
+    return configs;
 }

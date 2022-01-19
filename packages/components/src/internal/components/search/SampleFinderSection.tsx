@@ -41,6 +41,7 @@ interface SampleFinderSamplesGridProps {
     excludedCreateMenuKeys?: string[];
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     gridButtonProps?: any;
+    sampleTypeNames: string[]
 }
 
 interface Props extends SampleFinderSamplesGridProps {
@@ -80,7 +81,7 @@ function getLocalStorageKey(): string {
 }
 
 export const SampleFinderSection: FC<Props> = memo(props => {
-    const { parentEntityDataTypes, ...gridProps } = props;
+    const { sampleTypeNames, parentEntityDataTypes, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
@@ -103,7 +104,9 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         return 'sampleFinder-' + filterChangeCounter;
     };
 
-    const updateSessionStorage = (filterChangeCounter: number, filters: FilterProps[]) => {
+    const updateFilters = (filterChangeCounter: number, filters: FilterProps[]) => {
+        setFilters(filters);
+        setFilterChangeCounter(filterChangeCounter);
         sessionStorage.setItem(getLocalStorageKey(), JSON.stringify({
             filterChangeCounter,
             filters
@@ -116,10 +119,9 @@ export const SampleFinderSection: FC<Props> = memo(props => {
 
     const onFilterEdit = useCallback(
         (index: number) => {
-            setFilterChangeCounter(filterChangeCounter+1);
             setChosenEntityType(parentEntityDataTypes[index]);
             // TODO update filters as well
-            updateSessionStorage(filterChangeCounter + 1, filters);
+            updateFilters(filterChangeCounter+1, filters);
         },
         [parentEntityDataTypes, filterChangeCounter]
     );
@@ -128,16 +130,14 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         (index: number) => {
             const newFilterCards = [...filters];
             newFilterCards.splice(index, 1);
-            setFilters(newFilterCards);
-            setFilterChangeCounter(filterChangeCounter+1);
-            updateSessionStorage(filterChangeCounter + 1, newFilterCards);
+
+            updateFilters(filterChangeCounter+1, newFilterCards);
         },
         [filters, filterChangeCounter]
     );
 
     const onFilterClose = () => {
         setChosenEntityType(undefined);
-        setFilterChangeCounter(filterChangeCounter+1);
     };
 
     const onFind = useCallback(
@@ -149,11 +149,9 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 entityDataType: chosenEntityType,
             });
             onFilterClose();
-            setFilterChangeCounter(filterChangeCounter+1);
-            setFilters(newFilterCards);
-            updateSessionStorage(filterChangeCounter + 1, newFilterCards);
+            updateFilters(filterChangeCounter+1, newFilterCards);
         },
-        [filters, onFilterEdit, onFilterDelete, chosenEntityType]
+        [filters, filterChangeCounter, onFilterEdit, onFilterDelete, chosenEntityType]
     );
 
     return (
@@ -178,7 +176,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             ) : (
                 <>
                     <FilterCards cards={filters} onFilterDelete={onFilterDelete} onAddEntity={onAddEntity}/>
-                    <SampleFinderSamples {...gridProps} cards={filters} selectionKeyPrefix={getSelectionKeyPrefix()} filterChangeCounter={filterChangeCounter} />
+                    <SampleFinderSamples {...gridProps} cards={filters} sampleTypeNames={sampleTypeNames} selectionKeyPrefix={getSelectionKeyPrefix()} filterChangeCounter={filterChangeCounter} />
                 </>
             )}
             {chosenEntityType !== undefined && (
@@ -268,27 +266,22 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
 const SampleFinderSamplesWithQueryModels = withQueryModels<SampleFinderSamplesGridProps>(SampleFinderSamplesImpl);
 
 const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
-    const { cards, selectionKeyPrefix, user, ...gridProps } = props;
+    const { cards, sampleTypeNames, selectionKeyPrefix, user, ...gridProps } = props;
     const [queryConfigs, setQueryConfigs] = useState<{ [key: string]: QueryConfig }>(undefined);
     const [errors, setErrors] = useState<string>(undefined);
 
     useEffect(() => {
-        (async () => {
-            try {
-                setQueryConfigs(undefined);
-                const configs = await getSampleFinderQueryConfigs(user, cards, selectionKeyPrefix);
-                const promises = [];
-                for (let config of Object.values(configs)) {
-                    promises.push(saveFinderGridView(config.schemaQuery, [{fieldKey: "Name"}]));
-                }
-                Promise.all(promises).then(() => {
-                    setQueryConfigs(configs);
-                });
-            }
-            catch (error) {
-                setErrors(error);
-            }
-        })();
+        setQueryConfigs(undefined);
+        const configs = getSampleFinderQueryConfigs(user, sampleTypeNames, cards, selectionKeyPrefix);
+        const promises = [];
+        for (let config of Object.values(configs)) {
+            promises.push(saveFinderGridView(config.schemaQuery, [{fieldKey: "Name"}]));
+        }
+        Promise.all(promises).then(() => {
+            setQueryConfigs(configs);
+        }).catch(reason => {
+            setErrors(reason);
+        });
     }, [cards, user, selectionKeyPrefix])
 
     if (errors)
@@ -297,5 +290,5 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
     if (!queryConfigs)
         return <LoadingSpinner/>;
 
-    return <SampleFinderSamplesWithQueryModels key={selectionKeyPrefix} user={user} {...gridProps} autoLoad queryConfigs={queryConfigs} />;
+    return <SampleFinderSamplesWithQueryModels sampleTypeNames={sampleTypeNames} key={selectionKeyPrefix} user={user} {...gridProps} autoLoad queryConfigs={queryConfigs} />;
 });

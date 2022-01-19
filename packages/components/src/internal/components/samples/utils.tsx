@@ -198,8 +198,10 @@ export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
         return true;
 
     const lcQueryName = schemaQuery?.queryName?.toLowerCase();
-    if (lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA && lcQueryName === SCHEMAS.EXP_TABLES.MATERIALS.queryName.toLowerCase())
+    if (lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA
+        && lcQueryName === SCHEMAS.EXP_TABLES.MATERIALS.queryName.toLowerCase())
         return true;
 
-    return (lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase());
+    return lcSchemaName === SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA
+        && lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase();
 }

@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Consolidate logic for `ViewSelector` and `ViewsMenu` for finding views to include in menu
 * Move `getSampleTypes` method here from inventory module
 
+### version 2.120.0
+*Released*: 19 January 2022
+* Declare and export the `UPDATE_USER` redux action and wire up updates via reducer.
+
 ### version 2.119.0
 *Released*: 14 January 2022
 * Issue 44511: Ability to change a field's data type to known safe alternatives

@@ -588,6 +588,7 @@ import {
     serverNotificationInit,
     serverNotificationInvalidate,
     setReloadRequired,
+    updateUser,
     updateUserDisplayName,
 } from './internal/app/actions';
 import {
@@ -633,6 +634,7 @@ import {
     SOURCE_TYPE_KEY,
     SOURCES_KEY,
     STICKY_HEADER_HEIGHT,
+    UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     USER_KEY,
     USER_PERMISSIONS_REQUEST,
@@ -683,6 +685,7 @@ const App = {
     serverNotificationInit,
     serverNotificationInvalidate,
     setReloadRequired,
+    updateUser,
     updateUserDisplayName,
     userCanDesignLocations,
     userCanDesignSourceTypes,
@@ -694,6 +697,7 @@ const App = {
     SET_RELOAD_REQUIRED,
     USER_PERMISSIONS_SUCCESS,
     USER_PERMISSIONS_REQUEST,
+    UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     BIOLOGICS: BIOLOGICS_APP_PROPERTIES,
     SAMPLE_MANAGER: SAMPLE_MANAGER_APP_PROPERTIES,

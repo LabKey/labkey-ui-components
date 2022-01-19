@@ -181,7 +181,9 @@ update the `package.json` file and commit that change.  Then you can do a `git p
 Note that for some of our premium npm packages, we are using `npm` to do the build/publish. In those cases, you'll need
 to update the package.json file version number manually before running `npm publish`.
 
-## Merging labkey-ui-components changes into develop
+## Merging changes into develop
+
+### labkey-ui-components
 
 1. Do one final merge of the `develop` branch into your feature branch for `labkey-ui-components`.
 2. Run one final lint of your changes, `yarn run lint-branch-fix`, and review the changes applied.
@@ -191,11 +193,12 @@ to update the package.json file version number manually before running `npm publ
 6. Message the Frontend dev room chat about starting the pull request merge. This is to make sure two people aren't
    merging at the same time which might result in conflicting package version numbers.
 7. Check on the [TeamCity](https://teamcity.labkey.org) build status and jest test status (also shown in the PR).
-8. Merge the pull requests for `labkey-ui-components`.
-9. Run the command to publish: `yarn publish`.
+8. Run the command to publish: `yarn publish`.
+9. Merge the pull requests for `labkey-ui-components`.
 10. Message the Frontend dev room chat that the merge is complete.
 
-## Reference the new labkey-ui-components version in LabKey modules
+### LabKey modules
+
 1. Update any LabKey module `package.json` files where you are using / applying these changes with this final release version
 number (then do the regular `npm install` for that module, build, etc. and push those `package.json` and `package-lock.json` file
 changes to github as well).

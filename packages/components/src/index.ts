@@ -376,7 +376,7 @@ import {
     getLineageFilterValue,
     invalidateLineageResults,
 } from './internal/components/lineage/actions';
-import { InjectedLineage, withLineage } from './internal/components/lineage/withLineage';
+import { withLineage } from './internal/components/lineage/withLineage';
 import { DEFAULT_LINEAGE_DISTANCE } from './internal/components/lineage/constants';
 import {
     LINEAGE_DIRECTIONS,
@@ -1089,7 +1089,6 @@ export {
     ReportList,
     // lineage
     DEFAULT_LINEAGE_DISTANCE,
-    InjectedLineage,
     LINEAGE_GROUPING_GENERATIONS,
     LINEAGE_DIRECTIONS,
     LineageDepthLimitMessage,
@@ -1463,3 +1462,4 @@ export type { ContainerUser, UseContainerUser } from './internal/components/cont
 export type { PageDetailHeaderProps } from './internal/components/forms/PageDetailHeader';
 export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
+export type { InjectedLineage } from './internal/components/lineage/withLineage';

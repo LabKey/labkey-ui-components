@@ -20,10 +20,10 @@ import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 import { FilterCards, FilterProps } from './FilterCards';
-import { getFinderStartText, getFinderViewColumnsConfig } from './utils';
+import { getFinderStartText, getFinderViewColumnsConfig, getSampleFinderQueryConfigs } from './utils';
 import { SamplesManageButtonSections } from '../samples/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { getSampleFinderQueryConfigs, removeFinderGridView, saveFinderGridView } from './actions';
+import { removeFinderGridView, saveFinderGridView } from './actions';
 import { Alert } from '../base/Alert';
 import { SampleGridButtonProps } from '../samples/models';
 import { List } from 'immutable';
@@ -58,7 +58,7 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
 
     return (
         <div>
-            Search by:
+            Find by:
             {parentEntityDataTypes.map(parentEntityType => (
                 <button
                     key={parentEntityType.nounSingular}

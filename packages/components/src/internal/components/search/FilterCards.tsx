@@ -66,7 +66,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                     {!filterArray?.length && (
                         <>
                             <hr />
-                            <div>Showing all {schemaQuery.queryName} Samples</div>
+                            <div>Showing only samples with {schemaQuery.queryName} {entityDataType.nounAsParentSingular.toLowerCase()}s</div>
                         </>
                     )}
                     {!!filterArray?.length && <>Filter view coming soon ...</>}

@@ -292,6 +292,7 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
+    getSampleIdsFromSelection,
     updateSamplesStatus,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
@@ -946,6 +947,7 @@ export {
     createQueryGridModelFilteredBySample,
     createQueryConfigFilteredBySample,
     getSelectedItemSamples,
+    getSampleIdsFromSelection,
     updateSamplesStatus,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,

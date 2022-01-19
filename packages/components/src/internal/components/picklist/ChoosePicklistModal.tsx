@@ -27,6 +27,8 @@ import {
     getPicklistUrl,
     SampleTypeCount,
 } from './actions';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { getSampleIdsFromSelection } from '../samples/actions';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -227,12 +229,15 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             onCancel,
             afterAddToPicklist,
             user,
-            selectionKey,
+            selectionKey: initSelectionKey,
             numSelected,
-            sampleIds,
+            sampleIds: initSampleIds,
             currentProductId,
             picklistProductId,
             metricFeatureArea,
+            assaySchemaQuery,
+            selectedIds,
+            sampleFieldKey,
         } = props;
         const [search, setSearch] = useState<string>('');
         const [error, setError] = useState<string>(undefined);
@@ -240,22 +245,38 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         const [activeItem, setActiveItem] = useState<Picklist>(undefined);
         const [validCount, setValidCount] = useState<number>(numSelected);
         const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
+        const [sampleIds, setSampleIds] = useState<string[]>(initSampleIds);
+        const selectionKey = useMemo(()=> assaySchemaQuery ? undefined : initSelectionKey, [assaySchemaQuery, initSelectionKey]);
+
+        const validateSamples = useCallback(async () => {
+            try {
+                const data = await api.samples.getSampleOperationConfirmationData(
+                    SampleOperation.AddToPicklist,
+                    selectionKey,
+                    sampleIds
+                );
+                setStatusData(data);
+                setValidCount(data.allowed.length);
+            } catch (reason) {
+                setError(reason);
+            }
+        }, [api, selectionKey, sampleIds]);
 
         useEffect(() => {
             (async () => {
-                try {
-                    const data = await api.samples.getSampleOperationConfirmationData(
-                        SampleOperation.AddToPicklist,
-                        selectionKey,
-                        sampleIds
-                    );
-                    setStatusData(data);
-                    setValidCount(data.allowed.length);
-                } catch (reason) {
-                    setError(reason);
-                }
+                await validateSamples();
             })();
         }, [api, selectionKey, sampleIds]);
+
+        useEffect(() => {
+            (async () => {
+                if (assaySchemaQuery) {
+                    const ids = await getSampleIdsFromSelection(assaySchemaQuery.schemaName, assaySchemaQuery.queryName, [...selectedIds], sampleFieldKey);
+                    setSampleIds(ids);
+                    await validateSamples();
+                }
+            })();
+        },[sampleFieldKey, selectedIds, assaySchemaQuery]);
 
         const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
             setSearch(event.target.value.trim().toLowerCase());
@@ -473,6 +494,9 @@ interface ChoosePicklistModalProps {
     picklistProductId?: string;
     metricFeatureArea?: string;
     api?: ComponentsAPIWrapper;
+    assaySchemaQuery?: SchemaQuery;
+    sampleFieldKey?: string;
+    selectedIds?: Set<string>;
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {

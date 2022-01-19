@@ -21,10 +21,12 @@ interface Props {
     currentProductId?: string;
     picklistProductId?: string;
     metricFeatureArea?: string;
+    sampleFieldKey?: string;
+    selectedIds?: Set<string>;
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {
-    const { sampleIds, key, itemText, user, queryModel, currentProductId, picklistProductId, metricFeatureArea } =
+    const { sampleIds, key, itemText, user, queryModel, currentProductId, picklistProductId, metricFeatureArea, sampleFieldKey, selectedIds } =
         props;
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
@@ -93,6 +95,9 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     currentProductId={currentProductId}
                     picklistProductId={picklistProductId}
                     metricFeatureArea={metricFeatureArea}
+                    assaySchemaQuery={queryModel.schemaQuery}
+                    sampleFieldKey={sampleFieldKey}
+                    selectedIds={selectedIds}
                 />
             )}
             {showCreatePicklist && (
@@ -104,6 +109,9 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     onCancel={closeCreatePicklist}
                     showNotification
                     metricFeatureArea={metricFeatureArea}
+                    assaySchemaQuery={queryModel.schemaQuery}
+                    sampleFieldKey={sampleFieldKey}
+                    selectedIds={selectedIds}
                 />
             )}
         </>

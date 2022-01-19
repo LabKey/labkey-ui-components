@@ -1,14 +1,11 @@
 import React, { FC, useState } from 'react';
-
 import { MenuItem } from 'react-bootstrap';
 
 import { userCanManagePicklists } from '../../app/utils';
-
 import { User } from '../base/models/User';
-
 import { PicklistEditModal } from './PicklistEditModal';
-
 import { Picklist } from './models';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 interface Props {
     selectionKey?: string;
@@ -21,6 +18,9 @@ interface Props {
     picklistProductId?: string;
     metricFeatureArea?: string;
     onCreatePicklist?: () => void;
+    assaySchemaQuery?: SchemaQuery;
+    sampleFieldKey?: string;
+    selectedIds?: Set<string>;
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {

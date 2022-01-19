@@ -880,3 +880,22 @@ export function updateSamplesStatus(
         auditBehavior: auditBehavior ?? AuditBehaviorTypes.DETAILED,
     });
 }
+
+export async function getSampleIdsFromSelection(schemaName: string, queryName: string, selected: any[], sampleFieldKey: string ): Promise<string[]> {
+    const sampleIds = new Set<string>();
+
+    if (sampleFieldKey) {
+        const { data, dataIds } = await getSelectedData(schemaName, queryName, selected);
+        if (data) {
+            const rows = data.toJS();
+            dataIds.forEach(rowId => {
+                const val = rows[rowId]?.[sampleFieldKey]?.value;
+                if (val) {
+                    sampleIds.add(val);
+                }
+            });
+        }
+    }
+
+    return [...sampleIds];
+}

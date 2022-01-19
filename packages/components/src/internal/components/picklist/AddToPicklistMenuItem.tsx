@@ -26,8 +26,18 @@ interface Props {
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {
-    const { sampleIds, key, itemText, user, queryModel, currentProductId, picklistProductId, metricFeatureArea, sampleFieldKey, selectedIds } =
-        props;
+    const {
+        sampleIds,
+        key,
+        itemText,
+        user,
+        queryModel,
+        currentProductId,
+        picklistProductId,
+        metricFeatureArea,
+        sampleFieldKey,
+        selectedIds,
+    } = props;
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
 

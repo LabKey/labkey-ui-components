@@ -15,13 +15,13 @@ import { createNotification } from '../notifications/actions';
 import { incrementClientSideMetricCount } from '../../actions';
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
+import { getSampleIdsFromSelection } from '../samples/actions';
 import { getOperationNotPermittedMessage } from '../samples/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { getSampleIdsFromSelection } from '../samples/actions';
 
 interface Props {
     selectionKey?: string; // pass in either selectionKey and selectedQuantity or sampleIds.
@@ -35,7 +35,7 @@ interface Props {
     picklistProductId?: string;
     metricFeatureArea?: string;
     api?: ComponentsAPIWrapper;
-    assaySchemaQuery?:SchemaQuery;
+    assaySchemaQuery?: SchemaQuery;
     sampleFieldKey?: string;
     selectedIds?: Set<string>;
 }
@@ -76,10 +76,12 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     const [sampleIds, setSampleIds] = useState<string[]>(initSampleIds);
     const [validCount, setValidCount] = useState<number>(selectedQuantity ? selectedQuantity : sampleIds?.length);
     const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
-    const selectionKey = useMemo(()=> assaySchemaQuery ? undefined : initSelectionKey, [assaySchemaQuery, initSelectionKey]);
+    const selectionKey = useMemo(
+        () => (assaySchemaQuery ? undefined : initSelectionKey),
+        [assaySchemaQuery, initSelectionKey]
+    );
 
     const validateSamples = useCallback(() => {
-
         api.samples
             .getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
             .then(data => {
@@ -94,16 +96,21 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     useEffect(() => {
         (async () => {
             if (assaySchemaQuery) {
-                const ids = await getSampleIdsFromSelection(assaySchemaQuery.schemaName, assaySchemaQuery.queryName, [...selectedIds], sampleFieldKey);
+                const ids = await getSampleIdsFromSelection(
+                    assaySchemaQuery.schemaName,
+                    assaySchemaQuery.queryName,
+                    [...selectedIds],
+                    sampleFieldKey
+                );
                 setSampleIds(ids);
                 validateSamples();
             }
         })();
-    },[sampleFieldKey, selectedIds, assaySchemaQuery])
+    }, [sampleFieldKey, selectedIds, assaySchemaQuery]);
 
-    useEffect(()=>{
+    useEffect(() => {
         validateSamples();
-    },[selectionKey, sampleIds])
+    }, [selectionKey, sampleIds]);
 
     const isUpdate = picklist !== undefined;
     let finishVerb, finishingVerb;

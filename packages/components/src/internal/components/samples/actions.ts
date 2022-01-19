@@ -881,7 +881,12 @@ export function updateSamplesStatus(
     });
 }
 
-export async function getSampleIdsFromSelection(schemaName: string, queryName: string, selected: any[], sampleFieldKey: string ): Promise<string[]> {
+export async function getSampleIdsFromSelection(
+    schemaName: string,
+    queryName: string,
+    selected: any[],
+    sampleFieldKey: string
+): Promise<string[]> {
     const sampleIds = new Set<string>();
 
     if (sampleFieldKey) {

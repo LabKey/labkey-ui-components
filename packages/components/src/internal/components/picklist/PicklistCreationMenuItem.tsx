@@ -3,9 +3,11 @@ import { MenuItem } from 'react-bootstrap';
 
 import { userCanManagePicklists } from '../../app/utils';
 import { User } from '../base/models/User';
+
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
 import { PicklistEditModal } from './PicklistEditModal';
 import { Picklist } from './models';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 
 interface Props {
     selectionKey?: string;

@@ -16,8 +16,10 @@ import { incrementClientSideMetricCount } from '../../actions';
 
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
+import { getSampleIdsFromSelection } from '../samples/actions';
 import { getOperationNotPermittedMessage } from '../samples/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { Picklist } from './models';
 import {
@@ -27,8 +29,6 @@ import {
     getPicklistUrl,
     SampleTypeCount,
 } from './actions';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { getSampleIdsFromSelection } from '../samples/actions';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -246,7 +246,10 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         const [validCount, setValidCount] = useState<number>(numSelected);
         const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
         const [sampleIds, setSampleIds] = useState<string[]>(initSampleIds);
-        const selectionKey = useMemo(()=> assaySchemaQuery ? undefined : initSelectionKey, [assaySchemaQuery, initSelectionKey]);
+        const selectionKey = useMemo(
+            () => (assaySchemaQuery ? undefined : initSelectionKey),
+            [assaySchemaQuery, initSelectionKey]
+        );
 
         const validateSamples = useCallback(async () => {
             try {
@@ -271,12 +274,17 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         useEffect(() => {
             (async () => {
                 if (assaySchemaQuery) {
-                    const ids = await getSampleIdsFromSelection(assaySchemaQuery.schemaName, assaySchemaQuery.queryName, [...selectedIds], sampleFieldKey);
+                    const ids = await getSampleIdsFromSelection(
+                        assaySchemaQuery.schemaName,
+                        assaySchemaQuery.queryName,
+                        [...selectedIds],
+                        sampleFieldKey
+                    );
                     setSampleIds(ids);
                     await validateSamples();
                 }
             })();
-        },[sampleFieldKey, selectedIds, assaySchemaQuery]);
+        }, [sampleFieldKey, selectedIds, assaySchemaQuery]);
 
         const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
             setSearch(event.target.value.trim().toLowerCase());

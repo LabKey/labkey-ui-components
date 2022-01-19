@@ -4,7 +4,7 @@
  */
 import React, { FC, memo, PureComponent, ReactNode, useCallback, useState, useMemo } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
-import { List } from "immutable";
+import { List } from 'immutable';
 
 import {
     createLineageNodeCollections,
@@ -14,11 +14,14 @@ import {
 import { LineageSummary } from '../LineageSummary';
 import { LineageIOWithMetadata, LineageNode } from '../models';
 import { LineageOptions } from '../types';
+
+import { Grid, GridColumn } from '../../base/Grid';
+
+import { hasModule } from '../../../app/utils';
+
 import { LineageDetail } from './LineageDetail';
 import { DetailHeader, NodeDetailHeader } from './NodeDetailHeader';
 import { DetailsListLineageIO, DetailsListNodes, DetailsListSteps } from './DetailsList';
-import { Grid, GridColumn } from "../../base/Grid";
-import { hasModule } from "../../../app/utils";
 
 interface LineageNodeDetailProps {
     highlightNode?: string;
@@ -186,12 +189,7 @@ const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
                 <span className="spacer-left">&gt;</span>
                 <span className="spacer-left">{stepName}</span>
             </DetailHeader>
-            <Tabs
-                activeKey={tabKey}
-                defaultActiveKey={1}
-                id="lineage-run-step-tabs"
-                onSelect={changeTab as any}
-            >
+            <Tabs activeKey={tabKey} defaultActiveKey={1} id="lineage-run-step-tabs" onSelect={changeTab as any}>
                 <Tab eventKey={1} title="Step Details">
                     <LineageDetail item={step} />
                     <DetailsListLineageIO item={step} />
@@ -213,7 +211,7 @@ const provenanceCellRenderer = (data, row) => {
         return <a href={url}>{name}</a>;
     }
     return name;
-}
+};
 
 const PROVENANCE_MAP_COLS = List([
     new GridColumn({
@@ -233,7 +231,5 @@ export interface RunStepProvenanceMapProps {
 }
 
 const RunStepProvenanceMap: FC<RunStepProvenanceMapProps> = memo(({ item }) => {
-    return (
-        <Grid columns={PROVENANCE_MAP_COLS} data={item?.provenanceMap ?? []} />
-    )
+    return <Grid columns={PROVENANCE_MAP_COLS} data={item?.provenanceMap ?? []} />;
 });

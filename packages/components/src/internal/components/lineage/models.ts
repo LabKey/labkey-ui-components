@@ -182,8 +182,12 @@ export class LineageIO implements LineageItemWithMetadata {
             materialInputs: LineageIO.fromArray(values?.materialInputs),
             materialOutputs: LineageIO.fromArray(values?.materialOutputs),
             // convert the provenanceMap to the inputs and outputs array, filter for just those that have a from/to lsid value
-            objectInputs: LineageIO.fromArray(values?.provenanceMap?.map(prov => prov.from).filter(input => input?.lsid)),
-            objectOutputs: LineageIO.fromArray(values?.provenanceMap?.map(prov => prov.to).filter(input => input?.lsid)),
+            objectInputs: LineageIO.fromArray(
+                values?.provenanceMap?.map(prov => prov.from).filter(input => input?.lsid)
+            ),
+            objectOutputs: LineageIO.fromArray(
+                values?.provenanceMap?.map(prov => prov.to).filter(input => input?.lsid)
+            ),
         };
     }
 

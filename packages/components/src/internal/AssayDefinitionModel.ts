@@ -131,6 +131,7 @@ export class AssayDefinitionModel extends Record({
             if (col.isLookup()) {
                 const lookupSQ = col.lookup.schemaQuery;
                 const isMatch = targetSQ.isEqual(lookupSQ) ||
+                    // 44339: the SourceSamples custom query is backed by exp.materials
                     (targetSQ.equals(SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES) && SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ));
 
                 // 35881: If targetSQ is a Sample Set then allow targeting exp.materials table as well

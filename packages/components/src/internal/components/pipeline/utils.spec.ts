@@ -1,11 +1,11 @@
 import { List } from 'immutable';
 
-import {hasActivePipelineJob} from "./utils";
-import {MenuSectionModel, ProductMenuModel} from "../navigation/model";
+import { MenuSectionModel, ProductMenuModel } from '../navigation/model';
 
+import { hasActivePipelineJob } from './utils';
 
-describe("pipeline utils", () => {
-    test("hasActiveJob", () => {
+describe('pipeline utils', () => {
+    test('hasActiveJob', () => {
         const sampleSetItems = List<MenuSectionModel>([
             {
                 id: 1,
@@ -14,8 +14,8 @@ describe("pipeline utils", () => {
             {
                 id: 2,
                 label: 'Sample Set 2',
-                hasActiveJob: true
-            }
+                hasActiveJob: true,
+            },
         ]);
 
         const sections = List<MenuSectionModel>().asMutable();
@@ -25,15 +25,12 @@ describe("pipeline utils", () => {
             items: sampleSetItems,
             itemLimit: 2,
             key: 'samples',
-        })
-        sections.push(
-            samplesSection
-        );
+        });
+        sections.push(samplesSection);
 
         const emptyMenu = new ProductMenuModel({
             productIds: ['empty'],
         });
-
 
         const withActiveJobMenu = new ProductMenuModel({
             productIds: ['withJob'],
@@ -48,5 +45,4 @@ describe("pipeline utils", () => {
         expect(hasActivePipelineJob(withActiveJobMenu, 'samples', 'Sample Set 1')).toBeFalsy();
         expect(hasActivePipelineJob(withActiveJobMenu, 'samples', 'Sample Set 2')).toBeTruthy();
     });
-
 });

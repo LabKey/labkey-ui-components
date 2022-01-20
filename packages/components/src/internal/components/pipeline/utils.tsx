@@ -1,16 +1,15 @@
 import React, { ReactNode } from 'react';
-import {Utils} from "@labkey/api";
+import { Utils } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
-import {App, AssayUploadResultModel, ProductMenuModel} from '../../../index';
+import { App, AssayUploadResultModel, ProductMenuModel } from '../../../index';
 
-export function hasActivePipelineJob(menu: ProductMenuModel, sectionKey: string, itemLabel: string) : boolean {
-    if (!menu.isLoaded)
-        return false;
+export function hasActivePipelineJob(menu: ProductMenuModel, sectionKey: string, itemLabel: string): boolean {
+    if (!menu.isLoaded) return false;
 
     const section = menu.getSection(sectionKey);
     if (section) {
-        const menuItem = section.items.find((set) => Utils.caseInsensitiveEquals(set.get('label'), itemLabel));
+        const menuItem = section.items.find(set => Utils.caseInsensitiveEquals(set.get('label'), itemLabel));
         return menuItem?.hasActiveJob;
     }
 

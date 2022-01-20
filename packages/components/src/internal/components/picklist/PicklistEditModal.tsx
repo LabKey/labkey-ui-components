@@ -77,8 +77,9 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     const [validCount, setValidCount] = useState<number>(selectedQuantity ? selectedQuantity : sampleIds?.length);
     const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
     const selectionKey = useMemo(
-        () => (assaySchemaQuery ? undefined : initSelectionKey),
-        [assaySchemaQuery, initSelectionKey]
+        //If we are sampleFieldKey is set then selectionKey isn't going to correctly indicate selected samples
+        () => (sampleFieldKey ? undefined : initSelectionKey),
+        [sampleFieldKey, initSelectionKey]
     );
 
     const validateSamples = useCallback(() => {
@@ -95,7 +96,9 @@ export const PicklistEditModal: FC<Props> = memo(props => {
 
     useEffect(() => {
         (async () => {
-            if (assaySchemaQuery) {
+            //Look up SampleIds from the selected assay row ids.
+            // Using sampleFieldKey as proxy flag to determine if lookup is needed
+            if (sampleFieldKey && selectedIds) {
                 const ids = await getSampleIdsFromSelection(
                     assaySchemaQuery.schemaName,
                     assaySchemaQuery.queryName,
@@ -103,14 +106,10 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                     sampleFieldKey
                 );
                 setSampleIds(ids);
-                validateSamples();
             }
+            validateSamples();
         })();
-    }, [sampleFieldKey, selectedIds, assaySchemaQuery]);
-
-    useEffect(() => {
-        validateSamples();
-    }, [selectionKey, sampleIds]);
+    }, [sampleFieldKey, selectedIds, assaySchemaQuery, selectionKey, sampleIds]);
 
     const isUpdate = picklist !== undefined;
     let finishVerb, finishingVerb;

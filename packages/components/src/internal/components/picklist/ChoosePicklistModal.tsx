@@ -247,8 +247,8 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
         const [sampleIds, setSampleIds] = useState<string[]>(initSampleIds);
         const selectionKey = useMemo(
-            () => (assaySchemaQuery ? undefined : initSelectionKey),
-            [assaySchemaQuery, initSelectionKey]
+            () => (sampleFieldKey ? undefined : initSelectionKey),
+            [sampleFieldKey, initSelectionKey]
         );
 
         const validateSamples = useCallback(async () => {
@@ -267,22 +267,18 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
 
         useEffect(() => {
             (async () => {
-                await validateSamples();
-            })();
-        }, [api, selectionKey, sampleIds]);
-
-        useEffect(() => {
-            (async () => {
-                if (assaySchemaQuery) {
+                //Look up SampleIds from the selected assay row ids.
+                // Using sampleFieldKey as proxy flag to determine if lookup is needed
+                if (sampleFieldKey && selectedIds) {
                     const ids = await getSampleIdsFromSelection(
-                        assaySchemaQuery.schemaName,
-                        assaySchemaQuery.queryName,
+                        assaySchemaQuery?.schemaName,
+                        assaySchemaQuery?.queryName,
                         [...selectedIds],
                         sampleFieldKey
                     );
                     setSampleIds(ids);
-                    await validateSamples();
                 }
+                await validateSamples();
             })();
         }, [sampleFieldKey, selectedIds, assaySchemaQuery]);
 

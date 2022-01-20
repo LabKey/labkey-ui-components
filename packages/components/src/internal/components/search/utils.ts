@@ -18,8 +18,9 @@ export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [Filter.Types.CONTAINS.getU
 export function getSampleFinderFilterTypesForType(jsonType: JsonType) : any[] {
     let filterList = Filter.getFilterTypesForType(jsonType)
         .filter(function(result) {
-        return SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE.indexOf(result.getURLSuffix()) === -1;
-    });
+            return SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE.indexOf(result.getURLSuffix()) === -1;
+        })
+    ;
 
     if (jsonType === 'date') {
         filterList.push(Filter.Types.DATE_BETWEEN);
@@ -32,26 +33,14 @@ export function getSampleFinderFilterTypesForType(jsonType: JsonType) : any[] {
         const urlSuffix = filter.getURLSuffix();
         filters.push({
             value: urlSuffix,
-            label: filter.getLongDisplayText(),
+            label: filter.getDisplayText(),
             valueRequired: filter.isDataValueRequired(),
             multiValue: filter.isMultiValued(),
             betweenOperator: ['between', 'notbetween', 'datebetween', 'datenotbetween'].indexOf(urlSuffix) > -1
         });
     })
 
+    console.log(filters);
+
     return filters;
 }
-
-// getXtype : function() {
-//     switch (this.jsonType) {
-//         case "date":
-//             return "datefield";
-//         case "int":
-//         case "float":
-//             return "textfield";
-//         case "boolean":
-//             return 'labkey-booleantextfield';
-//         default:
-//             return "textfield";
-//     }
-// },

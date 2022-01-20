@@ -91,10 +91,10 @@ export const EntityFieldFilterParentSelector: FC<Props> = memo(props => {
 
     return (
         <Row className="search-parent-entity-panel">
-            <Col xs={3}>
-                <div className="search-parent-entity-col-title">{entityDataType.nounAsParentPlural ?? entityDataType.nounPlural}</div>
+            <Col xs={3} className="search-parent-entity-col">
+                <div className="search-field-col-title">{entityDataType.nounAsParentPlural ?? entityDataType.nounPlural}</div>
                 {!entityParents && <LoadingSpinner/>}
-                <div className="list-group search-parent-entity-col">
+                <div className="list-group search-parent-entity-col-div">
                     {entityParents?.map((parent, index) => {
                             const { label } = parent;
                             const fieldFilterCount = index%3; //TODO
@@ -111,10 +111,10 @@ export const EntityFieldFilterParentSelector: FC<Props> = memo(props => {
                     })}
                 </div>
             </Col>
-            <Col xs={3}>
-                <div className="search-parent-entity-col-title">Fields</div>
+            <Col xs={3} className="search-parent-entity-col">
+                <div className="search-field-col-title">Fields</div>
                 {(activeParent && !entityFields) && <LoadingSpinner/>}
-                <div className="list-group search-parent-entity-col">
+                <div className="list-group search-parent-entity-col-div">
                     {entityFields?.map((field, index) => {
                         const { fieldKey, caption } = field;
                         const hasFilter = index%4 === 0; //TODO
@@ -131,53 +131,55 @@ export const EntityFieldFilterParentSelector: FC<Props> = memo(props => {
                     })}
                 </div>
             </Col>
-            <Col xs={6}>
-                <div className="search-parent-entity-col-title">Values</div>
+            <Col xs={6} className="search-parent-entity-col">
+                <div className="search-field-col-title">Values</div>
                 {(activeParent && activeField) &&
-                    <Tab.Container
-                        activeKey={activeTab}
-                        className="storage-detail-tabs content-tabs"
-                        id="storage-detail-tabs"
-                        onSelect={(key) => onTabChange(key)}
-                    >
-                        <div>
-                            <Nav bsStyle="tabs">
-                                <NavItem eventKey={EntityFieldFilterTabs.Filter}>Filter</NavItem>
-                                {(!activeField || activeField?.allowFaceting()) &&
-                                    <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>Choose values</NavItem>}
-                            </Nav>
-                            <Tab.Content animation>
-                                <Tab.Pane eventKey={EntityFieldFilterTabs.Filter}>
-                                    <div className="search-parent-entity-col-title">Find values for {activeField.caption}</div>
-                                    <FilterExpressionView
-                                        key={activeField.fieldKey}
-                                        field={activeField}
-                                        fieldFilter={null} //TODO find the field filter
-                                    />
-                                </Tab.Pane>
-                                <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
-                                    <div className="search-parent-entity-col-title">Find values for {activeField.caption}</div>
-                                    {
-                                        activeField?.allowFaceting() &&
-                                        <FilterFacetedSelector
-                                            selectDistinctOptions={
-                                                {
-                                                    column: activeField?.fieldKey,
-                                                    // containerFilter: model.containerFilter,
-                                                    // containerPath: model.containerPath,
-                                                    schemaName: entityDataType?.instanceSchemaName,
-                                                    queryName: activeParent,
-                                                    viewName: "",
-                                                    filterArray: [], //TODO use active filters to filter distinct values, but exclude filters on current field
-                                                    parameters: null, //TODO use active parameters to filter distinct values
-                                                }
-                                            }
+                    <div>
+                        <Tab.Container
+                            activeKey={activeTab}
+                            className="storage-detail-tabs content-tabs"
+                            id="storage-detail-tabs"
+                            onSelect={(key) => onTabChange(key)}
+                        >
+                            <div>
+                                <Nav bsStyle="tabs">
+                                    <NavItem eventKey={EntityFieldFilterTabs.Filter}>Filter</NavItem>
+                                    {(!activeField || activeField?.allowFaceting()) &&
+                                        <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>Choose values</NavItem>}
+                                </Nav>
+                                <Tab.Content animation>
+                                    <Tab.Pane eventKey={EntityFieldFilterTabs.Filter}>
+                                        <div className="search-field-col-sub-title">Find values for {activeField.caption}</div>
+                                        <FilterExpressionView
+                                            key={activeField.fieldKey}
+                                            field={activeField}
+                                            fieldFilter={null} //TODO find the field filter
                                         />
-                                    }
-                                </Tab.Pane>
-                            </Tab.Content>
-                        </div>
-                    </Tab.Container>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
+                                        <div className="search-field-col-sub-title">Find values for {activeField.caption}</div>
+                                        {
+                                            activeField?.allowFaceting() &&
+                                            <FilterFacetedSelector
+                                                selectDistinctOptions={
+                                                    {
+                                                        column: activeField?.fieldKey,
+                                                        // containerFilter: model.containerFilter,
+                                                        // containerPath: model.containerPath,
+                                                        schemaName: entityDataType?.instanceSchemaName,
+                                                        queryName: activeParent,
+                                                        viewName: "",
+                                                        filterArray: [], //TODO use active filters to filter distinct values, but exclude filters on current field
+                                                        parameters: null, //TODO use active parameters to filter distinct values
+                                                    }
+                                                }
+                                            />
+                                        }
+                                    </Tab.Pane>
+                                </Tab.Content>
+                            </div>
+                        </Tab.Container>
+                    </div>
                 }
             </Col>
         </Row>

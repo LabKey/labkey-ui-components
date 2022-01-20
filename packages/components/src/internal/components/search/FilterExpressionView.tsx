@@ -1,5 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import DatePicker from 'react-datepicker';
+import { FormControl } from 'react-bootstrap';
+
 
 import { Filter } from "@labkey/api";
 
@@ -47,6 +49,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         if (!activeFilterType || !activeFilterType['valueRequired'])
             return null;
 
+        const suffix = isSecondInput ? '-second' : '';
+
         if (field.jsonType === "date") {
             return (
                 <DatePicker
@@ -58,7 +62,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                     selected={null}
                     startDate={null}
                     endDate={null}
-                    name={'field-value-date'}
+                    name={'field-value-date' + suffix}
                     onChange={updateDateFilterFieldValue}
                     minDate={null}
                     dateFormat={App.getDateFormat()}/>
@@ -91,10 +95,23 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             )
         }
 
+        if (field.jsonType === 'int' || field.jsonType === 'float') {
+            return (
+                <FormControl
+                    className="form-control"
+                    step={field.jsonType === 'int' ? 1 : undefined}
+                    name={'field-value-text' + suffix}
+                    onChange={(event:any) => updateTextFilterFieldValue(event?.target?.value)}
+                    type="number"
+                    value={null}
+                />
+            )
+        }
+
         return (
             <input
                 className={'form-control'}
-                name={'field-value-text' + (isSecondInput ? '-second' : '')}
+                name={'field-value-text' + suffix}
                 type="text"
                 value={null}
                 onChange={updateTextFilterFieldValue}
@@ -102,6 +119,27 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         );
 
     }, [field, activeFilterType]);
+
+    const renderFilterTypeInputs = useCallback(() => {
+        if (!activeFilterType || !activeFilterType['valueRequired'])
+            return null;
+
+        const isBetweenOperator = activeFilterType['betweenOperator'];
+
+        if (!isBetweenOperator)
+            return renderFilterTypeInput();
+
+        return (
+            <>
+                {renderFilterTypeInput()}
+                <div>and</div>
+                {renderFilterTypeInput(true)}
+            </>
+        )
+
+    }, [field, activeFilterType]);
+
+    console.log(fieldFilterOptions);
 
     return (
         <>
@@ -113,7 +151,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 onChange={onFieldFilterTypeChange}
                 options={fieldFilterOptions}
             />
-            {renderFilterTypeInput()}
+            {renderFilterTypeInputs()}
         </>
 
     );

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* TODO
+
 ### version 2.120.0
 *Released*: 19 January 2022
 * Declare and export the `UPDATE_USER` redux action and wire up updates via reducer.
@@ -12,10 +16,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.118.1
 *Released*: 14 January 2022
 * Share asynchronous upload functionality across LKB and LKSM by pulling relevant code into ui-components
-
-### version TBD
-*Released*: TBD
-* TODO
 
 ### version 2.117.1
 *Released*: 13 January 2022

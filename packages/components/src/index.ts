@@ -507,7 +507,7 @@ import { PipelineJobsListingPage } from './internal/components/pipeline/Pipeline
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
 import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
-import { hasActiveJob } from "./internal/components/pipeline/utils";
+import { hasActivePipelineJob } from "./internal/components/pipeline/utils";
 import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
@@ -1311,7 +1311,7 @@ export {
     // pipeline
     PipelineJobsPage,
     PipelineStatusDetailPage,
-    hasActiveJob,
+    hasActivePipelineJob,
     PipelineJobDetailPage,
     PipelineJobsListingPage,
     PipelineSubNav,
@@ -1431,3 +1431,4 @@ export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { SamplesEditableGridProps } from './internal/components/samples/SamplesEditableGrid';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';
+export type { PageDetailHeaderProps } from './internal/components/forms/PageDetailHeader';

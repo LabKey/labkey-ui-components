@@ -4,7 +4,7 @@ import {Utils} from "@labkey/api";
 import { AppURL } from '../../url/AppURL';
 import {App, AssayUploadResultModel, ProductMenuModel} from '../../../index';
 
-export function hasActiveJob(menu: ProductMenuModel, sectionKey: string, itemLabel: string) : boolean {
+export function hasActivePipelineJob(menu: ProductMenuModel, sectionKey: string, itemLabel: string) : boolean {
     if (!menu.isLoaded)
         return false;
 

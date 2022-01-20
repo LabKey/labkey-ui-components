@@ -396,7 +396,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                     requiredVersion: 17.1,
                     sql: userConfig.sql,
                     saveInSession: userConfig.saveInSession === true,
-                    containerFilter: userConfig.containerFilter ?? getContainerFilter(),
+                    containerFilter: userConfig.containerFilter ?? getContainerFilter(userConfig.containerPath),
                     success: json => {
                         result = handleSelectRowsResponse(json);
                         schemaQuery = SchemaQuery.create(userConfig.schemaName, json.queryName);
@@ -429,7 +429,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                     method: 'POST',
                     // put on this another parameter!
                     columns: userConfig.columns ? userConfig.columns : '*',
-                    containerFilter: userConfig.containerFilter ?? getContainerFilter(),
+                    containerFilter: userConfig.containerFilter ?? getContainerFilter(userConfig.containerPath),
                     success: json => {
                         result = handleSelectRowsResponse(json);
                         hasResults = true;
@@ -909,19 +909,38 @@ export function processRequest(response: any, request: any, reject: (reason?: an
  * provided by `@labkey/components`.
  * @private
  */
-export function getContainerFilter(): Query.ContainerFilter {
+export function getContainerFilter(containerPath?: string): Query.ContainerFilter {
     // Check experimental flag to see if cross-folder data support is enabled.
     if (!isSubfolderDataEnabled()) {
         return undefined;
     }
 
+    const path = containerPath ?? getServerContext().container.path;
+    const isProject = path.split('/').filter(p => !!p).length === 1;
+
     // When requesting data from a top-level folder context the ContainerFilter filters
     // "down" the folder hierarchy for data.
-    if (getServerContext().container.parentPath === '/') {
+    if (isProject) {
         return Query.ContainerFilter.currentAndSubfoldersPlusShared;
     }
 
     // When requesting data from a sub-folder context the ContainerFilter filters
     // "up" the folder hierarchy for data.
+    return Query.ContainerFilter.currentPlusProjectAndShared;
+}
+
+/**
+ * Provides the default ContainerFilter to utilize when requesting data for insert cross-folder.
+ * This ContainerFilter must be explicitly applied to be respected.
+ * @private
+ */
+export function getContainerFilterForInsert(): Query.ContainerFilter {
+    // Check experimental flag to see if cross-folder data support is enabled.
+    if (!isSubfolderDataEnabled()) {
+        return undefined;
+    }
+
+    // When inserting data from a top-level folder or a sub-folder context
+    // the ContainerFilter filters "up" the folder hierarchy for data.
     return Query.ContainerFilter.currentPlusProjectAndShared;
 }

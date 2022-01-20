@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, Record } from 'immutable';
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { ISelectRowsResult, QueryInfo, SchemaQuery } from '../../..';
 
@@ -23,6 +23,7 @@ import * as actions from './actions';
 
 export interface QuerySelectModelProps {
     allResults: Map<string, Map<string, any>>;
+    containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     displayColumn: string;
     delimiter: string;
@@ -44,6 +45,7 @@ export class QuerySelectModel
     extends Record({
         addExactFilter: true,
         allResults: Map<string, Map<string, any>>(),
+        containerFilter: undefined,
         containerPath: undefined,
         displayColumn: undefined,
         delimiter: DELIMITER,
@@ -64,6 +66,7 @@ export class QuerySelectModel
 {
     declare addExactFilter: boolean;
     declare allResults: Map<string, Map<string, any>>;
+    declare containerFilter: Query.ContainerFilter;
     declare containerPath: string;
     declare displayColumn: string;
     declare delimiter: string;

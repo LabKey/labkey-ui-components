@@ -63,7 +63,7 @@ function initDisplayColumn(queryInfo: QueryInfo, column?: string): string {
 
 export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel> {
     return new Promise((resolve, reject) => {
-        const { componentId, schemaQuery, containerPath } = props;
+        const { componentId, schemaQuery, containerFilter, containerPath } = props;
 
         if (schemaQuery) {
             const { queryName, schemaName } = schemaQuery;
@@ -95,6 +95,7 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                         }
 
                         selectRows({
+                            containerFilter,
                             containerPath,
                             schemaName,
                             queryName,
@@ -231,6 +232,7 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
     // 35112: Explicitly request exact matches -- can be disabled via QuerySelectModel.addExactFilter = false
     return searchRows(
         {
+            containerFilter: model.containerFilter,
             containerPath: model.containerPath,
             schemaName: schemaQuery.getSchema(),
             queryName: schemaQuery.getQuery(),

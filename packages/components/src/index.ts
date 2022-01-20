@@ -178,6 +178,7 @@ import {
 import {
     deleteRows,
     getContainerFilter,
+    getContainerFilterForInsert,
     getQueryDetails,
     importData,
     InsertFormats,
@@ -780,6 +781,7 @@ export {
     initQueryGridState,
     initNotificationsState,
     getContainerFilter,
+    getContainerFilterForInsert,
     getStateQueryGridModel,
     getStateModelId,
     getQueryGridModel,

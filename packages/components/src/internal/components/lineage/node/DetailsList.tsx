@@ -4,7 +4,7 @@ import { SVGIcon } from '../../../..';
 
 import { LineageItemWithMetadata, LineageIOWithMetadata, LineageNode } from '../models';
 import { LineageNodeCollection } from '../vis/VisGraphGenerator';
-import { getLineageNodeTitle } from '../utils';
+import { DEFAULT_ICON_URL, getLineageNodeTitle } from '../utils';
 import { NodeInteractionConsumer, WithNodeInteraction } from '../actions';
 import { LineageDataLink } from '../LineageDataLink';
 
@@ -119,8 +119,8 @@ export class DetailsListSteps extends PureComponent<DetailsListStepProps> {
             <DetailsList title="Run steps">
                 {node.steps.map((step, i) => (
                     <div className="lineage-name" key={`${node.lsid}.step.${i}`}>
-                        <SVGIcon className="lineage-sm-icon" iconSrc={step.iconProps.iconURL} />
-                        <span className="spacer-right">{step.protocol?.name || step.name}</span>
+                        <SVGIcon className="lineage-sm-icon" iconSrc={step.iconProps?.iconURL ?? DEFAULT_ICON_URL} />
+                        <span className="lineage-sm-name spacer-right">{step.protocol?.name || step.name}</span>
                         <LineageDataLink
                             onClick={() => {
                                 onSelect(i);
@@ -182,7 +182,7 @@ export class DetailsListLineageItems extends PureComponent<DetailsListLineageIte
                         style={{ fontWeight: highlightNode === item.lsid ? 'bold' : 'normal' }}
                         title={getLineageNodeTitle(item as LineageNode)}
                     >
-                        <SVGIcon className="lineage-sm-icon" iconSrc={item.iconProps.iconURL} />
+                        <SVGIcon className="lineage-sm-icon" iconSrc={item.iconProps?.iconURL ?? DEFAULT_ICON_URL} />
                         <NodeInteractionConsumer>
                             {(context: WithNodeInteraction) => {
                                 if (context.isNodeInGraph(item)) {

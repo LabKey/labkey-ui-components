@@ -341,7 +341,7 @@ export function extractEntityTypeOptionFromRow(
         value: lowerCaseValue ? name.toLowerCase() : name, // we match values on lower case because (at least) when parsed from an id they are lower case
         query: name,
         entityDataType,
-        isFromSharedContainer: caseInsensitive(rowObj, 'Folder/Path').value === SHARED_CONTAINER_PATH,
+        isFromSharedContainer: caseInsensitive(rowObj, 'Folder/Path')?.value === SHARED_CONTAINER_PATH,
     };
 }
 

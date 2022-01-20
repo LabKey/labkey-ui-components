@@ -195,7 +195,7 @@ const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
                     <DetailsListLineageIO item={step} />
                 </Tab>
                 {hasProvenanceModule && (
-                    <Tab eventKey={2} title="Provenance Map">
+                    <Tab eventKey={2} title="Provenance Map" className="lineage-run-step-provenance-map">
                         <RunStepProvenanceMap item={step} />
                     </Tab>
                 )}

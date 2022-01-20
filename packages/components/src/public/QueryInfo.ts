@@ -309,9 +309,7 @@ export class QueryInfo extends Record({
      */
     getVisibleViews(): ViewInfo[] {
         return this.views.sortBy(v => v.label, naturalSort).toArray().filter(
-            view =>
-                // Issue 42628: Hide Biologics details view override in view menu
-                view && !view.hidden && !view.isDefault && view.name.indexOf('~~') !== 0 && view.name !== ViewInfo.BIO_DETAIL_NAME
+            view => view.isVisible
         );
     }
 

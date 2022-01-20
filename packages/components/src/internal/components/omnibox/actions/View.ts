@@ -45,7 +45,7 @@ export class ViewAction implements Action {
             const name = tokens.join(' ').toLowerCase();
 
             queryInfo.views
-                .filter(view => !view.isDefault && view.name.indexOf('~~') !== 0 && view.name.toLowerCase() === name)
+                .filter(view => view.isVisible && view.name.toLowerCase() === name)
                 .forEach(view => {
                     found = true;
                     resolve({
@@ -69,7 +69,7 @@ export class ViewAction implements Action {
             const queryInfo = this.getQueryInfo();
             const name = tokens.join(' ').toLowerCase();
 
-            let views = queryInfo.views.filter(view => !view.isDefault && view.name.indexOf('~~') !== 0);
+            let views = queryInfo.views.filter(view => view.isVisible);
 
             if (name) {
                 views = views.filter(view => view.label.toLowerCase().indexOf(name) >= 0);

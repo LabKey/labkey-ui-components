@@ -1,23 +1,11 @@
 import { Map } from 'immutable';
-import { Ajax, Filter, Query, Utils } from '@labkey/api';
+import { Ajax, Query, Utils } from '@labkey/api';
 
-import {
-    buildURL,
-    getOmittedSampleTypeColumns,
-    QueryConfig,
-    QueryModel,
-    resolveErrorMessage,
-    SAMPLE_STATUS_REQUIRED_COLUMNS,
-    SchemaQuery,
-    SCHEMAS,
-    URLResolver
-} from '../../..';
+import { buildURL, QueryModel, resolveErrorMessage, SchemaQuery, URLResolver } from '../../..';
 import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 
 import { SearchIdData, SearchResultCardData } from './models';
-import { FilterProps } from './FilterCards';
-import { getFilterCardColumnName } from './utils';
-import { User } from '../base/models/User';
+import { SAMPLE_FINDER_VIEW_NAME } from './utils';
 
 export function searchUsingIndex(
     userConfig,
@@ -159,8 +147,6 @@ export function getProcessedSearchHits(
         : undefined;
 }
 
-const SAMPLE_FINDER_VIEW_NAME = "Sample Finder";
-
 export function removeFinderGridView(model: QueryModel): Promise<boolean> {
     return new Promise((resolve, reject) => {
         if (!model.isLoading) {
@@ -201,57 +187,3 @@ export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Prom
     });
 }
 
-function getSampleFinderConfigId(finderId: string, suffix: string): string {
-    return finderId + "|" + suffix;
-}
-
-// exported for jest testing
-export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<QueryConfig>  {
-    const baseFilters = [];
-    const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
-    cards.forEach(card => {
-        if (card.filterArray.length) {
-            card.filterArray.forEach(filter => {
-                requiredColumns.push(filter.getColumnName());
-            });
-            baseFilters.push(...card.filterArray);
-        } else {
-            const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
-
-            requiredColumns.push(cardColumnName);
-            baseFilters.push(Filter.create(cardColumnName + "/Name", null, Filter.Types.NONBLANK));
-        }
-    });
-    return {
-        requiredColumns,
-        baseFilters
-    };
-}
-
-export function getSampleFinderQueryConfigs(user: User, sampleTypeNames: string[], cards: FilterProps[], finderId: string): {[key: string]: QueryConfig} {
-    const omittedColumns = getOmittedSampleTypeColumns(user);
-    const commonConfig = getSampleFinderCommonConfigs(cards);
-    const allSamplesKey = getSampleFinderConfigId(finderId,'exp/materials');
-    const configs: { [key: string]: QueryConfig } = {
-        [allSamplesKey]: {
-            id: allSamplesKey,
-            title: 'All Samples',
-            schemaQuery: SchemaQuery.create(SCHEMAS.EXP_TABLES.MATERIALS.schemaName, SCHEMAS.EXP_TABLES.MATERIALS.queryName, SAMPLE_FINDER_VIEW_NAME),
-            omittedColumns: ['Run'],
-            ...commonConfig
-        },
-    };
-
-    for (const name of sampleTypeNames) {
-        const id = getSampleFinderConfigId(finderId, 'samples/' + name);
-        const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
-        configs[id] = {
-            id,
-            title: name,
-            schemaQuery,
-            omittedColumns,
-            ...commonConfig,
-        };
-    }
-    return configs;
-}

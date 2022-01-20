@@ -100,8 +100,8 @@ export const PicklistEditModal: FC<Props> = memo(props => {
             // Using sampleFieldKey as proxy flag to determine if lookup is needed
             if (sampleFieldKey && selectedIds) {
                 const ids = await getSampleIdsFromSelection(
-                    assaySchemaQuery.schemaName,
-                    assaySchemaQuery.queryName,
+                    assaySchemaQuery?.schemaName,
+                    assaySchemaQuery?.queryName,
                     [...selectedIds],
                     sampleFieldKey
                 );

@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { Col, Row, Nav, NavItem, Tab } from 'react-bootstrap';
 import { List } from "immutable";
 
-import { Filter, Query } from "@labkey/api";
+import { Filter } from "@labkey/api";
 
 import { EntityDataType, IEntityTypeOption } from "../entities/models";
 import { getEntityTypeOptions } from "../entities/actions";
@@ -10,7 +10,8 @@ import { QueryColumn } from "../../../public/QueryColumn";
 import { getQueryDetails } from "../../query/api";
 import { LoadingSpinner } from "../base/LoadingSpinner";
 import { ChoicesListItem } from "../base/ChoicesListItem";
-import { naturalSort } from "../../../public/sort";
+import { FilterFacetedSelector } from "./FilterFacetedSelector";
+import { FilterExpressionView } from "./FilterExpressionView";
 
 interface FieldFilters {
     fieldKey: string;
@@ -42,7 +43,6 @@ export const EntityFieldFilterParentSelector: FC<Props> = memo(props => {
     const [activeParent, setActiveParent] = useState<string>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
     const [entityFields, setEntityFields] = useState<List<QueryColumn>>(undefined);
-    const [activeFieldDistinctValues, setActiveFieldDistinctValues] = useState<any[]>(undefined);
     const [activeTab, setActiveTab] = useState<EntityFieldFilterTabs>(EntityFieldFilterTabs.Filter);
 
     useEffect(() => {
@@ -62,7 +62,6 @@ export const EntityFieldFilterParentSelector: FC<Props> = memo(props => {
 
     const onEntityClick = useCallback(async (queryName) => {
         setEntityFields(undefined);
-        setActiveFieldDistinctValues(undefined);
         setActiveParent(queryName);
         // onParentSelect(queryName);
         try {
@@ -76,51 +75,19 @@ export const EntityFieldFilterParentSelector: FC<Props> = memo(props => {
 
     }, [onParentSelect, entityDataType]);
 
-    const loadDistinctValues = useCallback((falseReload?: boolean) => {
-        if (activeFieldDistinctValues && !falseReload)
-            return;
-
-        const options = {
-            column: activeField.fieldKey,
-            // containerFilter: model.containerFilter,
-            // containerPath: model.containerPath,
-            schemaName: entityDataType.instanceSchemaName,
-            queryName: activeParent,
-            viewName: "",
-            filterArray: [], //TODO use active filters to filter distinct values, but exclude filters on current field
-            parameters: null, //TODO use active parameters to filter distinct values
-        };
-
-        Query.selectDistinctRows({
-            ...options,
-            success: result => {
-                const distinctValues = result.values.sort(naturalSort);
-                setActiveFieldDistinctValues(distinctValues);
-            },
-            failure: error => {
-                //TODO
-            }
-        });
-    }, [activeFieldDistinctValues, activeField, entityDataType, activeParent]);
-
     const onFieldClick = useCallback((queryColumn: QueryColumn) => {
         setActiveField(queryColumn);
-        setActiveFieldDistinctValues(undefined);
 
         if (activeTab === EntityFieldFilterTabs.ChooseValues) {
-            if (queryColumn.allowFaceting())
-                loadDistinctValues(true);
-            else
+            if (!queryColumn.allowFaceting())
                 setActiveTab(EntityFieldFilterTabs.Filter);
         }
 
-    }, [entityDataType, activeParent, loadDistinctValues, activeTab, setActiveTab]);
+    }, [entityDataType, activeParent, activeTab, setActiveTab]);
 
     const onTabChange = useCallback((tabKey: any) => {
         setActiveTab(tabKey);
-        if (tabKey === EntityFieldFilterTabs.ChooseValues)
-            loadDistinctValues();
-    }, [loadDistinctValues]);
+    }, []);
 
     return (
         <Row className="search-parent-entity-panel">
@@ -181,37 +148,31 @@ export const EntityFieldFilterParentSelector: FC<Props> = memo(props => {
                             </Nav>
                             <Tab.Content animation>
                                 <Tab.Pane eventKey={EntityFieldFilterTabs.Filter}>
-                                    {'TODO'}
+                                    <div className="search-parent-entity-col-title">Find values for {activeField.caption}</div>
+                                    <FilterExpressionView
+                                        key={activeField.fieldKey}
+                                        field={activeField}
+                                        fieldFilter={null} //TODO find the field filter
+                                    />
                                 </Tab.Pane>
                                 <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
-                                    {(!activeFieldDistinctValues && activeField?.allowFaceting()) && <LoadingSpinner/>}
+                                    <div className="search-parent-entity-col-title">Find values for {activeField.caption}</div>
                                     {
                                         activeField?.allowFaceting() &&
-                                        <div className="list-group search-parent-entity-col">
-                                            <ul className="nav nav-stacked labkey-wizard-pills">
-                                                {activeFieldDistinctValues?.map((value, index) => {
-                                                    let displayValue = value;
-                                                    if (value === null || value === undefined)
-                                                        displayValue = '[blank]';
-                                                    if (value === true)
-                                                        displayValue = 'TRUE';
-                                                    if (value === false)
-                                                        displayValue = 'FALSE';
-                                                    return (
-                                                        <li key={index}>
-                                                            <div className="form-check">
-                                                                <input className="form-check-input"
-                                                                       type="checkbox"
-                                                                       name={'field-value-' + index}
-                                                                       disabled={true}
-                                                                       checked={false}/>
-                                                                <span style={{marginLeft: 5}}>{displayValue}</span>
-                                                            </div>
-                                                        </li>
-                                                    )
-                                                })}
-                                            </ul>
-                                        </div>
+                                        <FilterFacetedSelector
+                                            selectDistinctOptions={
+                                                {
+                                                    column: activeField?.fieldKey,
+                                                    // containerFilter: model.containerFilter,
+                                                    // containerPath: model.containerPath,
+                                                    schemaName: entityDataType?.instanceSchemaName,
+                                                    queryName: activeParent,
+                                                    viewName: "",
+                                                    filterArray: [], //TODO use active filters to filter distinct values, but exclude filters on current field
+                                                    parameters: null, //TODO use active parameters to filter distinct values
+                                                }
+                                            }
+                                        />
                                     }
                                 </Tab.Pane>
                             </Tab.Content>
@@ -220,7 +181,6 @@ export const EntityFieldFilterParentSelector: FC<Props> = memo(props => {
                 }
             </Col>
         </Row>
-
     );
 });
 

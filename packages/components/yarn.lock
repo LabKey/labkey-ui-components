@@ -738,10 +738,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.7.3-sampleFinderTabbedGrids.0":
-  version "1.7.3-sampleFinderTabbedGrids.0"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.7.3-sampleFinderTabbedGrids.0.tgz#ec9840e4a56bbf426e651956a9ed308c752fb37c"
-  integrity sha1-7JhA5KVrv0JuZRlWqe0wjHUvs3w=
+"@labkey/api@1.7.3":
+  version "1.7.3"
+  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.7.3.tgz#76c992aa69324b1827e1cb96851a18153c8aec25"
+  integrity sha1-dsmSqmkySxgn4cuWhRoYFTyK7CU=
 
 "@labkey/eslint-config-base@0.0.11-fb-discussions.2":
   version "0.0.11-fb-discussions.2"

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.121.0
+*Released*: 21 January 2022
 * Update `SampleTypeTabbedGridPanel` to show row count on tabs
 * Added utility `isSamplesSchema` to check for `exp.materials` and `samples.X`
 * Updates to `SampleFinderSection` for showing filtered tabbed grids

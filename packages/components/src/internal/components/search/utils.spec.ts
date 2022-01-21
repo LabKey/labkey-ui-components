@@ -1,24 +1,23 @@
-import { Filter } from '@labkey/api';
-
-import { fromJS, List, Map } from 'immutable';
-
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { TEST_USER_EDITOR, TEST_USER_GUEST } from '../../../test/data/users';
-import { SCHEMAS } from '../../schemas';
-import { FREEZER_MANAGER_APP_PROPERTIES } from '../../app/constants';
-import { QueryInfo } from '../../../public/QueryInfo';
-import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-import { SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
 import { TestTypeDataType } from '../../../test/data/constants';
-import { QueryColumn } from '../../../public/QueryColumn';
 
 import {
     getFinderStartText,
     getFinderViewColumnsConfig,
     getSampleFinderCommonConfigs,
     getSampleFinderQueryConfigs,
-    SAMPLE_FINDER_VIEW_NAME,
+    SAMPLE_FINDER_VIEW_NAME
 } from './utils';
+import { SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
+import { Filter } from '@labkey/api';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { TEST_USER_EDITOR, TEST_USER_GUEST } from '../../../test/data/users';
+import { SCHEMAS } from '../../schemas';
+import { FREEZER_MANAGER_APP_PROPERTIES } from '../../app/constants';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { fromJS, List, Map } from 'immutable';
+import { QueryColumn } from '../../../public/QueryColumn';
+
 
 test('getFinderStartText', () => {
     expect(getFinderStartText([])).toBe('Start by adding  properties.');
@@ -156,11 +155,17 @@ describe('getSampleFinderQueryConfigs', () => {
         inventory: {
             productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
         },
+
     };
+    LABKEY.uuids = [
+        'uuid-1',
+        'uuid-2',
+        'uuid-3'
+    ];
     test('no sample type names, no cards', () => {
         expect(getSampleFinderQueryConfigs(TEST_USER_EDITOR, [], [], 'testId')).toStrictEqual({
-            'testId|exp/materials': {
-                id: 'testId|exp/materials',
+            'uuid-1-testId|exp/materials': {
+                id: 'uuid-1-testId|exp/materials',
                 title: 'All Samples',
                 schemaQuery: SchemaQuery.create(
                     SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
@@ -188,8 +193,8 @@ describe('getSampleFinderQueryConfigs', () => {
                 'testId'
             )
         ).toStrictEqual({
-            'testId|exp/materials': {
-                id: 'testId|exp/materials',
+            'uuid-1-testId|exp/materials': {
+                id: 'uuid-1-testId|exp/materials',
                 title: 'All Samples',
                 schemaQuery: SchemaQuery.create(
                     SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
@@ -207,8 +212,8 @@ describe('getSampleFinderQueryConfigs', () => {
         expect(
             getSampleFinderQueryConfigs(TEST_USER_GUEST, ['Sample Type 1', 'Sample Type 2'], [], 'testId')
         ).toStrictEqual({
-            'testId|exp/materials': {
-                id: 'testId|exp/materials',
+            'uuid-1-testId|exp/materials': {
+                id: 'uuid-1-testId|exp/materials',
                 title: 'All Samples',
                 schemaQuery: SchemaQuery.create(
                     SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
@@ -219,16 +224,16 @@ describe('getSampleFinderQueryConfigs', () => {
                 baseFilters: [],
                 requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
             },
-            'testId|samples/Sample Type 1': {
-                id: 'testId|samples/Sample Type 1',
+            'uuid-1-testId|samples/Sample Type 1': {
+                id: 'uuid-1-testId|samples/Sample Type 1',
                 title: 'Sample Type 1',
                 schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 1', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
                 baseFilters: [],
                 requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
             },
-            'testId|samples/Sample Type 2': {
-                id: 'testId|samples/Sample Type 2',
+            'uuid-1-testId|samples/Sample Type 2': {
+                id: 'uuid-1-testId|samples/Sample Type 2',
                 title: 'Sample Type 2',
                 schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 2', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
@@ -248,8 +253,8 @@ describe('getSampleFinderQueryConfigs', () => {
         expect(
             getSampleFinderQueryConfigs(TEST_USER_GUEST, ['Sample Type 1', 'Sample Type 2'], cards, 'testId')
         ).toStrictEqual({
-            'testId|exp/materials': {
-                id: 'testId|exp/materials',
+            'uuid-1-testId|exp/materials': {
+                id: 'uuid-1-testId|exp/materials',
                 title: 'All Samples',
                 schemaQuery: SchemaQuery.create(
                     SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
@@ -260,16 +265,16 @@ describe('getSampleFinderQueryConfigs', () => {
                 baseFilters: [Filter.create('QueryableInputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
                 requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'QueryableInputs/Materials/TestQuery'],
             },
-            'testId|samples/Sample Type 1': {
-                id: 'testId|samples/Sample Type 1',
+            'uuid-1-testId|samples/Sample Type 1': {
+                id: 'uuid-1-testId|samples/Sample Type 1',
                 title: 'Sample Type 1',
                 schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 1', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
                 baseFilters: [Filter.create('QueryableInputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
                 requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'QueryableInputs/Materials/TestQuery'],
             },
-            'testId|samples/Sample Type 2': {
-                id: 'testId|samples/Sample Type 2',
+            'uuid-1-testId|samples/Sample Type 2': {
+                id: 'uuid-1-testId|samples/Sample Type 2',
                 title: 'Sample Type 2',
                 schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 2', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],

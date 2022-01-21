@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item #9767: Improve sample actions from assay results grid
+  * Add Sample button to Assay Results page
+  * Adjust picklist & workflow job creation & update actions and components
+
 ### version 2.120.0
 *Released*: 19 January 2022
 * Declare and export the `UPDATE_USER` redux action and wire up updates via reducer.

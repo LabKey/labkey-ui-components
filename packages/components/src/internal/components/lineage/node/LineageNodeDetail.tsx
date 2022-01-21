@@ -2,8 +2,9 @@
  * Copyright (c) 2016-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, memo, PureComponent, ReactNode, useCallback, useState, useMemo } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
+import { List } from 'immutable';
 
 import {
     createLineageNodeCollections,
@@ -11,8 +12,12 @@ import {
     LineageNodeCollectionByType,
 } from '../vis/VisGraphGenerator';
 import { LineageSummary } from '../LineageSummary';
-import { LineageNode } from '../models';
+import { LineageIOWithMetadata, LineageNode } from '../models';
 import { LineageOptions } from '../types';
+
+import { Grid, GridColumn } from '../../base/Grid';
+
+import { hasModule } from '../../../app/utils';
 
 import { LineageDetail } from './LineageDetail';
 import { DetailHeader, NodeDetailHeader } from './NodeDetailHeader';
@@ -164,23 +169,67 @@ interface RunStepNodeDetailProps {
     stepIdx: number;
 }
 
-class RunStepNodeDetail extends PureComponent<RunStepNodeDetailProps> {
-    render(): ReactNode {
-        const { node, onBack, stepIdx } = this.props;
-        const step = node.steps.get(stepIdx);
+const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
+    const { node, onBack, stepIdx } = props;
+    const [tabKey, setTabKey] = useState<number>(1);
+    const step = node.steps.get(stepIdx);
+    const stepName = step.protocol?.name || step.name;
+    const hasProvenanceModule = useMemo(() => hasModule('provenance'), []);
 
-        return (
-            <div className="run-step-node-detail">
-                <DetailHeader header={`Run Step: ${step.name}`} iconSrc="default">
-                    <a className="lineage-link" onClick={onBack}>
-                        {node.name}
-                    </a>
-                    <span className="spacer-left">&gt;</span>
-                    <span className="spacer-left">{step.name}</span>
-                </DetailHeader>
-                <LineageDetail item={step} />
-                <DetailsListLineageIO item={step} />
-            </div>
-        );
+    const changeTab = useCallback((newTabKey: number) => {
+        setTabKey(newTabKey);
+    }, []);
+
+    return (
+        <div className="run-step-node-detail">
+            <DetailHeader header={`Run Step: ${stepName}`} iconSrc="default">
+                <a className="lineage-link" onClick={onBack}>
+                    {node.name}
+                </a>
+                <span className="spacer-left">&gt;</span>
+                <span className="spacer-left">{stepName}</span>
+            </DetailHeader>
+            <Tabs activeKey={tabKey} defaultActiveKey={1} id="lineage-run-step-tabs" onSelect={changeTab as any}>
+                <Tab eventKey={1} title="Step Details">
+                    <LineageDetail item={step} />
+                    <DetailsListLineageIO item={step} />
+                </Tab>
+                {hasProvenanceModule && (
+                    <Tab eventKey={2} title="Provenance Map" className="lineage-run-step-provenance-map">
+                        <RunStepProvenanceMap item={step} />
+                    </Tab>
+                )}
+            </Tabs>
+        </div>
+    );
+});
+
+const provenanceCellRenderer = (data, row) => {
+    const name = data?.get('name');
+    const url = data?.get('url');
+    if (url) {
+        return <a href={url}>{name}</a>;
     }
+    return name;
+};
+
+const PROVENANCE_MAP_COLS = List([
+    new GridColumn({
+        index: 'from',
+        title: 'From',
+        cell: provenanceCellRenderer,
+    }),
+    new GridColumn({
+        index: 'to',
+        title: 'To',
+        cell: provenanceCellRenderer,
+    }),
+]);
+
+export interface RunStepProvenanceMapProps {
+    item: LineageIOWithMetadata;
 }
+
+const RunStepProvenanceMap: FC<RunStepProvenanceMapProps> = memo(({ item }) => {
+    return <Grid columns={PROVENANCE_MAP_COLS} data={item?.provenanceMap ?? []} />;
+});

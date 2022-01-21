@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD January 2022
+* Item 9875: Add AssayDefinitionModel requireCommentOnQCStateChange prop
+
 ### version 2.120.1
 *Released*: 20 January 2022
 * Increase z-index of react-datepicker popover

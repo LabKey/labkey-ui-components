@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 9932: Sample Type Insights panel
+  * Refactor HorizontalBarSection from inventory module (previously StorageAllocationSection)
+
 ### version 2.121.0
 *Released*: 21 January 2022
 * Update `SampleTypeTabbedGridPanel` to show row count on tabs

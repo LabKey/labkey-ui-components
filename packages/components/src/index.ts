@@ -434,6 +434,7 @@ import {
 } from './public/QueryModel/utils';
 import { useRouteLeave, withRouteLeave } from './internal/util/RouteLeave';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
+import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
 import { CHART_GROUPS } from './internal/components/chart/configs';
 import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
@@ -1054,6 +1055,7 @@ export {
     BaseBarChart,
     BarChartViewer,
     CHART_GROUPS,
+    HorizontalBarSection,
     processChartData,
     DataViewInfoTypes,
     loadReports,
@@ -1429,3 +1431,4 @@ export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { SamplesEditableGridProps } from './internal/components/samples/SamplesEditableGrid';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';
+export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';

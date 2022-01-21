@@ -5,3 +5,63 @@
 .base-bar-chart a.bar-individual {
     cursor: pointer;
 }
+
+.horizontal-bar--chart-container {
+    margin-top: 30px;
+}
+
+.horizontal-bar--chart-legend {
+    color: grey;
+    margin-bottom: 15px;
+}
+
+.horizontal-bar-section {
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.horizontal-bar--title {
+    width: 150px;
+}
+
+.horizontal-bar--subtitle {
+    color: grey;
+}
+
+.horizontal-bar-part {
+    display: inline-block;
+    position:relative;
+    height:20px;
+}
+
+.horizontal-bar--linked {
+    cursor: pointer;
+}
+
+.horizontal-bar--begin {
+    border-left: 1px solid lightgray;
+}
+
+.horizontal-bar--filled {
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+}
+
+.horizontal-bar--end {
+    border-right: 1px solid lightgray;
+}
+
+.horizontal-bar--open {
+    background: white;
+    border: 1px solid lightgray;
+}
+
+.horizontal-bar--linkSpanner {
+    position:absolute;
+    width:100%;
+
+    top:0;
+    left: 0;
+    z-index: 1;
+}

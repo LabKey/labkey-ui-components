@@ -1,4 +1,4 @@
-import { Filter } from '@labkey/api';
+import { Filter, getServerContext } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -54,7 +54,8 @@ export function getFinderViewColumnsConfig(queryModel: QueryModel): { hasUpdates
 export const SAMPLE_FINDER_VIEW_NAME = 'Sample Finder';
 
 function getSampleFinderConfigId(finderId: string, suffix: string): string {
-    return finderId + '|' + suffix;
+    const { uuids } = getServerContext();
+    return uuids[0] + "-" + finderId + '|' + suffix;
 }
 
 // exported for jest testing

@@ -890,11 +890,12 @@ export async function getSampleIdsFromSelection(
     const sampleIds = new Set<string>();
 
     if (sampleFieldKey) {
-        const { data, dataIds } = await getSelectedData(schemaName, queryName, selected);
+        const rowIdFieldKey = `${sampleFieldKey}/RowId`;  //Pull the sample's rowId
+        const { data, dataIds } = await getSelectedData(schemaName, queryName, selected, 'RowId,' + rowIdFieldKey); // Include the RowId column to prevent warnings
         if (data) {
             const rows = data.toJS();
             dataIds.forEach(rowId => {
-                const val = rows[rowId]?.[sampleFieldKey]?.value;
+                const val = rows[rowId]?.[rowIdFieldKey]?.value;
                 if (val) {
                     sampleIds.add(val);
                 }

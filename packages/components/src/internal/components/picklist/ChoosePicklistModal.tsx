@@ -282,6 +282,13 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             })();
         }, [sampleFieldKey, selectedIds, assaySchemaQuery]);
 
+        // Not sure why this is needed, refreshes modal with updated validation data after sampleIds are updated
+        useEffect(() => {
+            (async () => {
+                await validateSamples();
+            })();
+        }, [api, selectionKey, sampleIds]);
+
         const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
             setSearch(event.target.value.trim().toLowerCase());
         }, []);

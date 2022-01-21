@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.90.4
-*Released*: TBD
+*Released*: 21 January 2022
 * Item 9818: Lineage graph details panel updates to show object input/outputs and run step provenance map
   * update Lineage related models for provenanceMap, objectInputs, and objectOutputs
   * display Object Inputs and Object Outputs as collapsible details list (next to Material and Data Inputs/Outputs)

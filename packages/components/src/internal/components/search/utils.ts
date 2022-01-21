@@ -23,8 +23,8 @@ export function getSampleFinderFilterTypesForType(jsonType: JsonType) : any[] {
     ;
 
     if (jsonType === 'date') {
-        filterList.push(Filter.Types.DATE_BETWEEN);
-        filterList.push(Filter.Types.DATE_NOT_BETWEEN);
+        filterList.push(Filter.Types.BETWEEN);
+        filterList.push(Filter.Types.NOT_BETWEEN);
     }
 
     let filters = [];
@@ -36,7 +36,7 @@ export function getSampleFinderFilterTypesForType(jsonType: JsonType) : any[] {
             label: filter.getDisplayText(),
             valueRequired: filter.isDataValueRequired(),
             multiValue: filter.isMultiValued(),
-            betweenOperator: ['between', 'notbetween', 'datebetween', 'datenotbetween'].indexOf(urlSuffix) > -1
+            betweenOperator: ['between', 'notbetween'].indexOf(urlSuffix) > -1
         });
     })
 

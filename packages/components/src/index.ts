@@ -297,6 +297,8 @@ import {
     getSampleTypeDetails,
     getSelectedItemSamples,
     updateSamplesStatus,
+    getSampleTypes,
+    getSelectedSampleTypes,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
@@ -327,6 +329,7 @@ import {
     isSampleOperationPermitted,
     getSampleSetMenuItem,
     SamplesManageButtonSections,
+    isSamplesSchema,
 } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
@@ -926,6 +929,7 @@ export {
     fetchDataClass,
     filterSampleRowsForOperation,
     isSampleOperationPermitted,
+    isSamplesSchema,
     getSampleSetMenuItem,
     getFilterForSampleOperation,
     getSampleDeleteMessage,
@@ -955,6 +959,8 @@ export {
     createQueryConfigFilteredBySample,
     getSelectedItemSamples,
     updateSamplesStatus,
+    getSampleTypes,
+    getSelectedSampleTypes,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,
     getDeleteSharedSampleTypeUrl,

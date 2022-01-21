@@ -35,6 +35,7 @@ import {
     naturalSortByProperty,
     QueryColumn,
     QueryConfig,
+    QueryModel,
     resolveErrorMessage,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -879,4 +880,49 @@ export function updateSamplesStatus(
         rows: updatedRows,
         auditBehavior: auditBehavior ?? AuditBehaviorTypes.DETAILED,
     });
+}
+
+export function getSampleTypes(): Promise<Array<{ id: number; label: string }>> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
+            queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
+            sort: 'Name',
+            filterArray: [Filter.create('Category', 'media', Filter.Types.NEQ_OR_NULL)],
+            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+        })
+            .then(response => {
+                const { key, models, orderedModels } = response;
+                const sampleTypeOptions = [];
+                orderedModels[key].forEach(row => {
+                    const data = models[key][row];
+                    sampleTypeOptions.push({ id: data.RowId.value, label: data.Name.value });
+                });
+                resolve(sampleTypeOptions);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
+
+export async function getSelectedSampleTypes(model: QueryModel): Promise<Array<string>> {
+    const { queryInfo } = model;
+    return new Promise(async (resolve, reject) => {
+        let selectedSampleTypes = [];
+        try {
+            const {data} = await getSelectedData(queryInfo.schemaName, queryInfo.name, Array.from(model.selections), "RowId,SampleSet");
+            data.forEach(item => {
+                const sampleType = item.getIn(['SampleSet', 'displayValue']);
+                if (selectedSampleTypes.indexOf(sampleType) === -1)
+                    selectedSampleTypes.push(sampleType);
+            });
+            resolve(selectedSampleTypes);
+        }
+        catch (reason) {
+            console.error("Problem getting selected data from model", queryInfo, model.selections);
+            reject(resolveErrorMessage(reason));
+        }
+    })
 }

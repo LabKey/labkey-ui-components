@@ -8,10 +8,17 @@ import { Section } from '../base/Section';
 
 import { capitalizeFirstChar } from '../../util/utils';
 
+import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
+
 import { FilterCards } from './FilterCards';
 import { SampleFinderHeaderButtons, SampleFinderSection } from './SampleFinderSection';
 
 describe('SampleFinderSection', () => {
+    LABKEY.moduleContext = {
+        samplemanagement: {
+            productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
+        },
+    };
     test('SampleFinderHeaderButtons', () => {
         const wrapper = mount(
             <SampleFinderHeaderButtons
@@ -37,6 +44,7 @@ describe('SampleFinderSection', () => {
                 getSampleAuditBehaviorType={jest.fn()}
                 samplesEditableGridProps={{}}
                 parentEntityDataTypes={[TestTypeDataType]}
+                sampleTypeNames={[]}
             />
         );
         const section = wrapper.find(Section);

@@ -12,6 +12,7 @@ import {
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleStateType,
+    SchemaQuery,
     SCHEMAS,
 } from '../../..';
 
@@ -206,3 +207,20 @@ export const shouldShowButtons = (
 ): boolean => {
     return hideButtons === undefined || hideButtons.indexOf(action) === -1;
 };
+
+export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
+    const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
+    if (lcSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) return true;
+
+    const lcQueryName = schemaQuery?.queryName?.toLowerCase();
+    if (
+        lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA &&
+        lcQueryName === SCHEMAS.EXP_TABLES.MATERIALS.queryName.toLowerCase()
+    )
+        return true;
+
+    return (
+        lcSchemaName === SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA &&
+        lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase()
+    );
+}

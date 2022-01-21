@@ -699,6 +699,14 @@ export class QueryModel {
     }
 
     /**
+     * An array of [[ViewInfo]] objects that are visible for a user to choose in the view menu. Note that the returned
+     * array will be sorted by view label.
+     */
+    get visibleViews(): ViewInfo[] {
+        return this.queryInfo?.getVisibleViews();
+    }
+
+    /**
      * True if data has been loaded, even if no rows were returned.
      */
     get hasData(): boolean {

@@ -6,6 +6,23 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 9815: Sample Finder v1 - Filter dialog field expression filters
     * Add EntityFieldFilterParentSelector, FilterExpressionView, FilterFacetedSelector
 
+### version 2.121.0
+*Released*: 21 January 2022
+* Update `SampleTypeTabbedGridPanel` to show row count on tabs
+* Added utility `isSamplesSchema` to check for `exp.materials` and `samples.X`
+* Updates to `SampleFinderSection` for showing filtered tabbed grids
+* Fix for Issue #44339 to allow create operations on selections from the "All Samples" grid in the tabbed grid.
+* Consolidate logic for `ViewSelector` and `ViewsMenu` for finding views to include in menu
+* Move `getSampleTypes` method here from inventory module and add `getSelectedSampleTypes` utility action
+
+### version 2.120.1
+*Released*: 20 January 2022
+* Increase z-index of react-datepicker popover
+
+### version 2.120.0
+*Released*: 19 January 2022
+* Declare and export the `UPDATE_USER` redux action and wire up updates via reducer.
+
 ### version 2.119.0
 *Released*: 14 January 2022
 * Issue 44511: Ability to change a field's data type to known safe alternatives

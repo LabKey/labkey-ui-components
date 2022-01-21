@@ -5,6 +5,7 @@
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 
+import { User } from '../components/base/models/User';
 import { ServerActivity } from '../components/notifications/model';
 
 import {
@@ -14,6 +15,7 @@ import {
     MENU_LOADING_START,
     MENU_RELOAD,
     SET_RELOAD_REQUIRED,
+    UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     USER_PERMISSIONS_REQUEST,
     USER_PERMISSIONS_SUCCESS,
@@ -54,6 +56,8 @@ export function getUserPermissions() {
             });
     };
 }
+
+export const updateUser = (userProps: Partial<User>) => ({ type: UPDATE_USER, userProps });
 
 export const updateUserDisplayName = (displayName: string) => ({ type: UPDATE_USER_DISPLAY_NAME, displayName });
 

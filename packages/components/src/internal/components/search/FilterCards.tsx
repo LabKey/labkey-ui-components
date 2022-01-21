@@ -7,17 +7,17 @@ import { capitalizeFirstChar } from '../../util/utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import {FieldFilter} from "./models";
 
-export interface FilterCardProps {
+export interface FilterProps {
     entityDataType: EntityDataType;
     filterArray?: FieldFilter[]; // the filters to be used in conjunction with the schemaQuery
     schemaQuery?: SchemaQuery;
     index?: number;
-    onAdd: (entityDataType: EntityDataType) => void;
 }
 
-interface FilterEditProps extends FilterCardProps {
+interface FilterEditProps extends FilterProps {
     onDelete: (index) => void;
     onEdit: (index) => void;
+    onAdd: (entityDataType: EntityDataType) => void;
 }
 
 // exported for jest testing
@@ -67,7 +67,10 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                     {!filterArray?.length && (
                         <>
                             <hr />
-                            <div>Showing all {schemaQuery.queryName} Samples</div>
+                            <div>
+                                Showing only samples with {schemaQuery.queryName}{' '}
+                                {entityDataType.nounAsParentSingular.toLowerCase()}s
+                            </div>
                         </>
                     )}
                     {!!filterArray?.length && <>Filter view coming soon ...</>}
@@ -78,16 +81,24 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
 });
 
 interface Props {
-    cards: FilterCardProps[];
+    cards: FilterProps[];
     className?: string;
     onFilterDelete?: (index) => void;
     onFilterEdit?: (index) => void;
+    onAddEntity: (entityDataType: EntityDataType) => void;
 }
 
 export const FilterCards: FC<Props> = props => (
     <div className={'filter-cards ' + props.className}>
         {props.cards.map((cardProps, i) => (
-            <FilterCard {...cardProps} onDelete={props.onFilterDelete} onEdit={props.onFilterEdit} index={i} key={i} />
+            <FilterCard
+                {...cardProps}
+                onAdd={props.onAddEntity}
+                onDelete={props.onFilterDelete}
+                onEdit={props.onFilterEdit}
+                index={i}
+                key={i}
+            />
         ))}
     </div>
 );

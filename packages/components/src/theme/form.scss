@@ -200,7 +200,11 @@ div.react-datepicker,
 div.react-datepicker__current-month {
     font-size: 14px;
 }
-
+.react-datepicker-popper {
+    // The default z-index is 1, but bootstrap sets the z-index for form inputs to 2, which means all form inputs render
+    // on top of the date-picker by default, which makes it hard to use in some situations.
+    z-index: 10;
+}
 .add-control--error-message {
     padding-top: 5px;
 }

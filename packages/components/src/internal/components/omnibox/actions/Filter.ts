@@ -91,7 +91,7 @@ function matchingFilterTypes(filterTypes: Filter.IFilterType[], token: string): 
  * @param column
  * @returns {IFilterType}
  */
-function resolveFilterType(token: string, column: QueryColumn): Filter.IFilterType {
+export function resolveFilterType(token: string, column: QueryColumn): Filter.IFilterType {
     if (SUFFIX_MAP.has(token)) {
         return SUFFIX_MAP.get(token);
     }

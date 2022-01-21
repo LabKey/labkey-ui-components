@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.120.1
+*Released*: 20 January 2022
+* Increase z-index of react-datepicker popover
+
 ### version 2.120.0
 *Released*: 19 January 2022
 * Declare and export the `UPDATE_USER` redux action and wire up updates via reducer.

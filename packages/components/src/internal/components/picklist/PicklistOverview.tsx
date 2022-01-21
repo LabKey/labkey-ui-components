@@ -331,7 +331,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
         <PicklistOverviewWithQueryModels
             {...props}
             key={LOAD_PICKLIST_COUNTER}
-            autoLoad={false}
+            autoLoad
             queryConfigs={queryConfigs}
             picklist={picklist}
             loadPicklist={loadPicklist}

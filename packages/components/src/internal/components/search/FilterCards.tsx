@@ -66,7 +66,10 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                     {!filterArray?.length && (
                         <>
                             <hr />
-                            <div>Showing only samples with {schemaQuery.queryName} {entityDataType.nounAsParentSingular.toLowerCase()}s</div>
+                            <div>
+                                Showing only samples with {schemaQuery.queryName}{' '}
+                                {entityDataType.nounAsParentSingular.toLowerCase()}s
+                            </div>
                         </>
                     )}
                     {!!filterArray?.length && <>Filter view coming soon ...</>}
@@ -87,7 +90,14 @@ interface Props {
 export const FilterCards: FC<Props> = props => (
     <div className={'filter-cards ' + props.className}>
         {props.cards.map((cardProps, i) => (
-            <FilterCard {...cardProps} onAdd={props.onAddEntity} onDelete={props.onFilterDelete} onEdit={props.onFilterEdit} index={i} key={i} />
+            <FilterCard
+                {...cardProps}
+                onAdd={props.onAddEntity}
+                onDelete={props.onFilterDelete}
+                onEdit={props.onFilterEdit}
+                index={i}
+                key={i}
+            />
         ))}
     </div>
 );

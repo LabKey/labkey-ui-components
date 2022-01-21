@@ -881,29 +881,27 @@ export function updateSamplesStatus(
     });
 }
 
-export function getSampleTypes() : Promise<{ id: number, label: string }[]> {
+export function getSampleTypes(): Promise<Array<{ id: number; label: string }>> {
     return new Promise((resolve, reject) => {
         selectRows({
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
             queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
-            sort: "Name",
+            sort: 'Name',
             filterArray: [Filter.create('Category', 'media', Filter.Types.NEQ_OR_NULL)],
             containerFilter: Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(response => {
                 const { key, models, orderedModels } = response;
-                let sampleTypeOptions = [];
-                orderedModels[key].forEach((row) => {
+                const sampleTypeOptions = [];
+                orderedModels[key].forEach(row => {
                     const data = models[key][row];
-                    sampleTypeOptions.push({id: data.RowId.value, label: data.Name.value});
+                    sampleTypeOptions.push({ id: data.RowId.value, label: data.Name.value });
                 });
-                resolve(
-                    sampleTypeOptions
-                );
+                resolve(sampleTypeOptions);
             })
             .catch(reason => {
                 console.error(reason);
                 reject(resolveErrorMessage(reason));
-            })
+            });
     });
 }

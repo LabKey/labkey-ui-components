@@ -79,7 +79,6 @@ describe('ViewMenu', () => {
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
         tree = renderer.create(<ViewMenu hideEmptyViewMenu={false} model={model} onViewSelect={jest.fn()} />);
         expect(tree.toJSON()).toMatchSnapshot();
-
     });
 
     test('Interactivity', () => {

@@ -267,8 +267,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             const view = queryInfo.views.get(viewName.toLowerCase());
             const name = view?.label ?? viewName;
             // Don't display hidden views in the OmniBox
-            if (!view?.hidden)
-                actionValues.push(this.omniBoxActions.view.actionValueFromView(name));
+            if (!view?.hidden) actionValues.push(this.omniBoxActions.view.actionValueFromView(name));
         }
 
         sorts.forEach((sort): void => {

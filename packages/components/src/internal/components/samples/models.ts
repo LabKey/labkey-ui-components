@@ -157,7 +157,7 @@ export class SampleState {
 
 export interface SampleGridButtonProps {
     afterSampleActionComplete?: () => void;
-    afterSampleDelete?: (rowsToKeep: Array<any>) => void;
+    afterSampleDelete?: (rowsToKeep: any[]) => void;
     createBtnParentKey?: string;
     createBtnParentType?: string;
     excludedCreateMenuKeys?: List<string>;

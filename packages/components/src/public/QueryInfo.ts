@@ -308,9 +308,10 @@ export class QueryInfo extends Record({
      * array will be sorted by view label.
      */
     getVisibleViews(): ViewInfo[] {
-        return this.views.sortBy(v => v.label, naturalSort).toArray().filter(
-            view => view.isVisible
-        );
+        return this.views
+            .sortBy(v => v.label, naturalSort)
+            .toArray()
+            .filter(view => view.isVisible);
     }
 
     getView(view: string): ViewInfo {

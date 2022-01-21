@@ -2,6 +2,8 @@ import React, { ComponentType, FC, memo, useCallback, useEffect, useState } from
 
 import { ActionURL, AuditBehaviorTypes, Filter } from '@labkey/api';
 
+import { List } from 'immutable';
+
 import { capitalizeFirstChar } from '../../util/utils';
 import { EntityDataType } from '../entities/models';
 import { Section } from '../base/Section';
@@ -12,24 +14,24 @@ import { SAMPLE_DATA_EXPORT_CONFIG } from '../samples/constants';
 import {
     InjectedQueryModels,
     RequiresModelAndActions,
-    withQueryModels
+    withQueryModels,
 } from '../../../public/QueryModel/withQueryModels';
 import { User } from '../base/models/User';
 import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
 
-import { EntityFieldFilterModal } from './EntityFieldFilterModal';
-
-import { FilterCards, FilterProps } from './FilterCards';
-import { getFinderStartText, getFinderViewColumnsConfig, getSampleFinderQueryConfigs } from './utils';
 import { SamplesManageButtonSections } from '../samples/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { removeFinderGridView, saveFinderGridView } from './actions';
+
 import { Alert } from '../base/Alert';
 import { SampleGridButtonProps } from '../samples/models';
-import { List } from 'immutable';
 import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 import { invalidateQueryDetailsCache } from '../../query/api';
 import { getPrimaryAppProperties } from '../../app/utils';
+
+import { removeFinderGridView, saveFinderGridView } from './actions';
+import { FilterCards, FilterProps } from './FilterCards';
+import { getFinderStartText, getFinderViewColumnsConfig, getSampleFinderQueryConfigs } from './utils';
+import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 const SAMPLE_FINDER_TITLE = 'Find Samples';
 const SAMPLE_FINDER_CAPTION = 'Find samples that meet all the criteria defined below';
@@ -41,7 +43,7 @@ interface SampleFinderSamplesGridProps {
     excludedCreateMenuKeys?: string[];
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     gridButtonProps?: any;
-    sampleTypeNames: string[]
+    sampleTypeNames: string[];
 }
 
 interface Props extends SampleFinderSamplesGridProps {
@@ -75,9 +77,8 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
     );
 });
 
-
 function getLocalStorageKey(): string {
-    return getPrimaryAppProperties().productId + ActionURL.getContainer() + "-SampleFinder";
+    return getPrimaryAppProperties().productId + ActionURL.getContainer() + '-SampleFinder';
 }
 
 export const SampleFinderSection: FC<Props> = memo(props => {
@@ -107,10 +108,13 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const updateFilters = (filterChangeCounter: number, filters: FilterProps[]) => {
         setFilters(filters);
         setFilterChangeCounter(filterChangeCounter);
-        sessionStorage.setItem(getLocalStorageKey(), JSON.stringify({
-            filterChangeCounter,
-            filters
-        }));
+        sessionStorage.setItem(
+            getLocalStorageKey(),
+            JSON.stringify({
+                filterChangeCounter,
+                filters,
+            })
+        );
     };
 
     const onAddEntity = useCallback((entityType: EntityDataType) => {
@@ -121,7 +125,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         (index: number) => {
             setChosenEntityType(parentEntityDataTypes[index]);
             // TODO update filters as well
-            updateFilters(filterChangeCounter+1, filters);
+            updateFilters(filterChangeCounter + 1, filters);
         },
         [parentEntityDataTypes, filterChangeCounter]
     );
@@ -131,7 +135,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             const newFilterCards = [...filters];
             newFilterCards.splice(index, 1);
 
-            updateFilters(filterChangeCounter+1, newFilterCards);
+            updateFilters(filterChangeCounter + 1, newFilterCards);
         },
         [filters, filterChangeCounter]
     );
@@ -149,7 +153,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 entityDataType: chosenEntityType,
             });
             onFilterClose();
-            updateFilters(filterChangeCounter+1, newFilterCards);
+            updateFilters(filterChangeCounter + 1, newFilterCards);
         },
         [filters, filterChangeCounter, onFilterEdit, onFilterDelete, chosenEntityType]
     );
@@ -175,8 +179,14 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 </>
             ) : (
                 <>
-                    <FilterCards cards={filters} onFilterDelete={onFilterDelete} onAddEntity={onAddEntity}/>
-                    <SampleFinderSamples {...gridProps} cards={filters} sampleTypeNames={sampleTypeNames} selectionKeyPrefix={getSelectionKeyPrefix()} filterChangeCounter={filterChangeCounter} />
+                    <FilterCards cards={filters} onFilterDelete={onFilterDelete} onAddEntity={onAddEntity} />
+                    <SampleFinderSamples
+                        {...gridProps}
+                        cards={filters}
+                        sampleTypeNames={sampleTypeNames}
+                        selectionKeyPrefix={getSelectionKeyPrefix()}
+                        filterChangeCounter={filterChangeCounter}
+                    />
                 </>
             )}
             {chosenEntityType !== undefined && (
@@ -201,24 +211,25 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
         if (allModelsLoaded && isLoading) {
             const promises = [];
             Object.values(queryModels).forEach(queryModel => {
-                const {hasUpdates, columns} = getFinderViewColumnsConfig(queryModel);
+                const { hasUpdates, columns } = getFinderViewColumnsConfig(queryModel);
                 if (hasUpdates) {
                     promises.push(saveFinderGridView(queryModel.schemaQuery, columns));
                 }
             });
-            Promise.all(promises).then((schemaQueries) => {
-                // since we have updated views, we need to invalidate the details cache so we pick up the new views
-                schemaQueries.forEach(schemaQuery => {
-                    invalidateQueryDetailsCache(schemaQuery);
+            Promise.all(promises)
+                .then(schemaQueries => {
+                    // since we have updated views, we need to invalidate the details cache so we pick up the new views
+                    schemaQueries.forEach(schemaQuery => {
+                        invalidateQueryDetailsCache(schemaQuery);
+                    });
+                    setIsLoading(false);
+                })
+                .catch(reason => {
+                    console.error('Error saving all finder views.', reason);
+                    setIsLoading(false);
                 });
-                setIsLoading(false);
-            }).catch(reason => {
-                console.error("Error saving all finder views.", reason);
-                setIsLoading(false);
-            });
         }
     }, [queryModels]);
-
 
     useEffect(() => {
         return () => {
@@ -227,18 +238,16 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                     (async () => {
                         try {
                             await removeFinderGridView(queryModel);
-                        }
-                        catch (error) {
+                        } catch (error) {
                             // ignore; already logged
                         }
                     })();
                 }
             }
-        }
+        };
     }, []);
 
-    if (isLoading)
-        return <LoadingSpinner />;
+    if (isLoading) return <LoadingSpinner />;
 
     return (
         <>
@@ -274,21 +283,30 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
         setQueryConfigs(undefined);
         const configs = getSampleFinderQueryConfigs(user, sampleTypeNames, cards, selectionKeyPrefix);
         const promises = [];
-        for (let config of Object.values(configs)) {
-            promises.push(saveFinderGridView(config.schemaQuery, [{fieldKey: "Name"}]));
+        for (const config of Object.values(configs)) {
+            promises.push(saveFinderGridView(config.schemaQuery, [{ fieldKey: 'Name' }]));
         }
-        Promise.all(promises).then(() => {
-            setQueryConfigs(configs);
-        }).catch(reason => {
-            setErrors(reason);
-        });
-    }, [cards, user, sampleTypeNames, selectionKeyPrefix])
+        Promise.all(promises)
+            .then(() => {
+                setQueryConfigs(configs);
+            })
+            .catch(reason => {
+                setErrors(reason);
+            });
+    }, [cards, user, sampleTypeNames, selectionKeyPrefix]);
 
-    if (errors)
-        return <Alert>{errors}</Alert>;
+    if (errors) return <Alert>{errors}</Alert>;
 
-    if (!queryConfigs)
-        return <LoadingSpinner/>;
+    if (!queryConfigs) return <LoadingSpinner />;
 
-    return <SampleFinderSamplesWithQueryModels sampleTypeNames={sampleTypeNames} key={selectionKeyPrefix} user={user} {...gridProps} autoLoad queryConfigs={queryConfigs} />;
+    return (
+        <SampleFinderSamplesWithQueryModels
+            sampleTypeNames={sampleTypeNames}
+            key={selectionKeyPrefix}
+            user={user}
+            {...gridProps}
+            autoLoad
+            queryConfigs={queryConfigs}
+        />
+    );
 });

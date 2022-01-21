@@ -158,10 +158,10 @@ export function removeFinderGridView(model: QueryModel): Promise<boolean> {
                 success: () => {
                     resolve(true);
                 },
-                failure: (error) => {
-                    console.error("There was a problem deleting the Sample Finder view.", error);
+                failure: error => {
+                    console.error('There was a problem deleting the Sample Finder view.', error);
                     reject(resolveErrorMessage(error));
-                }
+                },
             });
         }
     });
@@ -179,11 +179,8 @@ export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Prom
             },
             failure: response => {
                 console.error(response);
-                reject(
-                    'There was a problem creating the view for the data grid. ' + resolveErrorMessage(response)
-                );
+                reject('There was a problem creating the view for the data grid. ' + resolveErrorMessage(response));
             },
         });
     });
 }
-

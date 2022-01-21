@@ -67,14 +67,21 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
 }
 
 export function getSampleStatusType(row: any): SampleStateType {
-    return caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value || caseInsensitive(row, "SampleID/" + SAMPLE_STATE_TYPE_COLUMN_NAME)?.value;
+    return (
+        caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value ||
+        caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_TYPE_COLUMN_NAME)?.value
+    );
 }
 
 export function getSampleStatus(row: any): SampleStatus {
     return {
-        label: caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME)?.displayValue || caseInsensitive(row, "SampleID/" + SAMPLE_STATE_COLUMN_NAME)?.displayValue,
+        label:
+            caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME)?.displayValue ||
+            caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_COLUMN_NAME)?.displayValue,
         statusType: getSampleStatusType(row),
-        description: caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value || caseInsensitive(row, "SampleID/" + SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value,
+        description:
+            caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value ||
+            caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value,
     };
 }
 
@@ -194,14 +201,17 @@ export const shouldShowButtons = (
 
 export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
     const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
-    if (lcSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA)
-        return true;
+    if (lcSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) return true;
 
     const lcQueryName = schemaQuery?.queryName?.toLowerCase();
-    if (lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA
-        && lcQueryName === SCHEMAS.EXP_TABLES.MATERIALS.queryName.toLowerCase())
+    if (
+        lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA &&
+        lcQueryName === SCHEMAS.EXP_TABLES.MATERIALS.queryName.toLowerCase()
+    )
         return true;
 
-    return lcSchemaName === SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA
-        && lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase();
+    return (
+        lcSchemaName === SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA &&
+        lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase()
+    );
 }

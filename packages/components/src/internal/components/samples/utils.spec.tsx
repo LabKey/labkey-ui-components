@@ -11,13 +11,15 @@ import {
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     getSampleDeleteMessage,
-    isSampleOperationPermitted, isSamplesSchema,
+    isSampleOperationPermitted,
+    isSamplesSchema,
     LoadingSpinner,
     OperationConfirmationData,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
     SamplesManageButtonSections,
-    SampleStateType, SchemaQuery,
+    SampleStateType,
+    SchemaQuery,
     SCHEMAS,
 } from '../../..';
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
@@ -379,24 +381,24 @@ describe('shouldShowButtons', () => {
 });
 
 describe('isSamplesSchema', () => {
-    test("not sample schema", () => {
+    test('not sample schema', () => {
         expect(isSamplesSchema(SCHEMAS.EXP_TABLES.DATA)).toBeFalsy();
         expect(undefined).toBeFalsy();
     });
 
-    test("sample set", () => {
-        expect(isSamplesSchema(SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, "test"))).toBeTruthy();
-        expect(isSamplesSchema(SchemaQuery.create("Samples", "test"))).toBeTruthy();
+    test('sample set', () => {
+        expect(isSamplesSchema(SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'test'))).toBeTruthy();
+        expect(isSamplesSchema(SchemaQuery.create('Samples', 'test'))).toBeTruthy();
     });
 
-    test ('exp.materials', () => {
+    test('exp.materials', () => {
         expect(isSamplesSchema(SchemaQuery.create('EXP', 'materials'))).toBeTruthy();
         expect(isSamplesSchema(SCHEMAS.EXP_TABLES.MATERIALS)).toBeTruthy();
-    })
+    });
 
-    test("source samples", () => {
+    test('source samples', () => {
         expect(isSamplesSchema(SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES)).toBeTruthy();
-        expect(isSamplesSchema(SchemaQuery.create("sampleManagement", "SourceSamples"))).toBeTruthy();
-        expect(isSamplesSchema(SchemaQuery.create("sampleManagement", "Jobs"))).toBeFalsy();
-    })
-})
+        expect(isSamplesSchema(SchemaQuery.create('sampleManagement', 'SourceSamples'))).toBeTruthy();
+        expect(isSamplesSchema(SchemaQuery.create('sampleManagement', 'Jobs'))).toBeFalsy();
+    });
+});

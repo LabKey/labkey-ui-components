@@ -115,9 +115,9 @@ function getSelectedParents(
 ): Promise<List<EntityParentType>> {
     return new Promise((resolve, reject) => {
         const isSampleParent = isSamplesSchema(schemaQuery);
-        let columns = "LSID,Name,RowId";
+        let columns = 'LSID,Name,RowId';
         if (isSampleParent) {
-            columns += ",SampleSet";
+            columns += ',SampleSet';
         }
         return selectRows({
             schemaName: schemaQuery.schemaName,
@@ -129,8 +129,7 @@ function getSelectedParents(
             .then(response => {
                 if (isSampleParent) {
                     resolve(resolveSampleParentTypes(response, isAliquotParent));
-                }
-                else {
+                } else {
                     resolve(resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent));
                 }
             })
@@ -244,7 +243,6 @@ function initParents(
             } else {
                 return getSelected(selectionKey)
                     .then(selectionResponse => {
-
                         if (isItemSamples) {
                             return getSelectedSampleParentsFromItems(selectionResponse.selected, isAliquotParent)
                                 .then(response => resolve(response))
@@ -336,7 +334,7 @@ export function extractEntityTypeOptionFromRow(
     const name = caseInsensitive(rowObj, 'Name').value;
     return {
         label: name,
-        lsid: caseInsensitive(rowObj,'LSID').value,
+        lsid: caseInsensitive(rowObj, 'LSID').value,
         rowId: caseInsensitive(rowObj, 'RowId').value,
         value: lowerCaseValue ? name.toLowerCase() : name, // we match values on lower case because (at least) when parsed from an id they are lower case
         query: name,

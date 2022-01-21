@@ -111,6 +111,8 @@ export class ViewInfo extends Record({
 
     get isVisible(): boolean {
         // Issue 42628: Hide Biologics details view override in view menu
-        return !this.isDefault && !this.hidden && this.name.indexOf('~~') !== 0 && this.name !== ViewInfo.BIO_DETAIL_NAME
+        return (
+            !this.isDefault && !this.hidden && this.name.indexOf('~~') !== 0 && this.name !== ViewInfo.BIO_DETAIL_NAME
+        );
     }
 }

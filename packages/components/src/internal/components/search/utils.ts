@@ -1,12 +1,15 @@
+import { Filter } from '@labkey/api';
+
 import { EntityDataType } from '../entities/models';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
 import { User } from '../base/models/User';
-import { FilterProps } from './FilterCards';
+
 import { getOmittedSampleTypeColumns } from '../samples/utils';
 import { SCHEMAS } from '../../schemas';
-import { Filter } from '@labkey/api';
+
+import { FilterProps } from './FilterCards';
 
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): string {
     const hintText = 'Start by adding ';
@@ -19,22 +22,20 @@ export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): str
 }
 
 export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQuery: SchemaQuery): string {
-    return entityDataType.inputColumnName
-        .replace("Inputs", 'QueryableInputs')
-        .replace("First", schemaQuery.queryName);
+    return entityDataType.inputColumnName.replace('Inputs', 'QueryableInputs').replace('First', schemaQuery.queryName);
 }
 
-const FIRST_COLUMNS_IN_VIEW = ["Name", "SampleSet"];
+const FIRST_COLUMNS_IN_VIEW = ['Name', 'SampleSet'];
 
-export function getFinderViewColumnsConfig(queryModel: QueryModel): {hasUpdates: boolean, columns: any} {
+export function getFinderViewColumnsConfig(queryModel: QueryModel): { hasUpdates: boolean; columns: any } {
     const defaultDisplayColumns = queryModel.queryInfo?.getDisplayColumns().toArray();
-    const displayColumnKeys = defaultDisplayColumns.map(col => (col.fieldKey));
+    const displayColumnKeys = defaultDisplayColumns.map(col => col.fieldKey);
     const columnKeys = [];
     FIRST_COLUMNS_IN_VIEW.forEach(fieldKey => {
         if (displayColumnKeys.indexOf(fieldKey) >= 0) {
             columnKeys.push(fieldKey);
         }
-    })
+    });
     let hasUpdates = false;
     queryModel.requiredColumns.forEach(fieldKey => {
         if (displayColumnKeys.indexOf(fieldKey) == -1 && SAMPLE_STATUS_REQUIRED_COLUMNS.indexOf(fieldKey) === -1) {
@@ -42,8 +43,12 @@ export function getFinderViewColumnsConfig(queryModel: QueryModel): {hasUpdates:
             hasUpdates = true;
         }
     });
-    columnKeys.push(...defaultDisplayColumns.filter(col => FIRST_COLUMNS_IN_VIEW.indexOf(col.fieldKey) === -1).map(col => (col.fieldKey)));
-    return { hasUpdates, columns: columnKeys.map(fieldKey => ({fieldKey})) };
+    columnKeys.push(
+        ...defaultDisplayColumns
+            .filter(col => FIRST_COLUMNS_IN_VIEW.indexOf(col.fieldKey) === -1)
+            .map(col => col.fieldKey)
+    );
+    return { hasUpdates, columns: columnKeys.map(fieldKey => ({ fieldKey })) };
 }
 
 export const SAMPLE_FINDER_VIEW_NAME = 'Sample Finder';
@@ -61,7 +66,7 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
 
         if (card.filterArray?.length) {
             card.filterArray.forEach(filter => {
-                requiredColumns.push(cardColumnName + "/" + filter.getColumnName());
+                requiredColumns.push(cardColumnName + '/' + filter.getColumnName());
             });
             baseFilters.push(...card.filterArray);
         } else {
@@ -71,11 +76,16 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
     });
     return {
         requiredColumns,
-        baseFilters
+        baseFilters,
     };
 }
 
-export function getSampleFinderQueryConfigs(user: User, sampleTypeNames: string[], cards: FilterProps[], finderId: string): { [key: string]: QueryConfig } {
+export function getSampleFinderQueryConfigs(
+    user: User,
+    sampleTypeNames: string[],
+    cards: FilterProps[],
+    finderId: string
+): { [key: string]: QueryConfig } {
     const omittedColumns = getOmittedSampleTypeColumns(user);
     const commonConfig = getSampleFinderCommonConfigs(cards);
     const allSamplesKey = getSampleFinderConfigId(finderId, 'exp/materials');
@@ -83,9 +93,13 @@ export function getSampleFinderQueryConfigs(user: User, sampleTypeNames: string[
         [allSamplesKey]: {
             id: allSamplesKey,
             title: 'All Samples',
-            schemaQuery: SchemaQuery.create(SCHEMAS.EXP_TABLES.MATERIALS.schemaName, SCHEMAS.EXP_TABLES.MATERIALS.queryName, SAMPLE_FINDER_VIEW_NAME),
+            schemaQuery: SchemaQuery.create(
+                SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
+                SCHEMAS.EXP_TABLES.MATERIALS.queryName,
+                SAMPLE_FINDER_VIEW_NAME
+            ),
             omittedColumns: [...omittedColumns, 'Run'],
-            ...commonConfig
+            ...commonConfig,
         },
     };
 

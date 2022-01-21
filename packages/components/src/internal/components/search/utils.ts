@@ -40,7 +40,5 @@ export function getSampleFinderFilterTypesForType(jsonType: JsonType) : any[] {
         });
     })
 
-    console.log(filters);
-
     return filters;
 }

@@ -134,11 +134,11 @@ export const EntityFieldFilterParentSelector: FC<Props> = memo(props => {
             <Col xs={6} className="search-parent-entity-col">
                 <div className="search-field-col-title">Values</div>
                 {(activeParent && activeField) &&
-                    <div>
+                    <div className="search-parent-entity-col-div">
                         <Tab.Container
                             activeKey={activeTab}
-                            className="storage-detail-tabs content-tabs"
-                            id="storage-detail-tabs"
+                            className="search-field-tabs content-tabs"
+                            id="search-field-tabs"
                             onSelect={(key) => onTabChange(key)}
                         >
                             <div>

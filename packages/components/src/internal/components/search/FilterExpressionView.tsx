@@ -55,8 +55,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             return (
                 <DatePicker
                     autoComplete={'off'}
-                    className={'form-control'}
-                    wrapperClassName={'row'}
+                    className={'form-control search-filter-input'}
+                    wrapperClassName={'form-group search-filter-input-wrapper'}
                     selectsEnd
                     isClearable
                     selected={null}
@@ -98,7 +98,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         if (field.jsonType === 'int' || field.jsonType === 'float') {
             return (
                 <FormControl
-                    className="form-control"
+                    className="form-control search-filter-input"
                     step={field.jsonType === 'int' ? 1 : undefined}
                     name={'field-value-text' + suffix}
                     onChange={(event:any) => updateTextFilterFieldValue(event?.target?.value)}
@@ -110,7 +110,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
         return (
             <input
-                className={'form-control'}
+                className={'form-control search-filter-input'}
                 name={'field-value-text' + suffix}
                 type="text"
                 value={null}
@@ -132,20 +132,20 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         return (
             <>
                 {renderFilterTypeInput()}
-                <div>and</div>
+                <div className='search-filter-and'>and</div>
                 {renderFilterTypeInput(true)}
             </>
         )
 
     }, [field, activeFilterType]);
 
-    console.log(fieldFilterOptions);
-
     return (
         <>
             <SelectInput
                 key="search-parent-field-filter-type"
                 name="search-parent-field-filter-type"
+                containerClass='form-group search-filter-input-wrapper'
+                inputClass='search-filter-input-select'
                 placeholder="Select a filter type..."
                 value={fieldFilter?.getFilterType()?.getURLSuffix()}
                 onChange={onFieldFilterTypeChange}

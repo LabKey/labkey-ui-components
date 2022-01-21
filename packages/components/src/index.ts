@@ -294,6 +294,7 @@ import {
     getSelectedItemSamples,
     updateSamplesStatus,
     getSampleTypes,
+    getSelectedSampleTypes,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
@@ -951,6 +952,7 @@ export {
     getSelectedItemSamples,
     updateSamplesStatus,
     getSampleTypes,
+    getSelectedSampleTypes,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,
     getDeleteSharedSampleTypeUrl,

@@ -8,7 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Updates to `SampleFinderSection` for showing filtered tabbed grids
 * Fix for Issue #44339 to allow create operations on selections from the "All Samples" grid in the tabbed grid.
 * Consolidate logic for `ViewSelector` and `ViewsMenu` for finding views to include in menu
-* Move `getSampleTypes` method here from inventory module
+* Move `getSampleTypes` method here from inventory module and add `getSelectedSampleTypes` utility action
 
 ### version 2.120.1
 *Released*: 20 January 2022

@@ -2,7 +2,6 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import DatePicker from 'react-datepicker';
 import { FormControl } from 'react-bootstrap';
 
-
 import { Filter } from "@labkey/api";
 
 import { QueryColumn } from "../../../public/QueryColumn";
@@ -14,13 +13,14 @@ import {resolveFieldKey} from "../omnibox/utils";
 import {resolveFilterType} from "../omnibox/actions/Filter";
 
 interface Props {
+    key: string
     field: QueryColumn
     fieldFilter: Filter.IFilter // only one filter supported for v1
-    updateFilter?: (fieldKey: string, newFilter: Filter.IFilter) => void
+    onFieldFilterUpdate?: (newFilter: Filter.IFilter) => void
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
-    const { field, fieldFilter } = props;
+    const { field, fieldFilter, onFieldFilterUpdate } = props;
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<any[]>(undefined);
     const [activeFilterType, setActiveFilterType] = useState<any[]>(undefined);
@@ -33,7 +33,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         setFieldFilterOptions(filterOptions);
 
         if (fieldFilter) {
-            const filterOption = filterOptions?.find(option => option.value === fieldFilter.getFilterType().getURLSuffix());;
+            const filterOption = filterOptions?.find(option => option.value === fieldFilter.getFilterType().getURLSuffix());
             setActiveFilterType(filterOption);
             const rawFilterValue = fieldFilter.getValue();
             if (filterOption['betweenOperator']) {
@@ -46,7 +46,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             }
         }
 
-    }, [field, fieldFilter]);
+    }, [field]); // leave fieldFilter out of deps list, fieldFilter is used to init once
 
     const updateFilter = useCallback((newFilterType: any[], newFilterValue?: any, isSecondValue?: boolean) => {
         if (!newFilterType) {
@@ -55,24 +55,29 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         }
 
         const filterType = resolveFilterType(newFilterType?.['value'], field);
+        let filter = null;
 
         if (!newFilterType['valueRequired']) {
-            setActiveFilter(Filter.create(resolveFieldKey(field.name, field), null, filterType));
-            return;
+            filter = Filter.create(resolveFieldKey(field.name, field), null, filterType);
+        }
+        else {
+            let value = newFilterValue;
+            if (newFilterType?.['betweenOperator']) {
+                if (isSecondValue) {
+                    value = (firstFilterValue ? firstFilterValue + ',' : '') + newFilterValue;
+                }
+                else {
+                    value = newFilterValue + (secondFilterValue ? ',' + secondFilterValue : '');
+                }
+            }
+            else if (!value && field.jsonType === 'boolean')
+                value = false;
+
+            filter = Filter.create(resolveFieldKey(field.name, field), value, filterType);
         }
 
-        let value = newFilterValue;
-        if (newFilterType?.['betweenOperator']) {
-            if (isSecondValue) {
-                value = firstFilterValue + ',' + newFilterValue;
-            }
-            else {
-                value = newFilterValue + ',' + secondFilterValue;
-            }
-        }
-
-        const filter = Filter.create(resolveFieldKey(field.name, field), value, filterType);
         setActiveFilter(filter);
+        onFieldFilterUpdate(filter);
     }, [field, firstFilterValue, secondFilterValue]);
 
     const onFieldFilterTypeChange = useCallback((fieldname: any, filterUrlSuffix: any) => {
@@ -123,6 +128,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                     wrapperClassName={'form-group search-filter-input-wrapper'}
                     selectsEnd
                     isClearable
+                    required
                     selected={valueRaw ? new Date(valueRaw) : undefined}
                     name={'field-value-date' + suffix}
                     onChange={(newDate) => updateDateFilterFieldValue(newDate, isSecondInput)}
@@ -150,7 +156,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                             name='field-value-bool'
                             value={'false'}
                             onChange={updateBooleanFilterFieldValue}
-                        /> NO
+                        /> FALSE
                     </div>
                 </>
             )
@@ -163,8 +169,10 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                     step={field.jsonType === 'int' ? 1 : undefined}
                     name={'field-value-text' + suffix}
                     onChange={updateTextFilterFieldValue}
+                    pattern={field.jsonType === 'int' ? '[0-9]*' : undefined}
                     type="number"
                     value={valueRaw}
+                    required
                 />
             )
         }
@@ -176,6 +184,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 type="text"
                 value={valueRaw}
                 onChange={updateTextFilterFieldValue}
+                required
             />
         );
 

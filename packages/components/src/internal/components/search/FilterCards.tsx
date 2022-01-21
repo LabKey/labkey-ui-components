@@ -5,10 +5,11 @@ import { Filter } from '@labkey/api';
 import { EntityDataType } from '../entities/models';
 import { capitalizeFirstChar } from '../../util/utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import {FieldFilter} from "./models";
 
 export interface FilterCardProps {
     entityDataType: EntityDataType;
-    filterArray?: Filter.IFilter[]; // the filters to be used in conjunction with the schemaQuery
+    filterArray?: FieldFilter[]; // the filters to be used in conjunction with the schemaQuery
     schemaQuery?: SchemaQuery;
     index?: number;
     onAdd: (entityDataType: EntityDataType) => void;

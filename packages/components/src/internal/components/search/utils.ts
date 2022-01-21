@@ -30,7 +30,9 @@ export function getSampleFinderFilterTypesForType(jsonType: JsonType) : any[] {
     let filters = [];
 
     filterList.forEach(filter => {
-        const urlSuffix = filter.getURLSuffix();
+        let urlSuffix = filter.getURLSuffix();
+        if (urlSuffix === '')
+            urlSuffix = 'any';
         filters.push({
             value: urlSuffix,
             label: filter.getDisplayText(),

@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 
-import { AuditBehaviorTypes, Filter } from '@labkey/api';
+import { AuditBehaviorTypes } from '@labkey/api';
 
 import { capitalizeFirstChar } from '../../util/utils';
 import { EntityDataType } from '../entities/models';
@@ -18,6 +18,7 @@ import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 import { FilterCardProps, FilterCards } from './FilterCards';
 import { getFinderStartText } from './utils';
+import { FieldFilter } from "./models";
 
 const SAMPLE_FINDER_TITLE = 'Find Samples';
 const SAMPLE_FINDER_CAPTION = 'Find samples that meet all the criteria defined below';
@@ -91,14 +92,17 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     };
 
     const onFind = useCallback(
-        (schemaQuery: SchemaQuery, filterArray: Filter.IFilter[]) => {
+        (schemaName: string, dataTypeFilters : {[key: string] : FieldFilter[]}) => {
             const newFilterCards = [...filterCards];
-            newFilterCards.push({
-                schemaQuery,
-                filterArray,
-                entityDataType: chosenEntityType,
-                onAdd: onAddEntity,
-            });
+            Object.keys(dataTypeFilters).forEach(queryName => {
+                newFilterCards.push({
+                    schemaQuery: SchemaQuery.create(schemaName, queryName),
+                    filterArray: dataTypeFilters[queryName],
+                    entityDataType: chosenEntityType,
+                    onAdd: onAddEntity,
+                });
+            })
+
             onFilterClose();
             setFilterCards(newFilterCards);
         },

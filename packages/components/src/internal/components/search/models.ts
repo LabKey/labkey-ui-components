@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, Record } from 'immutable';
+import {Filter} from "@labkey/api";
 
 export class SearchResultsModel extends Record({
     entities: undefined,
@@ -48,4 +49,10 @@ export interface SearchResultCardData {
     title?: string;
     category?: string;
     typeName?: string;
+}
+
+export interface FieldFilter {
+    fieldKey: string;
+    fieldCaption: string;
+    filter: Filter.IFilter
 }

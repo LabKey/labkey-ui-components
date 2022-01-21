@@ -55,6 +55,8 @@ export const SAMPLE_FINDER_VIEW_NAME = 'Sample Finder';
 
 function getSampleFinderConfigId(finderId: string, suffix: string): string {
     const { uuids } = getServerContext();
+    // We need to make sure these ids are unique per application load since
+    // the server holds on to the selection keys even after the grid is gone.
     return uuids[0] + "-" + finderId + '|' + suffix;
 }
 

@@ -1,10 +1,11 @@
-import { List, Map } from 'immutable';
-import { Ajax, Utils } from '@labkey/api';
+import { Map } from 'immutable';
+import { Ajax, Query, Utils } from '@labkey/api';
 
-import { buildURL, URLResolver } from '../../..';
+import { buildURL, QueryModel, resolveErrorMessage, SchemaQuery, URLResolver } from '../../..';
 import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 
 import { SearchIdData, SearchResultCardData } from './models';
+import { SAMPLE_FINDER_VIEW_NAME } from './utils';
 
 export function searchUsingIndex(
     userConfig,
@@ -144,4 +145,42 @@ export function getProcessedSearchHits(
                   };
               })
         : undefined;
+}
+
+export function removeFinderGridView(model: QueryModel): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        if (!model.isLoading) {
+            Query.deleteQueryView({
+                schemaName: model.schemaQuery.schemaName,
+                queryName: model.schemaQuery.queryName,
+                viewName: SAMPLE_FINDER_VIEW_NAME,
+                revert: true,
+                success: () => {
+                    resolve(true);
+                },
+                failure: error => {
+                    console.error('There was a problem deleting the Sample Finder view.', error);
+                    reject(resolveErrorMessage(error));
+                },
+            });
+        }
+    });
+}
+
+export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Promise<SchemaQuery> {
+    return new Promise((resolve, reject) => {
+        Query.saveQueryViews({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+            // Mark the view as hidden, so it doesn't show up in LKS and in the grid view menus
+            views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns, hidden: true }],
+            success: () => {
+                resolve(schemaQuery);
+            },
+            failure: response => {
+                console.error(response);
+                reject('There was a problem creating the view for the data grid. ' + resolveErrorMessage(response));
+            },
+        });
+    });
 }

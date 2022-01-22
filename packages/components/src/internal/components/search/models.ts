@@ -15,6 +15,8 @@
  */
 import { fromJS, List, Map, Record } from 'immutable';
 import {Filter} from "@labkey/api";
+import {EntityDataType} from "../entities/models";
+import {SchemaQuery} from "../../../public/SchemaQuery";
 
 export class SearchResultsModel extends Record({
     entities: undefined,
@@ -56,3 +58,16 @@ export interface FieldFilter {
     fieldCaption: string;
     filter: Filter.IFilter
 }
+
+export interface FilterProps {
+    entityDataType: EntityDataType;
+    filterArray?: FieldFilter[]; // the filters to be used in conjunction with the schemaQuery
+    schemaQuery?: SchemaQuery;
+    index?: number;
+}
+
+export interface SearchSessionStorageProps {
+    filters: FilterProps[];
+    filterChangeCounter: number;
+}
+

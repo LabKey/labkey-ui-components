@@ -29,11 +29,17 @@ import { invalidateQueryDetailsCache } from '../../query/api';
 import { getPrimaryAppProperties } from '../../app/utils';
 
 import { removeFinderGridView, saveFinderGridView } from './actions';
-import { FilterCards, FilterProps } from './FilterCards';
-import { getFinderStartText, getFinderViewColumnsConfig, getSampleFinderQueryConfigs } from './utils';
+import { FilterCards } from './FilterCards';
+import {
+    getFinderStartText,
+    getFinderViewColumnsConfig,
+    getSampleFinderQueryConfigs,
+    searchFiltersFromJson,
+    searchFiltersToJson
+} from './utils';
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
-import { FieldFilter } from "./models";
+import {FieldFilter, FilterProps} from "./models";
 
 const SAMPLE_FINDER_TITLE = 'Find Samples';
 const SAMPLE_FINDER_CAPTION = 'Find samples that meet all the criteria defined below';
@@ -93,7 +99,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     useEffect(() => {
         const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
         if (finderSessionDataStr) {
-            const finderSessionData = JSON.parse(finderSessionDataStr);
+            const finderSessionData = searchFiltersFromJson(finderSessionDataStr);
             if (finderSessionData.filters) {
                 setFilters(finderSessionData.filters);
             }
@@ -112,10 +118,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         setFilterChangeCounter(filterChangeCounter);
         sessionStorage.setItem(
             getLocalStorageKey(),
-            JSON.stringify({
-                filterChangeCounter,
-                filters,
-            })
+            searchFiltersToJson(filters, filterChangeCounter)
         );
     };
 

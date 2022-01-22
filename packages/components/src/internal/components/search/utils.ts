@@ -10,7 +10,7 @@ import { User } from '../base/models/User';
 import { getOmittedSampleTypeColumns } from '../samples/utils';
 import { SCHEMAS } from '../../schemas';
 
-import { FilterProps } from './FilterCards';
+import {FilterProps, SearchSessionStorageProps} from './models';
 
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): string {
     const hintText = 'Start by adding ';
@@ -101,10 +101,15 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
         const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
 
         if (card.filterArray?.length) {
-            card.filterArray.forEach(filter => {
-                requiredColumns.push(cardColumnName + '/' + filter.filter.getColumnName());
+            let filters = [];
+            card.filterArray.forEach(f => {
+                const filter = f.filter;
+                const newColumnName = cardColumnName + '/' + filter.getColumnName();
+                const updatedFilter = Filter.create(newColumnName, filter.getValue(), filter.getFilterType());
+                filters.push(updatedFilter);
+                requiredColumns.push(newColumnName);
             });
-            baseFilters.push(...card.filterArray);
+            baseFilters.push(...filters);
         } else {
             requiredColumns.push(cardColumnName);
             baseFilters.push(Filter.create(cardColumnName + '/Name', null, Filter.Types.NONBLANK));
@@ -152,3 +157,59 @@ export function getSampleFinderQueryConfigs(
     }
     return configs;
 }
+
+export function filterToJson(filter: Filter.IFilter) : string {
+    return encodeURIComponent(filter.getURLParameterName()) + '=' + encodeURIComponent(filter.getURLParameterValue());
+}
+
+export function filterFromJson(filterStr: string) : Filter.IFilter {
+    return Filter.getFiltersFromUrl(filterStr, 'query')?.[0];
+}
+
+export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCounter: number) : string {
+    let filterPropsObj = [];
+
+    filterProps.forEach(filterProp => {
+        let filterPropObj = {...filterProp};
+        const filterArrayObjs = [];
+        [...filterPropObj.filterArray].forEach(field => {
+            filterArrayObjs.push({
+                fieldKey: field.fieldKey,
+                fieldCaption: field.fieldCaption,
+                filter: filterToJson(field.filter)
+            });
+        });
+        filterPropObj.filterArray = filterArrayObjs;
+        filterPropsObj.push(filterPropObj)
+    })
+
+    return JSON.stringify({
+        filters: filterPropsObj,
+        filterChangeCounter
+    });
+}
+
+export function searchFiltersFromJson(filterPropsStr: string) : SearchSessionStorageProps{
+    let filters : FilterProps[] = [];
+    let obj = JSON.parse(filterPropsStr);
+    let filterPropsObj : any[] = obj['filters'];
+    const filterChangeCounter : number = obj['filterChangeCounter'];
+    filterPropsObj.forEach(filterPropObj => {
+        let filterArray = [];
+        filterPropObj['filterArray']?.forEach(field => {
+            filterArray.push({
+                fieldKey: field.fieldKey,
+                fieldCaption: field.fieldCaption,
+                filter: filterFromJson(field.filter)
+            });
+        });
+        filterPropObj['filterArray'] = filterArray;
+        filters.push(filterPropObj as FilterProps)
+    });
+
+    return {
+        filters,
+        filterChangeCounter
+    };
+}
+

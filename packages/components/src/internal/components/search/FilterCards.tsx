@@ -1,18 +1,8 @@
 import React, { FC, memo, useCallback } from 'react';
 
-import { Filter } from '@labkey/api';
-
 import { EntityDataType } from '../entities/models';
 import { capitalizeFirstChar } from '../../util/utils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import {FieldFilter} from "./models";
-
-export interface FilterProps {
-    entityDataType: EntityDataType;
-    filterArray?: FieldFilter[]; // the filters to be used in conjunction with the schemaQuery
-    schemaQuery?: SchemaQuery;
-    index?: number;
-}
+import {FilterProps} from "./models";
 
 interface FilterEditProps extends FilterProps {
     onDelete: (index) => void;

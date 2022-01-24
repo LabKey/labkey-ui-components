@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD January 2022
+### version 2.121.1
+*Released*: 24 January 2022
 * Item 9875: Add AssayDefinitionModel requireCommentOnQCStateChange prop
 
 ### version 2.121.0

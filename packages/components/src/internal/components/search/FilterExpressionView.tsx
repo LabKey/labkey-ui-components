@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { FormControl } from 'react-bootstrap';
 
@@ -9,8 +9,8 @@ import { SelectInput } from "../forms/input/SelectInput";
 import { App } from "../../../index";
 import { getSampleFinderFilterTypesForType } from "./utils";
 import { JsonType } from "../domainproperties/PropDescType";
-import {resolveFieldKey} from "../omnibox/utils";
-import {resolveFilterType} from "../omnibox/actions/Filter";
+import { resolveFieldKey } from "../omnibox/utils";
+import { resolveFilterType } from "../omnibox/actions/Filter";
 
 interface Props {
     key: string
@@ -26,7 +26,6 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     const [activeFilterType, setActiveFilterType] = useState<any[]>(undefined);
     const [firstFilterValue, setFirstFilterValue] = useState<any>();
     const [secondFilterValue, setSecondFilterValue] = useState<any>();
-    const [activeFilter, setActiveFilter] = useState<Filter.IFilter>(fieldFilter);
 
     useEffect(() => {
         const filterOptions = getSampleFinderFilterTypesForType(field?.jsonType as JsonType);
@@ -37,9 +36,11 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             setActiveFilterType(filterOption);
             const rawFilterValue = fieldFilter.getValue();
             if (filterOption['betweenOperator']) {
-                const values = rawFilterValue.split(',');
-                setFirstFilterValue(values[0]);
-                setSecondFilterValue(values[1]);
+                setFirstFilterValue(rawFilterValue[0]);
+                setSecondFilterValue(rawFilterValue[1]);
+            }
+            else if (Array.isArray(rawFilterValue)) {
+                setFirstFilterValue(rawFilterValue.join(';'));
             }
             else {
                 setFirstFilterValue(rawFilterValue);
@@ -50,7 +51,6 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
     const updateFilter = useCallback((newFilterType: any[], newFilterValue?: any, isSecondValue?: boolean) => {
         if (!newFilterType) {
-            setActiveFilter(undefined);
             onFieldFilterUpdate(undefined);
             return;
         }
@@ -77,7 +77,6 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             filter = Filter.create(resolveFieldKey(field.name, field), value, filterType);
         }
 
-        setActiveFilter(filter);
         onFieldFilterUpdate(filter);
     }, [field, firstFilterValue, secondFilterValue]);
 

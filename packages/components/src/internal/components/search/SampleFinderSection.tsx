@@ -153,7 +153,9 @@ export const SampleFinderSection: FC<Props> = memo(props => {
 
     const onFind = useCallback(
         (schemaName: string, dataTypeFilters : {[key: string] : FieldFilter[]}) => {
-            const newFilterCards = [...filters];
+            const newFilterCards = [...filters].filter(filter => {
+                return filter.entityDataType.instanceSchemaName !== chosenEntityType.instanceSchemaName;
+            });
             Object.keys(dataTypeFilters).forEach(queryName => {
                 newFilterCards.push({
                     schemaQuery: SchemaQuery.create(schemaName, queryName),

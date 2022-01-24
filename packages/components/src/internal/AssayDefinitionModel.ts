@@ -39,6 +39,7 @@ export class AssayDefinitionModel extends Record({
     name: undefined,
     projectLevel: undefined,
     protocolSchemaName: undefined,
+    requireCommentOnQCStateChange: undefined,
     reRunSupport: undefined,
     templateLink: undefined,
     type: undefined,
@@ -54,6 +55,7 @@ export class AssayDefinitionModel extends Record({
     declare name: string;
     declare projectLevel: boolean;
     declare protocolSchemaName: string;
+    declare requireCommentOnQCStateChange: boolean;
     declare reRunSupport: string;
     declare templateLink: string;
     declare type: string;

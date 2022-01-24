@@ -2,7 +2,7 @@ import React from 'react';
 import { List } from 'immutable';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { MenuOption, SampleCreationTypeModal, SubMenu } from '../../..';
+import { MenuOption, SampleCreationTypeModal, SchemaQuery, SubMenu } from '../../..';
 
 import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
 
@@ -30,8 +30,8 @@ const DEFAULT_PROPS = {
     maxParentPerSample: 10,
     getOptions,
     parentType: 'samples',
-    isSelectingSamples: (schemaName: string) => {
-        return schemaName?.toLowerCase() === 'samples';
+    isSelectingSamples: (schemaQuery: SchemaQuery) => {
+        return schemaQuery?.schemaName.toLowerCase() === 'samples';
     },
 };
 

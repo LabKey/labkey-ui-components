@@ -157,11 +157,13 @@ export class SampleState {
 
 export interface SampleGridButtonProps {
     afterSampleActionComplete?: () => void;
-    afterSampleDelete?: (rowsToKeep: Array<any>) => void;
+    afterSampleDelete?: (rowsToKeep: any[]) => void;
     createBtnParentKey?: string;
     createBtnParentType?: string;
     excludedCreateMenuKeys?: List<string>;
+    excludedManageMenuKeys?: SamplesManageButtonSections[];
     hideButtons?: SamplesManageButtonSections[];
+    excludeStartJob?: boolean;
     initAliquotMode?: ALIQUOT_FILTER_MODE;
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
     showBulkUpdate?: () => void;

@@ -15,6 +15,7 @@ const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO_NO_VIEWS: QueryInfo;
 let QUERY_INFO_PUBLIC_VIEWS: QueryInfo;
 let QUERY_INFO_PRIVATE_VIEWS: QueryInfo;
+let QUERY_INFO_HIDDEN_VIEWS: QueryInfo;
 
 beforeAll(() => {
     initUnitTests();
@@ -34,6 +35,16 @@ beforeAll(() => {
             },
         ],
     });
+    QUERY_INFO_HIDDEN_VIEWS = makeQueryInfo({
+        ...mixturesQueryInfo,
+        views: [
+            mixturesQueryInfo.views[0],
+            {
+                ...mixturesQueryInfo.views[1],
+                hidden: true,
+            },
+        ],
+    });
 });
 
 describe('ViewMenu', () => {
@@ -47,12 +58,12 @@ describe('ViewMenu', () => {
         tree = renderer.create(<ViewMenu hideEmptyViewMenu={false} model={model} onViewSelect={jest.fn()} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
-        // No Extra columns shows up under "All Saved Views"
+        // "No Extra Column"  view shows up under "All Saved Views"
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
         tree = renderer.create(<ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={jest.fn()} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
-        // No Extra columns shows up under "My Saved Views"
+        // "No Extra Column" view shows up under "My Saved Views"
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PRIVATE_VIEWS, {}, []);
         tree = renderer.create(<ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={jest.fn()} />);
         expect(tree.toJSON()).toMatchSnapshot();
@@ -62,6 +73,11 @@ describe('ViewMenu', () => {
             schemaQuery: SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn'),
         });
         tree = renderer.create(<ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={jest.fn()} />);
+        expect(tree.toJSON()).toMatchSnapshot();
+
+        // "No Extra Column" view is hidden so does not show up
+        model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
+        tree = renderer.create(<ViewMenu hideEmptyViewMenu={false} model={model} onViewSelect={jest.fn()} />);
         expect(tree.toJSON()).toMatchSnapshot();
     });
 

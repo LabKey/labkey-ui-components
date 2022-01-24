@@ -140,3 +140,35 @@
 
 }
 
+.filter-cards__card {
+
+    .filter-row {
+
+        .filter-label-col {
+            font-weight: bold;
+            vertical-align: top;
+            padding-top: 10px;
+        }
+
+        .filter-value-col {
+            padding-top: 10px;
+            .filter-value__operator {
+                font-style: italic;
+                padding-left: 30px;
+            }
+
+            .filter-value__value {
+                padding-left: 30px;
+                ul {
+                    padding-left: 0;
+                }
+                .filter-value-display-value-li {
+                    display: block;
+                }
+            }
+        }
+    }
+
+}
+
+

@@ -31,6 +31,7 @@ import { getPrimaryAppProperties } from '../../app/utils';
 import { removeFinderGridView, saveFinderGridView } from './actions';
 import { FilterCards } from './FilterCards';
 import {
+    getFieldFilterKey,
     getFinderStartText,
     getFinderViewColumnsConfig,
     getSampleFinderQueryConfigs,
@@ -95,6 +96,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
     const [filters, setFilters] = useState<FilterProps[]>([]);
+    const [filterExpandedStatusMap, setFilterExpandedStatusMap] = useState<{[key: string] : boolean }>({});
 
     useEffect(() => {
         const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
@@ -166,6 +168,16 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         [filters, filterChangeCounter, onFilterEdit, onFilterDelete, chosenEntityType]
     );
 
+    const toggleFieldFilterExpandStatus = useCallback((fieldFilter: FieldFilter, schemaQuery?: SchemaQuery) => {
+        const fieldKey = getFieldFilterKey(fieldFilter, schemaQuery);
+        const expanded = !!filterExpandedStatusMap?.[fieldKey];
+        setFilterExpandedStatusMap({
+            ...filterExpandedStatusMap,
+            [fieldKey]: !expanded
+        })
+
+    }, [filterExpandedStatusMap]);
+
     return (
         <Section
             title={SAMPLE_FINDER_TITLE}
@@ -187,7 +199,13 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 </>
             ) : (
                 <>
-                    <FilterCards cards={filters} onFilterDelete={onFilterDelete} onAddEntity={onAddEntity} />
+                    <FilterCards
+                        cards={filters}
+                        onFilterDelete={onFilterDelete}
+                        filterExpandedStatusMap={filterExpandedStatusMap}
+                        toggleFieldFilterExpandStatus={toggleFieldFilterExpandStatus}
+                        onAddEntity={onAddEntity}
+                    />
                     <SampleFinderSamples
                         {...gridProps}
                         cards={filters}
@@ -198,7 +216,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 </>
             )}
             {chosenEntityType !== undefined && (
-                <EntityFieldFilterModal onCancel={onFilterClose} entityDataType={chosenEntityType} onFind={onFind} />
+                <EntityFieldFilterModal onCancel={onFilterClose} cards={filters} entityDataType={chosenEntityType} onFind={onFind} />
             )}
         </Section>
     );

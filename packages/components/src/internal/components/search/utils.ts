@@ -10,7 +10,7 @@ import { User } from '../base/models/User';
 import { getOmittedSampleTypeColumns } from '../samples/utils';
 import { SCHEMAS } from '../../schemas';
 
-import {FilterProps, SearchSessionStorageProps} from './models';
+import {FieldFilter, FilterProps, SearchSessionStorageProps} from './models';
 
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): string {
     const hintText = 'Start by adding ';
@@ -23,6 +23,8 @@ export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): str
 }
 
 export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [Filter.Types.CONTAINS.getURLSuffix(), Filter.Types.DOES_NOT_CONTAIN.getURLSuffix(), Filter.Types.DOES_NOT_START_WITH.getURLSuffix(), Filter.Types.STARTS_WITH.getURLSuffix(), Filter.Types.CONTAINS_ONE_OF.getURLSuffix(), Filter.Types.CONTAINS_NONE_OF.getURLSuffix()];
+
+export const SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE = [Filter.Types.EQUAL.getURLSuffix(), Filter.Types.DATE_EQUAL.getURLSuffix(), Filter.Types.IN.getURLSuffix(), Filter.Types.BETWEEN.getURLSuffix()];
 
 export function getSampleFinderFilterTypesForType(jsonType: JsonType) : any[] {
     let filterList = Filter.getFilterTypesForType(jsonType)
@@ -200,7 +202,8 @@ export function searchFiltersFromJson(filterPropsStr: string) : SearchSessionSto
             filterArray.push({
                 fieldKey: field.fieldKey,
                 fieldCaption: field.fieldCaption,
-                filter: filterFromJson(field.filter)
+                filter: filterFromJson(field.filter),
+                expanded: field.expanded,
             });
         });
         filterPropObj['filterArray'] = filterArray;
@@ -212,4 +215,30 @@ export function searchFiltersFromJson(filterPropsStr: string) : SearchSessionSto
         filterChangeCounter
     };
 }
+
+const EMPTY_VALUE_DISPLAY = '[blank]';
+export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string) : string[] {
+    let values = [], rawValues = [];
+    const rawValue = filter.getValue();
+    if (Array.isArray(rawValue)) {
+        rawValues = [...rawValue];
+    }
+    else {
+        rawValues = rawValue.split(';');
+
+    }
+
+    rawValues.forEach(v => {
+        values.push(v == '' ? (blankValue ?? EMPTY_VALUE_DISPLAY) : v);
+    })
+
+
+    return values;
+}
+
+
+export function getFieldFilterKey(fieldFilter: FieldFilter,  schemaQuery?: SchemaQuery): string  {
+    return schemaQuery.schemaName + '|' + schemaQuery.queryName + '|' + fieldFilter.fieldKey;
+}
+
 

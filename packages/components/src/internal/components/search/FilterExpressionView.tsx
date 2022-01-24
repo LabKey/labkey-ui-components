@@ -51,6 +51,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     const updateFilter = useCallback((newFilterType: any[], newFilterValue?: any, isSecondValue?: boolean) => {
         if (!newFilterType) {
             setActiveFilter(undefined);
+            onFieldFilterUpdate(undefined);
             return;
         }
 
@@ -102,7 +103,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         else
             setFirstFilterValue(newValue);
         updateFilter(activeFilterType, newValue, isSecondInput);
-    }, [activeFilterType]);
+    }, [activeFilterType, firstFilterValue, secondFilterValue]);
 
     const updateDateFilterFieldValue = useCallback((newValue: any, isSecondInput?: boolean) => {
         // todo fix date conversion?

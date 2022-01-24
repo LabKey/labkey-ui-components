@@ -14,13 +14,14 @@ import {getEntityTypeOptions} from "../entities/actions";
 import {getQueryDetails} from "../../query/api";
 import {QueryColumn} from "../../../public/QueryColumn";
 import {Alert} from "../base/Alert";
-import {FieldFilter} from "./models";
+import {FieldFilter, FilterProps} from "./models";
 
 
 interface Props {
     entityDataType: EntityDataType;
     onCancel: () => void;
     onFind: (schemaName: string, dataTypeFilters : {[key: string] : FieldFilter[]}) => void;
+    cards?: FilterProps[];
 }
 
 export enum EntityFieldFilterTabs {
@@ -29,7 +30,7 @@ export enum EntityFieldFilterTabs {
 }
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
-    const { entityDataType, onCancel, onFind } = props;
+    const { entityDataType, onCancel, onFind, cards } = props;
 
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
 
@@ -43,6 +44,17 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const [dataTypeFilters, setDataTypeFilters] = useState<{[key: string] : FieldFilter[]}>({});
 
     useEffect(() => {
+        // setDataTypeFilters from cards
+        let activeDataTypeFilters = {};
+
+        cards?.forEach(card => {
+            if (card.entityDataType.instanceSchemaName !== entityDataType.instanceSchemaName)
+                return;
+            const parent = card.schemaQuery.queryName;
+            activeDataTypeFilters[parent] = card.filterArray;
+        });
+        setDataTypeFilters(activeDataTypeFilters);
+
         getEntityTypeOptions(entityDataType)
             .then(results => {
                 const parents = [];
@@ -70,7 +82,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             // TODO
         }
 
-    }, [entityDataType]);
+    }, [entityDataType]); // skip dep on cards to init dataTypeFilters only once
 
     const onFieldClick = useCallback((queryColumn: QueryColumn) => {
         // check if current filter is valid, if not, remove
@@ -106,7 +118,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         fieldError = true;
                     }
                     else if (isBetween) {
-                        if (value.indexOf(',') === -1)
+                        if (!Array.isArray(value) || value.length < 2)
                             fieldError = true;
                     }
 

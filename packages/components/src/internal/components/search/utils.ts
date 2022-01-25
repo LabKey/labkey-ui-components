@@ -1,7 +1,7 @@
-import { Filter, getServerContext } from "@labkey/api";
+import { Filter, getServerContext } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
-import { JsonType } from "../domainproperties/PropDescType";
+import { JsonType } from '../domainproperties/PropDescType';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
@@ -10,7 +10,7 @@ import { User } from '../base/models/User';
 import { getOmittedSampleTypeColumns } from '../samples/utils';
 import { SCHEMAS } from '../../schemas';
 
-import {FieldFilter, FilterProps, SearchSessionStorageProps} from './models';
+import { FieldFilter, FilterProps, SearchSessionStorageProps } from './models';
 
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): string {
     const hintText = 'Start by adding ';
@@ -20,40 +20,6 @@ export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): str
         names = names.substr(0, lastComma) + ' or' + names.substr(lastComma + 1);
     }
     return hintText + names + ' properties.';
-}
-
-export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [Filter.Types.CONTAINS.getURLSuffix(), Filter.Types.DOES_NOT_CONTAIN.getURLSuffix(), Filter.Types.DOES_NOT_START_WITH.getURLSuffix(), Filter.Types.STARTS_WITH.getURLSuffix(), Filter.Types.CONTAINS_ONE_OF.getURLSuffix(), Filter.Types.CONTAINS_NONE_OF.getURLSuffix()];
-
-export const SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE = [Filter.Types.EQUAL.getURLSuffix(), Filter.Types.DATE_EQUAL.getURLSuffix(), Filter.Types.IN.getURLSuffix(), Filter.Types.BETWEEN.getURLSuffix()];
-
-export function getSampleFinderFilterTypesForType(jsonType: JsonType) : any[] {
-    let filterList = Filter.getFilterTypesForType(jsonType)
-        .filter(function(result) {
-            return SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE.indexOf(result.getURLSuffix()) === -1;
-        })
-    ;
-
-    if (jsonType === 'date') {
-        filterList.push(Filter.Types.BETWEEN);
-        filterList.push(Filter.Types.NOT_BETWEEN);
-    }
-
-    let filters = [];
-
-    filterList.forEach(filter => {
-        let urlSuffix = filter.getURLSuffix();
-        if (urlSuffix === '')
-            urlSuffix = 'any';
-        filters.push({
-            value: urlSuffix,
-            label: filter.getDisplayText(),
-            valueRequired: filter.isDataValueRequired(),
-            multiValue: filter.isMultiValued(),
-            betweenOperator: ['between', 'notbetween'].indexOf(urlSuffix) > -1
-        });
-    })
-
-    return filters;
 }
 
 export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQuery: SchemaQuery): string {
@@ -92,7 +58,7 @@ function getSampleFinderConfigId(finderId: string, suffix: string): string {
     const { uuids } = getServerContext();
     // We need to make sure these ids are unique per application load since
     // the server holds on to the selection keys even after the grid is gone.
-    return uuids[0] + "-" + finderId + '|' + suffix;
+    return uuids[0] + '-' + finderId + '|' + suffix;
 }
 
 // exported for jest testing
@@ -103,7 +69,7 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
         const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
 
         if (card.filterArray?.length) {
-            let filters = [];
+            const filters = [];
             card.filterArray.forEach(f => {
                 const filter = f.filter;
                 const newColumnName = cardColumnName + '/' + filter.getColumnName();
@@ -160,44 +126,97 @@ export function getSampleFinderQueryConfigs(
     return configs;
 }
 
-export function filterToJson(filter: Filter.IFilter) : string {
+export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [
+    Filter.Types.CONTAINS.getURLSuffix(),
+    Filter.Types.DOES_NOT_CONTAIN.getURLSuffix(),
+    Filter.Types.DOES_NOT_START_WITH.getURLSuffix(),
+    Filter.Types.STARTS_WITH.getURLSuffix(),
+    Filter.Types.CONTAINS_ONE_OF.getURLSuffix(),
+    Filter.Types.CONTAINS_NONE_OF.getURLSuffix(),
+];
+
+export const SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE = [
+    Filter.Types.EQUAL.getURLSuffix(),
+    Filter.Types.DATE_EQUAL.getURLSuffix(),
+    Filter.Types.IN.getURLSuffix(),
+    Filter.Types.BETWEEN.getURLSuffix(),
+];
+
+export function isBetweenOperator(urlSuffix: string): boolean {
+    return ['between', 'notbetween'].indexOf(urlSuffix) > -1;
+}
+
+export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
+
+export function getSampleFinderFilterTypesForType(jsonType: JsonType): any[] {
+    const filterList = Filter.getFilterTypesForType(jsonType).filter(function (result) {
+        return SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE.indexOf(result.getURLSuffix()) === -1;
+    });
+    if (jsonType === 'date') {
+        filterList.push(Filter.Types.BETWEEN);
+        filterList.push(Filter.Types.NOT_BETWEEN);
+    }
+
+    const filters = [];
+
+    filterList.forEach(filter => {
+        let urlSuffix = filter.getURLSuffix();
+        if (urlSuffix === '') urlSuffix = FILTER_URL_SUFFIX_ANY_ALT;
+        filters.push({
+            value: urlSuffix,
+            label: filter.getDisplayText(),
+            valueRequired: filter.isDataValueRequired(),
+            multiValue: filter.isMultiValued(),
+            betweenOperator: isBetweenOperator(urlSuffix)
+        });
+    });
+
+    return filters;
+}
+
+export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilterType) : boolean {
+    if (suffix === 'any' && filterType.getURLSuffix() === '') return true;
+    return suffix === filterType.getURLSuffix();
+}
+
+export function filterToJson(filter: Filter.IFilter): string {
     return encodeURIComponent(filter.getURLParameterName()) + '=' + encodeURIComponent(filter.getURLParameterValue());
 }
 
-export function filterFromJson(filterStr: string) : Filter.IFilter {
+export function filterFromJson(filterStr: string): Filter.IFilter {
     return Filter.getFiltersFromUrl(filterStr, 'query')?.[0];
 }
 
-export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCounter: number) : string {
-    let filterPropsObj = [];
+export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCounter: number): string {
+    const filterPropsObj = [];
 
     filterProps.forEach(filterProp => {
-        let filterPropObj = {...filterProp};
+        const filterPropObj = { ...filterProp };
         const filterArrayObjs = [];
         [...filterPropObj.filterArray].forEach(field => {
             filterArrayObjs.push({
                 fieldKey: field.fieldKey,
                 fieldCaption: field.fieldCaption,
-                filter: filterToJson(field.filter)
+                filter: filterToJson(field.filter),
             });
         });
         filterPropObj.filterArray = filterArrayObjs;
-        filterPropsObj.push(filterPropObj)
-    })
+        filterPropsObj.push(filterPropObj);
+    });
 
     return JSON.stringify({
         filters: filterPropsObj,
-        filterChangeCounter
+        filterChangeCounter,
     });
 }
 
-export function searchFiltersFromJson(filterPropsStr: string) : SearchSessionStorageProps{
-    let filters : FilterProps[] = [];
-    let obj = JSON.parse(filterPropsStr);
-    let filterPropsObj : any[] = obj['filters'];
-    const filterChangeCounter : number = obj['filterChangeCounter'];
+export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStorageProps {
+    const filters: FilterProps[] = [];
+    const obj = JSON.parse(filterPropsStr);
+    const filterPropsObj: any[] = obj['filters'];
+    const filterChangeCounter: number = obj['filterChangeCounter'];
     filterPropsObj.forEach(filterPropObj => {
-        let filterArray = [];
+        const filterArray = [];
         filterPropObj['filterArray']?.forEach(field => {
             filterArray.push({
                 fieldKey: field.fieldKey,
@@ -207,38 +226,75 @@ export function searchFiltersFromJson(filterPropsStr: string) : SearchSessionSto
             });
         });
         filterPropObj['filterArray'] = filterArray;
-        filters.push(filterPropObj as FilterProps)
+        filters.push(filterPropObj as FilterProps);
     });
 
     return {
         filters,
-        filterChangeCounter
+        filterChangeCounter,
     };
 }
 
 const EMPTY_VALUE_DISPLAY = '[blank]';
-export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string) : string[] {
-    let values = [], rawValues = [];
+export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string): any[] {
+    let values = [],
+        rawValues = [];
     const rawValue = filter.getValue();
+
     if (Array.isArray(rawValue)) {
         rawValues = [...rawValue];
-    }
-    else {
+    } else if (typeof rawValue === 'string') {
         rawValues = rawValue.split(';');
-
     }
+    else
+        rawValues = [rawValue];
 
     rawValues.forEach(v => {
-        values.push(v == '' ? (blankValue ?? EMPTY_VALUE_DISPLAY) : v);
-    })
-
+        values.push(v == '' ? blankValue ?? EMPTY_VALUE_DISPLAY : v);
+    });
 
     return values;
 }
 
-
-export function getFieldFilterKey(fieldFilter: FieldFilter,  schemaQuery?: SchemaQuery): string  {
+export function getFieldFilterKey(fieldFilter: FieldFilter, schemaQuery?: SchemaQuery): string {
     return schemaQuery.schemaName + '|' + schemaQuery.queryName + '|' + fieldFilter.fieldKey;
 }
 
+export function getFieldFiltersValidationResult(dataTypeFilters: {[key: string]: FieldFilter[]}) : string {
+    let errorMsg = 'Invalid/incomplete filter values. Please correct input for fields. ',
+        hasError = false,
+        parentFields = {};
+    Object.keys(dataTypeFilters).forEach(parent => {
+        const filters = dataTypeFilters[parent];
+        filters.forEach(fieldFilter => {
+            const filter = fieldFilter.filter;
+            if (filter.getFilterType().isDataValueRequired()) {
+                const value = filter.getValue();
+                const isBetween = isBetweenOperator(filter.getFilterType().getURLSuffix());
 
+                let fieldError = false;
+                if (value === undefined || value === null) {
+                    fieldError = true;
+                } else if (isBetween) {
+                    if (!Array.isArray(value) || value.length < 2) fieldError = true;
+                }
+
+                if (fieldError == true) {
+                    hasError = true;
+                    const fields = parentFields[parent] ?? [];
+                    fields.push(fieldFilter.fieldCaption);
+                    parentFields[parent] = fields;
+                }
+            }
+        });
+    });
+
+    if (hasError) {
+        Object.keys(parentFields).forEach(parent => {
+            errorMsg += parent + ': ' + parentFields[parent].join(', ') + '.';
+        });
+        return errorMsg;
+    }
+
+    return null;
+}

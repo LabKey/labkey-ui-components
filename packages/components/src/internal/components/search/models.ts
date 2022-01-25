@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, Record } from 'immutable';
-import {Filter} from "@labkey/api";
-import {EntityDataType} from "../entities/models";
-import {SchemaQuery} from "../../../public/SchemaQuery";
+import { Filter } from '@labkey/api';
+
+import { EntityDataType } from '../entities/models';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 export class SearchResultsModel extends Record({
     entities: undefined,
@@ -56,7 +57,7 @@ export interface SearchResultCardData {
 export interface FieldFilter {
     fieldKey: string;
     fieldCaption: string;
-    filter: Filter.IFilter
+    filter: Filter.IFilter;
 }
 
 export interface FilterProps {
@@ -70,4 +71,3 @@ export interface SearchSessionStorageProps {
     filters: FilterProps[];
     filterChangeCounter: number;
 }
-

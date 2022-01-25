@@ -36,11 +36,11 @@ import {
     getFinderViewColumnsConfig,
     getSampleFinderQueryConfigs,
     searchFiltersFromJson,
-    searchFiltersToJson
+    searchFiltersToJson,
 } from './utils';
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
-import {FieldFilter, FilterProps} from "./models";
+import { FieldFilter, FilterProps } from './models';
 
 const SAMPLE_FINDER_TITLE = 'Find Samples';
 const SAMPLE_FINDER_CAPTION = 'Find samples that meet all the criteria defined below';
@@ -96,7 +96,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
     const [filters, setFilters] = useState<FilterProps[]>([]);
-    const [filterExpandedStatusMap, setFilterExpandedStatusMap] = useState<{[key: string] : boolean }>({});
+    const [filterExpandedStatusMap, setFilterExpandedStatusMap] = useState<{ [key: string]: boolean }>({});
     const [chosenQueryName, setChosenQueryName] = useState<string>(undefined);
 
     useEffect(() => {
@@ -119,10 +119,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const updateFilters = (filterChangeCounter: number, filters: FilterProps[]) => {
         setFilters(filters);
         setFilterChangeCounter(filterChangeCounter);
-        sessionStorage.setItem(
-            getLocalStorageKey(),
-            searchFiltersToJson(filters, filterChangeCounter)
-        );
+        sessionStorage.setItem(getLocalStorageKey(), searchFiltersToJson(filters, filterChangeCounter));
     };
 
     const onAddEntity = useCallback((entityType: EntityDataType) => {
@@ -154,7 +151,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     };
 
     const onFind = useCallback(
-        (schemaName: string, dataTypeFilters : {[key: string] : FieldFilter[]}) => {
+        (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }) => {
             const newFilterCards = [...filters].filter(filter => {
                 return filter.entityDataType.instanceSchemaName !== chosenEntityType.instanceSchemaName;
             });
@@ -162,9 +159,9 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 newFilterCards.push({
                     schemaQuery: SchemaQuery.create(schemaName, queryName),
                     filterArray: dataTypeFilters[queryName],
-                    entityDataType: chosenEntityType
+                    entityDataType: chosenEntityType,
                 });
-            })
+            });
 
             onFilterClose();
             updateFilters(filterChangeCounter + 1, newFilterCards);
@@ -172,15 +169,17 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         [filters, filterChangeCounter, onFilterEdit, onFilterDelete, chosenEntityType]
     );
 
-    const toggleFieldFilterExpandStatus = useCallback((fieldFilter: FieldFilter, schemaQuery?: SchemaQuery) => {
-        const fieldKey = getFieldFilterKey(fieldFilter, schemaQuery);
-        const expanded = !!filterExpandedStatusMap?.[fieldKey];
-        setFilterExpandedStatusMap({
-            ...filterExpandedStatusMap,
-            [fieldKey]: !expanded
-        })
-
-    }, [filterExpandedStatusMap]);
+    const toggleFieldFilterExpandStatus = useCallback(
+        (fieldFilter: FieldFilter, schemaQuery?: SchemaQuery) => {
+            const fieldKey = getFieldFilterKey(fieldFilter, schemaQuery);
+            const expanded = !!filterExpandedStatusMap?.[fieldKey];
+            setFilterExpandedStatusMap({
+                ...filterExpandedStatusMap,
+                [fieldKey]: !expanded,
+            });
+        },
+        [filterExpandedStatusMap]
+    );
 
     return (
         <Section

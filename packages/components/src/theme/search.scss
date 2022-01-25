@@ -51,8 +51,7 @@
   padding-left: 1px;
 }
 
-
-.search-parent-entity-panel {
+.parent-search-panel__container {
     .field_count_circle {
         border-radius: 50%;
         text-align: center;
@@ -73,27 +72,27 @@
         margin-top: 5px;
     }
 
-    .search-field-col-title {
+    .parent-search-panel__col-title {
         padding-bottom: 10px;
         padding-left: 5px;
         font-size: 16px;
     }
 
-    .search-field-col-sub-title {
+    .parent-search-panel__col-sub-title {
         font-weight: bold;
         padding: 25px 0 10px 0;
     }
 
-    .search-parent-entity-col {
+    .parent-search-panel__col {
         padding-right: 0;
         padding-left: 8px;
     }
 
-    .search-parent-entity-col.col-xs-6 {
+    .parent-search-panel__col.col-xs-6 {
         padding-right: 8px;
     }
 
-    .search-parent-entity-col-div {
+    .parent-search-panel__col-content {
         height: 470px;
         overflow: scroll;
         border: 1px solid lightgray;
@@ -103,36 +102,18 @@
             border: none;
         }
 
-        .search-field-tabs {
+        .parent-search-panel__tabs {
             padding: 8px 15px;
         }
 
-        .search-field-tabs.content-tabs {
+        .parent-search-panel__tabs.content-tabs {
             .nav-tabs {
                 border-bottom: 1px solid lightgray;
             }
         }
     }
 
-    .search-filter-and {
-        padding: 8px 0;
-    }
-
-    .search-filter-input-wrapper {
-        width: 100%;
-        margin: 0 0 20px 0;
-    }
-
-    .search-filter-input {
-        width: 75%;
-        padding-left: 15px;
-    }
-
-    .search-filter-input-select {
-        width: 75%;
-    }
-
-    .search-field-empty-panel-msg {
+    .parent-search-panel__empty-msg {
         color: $gray-light;
         font-size: 16px;
         padding: 10px 10px;
@@ -140,35 +121,48 @@
 
 }
 
+.search-filter__input-wrapper {
+    width: 100%;
+    margin: 0 0 20px 0;
+
+    .search-filter__and-op {
+        padding: 8px 0;
+    }
+
+    .search-filter__input {
+        width: 75%;
+        padding-left: 15px;
+    }
+
+    .search-filter__input-select {
+        width: 75%;
+    }
+}
+
 .filter-cards__card {
-
-    .filter-row {
-
-        .filter-label-col {
+    .filter-display__row {
+        .filter-display__field-label {
             font-weight: bold;
             vertical-align: top;
             padding-top: 10px;
         }
 
-        .filter-value-col {
+        .filter-display__filter-content {
             padding-top: 10px;
-            .filter-value__operator {
+            .filter-display__filter-operator {
                 font-style: italic;
                 padding-left: 30px;
             }
 
-            .filter-value__value {
+            .filter-display__filter-value {
                 padding-left: 30px;
                 ul {
                     padding-left: 0;
                 }
-                .filter-value-display-value-li {
+                .filter-display__filter-value-li {
                     display: block;
                 }
             }
         }
     }
-
 }
-
-

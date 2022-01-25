@@ -298,19 +298,20 @@ export class QueryColumn extends Record({
 
     allowFaceting(): boolean {
         switch (this.facetingBehaviorType) {
-
             case 'ALWAYS_ON':
-                return true
+                return true;
             case 'ALWAYS_OFF':
                 return false;
             case 'AUTOMATIC':
                 // auto rules are if the column is a lookup or dimension
                 // OR if it is of type : (boolean, int, date, text), multiline excluded
-                if (this.lookup || this.dimension)
-                    return true
-                else if (this.jsonType == 'boolean' || this.jsonType == 'int' ||
-                    (this.jsonType == 'string' && this.inputType != 'textarea'))
-                    return true
+                if (this.lookup || this.dimension) return true;
+                else if (
+                    this.jsonType == 'boolean' ||
+                    this.jsonType == 'int' ||
+                    (this.jsonType == 'string' && this.inputType != 'textarea')
+                )
+                    return true;
         }
 
         return false;

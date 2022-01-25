@@ -31,30 +31,17 @@
 
 .horizontal-bar-part {
     display: inline-block;
-    position:relative;
-    height:20px;
+    position: relative;
+    height: 20px;
+    outline: 1px solid $table-border-color;
 }
 
 .horizontal-bar--linked {
     cursor: pointer;
 }
 
-.horizontal-bar--begin {
-    border-left: 1px solid lightgray;
-}
-
-.horizontal-bar--filled {
-    border-top: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
-}
-
-.horizontal-bar--end {
-    border-right: 1px solid lightgray;
-}
-
 .horizontal-bar--open {
     background: white;
-    border: 1px solid lightgray;
 }
 
 .horizontal-bar--linkSpanner {

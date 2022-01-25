@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.12#.#
+*Released*: ## January 2022
+* Issue 44721: make sorting methods defensive against non-string values
+
 ### version 2.121.1
 *Released*: 24 January 2022
 * Item 9875: Add AssayDefinitionModel requireCommentOnQCStateChange prop

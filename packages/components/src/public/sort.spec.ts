@@ -1,6 +1,5 @@
 import { naturalSort } from './sort';
 
-
 describe('naturalSort', () => {
     test('alphabetic', () => {
         expect(naturalSort('', 'anything')).toBe(1);
@@ -22,5 +21,12 @@ describe('naturalSort', () => {
         expect(naturalSort('1.431', '14.31')).toBeLessThan(0);
         expect(naturalSort('10', '1.0')).toBeGreaterThan(0);
         expect(naturalSort('1.2ABC', '1.2XY')).toBeLessThan(0);
+    });
+
+    test('non-string values', () => {
+        const nonStringValues = [42, 3.14, jest.fn(), true, [], {}, undefined, null, NaN];
+
+        // Don't particularly care how it sorts these ... just that it succeeds in processing them.
+        expect(nonStringValues.sort(naturalSort).length).toEqual(nonStringValues.length);
     });
 });

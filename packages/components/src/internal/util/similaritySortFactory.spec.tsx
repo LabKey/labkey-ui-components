@@ -77,4 +77,12 @@ describe('similaritySortFactory', () => {
         result = getValues().sort(similaritySortFactory('s-1', true));
         expect(result[0]).toEqual('6S-1'); // degrade to natural sort
     });
+
+    test('non-string values', () => {
+        const nonStringValues = [42, 3.14, jest.fn(), true, [], {}, undefined, null, NaN];
+
+        // Don't particularly care how it sorts these ... just that it succeeds in processing them.
+        expect(nonStringValues.sort(similaritySortFactory('x')).length).toEqual(nonStringValues.length);
+        expect(nonStringValues.sort(similaritySortFactory('y', true)).length).toEqual(nonStringValues.length);
+    });
 });

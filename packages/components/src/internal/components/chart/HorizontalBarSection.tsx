@@ -28,7 +28,6 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
     const horizontalBars = [];
 
     if (data?.length) {
-        let prevColor = undefined;
         let hasBegun = false;
         const dataCount =  data.length;
         let totalPct = 0;
@@ -41,10 +40,6 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
                 };
                 if (row.backgroundColor) {
                     styleProps['background'] = row.backgroundColor;
-                    if (row.backgroundColor === prevColor) {
-                        styleProps['borderLeft'] = '1px solid white'
-                    }
-                    prevColor = row.backgroundColor;
                 }
                 horizontalBars.push(
                     <OverlayTrigger
@@ -56,18 +51,22 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
                         }
                         placement="top"
                     >
-                        <div key={index} style={styleProps}
-                             className={classNames("horizontal-bar-part", row.className,
-                                 {
-                                     'horizontal-bar--begin': !hasBegun,
-                                     'horizontal-bar--filled': row.filled,
-                                     'horizontal-bar--linked': !!row.href,
-                                     'horizontal-bar--open': !row.filled || !row.backgroundColor,
-                                     'horizontal-bar--end': index === dataCount - 1
-                                 })}>
-                            {row.href && <a href={row.href}>
-                                <div className="horizontal-bar--linkSpanner">&nbsp;</div>
-                            </a>}
+                        <div
+                            key={index}
+                            style={styleProps}
+                            className={classNames("horizontal-bar-part", row.className, {
+                                 'horizontal-bar--begin': !hasBegun,
+                                 'horizontal-bar--filled': row.filled,
+                                 'horizontal-bar--linked': !!row.href,
+                                 'horizontal-bar--open': !row.filled || !row.backgroundColor,
+                                 'horizontal-bar--end': index === dataCount - 1
+                             })}
+                        >
+                            {row.href && (
+                                <a href={row.href}>
+                                    <div className="horizontal-bar--linkSpanner">&nbsp;</div>
+                                </a>
+                            )}
                         </div>
                     </OverlayTrigger>
                 );

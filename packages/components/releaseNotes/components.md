@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 9932: Sample Type Insights panel
   * Refactor HorizontalBarSection from inventory module (previously StorageAllocationSection)
   * Bar chart data helper for createPercentageBarData() and createHorizontalBarLegendData(), moved from inventory module
+  * Refactor ItemsLegend from inventory module
   * Issue 44633: Horizontal bar fix for borders causing line wrapping
 
 ### version 2.121.1

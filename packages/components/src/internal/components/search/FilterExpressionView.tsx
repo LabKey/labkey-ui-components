@@ -6,12 +6,12 @@ import { Filter } from "@labkey/api";
 
 import { QueryColumn } from "../../../public/QueryColumn";
 import { SelectInput } from "../forms/input/SelectInput";
-import {App} from "../../../index";
+import { App } from "../../../index";
 import { getSampleFinderFilterTypesForType } from "./utils";
 import { JsonType } from "../domainproperties/PropDescType";
 import { resolveFieldKey } from "../omnibox/utils";
 import { resolveFilterType } from "../omnibox/actions/Filter";
-import {formatDate} from "../../util/Date";
+import { formatDate } from "../../util/Date";
 
 interface Props {
     key: string

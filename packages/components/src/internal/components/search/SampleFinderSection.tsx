@@ -126,6 +126,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     };
 
     const onAddEntity = useCallback((entityType: EntityDataType) => {
+        setChosenQueryName(undefined);
         setChosenEntityType(entityType);
     }, []);
 

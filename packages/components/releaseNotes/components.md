@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add Sample button to Assay Results page
   * Adjust picklist & workflow job creation & update actions and components
 
+### version 2.121.1
+*Released*: 24 January 2022
+* Item 9875: Add AssayDefinitionModel requireCommentOnQCStateChange prop
+
 ### version 2.121.0
 *Released*: 21 January 2022
 * Update `SampleTypeTabbedGridPanel` to show row count on tabs

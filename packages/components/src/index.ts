@@ -436,7 +436,7 @@ import { useRouteLeave, withRouteLeave } from './internal/util/RouteLeave';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
 import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
 import { CHART_GROUPS } from './internal/components/chart/configs';
-import { createPercentageBarData } from './internal/components/chart/utils';
+import { createPercentageBarData, createHorizontalBarLegendData } from './internal/components/chart/utils';
 import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
@@ -1058,6 +1058,7 @@ export {
     CHART_GROUPS,
     HorizontalBarSection,
     createPercentageBarData,
+    createHorizontalBarLegendData,
     processChartData,
     DataViewInfoTypes,
     loadReports,
@@ -1434,3 +1435,4 @@ export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { SamplesEditableGridProps } from './internal/components/samples/SamplesEditableGrid';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';
 export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';
+export type { HorizontalBarLegendData } from './internal/components/chart/utils';

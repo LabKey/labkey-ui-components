@@ -112,6 +112,34 @@ export function createPercentageBarData(
     return { data, subtitle };
 }
 
+export interface HorizontalBarLegendData {
+    circleColor: string;
+    backgroundColor: string;
+    legendLabel: string;
+}
+
+export function createHorizontalBarLegendData(data: HorizontalBarData[]) : HorizontalBarLegendData[] {
+    let legendMap = {};
+    data.forEach(sampleType => {
+        if (sampleType.totalCount > 0) {
+            let labels = legendMap[sampleType.backgroundColor] || [];
+            if (labels.indexOf(sampleType.name) == -1) {
+                labels.push(sampleType.name);
+                legendMap[sampleType.backgroundColor] = labels;
+            }
+        }
+    });
+    let legendData = [];
+    Object.keys(legendMap).forEach(key => {
+        legendData.push({
+            circleColor: key,
+            backgroundColor: 'none',
+            legendLabel: (legendMap[key].join(', '))
+        })
+    });
+    return legendData;
+}
+
 interface BarChartPlotConfigProps {
     renderTo: string;
     title: string;

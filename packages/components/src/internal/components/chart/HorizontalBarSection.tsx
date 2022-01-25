@@ -34,12 +34,7 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
         let totalPct = 0;
         data.forEach((row, index) => {
             if (row.percent > 0) {
-                let pct;
-                if (index == data.length - 1) {
-                    pct = 100 - totalPct;
-                } else {
-                    pct = (row.percent == 100 ? row.percent : Math.min(Math.max(row.percent, 1), 99));
-                }
+                const pct = row.percent;
                 totalPct += pct;
                 let styleProps = {
                     width: pct + "%"

@@ -111,6 +111,7 @@ export const SAMPLE_SETS = {
 const SAMPLE_MANAGEMENT_SCHEMA = 'samplemanagement';
 export const SAMPLE_MANAGEMENT = {
     SCHEMA: SAMPLE_MANAGEMENT_SCHEMA,
+    SAMPLE_TYPE_INSIGHTS: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, 'SampleTypeInsights'),
     SOURCE_SAMPLES: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, 'SourceSamples'),
 };
 

@@ -27,7 +27,7 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
     const { subtitle, title, data, emptyText } = props;
     const horizontalBars = [];
 
-    if (data) {
+    if (data?.length) {
         let prevColor = undefined;
         let hasBegun = false;
         const dataCount =  data.length;
@@ -79,8 +79,7 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
                 hasBegun = true;
             }
         });
-    }
-    else {
+    } else {
         horizontalBars.push(<div>{emptyText ?? DEFAULT_EMPTY_TEXT}</div>)
     }
 

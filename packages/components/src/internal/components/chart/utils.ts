@@ -50,6 +50,68 @@ export function processChartData(response: ISelectRowsResult, options?: ProcessC
     return { barFillColors, data };
 }
 
+interface PercentageBarProps {
+    queryKey: string,
+    name: string;
+    label: string,
+    useForSubtitle?: boolean,
+    className?: string,
+    appURL?: AppURL,
+}
+
+export function createPercentageBarData(
+    row: Record<string, any>,
+    itemNounPlural: string,
+    unusedLabel: string,
+    totalCountKey: string,
+    percentageBars: PercentageBarProps[],
+) : { data: HorizontalBarData[], subtitle: string } {
+    const totalCount = caseInsensitive(row, totalCountKey)?.value ?? 0;
+    let unusedCount = totalCount;
+    const data = [];
+    let subtitle;
+    if (totalCount > 0) {
+        percentageBars.forEach(percentageBar => {
+            const itemCount = caseInsensitive(row, percentageBar.queryKey)?.value ?? 0;
+            unusedCount = unusedCount - itemCount;
+            const itemPct = (itemCount/totalCount) * 100;
+            const title = `${itemCount.toLocaleString()} of ${totalCount.toLocaleString()} ${itemNounPlural.toLowerCase()} are ${percentageBar.label.toLowerCase()}`;
+
+            data.push({
+                title,
+                name: percentageBar.name,
+                className: percentageBar.className,
+                count: itemCount,
+                totalCount: totalCount,
+                percent: itemPct,
+                href: percentageBar.appURL?.toHref(),
+                filled: true,
+            });
+
+            if (percentageBar.useForSubtitle) {
+                subtitle = `${title} (${(itemPct > 0 && itemPct < 1 ? '< 1' :  Math.trunc(itemPct))}%)`;
+            }
+        });
+
+        const unusedPct = (unusedCount/totalCount) * 100;
+        const unusedTitle = `${unusedCount.toLocaleString()} of ${totalCount.toLocaleString()} ${itemNounPlural.toLowerCase()} are ${unusedLabel.toLowerCase()}`;
+        data.push({
+            title: unusedTitle,
+            name: 'Available',
+            count: unusedCount,
+            totalCount: totalCount,
+            percent: unusedPct,
+            filled: false,
+        });
+
+        if (!subtitle) {
+            subtitle = `${unusedTitle} (${(unusedPct > 0 && unusedPct < 1 ? '< 1' :  Math.trunc(unusedPct))}%)`;
+        }
+    }
+
+    return { data, subtitle };
+}
+
 interface BarChartPlotConfigProps {
     renderTo: string;
     title: string;
@@ -164,47 +226,4 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
         scales,
         data,
     };
-}
-
-export function createPercentageBarData(
-    row: Record<string, any>,
-    totalCountKey: string,
-    itemCountKey: string,
-    itemNounPlural: string,
-    usedNoun: string,
-    unusedNoun: string,
-    className?: string,
-    appURL?: AppURL
-) : { data: HorizontalBarData[], subtitle: string } {
-    const totalCount = caseInsensitive(row, totalCountKey)?.value ?? 0;
-    const itemCount = caseInsensitive(row, itemCountKey)?.value ?? 0;
-    const data = [];
-    let subtitle;
-    if (totalCount > 0) {
-        const usedPct = (itemCount/totalCount) * 100;
-        const unusedPct = 100 - usedPct;
-        const unusedTitle = `${(totalCount - itemCount).toLocaleString()} of ${totalCount.toLocaleString()} ${itemNounPlural.toLowerCase()} ${unusedNoun.toLowerCase()}`;
-        data.push({
-            title: `${itemCount.toLocaleString()} of ${totalCount.toLocaleString()} ${itemNounPlural.toLowerCase()} ${usedNoun.toLowerCase()}`,
-            name: usedNoun,
-            className,
-            count: itemCount,
-            totalCount: totalCount,
-            percent: usedPct,
-            href: appURL?.toHref(),
-            filled: true,
-        });
-        data.push({
-            title: unusedTitle,
-            name: unusedNoun,
-            count: totalCount - itemCount,
-            totalCount: totalCount,
-            percent: unusedPct,
-            filled: false,
-        });
-
-        subtitle = `${unusedTitle} (${(unusedPct > 0 && unusedPct < 1 ? '< 1' :  Math.trunc(unusedPct))}%)`;
-    }
-
-    return { data, subtitle };
 }

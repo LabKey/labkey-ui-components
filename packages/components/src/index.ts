@@ -436,6 +436,7 @@ import { useRouteLeave, withRouteLeave } from './internal/util/RouteLeave';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
 import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
 import { CHART_GROUPS } from './internal/components/chart/configs';
+import { createPercentageBarData } from './internal/components/chart/utils';
 import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
@@ -1056,6 +1057,7 @@ export {
     BarChartViewer,
     CHART_GROUPS,
     HorizontalBarSection,
+    createPercentageBarData,
     processChartData,
     DataViewInfoTypes,
     loadReports,

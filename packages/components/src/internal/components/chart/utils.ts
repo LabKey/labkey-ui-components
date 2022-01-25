@@ -1,8 +1,9 @@
 import { fromJS } from 'immutable';
 import { getServerContext } from '@labkey/api';
 
-import { ISelectRowsResult, naturalSort } from '../../..';
+import {AppURL, caseInsensitive, ISelectRowsResult, naturalSort} from '../../..';
 
+import { HorizontalBarData } from './HorizontalBarSection';
 import { ChartData } from './types';
 
 interface ChartDataProps {
@@ -163,4 +164,47 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
         scales,
         data,
     };
+}
+
+export function createPercentageBarData(
+    row: Record<string, any>,
+    totalCountKey: string,
+    itemCountKey: string,
+    itemNounPlural: string,
+    usedNoun: string,
+    unusedNoun: string,
+    className?: string,
+    appURL?: AppURL
+) : { data: HorizontalBarData[], subtitle: string } {
+    const totalCount = caseInsensitive(row, totalCountKey)?.value ?? 0;
+    const itemCount = caseInsensitive(row, itemCountKey)?.value ?? 0;
+    const data = [];
+    let subtitle;
+    if (totalCount > 0) {
+        const usedPct = (itemCount/totalCount) * 100;
+        const unusedPct = 100 - usedPct;
+        const unusedTitle = `${(totalCount - itemCount).toLocaleString()} of ${totalCount.toLocaleString()} ${itemNounPlural.toLowerCase()} ${unusedNoun.toLowerCase()}`;
+        data.push({
+            title: `${itemCount.toLocaleString()} of ${totalCount.toLocaleString()} ${itemNounPlural.toLowerCase()} ${usedNoun.toLowerCase()}`,
+            name: usedNoun,
+            className,
+            count: itemCount,
+            totalCount: totalCount,
+            percent: usedPct,
+            href: appURL?.toHref(),
+            filled: true,
+        });
+        data.push({
+            title: unusedTitle,
+            name: unusedNoun,
+            count: totalCount - itemCount,
+            totalCount: totalCount,
+            percent: unusedPct,
+            filled: false,
+        });
+
+        subtitle = `${unusedTitle} (${(unusedPct > 0 && unusedPct < 1 ? '< 1' :  Math.trunc(unusedPct))}%)`;
+    }
+
+    return { data, subtitle };
 }

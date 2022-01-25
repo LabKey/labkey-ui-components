@@ -97,6 +97,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
     const [filters, setFilters] = useState<FilterProps[]>([]);
     const [filterExpandedStatusMap, setFilterExpandedStatusMap] = useState<{[key: string] : boolean }>({});
+    const [chosenQueryName, setChosenQueryName] = useState<string>(undefined);
 
     useEffect(() => {
         const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
@@ -130,11 +131,11 @@ export const SampleFinderSection: FC<Props> = memo(props => {
 
     const onFilterEdit = useCallback(
         (index: number) => {
-            setChosenEntityType(parentEntityDataTypes[index]);
-            // TODO update filters as well
-            updateFilters(filterChangeCounter + 1, filters);
+            const selectedCard = filters[index];
+            setChosenEntityType(selectedCard.entityDataType);
+            setChosenQueryName(selectedCard.schemaQuery.queryName);
         },
-        [parentEntityDataTypes, filterChangeCounter]
+        [filters]
     );
 
     const onFilterDelete = useCallback(
@@ -204,6 +205,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     <FilterCards
                         cards={filters}
                         onFilterDelete={onFilterDelete}
+                        onFilterEdit={onFilterEdit}
                         filterExpandedStatusMap={filterExpandedStatusMap}
                         toggleFieldFilterExpandStatus={toggleFieldFilterExpandStatus}
                         onAddEntity={onAddEntity}
@@ -218,7 +220,13 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 </>
             )}
             {chosenEntityType !== undefined && (
-                <EntityFieldFilterModal onCancel={onFilterClose} cards={filters} entityDataType={chosenEntityType} onFind={onFind} />
+                <EntityFieldFilterModal
+                    onCancel={onFilterClose}
+                    cards={filters}
+                    entityDataType={chosenEntityType}
+                    onFind={onFind}
+                    queryName={chosenQueryName}
+                />
             )}
         </Section>
     );

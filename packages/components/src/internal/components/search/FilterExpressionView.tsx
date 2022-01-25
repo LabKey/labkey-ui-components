@@ -6,11 +6,12 @@ import { Filter } from "@labkey/api";
 
 import { QueryColumn } from "../../../public/QueryColumn";
 import { SelectInput } from "../forms/input/SelectInput";
-import { App } from "../../../index";
+import {App} from "../../../index";
 import { getSampleFinderFilterTypesForType } from "./utils";
 import { JsonType } from "../domainproperties/PropDescType";
 import { resolveFieldKey } from "../omnibox/utils";
 import { resolveFilterType } from "../omnibox/actions/Filter";
+import {formatDate} from "../../util/Date";
 
 interface Props {
     key: string
@@ -32,7 +33,11 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         setFieldFilterOptions(filterOptions);
 
         if (fieldFilter) {
-            const filterOption = filterOptions?.find(option => option.value === fieldFilter.getFilterType().getURLSuffix());
+            const filterOption = filterOptions?.find(option => {
+                if (option.value === 'any' && fieldFilter.getFilterType().getURLSuffix() === '')
+                    return true;
+                return option.value === fieldFilter.getFilterType().getURLSuffix();
+            });
             setActiveFilterType(filterOption);
             const rawFilterValue = fieldFilter.getValue();
             if (filterOption['betweenOperator']) {
@@ -92,7 +97,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         const newValue = event.target.value;
         setFirstFilterValue(newValue);
         updateFilter(activeFilterType, newValue, false);
-    }, [activeFilterType]);
+    }, [activeFilterType, firstFilterValue, secondFilterValue]);
 
     const updateTextFilterFieldValue = useCallback((event: any) => {
         const newValue = event.target.value;
@@ -105,13 +110,13 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     }, [activeFilterType, firstFilterValue, secondFilterValue]);
 
     const updateDateFilterFieldValue = useCallback((newValue: any, isSecondInput?: boolean) => {
-        // todo fix date conversion?
+        const newDate = newValue ? formatDate(newValue) : null;
         if (isSecondInput)
-            setSecondFilterValue(newValue);
+            setSecondFilterValue(newDate);
         else
-            setFirstFilterValue(newValue);
-        updateFilter(activeFilterType, newValue, isSecondInput);
-    }, []);
+            setFirstFilterValue(newDate);
+        updateFilter(activeFilterType, newDate, isSecondInput);
+    }, [activeFilterType, firstFilterValue, secondFilterValue]);
 
     const renderFilterTypeInput = useCallback((isSecondInput?: boolean) => {
         if (!activeFilterType || !activeFilterType['valueRequired'])

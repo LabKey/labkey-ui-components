@@ -63,7 +63,7 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
         else if (filterUrlSuffix === Filter.Types.BETWEEN.getURLSuffix() ||
             filterUrlSuffix === Filter.Types.NOT_BETWEEN.getURLSuffix()){
             const values = filter.getValue();
-            filterValueDisplay = values[0] + '-' + values[1];
+            filterValueDisplay = values[0] + ' - ' + values[1];
         }
         else {
             if (filterType.isDataValueRequired) {

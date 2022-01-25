@@ -21,6 +21,7 @@ interface Props {
     entityDataType: EntityDataType;
     onCancel: () => void;
     onFind: (schemaName: string, dataTypeFilters : {[key: string] : FieldFilter[]}) => void;
+    queryName: string;
     cards?: FilterProps[];
 }
 
@@ -30,7 +31,7 @@ export enum EntityFieldFilterTabs {
 }
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
-    const { entityDataType, onCancel, onFind, cards } = props;
+    const { entityDataType, onCancel, onFind, cards, queryName } = props;
 
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
 
@@ -65,6 +66,9 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
                 })
                 setEntityParents(parents);
+                if (queryName) {
+                    onEntityClick(queryName);
+                }
             })
             .catch()
     }, [entityDataType]);
@@ -261,8 +265,8 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                     <div>
                                         <Nav bsStyle="tabs">
                                             <NavItem eventKey={EntityFieldFilterTabs.Filter}>Filter</NavItem>
-                                            {(!activeField || activeField?.allowFaceting()) &&
-                                                <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>Choose values</NavItem>}
+                                            {/*{(!activeField || activeField?.allowFaceting()) &&*/}
+                                            {/*    <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>Choose values</NavItem>}*/}
                                         </Nav>
                                         <Tab.Content animation>
                                             <Tab.Pane eventKey={EntityFieldFilterTabs.Filter}>
@@ -274,26 +278,26 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                                     onFieldFilterUpdate={onFilterUpdate}
                                                 />
                                             </Tab.Pane>
-                                            <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
-                                                <div className="search-field-col-sub-title">Find values for {activeField.caption}</div>
-                                                {
-                                                    activeField?.allowFaceting() &&
-                                                    <FilterFacetedSelector
-                                                        selectDistinctOptions={
-                                                            {
-                                                                column: activeField?.fieldKey,
-                                                                // containerFilter: model.containerFilter,
-                                                                // containerPath: model.containerPath,
-                                                                schemaName: entityDataType?.instanceSchemaName,
-                                                                queryName: activeParent,
-                                                                viewName: "",
-                                                                filterArray: [], //TODO use active filters to filter distinct values, but exclude filters on current field
-                                                                parameters: null, //TODO use active parameters to filter distinct values
-                                                            }
-                                                        }
-                                                    />
-                                                }
-                                            </Tab.Pane>
+                                            {/*<Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>*/}
+                                            {/*    <div className="search-field-col-sub-title">Find values for {activeField.caption}</div>*/}
+                                            {/*    {*/}
+                                            {/*        activeField?.allowFaceting() &&*/}
+                                            {/*        <FilterFacetedSelector*/}
+                                            {/*            selectDistinctOptions={*/}
+                                            {/*                {*/}
+                                            {/*                    column: activeField?.fieldKey,*/}
+                                            {/*                    // containerFilter: model.containerFilter,*/}
+                                            {/*                    // containerPath: model.containerPath,*/}
+                                            {/*                    schemaName: entityDataType?.instanceSchemaName,*/}
+                                            {/*                    queryName: activeParent,*/}
+                                            {/*                    viewName: "",*/}
+                                            {/*                    filterArray: [], //TODO use active filters to filter distinct values, but exclude filters on current field*/}
+                                            {/*                    parameters: null, //TODO use active parameters to filter distinct values*/}
+                                            {/*                }*/}
+                                            {/*            }*/}
+                                            {/*        />*/}
+                                            {/*    }*/}
+                                            {/*</Tab.Pane>*/}
                                         </Tab.Content>
                                     </div>
                                 </Tab.Container>

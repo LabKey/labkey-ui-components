@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable';
-import { getServerContext } from '@labkey/api';
+import { Filter, getServerContext } from '@labkey/api';
 
-import {AppURL, caseInsensitive, ISelectRowsResult, naturalSort} from '../../..';
+import { AppURL, caseInsensitive, ISelectRowsResult, naturalSort } from '../../..';
 
 import { HorizontalBarData } from './HorizontalBarSection';
 import { ChartData } from './types';
@@ -57,6 +57,7 @@ interface PercentageBarProps {
     useForSubtitle?: boolean,
     className?: string,
     appURL?: AppURL,
+    filled?: boolean,
 }
 
 export function createPercentageBarData(
@@ -65,6 +66,8 @@ export function createPercentageBarData(
     unusedLabel: string,
     totalCountKey: string,
     percentageBars: PercentageBarProps[],
+    baseAppURL?: AppURL,
+    urlFilterKey?: string
 ) : { data: HorizontalBarData[], subtitle: string } {
     const totalCount = caseInsensitive(row, totalCountKey)?.value ?? 0;
     let unusedCount = totalCount;
@@ -84,8 +87,8 @@ export function createPercentageBarData(
                 count: itemCount,
                 totalCount: totalCount,
                 percent: itemPct,
-                href: percentageBar.appURL?.toHref(),
-                filled: true,
+                href: percentageBar.appURL?.toHref() ?? baseAppURL?.addFilters(Filter.create(urlFilterKey, percentageBar.label)).toHref(),
+                filled: percentageBar.filled ?? true,
             });
 
             if (percentageBar.useForSubtitle) {
@@ -93,19 +96,21 @@ export function createPercentageBarData(
             }
         });
 
-        const unusedPct = (unusedCount/totalCount) * 100;
-        const unusedTitle = `${unusedCount.toLocaleString()} of ${totalCount.toLocaleString()} ${itemNounPlural.toLowerCase()} are ${unusedLabel.toLowerCase()}`;
-        data.push({
-            title: unusedTitle,
-            name: 'Available',
-            count: unusedCount,
-            totalCount: totalCount,
-            percent: unusedPct,
-            filled: false,
-        });
+        if (unusedLabel) {
+            const unusedPct = (unusedCount/totalCount) * 100;
+            const unusedTitle = `${unusedCount.toLocaleString()} of ${totalCount.toLocaleString()} ${itemNounPlural.toLowerCase()} are ${unusedLabel.toLowerCase()}`;
+            data.push({
+                title: unusedTitle,
+                name: 'Available',
+                count: unusedCount,
+                totalCount: totalCount,
+                percent: unusedPct,
+                filled: false,
+            });
 
-        if (!subtitle) {
-            subtitle = `${unusedTitle} (${(unusedPct > 0 && unusedPct < 1 ? '< 1' :  Math.trunc(unusedPct))}%)`;
+            if (!subtitle) {
+                subtitle = `${unusedTitle} (${(unusedPct > 0 && unusedPct < 1 ? '< 1' :  Math.trunc(unusedPct))}%)`;
+            }
         }
     }
 

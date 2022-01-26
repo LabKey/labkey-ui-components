@@ -3,8 +3,8 @@ import { naturalSort } from '../..';
 function indexOf(source: string, token: string, caseSensitive?: boolean): number {
     if (!source || !token) return -1;
 
-    const ss = caseSensitive === true ? source : source.toLowerCase();
-    const tt = caseSensitive === true ? token : token.toLowerCase();
+    const ss = caseSensitive === true ? source.toString() : source.toString().toLowerCase();
+    const tt = caseSensitive === true ? token.toString() : token.toString().toLowerCase();
 
     return ss.indexOf(tt);
 }
@@ -25,8 +25,8 @@ export function similaritySortFactory(token: string, caseSensitive?: boolean): (
         if (!rawA) return 1;
         if (!rawB) return -1;
 
-        const a = caseSensitive === true ? rawA : rawA.toLowerCase();
-        const b = caseSensitive === true ? rawB : rawB.toLowerCase();
+        const a = caseSensitive === true ? rawA.toString() : rawA.toString().toLowerCase();
+        const b = caseSensitive === true ? rawB.toString() : rawB.toString().toLowerCase();
 
         if (a === b) return 0;
         if (a === token && b !== token) return -1;

@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add SampleTypeInsightsPanel.tsx to be used in LKSM and LKB
   * Issue 44633: Horizontal bar fix for borders causing line wrapping
 
+### version 2.121.2
+*Released*: 25 January 2022
+* Issue 44721: make sorting methods defensive against non-string values
+
 ### version 2.121.1
 *Released*: 24 January 2022
 * Item 9875: Add AssayDefinitionModel requireCommentOnQCStateChange prop

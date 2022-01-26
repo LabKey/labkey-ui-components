@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * TODO
 
+### version 2.121.2
+*Released*: 25 January 2022
+* Issue 44721: make sorting methods defensive against non-string values
+
 ### version 2.121.1
 *Released*: 24 January 2022
 * Item 9875: Add AssayDefinitionModel requireCommentOnQCStateChange prop

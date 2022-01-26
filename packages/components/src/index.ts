@@ -520,6 +520,7 @@ import {
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
+import { SampleTypeInsightsPanel } from './internal/components/samples/SampleTypeInsightsPanel';
 import {
     DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
@@ -992,6 +993,7 @@ export {
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
+    SampleTypeInsightsPanel,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

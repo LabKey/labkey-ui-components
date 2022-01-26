@@ -53,6 +53,19 @@
     z-index: 1;
 }
 
+.bar-insights--checkedout, .bar-insights--consumed {
+    background: #faebcc;
+}
+.bar-insights--instorage, .bar-insights--available {
+    background: #dff0d8;
+}
+.bar-insights--locked {
+    background: #f2dede;
+}
+.bar-insights--aliquots {
+    background: rgba(0, 103, 197, 0.145);
+}
+
 .cell-legend-row {
     .cell-legend-icon {
         display: inline-block;

@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, Modal, Nav, NavItem, Row, Tab } from 'react-bootstrap';
-import { List } from 'immutable';
+import {fromJS, List} from 'immutable';
 
 import { Filter } from '@labkey/api';
 
@@ -25,6 +25,7 @@ interface Props {
     onCancel: () => void;
     onFind: (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }) => void;
     queryName: string;
+    showAllFields?: boolean; // all fields, including non-text fields
     cards?: FilterProps[];
 }
 
@@ -34,7 +35,7 @@ export enum EntityFieldFilterTabs {
 }
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
-    const { entityDataType, onCancel, onFind, cards, queryName } = props;
+    const { entityDataType, onCancel, onFind, cards, queryName, showAllFields } = props;
 
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
 
@@ -88,7 +89,17 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             getQueryDetails({ schemaName: entityDataType.instanceSchemaName, queryName })
                 .then((queryInfo) => {
                     const fields = queryInfo.getDisplayColumns();
-                    setQueryFields(fields);
+                    let supportedFields = fields;
+                    if (!showAllFields) {
+                        const supportedFieldArray = []
+                        fields.forEach(field => {
+                            if (field.jsonType === 'string') // TODO only support string fields until MVFK (multi value FK) server side work is completed
+                                supportedFieldArray.push(field)
+                        })
+                        supportedFields = fromJS(supportedFieldArray)
+                    }
+
+                    setQueryFields(supportedFields);
                 }).catch((error) => {
                     setLoadingError(resolveErrorMessage(error, queryName, queryName, 'load'));
                 });

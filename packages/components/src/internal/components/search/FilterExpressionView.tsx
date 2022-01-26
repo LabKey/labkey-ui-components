@@ -109,8 +109,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     );
 
     const updateTextFilterFieldValue = useCallback(
-        (event: any) => {
-            const newValue = event.target.value;
+        (event: any, isNumberInput?: boolean) => {
+            const newValue = isNumberInput ? event.target.valueAsNumber : event.target.value;
             const isSecondInput = event.target.name.endsWith('-second');
             if (isSecondInput) setSecondFilterValue(newValue);
             else setFirstFilterValue(newValue);
@@ -186,7 +186,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         className="form-control search-filter__input"
                         step={field.jsonType === 'int' ? 1 : undefined}
                         name={'field-value-text' + suffix}
-                        onChange={updateTextFilterFieldValue}
+                        onChange={(event) => updateTextFilterFieldValue(event, true)}
                         pattern={field.jsonType === 'int' ? '[0-9]*' : undefined}
                         type="number"
                         value={valueRaw}

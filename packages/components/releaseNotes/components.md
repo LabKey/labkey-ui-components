@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version XXX
 *Released*: XXX
 * Item 9815: Sample Finder v1 - Filter dialog field expression filters
-    * Add EntityFieldFilterParentSelector, FilterExpressionView, FilterFacetedSelector
+    * Updates to EntityFieldFilterModal, FilterCards and SampleFinderSection to wire up filtering
+    * Added FilterExpressionView.tsx and FilterFacetedSelector to support filtering
 
 ### version 2.121.1
 *Released*: 24 January 2022

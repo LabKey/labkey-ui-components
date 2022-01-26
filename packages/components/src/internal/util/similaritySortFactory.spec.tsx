@@ -1,5 +1,6 @@
-import { contains, hasPrefix, similaritySortFactory } from './similaritySortFactory';
 import { naturalSort } from '../..';
+
+import { contains, hasPrefix, similaritySortFactory } from './similaritySortFactory';
 
 describe('contains', () => {
     test('Empty values', () => {

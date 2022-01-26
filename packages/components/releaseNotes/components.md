@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.12#.#
-*Released*: ## January 2022
+### version 2.121.2
+*Released*: 25 January 2022
 * Issue 44721: make sorting methods defensive against non-string values
 
 ### version 2.121.1

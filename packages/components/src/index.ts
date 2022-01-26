@@ -310,6 +310,7 @@ import { SampleCreationTypeModal } from './internal/components/samples/SampleCre
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
+import { SampleActionsButton } from './internal/components/samples/SampleActionsButton';
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
@@ -967,6 +968,7 @@ export {
     SampleCreationType,
     SampleSetDeleteModal,
     SampleDeleteMenuItem,
+    SampleActionsButton,
     SamplesManageButton,
     SamplesManageButtonSections,
     SamplesTabbedGridPanel,

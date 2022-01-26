@@ -97,7 +97,6 @@ interface OwnProps {
     showQuerySelectPreviewOptions?: boolean;
     runDataPanelTitle?: string;
     beforeFinish?: (data: IAssayUploadOptions) => IAssayUploadOptions;
-    getJobDescription?: (options: AssayDOM.IImportRunOptions) => string;
     jobNotificationProvider?: string;
     assayProtocol?: AssayProtocolModel;
     backgroundUpload?: boolean; // assay design setting
@@ -467,13 +466,17 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }
     };
 
+    getBackgroundJobDescription = (options: AssayDOM.IImportRunOptions): string => {
+        const { assayDefinition } = this.props;
+        return assayDefinition.name + (options.name ? ' - ' + options.name : '');
+    };
+
     onFinish = (importAgain: boolean): void => {
         const {
             currentStep,
             onSave,
             maxRows,
             beforeFinish,
-            getJobDescription,
             jobNotificationProvider,
             assayProtocol,
             location,
@@ -515,7 +518,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                             forceAsync = true;
                     }
 
-                    const jobDescription = getJobDescription ? getJobDescription(data) : undefined;
+                    const jobDescription = this.getBackgroundJobDescription(data);
                     importAssayRun({ ...processedData, forceAsync, jobDescription, jobNotificationProvider })
                         .then((response: AssayUploadResultModel) => {
                             this.props.onDataChange?.(false);

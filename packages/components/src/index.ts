@@ -104,7 +104,6 @@ import { Grid, GridColumn } from './internal/components/base/Grid';
 import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
 import { ContentGroup, ContentGroupLabel } from './internal/components/base/ContentGroup';
-import { getTitleDisplay } from './internal/components/base/utils';
 import { FileAttachmentForm } from './public/files/FileAttachmentForm';
 import { DEFAULT_FILE } from './internal/components/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
@@ -513,7 +512,7 @@ import { PipelineJobsListingPage } from './internal/components/pipeline/Pipeline
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
 import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
-import { hasActivePipelineJob } from './internal/components/pipeline/utils';
+import { hasActivePipelineJob, getTitleDisplay } from './internal/components/pipeline/utils';
 import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
@@ -1252,7 +1251,6 @@ export {
     GridColumn,
     ContentGroup,
     ContentGroupLabel,
-    getTitleDisplay,
     Section,
     ConfirmModal,
     Cards,
@@ -1324,6 +1322,7 @@ export {
     PipelineJobsPage,
     PipelineStatusDetailPage,
     hasActivePipelineJob,
+    getTitleDisplay,
     PipelineJobDetailPage,
     PipelineJobsListingPage,
     PipelineSubNav,

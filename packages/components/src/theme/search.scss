@@ -145,16 +145,14 @@
             font-weight: bold;
             vertical-align: top;
             padding-top: 10px;
+            text-transform: uppercase;
         }
 
         .filter-display__filter-content {
             padding-top: 10px;
-            .filter-display__filter-operator {
-                font-style: italic;
-                padding-left: 30px;
-            }
 
             .filter-display__filter-value {
+                display: inline-block;
                 padding-left: 30px;
                 ul {
                     padding-left: 0;
@@ -162,6 +160,11 @@
                 .filter-display__filter-value-li {
                     display: block;
                 }
+            }
+
+
+            .field-display__filter-value-negate {
+                text-decoration: line-through;
             }
         }
     }

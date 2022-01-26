@@ -24,7 +24,8 @@ interface Props {
     entityDataType: EntityDataType;
     onCancel: () => void;
     onFind: (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }) => void;
-    queryName: string;
+    queryName?: string;
+    fieldKey?: string;
     showAllFields?: boolean; // all fields, including non-text fields
     cards?: FilterProps[];
 }
@@ -35,7 +36,7 @@ export enum EntityFieldFilterTabs {
 }
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
-    const { entityDataType, onCancel, onFind, cards, queryName, showAllFields } = props;
+    const { entityDataType, onCancel, onFind, cards, queryName, fieldKey, showAllFields } = props;
 
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
 
@@ -72,7 +73,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 });
                 setEntityQueries(parents);
                 if (queryName) {
-                    onEntityClick(queryName);
+                    onEntityClick(queryName, fieldKey);
                 }
             }).catch((error) => {
                 setLoadingError(resolveErrorMessage(error, entityDataType.nounAsParentSingular, entityDataType.nounAsParentPlural, 'load'));
@@ -80,7 +81,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     }, [entityDataType]); // don't add cards or queryName to deps, only init DataTypeFilters once per entityDataType
 
     const onEntityClick = useCallback(
-        queryName => {
+        (queryName: string, fieldKey?: string) => {
             setActiveQuery(queryName);
             setQueryFields(undefined);
             setActiveField(undefined);
@@ -96,10 +97,15 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                             if (field.jsonType === 'string') // TODO only support string fields until MVFK (multi value FK) server side work is completed
                                 supportedFieldArray.push(field)
                         })
-                        supportedFields = fromJS(supportedFieldArray)
+                        supportedFields = fromJS(supportedFieldArray);
                     }
 
                     setQueryFields(supportedFields);
+                    if (fieldKey) {
+                        const field = supportedFields.find(field => field.fieldKey === fieldKey);
+                        setActiveField(field);
+                    }
+
                 }).catch((error) => {
                     setLoadingError(resolveErrorMessage(error, queryName, queryName, 'load'));
                 });
@@ -228,7 +234,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         <div className="parent-search-panel__col-title">Fields</div>
                         {!activeQuery && (
                             <div className="parent-search-panel__empty-msg">
-                                No {entityDataType.nounAsParentPlural ?? entityDataType.nounPlural} selected.
+                                Select a {entityDataType.nounAsParentPlural ?? entityDataType.nounPlural}.
                             </div>
                         )}
                         {activeQuery && !queryFields && <LoadingSpinner />}
@@ -256,7 +262,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     <Col xs={6} className="parent-search-panel__col">
                         <div className="parent-search-panel__col-title">Values</div>
                         {activeQuery && !activeField && (
-                            <div className="parent-search-panel__empty-msg">No field selected.</div>
+                            <div className="parent-search-panel__empty-msg">Select a field.</div>
                         )}
                         {activeQuery && activeField && (
                             <div className="parent-search-panel__col-content">

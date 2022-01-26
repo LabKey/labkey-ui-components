@@ -1,23 +1,45 @@
 import React, { FC, memo, useCallback } from 'react';
+import classNames from 'classnames';
 
 import { Filter } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
 import { capitalizeFirstChar } from '../../util/utils';
 
-import { SchemaQuery } from '../../../public/SchemaQuery';
-
 import { FieldFilter, FilterProps } from './models';
-import { getFieldFilterKey, getFilterValuesAsArray, SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE } from './utils';
+import {
+    getFilterValuesAsArray,
+    NEGATE_FILTERS,
+    SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE
+} from './utils';
 
 interface FilterValueDisplayProps {
     fieldFilter: FieldFilter;
-    expanded: boolean;
-    onFilterValueExpandToggle?: () => void;
+    onFilterValueExpand?: () => void;
+}
+
+function getShortFilterTypeDisplay(filterType: Filter.IFilterType) {
+    const displayText = filterType.getDisplayText();
+    switch (displayText) {
+        case "Does Not Equal":
+            return <>&#8800;</>;
+        case "Equals":
+            return '=';
+        case "Is Greater Than":
+            return '>';
+        case "Is Less Than":
+            return '<';
+        case "Is Greater Than or Equal To":
+            return <>&#8805;</>;
+        case "Is Less Than or Equal To":
+            return <>&#8804;</>;
+        default:
+            return displayText;
+    }
 }
 
 export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
-    const { fieldFilter, expanded, onFilterValueExpandToggle } = props;
+    const { fieldFilter, onFilterValueExpand } = props;
     const { filter } = fieldFilter;
 
     const renderFilter = useCallback(() => {
@@ -26,8 +48,10 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
             let filterTypeLabel = null;
             let filterValueDisplay = null;
 
+            const negate = NEGATE_FILTERS.indexOf(filterUrlSuffix) > -1;
+
             if (SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE.indexOf(filterUrlSuffix) === -1)
-                filterTypeLabel = filterType.getDisplayText() + (filterType.isDataValueRequired() ? ':' : '');
+                filterTypeLabel = getShortFilterTypeDisplay(filterType);
 
             if (
                 filterUrlSuffix === Filter.Types.IN.getURLSuffix() ||
@@ -37,11 +61,11 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
                 filterValueDisplay = (
                     <ul className="filter-display__filter-values-ul">
                         {values?.map((value, index) => {
-                            if (index > 5 && !expanded) return null;
-                            if (index === 5 && !expanded) {
+                            if (index > 5) return null;
+                            if (index === 5) {
                                 return (
                                     <li className="filter-display__filter-value-li">
-                                        <a onClick={onFilterValueExpandToggle}>and {values.length - 5} more</a>
+                                        <a onClick={onFilterValueExpand}>and {values.length - 5} more</a>
                                     </li>
                                 );
                             }
@@ -52,11 +76,6 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
                                 </li>
                             );
                         })}
-                        {values.length > 5 && expanded && (
-                            <li className="filter-display__filter-value-li">
-                                <a onClick={onFilterValueExpandToggle}>show Less</a>
-                            </li>
-                        )}
                     </ul>
                 );
             } else if (
@@ -73,12 +92,16 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
 
             return (
                 <>
-                    <div className="filter-display__filter-operator">{filterTypeLabel}</div>
-                    <div className="filter-display__filter-value">{filterValueDisplay}</div>
+                    <span className={classNames('filter-display__filter-value', {
+                        'field-display__filter-value-negate': negate
+                    })}>
+                        {filterTypeLabel && <>{filterTypeLabel} </>}
+                        {filterValueDisplay}
+                    </span>
                 </>
             );
         },
-        [onFilterValueExpandToggle, filter, expanded]
+        [onFilterValueExpand, filter]
     );
 
     return <>{renderFilter()}</>;
@@ -88,8 +111,7 @@ interface FilterEditProps extends FilterProps {
     onDelete: (index) => void;
     onEdit: (index) => void;
     onAdd: (entityDataType: EntityDataType) => void;
-    toggleFieldFilterExpandStatus?: (fieldFilter: FieldFilter, schemaQuery?: SchemaQuery) => void;
-    filterExpandedStatusMap?: { [key: string]: boolean };
+    onFilterValueExpand?: (cardIndex: number, fieldFilter: FieldFilter) => void;
 }
 
 // exported for jest testing
@@ -102,8 +124,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
         onDelete,
         onEdit,
         schemaQuery,
-        filterExpandedStatusMap,
-        toggleFieldFilterExpandStatus,
+        onFilterValueExpand,
     } = props;
 
     const _onAdd = useCallback(() => {
@@ -120,22 +141,19 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
 
     const renderFilterRow = useCallback(
         (fieldFilter: FieldFilter) => {
-            const fieldKey = getFieldFilterKey(fieldFilter, schemaQuery);
-            const expanded = !!filterExpandedStatusMap?.[fieldKey];
             return (
                 <tr key={fieldFilter.fieldKey} className="filter-display__row">
                     <td className="filter-display__field-label">{fieldFilter.fieldCaption}:</td>
                     <td className="filter-display__filter-content">
                         <FilterValueDisplay
                             fieldFilter={fieldFilter}
-                            onFilterValueExpandToggle={() => toggleFieldFilterExpandStatus(fieldFilter, schemaQuery)}
-                            expanded={expanded}
+                            onFilterValueExpand={() => onFilterValueExpand(index, fieldFilter)}
                         />
                     </td>
                 </tr>
             );
         },
-        [onDelete, index, schemaQuery, toggleFieldFilterExpandStatus, filterExpandedStatusMap]
+        [onDelete, index, schemaQuery, onFilterValueExpand]
     );
 
     if (!schemaQuery) {
@@ -196,8 +214,7 @@ interface Props {
     onFilterDelete?: (index) => void;
     onFilterEdit?: (index) => void;
     onAddEntity: (entityDataType: EntityDataType) => void;
-    toggleFieldFilterExpandStatus?: (fieldFilter: FieldFilter, schemaQuery?: SchemaQuery) => void;
-    filterExpandedStatusMap?: { [key: string]: boolean };
+    onFilterValueExpand?: (cardIndex: number, fieldFilter: FieldFilter) => void;
 }
 
 export const FilterCards: FC<Props> = props => (
@@ -210,8 +227,7 @@ export const FilterCards: FC<Props> = props => (
                 onEdit={props.onFilterEdit}
                 index={i}
                 key={i}
-                toggleFieldFilterExpandStatus={props.toggleFieldFilterExpandStatus}
-                filterExpandedStatusMap={props.filterExpandedStatusMap}
+                onFilterValueExpand={props.onFilterValueExpand}
             />
         ))}
     </div>

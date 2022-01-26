@@ -135,11 +135,18 @@ export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [
     Filter.Types.CONTAINS_NONE_OF.getURLSuffix(),
 ];
 
+export const NEGATE_FILTERS = [
+    Filter.Types.NEQ_OR_NULL.getURLSuffix(),
+    Filter.Types.DATE_NOT_EQUAL.getURLSuffix(),
+    Filter.Types.NOT_IN.getURLSuffix()
+];
+
 export const SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE = [
     Filter.Types.EQUAL.getURLSuffix(),
     Filter.Types.DATE_EQUAL.getURLSuffix(),
     Filter.Types.IN.getURLSuffix(),
     Filter.Types.BETWEEN.getURLSuffix(),
+    ...NEGATE_FILTERS
 ];
 
 export function isBetweenOperator(urlSuffix: string): boolean {

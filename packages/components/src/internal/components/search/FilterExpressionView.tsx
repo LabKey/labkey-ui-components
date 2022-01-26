@@ -56,7 +56,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     }, [field]); // leave fieldFilter out of deps list, fieldFilter is used to init once
 
     const updateFilter = useCallback(
-        (newFilterType: any[], newFilterValue?: any, isSecondValue?: boolean) => {
+        (newFilterType: any[], newFilterValue?: any, isSecondValue?: boolean, clearBothValues?: boolean) => {
             if (!newFilterType) {
                 onFieldFilterUpdate(undefined); // remove filter
                 return;
@@ -73,7 +73,10 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             } else {
                 let value = newFilterValue;
                 if (newFilterType?.['betweenOperator']) {
-                    if (isSecondValue) {
+                    if (clearBothValues) {
+                        value = null;
+                    }
+                    else if (isSecondValue) {
                         value = (firstFilterValue ? firstFilterValue + ',' : '') + newFilterValue;
                     } else {
                         value = newFilterValue + (secondFilterValue ? ',' + secondFilterValue : '');
@@ -94,7 +97,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             setActiveFilterType(activeFilterType);
             setFirstFilterValue(undefined);
             setSecondFilterValue(undefined);
-            updateFilter(activeFilterType, undefined, undefined);
+            updateFilter(activeFilterType, undefined, undefined, true);
         },
         [fieldFilterOptions]
     );
@@ -189,7 +192,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         onChange={(event) => updateTextFilterFieldValue(event, true)}
                         pattern={field.jsonType === 'int' ? '[0-9]*' : undefined}
                         type="number"
-                        value={valueRaw}
+                        value={valueRaw ?? ''}
                         required
                     />
                 );
@@ -200,7 +203,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                     className="form-control search-filter__input"
                     name={'field-value-text' + suffix}
                     type="text"
-                    value={valueRaw}
+                    value={valueRaw ?? ''}
                     onChange={updateTextFilterFieldValue}
                     required
                 />

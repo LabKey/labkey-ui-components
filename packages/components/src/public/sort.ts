@@ -13,19 +13,17 @@ export function naturalSort(aso: any, bso: any): number {
     if (aso === undefined || aso === null || aso === '') return 1;
     if (bso === undefined || bso === null || bso === '') return -1;
 
-    let a,
-        b,
-        a1,
+    let a1,
         b1,
         i = 0,
-        n,
-        L,
-        rx = /(\.\d+)|(\d+(\.\d+)?)|([^\d.]+)|(\.\D+)|(\.$)/g;
+        n;
 
-    a = aso.toString().toLowerCase().match(rx);
-    b = bso.toString().toLowerCase().match(rx);
+    // If no matches are found in the group, then match() will return null
+    const rx = /(\.\d+)|(\d+(\.\d+)?)|([^\d.]+)|(\.\D+)|(\.$)/g;
+    const a = aso.toString().toLowerCase().match(rx) ?? [];
+    const b = bso.toString().toLowerCase().match(rx) ?? [];
 
-    L = a.length;
+    const L = a.length;
     while (i < L) {
         if (!b[i]) return 1;
         a1 = a[i];

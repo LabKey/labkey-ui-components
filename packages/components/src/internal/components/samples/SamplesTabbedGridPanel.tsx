@@ -169,6 +169,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             setShowBulkUpdate(false);
             setSelectionData(submitForEdit ? data : undefined);
             actions.loadModel(activeModel.id, true);
+            afterSampleActionComplete?.();
         },
         [actions, activeModel.id]
     );
@@ -188,6 +189,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         setIsEditing(false);
         setShowBulkUpdate(false);
     }, []);
+
+    const onGridEditComplete = useCallback(() => {
+        afterSampleActionComplete?.();
+        resetState();
+    }, [resetState]);
 
     const _afterSampleActionComplete = useCallback(() => {
         dismissNotifications();
@@ -280,7 +286,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     editableGridDataIdsForSelection={editableGridData?.idsForSelection}
                     editableGridUpdateData={editableGridData?.updateData}
                     onGridEditCancel={resetState}
-                    onGridEditComplete={resetState}
+                    onGridEditComplete={onGridEditComplete}
                     parentDataTypes={samplesEditableGridProps.parentDataTypes}
                     sampleSet={activeModel.schemaQuery.queryName}
                     samplesGridRequiredColumns={samplesEditableGridProps.samplesGridRequiredColumns}

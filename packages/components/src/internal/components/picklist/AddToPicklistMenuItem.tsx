@@ -36,7 +36,6 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         picklistProductId,
         metricFeatureArea,
         sampleFieldKey,
-        selectedIds,
     } = props;
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
@@ -105,9 +104,8 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     currentProductId={currentProductId}
                     picklistProductId={picklistProductId}
                     metricFeatureArea={metricFeatureArea}
-                    assaySchemaQuery={queryModel.schemaQuery}
+                    queryModel={queryModel}
                     sampleFieldKey={sampleFieldKey}
-                    selectedIds={selectedIds}
                 />
             )}
             {showCreatePicklist && (
@@ -119,9 +117,8 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     onCancel={closeCreatePicklist}
                     showNotification
                     metricFeatureArea={metricFeatureArea}
-                    assaySchemaQuery={queryModel.schemaQuery}
+                    queryModel={queryModel}
                     sampleFieldKey={sampleFieldKey}
-                    selectedIds={selectedIds}
                 />
             )}
         </>

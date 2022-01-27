@@ -19,7 +19,6 @@ import { OperationConfirmationData } from '../entities/models';
 import { getSampleIdsFromSelection } from '../samples/actions';
 import { getOperationNotPermittedMessage } from '../samples/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { Picklist } from './models';
 import {
@@ -29,6 +28,7 @@ import {
     getPicklistUrl,
     SampleTypeCount,
 } from './actions';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -229,15 +229,12 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             onCancel,
             afterAddToPicklist,
             user,
-            selectionKey: initSelectionKey,
+            selectionKey,
             numSelected,
-            sampleIds: initSampleIds,
+            sampleIds,
             currentProductId,
             picklistProductId,
             metricFeatureArea,
-            assaySchemaQuery,
-            selectedIds,
-            sampleFieldKey,
         } = props;
         const [search, setSearch] = useState<string>('');
         const [error, setError] = useState<string>(undefined);
@@ -245,47 +242,20 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         const [activeItem, setActiveItem] = useState<Picklist>(undefined);
         const [validCount, setValidCount] = useState<number>(numSelected);
         const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
-        const [sampleIds, setSampleIds] = useState<string[]>(initSampleIds);
-        const selectionKey = useMemo(
-            () => (sampleFieldKey ? undefined : initSelectionKey),
-            [sampleFieldKey, initSelectionKey]
-        );
-
-        const validateSamples = useCallback(async () => {
-            try {
-                const data = await api.samples.getSampleOperationConfirmationData(
-                    SampleOperation.AddToPicklist,
-                    selectionKey,
-                    sampleIds
-                );
-                setStatusData(data);
-                setValidCount(data.allowed.length);
-            } catch (reason) {
-                setError(reason);
-            }
-        }, [api, selectionKey, sampleIds]);
 
         useEffect(() => {
             (async () => {
-                //Look up SampleIds from the selected assay row ids.
-                // Using sampleFieldKey as proxy flag to determine if lookup is needed
-                if (sampleFieldKey && selectedIds) {
-                    const ids = await getSampleIdsFromSelection(
-                        assaySchemaQuery?.schemaName,
-                        assaySchemaQuery?.queryName,
-                        [...selectedIds],
-                        sampleFieldKey
+                try {
+                    const data = await api.samples.getSampleOperationConfirmationData(
+                        SampleOperation.AddToPicklist,
+                        selectionKey,
+                        sampleIds
                     );
-                    setSampleIds(ids);
+                    setStatusData(data);
+                    setValidCount(data.allowed.length);
+                } catch (reason) {
+                    setError(reason);
                 }
-                await validateSamples();
-            })();
-        }, [sampleFieldKey, selectedIds, assaySchemaQuery]);
-
-        // Not sure why this is needed, refreshes modal with updated validation data after sampleIds are updated
-        useEffect(() => {
-            (async () => {
-                await validateSamples();
             })();
         }, [api, selectionKey, sampleIds]);
 
@@ -505,15 +475,36 @@ interface ChoosePicklistModalProps {
     picklistProductId?: string;
     metricFeatureArea?: string;
     api?: ComponentsAPIWrapper;
-    assaySchemaQuery?: SchemaQuery;
+    queryModel?: QueryModel;
     sampleFieldKey?: string;
-    selectedIds?: Set<string>;
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
+    const {selectionKey, queryModel, sampleFieldKey, sampleIds} = props;
     const [error, setError] = useState<string>(undefined);
     const [items, setItems] = useState<Picklist[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [ids, setIds] = useState<string[]>(sampleIds);
+    const [selKey, setSelKey] = useState<string>(selectionKey);
+
+    useEffect(() => {
+        (async () => {
+            //Look up SampleIds from the selected assay row ids.
+            // Using sampleFieldKey as proxy flag to determine if lookup is needed
+            if (sampleFieldKey && queryModel) {
+                const ids = await getSampleIdsFromSelection(
+                    queryModel.schemaQuery.schemaName,
+                    queryModel.schemaQuery.queryName,
+                    [...queryModel.selections],
+                    sampleFieldKey
+                );
+                setIds(ids);
+
+                //Clear the selection key as it will not correctly map to the sampleIds
+                setSelKey(undefined);
+            }
+        })();
+    }, [sampleFieldKey, sampleIds, queryModel, selectionKey]);
 
     useEffect(() => {
         getPicklists()
@@ -527,7 +518,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
             });
     }, [getPicklists, setItems, setError, setLoading]);
 
-    return <ChoosePicklistModalDisplay {...props} picklists={items} picklistLoadError={error} loading={loading} />;
+    return <ChoosePicklistModalDisplay {...props} picklists={items} picklistLoadError={error} loading={loading} sampleIds={ids} selectionKey={selKey} />;
 });
 
 ChoosePicklistModal.defaultProps = {

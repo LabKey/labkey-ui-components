@@ -16,29 +16,26 @@
 import React, { FC, memo, ReactNode, useMemo, } from 'react';
 import { DropdownButton, } from 'react-bootstrap';
 import { PermissionTypes, } from '@labkey/api';
-import { User } from '../base/models/User';
+import { hasAnyPermissions, User } from '../base/models/User';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { PicklistCreationMenuItem } from '../picklist/PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from '../picklist/AddToPicklistMenuItem';
-import { RequiresPermission } from '../base/Permissions';
 
 interface Props {
     disabled?: boolean;
-    pullRight?: boolean;
-    collapsed?: boolean;
     user: User;
     model: QueryModel;
     moreMenuItems: ReactNode;
 }
 
 export const SampleActionsButton: FC<Props> = memo(props => {
-    const { pullRight, disabled, user, model, moreMenuItems} = props;
+    const {disabled, user, model, moreMenuItems} = props;
 
     const sampleFieldKey = useMemo(()=>{
         return model?.allColumns?.find(c=>c.isSampleLookup())?.fieldKey;
     }, [model]);
 
-    let title: any = 'Samples';
+    let title: ReactNode = 'Samples';
     let bsStyle = 'default';
 
     const id = 'assay-samples-menu';
@@ -49,27 +46,26 @@ export const SampleActionsButton: FC<Props> = memo(props => {
             id={`${id}-btn`}
             bsStyle={bsStyle}
             title={title}
-            pullRight={pullRight}
         >
-            <RequiresPermission perms={[PermissionTypes.Insert, PermissionTypes.Update]} >
-                {moreMenuItems && moreMenuItems}
-                <hr className={`${id}-spacer`} />
-                <PicklistCreationMenuItem
-                    key={`${id}-create-picklist`}
-                    itemText={'Create picklist'}
-                    user={user}
-                    selectionKey={model.id}
-                    assaySchemaQuery={model.schemaQuery}
-                    sampleFieldKey={sampleFieldKey}
-                    selectedIds={model.selections}
-                />
-                <AddToPicklistMenuItem
-                    user={user}
-                    queryModel={model}
-                    sampleFieldKey={sampleFieldKey}
-                    selectedIds={model.selections}
-                />
-            </RequiresPermission>
+            {hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]) && (
+                <>
+                    {moreMenuItems && moreMenuItems}
+                    <hr className='divider' />
+                    <PicklistCreationMenuItem
+                        key={`${id}-create-picklist`}
+                        itemText={'Create Picklist'}
+                        user={user}
+                        selectionKey={model.id}
+                        queryModel={model}
+                        sampleFieldKey={sampleFieldKey}
+                    />
+                    <AddToPicklistMenuItem
+                        user={user}
+                        queryModel={model}
+                        sampleFieldKey={sampleFieldKey}
+                    />
+                </>
+            )}
         </DropdownButton>
     );
 });

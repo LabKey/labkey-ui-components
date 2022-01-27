@@ -16,28 +16,28 @@ describe("HorizontalBarSection", () => {
     test("with data", () => {
         const allocationData = [
             {
-                title: "7 'Sample Type 1' samples",
-                count: 7,
-                totalCount: 37,
-                percent: 8.536585365853659,
+                title: "2 'Sample Type 1' samples",
+                count: 2,
+                totalCount: 10,
+                percent: 20,
                 backgroundColor: 'blue',
                 href: '#/freezers/test/storageView?query.SampleType~eq=Sample Type 1&query.StorageStatus~eq=Checked out',
                 filled: true
             },
             {
-                title: "30 'Sample Type 4' samples",
-                count: 30,
-                totalCount: 37,
-                percent: 36.58536585365854,
+                title: "3 'Sample Type 4' samples",
+                count: 3,
+                totalCount: 10,
+                percent: 30,
                 backgroundColor: 'orange',
                 href: '#/freezers/test/storageView?query.SampleType~eq=Sample Type 4&query.StorageStatus~eq=Checked out',
                 filled: true
             },
             {
-                title: '45 samples not checked out',
-                count: 45,
-                totalCount: 37,
-                percent: 54.87804878048781,
+                title: '5 samples not checked out',
+                count: 5,
+                totalCount: 10,
+                percent: 50,
                 filled: false
             }
         ];
@@ -46,11 +46,24 @@ describe("HorizontalBarSection", () => {
         expect(wrapper.find(".horizontal-bar--title").text()).toBe("Test Allocation");
         expect(wrapper.find(".horizontal-bar--subtitle").text()).toBe("A description");
         expect(wrapper.find('.horizontal-bar-part')).toHaveLength(3);
+        expect(wrapper.find('.horizontal-bar--begin')).toHaveLength(1);
+        expect(wrapper.find('.horizontal-bar--filled')).toHaveLength(2);
+        expect(wrapper.find('.horizontal-bar--linked')).toHaveLength(2);
+        expect(wrapper.find('.horizontal-bar--linkSpanner')).toHaveLength(2);
+        expect(wrapper.find('.horizontal-bar--open')).toHaveLength(1);
+        expect(wrapper.find('.horizontal-bar--end')).toHaveLength(1);
         const parts = wrapper.find('.horizontal-bar-part');
         expect(parts).toHaveLength(3);
         expect(parts.at(0).prop("className")).toContain("horizontal-bar--begin");
         expect(parts.at(0).prop("className")).toContain("horizontal-bar--filled");
+        expect(parts.at(0).prop("className")).toContain("horizontal-bar--linked");
+        expect(parts.at(0).prop("style").width).toBe('20%');
+        expect(parts.at(1).prop("className")).toContain("horizontal-bar--filled");
+        expect(parts.at(1).prop("className")).toContain("horizontal-bar--linked");
+        expect(parts.at(1).prop("style").width).toBe('30%');
         expect(parts.at(2).prop("className")).toContain("horizontal-bar--open");
+        expect(parts.at(2).prop("className")).toContain("horizontal-bar--end");
+        expect(parts.at(2).prop("style").width).toBe('50%');
 
         wrapper.unmount();
     });

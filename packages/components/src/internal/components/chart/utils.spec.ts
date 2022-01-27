@@ -1,7 +1,7 @@
-import {createHorizontalBarLegendData, ISelectRowsResult, processChartData} from '../../..';
+import {AppURL, ISelectRowsResult} from '../../..';
 import AssayRunCountsRowsJson from '../../../test/data/AssayRunCounts-getQueryRows.json';
 
-import { getBarChartPlotConfig } from './utils';
+import { getBarChartPlotConfig, createPercentageBarData, createHorizontalBarLegendData, processChartData } from './utils';
 
 beforeEach(() => {
     LABKEY.vis = {};
@@ -329,5 +329,128 @@ describe("createHorizontalBarLegendData", () => {
                 legendLabel: "Sample Type 1"
             }
         ]);
+    });
+});
+
+describe('createPercentageBarData', () => {
+    const ROW = {
+        Total: { value: 10 },
+        InStorage: { value: 8 },
+    };
+    const IN_STORAGE_BAR_CONFIG = {
+        queryKey: 'InStorage',
+        name: 'InStorage',
+        label: 'In Storage',
+        className: 'test-class',
+        appURL: AppURL.create('TEST'),
+        filled: true,
+    };
+
+    test('default props', () => {
+        const barData = createPercentageBarData(ROW, 'Samples', 'Not In Storage', 'Total', [IN_STORAGE_BAR_CONFIG]);
+
+        expect(barData.data).toStrictEqual([{
+            name: 'InStorage',
+            title: '8 of 10 samples are in storage',
+            className: 'test-class',
+            count: 8,
+            totalCount: 10,
+            percent: 80,
+            href: "#/TEST",
+            filled: true
+        }, {
+            name: 'Available',
+            title: '2 of 10 samples are not in storage',
+            count: 2,
+            totalCount: 10,
+            percent: 20,
+            filled: false
+        }]);
+        expect(barData.subtitle).toBe('2 of 10 samples are not in storage (20%)');
+    });
+
+    test('without unusedLabel', () => {
+        const barData = createPercentageBarData(ROW, 'Samples', undefined, 'Total', [IN_STORAGE_BAR_CONFIG]);
+
+        expect(barData.data).toStrictEqual([{
+            name: 'InStorage',
+            title: '8 of 10 samples are in storage',
+            className: 'test-class',
+            count: 8,
+            totalCount: 10,
+            percent: 80,
+            href: "#/TEST",
+            filled: true
+        }]);
+        expect(barData.subtitle).toBe(undefined);
+    });
+
+    test('totalCount zero', () => {
+        const EMPTY_ROW = {
+            Total: { value: 0 },
+            InStorage: { value: 0 },
+        };
+        const barData = createPercentageBarData(EMPTY_ROW, 'Samples', 'Not in storage', 'Total', [IN_STORAGE_BAR_CONFIG]);
+
+        expect(barData.data).toStrictEqual([]);
+        expect(barData.subtitle).toBe(undefined);
+    });
+
+    test('useForSubtitle and not filled', () => {
+        const IN_STORAGE_BAR_CONFIG_2 = {
+            queryKey: 'InStorage',
+            name: 'InStorage',
+            label: 'In Storage',
+            className: 'test-class',
+            appURL: AppURL.create('TEST'),
+            filled: false,
+            useForSubtitle: true,
+        };
+        const barData = createPercentageBarData(ROW, 'Samples', 'Not In Storage', 'Total', [IN_STORAGE_BAR_CONFIG_2]);
+
+        expect(barData.data).toStrictEqual([{
+            name: 'InStorage',
+            title: '8 of 10 samples are in storage',
+            className: 'test-class',
+            count: 8,
+            totalCount: 10,
+            percent: 80,
+            href: "#/TEST",
+            filled: false
+        }, {
+            name: 'Available',
+            title: '2 of 10 samples are not in storage',
+            count: 2,
+            totalCount: 10,
+            percent: 20,
+            filled: false
+        }]);
+        expect(barData.subtitle).toBe('8 of 10 samples are in storage (80%)');
+    });
+
+    test('baseAppURL and urlFilterKey', () => {
+        const IN_STORAGE_BAR_CONFIG_2 = {
+            queryKey: 'InStorage',
+            name: 'InStorage',
+            label: 'In Storage',
+            className: 'test-class',
+            filled: true,
+        };
+        const barData = createPercentageBarData(
+            ROW, 'Samples', undefined, 'Total', [IN_STORAGE_BAR_CONFIG_2],
+            AppURL.create('BASE'), 'FilterKey'
+        );
+
+        expect(barData.data).toStrictEqual([{
+            name: 'InStorage',
+            title: '8 of 10 samples are in storage',
+            className: 'test-class',
+            count: 8,
+            totalCount: 10,
+            percent: 80,
+            href: "#/BASE?query.FilterKey~eq=In Storage",
+            filled: true
+        }]);
+        expect(barData.subtitle).toBe(undefined);
     });
 });

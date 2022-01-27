@@ -292,7 +292,6 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
-    updateSamplesStatus,
     getSampleTypes,
     getSelectedSampleTypes,
 } from './internal/components/samples/actions';
@@ -950,7 +949,6 @@ export {
     createQueryGridModelFilteredBySample,
     createQueryConfigFilteredBySample,
     getSelectedItemSamples,
-    updateSamplesStatus,
     getSampleTypes,
     getSelectedSampleTypes,
     FindSamplesByIdHeaderPanel,

@@ -27,6 +27,7 @@ import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     caseInsensitive,
+    DATA_IMPORT_FILE_SIZE_LIMITS,
     dismissNotifications,
     EditorModel,
     FileSizeLimitProps,
@@ -38,6 +39,7 @@ import {
     LoadingSpinner,
     LoadingState,
     Location,
+    MAX_EDITABLE_GRID_ROWS,
     Progress,
     QueryColumn,
     QueryConfigMap,
@@ -75,6 +77,7 @@ import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 import { RunDataPanel } from './RunDataPanel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
 
+const BASE_FILE_TYPES = ['.csv', '.tsv', '.txt', '.xlsx', '.xls'];
 const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';
 const DATA_GRID_ID = 'assay-grid-data';
 
@@ -118,7 +121,10 @@ interface State {
 
 class AssayImportPanelsBody extends Component<Props, State> {
     static defaultProps = {
+        acceptedPreviewFileFormats: BASE_FILE_TYPES.join(', '),
+        fileSizeLimits: DATA_IMPORT_FILE_SIZE_LIMITS,
         loadSelectedSamples,
+        maxRows: MAX_EDITABLE_GRID_ROWS,
         showUploadTabs: true,
     };
 
@@ -649,6 +655,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             allowBulkRemove,
             allowBulkInsert,
             allowBulkUpdate,
+            maxRows,
             onSave,
             showUploadTabs,
             showQuerySelectPreviewOptions,
@@ -695,10 +702,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     currentStep={currentStep}
                     editorModel={editorModel}
                     fileSizeLimits={this.props.fileSizeLimits}
-                    maxEditableGridRowMsg={
-                        "A max of 1,000 rows are allowed. Please use the 'Upload Files' or 'Copy-and-Paste Data' tab if you need to import more than 1,000 rows."
-                    }
-                    maxRows={this.props.maxRows}
+                    maxEditableGridRowMsg={`A max of ${maxRows} rows are allowed. Please use the 'Upload Files' or 'Copy-and-Paste Data' tab if you need to import more than ${maxRows} rows.`}
+                    maxRows={maxRows}
                     onFileChange={this.handleFileChange}
                     onFileRemoval={this.handleFileRemove}
                     onGridChange={this.onGridChange}

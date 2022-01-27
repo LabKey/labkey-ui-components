@@ -19,6 +19,7 @@ import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter, FilterProps } from './models';
 import { getFieldFiltersValidationResult } from "./utils";
 import {resolveErrorMessage} from "../../util/messaging";
+import { naturalSortByProperty } from "../../../public/sort";
 
 interface Props {
     entityDataType: EntityDataType;
@@ -71,7 +72,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         parents.push(res);
                     });
                 });
-                setEntityQueries(parents);
+                setEntityQueries(parents.sort(naturalSortByProperty('label')));
                 if (queryName) {
                     onEntityClick(queryName, fieldKey);
                 }
@@ -234,7 +235,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         <div className="parent-search-panel__col-title">Fields</div>
                         {!activeQuery && (
                             <div className="parent-search-panel__empty-msg">
-                                Select a {entityDataType.nounAsParentPlural ?? entityDataType.nounPlural}.
+                                Select a {entityDataType.nounAsParentSingular?.toLowerCase() ?? entityDataType.nounSingular?.toLowerCase() }.
                             </div>
                         )}
                         {activeQuery && !queryFields && <LoadingSpinner />}

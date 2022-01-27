@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Moved `updateSampleStatus` method into inventory since it's used only when discarding samples and that now requires a specific inventory action
+* Change user display role to account for storage editor and designer roles
 
 ### version 2.121.2
 *Released*: 25 January 2022

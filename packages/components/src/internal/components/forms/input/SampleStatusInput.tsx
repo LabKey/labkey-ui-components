@@ -148,7 +148,6 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 onQSChange={onChange}
                 onToggleDisable={onToggleDisable}
                 placeholder="Select or type to search..."
-                previewOptions={true}
                 required={col.required}
                 schemaQuery={col.lookup?.schemaQuery}
                 showLabel

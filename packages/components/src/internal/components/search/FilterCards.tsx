@@ -25,6 +25,8 @@ function getShortFilterTypeDisplay(filterType: Filter.IFilterType) {
             return <>&#8800;</>;
         case "Equals":
             return '=';
+        case "Has Any Value":
+            return 'Any Value';
         case "Is Greater Than":
             return '>';
         case "Is Less Than":
@@ -85,7 +87,7 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
                 const values = filter.getValue();
                 filterValueDisplay = values[0] + ' - ' + values[1];
             } else {
-                if (filterType.isDataValueRequired) {
+                if (filterType.isDataValueRequired()) {
                     filterValueDisplay = filter.getValue();
                 }
             }
@@ -184,7 +186,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                     </div>
                 </div>
                 <div className="filter-card__card-content">
-                    {!filterArray?.length && (
+                    {!filterArray?.length /*TODO Is this supported?*/ && (
                         <>
                             <hr />
                             <div>

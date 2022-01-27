@@ -244,8 +244,7 @@ export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStor
 
 const EMPTY_VALUE_DISPLAY = '[blank]';
 export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string): any[] {
-    let values = [],
-        rawValues = [];
+    let values = [], rawValues;
     const rawValue = filter.getValue();
 
     if (Array.isArray(rawValue)) {

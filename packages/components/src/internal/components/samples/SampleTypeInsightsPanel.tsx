@@ -14,8 +14,8 @@ import { QueryModel } from "../../../public/QueryModel/QueryModel";
 import { isLoading } from "../../../public/LoadingState";
 import { QuerySort } from "../../../public/QuerySort";
 
-const INSIGHTS_MODEL_ID = 'sample-type-insights';
-const STATUS_COUNTS_MODEL_ID = 'sample-type-status-counts';
+export const INSIGHTS_MODEL_ID = 'sample-type-insights';
+export const STATUS_COUNTS_MODEL_ID = 'sample-type-status-counts';
 
 interface OwnProps {
     sampleSet: string;
@@ -23,7 +23,8 @@ interface OwnProps {
 
 type Props = OwnProps & InjectedQueryModels;
 
-const SampleTypeInsightsPanelImpl: FC<Props> = memo(props => {
+// exported for jest testing
+export const SampleTypeInsightsPanelImpl: FC<Props> = memo(props => {
     const { queryModels, sampleSet } = props;
     const insightsModel = queryModels[INSIGHTS_MODEL_ID];
     const statusModel = queryModels[STATUS_COUNTS_MODEL_ID];

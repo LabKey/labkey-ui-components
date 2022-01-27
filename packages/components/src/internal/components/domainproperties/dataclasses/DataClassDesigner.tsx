@@ -18,6 +18,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
+import { GENID_SYNTAX_STRING } from "../NameExpressionGenIdBanner";
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -278,6 +279,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         } = this.props;
         const { model, nameExpressionWarnings, namePreviews, namePreviewsLoading } = this.state;
 
+        const hasGenIdInExpression = model.nameExpression?.indexOf(GENID_SYNTAX_STRING) > -1;
+
         return (
             <BaseDomainDesigner
                 name={model.name}
@@ -315,7 +318,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     previewName={namePreviews?.[0]}
                     onNameFieldHover={this.onNameFieldHover}
                     nameExpressionGenIdProps={
-                        showGenIdBanner
+                        showGenIdBanner && hasGenIdInExpression
                             ? {
                                   dataTypeName: model.name,
                                   rowId: model.rowId,

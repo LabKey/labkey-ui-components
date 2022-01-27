@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Issue 44742: Hide NameExpressionGenIdBanner when genId is not used in the current naming patterns
+
 ### version 2.121.3
 *Released*: 27 January 2022
 * Merge release21.11-SNAPSHOT to develop (part 2)

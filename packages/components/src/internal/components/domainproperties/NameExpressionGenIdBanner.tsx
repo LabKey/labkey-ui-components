@@ -14,6 +14,8 @@ export interface NameExpressionGenIdProps {
     dataTypeLSID?: string;
 }
 
+export const GENID_SYNTAX_STRING = '${genId'; // skip closing tag to allow existence of formatter
+
 export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => {
     const { api, rowId, kindName, dataTypeName, dataTypeLSID } = props;
     const [currentGenId, setCurrentGenId] = useState<number>(undefined);

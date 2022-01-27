@@ -36,6 +36,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { UniqueIdBanner } from './UniqueIdBanner';
+import { GENID_SYNTAX_STRING } from "../NameExpressionGenIdBanner";
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -680,6 +681,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
         const options = initModel?.get('options');
 
+        const hasGenIdInExpression = model.nameExpression?.indexOf(GENID_SYNTAX_STRING) > -1 || model.aliquotNameExpression?.indexOf(GENID_SYNTAX_STRING) > -1;
+
         return (
             <BaseDomainDesigner
                 name={model.name}
@@ -733,7 +736,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     namePreviews={namePreviews}
                     onNameFieldHover={this.onNameFieldHover}
                     nameExpressionGenIdProps={
-                        showGenIdBanner && options
+                        showGenIdBanner && options && hasGenIdInExpression
                             ? {
                                   dataTypeName: options.get('name'),
                                   dataTypeLSID: options.get('lsid'),

@@ -22,7 +22,6 @@ interface Props {
     picklistProductId?: string;
     metricFeatureArea?: string;
     sampleFieldKey?: string;
-    selectedIds?: Set<string>;
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {
@@ -110,7 +109,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
             )}
             {showCreatePicklist && (
                 <PicklistEditModal
-                    selectionKey={id}
+                    selectionKey={sampleFieldKey ? undefined : id}   //If a sampleField is being used it, the id may not map correctly
                     selectedQuantity={numSelected}
                     sampleIds={sampleIds}
                     onFinish={afterCreatePicklist}

@@ -4,8 +4,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item #9767: Improve sample actions from assay results grid
-  * Add Sample button to Assay Results page
-  * Adjust picklist & workflow job creation & update actions and components
+  * Add new `SampleActionsButton` to Assay Results page
+  * Adjust picklist creation and update actions & components
+  * Adjust job creation and update actions & components
+  * Added `getFieldLookupFromSelection` which pulls the lookups rowId value based on supplied query & field
 
 ### version 2.121.1
 *Released*: 24 January 2022

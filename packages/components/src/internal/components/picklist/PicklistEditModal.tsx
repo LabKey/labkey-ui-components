@@ -36,9 +36,7 @@ interface Props {
     picklistProductId?: string;
     metricFeatureArea?: string;
     api?: ComponentsAPIWrapper;
-    schemaQuery?: SchemaQuery;
     sampleFieldKey?: string;
-    selectedIds?: Set<string>;
     queryModel?: QueryModel;
 }
 
@@ -64,7 +62,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                 setSelKey(undefined);
             }
         })();
-    }, [sampleFieldKey, sampleIds, queryModel, selectionKey]);
+    }, [api, sampleFieldKey, queryModel,]);
 
     return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} />;
 });

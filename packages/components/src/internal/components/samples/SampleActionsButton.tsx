@@ -36,22 +36,19 @@ export const SampleActionsButton: FC<Props> = memo(props => {
         return model?.allColumns?.find(c => c.isSampleLookup())?.fieldKey;
     }, [model]);
 
-    const title: ReactNode = 'Samples';
-    const bsStyle = 'default';
-
     const id = 'assay-samples-menu';
 
     return (
-        <DropdownButton disabled={disabled} id={`${id}-btn`} bsStyle={bsStyle} title={title}>
+        <DropdownButton disabled={disabled} id={`${id}-btn`} bsStyle={'default'} title={'Samples'}>
             {hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]) && (
                 <>
-                    {moreMenuItems && moreMenuItems}
-                    <hr className="divider" />
+                    {moreMenuItems}
+                    {!!moreMenuItems && <hr className="divider" />}
                     <PicklistCreationMenuItem
                         key={`${id}-create-picklist`}
                         itemText="Create Picklist"
                         user={user}
-                        selectionKey={model.id}
+                        selectionKey={sampleFieldKey ? undefined : model.id}
                         queryModel={model}
                         sampleFieldKey={sampleFieldKey}
                     />

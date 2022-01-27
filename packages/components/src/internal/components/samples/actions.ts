@@ -946,7 +946,7 @@ export async function getFieldLookupFromSelection(
     const sampleIds = new Set<string>();
 
     if (fieldKey) {
-        const rowIdFieldKey = `${fieldKey}/RowId`; // Pull the sample's rowId
+        const rowIdFieldKey = `${fieldKey}/RowId`; // Pull the rowId of the lookup
         const { data, dataIds } = await getSelectedData(schemaName, queryName, selected, 'RowId,' + rowIdFieldKey); // Include the RowId column to prevent warnings
         if (data) {
             const rows = data.toJS();

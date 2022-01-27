@@ -488,7 +488,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
 
     useEffect(() => {
         (async () => {
-            // Look up SampleIds from the selected assay row ids.
+            // Look up SampleIds from the selected row ids.
             // Using sampleFieldKey as proxy flag to determine if lookup is needed
             if (sampleFieldKey && queryModel) {
                 const ids = await api.samples.getFieldLookupFromSelection(
@@ -503,7 +503,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                 setSelKey(undefined);
             }
         })();
-    }, [sampleFieldKey, sampleIds, queryModel, selectionKey]);
+    }, [sampleFieldKey, queryModel,]);
 
     useEffect(() => {
         getPicklists()

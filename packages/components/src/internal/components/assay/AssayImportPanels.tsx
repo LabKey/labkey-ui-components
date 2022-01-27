@@ -27,7 +27,6 @@ import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     caseInsensitive,
-    DATA_IMPORT_FILE_SIZE_LIMITS,
     dismissNotifications,
     EditorModel,
     FileSizeLimitProps,
@@ -39,7 +38,6 @@ import {
     LoadingSpinner,
     LoadingState,
     Location,
-    MAX_EDITABLE_GRID_ROWS,
     Progress,
     QueryColumn,
     QueryConfigMap,
@@ -58,6 +56,8 @@ import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel
 
 import { AssayUploadTabs, IMPORT_DATA_FORM_TYPES } from '../../constants';
 import { EditorModelProps } from '../../models';
+
+import { DATA_IMPORT_FILE_SIZE_LIMITS } from '../pipeline/constants';
 
 import { loadSelectedSamples } from '../samples/actions';
 
@@ -93,7 +93,7 @@ interface OwnProps {
     allowBulkInsert?: boolean;
     allowBulkUpdate?: boolean;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
-    maxRows?: number;
+    maxRows?: number; // Not currently used, but related logic retained in component
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => void;
     loadSelectedSamples?: (location: Location, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
     showUploadTabs?: boolean;
@@ -124,7 +124,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
         acceptedPreviewFileFormats: BASE_FILE_TYPES.join(', '),
         fileSizeLimits: DATA_IMPORT_FILE_SIZE_LIMITS,
         loadSelectedSamples,
-        maxRows: MAX_EDITABLE_GRID_ROWS,
         showUploadTabs: true,
     };
 
@@ -660,6 +659,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             showUploadTabs,
             showQuerySelectPreviewOptions,
             runDataPanelTitle,
+            fileSizeLimits,
         } = this.props;
         const { dataModel, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } =
             this.state;
@@ -701,7 +701,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     allowBulkUpdate={allowBulkUpdate}
                     currentStep={currentStep}
                     editorModel={editorModel}
-                    fileSizeLimits={this.props.fileSizeLimits}
+                    fileSizeLimits={fileSizeLimits}
                     maxEditableGridRowMsg={`A max of ${maxRows} rows are allowed. Please use the 'Upload Files' or 'Copy-and-Paste Data' tab if you need to import more than ${maxRows} rows.`}
                     maxRows={maxRows}
                     onFileChange={this.handleFileChange}

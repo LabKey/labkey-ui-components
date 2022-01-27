@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* TODO
+* Share asynchronous upload UI indicators across LKB and LKSM by pulling relevant code into ui-components
 
 ### version 2.121.2
 *Released*: 25 January 2022

@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, ReactNode, useMemo, } from 'react';
-import { DropdownButton, } from 'react-bootstrap';
-import { PermissionTypes, } from '@labkey/api';
+import React, { FC, memo, ReactNode, useMemo } from 'react';
+import { DropdownButton } from 'react-bootstrap';
+import { PermissionTypes } from '@labkey/api';
+
 import { hasAnyPermissions, User } from '../base/models/User';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { PicklistCreationMenuItem } from '../picklist/PicklistCreationMenuItem';
@@ -29,41 +30,32 @@ interface Props {
 }
 
 export const SampleActionsButton: FC<Props> = memo(props => {
-    const {disabled, user, model, moreMenuItems} = props;
+    const { disabled, user, model, moreMenuItems } = props;
 
-    const sampleFieldKey = useMemo(()=>{
-        return model?.allColumns?.find(c=>c.isSampleLookup())?.fieldKey;
+    const sampleFieldKey = useMemo(() => {
+        return model?.allColumns?.find(c => c.isSampleLookup())?.fieldKey;
     }, [model]);
 
-    let title: ReactNode = 'Samples';
-    let bsStyle = 'default';
+    const title: ReactNode = 'Samples';
+    const bsStyle = 'default';
 
     const id = 'assay-samples-menu';
 
     return (
-        <DropdownButton
-            disabled={disabled}
-            id={`${id}-btn`}
-            bsStyle={bsStyle}
-            title={title}
-        >
+        <DropdownButton disabled={disabled} id={`${id}-btn`} bsStyle={bsStyle} title={title}>
             {hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]) && (
                 <>
                     {moreMenuItems && moreMenuItems}
-                    <hr className='divider' />
+                    <hr className="divider" />
                     <PicklistCreationMenuItem
                         key={`${id}-create-picklist`}
-                        itemText={'Create Picklist'}
+                        itemText="Create Picklist"
                         user={user}
                         selectionKey={model.id}
                         queryModel={model}
                         sampleFieldKey={sampleFieldKey}
                     />
-                    <AddToPicklistMenuItem
-                        user={user}
-                        queryModel={model}
-                        sampleFieldKey={sampleFieldKey}
-                    />
+                    <AddToPicklistMenuItem user={user} queryModel={model} sampleFieldKey={sampleFieldKey} />
                 </>
             )}
         </DropdownButton>

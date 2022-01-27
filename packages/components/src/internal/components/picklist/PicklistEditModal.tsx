@@ -20,9 +20,10 @@ import { getOperationNotPermittedMessage } from '../samples/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 interface Props {
     selectionKey?: string; // pass in either selectionKey and selectedQuantity or sampleIds.
@@ -43,13 +44,13 @@ interface Props {
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
-    const {selectionKey, queryModel, sampleFieldKey, sampleIds} = props;
+    const { selectionKey, queryModel, sampleFieldKey, sampleIds } = props;
     const [ids, setIds] = useState<string[]>(sampleIds);
     const [selKey, setSelKey] = useState<string>(selectionKey);
 
     useEffect(() => {
         (async () => {
-            //Look up SampleIds from the selected assay row ids.
+            // Look up SampleIds from the selected assay row ids.
             // Using sampleFieldKey as proxy flag to determine if lookup is needed
             if (sampleFieldKey && queryModel) {
                 const ids = await getSampleIdsFromSelection(
@@ -60,13 +61,13 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                 );
                 setIds(ids);
 
-                //Clear the selection key as it will not correctly map to the sampleIds
+                // Clear the selection key as it will not correctly map to the sampleIds
                 setSelKey(undefined);
             }
         })();
     }, [sampleFieldKey, sampleIds, queryModel, selectionKey]);
 
-    return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} />
+    return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} />;
 });
 
 export const PicklistEditModalDisplay: FC<Props> = memo(props => {
@@ -82,9 +83,6 @@ export const PicklistEditModalDisplay: FC<Props> = memo(props => {
         currentProductId,
         picklistProductId,
         metricFeatureArea,
-        schemaQuery,
-        sampleFieldKey,
-        selectedIds,
     } = props;
     const [name, setName] = useState<string>(picklist?.name ?? '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);

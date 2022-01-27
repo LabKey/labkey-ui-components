@@ -4,9 +4,10 @@ import { MenuItem } from 'react-bootstrap';
 import { userCanManagePicklists } from '../../app/utils';
 import { User } from '../base/models/User';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
 import { PicklistEditModal } from './PicklistEditModal';
 import { Picklist } from './models';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 interface Props {
     selectionKey?: string;

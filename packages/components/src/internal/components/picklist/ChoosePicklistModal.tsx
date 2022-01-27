@@ -19,6 +19,7 @@ import { OperationConfirmationData } from '../entities/models';
 import { getSampleIdsFromSelection } from '../samples/actions';
 import { getOperationNotPermittedMessage } from '../samples/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { Picklist } from './models';
 import {
@@ -28,7 +29,6 @@ import {
     getPicklistUrl,
     SampleTypeCount,
 } from './actions';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -480,7 +480,7 @@ interface ChoosePicklistModalProps {
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
-    const {selectionKey, queryModel, sampleFieldKey, sampleIds} = props;
+    const { selectionKey, queryModel, sampleFieldKey, sampleIds } = props;
     const [error, setError] = useState<string>(undefined);
     const [items, setItems] = useState<Picklist[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -489,7 +489,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
 
     useEffect(() => {
         (async () => {
-            //Look up SampleIds from the selected assay row ids.
+            // Look up SampleIds from the selected assay row ids.
             // Using sampleFieldKey as proxy flag to determine if lookup is needed
             if (sampleFieldKey && queryModel) {
                 const ids = await getSampleIdsFromSelection(
@@ -500,7 +500,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                 );
                 setIds(ids);
 
-                //Clear the selection key as it will not correctly map to the sampleIds
+                // Clear the selection key as it will not correctly map to the sampleIds
                 setSelKey(undefined);
             }
         })();
@@ -518,7 +518,16 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
             });
     }, [getPicklists, setItems, setError, setLoading]);
 
-    return <ChoosePicklistModalDisplay {...props} picklists={items} picklistLoadError={error} loading={loading} sampleIds={ids} selectionKey={selKey} />;
+    return (
+        <ChoosePicklistModalDisplay
+            {...props}
+            picklists={items}
+            picklistLoadError={error}
+            loading={loading}
+            sampleIds={ids}
+            selectionKey={selKey}
+        />
+    );
 });
 
 ChoosePicklistModal.defaultProps = {

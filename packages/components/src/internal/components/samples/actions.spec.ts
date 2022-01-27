@@ -2,7 +2,7 @@ import { List } from 'immutable';
 
 import { getSampleRowIdsFromSelection } from './actions';
 
-describe('getSampleIdsFromSelection', () => {
+describe('getSampleRowIdsFromSelection', () => {
     test('none', () => {
         expect(JSON.stringify(getSampleRowIdsFromSelection(undefined))).toBe('[]');
         expect(JSON.stringify(getSampleRowIdsFromSelection(List()))).toBe('[]');

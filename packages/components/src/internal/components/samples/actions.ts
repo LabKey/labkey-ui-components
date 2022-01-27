@@ -930,16 +930,23 @@ export async function getSelectedSampleTypes(model: QueryModel): Promise<string[
     });
 }
 
-export async function getSampleIdsFromSelection(
+/**
+ * Gets the Set of Ids from selected rowIds based on supplied fieldKey which should be a Lookup
+ * @param schemaName of selected rows
+ * @param queryName of selected rows
+ * @param selected rowIds to pull sampleIds for
+ * @param fieldKey field key for the Lookup
+ */
+export async function getFieldLookupFromSelection(
     schemaName: string,
     queryName: string,
     selected: any[],
-    sampleFieldKey: string
+    fieldKey: string
 ): Promise<string[]> {
     const sampleIds = new Set<string>();
 
-    if (sampleFieldKey) {
-        const rowIdFieldKey = `${sampleFieldKey}/RowId`; // Pull the sample's rowId
+    if (fieldKey) {
+        const rowIdFieldKey = `${fieldKey}/RowId`; // Pull the sample's rowId
         const { data, dataIds } = await getSelectedData(schemaName, queryName, selected, 'RowId,' + rowIdFieldKey); // Include the RowId column to prevent warnings
         if (data) {
             const rows = data.toJS();

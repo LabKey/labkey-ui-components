@@ -15,7 +15,6 @@ import { createNotification } from '../notifications/actions';
 import { incrementClientSideMetricCount } from '../../actions';
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
-import { getSampleIdsFromSelection } from '../samples/actions';
 import { getOperationNotPermittedMessage } from '../samples/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -44,7 +43,7 @@ interface Props {
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
-    const { selectionKey, queryModel, sampleFieldKey, sampleIds } = props;
+    const { api, selectionKey, queryModel, sampleFieldKey, sampleIds } = props;
     const [ids, setIds] = useState<string[]>(sampleIds);
     const [selKey, setSelKey] = useState<string>(selectionKey);
 
@@ -53,7 +52,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
             // Look up SampleIds from the selected assay row ids.
             // Using sampleFieldKey as proxy flag to determine if lookup is needed
             if (sampleFieldKey && queryModel) {
-                const ids = await getSampleIdsFromSelection(
+                const ids = await api.samples.getFieldLookupFromSelection(
                     queryModel.schemaQuery.schemaName,
                     queryModel.schemaQuery.queryName,
                     [...queryModel.selections],

@@ -9,6 +9,7 @@ import { OperationConfirmationData } from '../entities/models';
 import {
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
+    getFieldLookupFromSelection,
     getSampleSelectionLineageData,
     getSampleStatuses,
     getSampleStorageId,
@@ -37,6 +38,13 @@ export interface SamplesAPIWrapper {
     ) => Promise<OperationConfirmationData>;
 
     getSampleStorageId: (sampleRowId: number) => Promise<number>;
+
+    getFieldLookupFromSelection: (
+        schemaName: string,
+        queryName: string,
+        selected: any[],
+        fieldKey: string
+    ) => Promise<string[]>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
@@ -46,6 +54,7 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleStatuses = getSampleStatuses;
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
     getSampleStorageId = getSampleStorageId;
+    getFieldLookupFromSelection = getFieldLookupFromSelection;
 }
 
 /**
@@ -62,6 +71,7 @@ export function getSamplesTestAPIWrapper(
         getSampleStatuses: mockFn(),
         getSampleOperationConfirmationData: mockFn(),
         getSampleStorageId: mockFn,
+        getFieldLookupFromSelection: mockFn(),
         ...overrides,
     };
 }

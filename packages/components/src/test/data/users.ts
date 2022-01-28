@@ -228,5 +228,10 @@ export const TEST_USER_STORAGE_EDITOR = new User({
     isSignedIn: false,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([PermissionTypes.Read, PermissionTypes.EditStorageData]),
+    permissionsList: List<string>([
+        PermissionTypes.Read,
+        PermissionTypes.EditStorageData,
+        PermissionTypes.ManageSampleWorkflows,
+        PermissionTypes.ManagePicklists
+    ]),
 });

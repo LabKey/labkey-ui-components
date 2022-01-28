@@ -9,6 +9,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Adjust job creation and update actions & components
   * Added `getFieldLookupFromSelection` which pulls the lookups rowId value based on supplied query & field
 
+### version 2.121.4
+*Released*: 28 January 2022
+* Item 9970: QueryFormInput change showQuerySelectPreviewOptions default prop value to false
+  * Update SampleStatusInput component QuerySelect previewOptions prop to false as well
+
 ### version 2.121.3
 *Released*: 27 January 2022
 * Merge release21.11-SNAPSHOT to develop (part 2)

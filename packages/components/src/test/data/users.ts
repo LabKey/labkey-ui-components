@@ -80,6 +80,7 @@ export const TEST_USER_EDITOR = new User({
         PermissionTypes.Insert,
         PermissionTypes.Update,
         PermissionTypes.ManagePicklists,
+        PermissionTypes.ManageSampleWorkflows,
     ]),
 });
 
@@ -127,6 +128,7 @@ export const TEST_USER_FOLDER_ADMIN = new User({
         PermissionTypes.Insert,
         PermissionTypes.Update,
         PermissionTypes.ManagePicklists,
+        PermissionTypes.ManageSampleWorkflows,
         PermissionTypes.Admin,
     ]),
 });
@@ -156,6 +158,7 @@ export const TEST_USER_PROJECT_ADMIN = new User({
         PermissionTypes.Insert,
         PermissionTypes.Update,
         PermissionTypes.ManagePicklists,
+        PermissionTypes.ManageSampleWorkflows,
         PermissionTypes.Admin,
         PermissionTypes.AddUser,
     ]),
@@ -186,6 +189,7 @@ export const TEST_USER_APP_ADMIN = new User({
         PermissionTypes.Insert,
         PermissionTypes.Update,
         PermissionTypes.ManagePicklists,
+        PermissionTypes.ManageSampleWorkflows,
         PermissionTypes.Admin,
         PermissionTypes.UserManagement,
         PermissionTypes.ApplicationAdmin,

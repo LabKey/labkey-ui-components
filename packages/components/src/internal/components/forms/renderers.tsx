@@ -54,9 +54,9 @@ const AliasInputRenderer: InputRenderer = (
 ) => (
     <AliasInput
         col={col}
+        data={data}
         isDetailInput={isDetailInput}
         key={key}
-        value={value}
         allowDisable={allowFieldDisable}
         initiallyDisabled={initiallyDisabled}
         onToggleDisable={onToggleDisable}

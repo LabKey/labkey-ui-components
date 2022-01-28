@@ -861,35 +861,6 @@ export function getSampleTypeRowId(name: string): Promise<number> {
     });
 }
 
-// export function updateStoredSamplesStatus(
-//     sampleType: string,
-//     sampleIds: number[],
-//     newStatus: number,
-//     auditBehavior?: AuditBehaviorTypes
-// ): Promise<any> {
-//     return new Promise<any>((resolve, reject) => {
-//         if (!sampleIds.length)
-//             return Promise.resolve();
-//
-//         return Ajax.request({
-//             url: buildURL('inventory', 'updateStoredSampleStatus.api'),
-//             jsonData: {
-//                 sampleTypeName: sampleType,
-//                 sampleIds,
-//                 newStatus,
-//                 auditBehavior: auditBehavior ?? AuditBehaviorTypes.DETAILED
-//             },
-//             success: Utils.getCallbackWrapper(response => {
-//                 resolve(response);
-//             }),
-//             failure: Utils.getCallbackWrapper(response => {
-//                 console.error(response);
-//                 reject(response);
-//             }),
-//         });
-//     });
-// }
-
 export function getSampleTypes(): Promise<Array<{ id: number; label: string }>> {
     return new Promise((resolve, reject) => {
         selectRows({

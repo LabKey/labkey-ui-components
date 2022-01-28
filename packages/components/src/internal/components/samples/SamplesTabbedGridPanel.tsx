@@ -265,7 +265,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         showBulkUpdate: onShowBulkUpdate,
         toggleEditWithGridUpdate,
         onTabbedViewAliquotSelectorUpdate: onAliquotViewUpdate,
-        user,
         initAliquotMode: activeActiveAliquotMode,
     };
 

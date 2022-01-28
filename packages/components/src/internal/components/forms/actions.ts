@@ -61,6 +61,18 @@ function initDisplayColumn(queryInfo: QueryInfo, column?: string): string {
     return displayColumn;
 }
 
+function getQueryColumnNames(model: QuerySelectModel): string[] {
+    const { displayColumn, queryInfo, schemaQuery, valueColumn } = model;
+
+    // Include PKs plus useful-to-search-over columns and append the grid view's column list
+    const requiredColumns = queryInfo.pkCols.concat([displayColumn, valueColumn, 'Name', 'Description', 'Alias']);
+    return queryInfo
+        .getDisplayColumns(schemaQuery.viewName)
+        .map(c => c.fieldKey)
+        .concat(requiredColumns)
+        .toArray();
+}
+
 export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel> {
     return new Promise((resolve, reject) => {
         const { componentId, schemaQuery, containerFilter, containerPath } = props;
@@ -72,6 +84,15 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                 .then(queryInfo => {
                     const valueColumn = initValueColumn(queryInfo, props.valueColumn);
                     const displayColumn = initDisplayColumn(queryInfo, props.displayColumn);
+
+                    let model = new QuerySelectModel({
+                        ...props,
+                        displayColumn,
+                        id: componentId,
+                        isInit: true,
+                        queryInfo,
+                        valueColumn,
+                    });
 
                     if (props.value !== undefined && props.value !== null) {
                         let filter: Filter.IFilter;
@@ -95,21 +116,26 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                         }
 
                         selectRows({
+                            columns: getQueryColumnNames(model),
                             containerFilter,
                             containerPath,
                             schemaName,
                             queryName,
                             filterArray: [filter],
                         }).then(data => {
-                            const { componentId } = props;
-                            const newProps = Object.assign({}, props, {
-                                displayColumn,
-                                rawSelectedValue: props.value,
-                                selectedItems: fromJS(data.models[data.key]),
-                                valueColumn,
-                            });
+                            const selectedItems = fromJS(data.models[data.key]);
 
-                            const model = initQuerySelectModel(componentId, newProps, queryInfo);
+                            model = model.merge({
+                                rawSelectedValue: props.value,
+                                selectedItems,
+                            }) as QuerySelectModel;
+
+                            if (selectedItems.size) {
+                                model = model.merge({
+                                    allResults: model.allResults.merge(selectedItems),
+                                    selectedQuery: parseSelectedQuery(model, selectedItems),
+                                }) as QuerySelectModel;
+                            }
 
                             if (props.fireQSChangeOnInit && Utils.isFunction(props.onQSChange)) {
                                 let items: SelectInputOption | SelectInputOption[] = formatResults(
@@ -133,12 +159,6 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                             resolve(model);
                         });
                     } else {
-                        const newProps = Object.assign({}, props, {
-                            displayColumn,
-                            valueColumn,
-                        });
-
-                        const model = initQuerySelectModel(componentId, newProps, queryInfo);
                         resolve(model);
                     }
                 })
@@ -152,24 +172,6 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
             resolve(undefined);
         }
     });
-}
-
-function initQuerySelectModel(id: string, props: QuerySelectOwnProps, queryInfo: QueryInfo): QuerySelectModel {
-    let model = new QuerySelectModel({
-        ...props,
-        id,
-        isInit: true,
-        queryInfo,
-    });
-
-    if (model.selectedItems.size) {
-        model = model.merge({
-            allResults: model.allResults.merge(model.selectedItems),
-            selectedQuery: parseSelectedQuery(model, model.selectedItems),
-        }) as QuerySelectModel;
-    }
-
-    return model;
 }
 
 function initValueColumn(queryInfo: QueryInfo, column?: string): string {
@@ -222,13 +224,6 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
         allFilters = allFilters.concat(queryFilters.toArray());
     }
 
-    // Include PKs plus useful-to-search-over columns and append the grid view's column list
-    const requiredColumns = model.queryInfo.pkCols.concat([displayColumn, valueColumn, 'Name', 'Description', 'Alias']);
-    const columns = model.queryInfo
-        .getDisplayColumns(schemaQuery.viewName)
-        .map(c => c.fieldKey)
-        .concat(requiredColumns);
-
     // 35112: Explicitly request exact matches -- can be disabled via QuerySelectModel.addExactFilter = false
     return searchRows(
         {
@@ -236,7 +231,7 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
             containerPath: model.containerPath,
             schemaName: schemaQuery.getSchema(),
             queryName: schemaQuery.getQuery(),
-            columns: columns.join(','),
+            columns: getQueryColumnNames(model),
             filterArray: allFilters,
             sort: displayColumn,
             maxRows,

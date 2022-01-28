@@ -83,10 +83,6 @@ export class QuerySelectModel
     declare selectedItems: Map<string, any>;
     declare valueColumn: string;
 
-    constructor(values?: Partial<QuerySelectModelProps>) {
-        super(values);
-    }
-
     formatSavedResults(data?: Map<string, Map<string, any>>, token?: string): SelectInputOption[] {
         return actions.formatSavedResults(this, data, token);
     }

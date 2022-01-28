@@ -738,10 +738,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.8.0-storageRoles.1":
-  version "1.8.0-storageRoles.1"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.8.0-storageRoles.1.tgz#27d5776a0a6c7c470759e5a8d786845f7f9f3fa5"
-  integrity sha1-J9V3agpsfEcHWeWo14aEX3+fP6U=
+"@labkey/api@1.8.0-storageRoles.2":
+  version "1.8.0-storageRoles.2"
+  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.8.0-storageRoles.2.tgz#f115d5ed24f7ce215c6b9f43f85b59bc8825c677"
+  integrity sha1-8RXV7ST3ziFca59D+FtZvIglxnc=
 
 "@labkey/eslint-config-base@0.0.11-fb-discussions.2":
   version "0.0.11-fb-discussions.2"

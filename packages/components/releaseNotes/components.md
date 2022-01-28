@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version XXX
 *Released*: XXX
 * Issue 44742: Hide NameExpressionGenIdBanner when genId is not used in the current naming patterns
+* Issue 44771: Misspelling on naming pattern warning dialog
 
 ### version 2.121.3
 *Released*: 27 January 2022

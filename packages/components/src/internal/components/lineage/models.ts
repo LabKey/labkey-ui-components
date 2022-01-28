@@ -94,11 +94,24 @@ export interface LineageItemWithMetadata extends Experiment.LineageItemBase {
     links: LineageLinkMetadata;
 }
 
-export interface LineageIOWithMetadata extends Experiment.LineageIOConfig {
+export interface ProvenanceMap {
+    from: Experiment.LineageItemBase;
+    to: Experiment.LineageItemBase;
+}
+
+interface LineageIOConfig extends Experiment.LineageIOConfig {
+    provenanceMap?: ProvenanceMap[];
+    objectInputs?: Experiment.LineageItemBase[];
+    objectOutputs?: Experiment.LineageItemBase[];
+}
+
+export interface LineageIOWithMetadata extends LineageIOConfig {
     dataInputs?: LineageItemWithMetadata[];
     dataOutputs?: LineageItemWithMetadata[];
     materialInputs?: LineageItemWithMetadata[];
     materialOutputs?: LineageItemWithMetadata[];
+    objectInputs?: LineageItemWithMetadata[];
+    objectOutputs?: LineageItemWithMetadata[];
 }
 
 export interface LineageItemWithIOMetadata extends LineageItemWithMetadata, LineageIOWithMetadata {}
@@ -126,6 +139,8 @@ export class LineageRunStep implements LineageRunStepConfig {
     readonly modified: string;
     readonly modifiedBy: string;
     readonly name: string;
+    readonly objectInputs: LineageIO[];
+    readonly objectOutputs: LineageIO[];
     readonly pkFilters: Experiment.LineagePKFilter[];
     readonly protocol: Experiment.LineageItemBase;
     readonly queryName: string;
@@ -160,12 +175,19 @@ export class LineageIO implements LineageItemWithMetadata {
         Object.assign(this, values);
     }
 
-    static applyConfig(values?: Experiment.LineageIOConfig): Experiment.LineageIOConfig {
+    static applyConfig(values?: LineageIOConfig): LineageIOConfig {
         return {
             dataInputs: LineageIO.fromArray(values?.dataInputs),
             dataOutputs: LineageIO.fromArray(values?.dataOutputs),
             materialInputs: LineageIO.fromArray(values?.materialInputs),
             materialOutputs: LineageIO.fromArray(values?.materialOutputs),
+            // convert the provenanceMap to the inputs and outputs array, filter for just those that have a from/to lsid value
+            objectInputs: LineageIO.fromArray(
+                values?.provenanceMap?.map(prov => prov.from).filter(input => input?.lsid)
+            ),
+            objectOutputs: LineageIO.fromArray(
+                values?.provenanceMap?.map(prov => prov.to).filter(input => input?.lsid)
+            ),
         };
     }
 
@@ -210,6 +232,8 @@ export class LineageNode
         modified: undefined,
         modifiedBy: undefined,
         name: undefined,
+        objectInputs: undefined,
+        objectOutputs: undefined,
         parents: undefined,
         pipelinePath: undefined,
         pkFilters: undefined,
@@ -246,6 +270,8 @@ export class LineageNode
     declare modified: string;
     declare modifiedBy: string;
     declare name: string;
+    declare objectInputs: LineageIO[];
+    declare objectOutputs: LineageIO[];
     declare parents: List<LineageLink>;
     declare pipelinePath: string;
     declare pkFilters: Experiment.LineagePKFilter[];

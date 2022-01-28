@@ -10,7 +10,7 @@ import { imageURL, SchemaQuery, SCHEMAS, Theme } from '../../..';
 import { LineageItemWithMetadata, LineageLink, LineageNode } from './models';
 import { LINEAGE_DIRECTIONS, LineageIconMetadata } from './types';
 
-const DEFAULT_ICON_URL = 'default';
+export const DEFAULT_ICON_URL = 'default';
 const BACKUP_IMAGE_ROOT = 'https://labkey.org/_images/';
 
 // The default vis-network icon shape to use for nodes in the lineage graph

@@ -1,0 +1,1050 @@
+{
+  "nodes" : {
+    "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialTwoToRun" : {
+      "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+      "created" : "2022-01-20 15:46:08.231",
+      "cpasType" : "Material",
+      "materialLineageType" : "RootMaterial",
+      "schemaName" : "exp",
+      "type" : "Material",
+      "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140507",
+      "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialTwoToRun",
+      "createdBy" : "cnathe@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-1456:9a963061-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "value" : 140507,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "InputMaterialTwoToRun",
+      "queryName" : "Materials",
+      "modified" : "2022-01-20 15:46:08.231",
+      "expType" : "Material",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 140507,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialToStepOne" : {
+      "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+      "created" : "2022-01-20 15:46:08.276",
+      "cpasType" : "Material",
+      "materialLineageType" : "RootMaterial",
+      "schemaName" : "exp",
+      "type" : "Material",
+      "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140508",
+      "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialToStepOne",
+      "createdBy" : "cnathe@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-1456:9a963061-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "value" : 140508,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "InputMaterialToStepOne",
+      "queryName" : "Materials",
+      "modified" : "2022-01-20 15:46:08.276",
+      "expType" : "Material",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 140508,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample4" : {
+      "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+      "created" : "2022-01-20 15:45:53.271",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-1456:ScriptProcessSampleType",
+      "materialLineageType" : "RootMaterial",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140505",
+      "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample4",
+      "createdBy" : "cnathe@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-1456:9a963003-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "value" : 140505,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "Sample4",
+      "queryName" : "ScriptProcessSampleType",
+      "modified" : "2022-01-20 15:45:53.271",
+      "expType" : "Material",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 140505,
+      "properties" : {
+        "name" : "Sample4"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-1456:9a963061-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayRun.Folder-1456:9a963003-5c5b-103a-b871-ea5aa9ea8b30" : {
+      "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+      "dataOutputs" : [ {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "created" : "2022-01-20 15:46:07.421",
+        "dataFileURL" : "file:///Users/corynathe/LabKey/trunk/build/deploy/files/Script%20Processes%20Test%20Project/@files/assaydata/Other_Assay-2022-01-20-154607.tmp",
+        "cpasType" : "Data",
+        "schemaName" : "exp",
+        "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showData.view?rowId=35468",
+        "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-1456:9a963005-5c5b-103a-b871-ea5aa9ea8b30",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 35468,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "Other_Assay-2022-01-20-154607.tmp",
+        "queryName" : "Data",
+        "modified" : "2022-01-20 15:46:07.814",
+        "absolutePath" : "/Users/corynathe/LabKey/trunk/build/deploy/files/Script Processes Test Project/@files/assaydata/Other_Assay-2022-01-20-154607.tmp",
+        "pipelinePath" : "assaydata/Other_Assay-2022-01-20-154607.tmp",
+        "expType" : "Data",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 35468
+      } ],
+      "dataInputs" : [ ],
+      "created" : "2022-01-20 15:46:07.375",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-1456:Other+Assay",
+      "materialInputs" : [ {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "inputSample",
+        "created" : "2022-01-20 15:45:53.271",
+        "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-1456:ScriptProcessSampleType",
+        "materialLineageType" : "RootMaterial",
+        "schemaName" : "samples",
+        "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140505",
+        "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample4",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 140505,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "Sample4",
+        "queryName" : "ScriptProcessSampleType",
+        "modified" : "2022-01-20 15:45:53.271",
+        "expType" : "Material",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 140505,
+        "properties" : {
+          "name" : "Sample4"
+        }
+      }, {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "inputSample",
+        "created" : "2022-01-20 15:45:53.271",
+        "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-1456:ScriptProcessSampleType",
+        "materialLineageType" : "RootMaterial",
+        "schemaName" : "samples",
+        "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140504",
+        "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample3",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 140504,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "Sample3",
+        "queryName" : "ScriptProcessSampleType",
+        "modified" : "2022-01-20 15:45:53.271",
+        "expType" : "Material",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 140504,
+        "properties" : {
+          "name" : "Sample3"
+        }
+      }, {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "inputSample",
+        "created" : "2022-01-20 15:45:53.271",
+        "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-1456:ScriptProcessSampleType",
+        "materialLineageType" : "RootMaterial",
+        "schemaName" : "samples",
+        "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140503",
+        "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample2",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 140503,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "Sample2",
+        "queryName" : "ScriptProcessSampleType",
+        "modified" : "2022-01-20 15:45:53.271",
+        "expType" : "Material",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 140503,
+        "properties" : {
+          "name" : "Sample2"
+        }
+      }, {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "inputSample",
+        "created" : "2022-01-20 15:45:53.271",
+        "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-1456:ScriptProcessSampleType",
+        "materialLineageType" : "RootMaterial",
+        "schemaName" : "samples",
+        "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140502",
+        "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample1",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 140502,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "Sample1",
+        "queryName" : "ScriptProcessSampleType",
+        "modified" : "2022-01-20 15:45:53.271",
+        "expType" : "Material",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 140502,
+        "properties" : {
+          "name" : "Sample1"
+        }
+      } ],
+      "schemaName" : "assay.General.Other Assay",
+      "type" : "GeneralAssayRun",
+      "steps" : [ {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "dataOutputs" : [ {
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "created" : "2022-01-20 15:46:07.421",
+          "dataFileURL" : "file:///Users/corynathe/LabKey/trunk/build/deploy/files/Script%20Processes%20Test%20Project/@files/assaydata/Other_Assay-2022-01-20-154607.tmp",
+          "cpasType" : "Data",
+          "schemaName" : "exp",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showData.view?rowId=35468",
+          "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-1456:9a963005-5c5b-103a-b871-ea5aa9ea8b30",
+          "createdBy" : "cnathe@labkey.com",
+          "pkFilters" : [ {
+            "value" : 35468,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Other_Assay-2022-01-20-154607.tmp",
+          "queryName" : "Data",
+          "modified" : "2022-01-20 15:46:07.814",
+          "absolutePath" : "/Users/corynathe/LabKey/trunk/build/deploy/files/Script Processes Test Project/@files/assaydata/Other_Assay-2022-01-20-154607.tmp",
+          "pipelinePath" : "assaydata/Other_Assay-2022-01-20-154607.tmp",
+          "expType" : "Data",
+          "modifiedBy" : "cnathe@labkey.com",
+          "id" : 35468
+        } ],
+        "applicationType" : "ProtocolApplication",
+        "dataInputs" : [ ],
+        "created" : "2022-01-20 15:46:07.375",
+        "activitySequence" : 10,
+        "materialInputs" : [ {
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "role" : "inputSample",
+          "created" : "2022-01-20 15:45:53.271",
+          "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-1456:ScriptProcessSampleType",
+          "materialLineageType" : "RootMaterial",
+          "schemaName" : "samples",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140505",
+          "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample4",
+          "createdBy" : "cnathe@labkey.com",
+          "pkFilters" : [ {
+            "value" : 140505,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Sample4",
+          "queryName" : "ScriptProcessSampleType",
+          "modified" : "2022-01-20 15:45:53.271",
+          "expType" : "Material",
+          "modifiedBy" : "cnathe@labkey.com",
+          "id" : 140505,
+          "properties" : {
+            "name" : "Sample4"
+          }
+        }, {
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "role" : "inputSample",
+          "created" : "2022-01-20 15:45:53.271",
+          "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-1456:ScriptProcessSampleType",
+          "materialLineageType" : "RootMaterial",
+          "schemaName" : "samples",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140504",
+          "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample3",
+          "createdBy" : "cnathe@labkey.com",
+          "pkFilters" : [ {
+            "value" : 140504,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Sample3",
+          "queryName" : "ScriptProcessSampleType",
+          "modified" : "2022-01-20 15:45:53.271",
+          "expType" : "Material",
+          "modifiedBy" : "cnathe@labkey.com",
+          "id" : 140504,
+          "properties" : {
+            "name" : "Sample3"
+          }
+        }, {
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "role" : "inputSample",
+          "created" : "2022-01-20 15:45:53.271",
+          "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-1456:ScriptProcessSampleType",
+          "materialLineageType" : "RootMaterial",
+          "schemaName" : "samples",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140503",
+          "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample2",
+          "createdBy" : "cnathe@labkey.com",
+          "pkFilters" : [ {
+            "value" : 140503,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Sample2",
+          "queryName" : "ScriptProcessSampleType",
+          "modified" : "2022-01-20 15:45:53.271",
+          "expType" : "Material",
+          "modifiedBy" : "cnathe@labkey.com",
+          "id" : 140503,
+          "properties" : {
+            "name" : "Sample2"
+          }
+        }, {
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "role" : "inputSample",
+          "created" : "2022-01-20 15:45:53.271",
+          "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-1456:ScriptProcessSampleType",
+          "materialLineageType" : "RootMaterial",
+          "schemaName" : "samples",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140502",
+          "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample1",
+          "createdBy" : "cnathe@labkey.com",
+          "pkFilters" : [ {
+            "value" : 140502,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Sample1",
+          "queryName" : "ScriptProcessSampleType",
+          "modified" : "2022-01-20 15:45:53.271",
+          "expType" : "Material",
+          "modifiedBy" : "cnathe@labkey.com",
+          "id" : 140502,
+          "properties" : {
+            "name" : "Sample1"
+          }
+        } ],
+        "schemaName" : "exp",
+        "lsid" : "urn:lsid:labkey.com:ProtocolApplication.Run-26304:SimpleProtocol.CoreStep",
+        "protocol" : {
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "created" : "2022-01-20 15:46:04.551",
+          "schemaName" : "exp",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-protocolDetails.view?rowId=5069",
+          "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-1456:Other+Assay.Core",
+          "createdBy" : "cnathe@labkey.com",
+          "pkFilters" : [ {
+            "value" : 5069,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Other Assay - Core",
+          "queryName" : "Protocols",
+          "modified" : "2022-01-20 15:46:04.551",
+          "expType" : "Protocol",
+          "modifiedBy" : "cnathe@labkey.com",
+          "id" : 5069
+        },
+        "materialOutputs" : [ ],
+        "activityDate" : "2022-01-20 15:46:07.442",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 79358,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "Other Assay",
+        "queryName" : "ProtocolApplications",
+        "modified" : "2022-01-20 15:46:07.824",
+        "expType" : "ProtocolApplication",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 79358
+      } ],
+      "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showRunGraph.view?rowId=26304",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-1456:9a963003-5c5b-103a-b871-ea5aa9ea8b30",
+      "materialOutputs" : [ ],
+      "createdBy" : "cnathe@labkey.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "value" : 26304,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "OtherAssayRun",
+      "queryName" : "Runs",
+      "modified" : "2022-01-20 15:46:07.824",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 26304,
+      "provenanceMap" : [ {
+        "from" : {
+          "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample1",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 140502,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Sample1",
+          "queryName" : "ScriptProcessSampleType",
+          "schemaName" : "samples",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140502"
+        },
+        "to" : {
+          "lsid" : "urn:lsid:labkey.com:GeneralAssayResultRow.Protocol-5068:1",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 1,
+            "fieldKey" : "rowId"
+          } ],
+          "name" : "1",
+          "queryName" : "Data",
+          "schemaName" : "assay.General.Other Assay",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/assay-assayResults.view?rowId=5068&Data.rowId%7Eeq=1"
+        }
+      }, {
+        "from" : {
+          "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample1",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 140502,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Sample1",
+          "queryName" : "ScriptProcessSampleType",
+          "schemaName" : "samples",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140502"
+        },
+        "to" : {
+          "lsid" : "urn:lsid:labkey.com:GeneralAssayResultRow.Protocol-5068:2",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 2,
+            "fieldKey" : "rowId"
+          } ],
+          "name" : "2",
+          "queryName" : "Data",
+          "schemaName" : "assay.General.Other Assay",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/assay-assayResults.view?rowId=5068&Data.rowId%7Eeq=2"
+        }
+      }, {
+        "from" : {
+          "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample2",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 140503,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Sample2",
+          "queryName" : "ScriptProcessSampleType",
+          "schemaName" : "samples",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140503"
+        },
+        "to" : {
+          "lsid" : "urn:lsid:labkey.com:GeneralAssayResultRow.Protocol-5068:3",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 3,
+            "fieldKey" : "rowId"
+          } ],
+          "name" : "3",
+          "queryName" : "Data",
+          "schemaName" : "assay.General.Other Assay",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/assay-assayResults.view?rowId=5068&Data.rowId%7Eeq=3"
+        }
+      }, {
+        "from" : {
+          "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample3",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 140504,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Sample3",
+          "queryName" : "ScriptProcessSampleType",
+          "schemaName" : "samples",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140504"
+        },
+        "to" : {
+          "lsid" : "urn:lsid:labkey.com:GeneralAssayResultRow.Protocol-5068:4",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 4,
+            "fieldKey" : "rowId"
+          } ],
+          "name" : "4",
+          "queryName" : "Data",
+          "schemaName" : "assay.General.Other Assay",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/assay-assayResults.view?rowId=5068&Data.rowId%7Eeq=4"
+        }
+      }, {
+        "from" : {
+          "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample4",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 140505,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Sample4",
+          "queryName" : "ScriptProcessSampleType",
+          "schemaName" : "samples",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140505"
+        },
+        "to" : {
+          "lsid" : "urn:lsid:labkey.com:GeneralAssayResultRow.Protocol-5068:5",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 5,
+            "fieldKey" : "rowId"
+          } ],
+          "name" : "5",
+          "queryName" : "Data",
+          "schemaName" : "assay.General.Other Assay",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/assay-assayResults.view?rowId=5068&Data.rowId%7Eeq=5"
+        }
+      }, {
+        "from" : {
+          "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample4",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 140505,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Sample4",
+          "queryName" : "ScriptProcessSampleType",
+          "schemaName" : "samples",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140505"
+        },
+        "to" : {
+          "lsid" : "urn:lsid:labkey.com:GeneralAssayResultRow.Protocol-5068:6",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 6,
+            "fieldKey" : "rowId"
+          } ],
+          "name" : "6",
+          "queryName" : "Data",
+          "schemaName" : "assay.General.Other Assay",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/assay-assayResults.view?rowId=5068&Data.rowId%7Eeq=6"
+        }
+      } ],
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample4",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialOneToRun" : {
+      "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+      "created" : "2022-01-20 15:46:08.208",
+      "cpasType" : "Material",
+      "materialLineageType" : "RootMaterial",
+      "schemaName" : "exp",
+      "type" : "Material",
+      "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140506",
+      "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialOneToRun",
+      "createdBy" : "cnathe@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-1456:9a963061-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "value" : 140506,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "InputMaterialOneToRun",
+      "queryName" : "Materials",
+      "modified" : "2022-01-20 15:46:08.208",
+      "expType" : "Material",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 140506,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Transform.Folder-1456:9a963069-5c5b-103a-b871-ea5aa9ea8b30" : {
+      "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+      "created" : "2022-01-20 15:46:08.478",
+      "dataFileURL" : null,
+      "cpasType" : "Data",
+      "schemaName" : "exp",
+      "type" : "Transform",
+      "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showData.view?rowId=35470",
+      "lsid" : "urn:lsid:labkey.com:Transform.Folder-1456:9a963069-5c5b-103a-b871-ea5aa9ea8b30",
+      "createdBy" : "cnathe@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-1456:9a963061-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "value" : 35470,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "file:///Users/corynathe/LabKey/trunk/build/deploy/files/Script%20Processes%20Test%20Project/@files",
+      "queryName" : "Data",
+      "modified" : "2022-01-20 15:46:08.478",
+      "expType" : "Data",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 35470,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialToStepTwo" : {
+      "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+      "created" : "2022-01-20 15:46:08.319",
+      "cpasType" : "Material",
+      "materialLineageType" : "RootMaterial",
+      "schemaName" : "exp",
+      "type" : "Material",
+      "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140510",
+      "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialToStepTwo",
+      "createdBy" : "cnathe@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-1456:9a963061-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "value" : 140510,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "InputMaterialToStepTwo",
+      "queryName" : "Materials",
+      "modified" : "2022-01-20 15:46:08.319",
+      "expType" : "Material",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 140510,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample1" : {
+      "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+      "created" : "2022-01-20 15:45:53.271",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-1456:ScriptProcessSampleType",
+      "materialLineageType" : "RootMaterial",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140502",
+      "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample1",
+      "createdBy" : "cnathe@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-1456:9a963061-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "value" : 140502,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "Sample1",
+      "queryName" : "ScriptProcessSampleType",
+      "modified" : "2022-01-20 15:45:53.271",
+      "expType" : "Material",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 140502,
+      "properties" : {
+        "name" : "Sample1"
+      },
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Material.Folder-1456:OutputMaterialTwoFromRun" : {
+      "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+      "created" : "2022-01-20 15:46:08.389",
+      "cpasType" : "Material",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "exp",
+      "type" : "Material",
+      "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140513",
+      "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:OutputMaterialTwoFromRun",
+      "createdBy" : "cnathe@labkey.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "value" : 140513,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "OutputMaterialTwoFromRun",
+      "queryName" : "Materials",
+      "modified" : "2022-01-20 15:46:08.526",
+      "expType" : "Material",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 140513,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-1456:9a963061-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Run.Folder-1456:9a963061-5c5b-103a-b871-ea5aa9ea8b30" : {
+      "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+      "dataOutputs" : [ ],
+      "dataInputs" : [ {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "created" : "2022-01-20 15:46:08.478",
+        "dataFileURL" : null,
+        "cpasType" : "Data",
+        "schemaName" : "exp",
+        "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showData.view?rowId=35470",
+        "lsid" : "urn:lsid:labkey.com:Transform.Folder-1456:9a963069-5c5b-103a-b871-ea5aa9ea8b30",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 35470,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "file:///Users/corynathe/LabKey/trunk/build/deploy/files/Script%20Processes%20Test%20Project/@files",
+        "queryName" : "Data",
+        "modified" : "2022-01-20 15:46:08.478",
+        "expType" : "Data",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 35470
+      } ],
+      "created" : "2022-01-20 15:46:08.456",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:ProvenanceProtocol9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+      "materialInputs" : [ {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "Material",
+        "created" : "2022-01-20 15:46:08.319",
+        "cpasType" : "Material",
+        "materialLineageType" : "RootMaterial",
+        "schemaName" : "exp",
+        "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140510",
+        "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialToStepTwo",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 140510,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "InputMaterialToStepTwo",
+        "queryName" : "Materials",
+        "modified" : "2022-01-20 15:46:08.319",
+        "expType" : "Material",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 140510
+      }, {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "Material",
+        "created" : "2022-01-20 15:46:08.276",
+        "cpasType" : "Material",
+        "materialLineageType" : "RootMaterial",
+        "schemaName" : "exp",
+        "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140508",
+        "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialToStepOne",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 140508,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "InputMaterialToStepOne",
+        "queryName" : "Materials",
+        "modified" : "2022-01-20 15:46:08.276",
+        "expType" : "Material",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 140508
+      }, {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "Material",
+        "created" : "2022-01-20 15:46:08.208",
+        "cpasType" : "Material",
+        "materialLineageType" : "RootMaterial",
+        "schemaName" : "exp",
+        "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140506",
+        "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialOneToRun",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 140506,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "InputMaterialOneToRun",
+        "queryName" : "Materials",
+        "modified" : "2022-01-20 15:46:08.208",
+        "expType" : "Material",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 140506
+      }, {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "Material",
+        "created" : "2022-01-20 15:46:08.231",
+        "cpasType" : "Material",
+        "materialLineageType" : "RootMaterial",
+        "schemaName" : "exp",
+        "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140507",
+        "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialTwoToRun",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 140507,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "InputMaterialTwoToRun",
+        "queryName" : "Materials",
+        "modified" : "2022-01-20 15:46:08.231",
+        "expType" : "Material",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 140507
+      } ],
+      "schemaName" : "exp",
+      "type" : "Run",
+      "steps" : [ {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "dataOutputs" : [ ],
+        "applicationType" : "ProtocolApplication",
+        "dataInputs" : [ ],
+        "created" : "2022-01-20 15:46:08.456",
+        "activitySequence" : 2,
+        "materialInputs" : [ {
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "role" : "Material",
+          "created" : "2022-01-20 15:46:08.276",
+          "cpasType" : "Material",
+          "materialLineageType" : "RootMaterial",
+          "schemaName" : "exp",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140508",
+          "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialToStepOne",
+          "createdBy" : "cnathe@labkey.com",
+          "pkFilters" : [ {
+            "value" : 140508,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "InputMaterialToStepOne",
+          "queryName" : "Materials",
+          "modified" : "2022-01-20 15:46:08.276",
+          "expType" : "Material",
+          "modifiedBy" : "cnathe@labkey.com",
+          "id" : 140508
+        } ],
+        "schemaName" : "exp",
+        "lsid" : "urn:lsid:labkey.com:ProtocolApplication.Folder-1456:9a96306a-5c5b-103a-b871-ea5aa9ea8b30",
+        "protocol" : {
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "created" : "2022-01-20 15:46:08.405",
+          "schemaName" : "exp",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-protocolDetails.view?rowId=5071",
+          "lsid" : "urn:lsid:labkey.com:Protocol.Folder-1456:RecordingOneStepOne",
+          "createdBy" : "cnathe@labkey.com",
+          "pkFilters" : [ {
+            "value" : 5071,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "RecordingOneStepOne",
+          "queryName" : "Protocols",
+          "modified" : "2022-01-20 15:46:08.405",
+          "expType" : "Protocol",
+          "modifiedBy" : "cnathe@labkey.com",
+          "id" : 5071
+        },
+        "materialOutputs" : [ ],
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 79362,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "Step One of Recording One",
+        "queryName" : "ProtocolApplications",
+        "modified" : "2022-01-20 15:46:08.456",
+        "expType" : "ProtocolApplication",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 79362
+      }, {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "dataOutputs" : [ ],
+        "applicationType" : "ProtocolApplication",
+        "dataInputs" : [ ],
+        "created" : "2022-01-20 15:46:08.456",
+        "activitySequence" : 3,
+        "materialInputs" : [ {
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "role" : "Material",
+          "created" : "2022-01-20 15:46:08.319",
+          "cpasType" : "Material",
+          "materialLineageType" : "RootMaterial",
+          "schemaName" : "exp",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140510",
+          "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialToStepTwo",
+          "createdBy" : "cnathe@labkey.com",
+          "pkFilters" : [ {
+            "value" : 140510,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "InputMaterialToStepTwo",
+          "queryName" : "Materials",
+          "modified" : "2022-01-20 15:46:08.319",
+          "expType" : "Material",
+          "modifiedBy" : "cnathe@labkey.com",
+          "id" : 140510
+        } ],
+        "schemaName" : "exp",
+        "lsid" : "urn:lsid:labkey.com:ProtocolApplication.Folder-1456:9a96306c-5c5b-103a-b871-ea5aa9ea8b30",
+        "protocol" : {
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "created" : "2022-01-20 15:46:08.419",
+          "schemaName" : "exp",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-protocolDetails.view?rowId=5072",
+          "lsid" : "urn:lsid:labkey.com:Protocol.Folder-1456:RecordingOneStepTwo",
+          "createdBy" : "cnathe@labkey.com",
+          "pkFilters" : [ {
+            "value" : 5072,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "RecordingOneStepTwo",
+          "queryName" : "Protocols",
+          "modified" : "2022-01-20 15:46:08.419",
+          "expType" : "Protocol",
+          "modifiedBy" : "cnathe@labkey.com",
+          "id" : 5072
+        },
+        "materialOutputs" : [ ],
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 79363,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "Step Two of Recording One",
+        "queryName" : "ProtocolApplications",
+        "modified" : "2022-01-20 15:46:08.456",
+        "expType" : "ProtocolApplication",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 79363,
+        "provenanceMap" : [ {
+          "from" : {
+            "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample2",
+            "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+            "pkFilters" : [ {
+              "value" : 140503,
+              "fieldKey" : "RowId"
+            } ],
+            "name" : "Sample2",
+            "queryName" : "ScriptProcessSampleType",
+            "schemaName" : "samples",
+            "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140503"
+          },
+          "to" : {
+            "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample3",
+            "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+            "pkFilters" : [ {
+              "value" : 140504,
+              "fieldKey" : "RowId"
+            } ],
+            "name" : "Sample3",
+            "queryName" : "ScriptProcessSampleType",
+            "schemaName" : "samples",
+            "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140504"
+          }
+        } ]
+      } ],
+      "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showRunGraph.view?rowId=26305",
+      "lsid" : "urn:lsid:labkey.com:Run.Folder-1456:9a963061-5c5b-103a-b871-ea5aa9ea8b30",
+      "materialOutputs" : [ {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "Material",
+        "created" : "2022-01-20 15:46:08.366",
+        "cpasType" : "Material",
+        "materialLineageType" : "Derivative",
+        "schemaName" : "exp",
+        "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140512",
+        "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:OutputMaterialOneFromRun",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 140512,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "OutputMaterialOneFromRun",
+        "queryName" : "Materials",
+        "modified" : "2022-01-20 15:46:08.537",
+        "expType" : "Material",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 140512
+      }, {
+        "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "Material",
+        "created" : "2022-01-20 15:46:08.389",
+        "cpasType" : "Material",
+        "materialLineageType" : "Derivative",
+        "schemaName" : "exp",
+        "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140513",
+        "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:OutputMaterialTwoFromRun",
+        "createdBy" : "cnathe@labkey.com",
+        "pkFilters" : [ {
+          "value" : 140513,
+          "fieldKey" : "RowId"
+        } ],
+        "name" : "OutputMaterialTwoFromRun",
+        "queryName" : "Materials",
+        "modified" : "2022-01-20 15:46:08.526",
+        "expType" : "Material",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 140513
+      } ],
+      "createdBy" : "cnathe@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample4",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:OutputMaterialTwoFromRun",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:OutputMaterialOneFromRun",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "value" : 26305,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "ScriptProcessesTestRun",
+      "queryName" : "Runs",
+      "modified" : "2022-01-20 15:46:08.456",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 26305,
+      "provenanceMap" : [ {
+        "to" : {
+          "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample4",
+          "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+          "pkFilters" : [ {
+            "value" : 140505,
+            "fieldKey" : "RowId"
+          } ],
+          "name" : "Sample4",
+          "queryName" : "ScriptProcessSampleType",
+          "schemaName" : "samples",
+          "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140505"
+        }
+      } ],
+      "objectInputs" : [ "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample1" ],
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Transform.Folder-1456:9a963069-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialTwoToRun",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialToStepTwo",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialOneToRun",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:InputMaterialToStepOne",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.1456.ScriptProcessSampleType:Sample1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Material.Folder-1456:OutputMaterialOneFromRun" : {
+      "container" : "9a962d04-5c5b-103a-b871-ea5aa9ea8b30",
+      "created" : "2022-01-20 15:46:08.366",
+      "cpasType" : "Material",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "exp",
+      "type" : "Material",
+      "url" : "/labkey/Script%20Processes%20Test%20Project/experiment-showMaterial.view?rowId=140512",
+      "lsid" : "urn:lsid:labkey.com:Material.Folder-1456:OutputMaterialOneFromRun",
+      "createdBy" : "cnathe@labkey.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "value" : 140512,
+        "fieldKey" : "RowId"
+      } ],
+      "name" : "OutputMaterialOneFromRun",
+      "queryName" : "Materials",
+      "modified" : "2022-01-20 15:46:08.537",
+      "expType" : "Material",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 140512,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-1456:9a963061-5c5b-103a-b871-ea5aa9ea8b30",
+        "role" : "no role"
+      } ]
+    }
+  },
+  "seed" : "urn:lsid:labkey.com:Run.Folder-1456:9a963061-5c5b-103a-b871-ea5aa9ea8b30"
+}

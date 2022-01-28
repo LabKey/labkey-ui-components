@@ -1,6 +1,7 @@
 import { Map } from 'immutable';
 import { Filter } from '@labkey/api';
-import { FileSizeLimitProps } from "../../../public/files/models";
+
+import { FileSizeLimitProps } from '../../../public/files/models';
 
 const SAMPLES_IMPORT_PIPELINE_PROVIDER = 'Samples Import';
 const SOURCES_IMPORT_PIPELINE_PROVIDER = 'Sources Import';

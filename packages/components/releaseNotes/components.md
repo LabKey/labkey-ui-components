@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Change user display role to account for storage editor and designer roles
   * Update `CreateUsersModal` and `UsersGridPanel` to handle multiple roles
   * Add utility method `userCanEditStorageData`
+  * Update `SamplesTabbedGridPanel` to account for some users not being able to update storage data
 
 ### version 2.121.3
 *Released*: 27 January 2022

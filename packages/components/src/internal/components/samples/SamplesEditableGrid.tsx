@@ -106,6 +106,7 @@ interface State {
     discardSamplesCount: number;
     totalEditCount: number;
     consumedStatusIds: number[];
+    includedTabs: GridTab[];
 }
 
 class SamplesEditableGridBase extends React.Component<Props, State> {
@@ -122,6 +123,11 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         super(props);
         this._hasError = false;
 
+        const includedTabs = [GridTab.Samples];
+        if (props.determineStorage)
+            includedTabs.push(GridTab.Storage);
+        if (props.determineLineage)
+            includedTabs.push(GridTab.Lineage);
         this.state = {
             originalParents: undefined,
             parentTypeOptions: undefined,
@@ -138,6 +144,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             discardSamplesCount: undefined,
             totalEditCount: undefined,
             consumedStatusIds: undefined,
+            includedTabs
         };
     }
 
@@ -356,7 +363,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
     updateAllTabRows = (updateDataRows: any[], skipConfirmDiscard?: boolean): Promise<any> => {
         const { aliquots, sampleItems, noStorageSamples, invalidateSampleQueries } = this.props;
-        const { discardConsumed, discardSamplesComment, consumedStatusIds } = this.state;
+        const { discardConsumed, discardSamplesComment, consumedStatusIds, includedTabs } = this.state;
 
         let sampleSchemaQuery: SchemaQuery = null,
             sampleRows: any[] = [],
@@ -365,10 +372,10 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             discardStorageRows: any[] = [];
         updateDataRows.forEach(data => {
             const tabIndex = data.tabIndex;
-            if (tabIndex === GridTab.Storage) {
+            if (includedTabs[tabIndex] === GridTab.Storage) {
                 storageRows = data.updatedRows;
                 sampleSchemaQuery = data.schemaQuery;
-            } else if (tabIndex === GridTab.Lineage) {
+            } else if (includedTabs[tabIndex] === GridTab.Lineage) {
                 lineageRows = getUpdatedLineageRows(data.updatedRows, this.getLineageEditorQueryGridModel(), aliquots);
                 sampleSchemaQuery = data.schemaQuery;
             } else {
@@ -569,7 +576,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getSamplesColumnMetadata = (tabInd: number): Map<string, EditableColumnMetadata> => {
-        if (tabInd === GridTab.Storage || tabInd === GridTab.Lineage) return undefined;
+        const { includedTabs } = this.state;
+
+        if (includedTabs[tabInd] === GridTab.Storage || includedTabs[tabInd] === GridTab.Lineage) return undefined;
 
         const { aliquots, sampleTypeDomainFields } = this.props;
 
@@ -601,7 +610,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getSamplesUpdateColumns = (tabInd: number): List<QueryColumn> => {
-        if (tabInd === GridTab.Storage || tabInd === GridTab.Lineage) return undefined;
+        const { includedTabs } = this.state;
+
+        if (includedTabs[tabInd] === GridTab.Storage || includedTabs[tabInd] === GridTab.Lineage) return undefined;
 
         const { sampleTypeDomainFields } = this.props;
         const allColumns: List<QueryColumn> = this.getSamplesEditorQueryGridModel().getUpdateColumns(
@@ -630,10 +641,11 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
     getReadOnlyRows = (tabInd: number): List<string> => {
         const { aliquots, noStorageSamples } = this.props;
+        const { includedTabs } = this.state;
 
-        if (tabInd === GridTab.Storage) {
+        if (includedTabs[tabInd] === GridTab.Storage) {
             return List<string>(noStorageSamples);
-        } else if (tabInd === GridTab.Lineage) {
+        } else if (includedTabs[tabInd] === GridTab.Lineage) {
             return List<string>(aliquots);
         } else {
             return undefined;
@@ -641,8 +653,10 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getTabTitle = (tabInd: number): string => {
-        if (tabInd === GridTab.Storage) return 'Storage Details';
-        if (tabInd === GridTab.Lineage) return 'Lineage Details';
+        const { includedTabs } = this.state;
+
+        if (includedTabs[tabInd] === GridTab.Storage) return 'Storage Details';
+        if (includedTabs[tabInd] === GridTab.Lineage) return 'Lineage Details';
         return 'Sample Data';
     };
 
@@ -687,9 +701,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
     getTabHeader = (tabInd: number): ReactNode => {
         const { parentDataTypes, combineParentTypes } = this.props;
-        const { parentTypeOptions, entityParentsMap } = this.state;
+        const { parentTypeOptions, entityParentsMap, includedTabs } = this.state;
 
-        if (tabInd === GridTab.Lineage) {
+        if (includedTabs[tabInd] === GridTab.Lineage) {
             return (
                 <>
                     <div className="top-spacing">
@@ -707,7 +721,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     <hr />
                 </>
             );
-        } else if (tabInd === GridTab.Storage) {
+        } else if (includedTabs[tabInd] === GridTab.Storage) {
             return (
                 <div className="top-spacing sample-status-warning">
                     Samples that are not currently in storage are not editable here.
@@ -743,7 +757,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     render() {
-        const { selectionData, onGridEditCancel } = this.props;
+        const { selectionData, onGridEditCancel, determineStorage, determineLineage } = this.props;
         const { discardSamplesCount, totalEditCount, showDiscardDialog } = this.state;
 
         const samplesGrid = this.getSamplesEditorQueryGridModel();
@@ -751,13 +765,17 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
         const models = [samplesGrid];
 
-        const storageGrid = this.getStorageEditorQueryGridModel();
-        if (!storageGrid || !storageGrid.isLoaded) return <LoadingSpinner />;
-        models.push(storageGrid);
+        if (determineStorage) {
+            const storageGrid = this.getStorageEditorQueryGridModel();
+            if (!storageGrid || !storageGrid.isLoaded) return <LoadingSpinner/>;
+            models.push(storageGrid);
+        }
 
-        const lineageGrid = this.getLineageEditorQueryGridModel();
-        if (!lineageGrid || !lineageGrid.isLoaded) return <LoadingSpinner />;
-        models.push(lineageGrid);
+        if (determineLineage) {
+            const lineageGrid = this.getLineageEditorQueryGridModel();
+            if (!lineageGrid || !lineageGrid.isLoaded) return <LoadingSpinner/>;
+            models.push(lineageGrid);
+        }
 
         return (
             <>

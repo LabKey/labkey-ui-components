@@ -3,6 +3,7 @@ import { Set, List, Map } from 'immutable';
 import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import {
+    App,
     createNotification,
     dismissNotifications,
     EXPORT_TYPES,
@@ -274,7 +275,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                 <SamplesEditableGrid
                     {...samplesEditableGridProps}
                     determineLineage
-                    determineStorage
+                    determineStorage={App.userCanEditStorageData(user)}
                     displayQueryModel={activeModel}
                     editableGridDataForSelection={editableGridData?.dataForSelection}
                     editableGridDataIdsForSelection={editableGridData?.idsForSelection}

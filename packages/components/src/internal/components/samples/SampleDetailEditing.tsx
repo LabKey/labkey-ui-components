@@ -11,7 +11,7 @@ import {
     deleteRows,
     DetailPanelWithModel,
     getActionErrorMessage,
-    LoadingPage,
+    LoadingSpinner,
     QueryConfig,
     resolveErrorMessage,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -168,7 +168,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         }
 
         if (!sampleTypeDomainFields || model.isLoading) {
-            return <LoadingPage title={title} />;
+            return <LoadingSpinner />;
         }
 
         const row = this.getRow();

@@ -14,6 +14,7 @@ import {
     SampleDeleteMenuItem,
     SampleTypeDataType,
     SelectionMenuItem,
+    useServerContext,
 } from '../../..';
 
 import { EntityDataType } from '../entities/models';
@@ -43,8 +44,8 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
         toggleEditWithGridUpdate,
         hideButtons,
         model,
-        user,
     } = props;
+    const { user } = useServerContext();
     const { showImportDataButton, queryInfo } = model;
     const importSampleHref = App.NEW_SAMPLES_HREF.addParams({
         target: queryInfo?.schemaQuery?.queryName,

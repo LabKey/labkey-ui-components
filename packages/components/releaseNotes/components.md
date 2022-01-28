@@ -7,6 +7,16 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Updates to EntityFieldFilterModal, FilterCards and SampleFinderSection to wire up filtering
     * Added FilterExpressionView.tsx and FilterFacetedSelector to support filtering
 
+### version 2.121.4
+*Released*: 28 January 2022
+* Item 9970: QueryFormInput change showQuerySelectPreviewOptions default prop value to false
+  * Update SampleStatusInput component QuerySelect previewOptions prop to false as well
+
+### version 2.121.3
+*Released*: 27 January 2022
+* Merge release21.11-SNAPSHOT to develop (part 2)
+    * Includes changes from versions 2.90.4
+
 ### version 2.121.2
 *Released*: 25 January 2022
 * Issue 44721: make sorting methods defensive against non-string values
@@ -263,6 +273,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Export invalidateQueryDetailsCache
   * Provides containerPath-sensitive cache clearing
 * Announcements: support supplying containerPath
+
+### version 2.90.4
+*Released*: 21 January 2022
+* Item 9818: Lineage graph details panel updates to show object input/outputs and run step provenance map
+    * update Lineage related models for provenanceMap, objectInputs, and objectOutputs
+    * display Object Inputs and Object Outputs as collapsible details list (next to Material and Data Inputs/Outputs)
+    * use run step protocol name instead of step name for title
+    * update Run Step display to use tabs for Step Details and Provenance Map
+    * render Run Step provenance map as <Grid> with from/to info
 
 ### version 2.90.3
 *Released*: 10 November 2021

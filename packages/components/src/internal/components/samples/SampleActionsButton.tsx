@@ -36,7 +36,7 @@ export const SampleActionsButton: FC<Props> = memo(props => {
         return model?.allColumns?.find(c => c.isSampleLookup())?.fieldKey;
     }, [model]);
 
-    const id = 'assay-samples-menu';
+    const id = 'sample-actions-menu';
 
     return (
         <DropdownButton disabled={disabled} id={`${id}-btn`} bsStyle={'default'} title={'Samples'}>

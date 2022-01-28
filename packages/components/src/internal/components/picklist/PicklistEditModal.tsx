@@ -47,7 +47,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
 
     useEffect(() => {
         (async () => {
-            // Look up SampleIds from the selected assay row ids.
+            // Look up SampleIds from the selected row ids.
             // Using sampleFieldKey as proxy flag to determine if lookup is needed
             if (sampleFieldKey && queryModel) {
                 const ids = await api.samples.getFieldLookupFromSelection(

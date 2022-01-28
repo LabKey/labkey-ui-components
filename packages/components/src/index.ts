@@ -25,9 +25,9 @@ import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
 import { InferDomainResponse } from './public/InferDomainResponse';
 import {
+    getAssayImportNotificationMsg,
     getServerFilePreview,
     inferDomainFromFile,
-    getAssayImportNotificationMsg,
 } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
@@ -291,8 +291,8 @@ import {
     getFindSamplesByIdData,
     getSampleSet,
     getSampleTypeDetails,
-    getSelectedItemSamples,
     getSampleTypes,
+    getSelectedItemSamples,
     getSelectedSampleTypes,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
@@ -322,8 +322,8 @@ import {
     getSampleStatus,
     getSampleStatusType,
     isSampleOperationPermitted,
-    SamplesManageButtonSections,
     isSamplesSchema,
+    SamplesManageButtonSections,
 } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
@@ -525,8 +525,8 @@ import {
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
-    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_COLUMN_NAME,
+    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SampleOperation,
@@ -600,6 +600,8 @@ import {
     TEST_USER_GUEST,
     TEST_USER_PROJECT_ADMIN,
     TEST_USER_READER,
+    TEST_USER_STORAGE_DESIGNER,
+    TEST_USER_STORAGE_EDITOR,
 } from './test/data/users';
 import {
     ASSAY_DESIGN_KEY,
@@ -738,6 +740,8 @@ const App = {
     TEST_USER_FOLDER_ADMIN,
     TEST_USER_PROJECT_ADMIN,
     TEST_USER_APP_ADMIN,
+    TEST_USER_STORAGE_DESIGNER,
+    TEST_USER_STORAGE_EDITOR
 };
 
 const Hooks = {

@@ -192,3 +192,37 @@ export const TEST_USER_APP_ADMIN = new User({
         PermissionTypes.AddUser,
     ]),
 });
+
+export const TEST_USER_STORAGE_DESIGNER = new User({
+    canDelete: false,
+    canDeleteOwn: false,
+    canInsert: false,
+    canUpdate: false,
+    canUpdateOwn: false,
+    isAdmin: false,
+    isAnalyst: false,
+    isDeveloper: false,
+    isGuest: true,
+    isRootAdmin: false,
+    isSignedIn: false,
+    isSystemAdmin: false,
+    isTrusted: false,
+    permissionsList: List<string>([PermissionTypes.Read, PermissionTypes.DesignStorage]),
+});
+
+export const TEST_USER_STORAGE_EDITOR = new User({
+    canDelete: false,
+    canDeleteOwn: false,
+    canInsert: false,
+    canUpdate: false,
+    canUpdateOwn: false,
+    isAdmin: false,
+    isAnalyst: false,
+    isDeveloper: false,
+    isGuest: true,
+    isRootAdmin: false,
+    isSignedIn: false,
+    isSystemAdmin: false,
+    isTrusted: false,
+    permissionsList: List<string>([PermissionTypes.Read, PermissionTypes.EditStorageData]),
+});

@@ -114,6 +114,10 @@ export function userCanDesignLocations(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.DesignStorage], false);
 }
 
+export function userCanEditStorageData(user: User): boolean {
+    return hasAllPermissions(user, [PermissionTypes.EditStorageData], false);
+}
+
 export function isFreezerManagementEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.inventory !== undefined;
 }

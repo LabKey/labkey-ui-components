@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Moved `updateSampleStatus` method into inventory since it's used only when discarding samples and that now requires a specific inventory action
   * Change user display role to account for storage editor and designer roles
   * Update `CreateUsersModal` and `UsersGridPanel` to handle multiple roles
+  * Add utility method `userCanEditStorageData`
 
 ### version 2.121.3
 *Released*: 27 January 2022

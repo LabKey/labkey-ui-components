@@ -577,6 +577,7 @@ import {
     userCanDeletePublicPicklists,
     userCanDesignLocations,
     userCanDesignSourceTypes,
+    userCanEditStorageData,
     userCanManagePicklists,
 } from './internal/app/utils';
 import {
@@ -690,6 +691,7 @@ const App = {
     updateUser,
     updateUserDisplayName,
     userCanDesignLocations,
+    userCanEditStorageData,
     userCanDesignSourceTypes,
     userCanManagePicklists,
     userCanDeletePublicPicklists,

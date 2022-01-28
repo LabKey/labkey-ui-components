@@ -35,6 +35,7 @@ import {
     sampleManagerIsPrimaryApp,
     userCanDesignLocations,
     userCanDesignSourceTypes,
+    userCanEditStorageData,
 } from './utils';
 import {
     ASSAYS_KEY,
@@ -196,6 +197,18 @@ describe('utils', () => {
         expect(userCanDesignLocations(TEST_USER_APP_ADMIN)).toBeFalsy();
         expect(userCanDesignLocations(TEST_USER_STORAGE_DESIGNER)).toBeTruthy();
         expect(userCanDesignLocations(TEST_USER_STORAGE_EDITOR)).toBeFalsy();
+    });
+
+    test('userCanEditStorageData', () => {
+        expect(userCanEditStorageData(TEST_USER_GUEST)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_READER)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_AUTHOR)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_EDITOR)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_ASSAY_DESIGNER)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_FOLDER_ADMIN)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_APP_ADMIN)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_STORAGE_DESIGNER)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_STORAGE_EDITOR)).toBeTruthy();
     });
 
     test('isSampleManagerEnabled', () => {

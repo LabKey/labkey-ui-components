@@ -96,7 +96,7 @@ export function createPercentageBarData(
             }
         });
 
-        if (unusedLabel) {
+        if (unusedLabel && unusedCount > 0) {
             const unusedPct = (unusedCount/totalCount) * 100;
             const unusedTitle = `${unusedCount.toLocaleString()} of ${totalCount.toLocaleString()} ${itemNounPlural.toLowerCase()} are ${unusedLabel.toLowerCase()}`;
             data.push({
@@ -125,12 +125,12 @@ export interface HorizontalBarLegendData {
 
 export function createHorizontalBarLegendData(data: HorizontalBarData[]) : HorizontalBarLegendData[] {
     let legendMap = {};
-    data.forEach(sampleType => {
-        if (sampleType.totalCount > 0) {
-            let labels = legendMap[sampleType.backgroundColor] || [];
-            if (labels.indexOf(sampleType.name) == -1) {
-                labels.push(sampleType.name);
-                legendMap[sampleType.backgroundColor] = labels;
+    data.forEach(row => {
+        if (row.totalCount > 0) {
+            let labels = legendMap[row.backgroundColor] || [];
+            if (labels.indexOf(row.name) == -1) {
+                labels.push(row.name);
+                legendMap[row.backgroundColor] = labels;
             }
         }
     });

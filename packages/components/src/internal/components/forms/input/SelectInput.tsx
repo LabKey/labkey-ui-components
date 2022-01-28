@@ -178,6 +178,7 @@ export interface SelectInputProps {
     promptTextCreator?: (filterText: string) => string;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     required?: boolean;
+    resolveFormValue?: (selectedOptions: SelectInputOption | SelectInputOption[]) => any;
     saveOnBlur?: boolean;
     selectedOptions?: any;
     showLabel?: boolean;
@@ -353,7 +354,9 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
 
         let formValue;
 
-        if (selectedOptions !== undefined) {
+        if (this.props.resolveFormValue) {
+            formValue = this.props.resolveFormValue(selectedOptions);
+        } else if (selectedOptions !== undefined) {
             if (multiple) {
                 if (Array.isArray(selectedOptions)) {
                     formValue = selectedOptions.reduce((arr, option) => {

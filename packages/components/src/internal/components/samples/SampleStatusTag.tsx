@@ -12,10 +12,11 @@ interface Props {
     status: SampleStatus;
     iconOnly?: boolean;
     className?: string;
+    hideDescription?: boolean;
 }
 
 export const SampleStatusTag: FC<Props> = memo(props => {
-    const { status, iconOnly, className } = props;
+    const { status, iconOnly, className, hideDescription } = props;
     const { label, statusType, description } = status;
 
     if (!label || !isSampleStatusEnabled()) return null;
@@ -43,7 +44,7 @@ export const SampleStatusTag: FC<Props> = memo(props => {
                     'alert-success': !iconOnly && statusType === SampleStateType.Available,
                 })}
             >
-                {description || !isAvailable || iconOnly ? (
+                {!hideDescription && (description || !isAvailable || iconOnly) ? (
                     <LabelHelpTip iconComponent={icon} placement="bottom" title="Sample Status">
                         <div className="ws-pre-wrap popover-message">
                             <b>{label}</b> {description && '- '}

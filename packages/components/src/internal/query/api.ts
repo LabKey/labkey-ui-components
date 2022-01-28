@@ -231,6 +231,7 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
             columnMetadata.columnRenderer = Renderers.applyColumnRenderer(columnMetadata, rawColumn, metadata);
             columnMetadata.detailRenderer = Renderers.applyDetailRenderer(columnMetadata, rawColumn, metadata);
             columnMetadata.inputRenderer = Renderers.applyInputRenderer(columnMetadata, rawColumn, metadata);
+            columnMetadata.helpTipRenderer = Renderers.applyHelpTipRenderer(columnMetadata, rawColumn, metadata);
         }
     }
 
@@ -327,6 +328,10 @@ class Renderers {
 
     static applyInputRenderer(columnMetadata, rawColumn, metadata) {
         return this._check(columnMetadata, rawColumn, 'inputRenderer', metadata);
+    }
+
+    static applyHelpTipRenderer(columnMetadata, rawColumn, metadata) {
+        return this._check(columnMetadata, rawColumn, 'helpTipRenderer', metadata);
     }
 }
 

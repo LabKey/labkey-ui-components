@@ -16,6 +16,8 @@
 import React, { FC, memo, PureComponent, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
+import {HelpTipRenderer} from "../forms/HelpTipRenderer";
+import {LabelHelpTip} from "./LabelHelpTip";
 
 interface ColumnProps {
     align?: string;
@@ -29,6 +31,7 @@ interface ColumnProps {
     width?: any;
     headerCls?: string;
     hideTooltip?: boolean;
+    helpTipRenderer?: string;
 }
 
 export class GridColumn implements ColumnProps {
@@ -43,6 +46,7 @@ export class GridColumn implements ColumnProps {
     width: any;
     headerCls: string;
     hideTooltip?: boolean;
+    helpTipRenderer?: string;
 
     constructor(config: ColumnProps) {
         this.align = config.align;
@@ -51,6 +55,7 @@ export class GridColumn implements ColumnProps {
         this.raw = config.raw;
         this.width = config.width;
         this.headerCls = config.headerCls;
+        this.helpTipRenderer = config.helpTipRenderer;
 
         // react render displays '&nbsp', see: https://facebook.github.io/react/docs/jsx-gotchas.html
         if (config.title && config.title == '&nbsp;') {
@@ -117,6 +122,8 @@ function processColumns(columns: List<any>): List<GridColumn> {
                 tableCell: c.tableCell,
                 title: c.title || c.caption,
                 width: c.width,
+                helpTipRenderer: c.helpTipRenderer,
+                hideTooltip: c.helpTipRenderer !== undefined,
             });
         })
         .toList();
@@ -205,6 +212,11 @@ class GridHeader extends PureComponent<GridHeaderProps, any> {
                                     title={hideTooltip ? undefined : description}
                                 >
                                     {headerCell ? headerCell(column, i, columns.size) : title}
+                                    {column.helpTipRenderer && (
+                                        <LabelHelpTip id={column.index}>
+                                            <HelpTipRenderer type={column.helpTipRenderer} />
+                                        </LabelHelpTip>
+                                    )}
                                 </th>
                             );
                         }

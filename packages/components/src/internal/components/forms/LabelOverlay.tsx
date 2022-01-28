@@ -17,6 +17,7 @@ import React from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { QueryColumn, LabelHelpTip, generateId } from '../../..';
+import { HelpTipRenderer } from "./HelpTipRenderer";
 
 export interface LabelOverlayProps {
     inputId?: string;
@@ -53,6 +54,11 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         const { column, required, content } = this.props;
         const description = this.props.description ? this.props.description : column ? column.description : null;
         const type = this.props.type ? this.props.type : column ? column.type : null;
+        if (column?.name) console.log(column?.name, column?.helpTipRenderer);
+
+        if (column?.helpTipRenderer) {
+            return <HelpTipRenderer type={column.helpTipRenderer} />;
+        }
 
         return (
             <>

@@ -135,3 +135,15 @@
     text-align:center;
     margin-left: 0.2em;
 }
+
+.sample-status-legend--table {
+    tr td {
+        padding: 5px;
+        max-width: 300px;
+        vertical-align: top;
+    }
+
+    .sample-status-legend--description {
+        padding-top: 10px;
+    }
+}

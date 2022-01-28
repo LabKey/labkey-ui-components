@@ -55,6 +55,7 @@ import {
     QueryInfo,
     removeQueryGridModel,
     resolveErrorMessage,
+    SAMPLE_STATE_COLUMN_NAME,
     SampleCreationType,
     SampleCreationTypeModel,
     SampleTypeDataType,
@@ -103,6 +104,7 @@ import {
     EntityParentTypeSelectors,
     removeEntityParentType,
 } from './EntityParentTypeSelectors';
+import {SampleStatusLegend} from "../samples/SampleStatusLegend";
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
@@ -889,6 +891,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 toolTip: `A ${nounSingular} ID is required for each ${nounSingular} since this ${this.typeTextSingular} has no naming pattern. You can provide a naming pattern by editing the ${this.typeTextSingular} design.`,
             });
         }
+
+        columnMetadata = columnMetadata.set(SAMPLE_STATE_COLUMN_NAME, {
+            hideTitleTooltip: true,
+            toolTip: <SampleStatusLegend />,
+        });
+
         return columnMetadata;
     }
 

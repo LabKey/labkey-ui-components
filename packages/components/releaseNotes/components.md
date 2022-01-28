@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.121.4
+*Released*: 28 January 2022
 * Item 9970: QueryFormInput change showQuerySelectPreviewOptions default prop value to false
   * Update SampleStatusInput component QuerySelect previewOptions prop to false as well
 

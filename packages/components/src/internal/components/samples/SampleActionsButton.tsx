@@ -21,6 +21,7 @@ import { hasAnyPermissions, User } from '../base/models/User';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { PicklistCreationMenuItem } from '../picklist/PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from '../picklist/AddToPicklistMenuItem';
+import { SAMPLE_TYPE_CONCEPT_URI } from '../domainproperties/constants';
 
 interface Props {
     disabled?: boolean;
@@ -32,9 +33,9 @@ interface Props {
 export const SampleActionsButton: FC<Props> = memo(props => {
     const { disabled, user, model, moreMenuItems } = props;
 
-    const sampleFieldKey = useMemo(() => {
-        return model?.allColumns?.find(c => c.isSampleLookup())?.fieldKey;
-    }, [model]);
+    const sampleFieldKey = useMemo(() => model?.allColumns?.find(c =>
+        SAMPLE_TYPE_CONCEPT_URI.localeCompare(c.conceptURI, 'en', { sensitivity: 'base' }) === 0
+    )?.fieldKey,[model]);
 
     const id = 'sample-actions-menu';
 

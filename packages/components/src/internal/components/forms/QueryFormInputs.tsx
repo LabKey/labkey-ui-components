@@ -82,7 +82,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         allowFieldDisable: false,
         initiallyDisableFields: false,
         disabledFields: List<string>(),
-        showQuerySelectPreviewOptions: true,
+        showQuerySelectPreviewOptions: false,
     };
 
     private _fieldEnabledCount = 0;

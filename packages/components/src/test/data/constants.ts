@@ -442,6 +442,7 @@ export const TestTypeDataType: EntityDataType = {
     nounSingular: 'test',
     nounPlural: 'tests',
     nounAsParentSingular: 'test Parent',
+    nounAsParentPlural: 'test Parents',
     typeNounSingular: 'Test Type',
     descriptionSingular: 'parent test type',
     descriptionPlural: 'parent test types',

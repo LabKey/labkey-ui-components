@@ -81,7 +81,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                     } else {
                         value = newFilterValue + (secondFilterValue ? ',' + secondFilterValue : '');
                     }
-                } else if (!value && field.jsonType === 'boolean') value = false;
+                } else if (!value && field.jsonType === 'boolean') value = 'false';
 
                 filter = Filter.create(resolveFieldKey(field.name, field), value, filterType);
             }

@@ -1095,6 +1095,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "getPicklistFromId": [Function],
         },
         "samples": SamplesServerAPIWrapper {
+          "getFieldLookupFromSelection": [Function],
           "getSampleAliquotRows": [Function],
           "getSampleAssayResultViewConfigs": [Function],
           "getSampleOperationConfirmationData": [Function],

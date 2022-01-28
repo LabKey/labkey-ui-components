@@ -643,13 +643,11 @@ export class InsertRowsErrorResponse extends ImmutableRecord({
     }
 }
 
-export interface InsertRowsOptions {
+export interface InsertRowsOptions
+    extends Omit<Query.QueryRequestOptions, 'apiVersion' | 'schemaName' | 'queryName' | 'rows'> {
     fillEmptyFields?: boolean;
     rows: List<any>;
     schemaQuery: SchemaQuery;
-    auditBehavior?: AuditBehaviorTypes;
-    auditUserComment?: string;
-    form?: FormData;
 }
 
 export class InsertRowsResponse extends ImmutableRecord({
@@ -681,18 +679,16 @@ export class InsertRowsResponse extends ImmutableRecord({
 
 export function insertRows(options: InsertRowsOptions): Promise<InsertRowsResponse> {
     return new Promise((resolve, reject) => {
-        const { fillEmptyFields, rows, schemaQuery, auditBehavior, auditUserComment } = options;
+        const { fillEmptyFields, rows, schemaQuery, ...insertRowsOptions } = options;
         const _rows = fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows;
 
         Query.insertRows({
+            autoFormFileData: true,
+            ...insertRowsOptions,
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             rows: _rows.toArray(),
-            auditBehavior,
-            auditUserComment,
             apiVersion: 13.2,
-            form: options.form,
-            autoFormFileData: true,
             success: (response, request) => {
                 if (processRequest(response, request, reject)) return;
 
@@ -756,26 +752,24 @@ function ensureNullForUndefined(row: Map<string, any>): Map<string, any> {
     return row.reduce((map, v, k) => map.set(k, v === undefined ? null : v), Map<string, any>());
 }
 
-interface IUpdateRowsOptions {
-    containerPath?: string;
+interface UpdateRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {
     schemaQuery: SchemaQuery;
-    rows: any[];
-    auditBehavior?: AuditBehaviorTypes;
-    auditUserComment?: string;
-    form?: FormData;
 }
 
-export function updateRows(options: IUpdateRowsOptions): Promise<any> {
+interface UpdateRowsResponse {
+    rows: any[];
+    schemaQuery: SchemaQuery;
+    transactionAuditId?: number;
+}
+
+export function updateRows(options: UpdateRowsOptions): Promise<UpdateRowsResponse> {
     return new Promise((resolve, reject) => {
+        const { schemaQuery, ...updateRowOptions } = options;
         Query.updateRows({
-            containerPath: options.containerPath,
-            schemaName: options.schemaQuery.schemaName,
-            queryName: options.schemaQuery.queryName,
-            rows: options.rows,
-            auditBehavior: options.auditBehavior,
-            auditUserComment: options.auditUserComment,
-            form: options.form,
             autoFormFileData: true,
+            ...updateRowOptions,
+            queryName: schemaQuery.queryName,
+            schemaName: schemaQuery.schemaName,
             success: (response, request) => {
                 if (processRequest(response, request, reject)) return;
 
@@ -783,7 +777,7 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
                     Object.assign(
                         {},
                         {
-                            schemaQuery: options.schemaQuery,
+                            schemaQuery,
                             rows: response.rows,
                             transactionAuditId: response.transactionAuditId,
                         }
@@ -796,7 +790,7 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
                     Object.assign(
                         {},
                         {
-                            schemaQuery: options.schemaQuery,
+                            schemaQuery,
                         },
                         error
                     )
@@ -806,22 +800,18 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
     });
 }
 
-interface DeleteRowsOptions {
+interface DeleteRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {
     schemaQuery: SchemaQuery;
-    rows: any[];
-    auditBehavior?: AuditBehaviorTypes;
-    auditUserComment?: string;
 }
 
 export function deleteRows(options: DeleteRowsOptions): Promise<any> {
     return new Promise((resolve, reject) => {
+        const { schemaQuery, ...deleteRowsOptions } = options;
         Query.deleteRows({
-            schemaName: options.schemaQuery.schemaName,
-            queryName: options.schemaQuery.queryName,
-            rows: options.rows,
-            auditBehavior: options.auditBehavior,
-            auditUserComment: options.auditUserComment,
             apiVersion: 13.2,
+            ...deleteRowsOptions,
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
             success: response => {
                 resolve(
                     Object.assign(

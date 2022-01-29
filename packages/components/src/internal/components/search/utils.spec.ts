@@ -123,7 +123,12 @@ describe('getSampleFinderCommonConfigs', () => {
     });
 
     test('Cards with and without filters', () => {
-        const cardFilter = Filter.create('TestColumn', 'value');
+        const cardFilter = {
+            fieldKey: 'TestColumn',
+            fieldCaption: 'TestColumn',
+            filter: Filter.create('TestColumn', 'value')
+        };
+
         expect(
             getSampleFinderCommonConfigs([
                 {
@@ -139,7 +144,7 @@ describe('getSampleFinderCommonConfigs', () => {
         ).toStrictEqual({
             baseFilters: [
                 Filter.create('QueryableInputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK),
-                cardFilter,
+                Filter.create('QueryableInputs/Materials/TestQuery2/TestColumn', 'value')
             ],
             requiredColumns: [
                 ...SAMPLE_STATUS_REQUIRED_COLUMNS,

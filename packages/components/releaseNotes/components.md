@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Update `CreateUsersModal` and `UsersGridPanel` to handle multiple roles
   * Add utility method `userCanEditStorageData`
   * Update `SamplesTabbedGridPanel` to account for some users not being able to update storage data
+  * Update `SamplesEditableGrid`, `SamplesTabbedGridPanel`, and `SamplesSelectionContextProvider` to allow for not being able to edit the sample data
 
 ### version 2.121.3
 *Released*: 27 January 2022

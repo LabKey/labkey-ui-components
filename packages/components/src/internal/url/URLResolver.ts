@@ -16,7 +16,7 @@
 import { fromJS, List, Map, OrderedSet } from 'immutable';
 import { ActionURL, Experiment, Filter, getServerContext } from '@labkey/api';
 
-import { AppURL, createProductUrl } from '../..';
+import { AppURL, createProductUrl, ListResolver } from '../..';
 import { LineageLinkMetadata } from '../components/lineage/types';
 
 import { FREEZER_MANAGER_APP_PROPERTIES } from '../app/constants';
@@ -379,20 +379,26 @@ const LIST_MAPPERS = [
     new ActionMapper('list', 'details', (row, column) => {
         if (!column.has('lookup')) {
             const params = ActionURL.getParameters(row.get('url'));
+            const urlParts = parsePathName(row.get('url'));
 
-            const parts = ['q', 'lists', params.listId, params.pk];
-
-            return AppURL.create(...parts);
+            if (params && urlParts?.containerPath) {
+                const resolverPath = ListResolver.encodeResolverPath(urlParts.containerPath);
+                const parts = ['q', 'lists', resolverPath, params.listId, params.pk];
+                return AppURL.create(...parts);
+            }
         }
     }),
 
     new ActionMapper('list', 'grid', (row, column) => {
         if (!column.has('lookup')) {
             const params = ActionURL.getParameters(row.get('url'));
+            const urlParts = parsePathName(row.get('url'));
 
-            const parts = ['q', 'lists', params.listId];
-
-            return AppURL.create(...parts);
+            if (params && urlParts?.containerPath) {
+                const resolverPath = ListResolver.encodeResolverPath(urlParts.containerPath);
+                const parts = ['q', 'lists', resolverPath, params.listId];
+                return AppURL.create(...parts);
+            }
         }
     }),
 ];

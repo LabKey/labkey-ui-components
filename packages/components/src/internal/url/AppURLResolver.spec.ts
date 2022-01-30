@@ -245,10 +245,10 @@ describe('App Route Resolvers', () => {
     });
 
     test('Should resolve /q/lists routes', () => {
-        const routes = Map<number, string>().asMutable();
-        routes.set(23, 'Jordan');
-        routes.set(8, 'KObE');
-        routes.set(7, 'PistolPete');
+        const routes = Map<string, string>().asMutable();
+        routes.set('/bulls|23', 'Jordan');
+        routes.set('/lakers|8', 'KObE');
+        routes.set('/jazz|7', 'PistolPete');
         const listResolver = new ListResolver(routes.asImmutable());
 
         // test regex
@@ -256,23 +256,29 @@ describe('App Route Resolvers', () => {
         expect(listResolver.matches(undefined)).toBe(false);
         expect(listResolver.matches('/q/lists/f23')).toBe(false);
         expect(listResolver.matches('/q/lists/2.3')).toBe(false);
-        expect(listResolver.matches('/q/lists/23')).toBe(true);
-        expect(listResolver.matches('/q/lists/3221/foo/bar')).toBe(true);
-        expect(listResolver.matches('/q/lists/919/foo/bar?bar=1')).toBe(true);
+        expect(listResolver.matches('/q/lists/$CPSpath$CPE/23')).toBe(true);
+        expect(listResolver.matches('/q/lists/$CPS1/23$CPE/3221/foo/bar')).toBe(true);
+        expect(listResolver.matches('/q/lists/$CPSq/we/ry$CPE/919/foo/bar?bar=1')).toBe(true);
 
         return Promise.all([
-            listResolver.fetch(['q', 'lists', 'jordan', 4]).then((result: boolean) => {
-                expect(result).toBe(true);
-            }),
-            listResolver.fetch(['q', 'lists', 23]).then((url: AppURL) => {
+            listResolver
+                .fetch(['q', 'lists', ListResolver.encodeResolverPath('/BULLS'), 'jordan', 4])
+                .then((result: boolean) => {
+                    expect(result).toBe(true);
+                }),
+            listResolver.fetch(['q', 'lists', ListResolver.encodeResolverPath('/BULLS'), 23]).then((url: AppURL) => {
                 expect(url.toString()).toBe('/q/lists/Jordan');
             }),
-            listResolver.fetch(['q', 'lists', '8', 'mamba']).then((url: AppURL) => {
-                expect(url.toString()).toBe('/q/lists/KObE/mamba');
-            }),
-            listResolver.fetch(['q', 'lists', '7', 17, '?']).then((url: AppURL) => {
-                expect(url.toString()).toBe('/q/lists/PistolPete/17/%3F');
-            }),
+            listResolver
+                .fetch(['q', 'lists', ListResolver.encodeResolverPath('/lakers'), '8', 'mamba'])
+                .then((url: AppURL) => {
+                    expect(url.toString()).toBe('/q/lists/KObE/mamba');
+                }),
+            listResolver
+                .fetch(['q', 'lists', ListResolver.encodeResolverPath('/JaZz'), '7', 17, '?'])
+                .then((url: AppURL) => {
+                    expect(url.toString()).toBe('/q/lists/PistolPete/17/%3F');
+                }),
         ]);
     });
 

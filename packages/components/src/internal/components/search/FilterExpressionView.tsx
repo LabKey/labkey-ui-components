@@ -19,10 +19,11 @@ interface Props {
     field: QueryColumn;
     fieldFilter: Filter.IFilter; // only one filter supported for v1
     onFieldFilterUpdate?: (newFilter: Filter.IFilter) => void;
+    notFormsy?: boolean; // for jest test
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
-    const { field, fieldFilter, onFieldFilterUpdate } = props;
+    const { field, fieldFilter, onFieldFilterUpdate, notFormsy } = props;
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<any[]>(undefined);
     const [activeFilterType, setActiveFilterType] = useState<any[]>(undefined);
@@ -239,6 +240,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 value={activeFilterType?.['value']}
                 onChange={onFieldFilterTypeChange}
                 options={fieldFilterOptions}
+                formsy={!notFormsy}
             />
             {renderFilterTypeInputs()}
         </>

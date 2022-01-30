@@ -55,7 +55,7 @@ export const TEST_USER_AUTHOR = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: true,
-    permissionsList: List<string>([PermissionTypes.Read, PermissionTypes.Insert, PermissionTypes.ManageSampleWorkflows,]),
+    permissionsList: List<string>([PermissionTypes.Read, PermissionTypes.Insert,]),
 });
 
 export const TEST_USER_EDITOR = new User({

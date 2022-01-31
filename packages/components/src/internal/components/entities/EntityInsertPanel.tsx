@@ -895,6 +895,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         columnMetadata = columnMetadata.set(SAMPLE_STATE_COLUMN_NAME, {
             hideTitleTooltip: true,
             toolTip: <SampleStatusLegend />,
+            popoverClassName: 'label-help-arrow-left',
         });
 
         return columnMetadata;

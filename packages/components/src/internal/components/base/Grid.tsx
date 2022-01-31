@@ -213,7 +213,7 @@ class GridHeader extends PureComponent<GridHeaderProps, any> {
                                 >
                                     {headerCell ? headerCell(column, i, columns.size) : title}
                                     {column.helpTipRenderer && (
-                                        <LabelHelpTip id={column.index}>
+                                        <LabelHelpTip id={column.index} title={title} popoverClassName="label-help-arrow-top">
                                             <HelpTipRenderer type={column.helpTipRenderer} />
                                         </LabelHelpTip>
                                     )}

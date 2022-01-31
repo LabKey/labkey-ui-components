@@ -193,8 +193,8 @@ describe('utils', () => {
         expect(userCanDesignLocations(TEST_USER_AUTHOR)).toBeFalsy();
         expect(userCanDesignLocations(TEST_USER_EDITOR)).toBeFalsy();
         expect(userCanDesignLocations(TEST_USER_ASSAY_DESIGNER)).toBeFalsy();
-        expect(userCanDesignLocations(TEST_USER_FOLDER_ADMIN)).toBeFalsy();
-        expect(userCanDesignLocations(TEST_USER_APP_ADMIN)).toBeFalsy();
+        expect(userCanDesignLocations(TEST_USER_FOLDER_ADMIN)).toBeTruthy();
+        expect(userCanDesignLocations(TEST_USER_APP_ADMIN)).toBeTruthy();
         expect(userCanDesignLocations(TEST_USER_STORAGE_DESIGNER)).toBeTruthy();
         expect(userCanDesignLocations(TEST_USER_STORAGE_EDITOR)).toBeFalsy();
     });
@@ -485,7 +485,7 @@ describe('getStorageSectionConfig', () => {
         expect(config.emptyURL).toBe(undefined);
     });
 
-    test('editor', () => {
+    test('admin', () => {
         const config = getStorageSectionConfig(
             TEST_USER_FOLDER_ADMIN,
             BIOLOGICS_APP_PROPERTIES.productId,
@@ -495,7 +495,8 @@ describe('getStorageSectionConfig', () => {
         expect(config.maxItemsPerColumn).toBe(4);
         expect(config.seeAllURL).toBe('/labkey/freezermanager/app.view#/home');
         expect(config.headerURL).toBe('/labkey/freezermanager/app.view#/home');
-        expect(config.emptyURL).toBe(undefined);
+        expect(config.emptyURL).toBe('/labkey/freezermanager/app.view#/freezers/new');
+        expect(config.emptyURLText).toBe('Create a freezer');
     });
 
     test('storage editor', () => {

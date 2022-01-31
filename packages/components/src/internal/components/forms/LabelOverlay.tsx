@@ -32,6 +32,7 @@ export interface LabelOverlayProps {
     addLabelAsterisk?: boolean;
     content?: any; // other content to render to the popover
     canMouseOverTooltip?: boolean;
+    helpTipRenderer?: string;
 }
 
 export class LabelOverlay extends React.Component<LabelOverlayProps> {
@@ -51,12 +52,12 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
     }
 
     overlayBody = (): any => {
-        const { column, required, content } = this.props;
+        const { column, required, content, helpTipRenderer } = this.props;
         const description = this.props.description ? this.props.description : column ? column.description : null;
         const type = this.props.type ? this.props.type : column ? column.type : null;
 
-        if (column?.helpTipRenderer) {
-            return <HelpTipRenderer type={column.helpTipRenderer} />;
+        if (column?.helpTipRenderer || helpTipRenderer) {
+            return <HelpTipRenderer type={column?.helpTipRenderer || helpTipRenderer} />;
         }
 
         return (
@@ -98,9 +99,9 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
     };
 
     overlayContent() {
-        const { column } = this.props;
+        const { column, helpTipRenderer } = this.props;
         const label = this.props.label ? this.props.label : column ? column.caption : null;
-        const popoverClassName = column?.helpTipRenderer ? 'label-help-arrow-top' : undefined;
+        const popoverClassName = column?.helpTipRenderer || helpTipRenderer ? 'label-help-arrow-top' : undefined;
         const body = this.overlayBody();
         return (
             <Popover id={this._popoverId} title={label} bsClass="popover" className={popoverClassName}>

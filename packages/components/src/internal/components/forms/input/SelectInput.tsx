@@ -151,6 +151,7 @@ export interface SelectInputProps {
     disabled?: boolean;
     filterOption?: FilterOption;
     formsy?: boolean;
+    helpTipRenderer?: string;
     id?: any;
     initiallyDisabled?: boolean;
     inputClass?: string;
@@ -409,6 +410,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             showLabel,
             addLabelAsterisk,
             renderFieldLabel,
+            helpTipRenderer,
         } = this.props;
         const { isDisabled } = this.state;
 
@@ -432,6 +434,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
                             isFormsy: false,
                             required,
                             labelClass: !allowDisable ? this.props.labelClass : undefined,
+                            helpTipRenderer,
                         }}
                         showLabel={showLabel}
                         showToggle={allowDisable}

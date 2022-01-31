@@ -61,7 +61,7 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
                              })}
                         >
                             {row.href && (
-                                <a href={row.href}>
+                                <a href={row.href} className="horizontal-bar--link">
                                     <div className="horizontal-bar--linkSpanner">&nbsp;</div>
                                 </a>
                             )}

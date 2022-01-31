@@ -390,18 +390,19 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             } else {
                 sampleRows = data.updatedRows;
                 sampleSchemaQuery = data.schemaQuery;
-
-                sampleRows.forEach(row => {
-                    if (consumedStatusIds.indexOf(caseInsensitive(row, 'sampleState')) > -1) {
-                        const sampleId = caseInsensitive(row, 'RowId');
-                        const existingStorageItem = sampleItems[sampleId];
-                        if (existingStorageItem) {
-                            discardStorageRows.push({
-                                rowId: existingStorageItem.rowId,
-                            });
+                if (sampleItems) {
+                    sampleRows.forEach(row => {
+                        if (consumedStatusIds.indexOf(caseInsensitive(row, 'sampleState')) > -1) {
+                            const sampleId = caseInsensitive(row, 'RowId');
+                            const existingStorageItem = sampleItems[sampleId];
+                            if (existingStorageItem) {
+                                discardStorageRows.push({
+                                    rowId: existingStorageItem.rowId,
+                                });
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 

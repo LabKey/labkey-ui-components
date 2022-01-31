@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ConceptModel, GridColumn } from '../../..';
+import { ConceptModel, GridColumn, PropertyValidator } from '../../..';
 
 import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
@@ -34,6 +34,7 @@ import {
     PARTICIPANT_TYPE,
     PropDescType,
     SAMPLE_TYPE,
+    TEXT_CHOICE_TYPE,
     TEXT_TYPE,
     UNIQUE_ID_TYPE,
     USERS_TYPE,
@@ -41,7 +42,18 @@ import {
     VISIT_ID_TYPE,
 } from './PropDescType';
 
-import { acceptablePropertyType, DomainDesign, DomainField, FieldErrors, isPropertyTypeAllowed } from './models';
+import {
+    acceptablePropertyType,
+    DEFAULT_TEXT_CHOICE_VALIDATOR,
+    DomainDesign,
+    DomainField,
+    FieldErrors,
+    getValidValuesDetailStr,
+    getValidValuesFromArray,
+    isPropertyTypeAllowed,
+    isValidTextChoiceValue,
+    PropertyValidatorProperties,
+} from './models';
 import {
     BOOLEAN_RANGE_URI,
     CONCEPT_CODE_CONCEPT_URI,
@@ -50,9 +62,21 @@ import {
     DOMAIN_FIELD_PARTIALLY_LOCKED,
     INT_RANGE_URI,
     MULTILINE_RANGE_URI,
+    PHILEVEL_NOT_PHI,
+    PHILEVEL_FULL_PHI,
+    PHILEVEL_LIMITED_PHI,
+    PHILEVEL_RESTRICTED_PHI,
     SAMPLE_TYPE_CONCEPT_URI,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
     STRING_RANGE_URI,
+    TEXT_CHOICE_CONCEPT_URI,
 } from './constants';
+import { initUnitTestMocks } from '../../testHelperMocks';
+import { initOnotologyMocks } from '../../mock';
+
+beforeAll(() => {
+    initUnitTestMocks([initOnotologyMocks]);
+});
 
 const GRID_DATA = DomainDesign.create({
     fields: [
@@ -230,6 +254,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isInteger(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isInteger(PARTICIPANT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isInteger(TEXT_CHOICE_TYPE.rangeURI)).toBeFalsy();
     });
 
     test('isString', () => {
@@ -247,6 +272,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isString(SAMPLE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isString(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isString(TEXT_CHOICE_TYPE.rangeURI)).toBeTruthy();
     });
 
     test('isNumeric', () => {
@@ -264,6 +290,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isNumeric(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isNumeric(PARTICIPANT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isNumeric(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isNumeric(TEXT_CHOICE_TYPE.rangeURI)).toBeFalsy();
     });
 
     test('isMeasure', () => {
@@ -281,6 +308,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isMeasure(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(TEXT_CHOICE_TYPE.rangeURI)).toBeTruthy();
     });
 
     test('isDimension', () => {
@@ -298,6 +326,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isDimension(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isDimension(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isDimension(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(TEXT_CHOICE_TYPE.rangeURI)).toBeTruthy();
     });
 
     test('isMvEnableable', () => {
@@ -315,6 +344,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isMvEnableable(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMvEnableable(TEXT_CHOICE_TYPE.rangeURI)).toBeTruthy();
     });
 
     test('isUser', () => {
@@ -336,6 +366,22 @@ describe('PropDescType', () => {
         expect(PropDescType.isSample(null)).toBeFalsy();
         expect(PropDescType.isSample(CONCEPT_CODE_CONCEPT_URI)).toBeFalsy();
         expect(PropDescType.isSample(SAMPLE_TYPE_CONCEPT_URI)).toBeTruthy();
+    });
+
+    test('isTextChoice', () => {
+        expect(PropDescType.isTextChoice(undefined)).toBeFalsy();
+        expect(PropDescType.isTextChoice(null)).toBeFalsy();
+        expect(PropDescType.isTextChoice(SAMPLE_TYPE_CONCEPT_URI)).toBeFalsy();
+        expect(PropDescType.isTextChoice(TEXT_CHOICE_CONCEPT_URI)).toBeTruthy();
+        expect(PropDescType.isTextChoice('testing')).toBeFalsy();
+        expect(PropDescType.isTextChoice('textChoice')).toBeTruthy();
+    });
+
+    test('isUniqueIdField', () => {
+        expect(PropDescType.isUniqueIdField(undefined)).toBeFalsy();
+        expect(PropDescType.isUniqueIdField(null)).toBeFalsy();
+        expect(PropDescType.isUniqueIdField(SAMPLE_TYPE_CONCEPT_URI)).toBeFalsy();
+        expect(PropDescType.isUniqueIdField(STORAGE_UNIQUE_ID_CONCEPT_URI)).toBeTruthy();
     });
 
     test('isOntologyLookup', () => {
@@ -384,6 +430,7 @@ describe('PropDescType', () => {
         expect(isPropertyTypeAllowed(PARTICIPANT_TYPE, true, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(PARTICIPANT_TYPE, true, true)).toBeTruthy();
         expect(isPropertyTypeAllowed(ONTOLOGY_LOOKUP_TYPE, true, false)).toBeFalsy();
+        expect(isPropertyTypeAllowed(TEXT_CHOICE_TYPE, true, false)).toBeTruthy();
         expect(isPropertyTypeAllowed(VISIT_DATE_TYPE, true, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(VISIT_DATE_TYPE, true, true)).toBeTruthy();
         expect(isPropertyTypeAllowed(VISIT_ID_TYPE, true, false)).toBeFalsy();
@@ -408,6 +455,7 @@ describe('PropDescType', () => {
         expect(isPropertyTypeAllowed(PARTICIPANT_TYPE, true, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(PARTICIPANT_TYPE, true, true)).toBeTruthy();
         expect(isPropertyTypeAllowed(ONTOLOGY_LOOKUP_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(TEXT_CHOICE_TYPE, true, false)).toBeTruthy();
         expect(isPropertyTypeAllowed(VISIT_DATE_TYPE, true, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(VISIT_DATE_TYPE, true, true)).toBeTruthy();
         expect(isPropertyTypeAllowed(VISIT_ID_TYPE, true, false)).toBeFalsy();
@@ -424,6 +472,9 @@ describe('PropDescType', () => {
         expect(acceptablePropertyType(ONTOLOGY_LOOKUP_TYPE, INT_RANGE_URI)).toBeFalsy();
         expect(acceptablePropertyType(ONTOLOGY_LOOKUP_TYPE, STRING_RANGE_URI)).toBeTruthy();
         expect(acceptablePropertyType(ONTOLOGY_LOOKUP_TYPE, BOOLEAN_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(TEXT_CHOICE_TYPE, INT_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(TEXT_CHOICE_TYPE, STRING_RANGE_URI)).toBeTruthy();
+        expect(acceptablePropertyType(TEXT_CHOICE_TYPE, BOOLEAN_RANGE_URI)).toBeFalsy();
         expect(acceptablePropertyType(INTEGER_TYPE, INT_RANGE_URI)).toBeTruthy();
         expect(acceptablePropertyType(INTEGER_TYPE, STRING_RANGE_URI)).toBeFalsy();
         expect(acceptablePropertyType(INTEGER_TYPE, BOOLEAN_RANGE_URI)).toBeFalsy();
@@ -476,7 +527,7 @@ describe('DomainDesign', () => {
 
     test('getDomainContainer', () => {
         const domain = DomainDesign.create({ name: 'Test Container' });
-        expect(domain.getDomainContainer()).toBe(undefined);
+        expect(domain.getDomainContainer()).toBe('testContainerEntityId');
 
         const domain2 = DomainDesign.create({ name: 'Test Container', container: 'SOMETHINGELSE' });
         expect(domain2.getDomainContainer()).toBe('SOMETHINGELSE');
@@ -673,6 +724,13 @@ describe('DomainField', () => {
         expect(f3.isSaved()).toBeTruthy();
     });
 
+    test('isPHI', () => {
+        expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_NOT_PHI }).isPHI()).toBeFalsy();
+        expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_LIMITED_PHI }).isPHI()).toBeTruthy();
+        expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_FULL_PHI }).isPHI()).toBeTruthy();
+        expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_RESTRICTED_PHI }).isPHI()).toBeTruthy();
+    });
+
     test('updateDefaultValues', () => {
         const textField = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI });
         expect(textField.measure).toBeFalsy();
@@ -730,49 +788,78 @@ describe('DomainField', () => {
 
     test('getDetailsTextArray', () => {
         let field = DomainField.create({ propertyId: undefined, name: 'test' });
-        expect(field.getDetailsTextArray().join('')).toBe('New Field');
+        expect(field.getDetailsTextArray(0).join('')).toBe('New Field');
 
         field = field.merge({ propertyId: 0, updatedField: true }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated');
 
         field = field.merge({ dataType: SAMPLE_TYPE, lookupSchema: 'exp', lookupQuery: 'SampleType1' }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. SampleType1');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SampleType1');
 
         field = field.merge({ dataType: LOOKUP_TYPE }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. Current Folder > exp > SampleType1');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. Current Folder > exp > SampleType1');
 
         field = field.merge({ lookupContainer: 'Test Folder' }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. Test Folder > exp > SampleType1');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. Test Folder > exp > SampleType1');
 
         field = field.merge({ dataType: ONTOLOGY_LOOKUP_TYPE, sourceOntology: 'SRC' }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC');
 
         field = field.merge({ wrappedColumnName: 'Wrapped' }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC. Wrapped column - Wrapped');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC. Wrapped column - Wrapped');
 
         field = field.merge({ wrappedColumnName: undefined, isPrimaryKey: true }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC. Primary Key');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC. Primary Key');
 
         field = field.merge({ lockType: DOMAIN_FIELD_FULLY_LOCKED }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC. Primary Key. Locked');
+        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC. Primary Key. Locked');
 
         field = field.merge({ principalConceptCode: 'abc:123' }) as DomainField;
-        expect(field.getDetailsTextArray().join('')).toBe(
+        expect(field.getDetailsTextArray(0).join('')).toBe(
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
         );
 
-        expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
+        expect(field.getDetailsTextArray(0, { test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked. Additional Info'
         );
         field = field.merge({ name: '' }) as DomainField;
-        expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
+        expect(field.getDetailsTextArray(0, { test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
         );
 
         CONCEPT_CACHE.set('abc:123', new ConceptModel({ code: 'abc:123', label: 'Concept display text' }));
-        expect(field.getDetailsTextArray().join('')).toBe(
+        expect(field.getDetailsTextArray(0).join('')).toBe(
             'Updated. SRC. Ontology Concept: Concept display text (abc:123). Primary Key. Locked'
         );
+    });
+
+    test('getDetailsTextArray, textChoiceValidator', () => {
+        let field = DomainField.create({ propertyId: undefined, name: 'test' });
+        field = field.merge({
+            dataType: TEXT_CHOICE_TYPE,
+            textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
+        }) as DomainField;
+        expect(field.getDetailsTextArray(0).join('')).toBe('New Field. ');
+
+        field = field.merge({
+            textChoiceValidator: new PropertyValidator({
+                type: 'TextChoice',
+                name: 'Text Choice Validator',
+                properties: { validValues: ['a', 'b'] },
+                shouldShowWarning: true,
+            }),
+        }) as DomainField;
+        expect(field.getDetailsTextArray(0).join('')).toBe('New Field. a, b');
+
+        field = field.merge({
+            textChoiceValidator: new PropertyValidator({
+                type: 'TextChoice',
+                name: 'Text Choice Validator',
+                properties: { validValues: ['a', 'b', 'c', 'd', 'e', 'f'] },
+                shouldShowWarning: true,
+            }),
+        }) as DomainField;
+        expect(field.getDetailsTextArray(0).join('')).toBe('New Field. a, b, c, d (and 2 more)');
     });
 
     test('serialize, name trim', () => {
@@ -784,5 +871,216 @@ describe('DomainField', () => {
         expect(DomainField.serialize(DomainField.create({ name: 'test1 test2' })).name).toBe('test1 test2');
     });
 
+    test('hasRegExValidation', () => {
+        expect(
+            DomainField.hasRegExValidation(DomainField.create({ name: 'foo', rangeURI: INTEGER_TYPE.rangeURI }))
+        ).toBeFalsy();
+        expect(
+            DomainField.hasRegExValidation(
+                DomainField.create({
+                    name: 'foo',
+                    rangeURI: TEXT_CHOICE_TYPE.rangeURI,
+                    conceptURI: TEXT_CHOICE_TYPE.conceptURI,
+                })
+            )
+        ).toBeFalsy();
+        expect(
+            DomainField.hasRegExValidation(
+                DomainField.create({
+                    name: 'foo',
+                    rangeURI: UNIQUE_ID_TYPE.rangeURI,
+                    conceptURI: UNIQUE_ID_TYPE.conceptURI,
+                })
+            )
+        ).toBeFalsy();
+        expect(DomainField.hasRegExValidation(DomainField.create({}))).toBeTruthy();
+    });
+
+    test('hasRangeValidation', () => {
+        expect(
+            DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI }))
+        ).toBeFalsy();
+        expect(
+            DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: BOOLEAN_TYPE.rangeURI }))
+        ).toBeFalsy();
+        expect(
+            DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: INTEGER_TYPE.rangeURI }))
+        ).toBeTruthy();
+        expect(
+            DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: DOUBLE_TYPE.rangeURI }))
+        ).toBeTruthy();
+        expect(
+            DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: DATETIME_TYPE.rangeURI }))
+        ).toBeTruthy();
+    });
+
     // TODO add other test cases for DomainField.serialize code
+});
+
+describe('PropertyValidator', () => {
+    const validators = [
+        { type: 'Range', name: 'Range Validator 1', rowId: 1 },
+        { type: 'Range', name: 'Range Validator 2', rowId: 2 },
+        { type: 'Range', name: 'Range Validator 3', rowId: 3 },
+        { type: 'RegEx', name: 'RegEx Validator 1', rowId: 4 },
+        { type: 'RegEx', name: 'RegEx Validator 2', rowId: 5 },
+        { type: 'Lookup', name: 'Lookup Validator', rowId: 6 },
+        { type: 'TextChoice', name: 'Text Choice Validator', rowId: 7, properties: { validValues: [] } },
+        { type: 'Other', name: 'Text Choice Validator', rowId: 8 },
+    ];
+
+    test('expected validator types', () => {
+        expect(PropertyValidator.fromJS(validators, 'Range').size).toBe(3);
+        expect(PropertyValidator.fromJS(validators, 'RegEx').size).toBe(2);
+        expect(PropertyValidator.fromJS(validators, 'Lookup').size).toBe(1);
+        expect(PropertyValidator.fromJS(validators, 'TextChoice').size).toBe(1);
+        expect(PropertyValidator.fromJS(validators, 'Other').size).toBe(0);
+    });
+
+    test('shouldShowWarning', () => {
+        const pvs = PropertyValidator.fromJS(validators, 'TextChoice');
+        expect(pvs.size).toBe(1);
+        expect(pvs.get(0).shouldShowWarning).toBeTruthy();
+    });
+
+    test('TextChoice validValues', () => {
+        let pvs = PropertyValidator.fromJS(validators, 'TextChoice');
+        expect(pvs.size).toBe(1);
+        expect(pvs.get(0).properties.validValues).toStrictEqual([]);
+
+        pvs = PropertyValidator.fromJS(
+            [{ type: 'TextChoice', name: 'Text Choice Validator', expression: 'a|b', properties: {} }],
+            'TextChoice'
+        );
+        expect(pvs.size).toBe(1);
+        expect(pvs.get(0).properties.validValues).toStrictEqual(['a', 'b']);
+    });
+
+    test('isNewField', () => {
+        let pvs = PropertyValidator.fromJS(validators, 'TextChoice');
+        expect(pvs.size).toBe(1);
+        expect(pvs.get(0).rowId).toBeDefined();
+
+        pvs = PropertyValidator.fromJS(validators, 'TextChoice', true);
+        expect(pvs.size).toBe(1);
+        expect(pvs.get(0).rowId).toBeUndefined();
+    });
+
+    test('serialize', () => {
+        const pvs = PropertyValidator.serialize(PropertyValidator.fromJS(validators, 'TextChoice').toJS());
+        expect(pvs.length).toBe(1);
+        expect(pvs[0].properties.failOnMatch).toBeDefined();
+        expect(pvs[0].properties.validValues).toBeUndefined();
+        expect(pvs[0].shouldShowWarning).toBeUndefined();
+    });
+});
+
+describe('PropertyValidatorProperties', () => {
+    test('constructor default', () => {
+        const props = new PropertyValidatorProperties({});
+        expect(props.failOnMatch).toBe(false);
+        expect(props.validValues).toBe(undefined);
+    });
+
+    test('constructor failOnMatch', () => {
+        let props = new PropertyValidatorProperties({ failOnMatch: true });
+        expect(props.failOnMatch).toBe(true);
+
+        props = new PropertyValidatorProperties({ failOnMatch: false });
+        expect(props.failOnMatch).toBe(false);
+
+        props = new PropertyValidatorProperties({ failOnMatch: 'true' });
+        expect(props.failOnMatch).toBe(true);
+
+        props = new PropertyValidatorProperties({ failOnMatch: 'false' });
+        expect(props.failOnMatch).toBe(false);
+    });
+
+    test('constructor validValues', () => {
+        let props = new PropertyValidatorProperties({ validValues: ['a', 'b'] });
+        expect(props.validValues).toStrictEqual(['a', 'b']);
+
+        props = new PropertyValidatorProperties({ validValues: '' });
+        expect(props.validValues).toStrictEqual(['']);
+
+        props = new PropertyValidatorProperties({ validValues: 'a|b' });
+        expect(props.validValues).toStrictEqual(['a', 'b']);
+    });
+});
+
+describe('getValidValuesDetailStr', () => {
+    test('empty', () => {
+        expect(getValidValuesDetailStr(undefined)).toBeUndefined();
+        expect(getValidValuesDetailStr(null)).toBeUndefined();
+        expect(getValidValuesDetailStr([])).toBeUndefined();
+        expect(getValidValuesDetailStr([null, undefined, '', ' '])).toBeUndefined();
+    });
+
+    test('with values', () => {
+        expect(getValidValuesDetailStr(['a'])).toBe('a');
+        expect(getValidValuesDetailStr(['a', 'b'])).toBe('a, b');
+        expect(getValidValuesDetailStr(['a', 'b', 'c'])).toBe('a, b, c');
+        expect(getValidValuesDetailStr(['a', 'b', 'c', 'd'])).toBe('a, b, c, d');
+        expect(getValidValuesDetailStr(['a', 'b', 'c', 'd', 'e'])).toBe('a, b, c, d (and 1 more)');
+        expect(getValidValuesDetailStr(['a', 'b', 'c', 'd', 'e', 'f'])).toBe('a, b, c, d (and 2 more)');
+    });
+
+    test('with extra long values', () => {
+        expect(
+            getValidValuesDetailStr([
+                'aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa a',
+            ])
+        ).toBe('1 value');
+
+        expect(
+            getValidValuesDetailStr([
+                'aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa',
+                'bbbbbbbbb bbbbbbbbb bbbbbbbbb bbbbbbbbb bbbbbbbbb',
+            ])
+        ).toBe('2 values');
+
+        expect(
+            getValidValuesDetailStr([
+                'a',
+                'b',
+                'c',
+                'd',
+                'e',
+                'f',
+                'aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa aaaaaaaaa a',
+            ])
+        ).toBe('a, b, c, d (and 3 more)');
+    });
+});
+
+describe('getValidValuesFromArray', () => {
+    test('empty', () => {
+        expect(getValidValuesFromArray(undefined)).toStrictEqual([]);
+        expect(getValidValuesFromArray(null)).toStrictEqual([]);
+        expect(getValidValuesFromArray([])).toStrictEqual([]);
+    });
+
+    test('filter', () => {
+        expect(getValidValuesFromArray(['a', null, undefined, '', ' ', 'b'])).toStrictEqual(['a', 'b']);
+    });
+
+    test('remove duplicates', () => {
+        expect(getValidValuesFromArray(['a', 'a', 'a', 'b'])).toStrictEqual(['a', 'b']);
+    });
+});
+
+describe('isValidTextChoiceValue', () => {
+    test('empty', () => {
+        expect(isValidTextChoiceValue(undefined)).toBeFalsy();
+        expect(isValidTextChoiceValue(null)).toBeFalsy();
+        expect(isValidTextChoiceValue('')).toBeFalsy();
+        expect(isValidTextChoiceValue(' ')).toBeFalsy();
+    });
+
+    test('valid', () => {
+        expect(isValidTextChoiceValue('a')).toBeTruthy();
+        expect(isValidTextChoiceValue(' a')).toBeTruthy();
+        expect(isValidTextChoiceValue('a ')).toBeTruthy();
+        expect(isValidTextChoiceValue(' a ')).toBeTruthy();
+    });
 });

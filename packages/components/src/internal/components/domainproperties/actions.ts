@@ -15,7 +15,7 @@
  */
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
-import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
+import { Ajax, Domain, Experiment, Query, Security, Utils, Filter } from '@labkey/api';
 
 import {
     buildURL,
@@ -25,6 +25,7 @@ import {
     naturalSortByProperty,
     QueryColumn,
     SchemaDetails,
+    SchemaQuery,
 } from '../../..';
 
 import { processSchemas } from '../../schemas';
@@ -36,6 +37,7 @@ import { OntologyModel } from '../ontology/models';
 import { isCommunityDistribution } from '../../app/utils';
 
 import {
+    DEFAULT_TEXT_CHOICE_VALIDATOR,
     decodeLookup,
     DomainDesign,
     DomainException,
@@ -46,8 +48,10 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
+    NameExpressionsValidationResults,
     QueryInfoLite,
     updateSampleField,
+    isValidTextChoiceValue,
 } from './models';
 import {
     ATTACHMENT_TYPE,
@@ -59,6 +63,7 @@ import {
     VISIT_ID_TYPE,
     PropDescType,
     UNIQUE_ID_TYPE,
+    TEXT_CHOICE_TYPE,
 } from './PropDescType';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -72,6 +77,7 @@ import {
     DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     DOMAIN_FIELD_SAMPLE_TYPE,
     DOMAIN_FIELD_TYPE,
+    MAX_TEXT_LENGTH,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
@@ -272,6 +278,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
         return false;
     }
 
+    if (type === TEXT_CHOICE_TYPE && !domain.allowTextChoiceProperties) {
+        return false;
+    }
+
     return true;
 }
 
@@ -367,6 +377,41 @@ export function saveDomain(
                 failure: failureHandler,
             });
         }
+    });
+}
+
+/**
+ * @param domain: DomainDesign to save
+ * @param kind: DomainKind if creating new Domain
+ * @param options: Options for creating new Domain
+ * @param includeNamePreview
+ * @return Promise wrapped Domain API call.
+ */
+export function validateDomainNameExpressions(
+    domain: DomainDesign,
+    kind?: string,
+    options?: any,
+    includeNamePreview?: boolean
+): Promise<NameExpressionsValidationResults> {
+    return new Promise((resolve, reject) => {
+        function successHandler(response) {
+            resolve({
+                warnings: response['warnings'],
+                errors: response['errors'],
+                previews: response['previews'],
+            });
+        }
+
+        Domain.validateNameExpressions({
+            options,
+            domainDesign: DomainDesign.serialize(domain),
+            kind,
+            includeNamePreview,
+            success: successHandler,
+            failure: error => {
+                reject(error);
+            },
+        });
     });
 }
 
@@ -606,10 +651,23 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             conceptLabelColumn: undefined,
             conceptImportColumn: undefined,
             scannable: undefined,
+            textChoiceValidator: undefined,
         }) as DomainField;
 
         if (field.isNew()) {
             field = DomainField.updateDefaultValues(field);
+        }
+
+        if (field.isTextChoiceField()) {
+            // when changing a field to a Text Choice, add the default textChoiceValidator and
+            // remove/reset all other propertyValidators and other text option settings
+            field = field.merge({
+                textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
+                lookupValidator: undefined,
+                rangeValidators: [],
+                regexValidators: [],
+                scale: MAX_TEXT_LENGTH,
+            }) as DomainField;
         }
     }
 
@@ -1041,4 +1099,163 @@ export function getOntologyUpdatedFieldName(
         fieldChanged,
         !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined,
     ];
+}
+
+export function getDomainNamePreviews(
+    schemaQuery?: SchemaQuery,
+    domainId?: number,
+    containerPath?: string
+): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        return Domain.getDomainNamePreviews({
+            containerPath,
+            domainId,
+            queryName: schemaQuery?.getQuery(),
+            schemaName: schemaQuery?.getSchema(),
+            success: response => {
+                resolve(response['previews']);
+            },
+            failure: response => {
+                reject(response);
+            },
+        });
+    });
+}
+
+export function getTextChoiceInUseValues(
+    field: DomainField,
+    schemaName: string,
+    queryName: string,
+    lockedSqlFragment: string
+): Promise<Record<string, any>> {
+    return new Promise((resolve, reject) => {
+        const containerFilter = Query.ContainerFilter.allFolders; // to account for a shared domain at project or /Shared
+        const fieldName = field.original?.name ?? field.name;
+
+        // if the field is set as PHI, we need the query to include the RowId for logging, so we have to do the aggregate client side
+        if (field.isPHI()) {
+            Query.selectRows({
+                containerFilter,
+                schemaName,
+                queryName,
+                columns: 'RowId,SampleState/StatusType,' + fieldName,
+                filterArray: [Filter.create(fieldName, undefined, Filter.Types.NONBLANK)],
+                maxRows: -1,
+                success: response => {
+                    const values = {};
+                    response.rows.forEach(row => {
+                        const value = row[fieldName];
+                        if (isValidTextChoiceValue(value)) {
+                            if (!values[value]) {
+                                values[value] = { count: 0, locked: false };
+                            }
+                            values[value].count++;
+                            values[value].locked = values[value].locked || row['SampleState/StatusType'] === 'Locked';
+                        }
+                    });
+                    resolve(values);
+                },
+                failure: error => {
+                    console.error('Error fetching distinct values for the text field: ', error);
+                    reject(error);
+                },
+            });
+        } else {
+            Query.executeSql({
+                containerFilter,
+                schemaName,
+                sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
+                success: response => {
+                    const values = response.rows
+                        .filter(row => isValidTextChoiceValue(row[fieldName]))
+                        .reduce((prev, current) => {
+                            prev[current[fieldName]] = {
+                                count: current['RowCount'],
+                                locked: current['IsLocked'] === 1,
+                            };
+                            return prev;
+                        }, {});
+
+                    resolve(values);
+                },
+                failure: error => {
+                    console.error('Error fetching distinct values for the text field: ', error);
+                    reject(error);
+                },
+            });
+        }
+    });
+}
+
+export function getGenId(rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+        Experiment.getGenId({
+            containerPath,
+            rowId,
+            kindName,
+            success: response => {
+                if (response.success) {
+                    resolve(response['genId']);
+                } else {
+                    reject({ error: 'Unable to get genId' });
+                }
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+}
+
+export function hasExistingDomainData(
+    kindName: 'SampleSet' | 'DataClass',
+    dataTypeLSID?: string,
+    rowId?: number
+): Promise<boolean> {
+    let dataCountSql = 'SELECT COUNT(*) AS DataCount FROM ';
+
+    if (kindName === 'SampleSet') {
+        dataCountSql += "materials WHERE sampleset = '" + dataTypeLSID + "'";
+    } else {
+        dataCountSql += 'data WHERE dataclass = ' + rowId;
+    }
+
+    return new Promise((resolve, reject) => {
+        Query.executeSql({
+            schemaName: 'exp',
+            sql: dataCountSql,
+            success: async data => {
+                resolve(data.rows[0].DataCount !== 0);
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+}
+
+export function setGenId(
+    rowId: number,
+    kindName: 'SampleSet' | 'DataClass',
+    genId: number,
+    containerPath?: string
+): Promise<any> {
+    return new Promise((resolve, reject) => {
+        return Experiment.setGenId({
+            containerPath,
+            rowId,
+            kindName,
+            genId,
+            success: response => {
+                if (response.success) {
+                    resolve(response);
+                } else {
+                    reject({ error: response.error });
+                }
+            },
+            failure: response => {
+                reject(response);
+            },
+        });
+    });
 }

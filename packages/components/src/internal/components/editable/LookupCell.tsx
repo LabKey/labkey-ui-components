@@ -18,11 +18,10 @@ import { List, Map } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { modifyCell } from '../../actions';
 import { ValueDescriptor } from '../../models';
 import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { QueryColumn, QuerySelect, SchemaQuery } from '../../..';
-import { GlobalAppState } from '../../global';
+import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 
 const customStyles = {
     control: (provided, state) => ({
@@ -65,74 +64,74 @@ export interface LookupCellProps {
     col: QueryColumn;
     colIdx: number;
     disabled?: boolean;
-    modelId: string;
+    modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
     rowIdx: number;
-    select: (modelId: string, colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => any;
+    select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
     values: List<ValueDescriptor>;
-    onCellModify?: () => any;
     filteredLookupValues?: List<string>;
     filteredLookupKeys?: List<any>;
 }
 
-export class LookupCell extends PureComponent<LookupCellProps, undefined, GlobalAppState> {
+export class LookupCell extends PureComponent<LookupCellProps> {
     isMultiValue = (): boolean => {
         return this.props.col.isJunctionLookup();
     };
 
-    onInputChange = (
-        fieldName: string,
-        formValue: string | any[],
-        items: any,
-        selectedItems: Map<string, any>
-    ): void => {
-        const { colIdx, modelId, rowIdx, onCellModify } = this.props;
+    onInputChange = (fieldName: string, formValue: string | any[], items: any): void => {
+        const { colIdx, modifyCell, rowIdx, select } = this.props;
         if (this.isMultiValue()) {
-            if (items.length == 0) {
-                modifyCell(modelId, colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
+            if (items.length === 0) {
+                modifyCell(colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
             } else {
                 const valueDescriptors = items.map(item => ({ raw: item.value, display: item.label }));
-                modifyCell(modelId, colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
+                modifyCell(colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
             }
         } else {
-            modifyCell(
-                modelId,
-                colIdx,
-                rowIdx,
-                [
-                    {
-                        raw: items?.value,
-                        display: items?.label,
-                    },
-                ],
-                MODIFICATION_TYPES.REPLACE
-            );
+            modifyCell(colIdx, rowIdx, [{ raw: items?.value, display: items?.label }], MODIFICATION_TYPES.REPLACE);
         }
-        onCellModify?.();
 
         if (!this.isMultiValue()) {
-            this.props.select(modelId, colIdx, rowIdx);
+            select(colIdx, rowIdx);
         }
     };
 
     render(): ReactNode {
         const { col, values, filteredLookupKeys, filteredLookupValues } = this.props;
 
-        const lookup = col.lookup;
-        const isMultiple = this.isMultiValue();
         const rawValues = values
             .filter(vd => vd.raw !== undefined)
             .map(vd => vd.raw)
             .toArray();
 
+        if (col.validValues) {
+            return (
+                <TextChoiceInput
+                    autoFocus
+                    queryColumn={col}
+                    disabled={this.props.disabled}
+                    containerClass="select-input-cell-container"
+                    customTheme={customTheme}
+                    customStyles={customStyles}
+                    menuPosition="fixed" // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
+                    openMenuOnFocus={true}
+                    inputClass="select-input-cell"
+                    placeholder=""
+                    onChange={this.onInputChange}
+                    showLabel={false}
+                    value={rawValues[0]}
+                />
+            );
+        }
+
+        const lookup = col.lookup;
+        const isMultiple = this.isMultiValue();
         let queryFilters;
         if (filteredLookupValues) {
-            queryFilters = List([
-                Filter.create(col.lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN),
-            ]);
+            queryFilters = List([Filter.create(lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN)]);
         }
 
         if (filteredLookupKeys) {
-            queryFilters = List([Filter.create(col.lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN)]);
+            queryFilters = List([Filter.create(lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN)]);
         }
 
         return (

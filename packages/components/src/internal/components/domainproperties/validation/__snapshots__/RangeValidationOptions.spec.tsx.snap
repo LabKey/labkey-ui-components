@@ -26,11 +26,19 @@ exports[`RangeValidationOptions Range Validator - collapsed 1`] = `
       "type": "Range",
       "name": "Test range validator",
       "properties": Immutable.Record {
-        "failOnMatch": "true",
+        "failOnMatch": true,
+        "validValues": undefined,
+        "valueUpdates": undefined,
+      },
+      "extraProperties": Immutable.Record {
+        "failOnMatch": false,
+        "validValues": undefined,
+        "valueUpdates": undefined,
       },
       "errorMessage": "Range validation failed",
       "description": "This is a range validator",
       "new": true,
+      "shouldShowWarning": true,
       "rowId": 11267,
       "expression": "~gt=0&~lt=10",
     }
@@ -130,11 +138,19 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
       "type": "Range",
       "name": "Test range validator",
       "properties": Immutable.Record {
-        "failOnMatch": "true",
+        "failOnMatch": true,
+        "validValues": undefined,
+        "valueUpdates": undefined,
+      },
+      "extraProperties": Immutable.Record {
+        "failOnMatch": false,
+        "validValues": undefined,
+        "valueUpdates": undefined,
       },
       "errorMessage": "Range validation failed",
       "description": "This is a range validator",
       "new": true,
+      "shouldShowWarning": true,
       "rowId": 11267,
       "expression": "~gt=0&~lt=10",
     }

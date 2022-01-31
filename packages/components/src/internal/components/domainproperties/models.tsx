@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, Record } from 'immutable';
-import { Domain, getServerContext } from '@labkey/api';
+import { Domain, getServerContext, Utils } from '@labkey/api';
 import React, { ReactNode } from 'react';
 
 import { Checkbox } from 'react-bootstrap';
@@ -31,6 +31,7 @@ import { hasPremiumModule } from '../../app/utils';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
+    DECIMAL_RANGE_URI,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_MEASURE,
@@ -38,13 +39,21 @@ import {
     DOMAIN_FIELD_PARTIALLY_LOCKED,
     DOMAIN_FIELD_SELECTED,
     DOMAIN_FILTER_HASANYVALUE,
+    DOUBLE_RANGE_URI,
+    FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO,
+    FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG,
+    FLOAT_RANGE_URI,
     INT_RANGE_URI,
+    LONG_RANGE_URI,
     MAX_TEXT_LENGTH,
+    MULTILINE_RANGE_URI,
+    PHILEVEL_NOT_PHI,
     SAMPLE_TYPE_CONCEPT_URI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     STRING_RANGE_URI,
+    TEXT_CHOICE_CONCEPT_URI,
     UNLIMITED_TEXT_LENGTH,
     USER_RANGE_URI,
 } from './constants';
@@ -73,6 +82,7 @@ import {
     reorderSummaryColumns,
 } from './propertiesUtil';
 import { INT_LIST, VAR_LIST } from './list/constants';
+import { DomainRowWarning } from './DomainRowWarning';
 
 export interface IFieldChange {
     id: string;
@@ -116,6 +126,7 @@ interface IDomainDesign {
     allowFileLinkProperties: boolean;
     allowAttachmentProperties: boolean;
     allowFlagProperties: boolean;
+    allowTextChoiceProperties: boolean;
     allowTimepointProperties: boolean;
     showDefaultValueSettings: boolean;
     defaultDefaultValueType: string;
@@ -126,6 +137,8 @@ interface IDomainDesign {
     newDesignFields?: List<DomainField>; // set of fields to initialize a manually created design
     instructions?: string;
     domainKindName?: string;
+    schemaName?: string;
+    queryName?: string;
 }
 
 export class DomainDesign
@@ -138,6 +151,7 @@ export class DomainDesign
         allowFileLinkProperties: false,
         allowAttachmentProperties: false,
         allowFlagProperties: true,
+        allowTextChoiceProperties: true,
         allowTimepointProperties: false,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
@@ -150,6 +164,8 @@ export class DomainDesign
         newDesignFields: undefined,
         instructions: undefined,
         domainKindName: undefined,
+        schemaName: undefined,
+        queryName: undefined,
     })
     implements IDomainDesign
 {
@@ -161,6 +177,7 @@ export class DomainDesign
     declare allowFileLinkProperties: boolean;
     declare allowAttachmentProperties: boolean;
     declare allowFlagProperties: boolean;
+    declare allowTextChoiceProperties: boolean;
     declare allowTimepointProperties: boolean;
     declare showDefaultValueSettings: boolean;
     declare defaultDefaultValueType: string;
@@ -173,6 +190,8 @@ export class DomainDesign
     declare newDesignFields?: List<DomainField>; // Returns a set of fields to initialize a manually created design
     declare instructions: string;
     declare domainKindName: string;
+    declare schemaName: string;
+    declare queryName: string;
 
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
@@ -537,24 +556,45 @@ export class ConditionalFormat
 
 export interface IPropertyValidatorProperties {
     failOnMatch: boolean;
+    validValues: string[];
+    valueUpdates: Record<string, string>;
 }
 
 export class PropertyValidatorProperties
     extends Record({
         failOnMatch: false,
+        validValues: undefined,
+        valueUpdates: undefined,
     })
     implements IPropertyValidatorProperties
 {
     declare failOnMatch: boolean;
+    declare validValues: string[];
+    declare valueUpdates: Record<string, string>;
+
+    constructor(values?: { [key: string]: any }) {
+        if (typeof values?.failOnMatch === 'string') {
+            values.failOnMatch = values.failOnMatch.toLowerCase() === 'true';
+        }
+        // see DomainUtil.getPropertyDescriptor() for where this property is added to the JSON field validator extChoice validator info
+        if (typeof values?.validValues === 'string') {
+            values.validValues = values.validValues.split('|');
+        }
+        super(values);
+    }
 }
+
+const EXPECTED_VALIDATOR_TYPES = ['Range', 'RegEx', 'TextChoice', 'Lookup'];
 
 export interface IPropertyValidator {
     type: string;
     name: string;
     properties: PropertyValidatorProperties;
+    extraProperties: PropertyValidatorProperties;
     errorMessage?: string;
     description?: string;
     new: boolean;
+    shouldShowWarning: boolean;
     rowId?: number;
     expression?: string;
 }
@@ -564,9 +604,11 @@ export class PropertyValidator
         type: undefined,
         name: undefined,
         properties: new PropertyValidatorProperties(),
+        extraProperties: new PropertyValidatorProperties(),
         errorMessage: undefined,
         description: undefined,
         new: true,
+        shouldShowWarning: false,
         rowId: undefined,
         expression: undefined,
     })
@@ -575,37 +617,49 @@ export class PropertyValidator
     declare type: string;
     declare name: string;
     declare properties: PropertyValidatorProperties;
+    declare extraProperties: PropertyValidatorProperties;
     declare errorMessage?: string;
     declare description?: string;
     declare new: boolean;
+    declare shouldShowWarning: boolean;
     declare rowId?: number;
     declare expression?: string;
 
-    static fromJS(rawPropertyValidator: any[], type: string): List<PropertyValidator> {
+    static fromJS(rawPropertyValidator: any[], type: string, isNewField = false): List<PropertyValidator> {
         let propValidators = List<PropertyValidator>();
 
-        let newPv;
-        for (let i = 0; i < rawPropertyValidator.length; i++) {
-            if (
-                (type === 'Range' && rawPropertyValidator[i].type === 'Range') ||
-                (type === 'RegEx' && rawPropertyValidator[i].type === 'RegEx') ||
-                (type === 'Lookup' && rawPropertyValidator[i].type === 'Lookup')
-            ) {
-                rawPropertyValidator[i]['properties'] = new PropertyValidatorProperties(
-                    fromJS(rawPropertyValidator[i]['properties'])
-                );
-                newPv = new PropertyValidator(rawPropertyValidator[i]);
+        if (EXPECTED_VALIDATOR_TYPES.indexOf(type) > -1) {
+            for (let i = 0; i < rawPropertyValidator.length; i++) {
+                if (rawPropertyValidator[i].type === type) {
+                    const expressionStr = rawPropertyValidator[i].expression;
+                    const hasExpressionStr = expressionStr !== undefined && expressionStr !== null;
 
-                // Special case for filters HAS ANY VALUE not having a symbol
-                if (newPv.get('expression') !== undefined && newPv.get('expression') !== null) {
-                    newPv = newPv.set(
-                        'expression',
-                        newPv.get('expression').replace('~=', '~' + DOMAIN_FILTER_HASANYVALUE + '=')
-                    ) as PropertyValidator;
+                    // if we are loading a textChoiceValidator from JSON, we need to set the properties.validValues
+                    if (type === 'TextChoice' && !rawPropertyValidator[i]?.properties?.validValues) {
+                        rawPropertyValidator[i].properties.validValues = expressionStr?.split('|') ?? [];
+                    }
+
+                    rawPropertyValidator[i]['properties'] = new PropertyValidatorProperties(
+                        rawPropertyValidator[i]['properties']
+                    );
+                    let newPv = new PropertyValidator(rawPropertyValidator[i]);
+
+                    // if loading validator from DB, set shouldShowWarning initially
+                    newPv = newPv.set('shouldShowWarning', true) as PropertyValidator;
+
+                    // Special case for filters HAS ANY VALUE not having a symbol
+                    if (hasExpressionStr) {
+                        newPv = newPv.set(
+                            'expression',
+                            expressionStr.replace('~=', '~' + DOMAIN_FILTER_HASANYVALUE + '=')
+                        ) as PropertyValidator;
+                    }
+
+                    // for new fields, clear any validator rowIds that come in from the JSON file import
+                    if (isNewField) newPv = newPv.set('rowId', undefined) as PropertyValidator;
+
+                    propValidators = propValidators.push(newPv);
                 }
-
-                // newPv = newPv.set("properties", new PropertyValidatorProperties(fromJS(rawPropertyValidator[i]['properties'])));
-                propValidators = propValidators.push(newPv);
             }
         }
 
@@ -614,12 +668,31 @@ export class PropertyValidator
 
     static serialize(pvs: any[]): any {
         for (let i = 0; i < pvs.length; i++) {
-            pvs[i].expression = pvs[i].expression.replace(DOMAIN_FILTER_HASANYVALUE, '');
+            if (pvs[i].expression) {
+                pvs[i].expression = pvs[i].expression.replace(DOMAIN_FILTER_HASANYVALUE, '');
+            }
+
+            if (pvs[i]?.properties?.validValues) {
+                delete pvs[i].properties.validValues;
+            }
+
+            if (pvs[i]?.extraProperties && !pvs[i].extraProperties.valueUpdates) {
+                delete pvs[i].extraProperties;
+            }
+
+            delete pvs[i].shouldShowWarning;
         }
 
         return pvs;
     }
 }
+
+export const DEFAULT_TEXT_CHOICE_VALIDATOR = new PropertyValidator({
+    type: 'TextChoice',
+    name: 'Text Choice Validator',
+    expression: '',
+    properties: { validValues: [] },
+});
 
 interface ILookupConfig {
     lookupContainer?: string;
@@ -658,6 +731,7 @@ export interface IDomainField {
     rangeValidators: List<PropertyValidator>;
     rangeURI: string;
     regexValidators: List<PropertyValidator>;
+    textChoiceValidator?: PropertyValidator;
     required?: boolean;
     recommendedVariable?: boolean;
     scale?: number;
@@ -712,6 +786,7 @@ export class DomainField
         rangeValidators: List<PropertyValidator>(),
         rangeURI: undefined,
         regexValidators: List<PropertyValidator>(),
+        textChoiceValidator: undefined,
         recommendedVariable: false,
         required: false,
         scale: MAX_TEXT_LENGTH,
@@ -768,6 +843,7 @@ export class DomainField
     declare rangeValidators: List<PropertyValidator>;
     declare rangeURI: string;
     declare regexValidators: List<PropertyValidator>;
+    declare textChoiceValidator?: PropertyValidator;
     declare recommendedVariable: boolean;
     declare required?: boolean;
     declare scale?: number;
@@ -805,6 +881,7 @@ export class DomainField
                 original: {
                     dataType,
                     conceptURI: rawField.conceptURI,
+                    name: rawField.name,
                     rangeURI:
                         rawField.propertyId !== undefined || rawField.wrappedColumnName !== undefined
                             ? rawField.rangeURI // Issue 40795: need rangURI for alias field (query metadata) to get other available types in the datatype dropdown
@@ -823,19 +900,21 @@ export class DomainField
         if (rawField.propertyValidators) {
             field = field.set(
                 'rangeValidators',
-                PropertyValidator.fromJS(rawField.propertyValidators, 'Range')
+                PropertyValidator.fromJS(rawField.propertyValidators, 'Range', field.isNew())
             ) as DomainField;
             field = field.set(
                 'regexValidators',
-                PropertyValidator.fromJS(rawField.propertyValidators, 'RegEx')
+                PropertyValidator.fromJS(rawField.propertyValidators, 'RegEx', field.isNew())
             ) as DomainField;
 
-            const lookups = PropertyValidator.fromJS(rawField.propertyValidators, 'Lookup');
+            const lookups = PropertyValidator.fromJS(rawField.propertyValidators, 'Lookup', field.isNew());
             if (lookups && lookups.size > 0) {
-                field = field.set(
-                    'lookupValidator',
-                    PropertyValidator.fromJS(rawField.propertyValidators, 'Lookup').get(0)
-                ) as DomainField;
+                field = field.set('lookupValidator', lookups.get(0)) as DomainField;
+            }
+
+            const textChoice = PropertyValidator.fromJS(rawField.propertyValidators, 'TextChoice', field.isNew());
+            if (textChoice?.size > 0) {
+                field = field.set('textChoiceValidator', textChoice.get(0)) as DomainField;
             }
         }
 
@@ -938,13 +1017,18 @@ export class DomainField
         if (json.rangeValidators) {
             json.propertyValidators = json.propertyValidators.concat(PropertyValidator.serialize(json.rangeValidators));
         }
-
         if (json.regexValidators) {
             json.propertyValidators = json.propertyValidators.concat(PropertyValidator.serialize(json.regexValidators));
         }
-
         if (json.lookupValidator) {
-            json.propertyValidators = json.propertyValidators.concat(json.lookupValidator);
+            json.propertyValidators = json.propertyValidators.concat(
+                PropertyValidator.serialize([json.lookupValidator])
+            );
+        }
+        if (json.textChoiceValidator) {
+            json.propertyValidators = json.propertyValidators.concat(
+                PropertyValidator.serialize([json.textChoiceValidator])
+            );
         }
 
         // Special case for users, needs different URI for uniqueness in UI but actually uses int URI
@@ -966,6 +1050,7 @@ export class DomainField
         delete json.visible;
         delete json.rangeValidators;
         delete json.regexValidators;
+        delete json.textChoiceValidator;
         delete json.lookupValidator;
         delete json.disablePhiLevel;
         delete json.lockExistingField;
@@ -1015,6 +1100,14 @@ export class DomainField
         return this.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
     }
 
+    isTextChoiceField(): boolean {
+        return this.conceptURI === TEXT_CHOICE_CONCEPT_URI;
+    }
+
+    isPHI(): boolean {
+        return this.PHI !== PHILEVEL_NOT_PHI;
+    }
+
     static hasRangeValidation(field: DomainField): boolean {
         return (
             field.dataType === INTEGER_TYPE ||
@@ -1026,7 +1119,7 @@ export class DomainField
     }
 
     static hasRegExValidation(field: DomainField): boolean {
-        return field.dataType.isString() && !field.isUniqueIdField();
+        return field.dataType.isString() && !field.isUniqueIdField() && !field.isTextChoiceField();
     }
 
     static updateDefaultValues(field: DomainField): DomainField {
@@ -1058,7 +1151,7 @@ export class DomainField
         return concept?.getDisplayLabel() ?? this.principalConceptCode;
     }
 
-    getDetailsTextArray(fieldDetailsInfo?: { [key: string]: string }): any[] {
+    getDetailsTextArray(index: number, fieldDetailsInfo?: { [key: string]: string }): any[] {
         const details = [];
         let period = '';
 
@@ -1087,6 +1180,23 @@ export class DomainField
             period = '. ';
         } else if (this.dataType.isOntologyLookup() && this.sourceOntology) {
             details.push(period + this.sourceOntology);
+            period = '. ';
+        } else if (this.dataType.isTextChoice()) {
+            const validValuesStr = getValidValuesDetailStr(this.textChoiceValidator?.properties.validValues);
+            details.push(period);
+            if (validValuesStr) {
+                details.push(validValuesStr);
+            } else if (this.textChoiceValidator?.shouldShowWarning) {
+                details.push(
+                    <DomainRowWarning
+                        index={index}
+                        extraInfo={FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO}
+                        msg={FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG}
+                        name={this.name}
+                        severity={SEVERITY_LEVEL_WARN}
+                    />
+                );
+            }
             period = '. ';
         }
 
@@ -1117,6 +1227,33 @@ export class DomainField
 
         return details;
     }
+}
+
+export function isValidTextChoiceValue(v: string): boolean {
+    return v !== null && v !== undefined && v.trim() !== '';
+}
+
+export function getValidValuesFromArray(validValues: string[]): string[] {
+    // filter out any empty string values
+    const vals = validValues?.filter(isValidTextChoiceValue) ?? [];
+    // remove duplicates
+    return [...new Set(vals)];
+}
+
+export function getValidValuesDetailStr(validValues: string[]): string {
+    const numToShow = 4;
+    const vals = getValidValuesFromArray(validValues);
+    if (vals.length > 0) {
+        let validValuesStr = vals.slice(0, numToShow).join(', ');
+        if (vals.length > numToShow) {
+            validValuesStr += ` (and ${vals.length - numToShow} more)`;
+        }
+        if (validValuesStr.length > 80) {
+            validValuesStr = Utils.pluralize(vals.length, 'value', 'values');
+        }
+        return validValuesStr;
+    }
+    return undefined;
 }
 
 export function decodeLookup(value: string): { queryName: string; rangeURI: string } {
@@ -1203,6 +1340,19 @@ export function resolveAvailableTypes(
             // Can always return to the original type for field
             if (type.name === field.dataType.name) return true;
 
+            // Issue 44511: Allow all types to be converted to strings
+            if ((type.rangeURI === STRING_RANGE_URI || type.rangeURI === MULTILINE_RANGE_URI) && !type.conceptURI)
+                return true;
+
+            // Issue 44511: Allow integer/long -> decimal/double/float
+            if (
+                (type.rangeURI === DOUBLE_RANGE_URI ||
+                    type.rangeURI === FLOAT_RANGE_URI ||
+                    type.rangeURI === DECIMAL_RANGE_URI) &&
+                (field.dataType.rangeURI === INT_RANGE_URI || field.dataType.rangeURI === LONG_RANGE_URI)
+            )
+                return true;
+
             if (!acceptablePropertyType(type, rangeURI)) return false;
 
             if (appPropertiesOnly) {
@@ -1234,6 +1384,7 @@ export function isPropertyTypeAllowed(
     return hasPremiumModule() || ![LOOKUP_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
 }
 
+// Determines if a storage type (rangeURI) is a match for a concept type (like User or Subject)
 export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {
     if (type.isLookup()) {
         return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
@@ -1702,6 +1853,8 @@ export interface IDomainFormDisplayOptions {
     hideConditionalFormatting?: boolean;
     hideInferFromFile?: boolean;
     showScannableOption?: boolean;
+    textChoiceLockedForDomain?: boolean;
+    textChoiceLockedSqlFragment?: string;
 }
 
 export interface IDerivationDataScope {
@@ -1724,11 +1877,13 @@ export class DomainDetails extends Record({
     options: undefined,
     domainKindName: undefined,
     nameReadOnly: false,
+    namePreviews: undefined,
 }) {
     declare domainDesign: DomainDesign;
     declare options: Map<string, any>;
     declare domainKindName: string;
     declare nameReadOnly?: boolean;
+    declare namePreviews?: string[];
 
     static create(rawDesign: Map<string, any> = Map(), domainKindType: string = Domain.KINDS.UNKNOWN): DomainDetails {
         let design;
@@ -1737,7 +1892,8 @@ export class DomainDetails extends Record({
             const domainKindName = rawDesign.get('domainKindName', domainKindType);
             const options = Map(rawDesign.get('options'));
             const nameReadOnly = rawDesign.get('nameReadOnly');
-            design = new DomainDetails({ domainDesign, domainKindName, options, nameReadOnly });
+            const namePreviews = rawDesign.get('namePreviews');
+            design = new DomainDetails({ domainDesign, domainKindName, options, nameReadOnly, namePreviews });
         } else {
             design = new DomainDetails({
                 domainDesign: DomainDesign.create(null),
@@ -1758,4 +1914,10 @@ export interface DomainFieldIndexChange {
 export interface BulkDeleteConfirmInfo {
     deletableSelectedFields: number[];
     undeletableFields: number[];
+}
+
+export interface NameExpressionsValidationResults {
+    warnings: string[];
+    errors: string[];
+    previews: string[];
 }

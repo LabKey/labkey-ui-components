@@ -32,7 +32,7 @@ $circle-size: 12 * $scale;
   margin-bottom: $scale * 2;
 
   .cards__card-content {
-    color: #777;
+    color: $gray-light;
     margin: ($scale * 2) ($scale * 3);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -42,7 +42,7 @@ $circle-size: 12 * $scale;
   .cards__card-title {
     text-transform: uppercase;
     font-size: 16px;
-    color: #555;
+    color: $gray;
     margin-bottom: $scale;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -60,10 +60,10 @@ $circle-size: 12 * $scale;
     cursor: pointer;
 
     .cards__card-content {
-      color: #555;
+      color: $gray;
     }
     .cards__card-title {
-      color: #333;
+      color: $gray-dark;
     }
   }
 
@@ -72,10 +72,10 @@ $circle-size: 12 * $scale;
     transform: translateY(-2px);
 
     .cards__card-content {
-      color: #555;
+      color: $gray;
     }
     .cards__card-title {
-      color: #333;
+      color: $gray-dark;
     }
   }
 }
@@ -123,3 +123,111 @@ $circle-size: 12 * $scale;
 .cards__block-disabled {
   background: linear-gradient(0.15turn, #aaa, #eee) no-repeat center;
 }
+
+.filter-cards {
+    display: flex;
+    overflow-x: scroll;
+    padding-left: 1px;
+    padding-bottom: 20px;
+    justify-content: left;
+
+    &.empty {
+        justify-content: center;
+        margin-top: 100px;
+
+        @media (max-width: $screen-md-min) {
+            margin-top: 15px;
+        }
+    }
+    @media (max-width: $screen-md-min) {
+        flex-wrap: wrap;
+    }
+}
+
+.filter-cards__card {
+    min-width: 330px;
+    border-radius: 2px;
+    height: $card-min-height;
+    background: white;
+    padding: 0;
+    transition: all 250ms;
+    font-size: 14px;
+    margin-right: 15px;
+    margin-top: 8px;
+
+
+    @include shadow(1);
+
+    &:hover,&:focus {
+        text-decoration: none;
+
+        @include shadow(3);
+        transform: translateY(-5px);
+        cursor: pointer;
+
+        .cards__card-content {
+            color: $gray;
+        }
+        .cards__card-title {
+            color: $gray-dark;
+        }
+    }
+}
+
+.filter-card__card-content {
+    padding: 0 20px 15px 20px;
+}
+
+.filter-card__empty-content {
+    padding-top: 63px;
+    text-align: center;
+    color: $gray-light;
+    font-weight: 300;
+    font-size: 37px;
+}
+
+.filter-card__header {
+    height: 59px;
+    color: white;
+    padding: 10px 0 10px 20px;
+
+    &.without-secondary {
+        padding: 18px 0 18px 20px;
+    }
+
+    & .primary-text {
+        font-size: 20px;
+        line-height: 23px;
+    }
+
+    & .secondary-text {
+        font-size: 13px;
+    }
+
+    & .actions {
+        font-size: 16px;
+        padding-right: 10px;
+        padding-top: 10px;
+    }
+
+    & .action-icon {
+        padding-right: 10px;
+    }
+}
+
+.filter-card__header-primary {
+    background-color: $brand-primary;
+}
+.filter-card__header-success {
+    background-color: $brand-success;
+}
+
+.filter-hint {
+    padding-top: 10px;
+    color: $gray-light;
+    font-weight: 400;
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 100px;
+}
+

@@ -6,6 +6,10 @@ import classNames from 'classnames';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
+import { NameExpressionPreview } from '../NameExpressionPreview';
+
+import { NameExpressionGenIdBanner, NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
+
 import { IEntityDetails } from './models';
 import {
     getEntityDescriptionValue,
@@ -24,6 +28,11 @@ export interface EntityDetailsProps {
     nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
     nameReadOnly?: boolean;
+    showPreviewName?: boolean;
+    previewName?: string;
+    namePreviewsLoading?: boolean;
+    onNameFieldHover?: () => any;
+    nameExpressionGenIdProps?: NameExpressionGenIdProps;
 }
 
 export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, any> {
@@ -37,6 +46,11 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
             data,
             nameReadOnly,
             warning,
+            showPreviewName,
+            previewName,
+            onNameFieldHover,
+            namePreviewsLoading,
+            nameExpressionGenIdProps,
         } = this.props;
         const moreInfoLink = nameExpressionInfoUrl ? (
             <p>
@@ -85,17 +99,33 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                         />
                     </Col>
                 </Row>
+                {nameExpressionGenIdProps && (
+                    <Row className="margin-top">
+                        <Col xs={2} />
+                        <Col xs={10}>
+                            <NameExpressionGenIdBanner {...nameExpressionGenIdProps} />
+                        </Col>
+                    </Row>
+                )}
                 <Row className="margin-bottom">
                     <Col xs={2}>
-                        <DomainFieldLabel
-                            label="Naming Pattern"
-                            helpTipBody={
-                                <>
-                                    <p>Pattern used for generating unique IDs for this {noun.toLowerCase()}.</p>
-                                    {moreInfoLink}
-                                </>
-                            }
-                        />
+                        <div className="name-expression-label-div" onMouseEnter={() => onNameFieldHover?.()}>
+                            <DomainFieldLabel
+                                label="Naming Pattern"
+                                helpTipBody={
+                                    <>
+                                        <p>Pattern used for generating unique IDs for this {noun.toLowerCase()}.</p>
+                                        {showPreviewName && (
+                                            <NameExpressionPreview
+                                                previewName={previewName}
+                                                isPreviewLoading={namePreviewsLoading}
+                                            />
+                                        )}
+                                        {moreInfoLink}
+                                    </>
+                                }
+                            />
+                        </div>
                     </Col>
                     <Col xs={10}>
                         <FormControl

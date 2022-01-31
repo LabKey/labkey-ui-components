@@ -1,17 +1,19 @@
-import { ReactNode } from 'react';
-import { List, Map, OrderedMap, Record } from 'immutable';
-import { AssayDOM } from '@labkey/api';
+import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable';
+import { AssayDOM, Utils } from '@labkey/api';
 
 import {
     AppURL,
     AssayDefinitionModel,
+    AssayDomainTypes,
+    EditorModel,
     FileAttachmentFormModel,
-    getEditorModel,
     QueryColumn,
-    QueryGridModel,
     QueryInfo,
+    QueryModel,
 } from '../../..';
+import { genCellKey, getLookupDisplayValue, getLookupValueDescriptors } from '../../actions';
 import { AssayUploadTabs } from '../../constants';
+import { ValueDescriptor } from '../../models';
 import { generateNameWithTimestamp } from '../../util/Date';
 
 // exported for jest testing
@@ -54,7 +56,6 @@ export interface IAssayUploadOptions extends AssayDOM.IImportRunOptions {
 export class AssayWizardModel
     extends Record({
         assayDef: undefined,
-        isError: undefined,
         isWarning: false,
         isInit: false,
         isLoading: false,
@@ -63,7 +64,6 @@ export class AssayWizardModel
         returnUrl: undefined,
         isSubmitted: undefined,
         isSubmitting: undefined,
-        errorMsg: undefined,
 
         attachedFiles: Map<string, File>(),
         batchColumns: OrderedMap<string, QueryColumn>(),
@@ -87,7 +87,6 @@ export class AssayWizardModel
     implements FileAttachmentFormModel
 {
     declare assayDef: AssayDefinitionModel;
-    declare isError?: boolean;
     declare isInit: boolean;
     declare isLoading: boolean;
     declare isWarning?: boolean;
@@ -96,7 +95,6 @@ export class AssayWizardModel
     declare returnUrl?: AppURL;
     declare isSubmitted?: boolean;
     declare isSubmitting?: boolean;
-    declare errorMsg?: ReactNode;
 
     declare attachedFiles: Map<string, File>;
     declare batchColumns: OrderedMap<string, QueryColumn>;
@@ -150,7 +148,7 @@ export class AssayWizardModel
         return generateNameWithTimestamp(this.assayDef.name);
     }
 
-    hasData(currentStep: number, gridModel: QueryGridModel): boolean {
+    hasData(currentStep: number): boolean {
         if (this.isFilesTab(currentStep)) {
             if (!this.attachedFiles.isEmpty()) {
                 return true;
@@ -169,7 +167,7 @@ export class AssayWizardModel
         return false;
     }
 
-    prepareFormData(currentStep: number, gridModel: QueryGridModel): IAssayUploadOptions {
+    prepareFormData(currentStep: number, editorModel: EditorModel, queryModel: QueryModel): IAssayUploadOptions {
         const {
             batchId,
             batchProperties,
@@ -220,10 +218,8 @@ export class AssayWizardModel
             assayData.dataRows = parseDataTextToRunRows(dataText);
         } else if (this.isGridTab(currentStep)) {
             // need to get the EditorModel for the data to use in the import
-            const editorModel = getEditorModel(gridModel.getId());
-
             assayData.dataRows = editorModel
-                .getRawData(gridModel)
+                .getRawDataFromGridData(fromJS(queryModel.rows), fromJS(queryModel.orderedRows), queryModel.queryInfo)
                 .valueSeq()
                 .map(row => row.filter(v => v !== undefined && v !== null && ('' + v).trim() !== ''))
                 .toList()
@@ -238,5 +234,79 @@ export class AssayWizardModel
         }
 
         return assayData;
+    }
+
+    getInitialQueryModelData(): { rows: { [key: string]: any }; orderedRows: string[] } {
+        const { assayDef, selectedSamples } = this;
+        const sampleColumnData = assayDef.getSampleColumn();
+        const sampleColInResults = sampleColumnData && sampleColumnData.domain === AssayDomainTypes.RESULT;
+        const hasSamples = sampleColInResults && selectedSamples;
+        // We only care about passing samples to the data grid if there is a sample column in the results domain.
+        const rows = hasSamples ? selectedSamples.toJS() : {};
+        return { rows, orderedRows: Object.keys(rows) };
+    }
+
+    // TODO: this method is essentially a duplicate of loadDataForEditor. We should probably make a version that can be
+    //  shared because we're going to need this outside of Assays when we convert more usages of
+    //  EditableGridPanelDeprecated
+    async getInitialEditorModelData(queryModelData: Partial<QueryModel>): Promise<Partial<EditorModel>> {
+        const { orderedRows, rows } = queryModelData;
+        const columns = this.queryInfo.getInsertColumns();
+        const lookupValueDescriptors = await getLookupValueDescriptors(
+            columns.toArray(),
+            fromJS(rows),
+            fromJS(orderedRows)
+        );
+        let cellValues = Map<string, List<ValueDescriptor>>();
+
+        // data is initialized in column order
+        columns.forEach((col, cn) => {
+            orderedRows.forEach((id, rn) => {
+                const row = rows[id];
+                const cellKey = genCellKey(cn, rn);
+                const value = row[col.fieldKey];
+
+                if (Array.isArray(value)) {
+                    // assume to be list of {displayValue, value} objects
+                    cellValues = cellValues.set(
+                        cellKey,
+                        value.reduce(
+                            (list, v) => list.push({ display: v.displayValue, raw: v.value }),
+                            List<ValueDescriptor>()
+                        )
+                    );
+                } else {
+                    let cellValue = List([{ display: value, raw: value }]);
+
+                    // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid
+                    // cell
+                    if (col.isLookup() && Utils.isNumber(value)) {
+                        const descriptors = lookupValueDescriptors[col.lookupKey];
+                        if (descriptors) {
+                            cellValue = List(descriptors.filter(descriptor => descriptor.raw === value));
+                        }
+                    }
+
+                    cellValues = cellValues.set(cellKey, cellValue);
+                }
+            });
+        });
+
+        return {
+            cellValues,
+            colCount: columns.size,
+            deletedIds: Set<any>(),
+            rowCount: orderedRows.length,
+        };
+    }
+
+    /**
+     * This method instantiates the initial data used in the editable grid during assay upload, it includes data for
+     * an EditorModel and QueryModel.
+     */
+    async getInitialGridData(): Promise<{ editorModel: Partial<EditorModel>; queryModel: Partial<QueryModel> }> {
+        const queryModelData = this.getInitialQueryModelData();
+        const editorModelData = await this.getInitialEditorModelData(queryModelData);
+        return { editorModel: editorModelData, queryModel: queryModelData };
     }
 }

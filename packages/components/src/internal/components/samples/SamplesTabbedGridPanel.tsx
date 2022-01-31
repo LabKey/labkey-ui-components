@@ -56,6 +56,7 @@ interface Props extends InjectedQueryModels {
     gridButtonProps?: any;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     user: User;
+    withTitle?: boolean;
 }
 
 export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
@@ -78,6 +79,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         gridButtonProps,
         getSampleAuditBehaviorType,
         tabbedGridPanelProps,
+        withTitle,
     } = props;
     const onLabelExport = { [EXPORT_TYPES.LABEL]: onPrintLabel };
 
@@ -195,7 +197,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     }, [actions, activeModel.id]);
 
     const afterSampleDelete = useCallback(
-        (rowsToKeep: Array<any>) => {
+        (rowsToKeep: any[]) => {
             const ids = [];
             if (rowsToKeep.length > 0) {
                 rowsToKeep.forEach(row => {
@@ -209,7 +211,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         [actions, activeModel]
     );
 
-    const onUpdateRows = useCallback((schemaQuery: SchemaQuery, rows: Array<any>): Promise<void> => {
+    const onUpdateRows = useCallback((schemaQuery: SchemaQuery, rows: any[]): Promise<void> => {
         if (rows.length === 0) {
             return new Promise(resolve => {
                 dismissNotifications();
@@ -289,7 +291,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             ) : (
                 <TabbedGridPanel
                     {...tabbedGridPanelProps}
-                    title={asPanel ? 'Samples' : undefined}
+                    title={withTitle ? 'Samples' : undefined}
+                    asPanel={asPanel}
                     actions={actions}
                     queryModels={queryModels}
                     activeModelId={activeTabId}
@@ -300,6 +303,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     ButtonsComponentRight={SampleTabbedGridButtonsRight}
                     supportedExportTypes={canPrintLabels ? EXPORT_TYPES_WITH_LABEL : undefined}
                     onExport={canPrintLabels ? onLabelExport : undefined}
+                    showRowCountOnTabs
                 />
             )}
             {showBulkUpdate && (
@@ -314,6 +318,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     onBulkUpdateComplete={onBulkUpdateComplete}
                     editSelectionInGrid={onEditSelectionInGrid}
                     updateRows={onUpdateRows}
+                    determineStorage // determine storage for discard consumed samples
                 />
             )}
         </>
@@ -322,6 +327,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
 
 SamplesTabbedGridPanel.defaultProps = {
     asPanel: true,
+    withTitle: true,
     canPrintLabels: false,
     excludedCreateMenuKeys: List<string>(),
 };

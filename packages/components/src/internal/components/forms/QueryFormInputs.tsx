@@ -65,6 +65,7 @@ interface QueryFormInputsProps {
     showLabelAsterisk?: boolean; // only used if checkRequiredFields is false, to show * for fields that are originally required
     showQuerySelectPreviewOptions?: boolean;
     useDatePicker?: boolean;
+    onAdditionalFormDataChange?: (name: string, value: any) => any;
 }
 
 interface State {
@@ -81,7 +82,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         allowFieldDisable: false,
         initiallyDisableFields: false,
         disabledFields: List<string>(),
-        showQuerySelectPreviewOptions: true,
+        showQuerySelectPreviewOptions: false,
     };
 
     private _fieldEnabledCount = 0;
@@ -173,6 +174,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             useDatePicker,
             renderFieldLabel,
             showQuerySelectPreviewOptions,
+            onAdditionalFormDataChange,
         } = this.props;
 
         const filter = columnFilter ?? insertColumnFilter;
@@ -219,7 +221,11 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 false,
                                 allowFieldDisable,
                                 shouldDisableField,
-                                this.onToggleDisable
+                                this.onToggleDisable,
+                                this.onQSChange,
+                                this.renderLabelField,
+                                showAsteriskSymbol,
+                                onAdditionalFormDataChange
                             );
                         }
 
@@ -279,6 +285,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 initiallyDisabled={shouldDisableField}
                                 onToggleDisable={this.onToggleDisable}
                                 renderFieldLabel={renderFieldLabel}
+                                placeholder="Select or type to search..."
                             />
                         );
                     }

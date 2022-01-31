@@ -24,7 +24,11 @@ import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColu
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
 import { InferDomainResponse } from './public/InferDomainResponse';
-import { getServerFilePreview, inferDomainFromFile } from './internal/components/assay/utils';
+import {
+    getServerFilePreview,
+    inferDomainFromFile,
+    getAssayImportNotificationMsg,
+} from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
@@ -274,6 +278,7 @@ import {
 import { GenerateEntityResponse, OperationConfirmationData } from './internal/components/entities/models';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
+import { SampleFinderSection } from './internal/components/search/SampleFinderSection';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { loadNameExpressionOptions } from './internal/components/settings/actions';
 import { searchUsingIndex } from './internal/components/search/actions';
@@ -287,6 +292,9 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSelectedItemSamples,
+    updateSamplesStatus,
+    getSampleTypes,
+    getSelectedSampleTypes,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
@@ -316,6 +324,7 @@ import {
     getSampleStatusType,
     isSampleOperationPermitted,
     SamplesManageButtonSections,
+    isSamplesSchema,
 } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
@@ -374,7 +383,7 @@ import { EntityTypeDeleteConfirmModal } from './internal/components/entities/Ent
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './internal/components/navigation/HeaderWrapper';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
-import { FindByIdsModal } from './internal/components/navigation/FindByIdsModal';
+import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
 import { SubNav } from './internal/components/navigation/SubNav';
@@ -468,6 +477,7 @@ import { ListDesignerPanels } from './internal/components/domainproperties/list/
 import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
+import { DesignerDetailPanel } from './internal/components/domainproperties/DesignerDetailPanel';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { ValidatorModal } from './internal/components/domainproperties/validation/ValidatorModal';
 import { RangeValidationOptions } from './internal/components/domainproperties/validation/RangeValidationOptions';
@@ -487,7 +497,15 @@ import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPan
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
+import {
+    BACKGROUND_IMPORT_MIN_FILE_SIZE,
+    BACKGROUND_IMPORT_MIN_ROW_SIZE,
+    DATA_IMPORT_FILE_SIZE_LIMITS,
+} from './internal/components/pipeline/constants';
+import { PipelineJobDetailPage } from './internal/components/pipeline/PipelineJobDetailPage';
+import { PipelineJobsListingPage } from './internal/components/pipeline/PipelineJobsListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
+import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
 import {
     ALIQUOT_CREATION,
@@ -502,18 +520,19 @@ import { ManageSampleStatusesPanel } from './internal/components/samples/ManageS
 import {
     DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
+    IS_ALIQUOT_COL,
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+    SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SampleOperation,
     SampleStateType,
     UNIQUE_ID_FIND_FIELD,
-    IS_ALIQUOT_COL,
 } from './internal/components/samples/constants';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -570,6 +589,7 @@ import {
     serverNotificationInit,
     serverNotificationInvalidate,
     setReloadRequired,
+    updateUser,
     updateUserDisplayName,
 } from './internal/app/actions';
 import {
@@ -588,8 +608,9 @@ import {
     BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
     EXPERIMENTAL_REQUESTS_MENU,
-    FIND_SAMPLES_HREF,
-    FIND_SAMPLES_KEY,
+    FIND_SAMPLES_BY_FILTER_KEY,
+    FIND_SAMPLES_BY_ID_HREF,
+    FIND_SAMPLES_BY_ID_KEY,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
@@ -605,6 +626,7 @@ import {
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLE_TYPE_KEY,
     SAMPLES_KEY,
+    SEARCH_KEY,
     SECURITY_LOGOUT,
     SECURITY_SERVER_UNAVAILABLE,
     SECURITY_SESSION_TIMEOUT,
@@ -613,6 +635,7 @@ import {
     SOURCE_TYPE_KEY,
     SOURCES_KEY,
     STICKY_HEADER_HEIGHT,
+    UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     USER_KEY,
     USER_PERMISSIONS_REQUEST,
@@ -664,6 +687,7 @@ const App = {
     serverNotificationInit,
     serverNotificationInvalidate,
     setReloadRequired,
+    updateUser,
     updateUserDisplayName,
     userCanDesignLocations,
     userCanDesignSourceTypes,
@@ -675,6 +699,7 @@ const App = {
     SET_RELOAD_REQUIRED,
     USER_PERMISSIONS_SUCCESS,
     USER_PERMISSIONS_REQUEST,
+    UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     BIOLOGICS: BIOLOGICS_APP_PROPERTIES,
     SAMPLE_MANAGER: SAMPLE_MANAGER_APP_PROPERTIES,
@@ -682,10 +707,12 @@ const App = {
     ASSAYS_KEY,
     ASSAY_DESIGN_KEY,
     EXPERIMENTAL_REQUESTS_MENU,
-    FIND_SAMPLES_KEY,
+    FIND_SAMPLES_BY_ID_KEY,
+    FIND_SAMPLES_BY_FILTER_KEY,
     PICKLIST_KEY,
     SAMPLES_KEY,
     SAMPLE_TYPE_KEY,
+    SEARCH_KEY,
     SOURCES_KEY,
     SOURCE_TYPE_KEY,
     WORKFLOW_KEY,
@@ -697,7 +724,7 @@ const App = {
     NEW_SOURCE_TYPE_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_ASSAY_DESIGN_HREF,
-    FIND_SAMPLES_HREF,
+    FIND_SAMPLES_BY_ID_HREF,
     PICKLIST_HOME_HREF,
     WORKFLOW_HOME_HREF,
     NEW_FREEZER_DESIGN_HREF,
@@ -897,6 +924,7 @@ export {
     fetchDataClass,
     filterSampleRowsForOperation,
     isSampleOperationPermitted,
+    isSamplesSchema,
     getFilterForSampleOperation,
     getSampleDeleteMessage,
     getSampleStatus,
@@ -905,6 +933,7 @@ export {
     SampleOperation,
     SampleStateType,
     SampleStatusTag,
+    SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -923,6 +952,9 @@ export {
     createQueryGridModelFilteredBySample,
     createQueryConfigFilteredBySample,
     getSelectedItemSamples,
+    updateSamplesStatus,
+    getSampleTypes,
+    getSelectedSampleTypes,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,
     getDeleteSharedSampleTypeUrl,
@@ -980,6 +1012,7 @@ export {
     SearchResultCard,
     SearchResultsPanel,
     searchUsingIndex,
+    SampleFinderSection,
     // settings
     NameIdSettings,
     loadNameExpressionOptions,
@@ -1085,6 +1118,7 @@ export {
     setDomainFields,
     DomainDesign,
     DomainField,
+    DesignerDetailPanel,
     DomainFieldLabel,
     ValidatorModal,
     RangeValidationOptions,
@@ -1279,6 +1313,13 @@ export {
     // pipeline
     PipelineJobsPage,
     PipelineStatusDetailPage,
+    PipelineJobDetailPage,
+    PipelineJobsListingPage,
+    PipelineSubNav,
+    BACKGROUND_IMPORT_MIN_FILE_SIZE,
+    BACKGROUND_IMPORT_MIN_ROW_SIZE,
+    DATA_IMPORT_FILE_SIZE_LIMITS,
+    getAssayImportNotificationMsg,
     // Test Helpers
     sleep,
     createMockWithRouterProps,

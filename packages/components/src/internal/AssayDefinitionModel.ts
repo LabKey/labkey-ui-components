@@ -39,6 +39,7 @@ export class AssayDefinitionModel extends Record({
     name: undefined,
     projectLevel: undefined,
     protocolSchemaName: undefined,
+    requireCommentOnQCStateChange: undefined,
     reRunSupport: undefined,
     templateLink: undefined,
     type: undefined,
@@ -54,6 +55,7 @@ export class AssayDefinitionModel extends Record({
     declare name: string;
     declare projectLevel: boolean;
     declare protocolSchemaName: string;
+    declare requireCommentOnQCStateChange: boolean;
     declare reRunSupport: string;
     declare templateLink: string;
     declare type: string;
@@ -130,11 +132,15 @@ export class AssayDefinitionModel extends Record({
         const findLookup = (col: QueryColumn): boolean => {
             if (col.isLookup()) {
                 const lookupSQ = col.lookup.schemaQuery;
-                const isMatch = targetSQ.isEqual(lookupSQ);
+                const isMatch =
+                    targetSQ.isEqual(lookupSQ) ||
+                    // 44339: the SourceSamples custom query is backed by exp.materials
+                    (targetSQ.equals(SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES) &&
+                        SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ));
 
                 // 35881: If targetSQ is a Sample Set then allow targeting exp.materials table as well
                 if (isSampleSet) {
-                    return isMatch || SchemaQuery.create('exp', 'Materials').isEqual(lookupSQ);
+                    return isMatch || SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ);
                 }
 
                 return isMatch;

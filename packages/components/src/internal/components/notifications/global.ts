@@ -37,6 +37,10 @@ export function resetNotificationsState() {
     });
 }
 
+export function isNotificationsEnabled(): boolean {
+    return !!getGlobal()['Notifications'];
+}
+
 export function getNotifications(): Map<string, NotificationItemModel> {
     if (!getGlobal()['Notifications']) {
         throw new Error(

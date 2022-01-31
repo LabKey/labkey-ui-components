@@ -15,6 +15,7 @@ import {
     MULTILINE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     SAMPLE_TYPE,
+    TEXT_CHOICE_TYPE,
     TEXT_TYPE,
 } from './PropDescType';
 import { TextFieldOptions } from './TextFieldOptions';
@@ -26,6 +27,7 @@ import { SampleFieldOptions } from './SampleFieldOptions';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
+import { TextChoiceOptions } from './TextChoiceOptions';
 
 const DEFAULT_PROPS = {
     index: 1,
@@ -36,9 +38,11 @@ const DEFAULT_PROPS = {
     showingModal: jest.fn(),
 };
 
-describe('DomainExpandedOptions', () => {
+describe('DomainRowExpandedOptions', () => {
     function validateRender(row: any, expected: { [key: string]: number }, expectCondFormAndVal = true) {
+        expect(row.find(NameAndLinkingOptions)).toHaveLength(1);
         expect(row.find(TextFieldOptions)).toHaveLength(expected.text || 0);
+        expect(row.find(TextChoiceOptions)).toHaveLength(expected.textChoice || 0);
         expect(row.find(BooleanFieldOptions)).toHaveLength(expected.boolean || 0);
         expect(row.find(DateTimeFieldOptions)).toHaveLength(expected.dateTime || 0);
         expect(row.find(NumericFieldOptions)).toHaveLength(expected.numeric || 0);
@@ -46,7 +50,6 @@ describe('DomainExpandedOptions', () => {
         expect(row.find(SampleFieldOptions)).toHaveLength(expected.sample || 0);
         expect(row.find(OntologyLookupOptions)).toHaveLength(expected.ontologyLookup || 0);
         expect(row.find(DerivationDataScopeFieldOptions)).toHaveLength(expected.aliquot || 0);
-        expect(row.find(NameAndLinkingOptions)).toHaveLength(1);
         expect(row.find(ConditionalFormattingAndValidation)).toHaveLength(expectCondFormAndVal ? 1 : 0);
     }
 
@@ -169,6 +172,17 @@ describe('DomainExpandedOptions', () => {
 
         const row = mount(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
         validateRender(row, { sample: 1 });
+        row.unmount();
+    });
+
+    test('Text Choice data type', () => {
+        const field = DomainField.create({
+            conceptURI: TEXT_CHOICE_TYPE.conceptURI,
+            rangeURI: TEXT_CHOICE_TYPE.rangeURI,
+        });
+
+        const row = mount(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
+        validateRender(row, { textChoice: 1 });
         row.unmount();
     });
 

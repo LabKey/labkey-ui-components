@@ -42,6 +42,7 @@ export const EXP_TABLES = {
     SCHEMA: EXP_SCHEMA,
     SAMPLE_SETS: SchemaQuery.create(EXP_SCHEMA, 'SampleSets'),
     SAMPLE_SET_HEAT_MAP: SchemaQuery.create(EXP_SCHEMA, 'SampleSetHeatMap'),
+    SAMPLE_STATUS: SchemaQuery.create(EXP_SCHEMA, 'SampleStatus'),
 };
 
 // CORE
@@ -106,6 +107,13 @@ export const SAMPLE_SETS = {
     SAMPLES: SchemaQuery.create(SAMPLE_SET_SCHEMA, 'Samples'),
 };
 
+// SAMPLE MANAGEMENT
+const SAMPLE_MANAGEMENT_SCHEMA = 'samplemanagement';
+export const SAMPLE_MANAGEMENT = {
+    SCHEMA: SAMPLE_MANAGEMENT_SCHEMA,
+    SOURCE_SAMPLES: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, 'SourceSamples'),
+};
+
 // STUDY
 const STUDY_SCHEMA = 'study';
 export const STUDY_TABLES = {
@@ -137,6 +145,7 @@ export const SCHEMAS = {
     INVENTORY,
     LIST_METADATA_TABLES,
     PICKLIST_TABLES,
+    SAMPLE_MANAGEMENT,
 };
 
 export function fetchSchemas(schemaName?: string): Promise<List<Map<string, SchemaDetails>>> {

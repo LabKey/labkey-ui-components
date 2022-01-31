@@ -1,18 +1,21 @@
 import React, { FC, useMemo } from 'react';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 
-import { capitalizeFirstChar, getEditorModel, QueryGridModel } from '../../..';
+import { capitalizeFirstChar, EditorModel } from '../../..';
 
 import { getCommonDataValues } from '../../util/utils';
 
 import { QueryInfoForm, QueryInfoFormProps } from './QueryInfoForm';
 
-interface Props extends Omit<QueryInfoFormProps, 'fieldValues' | 'queryInfo'> {
-    model: QueryGridModel;
+interface Props extends Omit<QueryInfoFormProps, 'fieldValues'> {
+    data: Map<any, Map<string, any>>;
+    dataKeys: List<any>;
+    editorModel: EditorModel;
     selectedRowIndexes: List<number>;
 }
 
-export const BulkAddUpdateForm: FC<Props> = ({ model, selectedRowIndexes, ...queryInfoFormProps }) => {
+export const BulkAddUpdateForm: FC<Props> = (props) => {
+    const { data, dataKeys, editorModel, queryInfo, selectedRowIndexes, ...queryInfoFormProps } = props;
     const {
         pluralNoun,
         singularNoun,
@@ -20,21 +23,19 @@ export const BulkAddUpdateForm: FC<Props> = ({ model, selectedRowIndexes, ...que
         title = 'Update ' + selectedRowIndexes.size + ' ' + (selectedRowIndexes.size === 1 ? singularNoun : pluralNoun),
     } = queryInfoFormProps;
 
-    const editorModel = getEditorModel(model.getId());
-
     const fieldValues = useMemo(() => {
         const editorData = editorModel
-            .getRawData(model)
+            .getRawDataFromGridData(data, dataKeys, queryInfo)
             .filter((val, index) => selectedRowIndexes.contains(index))
             .toMap();
         return getCommonDataValues(editorData);
-    }, [editorModel, model, selectedRowIndexes]);
+    }, [data, dataKeys, editorModel, queryInfo, selectedRowIndexes]);
 
     return (
         <QueryInfoForm
             {...queryInfoFormProps}
             fieldValues={fieldValues}
-            queryInfo={model.queryInfo.getInsertQueryInfo()}
+            queryInfo={queryInfo.getInsertQueryInfo()}
             submitForEditText={submitForEditText}
             title={title}
         />

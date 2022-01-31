@@ -40,7 +40,7 @@ export class Page extends React.Component<PageProps, any> {
         Page.setDocumentTitle(nextProps);
     }
 
-    static getDocumentTitle(props: PageProps) {
+    static getDocumentTitle(props: PageProps): string {
         const { productName, title } = props;
         let fullTitle = title && title.length > 0 ? title : '';
         if (productName && productName.length > 0)
@@ -48,7 +48,7 @@ export class Page extends React.Component<PageProps, any> {
         return fullTitle;
     }
 
-    static setDocumentTitle(props: PageProps) {
+    static setDocumentTitle(props: PageProps): void {
         const fullTitle = Page.getDocumentTitle(props);
 
         if (document.title != fullTitle) {
@@ -56,10 +56,10 @@ export class Page extends React.Component<PageProps, any> {
         }
     }
 
-    isHeader(child): boolean {
+    isHeader = (child): boolean => {
         // Dev/Prod builds require slightly different requirements for this check
         return child.type === PageHeader || child.type.name === 'PageHeader';
-    }
+    };
 
     render() {
         const { children, notFound, showNotifications } = this.props;

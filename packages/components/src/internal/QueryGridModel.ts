@@ -509,22 +509,6 @@ export class QueryGridModel
         return !!this.queryInfo?.getShowInsertNewButton();
     }
 
-    getDataEdit(): List<Map<string, any>> {
-        return this.dataIds
-            .map(i => {
-                if (this.data.has(i)) {
-                    return this.data.get(i).merge({
-                        [GRID_EDIT_INDEX]: i,
-                    });
-                }
-
-                return Map<string, any>({
-                    [GRID_EDIT_INDEX]: i,
-                });
-            })
-            .toList();
-    }
-
     get selectionKey() {
         if (!this.queryInfo) {
             return undefined;

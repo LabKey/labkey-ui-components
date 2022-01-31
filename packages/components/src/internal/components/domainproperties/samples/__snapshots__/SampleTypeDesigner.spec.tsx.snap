@@ -182,36 +182,41 @@ Array [
             <div
               className="col-xs-2"
             >
-              Naming 
-              <span
-                className="domain-no-wrap"
+              <div
+                className="name-expression-label-div"
+                onMouseEnter={[Function]}
               >
-                Pattern
+                Naming 
                 <span
-                  className="label-help-target"
-                  onMouseOut={[Function]}
-                  onMouseOver={[Function]}
+                  className="domain-no-wrap"
                 >
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                    data-icon="question-circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
+                  Pattern
+                  <span
+                    className="label-help-target"
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
                   >
-                    <path
-                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                      fill="currentColor"
+                    <svg
+                      aria-hidden="true"
+                      className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                      data-icon="question-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
                       style={Object {}}
-                    />
-                  </svg>
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                        fill="currentColor"
+                        style={Object {}}
+                      />
+                    </svg>
+                  </span>
+                  
                 </span>
-                
-              </span>
+              </div>
             </div>
             <div
               className="col-xs-10"
@@ -616,36 +621,41 @@ Array [
             <div
               className="col-xs-2"
             >
-              Naming 
-              <span
-                className="domain-no-wrap"
+              <div
+                className="name-expression-label-div"
+                onMouseEnter={[Function]}
               >
-                Pattern
+                Naming 
                 <span
-                  className="label-help-target"
-                  onMouseOut={[Function]}
-                  onMouseOver={[Function]}
+                  className="domain-no-wrap"
                 >
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                    data-icon="question-circle"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={Object {}}
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
+                  Pattern
+                  <span
+                    className="label-help-target"
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
                   >
-                    <path
-                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                      fill="currentColor"
+                    <svg
+                      aria-hidden="true"
+                      className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                      data-icon="question-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
                       style={Object {}}
-                    />
-                  </svg>
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                        fill="currentColor"
+                        style={Object {}}
+                      />
+                    </svg>
+                  </span>
+                  
                 </span>
-                
-              </span>
+              </div>
             </div>
             <div
               className="col-xs-10"
@@ -955,6 +965,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "allowFileLinkProperties": false,
         "allowAttachmentProperties": false,
         "allowFlagProperties": true,
+        "allowTextChoiceProperties": true,
         "allowTimepointProperties": false,
         "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
@@ -988,6 +999,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "rangeValidators": Immutable.List [],
             "rangeURI": undefined,
             "regexValidators": Immutable.List [],
+            "textChoiceValidator": undefined,
             "recommendedVariable": false,
             "required": false,
             "scale": 4000,
@@ -1029,6 +1041,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "lookupSchema": undefined,
                 "lookupQuery": undefined,
               },
+              "name": "testfield",
               "rangeURI": undefined,
             },
             "updatedField": false,
@@ -1054,10 +1067,13 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "newDesignFields": undefined,
         "instructions": undefined,
         "domainKindName": undefined,
+        "schemaName": undefined,
+        "queryName": undefined,
       },
       "options": Immutable.Map {},
       "domainKindName": "Unknown",
       "nameReadOnly": true,
+      "namePreviews": undefined,
     }
   }
   onCancel={[MockFunction]}
@@ -1065,6 +1081,32 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
   testMode={true}
 >
   <SampleTypeDesignerImpl
+    api={
+      Object {
+        "domain": DomainPropertiesAPIWrapper {
+          "getDomainNamePreviews": [Function],
+          "getGenId": [Function],
+          "hasExistingDomainData": [Function],
+          "setGenId": [Function],
+          "validateDomainNameExpressions": [Function],
+        },
+        "picklist": PicklistServerAPIWrapper {
+          "getPicklistDeleteData": [Function],
+          "getPicklistFromId": [Function],
+        },
+        "samples": SamplesServerAPIWrapper {
+          "getSampleAliquotRows": [Function],
+          "getSampleAssayResultViewConfigs": [Function],
+          "getSampleOperationConfirmationData": [Function],
+          "getSampleSelectionLineageData": [Function],
+          "getSampleStatuses": [Function],
+          "getSampleStorageId": [Function],
+        },
+        "security": ServerSecurityAPIWrapper {
+          "fetchContainers": [Function],
+        },
+      }
+    }
     appPropertiesOnly={true}
     currentPanelIndex={0}
     defaultSampleFieldConfig={
@@ -1114,6 +1156,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "allowFileLinkProperties": false,
           "allowAttachmentProperties": false,
           "allowFlagProperties": true,
+          "allowTextChoiceProperties": true,
           "allowTimepointProperties": false,
           "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
@@ -1147,6 +1190,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "rangeValidators": Immutable.List [],
               "rangeURI": undefined,
               "regexValidators": Immutable.List [],
+              "textChoiceValidator": undefined,
               "recommendedVariable": false,
               "required": false,
               "scale": 4000,
@@ -1188,6 +1232,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "lookupSchema": undefined,
                   "lookupQuery": undefined,
                 },
+                "name": "testfield",
                 "rangeURI": undefined,
               },
               "updatedField": false,
@@ -1213,10 +1258,13 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "newDesignFields": undefined,
           "instructions": undefined,
           "domainKindName": undefined,
+          "schemaName": undefined,
+          "queryName": undefined,
         },
         "options": Immutable.Map {},
         "domainKindName": "Unknown",
         "nameReadOnly": true,
+        "namePreviews": undefined,
       }
     }
     nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
@@ -1232,6 +1280,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
     testMode={true}
     useSeparateDataClassesAliasMenu={false}
     useTheme={false}
+    validateNameExpressions={true}
     visitedPanels={Immutable.List []}
   >
     <BaseDomainDesigner
@@ -1246,6 +1295,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "allowFileLinkProperties": false,
             "allowAttachmentProperties": false,
             "allowFlagProperties": true,
+            "allowTextChoiceProperties": true,
             "allowTimepointProperties": false,
             "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
@@ -1279,6 +1329,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "rangeValidators": Immutable.List [],
                 "rangeURI": undefined,
                 "regexValidators": Immutable.List [],
+                "textChoiceValidator": undefined,
                 "recommendedVariable": false,
                 "required": false,
                 "scale": 4000,
@@ -1320,6 +1371,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                   },
+                  "name": "testfield",
                   "rangeURI": undefined,
                 },
                 "updatedField": false,
@@ -1347,6 +1399,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "newDesignFields": undefined,
             "instructions": undefined,
             "domainKindName": undefined,
+            "schemaName": undefined,
+            "queryName": undefined,
           },
         ]
       }
@@ -1386,6 +1440,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "allowFileLinkProperties": false,
               "allowAttachmentProperties": false,
               "allowFlagProperties": true,
+              "allowTextChoiceProperties": true,
               "allowTimepointProperties": false,
               "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
@@ -1419,6 +1474,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "rangeValidators": Immutable.List [],
                   "rangeURI": undefined,
                   "regexValidators": Immutable.List [],
+                  "textChoiceValidator": undefined,
                   "recommendedVariable": false,
                   "required": false,
                   "scale": 4000,
@@ -1460,6 +1516,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    "name": "testfield",
                     "rangeURI": undefined,
                   },
                   "updatedField": false,
@@ -1487,6 +1544,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "newDesignFields": undefined,
               "instructions": undefined,
               "domainKindName": undefined,
+              "schemaName": undefined,
+              "queryName": undefined,
             },
             "autoLinkTargetContainerId": undefined,
             "autoLinkCategory": undefined,
@@ -1495,8 +1554,10 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         }
         nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
         nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
+        namePreviewsLoading={false}
         onAddParentAlias={[Function]}
         onAddUniqueIdField={[Function]}
+        onNameFieldHover={[Function]}
         onParentAliasChange={[Function]}
         onRemoveParentAlias={[Function]}
         onToggle={[Function]}
@@ -1545,6 +1606,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "allowFileLinkProperties": false,
                 "allowAttachmentProperties": false,
                 "allowFlagProperties": true,
+                "allowTextChoiceProperties": true,
                 "allowTimepointProperties": false,
                 "showDefaultValueSettings": false,
                 "defaultDefaultValueType": undefined,
@@ -1578,6 +1640,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": undefined,
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -1619,6 +1682,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "testfield",
                       "rangeURI": undefined,
                     },
                     "updatedField": false,
@@ -1646,6 +1710,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "newDesignFields": undefined,
                 "instructions": undefined,
                 "domainKindName": undefined,
+                "schemaName": undefined,
+                "queryName": undefined,
               },
               "autoLinkTargetContainerId": undefined,
               "autoLinkCategory": undefined,
@@ -1654,10 +1720,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           }
           nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
           nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
+          namePreviewsLoading={false}
           nounPlural="Sample Types"
           nounSingular="Sample Type"
           onAddParentAlias={[Function]}
           onAddUniqueIdField={[Function]}
+          onNameFieldHover={[Function]}
           onParentAliasChange={[Function]}
           onRemoveParentAlias={[Function]}
           panelStatus="NONE"
@@ -1710,6 +1778,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "allowFileLinkProperties": false,
                   "allowAttachmentProperties": false,
                   "allowFlagProperties": true,
+                  "allowTextChoiceProperties": true,
                   "allowTimepointProperties": false,
                   "showDefaultValueSettings": false,
                   "defaultDefaultValueType": undefined,
@@ -1743,6 +1812,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "rangeValidators": Immutable.List [],
                       "rangeURI": undefined,
                       "regexValidators": Immutable.List [],
+                      "textChoiceValidator": undefined,
                       "recommendedVariable": false,
                       "required": false,
                       "scale": 4000,
@@ -1784,6 +1854,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                           "lookupSchema": undefined,
                           "lookupQuery": undefined,
                         },
+                        "name": "testfield",
                         "rangeURI": undefined,
                       },
                       "updatedField": false,
@@ -1811,6 +1882,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "newDesignFields": undefined,
                   "instructions": undefined,
                   "domainKindName": undefined,
+                  "schemaName": undefined,
+                  "queryName": undefined,
                 },
                 "autoLinkTargetContainerId": undefined,
                 "autoLinkCategory": undefined,
@@ -1819,10 +1892,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             }
             nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
             nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
+            namePreviewsLoading={false}
             nounPlural="Sample Types"
             nounSingular="Sample Type"
             onAddParentAlias={[Function]}
             onAddUniqueIdField={[Function]}
+            onNameFieldHover={[Function]}
             onParentAliasChange={[Function]}
             onRemoveParentAlias={[Function]}
             panelStatus="NONE"
@@ -2073,6 +2148,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         "allowFileLinkProperties": false,
                                         "allowAttachmentProperties": false,
                                         "allowFlagProperties": true,
+                                        "allowTextChoiceProperties": true,
                                         "allowTimepointProperties": false,
                                         "showDefaultValueSettings": false,
                                         "defaultDefaultValueType": undefined,
@@ -2106,6 +2182,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             "rangeValidators": Immutable.List [],
                                             "rangeURI": undefined,
                                             "regexValidators": Immutable.List [],
+                                            "textChoiceValidator": undefined,
                                             "recommendedVariable": false,
                                             "required": false,
                                             "scale": 4000,
@@ -2147,6 +2224,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                 "lookupSchema": undefined,
                                                 "lookupQuery": undefined,
                                               },
+                                              "name": "testfield",
                                               "rangeURI": undefined,
                                             },
                                             "updatedField": false,
@@ -2174,6 +2252,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         "newDesignFields": undefined,
                                         "instructions": undefined,
                                         "domainKindName": undefined,
+                                        "schemaName": undefined,
+                                        "queryName": undefined,
                                       },
                                       "autoLinkTargetContainerId": undefined,
                                       "autoLinkCategory": undefined,
@@ -2182,9 +2262,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                   }
                                   nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
                                   nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
+                                  namePreviewsLoading={false}
                                   nameReadOnly={true}
                                   noun="Sample Type"
                                   onFormChange={[Function]}
+                                  onNameFieldHover={[Function]}
+                                  showPreviewName={false}
                                 >
                                   <Form
                                     bsClass="form"
@@ -2472,110 +2555,115 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             <div
                                               className="col-xs-2"
                                             >
-                                              <DomainFieldLabel
-                                                helpTipBody={
-                                                  <React.Fragment>
-                                                    <p>
-                                                      Pattern used for generating unique IDs for this 
-                                                      sample type
-                                                      .
-                                                    </p>
-                                                    <p>
-                                                      <a
-                                                        href="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
-                                                        rel="noreferrer"
-                                                        target="_blank"
-                                                      >
-                                                        More info
-                                                      </a>
-                                                    </p>
-                                                  </React.Fragment>
-                                                }
-                                                label="Naming Pattern"
+                                              <div
+                                                className="name-expression-label-div"
+                                                onMouseEnter={[Function]}
                                               >
-                                                Naming 
-                                                <span
-                                                  className="domain-no-wrap"
-                                                >
-                                                  Pattern
-                                                  <Component
-                                                    customStyle={Object {}}
-                                                    id="tooltip"
-                                                    size="1x"
-                                                    title="Naming Pattern"
-                                                  >
-                                                    <span
-                                                      className="label-help-target"
-                                                      onMouseOut={[Function]}
-                                                      onMouseOver={[Function]}
-                                                    >
-                                                      <FontAwesomeIcon
-                                                        border={false}
-                                                        className="label-help-icon"
-                                                        fixedWidth={false}
-                                                        flip={null}
-                                                        icon={
-                                                          Object {
-                                                            "icon": Array [
-                                                              512,
-                                                              512,
-                                                              Array [],
-                                                              "f059",
-                                                              "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
-                                                            ],
-                                                            "iconName": "question-circle",
-                                                            "prefix": "fas",
-                                                          }
-                                                        }
-                                                        inverse={false}
-                                                        listItem={false}
-                                                        mask={null}
-                                                        pull={null}
-                                                        pulse={false}
-                                                        rotation={null}
-                                                        size="1x"
-                                                        spin={false}
-                                                        style={Object {}}
-                                                        swapOpacity={false}
-                                                        symbol={false}
-                                                        title=""
-                                                        transform={null}
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          style={Object {}}
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
+                                                <DomainFieldLabel
+                                                  helpTipBody={
+                                                    <React.Fragment>
+                                                      <p>
+                                                        Pattern used for generating unique IDs for this 
+                                                        sample type
+                                                        .
+                                                      </p>
+                                                      <p>
+                                                        <a
+                                                          href="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
+                                                          rel="noreferrer"
+                                                          target="_blank"
                                                         >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                            style={Object {}}
-                                                          />
-                                                        </svg>
-                                                      </FontAwesomeIcon>
-                                                      <Overlay
-                                                        animation={[Function]}
-                                                        placement="right"
-                                                        rootClose={false}
-                                                        show={false}
+                                                          More info
+                                                        </a>
+                                                      </p>
+                                                    </React.Fragment>
+                                                  }
+                                                  label="Naming Pattern"
+                                                >
+                                                  Naming 
+                                                  <span
+                                                    className="domain-no-wrap"
+                                                  >
+                                                    Pattern
+                                                    <Component
+                                                      customStyle={Object {}}
+                                                      id="tooltip"
+                                                      size="1x"
+                                                      title="Naming Pattern"
+                                                    >
+                                                      <span
+                                                        className="label-help-target"
+                                                        onMouseOut={[Function]}
+                                                        onMouseOver={[Function]}
                                                       >
+                                                        <FontAwesomeIcon
+                                                          border={false}
+                                                          className="label-help-icon"
+                                                          fixedWidth={false}
+                                                          flip={null}
+                                                          icon={
+                                                            Object {
+                                                              "icon": Array [
+                                                                512,
+                                                                512,
+                                                                Array [],
+                                                                "f059",
+                                                                "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                              ],
+                                                              "iconName": "question-circle",
+                                                              "prefix": "fas",
+                                                            }
+                                                          }
+                                                          inverse={false}
+                                                          listItem={false}
+                                                          mask={null}
+                                                          pull={null}
+                                                          pulse={false}
+                                                          rotation={null}
+                                                          size="1x"
+                                                          spin={false}
+                                                          style={Object {}}
+                                                          swapOpacity={false}
+                                                          symbol={false}
+                                                          title=""
+                                                          transform={null}
+                                                        >
+                                                          <svg
+                                                            aria-hidden="true"
+                                                            className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                                            data-icon="question-circle"
+                                                            data-prefix="fas"
+                                                            focusable="false"
+                                                            role="img"
+                                                            style={Object {}}
+                                                            viewBox="0 0 512 512"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                          >
+                                                            <path
+                                                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                              fill="currentColor"
+                                                              style={Object {}}
+                                                            />
+                                                          </svg>
+                                                        </FontAwesomeIcon>
                                                         <Overlay
+                                                          animation={[Function]}
                                                           placement="right"
                                                           rootClose={false}
                                                           show={false}
-                                                          transition={[Function]}
-                                                        />
-                                                      </Overlay>
-                                                    </span>
-                                                  </Component>
-                                                </span>
-                                              </DomainFieldLabel>
+                                                        >
+                                                          <Overlay
+                                                            placement="right"
+                                                            rootClose={false}
+                                                            show={false}
+                                                            transition={[Function]}
+                                                          />
+                                                        </Overlay>
+                                                      </span>
+                                                    </Component>
+                                                  </span>
+                                                </DomainFieldLabel>
+                                              </div>
                                             </div>
                                           </Col>
                                           <Col
@@ -2789,6 +2877,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "allowFileLinkProperties": false,
             "allowAttachmentProperties": false,
             "allowFlagProperties": true,
+            "allowTextChoiceProperties": true,
             "allowTimepointProperties": false,
             "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
@@ -2822,6 +2911,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "rangeValidators": Immutable.List [],
                 "rangeURI": undefined,
                 "regexValidators": Immutable.List [],
+                "textChoiceValidator": undefined,
                 "recommendedVariable": false,
                 "required": false,
                 "scale": 4000,
@@ -2863,6 +2953,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                   },
+                  "name": "testfield",
                   "rangeURI": undefined,
                 },
                 "updatedField": false,
@@ -2890,6 +2981,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "newDesignFields": undefined,
             "instructions": undefined,
             "domainKindName": undefined,
+            "schemaName": undefined,
+            "queryName": undefined,
           }
         }
         domainFormDisplayOptions={
@@ -2897,6 +2990,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "hideConditionalFormatting": true,
             "hideStudyPropertyTypes": true,
             "showScannableOption": true,
+            "textChoiceLockedSqlFragment": "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
           }
         }
         domainIndex={0}
@@ -2926,6 +3020,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "allowFileLinkProperties": false,
                 "allowAttachmentProperties": false,
                 "allowFlagProperties": true,
+                "allowTextChoiceProperties": true,
                 "allowTimepointProperties": false,
                 "showDefaultValueSettings": false,
                 "defaultDefaultValueType": undefined,
@@ -2959,6 +3054,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "rangeValidators": Immutable.List [],
                     "rangeURI": undefined,
                     "regexValidators": Immutable.List [],
+                    "textChoiceValidator": undefined,
                     "recommendedVariable": false,
                     "required": false,
                     "scale": 4000,
@@ -3000,6 +3096,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
+                      "name": "testfield",
                       "rangeURI": undefined,
                     },
                     "updatedField": false,
@@ -3027,6 +3124,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "newDesignFields": undefined,
                 "instructions": undefined,
                 "domainKindName": undefined,
+                "schemaName": undefined,
+                "queryName": undefined,
               }
             }
             domainFormDisplayOptions={
@@ -3034,6 +3133,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "hideConditionalFormatting": true,
                 "hideStudyPropertyTypes": true,
                 "showScannableOption": true,
+                "textChoiceLockedSqlFragment": "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
               }
             }
             domainIndex={0}
@@ -3856,6 +3956,16 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                               "lookupSchema": undefined,
                                                               "lookupQuery": undefined,
                                                             },
+                                                            Immutable.Record {
+                                                              "conceptURI": "http://www.labkey.org/types#textChoice",
+                                                              "display": "Text Choice",
+                                                              "name": "textChoice",
+                                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                              "alternateRangeURI": undefined,
+                                                              "shortDisplay": undefined,
+                                                              "lookupSchema": undefined,
+                                                              "lookupQuery": undefined,
+                                                            },
                                                           ]
                                                         }
                                                         defaultValueOptions={Immutable.List []}
@@ -3864,6 +3974,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "hideConditionalFormatting": true,
                                                             "hideStudyPropertyTypes": true,
                                                             "showScannableOption": true,
+                                                            "textChoiceLockedSqlFragment": "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
                                                           }
                                                         }
                                                         domainId={null}
@@ -3900,6 +4011,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "rangeValidators": Immutable.List [],
                                                             "rangeURI": undefined,
                                                             "regexValidators": Immutable.List [],
+                                                            "textChoiceValidator": undefined,
                                                             "recommendedVariable": false,
                                                             "required": false,
                                                             "scale": 4000,
@@ -3941,6 +4053,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                 "lookupSchema": undefined,
                                                                 "lookupQuery": undefined,
                                                               },
+                                                              "name": "testfield",
                                                               "rangeURI": undefined,
                                                             },
                                                             "updatedField": false,
@@ -4050,6 +4163,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "hideConditionalFormatting": true,
                                                                             "hideStudyPropertyTypes": true,
                                                                             "showScannableOption": true,
+                                                                            "textChoiceLockedSqlFragment": "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
                                                                           }
                                                                         }
                                                                         domainId={null}
@@ -4083,6 +4197,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "rangeValidators": Immutable.List [],
                                                                             "rangeURI": undefined,
                                                                             "regexValidators": Immutable.List [],
+                                                                            "textChoiceValidator": undefined,
                                                                             "recommendedVariable": false,
                                                                             "required": false,
                                                                             "scale": 4000,
@@ -4124,6 +4239,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                 "lookupSchema": undefined,
                                                                                 "lookupQuery": undefined,
                                                                               },
+                                                                              "name": "testfield",
                                                                               "rangeURI": undefined,
                                                                             },
                                                                             "updatedField": false,
@@ -4482,6 +4598,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         Text
                                                                                       </option>
                                                                                       <option
+                                                                                        key="textChoice"
+                                                                                        value="textChoice"
+                                                                                      >
+                                                                                        Text Choice
+                                                                                      </option>
+                                                                                      <option
                                                                                         key="users"
                                                                                         value="users"
                                                                                       >
@@ -4661,6 +4783,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "hideConditionalFormatting": true,
                                                                               "hideStudyPropertyTypes": true,
                                                                               "showScannableOption": true,
+                                                                              "textChoiceLockedSqlFragment": "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
                                                                             }
                                                                           }
                                                                           domainIndex={0}
@@ -4693,6 +4816,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "rangeValidators": Immutable.List [],
                                                                               "rangeURI": undefined,
                                                                               "regexValidators": Immutable.List [],
+                                                                              "textChoiceValidator": undefined,
                                                                               "recommendedVariable": false,
                                                                               "required": false,
                                                                               "scale": 4000,
@@ -4734,6 +4858,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   "lookupSchema": undefined,
                                                                                   "lookupQuery": undefined,
                                                                                 },
+                                                                                "name": "testfield",
                                                                                 "rangeURI": undefined,
                                                                               },
                                                                               "updatedField": false,
@@ -5086,163 +5211,175 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                           </Col>
                                                                                         </div>
                                                                                       </Row>
-                                                                                      <Row
-                                                                                        bsClass="row"
-                                                                                        componentClass="div"
+                                                                                      <Memo()
+                                                                                        appPropertiesOnly={true}
+                                                                                        domainIndex={0}
+                                                                                        index={0}
+                                                                                        label="Text Options"
+                                                                                        lockType="NotLocked"
+                                                                                        onChange={[Function]}
+                                                                                        scale={4000}
+                                                                                        scannable={false}
+                                                                                        showScannableOption={true}
                                                                                       >
-                                                                                        <div
-                                                                                          className="row"
+                                                                                        <Row
+                                                                                          bsClass="row"
+                                                                                          componentClass="div"
                                                                                         >
-                                                                                          <Col
-                                                                                            bsClass="col"
-                                                                                            componentClass="div"
-                                                                                            xs={3}
+                                                                                          <div
+                                                                                            className="row"
                                                                                           >
-                                                                                            <div
-                                                                                              className="col-xs-3"
+                                                                                            <Col
+                                                                                              bsClass="col"
+                                                                                              componentClass="div"
+                                                                                              xs={3}
                                                                                             >
                                                                                               <div
-                                                                                                className="domain-field-label"
+                                                                                                className="col-xs-3"
                                                                                               >
-                                                                                                <DomainFieldLabel
-                                                                                                  helpTipBody="When using the Find Samples dialog from the search bar and choosing the
-                                        \\"Barcodes\\" option, text fields
+                                                                                                <div
+                                                                                                  className="domain-field-label"
+                                                                                                >
+                                                                                                  <DomainFieldLabel
+                                                                                                    helpTipBody="When using the Find Samples dialog from the search bar and choosing the
+                                        \\"Barcodes\\" option, fields
                                         that are designated as Barcode fields will be queried
                                         along with any UniqueId fields for this sample type."
-                                                                                                  label="Barcode Field"
-                                                                                                >
-                                                                                                  Barcode 
-                                                                                                  <span
-                                                                                                    className="domain-no-wrap"
+                                                                                                    label="Barcode Field"
                                                                                                   >
-                                                                                                    Field
-                                                                                                    <Component
-                                                                                                      customStyle={Object {}}
-                                                                                                      id="tooltip"
-                                                                                                      size="1x"
-                                                                                                      title="Barcode Field"
+                                                                                                    Barcode 
+                                                                                                    <span
+                                                                                                      className="domain-no-wrap"
                                                                                                     >
-                                                                                                      <span
-                                                                                                        className="label-help-target"
-                                                                                                        onMouseOut={[Function]}
-                                                                                                        onMouseOver={[Function]}
+                                                                                                      Field
+                                                                                                      <Component
+                                                                                                        customStyle={Object {}}
+                                                                                                        id="tooltip"
+                                                                                                        size="1x"
+                                                                                                        title="Barcode Field"
                                                                                                       >
-                                                                                                        <FontAwesomeIcon
-                                                                                                          border={false}
-                                                                                                          className="label-help-icon"
-                                                                                                          fixedWidth={false}
-                                                                                                          flip={null}
-                                                                                                          icon={
-                                                                                                            Object {
-                                                                                                              "icon": Array [
-                                                                                                                512,
-                                                                                                                512,
-                                                                                                                Array [],
-                                                                                                                "f059",
-                                                                                                                "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
-                                                                                                              ],
-                                                                                                              "iconName": "question-circle",
-                                                                                                              "prefix": "fas",
+                                                                                                        <span
+                                                                                                          className="label-help-target"
+                                                                                                          onMouseOut={[Function]}
+                                                                                                          onMouseOver={[Function]}
+                                                                                                        >
+                                                                                                          <FontAwesomeIcon
+                                                                                                            border={false}
+                                                                                                            className="label-help-icon"
+                                                                                                            fixedWidth={false}
+                                                                                                            flip={null}
+                                                                                                            icon={
+                                                                                                              Object {
+                                                                                                                "icon": Array [
+                                                                                                                  512,
+                                                                                                                  512,
+                                                                                                                  Array [],
+                                                                                                                  "f059",
+                                                                                                                  "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                                                                                ],
+                                                                                                                "iconName": "question-circle",
+                                                                                                                "prefix": "fas",
+                                                                                                              }
                                                                                                             }
-                                                                                                          }
-                                                                                                          inverse={false}
-                                                                                                          listItem={false}
-                                                                                                          mask={null}
-                                                                                                          pull={null}
-                                                                                                          pulse={false}
-                                                                                                          rotation={null}
-                                                                                                          size="1x"
-                                                                                                          spin={false}
-                                                                                                          style={Object {}}
-                                                                                                          swapOpacity={false}
-                                                                                                          symbol={false}
-                                                                                                          title=""
-                                                                                                          transform={null}
-                                                                                                        >
-                                                                                                          <svg
-                                                                                                            aria-hidden="true"
-                                                                                                            className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                                                                            data-icon="question-circle"
-                                                                                                            data-prefix="fas"
-                                                                                                            focusable="false"
-                                                                                                            role="img"
+                                                                                                            inverse={false}
+                                                                                                            listItem={false}
+                                                                                                            mask={null}
+                                                                                                            pull={null}
+                                                                                                            pulse={false}
+                                                                                                            rotation={null}
+                                                                                                            size="1x"
+                                                                                                            spin={false}
                                                                                                             style={Object {}}
-                                                                                                            viewBox="0 0 512 512"
-                                                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                                                            swapOpacity={false}
+                                                                                                            symbol={false}
+                                                                                                            title=""
+                                                                                                            transform={null}
                                                                                                           >
-                                                                                                            <path
-                                                                                                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                                                              fill="currentColor"
+                                                                                                            <svg
+                                                                                                              aria-hidden="true"
+                                                                                                              className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                                                                                              data-icon="question-circle"
+                                                                                                              data-prefix="fas"
+                                                                                                              focusable="false"
+                                                                                                              role="img"
                                                                                                               style={Object {}}
-                                                                                                            />
-                                                                                                          </svg>
-                                                                                                        </FontAwesomeIcon>
-                                                                                                        <Overlay
-                                                                                                          animation={[Function]}
-                                                                                                          placement="right"
-                                                                                                          rootClose={false}
-                                                                                                          show={false}
-                                                                                                        >
+                                                                                                              viewBox="0 0 512 512"
+                                                                                                              xmlns="http://www.w3.org/2000/svg"
+                                                                                                            >
+                                                                                                              <path
+                                                                                                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                                                                fill="currentColor"
+                                                                                                                style={Object {}}
+                                                                                                              />
+                                                                                                            </svg>
+                                                                                                          </FontAwesomeIcon>
                                                                                                           <Overlay
+                                                                                                            animation={[Function]}
                                                                                                             placement="right"
                                                                                                             rootClose={false}
                                                                                                             show={false}
-                                                                                                            transition={[Function]}
-                                                                                                          />
-                                                                                                        </Overlay>
-                                                                                                      </span>
-                                                                                                    </Component>
-                                                                                                  </span>
-                                                                                                </DomainFieldLabel>
+                                                                                                          >
+                                                                                                            <Overlay
+                                                                                                              placement="right"
+                                                                                                              rootClose={false}
+                                                                                                              show={false}
+                                                                                                              transition={[Function]}
+                                                                                                            />
+                                                                                                          </Overlay>
+                                                                                                        </span>
+                                                                                                      </Component>
+                                                                                                    </span>
+                                                                                                  </DomainFieldLabel>
+                                                                                                </div>
                                                                                               </div>
-                                                                                            </div>
-                                                                                          </Col>
-                                                                                        </div>
-                                                                                      </Row>
-                                                                                      <Row
-                                                                                        bsClass="row"
-                                                                                        componentClass="div"
-                                                                                      >
-                                                                                        <div
-                                                                                          className="row"
+                                                                                            </Col>
+                                                                                          </div>
+                                                                                        </Row>
+                                                                                        <Row
+                                                                                          bsClass="row"
+                                                                                          componentClass="div"
                                                                                         >
-                                                                                          <Col
-                                                                                            bsClass="col"
-                                                                                            className="domain-text-options-col"
-                                                                                            componentClass="div"
-                                                                                            xs={12}
+                                                                                          <div
+                                                                                            className="row"
                                                                                           >
-                                                                                            <div
-                                                                                              className="domain-text-options-col col-xs-12"
+                                                                                            <Col
+                                                                                              bsClass="col"
+                                                                                              className="domain-text-options-col"
+                                                                                              componentClass="div"
+                                                                                              xs={12}
                                                                                             >
-                                                                                              <FormControl
-                                                                                                bsClass="form-control"
-                                                                                                checked={false}
-                                                                                                className="domain-text-option-scannable"
-                                                                                                componentClass="input"
-                                                                                                disabled={false}
-                                                                                                id="domainpropertiesrow-scannable-0-0"
-                                                                                                name="domainpropertiesrow-scannable"
-                                                                                                onChange={[Function]}
-                                                                                                type="checkbox"
+                                                                                              <div
+                                                                                                className="domain-text-options-col col-xs-12"
                                                                                               >
-                                                                                                <input
+                                                                                                <FormControl
+                                                                                                  bsClass="form-control"
                                                                                                   checked={false}
-                                                                                                  className="domain-text-option-scannable form-control"
+                                                                                                  className="domain-text-option-scannable"
+                                                                                                  componentClass="input"
                                                                                                   disabled={false}
                                                                                                   id="domainpropertiesrow-scannable-0-0"
                                                                                                   name="domainpropertiesrow-scannable"
                                                                                                   onChange={[Function]}
                                                                                                   type="checkbox"
-                                                                                                />
-                                                                                              </FormControl>
-                                                                                              <span>
-                                                                                                Search this field when scanning samples
-                                                                                              </span>
-                                                                                            </div>
-                                                                                          </Col>
-                                                                                        </div>
-                                                                                      </Row>
+                                                                                                >
+                                                                                                  <input
+                                                                                                    checked={false}
+                                                                                                    className="domain-text-option-scannable form-control"
+                                                                                                    disabled={false}
+                                                                                                    id="domainpropertiesrow-scannable-0-0"
+                                                                                                    name="domainpropertiesrow-scannable"
+                                                                                                    onChange={[Function]}
+                                                                                                    type="checkbox"
+                                                                                                  />
+                                                                                                </FormControl>
+                                                                                                <span>
+                                                                                                  Search this field when scanning samples
+                                                                                                </span>
+                                                                                              </div>
+                                                                                            </Col>
+                                                                                          </div>
+                                                                                        </Row>
+                                                                                      </Memo()>
                                                                                     </div>
                                                                                   </TextFieldOptions>
                                                                                 </div>
@@ -5287,6 +5424,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "rangeValidators": Immutable.List [],
                                                                                         "rangeURI": undefined,
                                                                                         "regexValidators": Immutable.List [],
+                                                                                        "textChoiceValidator": undefined,
                                                                                         "recommendedVariable": false,
                                                                                         "required": false,
                                                                                         "scale": 4000,
@@ -5328,6 +5466,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                             "lookupSchema": undefined,
                                                                                             "lookupQuery": undefined,
                                                                                           },
+                                                                                          "name": "testfield",
                                                                                           "rangeURI": undefined,
                                                                                         },
                                                                                         "updatedField": false,
@@ -5728,6 +5867,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "hideConditionalFormatting": true,
                                                                                         "hideStudyPropertyTypes": true,
                                                                                         "showScannableOption": true,
+                                                                                        "textChoiceLockedSqlFragment": "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
                                                                                       }
                                                                                     }
                                                                                     domainIndex={0}
@@ -5760,6 +5900,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "rangeValidators": Immutable.List [],
                                                                                         "rangeURI": undefined,
                                                                                         "regexValidators": Immutable.List [],
+                                                                                        "textChoiceValidator": undefined,
                                                                                         "recommendedVariable": false,
                                                                                         "required": false,
                                                                                         "scale": 4000,
@@ -5801,6 +5942,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                             "lookupSchema": undefined,
                                                                                             "lookupQuery": undefined,
                                                                                           },
+                                                                                          "name": "testfield",
                                                                                           "rangeURI": undefined,
                                                                                         },
                                                                                         "updatedField": false,
@@ -6108,6 +6250,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           </DomainFormImpl>
         </LookupProvider>
       </DomainForm>
+      <NameExpressionValidationModal
+        onConfirm={[Function]}
+        onHide={[Function]}
+        show={false}
+      />
       <div
         className="domain-form-panel domain-designer-buttons"
       >

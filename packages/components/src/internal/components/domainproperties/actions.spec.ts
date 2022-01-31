@@ -43,7 +43,7 @@ import {
     updateDataType,
     updateDomainField,
 } from './actions';
-import { DomainDesign, DomainException, DomainField } from './models';
+import { DEFAULT_TEXT_CHOICE_VALIDATOR, DomainDesign, DomainException, DomainField } from './models';
 import {
     ATTACHMENT_TYPE,
     DATETIME_TYPE,
@@ -58,6 +58,7 @@ import {
     UNIQUE_ID_TYPE,
     BOOLEAN_TYPE,
     USERS_TYPE,
+    TEXT_CHOICE_TYPE,
 } from './PropDescType';
 import {
     CONCEPT_CODE_CONCEPT_URI,
@@ -67,6 +68,7 @@ import {
     FIELD_NAME_CHAR_WARNING_MSG,
     FLAG_CONCEPT_URI,
     INT_RANGE_URI,
+    MAX_TEXT_LENGTH,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
@@ -335,6 +337,7 @@ describe('domain properties actions', () => {
             allowFileLinkProperties: true,
             allowAttachmentProperties: true,
             allowTimepointProperties: true,
+            allowTextChoiceProperties: true,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeTruthy();
@@ -345,6 +348,7 @@ describe('domain properties actions', () => {
         expect(available.contains(VISIT_DATE_TYPE)).toBeTruthy();
         expect(available.contains(VISIT_ID_TYPE)).toBeTruthy();
         expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
+        expect(available.contains(TEXT_CHOICE_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypes, no optional allowed', () => {
@@ -353,6 +357,7 @@ describe('domain properties actions', () => {
             allowFileLinkProperties: false,
             allowAttachmentProperties: false,
             allowTimepointProperties: false,
+            allowTextChoiceProperties: false,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeFalsy();
@@ -363,6 +368,7 @@ describe('domain properties actions', () => {
         expect(available.contains(VISIT_DATE_TYPE)).toBeFalsy();
         expect(available.contains(VISIT_ID_TYPE)).toBeFalsy();
         expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
+        expect(available.contains(TEXT_CHOICE_TYPE)).toBeFalsy();
     });
 
     test('getAvailableTypesForOntology', async () => {
@@ -540,8 +546,7 @@ describe('domain properties actions', () => {
 
         const emptinessError = {
             success: false,
-            msg:
-                'No field definitions were found in the imported json file. Please check the file contents and try again.',
+            msg: 'No field definitions were found in the imported json file. Please check the file contents and try again.',
         };
         expect(processJsonImport('[]', domain)).toStrictEqual(emptinessError);
         expect(processJsonImport('{}', domain)).toStrictEqual(emptinessError);
@@ -552,13 +557,11 @@ describe('domain properties actions', () => {
 
         const primaryKeyErrorAssay = {
             success: false,
-            msg:
-                "Error on importing field 'undefined': Assay domain type does not support fields with an externally defined Primary Key.",
+            msg: "Error on importing field 'undefined': Assay domain type does not support fields with an externally defined Primary Key.",
         };
         const primaryKeyError = {
             success: false,
-            msg:
-                "Error on importing field 'undefined': This domain type does not support fields with an externally defined Primary Key.",
+            msg: "Error on importing field 'undefined': This domain type does not support fields with an externally defined Primary Key.",
         };
         expect(
             processJsonImport(
@@ -652,6 +655,45 @@ describe('domain properties actions', () => {
         expect(field.conceptSubtree).toBeUndefined();
         expect(field.conceptLabelColumn).toBeUndefined();
         expect(field.conceptImportColumn).toBeUndefined();
+    });
+
+    test('updateDataType clear textChoiceValidator props on change', () => {
+        let field = DomainField.create({
+            rangeURI: TEXT_CHOICE_TYPE.rangeURI,
+            conceptURI: TEXT_CHOICE_TYPE.conceptURI,
+            propertyValidators: [DEFAULT_TEXT_CHOICE_VALIDATOR.toJS()],
+        });
+        expect(field.dataType).toBe(TEXT_CHOICE_TYPE);
+        expect(field.textChoiceValidator).toBeDefined();
+
+        field = updateDataType(field, 'boolean');
+        expect(field.dataType).toBe(BOOLEAN_TYPE);
+        expect(field.textChoiceValidator).toBeUndefined();
+    });
+
+    test('updateDataType textChoice', () => {
+        let field = DomainField.create({
+            propertyValidators: [
+                { type: 'Range', name: 'Range Validator', expression: '' },
+                { type: 'RegEx', name: 'RegEx Validator', expression: '' },
+                { type: 'Lookup', name: 'Lookup Validator', expression: '' },
+            ],
+            scale: 10,
+        });
+        expect(field.dataType).toBe(TEXT_TYPE);
+        expect(field.scale).toBe(10);
+        expect(field.lookupValidator).toBeDefined();
+        expect(field.rangeValidators.size).toBe(1);
+        expect(field.regexValidators.size).toBe(1);
+        expect(field.textChoiceValidator).toBeUndefined();
+
+        field = updateDataType(field, 'textChoice');
+        expect(field.dataType).toBe(TEXT_CHOICE_TYPE);
+        expect(field.scale).toBe(MAX_TEXT_LENGTH);
+        expect(field.lookupValidator).toBeUndefined();
+        expect(field.rangeValidators.size).toBe(0);
+        expect(field.regexValidators.size).toBe(0);
+        expect(field.textChoiceValidator).toBe(DEFAULT_TEXT_CHOICE_VALIDATOR);
     });
 
     test('updateDataType isLookup', () => {

@@ -6,6 +6,132 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update `PageDetailHeader` with option to use `EditInlineField` instead of `FieldEditorOverlay`
 * Add simple action for doing update rows on a single field (callback helper for `EditInlineField`).
 
+### version 2.121.4
+*Released*: 28 January 2022
+* Item 9970: QueryFormInput change showQuerySelectPreviewOptions default prop value to false
+  * Update SampleStatusInput component QuerySelect previewOptions prop to false as well
+
+### version 2.121.3
+*Released*: 27 January 2022
+* Merge release21.11-SNAPSHOT to develop (part 2)
+    * Includes changes from versions 2.90.4
+
+### version 2.121.2
+*Released*: 25 January 2022
+* Issue 44721: make sorting methods defensive against non-string values
+
+### version 2.121.1
+*Released*: 24 January 2022
+* Item 9875: Add AssayDefinitionModel requireCommentOnQCStateChange prop
+
+### version 2.121.0
+*Released*: 21 January 2022
+* Update `SampleTypeTabbedGridPanel` to show row count on tabs
+* Added utility `isSamplesSchema` to check for `exp.materials` and `samples.X`
+* Updates to `SampleFinderSection` for showing filtered tabbed grids
+* Fix for Issue #44339 to allow create operations on selections from the "All Samples" grid in the tabbed grid.
+* Consolidate logic for `ViewSelector` and `ViewsMenu` for finding views to include in menu
+* Move `getSampleTypes` method here from inventory module and add `getSelectedSampleTypes` utility action
+
+### version 2.120.1
+*Released*: 20 January 2022
+* Increase z-index of react-datepicker popover
+
+### version 2.120.0
+*Released*: 19 January 2022
+* Declare and export the `UPDATE_USER` redux action and wire up updates via reducer.
+
+### version 2.119.0
+*Released*: 14 January 2022
+* Issue 44511: Ability to change a field's data type to known safe alternatives
+
+### version 2.118.1
+*Released*: 14 January 2022
+* Share asynchronous upload functionality across LKB and LKSM by pulling relevant code into ui-components
+
+### version 2.117.1
+*Released*: 13 January 2022
+* Item #9810: Consumed Status/Discarding Sample
+  * Added DiscardConsumedSamples, DiscardConsumedSamplesModal and SampleStatusInput components
+  * Modified SamplesEditableGrid, SamplesBulkUpdateForm and SampleDetailEditing to allow discarding consumed samples
+
+### version 2.116.0
+*Released*: 10 January 2022
+* Refactor EditableGrid to be QueryGridModel agnostic
+* Add EditableGridPanel component, which is compatible with QueryModel
+* Refactor AssayImportPanels/RunDataPanel to use EditableGridPanel and no longer use QueryGridModel
+* Delete AssayUploadGridLoader
+  * EditableGridPanel removes the need for overloading GridLoaders to instantiate models
+
+### version 2.115.2
+*Released*: 7 January 2022
+* Fix unhandled promises
+  * most are addressed by adding test mock initialization
+  * address <AssignmentOptions/> in Issues by refactoring how erroneous requests are handled
+
+### version 2.115.1
+*Released*: 5 January 2022
+* Escape typings of some built-in React HTML types
+
+### version 2.115.0
+*Released*: 5 January 2022
+* Item 9846: Text Choice value type ahead search
+
+### version 2.114.0
+*Released*: 4 January 2022
+* Added getGenId and setGenId utils
+* Added NameExpressionGenIdBanner
+
+### version 2.113.0
+*Released*: 4 January 2022
+* Foundational work for Sample Finder feature development.
+  * Add experimental feature flag
+  * Update FindAndSearch menu
+  * Move SearchBox and related components into the search directory
+
+### version 2.112.0
+*Released*: 30 December 2021
+* Item #9782: Text Choice data type support for field editor updates to in-use values
+  * update to query to get in-use text choice values so that it includes "locked" and row count
+  * provide SQL fragment from sample type domain for how to determine "locked" text choice values
+  * update text choice listing icons and selected value display for info on updates and hover text
+  * send text choice value updates for in-use values to the server as part of POST to update domain
+  * prevent text choice updates and add values modal apply for duplicates and empty strings
+
+### version 2.111.1
+*Released*: 29 December 2021
+* Issue #44567: Hide scannable option for floating point fields due to improper matching.
+
+### version 2.111.0
+*Released*: 24 December 2021
+* Edit Sample Type and Data Class's Naming Pattern Prefix Expression alteration warning message
+
+### version 2.110.0
+*Released*: 23 December 2021
+* Item #9633: Add scannable option to SampleType numeric fields for LabKey apps
+    * Refactored scannable option from `TextFieldOptions` into new `ScannableOption` component
+    * Added ScannableOption to `NumericFieldOptions`
+
+### version 2.109.0
+*Released*: 23 December 2021
+* SampleTypeDesigner and DataClassDesigner
+   * Validate name expressions prior to save
+   * Show name preview on hover
+* Added DesignerDetailPanel to show name preview for designer details panel
+* EntityInsertPanel: show name preview on tooltip, hide double tooltip
+
+### version 2.108.0
+*Released*: 22 December 2021
+* Item 9758: Field editor "Text Choice" data type and UI to create, update, delete field options/values
+    * RegEx validator modal fix for “Fail validation when pattern matches field value” checked state on initialization
+    * factor out ChoicesListItem to re-use in list group cases (TextChoiceOptions, ChoosePicklistModal, ManageSasmpleStatusesPanel)
+    * field editor row addition of "Text Choice" data type and "Text Choice Options" section in expanded row
+    * field editor row updates for selected "Text Choice" data type: reset some field options set for other types, hide regex validator UI, hide text options UI
+    * factor out DomainRowWarning to re-use between name special character type warnings and empty text choice values details display
+    * TextChoiceAddValuesModal for add case and check for max allowed values
+    * domain design model parsing for loading existing field property validators for text choice fields
+    * show TextChoiceInput in EditableGrid cell for column with validValues
+
 ### version 2.107.1
 *Released*: 22 December 2021
 * Remove experimental feature flag for enabling SM product navigation in Biologics folders
@@ -146,6 +272,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Export invalidateQueryDetailsCache
   * Provides containerPath-sensitive cache clearing
 * Announcements: support supplying containerPath
+
+### version 2.90.4
+*Released*: 21 January 2022
+* Item 9818: Lineage graph details panel updates to show object input/outputs and run step provenance map
+    * update Lineage related models for provenanceMap, objectInputs, and objectOutputs
+    * display Object Inputs and Object Outputs as collapsible details list (next to Material and Data Inputs/Outputs)
+    * use run step protocol name instead of step name for title
+    * update Run Step display to use tabs for Step Details and Provenance Map
+    * render Run Step provenance map as <Grid> with from/to info
 
 ### version 2.90.3
 *Released*: 10 November 2021

@@ -21,12 +21,16 @@ import {
     AssayDomainTypes,
     AssayStateModel,
     Container,
+    EntityDataType,
     GENERAL_ASSAY_PROVIDER_NAME,
     IFile,
     LoadingState,
     QueryInfo,
+    SchemaQuery,
 } from '../..';
 import { AssayWizardModel } from '../../internal/components/assay/AssayWizardModel';
+
+import { DELETE_SAMPLES_TOPIC } from '../../internal/util/helpLinks';
 
 import assayWizardJSON from './assayWizardModel.json';
 
@@ -58,7 +62,7 @@ export const ASSAY_WIZARD_MODEL = new AssayWizardModel({
     assayDef: ASSAY_DEFINITION_MODEL,
     batchColumns: ASSAY_DEFINITION_MODEL.getDomainColumns(AssayDomainTypes.BATCH),
     runColumns: ASSAY_DEFINITION_MODEL.getDomainColumns(AssayDomainTypes.RUN),
-    queryInfo: QueryInfo.create(assayWizardJSON.queryInfo),
+    queryInfo: QueryInfo.fromJSON(assayWizardJSON.queryInfo),
 });
 
 export const FILES_DATA = List<IFile>([
@@ -429,3 +433,25 @@ export const TEST_FOLDER_CONTAINER = new Container({
     title: 'Test Folder Container',
     type: 'folder',
 });
+
+export const TestTypeDataType: EntityDataType = {
+    typeListingSchemaQuery: SchemaQuery.create('TestListing', 'query'),
+    listingSchemaQuery: SchemaQuery.create('Test', 'query'),
+    instanceSchemaName: 'TestSchema',
+    operationConfirmationActionName: 'test-delete-confirmation.api',
+    nounSingular: 'test',
+    nounPlural: 'tests',
+    nounAsParentSingular: 'test Parent',
+    typeNounSingular: 'Test Type',
+    descriptionSingular: 'parent test type',
+    descriptionPlural: 'parent test types',
+    uniqueFieldKey: 'Name',
+    dependencyText: 'test data dependencies',
+    deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
+    inputColumnName: 'Inputs/Materials/First',
+    inputTypeValueField: 'lsid',
+    insertColumnNamePrefix: 'MaterialInputs/',
+    editTypeAppUrlPrefix: 'Test',
+    importFileAction: 'importSamples',
+    filterCardHeaderClass: 'filter-card__header-success',
+};

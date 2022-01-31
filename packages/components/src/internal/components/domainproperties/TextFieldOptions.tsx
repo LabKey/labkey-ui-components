@@ -1,8 +1,6 @@
 import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
-import classNames from 'classnames';
-
 import { createFormInputId, createFormInputName, getNameFromId } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
 import {
@@ -13,15 +11,12 @@ import {
     MAX_TEXT_LENGTH,
     UNLIMITED_TEXT_LENGTH,
 } from './constants';
-import { ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
+import { ScannableOption, ScannableProps } from './ScannableOption';
 
-interface TextFieldProps extends ITypeDependentProps {
+interface TextFieldProps extends ScannableProps {
     scale: number;
-    scannable?: boolean;
-    appPropertiesOnly?: boolean;
-    showScannableOption?: boolean;
 }
 
 export interface TextFieldState {
@@ -70,57 +65,11 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
         }
     };
 
-    handleScannableOptionToggle = (event: any): void => {
-        const { onChange } = this.props;
-        const target = event.target;
-
-        onChange?.(target.id, target.checked);
-    };
-
     getMaxCountHelpText = () => {
         return (
             <>
                 <p>Sets the maximum character count for a text field.</p>
                 <p>Anything over 4,000 characters will use the 'Unlimited' designation.</p>
-            </>
-        );
-    };
-
-    renderIsScannableOption = () => {
-        const { domainIndex, index, lockType, scannable = false, appPropertiesOnly, showScannableOption } = this.props;
-        if (!appPropertiesOnly || !showScannableOption) return undefined;
-
-        return (
-            <>
-                <Row>
-                    <Col xs={3}>
-                        <div className="domain-field-label">
-                            <DomainFieldLabel
-                                label="Barcode Field"
-                                helpTipBody={
-                                    'When using the Find Samples dialog from the search bar and choosing the\n' +
-                                    '                                        "Barcodes" option, text fields\n' +
-                                    '                                        that are designated as Barcode fields will be queried\n' +
-                                    '                                        along with any UniqueId fields for this sample type.'
-                                }
-                            />
-                        </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12} className="domain-text-options-col">
-                        <FormControl
-                            type="checkbox"
-                            id={createFormInputId(DOMAIN_FIELD_SCANNABLE_OPTION, domainIndex, index)}
-                            name={createFormInputName(DOMAIN_FIELD_SCANNABLE_OPTION)}
-                            className="domain-text-option-scannable"
-                            onChange={this.handleScannableOptionToggle}
-                            disabled={isFieldFullyLocked(lockType)}
-                            checked={scannable}
-                        />
-                        <span>Search this field when scanning samples</span>
-                    </Col>
-                </Row>
             </>
         );
     };
@@ -183,7 +132,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                         </span>
                     </Col>
                 </Row>
-                {this.renderIsScannableOption()}
+                <ScannableOption {...this.props} />
             </div>
         );
     }

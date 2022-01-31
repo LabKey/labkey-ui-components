@@ -2,18 +2,25 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
 import { List } from 'immutable';
 
+import { Domain } from '@labkey/api';
+
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, loadNameExpressionOptions, resolveErrorMessage } from '../../../..';
 import { DomainDesign, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
-import { getDomainPanelStatus, saveDomain } from '../actions';
+import { getDomainPanelStatus, saveDomain, validateDomainNameExpressions } from '../actions';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
 import { isSampleManagerEnabled } from '../../../app/utils';
+
+import { NameExpressionValidationModal } from '../validation/NameExpressionValidationModal';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
 
 interface Props {
+    api?: ComponentsAPIWrapper;
     nounSingular?: string;
     nounPlural?: string;
     nameExpressionInfoUrl?: string;
@@ -35,18 +42,25 @@ interface Props {
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
     loadNameExpressionOptions?: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
+    validateNameExpressions?: boolean;
+    showGenIdBanner?: boolean;
 }
 
 interface State {
     model: DataClassModel;
+    nameExpressionWarnings: string[];
+    namePreviews: string[];
+    namePreviewsLoading: boolean;
 }
 
 class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     static defaultProps = {
+        api: getDefaultAPIWrapper(),
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
         domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'data class' },
         loadNameExpressionOptions,
+        validateNameExpressions: true,
     };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
@@ -55,6 +69,9 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         this.state = produce(
             {
                 model: props.initModel || DataClassModel.create({}),
+                nameExpressionWarnings: undefined,
+                namePreviews: undefined,
+                namePreviewsLoading: false,
             },
             () => {}
         );
@@ -97,15 +114,11 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }
     };
 
-    saveDomain = (): void => {
-        const { setSubmitting, beforeFinish } = this.props;
+    finishSave = () => {
+        const { setSubmitting } = this.props;
         const { model } = this.state;
 
-        if (beforeFinish) {
-            beforeFinish(model);
-        }
-
-        saveDomain(model.domain, 'DataClass', model.options, model.name)
+        saveDomain(model.domain, Domain.KINDS.DATA_CLASS, model.options, model.name)
             .then(response => {
                 setSubmitting(false, () => {
                     this.saveModel({ domain: response, exception: undefined }, () => {
@@ -124,6 +137,42 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     }
                 });
             });
+    };
+
+    saveDomain = (hasConfirmedNameExpression?: boolean): void => {
+        const { setSubmitting, beforeFinish, api } = this.props;
+        const { model } = this.state;
+
+        if (beforeFinish) {
+            beforeFinish(model);
+        }
+
+        if (this.props.validateNameExpressions && !hasConfirmedNameExpression) {
+            api.domain
+                .validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
+                .then(response => {
+                    if (response.errors?.length > 0 || response.warnings?.length > 0) {
+                        setSubmitting(false, () => {
+                            this.saveModel({ exception: response.errors?.join('\n') });
+                            this.setState({
+                                nameExpressionWarnings: response.warnings,
+                                namePreviews: response.previews,
+                            });
+                        });
+                    } else this.finishSave();
+                })
+                .catch(response => {
+                    const exception = resolveErrorMessage(response);
+
+                    setSubmitting(false, () => {
+                        this.saveModel({ exception });
+                    });
+                });
+        }
+
+        if (this.props.validateNameExpressions && !hasConfirmedNameExpression) return;
+
+        this.finishSave();
     };
 
     saveModel = (modelOrProps: DataClassModel | Partial<DataClassModelConfig>, callback?: () => void): void => {
@@ -160,6 +209,49 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         });
     };
 
+    onNameExpressionWarningCancel = (): void => {
+        const { setSubmitting } = this.props;
+
+        setSubmitting(false, () => {
+            this.setState({
+                nameExpressionWarnings: undefined,
+            });
+        });
+    };
+
+    onNameExpressionWarningConfirm = (): void => {
+        this.setState(
+            () => ({
+                nameExpressionWarnings: undefined,
+            }),
+            () => this.saveDomain(true)
+        );
+    };
+
+    onNameFieldHover = () => {
+        const { api } = this.props;
+        const { model, namePreviewsLoading } = this.state;
+
+        if (namePreviewsLoading) return;
+
+        if (this.props.validateNameExpressions) {
+            api.domain
+                .validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
+                .then(response => {
+                    this.setState(() => ({
+                        namePreviewsLoading: false,
+                        namePreviews: response?.previews,
+                    }));
+                })
+                .catch(response => {
+                    console.error(response);
+                    this.setState(() => ({
+                        namePreviewsLoading: false,
+                    }));
+                });
+        }
+    };
+
     render(): ReactNode {
         const {
             onCancel,
@@ -182,8 +274,9 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             helpTopic,
             testMode,
             domainFormDisplayOptions,
+            showGenIdBanner,
         } = this.props;
-        const { model } = this.state;
+        const { model, nameExpressionWarnings, namePreviews, namePreviewsLoading } = this.state;
 
         return (
             <BaseDomainDesigner
@@ -218,6 +311,18 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                         onTogglePanel(0, collapsed, callback);
                     }}
                     useTheme={useTheme}
+                    namePreviewsLoading={namePreviewsLoading}
+                    previewName={namePreviews?.[0]}
+                    onNameFieldHover={this.onNameFieldHover}
+                    nameExpressionGenIdProps={
+                        showGenIdBanner
+                            ? {
+                                  dataTypeName: model.name,
+                                  rowId: model.rowId,
+                                  kindName: 'DataClass',
+                              }
+                            : undefined
+                    }
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}
@@ -241,6 +346,13 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     successBsStyle={successBsStyle}
                     testMode={testMode}
                     domainFormDisplayOptions={domainFormDisplayOptions}
+                />
+                <NameExpressionValidationModal
+                    onHide={this.onNameExpressionWarningCancel}
+                    onConfirm={this.onNameExpressionWarningConfirm}
+                    warnings={nameExpressionWarnings}
+                    previews={namePreviews}
+                    show={!!nameExpressionWarnings && !model.exception}
                 />
             </BaseDomainDesigner>
         );

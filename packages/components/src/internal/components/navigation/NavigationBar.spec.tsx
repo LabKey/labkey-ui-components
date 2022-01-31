@@ -26,12 +26,13 @@ import { ServerNotificationModel } from '../notifications/model';
 
 import { ProductNavigation } from '../productnavigation/ProductNavigation';
 
+import { SearchBox } from '../search/SearchBox';
+
 import { MenuSectionModel, ProductMenuModel } from './model';
 
 import { NavigationBar } from './NavigationBar';
 import { UserMenu } from './UserMenu';
 import { ProductMenu } from './ProductMenu';
-import { SearchBox } from './SearchBox';
 
 beforeEach(() => {
     LABKEY.devMode = false;

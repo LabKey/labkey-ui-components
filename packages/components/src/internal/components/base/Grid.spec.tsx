@@ -18,7 +18,8 @@ import { fromJS, List } from 'immutable';
 import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import { Grid, GridColumn } from './Grid';
+import { Grid } from './Grid';
+import {GridColumn} from "./models/GridColumn";
 
 const gridData = fromJS([
     {

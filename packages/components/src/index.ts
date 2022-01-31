@@ -19,6 +19,7 @@ import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceUR
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
+import { GridColumn } from './internal/components/base/models/GridColumn';
 import { getSchemaQuery, resolveKey, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
@@ -100,7 +101,7 @@ import { PageHeader } from './internal/components/base/PageHeader';
 import { Progress } from './internal/components/base/Progress';
 import { LabelHelpTip } from './internal/components/base/LabelHelpTip';
 import { Tip } from './internal/components/base/Tip';
-import { Grid, GridColumn } from './internal/components/base/Grid';
+import { Grid } from './internal/components/base/Grid';
 import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
 import { ContentGroup, ContentGroupLabel } from './internal/components/base/ContentGroup';

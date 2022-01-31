@@ -1,13 +1,12 @@
 import React, {FC, memo} from "react";
 
+import { LoadingSpinner, caseInsensitive, SCHEMAS } from '../../../';
+
 import {SampleStatusTag} from "./SampleStatusTag";
 import {getSampleStatus} from "./utils";
-import {SCHEMAS} from "../../schemas";
 import {InjectedQueryModels, withQueryModels} from "../../../public/QueryModel/withQueryModels";
 import {QuerySort} from "../../../public/QuerySort";
 import {isLoading} from "../../../public/LoadingState";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {caseInsensitive} from "../../util/utils";
 
 interface OwnProps {}
 

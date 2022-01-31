@@ -96,7 +96,7 @@ export function createPercentageBarData(
             }
         });
 
-        if (unusedLabel && unusedCount > 0) {
+        if (unusedLabel) {
             const unusedPct = (unusedCount/totalCount) * 100;
             const unusedTitle = `${unusedCount.toLocaleString()} of ${totalCount.toLocaleString()} ${itemNounPlural.toLowerCase()} are ${unusedLabel.toLowerCase()}`;
             data.push({

@@ -69,6 +69,10 @@ export class DataClassModel implements DataClassModelConfig {
         return new DataClassModel({ ...raw, domain });
     }
 
+    get containerPath(): string {
+        return this.domain?.container;
+    }
+
     get isNew(): boolean {
         return !this.rowId;
     }

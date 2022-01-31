@@ -109,7 +109,7 @@ export function resolveDetailEditRenderer(
                     <QuerySelect
                         componentId={col.fieldKey}
                         containerFilter={options?.containerFilter}
-                        containerPath={options?.containerPath ?? col.lookup.containerPath}
+                        containerPath={col.lookup.containerPath ?? options?.containerPath}
                         displayColumn={col.lookup.displayColumn}
                         formsy
                         inputClass="col-sm-12"

@@ -27,7 +27,8 @@ export interface DomainPropertiesAPIWrapper {
     hasExistingDomainData: (
         kindName: 'SampleSet' | 'DataClass',
         dataTypeLSID?: string,
-        rowId?: number
+        rowId?: number,
+        containerPath?: string
     ) => Promise<boolean>;
 }
 

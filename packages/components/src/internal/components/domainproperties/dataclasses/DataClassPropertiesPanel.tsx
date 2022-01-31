@@ -69,9 +69,11 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
     state: Readonly<State> = { isValid: true, prefix: undefined, loadingError: undefined };
 
     componentDidMount = async (): Promise<void> => {
+        const { model } = this.props;
+
         if (isSampleManagerEnabled()) {
             try {
-                const response = await loadNameExpressionOptions();
+                const response = await loadNameExpressionOptions(model.containerPath);
                 this.setState({ prefix: response.prefix ?? null });
             } catch (error) {
                 this.setState({ loadingError: 'There was a problem retrieving the Naming Pattern prefix.' });
@@ -95,63 +97,13 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
     };
 
     onFormChange = (evt: any): void => {
-        const id = evt.target.id;
-        const value = evt.target.value;
+        const { id, value } = evt.target;
         this.onChange(id, value);
     };
 
     onChange = (id: string, value: any): void => {
         this.updateValidStatus(this.props.model.mutate({ [getFormNameFromId(id)]: value }));
     };
-
-    renderSampleTypeSelect(): ReactNode {
-        const { model, nounSingular } = this.props;
-
-        return (
-            <Row>
-                <Col xs={2}>
-                    <DomainFieldLabel
-                        label="Sample Type"
-                        helpTipBody={`The default Sample Type where new samples will be created for this ${nounSingular.toLowerCase()}.`}
-                    />
-                </Col>
-                <Col xs={10}>
-                    <QuerySelect
-                        componentId={FORM_IDS.SAMPLE_TYPE_ID}
-                        name={FORM_IDS.SAMPLE_TYPE_ID}
-                        schemaQuery={SCHEMAS.EXP_TABLES.SAMPLE_SETS}
-                        onQSChange={this.onChange}
-                        value={model.sampleSet}
-                        showLabel={false}
-                    />
-                </Col>
-            </Row>
-        );
-    }
-
-    renderCategorySelect(): ReactNode {
-        const { model } = this.props;
-
-        return (
-            <Row>
-                <Col xs={2}>
-                    <DomainFieldLabel label="Category" />
-                </Col>
-                <Col xs={10}>
-                    <QuerySelect
-                        componentId={FORM_IDS.CATEGORY}
-                        name={FORM_IDS.CATEGORY}
-                        schemaQuery={SCHEMAS.EXP_TABLES.DATA_CLASS_CATEGORY_TYPE}
-                        displayColumn="Value"
-                        valueColumn="Value"
-                        onQSChange={this.onChange}
-                        value={model.category}
-                        showLabel={false}
-                    />
-                </Col>
-            </Row>
-        );
-    }
 
     render(): ReactNode {
         const {
@@ -215,8 +167,45 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     onNameFieldHover={onNameFieldHover}
                     nameExpressionGenIdProps={nameExpressionGenIdProps}
                 />
-                {!appPropertiesOnly && this.renderCategorySelect()}
-                {!appPropertiesOnly && this.renderSampleTypeSelect()}
+                {!appPropertiesOnly && (
+                    <Row>
+                        <Col xs={2}>
+                            <DomainFieldLabel label="Category" />
+                        </Col>
+                        <Col xs={10}>
+                            <QuerySelect
+                                componentId={FORM_IDS.CATEGORY}
+                                name={FORM_IDS.CATEGORY}
+                                schemaQuery={SCHEMAS.EXP_TABLES.DATA_CLASS_CATEGORY_TYPE}
+                                displayColumn="Value"
+                                valueColumn="Value"
+                                onQSChange={this.onChange}
+                                value={model.category}
+                                showLabel={false}
+                            />
+                        </Col>
+                    </Row>
+                )}
+                {!appPropertiesOnly && (
+                    <Row>
+                        <Col xs={2}>
+                            <DomainFieldLabel
+                                label="Sample Type"
+                                helpTipBody={`The default Sample Type where new samples will be created for this ${nounSingular.toLowerCase()}.`}
+                            />
+                        </Col>
+                        <Col xs={10}>
+                            <QuerySelect
+                                componentId={FORM_IDS.SAMPLE_TYPE_ID}
+                                name={FORM_IDS.SAMPLE_TYPE_ID}
+                                schemaQuery={SCHEMAS.EXP_TABLES.SAMPLE_SETS}
+                                onQSChange={this.onChange}
+                                value={model.sampleSet}
+                                showLabel={false}
+                            />
+                        </Col>
+                    </Row>
+                )}
             </BasePropertiesPanel>
         );
     }

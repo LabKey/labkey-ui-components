@@ -26,6 +26,7 @@ import {
     QueryColumn,
     SchemaDetails,
     SchemaQuery,
+    SCHEMAS,
 } from '../../..';
 
 import { processSchemas } from '../../schemas';
@@ -403,6 +404,7 @@ export function validateDomainNameExpressions(
         }
 
         Domain.validateNameExpressions({
+            containerPath: domain.container,
             options,
             domainDesign: DomainDesign.serialize(domain),
             kind,
@@ -1210,7 +1212,8 @@ export function getGenId(rowId: number, kindName: 'SampleSet' | 'DataClass', con
 export function hasExistingDomainData(
     kindName: 'SampleSet' | 'DataClass',
     dataTypeLSID?: string,
-    rowId?: number
+    rowId?: number,
+    containerPath?: string
 ): Promise<boolean> {
     let dataCountSql = 'SELECT COUNT(*) AS DataCount FROM ';
 
@@ -1222,7 +1225,8 @@ export function hasExistingDomainData(
 
     return new Promise((resolve, reject) => {
         Query.executeSql({
-            schemaName: 'exp',
+            containerPath,
+            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
             sql: dataCountSql,
             success: async data => {
                 resolve(data.rows[0].DataCount !== 0);

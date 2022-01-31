@@ -8,6 +8,8 @@ import {InjectedQueryModels, withQueryModels} from "../../../public/QueryModel/w
 import {QuerySort} from "../../../public/QuerySort";
 import {isLoading} from "../../../public/LoadingState";
 
+export const SAMPLE_STATUS_LEGEND = 'SampleStatusLegend';
+
 interface OwnProps {}
 
 const SampleStatusLegendImpl: FC<OwnProps & InjectedQueryModels> = memo(props => {
@@ -20,9 +22,11 @@ const SampleStatusLegendImpl: FC<OwnProps & InjectedQueryModels> = memo(props =>
     if (model.rowCount === 0) {
         return (
             <table className="sample-status-legend--table">
-                <tr>
-                    <td>No sample statuses are defined.</td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>No sample statuses are defined.</td>
+                    </tr>
+                </tbody>
             </table>
         );
     }

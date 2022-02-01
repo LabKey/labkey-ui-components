@@ -1,6 +1,8 @@
 import { Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
+import { FileSizeLimitProps } from '../../../public/files/models';
+
 const SAMPLES_IMPORT_PIPELINE_PROVIDER = 'Samples Import';
 const SOURCES_IMPORT_PIPELINE_PROVIDER = 'Sources Import';
 
@@ -12,7 +14,7 @@ export const PIPELINE_PROVIDER_FILTER_LKSM = Filter.create('Provider', PROVIDERS
 
 export const ACTIVE_JOB_INDICATOR_CLS = 'fa-spinner fa-pulse';
 
-export const DATA_IMPORT_FILE_SIZE_LIMITS = Map<string, any>({
+export const DATA_IMPORT_FILE_SIZE_LIMITS = Map<string, FileSizeLimitProps>({
     all: {
         maxPreviewSize: {
             value: 5242880,

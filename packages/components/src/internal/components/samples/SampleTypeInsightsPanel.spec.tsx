@@ -1,15 +1,16 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import {Panel} from "react-bootstrap";
+import { Panel } from 'react-bootstrap';
 
 import { LabelHelpTip, LoadingSpinner } from '../../..';
 
-import {INSIGHTS_MODEL_ID, SampleTypeInsightsPanelImpl, STATUS_COUNTS_MODEL_ID} from './SampleTypeInsightsPanel';
-import {HorizontalBarSection} from "../chart/HorizontalBarSection";
-import {makeTestActions, makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {LoadingState} from "../../../public/LoadingState";
+import { HorizontalBarSection } from '../chart/HorizontalBarSection';
+import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { LoadingState } from '../../../public/LoadingState';
+
+import { INSIGHTS_MODEL_ID, SampleTypeInsightsPanelImpl, STATUS_COUNTS_MODEL_ID } from './SampleTypeInsightsPanel';
 
 describe('SampleTypeInsightsPanel', () => {
     const SQ = SchemaQuery.create('schema', 'query');
@@ -20,58 +21,65 @@ describe('SampleTypeInsightsPanel', () => {
     const MODEL_INSIGHTS = makeTestQueryModel(
         SQ,
         new QueryInfo(),
-        { 1: {
-            AliquotCount: { value: 3 },
-            CheckedOutCount: { value: 1 },
-            InStorageCount: { value: 4 },
-            NonAliquotCount: { value: 12 },
-            NotInStorageCount: { value: 10 },
-            SampleSet: { value: 'Blood' },
-            TotalCount: { value: 15 },
-        }},
+        {
+            1: {
+                AliquotCount: { value: 3 },
+                CheckedOutCount: { value: 1 },
+                InStorageCount: { value: 4 },
+                NonAliquotCount: { value: 12 },
+                NotInStorageCount: { value: 10 },
+                SampleSet: { value: 'Blood' },
+                TotalCount: { value: 15 },
+            },
+        },
         ['1'],
         1
     ).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
     const MODEL_STATUS_COUNTS = makeTestQueryModel(
         SQ,
         new QueryInfo(),
-        { 1: {
-            "Status" : {"value" : "Available"},
-            "RowId" : {"value" : 1833},
-            "TotalCount" : {"value" : 2},
-            "WithStatusCount" : {"value" : 2},
-            "Color" : {"value" : "#dff0d8"},
-            "ClassName" : {"value" : "bar-insights--available"},
-            "NoStatusCount" : {"value" : 0},
-            "Name" : {"value" : "b"}
-        }, 2: {
-            "Status" : {"value" : "Consumed"},
-            "RowId" : {"value" : 1833},
-            "TotalCount" : {"value" : 1},
-            "WithStatusCount" : {"value" : 1},
-            "Color" : {"value" : "#faebcc"},
-            "ClassName" : {"value" : "bar-insights--consumed"},
-            "NoStatusCount" : {"value" : 0},
-            "Name" : {"value" : "b"}
-        }, 3: {
-            "Status" : {"value" : "Locked"},
-            "RowId" : {"value" : 1833},
-            "TotalCount" : {"value" : 2},
-            "WithStatusCount" : {"value" : 2},
-            "Color" : {"value" : "#f2dede"},
-            "ClassName" : {"value" : "bar-insights--locked"},
-            "NoStatusCount" : {"value" : 0},
-            "Name" : {"value" : "b"}
-        }, 4: {
-            "Status" : {"value" : "No Status"},
-            "RowId" : {"value" : 1833},
-            "TotalCount" : {"value" : 10},
-            "WithStatusCount" : {"value" : 0},
-            "Color" : {"value" : "#eeeeee"},
-            "ClassName" : {"value" : null},
-            "NoStatusCount" : {"value" : 10},
-            "Name" : {"value" : "b"}
-        }},
+        {
+            1: {
+                Status: { value: 'Available' },
+                RowId: { value: 1833 },
+                TotalCount: { value: 2 },
+                WithStatusCount: { value: 2 },
+                Color: { value: '#dff0d8' },
+                ClassName: { value: 'bar-insights--available' },
+                NoStatusCount: { value: 0 },
+                Name: { value: 'b' },
+            },
+            2: {
+                Status: { value: 'Consumed' },
+                RowId: { value: 1833 },
+                TotalCount: { value: 1 },
+                WithStatusCount: { value: 1 },
+                Color: { value: '#faebcc' },
+                ClassName: { value: 'bar-insights--consumed' },
+                NoStatusCount: { value: 0 },
+                Name: { value: 'b' },
+            },
+            3: {
+                Status: { value: 'Locked' },
+                RowId: { value: 1833 },
+                TotalCount: { value: 2 },
+                WithStatusCount: { value: 2 },
+                Color: { value: '#f2dede' },
+                ClassName: { value: 'bar-insights--locked' },
+                NoStatusCount: { value: 0 },
+                Name: { value: 'b' },
+            },
+            4: {
+                Status: { value: 'No Status' },
+                RowId: { value: 1833 },
+                TotalCount: { value: 10 },
+                WithStatusCount: { value: 0 },
+                Color: { value: '#eeeeee' },
+                ClassName: { value: null },
+                NoStatusCount: { value: 10 },
+                Name: { value: 'b' },
+            },
+        },
         ['1', '2', '3', '4'],
         4
     ).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
@@ -92,19 +100,29 @@ describe('SampleTypeInsightsPanel', () => {
     }
 
     test('loading', () => {
-        const wrapper = mount(<SampleTypeInsightsPanelImpl {...DEFAULT_PROPS} queryModels={{
-            [INSIGHTS_MODEL_ID]: MODEL_INSIGHTS,
-            [STATUS_COUNTS_MODEL_ID]: MODEL_LOADING,
-        }} />);
+        const wrapper = mount(
+            <SampleTypeInsightsPanelImpl
+                {...DEFAULT_PROPS}
+                queryModels={{
+                    [INSIGHTS_MODEL_ID]: MODEL_INSIGHTS,
+                    [STATUS_COUNTS_MODEL_ID]: MODEL_LOADING,
+                }}
+            />
+        );
         validate(wrapper, true);
         wrapper.unmount();
     });
 
     test('with data', () => {
-        const wrapper = mount(<SampleTypeInsightsPanelImpl {...DEFAULT_PROPS} queryModels={{
-            [INSIGHTS_MODEL_ID]: MODEL_INSIGHTS,
-            [STATUS_COUNTS_MODEL_ID]: MODEL_STATUS_COUNTS,
-        }} />);
+        const wrapper = mount(
+            <SampleTypeInsightsPanelImpl
+                {...DEFAULT_PROPS}
+                queryModels={{
+                    [INSIGHTS_MODEL_ID]: MODEL_INSIGHTS,
+                    [STATUS_COUNTS_MODEL_ID]: MODEL_STATUS_COUNTS,
+                }}
+            />
+        );
         validate(wrapper, false);
         expect(wrapper.find(HorizontalBarSection).at(0).prop('subtitle')).toBe('4 of 15 samples are in storage (26%)');
         const storageStatusData = wrapper.find(HorizontalBarSection).at(0).prop('data');
@@ -128,12 +146,12 @@ describe('SampleTypeInsightsPanel', () => {
         expect(sampleStatusData[0].count).toBe(2);
         expect(sampleStatusData[0].filled).toBe(true);
         expect(sampleStatusData[0].href).toBe('#/samples/b?query.SampleState/Label~eq=Available');
-        expect(sampleStatusData[0].title).toBe('2 \'Available\' samples');
+        expect(sampleStatusData[0].title).toBe("2 'Available' samples");
         expect(sampleStatusData[3].className).toBe(null);
         expect(sampleStatusData[3].count).toBe(10);
         expect(sampleStatusData[3].filled).toBe(false);
         expect(sampleStatusData[3].href).toBe('#/samples/b?query.SampleState/Label~isblank=');
-        expect(sampleStatusData[3].title).toBe('10 \'No Status\' samples');
+        expect(sampleStatusData[3].title).toBe("10 'No Status' samples");
 
         expect(wrapper.find(HorizontalBarSection).at(2).prop('subtitle')).toBe('3 of 15 samples are aliquots (20%)');
         const aliquotData = wrapper.find(HorizontalBarSection).at(2).prop('data');
@@ -151,10 +169,15 @@ describe('SampleTypeInsightsPanel', () => {
     });
 
     test('no data', () => {
-        const wrapper = mount(<SampleTypeInsightsPanelImpl {...DEFAULT_PROPS} queryModels={{
-            [INSIGHTS_MODEL_ID]: MODEL_NO_ROWS,
-            [STATUS_COUNTS_MODEL_ID]: MODEL_NO_ROWS,
-        }} />);
+        const wrapper = mount(
+            <SampleTypeInsightsPanelImpl
+                {...DEFAULT_PROPS}
+                queryModels={{
+                    [INSIGHTS_MODEL_ID]: MODEL_NO_ROWS,
+                    [STATUS_COUNTS_MODEL_ID]: MODEL_NO_ROWS,
+                }}
+            />
+        );
         validate(wrapper, false, false);
         expect(wrapper.find(HorizontalBarSection).at(0).prop('subtitle')).toBe(undefined);
         expect(wrapper.find(HorizontalBarSection).at(0).prop('data')).toStrictEqual([]);

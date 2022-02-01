@@ -1,7 +1,12 @@
-import {AppURL, ISelectRowsResult} from '../../..';
+import { AppURL, ISelectRowsResult } from '../../..';
 import AssayRunCountsRowsJson from '../../../test/data/AssayRunCounts-getQueryRows.json';
 
-import { getBarChartPlotConfig, createPercentageBarData, createHorizontalBarLegendData, processChartData } from './utils';
+import {
+    getBarChartPlotConfig,
+    createPercentageBarData,
+    createHorizontalBarLegendData,
+    processChartData,
+} from './utils';
 
 beforeEach(() => {
     LABKEY.vis = {};
@@ -127,207 +132,219 @@ describe('getBarChartPlotConfig', () => {
     });
 });
 
-describe("createHorizontalBarLegendData", () => {
-    test("all different", () => {
-        expect(createHorizontalBarLegendData([
+describe('createHorizontalBarLegendData', () => {
+    test('all different', () => {
+        expect(
+            createHorizontalBarLegendData([
+                {
+                    title: "22 'Sample Type 1' samples",
+                    name: 'Sample Type 1',
+                    count: 22,
+                    totalCount: 82,
+                    percent: 26.82926829268293,
+                    backgroundColor: 'blue',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1',
+                    filled: true,
+                },
+                {
+                    title: "20 'Sample Type 2' samples",
+                    name: 'Sample Type 2',
+                    count: 20,
+                    totalCount: 82,
+                    percent: 24.390243902439025,
+                    backgroundColor: 'green',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 2',
+                    filled: true,
+                },
+                {
+                    title: "10 'Sample Type 3' samples",
+                    name: 'Sample Type 3',
+                    count: 10,
+                    totalCount: 82,
+                    percent: 12.195121951219512,
+                    backgroundColor: 'red',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 3',
+                    filled: true,
+                },
+                {
+                    title: "30 'Sample Type 4' samples",
+                    name: 'Sample Type 4',
+                    count: 30,
+                    totalCount: 82,
+                    percent: 36.58536585365854,
+                    backgroundColor: 'orange',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 4',
+                    filled: true,
+                },
+            ])
+        ).toStrictEqual([
             {
-                title: "22 'Sample Type 1' samples",
-                name: "Sample Type 1",
-                count: 22,
-                totalCount: 82,
-                percent: 26.82926829268293,
-                backgroundColor: 'blue',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1',
-                filled: true
-            },
-            {
-                title: "20 'Sample Type 2' samples",
-                name: "Sample Type 2",
-                count: 20,
-                totalCount: 82,
-                percent: 24.390243902439025,
-                backgroundColor: 'green',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 2',
-                filled: true
-            },
-            {
-                title: "10 'Sample Type 3' samples",
-                name: "Sample Type 3",
-                count: 10,
-                totalCount: 82,
-                percent: 12.195121951219512,
-                backgroundColor: 'red',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 3',
-                filled: true
-            },
-            {
-                title: "30 'Sample Type 4' samples",
-                name: "Sample Type 4",
-                count: 30,
-                totalCount: 82,
-                percent: 36.58536585365854,
-                backgroundColor: 'orange',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 4',
-                filled: true
-            }])).toStrictEqual([
-            {
-                circleColor: "blue",
+                circleColor: 'blue',
                 backgroundColor: 'none',
-                legendLabel: "Sample Type 1"
+                legendLabel: 'Sample Type 1',
             },
             {
-                circleColor: "green",
+                circleColor: 'green',
                 backgroundColor: 'none',
-                legendLabel: "Sample Type 2"
+                legendLabel: 'Sample Type 2',
             },
             {
-                circleColor: "red",
+                circleColor: 'red',
                 backgroundColor: 'none',
-                legendLabel: "Sample Type 3"
+                legendLabel: 'Sample Type 3',
             },
             {
-                circleColor: "orange",
+                circleColor: 'orange',
                 backgroundColor: 'none',
-                legendLabel: "Sample Type 4"
-            }
+                legendLabel: 'Sample Type 4',
+            },
         ]);
     });
 
-    test("some colors the same", () => {
-        expect(createHorizontalBarLegendData([
+    test('some colors the same', () => {
+        expect(
+            createHorizontalBarLegendData([
+                {
+                    title: "22 'Sample Type 1' samples",
+                    name: 'Sample Type 1',
+                    count: 22,
+                    totalCount: 82,
+                    percent: 26.82926829268293,
+                    backgroundColor: 'blue',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1',
+                    filled: true,
+                },
+                {
+                    title: "20 'Sample Type 2' samples",
+                    name: 'Sample Type 2',
+                    count: 20,
+                    totalCount: 82,
+                    percent: 24.390243902439025,
+                    backgroundColor: 'blue',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 2',
+                    filled: true,
+                },
+                {
+                    title: "10 'Sample Type 3' samples",
+                    name: 'Sample Type 3',
+                    count: 10,
+                    totalCount: 82,
+                    percent: 12.195121951219512,
+                    backgroundColor: 'red',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 3',
+                    filled: true,
+                },
+                {
+                    title: "30 'Sample Type 4' samples",
+                    name: 'Sample Type 4',
+                    count: 30,
+                    totalCount: 82,
+                    percent: 36.58536585365854,
+                    backgroundColor: 'blue',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 4',
+                    filled: true,
+                },
+            ])
+        ).toStrictEqual([
             {
-                title: "22 'Sample Type 1' samples",
-                name: "Sample Type 1",
-                count: 22,
-                totalCount: 82,
-                percent: 26.82926829268293,
-                backgroundColor: 'blue',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1',
-                filled: true
-            },
-            {
-                title: "20 'Sample Type 2' samples",
-                name: "Sample Type 2",
-                count: 20,
-                totalCount: 82,
-                percent: 24.390243902439025,
-                backgroundColor: 'blue',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 2',
-                filled: true
-            },
-            {
-                title: "10 'Sample Type 3' samples",
-                name: "Sample Type 3",
-                count: 10,
-                totalCount: 82,
-                percent: 12.195121951219512,
-                backgroundColor: 'red',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 3',
-                filled: true
-            },
-            {
-                title: "30 'Sample Type 4' samples",
-                name: "Sample Type 4",
-                count: 30,
-                totalCount: 82,
-                percent: 36.58536585365854,
-                backgroundColor: 'blue',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 4',
-                filled: true
-            }])).toStrictEqual([
-            {
-                circleColor: "blue",
+                circleColor: 'blue',
                 backgroundColor: 'none',
-                legendLabel: "Sample Type 1, Sample Type 2, Sample Type 4"
+                legendLabel: 'Sample Type 1, Sample Type 2, Sample Type 4',
             },
             {
-                circleColor: "red",
+                circleColor: 'red',
                 backgroundColor: 'none',
-                legendLabel: "Sample Type 3"
-            }
+                legendLabel: 'Sample Type 3',
+            },
         ]);
     });
 
-    test("repeated types", () => {
-        expect(createHorizontalBarLegendData([
+    test('repeated types', () => {
+        expect(
+            createHorizontalBarLegendData([
+                {
+                    title: "22 'Sample Type 1' samples",
+                    name: 'Sample Type 1',
+                    count: 22,
+                    totalCount: 82,
+                    percent: 26.82926829268293,
+                    backgroundColor: 'blue',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1',
+                    filled: true,
+                },
+                {
+                    title: "20 'Sample Type 1' samples",
+                    name: 'Sample Type 1',
+                    count: 20,
+                    totalCount: 82,
+                    percent: 24.390243902439025,
+                    backgroundColor: 'blue',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1',
+                    filled: true,
+                },
+                {
+                    title: "10 'Sample Type 2' samples",
+                    name: 'Sample Type 2',
+                    count: 10,
+                    totalCount: 82,
+                    percent: 12.195121951219512,
+                    backgroundColor: 'red',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 2',
+                    filled: true,
+                },
+                {
+                    title: "30 'Sample Type 2' samples",
+                    name: 'Sample Type 2',
+                    count: 30,
+                    totalCount: 82,
+                    percent: 36.58536585365854,
+                    backgroundColor: 'red',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 2',
+                    filled: true,
+                },
+            ])
+        ).toStrictEqual([
             {
-                title: "22 'Sample Type 1' samples",
-                name: "Sample Type 1",
-                count: 22,
-                totalCount: 82,
-                percent: 26.82926829268293,
-                backgroundColor: 'blue',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1',
-                filled: true
-            },
-            {
-                title: "20 'Sample Type 1' samples",
-                name: "Sample Type 1",
-                count: 20,
-                totalCount: 82,
-                percent: 24.390243902439025,
-                backgroundColor: 'blue',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1',
-                filled: true
-            },
-            {
-                title: "10 'Sample Type 2' samples",
-                name: "Sample Type 2",
-                count: 10,
-                totalCount: 82,
-                percent: 12.195121951219512,
-                backgroundColor: 'red',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 2',
-                filled: true
-            },
-            {
-                title: "30 'Sample Type 2' samples",
-                name: "Sample Type 2",
-                count: 30,
-                totalCount: 82,
-                percent: 36.58536585365854,
-                backgroundColor: 'red',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 2',
-                filled: true
-            }])).toStrictEqual([
-            {
-                circleColor: "blue",
+                circleColor: 'blue',
                 backgroundColor: 'none',
-                legendLabel: "Sample Type 1"
+                legendLabel: 'Sample Type 1',
             },
             {
-                circleColor: "red",
+                circleColor: 'red',
                 backgroundColor: 'none',
-                legendLabel: "Sample Type 2"
-            }
+                legendLabel: 'Sample Type 2',
+            },
         ]);
     });
 
-    test("some with zero count", () => {
-        expect(createHorizontalBarLegendData([
+    test('some with zero count', () => {
+        expect(
+            createHorizontalBarLegendData([
+                {
+                    title: "22 'Sample Type 1' samples",
+                    name: 'Sample Type 1',
+                    count: 22,
+                    totalCount: 82,
+                    percent: 26.82926829268293,
+                    backgroundColor: 'blue',
+                    href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1',
+                    filled: true,
+                },
+                {
+                    title: 'No samples in storage',
+                    count: 0,
+                    totalCount: 0,
+                    percent: 100,
+                    backgroundColor: 'green',
+                    filled: false,
+                },
+            ])
+        ).toStrictEqual([
             {
-                title: "22 'Sample Type 1' samples",
-                name: "Sample Type 1",
-                count: 22,
-                totalCount: 82,
-                percent: 26.82926829268293,
-                backgroundColor: 'blue',
-                href: '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1',
-                filled: true
-            },
-            {
-                title: "No samples in storage",
-                count: 0,
-                totalCount: 0,
-                percent: 100,
-                backgroundColor: 'green',
-                filled: false
-            }])).toStrictEqual([
-            {
-                circleColor: "blue",
+                circleColor: 'blue',
                 backgroundColor: 'none',
-                legendLabel: "Sample Type 1"
-            }
+                legendLabel: 'Sample Type 1',
+            },
         ]);
     });
 });
@@ -349,39 +366,44 @@ describe('createPercentageBarData', () => {
     test('default props', () => {
         const barData = createPercentageBarData(ROW, 'Samples', 'Not In Storage', 'Total', [IN_STORAGE_BAR_CONFIG]);
 
-        expect(barData.data).toStrictEqual([{
-            name: 'InStorage',
-            title: '8 of 10 samples are in storage',
-            className: 'test-class',
-            count: 8,
-            totalCount: 10,
-            percent: 80,
-            href: "#/TEST",
-            filled: true
-        }, {
-            name: 'Available',
-            title: '2 of 10 samples are not in storage',
-            count: 2,
-            totalCount: 10,
-            percent: 20,
-            filled: false
-        }]);
+        expect(barData.data).toStrictEqual([
+            {
+                name: 'InStorage',
+                title: '8 of 10 samples are in storage',
+                className: 'test-class',
+                count: 8,
+                totalCount: 10,
+                percent: 80,
+                href: '#/TEST',
+                filled: true,
+            },
+            {
+                name: 'Available',
+                title: '2 of 10 samples are not in storage',
+                count: 2,
+                totalCount: 10,
+                percent: 20,
+                filled: false,
+            },
+        ]);
         expect(barData.subtitle).toBe('2 of 10 samples are not in storage (20%)');
     });
 
     test('without unusedLabel', () => {
         const barData = createPercentageBarData(ROW, 'Samples', undefined, 'Total', [IN_STORAGE_BAR_CONFIG]);
 
-        expect(barData.data).toStrictEqual([{
-            name: 'InStorage',
-            title: '8 of 10 samples are in storage',
-            className: 'test-class',
-            count: 8,
-            totalCount: 10,
-            percent: 80,
-            href: "#/TEST",
-            filled: true
-        }]);
+        expect(barData.data).toStrictEqual([
+            {
+                name: 'InStorage',
+                title: '8 of 10 samples are in storage',
+                className: 'test-class',
+                count: 8,
+                totalCount: 10,
+                percent: 80,
+                href: '#/TEST',
+                filled: true,
+            },
+        ]);
         expect(barData.subtitle).toBe(undefined);
     });
 
@@ -390,7 +412,9 @@ describe('createPercentageBarData', () => {
             Total: { value: 0 },
             InStorage: { value: 0 },
         };
-        const barData = createPercentageBarData(EMPTY_ROW, 'Samples', 'Not in storage', 'Total', [IN_STORAGE_BAR_CONFIG]);
+        const barData = createPercentageBarData(EMPTY_ROW, 'Samples', 'Not in storage', 'Total', [
+            IN_STORAGE_BAR_CONFIG,
+        ]);
 
         expect(barData.data).toStrictEqual([]);
         expect(barData.subtitle).toBe(undefined);
@@ -408,23 +432,26 @@ describe('createPercentageBarData', () => {
         };
         const barData = createPercentageBarData(ROW, 'Samples', 'Not In Storage', 'Total', [IN_STORAGE_BAR_CONFIG_2]);
 
-        expect(barData.data).toStrictEqual([{
-            name: 'InStorage',
-            title: '8 of 10 samples are in storage',
-            className: 'test-class',
-            count: 8,
-            totalCount: 10,
-            percent: 80,
-            href: "#/TEST",
-            filled: false
-        }, {
-            name: 'Available',
-            title: '2 of 10 samples are not in storage',
-            count: 2,
-            totalCount: 10,
-            percent: 20,
-            filled: false
-        }]);
+        expect(barData.data).toStrictEqual([
+            {
+                name: 'InStorage',
+                title: '8 of 10 samples are in storage',
+                className: 'test-class',
+                count: 8,
+                totalCount: 10,
+                percent: 80,
+                href: '#/TEST',
+                filled: false,
+            },
+            {
+                name: 'Available',
+                title: '2 of 10 samples are not in storage',
+                count: 2,
+                totalCount: 10,
+                percent: 20,
+                filled: false,
+            },
+        ]);
         expect(barData.subtitle).toBe('8 of 10 samples are in storage (80%)');
     });
 
@@ -437,20 +464,27 @@ describe('createPercentageBarData', () => {
             filled: true,
         };
         const barData = createPercentageBarData(
-            ROW, 'Samples', undefined, 'Total', [IN_STORAGE_BAR_CONFIG_2],
-            AppURL.create('BASE'), 'FilterKey'
+            ROW,
+            'Samples',
+            undefined,
+            'Total',
+            [IN_STORAGE_BAR_CONFIG_2],
+            AppURL.create('BASE'),
+            'FilterKey'
         );
 
-        expect(barData.data).toStrictEqual([{
-            name: 'InStorage',
-            title: '8 of 10 samples are in storage',
-            className: 'test-class',
-            count: 8,
-            totalCount: 10,
-            percent: 80,
-            href: "#/BASE?query.FilterKey~eq=In Storage",
-            filled: true
-        }]);
+        expect(barData.data).toStrictEqual([
+            {
+                name: 'InStorage',
+                title: '8 of 10 samples are in storage',
+                className: 'test-class',
+                count: 8,
+                totalCount: 10,
+                percent: 80,
+                href: '#/BASE?query.FilterKey~eq=In Storage',
+                filled: true,
+            },
+        ]);
         expect(barData.subtitle).toBe(undefined);
     });
 });

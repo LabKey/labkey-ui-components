@@ -51,13 +51,13 @@ export function processChartData(response: ISelectRowsResult, options?: ProcessC
 }
 
 interface PercentageBarProps {
-    queryKey: string,
+    queryKey: string;
     name: string;
-    label: string,
-    useForSubtitle?: boolean,
-    className?: string,
-    appURL?: AppURL,
-    filled?: boolean,
+    label: string;
+    useForSubtitle?: boolean;
+    className?: string;
+    appURL?: AppURL;
+    filled?: boolean;
 }
 
 export function createPercentageBarData(
@@ -77,7 +77,7 @@ export function createPercentageBarData(
         percentageBars.forEach(percentageBar => {
             const itemCount = caseInsensitive(row, percentageBar.queryKey)?.value ?? 0;
             unusedCount = unusedCount - itemCount;
-            const itemPct = (itemCount/totalCount) * 100;
+            const itemPct = (itemCount / totalCount) * 100;
             const title = `${itemCount.toLocaleString()} of ${totalCount.toLocaleString()} ${itemNounPlural.toLowerCase()} are ${percentageBar.label.toLowerCase()}`;
 
             data.push({
@@ -85,31 +85,33 @@ export function createPercentageBarData(
                 name: percentageBar.name,
                 className: percentageBar.className,
                 count: itemCount,
-                totalCount: totalCount,
+                totalCount,
                 percent: itemPct,
-                href: percentageBar.appURL?.toHref() ?? baseAppURL?.addFilters(Filter.create(urlFilterKey, percentageBar.label)).toHref(),
+                href:
+                    percentageBar.appURL?.toHref() ??
+                    baseAppURL?.addFilters(Filter.create(urlFilterKey, percentageBar.label)).toHref(),
                 filled: percentageBar.filled ?? true,
             });
 
             if (percentageBar.useForSubtitle) {
-                subtitle = `${title} (${(itemPct > 0 && itemPct < 1 ? '< 1' :  Math.trunc(itemPct))}%)`;
+                subtitle = `${title} (${itemPct > 0 && itemPct < 1 ? '< 1' : Math.trunc(itemPct)}%)`;
             }
         });
 
         if (unusedLabel) {
-            const unusedPct = (unusedCount/totalCount) * 100;
+            const unusedPct = (unusedCount / totalCount) * 100;
             const unusedTitle = `${unusedCount.toLocaleString()} of ${totalCount.toLocaleString()} ${itemNounPlural.toLowerCase()} are ${unusedLabel.toLowerCase()}`;
             data.push({
                 title: unusedTitle,
                 name: 'Available',
                 count: unusedCount,
-                totalCount: totalCount,
+                totalCount,
                 percent: unusedPct,
                 filled: false,
             });
 
             if (!subtitle) {
-                subtitle = `${unusedTitle} (${(unusedPct > 0 && unusedPct < 1 ? '< 1' :  Math.trunc(unusedPct))}%)`;
+                subtitle = `${unusedTitle} (${unusedPct > 0 && unusedPct < 1 ? '< 1' : Math.trunc(unusedPct)}%)`;
             }
         }
     }
@@ -123,24 +125,24 @@ export interface HorizontalBarLegendData {
     legendLabel: string;
 }
 
-export function createHorizontalBarLegendData(data: HorizontalBarData[]) : HorizontalBarLegendData[] {
-    let legendMap = {};
+export function createHorizontalBarLegendData(data: HorizontalBarData[]): HorizontalBarLegendData[] {
+    const legendMap = {};
     data.forEach(row => {
         if (row.totalCount > 0) {
-            let labels = legendMap[row.backgroundColor] || [];
+            const labels = legendMap[row.backgroundColor] || [];
             if (labels.indexOf(row.name) == -1) {
                 labels.push(row.name);
                 legendMap[row.backgroundColor] = labels;
             }
         }
     });
-    let legendData = [];
+    const legendData = [];
     Object.keys(legendMap).forEach(key => {
         legendData.push({
             circleColor: key,
             backgroundColor: 'none',
-            legendLabel: (legendMap[key].join(', '))
-        })
+            legendLabel: legendMap[key].join(', '),
+        });
     });
     return legendData;
 }

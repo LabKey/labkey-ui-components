@@ -364,7 +364,11 @@ import {
     RUN_PROPERTIES_REQUIRED_COLUMNS,
 } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
-import { processChartData } from './internal/components/chart/utils';
+import {
+    processChartData,
+    createPercentageBarData,
+    createHorizontalBarLegendData,
+} from './internal/components/chart/utils';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
 import {
     getImmediateChildLineageFilterValue,
@@ -439,7 +443,6 @@ import { BarChartViewer } from './internal/components/chart/BarChartViewer';
 import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
 import { ItemsLegend } from './internal/components/chart/ItemsLegend';
 import { CHART_GROUPS } from './internal/components/chart/configs';
-import { createPercentageBarData, createHorizontalBarLegendData } from './internal/components/chart/utils';
 import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';

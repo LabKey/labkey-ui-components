@@ -4,15 +4,14 @@ import { Filter } from '@labkey/api';
 
 import { LoadingSpinner, LabelHelpTip, SCHEMAS, caseInsensitive, AppURL } from '../../..';
 
-import { createPercentageBarData } from "../chart/utils";
-import { HorizontalBarData, HorizontalBarSection } from "../chart/HorizontalBarSection";
-import { createHorizontalBarLegendData } from "../chart/utils";
-import { ItemsLegend } from "../chart/ItemsLegend";
-import { SAMPLES_KEY } from "../../app/constants";
-import { InjectedQueryModels, withQueryModels } from "../../../public/QueryModel/withQueryModels";
-import { QueryModel } from "../../../public/QueryModel/QueryModel";
-import { isLoading } from "../../../public/LoadingState";
-import { QuerySort } from "../../../public/QuerySort";
+import { createPercentageBarData, createHorizontalBarLegendData } from '../chart/utils';
+import { HorizontalBarData, HorizontalBarSection } from '../chart/HorizontalBarSection';
+import { ItemsLegend } from '../chart/ItemsLegend';
+import { SAMPLES_KEY } from '../../app/constants';
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { isLoading } from '../../../public/LoadingState';
+import { QuerySort } from '../../../public/QuerySort';
 
 export const INSIGHTS_MODEL_ID = 'sample-type-insights';
 export const STATUS_COUNTS_MODEL_ID = 'sample-type-status-counts';
@@ -46,29 +45,48 @@ export const SampleTypeInsightsPanelImpl: FC<Props> = memo(props => {
         undefined,
         'TotalCount',
         [
-            { queryKey: 'CheckedOutCount', name: 'CheckedOut', label: 'Checked out', className: 'bar-insights--checkedout' },
-            { queryKey: 'InStorageCount',  name: 'InStorage', label: 'In storage', className: 'bar-insights--instorage', useForSubtitle: true },
-            { queryKey: 'NotInStorageCount',  name: 'NotInStorage', label: 'Not in storage', className: 'bar-insights--notinstorage', filled: false },
+            {
+                queryKey: 'CheckedOutCount',
+                name: 'CheckedOut',
+                label: 'Checked out',
+                className: 'bar-insights--checkedout',
+            },
+            {
+                queryKey: 'InStorageCount',
+                name: 'InStorage',
+                label: 'In storage',
+                className: 'bar-insights--instorage',
+                useForSubtitle: true,
+            },
+            {
+                queryKey: 'NotInStorageCount',
+                name: 'NotInStorage',
+                label: 'Not in storage',
+                className: 'bar-insights--notinstorage',
+                filled: false,
+            },
         ],
         AppURL.create(SAMPLES_KEY, sampleSet),
         'StorageStatus'
     );
-    const aliquotData = createPercentageBarData(
-        insightsModel.getRow(),
-        'Samples',
-        undefined,
-        'TotalCount',
-        [
-            {
-                queryKey: 'AliquotCount', name: 'Aliquots', label: 'aliquots', className: 'bar-insights--aliquots', useForSubtitle: true,
-                appURL: AppURL.create(SAMPLES_KEY, sampleSet).addFilters(Filter.create('IsAliquot', true))
-            },
-            {
-                queryKey: 'NonAliquotCount', name: 'NonAliquots', label: 'not aliquots', className: 'bar-insights--nonaliquots', filled: false,
-                appURL: AppURL.create(SAMPLES_KEY, sampleSet).addFilters(Filter.create('IsAliquot', false))
-            },
-        ],
-    );
+    const aliquotData = createPercentageBarData(insightsModel.getRow(), 'Samples', undefined, 'TotalCount', [
+        {
+            queryKey: 'AliquotCount',
+            name: 'Aliquots',
+            label: 'aliquots',
+            className: 'bar-insights--aliquots',
+            useForSubtitle: true,
+            appURL: AppURL.create(SAMPLES_KEY, sampleSet).addFilters(Filter.create('IsAliquot', true)),
+        },
+        {
+            queryKey: 'NonAliquotCount',
+            name: 'NonAliquots',
+            label: 'not aliquots',
+            className: 'bar-insights--nonaliquots',
+            filled: false,
+            appURL: AppURL.create(SAMPLES_KEY, sampleSet).addFilters(Filter.create('IsAliquot', false)),
+        },
+    ]);
     const statusBarData = getSampleStatusBarData(statusModel);
     const statusLegendData = createHorizontalBarLegendData(statusBarData);
     const statusData = {
@@ -76,7 +94,11 @@ export const SampleTypeInsightsPanelImpl: FC<Props> = memo(props => {
         subtitle: statusBarData?.length > 0 && (
             <div className="storage-item-legend">
                 <LabelHelpTip
-                    iconComponent={<span><i className="fa fa-info-circle"/> Legend</span>}
+                    iconComponent={
+                        <span>
+                            <i className="fa fa-info-circle" /> Legend
+                        </span>
+                    }
                     placement="bottom"
                     title="Sample Status Legend"
                 >
@@ -90,12 +112,16 @@ export const SampleTypeInsightsPanelImpl: FC<Props> = memo(props => {
         <Panel>
             <Panel.Heading>Insights</Panel.Heading>
             <Panel.Body>
-                <HorizontalBarSection title="Storage Status" subtitle={storageData?.subtitle} data={storageData?.data} />
+                <HorizontalBarSection
+                    title="Storage Status"
+                    subtitle={storageData?.subtitle}
+                    data={storageData?.data}
+                />
                 <HorizontalBarSection title="Sample Status" subtitle={statusData?.subtitle} data={statusData?.data} />
                 <HorizontalBarSection title="Aliquots" subtitle={aliquotData?.subtitle} data={aliquotData?.data} />
             </Panel.Body>
         </Panel>
-    )
+    );
 });
 
 const SampleTypeInsightsPanelWithQueryModels = withQueryModels<OwnProps>(SampleTypeInsightsPanelImpl);
@@ -111,10 +137,10 @@ export const SampleTypeInsightsPanel: FC<OwnProps> = memo(props => {
             id: STATUS_COUNTS_MODEL_ID,
             schemaQuery: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_STATUS_COUNTS,
             baseFilters: [Filter.create('Name', props.sampleSet)],
-            sorts: [new QuerySort({ fieldKey: 'ClassName' }), new QuerySort({ fieldKey: 'Status' })]
+            sorts: [new QuerySort({ fieldKey: 'ClassName' }), new QuerySort({ fieldKey: 'Status' })],
         },
     };
-    return <SampleTypeInsightsPanelWithQueryModels {...props} autoLoad queryConfigs={queryConfigs} />
+    return <SampleTypeInsightsPanelWithQueryModels {...props} autoLoad queryConfigs={queryConfigs} />;
 });
 
 const getSampleStatusBarData = (model: QueryModel): HorizontalBarData[] => {
@@ -130,21 +156,21 @@ const getSampleStatusBarData = (model: QueryModel): HorizontalBarData[] => {
 
         data.push({
             name: status,
-            title: count.toLocaleString() + " '" + status + "' " + (count === 1 ? "sample" : "samples"),
+            title: count.toLocaleString() + " '" + status + "' " + (count === 1 ? 'sample' : 'samples'),
             count,
             backgroundColor: hasStatus && caseInsensitive(row, 'Color').value,
             className: caseInsensitive(row, 'ClassName').value,
             href: getAppURLWithFilter(sampleType, 'SampleState/Label', hasStatus ? status : undefined).toHref(),
-            filled: hasStatus
+            filled: hasStatus,
         });
     });
 
     data = data.map(row => {
-        return { ...row, totalCount: totalSamples, percent: (row.count/totalSamples) * 100 }
-    })
+        return { ...row, totalCount: totalSamples, percent: (row.count / totalSamples) * 100 };
+    });
 
     return data;
-}
+};
 
 const getAppURLWithFilter = (sampleType: string, filterKey: string, value: any): AppURL => {
     let url = AppURL.create(SAMPLES_KEY, sampleType);
@@ -154,4 +180,4 @@ const getAppURLWithFilter = (sampleType: string, filterKey: string, value: any):
         url = url.addFilters(Filter.create(filterKey, null, Filter.Types.ISBLANK));
     }
     return url;
-}
+};

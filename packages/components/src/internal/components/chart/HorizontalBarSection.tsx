@@ -29,12 +29,12 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
 
     if (data?.length) {
         let hasBegun = false;
-        const dataCount =  data.length;
+        const dataCount = data.length;
         data.forEach((row, index) => {
             if (row.percent > 0) {
                 const pct = row.percent;
-                let styleProps = {
-                    width: pct + "%"
+                const styleProps = {
+                    width: pct + '%',
                 };
                 if (row.backgroundColor) {
                     styleProps['background'] = row.backgroundColor;
@@ -52,13 +52,13 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
                         <div
                             key={index}
                             style={styleProps}
-                            className={classNames("horizontal-bar-part", row.className, {
-                                 'horizontal-bar--begin': !hasBegun,
-                                 'horizontal-bar--filled': row.filled,
-                                 'horizontal-bar--linked': !!row.href,
-                                 'horizontal-bar--open': !row.filled || !row.backgroundColor,
-                                 'horizontal-bar--end': index === dataCount - 1
-                             })}
+                            className={classNames('horizontal-bar-part', row.className, {
+                                'horizontal-bar--begin': !hasBegun,
+                                'horizontal-bar--filled': row.filled,
+                                'horizontal-bar--linked': !!row.href,
+                                'horizontal-bar--open': !row.filled || !row.backgroundColor,
+                                'horizontal-bar--end': index === dataCount - 1,
+                            })}
                         >
                             {row.href && (
                                 <a href={row.href} className="horizontal-bar--link">
@@ -72,7 +72,7 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
             }
         });
     } else {
-        horizontalBars.push(<div>{emptyText ?? DEFAULT_EMPTY_TEXT}</div>)
+        horizontalBars.push(<div>{emptyText ?? DEFAULT_EMPTY_TEXT}</div>);
     }
 
     return (
@@ -80,16 +80,16 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
             <tbody>
                 <tr>
                     {title && <td className="horizontal-bar--title">{title}</td>}
-                    <td>
-                        {horizontalBars}
-                    </td>
+                    <td>{horizontalBars}</td>
                 </tr>
                 {subtitle && (
                     <tr>
-                        <td className="horizontal-bar--subtitle" colSpan={2}>{subtitle}</td>
+                        <td className="horizontal-bar--subtitle" colSpan={2}>
+                            {subtitle}
+                        </td>
                     </tr>
                 )}
             </tbody>
         </table>
-    )
+    );
 });

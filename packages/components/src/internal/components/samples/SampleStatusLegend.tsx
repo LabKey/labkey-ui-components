@@ -13,7 +13,8 @@ export const SAMPLE_STATUS_LEGEND = 'SampleStatusLegend';
 
 interface OwnProps {}
 
-const SampleStatusLegendImpl: FC<OwnProps & InjectedQueryModels> = memo(props => {
+// export for jest testing
+export const SampleStatusLegendImpl: FC<OwnProps & InjectedQueryModels> = memo(props => {
     const { model } = props.queryModels;
 
     if (isLoading(model.rowsLoadingState)) {

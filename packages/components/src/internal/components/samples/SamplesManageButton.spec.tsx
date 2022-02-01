@@ -18,7 +18,12 @@ import {
     SelectionMenuItem,
 } from '../../..';
 
-import { TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+import {
+    TEST_USER_AUTHOR,
+    TEST_USER_EDITOR,
+    TEST_USER_READER,
+    TEST_USER_STORAGE_EDITOR,
+} from '../../../test/data/users';
 import { mountWithServerContext } from '../../testHelpers';
 
 import { SamplesManageButton } from './SamplesManageButton';
@@ -51,7 +56,6 @@ describe('SamplesManageButton', () => {
     }
 
     const DEFAULT_PROPS = {
-        user: TEST_USER_EDITOR,
         parentEntityDataTypes: [DataClassDataType, SampleTypeDataType],
         model: makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
             queryInfoLoadingState: LoadingState.LOADED,
@@ -88,15 +92,22 @@ describe('SamplesManageButton', () => {
     });
 
     test('author', () => {
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} user={TEST_USER_AUTHOR} />, {
+        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_AUTHOR,
         });
-        validate(wrapper, true, 0, 0, 1, 0, 1);
+        validate(wrapper, true, 0, 0, 1, 0, 0);
         wrapper.unmount();
     });
 
+    test('storage editor', () => {
+        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} />, {
+            user: TEST_USER_STORAGE_EDITOR,
+        });
+        validate(wrapper, true, 0, 2, 2, 0, 1);
+    });
+
     test('reader', () => {
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} user={TEST_USER_READER} />, {
+        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_READER,
         });
         validate(wrapper, false);

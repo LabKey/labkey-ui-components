@@ -60,7 +60,7 @@ export const RemoveFromPicklistMenuItem: FC<Props> = memo(props => {
         : undefined;
 
     return (
-        <RequiresPermission perms={PermissionTypes.Delete}>
+        <RequiresPermission perms={PermissionTypes.ManagePicklists}>
             {picklist.canRemoveItems(user) && (
                 <SelectionMenuItem
                     id="remove-samples-menu-item"

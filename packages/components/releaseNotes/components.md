@@ -1,8 +1,18 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.124.0
+*Released*: 31 January 2022
+* Item 9923: Adding roles for storage management
+  * Moved `updateSampleStatus` method into inventory since it's used only when discarding samples and that now requires a specific inventory action
+  * Change user display role to account for storage editor and designer roles
+  * Update `CreateUsersModal` and `UsersGridPanel` to handle multiple roles
+  * Add utility method `userCanEditStorageData`
+  * Update `SamplesTabbedGridPanel` to account for some users not being able to update storage data
+  * Update `SamplesEditableGrid`, `SamplesTabbedGridPanel`, and `SamplesSelectionContextProvider` to allow for not being able to edit the sample data
+
 ### version 2.123.0
-*Released*: 21 January 2022
+*Released*: 31 January 2022
 * Item #9767: Improve sample actions from assay results grid
   * Add new `SampleActionsButton` to Assay Results page
   * Adjust picklist creation and update actions & components

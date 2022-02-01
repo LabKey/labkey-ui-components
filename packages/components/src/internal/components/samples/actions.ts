@@ -861,27 +861,6 @@ export function getSampleTypeRowId(name: string): Promise<number> {
     });
 }
 
-export function updateSamplesStatus(
-    sampleType: string,
-    sampleIds: number[],
-    newStatus: number,
-    auditBehavior?: AuditBehaviorTypes
-): Promise<any> {
-    const updatedRows = [];
-    [...sampleIds].forEach(sampleId => {
-        updatedRows.push({
-            rowId: sampleId,
-            sampleState: newStatus,
-        });
-    });
-
-    return updateRows({
-        schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
-        rows: updatedRows,
-        auditBehavior: auditBehavior ?? AuditBehaviorTypes.DETAILED,
-    });
-}
-
 export function getSampleTypes(): Promise<Array<{ id: number; label: string }>> {
     return new Promise((resolve, reject) => {
         selectRows({

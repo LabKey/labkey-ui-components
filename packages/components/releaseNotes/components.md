@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.122.0
+*Released*: 31 January 2022
+* Share asynchronous upload UI indicators across LKB and LKSM by pulling relevant code into ui-components
+
 ### version 2.121.4
 *Released*: 28 January 2022
 * Item 9970: QueryFormInput change showQuerySelectPreviewOptions default prop value to false

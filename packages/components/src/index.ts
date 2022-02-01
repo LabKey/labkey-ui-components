@@ -364,7 +364,11 @@ import {
     RUN_PROPERTIES_REQUIRED_COLUMNS,
 } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
-import { processChartData } from './internal/components/chart/utils';
+import {
+    processChartData,
+    createPercentageBarData,
+    createHorizontalBarLegendData,
+} from './internal/components/chart/utils';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
 import {
     getImmediateChildLineageFilterValue,
@@ -435,6 +439,8 @@ import {
 } from './public/QueryModel/utils';
 import { useRouteLeave, withRouteLeave } from './internal/util/RouteLeave';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
+import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
+import { ItemsLegend } from './internal/components/chart/ItemsLegend';
 import { CHART_GROUPS } from './internal/components/chart/configs';
 import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
@@ -520,6 +526,7 @@ import {
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
+import { SampleTypeInsightsPanel } from './internal/components/samples/SampleTypeInsightsPanel';
 import {
     DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
@@ -1001,6 +1008,7 @@ export {
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
+    SampleTypeInsightsPanel,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
@@ -1066,6 +1074,10 @@ export {
     BaseBarChart,
     BarChartViewer,
     CHART_GROUPS,
+    HorizontalBarSection,
+    ItemsLegend,
+    createPercentageBarData,
+    createHorizontalBarLegendData,
     processChartData,
     DataViewInfoTypes,
     loadReports,
@@ -1445,3 +1457,5 @@ export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { SamplesEditableGridProps } from './internal/components/samples/SamplesEditableGrid';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';
 export type { PageDetailHeaderProps } from './internal/components/forms/PageDetailHeader';
+export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';
+export type { HorizontalBarLegendData } from './internal/components/chart/utils';

@@ -183,7 +183,6 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
             sampleSetLabel,
             onCancel,
             onBulkUpdateError,
-            onBulkUpdateComplete,
             editSelectionInGrid,
             editStatusData,
         } = this.props;

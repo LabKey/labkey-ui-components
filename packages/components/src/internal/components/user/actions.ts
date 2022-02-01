@@ -65,6 +65,14 @@ export function getUserRoleDisplay(user: User): string {
         return APPLICATION_SECURITY_ROLES.get(PermissionRoles.Editor);
     }
 
+    if (hasAllPermissions(user, [PermissionTypes.EditStorageData])) {
+        return 'Storage Editor';
+    }
+
+    if (hasAllPermissions(user, [PermissionTypes.DesignStorage])) {
+        return 'Storage Designer';
+    }
+
     if (hasAllPermissions(user, [PermissionTypes.Read])) {
         return APPLICATION_SECURITY_ROLES.get(PermissionRoles.Reader);
     }

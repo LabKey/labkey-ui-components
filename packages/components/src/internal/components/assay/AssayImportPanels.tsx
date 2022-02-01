@@ -57,6 +57,8 @@ import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel
 import { AssayUploadTabs, IMPORT_DATA_FORM_TYPES } from '../../constants';
 import { EditorModelProps } from '../../models';
 
+import { DATA_IMPORT_FILE_SIZE_LIMITS } from '../pipeline/constants';
+
 import { loadSelectedSamples } from '../samples/actions';
 
 import { STATUS_DATA_RETRIEVAL_ERROR } from '../samples/constants';
@@ -75,6 +77,7 @@ import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 import { RunDataPanel } from './RunDataPanel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
 
+const BASE_FILE_TYPES = ['.csv', '.tsv', '.txt', '.xlsx', '.xls'];
 const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';
 const DATA_GRID_ID = 'assay-grid-data';
 
@@ -90,14 +93,13 @@ interface OwnProps {
     allowBulkInsert?: boolean;
     allowBulkUpdate?: boolean;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
-    maxRows?: number;
+    maxRows?: number; // Not currently used, but related logic retained in component
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => void;
     loadSelectedSamples?: (location: Location, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
     showUploadTabs?: boolean;
     showQuerySelectPreviewOptions?: boolean;
     runDataPanelTitle?: string;
     beforeFinish?: (data: IAssayUploadOptions) => IAssayUploadOptions;
-    getJobDescription?: (options: AssayDOM.IImportRunOptions) => string;
     jobNotificationProvider?: string;
     assayProtocol?: AssayProtocolModel;
     backgroundUpload?: boolean; // assay design setting
@@ -119,6 +121,8 @@ interface State {
 
 class AssayImportPanelsBody extends Component<Props, State> {
     static defaultProps = {
+        acceptedPreviewFileFormats: BASE_FILE_TYPES.join(', '),
+        fileSizeLimits: DATA_IMPORT_FILE_SIZE_LIMITS,
         loadSelectedSamples,
         showUploadTabs: true,
     };
@@ -467,13 +471,17 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }
     };
 
+    getBackgroundJobDescription = (options: AssayDOM.IImportRunOptions): string => {
+        const { assayDefinition } = this.props;
+        return assayDefinition.name + (options.name ? ' - ' + options.name : '');
+    };
+
     onFinish = (importAgain: boolean): void => {
         const {
             currentStep,
             onSave,
             maxRows,
             beforeFinish,
-            getJobDescription,
             jobNotificationProvider,
             assayProtocol,
             location,
@@ -515,7 +523,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                             forceAsync = true;
                     }
 
-                    const jobDescription = getJobDescription ? getJobDescription(data) : undefined;
+                    const jobDescription = this.getBackgroundJobDescription(data);
                     importAssayRun({ ...processedData, forceAsync, jobDescription, jobNotificationProvider })
                         .then((response: AssayUploadResultModel) => {
                             this.props.onDataChange?.(false);
@@ -646,10 +654,12 @@ class AssayImportPanelsBody extends Component<Props, State> {
             allowBulkRemove,
             allowBulkInsert,
             allowBulkUpdate,
+            maxRows,
             onSave,
             showUploadTabs,
             showQuerySelectPreviewOptions,
             runDataPanelTitle,
+            fileSizeLimits,
         } = this.props;
         const { dataModel, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } =
             this.state;
@@ -691,11 +701,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     allowBulkUpdate={allowBulkUpdate}
                     currentStep={currentStep}
                     editorModel={editorModel}
-                    fileSizeLimits={this.props.fileSizeLimits}
-                    maxEditableGridRowMsg={
-                        "A max of 1,000 rows are allowed. Please use the 'Upload Files' or 'Copy-and-Paste Data' tab if you need to import more than 1,000 rows."
-                    }
-                    maxRows={this.props.maxRows}
+                    fileSizeLimits={fileSizeLimits}
+                    maxEditableGridRowMsg={`A max of ${maxRows} rows are allowed. Please use the 'Upload Files' or 'Copy-and-Paste Data' tab if you need to import more than ${maxRows} rows.`}
+                    maxRows={maxRows}
                     onFileChange={this.handleFileChange}
                     onFileRemoval={this.handleFileRemove}
                     onGridChange={this.onGridChange}

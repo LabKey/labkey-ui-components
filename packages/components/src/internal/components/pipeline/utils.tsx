@@ -1,7 +1,20 @@
 import React, { ReactNode } from 'react';
+import { Utils } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
-import { App, AssayUploadResultModel } from '../../../index';
+import { ACTIVE_JOB_INDICATOR_CLS, App, AssayUploadResultModel, ProductMenuModel, Tip } from '../../../index';
+
+export function hasActivePipelineJob(menu: ProductMenuModel, sectionKey: string, itemLabel: string): boolean {
+    if (!menu.isLoaded) return false;
+
+    const section = menu.getSection(sectionKey);
+    if (section) {
+        const menuItem = section.items.find(set => Utils.caseInsensitiveEquals(set.get('label'), itemLabel));
+        return menuItem?.hasActiveJob;
+    }
+
+    return false;
+}
 
 export function getPipelineLinkMsg(response: AssayUploadResultModel): ReactNode {
     return (
@@ -33,4 +46,17 @@ export function getWorkflowLinkMsg(workflowJobId?: string, workflowTaskId?: stri
         );
     }
     return null;
+}
+
+export function getTitleDisplay(content: ReactNode, hasActivePipelineJob: boolean): ReactNode {
+    return hasActivePipelineJob ? (
+        <>
+            <Tip caption="Background import in progress">
+                <i className={'fa ' + ACTIVE_JOB_INDICATOR_CLS} />
+            </Tip>
+            <span className="page-detail-header-title-padding">{content}</span>
+        </>
+    ) : (
+        content
+    );
 }

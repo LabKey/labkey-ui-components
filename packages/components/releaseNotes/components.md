@@ -3,9 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Update `PageDetailHeader` with option to use `EditInlineField` instead of `FieldEditorOverlay`
-* Add simple action for doing update rows on a single field (callback helper for `EditInlineField`).
 * Remove `FieldEditorOverlay` component
+* Add simple action for doing update rows on a single field (callback helper for `EditInlineField`).
 
 ### version 2.124.0
 *Released*: 31 January 2022

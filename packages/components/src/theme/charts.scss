@@ -5,3 +5,93 @@
 .base-bar-chart a.bar-individual {
     cursor: pointer;
 }
+
+.horizontal-bar--chart-container {
+    margin-top: 30px;
+}
+
+.horizontal-bar--chart-legend {
+    color: grey;
+    margin-bottom: 15px;
+}
+
+.horizontal-bar-section {
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.horizontal-bar--title {
+    width: 150px;
+    padding-right: 5px;
+    overflow-wrap: anywhere;
+}
+
+.horizontal-bar--subtitle {
+    color: grey;
+}
+
+.horizontal-bar-part {
+    display: inline-block;
+    position: relative;
+    height: 20px;
+    outline: 1px solid $table-border-color;
+}
+
+.horizontal-bar--linked {
+    cursor: pointer;
+}
+
+.horizontal-bar--open {
+    background: white;
+}
+
+.horizontal-bar--link {
+    display: block;
+}
+
+.horizontal-bar--linkSpanner {
+    position:absolute;
+    width:100%;
+
+    top:0;
+    left: 0;
+    z-index: 1;
+}
+
+.bar-insights--checkedout, .bar-insights--consumed {
+    background: #faebcc;
+}
+.bar-insights--instorage, .bar-insights--available {
+    background: #dff0d8;
+}
+.bar-insights--locked {
+    background: #f2dede;
+}
+.bar-insights--aliquots {
+    background: rgba(0, 103, 197, 0.145);
+}
+
+.cell-legend-row {
+    .cell-legend-icon {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+
+        .cell-legend-circle {
+            display: flex;
+            margin-left: 5px;
+            margin-top: 6px;
+        }
+    }
+
+    .cell-legend-icon-border {
+        border: 1px solid #979797;
+    }
+
+    .cell-legend-label {
+        padding-left: 10px;
+        display: inline-block;
+        overflow: hidden;
+    }
+}

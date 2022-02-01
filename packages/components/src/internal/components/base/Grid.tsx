@@ -81,7 +81,8 @@ interface GridHeaderProps {
     transpose?: boolean;
 }
 
-class GridHeader extends PureComponent<GridHeaderProps, any> {
+// export for jest testing
+export class GridHeader extends PureComponent<GridHeaderProps, any> {
     _handleClick(column: GridColumn, evt) {
         evt.stopPropagation();
         if (this.props.onCellClick) {

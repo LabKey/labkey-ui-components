@@ -11,6 +11,18 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Update `SamplesTabbedGridPanel` to account for some users not being able to update storage data
   * Update `SamplesEditableGrid`, `SamplesTabbedGridPanel`, and `SamplesSelectionContextProvider` to allow for not being able to edit the sample data
 
+### version 2.123.0
+*Released*: 31 January 2022
+* Item #9767: Improve sample actions from assay results grid
+  * Add new `SampleActionsButton` to Assay Results page
+  * Adjust picklist creation and update actions & components
+  * Adjust job creation and update actions & components
+  * Added `getFieldLookupFromSelection` which pulls the lookups rowId value based on supplied query & field
+
+### version 2.122.0
+*Released*: 31 January 2022
+* Share asynchronous upload UI indicators across LKB and LKSM by pulling relevant code into ui-components
+
 ### version 2.121.4
 *Released*: 28 January 2022
 * Item 9970: QueryFormInput change showQuerySelectPreviewOptions default prop value to false

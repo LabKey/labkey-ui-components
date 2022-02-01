@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, Modal } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
@@ -17,6 +17,9 @@ import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
@@ -33,9 +36,38 @@ interface Props {
     picklistProductId?: string;
     metricFeatureArea?: string;
     api?: ComponentsAPIWrapper;
+    sampleFieldKey?: string;
+    queryModel?: QueryModel;
 }
 
 export const PicklistEditModal: FC<Props> = memo(props => {
+    const { api, selectionKey, queryModel, sampleFieldKey, sampleIds } = props;
+    const [ids, setIds] = useState<string[]>(sampleIds);
+    const [selKey, setSelKey] = useState<string>(selectionKey);
+
+    useEffect(() => {
+        (async () => {
+            // Look up SampleIds from the selected row ids.
+            // Using sampleFieldKey as proxy flag to determine if lookup is needed
+            if (sampleFieldKey && queryModel) {
+                const ids = await api.samples.getFieldLookupFromSelection(
+                    queryModel.schemaQuery.schemaName,
+                    queryModel.schemaQuery.queryName,
+                    [...queryModel.selections],
+                    sampleFieldKey
+                );
+                setIds(ids);
+
+                // Clear the selection key as it will not correctly map to the sampleIds
+                setSelKey(undefined);
+            }
+        })();
+    }, [api, sampleFieldKey, queryModel,]);
+
+    return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} />;
+});
+
+export const PicklistEditModalDisplay: FC<Props> = memo(props => {
     const {
         api,
         onCancel,
@@ -69,16 +101,18 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
 
     useEffect(() => {
-        api.samples
-            .getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
-            .then(data => {
-                setStatusData(data);
-                setValidCount(data.allowed.length);
-            })
-            .catch(reason => {
-                setPicklistError(reason);
-            });
-    }, [selectionKey, sampleIds]);
+        (async () => {
+            api.samples
+                .getSampleOperationConfirmationData(SampleOperation.AddToPicklist, selectionKey, sampleIds)
+                .then(data => {
+                    setStatusData(data);
+                    setValidCount(data.allowed.length);
+                })
+                .catch(reason => {
+                    setPicklistError(reason);
+                });
+        })();
+    }, [api, selectionKey, sampleIds]);
 
     const isUpdate = picklist !== undefined;
     let finishVerb, finishingVerb;

@@ -15,12 +15,12 @@
  */
 import React from 'react';
 import { fromJS, List } from 'immutable';
-import {mount, ReactWrapper, shallow} from 'enzyme';
+import { mount, ReactWrapper, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import {Grid, GridHeader} from './Grid';
-import {GridColumn} from "./models/GridColumn";
-import {LabelHelpTip} from "./LabelHelpTip";
+import { Grid, GridHeader } from './Grid';
+import { GridColumn } from './models/GridColumn';
+import { LabelHelpTip } from './LabelHelpTip';
 
 const gridData = fromJS([
     {
@@ -206,7 +206,7 @@ describe('GridHeader', () => {
         showHeader: true,
         columns: List.of(
             new GridColumn({ index: 'a', title: 'A', showHeader: true }),
-            new GridColumn({ index: 'b', title: 'B', showHeader: true }),
+            new GridColumn({ index: 'b', title: 'B', showHeader: true })
         ),
     };
 
@@ -223,15 +223,15 @@ describe('GridHeader', () => {
     });
 
     test('column not showHeader', () => {
-        const wrapper = mount(<GridHeader
-            {...DEFAULT_PROPS}
-            columns={
-                List.of(
+        const wrapper = mount(
+            <GridHeader
+                {...DEFAULT_PROPS}
+                columns={List.of(
                     new GridColumn({ index: 'a', title: 'A', showHeader: true }),
-                    new GridColumn({ index: 'b', title: 'B', showHeader: false }),
-                )
-            }
-        />);
+                    new GridColumn({ index: 'b', title: 'B', showHeader: false })
+                )}
+            />
+        );
         validate(wrapper, 1);
         wrapper.unmount();
     });
@@ -243,15 +243,15 @@ describe('GridHeader', () => {
     });
 
     test('column helpTipRenderer', () => {
-        const wrapper = mount(<GridHeader
-            {...DEFAULT_PROPS}
-            columns={
-                List.of(
+        const wrapper = mount(
+            <GridHeader
+                {...DEFAULT_PROPS}
+                columns={List.of(
                     new GridColumn({ index: 'a', title: 'A', showHeader: true }),
-                    new GridColumn({ index: 'b', title: 'B', showHeader: true, helpTipRenderer: 'TestRenderer' }),
-                )
-            }
-        />);
+                    new GridColumn({ index: 'b', title: 'B', showHeader: true, helpTipRenderer: 'TestRenderer' })
+                )}
+            />
+        );
         validate(wrapper, 2, 1);
         wrapper.unmount();
     });

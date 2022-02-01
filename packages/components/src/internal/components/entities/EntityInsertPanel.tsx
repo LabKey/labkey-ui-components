@@ -85,6 +85,8 @@ import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from '../samples/constants';
 
 import { GetNameExpressionOptionsResponse, loadNameExpressionOptions } from '../settings/actions';
 
+import { SampleStatusLegend } from '../samples/SampleStatusLegend';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -104,7 +106,6 @@ import {
     EntityParentTypeSelectors,
     removeEntityParentType,
 } from './EntityParentTypeSelectors';
-import {SampleStatusLegend} from "../samples/SampleStatusLegend";
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';

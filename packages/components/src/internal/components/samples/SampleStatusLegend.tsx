@@ -1,13 +1,14 @@
-import React, {FC, memo} from "react";
+import React, { FC, memo } from 'react';
 import { Query } from '@labkey/api';
 
-import { LoadingSpinner, caseInsensitive, SCHEMAS } from '../../../';
+import { LoadingSpinner, caseInsensitive, SCHEMAS } from '../../..';
 
-import {SampleStatusTag} from "./SampleStatusTag";
-import {getSampleStatus} from "./utils";
-import {InjectedQueryModels, withQueryModels} from "../../../public/QueryModel/withQueryModels";
-import {QuerySort} from "../../../public/QuerySort";
-import {isLoading} from "../../../public/LoadingState";
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { QuerySort } from '../../../public/QuerySort';
+import { isLoading } from '../../../public/LoadingState';
+
+import { getSampleStatus } from './utils';
+import { SampleStatusTag } from './SampleStatusTag';
 
 export const SAMPLE_STATUS_LEGEND = 'SampleStatusLegend';
 
@@ -36,18 +37,22 @@ export const SampleStatusLegendImpl: FC<OwnProps & InjectedQueryModels> = memo(p
     return (
         <table className="sample-status-legend--table">
             <tbody>
-            {model.gridData.map(row => {
-                const status = getSampleStatus(row);
-                return (
-                    <tr key={status.label}>
-                        <td><SampleStatusTag status={status} hideDescription={true} /></td>
-                        <td className="sample-status-legend--description">{caseInsensitive(row, 'Description')?.value}</td>
-                    </tr>
-                )
-            })}
+                {model.gridData.map(row => {
+                    const status = getSampleStatus(row);
+                    return (
+                        <tr key={status.label}>
+                            <td>
+                                <SampleStatusTag status={status} hideDescription={true} />
+                            </td>
+                            <td className="sample-status-legend--description">
+                                {caseInsensitive(row, 'Description')?.value}
+                            </td>
+                        </tr>
+                    );
+                })}
             </tbody>
         </table>
-    )
+    );
 });
 
 const SampleStatusLegendWithQueryModels = withQueryModels<OwnProps>(SampleStatusLegendImpl);
@@ -59,11 +64,8 @@ export const SampleStatusLegend: FC<OwnProps> = () => {
             schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_STATUS,
             containerFilter: Query.ContainerFilter.current, // only get statuses for the current container
             maxRows: -1,
-            sorts: [
-                new QuerySort({ fieldKey: 'StatusType' }),
-                new QuerySort({ fieldKey: 'Label' }),
-            ],
+            sorts: [new QuerySort({ fieldKey: 'StatusType' }), new QuerySort({ fieldKey: 'Label' })],
         },
     };
-    return <SampleStatusLegendWithQueryModels autoLoad queryConfigs={queryConfigs} />
+    return <SampleStatusLegendWithQueryModels autoLoad queryConfigs={queryConfigs} />;
 };

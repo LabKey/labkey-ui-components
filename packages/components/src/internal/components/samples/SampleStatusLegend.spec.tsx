@@ -1,13 +1,14 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
+import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { LoadingState } from '../../../public/LoadingState';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { SampleStatusLegendImpl } from './SampleStatusLegend';
-import {makeTestActions, makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {LoadingState} from "../../../public/LoadingState";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {SampleStatusTag} from "./SampleStatusTag";
+import { SampleStatusTag } from './SampleStatusTag';
 
 describe('SampleStatusLegend', () => {
     const SQ = SchemaQuery.create('schema', 'query');
@@ -19,20 +20,26 @@ describe('SampleStatusLegend', () => {
         queryInfoLoadingState: LoadingState.LOADED,
         rowsLoadingState: LoadingState.LOADING,
     });
-    const MODEL_WITH_ROWS = makeTestQueryModel(SQ, new QueryInfo(), {
-        1: {
-            Label: { value: 'Available' },
-            Description: { value: undefined },
+    const MODEL_WITH_ROWS = makeTestQueryModel(
+        SQ,
+        new QueryInfo(),
+        {
+            1: {
+                Label: { value: 'Available' },
+                Description: { value: undefined },
+            },
+            2: {
+                Label: { value: 'Consumed' },
+                Description: { value: undefined },
+            },
+            3: {
+                Label: { value: 'Locked' },
+                Description: { value: 'with desc' },
+            },
         },
-        2: {
-            Label: { value: 'Consumed' },
-            Description: { value: undefined },
-        },
-        3: {
-            Label: { value: 'Locked' },
-            Description: { value: 'with desc' },
-        },
-    }, ['1', '2', '3'], 2).mutate({
+        ['1', '2', '3'],
+        2
+    ).mutate({
         queryInfoLoadingState: LoadingState.LOADED,
         rowsLoadingState: LoadingState.LOADED,
     });
@@ -49,17 +56,13 @@ describe('SampleStatusLegend', () => {
     }
 
     test('loading', () => {
-        const wrapper = mount(<SampleStatusLegendImpl {...DEFAULT_PROPS}
-            queryModels={{ model: MODEL_LOADING }}
-        />);
+        const wrapper = mount(<SampleStatusLegendImpl {...DEFAULT_PROPS} queryModels={{ model: MODEL_LOADING }} />);
         validate(wrapper, true);
         wrapper.unmount();
     });
 
     test('no rows', () => {
-        const wrapper = mount(<SampleStatusLegendImpl {...DEFAULT_PROPS}
-            queryModels={{ model: MODEL_NO_ROWS }}
-        />);
+        const wrapper = mount(<SampleStatusLegendImpl {...DEFAULT_PROPS} queryModels={{ model: MODEL_NO_ROWS }} />);
         validate(wrapper, false);
         expect(wrapper.find('td')).toHaveLength(1);
         expect(wrapper.find('td').text()).toBe('No sample statuses are defined.');
@@ -67,9 +70,7 @@ describe('SampleStatusLegend', () => {
     });
 
     test('with rows', () => {
-        const wrapper = mount(<SampleStatusLegendImpl {...DEFAULT_PROPS}
-            queryModels={{ model: MODEL_WITH_ROWS }}
-        />);
+        const wrapper = mount(<SampleStatusLegendImpl {...DEFAULT_PROPS} queryModels={{ model: MODEL_WITH_ROWS }} />);
         validate(wrapper, false, 3);
         expect(wrapper.find('.sample-status-legend--description').at(0).text()).toBe('');
         expect(wrapper.find('.sample-status-legend--description').at(1).text()).toBe('');

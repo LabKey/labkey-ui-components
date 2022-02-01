@@ -645,7 +645,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         <OverlayTrigger
                             placement="bottom"
                             overlay={
-                                <Popover id={'popover-' + label} bsClass="popover" className={metadata?.popoverClassName}>
+                                <Popover
+                                    id={'popover-' + label}
+                                    bsClass="popover"
+                                    className={metadata?.popoverClassName}
+                                >
                                     {metadata?.toolTip}
                                     {format && <div>Display Format: {format}</div>}
                                 </Popover>

@@ -1,8 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
+import { SampleStatusLegend } from '../samples/SampleStatusLegend';
+
 import { HelpTipRenderer } from './HelpTipRenderer';
-import {SampleStatusLegend} from "../samples/SampleStatusLegend";
 
 describe('HelpTipRenderer', () => {
     test('SampleStatusLegend', () => {

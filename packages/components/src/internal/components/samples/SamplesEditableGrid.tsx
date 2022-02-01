@@ -55,8 +55,8 @@ import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './mo
 import { getOriginalParentsFromSampleLineage } from './actions';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
-import {SAMPLE_STATE_COLUMN_NAME} from "./constants";
-import {SampleStatusLegend} from "./SampleStatusLegend";
+import { SAMPLE_STATE_COLUMN_NAME } from './constants';
+import { SampleStatusLegend } from './SampleStatusLegend';
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;

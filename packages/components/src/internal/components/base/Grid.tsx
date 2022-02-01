@@ -16,9 +16,11 @@
 import React, { FC, memo, PureComponent, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
-import {HelpTipRenderer} from "../forms/HelpTipRenderer";
-import {LabelHelpTip} from "./LabelHelpTip";
-import {GridColumn} from "./models/GridColumn";
+
+import { HelpTipRenderer } from '../forms/HelpTipRenderer';
+
+import { LabelHelpTip } from './LabelHelpTip';
+import { GridColumn } from './models/GridColumn';
 
 function processColumns(columns: List<any>): List<GridColumn> {
     return columns
@@ -134,7 +136,11 @@ export class GridHeader extends PureComponent<GridHeaderProps, any> {
                                 >
                                     {headerCell ? headerCell(column, i, columns.size) : title}
                                     {column.helpTipRenderer && (
-                                        <LabelHelpTip id={column.index} title={title} popoverClassName="label-help-arrow-top">
+                                        <LabelHelpTip
+                                            id={column.index}
+                                            title={title}
+                                            popoverClassName="label-help-arrow-top"
+                                        >
                                             <HelpTipRenderer type={column.helpTipRenderer} />
                                         </LabelHelpTip>
                                     )}

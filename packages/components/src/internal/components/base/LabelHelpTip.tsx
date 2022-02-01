@@ -16,7 +16,8 @@ interface Props {
 }
 
 export const LabelHelpTip: FC<Props> = memo(props => {
-    const { children, title, placement, id, size, customStyle, required, iconComponent, bsStyle, popoverClassName } = props;
+    const { children, title, placement, id, size, customStyle, required, iconComponent, bsStyle, popoverClassName } =
+        props;
     const targetRef = useRef();
     const [show, setShow] = useState(false);
 

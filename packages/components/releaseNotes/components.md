@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.123.0
+*Released*: 21 January 2022
+* Item #9767: Improve sample actions from assay results grid
+  * Add new `SampleActionsButton` to Assay Results page
+  * Adjust picklist creation and update actions & components
+  * Adjust job creation and update actions & components
+  * Added `getFieldLookupFromSelection` which pulls the lookups rowId value based on supplied query & field
+
 ### version 2.122.0
 *Released*: 31 January 2022
 * Share asynchronous upload UI indicators across LKB and LKSM by pulling relevant code into ui-components

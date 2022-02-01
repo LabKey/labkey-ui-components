@@ -907,22 +907,57 @@ export function getSampleTypes(): Promise<Array<{ id: number; label: string }>> 
     });
 }
 
-export async function getSelectedSampleTypes(model: QueryModel): Promise<Array<string>> {
+export async function getSelectedSampleTypes(model: QueryModel): Promise<string[]> {
     const { queryInfo } = model;
     return new Promise(async (resolve, reject) => {
-        let selectedSampleTypes = [];
+        const selectedSampleTypes = [];
         try {
-            const {data} = await getSelectedData(queryInfo.schemaName, queryInfo.name, Array.from(model.selections), "RowId,SampleSet");
+            const { data } = await getSelectedData(
+                queryInfo.schemaName,
+                queryInfo.name,
+                Array.from(model.selections),
+                'RowId,SampleSet'
+            );
             data.forEach(item => {
                 const sampleType = item.getIn(['SampleSet', 'displayValue']);
-                if (selectedSampleTypes.indexOf(sampleType) === -1)
-                    selectedSampleTypes.push(sampleType);
+                if (selectedSampleTypes.indexOf(sampleType) === -1) selectedSampleTypes.push(sampleType);
             });
             resolve(selectedSampleTypes);
-        }
-        catch (reason) {
-            console.error("Problem getting selected data from model", queryInfo, model.selections);
+        } catch (reason) {
+            console.error('Problem getting selected data from model', queryInfo, model.selections);
             reject(resolveErrorMessage(reason));
         }
-    })
+    });
+}
+
+/**
+ * Gets the Set of Ids from selected rowIds based on supplied fieldKey which should be a Lookup
+ * @param schemaName of selected rows
+ * @param queryName of selected rows
+ * @param selected rowIds to pull sampleIds for
+ * @param fieldKey field key for the Lookup
+ */
+export async function getFieldLookupFromSelection(
+    schemaName: string,
+    queryName: string,
+    selected: any[],
+    fieldKey: string
+): Promise<string[]> {
+    const sampleIds = new Set<string>();
+
+    if (fieldKey) {
+        const rowIdFieldKey = `${fieldKey}/RowId`; // Pull the rowId of the lookup
+        const { data, dataIds } = await getSelectedData(schemaName, queryName, selected, 'RowId,' + rowIdFieldKey); // Include the RowId column to prevent warnings
+        if (data) {
+            const rows = data.toJS();
+            dataIds.forEach(rowId => {
+                const val = rows[rowId]?.[rowIdFieldKey]?.value;
+                if (val) {
+                    sampleIds.add(val);
+                }
+            });
+        }
+    }
+
+    return [...sampleIds];
 }

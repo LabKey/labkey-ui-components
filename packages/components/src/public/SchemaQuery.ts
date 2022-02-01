@@ -90,7 +90,7 @@ export class SchemaQuery extends Record({
 
     hasSchema(schemaName: string): boolean {
         if (schemaName) {
-            return this.schemaName.toLowerCase() === schemaName.toLowerCase();
+            return this.schemaName?.toLowerCase() === schemaName.toLowerCase();
         }
 
         return false;

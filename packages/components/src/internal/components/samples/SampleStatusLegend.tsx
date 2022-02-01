@@ -1,4 +1,5 @@
 import React, {FC, memo} from "react";
+import { Query } from '@labkey/api';
 
 import { LoadingSpinner, caseInsensitive, SCHEMAS } from '../../../';
 
@@ -55,6 +56,8 @@ export const SampleStatusLegend: FC<OwnProps> = () => {
         model: {
             id: 'sample-statuses-model',
             schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_STATUS,
+            containerFilter: Query.ContainerFilter.current, // only get statuses for the current container
+            maxRows: -1,
             sorts: [
                 new QuerySort({ fieldKey: 'StatusType' }),
                 new QuerySort({ fieldKey: 'Label' }),

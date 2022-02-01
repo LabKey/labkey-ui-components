@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.125.0
+*Released*: 1 February 2022
 * Item 9932: Sample Type Insights panel
   * Refactor HorizontalBarSection from inventory module (previously StorageAllocationSection)
   * Bar chart data helper for createPercentageBarData() and createHorizontalBarLegendData(), moved from inventory module

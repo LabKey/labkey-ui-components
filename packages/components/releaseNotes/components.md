@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.123.0
+*Released*: 21 January 2022
 * Item #9767: Improve sample actions from assay results grid
   * Add new `SampleActionsButton` to Assay Results page
   * Adjust picklist creation and update actions & components

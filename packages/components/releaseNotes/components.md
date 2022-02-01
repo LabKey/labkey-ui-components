@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.124.0
+*Released*: 31 January 2022
 * Item 9923: Adding roles for storage management
   * Moved `updateSampleStatus` method into inventory since it's used only when discarding samples and that now requires a specific inventory action
   * Change user display role to account for storage editor and designer roles

@@ -886,22 +886,25 @@ export function getSampleTypes(): Promise<Array<{ id: number; label: string }>> 
     });
 }
 
-export async function getSelectedSampleTypes(model: QueryModel): Promise<Array<string>> {
+export async function getSelectedSampleTypes(model: QueryModel): Promise<string[]> {
     const { queryInfo } = model;
     return new Promise(async (resolve, reject) => {
-        let selectedSampleTypes = [];
+        const selectedSampleTypes = [];
         try {
-            const {data} = await getSelectedData(queryInfo.schemaName, queryInfo.name, Array.from(model.selections), "RowId,SampleSet");
+            const { data } = await getSelectedData(
+                queryInfo.schemaName,
+                queryInfo.name,
+                Array.from(model.selections),
+                'RowId,SampleSet'
+            );
             data.forEach(item => {
                 const sampleType = item.getIn(['SampleSet', 'displayValue']);
-                if (selectedSampleTypes.indexOf(sampleType) === -1)
-                    selectedSampleTypes.push(sampleType);
+                if (selectedSampleTypes.indexOf(sampleType) === -1) selectedSampleTypes.push(sampleType);
             });
             resolve(selectedSampleTypes);
-        }
-        catch (reason) {
-            console.error("Problem getting selected data from model", queryInfo, model.selections);
+        } catch (reason) {
+            console.error('Problem getting selected data from model', queryInfo, model.selections);
             reject(resolveErrorMessage(reason));
         }
-    })
+    });
 }

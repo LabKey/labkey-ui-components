@@ -22,7 +22,7 @@ import {
     TEST_USER_AUTHOR,
     TEST_USER_EDITOR,
     TEST_USER_READER,
-    TEST_USER_STORAGE_EDITOR
+    TEST_USER_STORAGE_EDITOR,
 } from '../../../test/data/users';
 import { mountWithServerContext } from '../../testHelpers';
 
@@ -101,10 +101,10 @@ describe('SamplesManageButton', () => {
 
     test('storage editor', () => {
         const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} />, {
-            user: TEST_USER_STORAGE_EDITOR
+            user: TEST_USER_STORAGE_EDITOR,
         });
         validate(wrapper, true, 0, 2, 2, 0, 1);
-    })
+    });
 
     test('reader', () => {
         const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} />, {

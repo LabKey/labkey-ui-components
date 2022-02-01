@@ -124,12 +124,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         this._hasError = false;
 
         const includedTabs = [];
-        if (props.determineSampleData)
-            includedTabs.push(GridTab.Samples);
-        if (props.determineStorage)
-            includedTabs.push(GridTab.Storage);
-        if (props.determineLineage)
-            includedTabs.push(GridTab.Lineage);
+        if (props.determineSampleData) includedTabs.push(GridTab.Samples);
+        if (props.determineStorage) includedTabs.push(GridTab.Storage);
+        if (props.determineLineage) includedTabs.push(GridTab.Lineage);
         this.state = {
             originalParents: undefined,
             parentTypeOptions: undefined,
@@ -146,7 +143,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             discardSamplesCount: undefined,
             totalEditCount: undefined,
             consumedStatusIds: undefined,
-            includedTabs
+            includedTabs,
         };
     }
 
@@ -358,11 +355,11 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     initLineageEditableGrid = async (): Promise<void> => {
         const { determineLineage } = this.props;
         if (determineLineage) {
-            const {originalParents, parentTypeOptions} = await getOriginalParentsFromSampleLineage(
+            const { originalParents, parentTypeOptions } = await getOriginalParentsFromSampleLineage(
                 this.props.sampleLineage
             );
             this.setState(
-                () => ({originalParents, parentTypeOptions}),
+                () => ({ originalParents, parentTypeOptions }),
                 () => {
                     gridInit(this.getLineageEditorQueryGridModel(), true, this);
                 }
@@ -712,7 +709,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     getCurrentTab = (tabInd: number): number => {
         const { includedTabs } = this.state;
         return tabInd === undefined ? includedTabs[0] : includedTabs[tabInd];
-    }
+    };
 
     getTabHeader = (tabInd: number): ReactNode => {
         const { parentDataTypes, combineParentTypes } = this.props;
@@ -780,19 +777,19 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         const models = [];
         if (determineSampleData) {
             const samplesGrid = this.getSamplesEditorQueryGridModel();
-            if (!samplesGrid || !samplesGrid.isLoaded) return <LoadingSpinner/>;
+            if (!samplesGrid || !samplesGrid.isLoaded) return <LoadingSpinner />;
             models.push(samplesGrid);
         }
 
         if (determineStorage) {
             const storageGrid = this.getStorageEditorQueryGridModel();
-            if (!storageGrid || !storageGrid.isLoaded) return <LoadingSpinner/>;
+            if (!storageGrid || !storageGrid.isLoaded) return <LoadingSpinner />;
             models.push(storageGrid);
         }
 
         if (determineLineage) {
             const lineageGrid = this.getLineageEditorQueryGridModel();
-            if (!lineageGrid || !lineageGrid.isLoaded) return <LoadingSpinner/>;
+            if (!lineageGrid || !lineageGrid.isLoaded) return <LoadingSpinner />;
             models.push(lineageGrid);
         }
 

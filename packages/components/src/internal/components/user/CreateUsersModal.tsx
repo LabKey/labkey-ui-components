@@ -58,7 +58,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
         }));
     };
 
-    handleRoles = (name, formValue, selectedOptions: {id: string, label: string}[]) => {
+    handleRoles = (name, formValue, selectedOptions: Array<{ id: string; label: string }>) => {
         const roles = selectedOptions ? selectedOptions.map(option => option.id) : undefined;
         this.setState({ roles });
     };

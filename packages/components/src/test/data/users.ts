@@ -55,7 +55,7 @@ export const TEST_USER_AUTHOR = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: true,
-    permissionsList: List<string>([PermissionTypes.Read, PermissionTypes.Insert,]),
+    permissionsList: List<string>([PermissionTypes.Read, PermissionTypes.Insert]),
 });
 
 export const TEST_USER_EDITOR = new User({
@@ -235,6 +235,6 @@ export const TEST_USER_STORAGE_EDITOR = new User({
         PermissionTypes.Read,
         PermissionTypes.EditStorageData,
         PermissionTypes.ManageSampleWorkflows,
-        PermissionTypes.ManagePicklists
+        PermissionTypes.ManagePicklists,
     ]),
 });

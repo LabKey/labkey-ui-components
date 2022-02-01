@@ -72,7 +72,7 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                 PermissionTypes.Insert,
                 PermissionTypes.Update,
                 PermissionTypes.Delete,
-                PermissionTypes.EditStorageData
+                PermissionTypes.EditStorageData,
             ]}
         >
             <ManageDropdownButton id="samples-manage-btn">
@@ -93,7 +93,10 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                     </RequiresPermission>
                 )}
                 {shouldShowButtons(SamplesManageButtonSections.EDIT, hideButtons) && (
-                    <RequiresPermission perms={[PermissionTypes.Update, PermissionTypes.EditStorageData]} permissionCheck={'any'}>
+                    <RequiresPermission
+                        perms={[PermissionTypes.Update, PermissionTypes.EditStorageData]}
+                        permissionCheck="any"
+                    >
                         <SelectionMenuItem
                             id="update-samples-menu-item"
                             text="Edit Selected Samples in Grid"
@@ -102,7 +105,7 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                             queryModel={model}
                             nounPlural={SampleTypeDataType.nounPlural}
                         />
-                        {user.canUpdate &&
+                        {user.canUpdate && (
                             <SelectionMenuItem
                                 id="bulk-update-samples-menu-item"
                                 text="Edit Selected Samples in Bulk"
@@ -110,8 +113,9 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                                 queryModel={model}
                                 nounPlural={SampleTypeDataType.nounPlural}
                             />
-                        }
-                        {!combineParentTypes && user.canUpdate &&
+                        )}
+                        {!combineParentTypes &&
+                            user.canUpdate &&
                             parentEntityDataTypes.map(parentEntityDataType => {
                                 return (
                                     <EntityLineageEditMenuItem

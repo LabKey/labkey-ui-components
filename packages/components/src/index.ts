@@ -400,7 +400,6 @@ import { ChangePasswordModal } from './internal/components/user/ChangePasswordMo
 import { UsersGridPanel } from './internal/components/user/UsersGridPanel';
 import { UserProvider, useUserProperties } from './internal/components/user/UserProvider';
 import { UserLink } from './internal/components/user/UserLink';
-import { FieldEditorOverlay } from './internal/components/forms/FieldEditorOverlay';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_FIELD_REQUIRED,
@@ -864,7 +863,6 @@ export {
     SelectInput,
     DatePickerInput,
     QueryDateInput,
-    FieldEditorOverlay,
     FileInput,
     TextAreaInput,
     TextInput,

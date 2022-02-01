@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import { PermissionTypes } from '@labkey/api';
 
-import { EditInlineField, hasAllPermissions, SVGIcon, User } from '../../..';
-
-import { FieldEditorOverlay, FieldEditorOverlayProps } from './FieldEditorOverlay';
+import { SVGIcon } from '../../..';
 
 export interface PageDetailHeaderProps {
     description?: ReactNode;

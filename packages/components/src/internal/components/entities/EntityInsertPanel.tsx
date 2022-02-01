@@ -855,7 +855,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
-    getGeneratedIdColumnMetadata(): Map<string, EditableColumnMetadata> {
+    getColumnMetadata(): Map<string, EditableColumnMetadata> {
         const { entityDataType, nounSingular, nounPlural } = this.props;
         const { creationType, previewName, previewAliquotName } = this.state;
         let columnMetadata = getUniqueIdColumnMetadata(this.getGridQueryInfo());
@@ -904,9 +904,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel, creationType } = this.state;
         const { creationTypeOptions, nounPlural, onBulkAdd } = this.props;
-
-        const columnMetadata = this.getGeneratedIdColumnMetadata();
-
+        const columnMetadata = this.getColumnMetadata();
         const queryGridModel = this.getQueryGridModel();
         const isLoaded = !!queryGridModel?.isLoaded;
 

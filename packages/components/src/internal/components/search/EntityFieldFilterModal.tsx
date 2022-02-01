@@ -27,8 +27,9 @@ interface Props {
     onFind: (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }) => void;
     queryName?: string;
     fieldKey?: string;
-    showAllFields?: boolean; // all fields, including non-text fields
+    showAllFields?: boolean; // all fields types, including non-text fields
     cards?: FilterProps[];
+    skipDefaultViewCheck?: boolean; // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
 }
 
 export enum EntityFieldFilterTabs {
@@ -37,7 +38,7 @@ export enum EntityFieldFilterTabs {
 }
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
-    const { api, entityDataType, onCancel, onFind, cards, queryName, fieldKey, showAllFields } = props;
+    const { api, entityDataType, onCancel, onFind, cards, queryName, fieldKey, showAllFields, skipDefaultViewCheck } = props;
 
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
 
@@ -90,7 +91,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             setLoadingError(undefined);
             api.query.getQueryDetails({ schemaName: entityDataType.instanceSchemaName, queryName })
                 .then((queryInfo) => {
-                    const fields = queryInfo.getDisplayColumns();
+                    const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
                     let supportedFields = fields;
                     if (!showAllFields) {
                         const supportedFieldArray = []
@@ -211,14 +212,15 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         <div className="list-group parent-search-panel__col-content">
                             {entityQueries?.map((parent, index) => {
                                 const label = parent.label ?? parent?.get('label');
-                                const fieldFilterCount = dataTypeFilters?.[label]?.length;
+                                const parentValue = parent.value ?? parent?.get('value');
+                                const fieldFilterCount = dataTypeFilters?.[parentValue]?.length ?? 0;
                                 return (
                                     <ChoicesListItem
-                                        active={label === activeQuery}
+                                        active={parentValue === activeQuery}
                                         index={index}
                                         key={parent.rowId + ''}
                                         label={label}
-                                        onSelect={() => onEntityClick(label)}
+                                        onSelect={() => onEntityClick(parentValue)}
                                         componentRight={
                                             fieldFilterCount !== 0 && (
                                                 <span className="pull-right field_count_circle">
@@ -240,7 +242,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         )}
                         {activeQuery && !queryFields && <LoadingSpinner />}
                         {activeQuery && (
-                            <div className="list-group parent-search-panel__col-content">
+                            <div className="list-group parent-search-panel__col-content parent-search-panel__fields-col-content">
                                 {queryFields?.map((field, index) => {
                                     const { fieldKey, caption } = field;
                                     const hasFilter = filterStatus?.[activeQuery + '-' + fieldKey];

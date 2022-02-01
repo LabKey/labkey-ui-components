@@ -21,11 +21,21 @@ interface Props {
     currentProductId?: string;
     picklistProductId?: string;
     metricFeatureArea?: string;
+    sampleFieldKey?: string;
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {
-    const { sampleIds, key, itemText, user, queryModel, currentProductId, picklistProductId, metricFeatureArea } =
-        props;
+    const {
+        sampleIds,
+        key,
+        itemText,
+        user,
+        queryModel,
+        currentProductId,
+        picklistProductId,
+        metricFeatureArea,
+        sampleFieldKey,
+    } = props;
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
 
@@ -93,17 +103,21 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     currentProductId={currentProductId}
                     picklistProductId={picklistProductId}
                     metricFeatureArea={metricFeatureArea}
+                    queryModel={queryModel}
+                    sampleFieldKey={sampleFieldKey}
                 />
             )}
             {showCreatePicklist && (
                 <PicklistEditModal
-                    selectionKey={id}
+                    selectionKey={sampleFieldKey ? undefined : id}   //If a sampleField is being used it, the id may not map correctly
                     selectedQuantity={numSelected}
                     sampleIds={sampleIds}
                     onFinish={afterCreatePicklist}
                     onCancel={closeCreatePicklist}
                     showNotification
                     metricFeatureArea={metricFeatureArea}
+                    queryModel={queryModel}
+                    sampleFieldKey={sampleFieldKey}
                 />
             )}
         </>

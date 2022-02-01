@@ -26,9 +26,9 @@ import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
 import { InferDomainResponse } from './public/InferDomainResponse';
 import {
+    getAssayImportNotificationMsg,
     getServerFilePreview,
     inferDomainFromFile,
-    getAssayImportNotificationMsg,
 } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
@@ -199,10 +199,10 @@ import {
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
     SHARED_CONTAINER_PATH,
-    SM_PIPELINE_JOB_NOTIFICATION_EVENT,
-    SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
-    SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
-    SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
+    PIPELINE_JOB_NOTIFICATION_EVENT,
+    PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
+    PIPELINE_JOB_NOTIFICATION_EVENT_START,
+    PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
 } from './internal/constants';
 import { getLocation, pushParameter, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
@@ -292,9 +292,9 @@ import {
     getFindSamplesByIdData,
     getSampleSet,
     getSampleTypeDetails,
-    getSelectedItemSamples,
-    updateSamplesStatus,
+    getFieldLookupFromSelection,
     getSampleTypes,
+    getSelectedItemSamples,
     getSelectedSampleTypes,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
@@ -310,6 +310,7 @@ import { SampleCreationTypeModal } from './internal/components/samples/SampleCre
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
+import { SampleActionsButton } from './internal/components/samples/SampleActionsButton';
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
@@ -324,8 +325,9 @@ import {
     getSampleStatus,
     getSampleStatusType,
     isSampleOperationPermitted,
-    SamplesManageButtonSections,
+    getSampleSetMenuItem,
     isSamplesSchema,
+    SamplesManageButtonSections,
 } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
@@ -502,12 +504,14 @@ import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
+    ACTIVE_JOB_INDICATOR_CLS,
 } from './internal/components/pipeline/constants';
 import { PipelineJobDetailPage } from './internal/components/pipeline/PipelineJobDetailPage';
 import { PipelineJobsListingPage } from './internal/components/pipeline/PipelineJobsListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
 import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
+import { hasActivePipelineJob, getTitleDisplay } from './internal/components/pipeline/utils';
 import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
@@ -527,8 +531,8 @@ import {
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
-    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_COLUMN_NAME,
+    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SampleOperation,
@@ -579,6 +583,7 @@ import {
     userCanDeletePublicPicklists,
     userCanDesignLocations,
     userCanDesignSourceTypes,
+    userCanEditStorageData,
     userCanManagePicklists,
 } from './internal/app/utils';
 import {
@@ -602,6 +607,8 @@ import {
     TEST_USER_GUEST,
     TEST_USER_PROJECT_ADMIN,
     TEST_USER_READER,
+    TEST_USER_STORAGE_DESIGNER,
+    TEST_USER_STORAGE_EDITOR,
 } from './test/data/users';
 import {
     ASSAY_DESIGN_KEY,
@@ -690,6 +697,7 @@ const App = {
     updateUser,
     updateUserDisplayName,
     userCanDesignLocations,
+    userCanEditStorageData,
     userCanDesignSourceTypes,
     userCanManagePicklists,
     userCanDeletePublicPicklists,
@@ -740,6 +748,8 @@ const App = {
     TEST_USER_FOLDER_ADMIN,
     TEST_USER_PROJECT_ADMIN,
     TEST_USER_APP_ADMIN,
+    TEST_USER_STORAGE_DESIGNER,
+    TEST_USER_STORAGE_EDITOR,
 };
 
 const Hooks = {
@@ -924,6 +934,7 @@ export {
     filterSampleRowsForOperation,
     isSampleOperationPermitted,
     isSamplesSchema,
+    getSampleSetMenuItem,
     getFilterForSampleOperation,
     getSampleDeleteMessage,
     getSampleStatus,
@@ -950,8 +961,8 @@ export {
     getSampleTypeDetails,
     createQueryGridModelFilteredBySample,
     createQueryConfigFilteredBySample,
+    getFieldLookupFromSelection,
     getSelectedItemSamples,
-    updateSamplesStatus,
     getSampleTypes,
     getSelectedSampleTypes,
     FindSamplesByIdHeaderPanel,
@@ -966,6 +977,7 @@ export {
     SampleCreationType,
     SampleSetDeleteModal,
     SampleDeleteMenuItem,
+    SampleActionsButton,
     SamplesManageButton,
     SamplesManageButtonSections,
     SamplesTabbedGridPanel,
@@ -1090,10 +1102,10 @@ export {
     BreadcrumbCreate,
     // notification related items
     NO_UPDATES_MESSAGE,
-    SM_PIPELINE_JOB_NOTIFICATION_EVENT,
-    SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
-    SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
-    SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
+    PIPELINE_JOB_NOTIFICATION_EVENT,
+    PIPELINE_JOB_NOTIFICATION_EVENT_START,
+    PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
+    PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
     SHARED_CONTAINER_PATH,
     NotificationItemModel,
     Notification,
@@ -1312,12 +1324,15 @@ export {
     // pipeline
     PipelineJobsPage,
     PipelineStatusDetailPage,
+    hasActivePipelineJob,
+    getTitleDisplay,
     PipelineJobDetailPage,
     PipelineJobsListingPage,
     PipelineSubNav,
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
+    ACTIVE_JOB_INDICATOR_CLS,
     getAssayImportNotificationMsg,
     // Test Helpers
     sleep,
@@ -1430,3 +1445,4 @@ export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { SamplesEditableGridProps } from './internal/components/samples/SamplesEditableGrid';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';
+export type { PageDetailHeaderProps } from './internal/components/forms/PageDetailHeader';

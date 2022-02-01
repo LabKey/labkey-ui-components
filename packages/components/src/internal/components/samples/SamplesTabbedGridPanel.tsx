@@ -3,6 +3,7 @@ import { Set, List, Map } from 'immutable';
 import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import {
+    App,
     createNotification,
     dismissNotifications,
     EXPORT_TYPES,
@@ -46,7 +47,7 @@ interface Props extends InjectedQueryModels {
     createBtnParentType?: string;
     createBtnParentKey?: string;
     excludedCreateMenuKeys?: List<string>;
-    initialTabId?: string; // use if you have multiple tabs but want to start on something other then the first one
+    initialTabId?: string; // use if you have multiple tabs but want to start on something other than the first one
     onPrintLabel?: () => void;
     modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
     sampleAliquotType?: ALIQUOT_FILTER_MODE; // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
@@ -264,7 +265,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         showBulkUpdate: onShowBulkUpdate,
         toggleEditWithGridUpdate,
         onTabbedViewAliquotSelectorUpdate: onAliquotViewUpdate,
-        user,
         initAliquotMode: activeActiveAliquotMode,
     };
 
@@ -273,8 +273,9 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             {isEditing || selectionData ? (
                 <SamplesEditableGrid
                     {...samplesEditableGridProps}
-                    determineLineage
-                    determineStorage
+                    determineSampleData={user.canUpdate}
+                    determineLineage={user.canUpdate}
+                    determineStorage={App.userCanEditStorageData(user)}
                     displayQueryModel={activeModel}
                     editableGridDataForSelection={editableGridData?.dataForSelection}
                     editableGridDataIdsForSelection={editableGridData?.idsForSelection}
@@ -308,6 +309,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             )}
             {showBulkUpdate && (
                 <SamplesBulkUpdateForm
+                    determineSampleData
                     selection={List(Array.from(activeModel.selections))}
                     sampleSet={activeModel.schemaQuery.queryName}
                     sampleSetLabel={activeModel.queryInfo.title}

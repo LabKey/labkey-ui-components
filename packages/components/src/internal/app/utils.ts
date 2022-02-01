@@ -111,7 +111,11 @@ export function userCanDesignSourceTypes(user: User): boolean {
 }
 
 export function userCanDesignLocations(user: User): boolean {
-    return hasAllPermissions(user, [PermissionTypes.Admin]);
+    return hasAllPermissions(user, [PermissionTypes.DesignStorage], false);
+}
+
+export function userCanEditStorageData(user: User): boolean {
+    return hasAllPermissions(user, [PermissionTypes.EditStorageData], false);
 }
 
 export function isFreezerManagementEnabled(moduleContext?: any): boolean {

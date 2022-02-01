@@ -1,12 +1,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
+import { Filter } from '@labkey/api';
+
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { capitalizeFirstChar } from '../../util/utils';
 import { TestTypeDataType } from '../../../test/data/constants';
 
 import { FilterCard } from './FilterCards';
-import {Filter} from "@labkey/api";
 
 describe('FilterCard', () => {
     const capParentNoun = capitalizeFirstChar(TestTypeDataType.nounAsParentSingular);
@@ -56,15 +57,18 @@ describe('FilterCard', () => {
             <FilterCard
                 entityDataType={TestTypeDataType}
                 schemaQuery={SchemaQuery.create('testSample', 'parent')}
-                filterArray={[{
-                    fieldKey: '1',
-                    fieldCaption: 'Field1',
-                    filter: Filter.create('IntField', 1)
-                },{
-                    fieldKey: '2',
-                    fieldCaption: 'Field2',
-                    filter: Filter.create('IntField2', 2)
-                }]}
+                filterArray={[
+                    {
+                        fieldKey: '1',
+                        fieldCaption: 'Field1',
+                        filter: Filter.create('IntField', 1),
+                    },
+                    {
+                        fieldKey: '2',
+                        fieldCaption: 'Field2',
+                        filter: Filter.create('IntField2', 2),
+                    },
+                ]}
                 onAdd={jest.fn}
                 onEdit={jest.fn}
                 onDelete={jest.fn}

@@ -91,7 +91,7 @@ function getLocalStorageKey(): string {
 }
 
 export const SampleFinderSection: FC<Props> = memo(props => {
-    const { sampleTypeNames, parentEntityDataTypes, showAllFields,  ...gridProps } = props;
+    const { sampleTypeNames, parentEntityDataTypes, showAllFields, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
@@ -143,7 +143,6 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             setChosenEntityType(selectedCard.entityDataType);
             setChosenQueryName(selectedCard.schemaQuery.queryName);
             setChosenField(fieldFilter.fieldKey);
-
         },
         [filters]
     );

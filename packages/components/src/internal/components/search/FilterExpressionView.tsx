@@ -13,7 +13,7 @@ import { resolveFieldKey } from '../omnibox/utils';
 import { resolveFilterType } from '../omnibox/actions/Filter';
 import { formatDate } from '../../util/Date';
 
-import {getFilterValuesAsArray, getSampleFinderFilterTypesForType, isFilterUrlSuffixMatch} from './utils';
+import { getFilterValuesAsArray, getSampleFinderFilterTypesForType, isFilterUrlSuffixMatch } from './utils';
 
 interface Props {
     field: QueryColumn;
@@ -52,7 +52,6 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                     setFirstFilterValue(values[0]);
                 }
             }
-
         }
     }, [field]); // leave fieldFilter out of deps list, fieldFilter is used to init once
 
@@ -64,10 +63,9 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             }
 
             const filterType = resolveFilterType(newFilterType?.['value'], field);
-            if (!filterType)
-                return;
+            if (!filterType) return;
 
-            let filter : Filter.IFilter;
+            let filter: Filter.IFilter;
 
             if (!newFilterType['valueRequired']) {
                 filter = Filter.create(resolveFieldKey(field.name, field), null, filterType);
@@ -76,8 +74,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 if (newFilterType?.['betweenOperator']) {
                     if (clearBothValues) {
                         value = null;
-                    }
-                    else if (isSecondValue) {
+                    } else if (isSecondValue) {
                         value = (firstFilterValue ? firstFilterValue + ',' : '') + newFilterValue;
                     } else {
                         value = newFilterValue + (secondFilterValue ? ',' + secondFilterValue : '');
@@ -190,7 +187,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         className="form-control search-filter__input"
                         step={field.jsonType === 'int' ? 1 : undefined}
                         name={'field-value-text' + suffix}
-                        onChange={(event) => updateTextFilterFieldValue(event, true)}
+                        onChange={event => updateTextFilterFieldValue(event, true)}
                         pattern={field.jsonType === 'int' ? '[0-9]*' : undefined}
                         type="number"
                         value={valueRaw ?? ''}

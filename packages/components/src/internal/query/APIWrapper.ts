@@ -1,9 +1,10 @@
-import {List, Map} from 'immutable';
-import {getQueryDetails, GetQueryDetailsOptions} from "./api";
-import {QueryInfo} from "../../public/QueryInfo";
-import {EntityDataType, IEntityTypeOption} from "../components/entities/models";
-import {getEntityTypeOptions} from "../components/entities/actions";
+import { List, Map } from 'immutable';
 
+import { QueryInfo } from '../../public/QueryInfo';
+import { EntityDataType, IEntityTypeOption } from '../components/entities/models';
+import { getEntityTypeOptions } from '../components/entities/actions';
+
+import { getQueryDetails, GetQueryDetailsOptions } from './api';
 
 export interface QueryAPIWrapper {
     getEntityTypeOptions: (

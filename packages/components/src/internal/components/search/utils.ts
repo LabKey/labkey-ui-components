@@ -138,7 +138,7 @@ export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [
 export const NEGATE_FILTERS = [
     Filter.Types.NEQ_OR_NULL.getURLSuffix(),
     Filter.Types.DATE_NOT_EQUAL.getURLSuffix(),
-    Filter.Types.NOT_IN.getURLSuffix()
+    Filter.Types.NOT_IN.getURLSuffix(),
 ];
 
 export const SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE = [
@@ -146,7 +146,7 @@ export const SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE = [
     Filter.Types.DATE_EQUAL.getURLSuffix(),
     Filter.Types.IN.getURLSuffix(),
     Filter.Types.BETWEEN.getURLSuffix(),
-    ...NEGATE_FILTERS
+    ...NEGATE_FILTERS,
 ];
 
 export function isBetweenOperator(urlSuffix: string): boolean {
@@ -174,14 +174,14 @@ export function getSampleFinderFilterTypesForType(jsonType: JsonType): any[] {
             label: filter.getDisplayText(),
             valueRequired: filter.isDataValueRequired(),
             multiValue: filter.isMultiValued(),
-            betweenOperator: isBetweenOperator(urlSuffix)
+            betweenOperator: isBetweenOperator(urlSuffix),
         });
     });
 
     return filters;
 }
 
-export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilterType) : boolean {
+export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilterType): boolean {
     if (suffix === 'any' && filterType.getURLSuffix() === '') return true;
     return suffix === filterType.getURLSuffix();
 }
@@ -244,16 +244,15 @@ export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStor
 
 const EMPTY_VALUE_DISPLAY = '[blank]';
 export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string): any[] {
-    let values = [], rawValues;
+    let values = [],
+        rawValues;
     const rawValue = filter.getValue();
 
     if (Array.isArray(rawValue)) {
         rawValues = [...rawValue];
     } else if (typeof rawValue === 'string') {
         rawValues = rawValue.split(';');
-    }
-    else
-        rawValues = [rawValue];
+    } else rawValues = [rawValue];
 
     rawValues.forEach(v => {
         values.push(v == '' ? blankValue ?? EMPTY_VALUE_DISPLAY : v);
@@ -266,7 +265,7 @@ export function getFieldFilterKey(fieldFilter: FieldFilter, schemaQuery?: Schema
     return schemaQuery.schemaName + '|' + schemaQuery.queryName + '|' + fieldFilter.fieldKey;
 }
 
-export function getFieldFiltersValidationResult(dataTypeFilters: {[key: string]: FieldFilter[]}) : string {
+export function getFieldFiltersValidationResult(dataTypeFilters: { [key: string]: FieldFilter[] }): string {
     let errorMsg = 'Invalid/incomplete filter values. Please correct input for fields. ',
         hasError = false,
         parentFields = {};

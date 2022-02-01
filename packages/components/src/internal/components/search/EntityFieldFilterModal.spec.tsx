@@ -1,48 +1,53 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import {fromJS} from "immutable";
+import { fromJS } from 'immutable';
 
-import {Filter} from "@labkey/api";
+import { Filter } from '@labkey/api';
 
-import {EntityFieldFilterModal} from "./EntityFieldFilterModal";
-import {getTestAPIWrapper} from "../../APIWrapper";
-import {getQueryTestAPIWrapper} from "../../query/APIWrapper";
-import {GetQueryDetailsOptions} from "../../query/api";
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
+import { GetQueryDetailsOptions } from '../../query/api';
 import sampleSetAllFieldTypesQueryInfo from '../../../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
-import {TestTypeDataType} from "../../../test/data/constants";
-import {waitForLifecycle} from "../../testHelpers";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {ChoicesListItem} from "../base/ChoicesListItem";
-import {SchemaQuery} from "../../../public/SchemaQuery";
+import { TestTypeDataType } from '../../../test/data/constants';
+import { waitForLifecycle } from '../../testHelpers';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { ChoicesListItem } from '../base/ChoicesListItem';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 const sampleTypes = {
-    "SampleSets": [{
-        "label": "SampleType_01",
-        "lsid": "urn:lsid:labkey.com:SampleSet.Folder-13:SampleType_01",
-        "rowId": 21,
-        "value": "sampletype_01",
-        "query": "SampleType_01",
-        "entityDataType": TestTypeDataType,
-        "isFromSharedContainer": false,
-        "schema": "samples"
-    }, {
-        "label": "SampleSetAllFieldTypes",
-        "lsid": "urn:lsid:labkey.com:SampleSet.Folder-4:SampleSetAllFieldTypes",
-        "rowId": 18,
-        "value": "samplesetallfieldtypes",
-        "query": "samplesetallfieldtypes",
-        "entityDataType": TestTypeDataType,
-        "isFromSharedContainer": true,
-        "schema": "samples"
-    }]
+    SampleSets: [
+        {
+            label: 'SampleType_01',
+            lsid: 'urn:lsid:labkey.com:SampleSet.Folder-13:SampleType_01',
+            rowId: 21,
+            value: 'sampletype_01',
+            query: 'SampleType_01',
+            entityDataType: TestTypeDataType,
+            isFromSharedContainer: false,
+            schema: 'samples',
+        },
+        {
+            label: 'SampleSetAllFieldTypes',
+            lsid: 'urn:lsid:labkey.com:SampleSet.Folder-4:SampleSetAllFieldTypes',
+            rowId: 18,
+            value: 'samplesetallfieldtypes',
+            query: 'samplesetallfieldtypes',
+            entityDataType: TestTypeDataType,
+            isFromSharedContainer: true,
+            schema: 'samples',
+        },
+    ],
 };
 
 const DEFAULT_PROPS = {
     api: getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
-            getEntityTypeOptions: () =>  Promise.resolve(fromJS(sampleTypes)),
-            getQueryDetails: (options: GetQueryDetailsOptions) => Promise.resolve(QueryInfo.fromJSON(sampleSetAllFieldTypesQueryInfo))
+            getEntityTypeOptions: () => Promise.resolve(fromJS(sampleTypes)),
+            getQueryDetails: (options: GetQueryDetailsOptions) =>
+                Promise.resolve(QueryInfo.fromJSON(sampleSetAllFieldTypesQueryInfo)),
         }),
     }),
     entityDataType: TestTypeDataType,
@@ -50,28 +55,30 @@ const DEFAULT_PROPS = {
     onFind: jest.fn(),
     queryName: 'samplesetallfieldtypes',
     fieldKey: 'Integer',
-    skipDefaultViewCheck: true // QueryInfo.fromJSON lacks views info
+    skipDefaultViewCheck: true, // QueryInfo.fromJSON lacks views info
 };
 
-const filterArray = [{
-    fieldKey: 'Integer',
-    fieldCaption: 'Integer',
-    filter: Filter.create('Integer', 1)
-}, {
-    fieldKey: 'Boolean',
-    fieldCaption: 'Boolean',
-    filter: Filter.create('Boolean', true)
-}];
+const filterArray = [
+    {
+        fieldKey: 'Integer',
+        fieldCaption: 'Integer',
+        filter: Filter.create('Integer', 1),
+    },
+    {
+        fieldKey: 'Boolean',
+        fieldCaption: 'Boolean',
+        filter: Filter.create('Boolean', true),
+    },
+];
 
-const card =  {
+const card = {
     entityDataType: TestTypeDataType,
-    filterArray: filterArray,
+    filterArray,
     schemaQuery: SchemaQuery.create('TestSchema', 'samplesetallfieldtypes'),
     index: 1,
-}
+};
 
 describe('EntityFieldFilterModal', () => {
-
     function verifyOpeningCardWithFilters(wrapper, isQuerySelected?: boolean) {
         const queriesContainer = wrapper.find('.parent-search-panel__col_queries');
         const queries = queriesContainer.find(ChoicesListItem);
@@ -94,8 +101,7 @@ describe('EntityFieldFilterModal', () => {
         for (let i = 0; i < fieldCount; i++) {
             const fieldName = fields.at(i).text();
             let hasFieldFilter = false;
-            if (fieldName === 'Integer' || fieldName === 'Boolean')
-                hasFieldFilter = true;
+            if (fieldName === 'Integer' || fieldName === 'Boolean') hasFieldFilter = true;
 
             expect(fields.at(i).find('.search_field_dot')).toHaveLength(hasFieldFilter ? 1 : 0); // has filter indicator
 
@@ -106,13 +112,7 @@ describe('EntityFieldFilterModal', () => {
     }
 
     test('no initial query selection, no existing filters', async () => {
-        const wrapper = mount(
-            <EntityFieldFilterModal
-                {...DEFAULT_PROPS}
-                queryName={null}
-                fieldKey={null}
-            />
-        );
+        const wrapper = mount(<EntityFieldFilterModal {...DEFAULT_PROPS} queryName={null} fieldKey={null} />);
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -146,31 +146,21 @@ describe('EntityFieldFilterModal', () => {
 
     test('no initial query selection, with existing filters', async () => {
         const wrapper = mount(
-            <EntityFieldFilterModal
-                {...DEFAULT_PROPS}
-                cards={[card]}
-                queryName={null}
-                fieldKey={null}
-            />
+            <EntityFieldFilterModal {...DEFAULT_PROPS} cards={[card]} queryName={null} fieldKey={null} />
         );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        verifyOpeningCardWithFilters(wrapper, false)
+        verifyOpeningCardWithFilters(wrapper, false);
 
         wrapper.unmount();
     });
 
     test('open card with filters, list all field types', async () => {
         const wrapper = mount(
-            <EntityFieldFilterModal
-                {...DEFAULT_PROPS}
-                cards={[card]}
-                showAllFields={true}
-                fieldKey={null}
-            />
+            <EntityFieldFilterModal {...DEFAULT_PROPS} cards={[card]} showAllFields={true} fieldKey={null} />
         );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
@@ -187,13 +177,7 @@ describe('EntityFieldFilterModal', () => {
     });
 
     test('open card with filters, list string field type only', async () => {
-        const wrapper = mount(
-            <EntityFieldFilterModal
-                {...DEFAULT_PROPS}
-                cards={[card]}
-                fieldKey={null}
-            />
-        );
+        const wrapper = mount(<EntityFieldFilterModal {...DEFAULT_PROPS} cards={[card]} fieldKey={null} />);
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -205,7 +189,4 @@ describe('EntityFieldFilterModal', () => {
 
         wrapper.unmount();
     });
-
 });
-
-

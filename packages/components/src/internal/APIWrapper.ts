@@ -13,7 +13,7 @@ import {
     DomainPropertiesAPIWrapper,
     getDomainPropertiesTestAPIWrapper,
 } from './components/domainproperties/APIWrapper';
-import {getQueryTestAPIWrapper, QueryAPIWrapper, QueryServerAPIWrapper} from "./query/APIWrapper";
+import { getQueryTestAPIWrapper, QueryAPIWrapper, QueryServerAPIWrapper } from './query/APIWrapper';
 
 export interface ComponentsAPIWrapper {
     picklist: PicklistAPIWrapper;

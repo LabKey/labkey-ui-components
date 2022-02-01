@@ -1,23 +1,24 @@
-import { TestTypeDataType } from '../../../test/data/constants';
-
-import {
-    getFinderStartText,
-    getFinderViewColumnsConfig,
-    getSampleFinderCommonConfigs,
-    getSampleFinderQueryConfigs,
-    SAMPLE_FINDER_VIEW_NAME
-} from './utils';
-import { SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
 import { Filter } from '@labkey/api';
+
+import { fromJS, List, Map } from 'immutable';
+
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { TEST_USER_EDITOR, TEST_USER_GUEST } from '../../../test/data/users';
 import { SCHEMAS } from '../../schemas';
 import { FREEZER_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-import { fromJS, List, Map } from 'immutable';
+import { SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
+import { TestTypeDataType } from '../../../test/data/constants';
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import {
+    getFinderStartText,
+    getFinderViewColumnsConfig,
+    getSampleFinderCommonConfigs,
+    getSampleFinderQueryConfigs,
+    SAMPLE_FINDER_VIEW_NAME,
+} from './utils';
 
 test('getFinderStartText', () => {
     expect(getFinderStartText([])).toBe('Start by adding  properties.');
@@ -126,7 +127,7 @@ describe('getSampleFinderCommonConfigs', () => {
         const cardFilter = {
             fieldKey: 'TestColumn',
             fieldCaption: 'TestColumn',
-            filter: Filter.create('TestColumn', 'value')
+            filter: Filter.create('TestColumn', 'value'),
         };
 
         expect(
@@ -144,7 +145,7 @@ describe('getSampleFinderCommonConfigs', () => {
         ).toStrictEqual({
             baseFilters: [
                 Filter.create('QueryableInputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK),
-                Filter.create('QueryableInputs/Materials/TestQuery2/TestColumn', 'value')
+                Filter.create('QueryableInputs/Materials/TestQuery2/TestColumn', 'value'),
             ],
             requiredColumns: [
                 ...SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -160,13 +161,8 @@ describe('getSampleFinderQueryConfigs', () => {
         inventory: {
             productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
         },
-
     };
-    LABKEY.uuids = [
-        'uuid-1',
-        'uuid-2',
-        'uuid-3'
-    ];
+    LABKEY.uuids = ['uuid-1', 'uuid-2', 'uuid-3'];
     test('no sample type names, no cards', () => {
         expect(getSampleFinderQueryConfigs(TEST_USER_EDITOR, [], [], 'testId')).toStrictEqual({
             'uuid-1-testId|exp/materials': {

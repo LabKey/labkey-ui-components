@@ -1,18 +1,13 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Filter } from "@labkey/api";
+import { Filter } from '@labkey/api';
+
+import { QueryColumn } from '../../../public/QueryColumn';
+import { BOOLEAN_TYPE, DATE_TYPE, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE } from '../domainproperties/PropDescType';
+import { SelectInput } from '../forms/input/SelectInput';
 
 import { FilterExpressionView } from './FilterExpressionView';
-import { QueryColumn } from "../../../public/QueryColumn";
-import {
-    BOOLEAN_TYPE,
-    DATE_TYPE,
-    DOUBLE_TYPE,
-    INTEGER_TYPE,
-    TEXT_TYPE
-} from "../domainproperties/PropDescType";
-import { SelectInput } from "../forms/input/SelectInput";
 
 const stringField = QueryColumn.create({ name: 'StringField', rangeURI: TEXT_TYPE.rangeURI, jsonType: 'string' });
 const doubleField = QueryColumn.create({ name: 'DoubleField', rangeURI: DOUBLE_TYPE.rangeURI, jsonType: 'float' });
@@ -20,39 +15,37 @@ const intField = QueryColumn.create({ name: 'IntField', rangeURI: INTEGER_TYPE.r
 const booleanField = QueryColumn.create({ name: 'BooleanField', rangeURI: BOOLEAN_TYPE.rangeURI, jsonType: 'boolean' });
 const dateField = QueryColumn.create({ name: 'DateField', rangeURI: DATE_TYPE.rangeURI, jsonType: 'date' });
 
-const Ops = ["any",
-    "eq",
-    "neqornull",
-    "isblank",
-    "isnonblank",
-    "gt",
-    "lt",
-    "gte",
-    "lte",
-    "in",
-    "notin",
-    "between",
-    "notbetween"];
-
-const dateOps = ["any",
-    "dateeq",
-    "dateneq",
-    "isblank",
-    "isnonblank",
-    "dategt",
-    "datelt",
-    "dategte",
-    "datelte",
-    "between",
-    "notbetween"];
-
-const booleanOps = [
-    "any",
-    "eq",
-    "neqornull",
-    "isblank",
-    "isnonblank",
+const Ops = [
+    'any',
+    'eq',
+    'neqornull',
+    'isblank',
+    'isnonblank',
+    'gt',
+    'lt',
+    'gte',
+    'lte',
+    'in',
+    'notin',
+    'between',
+    'notbetween',
 ];
+
+const dateOps = [
+    'any',
+    'dateeq',
+    'dateneq',
+    'isblank',
+    'isnonblank',
+    'dategt',
+    'datelt',
+    'dategte',
+    'datelte',
+    'between',
+    'notbetween',
+];
+
+const booleanOps = ['any', 'eq', 'neqornull', 'isblank', 'isnonblank'];
 
 beforeAll(() => {
     LABKEY.container = {
@@ -65,47 +58,41 @@ beforeAll(() => {
 });
 
 describe('FilterExpressionView', () => {
-
-    function validate(wrapper: ReactWrapper, operators: string[], inputCount: number = 0, selectedOp?: string, firstInputValue?: any, secondInputValue?: any)
-    {
+    function validate(
+        wrapper: ReactWrapper,
+        operators: string[],
+        inputCount = 0,
+        selectedOp?: string,
+        firstInputValue?: any,
+        secondInputValue?: any
+    ) {
         validateFilterTypeDropdown(wrapper, operators, selectedOp);
 
         const filterInputs = wrapper.find('input.search-filter__input');
 
         expect(filterInputs.length).toEqual(inputCount);
 
-        if (firstInputValue)
-            expect(filterInputs.at(0).props()['value']).toEqual(firstInputValue);
+        if (firstInputValue) expect(filterInputs.at(0).props()['value']).toEqual(firstInputValue);
 
-        if (secondInputValue)
-            expect(filterInputs.at(1).props()['value']).toEqual(secondInputValue);
-
+        if (secondInputValue) expect(filterInputs.at(1).props()['value']).toEqual(secondInputValue);
     }
 
     function validateFilterTypeDropdown(wrapper: ReactWrapper, operators: string[], selectedOp?: string) {
         const selectInput = wrapper.find(SelectInput);
         const options = selectInput.props()['options'];
         const selectedFilter = selectInput.props()['value'];
-        if (selectedOp)
-            expect(selectedFilter).toEqual(selectedOp);
-        else
-            expect(selectedFilter == null).toBeTruthy();
+        if (selectedOp) expect(selectedFilter).toEqual(selectedOp);
+        else expect(selectedFilter == null).toBeTruthy();
 
         const ops = [];
         options.map(op => ops.push(op['value']));
         expect(ops).toEqual(operators);
     }
 
-    test("string field, no filter selected", () => {
-        const wrapper = mount(
-            <FilterExpressionView
-                field={stringField}
-                fieldFilter={null}
-                notFormsy={true}
-            />
-        );
+    test('string field, no filter selected', () => {
+        const wrapper = mount(<FilterExpressionView field={stringField} fieldFilter={null} notFormsy={true} />);
 
-        validateFilterTypeDropdown(wrapper, Ops,null);
+        validateFilterTypeDropdown(wrapper, Ops, null);
 
         wrapper.unmount();
     });
@@ -159,7 +146,7 @@ describe('FilterExpressionView', () => {
             />
         );
 
-        validate(wrapper, Ops, 1, 'gt', 1.23 );
+        validate(wrapper, Ops, 1, 'gt', 1.23);
         wrapper.unmount();
     });
 
@@ -190,8 +177,7 @@ describe('FilterExpressionView', () => {
 
         validateFilterTypeDropdown(wrapper, booleanOps, 'eq');
 
-        const radios = wrapper
-            .find('input[type="radio"]');
+        const radios = wrapper.find('input[type="radio"]');
 
         expect(radios.length).toBe(2);
 
@@ -202,6 +188,4 @@ describe('FilterExpressionView', () => {
 
         wrapper.unmount();
     });
-
-
 });

@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, Modal, Nav, NavItem, Row, Tab } from 'react-bootstrap';
-import {fromJS, List} from 'immutable';
+import { fromJS, List } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
@@ -12,13 +12,16 @@ import { ChoicesListItem } from '../base/ChoicesListItem';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { Alert } from '../base/Alert';
 
+import { resolveErrorMessage } from '../../util/messaging';
+
+import { naturalSortByProperty } from '../../../public/sort';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter, FilterProps } from './models';
-import { getFieldFiltersValidationResult } from "./utils";
-import {resolveErrorMessage} from "../../util/messaging";
-import { naturalSortByProperty } from "../../../public/sort";
-import {ComponentsAPIWrapper, getDefaultAPIWrapper} from "../../APIWrapper";
+import { getFieldFiltersValidationResult } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -38,7 +41,8 @@ export enum EntityFieldFilterTabs {
 }
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
-    const { api, entityDataType, onCancel, onFind, cards, queryName, fieldKey, showAllFields, skipDefaultViewCheck } = props;
+    const { api, entityDataType, onCancel, onFind, cards, queryName, fieldKey, showAllFields, skipDefaultViewCheck } =
+        props;
 
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
 
@@ -65,7 +69,8 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         setDataTypeFilters(activeDataTypeFilters);
 
         setLoadingError(undefined);
-        api.query.getEntityTypeOptions(entityDataType)
+        api.query
+            .getEntityTypeOptions(entityDataType)
             .then(results => {
                 const parents = [];
                 results.map(result => {
@@ -77,9 +82,17 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 if (queryName) {
                     onEntityClick(queryName, fieldKey);
                 }
-            }).catch((error) => {
-                setLoadingError(resolveErrorMessage(error, entityDataType.nounAsParentSingular, entityDataType.nounAsParentPlural, 'load'));
             })
+            .catch(error => {
+                setLoadingError(
+                    resolveErrorMessage(
+                        error,
+                        entityDataType.nounAsParentSingular,
+                        entityDataType.nounAsParentPlural,
+                        'load'
+                    )
+                );
+            });
     }, [entityDataType]); // don't add cards or queryName to deps, only init DataTypeFilters once per entityDataType
 
     const onEntityClick = useCallback(
@@ -89,16 +102,18 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             setActiveField(undefined);
 
             setLoadingError(undefined);
-            api.query.getQueryDetails({ schemaName: entityDataType.instanceSchemaName, queryName })
-                .then((queryInfo) => {
+            api.query
+                .getQueryDetails({ schemaName: entityDataType.instanceSchemaName, queryName })
+                .then(queryInfo => {
                     const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
                     let supportedFields = fields;
                     if (!showAllFields) {
-                        const supportedFieldArray = []
+                        const supportedFieldArray = [];
                         fields.forEach(field => {
-                            if (field.jsonType === 'string') // TODO only support string fields until MVFK (multi value FK) server side work is completed
-                                supportedFieldArray.push(field)
-                        })
+                            if (field.jsonType === 'string')
+                                // TODO only support string fields until MVFK (multi value FK) server side work is completed
+                                supportedFieldArray.push(field);
+                        });
                         supportedFields = fromJS(supportedFieldArray);
                     }
 
@@ -107,11 +122,10 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         const field = supportedFields.find(field => field.fieldKey === fieldKey);
                         setActiveField(field);
                     }
-
-                }).catch((error) => {
+                })
+                .catch(error => {
                     setLoadingError(resolveErrorMessage(error, queryName, queryName, 'load'));
                 });
-
         },
         [entityDataType]
     );
@@ -137,11 +151,8 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
     const _onFind = useCallback(() => {
         const filterErrors = getFieldFiltersValidationResult(dataTypeFilters);
-        if (!filterErrors)
-            onFind(entityDataType.instanceSchemaName, dataTypeFilters);
-        else
-            setFilterError(filterErrors);
-
+        if (!filterErrors) onFind(entityDataType.instanceSchemaName, dataTypeFilters);
+        else setFilterError(filterErrors);
     }, [onFind, dataTypeFilters]);
 
     const currentFieldFilter = useMemo(() => {
@@ -171,7 +182,6 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             else delete dataTypeFiltersUpdated[activeQuery];
 
             setDataTypeFilters(dataTypeFiltersUpdated);
-
         },
         [dataTypeFilters, activeQuery, activeField]
     );
@@ -237,7 +247,10 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         <div className="parent-search-panel__col-title">Fields</div>
                         {!activeQuery && (
                             <div className="parent-search-panel__empty-msg">
-                                Select a {entityDataType.nounAsParentSingular?.toLowerCase() ?? entityDataType.nounSingular?.toLowerCase() }.
+                                Select a{' '}
+                                {entityDataType.nounAsParentSingular?.toLowerCase() ??
+                                    entityDataType.nounSingular?.toLowerCase()}
+                                .
                             </div>
                         )}
                         {activeQuery && !queryFields && <LoadingSpinner />}

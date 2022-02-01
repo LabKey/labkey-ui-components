@@ -4,7 +4,7 @@ import { EntityDataType } from '../entities/models';
 import { capitalizeFirstChar } from '../../util/utils';
 
 import { FieldFilter, FilterProps } from './models';
-import { FilterValueDisplay } from "./FilterValueDisplay";
+import { FilterValueDisplay } from './FilterValueDisplay';
 
 interface FilterEditProps extends FilterProps {
     onDelete: (index) => void;
@@ -15,16 +15,7 @@ interface FilterEditProps extends FilterProps {
 
 // exported for jest testing
 export const FilterCard: FC<FilterEditProps> = memo(props => {
-    const {
-        entityDataType,
-        filterArray,
-        index,
-        onAdd,
-        onDelete,
-        onEdit,
-        schemaQuery,
-        onFilterValueExpand,
-    } = props;
+    const { entityDataType, filterArray, index, onAdd, onDelete, onEdit, schemaQuery, onFilterValueExpand } = props;
 
     const _onAdd = useCallback(() => {
         onAdd(entityDataType);
@@ -83,7 +74,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                     </div>
                 </div>
                 <div className="filter-card__card-content">
-                    {!filterArray?.length /*TODO Is this supported?*/ && (
+                    {!filterArray?.length /* TODO Is this supported?*/ && (
                         <>
                             <hr />
                             <div>

@@ -8,6 +8,7 @@ import { fromJS, Map, OrderedSet } from 'immutable';
 import { Experiment, Filter, getServerContext, Query } from '@labkey/api';
 
 import {
+    App,
     AppURL,
     caseInsensitive,
     ISelectRowsResult,
@@ -307,7 +308,7 @@ function computeSampleCounts(lineageResult: LineageResult, sampleSets: ISelectRo
 
         return {
             name: {
-                url: AppURL.create('samples', name).toHref(),
+                url: AppURL.create(App.SAMPLES_KEY, name).toHref(),
                 value: name,
             },
             sampleCount: {

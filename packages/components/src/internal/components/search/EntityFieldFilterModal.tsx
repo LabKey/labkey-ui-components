@@ -9,8 +9,6 @@ import { capitalizeFirstChar } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ChoicesListItem } from '../base/ChoicesListItem';
 
-import { getEntityTypeOptions } from '../entities/actions';
-import { getQueryDetails } from '../../query/api';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { Alert } from '../base/Alert';
 
@@ -20,8 +18,10 @@ import { FieldFilter, FilterProps } from './models';
 import { getFieldFiltersValidationResult } from "./utils";
 import {resolveErrorMessage} from "../../util/messaging";
 import { naturalSortByProperty } from "../../../public/sort";
+import {ComponentsAPIWrapper, getDefaultAPIWrapper} from "../../APIWrapper";
 
 interface Props {
+    api?: ComponentsAPIWrapper;
     entityDataType: EntityDataType;
     onCancel: () => void;
     onFind: (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }) => void;
@@ -37,7 +37,7 @@ export enum EntityFieldFilterTabs {
 }
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
-    const { entityDataType, onCancel, onFind, cards, queryName, fieldKey, showAllFields } = props;
+    const { api, entityDataType, onCancel, onFind, cards, queryName, fieldKey, showAllFields } = props;
 
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
 
@@ -64,7 +64,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         setDataTypeFilters(activeDataTypeFilters);
 
         setLoadingError(undefined);
-        getEntityTypeOptions(entityDataType)
+        api.query.getEntityTypeOptions(entityDataType)
             .then(results => {
                 const parents = [];
                 results.map(result => {
@@ -88,7 +88,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             setActiveField(undefined);
 
             setLoadingError(undefined);
-            getQueryDetails({ schemaName: entityDataType.instanceSchemaName, queryName })
+            api.query.getQueryDetails({ schemaName: entityDataType.instanceSchemaName, queryName })
                 .then((queryInfo) => {
                     const fields = queryInfo.getDisplayColumns();
                     let supportedFields = fields;
@@ -203,14 +203,14 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 {loadingError && <Alert>{loadingError}</Alert>}
                 {filterError && <Alert>{filterError}</Alert>}
                 <Row className="parent-search-panel__container">
-                    <Col xs={3} className="parent-search-panel__col">
+                    <Col xs={3} className="parent-search-panel__col parent-search-panel__col_queries">
                         <div className="parent-search-panel__col-title">
                             {entityDataType.nounAsParentPlural ?? entityDataType.nounPlural}
                         </div>
                         {!entityQueries && <LoadingSpinner />}
                         <div className="list-group parent-search-panel__col-content">
                             {entityQueries?.map((parent, index) => {
-                                const { label } = parent;
+                                const label = parent.label ?? parent?.get('label');
                                 const fieldFilterCount = dataTypeFilters?.[label]?.length;
                                 return (
                                     <ChoicesListItem
@@ -231,7 +231,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                             })}
                         </div>
                     </Col>
-                    <Col xs={3} className="parent-search-panel__col">
+                    <Col xs={3} className="parent-search-panel__col parent-search-panel__col_fields">
                         <div className="parent-search-panel__col-title">Fields</div>
                         {!activeQuery && (
                             <div className="parent-search-panel__empty-msg">
@@ -260,7 +260,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                             </div>
                         )}
                     </Col>
-                    <Col xs={6} className="parent-search-panel__col">
+                    <Col xs={6} className="parent-search-panel__col parent-search-panel__col_filter_exp">
                         <div className="parent-search-panel__col-title">Values</div>
                         {activeQuery && !activeField && (
                             <div className="parent-search-panel__empty-msg">Select a field.</div>
@@ -340,3 +340,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         </Modal>
     );
 });
+
+EntityFieldFilterModal.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};

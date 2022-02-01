@@ -75,6 +75,7 @@ describe('SamplesBulkUpdateForm', () => {
         sampleItems: {},
         sampleLineageKeys: undefined,
         sampleLineage: undefined,
+        determineSampleData: true,
 
         updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise.resolve(),
         hasValidMaxSelection: () => true,

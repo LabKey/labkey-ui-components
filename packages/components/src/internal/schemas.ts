@@ -27,6 +27,7 @@ const ASSAY_SCHEMA = 'assay';
 export const ASSAY_TABLES = {
     ASSAY_LIST: SchemaQuery.create(ASSAY_SCHEMA, 'AssayList'),
     SCHEMA: ASSAY_SCHEMA,
+    RESULTS_QUERYNAME: 'Data',
 };
 
 // EXP

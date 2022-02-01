@@ -6,7 +6,7 @@ import { WizardNavButtons, Alert, SelectInput } from '../../..';
 
 interface Props {
     onCancel: () => void;
-    onComplete: (response: any, role: string) => void;
+    onComplete: (response: any, roles: string[]) => void;
     show: boolean;
 
     // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
@@ -18,7 +18,7 @@ interface State {
     emailText: string;
     sendEmail: boolean;
     optionalMessage: string;
-    role: string;
+    roles: string[];
     isSubmitting: boolean;
     error: string;
 }
@@ -27,7 +27,7 @@ const DEFAULT_STATE = {
     emailText: '',
     sendEmail: true,
     optionalMessage: '',
-    role: undefined,
+    roles: undefined,
     isSubmitting: false,
     error: undefined,
 };
@@ -58,9 +58,9 @@ export class CreateUsersModal extends React.Component<Props, State> {
         }));
     };
 
-    handleRole = (name, formValue, selectedOption) => {
-        const role = selectedOption ? selectedOption.id : undefined;
-        this.setState(() => ({ role }));
+    handleRoles = (name, formValue, selectedOptions: Array<{ id: string; label: string }>) => {
+        const roles = selectedOptions ? selectedOptions.map(option => option.id) : undefined;
+        this.setState({ roles });
     };
 
     createUsers = () => {
@@ -75,7 +75,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
             sendEmail,
             optionalMessage: optionalMessage && optionalMessage.length > 0 ? optionalMessage : undefined,
             success: response => {
-                this.props.onComplete(response, this.getSelectedRole());
+                this.props.onComplete(response, this.getSelectedRoles());
                 this.setState(() => DEFAULT_STATE);
             },
             failure: error => {
@@ -89,8 +89,8 @@ export class CreateUsersModal extends React.Component<Props, State> {
         return this.props.roleOptions && this.props.roleOptions.length > 0;
     }
 
-    getSelectedRole(): string {
-        return this.hasRoleOptions() ? this.state.role || this.props.roleOptions[0].id : undefined;
+    getSelectedRoles(): string[] {
+        return this.hasRoleOptions() ? this.state.roles || [this.props.roleOptions[0].id] : undefined;
     }
 
     renderForm() {
@@ -111,18 +111,19 @@ export class CreateUsersModal extends React.Component<Props, State> {
                 />
                 {this.hasRoleOptions() && (
                     <>
-                        <div className="create-users-label-top create-users-label-bottom">Role:</div>
+                        <div className="create-users-label-top create-users-label-bottom">Roles:</div>
                         <SelectInput
                             containerClass="form-group row"
                             inputClass="col-sm-12"
                             name="create-users-role"
                             key="create-users-role-selection"
                             placeholder="Select role..."
-                            value={this.getSelectedRole()}
+                            value={this.getSelectedRoles()}
                             options={this.props.roleOptions}
                             valueKey="id"
-                            onChange={this.handleRole}
+                            onChange={this.handleRoles}
                             clearable={false}
+                            multiple
                         />
                     </>
                 )}

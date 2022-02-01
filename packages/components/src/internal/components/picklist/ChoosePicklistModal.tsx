@@ -18,6 +18,7 @@ import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { Picklist } from './models';
 import {
@@ -473,12 +474,36 @@ interface ChoosePicklistModalProps {
     picklistProductId?: string;
     metricFeatureArea?: string;
     api?: ComponentsAPIWrapper;
+    queryModel?: QueryModel;
+    sampleFieldKey?: string;
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
+    const { api, selectionKey, queryModel, sampleFieldKey, sampleIds } = props;
     const [error, setError] = useState<string>(undefined);
     const [items, setItems] = useState<Picklist[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [ids, setIds] = useState<string[]>(sampleIds);
+    const [selKey, setSelKey] = useState<string>(selectionKey);
+
+    useEffect(() => {
+        (async () => {
+            // Look up SampleIds from the selected row ids.
+            // Using sampleFieldKey as proxy flag to determine if lookup is needed
+            if (sampleFieldKey && queryModel) {
+                const ids = await api.samples.getFieldLookupFromSelection(
+                    queryModel.schemaQuery.schemaName,
+                    queryModel.schemaQuery.queryName,
+                    [...queryModel.selections],
+                    sampleFieldKey
+                );
+                setIds(ids);
+
+                // Clear the selection key as it will not correctly map to the sampleIds
+                setSelKey(undefined);
+            }
+        })();
+    }, [sampleFieldKey, queryModel,]);
 
     useEffect(() => {
         getPicklists()
@@ -492,7 +517,16 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
             });
     }, [getPicklists, setItems, setError, setLoading]);
 
-    return <ChoosePicklistModalDisplay {...props} picklists={items} picklistLoadError={error} loading={loading} />;
+    return (
+        <ChoosePicklistModalDisplay
+            {...props}
+            picklists={items}
+            picklistLoadError={error}
+            loading={loading}
+            sampleIds={ids}
+            selectionKey={selKey}
+        />
+    );
 });
 
 ChoosePicklistModal.defaultProps = {

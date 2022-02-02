@@ -296,7 +296,7 @@ export function getFieldFiltersValidationResult(dataTypeFilters: { [key: string]
 
     if (hasError) {
         Object.keys(parentFields).forEach(parent => {
-            errorMsg += parent + ': ' + parentFields[parent].join(', ') + '.';
+            errorMsg += parent + ': ' + parentFields[parent].join(', ') + '. ';
         });
         return errorMsg;
     }

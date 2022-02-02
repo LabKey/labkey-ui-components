@@ -74,6 +74,7 @@ export const ALIQUOT_CREATION: SampleCreationTypeModel = {
 export interface SamplesSelectionProviderProps {
     selection: List<any>;
     sampleSet: string;
+    determineSampleData: boolean;
     determineStorage?: boolean;
     determineLineage?: boolean;
 }
@@ -168,5 +169,4 @@ export interface SampleGridButtonProps {
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
     showBulkUpdate?: () => void;
     toggleEditWithGridUpdate?: () => void;
-    user: User;
 }

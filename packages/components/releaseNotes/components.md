@@ -7,6 +7,44 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Updates to EntityFieldFilterModal, FilterCards and SampleFinderSection to wire up filtering
     * Added FilterExpressionView.tsx and FilterFacetedSelector to support filtering
 
+### version 2.126.0
+*Released*: 1 February 2022
+* Item 9888: Sample status help tip display of configured statuses and descriptions
+  * SampleStatusLegend component to query for configured statues and render as table
+  * helpTipRenderer - allow column metadata to specify a help tip renderer to be used in grid column header and details panel label
+  * EntityInsertPanel update to add SampleStatusLegend as column header metadata tooltip for SampleState / Status column
+
+### version 2.125.0
+*Released*: 1 February 2022
+* Item 9932: Sample Type Insights panel
+  * Refactor HorizontalBarSection from inventory module (previously StorageAllocationSection)
+  * Bar chart data helper for createPercentageBarData() and createHorizontalBarLegendData(), moved from inventory module
+  * Refactor ItemsLegend from inventory module
+  * Add SampleTypeInsightsPanel.tsx to be used in LKSM and LKB
+  * Issue 44633: Horizontal bar fix for borders causing line wrapping
+
+### version 2.124.0
+*Released*: 31 January 2022
+* Item 9923: Adding roles for storage management
+  * Moved `updateSampleStatus` method into inventory since it's used only when discarding samples and that now requires a specific inventory action
+  * Change user display role to account for storage editor and designer roles
+  * Update `CreateUsersModal` and `UsersGridPanel` to handle multiple roles
+  * Add utility method `userCanEditStorageData`
+  * Update `SamplesTabbedGridPanel` to account for some users not being able to update storage data
+  * Update `SamplesEditableGrid`, `SamplesTabbedGridPanel`, and `SamplesSelectionContextProvider` to allow for not being able to edit the sample data
+
+### version 2.123.0
+*Released*: 31 January 2022
+* Item #9767: Improve sample actions from assay results grid
+  * Add new `SampleActionsButton` to Assay Results page
+  * Adjust picklist creation and update actions & components
+  * Adjust job creation and update actions & components
+  * Added `getFieldLookupFromSelection` which pulls the lookups rowId value based on supplied query & field
+
+### version 2.122.0
+*Released*: 31 January 2022
+* Share asynchronous upload UI indicators across LKB and LKSM by pulling relevant code into ui-components
+
 ### version 2.121.4
 *Released*: 28 January 2022
 * Item 9970: QueryFormInput change showQuerySelectPreviewOptions default prop value to false

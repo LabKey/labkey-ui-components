@@ -413,6 +413,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                       Object {
                         "addLabelAsterisk": undefined,
                         "description": "Select a Data Type 1",
+                        "helpTipRenderer": undefined,
                         "inputId": "entityType0",
                         "isFormsy": false,
                         "label": "Data Type 1",

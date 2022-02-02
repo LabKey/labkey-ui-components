@@ -107,6 +107,11 @@ describe('SampleStatusTag', () => {
         validateNotIconOnly(wrapper, 'alert-success', availableStatus.label);
     });
 
+    test('available status, hide description', () => {
+        const wrapper = mount(<SampleStatusTag status={availableStatus} hideDescription />);
+        validateNotIconOnly(wrapper, 'alert-success', availableStatus.label, false);
+    });
+
     test('available status type, no description', () => {
         const status = {
             label: 'Also available',

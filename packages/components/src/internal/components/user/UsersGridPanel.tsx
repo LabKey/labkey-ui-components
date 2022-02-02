@@ -50,7 +50,7 @@ const OMITTED_COLUMNS = [
 
 interface OwnProps {
     user: User;
-    onCreateComplete: (response: any, role: string) => any;
+    onCreateComplete: (response: any, roles: string[]) => any;
     onUsersStateChangeComplete: (response: any) => any;
     policy: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
@@ -175,10 +175,10 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         }
     };
 
-    onCreateComplete = (response: any, role: string): void => {
+    onCreateComplete = (response: any, roles: string[]): void => {
         this.closeDialog();
         this.onRowSelectionChange(this.getUsersModel(), undefined, false); // clear selected user details
-        this.props.onCreateComplete(response, role);
+        this.props.onCreateComplete(response, roles);
         this.reloadUsersModel();
     };
 

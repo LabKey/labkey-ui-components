@@ -138,6 +138,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 containerPath={col.lookup?.containerPath}
                 displayColumn={col.lookup?.displayColumn}
                 formsy={formsy}
+                helpTipRenderer={col.helpTipRenderer}
                 initiallyDisabled={initiallyDisabled}
                 joinValues={col.isJunctionLookup()}
                 label={col.caption}

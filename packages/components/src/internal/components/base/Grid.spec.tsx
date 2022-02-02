@@ -15,10 +15,12 @@
  */
 import React from 'react';
 import { fromJS, List } from 'immutable';
-import { shallow } from 'enzyme';
+import { mount, ReactWrapper, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import { Grid, GridColumn } from './Grid';
+import { Grid, GridHeader } from './Grid';
+import { GridColumn } from './models/GridColumn';
+import { LabelHelpTip } from './LabelHelpTip';
 
 const gridData = fromJS([
     {
@@ -196,5 +198,61 @@ describe('Grid component', () => {
         );
         const tree = renderer.create(<Grid data={gridData} columns={columns} />).toJSON();
         expect(tree).toMatchSnapshot();
+    });
+});
+
+describe('GridHeader', () => {
+    const DEFAULT_PROPS = {
+        showHeader: true,
+        columns: List.of(
+            new GridColumn({ index: 'a', title: 'A', showHeader: true }),
+            new GridColumn({ index: 'b', title: 'B', showHeader: true })
+        ),
+    };
+
+    function validate(wrapper: ReactWrapper, columnCount: number, labelHelpTipCount = 0): void {
+        expect(wrapper.find('thead')).toHaveLength(1);
+        expect(wrapper.find('.grid-header-cell')).toHaveLength(columnCount);
+        expect(wrapper.find(LabelHelpTip)).toHaveLength(labelHelpTipCount);
+    }
+
+    test('default props', () => {
+        const wrapper = mount(<GridHeader {...DEFAULT_PROPS} />);
+        validate(wrapper, 2);
+        wrapper.unmount();
+    });
+
+    test('column not showHeader', () => {
+        const wrapper = mount(
+            <GridHeader
+                {...DEFAULT_PROPS}
+                columns={List.of(
+                    new GridColumn({ index: 'a', title: 'A', showHeader: true }),
+                    new GridColumn({ index: 'b', title: 'B', showHeader: false })
+                )}
+            />
+        );
+        validate(wrapper, 1);
+        wrapper.unmount();
+    });
+
+    test('grid not showHeader', () => {
+        const wrapper = mount(<GridHeader {...DEFAULT_PROPS} showHeader={false} />);
+        validate(wrapper, 0);
+        wrapper.unmount();
+    });
+
+    test('column helpTipRenderer', () => {
+        const wrapper = mount(
+            <GridHeader
+                {...DEFAULT_PROPS}
+                columns={List.of(
+                    new GridColumn({ index: 'a', title: 'A', showHeader: true }),
+                    new GridColumn({ index: 'b', title: 'B', showHeader: true, helpTipRenderer: 'TestRenderer' })
+                )}
+            />
+        );
+        validate(wrapper, 2, 1);
+        wrapper.unmount();
     });
 });

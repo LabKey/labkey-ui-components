@@ -14,6 +14,7 @@ import {
     SampleDeleteMenuItem,
     SampleTypeDataType,
     SelectionMenuItem,
+    useServerContext,
 } from '../../..';
 
 import { EntityDataType } from '../entities/models';
@@ -43,8 +44,8 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
         toggleEditWithGridUpdate,
         hideButtons,
         model,
-        user,
     } = props;
+    const { user } = useServerContext();
     const { showImportDataButton, queryInfo } = model;
     const importSampleHref = App.NEW_SAMPLES_HREF.addParams({
         target: queryInfo?.schemaQuery?.queryName,
@@ -67,7 +68,12 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
     return (
         <RequiresPermission
             permissionCheck="any"
-            perms={[PermissionTypes.Insert, PermissionTypes.Update, PermissionTypes.Delete]}
+            perms={[
+                PermissionTypes.Insert,
+                PermissionTypes.Update,
+                PermissionTypes.Delete,
+                PermissionTypes.EditStorageData,
+            ]}
         >
             <ManageDropdownButton id="samples-manage-btn">
                 {props.children}
@@ -82,10 +88,15 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                     </RequiresPermission>
                 )}
                 {shouldShowButtons(SamplesManageButtonSections.PICKLIST, hideButtons) && (
-                    <AddToPicklistMenuItem queryModel={model} user={user} />
+                    <RequiresPermission perms={PermissionTypes.ManagePicklists}>
+                        <AddToPicklistMenuItem queryModel={model} user={user} />
+                    </RequiresPermission>
                 )}
                 {shouldShowButtons(SamplesManageButtonSections.EDIT, hideButtons) && (
-                    <RequiresPermission perms={PermissionTypes.Update}>
+                    <RequiresPermission
+                        perms={[PermissionTypes.Update, PermissionTypes.EditStorageData]}
+                        permissionCheck="any"
+                    >
                         <SelectionMenuItem
                             id="update-samples-menu-item"
                             text="Edit Selected Samples in Grid"
@@ -94,14 +105,17 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                             queryModel={model}
                             nounPlural={SampleTypeDataType.nounPlural}
                         />
-                        <SelectionMenuItem
-                            id="bulk-update-samples-menu-item"
-                            text="Edit Selected Samples in Bulk"
-                            onClick={showBulkUpdate}
-                            queryModel={model}
-                            nounPlural={SampleTypeDataType.nounPlural}
-                        />
+                        {user.canUpdate && (
+                            <SelectionMenuItem
+                                id="bulk-update-samples-menu-item"
+                                text="Edit Selected Samples in Bulk"
+                                onClick={showBulkUpdate}
+                                queryModel={model}
+                                nounPlural={SampleTypeDataType.nounPlural}
+                            />
+                        )}
                         {!combineParentTypes &&
+                            user.canUpdate &&
                             parentEntityDataTypes.map(parentEntityDataType => {
                                 return (
                                     <EntityLineageEditMenuItem
@@ -113,7 +127,7 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                                     />
                                 );
                             })}
-                        {combineParentTypes && (
+                        {combineParentTypes && user.canUpdate && (
                             <EntityLineageEditMenuItem
                                 childEntityDataType={SampleTypeDataType}
                                 parentEntityDataTypes={parentEntityDataTypes}

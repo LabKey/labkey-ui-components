@@ -68,24 +68,26 @@ export function SamplesSelectionProvider<T>(
         }
 
         loadEditConfirmationData(): void {
-            const { selection } = this.props;
-            getSampleOperationConfirmationData(SampleOperation.EditMetadata, undefined, selection.toArray())
-                .then(editConfirmationData => {
-                    this.setState({
-                        editStatusData: editConfirmationData,
+            const { selection, determineSampleData } = this.props;
+            if (determineSampleData) {
+                getSampleOperationConfirmationData(SampleOperation.EditMetadata, undefined, selection.toArray())
+                    .then(editConfirmationData => {
+                        this.setState({
+                            editStatusData: editConfirmationData,
+                        });
+                    })
+                    .catch(error => {
+                        this.setState({
+                            selectionInfoError: error,
+                            editStatusData: undefined,
+                        });
                     });
-                })
-                .catch(error => {
-                    this.setState({
-                        selectionInfoError: error,
-                        editStatusData: undefined,
-                    });
-                });
+            }
         }
 
         loadAliquotData(): void {
-            const { selection, sampleSet } = this.props;
-            if (selection && selection.size > 0) {
+            const { determineSampleData, selection, sampleSet } = this.props;
+            if (determineSampleData && selection && selection.size > 0) {
                 getAliquotSampleIds(selection, sampleSet)
                     .then(aliquots => {
                         this.setState({
@@ -153,7 +155,7 @@ export function SamplesSelectionProvider<T>(
         }
 
         render(): ReactNode {
-            const { determineStorage, determineLineage } = this.props;
+            const { determineSampleData, determineStorage, determineLineage } = this.props;
             const {
                 aliquots,
                 noStorageSamples,
@@ -166,8 +168,8 @@ export function SamplesSelectionProvider<T>(
             let isLoaded = !!sampleTypeDomainFields;
             if (isLoaded && !selectionInfoError) {
                 if (
-                    !editStatusData ||
-                    !aliquots ||
+                    (determineSampleData && !editStatusData) ||
+                    (determineSampleData && !aliquots) ||
                     (determineStorage && !noStorageSamples) ||
                     (determineLineage && !sampleLineage)
                 ) {

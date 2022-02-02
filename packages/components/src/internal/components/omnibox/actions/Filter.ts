@@ -108,7 +108,7 @@ export function resolveFilterType(token: string, column: QueryColumn): Filter.IF
             if (symbolTypes.has(suffix)) {
                 if (match) {
                     console.warn(
-                        `Column of type \"${column.get('jsonType')}\" has multiple filter for symbol \"${token}\".`
+                        `Column of type \"${column.get('jsonType')}\" has multiple filters for symbol \"${token}\".`
                     );
                     match = false;
                     value = undefined;

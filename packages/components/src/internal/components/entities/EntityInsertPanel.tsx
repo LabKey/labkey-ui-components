@@ -55,6 +55,7 @@ import {
     QueryInfo,
     removeQueryGridModel,
     resolveErrorMessage,
+    SAMPLE_STATE_COLUMN_NAME,
     SampleCreationType,
     SampleCreationTypeModel,
     SampleTypeDataType,
@@ -83,6 +84,8 @@ import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/a
 import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from '../samples/constants';
 
 import { GetNameExpressionOptionsResponse, loadNameExpressionOptions } from '../settings/actions';
+
+import { SampleStatusLegend } from '../samples/SampleStatusLegend';
 
 import {
     EntityDataType,
@@ -853,7 +856,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
-    getGeneratedIdColumnMetadata(): Map<string, EditableColumnMetadata> {
+    getColumnMetadata(): Map<string, EditableColumnMetadata> {
         const { entityDataType, nounSingular, nounPlural } = this.props;
         const { creationType, previewName, previewAliquotName } = this.state;
         let columnMetadata = getUniqueIdColumnMetadata(this.getGridQueryInfo());
@@ -889,15 +892,20 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 toolTip: `A ${nounSingular} ID is required for each ${nounSingular} since this ${this.typeTextSingular} has no naming pattern. You can provide a naming pattern by editing the ${this.typeTextSingular} design.`,
             });
         }
+
+        columnMetadata = columnMetadata.set(SAMPLE_STATE_COLUMN_NAME, {
+            hideTitleTooltip: true,
+            toolTip: <SampleStatusLegend />,
+            popoverClassName: 'label-help-arrow-left',
+        });
+
         return columnMetadata;
     }
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel, creationType } = this.state;
         const { creationTypeOptions, nounPlural, onBulkAdd } = this.props;
-
-        const columnMetadata = this.getGeneratedIdColumnMetadata();
-
+        const columnMetadata = this.getColumnMetadata();
         const queryGridModel = this.getQueryGridModel();
         const isLoaded = !!queryGridModel?.isLoaded;
 

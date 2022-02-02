@@ -10,10 +10,11 @@ import { User } from '../base/models/User';
 import { getOmittedSampleTypeColumns } from '../samples/utils';
 import { SCHEMAS } from '../../schemas';
 
-import {FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps} from './models';
-import {resolveFilterType} from "../omnibox/actions/Filter";
-import {resolveFieldKey} from "../omnibox/utils";
-import {QueryColumn} from "../../../public/QueryColumn";
+import { resolveFilterType } from '../omnibox/actions/Filter';
+import { resolveFieldKey } from '../omnibox/utils';
+import { QueryColumn } from '../../../public/QueryColumn';
+
+import { FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps } from './models';
 
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): string {
     const hintText = 'Start by adding ';
@@ -304,39 +305,42 @@ export function getFieldFiltersValidationResult(dataTypeFilters: { [key: string]
 }
 
 // TODO add jest
-export function getUpdateFilterExpressionFilter(newFilterType: FieldFilterOption, field: QueryColumn, previousFirstFilterValue?: any, previousSecondFilterValue?: any, newFilterValue?: any, isSecondValue?: boolean, clearBothValues?: boolean) : Filter.IFilter {
-        if (!newFilterType) {
-            return null;
-        }
+export function getUpdateFilterExpressionFilter(
+    newFilterType: FieldFilterOption,
+    field: QueryColumn,
+    previousFirstFilterValue?: any,
+    previousSecondFilterValue?: any,
+    newFilterValue?: any,
+    isSecondValue?: boolean,
+    clearBothValues?: boolean
+): Filter.IFilter {
+    if (!newFilterType) {
+        return null;
+    }
 
-        const filterType = resolveFilterType(newFilterType?.value, field);
-        if (!filterType)
-            return null;
+    const filterType = resolveFilterType(newFilterType?.value, field);
+    if (!filterType) return null;
 
-        let filter: Filter.IFilter;
+    let filter: Filter.IFilter;
 
-        if (!newFilterType.valueRequired) {
-            filter = Filter.create(resolveFieldKey(field.name, field), null, filterType);
-        } else {
-            let value = newFilterValue;
-            if (newFilterType?.betweenOperator) {
-                if (clearBothValues) {
-                    value = null;
-                } else if (isSecondValue) {
-                    if (!newFilterValue)
-                        value = previousFirstFilterValue ? previousFirstFilterValue : '';
-                    else
-                        value = (previousFirstFilterValue ? previousFirstFilterValue + ',' : '') + newFilterValue;
-                } else {
-                    if (!newFilterValue)
-                        value = previousSecondFilterValue ? previousSecondFilterValue : '';
-                    else
-                        value = newFilterValue + (previousSecondFilterValue ? ',' + previousSecondFilterValue : '');
-                }
-            } else if (!value && field.jsonType === 'boolean') value = 'false';
+    if (!newFilterType.valueRequired) {
+        filter = Filter.create(resolveFieldKey(field.name, field), null, filterType);
+    } else {
+        let value = newFilterValue;
+        if (newFilterType?.betweenOperator) {
+            if (clearBothValues) {
+                value = null;
+            } else if (isSecondValue) {
+                if (!newFilterValue) value = previousFirstFilterValue ? previousFirstFilterValue : '';
+                else value = (previousFirstFilterValue ? previousFirstFilterValue + ',' : '') + newFilterValue;
+            } else {
+                if (!newFilterValue) value = previousSecondFilterValue ? previousSecondFilterValue : '';
+                else value = newFilterValue + (previousSecondFilterValue ? ',' + previousSecondFilterValue : '');
+            }
+        } else if (!value && field.jsonType === 'boolean') value = 'false';
 
-            filter = Filter.create(resolveFieldKey(field.name, field), value, filterType);
-        }
+        filter = Filter.create(resolveFieldKey(field.name, field), value, filterType);
+    }
 
-        return filter;
+    return filter;
 }

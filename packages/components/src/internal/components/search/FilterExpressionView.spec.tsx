@@ -115,7 +115,7 @@ describe('FilterExpressionView', () => {
             <FilterExpressionView
                 field={stringField}
                 fieldFilter={Filter.create('StringField', 'ABC', Filter.Types.Equals)}
-             />
+            />
         );
 
         validate(wrapper, Ops, 1, 'eq', 'ABC');
@@ -163,10 +163,7 @@ describe('FilterExpressionView', () => {
 
     test('boolean field, equal', async () => {
         const wrapper = mount(
-            <FilterExpressionView
-                field={booleanField}
-                fieldFilter={Filter.create('BooleanField', 'true')}
-            />
+            <FilterExpressionView field={booleanField} fieldFilter={Filter.create('BooleanField', 'true')} />
         );
 
         validateFilterTypeDropdown(wrapper, booleanOps, 'eq');

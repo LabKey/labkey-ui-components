@@ -18,7 +18,6 @@ import { Filter } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import {isBetweenOperator} from "./utils";
 
 export class SearchResultsModel extends Record({
     entities: undefined,

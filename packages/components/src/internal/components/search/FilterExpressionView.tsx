@@ -15,9 +15,9 @@ import {
     getFilterValuesAsArray,
     getSampleFinderFilterTypesForType,
     getUpdateFilterExpressionFilter,
-    isFilterUrlSuffixMatch
+    isFilterUrlSuffixMatch,
 } from './utils';
-import {FieldFilterOption} from "./models";
+import { FieldFilterOption } from './models';
 
 interface Props {
     field: QueryColumn;
@@ -59,8 +59,23 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     }, [field]); // leave fieldFilter out of deps list, fieldFilter is used to init once
 
     const updateFilter = useCallback(
-        (newFilterType: FieldFilterOption, previousFirstFilterValue?: any, previousSecondFilterValue?: any, newFilterValue?: any, isSecondValue?: boolean, clearBothValues?: boolean) => {
-            const newFilter = getUpdateFilterExpressionFilter(newFilterType, field, previousFirstFilterValue, previousSecondFilterValue, newFilterValue, isSecondValue, clearBothValues);
+        (
+            newFilterType: FieldFilterOption,
+            previousFirstFilterValue?: any,
+            previousSecondFilterValue?: any,
+            newFilterValue?: any,
+            isSecondValue?: boolean,
+            clearBothValues?: boolean
+        ) => {
+            const newFilter = getUpdateFilterExpressionFilter(
+                newFilterType,
+                field,
+                previousFirstFilterValue,
+                previousSecondFilterValue,
+                newFilterValue,
+                isSecondValue,
+                clearBothValues
+            );
             onFieldFilterUpdate(newFilter);
         },
         [field]
@@ -72,7 +87,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             setActiveFilterType(activeFilterType);
             setFirstFilterValue(undefined);
             setSecondFilterValue(undefined);
-            updateFilter(activeFilterType, undefined, undefined,undefined, undefined, true);
+            updateFilter(activeFilterType, undefined, undefined, undefined, undefined, true);
         },
         [fieldFilterOptions]
     );

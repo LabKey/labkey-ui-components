@@ -248,27 +248,27 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                 .
                             </div>
                         )}
-                        {activeQuery &&
+                        {activeQuery && (
                             <div className="list-group parent-search-panel__col-content parent-search-panel__fields-col-content">
-                                    {!queryFields && <LoadingSpinner />}
-                                    {queryFields?.map((field, index) => {
-                                        const { fieldKey, caption } = field;
-                                        const hasFilter = filterStatus?.[activeQuery + '-' + fieldKey];
-                                        return (
-                                            <ChoicesListItem
-                                                active={fieldKey === activeField?.fieldKey}
-                                                index={index}
-                                                key={fieldKey}
-                                                label={caption}
-                                                onSelect={() => onFieldClick(field)}
-                                                componentRight={
-                                                    hasFilter && <span className="pull-right search_field_dot" />
-                                                }
-                                            />
-                                        );
-                                    })}
-                                </div>
-                        }
+                                {!queryFields && <LoadingSpinner />}
+                                {queryFields?.map((field, index) => {
+                                    const { fieldKey, caption } = field;
+                                    const hasFilter = filterStatus?.[activeQuery + '-' + fieldKey];
+                                    return (
+                                        <ChoicesListItem
+                                            active={fieldKey === activeField?.fieldKey}
+                                            index={index}
+                                            key={fieldKey}
+                                            label={caption}
+                                            onSelect={() => onFieldClick(field)}
+                                            componentRight={
+                                                hasFilter && <span className="pull-right search_field_dot" />
+                                            }
+                                        />
+                                    );
+                                })}
+                            </div>
+                        )}
                     </Col>
                     <Col xs={6} className="parent-search-panel__col parent-search-panel__col_filter_exp">
                         <div className="parent-search-panel__col-title">Values</div>

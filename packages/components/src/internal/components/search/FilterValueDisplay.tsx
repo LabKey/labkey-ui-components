@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Filter } from '@labkey/api';
 
 import { getFilterValuesAsArray, NEGATE_FILTERS, SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE } from './utils';
+import {OverlayTrigger, Popover} from "react-bootstrap";
 
 interface FilterValueDisplayProps {
     filter: Filter.IFilter;
@@ -47,7 +48,6 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
             return getShortFilterTypeDisplay(filterType);
 
         return null;
-
     }, [filter]);
 
     const filterValueDisplay = useMemo(() => {
@@ -65,9 +65,25 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
                     {values?.map((value, index) => {
                         if (index > 5) return null;
                         if (index === 5) {
+
                             return (
                                 <li className="filter-display__filter-value-li">
-                                    <a onClick={onFilterValueExpand}>and {values.length - 5} more</a>
+                                    <OverlayTrigger
+                                        overlay={
+                                            <Popover bsClass="popover" id={'filter-value-list-popover-' + index}>
+                                                <div>
+                                                    {[...values]
+                                                        .splice(5)
+                                                        .map(val => <div>{val}</div>)
+                                                    }
+                                                </div>
+                                            </Popover>
+                                        }
+                                        placement="top"
+                                    >
+                                        <a onClick={onFilterValueExpand}>and {values.length - 5} more</a>
+                                    </OverlayTrigger>
+
                                 </li>
                             );
                         }
@@ -105,5 +121,4 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
             {filterValueDisplay}
         </span>
     );
-
 });

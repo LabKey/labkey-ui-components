@@ -69,7 +69,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                     {!!filterArray?.length && (
                         <table>
                             <tbody>
-                                {filterArray.map(fieldFilter =>
+                                {filterArray.map(fieldFilter => (
                                     <tr key={fieldFilter.fieldKey} className="filter-display__row">
                                         <td className="filter-display__field-label">{fieldFilter.fieldCaption}:</td>
                                         <td className="filter-display__filter-content">
@@ -79,7 +79,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                                             />
                                         </td>
                                     </tr>
-                                )}
+                                ))}
                             </tbody>
                         </table>
                     )}

@@ -431,7 +431,7 @@ export function useUsersWithPermissions(
     return { error, loadingState, users };
 }
 
-export function onSingleFieldEdit(model: QueryModel, name: string, value: any): Promise<any> {
+export function updateRowFieldValue(model: QueryModel, name: string, value: any): Promise<any> {
     const options: any = {
         schemaQuery: model.schemaQuery,
         rows: [

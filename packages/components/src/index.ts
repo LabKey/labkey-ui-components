@@ -659,7 +659,7 @@ import {
 import { Key, useEnterEscape } from './public/useEnterEscape';
 import { DateInput } from './internal/components/DateInput';
 import { EditInlineField } from './internal/components/EditInlineField';
-import { onSingleFieldEdit } from './internal/components/forms/actions';
+import { updateRowFieldValue } from './internal/components/forms/actions';
 import { FileAttachmentArea } from './internal/components/files/FileAttachmentArea';
 import { UserAvatar, UserAvatars } from './internal/components/UserAvatars';
 import { AnnouncementRenderType } from './internal/announcements/model';
@@ -895,7 +895,7 @@ export {
     AutoForm,
     DateInput,
     EditInlineField,
-    onSingleFieldEdit,
+    updateRowFieldValue,
     // user/permissions related items
     getUsersWithPermissions,
     useUsersWithPermissions,

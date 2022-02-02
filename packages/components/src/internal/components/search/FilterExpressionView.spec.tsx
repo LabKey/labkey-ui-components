@@ -90,7 +90,7 @@ describe('FilterExpressionView', () => {
     }
 
     test('string field, no filter selected', () => {
-        const wrapper = mount(<FilterExpressionView field={stringField} fieldFilter={null} notFormsy={true} />);
+        const wrapper = mount(<FilterExpressionView field={stringField} fieldFilter={null} />);
 
         validateFilterTypeDropdown(wrapper, Ops, null);
 
@@ -102,7 +102,6 @@ describe('FilterExpressionView', () => {
             <FilterExpressionView
                 field={stringField}
                 fieldFilter={Filter.create('StringField', null, Filter.Types.HAS_ANY_VALUE)}
-                notFormsy={true}
             />
         );
 
@@ -116,8 +115,7 @@ describe('FilterExpressionView', () => {
             <FilterExpressionView
                 field={stringField}
                 fieldFilter={Filter.create('StringField', 'ABC', Filter.Types.Equals)}
-                notFormsy={true}
-            />
+             />
         );
 
         validate(wrapper, Ops, 1, 'eq', 'ABC');
@@ -129,7 +127,6 @@ describe('FilterExpressionView', () => {
             <FilterExpressionView
                 field={intField}
                 fieldFilter={Filter.create('IntField', '1,200', Filter.Types.BETWEEN)}
-                notFormsy={true}
             />
         );
 
@@ -142,7 +139,6 @@ describe('FilterExpressionView', () => {
             <FilterExpressionView
                 field={doubleField}
                 fieldFilter={Filter.create('DoubleField', 1.23, Filter.Types.GT)}
-                notFormsy={true}
             />
         );
 
@@ -158,7 +154,6 @@ describe('FilterExpressionView', () => {
             <FilterExpressionView
                 field={dateField}
                 fieldFilter={Filter.create('DateField', testDate, Filter.Types.DATE_NOT_EQUAL)}
-                notFormsy={true}
             />
         );
 
@@ -171,7 +166,6 @@ describe('FilterExpressionView', () => {
             <FilterExpressionView
                 field={booleanField}
                 fieldFilter={Filter.create('BooleanField', 'true')}
-                notFormsy={true}
             />
         );
 

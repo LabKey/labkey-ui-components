@@ -165,7 +165,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                         </span>
                     )}
                     <span
-                        className="edit-inline-field__toggle"
+                        className={ allowEdit ? "edit-inline-field__toggle" : ''}
                         onClick={toggleEdit}
                         onKeyDown={toggleKeyDown}
                         tabIndex={1}

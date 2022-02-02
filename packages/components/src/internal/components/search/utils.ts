@@ -304,10 +304,9 @@ export function getFieldFiltersValidationResult(dataTypeFilters: { [key: string]
     return null;
 }
 
-// TODO add jest
 export function getUpdateFilterExpressionFilter(
     newFilterType: FieldFilterOption,
-    field: QueryColumn,
+    field?: QueryColumn,
     previousFirstFilterValue?: any,
     previousSecondFilterValue?: any,
     newFilterValue?: any,

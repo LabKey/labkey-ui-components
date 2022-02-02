@@ -249,7 +249,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
                                         componentId={id}
-                                        containerFilter={containerFilter}
+                                        containerFilter={col.lookup.containerFilter ?? containerFilter}
                                         containerPath={col.lookup.containerPath}
                                         displayColumn={col.lookup.displayColumn}
                                         fireQSChangeOnInit={fireQSChangeOnInit}

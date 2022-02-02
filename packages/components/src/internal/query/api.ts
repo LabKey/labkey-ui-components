@@ -232,6 +232,10 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
             columnMetadata.detailRenderer = Renderers.applyDetailRenderer(columnMetadata, rawColumn, metadata);
             columnMetadata.inputRenderer = Renderers.applyInputRenderer(columnMetadata, rawColumn, metadata);
             columnMetadata.helpTipRenderer = Renderers.applyHelpTipRenderer(columnMetadata, rawColumn, metadata);
+
+            if (columnMetadata.lookup) {
+                columnMetadata.lookup = Object.assign({}, rawColumn.lookup, columnMetadata.lookup);
+            }
         }
     }
 

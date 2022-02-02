@@ -15,7 +15,8 @@ import { LineageSummary } from '../LineageSummary';
 import { LineageIOWithMetadata, LineageNode } from '../models';
 import { LineageOptions } from '../types';
 
-import { Grid, GridColumn } from '../../base/Grid';
+import { Grid } from '../../base/Grid';
+import { GridColumn } from '../../base/models/GridColumn';
 
 import { hasModule } from '../../../app/utils';
 

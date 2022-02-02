@@ -6,6 +6,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Remove `FieldEditorOverlay` component
 * Add simple action for doing update rows on a single field (callback helper for `EditInlineField`).
 
+### version 2.126.0
+*Released*: 1 February 2022
+* Item 9888: Sample status help tip display of configured statuses and descriptions
+  * SampleStatusLegend component to query for configured statues and render as table
+  * helpTipRenderer - allow column metadata to specify a help tip renderer to be used in grid column header and details panel label
+  * EntityInsertPanel update to add SampleStatusLegend as column header metadata tooltip for SampleState / Status column
+
 ### version 2.125.0
 *Released*: 1 February 2022
 * Item 9932: Sample Type Insights panel

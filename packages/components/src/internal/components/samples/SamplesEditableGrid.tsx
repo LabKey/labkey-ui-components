@@ -55,6 +55,8 @@ import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './mo
 import { getOriginalParentsFromSampleLineage } from './actions';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
+import { SAMPLE_STATE_COLUMN_NAME } from './constants';
+import { SampleStatusLegend } from './SampleStatusLegend';
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;
@@ -583,15 +585,16 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getSamplesColumnMetadata = (tabInd: number): Map<string, EditableColumnMetadata> => {
-        const { includedTabs } = this.state;
-
         if (this.getCurrentTab(tabInd) !== GridTab.Samples) return undefined;
 
         const { aliquots, sampleTypeDomainFields } = this.props;
-
         const queryGridModel = this.getSamplesEditorQueryGridModel();
-        // always allow description field to be editable, even for aliquots
         let columnMetadata = getUniqueIdColumnMetadata(queryGridModel.queryInfo);
+        columnMetadata = columnMetadata.set(SAMPLE_STATE_COLUMN_NAME, {
+            hideTitleTooltip: true,
+            toolTip: <SampleStatusLegend />,
+            popoverClassName: 'label-help-arrow-left',
+        });
 
         const allSamples = !aliquots || aliquots.length === 0;
         if (allSamples) return columnMetadata.asImmutable();

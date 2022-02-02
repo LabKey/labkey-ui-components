@@ -13,12 +13,15 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
 
 import {
-    getFieldFiltersValidationResult, getFilterValuesAsArray,
+    getFieldFiltersValidationResult,
+    getFilterValuesAsArray,
     getFinderStartText,
     getFinderViewColumnsConfig,
     getSampleFinderCommonConfigs,
     getSampleFinderQueryConfigs,
-    SAMPLE_FINDER_VIEW_NAME, searchFiltersFromJson, searchFiltersToJson,
+    SAMPLE_FINDER_VIEW_NAME,
+    searchFiltersFromJson,
+    searchFiltersToJson,
 } from './utils';
 
 test('getFinderStartText', () => {
@@ -291,37 +294,37 @@ const goodAnyValueFilter = {
     fieldKey: 'textField',
     fieldCaption: 'textField',
     filter: Filter.create('textField', null, Filter.Types.HAS_ANY_VALUE),
-}
+};
 
 const goodIntFilter = {
     fieldKey: 'intField',
     fieldCaption: 'intField',
     filter: Filter.create('intField', 1),
-}
+};
 
 const goodBetweenFilter = {
     fieldKey: 'strField',
     fieldCaption: 'strField',
     filter: Filter.create('strField', ['1', '5'], Filter.Types.BETWEEN),
-}
+};
 
 const goodBetweenFilter2 = {
     fieldKey: 'floatField2',
     fieldCaption: 'floatField2',
     filter: Filter.create('floatField2', '1,5', Filter.Types.BETWEEN),
-}
+};
 
 const badIntFilter = {
     fieldKey: 'intField',
     fieldCaption: 'intField',
     filter: Filter.create('intField', null),
-}
+};
 
 const badBetweenFilter = {
     fieldKey: 'doubleField',
     fieldCaption: 'doubleField',
     filter: Filter.create('doubleField', '1', Filter.Types.BETWEEN),
-}
+};
 
 const card = {
     entityDataType: TestTypeDataType,
@@ -330,26 +333,22 @@ const card = {
     index: 1,
 };
 
-const cardJSON = '{\"filters\":[{\"entityDataType\":{\"typeListingSchemaQuery\":{\"schemaName\":\"TestListing\",\"queryName\":\"query\"},\"listingSchemaQuery\":{\"schemaName\":\"Test\",\"queryName\":\"query\"},' +
-    '\"instanceSchemaName\":\"TestSchema\",\"operationConfirmationActionName\":\"test-delete-confirmation.api\",\"nounSingular\":\"test\",\"nounPlural\":\"tests\",\"nounAsParentSingular\":\"test Parent\",' +
-    '\"nounAsParentPlural\":\"test Parents\",\"typeNounSingular\":\"Test Type\",\"descriptionSingular\":\"parent test type\",\"descriptionPlural\":\"parent test types\",\"uniqueFieldKey\":\"Name\",' +
-    '\"dependencyText\":\"test data dependencies\",\"deleteHelpLinkTopic\":\"viewSampleSets#delete\",\"inputColumnName\":\"Inputs/Materials/First\",\"inputTypeValueField\":\"lsid\",' +
-    '\"insertColumnNamePrefix\":\"MaterialInputs/\",\"editTypeAppUrlPrefix\":\"Test\",\"importFileAction\":\"importSamples\",\"filterCardHeaderClass\":\"filter-card__header-success\"},' +
-    '\"filterArray\":[{\"fieldKey\":\"textField\",\"fieldCaption\":\"textField\",\"filter\":\"query.textField~=\"},{\"fieldKey\":\"strField\",\"fieldCaption\":\"strField\",' +
-    '\"filter\":\"query.strField~between=1%2C5\"}],\"schemaQuery\":{\"schemaName\":\"TestSchema\",\"queryName\":\"samples1\"},\"index\":1}],\"filterChangeCounter\":5}'
-
+const cardJSON =
+    '{"filters":[{"entityDataType":{"typeListingSchemaQuery":{"schemaName":"TestListing","queryName":"query"},"listingSchemaQuery":{"schemaName":"Test","queryName":"query"},' +
+    '"instanceSchemaName":"TestSchema","operationConfirmationActionName":"test-delete-confirmation.api","nounSingular":"test","nounPlural":"tests","nounAsParentSingular":"test Parent",' +
+    '"nounAsParentPlural":"test Parents","typeNounSingular":"Test Type","descriptionSingular":"parent test type","descriptionPlural":"parent test types","uniqueFieldKey":"Name",' +
+    '"dependencyText":"test data dependencies","deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","inputTypeValueField":"lsid",' +
+    '"insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test","importFileAction":"importSamples","filterCardHeaderClass":"filter-card__header-success"},' +
+    '"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~="},{"fieldKey":"strField","fieldCaption":"strField",' +
+    '"filter":"query.strField~between=1%2C5"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1}],"filterChangeCounter":5}';
 
 describe('searchFiltersToJson', () => {
-
     test('searchFiltersToJson', () => {
-        expect(searchFiltersToJson([card], 5))
-            .toEqual(cardJSON);
+        expect(searchFiltersToJson([card], 5)).toEqual(cardJSON);
     });
-
 });
 
 describe('searchFiltersFromJson', () => {
-
     test('searchFiltersFromJson', () => {
         const deserializedCard = searchFiltersFromJson(cardJSON);
         expect(deserializedCard['filterChangeCounter']).toEqual(5);
@@ -361,59 +360,77 @@ describe('searchFiltersFromJson', () => {
         const textFilter = fieldFilters[1]['filter'];
         expect(textFilter).toStrictEqual(goodBetweenFilter.filter);
     });
-
 });
 
 describe('getFilterValuesAsArray', () => {
-
     test('array value', () => {
-        expect(getFilterValuesAsArray(Filter.create('textField', ['a', 'b'], Filter.Types.IN)))
-            .toStrictEqual(['a', 'b']);
+        expect(getFilterValuesAsArray(Filter.create('textField', ['a', 'b'], Filter.Types.IN))).toStrictEqual([
+            'a',
+            'b',
+        ]);
     });
 
     test('string value', () => {
-        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c', Filter.Types.IN)))
-            .toStrictEqual(['a', 'b', 'c']);
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c', Filter.Types.IN))).toStrictEqual([
+            'a',
+            'b',
+            'c',
+        ]);
     });
 
     test('with blank value', () => {
-        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;;c', Filter.Types.IN)))
-            .toStrictEqual(['a', 'b', '[blank]', 'c']);
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;;c', Filter.Types.IN))).toStrictEqual([
+            'a',
+            'b',
+            '[blank]',
+            'c',
+        ]);
     });
 
     test('with custom blank value', () => {
-        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;;c', Filter.Types.IN), '[empty]'))
-            .toStrictEqual(['a', 'b', '[empty]', 'c']);
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;;c', Filter.Types.IN), '[empty]')).toStrictEqual([
+            'a',
+            'b',
+            '[empty]',
+            'c',
+        ]);
     });
 
     test('string value - between', () => {
-        expect(getFilterValuesAsArray(Filter.create('textField', 'a,c', Filter.Types.BETWEEN)))
-            .toStrictEqual(['a', 'c']);
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a,c', Filter.Types.BETWEEN))).toStrictEqual([
+            'a',
+            'c',
+        ]);
     });
-
 });
 
 describe('getFieldFiltersValidationResult', () => {
-
     test('no error', () => {
-        expect(getFieldFiltersValidationResult({
-            'sampleType1': [goodAnyValueFilter, goodBetweenFilter],
-            'sampleType2': [goodIntFilter, goodBetweenFilter2]
-        })).toBeNull();
+        expect(
+            getFieldFiltersValidationResult({
+                sampleType1: [goodAnyValueFilter, goodBetweenFilter],
+                sampleType2: [goodIntFilter, goodBetweenFilter2],
+            })
+        ).toBeNull();
     });
 
     test('missing value', () => {
-        expect(getFieldFiltersValidationResult({
-            'sampleType1': [goodAnyValueFilter, badIntFilter],
-            'sampleType2': [goodIntFilter]
-        })).toEqual('Invalid/incomplete filter values. Please correct input for fields. sampleType1: intField. ');
+        expect(
+            getFieldFiltersValidationResult({
+                sampleType1: [goodAnyValueFilter, badIntFilter],
+                sampleType2: [goodIntFilter],
+            })
+        ).toEqual('Invalid/incomplete filter values. Please correct input for fields. sampleType1: intField. ');
     });
 
     test('missing between filter value', () => {
-        expect(getFieldFiltersValidationResult({
-            'sampleType1': [goodAnyValueFilter, badIntFilter],
-            'sampleType2': [goodIntFilter, badIntFilter, badBetweenFilter]
-        })).toEqual('Invalid/incomplete filter values. Please correct input for fields. sampleType1: intField. sampleType2: intField, doubleField. ');
+        expect(
+            getFieldFiltersValidationResult({
+                sampleType1: [goodAnyValueFilter, badIntFilter],
+                sampleType2: [goodIntFilter, badIntFilter, badBetweenFilter],
+            })
+        ).toEqual(
+            'Invalid/incomplete filter values. Please correct input for fields. sampleType1: intField. sampleType2: intField, doubleField. '
+        );
     });
-
 });

@@ -139,9 +139,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
 
     const onFilterValueExpand = useCallback(
         (index: number, fieldFilter: FieldFilter) => {
-            const selectedCard = filters[index];
-            setChosenEntityType(selectedCard.entityDataType);
-            setChosenQueryName(selectedCard.schemaQuery.queryName);
+            onFilterEdit(index);
             setChosenField(fieldFilter.fieldKey);
         },
         [filters]

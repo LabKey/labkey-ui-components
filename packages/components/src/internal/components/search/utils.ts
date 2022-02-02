@@ -10,7 +10,10 @@ import { User } from '../base/models/User';
 import { getOmittedSampleTypeColumns } from '../samples/utils';
 import { SCHEMAS } from '../../schemas';
 
-import { FieldFilter, FilterProps, SearchSessionStorageProps } from './models';
+import {FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps} from './models';
+import {resolveFilterType} from "../omnibox/actions/Filter";
+import {resolveFieldKey} from "../omnibox/utils";
+import {QueryColumn} from "../../../public/QueryColumn";
 
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): string {
     const hintText = 'Start by adding ';
@@ -155,7 +158,7 @@ export function isBetweenOperator(urlSuffix: string): boolean {
 
 export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
 
-export function getSampleFinderFilterTypesForType(jsonType: JsonType): any[] {
+export function getSampleFinderFilterTypesForType(jsonType: JsonType): FieldFilterOption[] {
     const filterList = Filter.getFilterTypesForType(jsonType).filter(function (result) {
         return SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE.indexOf(result.getURLSuffix()) === -1;
     });
@@ -164,21 +167,17 @@ export function getSampleFinderFilterTypesForType(jsonType: JsonType): any[] {
         filterList.push(Filter.Types.NOT_BETWEEN);
     }
 
-    const filters = [];
-
-    filterList.forEach(filter => {
+    return filterList.map(filter => {
         let urlSuffix = filter.getURLSuffix();
         if (urlSuffix === '') urlSuffix = FILTER_URL_SUFFIX_ANY_ALT;
-        filters.push({
+        return {
             value: urlSuffix,
             label: filter.getDisplayText(),
             valueRequired: filter.isDataValueRequired(),
             multiValue: filter.isMultiValued(),
             betweenOperator: isBetweenOperator(urlSuffix),
-        });
+        } as FieldFilterOption;
     });
-
-    return filters;
 }
 
 export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilterType): boolean {
@@ -302,4 +301,42 @@ export function getFieldFiltersValidationResult(dataTypeFilters: { [key: string]
     }
 
     return null;
+}
+
+// TODO add jest
+export function getUpdateFilterExpressionFilter(newFilterType: FieldFilterOption, field: QueryColumn, previousFirstFilterValue?: any, previousSecondFilterValue?: any, newFilterValue?: any, isSecondValue?: boolean, clearBothValues?: boolean) : Filter.IFilter {
+        if (!newFilterType) {
+            return null;
+        }
+
+        const filterType = resolveFilterType(newFilterType?.value, field);
+        if (!filterType)
+            return null;
+
+        let filter: Filter.IFilter;
+
+        if (!newFilterType.valueRequired) {
+            filter = Filter.create(resolveFieldKey(field.name, field), null, filterType);
+        } else {
+            let value = newFilterValue;
+            if (newFilterType?.betweenOperator) {
+                if (clearBothValues) {
+                    value = null;
+                } else if (isSecondValue) {
+                    if (!newFilterValue)
+                        value = previousFirstFilterValue ? previousFirstFilterValue : '';
+                    else
+                        value = (previousFirstFilterValue ? previousFirstFilterValue + ',' : '') + newFilterValue;
+                } else {
+                    if (!newFilterValue)
+                        value = previousSecondFilterValue ? previousSecondFilterValue : '';
+                    else
+                        value = newFilterValue + (previousSecondFilterValue ? ',' + previousSecondFilterValue : '');
+                }
+            } else if (!value && field.jsonType === 'boolean') value = 'false';
+
+            filter = Filter.create(resolveFieldKey(field.name, field), value, filterType);
+        }
+
+        return filter;
 }

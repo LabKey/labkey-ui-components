@@ -9,11 +9,15 @@ import { SelectInput } from '../forms/input/SelectInput';
 import { App } from '../../../index';
 
 import { JsonType } from '../domainproperties/PropDescType';
-import { resolveFieldKey } from '../omnibox/utils';
-import { resolveFilterType } from '../omnibox/actions/Filter';
 import { formatDate } from '../../util/Date';
 
-import { getFilterValuesAsArray, getSampleFinderFilterTypesForType, isFilterUrlSuffixMatch } from './utils';
+import {
+    getFilterValuesAsArray,
+    getSampleFinderFilterTypesForType,
+    getUpdateFilterExpressionFilter,
+    isFilterUrlSuffixMatch
+} from './utils';
+import {FieldFilterOption} from "./models";
 
 interface Props {
     field: QueryColumn;
@@ -24,8 +28,8 @@ interface Props {
 export const FilterExpressionView: FC<Props> = memo(props => {
     const { field, fieldFilter, onFieldFilterUpdate } = props;
 
-    const [fieldFilterOptions, setFieldFilterOptions] = useState<any[]>(undefined);
-    const [activeFilterType, setActiveFilterType] = useState<any[]>(undefined);
+    const [fieldFilterOptions, setFieldFilterOptions] = useState<FieldFilterOption[]>(undefined);
+    const [activeFilterType, setActiveFilterType] = useState<FieldFilterOption>(undefined);
     const [firstFilterValue, setFirstFilterValue] = useState<any>();
     const [secondFilterValue, setSecondFilterValue] = useState<any>();
 
@@ -42,7 +46,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 setActiveFilterType(filterOption);
 
                 const values = getFilterValuesAsArray(fieldFilter);
-                if (filterOption['betweenOperator']) {
+                if (filterOption.betweenOperator) {
                     setFirstFilterValue(values[0]);
                     setSecondFilterValue(values[1]);
                 } else if (values.length > 1) {
@@ -55,37 +59,11 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     }, [field]); // leave fieldFilter out of deps list, fieldFilter is used to init once
 
     const updateFilter = useCallback(
-        (newFilterType: any[], newFilterValue?: any, isSecondValue?: boolean, clearBothValues?: boolean) => {
-            if (!newFilterType) {
-                onFieldFilterUpdate(undefined); // remove filter
-                return;
-            }
-
-            const filterType = resolveFilterType(newFilterType?.['value'], field);
-            if (!filterType) return;
-
-            let filter: Filter.IFilter;
-
-            if (!newFilterType['valueRequired']) {
-                filter = Filter.create(resolveFieldKey(field.name, field), null, filterType);
-            } else {
-                let value = newFilterValue;
-                if (newFilterType?.['betweenOperator']) {
-                    if (clearBothValues) {
-                        value = null;
-                    } else if (isSecondValue) {
-                        value = (firstFilterValue ? firstFilterValue + ',' : '') + newFilterValue;
-                    } else {
-                        value = newFilterValue + (secondFilterValue ? ',' + secondFilterValue : '');
-                    }
-                } else if (!value && field.jsonType === 'boolean') value = 'false';
-
-                filter = Filter.create(resolveFieldKey(field.name, field), value, filterType);
-            }
-
-            onFieldFilterUpdate(filter);
+        (newFilterType: FieldFilterOption, previousFirstFilterValue?: any, previousSecondFilterValue?: any, newFilterValue?: any, isSecondValue?: boolean, clearBothValues?: boolean) => {
+            const newFilter = getUpdateFilterExpressionFilter(newFilterType, field, previousFirstFilterValue, previousSecondFilterValue, newFilterValue, isSecondValue, clearBothValues);
+            onFieldFilterUpdate(newFilter);
         },
-        [field, firstFilterValue, secondFilterValue]
+        [field]
     );
 
     const onFieldFilterTypeChange = useCallback(
@@ -94,7 +72,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             setActiveFilterType(activeFilterType);
             setFirstFilterValue(undefined);
             setSecondFilterValue(undefined);
-            updateFilter(activeFilterType, undefined, undefined, true);
+            updateFilter(activeFilterType, undefined, undefined,undefined, undefined, true);
         },
         [fieldFilterOptions]
     );
@@ -103,9 +81,9 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         (event: any) => {
             const newValue = event.target.value;
             setFirstFilterValue(newValue); // boolean columns don't support between operators
-            updateFilter(activeFilterType, newValue, false);
+            updateFilter(activeFilterType, firstFilterValue, secondFilterValue, newValue, false);
         },
-        [activeFilterType, firstFilterValue, secondFilterValue]
+        [activeFilterType]
     );
 
     const updateTextFilterFieldValue = useCallback(
@@ -114,9 +92,9 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const isSecondInput = event.target.name.endsWith('-second');
             if (isSecondInput) setSecondFilterValue(newValue);
             else setFirstFilterValue(newValue);
-            updateFilter(activeFilterType, newValue, isSecondInput);
+            updateFilter(activeFilterType, firstFilterValue, secondFilterValue, newValue, isSecondInput);
         },
-        [activeFilterType, firstFilterValue, secondFilterValue]
+        [activeFilterType]
     );
 
     const updateDateFilterFieldValue = useCallback(
@@ -124,14 +102,14 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const newDate = newValue ? formatDate(newValue) : null;
             if (isSecondInput) setSecondFilterValue(newDate);
             else setFirstFilterValue(newDate);
-            updateFilter(activeFilterType, newDate, isSecondInput);
+            updateFilter(activeFilterType, firstFilterValue, secondFilterValue, newDate, isSecondInput);
         },
-        [activeFilterType, firstFilterValue, secondFilterValue]
+        [activeFilterType]
     );
 
     const renderFilterInput = useCallback(
-        (isSecondInput?: boolean) => {
-            if (!activeFilterType || !activeFilterType['valueRequired']) return null;
+        (firstFilterValue, secondFilterValue, isSecondInput?: boolean) => {
+            if (!activeFilterType || !activeFilterType.valueRequired) return null;
 
             const suffix = isSecondInput ? '-second' : '';
             const valueRaw = isSecondInput ? secondFilterValue : firstFilterValue;
@@ -206,21 +184,21 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 />
             );
         },
-        [field, activeFilterType, firstFilterValue, secondFilterValue]
+        [field, activeFilterType]
     );
 
     const renderFilterTypeInputs = useCallback(() => {
-        if (!activeFilterType || !activeFilterType['valueRequired']) return null;
+        if (!activeFilterType || !activeFilterType.valueRequired) return null;
 
-        const isBetweenOperator = activeFilterType['betweenOperator'];
+        const isBetweenOperator = activeFilterType.betweenOperator;
 
-        if (!isBetweenOperator) return renderFilterInput();
+        if (!isBetweenOperator) return renderFilterInput(firstFilterValue, secondFilterValue);
 
         return (
             <>
-                {renderFilterInput()}
+                {renderFilterInput(firstFilterValue, secondFilterValue)}
                 <div className="search-filter__and-op">and</div>
-                {renderFilterInput(true)}
+                {renderFilterInput(firstFilterValue, secondFilterValue, true)}
             </>
         );
     }, [field, activeFilterType, firstFilterValue, secondFilterValue]);
@@ -233,7 +211,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 containerClass="form-group search-filter__input-wrapper"
                 inputClass="search-filter__input-select"
                 placeholder="Select a filter type..."
-                value={activeFilterType?.['value']}
+                value={activeFilterType?.value}
                 onChange={onFieldFilterTypeChange}
                 options={fieldFilterOptions}
             />

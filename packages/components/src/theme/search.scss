@@ -59,7 +59,7 @@
         color: white;
         width: 15px;
         line-height: 15px;
-        background-color: #FA6400;
+        background-color: $badge-color;
         display: inline-block;
     }
 
@@ -68,7 +68,7 @@
         width: 10px;
         border-radius: 50%;
         display: inline-block;
-        background-color: #FA6400;
+        background-color: $badge-color;
         margin-top: 5px;
     }
 
@@ -95,7 +95,7 @@
     .parent-search-panel__col-content {
         height: 470px;
         overflow: scroll;
-        border: 1px solid lightgray;
+        border: 1px solid $light-gray;
         margin-bottom: 20px;
 
         .list-group-item {
@@ -108,7 +108,7 @@
 
         .parent-search-panel__tabs.content-tabs {
             .nav-tabs {
-                border-bottom: 1px solid lightgray;
+                border-bottom: 1px solid $light-gray;
             }
         }
     }

@@ -108,13 +108,8 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
                     let supportedFields = fields;
                     if (!showAllFields) {
-                        const supportedFieldArray = [];
-                        fields.forEach(field => {
-                            if (field.jsonType === 'string')
-                                // TODO only support string fields until MVFK (multi value FK) server side work is completed
-                                supportedFieldArray.push(field);
-                        });
-                        supportedFields = fromJS(supportedFieldArray);
+                        // TODO only support string fields until MVFK (multi value FK) server side work is completed
+                        supportedFields = fromJS(fields.filter(field => field.jsonType === 'string'));
                     }
 
                     setQueryFields(supportedFields);
@@ -127,18 +122,18 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     setLoadingError(resolveErrorMessage(error, queryName, queryName, 'load'));
                 });
         },
-        [entityDataType]
+        [api, entityDataType, skipDefaultViewCheck, showAllFields]
     );
 
     const onFieldClick = useCallback(
         (queryColumn: QueryColumn) => {
             setActiveField(queryColumn);
 
-            if (activeTab === EntityFieldFilterTabs.ChooseValues) {
-                if (!queryColumn.allowFaceting()) setActiveTab(EntityFieldFilterTabs.Filter);
+            if (activeTab === EntityFieldFilterTabs.ChooseValues && !queryColumn.allowFaceting()) {
+                setActiveTab(EntityFieldFilterTabs.Filter);
             }
         },
-        [entityDataType, activeQuery, activeTab, setActiveTab]
+        [activeTab]
     );
 
     const onTabChange = useCallback((tabKey: any) => {
@@ -178,7 +173,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     filter: newFilter,
                 });
 
-            if (newParentFilters?.length >= 0) dataTypeFiltersUpdated[activeQuery] = newParentFilters;
+            if (newParentFilters?.length > 0) dataTypeFiltersUpdated[activeQuery] = newParentFilters;
             else delete dataTypeFiltersUpdated[activeQuery];
 
             setDataTypeFilters(dataTypeFiltersUpdated);
@@ -199,7 +194,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         });
 
         return status;
-    }, [activeField, activeQuery, dataTypeFilters]);
+    }, [dataTypeFilters]);
 
     // TODO when populating types, adjust container filter to include the proper set of sample types
     //  (current + project + shared, in most cases).  For LKB, check if we should filter out any of the
@@ -218,11 +213,11 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         <div className="parent-search-panel__col-title">
                             {entityDataType.nounAsParentPlural ?? entityDataType.nounPlural}
                         </div>
-                        {!entityQueries && <LoadingSpinner />}
                         <div className="list-group parent-search-panel__col-content">
+                            {!entityQueries && <LoadingSpinner />}
                             {entityQueries?.map((parent, index) => {
-                                const label = parent.label ?? parent?.get('label');
-                                const parentValue = parent.value ?? parent?.get('value');
+                                const label = parent.label ?? parent.get?.('label'); // jest test data is Map, instead of js object
+                                const parentValue = parent.value ?? parent.get?.('value');
                                 const fieldFilterCount = dataTypeFilters?.[parentValue]?.length ?? 0;
                                 return (
                                     <ChoicesListItem
@@ -253,27 +248,27 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                 .
                             </div>
                         )}
-                        {activeQuery && !queryFields && <LoadingSpinner />}
-                        {activeQuery && (
+                        {activeQuery &&
                             <div className="list-group parent-search-panel__col-content parent-search-panel__fields-col-content">
-                                {queryFields?.map((field, index) => {
-                                    const { fieldKey, caption } = field;
-                                    const hasFilter = filterStatus?.[activeQuery + '-' + fieldKey];
-                                    return (
-                                        <ChoicesListItem
-                                            active={fieldKey === activeField?.fieldKey}
-                                            index={index}
-                                            key={fieldKey}
-                                            label={caption}
-                                            onSelect={() => onFieldClick(field)}
-                                            componentRight={
-                                                hasFilter && <span className="pull-right search_field_dot" />
-                                            }
-                                        />
-                                    );
-                                })}
-                            </div>
-                        )}
+                                    {!queryFields && <LoadingSpinner />}
+                                    {queryFields?.map((field, index) => {
+                                        const { fieldKey, caption } = field;
+                                        const hasFilter = filterStatus?.[activeQuery + '-' + fieldKey];
+                                        return (
+                                            <ChoicesListItem
+                                                active={fieldKey === activeField?.fieldKey}
+                                                index={index}
+                                                key={fieldKey}
+                                                label={caption}
+                                                onSelect={() => onFieldClick(field)}
+                                                componentRight={
+                                                    hasFilter && <span className="pull-right search_field_dot" />
+                                                }
+                                            />
+                                        );
+                                    })}
+                                </div>
+                        }
                     </Col>
                     <Col xs={6} className="parent-search-panel__col parent-search-panel__col_filter_exp">
                         <div className="parent-search-panel__col-title">Values</div>

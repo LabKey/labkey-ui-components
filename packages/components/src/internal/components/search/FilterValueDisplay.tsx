@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import classNames from 'classnames';
 
 import { Filter } from '@labkey/api';
@@ -35,16 +35,25 @@ function getShortFilterTypeDisplay(filterType: Filter.IFilterType) {
 export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
     const { filter, onFilterValueExpand } = props;
 
-    const renderFilter = useCallback(() => {
+    const exclude = useMemo(() => {
+        return NEGATE_FILTERS.indexOf(filter.getFilterType().getURLSuffix()) > -1;
+    }, [filter]);
+
+    const filterTypeLabel = useMemo(() => {
         const filterType = filter.getFilterType();
         const filterUrlSuffix = filterType.getURLSuffix();
-        let filterTypeLabel = null;
-        let filterValueDisplay = null;
-
-        const exclude = NEGATE_FILTERS.indexOf(filterUrlSuffix) > -1;
 
         if (SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE.indexOf(filterUrlSuffix) === -1)
-            filterTypeLabel = getShortFilterTypeDisplay(filterType);
+            return getShortFilterTypeDisplay(filterType);
+
+        return null;
+
+    }, [filter]);
+
+    const filterValueDisplay = useMemo(() => {
+        const filterType = filter.getFilterType();
+        const filterUrlSuffix = filterType.getURLSuffix();
+        let filterValueDisplay = null;
 
         if (
             filterUrlSuffix === Filter.Types.IN.getURLSuffix() ||
@@ -83,19 +92,18 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
             }
         }
 
-        return (
-            <>
-                <span
-                    className={classNames('filter-display__filter-value', {
-                        'field-display__filter-value-negate': exclude,
-                    })}
-                >
-                    {filterTypeLabel && <>{filterTypeLabel} </>}
-                    {filterValueDisplay}
-                </span>
-            </>
-        );
-    }, [onFilterValueExpand, filter]);
+        return filterValueDisplay;
+    }, [filter, onFilterValueExpand]);
 
-    return <>{renderFilter()}</>;
+    return (
+        <span
+            className={classNames('filter-display__filter-value', {
+                'field-display__filter-value-negate': exclude,
+            })}
+        >
+            {filterTypeLabel && <>{filterTypeLabel} </>}
+            {filterValueDisplay}
+        </span>
+    );
+
 });

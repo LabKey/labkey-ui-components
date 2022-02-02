@@ -29,23 +29,6 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
         onDelete(index);
     }, [onDelete, index]);
 
-    const renderFilterRow = useCallback(
-        (fieldFilter: FieldFilter) => {
-            return (
-                <tr key={fieldFilter.fieldKey} className="filter-display__row">
-                    <td className="filter-display__field-label">{fieldFilter.fieldCaption}:</td>
-                    <td className="filter-display__filter-content">
-                        <FilterValueDisplay
-                            filter={fieldFilter.filter}
-                            onFilterValueExpand={() => onFilterValueExpand(index, fieldFilter)}
-                        />
-                    </td>
-                </tr>
-            );
-        },
-        [onDelete, index, schemaQuery, onFilterValueExpand]
-    );
-
     if (!schemaQuery) {
         return (
             <>
@@ -74,7 +57,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                     </div>
                 </div>
                 <div className="filter-card__card-content">
-                    {!filterArray?.length /* TODO Is this supported?*/ && (
+                    {!filterArray?.length /* TODO: support finding by parent type without filters*/ && (
                         <>
                             <hr />
                             <div>
@@ -86,9 +69,17 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                     {!!filterArray?.length && (
                         <table>
                             <tbody>
-                                {filterArray.map(fieldFilter => {
-                                    return renderFilterRow(fieldFilter);
-                                })}
+                                {filterArray.map(fieldFilter =>
+                                    <tr key={fieldFilter.fieldKey} className="filter-display__row">
+                                        <td className="filter-display__field-label">{fieldFilter.fieldCaption}:</td>
+                                        <td className="filter-display__filter-content">
+                                            <FilterValueDisplay
+                                                filter={fieldFilter.filter}
+                                                onFilterValueExpand={() => onFilterValueExpand(index, fieldFilter)}
+                                            />
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     )}

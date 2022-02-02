@@ -18,6 +18,7 @@ import { Filter } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import {isBetweenOperator} from "./utils";
 
 export class SearchResultsModel extends Record({
     entities: undefined,
@@ -70,4 +71,12 @@ export interface FilterProps {
 export interface SearchSessionStorageProps {
     filters: FilterProps[];
     filterChangeCounter: number;
+}
+
+export interface FieldFilterOption {
+    value: string;
+    label: string;
+    valueRequired: boolean;
+    multiValue: boolean;
+    betweenOperator: boolean;
 }

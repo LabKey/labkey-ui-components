@@ -102,6 +102,7 @@ export class QueryColumn extends Record({
     cell: undefined,
     columnRenderer: undefined,
     detailRenderer: undefined,
+    helpTipRenderer: undefined,
     inputRenderer: undefined,
     removeFromViews: false,
     sorts: undefined,
@@ -169,6 +170,7 @@ export class QueryColumn extends Record({
     declare cell: Function;
     declare columnRenderer: string;
     declare detailRenderer: string;
+    declare helpTipRenderer: string;
     declare inputRenderer: string;
     declare sorts: '+' | '-';
     declare removeFromViews: boolean; // strips this column from all ViewInfo definitions

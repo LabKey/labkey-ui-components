@@ -17,83 +17,10 @@ import React, { FC, memo, PureComponent, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 
-interface ColumnProps {
-    align?: string;
-    cell?: (data?: any, row?: any, col?: GridColumn, rowNumber?: number, colNumber?: number) => any;
-    format?: string;
-    index: string;
-    showHeader?: boolean;
-    raw?: any;
-    tableCell?: boolean;
-    title: string;
-    width?: any;
-    headerCls?: string;
-    hideTooltip?: boolean;
-}
+import { HelpTipRenderer } from '../forms/HelpTipRenderer';
 
-export class GridColumn implements ColumnProps {
-    align: string;
-    cell: (data?: any, row?: any, col?: GridColumn, rowNumber?: number, colNumber?: number) => any;
-    format: string;
-    index: string;
-    raw: any;
-    showHeader: boolean;
-    tableCell: boolean;
-    title: string;
-    width: any;
-    headerCls: string;
-    hideTooltip?: boolean;
-
-    constructor(config: ColumnProps) {
-        this.align = config.align;
-        this.index = config.index;
-        this.format = config.format;
-        this.raw = config.raw;
-        this.width = config.width;
-        this.headerCls = config.headerCls;
-
-        // react render displays '&nbsp', see: https://facebook.github.io/react/docs/jsx-gotchas.html
-        if (config.title && config.title == '&nbsp;') {
-            this.title = '';
-        } else {
-            this.title = config.title;
-        }
-
-        this.showHeader = config.showHeader !== false; // defaults to true
-        this.tableCell = config.tableCell === true; // defaults to false
-        this.hideTooltip = config.hideTooltip === true; // defaults to false
-
-        if (config.cell) {
-            this.cell = config.cell;
-        } else {
-            this.cell = defaultCell;
-        }
-    }
-}
-
-const defaultCell = (d, row, col: GridColumn) => {
-    let display = null;
-    if (d != undefined) {
-        if (typeof d === 'string' || typeof d === 'number') {
-            display = d;
-        } else if (typeof d === 'boolean') {
-            display = d ? 'true' : 'false';
-        } else {
-            if (d.has('formattedValue')) {
-                display = d.get('formattedValue');
-            } else {
-                const o = d.has('displayValue') ? d.get('displayValue') : d.get('value');
-                display = o !== null && o !== undefined ? o.toString() : null;
-            }
-
-            if (d.get('url')) {
-                display = <a href={d.get('url')}>{display}</a>;
-            }
-        }
-    }
-
-    return display;
-};
+import { LabelHelpTip } from './LabelHelpTip';
+import { GridColumn } from './models/GridColumn';
 
 function processColumns(columns: List<any>): List<GridColumn> {
     return columns
@@ -117,6 +44,8 @@ function processColumns(columns: List<any>): List<GridColumn> {
                 tableCell: c.tableCell,
                 title: c.title || c.caption,
                 width: c.width,
+                helpTipRenderer: c.helpTipRenderer,
+                hideTooltip: c.helpTipRenderer !== undefined,
             });
         })
         .toList();
@@ -154,7 +83,8 @@ interface GridHeaderProps {
     transpose?: boolean;
 }
 
-class GridHeader extends PureComponent<GridHeaderProps, any> {
+// export for jest testing
+export class GridHeader extends PureComponent<GridHeaderProps, any> {
     _handleClick(column: GridColumn, evt) {
         evt.stopPropagation();
         if (this.props.onCellClick) {
@@ -205,6 +135,15 @@ class GridHeader extends PureComponent<GridHeaderProps, any> {
                                     title={hideTooltip ? undefined : description}
                                 >
                                     {headerCell ? headerCell(column, i, columns.size) : title}
+                                    {column.helpTipRenderer && (
+                                        <LabelHelpTip
+                                            id={column.index}
+                                            title={title}
+                                            popoverClassName="label-help-arrow-top"
+                                        >
+                                            <HelpTipRenderer type={column.helpTipRenderer} />
+                                        </LabelHelpTip>
+                                    )}
                                 </th>
                             );
                         }

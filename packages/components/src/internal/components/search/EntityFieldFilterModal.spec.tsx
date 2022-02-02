@@ -4,8 +4,6 @@ import { fromJS } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { getTestAPIWrapper } from '../../APIWrapper';
-import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
 import { GetQueryDetailsOptions } from '../../query/api';
 import sampleSetAllFieldTypesQueryInfo from '../../../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
 import { TestTypeDataType } from '../../../test/data/constants';
@@ -16,6 +14,9 @@ import { ChoicesListItem } from '../base/ChoicesListItem';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
+
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
 
 const sampleTypes = {
     SampleSets: [

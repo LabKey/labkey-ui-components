@@ -12,18 +12,20 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
 
+import { TEXT_TYPE } from '../domainproperties/PropDescType';
+
 import {
     getFieldFiltersValidationResult,
     getFilterValuesAsArray,
     getFinderStartText,
     getFinderViewColumnsConfig,
     getSampleFinderCommonConfigs,
-    getSampleFinderQueryConfigs, getUpdateFilterExpressionFilter,
+    getSampleFinderQueryConfigs,
+    getUpdateFilterExpressionFilter,
     SAMPLE_FINDER_VIEW_NAME,
     searchFiltersFromJson,
     searchFiltersToJson,
 } from './utils';
-import {TEXT_TYPE} from "../domainproperties/PropDescType";
 
 test('getFinderStartText', () => {
     expect(getFinderStartText([])).toBe('Start by adding  properties.');
@@ -436,43 +438,41 @@ describe('getFieldFiltersValidationResult', () => {
     });
 });
 
-
 describe('getUpdateFilterExpressionFilter', () => {
-
     const fieldKey = 'StringField';
-    const stringField = QueryColumn.create({ name: fieldKey, rangeURI: TEXT_TYPE.rangeURI, jsonType: 'string' })
+    const stringField = QueryColumn.create({ name: fieldKey, rangeURI: TEXT_TYPE.rangeURI, jsonType: 'string' });
 
     const anyOp = {
         betweenOperator: false,
-        label: "Has Any Value",
+        label: 'Has Any Value',
         multiValue: false,
-        value: "any",
-        valueRequired: false
-    }
+        value: 'any',
+        valueRequired: false,
+    };
 
     const equalOp = {
         betweenOperator: false,
-        label: "Equals",
+        label: 'Equals',
         multiValue: false,
-        value: "eq",
-        valueRequired: true
-    }
+        value: 'eq',
+        valueRequired: true,
+    };
 
     const betweenOp = {
         betweenOperator: true,
-        label: "Between",
+        label: 'Between',
         multiValue: true,
-        value: "between",
-        valueRequired: true
-    }
+        value: 'between',
+        valueRequired: true,
+    };
 
     const badOp = {
         betweenOperator: true,
-        label: "NotSupported",
+        label: 'NotSupported',
         multiValue: true,
-        value: "NotSupported",
-        valueRequired: true
-    }
+        value: 'NotSupported',
+        valueRequired: true,
+    };
 
     test('remove filter type', () => {
         expect(getUpdateFilterExpressionFilter(null)).toBeNull();
@@ -483,38 +483,44 @@ describe('getUpdateFilterExpressionFilter', () => {
     });
 
     test('value not required', () => {
-        expect(getUpdateFilterExpressionFilter(anyOp, stringField, 'abc'))
-            .toStrictEqual(Filter.create(fieldKey, null, Filter.Types.HAS_ANY_VALUE));
+        expect(getUpdateFilterExpressionFilter(anyOp, stringField, 'abc')).toStrictEqual(
+            Filter.create(fieldKey, null, Filter.Types.HAS_ANY_VALUE)
+        );
     });
 
     test('remove filter value', () => {
-        expect(getUpdateFilterExpressionFilter(equalOp, stringField, 'abc', null, null))
-            .toStrictEqual(Filter.create(fieldKey, null, Filter.Types.EQ));
+        expect(getUpdateFilterExpressionFilter(equalOp, stringField, 'abc', null, null)).toStrictEqual(
+            Filter.create(fieldKey, null, Filter.Types.EQ)
+        );
     });
 
     test('update filter value', () => {
-        expect(getUpdateFilterExpressionFilter(equalOp, stringField, 'abc', null, 'def'))
-            .toStrictEqual(Filter.create(fieldKey, 'def', Filter.Types.EQ));
+        expect(getUpdateFilterExpressionFilter(equalOp, stringField, 'abc', null, 'def')).toStrictEqual(
+            Filter.create(fieldKey, 'def', Filter.Types.EQ)
+        );
     });
 
     test('update between filter first value', () => {
-        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', 'a'))
-            .toStrictEqual(Filter.create(fieldKey, 'a,z', Filter.Types.BETWEEN));
+        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', 'a')).toStrictEqual(
+            Filter.create(fieldKey, 'a,z', Filter.Types.BETWEEN)
+        );
     });
 
     test('update between filter second value', () => {
-        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, null, null, 'y', true))
-            .toStrictEqual(Filter.create(fieldKey, 'y', Filter.Types.BETWEEN));
+        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, null, null, 'y', true)).toStrictEqual(
+            Filter.create(fieldKey, 'y', Filter.Types.BETWEEN)
+        );
     });
 
     test('remove between filter second value', () => {
-        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', null, true))
-            .toStrictEqual(Filter.create(fieldKey, 'x', Filter.Types.BETWEEN));
+        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', null, true)).toStrictEqual(
+            Filter.create(fieldKey, 'x', Filter.Types.BETWEEN)
+        );
     });
 
     test('clear between filter values', () => {
-        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', null, null, true))
-            .toStrictEqual(Filter.create(fieldKey, null, Filter.Types.BETWEEN));
+        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', null, null, true)).toStrictEqual(
+            Filter.create(fieldKey, null, Filter.Types.BETWEEN)
+        );
     });
-
 });

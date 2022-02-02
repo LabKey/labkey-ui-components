@@ -16,12 +16,12 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { naturalSortByProperty } from '../../../public/sort';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 import { FilterFacetedSelector } from './FilterFacetedSelector';
+
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter, FilterProps } from './models';
 import { getFieldFiltersValidationResult } from './utils';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface Props {
     api?: ComponentsAPIWrapper;

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.127.0
+*Released*: 3 February 2022
 * Remove `FieldEditorOverlay` component
 * Add simple action for doing update rows on a single field (callback helper for `EditInlineField`).
 

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.128.0
+*Released*: 3 February 2022
+* Item 9815: Sample Finder v1 - Filter dialog field expression filters
+    * Updates to EntityFieldFilterModal, FilterCards and SampleFinderSection to wire up filtering
+    * Added FilterValueDisplay, FilterExpressionView and FilterFacetedSelector to support filtering
+
 ### version 2.127.0
 *Released*: 3 February 2022
 * Remove `FieldEditorOverlay` component

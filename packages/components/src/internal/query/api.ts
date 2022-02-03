@@ -51,7 +51,7 @@ export function invalidateQueryDetailsCacheKey(key: string): void {
     delete queryDetailsCache[key];
 }
 
-interface GetQueryDetailsOptions {
+export interface GetQueryDetailsOptions {
     schemaName: string;
     queryName: string;
     containerPath?: string;

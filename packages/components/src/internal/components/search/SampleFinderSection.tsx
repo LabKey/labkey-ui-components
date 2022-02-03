@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, useCallback, useEffect, useState } from 'react';
 
-import { ActionURL, AuditBehaviorTypes, Filter } from '@labkey/api';
+import { ActionURL, AuditBehaviorTypes } from '@labkey/api';
 
 import { List } from 'immutable';
 
@@ -29,9 +29,17 @@ import { invalidateQueryDetailsCache } from '../../query/api';
 import { getPrimaryAppProperties } from '../../app/utils';
 
 import { removeFinderGridView, saveFinderGridView } from './actions';
-import { FilterCards, FilterProps } from './FilterCards';
-import { getFinderStartText, getFinderViewColumnsConfig, getSampleFinderQueryConfigs } from './utils';
+import { FilterCards } from './FilterCards';
+import {
+    getFinderStartText,
+    getFinderViewColumnsConfig,
+    getSampleFinderQueryConfigs,
+    searchFiltersFromJson,
+    searchFiltersToJson,
+} from './utils';
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
+
+import { FieldFilter, FilterProps } from './models';
 
 const SAMPLE_FINDER_TITLE = 'Find Samples';
 const SAMPLE_FINDER_CAPTION = 'Find samples that meet all the criteria defined below';
@@ -44,6 +52,7 @@ interface SampleFinderSamplesGridProps {
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     gridButtonProps?: any;
     sampleTypeNames: string[];
+    showAllFields?: boolean;
 }
 
 interface Props extends SampleFinderSamplesGridProps {
@@ -82,16 +91,18 @@ function getLocalStorageKey(): string {
 }
 
 export const SampleFinderSection: FC<Props> = memo(props => {
-    const { sampleTypeNames, parentEntityDataTypes, ...gridProps } = props;
+    const { sampleTypeNames, parentEntityDataTypes, showAllFields, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
     const [filters, setFilters] = useState<FilterProps[]>([]);
+    const [chosenQueryName, setChosenQueryName] = useState<string>(undefined);
+    const [chosenField, setChosenField] = useState<string>(undefined);
 
     useEffect(() => {
         const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
         if (finderSessionDataStr) {
-            const finderSessionData = JSON.parse(finderSessionDataStr);
+            const finderSessionData = searchFiltersFromJson(finderSessionDataStr);
             if (finderSessionData.filters) {
                 setFilters(finderSessionData.filters);
             }
@@ -108,26 +119,30 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const updateFilters = (filterChangeCounter: number, filters: FilterProps[]) => {
         setFilters(filters);
         setFilterChangeCounter(filterChangeCounter);
-        sessionStorage.setItem(
-            getLocalStorageKey(),
-            JSON.stringify({
-                filterChangeCounter,
-                filters,
-            })
-        );
+        sessionStorage.setItem(getLocalStorageKey(), searchFiltersToJson(filters, filterChangeCounter));
     };
 
     const onAddEntity = useCallback((entityType: EntityDataType) => {
+        setChosenQueryName(undefined);
+        setChosenField(undefined);
         setChosenEntityType(entityType);
     }, []);
 
     const onFilterEdit = useCallback(
         (index: number) => {
-            setChosenEntityType(parentEntityDataTypes[index]);
-            // TODO update filters as well
-            updateFilters(filterChangeCounter + 1, filters);
+            const selectedCard = filters[index];
+            setChosenEntityType(selectedCard.entityDataType);
+            setChosenQueryName(selectedCard.schemaQuery.queryName);
         },
-        [parentEntityDataTypes, filterChangeCounter]
+        [filters]
+    );
+
+    const onFilterValueExpand = useCallback(
+        (index: number, fieldFilter: FieldFilter) => {
+            onFilterEdit(index);
+            setChosenField(fieldFilter.fieldKey);
+        },
+        [filters]
     );
 
     const onFilterDelete = useCallback(
@@ -142,16 +157,23 @@ export const SampleFinderSection: FC<Props> = memo(props => {
 
     const onFilterClose = () => {
         setChosenEntityType(undefined);
+        setChosenQueryName(undefined);
+        setChosenField(undefined);
     };
 
     const onFind = useCallback(
-        (schemaQuery: SchemaQuery, filterArray: Filter.IFilter[]) => {
-            const newFilterCards = [...filters];
-            newFilterCards.push({
-                schemaQuery,
-                filterArray,
-                entityDataType: chosenEntityType,
+        (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }) => {
+            const newFilterCards = [...filters].filter(filter => {
+                return filter.entityDataType.instanceSchemaName !== chosenEntityType.instanceSchemaName;
             });
+            Object.keys(dataTypeFilters).forEach(queryName => {
+                newFilterCards.push({
+                    schemaQuery: SchemaQuery.create(schemaName, queryName),
+                    filterArray: dataTypeFilters[queryName],
+                    entityDataType: chosenEntityType,
+                });
+            });
+
             onFilterClose();
             updateFilters(filterChangeCounter + 1, newFilterCards);
         },
@@ -179,7 +201,13 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 </>
             ) : (
                 <>
-                    <FilterCards cards={filters} onFilterDelete={onFilterDelete} onAddEntity={onAddEntity} />
+                    <FilterCards
+                        cards={filters}
+                        onFilterDelete={onFilterDelete}
+                        onFilterEdit={onFilterEdit}
+                        onFilterValueExpand={onFilterValueExpand}
+                        onAddEntity={onAddEntity}
+                    />
                     <SampleFinderSamples
                         {...gridProps}
                         cards={filters}
@@ -190,7 +218,15 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 </>
             )}
             {chosenEntityType !== undefined && (
-                <EntityFieldFilterModal onCancel={onFilterClose} entityDataType={chosenEntityType} onFind={onFind} />
+                <EntityFieldFilterModal
+                    onCancel={onFilterClose}
+                    cards={filters}
+                    entityDataType={chosenEntityType}
+                    onFind={onFind}
+                    queryName={chosenQueryName}
+                    fieldKey={chosenField}
+                    showAllFields={showAllFields}
+                />
             )}
         </Section>
     );

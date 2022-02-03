@@ -53,7 +53,7 @@ export class QueryColumn extends Record({
     displayAsLookup: undefined,
     // excludeFromShifting: undefined,
     // ext: undefined,
-    // facetingBehaviorType: undefined,
+    facetingBehaviorType: undefined,
     fieldKey: undefined,
     fieldKeyArray: undefined,
     // fieldKeyPath: undefined,
@@ -121,7 +121,7 @@ export class QueryColumn extends Record({
     declare displayAsLookup: boolean;
     // declare excludeFromShifting: boolean;
     // declare ext: any;
-    // declare facetingBehaviorType: string;
+    declare facetingBehaviorType: string;
     declare fieldKey: string;
     declare fieldKeyArray: string[];
     // declare fieldKeyPath: string;
@@ -296,6 +296,27 @@ export class QueryColumn extends Record({
 
     get isFileInput(): boolean {
         return this.inputType === 'file';
+    }
+
+    allowFaceting(): boolean {
+        switch (this.facetingBehaviorType) {
+            case 'ALWAYS_ON':
+                return true;
+            case 'ALWAYS_OFF':
+                return false;
+            case 'AUTOMATIC':
+                // auto rules are if the column is a lookup or dimension
+                // OR if it is of type : (boolean, int, date, text), multiline excluded
+                if (this.lookup || this.dimension) return true;
+                else if (
+                    this.jsonType == 'boolean' ||
+                    this.jsonType == 'int' ||
+                    (this.jsonType == 'string' && this.inputType != 'textarea')
+                )
+                    return true;
+        }
+
+        return false;
     }
 }
 

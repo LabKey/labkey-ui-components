@@ -1,6 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
+import { Filter } from '@labkey/api';
+
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { capitalizeFirstChar } from '../../util/utils';
 import { TestTypeDataType } from '../../../test/data/constants';
@@ -47,6 +49,38 @@ describe('FilterCard', () => {
         const content = wrapper.find('.filter-card__card-content');
         expect(content.exists()).toBeTruthy();
         expect(content.text().trim()).toBe('Showing only samples with parent test parents');
+        wrapper.unmount();
+    });
+
+    test('with filters', () => {
+        const wrapper = mount(
+            <FilterCard
+                entityDataType={TestTypeDataType}
+                schemaQuery={SchemaQuery.create('testSample', 'parent')}
+                filterArray={[
+                    {
+                        fieldKey: '1',
+                        fieldCaption: 'Field1',
+                        filter: Filter.create('IntField', 1),
+                    },
+                    {
+                        fieldKey: '2',
+                        fieldCaption: 'Field2',
+                        filter: Filter.create('IntField2', 2),
+                    },
+                ]}
+                onAdd={jest.fn}
+                onEdit={jest.fn}
+                onDelete={jest.fn}
+            />
+        );
+        expect(wrapper.find('.filter-card__empty-content').exists()).toBeFalsy();
+
+        const content = wrapper.find('.filter-card__card-content');
+        expect(content.exists()).toBeTruthy();
+
+        expect(content.find('.filter-display__row').length).toBe(2);
+        expect(content.text()).toBe('Field1:1Field2:2');
         wrapper.unmount();
     });
 });

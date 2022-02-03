@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import { PermissionTypes } from '@labkey/api';
 
-import { hasAllPermissions, SVGIcon, User } from '../../..';
-
-import { FieldEditorOverlay, FieldEditorOverlayProps } from './FieldEditorOverlay';
+import { SVGIcon } from '../../..';
 
 export interface PageDetailHeaderProps {
     description?: ReactNode;
-    fieldTriggerProps?: FieldEditorOverlayProps;
     iconAltText?: string;
     iconDir?: string;
     iconSrc?: string;
@@ -30,7 +26,6 @@ export interface PageDetailHeaderProps {
     leftColumns?: number;
     subTitle?: ReactNode;
     title: ReactNode;
-    user?: User;
 }
 
 export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
@@ -42,7 +37,6 @@ export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
         const {
             children,
             description,
-            fieldTriggerProps,
             iconAltText,
             iconUrl,
             iconDir,
@@ -50,13 +44,8 @@ export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
             leftColumns,
             subTitle,
             title,
-            user,
         } = this.props;
         const hasIcon = iconUrl || iconSrc;
-
-        if (fieldTriggerProps && !user) {
-            throw Error('PageDetailHeader: If supplying "fieldTriggerProps", then "user" prop must be specified.');
-        }
 
         return (
             <div className="page-header">
@@ -79,14 +68,6 @@ export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
                         <h2 className="no-margin-top detail__header--name">{title}</h2>
                         {subTitle && <h4 className="test-loc-detail-subtitle">{subTitle}</h4>}
                         {description && <span className="detail__header--desc">{description}</span>}
-                        {fieldTriggerProps && (
-                            <div className="text__truncate">
-                                <FieldEditorOverlay
-                                    {...fieldTriggerProps}
-                                    canUpdate={hasAllPermissions(user, [PermissionTypes.Update])}
-                                />
-                            </div>
-                        )}
                     </div>
                 </div>
                 {children && <div className="pull-right">{children}</div>}

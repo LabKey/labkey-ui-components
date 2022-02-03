@@ -18,15 +18,18 @@ import { fromJS, List, Map } from 'immutable';
 import { useCallback, useEffect, useState } from 'react';
 
 import {
+    caseInsensitive,
     getQueryDetails,
     ISelectRowsResult,
     LoadingState,
     naturalSort,
-    SelectInputOption,
     QueryInfo,
+    QueryModel,
     QuerySelectOwnProps,
     searchRows,
+    SelectInputOption,
     selectRows,
+    updateRows,
 } from '../../..';
 
 import { getUsers, setUsers } from '../../global';
@@ -426,4 +429,16 @@ export function useUsersWithPermissions(
     }, [load]);
 
     return { error, loadingState, users };
+}
+
+export function updateRowFieldValue(model: QueryModel, name: string, value: any): Promise<any> {
+    return updateRows({
+        schemaQuery: model.schemaQuery,
+        rows: [
+            {
+                rowId: model.getRowValue('rowId'),
+                [name]: value,
+            },
+        ],
+    });
 }

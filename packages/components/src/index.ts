@@ -405,7 +405,6 @@ import { ChangePasswordModal } from './internal/components/user/ChangePasswordMo
 import { UsersGridPanel } from './internal/components/user/UsersGridPanel';
 import { UserProvider, useUserProperties } from './internal/components/user/UserProvider';
 import { UserLink } from './internal/components/user/UserLink';
-import { FieldEditorOverlay } from './internal/components/forms/FieldEditorOverlay';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_FIELD_REQUIRED,
@@ -661,6 +660,7 @@ import {
 import { Key, useEnterEscape } from './public/useEnterEscape';
 import { DateInput } from './internal/components/DateInput';
 import { EditInlineField } from './internal/components/EditInlineField';
+import { updateRowFieldValue } from './internal/components/forms/actions';
 import { FileAttachmentArea } from './internal/components/files/FileAttachmentArea';
 import { UserAvatar, UserAvatars } from './internal/components/UserAvatars';
 import { AnnouncementRenderType } from './internal/announcements/model';
@@ -871,7 +871,6 @@ export {
     SelectInput,
     DatePickerInput,
     QueryDateInput,
-    FieldEditorOverlay,
     FileInput,
     TextAreaInput,
     TextInput,
@@ -897,6 +896,7 @@ export {
     AutoForm,
     DateInput,
     EditInlineField,
+    updateRowFieldValue,
     // user/permissions related items
     getUsersWithPermissions,
     useUsersWithPermissions,

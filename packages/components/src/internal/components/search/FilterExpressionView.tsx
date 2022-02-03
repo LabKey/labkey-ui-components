@@ -61,8 +61,6 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     const updateFilter = useCallback(
         (
             newFilterType: FieldFilterOption,
-            previousFirstFilterValue?: any,
-            previousSecondFilterValue?: any,
             newFilterValue?: any,
             isSecondValue?: boolean,
             clearBothValues?: boolean
@@ -70,15 +68,15 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const newFilter = getUpdateFilterExpressionFilter(
                 newFilterType,
                 field,
-                previousFirstFilterValue,
-                previousSecondFilterValue,
+                firstFilterValue,
+                secondFilterValue,
                 newFilterValue,
                 isSecondValue,
                 clearBothValues
             );
             onFieldFilterUpdate(newFilter);
         },
-        [field]
+        [field, firstFilterValue, secondFilterValue]
     );
 
     const onFieldFilterTypeChange = useCallback(
@@ -87,7 +85,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             setActiveFilterType(activeFilterType);
             setFirstFilterValue(undefined);
             setSecondFilterValue(undefined);
-            updateFilter(activeFilterType, undefined, undefined, undefined, undefined, true);
+            updateFilter(activeFilterType, undefined, undefined, true);
         },
         [fieldFilterOptions]
     );
@@ -96,9 +94,9 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         (event: any) => {
             const newValue = event.target.value;
             setFirstFilterValue(newValue); // boolean columns don't support between operators
-            updateFilter(activeFilterType, firstFilterValue, secondFilterValue, newValue, false);
+            updateFilter(activeFilterType, newValue, false);
         },
-        [activeFilterType]
+        [activeFilterType, firstFilterValue, secondFilterValue] // updateFilter has deps on firstFilterValue & secondFilterValue
     );
 
     const updateTextFilterFieldValue = useCallback(
@@ -107,9 +105,9 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const isSecondInput = event.target.name.endsWith('-second');
             if (isSecondInput) setSecondFilterValue(newValue);
             else setFirstFilterValue(newValue);
-            updateFilter(activeFilterType, firstFilterValue, secondFilterValue, newValue, isSecondInput);
+            updateFilter(activeFilterType, newValue, isSecondInput);
         },
-        [activeFilterType]
+        [activeFilterType, firstFilterValue, secondFilterValue] // updateFilter has deps on firstFilterValue & secondFilterValue
     );
 
     const updateDateFilterFieldValue = useCallback(
@@ -117,13 +115,13 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const newDate = newValue ? formatDate(newValue) : null;
             if (isSecondInput) setSecondFilterValue(newDate);
             else setFirstFilterValue(newDate);
-            updateFilter(activeFilterType, firstFilterValue, secondFilterValue, newDate, isSecondInput);
+            updateFilter(activeFilterType, newDate, isSecondInput);
         },
-        [activeFilterType]
+        [activeFilterType, firstFilterValue, secondFilterValue] // updateFilter has deps on firstFilterValue & secondFilterValue
     );
 
     const renderFilterInput = useCallback(
-        (firstFilterValue, secondFilterValue, isSecondInput?: boolean) => {
+        (isSecondInput?: boolean) => {
             if (!activeFilterType || !activeFilterType.valueRequired) return null;
 
             const suffix = isSecondInput ? '-second' : '';
@@ -199,7 +197,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 />
             );
         },
-        [field, activeFilterType]
+        [field, activeFilterType, firstFilterValue, secondFilterValue]
     );
 
     const renderFilterTypeInputs = useCallback(() => {
@@ -207,13 +205,13 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
         const isBetweenOperator = activeFilterType.betweenOperator;
 
-        if (!isBetweenOperator) return renderFilterInput(firstFilterValue, secondFilterValue);
+        if (!isBetweenOperator) return renderFilterInput();
 
         return (
             <>
-                {renderFilterInput(firstFilterValue, secondFilterValue)}
+                {renderFilterInput()}
                 <div className="search-filter__and-op">and</div>
-                {renderFilterInput(firstFilterValue, secondFilterValue, true)}
+                {renderFilterInput(true)}
             </>
         );
     }, [field, activeFilterType, firstFilterValue, secondFilterValue]);

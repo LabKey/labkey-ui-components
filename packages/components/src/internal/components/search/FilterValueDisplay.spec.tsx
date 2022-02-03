@@ -73,7 +73,7 @@ describe('FilterValueDisplay', () => {
         wrapper.unmount();
     });
 
-    test('value list, longer than 5', () => {
+    test('value list, longer than 5, exclusion', () => {
         const wrapper = mount(
             <FilterValueDisplay
                 filter={Filter.create(

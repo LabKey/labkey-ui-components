@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Updates to EntityFieldFilterModal, FilterCards and SampleFinderSection to wire up filtering
     * Added FilterExpressionView.tsx and FilterFacetedSelector to support filtering
 
+### version 2.127.0
+*Released*: 3 February 2022
+* Remove `FieldEditorOverlay` component
+* Add simple action for doing update rows on a single field (callback helper for `EditInlineField`).
+
 ### version 2.126.0
 *Released*: 1 February 2022
 * Item 9888: Sample status help tip display of configured statuses and descriptions

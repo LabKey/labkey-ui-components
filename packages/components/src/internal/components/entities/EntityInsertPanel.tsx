@@ -106,6 +106,8 @@ import {
     EntityParentTypeSelectors,
     removeEntityParentType,
 } from './EntityParentTypeSelectors';
+import { incrementClientSideMetricCount } from '../../actions';
+import { ENTITY_CREATION_METRIC } from './constants';
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
@@ -707,7 +709,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     insertRowsFromGrid = async (): Promise<void> => {
         const { insertModel, creationType } = this.state;
-        const { entityDataType } = this.props;
+        const { entityDataType, nounPlural } = this.props;
         const queryGridModel = this.getQueryGridModel();
         const editorModel = getEditorModel(queryGridModel.getId());
         const errors = editorModel.getValidationErrors(queryGridModel, entityDataType.uniqueFieldKey);
@@ -734,6 +736,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             this.setSubmitting(false);
 
             if (response?.rows) {
+                await incrementClientSideMetricCount(ENTITY_CREATION_METRIC, nounPlural + 'CreationFromGrid');
                 this.props.onDataChange?.(false);
                 this.props.afterEntityCreation?.(
                     insertModel.getTargetEntityTypeLabel(),
@@ -1069,6 +1072,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
             this.setSubmitting(false);
             onDataChange?.(false);
+
+            await incrementClientSideMetricCount(ENTITY_CREATION_METRIC, nounPlural + 'FileImport' + (isMerge ? 'WithMerge' : ''));
+
             if (useAsync) {
                 onBackgroundJobStart?.(insertModel.getTargetEntityTypeLabel(), file.name, response.jobId);
             } else {

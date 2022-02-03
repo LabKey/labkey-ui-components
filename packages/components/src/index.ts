@@ -178,6 +178,7 @@ import {
 import {
     deleteRows,
     getContainerFilter,
+    getContainerFilterForInsert,
     getQueryDetails,
     importData,
     InsertFormats,
@@ -259,6 +260,7 @@ import {
     handleInputTab,
     handleTabKeyOnTextArea,
     useUsersWithPermissions,
+    updateRowFieldValue,
 } from './internal/components/forms/actions';
 import { FormStep, FormTabs, withFormSteps } from './internal/components/forms/FormStep';
 import { GridAliquotViewSelector } from './internal/components/gridbar/GridAliquotViewSelector';
@@ -376,6 +378,7 @@ import {
     getLineageFilterValue,
     invalidateLineageResults,
 } from './internal/components/lineage/actions';
+import { withLineage } from './internal/components/lineage/withLineage';
 import { DEFAULT_LINEAGE_DISTANCE } from './internal/components/lineage/constants';
 import {
     LINEAGE_DIRECTIONS,
@@ -660,7 +663,6 @@ import {
 import { Key, useEnterEscape } from './public/useEnterEscape';
 import { DateInput } from './internal/components/DateInput';
 import { EditInlineField } from './internal/components/EditInlineField';
-import { updateRowFieldValue } from './internal/components/forms/actions';
 import { FileAttachmentArea } from './internal/components/files/FileAttachmentArea';
 import { UserAvatar, UserAvatars } from './internal/components/UserAvatars';
 import { AnnouncementRenderType } from './internal/announcements/model';
@@ -779,6 +781,7 @@ export {
     initQueryGridState,
     initNotificationsState,
     getContainerFilter,
+    getContainerFilterForInsert,
     getStateQueryGridModel,
     getStateModelId,
     getQueryGridModel,
@@ -1100,6 +1103,7 @@ export {
     invalidateLineageResults,
     getImmediateChildLineageFilterValue,
     getLineageFilterValue,
+    withLineage,
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,
@@ -1460,3 +1464,4 @@ export type { ContainerUser, UseContainerUser } from './internal/components/cont
 export type { PageDetailHeaderProps } from './internal/components/forms/PageDetailHeader';
 export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
+export type { InjectedLineage } from './internal/components/lineage/withLineage';

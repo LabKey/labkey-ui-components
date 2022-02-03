@@ -1,12 +1,14 @@
 // Consider having this implement Query.QueryColumn from @labkey/api
 // commented out attributes are not used in app
 import { Record } from 'immutable';
+import { Query } from '@labkey/api';
 
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
 
 import { SchemaQuery } from './SchemaQuery';
 
 export class QueryLookup extends Record({
+    containerFilter: undefined,
     containerPath: undefined,
     displayColumn: undefined,
     isPublic: false,
@@ -18,6 +20,7 @@ export class QueryLookup extends Record({
     schemaQuery: undefined,
     table: undefined,
 }) {
+    declare containerFilter: Query.ContainerFilter;
     declare containerPath: string;
     declare displayColumn: string;
     declare isPublic: boolean;

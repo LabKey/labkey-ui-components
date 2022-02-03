@@ -232,6 +232,10 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
             columnMetadata.detailRenderer = Renderers.applyDetailRenderer(columnMetadata, rawColumn, metadata);
             columnMetadata.inputRenderer = Renderers.applyInputRenderer(columnMetadata, rawColumn, metadata);
             columnMetadata.helpTipRenderer = Renderers.applyHelpTipRenderer(columnMetadata, rawColumn, metadata);
+
+            if (columnMetadata.lookup) {
+                columnMetadata.lookup = Object.assign({}, rawColumn.lookup, columnMetadata.lookup);
+            }
         }
     }
 
@@ -396,7 +400,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                     requiredVersion: 17.1,
                     sql: userConfig.sql,
                     saveInSession: userConfig.saveInSession === true,
-                    containerFilter: userConfig.containerFilter ?? getContainerFilter(),
+                    containerFilter: userConfig.containerFilter ?? getContainerFilter(userConfig.containerPath),
                     success: json => {
                         result = handleSelectRowsResponse(json);
                         schemaQuery = SchemaQuery.create(userConfig.schemaName, json.queryName);
@@ -429,7 +433,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                     method: 'POST',
                     // put on this another parameter!
                     columns: userConfig.columns ? userConfig.columns : '*',
-                    containerFilter: userConfig.containerFilter ?? getContainerFilter(),
+                    containerFilter: userConfig.containerFilter ?? getContainerFilter(userConfig.containerPath),
                     success: json => {
                         result = handleSelectRowsResponse(json);
                         hasResults = true;
@@ -643,13 +647,11 @@ export class InsertRowsErrorResponse extends ImmutableRecord({
     }
 }
 
-export interface InsertRowsOptions {
+export interface InsertRowsOptions
+    extends Omit<Query.QueryRequestOptions, 'apiVersion' | 'schemaName' | 'queryName' | 'rows'> {
     fillEmptyFields?: boolean;
     rows: List<any>;
     schemaQuery: SchemaQuery;
-    auditBehavior?: AuditBehaviorTypes;
-    auditUserComment?: string;
-    form?: FormData;
 }
 
 export class InsertRowsResponse extends ImmutableRecord({
@@ -681,18 +683,16 @@ export class InsertRowsResponse extends ImmutableRecord({
 
 export function insertRows(options: InsertRowsOptions): Promise<InsertRowsResponse> {
     return new Promise((resolve, reject) => {
-        const { fillEmptyFields, rows, schemaQuery, auditBehavior, auditUserComment } = options;
+        const { fillEmptyFields, rows, schemaQuery, ...insertRowsOptions } = options;
         const _rows = fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows;
 
         Query.insertRows({
+            autoFormFileData: true,
+            ...insertRowsOptions,
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             rows: _rows.toArray(),
-            auditBehavior,
-            auditUserComment,
             apiVersion: 13.2,
-            form: options.form,
-            autoFormFileData: true,
             success: (response, request) => {
                 if (processRequest(response, request, reject)) return;
 
@@ -756,26 +756,24 @@ function ensureNullForUndefined(row: Map<string, any>): Map<string, any> {
     return row.reduce((map, v, k) => map.set(k, v === undefined ? null : v), Map<string, any>());
 }
 
-interface IUpdateRowsOptions {
-    containerPath?: string;
+interface UpdateRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {
     schemaQuery: SchemaQuery;
-    rows: any[];
-    auditBehavior?: AuditBehaviorTypes;
-    auditUserComment?: string;
-    form?: FormData;
 }
 
-export function updateRows(options: IUpdateRowsOptions): Promise<any> {
+interface UpdateRowsResponse {
+    rows: any[];
+    schemaQuery: SchemaQuery;
+    transactionAuditId?: number;
+}
+
+export function updateRows(options: UpdateRowsOptions): Promise<UpdateRowsResponse> {
     return new Promise((resolve, reject) => {
+        const { schemaQuery, ...updateRowOptions } = options;
         Query.updateRows({
-            containerPath: options.containerPath,
-            schemaName: options.schemaQuery.schemaName,
-            queryName: options.schemaQuery.queryName,
-            rows: options.rows,
-            auditBehavior: options.auditBehavior,
-            auditUserComment: options.auditUserComment,
-            form: options.form,
             autoFormFileData: true,
+            ...updateRowOptions,
+            queryName: schemaQuery.queryName,
+            schemaName: schemaQuery.schemaName,
             success: (response, request) => {
                 if (processRequest(response, request, reject)) return;
 
@@ -783,7 +781,7 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
                     Object.assign(
                         {},
                         {
-                            schemaQuery: options.schemaQuery,
+                            schemaQuery,
                             rows: response.rows,
                             transactionAuditId: response.transactionAuditId,
                         }
@@ -796,7 +794,7 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
                     Object.assign(
                         {},
                         {
-                            schemaQuery: options.schemaQuery,
+                            schemaQuery,
                         },
                         error
                     )
@@ -806,22 +804,18 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
     });
 }
 
-interface DeleteRowsOptions {
+interface DeleteRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {
     schemaQuery: SchemaQuery;
-    rows: any[];
-    auditBehavior?: AuditBehaviorTypes;
-    auditUserComment?: string;
 }
 
 export function deleteRows(options: DeleteRowsOptions): Promise<any> {
     return new Promise((resolve, reject) => {
+        const { schemaQuery, ...deleteRowsOptions } = options;
         Query.deleteRows({
-            schemaName: options.schemaQuery.schemaName,
-            queryName: options.schemaQuery.queryName,
-            rows: options.rows,
-            auditBehavior: options.auditBehavior,
-            auditUserComment: options.auditUserComment,
             apiVersion: 13.2,
+            ...deleteRowsOptions,
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
             success: response => {
                 resolve(
                     Object.assign(
@@ -909,19 +903,38 @@ export function processRequest(response: any, request: any, reject: (reason?: an
  * provided by `@labkey/components`.
  * @private
  */
-export function getContainerFilter(): Query.ContainerFilter {
+export function getContainerFilter(containerPath?: string): Query.ContainerFilter {
     // Check experimental flag to see if cross-folder data support is enabled.
     if (!isSubfolderDataEnabled()) {
         return undefined;
     }
 
+    const path = containerPath ?? getServerContext().container.path;
+    const isProject = path.split('/').filter(p => !!p).length === 1;
+
     // When requesting data from a top-level folder context the ContainerFilter filters
     // "down" the folder hierarchy for data.
-    if (getServerContext().container.parentPath === '/') {
+    if (isProject) {
         return Query.ContainerFilter.currentAndSubfoldersPlusShared;
     }
 
     // When requesting data from a sub-folder context the ContainerFilter filters
     // "up" the folder hierarchy for data.
+    return Query.ContainerFilter.currentPlusProjectAndShared;
+}
+
+/**
+ * Provides the default ContainerFilter to utilize when requesting data for insert cross-folder.
+ * This ContainerFilter must be explicitly applied to be respected.
+ * @private
+ */
+export function getContainerFilterForInsert(): Query.ContainerFilter {
+    // Check experimental flag to see if cross-folder data support is enabled.
+    if (!isSubfolderDataEnabled()) {
+        return undefined;
+    }
+
+    // When inserting data from a top-level folder or a sub-folder context
+    // the ContainerFilter filters "up" the folder hierarchy for data.
     return Query.ContainerFilter.currentPlusProjectAndShared;
 }

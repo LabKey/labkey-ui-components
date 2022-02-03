@@ -1,20 +1,38 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
+import { Map } from 'immutable';
 
-import { generateId, QueryColumn, SelectInput } from '../../../..';
+import { caseInsensitive, generateId, QueryColumn, SelectInput } from '../../../..';
 
 interface Props {
     allowDisable?: boolean;
     col: QueryColumn;
+    data?: any;
     isDetailInput?: boolean;
-    initiallyDisabled: boolean;
+    initiallyDisabled?: boolean;
     onToggleDisable?: (disabled: boolean) => void;
-    value?: string | Array<Record<string, any>>;
 }
 
 export const AliasInput: FC<Props> = memo(props => {
-    const { allowDisable, col, isDetailInput, initiallyDisabled, onToggleDisable, value } = props;
+    const { allowDisable, col, data, isDetailInput, initiallyDisabled, onToggleDisable } = props;
     const id = useMemo(() => generateId(), []);
     const promptTextCreator = useCallback((text: string) => `Create alias "${text}"`, []);
+
+    // AliasInput supplies its own formValue resolution
+    // - The value is mapped from the "label"
+    // - When empty the server expects an empty Array and not undefined/null
+    const resolveFormValue = useCallback(options => options?.map(o => o.label) ?? [], []);
+
+    const value: string[] = useMemo(() => {
+        const row = Map.isMap(data) ? data.toJS() : data;
+        return caseInsensitive(row, col.fieldKey)
+            ?.map(a => {
+                if (!a) return a;
+                if (typeof a === 'string') return a;
+                if (typeof a === 'object') return a.displayValue;
+                return undefined;
+            })
+            .filter(a => !!a);
+    }, [col, data]);
 
     return (
         <SelectInput
@@ -33,6 +51,7 @@ export const AliasInput: FC<Props> = memo(props => {
             placeholder="Enter alias name(s)"
             promptTextCreator={promptTextCreator}
             required={col.required}
+            resolveFormValue={resolveFormValue}
             saveOnBlur
             showLabel
             value={value}

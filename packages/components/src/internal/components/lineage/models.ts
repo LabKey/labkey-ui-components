@@ -252,7 +252,8 @@ export class LineageNode
         listURL: undefined,
         meta: undefined,
     })
-    implements LineageNodeConfig {
+    implements LineageNodeConfig
+{
     declare absolutePath: string;
     declare children: List<LineageLink>;
     declare container: string;
@@ -494,7 +495,7 @@ export interface ILineage {
     error?: string;
     result: LineageResult;
     resultLoadingState?: LoadingState;
-    sampleStats: any;
+    sampleStats: List<Map<string, any>>;
     seed: string;
     seedResult: LineageResult;
     seedResultError?: string;
@@ -507,7 +508,7 @@ export class Lineage implements ILineage {
     readonly error?: string;
     readonly result: LineageResult;
     readonly resultLoadingState: LoadingState = LoadingState.INITIALIZED;
-    readonly sampleStats: any;
+    readonly sampleStats: List<Map<string, any>>;
     readonly seed: string;
     readonly seedResult: LineageResult;
     readonly seedResultError?: string;

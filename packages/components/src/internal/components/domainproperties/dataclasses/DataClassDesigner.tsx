@@ -7,7 +7,7 @@ import { Domain } from '@labkey/api';
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, loadNameExpressionOptions, resolveErrorMessage } from '../../../..';
 import { DomainDesign, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
-import { getDomainPanelStatus, saveDomain, validateDomainNameExpressions } from '../actions';
+import { getDomainPanelStatus, saveDomain } from '../actions';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
 import { isSampleManagerEnabled } from '../../../app/utils';
@@ -41,7 +41,9 @@ interface Props {
     testMode?: boolean;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
-    loadNameExpressionOptions?: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
+    loadNameExpressionOptions?: (
+        containerPath?: string
+    ) => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
     validateNameExpressions?: boolean;
     showGenIdBanner?: boolean;
 }
@@ -79,7 +81,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
 
     componentDidMount = async (): Promise<void> => {
         if (this.state.model.isNew && isSampleManagerEnabled()) {
-            const response = await this.props.loadNameExpressionOptions();
+            const response = await this.props.loadNameExpressionOptions(this.state.model.containerPath);
 
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -114,65 +116,60 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }
     };
 
-    finishSave = () => {
-        const { setSubmitting } = this.props;
+    saveDomain = async (hasConfirmedNameExpression?: boolean): Promise<void> => {
+        const { api, beforeFinish, onComplete, setSubmitting, validateNameExpressions } = this.props;
         const { model } = this.state;
 
-        saveDomain(model.domain, Domain.KINDS.DATA_CLASS, model.options, model.name)
-            .then(response => {
-                setSubmitting(false, () => {
-                    this.saveModel({ domain: response, exception: undefined }, () => {
-                        this.props.onComplete(this.state.model);
+        beforeFinish?.(model);
+
+        if (validateNameExpressions && !hasConfirmedNameExpression) {
+            try {
+                const response = await api.domain.validateDomainNameExpressions(
+                    model.domain,
+                    Domain.KINDS.DATA_CLASS,
+                    model.options,
+                    true
+                );
+
+                if (response.errors?.length > 0 || response.warnings?.length > 0) {
+                    setSubmitting(false, () => {
+                        this.saveModel({ exception: response.errors?.join('\n') });
+                        this.setState({
+                            nameExpressionWarnings: response.warnings,
+                            namePreviews: response.previews,
+                        });
                     });
-                });
-            })
-            .catch(response => {
-                const exception = resolveErrorMessage(response);
+                    return;
+                }
+            } catch (e) {
+                const exception = resolveErrorMessage(e);
 
                 setSubmitting(false, () => {
-                    if (exception) {
-                        this.saveModel({ exception });
-                    } else {
-                        this.saveModel({ domain: response, exception: undefined });
-                    }
+                    this.saveModel({ exception });
+                });
+                return;
+            }
+        }
+
+        try {
+            const savedDomain = await saveDomain(model.domain, Domain.KINDS.DATA_CLASS, model.options, model.name);
+
+            setSubmitting(false, () => {
+                this.saveModel({ domain: savedDomain, exception: undefined }, () => {
+                    onComplete(this.state.model);
                 });
             });
-    };
+        } catch (error) {
+            const exception = resolveErrorMessage(error);
 
-    saveDomain = (hasConfirmedNameExpression?: boolean): void => {
-        const { setSubmitting, beforeFinish, api } = this.props;
-        const { model } = this.state;
-
-        if (beforeFinish) {
-            beforeFinish(model);
+            setSubmitting(false, () => {
+                if (exception) {
+                    this.saveModel({ exception });
+                } else {
+                    this.saveModel({ domain: error, exception: undefined });
+                }
+            });
         }
-
-        if (this.props.validateNameExpressions && !hasConfirmedNameExpression) {
-            api.domain
-                .validateDomainNameExpressions(model.domain, Domain.KINDS.DATA_CLASS, model.options, true)
-                .then(response => {
-                    if (response.errors?.length > 0 || response.warnings?.length > 0) {
-                        setSubmitting(false, () => {
-                            this.saveModel({ exception: response.errors?.join('\n') });
-                            this.setState({
-                                nameExpressionWarnings: response.warnings,
-                                namePreviews: response.previews,
-                            });
-                        });
-                    } else this.finishSave();
-                })
-                .catch(response => {
-                    const exception = resolveErrorMessage(response);
-
-                    setSubmitting(false, () => {
-                        this.saveModel({ exception });
-                    });
-                });
-        }
-
-        if (this.props.validateNameExpressions && !hasConfirmedNameExpression) return;
-
-        this.finishSave();
     };
 
     saveModel = (modelOrProps: DataClassModel | Partial<DataClassModelConfig>, callback?: () => void): void => {
@@ -193,8 +190,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
 
         this.saveModel({ domain }, () => {
             // Issue 39918: use the dirty property that DomainForm onChange passes
-            if (onChange && dirty) {
-                onChange(this.state.model);
+            if (dirty) {
+                onChange?.(this.state.model);
             }
         });
     };
@@ -203,9 +200,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         const { onChange } = this.props;
 
         this.saveModel(model, () => {
-            if (onChange) {
-                onChange(this.state.model);
-            }
+            onChange?.(this.state.model);
         });
     };
 
@@ -317,6 +312,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     nameExpressionGenIdProps={
                         showGenIdBanner
                             ? {
+                                  containerPath: model.containerPath,
                                   dataTypeName: model.name,
                                   rowId: model.rowId,
                                   kindName: 'DataClass',

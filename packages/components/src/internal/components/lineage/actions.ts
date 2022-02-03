@@ -7,7 +7,17 @@ import { Draft, produce } from 'immer';
 import { fromJS, Map, OrderedSet } from 'immutable';
 import { Experiment, Filter, getServerContext, Query } from '@labkey/api';
 
-import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../../..';
+import {
+    App,
+    AppURL,
+    caseInsensitive,
+    ISelectRowsResult,
+    Location,
+    naturalSort,
+    SchemaQuery,
+    SCHEMAS,
+    selectRows,
+} from '../../..';
 
 import {
     Lineage,
@@ -111,8 +121,8 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
 
 function applyLineageMetadata(
     lineage: LineageResult,
-    metadata: { [lsid: string]: LineageNodeMetadata },
-    iconURLByLsid: { [lsid: string]: string },
+    metadata: Record<string /* LSID */, LineageNodeMetadata>,
+    iconURLByLsid: Record<string /* LSID */, string>,
     options?: LineageOptions
 ): LineageResult {
     const urlResolver = getURLResolver(options);
@@ -142,7 +152,7 @@ function applyLineageMetadata(
 
 function applyItemMetadata(
     item: LineageItemWithIOMetadata,
-    iconURLByLsid: { [lsid: string]: string },
+    iconURLByLsid: Record<string /* LSID */, string>,
     urlResolver: LineageURLResolver,
     isSeed = false
 ): Partial<LineageItemWithIOMetadata> {
@@ -155,7 +165,7 @@ function applyItemMetadata(
 
 function applyLineageIOMetadata(
     item: LineageIOWithMetadata,
-    iconURLByLsid: { [lsid: string]: string },
+    iconURLByLsid: Record<string /* LSID */, string>,
     urlResolver: LineageURLResolver
 ): LineageIOWithMetadata {
     const _applyItem = produce((draft: Draft<LineageItemWithMetadata>) => {
@@ -173,37 +183,27 @@ function applyLineageIOMetadata(
     };
 }
 
-export function processLineageResult(lineage: LineageResult, options?: LineageOptions): Promise<LineageResult> {
-    return new Promise((resolve, reject) => {
-        return Promise.all(fetchNodeMetadata(lineage))
-            .then(results => {
-                const iconURLByLsid = {};
-                const metadata = {};
-                results.forEach(result => {
-                    const queryInfo = result.queries[result.key];
-                    const model = fromJS(result.models[result.key]);
-                    model.forEach(data => {
-                        const lsid = data.getIn(['LSID', 'value']);
-                        iconURLByLsid[lsid] = queryInfo.iconURL;
-                        metadata[lsid] = LineageNodeMetadata.create(data, queryInfo);
-                    });
-                });
+export async function processLineageResult(lineage: LineageResult, options?: LineageOptions): Promise<LineageResult> {
+    const iconURLByLsid = {};
+    const metadata = {};
 
-                return applyLineageMetadata(lineage, metadata, iconURLByLsid, options);
-            })
-            .then(
-                result => {
-                    resolve(result);
-                },
-                reason => {
-                    reject(reason);
-                }
-            );
+    const results = await Promise.all(fetchNodeMetadata(lineage));
+
+    results.forEach(result => {
+        const queryInfo = result.queries[result.key];
+        const model = fromJS(result.models[result.key]);
+        model.forEach(data => {
+            const lsid = data.getIn(['LSID', 'value']);
+            iconURLByLsid[lsid] = queryInfo.iconURL;
+            metadata[lsid] = LineageNodeMetadata.create(data, queryInfo);
+        });
     });
+
+    return applyLineageMetadata(lineage, metadata, iconURLByLsid, options);
 }
 
-let lineageResultCache: { [key: string]: Promise<LineageResult> } = {};
-let lineageSeedCache: { [key: string]: Promise<LineageResult> } = {};
+let lineageResultCache: Record<string, Promise<LineageResult>> = {};
+let lineageSeedCache: Record<string, Promise<LineageResult>> = {};
 
 export function invalidateLineageResults(): void {
     lineageResultCache = {};
@@ -284,54 +284,45 @@ export function loadSeedResult(seed: string, container?: string, options?: Linea
 }
 
 // TODO add jest test coverage for this function
-function computeSampleCounts(lineageResult: LineageResult, sampleSets: any): any {
+function computeSampleCounts(lineageResult: LineageResult, sampleSets: ISelectRowsResult): any {
     const { key, models } = sampleSets;
+    const { nodes, seed } = lineageResult;
 
-    const rows = [];
     const nodeIds = {};
+    const seedNode = nodes.get(seed);
 
-    lineageResult.nodes.forEach(node => {
-        if (node.lsid && node.cpasType) {
-            const key = node.cpasType;
-
-            if (!nodeIds[key]) {
-                nodeIds[key] = [];
+    nodes.forEach(({ cpasType, id, lsid }) => {
+        if (lsid && cpasType) {
+            if (!nodeIds[cpasType]) {
+                nodeIds[cpasType] = [];
             }
 
-            nodeIds[key].push(node.id);
+            nodeIds[cpasType].push(id);
         }
     });
 
-    for (const row in models[key]) {
-        if (models[key].hasOwnProperty(row)) {
-            const _row = models[key][row];
+    const rows = Object.values(models[key]).map(row => {
+        const name = caseInsensitive(row, 'Name').value;
+        const cpasType = caseInsensitive(row, 'LSID').value;
+        const count = nodeIds[cpasType]?.length ?? 0;
 
-            let count = 0,
-                filteredURL;
-            const name = _row['Name'].value,
-                ids = nodeIds[_row['LSID'].value];
+        return {
+            name: {
+                url: AppURL.create(App.SAMPLES_KEY, name).toHref(),
+                value: name,
+            },
+            sampleCount: {
+                url:
+                    count > 0
+                        ? AppURL.create('rd', 'expdata', seedNode.id, 'samples').addParam('tab', name).toHref()
+                        : undefined,
+                value: count,
+            },
+            modified: count > 0 ? caseInsensitive(row, 'Modified') : undefined,
+        };
+    });
 
-            // if there were related samples, use the array of RowIds as a count and to build an AppURL and filter
-            if (ids) {
-                count = ids.length;
-
-                filteredURL = AppURL.create('samples', name)
-                    .addFilters(Filter.create('RowId', ids, Filter.Types.IN))
-                    .toHref();
-            }
-
-            rows.push({
-                name: {
-                    value: _row['Name'].value,
-                    url: filteredURL,
-                },
-                sampleCount: {
-                    value: count,
-                },
-                modified: count > 0 ? _row['Modified'] : undefined,
-            });
-        }
-    }
+    rows.sort((rowA, rowB) => naturalSort(rowA.name.value, rowB.name.value));
 
     return fromJS(rows);
 }

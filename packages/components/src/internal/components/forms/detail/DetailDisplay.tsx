@@ -1,6 +1,7 @@
 import React, { FC, memo, ReactNode, useMemo } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Panel } from 'react-bootstrap';
+import { Query } from '@labkey/api';
 
 import { DefaultRenderer, LabelHelpTip, QueryColumn } from '../../../..';
 
@@ -17,6 +18,10 @@ import {
 export type Renderer = (data: any, row?: any) => ReactNode;
 
 export interface RenderOptions {
+    /** A container filter that will be applied to all query-based inputs in this form */
+    containerFilter?: Query.ContainerFilter;
+    /** A container path that will be applied to all query-based inputs on this form */
+    containerPath?: string;
     useDatePicker?: boolean;
 }
 
@@ -101,6 +106,8 @@ interface DetailDisplayProps extends DetailDisplaySharedProps {
 export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
     const {
         asPanel,
+        containerFilter,
+        containerPath,
         data,
         displayColumns,
         editingMode,
@@ -130,7 +137,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
             displayColumns,
             detailRenderer,
             titleRenderer,
-            { useDatePicker },
+            { containerFilter, containerPath, useDatePicker },
             fileInputRenderer,
             onAdditionalFormDataChange
         );

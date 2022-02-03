@@ -1,6 +1,29 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.129.0
+*Released*: 3 February 2022
+* **AliasInput**
+    * Refactor `AliasInput` "value" processing to match what is expected. This fixes several bugs with how this component displays and persists state.
+    * Add unit tests.
+* **Data Classes**
+    * Support cross-folder domain editing for Data Classes.
+* **Details**
+    * Support `containerFilter` and `containerPath` for `Detail`, `DetailPanel`, `DetailEditRenderer`, and `EditableDetailPanel`.
+* **Lineage**
+    * Export `withLineage` and `InjectedLineage` for external use.
+    * Refactor how `sampleStats` are processed.
+* **Query APIs**
+    * Improve typings for `insertRows`, `deleteRows`, and `selectRows` to reduce duplication with `@labkey/api` and provide passthrough of all configuration options.
+    * Update `getContainerFilter` to process the `containerPath` provided to query configurations if provided.
+    * Introduce `getContainerFilterForInsert`. Supplies the container filter to be used when fetching data intended for insert.
+* **QuerySelect**
+    * Ensure all queries made by `QuerySelect` specify the same set of columns.
+    * Simplify and centralize `QuerySelectModel` initialization.
+    * Support specifying `containerFilter` on `QuerySelect`.
+* **SelectInput**
+    * Introduce `resolveFormValue` for component users to override how the input processes the selected options into a form value.
+
 ### version 2.128.0
 *Released*: 3 February 2022
 * Item 9815: Sample Finder v1 - Filter dialog field expression filters

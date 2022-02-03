@@ -432,14 +432,13 @@ export function useUsersWithPermissions(
 }
 
 export function updateRowFieldValue(model: QueryModel, name: string, value: any): Promise<any> {
-    const options: any = {
+    return updateRows({
         schemaQuery: model.schemaQuery,
         rows: [
             {
-                rowId: caseInsensitive(model.getRow(), 'rowId')?.value,
+                rowId: model.getRowValue('rowId'),
                 [name]: value,
             },
         ],
-    };
-    return updateRows(options);
+    });
 }

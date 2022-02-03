@@ -252,7 +252,8 @@ export class LineageNode
         listURL: undefined,
         meta: undefined,
     })
-    implements LineageNodeConfig {
+    implements LineageNodeConfig
+{
     declare absolutePath: string;
     declare children: List<LineageLink>;
     declare container: string;

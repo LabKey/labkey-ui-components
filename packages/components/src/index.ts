@@ -260,6 +260,7 @@ import {
     handleInputTab,
     handleTabKeyOnTextArea,
     useUsersWithPermissions,
+    updateRowFieldValue,
 } from './internal/components/forms/actions';
 import { FormStep, FormTabs, withFormSteps } from './internal/components/forms/FormStep';
 import { GridAliquotViewSelector } from './internal/components/gridbar/GridAliquotViewSelector';
@@ -662,7 +663,6 @@ import {
 import { Key, useEnterEscape } from './public/useEnterEscape';
 import { DateInput } from './internal/components/DateInput';
 import { EditInlineField } from './internal/components/EditInlineField';
-import { updateRowFieldValue } from './internal/components/forms/actions';
 import { FileAttachmentArea } from './internal/components/files/FileAttachmentArea';
 import { UserAvatar, UserAvatars } from './internal/components/UserAvatars';
 import { AnnouncementRenderType } from './internal/announcements/model';

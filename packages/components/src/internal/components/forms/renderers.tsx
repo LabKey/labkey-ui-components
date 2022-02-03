@@ -108,7 +108,7 @@ const SampleStatusInputRenderer: InputRenderer = (
     onAdditionalFormDataChange?: (name: string, value: any) => any,
     inputClass?: string,
     containerPath?: string,
-    containerFilter?: Query.ContainerFilter,
+    containerFilter?: Query.ContainerFilter
 ) => {
     return (
         <SampleStatusInput

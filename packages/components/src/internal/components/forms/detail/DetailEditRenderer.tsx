@@ -92,7 +92,7 @@ export function resolveDetailEditRenderer(
                     onAdditionalFormDataChange,
                     'col-sm-12',
                     options?.containerPath,
-                    options?.containerFilter,
+                    options?.containerFilter
                 );
             }
 

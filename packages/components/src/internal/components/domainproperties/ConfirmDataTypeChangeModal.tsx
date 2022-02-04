@@ -1,7 +1,7 @@
 import React, { FC, memo } from 'react';
 import { PropDescType } from "./PropDescType";
 import { ConfirmModal } from "../base/ConfirmModal";
-import { INT_RANGE_URI, MULTILINE_RANGE_URI } from "./constants";
+import { FILELINK_RANGE_URI, INT_RANGE_URI, MULTILINE_RANGE_URI } from "./constants";
 
 interface Props {
     originalRangeURI: string;
@@ -39,5 +39,6 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
 const getDataTypeConfirmDisplayText = (rangeURI: string): string => {
     if (rangeURI === INT_RANGE_URI) return 'Integer';
     if (rangeURI === MULTILINE_RANGE_URI) return 'String';
+    if (rangeURI === FILELINK_RANGE_URI) return 'File';
     return rangeURI.substring(rangeURI.indexOf('#') + 1);
 }

@@ -40,7 +40,7 @@ import {
     DOMAIN_FIELD_SELECTED,
     DOMAIN_FILTER_HASANYVALUE,
     FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO,
-    FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG,
+    FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG, FILE_CONVERT_URIS,
     INT_RANGE_URI,
     LONG_RANGE_URI,
     MAX_TEXT_LENGTH,
@@ -1339,8 +1339,11 @@ export function resolveAvailableTypes(
             // Can always return to the original type for field
             if (type.name === dataType.name) return true;
 
-            // Issue 44511: Allow all types to be converted to strings
-            if (STRING_CONVERT_URIS.indexOf(type.rangeURI) > -1 && !type.conceptURI) return true;
+            // Issue 44511: Allow all types to be converted to string
+            // Issue 44711: Don't allow Attachment or FileLink field types to be converted
+            if (STRING_CONVERT_URIS.indexOf(type.rangeURI) > -1 && !type.conceptURI && FILE_CONVERT_URIS.indexOf(rangeURI) === -1) {
+                return true;
+            }
 
             // Issue 44511: Allow integer/long -> decimal/double/float
             if (NUMBER_CONVERT_URIS.indexOf(type.rangeURI) > -1 && (rangeURI === INT_RANGE_URI || rangeURI === LONG_RANGE_URI)) {

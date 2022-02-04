@@ -39,19 +39,18 @@ import {
     DOMAIN_FIELD_PARTIALLY_LOCKED,
     DOMAIN_FIELD_SELECTED,
     DOMAIN_FILTER_HASANYVALUE,
-    DOUBLE_RANGE_URI,
     FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO,
     FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG,
-    FLOAT_RANGE_URI,
     INT_RANGE_URI,
     LONG_RANGE_URI,
     MAX_TEXT_LENGTH,
-    MULTILINE_RANGE_URI,
+    NUMBER_CONVERT_URIS,
     PHILEVEL_NOT_PHI,
     SAMPLE_TYPE_CONCEPT_URI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
+    STRING_CONVERT_URIS,
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
     UNLIMITED_TEXT_LENGTH,
@@ -1332,26 +1331,21 @@ export function resolveAvailableTypes(
     }
 
     // compare against original types as the field's values are volatile
-    const { rangeURI } = field.original;
+    const { rangeURI, dataType } = field.original;
 
     // field has been saved -- display eligible propTypes
     let filteredTypes = availableTypes
         .filter(type => {
             // Can always return to the original type for field
-            if (type.name === field.dataType.name) return true;
+            if (type.name === dataType.name) return true;
 
             // Issue 44511: Allow all types to be converted to strings
-            if ((type.rangeURI === STRING_RANGE_URI || type.rangeURI === MULTILINE_RANGE_URI) && !type.conceptURI)
-                return true;
+            if (STRING_CONVERT_URIS.indexOf(type.rangeURI) > -1 && !type.conceptURI) return true;
 
             // Issue 44511: Allow integer/long -> decimal/double/float
-            if (
-                (type.rangeURI === DOUBLE_RANGE_URI ||
-                    type.rangeURI === FLOAT_RANGE_URI ||
-                    type.rangeURI === DECIMAL_RANGE_URI) &&
-                (field.dataType.rangeURI === INT_RANGE_URI || field.dataType.rangeURI === LONG_RANGE_URI)
-            )
+            if (NUMBER_CONVERT_URIS.indexOf(type.rangeURI) > -1 && (rangeURI === INT_RANGE_URI || rangeURI === LONG_RANGE_URI)) {
                 return true;
+            }
 
             if (!acceptablePropertyType(type, rangeURI)) return false;
 

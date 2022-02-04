@@ -60,6 +60,10 @@ export class PropDescType
     declare lookupSchema?: string;
     declare lookupQuery?: string;
 
+    static fromName(name: string): PropDescType {
+        return PROP_DESC_TYPES.find(type => type.name === name);
+    }
+
     static isUser(name: string): boolean {
         return name === 'users';
     }

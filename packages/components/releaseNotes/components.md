@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD February 2022
+* Issue 44711: Field editor update to show confirm modal on change of data type for saved field
+  * when the field is changing from any non-string -> string OR int/long -> double/float/decimal
+
 ### version 2.129.0
 *Released*: 3 February 2022
 * **AliasInput**

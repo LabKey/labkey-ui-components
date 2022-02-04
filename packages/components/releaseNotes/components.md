@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 9992: Add ontology type ahead search to forms
+  * Split out `OntologySearchInput` from the existing `OntologyTreeSearchContainer`
+
 ### version 2.131.0
 *Released*: 8 February 2022
 * Issue 44711: Field editor update to show confirm modal on change of data type for saved field

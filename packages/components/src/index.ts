@@ -554,6 +554,7 @@ import { OntologyConceptPicker } from './internal/components/ontology/OntologyCo
 import { OntologyBrowserPage } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
+import { OntologySearchInput } from './internal/components/ontology/OntologyTreeSearchContainer'
 import { AppModel, LogoutReason } from './internal/app/models';
 import { Picklist } from './internal/components/picklist/models';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
@@ -1361,6 +1362,7 @@ export {
     OntologyConceptOverviewPanel,
     OntologyBrowserFilterPanel,
     OntologyConceptPicker,
+    OntologySearchInput,
     ConceptModel,
     // UserAvatars
     UserAvatar,

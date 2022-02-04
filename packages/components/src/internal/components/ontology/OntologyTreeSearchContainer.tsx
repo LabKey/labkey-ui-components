@@ -3,23 +3,75 @@ import React, { ChangeEvent, FC, memo, MouseEvent, useCallback, useEffect, useMe
 import { Alert, searchUsingIndex } from '../../..';
 
 import { ConceptModel, OntologyModel, PathModel } from './models';
-import { fetchAlternatePaths } from './actions';
+import { fetchAlternatePaths, getOntologyDetails } from './actions';
 
 const CONCEPT_CATEGORY = 'concept';
 const SEARCH_LIMIT = 20;
 
+interface OntologySearchInputProps {
+    ontologyId: string;
+    initCode?: string; //initial concept code
+    inputName: string;
+    className: string;
+    searchPathClickHandler: (code: string) => void;
+}
+
+export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
+    const {ontologyId, searchPathClickHandler, ...rest} = props;
+    const [ontologyModel, setOntologyModel] = useState<OntologyModel>();
+    const [error, setError] = useState<string>();
+
+    useEffect(() => {
+        if (ontologyId) {
+            getOntologyDetails(ontologyId)
+                .then((ontology: OntologyModel) => {
+                    setOntologyModel(ontology);
+                })
+                .catch(() => {
+                    setError('Error: unable to load ontology concept information for ' + ontologyId + '.');
+                    // setSelectedOntologyId(undefined);
+                });
+        } else {
+            setOntologyModel(undefined);
+        }
+    }, [ontologyId, setOntologyModel, setError]);
+
+    const onSearchClickHandler = useCallback((path: PathModel) => {
+        searchPathClickHandler(path.code)
+    }, [searchPathClickHandler]);
+
+    return (
+        <>
+            <Alert>{error}</Alert>
+            {ontologyModel && <OntologyTreeSearchContainer
+                {...rest}
+                ontology={ontologyModel}
+                searchPathClickHandler={onSearchClickHandler}
+            />}
+        </>
+    );
+});
+
 interface OntologyTreeSearchContainerProps {
     ontology: OntologyModel;
+    inputName?: string;
+    initCode?: string;
+    className?: string;
     searchPathClickHandler: (path: PathModel, isAlternatePath?: boolean) => void;
 }
 
 export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> = memo(props => {
-    const { ontology, searchPathClickHandler } = props;
+    const { ontology, searchPathClickHandler, inputName = "concept-search", className = "form-control", initCode = "" } = props;
     const [isFocused, setIsFocused] = useState<boolean>();
-    const [searchTerm, setSearchTerm] = useState<string>();
+    const [searchTerm, setSearchTerm] = useState<string>(initCode);
     const [searchHits, setSearchHits] = useState<ConceptModel[]>();
     const [totalHits, setTotalHits] = useState<number>();
     const [error, setError] = useState<string>();
+    const [showResults, setShowResults] = useState<boolean>(false);
+
+    useEffect(() => {
+        setSearchTerm(initCode);
+    }, [initCode, setSearchTerm]);
 
     const onSearchChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
@@ -82,8 +134,9 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
             if (codePaths?.length > 0) {
                 searchPathClickHandler(codePaths[0], true);
             }
+            setSearchTerm(code);
         },
-        [searchPathClickHandler]
+        [setSearchTerm, searchPathClickHandler]
     );
 
     // cancel form submit since we are just using the input for the search menu display
@@ -92,26 +145,39 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
         return false;
     }, []);
 
+    const keyHandler = useCallback((evt: React.KeyboardEvent<HTMLElement>) => {
+        switch (evt.key) {
+            case 'Escape':
+                setShowResults(false);
+                evt.stopPropagation();
+                evt.preventDefault();
+                return true;
+            default:
+                setShowResults(true);
+                return false;
+        }
+    }, [setShowResults]);
+
     return (
         <div className="concept-search-container">
-            <form autoComplete="off" onSubmit={onSubmit}>
                 <input
                     type="text"
-                    className="form-control"
-                    name="concept-search"
+                    className={className}
+                    name={inputName}
                     placeholder={'Search ' + ontology.abbreviation}
                     onChange={onSearchChange}
                     onFocus={onSearchFocus}
                     onBlur={onSearchBlur}
+                    onKeyUp={keyHandler}
+                    value={searchTerm}
                 />
-            </form>
-            <OntologySearchResultsMenu
+            {showResults && <OntologySearchResultsMenu
                 searchHits={searchHits}
                 totalHits={totalHits}
                 isFocused={isFocused}
                 error={error}
                 onItemClick={onItemClick}
-            />
+            />}
         </div>
     );
 });

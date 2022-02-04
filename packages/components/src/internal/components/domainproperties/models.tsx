@@ -1361,8 +1361,8 @@ export function resolveAvailableTypes(
         .toList();
 
     // Issue 39341: if the field type is coming from the server as a type we don't support in new field creation, add it to the list
-    if (!filteredTypes.contains(field.dataType)) {
-        filteredTypes = filteredTypes.push(field.dataType);
+    if (!filteredTypes.contains(dataType)) {
+        filteredTypes = filteredTypes.push(dataType);
     }
 
     return filteredTypes;

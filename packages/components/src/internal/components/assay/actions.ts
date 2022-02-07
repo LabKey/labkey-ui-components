@@ -41,6 +41,7 @@ export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
     'DataOutputs',
     'DataOutputs/DataFileUrl',
     'Batch',
+    'Folder',
     // Below Columns are required for us to render the WorkflowTask in EditableDetails components
     'WorkflowTask',
     'WorkflowTask/Run',
@@ -220,16 +221,19 @@ function collectFiles(source: Record<string, any>): FileMap {
 export function deleteAssayRuns(
     selectionKey?: string,
     rowId?: string,
-    cascadeDeleteReplacedRuns = false
+    cascadeDeleteReplacedRuns = false,
+    containerPath?: string
 ): Promise<any> {
     return new Promise((resolve, reject) => {
-        const params = selectionKey ? { dataRegionSelectionKey: selectionKey } : { singleObjectRowId: rowId };
-        params['cascade'] = cascadeDeleteReplacedRuns;
+        const jsonData: any = selectionKey ? { dataRegionSelectionKey: selectionKey } : { singleObjectRowId: rowId };
+        jsonData.cascade = cascadeDeleteReplacedRuns;
 
         return Ajax.request({
-            url: buildURL('experiment', 'deleteRuns.api'),
+            url: buildURL('experiment', 'deleteRuns.api', undefined, {
+                container: containerPath,
+            }),
             method: 'POST',
-            params,
+            jsonData,
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),

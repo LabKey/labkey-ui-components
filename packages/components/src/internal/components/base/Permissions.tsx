@@ -15,7 +15,7 @@
  */
 import React, { FC, useMemo } from 'react';
 
-import { hasPermissions, useServerContext } from '../../..';
+import { hasPermissions, User, useServerContext } from '../../..';
 
 interface Props {
     /** Indicates if user.isAdmin should override check */
@@ -30,15 +30,17 @@ interface Props {
     perms: string | string[];
 }
 
+interface ForUserProps extends Props {
+    user: User;
+}
+
 /**
  * This component is intended to be used to wrap other components which should only be displayed when the
  * user has specific permissions. Permissions are defined on the application user and can be specified by
- * importing PermissionTypes. The component uses "useServerContext" to access the current user so it
- * requires access to the "ServerContext".
+ * importing PermissionTypes.
  */
-export const RequiresPermission: FC<Props> = props => {
-    const { checkIsAdmin, children, permissionCheck, perms } = props;
-    const { user } = useServerContext();
+export const RequiresPermissionForUser: FC<ForUserProps> = props => {
+    const { checkIsAdmin, children, permissionCheck, perms, user } = props;
 
     const allow = useMemo<boolean>(
         () => hasPermissions(user, typeof perms === 'string' ? [perms] : perms, checkIsAdmin, permissionCheck),
@@ -46,6 +48,19 @@ export const RequiresPermission: FC<Props> = props => {
     );
 
     return <>{React.Children.map(children, child => (allow ? child : null))}</>;
+};
+
+RequiresPermissionForUser.displayName = 'RequiresPermissionForUser';
+
+/**
+ * This component is intended to be used to wrap other components which should only be displayed when the
+ * user has specific permissions. Permissions are defined on the application user and can be specified by
+ * importing PermissionTypes. The component uses "useServerContext" to access the current user so it
+ * requires access to the "ServerContext".
+ */
+export const RequiresPermission: FC<Props> = props => {
+    const { user } = useServerContext();
+    return <RequiresPermissionForUser {...props} user={user} />;
 };
 
 RequiresPermission.displayName = 'RequiresPermission';

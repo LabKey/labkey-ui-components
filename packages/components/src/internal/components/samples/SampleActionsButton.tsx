@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, ReactNode, useMemo } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
@@ -25,28 +25,35 @@ import { SAMPLE_TYPE_CONCEPT_URI } from '../domainproperties/constants';
 
 interface Props {
     disabled?: boolean;
-    user: User;
     model: QueryModel;
-    moreMenuItems: ReactNode;
+    user: User;
 }
 
 export const SampleActionsButton: FC<Props> = memo(props => {
-    const { disabled, user, model, moreMenuItems } = props;
+    const { children, disabled, user, model } = props;
 
-    const sampleFieldKey = useMemo(() => model?.allColumns?.find(c =>
-        SAMPLE_TYPE_CONCEPT_URI.localeCompare(c.conceptURI, 'en', { sensitivity: 'base' }) === 0
-    )?.fieldKey,[model]);
+    const sampleFieldKey = useMemo(
+        () =>
+            model.allColumns?.find(
+                c => SAMPLE_TYPE_CONCEPT_URI.localeCompare(c.conceptURI, 'en', { sensitivity: 'base' }) === 0
+            )?.fieldKey,
+        [model]
+    );
 
     const id = 'sample-actions-menu';
+    const hasPerms = hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]);
+
+    if (!(!!children || hasPerms)) {
+        return null;
+    }
 
     return (
-        <DropdownButton disabled={disabled} id={`${id}-btn`} bsStyle={'default'} title={'Samples'}>
-            {hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]) && (
+        <DropdownButton bsStyle="default" disabled={disabled} id={`${id}-btn`} title="Samples">
+            {children}
+            {!!children && hasPerms && <hr className="divider" />}
+            {hasPerms && (
                 <>
-                    {moreMenuItems}
-                    {!!moreMenuItems && <hr className="divider" />}
                     <PicklistCreationMenuItem
-                        key={`${id}-create-picklist`}
                         itemText="Create Picklist"
                         user={user}
                         selectionKey={sampleFieldKey ? undefined : model.id}
@@ -59,3 +66,5 @@ export const SampleActionsButton: FC<Props> = memo(props => {
         </DropdownButton>
     );
 });
+
+SampleActionsButton.displayName = 'SampleActionsButton';

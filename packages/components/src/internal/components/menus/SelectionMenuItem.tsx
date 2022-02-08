@@ -23,11 +23,12 @@ interface Props {
     model?: QueryGridModel;
     queryModel?: QueryModel;
     text: string;
-    onClick: () => void;
+    onClick?: () => void;
     disabledMsg: string;
     maxSelection?: number;
     maxSelectionDisabledMsg?: string;
     nounPlural: string;
+    href?: string;
 }
 
 export class SelectionMenuItem extends PureComponent<Props> {
@@ -55,10 +56,10 @@ export class SelectionMenuItem extends PureComponent<Props> {
     }
 
     render() {
-        const { id, text, onClick, disabledMsg, maxSelection, maxSelectionDisabledMsg, nounPlural } = this.props;
+        const { id, text, onClick, href, disabledMsg, maxSelection, maxSelectionDisabledMsg, nounPlural } = this.props;
         const { disabled, tooFewSelected } = this;
         const item = (
-            <MenuItem onClick={onClick} disabled={disabled}>
+            <MenuItem href={href} onClick={onClick} disabled={disabled}>
                 {text}
             </MenuItem>
         );

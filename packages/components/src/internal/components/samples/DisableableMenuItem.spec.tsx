@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { mount, ReactWrapper } from 'enzyme';
-import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
+import { MenuItem, OverlayTrigger } from 'react-bootstrap';
 
 import { DisableableMenuItem } from './DisableableMenuItem';
 
@@ -32,41 +32,38 @@ describe('DisableableMenuItem', () => {
 
     test('operation permitted', () => {
         const content = 'Test Operation';
-        const wrapper = mount(<DisableableMenuItem operationPermitted={true} menuItemContent={content} />);
+        const wrapper = mount(<DisableableMenuItem operationPermitted>{content}</DisableableMenuItem>);
         validate(wrapper, false, content);
     });
 
     test('operation permitted, menu props', () => {
-        const props = { onClick: jest.fn() };
-
-        const content = <span>Test Operation</span>;
+        const onClick = jest.fn();
         const wrapper = mount(
-            <DisableableMenuItem operationPermitted={true} menuItemContent={content} menuItemProps={props} />
+            <DisableableMenuItem operationPermitted onClick={onClick}>
+                <span>Test Operation</span>
+            </DisableableMenuItem>
         );
-        validate(wrapper, false, 'Test Operation', props);
+        validate(wrapper, false, 'Test Operation', { onClick });
     });
 
     test('disabled', () => {
-        const content = <div>Other test</div>;
-        const props = { onClick: jest.fn() };
         const wrapper = mount(
-            <DisableableMenuItem operationPermitted={false} menuItemContent={content} menuItemProps={props} />
+            <DisableableMenuItem operationPermitted={false} onClick={jest.fn()}>
+                <div>Other test</div>
+            </DisableableMenuItem>
         );
-        validate(wrapper, true, 'Other test');
+        validate(wrapper, true, 'Other test', { onClick: undefined });
     });
 
     test('disabled, alternate overlay placement', () => {
         const content = 'Other test';
-        const props = { onClick: jest.fn() };
+        const onClick = jest.fn();
         const wrapper = mount(
-            <DisableableMenuItem
-                operationPermitted={false}
-                menuItemContent={content}
-                menuItemProps={props}
-                placement="right"
-            />
+            <DisableableMenuItem onClick={onClick} operationPermitted={false} placement="right">
+                {content}
+            </DisableableMenuItem>
         );
-        validate(wrapper, true, content, props);
+        validate(wrapper, true, content, { onClick });
         expect(wrapper.find(OverlayTrigger).prop('placement')).toBe('right');
     });
 });

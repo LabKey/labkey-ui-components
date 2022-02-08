@@ -84,13 +84,14 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                 />
             ) : (
                 <DisableableMenuItem
+                    onClick={onClick}
                     operationPermitted={isSampleOperationPermitted(
                         getSampleStatusType(queryModel.getRow()),
                         SampleOperation.AddToPicklist
                     )}
-                    menuItemProps={{ onClick, key }}
-                    menuItemContent={itemText}
-                />
+                >
+                    {itemText}
+                </DisableableMenuItem>
             )}
             {showChoosePicklist && (
                 <ChoosePicklistModal

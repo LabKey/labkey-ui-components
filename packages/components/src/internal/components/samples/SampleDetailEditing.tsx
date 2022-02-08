@@ -11,7 +11,7 @@ import {
     deleteRows,
     DetailPanelWithModel,
     getActionErrorMessage,
-    LoadingPage,
+    LoadingSpinner,
     QueryConfig,
     resolveErrorMessage,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -75,11 +75,11 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     }
 
     init = async (): Promise<void> => {
-        const { sampleSet, api } = this.props;
+        const { sampleSet, api, model } = this.props;
 
         try {
             const sampleTypeDomainFields = await getGroupedSampleDomainFields(sampleSet);
-            const sampleStorageItemId = await api.samples.getSampleStorageId(this.getSampleId());
+            const sampleStorageItemId = await api.samples.getSampleStorageId(model.getRowValue('RowId'));
 
             this.setState({ sampleTypeDomainFields, sampleStorageItemId, hasError: false });
         } catch (e) {
@@ -89,11 +89,6 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
 
     getRow = (): Record<string, any> => {
         return this.props.model.getRow() ?? {};
-    };
-
-    getSampleId = () => {
-        const row = this.getRow();
-        return caseInsensitive(row, 'RowId')?.value;
     };
 
     getUpdateDisplayColumns = (isAliquot: boolean): GroupedSampleDisplayColumns => {
@@ -168,7 +163,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         }
 
         if (!sampleTypeDomainFields || model.isLoading) {
-            return <LoadingPage title={title} />;
+            return <LoadingSpinner />;
         }
 
         const row = this.getRow();

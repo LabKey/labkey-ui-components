@@ -5,7 +5,7 @@
 import React, { FunctionComponent, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 
-import { Alert, Grid, GridColumn, LoadingSpinner } from '../../..';
+import { Grid, GridColumn } from '../../..';
 
 import { InjectedLineage, withLineage } from './withLineage';
 
@@ -27,16 +27,16 @@ class CountsWithLineageImpl extends PureComponent<InjectedLineage> {
 
     render(): ReactNode {
         const { lineage } = this.props;
+        const data = lineage?.sampleStats?.filter(stats => stats.getIn(['sampleCount', 'value']) > 0).toList();
 
-        if (!lineage || !lineage.isLoaded()) {
-            return <LoadingSpinner />;
-        }
-
-        if (lineage.error) {
-            return <Alert>{lineage.error}</Alert>;
-        }
-
-        return <Grid columns={this.columns} data={lineage.sampleStats} />;
+        return (
+            <Grid
+                columns={this.columns}
+                data={data}
+                emptyText={lineage?.error ?? 'No derived samples'}
+                isLoading={!lineage?.isLoaded()}
+            />
+        );
     }
 }
 

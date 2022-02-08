@@ -1,13 +1,12 @@
 import React, { FC, useState } from 'react';
-
 import { MenuItem } from 'react-bootstrap';
 
 import { userCanManagePicklists } from '../../app/utils';
-
 import { User } from '../base/models/User';
 
-import { PicklistEditModal } from './PicklistEditModal';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
+import { PicklistEditModal } from './PicklistEditModal';
 import { Picklist } from './models';
 
 interface Props {
@@ -21,6 +20,8 @@ interface Props {
     picklistProductId?: string;
     metricFeatureArea?: string;
     onCreatePicklist?: () => void;
+    queryModel?: QueryModel;
+    sampleFieldKey?: string;
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {

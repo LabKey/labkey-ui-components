@@ -15,7 +15,7 @@
  */
 import React, { FC, PureComponent, ReactNode } from 'react';
 import { fromJS, List, Map } from 'immutable';
-import { Filter, Utils } from '@labkey/api';
+import { Filter, Query, Utils } from '@labkey/api';
 
 import { resolveErrorMessage, SchemaQuery } from '../../..';
 
@@ -124,6 +124,7 @@ type InheritedSelectInputProps = Omit<
 
 export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     componentId: string;
+    containerFilter?: Query.ContainerFilter;
     /** The path to the LK container that the queries should be scoped to. */
     containerPath?: string;
     displayColumn?: string;
@@ -283,6 +284,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             description,
             filterOption,
             formsy,
+            helpTipRenderer,
             initiallyDisabled,
             inputClass,
             label,
@@ -306,6 +308,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                 description,
                 disabled: true,
                 formsy,
+                helpTipRenderer,
                 initiallyDisabled,
                 isLoading: false,
                 inputClass,
@@ -335,6 +338,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                     cacheOptions: true,
                     defaultOptions,
                     filterOption,
+                    helpTipRenderer,
                     isLoading,
                     loadOptions: this.loadOptions,
                     onChange: this.onChange,
@@ -357,6 +361,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                 description,
                 disabled: true,
                 formsy,
+                helpTipRenderer,
                 inputClass,
                 initiallyDisabled,
                 label,

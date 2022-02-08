@@ -20,26 +20,27 @@ import { deleteEntityType } from '../../entities/actions';
 
 import { DataClassModel } from './models';
 
-export function fetchDataClass(queryName?: string, rowId?: number): Promise<DataClassModel> {
+export function fetchDataClass(queryName?: string, rowId?: number, containerPath?: string): Promise<DataClassModel> {
     if (rowId) {
-        return fetchDataClassProperties(rowId)
+        return fetchDataClassProperties(rowId, containerPath)
             .then(response => {
-                return _fetchDataClass(undefined, response.domainId);
+                return _fetchDataClass(undefined, response.domainId, containerPath);
             })
             .catch(error => {
                 return Promise.reject(error);
             });
     } else if (queryName) {
-        return _fetchDataClass(queryName);
+        return _fetchDataClass(queryName, undefined, containerPath);
     } else {
         // for the create case to get the domain details based on domainKind param only
         return _fetchDataClass();
     }
 }
 
-function _fetchDataClass(queryName?: string, domainId?: number): Promise<DataClassModel> {
+function _fetchDataClass(queryName?: string, domainId?: number, containerPath?: string): Promise<DataClassModel> {
     return new Promise((resolve, reject) => {
         return Domain.getDomainDetails({
+            containerPath,
             schemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
             queryName,
             domainId,
@@ -58,11 +59,10 @@ function _fetchDataClass(queryName?: string, domainId?: number): Promise<DataCla
     });
 }
 
-function fetchDataClassProperties(rowId: number): Promise<any> {
+function fetchDataClassProperties(rowId: number, containerPath?: string): Promise<any> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('experiment', 'getDataClassProperties.api'),
-            method: 'GET',
+            url: ActionURL.buildURL('experiment', 'getDataClassProperties.api', containerPath),
             params: { rowId },
             scope: this,
             success: Utils.getCallbackWrapper(data => {

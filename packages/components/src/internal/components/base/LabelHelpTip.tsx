@@ -12,10 +12,12 @@ interface Props {
     size?: any; // size of help icon, if using default icon
     title?: string;
     bsStyle?: string; // is placed on the popover container as "popover-<value>"
+    popoverClassName?: string; // is place on the popover container
 }
 
 export const LabelHelpTip: FC<Props> = memo(props => {
-    const { children, title, placement, id, size, customStyle, required, iconComponent, bsStyle } = props;
+    const { children, title, placement, id, size, customStyle, required, iconComponent, bsStyle, popoverClassName } =
+        props;
     const targetRef = useRef();
     const [show, setShow] = useState(false);
 
@@ -30,7 +32,7 @@ export const LabelHelpTip: FC<Props> = memo(props => {
                 <FontAwesomeIcon size={size} style={customStyle} className="label-help-icon" icon={faQuestionCircle} />
             )}
             <Overlay target={targetRef.current} show={show} placement={placement}>
-                <Popover id={id} title={title} bsStyle={bsStyle} >
+                <Popover id={id} title={title} bsStyle={bsStyle} className={popoverClassName}>
                     {children}
                     {required && <div className="label-help-required">This field is required.</div>}
                 </Popover>

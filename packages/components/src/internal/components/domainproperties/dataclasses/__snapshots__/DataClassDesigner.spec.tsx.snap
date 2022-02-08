@@ -1513,7 +1513,12 @@ exports[`DataClassDesigner initModel 1`] = `
           "getPicklistDeleteData": [Function],
           "getPicklistFromId": [Function],
         },
+        "query": QueryServerAPIWrapper {
+          "getEntityTypeOptions": [Function],
+          "getQueryDetails": [Function],
+        },
         "samples": SamplesServerAPIWrapper {
+          "getFieldLookupFromSelection": [Function],
           "getSampleAliquotRows": [Function],
           "getSampleAssayResultViewConfigs": [Function],
           "getSampleOperationConfirmationData": [Function],

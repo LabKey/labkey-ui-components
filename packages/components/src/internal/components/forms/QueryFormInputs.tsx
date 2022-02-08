@@ -16,7 +16,7 @@
 import React, { ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
-import { Utils } from '@labkey/api';
+import { Query, Utils } from '@labkey/api';
 
 import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo } from '../../..';
 
@@ -50,6 +50,8 @@ interface QueryFormInputsProps {
     checkRequiredFields?: boolean;
     columnFilter?: (col?: QueryColumn) => boolean;
     componentKey?: string; // unique key to add to QuerySelect to avoid duplication w/ transpose
+    /** A container filter that will be applied to all query-based inputs in this form */
+    containerFilter?: Query.ContainerFilter;
     disabledFields?: List<string>;
     fieldValues?: any;
     fireQSChangeOnInit?: boolean;
@@ -82,7 +84,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         allowFieldDisable: false,
         initiallyDisableFields: false,
         disabledFields: List<string>(),
-        showQuerySelectPreviewOptions: true,
+        showQuerySelectPreviewOptions: false,
     };
 
     private _fieldEnabledCount = 0;
@@ -160,6 +162,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         const {
             columnFilter,
             componentKey,
+            containerFilter,
             fieldValues,
             fireQSChangeOnInit,
             checkRequiredFields,
@@ -246,6 +249,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
                                         componentId={id}
+                                        containerFilter={col.lookup.containerFilter ?? containerFilter}
                                         containerPath={col.lookup.containerPath}
                                         displayColumn={col.lookup.displayColumn}
                                         fireQSChangeOnInit={fireQSChangeOnInit}

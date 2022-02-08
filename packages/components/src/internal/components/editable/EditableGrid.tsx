@@ -162,6 +162,7 @@ export interface EditableColumnMetadata {
     caption?: string;
     isReadOnlyCell?: (rowKey: string) => boolean;
     hideTitleTooltip?: boolean;
+    popoverClassName?: string;
 }
 
 export interface BulkAddData {
@@ -644,7 +645,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         <OverlayTrigger
                             placement="bottom"
                             overlay={
-                                <Popover id={'popover-' + label} bsClass="popover">
+                                <Popover
+                                    id={'popover-' + label}
+                                    bsClass="popover"
+                                    className={metadata?.popoverClassName}
+                                >
                                     {metadata?.toolTip}
                                     {format && <div>Display Format: {format}</div>}
                                 </Popover>

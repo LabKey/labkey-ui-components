@@ -147,7 +147,7 @@ $circle-size: 12 * $scale;
 .filter-cards__card {
     min-width: 330px;
     border-radius: 2px;
-    height: $card-min-height;
+    min-height: $card-min-height;
     background: white;
     padding: 0;
     transition: all 250ms;

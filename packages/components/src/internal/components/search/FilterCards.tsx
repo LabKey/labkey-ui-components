@@ -1,27 +1,21 @@
 import React, { FC, memo, useCallback } from 'react';
 
-import { Filter } from '@labkey/api';
-
 import { EntityDataType } from '../entities/models';
 import { capitalizeFirstChar } from '../../util/utils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 
-export interface FilterProps {
-    entityDataType: EntityDataType;
-    filterArray?: Filter.IFilter[]; // the filters to be used in conjunction with the schemaQuery
-    schemaQuery?: SchemaQuery;
-    index?: number;
-}
+import { FieldFilter, FilterProps } from './models';
+import { FilterValueDisplay } from './FilterValueDisplay';
 
 interface FilterEditProps extends FilterProps {
     onDelete: (index) => void;
     onEdit: (index) => void;
     onAdd: (entityDataType: EntityDataType) => void;
+    onFilterValueExpand?: (cardIndex: number, fieldFilter: FieldFilter) => void;
 }
 
 // exported for jest testing
 export const FilterCard: FC<FilterEditProps> = memo(props => {
-    const { entityDataType, filterArray, index, onAdd, onDelete, onEdit, schemaQuery } = props;
+    const { entityDataType, filterArray, index, onAdd, onDelete, onEdit, schemaQuery, onFilterValueExpand } = props;
 
     const _onAdd = useCallback(() => {
         onAdd(entityDataType);
@@ -63,7 +57,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                     </div>
                 </div>
                 <div className="filter-card__card-content">
-                    {!filterArray?.length && (
+                    {!filterArray?.length /* TODO: support finding by parent type without filters*/ && (
                         <>
                             <hr />
                             <div>
@@ -72,7 +66,23 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                             </div>
                         </>
                     )}
-                    {!!filterArray?.length && <>Filter view coming soon ...</>}
+                    {!!filterArray?.length && (
+                        <table>
+                            <tbody>
+                                {filterArray.map(fieldFilter => (
+                                    <tr key={fieldFilter.fieldKey} className="filter-display__row">
+                                        <td className="filter-display__field-label">{fieldFilter.fieldCaption}:</td>
+                                        <td className="filter-display__filter-content">
+                                            <FilterValueDisplay
+                                                filter={fieldFilter.filter}
+                                                onFilterValueExpand={() => onFilterValueExpand(index, fieldFilter)}
+                                            />
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
             </div>
         </>
@@ -85,6 +95,7 @@ interface Props {
     onFilterDelete?: (index) => void;
     onFilterEdit?: (index) => void;
     onAddEntity: (entityDataType: EntityDataType) => void;
+    onFilterValueExpand?: (cardIndex: number, fieldFilter: FieldFilter) => void;
 }
 
 export const FilterCards: FC<Props> = props => (
@@ -97,6 +108,7 @@ export const FilterCards: FC<Props> = props => (
                 onEdit={props.onFilterEdit}
                 index={i}
                 key={i}
+                onFilterValueExpand={props.onFilterValueExpand}
             />
         ))}
     </div>

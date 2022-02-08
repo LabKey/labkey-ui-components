@@ -738,6 +738,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     nameExpressionGenIdProps={
                         showGenIdBanner && options && hasGenIdInExpression
                             ? {
+                                  containerPath: model.containerPath,
                                   dataTypeName: options.get('name'),
                                   dataTypeLSID: options.get('lsid'),
                                   rowId: options.get('rowId'),

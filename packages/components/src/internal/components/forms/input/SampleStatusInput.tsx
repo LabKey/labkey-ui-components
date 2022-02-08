@@ -1,4 +1,5 @@
 import React, { FC, memo, ReactNode, ReactText, useCallback, useEffect, useState, useMemo } from 'react';
+import { Query } from '@labkey/api';
 
 import {
     DISCARD_CONSUMED_CHECKBOX_FIELD,
@@ -15,6 +16,8 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 interface SampleStatusInputProps {
     api?: ComponentsAPIWrapper;
     col: QueryColumn;
+    containerFilter?: Query.ContainerFilter;
+    containerPath?: string;
     data: any;
     key: ReactText;
     isDetailInput?: boolean;
@@ -37,6 +40,8 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         showAsteriskSymbol,
         allowDisable,
         col,
+        containerFilter,
+        containerPath,
         key,
         initiallyDisabled,
         onToggleDisable,
@@ -86,7 +91,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
             const showPanel = isInStorage && isConsumed;
             setShowDiscardPanel(showPanel);
         },
-        [onQSChange, consumedStatuses]
+        [consumedStatuses, onAdditionalFormDataChange, onQSChange, shouldDiscard, value]
     );
 
     const onCommentChange = useCallback(
@@ -135,9 +140,11 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 addLabelAsterisk={showAsteriskSymbol}
                 allowDisable={allowDisable}
                 componentId={col.fieldKey + key}
-                containerPath={col.lookup?.containerPath}
-                displayColumn={col.lookup?.displayColumn}
+                containerFilter={col.lookup.containerFilter ?? containerFilter}
+                containerPath={col.lookup.containerPath ?? containerPath}
+                displayColumn={col.lookup.displayColumn}
                 formsy={formsy}
+                helpTipRenderer={col.helpTipRenderer}
                 initiallyDisabled={initiallyDisabled}
                 joinValues={col.isJunctionLookup()}
                 label={col.caption}
@@ -148,12 +155,11 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 onQSChange={onChange}
                 onToggleDisable={onToggleDisable}
                 placeholder="Select or type to search..."
-                previewOptions={true}
                 required={col.required}
-                schemaQuery={col.lookup?.schemaQuery}
+                schemaQuery={col.lookup.schemaQuery}
                 showLabel
                 value={value}
-                valueColumn={col.lookup?.keyColumn}
+                valueColumn={col.lookup.keyColumn}
                 inputClass={inputClass}
             />
             {error && <Alert>{error}</Alert>}

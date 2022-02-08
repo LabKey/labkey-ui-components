@@ -13,12 +13,14 @@ import {
     DomainPropertiesAPIWrapper,
     getDomainPropertiesTestAPIWrapper,
 } from './components/domainproperties/APIWrapper';
+import { getQueryTestAPIWrapper, QueryAPIWrapper, QueryServerAPIWrapper } from './query/APIWrapper';
 
 export interface ComponentsAPIWrapper {
     picklist: PicklistAPIWrapper;
     samples: SamplesAPIWrapper;
     security: SecurityAPIWrapper;
     domain: DomainPropertiesAPIWrapper;
+    query: QueryAPIWrapper;
 }
 
 export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
@@ -27,6 +29,7 @@ export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
         samples: new SamplesServerAPIWrapper(),
         security: new ServerSecurityAPIWrapper(),
         domain: new DomainPropertiesAPIWrapper(),
+        query: new QueryServerAPIWrapper(),
     };
 }
 
@@ -42,6 +45,7 @@ export function getTestAPIWrapper(
         samples: getSamplesTestAPIWrapper(mockFn, overrides.samples),
         security: getSecurityTestAPIWrapper(mockFn, overrides.security),
         domain: getDomainPropertiesTestAPIWrapper(mockFn, overrides.domain),
+        query: getQueryTestAPIWrapper(mockFn, overrides.query),
         ...overrides,
     };
 }

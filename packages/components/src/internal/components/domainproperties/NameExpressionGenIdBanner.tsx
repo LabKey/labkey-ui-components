@@ -8,6 +8,7 @@ import { isNotificationsEnabled } from '../notifications/global';
 
 export interface NameExpressionGenIdProps {
     api?: ComponentsAPIWrapper;
+    containerPath?: string;
     dataTypeName: string; // sampletype or dataclass name
     rowId: number;
     kindName: 'SampleSet' | 'DataClass';
@@ -17,7 +18,7 @@ export interface NameExpressionGenIdProps {
 export const GENID_SYNTAX_STRING = '${genId'; // skip closing tag to allow existence of formatter
 
 export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => {
-    const { api, rowId, kindName, dataTypeName, dataTypeLSID } = props;
+    const { api, containerPath, rowId, kindName, dataTypeName, dataTypeLSID } = props;
     const [currentGenId, setCurrentGenId] = useState<number>(undefined);
     const [newGenId, setNewGenId] = useState<number>(undefined);
     const [minNewGenId, setMinNewGenId] = useState<number>(undefined);
@@ -29,7 +30,7 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
     const init = async () => {
         if (rowId && kindName) {
             try {
-                const hasData = await api.domain.hasExistingDomainData(kindName, dataTypeLSID, rowId);
+                const hasData = await api.domain.hasExistingDomainData(kindName, dataTypeLSID, rowId, containerPath);
                 const canResetGen = !hasData;
                 setCanReset(canResetGen);
 

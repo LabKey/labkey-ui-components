@@ -1,12 +1,14 @@
 // Consider having this implement Query.QueryColumn from @labkey/api
 // commented out attributes are not used in app
 import { Record } from 'immutable';
+import { Query } from '@labkey/api';
 
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
 
 import { SchemaQuery } from './SchemaQuery';
 
 export class QueryLookup extends Record({
+    containerFilter: undefined,
     containerPath: undefined,
     displayColumn: undefined,
     isPublic: false,
@@ -18,6 +20,7 @@ export class QueryLookup extends Record({
     schemaQuery: undefined,
     table: undefined,
 }) {
+    declare containerFilter: Query.ContainerFilter;
     declare containerPath: string;
     declare displayColumn: string;
     declare isPublic: boolean;
@@ -53,7 +56,7 @@ export class QueryColumn extends Record({
     displayAsLookup: undefined,
     // excludeFromShifting: undefined,
     // ext: undefined,
-    // facetingBehaviorType: undefined,
+    facetingBehaviorType: undefined,
     fieldKey: undefined,
     fieldKeyArray: undefined,
     // fieldKeyPath: undefined,
@@ -102,6 +105,7 @@ export class QueryColumn extends Record({
     cell: undefined,
     columnRenderer: undefined,
     detailRenderer: undefined,
+    helpTipRenderer: undefined,
     inputRenderer: undefined,
     removeFromViews: false,
     sorts: undefined,
@@ -120,7 +124,7 @@ export class QueryColumn extends Record({
     declare displayAsLookup: boolean;
     // declare excludeFromShifting: boolean;
     // declare ext: any;
-    // declare facetingBehaviorType: string;
+    declare facetingBehaviorType: string;
     declare fieldKey: string;
     declare fieldKeyArray: string[];
     // declare fieldKeyPath: string;
@@ -169,6 +173,7 @@ export class QueryColumn extends Record({
     declare cell: Function;
     declare columnRenderer: string;
     declare detailRenderer: string;
+    declare helpTipRenderer: string;
     declare inputRenderer: string;
     declare sorts: '+' | '-';
     declare removeFromViews: boolean; // strips this column from all ViewInfo definitions
@@ -294,6 +299,27 @@ export class QueryColumn extends Record({
 
     get isFileInput(): boolean {
         return this.inputType === 'file';
+    }
+
+    allowFaceting(): boolean {
+        switch (this.facetingBehaviorType) {
+            case 'ALWAYS_ON':
+                return true;
+            case 'ALWAYS_OFF':
+                return false;
+            case 'AUTOMATIC':
+                // auto rules are if the column is a lookup or dimension
+                // OR if it is of type : (boolean, int, date, text), multiline excluded
+                if (this.lookup || this.dimension) return true;
+                else if (
+                    this.jsonType == 'boolean' ||
+                    this.jsonType == 'int' ||
+                    (this.jsonType == 'string' && this.inputType != 'textarea')
+                )
+                    return true;
+        }
+
+        return false;
     }
 }
 

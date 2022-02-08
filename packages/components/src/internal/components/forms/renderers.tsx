@@ -15,6 +15,7 @@
  */
 import React, { ReactNode, ReactText } from 'react';
 import { List, Map } from 'immutable';
+import { Query } from '@labkey/api';
 import { Input } from 'formsy-react-components';
 import { addValidationRule, validationRules } from 'formsy-react';
 
@@ -39,7 +40,9 @@ type InputRenderer = (
     renderLabelField?: (col: QueryColumn) => ReactNode,
     showAsteriskSymbol?: boolean,
     onAdditionalFormDataChange?: (name: string, value: any) => any,
-    inputClass?: string
+    inputClass?: string,
+    containerPath?: string,
+    containerFilter?: Query.ContainerFilter
 ) => ReactNode;
 
 const AliasInputRenderer: InputRenderer = (
@@ -54,9 +57,9 @@ const AliasInputRenderer: InputRenderer = (
 ) => (
     <AliasInput
         col={col}
+        data={data}
         isDetailInput={isDetailInput}
         key={key}
-        value={value}
         allowDisable={allowFieldDisable}
         initiallyDisabled={initiallyDisabled}
         onToggleDisable={onToggleDisable}
@@ -103,7 +106,9 @@ const SampleStatusInputRenderer: InputRenderer = (
     renderLabelField?: (col: QueryColumn) => ReactNode,
     showAsteriskSymbol?: boolean,
     onAdditionalFormDataChange?: (name: string, value: any) => any,
-    inputClass?: string
+    inputClass?: string,
+    containerPath?: string,
+    containerFilter?: Query.ContainerFilter
 ) => {
     return (
         <SampleStatusInput
@@ -119,6 +124,8 @@ const SampleStatusInputRenderer: InputRenderer = (
             showAsteriskSymbol={showAsteriskSymbol}
             onAdditionalFormDataChange={onAdditionalFormDataChange}
             inputClass={inputClass}
+            containerFilter={containerFilter}
+            containerPath={containerPath}
         />
     );
 };

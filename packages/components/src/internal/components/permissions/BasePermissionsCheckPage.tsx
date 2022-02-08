@@ -30,7 +30,7 @@ export class BasePermissionsCheckPage extends React.PureComponent<Props, any> {
 
         return (
             <Page title={title} hasHeader={true}>
-                <PageDetailHeader user={user} title={title} subTitle={subTitle} description={description}>
+                <PageDetailHeader title={title} subTitle={subTitle} description={description}>
                     {renderButtons && renderButtons()}
                 </PageDetailHeader>
                 <Notification user={user} />

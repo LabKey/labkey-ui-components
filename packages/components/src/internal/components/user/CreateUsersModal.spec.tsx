@@ -59,7 +59,7 @@ describe('<CreateUsersModal/>', () => {
         expect(wrapper.find('Checkbox')).toHaveLength(1);
         expect(wrapper.find('Checkbox').props().checked).toBe(true);
         expect(wrapper.find('SelectInput')).toHaveLength(1);
-        expect(wrapper.find('SelectInput').props().value).toBe(ROLE_OPTIONS[0].id);
+        expect(wrapper.find('SelectInput').props().value).toStrictEqual([ROLE_OPTIONS[0].id]);
         expect(wrapper.find('.btn')).toHaveLength(2);
         expect(wrapper.find('.btn-success')).toHaveLength(1);
         expect(wrapper.find('.btn-success').props().disabled).toBe(false);
@@ -76,7 +76,7 @@ describe('<CreateUsersModal/>', () => {
             emailText: 'TestEmailText',
             sendEmail: false,
             optionalMessage: 'TestOptionalMessage',
-            role: ROLE_OPTIONS[1].id,
+            roles: [ROLE_OPTIONS[1].id],
             isSubmitting: true,
             error: 'TestError',
         });
@@ -89,7 +89,7 @@ describe('<CreateUsersModal/>', () => {
         expect(wrapper.find('Checkbox')).toHaveLength(1);
         expect(wrapper.find('Checkbox').props().checked).toBe(false);
         expect(wrapper.find('SelectInput')).toHaveLength(1);
-        expect(wrapper.find('SelectInput').props().value).toBe(ROLE_OPTIONS[1].id);
+        expect(wrapper.find('SelectInput').props().value).toStrictEqual([ROLE_OPTIONS[1].id]);
         expect(wrapper.find('.btn')).toHaveLength(2);
         expect(wrapper.find('.btn-success')).toHaveLength(1);
         expect(wrapper.find('.btn-success').props().disabled).toBe(true);

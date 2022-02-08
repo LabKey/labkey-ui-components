@@ -91,7 +91,7 @@ function matchingFilterTypes(filterTypes: Filter.IFilterType[], token: string): 
  * @param column
  * @returns {IFilterType}
  */
-function resolveFilterType(token: string, column: QueryColumn): Filter.IFilterType {
+export function resolveFilterType(token: string, column: QueryColumn): Filter.IFilterType {
     if (SUFFIX_MAP.has(token)) {
         return SUFFIX_MAP.get(token);
     }
@@ -108,7 +108,7 @@ function resolveFilterType(token: string, column: QueryColumn): Filter.IFilterTy
             if (symbolTypes.has(suffix)) {
                 if (match) {
                     console.warn(
-                        `Column of type \"${column.get('jsonType')}\" has multiple filter for symbol \"${token}\".`
+                        `Column of type \"${column.get('jsonType')}\" has multiple filters for symbol \"${token}\".`
                     );
                     match = false;
                     value = undefined;

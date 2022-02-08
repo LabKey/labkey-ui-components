@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import Formsy from 'formsy-react';
 import { fromJS } from 'immutable';
 import { Button } from 'react-bootstrap';
-import { AuditBehaviorTypes } from '@labkey/api';
+import { AuditBehaviorTypes, Query } from '@labkey/api';
 
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
 import { DetailRenderer } from '../../internal/components/forms/detail/DetailDisplay';
@@ -24,6 +24,7 @@ export interface EditableDetailPanelProps extends RequiresModelAndActions {
     auditBehavior?: AuditBehaviorTypes;
     cancelText?: string;
     canUpdate: boolean;
+    containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     detailEditRenderer?: DetailRenderer;
     detailHeader?: ReactNode;
@@ -136,6 +137,8 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         const {
             actions,
             appEditable,
+            containerFilter,
+            containerPath,
             detailEditRenderer,
             detailHeader,
             detailRenderer,
@@ -175,6 +178,8 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                         <DetailPanel
                             actions={actions}
+                            containerFilter={containerFilter}
+                            containerPath={containerPath}
                             detailEditRenderer={detailEditRenderer}
                             detailRenderer={detailRenderer}
                             editColumns={editColumns}

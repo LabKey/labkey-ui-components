@@ -137,6 +137,7 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         return (
             <QuerySelect
                 autoFocus
+                containerFilter={lookup.containerFilter}
                 disabled={this.props.disabled}
                 queryFilters={queryFilters}
                 multiple={isMultiple}

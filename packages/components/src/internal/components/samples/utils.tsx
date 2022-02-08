@@ -1,12 +1,14 @@
 import React, { ReactNode } from 'react';
 
-import { Filter } from '@labkey/api';
+import { Filter, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 import {
     App,
     caseInsensitive,
     LoadingSpinner,
+    MenuItemModel,
+    ProductMenuModel,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleStateType,
@@ -69,7 +71,8 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
 export function getSampleStatusType(row: any): SampleStateType {
     return (
         caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value ||
-        caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_TYPE_COLUMN_NAME)?.value
+        caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_TYPE_COLUMN_NAME)?.value ||
+        caseInsensitive(row, 'StatusType')?.value
     );
 }
 
@@ -77,11 +80,13 @@ export function getSampleStatus(row: any): SampleStatus {
     return {
         label:
             caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME)?.displayValue ||
-            caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_COLUMN_NAME)?.displayValue,
+            caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_COLUMN_NAME)?.displayValue ||
+            caseInsensitive(row, 'Label')?.value,
         statusType: getSampleStatusType(row),
         description:
             caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value ||
-            caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value,
+            caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value ||
+            caseInsensitive(row, 'Description')?.value,
     };
 }
 
@@ -182,6 +187,13 @@ export function filterSampleRowsForOperation(
         statusMessage: getOperationNotPermittedMessage(operation, statusData),
         statusData,
     };
+}
+
+export function getSampleSetMenuItem(menu: ProductMenuModel, key: string): MenuItemModel {
+    const sampleSetsSection = menu ? menu.getSection(App.SAMPLES_KEY) : undefined;
+    return sampleSetsSection
+        ? sampleSetsSection.items.find(set => Utils.caseInsensitiveEquals(set.get('key'), key))
+        : undefined;
 }
 
 export enum SamplesManageButtonSections {

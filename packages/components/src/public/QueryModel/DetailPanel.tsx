@@ -78,7 +78,16 @@ interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
 }
 
 export const DetailPanelWithModel: FC<DetailPanelWithModelProps> = memo(props => {
-    const { asPanel, detailRenderer, editingMode, titleRenderer, useDatePicker, queryConfig } = props;
+    const {
+        asPanel,
+        containerFilter,
+        containerPath,
+        detailRenderer,
+        editingMode,
+        titleRenderer,
+        useDatePicker,
+        queryConfig,
+    } = props;
     const queryConfigs = useMemo(() => ({ model: queryConfig }), [queryConfig]);
     const { keyValue, schemaQuery } = queryConfig;
     const { schemaName, queryName } = schemaQuery;
@@ -89,6 +98,8 @@ export const DetailPanelWithModel: FC<DetailPanelWithModelProps> = memo(props =>
         <DetailPanelWithModelBody
             asPanel={asPanel}
             autoLoad
+            containerFilter={containerFilter}
+            containerPath={containerPath}
             detailRenderer={detailRenderer}
             editingMode={editingMode}
             key={key}

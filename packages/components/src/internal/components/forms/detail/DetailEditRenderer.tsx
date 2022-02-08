@@ -90,7 +90,9 @@ export function resolveDetailEditRenderer(
                     null,
                     false,
                     onAdditionalFormDataChange,
-                    'col-sm-12'
+                    'col-sm-12',
+                    options?.containerPath,
+                    options?.containerFilter
                 );
             }
 
@@ -108,7 +110,8 @@ export function resolveDetailEditRenderer(
                 return (
                     <QuerySelect
                         componentId={col.fieldKey}
-                        containerPath={col.lookup.containerPath}
+                        containerFilter={col.lookup.containerFilter ?? options?.containerFilter}
+                        containerPath={col.lookup.containerPath ?? options?.containerPath}
                         displayColumn={col.lookup.displayColumn}
                         formsy
                         inputClass="col-sm-12"

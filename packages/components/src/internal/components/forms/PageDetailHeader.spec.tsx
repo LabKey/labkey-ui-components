@@ -23,7 +23,7 @@ import { PageDetailHeader } from './PageDetailHeader';
 
 describe('<PageDetailHeader/>', () => {
     test('default props', () => {
-        const component = <PageDetailHeader title="Title" user={new User()} iconSrc="default" />;
+        const component = <PageDetailHeader title="Title" iconSrc="default" />;
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
@@ -32,7 +32,6 @@ describe('<PageDetailHeader/>', () => {
     test('with additional props', () => {
         const component = (
             <PageDetailHeader
-                user={new User()}
                 title="Title"
                 subTitle="Subtitle"
                 description="Description"
@@ -50,7 +49,7 @@ describe('<PageDetailHeader/>', () => {
 
     test('prefer iconUrl', () => {
         const component = (
-            <PageDetailHeader user={new User()} title="Title" iconUrl="iconUrl" iconDir="iconDir" iconSrc="iconSrc" />
+            <PageDetailHeader title="Title" iconUrl="iconUrl" iconDir="iconDir" iconSrc="iconSrc" />
         );
 
         const wrapper = mount(component);
@@ -60,7 +59,7 @@ describe('<PageDetailHeader/>', () => {
     });
 
     test('without icon', () => {
-        const component = <PageDetailHeader user={new User()} title="Title" />;
+        const component = <PageDetailHeader title="Title" />;
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();

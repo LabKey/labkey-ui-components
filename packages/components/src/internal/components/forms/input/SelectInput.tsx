@@ -151,6 +151,7 @@ export interface SelectInputProps {
     disabled?: boolean;
     filterOption?: FilterOption;
     formsy?: boolean;
+    helpTipRenderer?: string;
     id?: any;
     initiallyDisabled?: boolean;
     inputClass?: string;
@@ -177,6 +178,7 @@ export interface SelectInputProps {
     promptTextCreator?: (filterText: string) => string;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     required?: boolean;
+    resolveFormValue?: (selectedOptions: SelectInputOption | SelectInputOption[]) => any;
     saveOnBlur?: boolean;
     selectedOptions?: any;
     showLabel?: boolean;
@@ -352,7 +354,9 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
 
         let formValue;
 
-        if (selectedOptions !== undefined) {
+        if (this.props.resolveFormValue) {
+            formValue = this.props.resolveFormValue(selectedOptions);
+        } else if (selectedOptions !== undefined) {
             if (multiple) {
                 if (Array.isArray(selectedOptions)) {
                     formValue = selectedOptions.reduce((arr, option) => {
@@ -409,6 +413,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             showLabel,
             addLabelAsterisk,
             renderFieldLabel,
+            helpTipRenderer,
         } = this.props;
         const { isDisabled } = this.state;
 
@@ -432,6 +437,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
                             isFormsy: false,
                             required,
                             labelClass: !allowDisable ? this.props.labelClass : undefined,
+                            helpTipRenderer,
                         }}
                         showLabel={showLabel}
                         showToggle={allowDisable}

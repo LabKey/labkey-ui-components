@@ -13,6 +13,8 @@ import {
     TEST_USER_FOLDER_ADMIN,
     TEST_USER_GUEST,
     TEST_USER_READER,
+    TEST_USER_STORAGE_DESIGNER,
+    TEST_USER_STORAGE_EDITOR,
 } from '../../test/data/users';
 
 import {
@@ -35,6 +37,7 @@ import {
     sampleManagerIsPrimaryApp,
     userCanDesignLocations,
     userCanDesignSourceTypes,
+    userCanEditStorageData,
 } from './utils';
 import {
     ASSAYS_KEY,
@@ -194,6 +197,20 @@ describe('utils', () => {
         expect(userCanDesignLocations(TEST_USER_ASSAY_DESIGNER)).toBeFalsy();
         expect(userCanDesignLocations(TEST_USER_FOLDER_ADMIN)).toBeTruthy();
         expect(userCanDesignLocations(TEST_USER_APP_ADMIN)).toBeTruthy();
+        expect(userCanDesignLocations(TEST_USER_STORAGE_DESIGNER)).toBeTruthy();
+        expect(userCanDesignLocations(TEST_USER_STORAGE_EDITOR)).toBeFalsy();
+    });
+
+    test('userCanEditStorageData', () => {
+        expect(userCanEditStorageData(TEST_USER_GUEST)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_READER)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_AUTHOR)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_EDITOR)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_ASSAY_DESIGNER)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_FOLDER_ADMIN)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_APP_ADMIN)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_STORAGE_DESIGNER)).toBeFalsy();
+        expect(userCanEditStorageData(TEST_USER_STORAGE_EDITOR)).toBeTruthy();
     });
 
     test('isSampleManagerEnabled', () => {
@@ -470,9 +487,36 @@ describe('getStorageSectionConfig', () => {
         expect(config.emptyURL).toBe(undefined);
     });
 
-    test('editor', () => {
+    test('admin', () => {
         const config = getStorageSectionConfig(
             TEST_USER_FOLDER_ADMIN,
+            BIOLOGICS_APP_PROPERTIES.productId,
+            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
+            4
+        );
+        expect(config.maxItemsPerColumn).toBe(4);
+        expect(config.seeAllURL).toBe('/labkey/freezermanager/app.view#/home');
+        expect(config.headerURL).toBe('/labkey/freezermanager/app.view#/home');
+        expect(config.emptyURL).toBe('/labkey/freezermanager/app.view#/freezers/new');
+        expect(config.emptyURLText).toBe('Create a freezer');
+    });
+
+    test('storage editor', () => {
+        const config = getStorageSectionConfig(
+            TEST_USER_STORAGE_EDITOR,
+            BIOLOGICS_APP_PROPERTIES.productId,
+            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
+            4
+        );
+        expect(config.maxItemsPerColumn).toBe(4);
+        expect(config.seeAllURL).toBe('/labkey/freezermanager/app.view#/home');
+        expect(config.headerURL).toBe('/labkey/freezermanager/app.view#/home');
+        expect(config.emptyURL).toBe(undefined);
+    });
+
+    test('storage designer', () => {
+        const config = getStorageSectionConfig(
+            TEST_USER_STORAGE_DESIGNER,
             BIOLOGICS_APP_PROPERTIES.productId,
             { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
             4

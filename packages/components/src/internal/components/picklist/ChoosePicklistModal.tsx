@@ -501,7 +501,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                 setSelKey(undefined);
             }
         })();
-    }, [sampleFieldKey, queryModel,]);
+    }, [sampleFieldKey, queryModel]);
 
     useEffect(() => {
         getPicklists()

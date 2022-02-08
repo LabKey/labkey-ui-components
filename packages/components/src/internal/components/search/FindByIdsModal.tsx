@@ -144,4 +144,4 @@ export const FindByIdsModal: FC<Props> = memo(props => {
 
 FindByIdsModal.defaultProps = {
     api: getDefaultAPIWrapper(),
-}
+};

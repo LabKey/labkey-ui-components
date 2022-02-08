@@ -2399,11 +2399,7 @@ function pasteCellLoad(
                 let msg: CellMessage;
 
                 if (col && col.isPublicLookup()) {
-                    const { message, values } = parsePasteCellLookup(
-                        col,
-                        lookupDescriptorMap[col.lookupKey],
-                        value
-                    );
+                    const { message, values } = parsePasteCellLookup(col, lookupDescriptorMap[col.lookupKey], value);
                     cv = values;
 
                     if (message) {
@@ -2681,10 +2677,7 @@ export function createQueryConfigFilteredBySample(
  * @param featureArea
  * @param metricName
  */
-export function incrementClientSideMetricCount(
-    featureArea: string,
-    metricName: string
-): void {
+export function incrementClientSideMetricCount(featureArea: string, metricName: string): void {
     if (!featureArea || !metricName || getServerContext().user.isGuest) {
         return;
     } else {

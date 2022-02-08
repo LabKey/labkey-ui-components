@@ -4,8 +4,9 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { EntityDataType, IEntityTypeOption } from '../components/entities/models';
 import { getEntityTypeOptions } from '../components/entities/actions';
 
-import { getQueryDetails, GetQueryDetailsOptions } from './api';
 import { incrementClientSideMetricCount } from '../actions';
+
+import { getQueryDetails, GetQueryDetailsOptions } from './api';
 
 export interface QueryAPIWrapper {
     getEntityTypeOptions: (
@@ -13,7 +14,7 @@ export interface QueryAPIWrapper {
         containerPath?: string
     ) => Promise<Map<string, List<IEntityTypeOption>>>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
-    incrementClientSideMetricCount: (featureArea: string, metricName: string) => void
+    incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
 }
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {

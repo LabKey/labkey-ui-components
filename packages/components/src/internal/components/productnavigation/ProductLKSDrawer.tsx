@@ -101,7 +101,7 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
 
 ProductLKSDrawer.defaultProps = {
     api: getDefaultAPIWrapper(),
-}
+};
 
 // exported for jest testing
 export function getProjectBeginUrl(container: string): string {

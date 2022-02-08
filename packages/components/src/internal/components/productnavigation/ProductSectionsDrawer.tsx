@@ -2,24 +2,14 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { List } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
-import {
-    Alert,
-    AppURL,
-    createProductUrl,
-    MenuSectionModel,
-    ProductMenuModel,
-} from '../../..';
-import {
-    FREEZERS_KEY,
-    MEDIA_KEY,
-    NOTEBOOKS_KEY,
-    WORKFLOW_KEY
-} from '../../app/constants';
+import { Alert, AppURL, createProductUrl, MenuSectionModel, ProductMenuModel } from '../../..';
+import { FREEZERS_KEY, MEDIA_KEY, NOTEBOOKS_KEY, WORKFLOW_KEY } from '../../app/constants';
+
+import { getAppProductIds } from '../../app/utils';
 
 import { ProductModel, ProductSectionModel } from './models';
 import { APPLICATION_NAVIGATION_METRIC, SECTION_KEYS_TO_SKIP } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
-import { getAppProductIds } from '../../app/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface ProductAppsDrawerProps {
@@ -35,11 +25,10 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
     const [sections, setSections] = useState<ProductSectionModel[]>();
 
     const productIds = useMemo((): List<string> => {
-       return getAppProductIds(product.productId)
+        return getAppProductIds(product.productId);
     }, [product.productId]);
 
     useEffect(() => {
-
         const model = new ProductMenuModel({
             currentProductId: product.productId,
             userMenuProductId: product.productId,
@@ -61,7 +50,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
 
 ProductSectionsDrawer.defaultProps = {
     api: getDefaultAPIWrapper(),
-}
+};
 
 interface ProductSectionsDrawerImplProps extends ProductAppsDrawerProps {
     error: string;

@@ -60,7 +60,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                 setSelKey(undefined);
             }
         })();
-    }, [api, sampleFieldKey, queryModel,]);
+    }, [api, sampleFieldKey, queryModel]);
 
     return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} />;
 });

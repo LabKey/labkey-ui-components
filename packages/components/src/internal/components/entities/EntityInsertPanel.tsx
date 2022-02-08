@@ -1074,7 +1074,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             );
 
             this.setSubmitting(false);
-            api.query.incrementClientSideMetricCount(ENTITY_CREATION_METRIC, nounPlural + 'FileImport' + (isMerge ? 'WithMerge' : 'WithoutMerge'));
+            api.query.incrementClientSideMetricCount(
+                ENTITY_CREATION_METRIC,
+                nounPlural + 'FileImport' + (isMerge ? 'WithMerge' : 'WithoutMerge')
+            );
             onDataChange?.(false);
 
             if (useAsync) {

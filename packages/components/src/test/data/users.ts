@@ -36,7 +36,13 @@ export const TEST_USER_READER = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([PermissionTypes.Read]),
+    permissionsList: List<string>([
+        PermissionTypes.Read,
+        PermissionTypes.ReadDataClass,
+        PermissionTypes.ReadAssay,
+        PermissionTypes.ReadMedia,
+        PermissionTypes.ReadNotebooks,
+    ]),
 });
 
 export const TEST_USER_AUTHOR = new User({

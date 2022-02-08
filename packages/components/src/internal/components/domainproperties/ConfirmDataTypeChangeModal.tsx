@@ -1,7 +1,9 @@
 import React, { FC, memo } from 'react';
-import { PropDescType } from "./PropDescType";
-import { ConfirmModal } from "../base/ConfirmModal";
-import { FILELINK_RANGE_URI, INT_RANGE_URI, MULTILINE_RANGE_URI } from "./constants";
+
+import { ConfirmModal } from '../base/ConfirmModal';
+
+import { PropDescType } from './PropDescType';
+import { FILELINK_RANGE_URI, INT_RANGE_URI, MULTILINE_RANGE_URI } from './constants';
 
 interface Props {
     originalRangeURI: string;
@@ -26,14 +28,13 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
         >
             <div>
                 This change will convert the values in the field from{' '}
-                <span className="domain-field-confirm-datatype">{origTypeLabel}</span>{' '}
-                to <span className="domain-field-confirm-datatype">{newTypeLabel}</span>.
-                Once you save your changes, you will not be able to change it back to{' '}
-                <span className="domain-field-confirm-datatype">{origTypeLabel}</span>.
-                Would you like to continue?
+                <span className="domain-field-confirm-datatype">{origTypeLabel}</span> to{' '}
+                <span className="domain-field-confirm-datatype">{newTypeLabel}</span>. Once you save your changes, you
+                will not be able to change it back to{' '}
+                <span className="domain-field-confirm-datatype">{origTypeLabel}</span>. Would you like to continue?
             </div>
         </ConfirmModal>
-    )
+    );
 });
 
 // exported for jest testing
@@ -42,4 +43,4 @@ export const getDataTypeConfirmDisplayText = (rangeURI: string): string => {
     if (rangeURI === MULTILINE_RANGE_URI) return 'String';
     if (rangeURI === FILELINK_RANGE_URI) return 'File';
     return rangeURI.substring(rangeURI.indexOf('#') + 1);
-}
+};

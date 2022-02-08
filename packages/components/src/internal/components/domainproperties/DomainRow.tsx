@@ -60,7 +60,7 @@ import {
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
 import { DomainRowWarning } from './DomainRowWarning';
-import { ConfirmDataTypeChangeModal } from "./ConfirmDataTypeChangeModal";
+import { ConfirmDataTypeChangeModal } from './ConfirmDataTypeChangeModal';
 
 export interface DomainRowProps {
     appPropertiesOnly?: boolean;
@@ -296,10 +296,13 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         const evt = {
             target: {
                 id: createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index),
-                value: dataTypeChangeToConfirm
-            }
+                value: dataTypeChangeToConfirm,
+            },
         };
-        this.onFieldChange(evt, PropDescType.isLookup(dataTypeChangeToConfirm) || PropDescType.isTextChoice(dataTypeChangeToConfirm));
+        this.onFieldChange(
+            evt,
+            PropDescType.isLookup(dataTypeChangeToConfirm) || PropDescType.isTextChoice(dataTypeChangeToConfirm)
+        );
         this.onHideConfirmTypeChange();
     };
 
@@ -595,4 +598,4 @@ const shouldShowConfirmDataTypeChange = (originalRangeURI: string, newRangeURI: 
         return toNumber || (toString && !wasString);
     }
     return false;
-}
+};

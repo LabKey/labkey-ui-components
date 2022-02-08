@@ -1,16 +1,17 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import {ConfirmDataTypeChangeModal, getDataTypeConfirmDisplayText} from './ConfirmDataTypeChangeModal';
-import {ConfirmModal} from "../base/ConfirmModal";
-import {PROP_DESC_TYPES} from "./PropDescType";
+import { ConfirmModal } from '../base/ConfirmModal';
+
+import { ConfirmDataTypeChangeModal, getDataTypeConfirmDisplayText } from './ConfirmDataTypeChangeModal';
+import { PROP_DESC_TYPES } from './PropDescType';
 import {
     BOOLEAN_RANGE_URI,
     DATETIME_RANGE_URI,
     FILELINK_RANGE_URI,
     INT_RANGE_URI,
-    MULTILINE_RANGE_URI
-} from "./constants";
+    MULTILINE_RANGE_URI,
+} from './constants';
 
 describe('ConfirmDataTypeChangeModal', () => {
     const DEFAULT_PROPS = {

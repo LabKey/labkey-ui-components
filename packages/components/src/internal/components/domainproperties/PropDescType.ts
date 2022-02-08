@@ -50,7 +50,8 @@ export class PropDescType
         lookupSchema: undefined,
         lookupQuery: undefined,
     })
-    implements IPropDescType {
+    implements IPropDescType
+{
     declare conceptURI: string;
     declare display: string;
     declare name: string;

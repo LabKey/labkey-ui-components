@@ -19,6 +19,10 @@ import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
 import { CONCEPT_CACHE } from '../ontology/actions';
 
+import { initUnitTestMocks } from '../../testHelperMocks';
+
+import { initOnotologyMocks } from '../../mock';
+
 import {
     ATTACHMENT_TYPE,
     AUTOINT_TYPE,
@@ -71,8 +75,6 @@ import {
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
 } from './constants';
-import { initUnitTestMocks } from '../../testHelperMocks';
-import { initOnotologyMocks } from '../../mock';
 
 beforeAll(() => {
     initUnitTestMocks([initOnotologyMocks]);

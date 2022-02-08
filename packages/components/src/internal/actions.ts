@@ -2673,37 +2673,39 @@ export function createQueryConfigFilteredBySample(
     };
 }
 
-export interface IClientSideMetricCountResponse {
-    count: number;
-}
-
+/**
+ * Call the core-incrementClientSideMetricCount to track a given client side action (grouped by featureArea and metricName).
+ * Note that this call does not return a Promise as it is to just be a background action and not interrupt the
+ * main flow of the applications. Also note, that if something goes wrong it will just log the error to the console,
+ * but will intentionally not return the error response to the caller.
+ * @param featureArea
+ * @param metricName
+ */
 export function incrementClientSideMetricCount(
     featureArea: string,
     metricName: string
-): Promise<IClientSideMetricCountResponse> {
-    return new Promise((resolve, reject) => {
-        if (!featureArea || !metricName || getServerContext().user.isGuest) {
-            resolve(undefined);
-        } else {
-            return Ajax.request({
-                url: buildURL('core', 'incrementClientSideMetricCount.api'),
-                method: 'POST',
-                jsonData: {
-                    featureArea,
-                    metricName,
+): void {
+    if (!featureArea || !metricName || getServerContext().user.isGuest) {
+        return;
+    } else {
+        Ajax.request({
+            url: buildURL('core', 'incrementClientSideMetricCount.api'),
+            method: 'POST',
+            jsonData: {
+                featureArea,
+                metricName,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                // success, no-op
+            }),
+            failure: Utils.getCallbackWrapper(
+                response => {
+                    // log the error but don't prevent from proceeding
+                    console.error(response);
                 },
-                success: Utils.getCallbackWrapper(response => {
-                    resolve(response);
-                }),
-                failure: Utils.getCallbackWrapper(
-                    response => {
-                        console.error(response);
-                        resolve(response); // still resolve here so this call doesn't prevent callers from proceeding as usual
-                    },
-                    this,
-                    true
-                ),
-            });
-        }
-    });
+                this,
+                true
+            ),
+        });
+    }
 }

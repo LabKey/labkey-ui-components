@@ -29,7 +29,7 @@ interface ProductAppsDrawerProps {
 }
 
 export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
-    const { product, onCloseMenu } = props;
+    const { product } = props;
     const currentContainer = getServerContext().container;
     const [error, setError] = useState<string>();
     const [sections, setSections] = useState<ProductSectionModel[]>();
@@ -78,8 +78,8 @@ export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = mem
         setTimeout(() => setTransition(false), 10);
     }, []);
 
-    const navigate = useCallback(async (section: ProductSectionModel) => {
-        await api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, product.navigationMetric);
+    const navigate = useCallback((section: ProductSectionModel) => {
+        api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, product.navigationMetric);
         onCloseMenu?.();
     }, []);
 

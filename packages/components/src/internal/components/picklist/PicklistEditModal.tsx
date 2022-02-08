@@ -174,7 +174,7 @@ export const PicklistEditModalDisplay: FC<Props> = memo(props => {
                     selectionKey,
                     sampleIds
                 );
-                await api.query.incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
+                api.query.incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
             }
             reset();
             if (showNotification) {

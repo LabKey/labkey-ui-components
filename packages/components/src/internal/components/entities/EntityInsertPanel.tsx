@@ -738,7 +738,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             this.setSubmitting(false);
 
             if (response?.rows) {
-                await api.query.incrementClientSideMetricCount(ENTITY_CREATION_METRIC, nounPlural + 'CreationFromGrid');
+                api.query.incrementClientSideMetricCount(ENTITY_CREATION_METRIC, nounPlural + 'CreationFromGrid');
                 this.props.onDataChange?.(false);
                 this.props.afterEntityCreation?.(
                     insertModel.getTargetEntityTypeLabel(),
@@ -1074,9 +1074,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             );
 
             this.setSubmitting(false);
+            api.query.incrementClientSideMetricCount(ENTITY_CREATION_METRIC, nounPlural + 'FileImport' + (isMerge ? 'WithMerge' : 'WithoutMerge'));
             onDataChange?.(false);
-
-            await api.query.incrementClientSideMetricCount(ENTITY_CREATION_METRIC, nounPlural + 'FileImport' + (isMerge ? 'WithMerge' : 'WithoutMerge'));
 
             if (useAsync) {
                 onBackgroundJobStart?.(insertModel.getTargetEntityTypeLabel(), file.name, response.jobId);

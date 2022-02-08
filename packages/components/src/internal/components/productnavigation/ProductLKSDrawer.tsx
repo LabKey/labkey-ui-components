@@ -33,18 +33,18 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
         setTimeout(() => setTransition(false), 10);
     }, []);
 
-    const onTabClick = useCallback(async () => {
-        await api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_TAB_METRIC);
+    const onTabClick = useCallback(() => {
+        api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_TAB_METRIC);
     }, []);
 
     const visibleTabs = tabs.filter(tab => !tab.disabled);
 
-    const onHomeClick = useCallback(async () => {
-        await api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_HOME_METRIC);
+    const onHomeClick = useCallback(() => {
+        api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_HOME_METRIC);
     }, []);
 
-    const onContainerClick = useCallback(async () => {
-        await api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_CONTAINER_METRIC);
+    const onContainerClick = useCallback(() => {
+        api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_CONTAINER_METRIC);
     }, []);
 
     return (

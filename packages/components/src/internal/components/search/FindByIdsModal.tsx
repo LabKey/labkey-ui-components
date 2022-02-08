@@ -82,7 +82,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
             setSubmitting(true);
             try {
                 const _sessionKey = await saveIdsToFind(fieldType, ids, sessionKey);
-                await api.query.incrementClientSideMetricCount('find' + capitalNounPlural + 'ById', 'findCount');
+                api.query.incrementClientSideMetricCount('find' + capitalNounPlural + 'ById', 'findCount');
                 setSubmitting(false);
                 reset();
                 onFind(_sessionKey);

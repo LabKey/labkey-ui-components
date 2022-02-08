@@ -290,7 +290,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 const insertResponse = await addSamplesToPicklist(activeItem.name, statusData, selectionKey, sampleIds);
                 setError(undefined);
                 setSubmitting(false);
-                await api.query.incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
+                api.query.incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
                 createNotification({
                     message: () => (
                         <AddedToPicklistNotification

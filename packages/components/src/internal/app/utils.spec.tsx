@@ -65,7 +65,7 @@ describe('getMenuSectionConfigs', () => {
                 productId: 'SampleManager',
             },
         };
-        const configs = getMenuSectionConfigs(new User(), 'sampleManager');
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager');
 
         expect(configs.size).toBe(4);
         expect(configs.hasIn([0, 'sources'])).toBeTruthy();
@@ -89,7 +89,7 @@ describe('getMenuSectionConfigs', () => {
                 productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
             },
         };
-        const configs = getMenuSectionConfigs(new User(), FREEZER_MANAGER_APP_PROPERTIES.productId);
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId);
 
         expect(configs.size).toBe(2);
         expect(configs.hasIn([0, 'freezers'])).toBeTruthy();
@@ -111,7 +111,7 @@ describe('getMenuSectionConfigs', () => {
             },
         };
 
-        const configs = getMenuSectionConfigs(new User(), 'sampleManager');
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager');
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, 'sources'])).toBeTruthy();
         expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
@@ -144,7 +144,7 @@ describe('getMenuSectionConfigs', () => {
             },
         };
 
-        const configs = getMenuSectionConfigs(new User(), FREEZER_MANAGER_APP_PROPERTIES.productId);
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId);
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, 'sources'])).toBeTruthy();
         expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual(
@@ -166,6 +166,33 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('/labkey/samplemanager/app.view#/workflow');
 
         expect(configs.hasIn([4, 'user'])).toBeTruthy();
+    });
+
+    test('SM and FM enabled, SM current app, storage editor', () => {
+        LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['samplemanagement', 'study', 'premium'],
+            },
+            samplemanagement: {
+                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
+            },
+            inventory: {
+                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
+            },
+        };
+
+        const configs = getMenuSectionConfigs(TEST_USER_STORAGE_EDITOR, 'sampleManager');
+        expect(configs.size).toBe(3);
+        expect(configs.hasIn([0, 'samples'])).toBeTruthy();
+        expect(configs.getIn([0, 'samples', 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+
+        expect(configs.hasIn([1, 'freezers'])).toBeTruthy();
+        expect(configs.getIn([1, 'freezers', 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+
+        expect(configs.hasIn([2, 'workflow'])).toBeTruthy();
+        expect(configs.getIn([2, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
+
+        expect(configs.hasIn([2, 'user'])).toBeTruthy();
     });
 });
 
@@ -554,6 +581,19 @@ describe('addSourcesSectionConfig', () => {
         expect(sectionConfig.emptyText).toBe('No source types have been defined');
         expect(sectionConfig.emptyURL).toBe('/labkey/test/app.view#/sourceType/new');
         expect(sectionConfig.emptyURLText).toBe('Create a source type');
+    });
+
+    test('storage editor', () => {
+        let configs = List<Map<string, MenuSectionConfig>>();
+        configs = addSourcesSectionConfig(TEST_USER_STORAGE_EDITOR, '/labkey/test/app.view', configs);
+        expect(configs.size).toBe(0);
+    });
+
+
+    test('storage designer', () => {
+        let configs = List<Map<string, MenuSectionConfig>>();
+        configs = addSourcesSectionConfig(TEST_USER_STORAGE_DESIGNER, '/labkey/test/app.view', configs);
+        expect(configs.size).toBe(0);
     });
 });
 

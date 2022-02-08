@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.130.0
+*Released*: 8 February 2022
+* Issue 44740: Add client side metrics to track if samples/sources are being created via the grid or from file import
+* Update incrementClientSideMetricCount() so it does not return a Promise but is only used asynchronously
+
 ### version 2.129.0
 *Released*: 3 February 2022
 * **AliasInput**

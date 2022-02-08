@@ -10,6 +10,7 @@ import { EntityDataType } from './models';
 
 export const DATA_DELETE_CONFIRMATION_ACTION = 'getDataDeleteConfirmationData.api';
 export const SAMPLE_DELETE_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
+export const ENTITY_CREATION_METRIC = 'entityCreation';
 
 export const SampleTypeDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,

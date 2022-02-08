@@ -12,8 +12,6 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
 import { createNotification } from '../notifications/actions';
 
-import { incrementClientSideMetricCount } from '../../actions';
-
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
@@ -292,7 +290,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 const insertResponse = await addSamplesToPicklist(activeItem.name, statusData, selectionKey, sampleIds);
                 setError(undefined);
                 setSubmitting(false);
-                incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
+                await api.query.incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
                 createNotification({
                     message: () => (
                         <AddedToPicklistNotification

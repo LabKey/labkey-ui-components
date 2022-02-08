@@ -6,17 +6,13 @@ import {
     Alert,
     AppURL,
     createProductUrl,
-    incrementClientSideMetricCount,
     MenuSectionModel,
     ProductMenuModel,
 } from '../../..';
 import {
-    BIOLOGICS_APP_PROPERTIES,
-    FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     MEDIA_KEY,
     NOTEBOOKS_KEY,
-    SAMPLE_MANAGER_APP_PROPERTIES,
     WORKFLOW_KEY
 } from '../../app/constants';
 
@@ -24,8 +20,10 @@ import { ProductModel, ProductSectionModel } from './models';
 import { APPLICATION_NAVIGATION_METRIC, SECTION_KEYS_TO_SKIP } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
 import { getAppProductIds } from '../../app/utils';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface ProductAppsDrawerProps {
+    api?: ComponentsAPIWrapper;
     product: ProductModel;
     onCloseMenu?: () => void;
 }
@@ -58,19 +56,21 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
             });
     }, [product]);
 
-    return <ProductSectionsDrawerImpl error={error} product={product} sections={sections} onCloseMenu={onCloseMenu} />;
+    return <ProductSectionsDrawerImpl {...props} error={error} sections={sections} />;
 });
 
-interface ProductSectionsDrawerImplProps {
+ProductSectionsDrawer.defaultProps = {
+    api: getDefaultAPIWrapper(),
+}
+
+interface ProductSectionsDrawerImplProps extends ProductAppsDrawerProps {
     error: string;
-    product: ProductModel;
     sections: ProductSectionModel[];
-    onCloseMenu?: () => void;
 }
 
 // exported for jest testing
 export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props => {
-    const { sections, error, onCloseMenu, product } = props;
+    const { api, sections, error, onCloseMenu, product } = props;
 
     const [transition, setTransition] = useState<boolean>(true);
     useEffect(() => {
@@ -78,8 +78,8 @@ export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = mem
         setTimeout(() => setTransition(false), 10);
     }, []);
 
-    const navigate = useCallback((section: ProductSectionModel) => {
-        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, product.navigationMetric);
+    const navigate = useCallback(async (section: ProductSectionModel) => {
+        await api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, product.navigationMetric);
         onCloseMenu?.();
     }, []);
 

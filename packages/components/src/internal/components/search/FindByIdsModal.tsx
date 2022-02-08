@@ -6,9 +6,9 @@ import { FindField } from '../samples/models';
 import { capitalizeFirstChar } from '../../util/utils';
 import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from '../samples/constants';
 import { saveIdsToFind } from '../samples/actions';
-import { incrementClientSideMetricCount } from '../../actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 // exported for Jest testing
 export const FindFieldOption: FC<{
@@ -37,6 +37,7 @@ export const FindFieldOption: FC<{
 });
 
 interface Props {
+    api?: ComponentsAPIWrapper;
     show: boolean;
     onCancel: () => void;
     onFind: (sessionKey: string) => void;
@@ -46,7 +47,7 @@ interface Props {
 }
 
 export const FindByIdsModal: FC<Props> = memo(props => {
-    const { show, onCancel, onFind, nounPlural, sessionKey, initialField } = props;
+    const { show, onCancel, onFind, nounPlural, sessionKey, initialField, api } = props;
 
     const [fieldType, setFieldType] = useState<FindField>(initialField || UNIQUE_ID_FIND_FIELD);
     const [idString, setIdString] = useState<string>(undefined);
@@ -78,10 +79,10 @@ export const FindByIdsModal: FC<Props> = memo(props => {
             .map(id => id.trim())
             .filter(id => id.length > 0);
         if (ids.length > 0) {
-            incrementClientSideMetricCount('find' + capitalNounPlural + 'ById', 'findCount');
             setSubmitting(true);
             try {
                 const _sessionKey = await saveIdsToFind(fieldType, ids, sessionKey);
+                await api.query.incrementClientSideMetricCount('find' + capitalNounPlural + 'ById', 'findCount');
                 setSubmitting(false);
                 reset();
                 onFind(_sessionKey);
@@ -140,3 +141,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
         </Modal>
     );
 });
+
+FindByIdsModal.defaultProps = {
+    api: getDefaultAPIWrapper(),
+}

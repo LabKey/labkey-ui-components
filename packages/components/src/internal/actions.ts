@@ -2673,7 +2673,7 @@ export function createQueryConfigFilteredBySample(
     };
 }
 
-interface IClientSideMetricCountResponse {
+export interface IClientSideMetricCountResponse {
     count: number;
 }
 
@@ -2698,7 +2698,7 @@ export function incrementClientSideMetricCount(
                 failure: Utils.getCallbackWrapper(
                     response => {
                         console.error(response);
-                        reject(response);
+                        resolve(response); // still resolve here so this call doesn't prevent callers from proceeding as usual
                     },
                     this,
                     true

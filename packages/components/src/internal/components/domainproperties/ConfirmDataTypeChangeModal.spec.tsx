@@ -31,9 +31,9 @@ describe('ConfirmDataTypeChangeModal', () => {
     });
 
     test('getDataTypeConfirmDisplayText', () => {
-        expect(getDataTypeConfirmDisplayText(INT_RANGE_URI)).toBe('Integer');
-        expect(getDataTypeConfirmDisplayText(MULTILINE_RANGE_URI)).toBe('String');
-        expect(getDataTypeConfirmDisplayText(FILELINK_RANGE_URI)).toBe('File');
+        expect(getDataTypeConfirmDisplayText(INT_RANGE_URI)).toBe('integer');
+        expect(getDataTypeConfirmDisplayText(MULTILINE_RANGE_URI)).toBe('string');
+        expect(getDataTypeConfirmDisplayText(FILELINK_RANGE_URI)).toBe('file');
         expect(getDataTypeConfirmDisplayText(BOOLEAN_RANGE_URI)).toBe('boolean');
         expect(getDataTypeConfirmDisplayText(DATETIME_RANGE_URI)).toBe('dateTime');
     });

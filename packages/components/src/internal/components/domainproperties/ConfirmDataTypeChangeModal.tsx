@@ -39,8 +39,8 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
 
 // exported for jest testing
 export const getDataTypeConfirmDisplayText = (rangeURI: string): string => {
-    if (rangeURI === INT_RANGE_URI) return 'Integer';
-    if (rangeURI === MULTILINE_RANGE_URI) return 'String';
-    if (rangeURI === FILELINK_RANGE_URI) return 'File';
+    if (rangeURI === INT_RANGE_URI) return 'integer';
+    if (rangeURI === MULTILINE_RANGE_URI) return 'string';
+    if (rangeURI === FILELINK_RANGE_URI) return 'file';
     return rangeURI.substring(rangeURI.indexOf('#') + 1);
 };

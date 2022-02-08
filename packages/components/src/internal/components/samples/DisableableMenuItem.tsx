@@ -1,7 +1,9 @@
 import React, { FC, memo, ReactNode } from 'react';
-import { MenuItem, MenuItemProps, OverlayTrigger, Popover } from 'react-bootstrap';
+import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
-interface Props extends MenuItemProps {
+import { ReactBootstrapMenuItemProps } from '../menus/types';
+
+interface Props extends ReactBootstrapMenuItemProps {
     disabledMessage?: ReactNode;
     operationPermitted: boolean;
     placement?: string;
@@ -27,6 +29,7 @@ export const DisableableMenuItem: FC<Props> = memo(props => {
             {disabledMessage}
         </Popover>
     );
+
     return (
         <OverlayTrigger overlay={overlay} placement={placement}>
             <MenuItem disabled>{children}</MenuItem>

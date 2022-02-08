@@ -28,29 +28,9 @@ interface Props {
     permissionCheck?: 'all' | 'any';
     /** The permission(s) to check against the user. */
     perms: string | string[];
+    /** Optionally, specify the User object to check permissions against. Defaults to user from ServerContext. */
+    user?: User;
 }
-
-interface ForUserProps extends Props {
-    user: User;
-}
-
-/**
- * This component is intended to be used to wrap other components which should only be displayed when the
- * user has specific permissions. Permissions are defined on the application user and can be specified by
- * importing PermissionTypes.
- */
-export const RequiresPermissionForUser: FC<ForUserProps> = props => {
-    const { checkIsAdmin, children, permissionCheck, perms, user } = props;
-
-    const allow = useMemo<boolean>(
-        () => hasPermissions(user, typeof perms === 'string' ? [perms] : perms, checkIsAdmin, permissionCheck),
-        [checkIsAdmin, permissionCheck, perms, user]
-    );
-
-    return <>{React.Children.map(children, child => (allow ? child : null))}</>;
-};
-
-RequiresPermissionForUser.displayName = 'RequiresPermissionForUser';
 
 /**
  * This component is intended to be used to wrap other components which should only be displayed when the
@@ -59,8 +39,16 @@ RequiresPermissionForUser.displayName = 'RequiresPermissionForUser';
  * requires access to the "ServerContext".
  */
 export const RequiresPermission: FC<Props> = props => {
-    const { user } = useServerContext();
-    return <RequiresPermissionForUser {...props} user={user} />;
+    const { checkIsAdmin, children, permissionCheck, perms } = props;
+    const serverContext = useServerContext();
+    const user = props.user ?? serverContext.user;
+
+    const allow = useMemo<boolean>(
+        () => hasPermissions(user, typeof perms === 'string' ? [perms] : perms, checkIsAdmin, permissionCheck),
+        [checkIsAdmin, permissionCheck, perms, user]
+    );
+
+    return <>{React.Children.map(children, child => (allow ? child : null))}</>;
 };
 
 RequiresPermission.displayName = 'RequiresPermission';

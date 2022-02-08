@@ -134,7 +134,7 @@ import {
     ServerActivityData,
     ServerNotificationModel,
 } from './internal/components/notifications/model';
-import { RequiresPermission, RequiresPermissionForUser } from './internal/components/base/Permissions';
+import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons } from './internal/components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './internal/components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
@@ -939,7 +939,6 @@ export {
     SITE_SECURITY_ROLES,
     BasePermissionsCheckPage,
     RequiresPermission,
-    RequiresPermissionForUser,
     hasAllPermissions,
     hasAnyPermissions,
     hasPermissions,

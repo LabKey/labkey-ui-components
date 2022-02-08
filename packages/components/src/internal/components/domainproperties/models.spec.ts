@@ -398,6 +398,15 @@ describe('PropDescType', () => {
         expect(PropDescType.isAutoIncrement(AUTOINT_TYPE)).toBeTruthy();
     });
 
+    test('fromName', () => {
+        expect(PropDescType.fromName('text')).toBe(undefined);
+        expect(PropDescType.fromName('Text')).toBe(undefined);
+        expect(PropDescType.fromName('string')).toBe(TEXT_TYPE);
+        expect(PropDescType.fromName('DateTime')).toBe(undefined);
+        expect(PropDescType.fromName('dateTime')).toBe(DATETIME_TYPE);
+        expect(PropDescType.fromName('date')).toBe(undefined); // because not in PROP_DESC_TYPES
+    });
+
     test('isFileType', () => {
         expect(INTEGER_TYPE.isFileType()).toBeFalsy();
         expect(TEXT_TYPE.isFileType()).toBeFalsy();

@@ -2399,11 +2399,7 @@ function pasteCellLoad(
                 let msg: CellMessage;
 
                 if (col && col.isPublicLookup()) {
-                    const { message, values } = parsePasteCellLookup(
-                        col,
-                        lookupDescriptorMap[col.lookupKey],
-                        value
-                    );
+                    const { message, values } = parsePasteCellLookup(col, lookupDescriptorMap[col.lookupKey], value);
                     cv = values;
 
                     if (message) {
@@ -2673,37 +2669,36 @@ export function createQueryConfigFilteredBySample(
     };
 }
 
-interface IClientSideMetricCountResponse {
-    count: number;
-}
-
-export function incrementClientSideMetricCount(
-    featureArea: string,
-    metricName: string
-): Promise<IClientSideMetricCountResponse> {
-    return new Promise((resolve, reject) => {
-        if (!featureArea || !metricName || getServerContext().user.isGuest) {
-            resolve(undefined);
-        } else {
-            return Ajax.request({
-                url: buildURL('core', 'incrementClientSideMetricCount.api'),
-                method: 'POST',
-                jsonData: {
-                    featureArea,
-                    metricName,
+/**
+ * Call the core-incrementClientSideMetricCount to track a given client side action (grouped by featureArea and metricName).
+ * Note that this call does not return a Promise as it is to just be a background action and not interrupt the
+ * main flow of the applications. Also note, that if something goes wrong it will just log the error to the console,
+ * but will intentionally not return the error response to the caller.
+ * @param featureArea
+ * @param metricName
+ */
+export function incrementClientSideMetricCount(featureArea: string, metricName: string): void {
+    if (!featureArea || !metricName || getServerContext().user.isGuest) {
+        return;
+    } else {
+        Ajax.request({
+            url: buildURL('core', 'incrementClientSideMetricCount.api'),
+            method: 'POST',
+            jsonData: {
+                featureArea,
+                metricName,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                // success, no-op
+            }),
+            failure: Utils.getCallbackWrapper(
+                response => {
+                    // log the error but don't prevent from proceeding
+                    console.error(response);
                 },
-                success: Utils.getCallbackWrapper(response => {
-                    resolve(response);
-                }),
-                failure: Utils.getCallbackWrapper(
-                    response => {
-                        console.error(response);
-                        reject(response);
-                    },
-                    this,
-                    true
-                ),
-            });
-        }
-    });
+                this,
+                true
+            ),
+        });
+    }
 }

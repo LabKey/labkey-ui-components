@@ -120,6 +120,11 @@ export interface IntegrationTestServer {
      */
     requestContext: RequestContext;
     /**
+     * This is the ServerContext object that is bound to all of the exposed IntegrationTestServer methods. You should
+     * not need to use this context directly.
+     */
+    serverContext: ServerContext;
+    /**
      * Tears down any test artifacts on the server. This is intended to be called after the tests complete.
      * Specifically, it deletes the test Project along with any test containers created during the test run.
      * Additionally, deletes all user accounts created during the test run.
@@ -225,14 +230,16 @@ const getUserId = async (ctx: ServerContext, email: string): Promise<number> => 
     return undefined;
 };
 
-export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
+type SuperTestProvider = (location: string) => SuperTest<any>;
+
+export const hookServer = (env: NodeJS.ProcessEnv, superTestProvider?: SuperTestProvider): IntegrationTestServer => {
     // Override the global context path -- required for ActionURL to work
     LABKEY.contextPath = env.INTEGRATION_CONTEXT_PATH;
 
     const location = env.INTEGRATION_SERVER;
 
     const server: ServerContext = {
-        agent: supertest(location),
+        agent: superTestProvider !== undefined ? superTestProvider(location) : supertest(location),
         createdUsers: [],
         // This will be fully initialized after call to init()
         defaultContext: new RequestContext({
@@ -252,6 +259,7 @@ export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
         post: postRequest.bind(this, server),
         request: request.bind(this, server),
         requestContext: server.defaultContext,
+        serverContext: server,
         teardown: teardown.bind(this, server),
     };
 };

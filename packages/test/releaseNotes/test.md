@@ -1,6 +1,12 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
+### version 1.1.0
+* Allow superagent to be overridden
+  * This allows test suites to use a different version of super agent e.g. superwsagent
+* Expose ServerContext
+  * This allows test suites to have access to the underlying agent if needed
+
 ### version 1.0.1
 * Regenerate lockfile so TC doesn't fail during install
 

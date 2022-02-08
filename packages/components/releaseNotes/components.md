@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.131.0
+*Released*: 8 February 2022
+* Issue 44711: Field editor update to show confirm modal on change of data type for saved field
+  * when the field is changing from any non-string -> string OR int/long -> double/float/decimal
+  * don't allow for Attachment or FileLink data type fields to be converted to Text/String
+
 ### version 2.130.0
 *Released*: 8 February 2022
 * Issue 44740: Add client side metrics to track if samples/sources are being created via the grid or from file import

@@ -50,7 +50,8 @@ export class PropDescType
         lookupSchema: undefined,
         lookupQuery: undefined,
     })
-    implements IPropDescType {
+    implements IPropDescType
+{
     declare conceptURI: string;
     declare display: string;
     declare name: string;
@@ -59,6 +60,10 @@ export class PropDescType
     declare shortDisplay: string;
     declare lookupSchema?: string;
     declare lookupQuery?: string;
+
+    static fromName(name: string): PropDescType {
+        return PROP_DESC_TYPES.find(type => type.name === name);
+    }
 
     static isUser(name: string): boolean {
         return name === 'users';

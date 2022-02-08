@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD February 2022
+### version 2.130
+*Released*: 8 February 2022
 * Issue 44740: Add client side metrics to track if samples/sources are being created via the grid or from file import
 * Update incrementClientSideMetricCount() so that even on failure it calls resolve() since we don't want to interrupt the app execution
 * Update calls to incrementClientSideMetricCount() to use async/await

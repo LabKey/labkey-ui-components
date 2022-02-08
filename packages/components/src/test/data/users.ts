@@ -81,6 +81,10 @@ export const TEST_USER_EDITOR = new User({
         PermissionTypes.Update,
         PermissionTypes.ManagePicklists,
         PermissionTypes.ManageSampleWorkflows,
+        PermissionTypes.ReadNotebooks,
+        PermissionTypes.ReadDataClass,
+        PermissionTypes.ReadAssay,
+        PermissionTypes.ReadMedia
     ]),
 });
 
@@ -131,6 +135,10 @@ export const TEST_USER_FOLDER_ADMIN = new User({
         PermissionTypes.ManagePicklists,
         PermissionTypes.ManageSampleWorkflows,
         PermissionTypes.Admin,
+        PermissionTypes.ReadNotebooks,
+        PermissionTypes.ReadDataClass,
+        PermissionTypes.ReadAssay,
+        PermissionTypes.ReadMedia,
     ]),
 });
 
@@ -163,6 +171,10 @@ export const TEST_USER_PROJECT_ADMIN = new User({
         PermissionTypes.ManageSampleWorkflows,
         PermissionTypes.Admin,
         PermissionTypes.AddUser,
+        PermissionTypes.ReadNotebooks,
+        PermissionTypes.ReadDataClass,
+        PermissionTypes.ReadAssay,
+        PermissionTypes.ReadMedia,
     ]),
 });
 
@@ -197,6 +209,10 @@ export const TEST_USER_APP_ADMIN = new User({
         PermissionTypes.UserManagement,
         PermissionTypes.ApplicationAdmin,
         PermissionTypes.AddUser,
+        PermissionTypes.ReadNotebooks,
+        PermissionTypes.ReadDataClass,
+        PermissionTypes.ReadAssay,
+        PermissionTypes.ReadMedia,
     ]),
 });
 

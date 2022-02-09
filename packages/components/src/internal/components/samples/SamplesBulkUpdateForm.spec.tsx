@@ -9,6 +9,7 @@ import { OperationConfirmationData } from '../entities/models';
 
 import { SamplesBulkUpdateAlert, SamplesBulkUpdateFormBase } from './SamplesBulkUpdateForm';
 import { getSamplesTestAPIWrapper } from './APIWrapper';
+import { TEST_USER_EDITOR } from '../../../test/data/users';
 
 describe('SamplesBulkUpdateForm', () => {
     const COLUMN_DESCRIPTION = new QueryColumn({
@@ -84,6 +85,7 @@ describe('SamplesBulkUpdateForm', () => {
         onBulkUpdateComplete: jest.fn,
         editSelectionInGrid: jest.fn,
         api: getSamplesTestAPIWrapper(),
+        user: TEST_USER_EDITOR,
     };
 
     test('all selected are samples', () => {

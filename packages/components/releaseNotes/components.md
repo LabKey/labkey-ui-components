@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add utility methods for checking various read permissions
   * update `assayPage` to check assay read permission
 * Update `SelectionMenuItem` to accept either an `onClick` or `href` property.
+* Don't show the option to discard samples when changing status if user doesn't have proper permissions
 
 ### version 2.129.0
 *Released*: 3 February 2022

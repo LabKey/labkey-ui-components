@@ -12,12 +12,10 @@ import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainpr
 
 import { createNotification } from '../notifications/actions';
 
-import { incrementClientSideMetricCount } from '../../actions';
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
@@ -62,7 +60,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
                 setSelKey(undefined);
             }
         })();
-    }, [api, sampleFieldKey, queryModel,]);
+    }, [api, sampleFieldKey, queryModel]);
 
     return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} />;
 });
@@ -176,7 +174,7 @@ export const PicklistEditModalDisplay: FC<Props> = memo(props => {
                     selectionKey,
                     sampleIds
                 );
-                incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
+                api.query.incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
             }
             reset();
             if (showNotification) {

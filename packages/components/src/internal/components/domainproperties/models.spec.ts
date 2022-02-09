@@ -19,6 +19,10 @@ import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
 import { CONCEPT_CACHE } from '../ontology/actions';
 
+import { initUnitTestMocks } from '../../testHelperMocks';
+
+import { initOnotologyMocks } from '../../mock';
+
 import {
     ATTACHMENT_TYPE,
     AUTOINT_TYPE,
@@ -71,8 +75,6 @@ import {
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
 } from './constants';
-import { initUnitTestMocks } from '../../testHelperMocks';
-import { initOnotologyMocks } from '../../mock';
 
 beforeAll(() => {
     initUnitTestMocks([initOnotologyMocks]);
@@ -396,6 +398,15 @@ describe('PropDescType', () => {
         expect(PropDescType.isAutoIncrement(null)).toBeFalsy();
         expect(PropDescType.isAutoIncrement(INTEGER_TYPE)).toBeFalsy();
         expect(PropDescType.isAutoIncrement(AUTOINT_TYPE)).toBeTruthy();
+    });
+
+    test('fromName', () => {
+        expect(PropDescType.fromName('text')).toBe(undefined);
+        expect(PropDescType.fromName('Text')).toBe(undefined);
+        expect(PropDescType.fromName('string')).toBe(TEXT_TYPE);
+        expect(PropDescType.fromName('DateTime')).toBe(undefined);
+        expect(PropDescType.fromName('dateTime')).toBe(DATETIME_TYPE);
+        expect(PropDescType.fromName('date')).toBe(undefined); // because not in PROP_DESC_TYPES
     });
 
     test('isFileType', () => {

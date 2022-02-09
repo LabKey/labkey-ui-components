@@ -35,8 +35,10 @@ import {
     DOMAIN_FIELD_TYPE,
     FIELD_NAME_CHAR_WARNING_INFO,
     FIELD_NAME_CHAR_WARNING_MSG,
+    NUMBER_CONVERT_URIS,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
+    STRING_CONVERT_URIS,
 } from './constants';
 import {
     DomainField,
@@ -58,6 +60,7 @@ import {
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
 import { DomainRowWarning } from './DomainRowWarning';
+import { ConfirmDataTypeChangeModal } from './ConfirmDataTypeChangeModal';
 
 export interface DomainRowProps {
     appPropertiesOnly?: boolean;
@@ -93,6 +96,7 @@ interface DomainRowState {
     isDragDisabled: boolean;
     showAdv: boolean;
     showingModal: boolean;
+    dataTypeChangeToConfirm: string;
 }
 
 /**
@@ -110,6 +114,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             showAdv: false,
             closing: false,
             showingModal: false,
+            dataTypeChangeToConfirm: undefined,
             isDragDisabled: props.isDragDisabled,
         };
 
@@ -265,15 +270,53 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
     };
 
     onDataTypeChange = (evt: any): void => {
-        this.onFieldChange(evt, PropDescType.isLookup(evt.target.value) || PropDescType.isTextChoice(evt.target.value));
+        const { field } = this.props;
+        const { value } = evt.target;
+
+        // warn for a saved field changing from any non-string -> string OR int/long -> double/float/decimal
+        if (field.isSaved()) {
+            const typeConvertingTo = PropDescType.fromName(value);
+            if (shouldShowConfirmDataTypeChange(field.original.rangeURI, typeConvertingTo.rangeURI)) {
+                this.onShowConfirmTypeChange(value);
+                return;
+            }
+        }
+
+        this.onFieldChange(evt, PropDescType.isLookup(value) || PropDescType.isTextChoice(value));
     };
 
-    onShowAdvanced = (): any => {
+    onShowConfirmTypeChange = (dataTypeChangeToConfirm: string): void => {
+        this.setState({ dataTypeChangeToConfirm });
+        this.setDragDisabled(this.props.isDragDisabled, true);
+    };
+
+    onConfirmTypeChange = (): void => {
+        const { domainIndex, index } = this.props;
+        const { dataTypeChangeToConfirm } = this.state;
+        const evt = {
+            target: {
+                id: createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index),
+                value: dataTypeChangeToConfirm,
+            },
+        };
+        this.onFieldChange(
+            evt,
+            PropDescType.isLookup(dataTypeChangeToConfirm) || PropDescType.isTextChoice(dataTypeChangeToConfirm)
+        );
+        this.onHideConfirmTypeChange();
+    };
+
+    onHideConfirmTypeChange = (): void => {
+        this.setState({ dataTypeChangeToConfirm: undefined });
+        this.setDragDisabled(this.props.isDragDisabled, false);
+    };
+
+    onShowAdvanced = (): void => {
         this.setState({ showAdv: true });
         this.setDragDisabled(this.props.isDragDisabled, true);
     };
 
-    onHideAdvanced = (): any => {
+    onHideAdvanced = (): void => {
         this.setState({ showAdv: false });
         this.setDragDisabled(this.props.isDragDisabled, false);
     };
@@ -410,7 +453,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
     }
 
     render() {
-        const { closing, isDragDisabled, showAdv, showingModal } = this.state;
+        const { closing, isDragDisabled, showAdv, showingModal, dataTypeChangeToConfirm } = this.state;
         const {
             index,
             field,
@@ -532,9 +575,27 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                 />
                             </div>
                         </Collapse>
+                        {dataTypeChangeToConfirm && (
+                            <ConfirmDataTypeChangeModal
+                                originalRangeURI={field.original.rangeURI}
+                                newDataType={PropDescType.fromName(dataTypeChangeToConfirm)}
+                                onConfirm={this.onConfirmTypeChange}
+                                onCancel={this.onHideConfirmTypeChange}
+                            />
+                        )}
                     </div>
                 )}
             </Draggable>
         );
     }
 }
+
+const shouldShowConfirmDataTypeChange = (originalRangeURI: string, newRangeURI: string): boolean => {
+    if (newRangeURI && originalRangeURI !== newRangeURI) {
+        const wasString = STRING_CONVERT_URIS.indexOf(originalRangeURI) > -1;
+        const toString = STRING_CONVERT_URIS.indexOf(newRangeURI) > -1;
+        const toNumber = NUMBER_CONVERT_URIS.indexOf(newRangeURI) > -1;
+        return toNumber || (toString && !wasString);
+    }
+    return false;
+};

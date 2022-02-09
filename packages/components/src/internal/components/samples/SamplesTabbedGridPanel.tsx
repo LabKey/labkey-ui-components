@@ -31,6 +31,7 @@ import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditable
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
 import { SampleGridButtonProps } from './models';
+import { userCanEditStorageData } from '../../app/utils';
 
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 
@@ -326,7 +327,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     onBulkUpdateComplete={onBulkUpdateComplete}
                     editSelectionInGrid={onEditSelectionInGrid}
                     updateRows={onUpdateRows}
-                    determineStorage // determine storage for discard consumed samples
+                    determineStorage={userCanEditStorageData(user)} // determine storage for discard consumed samples
+                    user={user}
                 />
             )}
         </>

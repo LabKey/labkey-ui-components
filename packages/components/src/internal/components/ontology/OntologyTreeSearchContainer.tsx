@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, FC, memo, MouseEvent, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Alert, searchUsingIndex } from '../../..';
 
@@ -14,6 +14,8 @@ interface OntologySearchInputProps {
     inputName: string;
     className: string;
     searchPathClickHandler: (code: string) => void;
+    showBrowserHandler?: () => void;
+    fieldName?: string;
 }
 
 export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
@@ -58,10 +60,12 @@ interface OntologyTreeSearchContainerProps {
     initCode?: string;
     className?: string;
     searchPathClickHandler: (path: PathModel, isAlternatePath?: boolean) => void;
+    showBrowserHandler?: () => void;
+    fieldName?: string;
 }
 
 export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> = memo(props => {
-    const { ontology, searchPathClickHandler, inputName = "concept-search", className = "form-control", initCode = "" } = props;
+    const { ontology, searchPathClickHandler, inputName = "concept-search", className = "form-control", initCode = "", showBrowserHandler, fieldName } = props;
     const [isFocused, setIsFocused] = useState<boolean>();
     const [searchTerm, setSearchTerm] = useState<string>(initCode);
     const [searchHits, setSearchHits] = useState<ConceptModel[]>();
@@ -171,13 +175,17 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
                     onKeyUp={keyHandler}
                     value={searchTerm}
                 />
-            {showResults && <OntologySearchResultsMenu
-                searchHits={searchHits}
-                totalHits={totalHits}
-                isFocused={isFocused}
-                error={error}
-                onItemClick={onItemClick}
-            />}
+            {showResults &&
+                <OntologySearchResultsMenu
+                    searchHits={searchHits}
+                    totalHits={totalHits}
+                    isFocused={isFocused}
+                    error={error}
+                    onItemClick={onItemClick}
+                    showBrowserHandler={showBrowserHandler}
+                    fieldName={fieldName}
+                />
+            }
         </div>
     );
 });
@@ -188,11 +196,13 @@ interface OntologySearchResultsMenuProps {
     isFocused: boolean;
     error: string;
     onItemClick: (evt: MouseEvent<HTMLLIElement>, code: string) => void;
+    showBrowserHandler?: () => void;
+    fieldName?: string;
 }
 
 // exported for jest testing
 export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = memo(props => {
-    const { searchHits, isFocused, totalHits, error, onItemClick } = props;
+    const { searchHits, isFocused, totalHits, error, onItemClick, showBrowserHandler, fieldName } = props;
     const showMenu = useMemo(() => isFocused && (searchHits !== undefined || error !== undefined), [
         isFocused,
         searchHits,
@@ -201,6 +211,24 @@ export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = mem
     const hitsHaveDescriptions = useMemo(() => searchHits?.findIndex(hit => hit.description !== undefined) > -1, [
         searchHits,
     ]);
+
+    const onOpenPicker = useCallback(() => {
+        showBrowserHandler();
+    },[showBrowserHandler]);
+
+    const browserLink = useMemo(():ReactNode => {
+        // If the field or link action isn't available, just end the text
+        if (!fieldName || !onOpenPicker) return '.';
+
+        return (
+            <>
+                {', '}
+                <a className="show-toggle" onMouseDown={onOpenPicker}>
+                    {`or click here to Find ${fieldName} by Tree`}
+                </a>
+            </>
+        );
+    },[fieldName, onOpenPicker]);
 
     if (!showMenu) {
         return null;
@@ -236,7 +264,7 @@ export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = mem
                 {searchHits?.length < totalHits && (
                     <div className="result-footer">
                         {Number(totalHits).toLocaleString()} results found. Update your search term to further refine
-                        your results.
+                        your results{browserLink}
                     </div>
                 )}
             </ul>

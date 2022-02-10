@@ -9,13 +9,14 @@ import { SampleState } from '../../samples/models';
 import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { DiscardConsumedSamplesPanel } from '../../samples/DiscardConsumedSamplesPanel';
-import { waitForLifecycle } from '../../../testHelpers';
+import { mountWithServerContext, waitForLifecycle } from '../../../testHelpers';
 
 import { getSamplesTestAPIWrapper } from '../../samples/APIWrapper';
 
 import { getTestAPIWrapper } from '../../../APIWrapper';
 
 import { SampleStatusInput } from './SampleStatusInput';
+import { TEST_USER_EDITOR, TEST_USER_STORAGE_EDITOR } from '../../../../test/data/users';
 
 const COLUMN_STATUS = new QueryColumn({
     fieldKey: 'samplestate',
@@ -57,7 +58,10 @@ const DEFAULT_PROPS = {
 
 describe('SampleStatusInput', () => {
     test('initial value is blank', async () => {
-        const component = mount(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} />);
+        const component = mountWithServerContext(
+            <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />,
+            { user: TEST_USER_STORAGE_EDITOR }
+        );
         await waitForLifecycle(component);
 
         const discardPanel = component.find(DiscardConsumedSamplesPanel);
@@ -65,7 +69,10 @@ describe('SampleStatusInput', () => {
     });
 
     test('initial value is Consumed', async () => {
-        const component = mount(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} data={INIT_CONSUMED} />);
+        const component = mountWithServerContext(
+            <SampleStatusInput {...DEFAULT_PROPS} formsy={false} data={INIT_CONSUMED} />,
+            { user: TEST_USER_STORAGE_EDITOR }
+        );
         await waitForLifecycle(component);
 
         const discardPanel = component.find(DiscardConsumedSamplesPanel);
@@ -73,7 +80,10 @@ describe('SampleStatusInput', () => {
     });
 
     test('show discard', async () => {
-        const component = mount(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} forceShowDiscard={true} />);
+        const component = mountWithServerContext(
+            <SampleStatusInput {...DEFAULT_PROPS} formsy={false} forceShowDiscard={true} />,
+            { user: TEST_USER_STORAGE_EDITOR }
+        );
 
         await waitForLifecycle(component);
 
@@ -84,8 +94,9 @@ describe('SampleStatusInput', () => {
     });
 
     test('show discard, with allowDisable true (bulk edit)', async () => {
-        const component = mount(
-            <SampleStatusInput {...DEFAULT_PROPS} formsy={false} forceShowDiscard={true} allowDisable={true} />
+        const component = mountWithServerContext(
+            <SampleStatusInput {...DEFAULT_PROPS} formsy={false} forceShowDiscard={true} allowDisable={true} />,
+            { user: TEST_USER_STORAGE_EDITOR }
         );
 
         await waitForLifecycle(component);

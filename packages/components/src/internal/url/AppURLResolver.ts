@@ -318,13 +318,27 @@ export class SamplesResolver implements AppRouteResolver {
  * to the lineage page for a sample, but the URL here doesn't have any info about the related entity.
  */
 export class ExperimentRunResolver implements AppRouteResolver {
+
+    jobs: Set<number> // set of rowIds that are jobs
+
     static createURL(rowId: string | number): AppURL {
         return AppURL.create('rd','run', rowId);
+    }
+
+    constructor(jobs?: Set<number>) {
+        this.jobs = jobs !== undefined ? jobs : new Set();
     }
 
     fetch(parts: any[]): Promise<AppURL | boolean> {
         const rowId = parts[2];
 
+        if (isNaN(rowId)) {
+            // skip it
+            return Promise.resolve(true);
+        }
+        if (this.jobs.has(rowId)) {
+            return Promise.resolve(AppURL.create('workflow', rowId));
+        }
         return new Promise((resolve) => {
             return selectRows({
                 schemaName: SAMPLE_MANAGEMENT.JOBS.schemaName,

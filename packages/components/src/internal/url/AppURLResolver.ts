@@ -19,6 +19,7 @@ import { Filter } from '@labkey/api';
 import { AssayProtocolModel, caseInsensitive, fetchProtocol, getQueryDetails, SCHEMAS, selectRows } from '../..';
 
 import { AppURL, spliceURL } from './AppURL';
+import { SAMPLE_MANAGEMENT } from '../schemas';
 
 export interface AppRouteResolver {
     matches: (route: string) => boolean;
@@ -306,3 +307,44 @@ export class SamplesResolver implements AppRouteResolver {
         }
     }
 }
+
+/**
+ * Resolves experiment runs to workflow jobs if appropriate
+ * /rd/run/14/... -> /workflow/14/...
+ * If this doesn't correspond to a job, the link won't resolve.
+ *
+ * Ideally we would resolve to the original URL if it's not a job, but since that's a link out to LKS
+ * it's not current supported by AppRouteResolvers.  Alternatively, and perhaps more ideally, we'd resolve
+ * to the lineage page for a sample, but the URL here doesn't have any info about the related entity.
+ */
+export class ExperimentRunResolver implements AppRouteResolver {
+    static createURL(rowId: string | number): AppURL {
+        return AppURL.create('rd','run', rowId);
+    }
+
+    fetch(parts: any[]): Promise<AppURL | boolean> {
+        const rowId = parts[2];
+
+        return new Promise((resolve) => {
+            return selectRows({
+                schemaName: SAMPLE_MANAGEMENT.JOBS.schemaName,
+                queryName: SAMPLE_MANAGEMENT.JOBS.queryName,
+                filterArray: [Filter.create('RowId', rowId)],
+                columns: 'RowId'
+            }).then(result => {
+                const data = result.models[result.key];
+                if (data.rows) {
+                    resolve(AppURL.create('workflow', rowId))
+                }
+                resolve(true);
+            }).catch(reason => {
+                resolve(true);
+            });
+        });
+    }
+
+    matches(route: string): boolean {
+        return /\/rd\/run\/\d+$/.test(route);
+    }
+}
+

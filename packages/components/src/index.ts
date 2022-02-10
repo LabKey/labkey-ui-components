@@ -208,7 +208,13 @@ import {
 import { getLocation, pushParameter, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
 import { getHelpLink, HELP_LINK_REFERRER, HelpLink, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
-import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './internal/url/AppURLResolver';
+import {
+    AssayResolver,
+    AssayRunResolver,
+    ExperimentRunResolver,
+    ListResolver,
+    SamplesResolver
+} from './internal/url/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
 import { EditableGridPanelDeprecated } from './internal/components/editable/EditableGridPanelDeprecated';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
@@ -849,6 +855,7 @@ export {
     AssayRunResolver,
     ListResolver,
     SamplesResolver,
+    ExperimentRunResolver,
     getLocation,
     pushParameter,
     replaceParameter,

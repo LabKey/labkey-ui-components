@@ -45,7 +45,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             if (filterOption) {
                 setActiveFilterType(filterOption);
 
-                const values = getFilterValuesAsArray(fieldFilter);
+                const values = getFilterValuesAsArray(fieldFilter, '');
                 if (filterOption.betweenOperator) {
                     setFirstFilterValue(values[0]);
                     setSecondFilterValue(values[1]);

@@ -154,7 +154,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         if (!dataTypeFilters || !activeField) return null;
 
         const activeParentFilters: FieldFilter[] = dataTypeFilters[activeQuery];
-        return activeParentFilters?.find(filter => filter.filter.getColumnName() === activeField.fieldKey);
+        return activeParentFilters?.find(filter => filter.fieldKey === activeField.fieldKey);
     }, [activeField, activeQuery, dataTypeFilters]);
 
     const onFilterUpdate = useCallback(
@@ -164,7 +164,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             const dataTypeFiltersUpdated = { ...dataTypeFilters };
             const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
             const newParentFilters =
-                activeParentFilters?.filter(filter => filter.filter.getColumnName() != activeField.fieldKey) ?? [];
+                activeParentFilters?.filter(filter => filter.fieldKey != activeField.fieldKey) ?? [];
 
             if (newFilter != null)
                 newParentFilters.push({
@@ -188,13 +188,27 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         Object.keys(dataTypeFilters).forEach(parent => {
             const filterFields = dataTypeFilters[parent];
             filterFields.forEach(field => {
-                const key = parent + '-' + field.filter.getColumnName();
+                const key = parent + '-' + field.fieldKey;
                 status[key] = true;
             });
         });
 
         return status;
     }, [dataTypeFilters]);
+
+    const fieldDistinctValueFilters = useMemo(() => {
+        if (!dataTypeFilters || !activeQuery || !activeField) return null;
+
+        let filters = [];
+
+        //use active filters to filter distinct values, but exclude filters on current field
+        dataTypeFilters?.[activeQuery]?.forEach(field => {
+            if (field.fieldKey !== activeField.fieldKey)
+                filters.push(field.filter);
+        });
+
+        return filters;
+    }, [dataTypeFilters, activeQuery, activeField]);
 
     // TODO when populating types, adjust container filter to include the proper set of sample types
     //  (current + project + shared, in most cases).  For LKB, check if we should filter out any of the
@@ -286,41 +300,43 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                     <div>
                                         <Nav bsStyle="tabs">
                                             <NavItem eventKey={EntityFieldFilterTabs.Filter}>Filter</NavItem>
-                                            {/* {(!activeField || activeField?.allowFaceting()) &&*/}
-                                            {/*    <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>Choose values</NavItem>}*/}
+                                             {(!activeField || activeField?.allowFaceting()) &&
+                                                <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>Choose values</NavItem>}
                                         </Nav>
-                                        <Tab.Content animation>
+                                        <Tab.Content animation className="parent-search-panel__values-col-content">
                                             <Tab.Pane eventKey={EntityFieldFilterTabs.Filter}>
                                                 <div className="parent-search-panel__col-sub-title">
                                                     Find values for {activeField.caption}
                                                 </div>
-                                                <FilterExpressionView
+                                                {activeTab === EntityFieldFilterTabs.Filter &&
+                                                    <FilterExpressionView
                                                     key={activeField.fieldKey}
                                                     field={activeField}
                                                     fieldFilter={currentFieldFilter?.filter}
                                                     onFieldFilterUpdate={onFilterUpdate}
-                                                />
+                                                />}
                                             </Tab.Pane>
-                                            {/* <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>*/}
-                                            {/*    <div className="parent-search-panel__col-sub-title">Find values for {activeField.caption}</div>*/}
-                                            {/*    {*/}
-                                            {/*        activeField?.allowFaceting() &&*/}
-                                            {/*        <FilterFacetedSelector*/}
-                                            {/*            selectDistinctOptions={*/}
-                                            {/*                {*/}
-                                            {/*                    column: activeField?.fieldKey,*/}
-                                            {/*                    // containerFilter: model.containerFilter,*/}
-                                            {/*                    // containerPath: model.containerPath,*/}
-                                            {/*                    schemaName: entityDataType?.instanceSchemaName,*/}
-                                            {/*                    queryName: activeQuery,*/}
-                                            {/*                    viewName: "",*/}
-                                            {/*                    filterArray: [], //TODO use active filters to filter distinct values, but exclude filters on current field*/}
-                                            {/*                    parameters: null, //TODO use active parameters to filter distinct values*/}
-                                            {/*                }*/}
-                                            {/*            }*/}
-                                            {/*        />*/}
-                                            {/*    }*/}
-                                            {/* </Tab.Pane>*/}
+                                             <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
+                                                <div className="parent-search-panel__col-sub-title">Find values for {activeField.caption}</div>
+                                                {
+                                                    (activeTab === EntityFieldFilterTabs.ChooseValues && activeField?.jsonType === 'string' && activeField?.allowFaceting()) &&
+                                                    <FilterFacetedSelector
+                                                        selectDistinctOptions={
+                                                            {
+                                                                column: activeField?.fieldKey,
+                                                                schemaName: entityDataType?.instanceSchemaName,
+                                                                queryName: activeQuery,
+                                                                viewName: "",
+                                                                filterArray: fieldDistinctValueFilters,
+                                                            }
+                                                        }
+                                                        fieldFilter={currentFieldFilter?.filter}
+                                                        fieldKey={activeField.fieldKey}
+                                                        key={activeField.fieldKey}
+                                                        onFieldFilterUpdate={onFilterUpdate}
+                                                    />
+                                                }
+                                             </Tab.Pane>
                                         </Tab.Content>
                                     </div>
                                 </Tab.Container>

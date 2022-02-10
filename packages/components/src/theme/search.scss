@@ -111,6 +111,13 @@
                 border-bottom: 1px solid $light-gray;
             }
         }
+
+        .parent-search-panel__values-col-content {
+            .parent-search-panel__col-content & {
+                overflow: hidden;
+            }
+            height: 420px;
+        }
     }
 
     .parent-search-panel__empty-msg {
@@ -169,3 +176,38 @@
         }
     }
 }
+
+.OmniBox--multi {
+    .OmniBox-value.filter-result-pills-value {
+        max-width: 90%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin: 3px 0;
+
+        &:hover {
+            white-space: normal;
+        }
+    }
+}
+
+.search-parent-entity-col-values-list-value {
+    margin: 3px 0;
+    line-height: 22px;
+}
+
+.search-parent-entity-col-values-list {
+        height: 355px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+}
+
+.search-parent-entity-col-values-list-value-val {
+    margin-left: 5px;
+
+    &:hover {
+        color: $gray-light;
+        cursor: pointer;
+    }
+}
+

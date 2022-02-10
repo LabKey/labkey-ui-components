@@ -89,4 +89,16 @@ describe('<SelectionMenuItem/>', () => {
         expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
         wrapper.unmount();
     });
+
+    test('with href', () => {
+        const text = 'Menu Item Text';
+        const model = new QueryGridModel({
+            totalRows: 5,
+            selectedIds: List(['1', '2', '3']),
+        });
+        const href = "http://my.href.test";
+        const wrapper = mount(<SelectionMenuItem maxSelection={2} id="jest-test-1" model={model} text={text} href={href} />);
+        expect(wrapper.prop('href')).toBe(href);
+        expect(wrapper.prop('onClick')).toBe(undefined);
+    });
 });

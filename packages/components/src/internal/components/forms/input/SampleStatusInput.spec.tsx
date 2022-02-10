@@ -17,6 +17,7 @@ import { getTestAPIWrapper } from '../../../APIWrapper';
 
 import { SampleStatusInput } from './SampleStatusInput';
 import { TEST_USER_EDITOR, TEST_USER_STORAGE_EDITOR } from '../../../../test/data/users';
+import { QuerySelect } from '../QuerySelect';
 
 const COLUMN_STATUS = new QueryColumn({
     fieldKey: 'samplestate',
@@ -79,31 +80,68 @@ describe('SampleStatusInput', () => {
         expect(discardPanel).toHaveLength(0);
     });
 
-    test('show discard', async () => {
-        const component = mountWithServerContext(
-            <SampleStatusInput {...DEFAULT_PROPS} formsy={false} forceShowDiscard={true} />,
-            { user: TEST_USER_STORAGE_EDITOR }
+
+    test('change to consumed status, editor', async () => {
+        const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false}  allowDisable />;
+        const wrapper = mountWithServerContext(
+            component,
+            { user: TEST_USER_EDITOR }
         );
 
-        await waitForLifecycle(component);
+        await waitForLifecycle(wrapper); // retrieve statuses
+        wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
 
-        const discardPanel = component.find(DiscardConsumedSamplesPanel);
-        expect(discardPanel).toHaveLength(1);
-
-        expect(component.find('.sample-bulk-update-discard-panel')).toHaveLength(0);
+        await waitForLifecycle(wrapper); // update after select
+        const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
+        expect(discardPanel).toHaveLength(0);
     });
 
-    test('show discard, with allowDisable true (bulk edit)', async () => {
-        const component = mountWithServerContext(
-            <SampleStatusInput {...DEFAULT_PROPS} formsy={false} forceShowDiscard={true} allowDisable={true} />,
+    test('change to consumed status, storage editor, allow disable (bulk edit)', async () => {
+        const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false}  allowDisable />;
+        const wrapper = mountWithServerContext(
+            component,
             { user: TEST_USER_STORAGE_EDITOR }
         );
 
-        await waitForLifecycle(component);
-
-        const discardPanel = component.find(DiscardConsumedSamplesPanel);
+        await waitForLifecycle(wrapper);
+        wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
+        await waitForLifecycle(wrapper);
+        const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(1);
 
-        expect(component.find('.sample-bulk-update-discard-panel')).toHaveLength(1);
+        expect(wrapper.find('.sample-bulk-update-discard-panel')).toHaveLength(1);
+    });
+
+    test('change to consumed status, storage editor, no allowDisable', async () => {
+        const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />;
+        const wrapper = mountWithServerContext(
+            component,
+            { user: TEST_USER_STORAGE_EDITOR }
+        );
+
+        await waitForLifecycle(wrapper);
+        wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
+        await waitForLifecycle(wrapper);
+        const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
+        expect(discardPanel).toHaveLength(1);
+
+        expect(wrapper.find('.sample-bulk-update-discard-panel')).toHaveLength(0);
+    });
+
+
+    test('change to not consumed, storage editor', async () => {
+        const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />;
+        const wrapper = mountWithServerContext(
+            component,
+            { user: TEST_USER_STORAGE_EDITOR }
+        );
+
+        await waitForLifecycle(wrapper);
+        wrapper.find(QuerySelect).prop('onQSChange')('name', 100, [], undefined);
+        await waitForLifecycle(wrapper);
+        const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
+        expect(discardPanel).toHaveLength(0);
+
+        expect(wrapper.find('.sample-bulk-update-discard-panel')).toHaveLength(0);
     });
 });

@@ -33,7 +33,6 @@ interface SampleStatusInputProps {
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     inputClass?: string;
     formsy?: boolean; // for jest test
-    forceShowDiscard?: boolean; // workaround for jest test due to difficulty getting QuerySelect to work with jest
 }
 
 export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
@@ -167,7 +166,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 inputClass={inputClass}
             />
             {error && <Alert>{error}</Alert>}
-            {(showDiscardPanel || props.forceShowDiscard) && <>{discardPanel}</>}
+            {showDiscardPanel && <>{discardPanel}</>}
         </React.Fragment>
     );
 });

@@ -332,8 +332,7 @@ export class ExperimentRunResolver implements AppRouteResolver {
                 filterArray: [Filter.create('RowId', rowId)],
                 columns: 'RowId'
             }).then(result => {
-                const data = result.models[result.key];
-                if (data.rows) {
+                if (Object.keys(result.models[result.key]).length) {
                     resolve(AppURL.create('workflow', rowId))
                 }
                 resolve(true);

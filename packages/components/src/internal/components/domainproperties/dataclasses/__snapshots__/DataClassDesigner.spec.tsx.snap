@@ -1516,6 +1516,7 @@ exports[`DataClassDesigner initModel 1`] = `
         "query": QueryServerAPIWrapper {
           "getEntityTypeOptions": [Function],
           "getQueryDetails": [Function],
+          "incrementClientSideMetricCount": [Function],
         },
         "samples": SamplesServerAPIWrapper {
           "getFieldLookupFromSelection": [Function],

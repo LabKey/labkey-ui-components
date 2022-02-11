@@ -3,7 +3,7 @@ import { getServerContext } from '@labkey/api';
 
 import classNames from 'classnames';
 
-import { buildURL, incrementClientSideMetricCount } from '../../..';
+import { buildURL } from '../../..';
 
 import { ContainerTabModel } from './models';
 import {
@@ -14,15 +14,17 @@ import {
     TO_LKS_TAB_METRIC,
 } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface ProductLKSDrawerProps {
+    api?: ComponentsAPIWrapper;
     showHome: boolean;
     disableLKSContainerLink?: boolean;
     tabs: ContainerTabModel[];
 }
 
 export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
-    const { tabs, disableLKSContainerLink, showHome } = props;
+    const { tabs, disableLKSContainerLink, showHome, api } = props;
     const { container, homeContainer, user } = getServerContext();
     const isHomeContainer = useMemo(() => container.path === '/home', [container]);
     const [transition, setTransition] = useState<boolean>(true);
@@ -32,17 +34,17 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
     }, []);
 
     const onTabClick = useCallback(() => {
-        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_TAB_METRIC);
+        api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_TAB_METRIC);
     }, []);
 
     const visibleTabs = tabs.filter(tab => !tab.disabled);
 
     const onHomeClick = useCallback(() => {
-        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_HOME_METRIC);
+        api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_HOME_METRIC);
     }, []);
 
     const onContainerClick = useCallback(() => {
-        incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_CONTAINER_METRIC);
+        api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_CONTAINER_METRIC);
     }, []);
 
     return (
@@ -96,6 +98,10 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
         </div>
     );
 });
+
+ProductLKSDrawer.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};
 
 // exported for jest testing
 export function getProjectBeginUrl(container: string): string {

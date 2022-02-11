@@ -106,6 +106,8 @@ import {
     EntityParentTypeSelectors,
     removeEntityParentType,
 } from './EntityParentTypeSelectors';
+import { ENTITY_CREATION_METRIC } from './constants';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
@@ -128,6 +130,7 @@ class EntityGridLoader implements IGridLoader {
 }
 
 interface OwnProps {
+    api?: ComponentsAPIWrapper;
     asyncSize?: number; // the file size cutoff to enable async import. If undefined, async is not supported
     auditBehavior?: AuditBehaviorTypes;
     afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?) => void;
@@ -189,6 +192,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         numPerParent: 1,
         tab: EntityInsertPanelTabs.First,
         loadNameExpressionOptions,
+        api: getDefaultAPIWrapper(),
     };
 
     private readonly capNounSingular;
@@ -707,7 +711,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     insertRowsFromGrid = async (): Promise<void> => {
         const { insertModel, creationType } = this.state;
-        const { entityDataType } = this.props;
+        const { api, entityDataType, nounPlural } = this.props;
         const queryGridModel = this.getQueryGridModel();
         const editorModel = getEditorModel(queryGridModel.getId());
         const errors = editorModel.getValidationErrors(queryGridModel, entityDataType.uniqueFieldKey);
@@ -734,6 +738,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             this.setSubmitting(false);
 
             if (response?.rows) {
+                api.query.incrementClientSideMetricCount(ENTITY_CREATION_METRIC, nounPlural + 'CreationFromGrid');
                 this.props.onDataChange?.(false);
                 this.props.afterEntityCreation?.(
                     insertModel.getTargetEntityTypeLabel(),
@@ -1045,6 +1050,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     submitFileHandler = async (): Promise<void> => {
         const {
+            api,
             fileImportParameters,
             nounPlural,
             entityDataType,
@@ -1068,7 +1074,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             );
 
             this.setSubmitting(false);
+            api.query.incrementClientSideMetricCount(
+                ENTITY_CREATION_METRIC,
+                nounPlural + 'FileImport' + (isMerge ? 'WithMerge' : 'WithoutMerge')
+            );
             onDataChange?.(false);
+
             if (useAsync) {
                 onBackgroundJobStart?.(insertModel.getTargetEntityTypeLabel(), file.name, response.jobId);
             } else {

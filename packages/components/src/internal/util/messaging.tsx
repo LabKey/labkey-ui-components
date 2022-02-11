@@ -76,6 +76,12 @@ export function resolveErrorMessage(error: any, noun = 'data', nounPlural?: stri
             return `There was a problem ${verb || 'retrieving or updating'} your ${
                 noun || 'data'
             }.  The request did not contain the proper identifiers.  Make sure the ${noun || 'data'} are still valid.`;
+        } else if (lcMessage.indexOf("unable to set genid to ") === 0) {
+            // genId display value should be 1 larger than DB value
+            const prefix = "Unable to set genId to ";
+            const numberEndInd = lcMessage.indexOf(' ', prefix.length + 1);
+            const numberStr = lcMessage.substring(prefix.length, numberEndInd);
+            return prefix + (parseInt(numberStr) + 1) + lcMessage.substring(numberEndInd);
         } else if (lcMessage.indexOf(IllegalArgumentMessage) >= 0) {
             return trimExceptionPrefix(IllegalArgumentMessage, errorMsg);
         } else if (lcMessage.indexOf('at least one of "file", "runfilepath", or "datarows" is required') >= 0) {

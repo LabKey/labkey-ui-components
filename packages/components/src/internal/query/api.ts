@@ -395,20 +395,27 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
         }
 
         if (userConfig.hasOwnProperty('sql')) {
+            const saveInSession = userConfig.saveInSession === true;
             Query.executeSql(
                 Object.assign({}, userConfig, {
                     method: 'POST',
                     requiredVersion: 17.1,
                     sql: userConfig.sql,
-                    saveInSession: userConfig.saveInSession === true,
+                    saveInSession,
                     containerFilter: userConfig.containerFilter ?? getContainerFilter(userConfig.containerPath),
                     success: json => {
                         result = handleSelectRowsResponse(json);
-                        schemaQuery = SchemaQuery.create(userConfig.schemaName, json.queryName);
-                        key = resolveSchemaQuery(schemaQuery);
                         hasResults = true;
+                        let resultSchemaQuery: SchemaQuery;
 
-                        getQueryDetails(schemaQuery)
+                        if (saveInSession) {
+                            resultSchemaQuery = SchemaQuery.create(userConfig.schemaName, json.queryName);
+                            key = resolveSchemaQuery(resultSchemaQuery);
+                        } else {
+                            resultSchemaQuery = schemaQuery;
+                        }
+
+                        getQueryDetails(resultSchemaQuery)
                             .then(d => {
                                 hasDetails = true;
                                 details = d;

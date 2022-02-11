@@ -131,7 +131,7 @@ const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo(props => {
                 setCountsByType([]);
                 setLoadingCounts(false);
             });
-    }, [picklist, getPicklistCountsBySampleType, setCountsByType, setLoadingCounts]);
+    }, [picklist]);
 
     if (loadingCounts) {
         return <LoadingSpinner />;
@@ -282,34 +282,39 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             });
 
             return [mine, team];
-        }, [filteredItems]);
+        }, [filteredItems, user]);
 
-        const onAddClicked = useCallback(async () => {
+        const onAddClicked = async (): Promise<void> => {
             setSubmitting(true);
-            try {
-                const insertResponse = await addSamplesToPicklist(activeItem.name, statusData, selectionKey, sampleIds);
-                setError(undefined);
-                setSubmitting(false);
-                api.query.incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
-                createNotification({
-                    message: () => (
-                        <AddedToPicklistNotification
-                            picklist={activeItem}
-                            numAdded={insertResponse.rows.length}
-                            numSelected={validCount}
-                            currentProductId={currentProductId}
-                            picklistProductId={picklistProductId}
-                        />
-                    ),
-                    alertClass: insertResponse.rows.length === 0 ? 'info' : 'success',
-                });
+            setError(undefined);
+            let numAdded: number;
 
-                afterAddToPicklist();
+            try {
+                const response = await addSamplesToPicklist(activeItem.name, statusData, selectionKey, sampleIds);
+                api.query.incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
+                numAdded = response.rows.length;
+                setSubmitting(false);
             } catch (e) {
                 setSubmitting(false);
-                setError(resolveErrorMessage(e));
+                setError(resolveErrorMessage(e) ?? 'Failed to add samples to picklist.');
+                return;
             }
-        }, [activeItem, selectionKey, setSubmitting, setError, sampleIds, validCount]);
+
+            createNotification({
+                message: () => (
+                    <AddedToPicklistNotification
+                        picklist={activeItem}
+                        numAdded={numAdded}
+                        numSelected={validCount}
+                        currentProductId={currentProductId}
+                        picklistProductId={picklistProductId}
+                    />
+                ),
+                alertClass: numAdded === 0 ? 'info' : 'success',
+            });
+
+            afterAddToPicklist();
+        };
 
         const closeModal = useCallback(() => {
             setError(undefined);

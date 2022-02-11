@@ -1,4 +1,4 @@
-import { Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
+import { Ajax, Domain, Filter, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
@@ -193,26 +193,35 @@ export interface SampleTypeCount {
 }
 
 export function getPicklistCountsBySampleType(listName: string): Promise<SampleTypeCount[]> {
-    return new Promise((resolve, reject) => {
-        Query.executeSql({
-            sql:
-                'SELECT COUNT(*) as ItemCount, \n' +
-                '       SampleId.SampleSet.Name AS SampleType, \n' +
-                '       SampleId.LabelColor\n' +
-                'FROM lists."' +
-                listName +
-                '"\n' +
-                'GROUP BY SampleId.SampleSet.Name, SampleId.LabelColor\n' +
-                'ORDER BY SampleId.SampleSet.Name',
-            schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
-            success: data => {
-                resolve(data.rows);
-            },
-            failure: reason => {
-                console.error(reason);
-                reject(reason);
-            },
-        });
+    return new Promise(async (resolve, reject) => {
+        try {
+            const { key, models, orderedModels } = await selectRows({
+                schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
+                queryName: listName,
+                sql: [
+                    'SELECT COUNT(*) as ItemCount,',
+                    'SampleId.SampleSet.Name AS SampleType,',
+                    'SampleId.LabelColor',
+                    `FROM "${SCHEMAS.PICKLIST_TABLES.SCHEMA}"."${listName}"`,
+                    'GROUP BY SampleId.SampleSet.Name, SampleId.LabelColor',
+                    'ORDER BY SampleId.SampleSet.Name',
+                ].join('\n'),
+            });
+
+            const counts = orderedModels[key]
+                .map(idx => models[key][idx])
+                .map(row => ({
+                    ItemCount: row.ItemCount.value,
+                    LabelColor: row.LabelColor.value,
+                    SampleType: row.SampleType.value,
+                }))
+                .toArray();
+
+            resolve(counts);
+        } catch (e) {
+            console.error('Failed to get picklist counts by sample type', e);
+            reject(e);
+        }
     });
 }
 
@@ -489,7 +498,7 @@ export const getPicklistFromId = async (listId: number): Promise<Picklist> => {
 };
 
 // exported for jest testing
-export const convertPicklistSampleTypeData = (data: Record<string, any>[]): string[] => {
+export const convertPicklistSampleTypeData = (data: Array<Record<string, any>>): string[] => {
     const sampleTypes = [];
     data.forEach(row => {
         sampleTypes.push(caseInsensitive(row, 'SampleType').displayValue);

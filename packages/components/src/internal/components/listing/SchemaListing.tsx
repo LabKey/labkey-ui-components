@@ -16,9 +16,10 @@
 import React, { Component, ReactNode } from 'react';
 import { Link } from 'react-router';
 import { List, Map } from 'immutable';
+import { Query } from '@labkey/api';
 
-import { AppURL, Grid, GridColumn, LoadingSpinner, SchemaDetails } from '../../..';
-import { fetchSchemas } from '../../schemas';
+import { AppURL, Grid, GridColumn, LoadingSpinner, naturalSortByProperty, SchemaDetails } from '../../..';
+import { processSchemas } from '../../query/api';
 
 const columns = List([
     new GridColumn({
@@ -41,6 +42,29 @@ const columns = List([
         title: 'Description',
     }),
 ]);
+
+function fetchSchemas(schemaName?: string): Promise<List<Map<string, SchemaDetails>>> {
+    return new Promise((resolve, reject) => {
+        Query.getSchemas({
+            apiVersion: 9.3,
+            schemaName,
+            success: schemas => {
+                resolve(
+                    processSchemas(schemas)
+                        .filter(schema => {
+                            const start = schemaName ? schemaName.length + 1 : 0;
+                            return schema.fullyQualifiedName.substring(start).indexOf('.') === -1;
+                        })
+                        .sort(naturalSortByProperty('schemaName'))
+                        .toList()
+                );
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+}
 
 interface SchemaListingProps {
     schemaName?: string;

@@ -938,5 +938,5 @@ export async function getFieldLookupFromSelection(
         }
     }
 
-    return [...sampleIds];
+    return Array.from(sampleIds);
 }

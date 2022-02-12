@@ -16,15 +16,19 @@ import { caseInsensitive, OperationConfirmationData, SCHEMAS } from '../../..';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
-import { isSampleStatusEnabled } from '../../app/utils';
+import { isSampleStatusEnabled, isSubfolderDataEnabled } from '../../app/utils';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
+
+export function getPicklistListingContainerFilter(): Query.ContainerFilter {
+    return isSubfolderDataEnabled() ? Query.ContainerFilter.current : undefined;
+}
 
 export function getPicklists(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
         const { queryName, schemaName } = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS;
         selectRows({
-            containerFilter: Query.ContainerFilter.current,
+            containerFilter: getPicklistListingContainerFilter(),
             schemaName,
             queryName,
             sort: 'Name',

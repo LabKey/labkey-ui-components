@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, useCallback, useMemo, useState } from 'react';
 
-import { Filter, PermissionTypes, Query } from '@labkey/api';
+import { Filter, PermissionTypes } from '@labkey/api';
 
 import {
     Actions,
@@ -26,7 +26,7 @@ import {
 
 import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
-import { deletePicklists } from './actions';
+import { deletePicklists, getPicklistListingContainerFilter } from './actions';
 import { Picklist } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 
@@ -168,7 +168,7 @@ export const PicklistListing: FC<OwnProps> = memo(props => {
     const queryConfigs = {
         [MY_PICKLISTS_GRID_ID]: {
             baseFilters: [Filter.create('CreatedBy', user.id)],
-            containerFilter: Query.ContainerFilter.current,
+            containerFilter: getPicklistListingContainerFilter(),
             sorts: [new QuerySort({ fieldKey: 'Name' })],
             id: MY_PICKLISTS_GRID_ID,
             title: 'My Picklists',
@@ -177,7 +177,7 @@ export const PicklistListing: FC<OwnProps> = memo(props => {
         },
         [TEAM_PICKLISTS_GRID_ID]: {
             baseFilters: [Filter.create('Category', PUBLIC_PICKLIST_CATEGORY)],
-            containerFilter: Query.ContainerFilter.current,
+            containerFilter: getPicklistListingContainerFilter(),
             sorts: [new QuerySort({ fieldKey: 'Name' })],
             id: TEAM_PICKLISTS_GRID_ID,
             title: 'Team Picklists',

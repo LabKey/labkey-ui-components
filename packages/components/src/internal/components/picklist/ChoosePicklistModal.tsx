@@ -494,19 +494,19 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
             // Look up SampleIds from the selected row ids.
             // Using sampleFieldKey as proxy flag to determine if lookup is needed
             if (sampleFieldKey && queryModel) {
-                const ids = await api.samples.getFieldLookupFromSelection(
+                const ids_ = await api.samples.getFieldLookupFromSelection(
                     queryModel.schemaQuery.schemaName,
                     queryModel.schemaQuery.queryName,
                     [...queryModel.selections],
                     sampleFieldKey
                 );
-                setIds(ids);
+                setIds(ids_);
 
                 // Clear the selection key as it will not correctly map to the sampleIds
                 setSelKey(undefined);
             }
         })();
-    }, [sampleFieldKey, queryModel]);
+    }, [api, sampleFieldKey, queryModel]);
 
     useEffect(() => {
         getPicklists()
@@ -518,7 +518,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                 setError('There was a problem retrieving the picklist data. ' + resolveErrorMessage(reason));
                 setLoading(false);
             });
-    }, [getPicklists, setItems, setError, setLoading]);
+    }, []);
 
     return (
         <ChoosePicklistModalDisplay

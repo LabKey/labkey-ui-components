@@ -1,4 +1,4 @@
-import { Ajax, Domain, Filter, Utils } from '@labkey/api';
+import { Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
@@ -22,9 +22,9 @@ import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './mode
 
 export function getPicklists(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
-        const schemaName = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.schemaName;
-        const queryName = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.queryName;
+        const { queryName, schemaName } = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS;
         selectRows({
+            containerFilter: Query.ContainerFilter.current,
             schemaName,
             queryName,
             sort: 'Name',
@@ -202,7 +202,7 @@ export function getPicklistCountsBySampleType(listName: string): Promise<SampleT
                     'SELECT COUNT(*) as ItemCount,',
                     'SampleId.SampleSet.Name AS SampleType,',
                     'SampleId.LabelColor',
-                    `FROM "${SCHEMAS.PICKLIST_TABLES.SCHEMA}"."${listName}"`,
+                    `FROM ${SCHEMAS.PICKLIST_TABLES.SCHEMA}."${listName}"`,
                     'GROUP BY SampleId.SampleSet.Name, SampleId.LabelColor',
                     'ORDER BY SampleId.SampleSet.Name',
                 ].join('\n'),

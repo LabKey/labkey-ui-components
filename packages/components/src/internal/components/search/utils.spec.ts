@@ -15,17 +15,19 @@ import { SCHEMAS } from '../../schemas';
 import { TEXT_TYPE } from '../domainproperties/PropDescType';
 
 import {
+    ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues,
     getFieldFiltersValidationResult,
     getFilterValuesAsArray,
     getFinderStartText,
     getFinderViewColumnsConfig,
     getSampleFinderCommonConfigs,
-    getSampleFinderQueryConfigs,
+    getSampleFinderQueryConfigs, getUpdatedCheckedValues, getUpdatedChooseValuesFilter,
     getUpdateFilterExpressionFilter,
     SAMPLE_FINDER_VIEW_NAME,
     searchFiltersFromJson,
     searchFiltersToJson,
 } from './utils';
+import { NOT_ANY_FILTER_TYPE } from "../../url/NotAnyFilterType";
 
 test('getFinderStartText', () => {
     expect(getFinderStartText([])).toBe('Start by adding  properties.');
@@ -523,4 +525,275 @@ describe('getUpdateFilterExpressionFilter', () => {
             Filter.create(fieldKey, null, Filter.Types.BETWEEN)
         );
     });
+});
+
+
+const distinctValues = ['[All]', '[blank]', 'ed', 'ned', 'ted', 'red', 'bed'];
+const fieldKey = 'thing';
+
+const checkedOne = Filter.create(fieldKey, 'ed');
+const uncheckedOne = Filter.create(fieldKey, 'red', Filter.Types.NOT_EQUAL);
+const uncheckedTwo = Filter.create(fieldKey, 'ed;ned', Filter.Types.NOT_IN);
+const checkedTwo = Filter.create(fieldKey, 'ed;ned', Filter.Types.IN);
+const checkedTwoWithBlank = Filter.create(fieldKey, ';ed' , Filter.Types.IN);
+const checkedThree = Filter.create(fieldKey, 'ed;ned;ted', Filter.Types.IN);
+const checkedZero = Filter.create(fieldKey, null, NOT_ANY_FILTER_TYPE);
+const anyFilter = Filter.create(fieldKey, null, Filter.Types.HAS_ANY_VALUE);
+const blankFilter = Filter.create(fieldKey, null, Filter.Types.ISBLANK);
+const notblankFilter = Filter.create(fieldKey, null, Filter.Types.NONBLANK);
+
+
+describe('getCheckedFilterValues', () => {
+
+    test('no filter', () => {
+        expect(
+            getCheckedFilterValues(null, distinctValues)
+        ).toEqual(distinctValues);
+    });
+
+    test('any filter', () => {
+        expect(
+            getCheckedFilterValues(anyFilter, distinctValues)
+        ).toEqual(distinctValues);
+    });
+
+    test('eq one', () => {
+        expect(
+            getCheckedFilterValues(checkedOne, distinctValues)
+        ).toEqual(['ed']);
+    });
+
+    test('not eq one', () => {
+        expect(
+            getCheckedFilterValues(uncheckedOne, distinctValues)
+        ).toEqual(['[blank]', 'ed', 'ned', 'ted', 'bed']);
+    });
+
+    test('isblank', () => {
+        expect(
+            getCheckedFilterValues(blankFilter, distinctValues)
+        ).toEqual(['[blank]']);
+    });
+
+    test('not blank', () => {
+        expect(
+            getCheckedFilterValues(notblankFilter, distinctValues)
+        ).toEqual(['ed', 'ned', 'ted', 'red', 'bed']);
+    });
+
+    test('in values', () => {
+        expect(
+            getCheckedFilterValues(checkedThree, distinctValues)
+        ).toEqual(['ed', 'ned', 'ted']);
+    });
+
+    test('not in values', () => {
+        expect(
+            getCheckedFilterValues(uncheckedTwo, distinctValues)
+        ).toEqual(['[blank]', 'ted', 'red', 'bed']);
+    });
+
+});
+
+describe('getUpdatedCheckedValues', () => {
+
+    test('check another, from eq one', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues, 'ned', true, checkedOne)
+        ).toEqual(['ed', 'ned']);
+    });
+
+    test('check blank, from eq one', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues, EMPTY_VALUE_DISPLAY, true, checkedOne)
+        ).toEqual(['ed', EMPTY_VALUE_DISPLAY]);
+    });
+
+    test('all checked, then uncheck one', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues, 'red', false, null)
+        ).toEqual([EMPTY_VALUE_DISPLAY, 'ed', 'ned', 'ted', 'bed']);
+    });
+
+    test('two checked, then uncheck one', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues, 'ed', false, checkedTwo)
+        ).toEqual(['ned']);
+    });
+
+    test('two checked, then uncheck another so blank is the only value left', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues, 'ed', false, checkedTwoWithBlank)
+        ).toEqual([EMPTY_VALUE_DISPLAY]);
+    });
+
+    test('all checked, then uncheck blank', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues, EMPTY_VALUE_DISPLAY, false, null)
+        ).toEqual(['ed', 'ned', 'ted', 'red', 'bed']);
+    });
+
+    test('none checked, then check blank', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues, EMPTY_VALUE_DISPLAY, true, checkedZero)
+        ).toEqual([EMPTY_VALUE_DISPLAY]);
+    });
+
+    test('none checked, then check one', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues, 'ed', true, checkedZero)
+        ).toEqual(['ed']);
+    });
+
+    test('all checked, then check blank and uncheck everything else', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues, EMPTY_VALUE_DISPLAY, true, null, true)
+        ).toEqual([EMPTY_VALUE_DISPLAY]);
+    });
+
+    test('half checked, then check one more', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues,'red', true, checkedThree)
+        ).toEqual(['ed', 'ned', 'ted', 'red']);
+    });
+
+    test('half checked, then uncheck one', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues,'ed', false, checkedThree)
+        ).toEqual(['ned', 'ted']);
+    });
+
+    test('one checked, then uncheck that one', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues,'ed', false, checkedOne)
+        ).toEqual([]);
+    });
+
+    test('one unchecked, then check that one', () => {
+        expect(
+            getUpdatedCheckedValues(distinctValues,'red', true, uncheckedOne)
+        ).toEqual(['[blank]', 'ed', 'ned', 'ted', 'bed', 'red', '[All]']);
+    });
+
+});
+
+describe('getUpdatedChooseValuesFilter', () => {
+
+    function validate(resultFilter: Filter.IFilter, expectedFilterUrlSuffix: string, expectedFilterValue?: any) {
+        if (resultFilter == null)
+            expect(resultFilter).toBeNull();
+
+        expect(resultFilter.getFilterType().getURLSuffix()).toEqual(expectedFilterUrlSuffix);
+
+        if (expectedFilterValue == null)
+            expect(resultFilter.getValue()).toBeNull();
+        else
+            expect(resultFilter.getValue()).toEqual(expectedFilterValue);
+    }
+
+    test('check ALL, from eq one', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, ALL_VALUE_DISPLAY, true, checkedOne),
+            ''
+        );
+    });
+
+    test('check another, from eq one', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ned', true, checkedOne),
+            'in',
+            ['ed', 'ned']
+        );
+    });
+
+    test('check blank, from eq one', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, EMPTY_VALUE_DISPLAY, true, checkedOne),
+            'in',
+            ['ed', '']
+        );
+    });
+
+    test('all checked, then uncheck one', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'red', false, null),
+            'neqornull',
+            'red'
+        );
+    });
+
+    test('two checked, then uncheck one', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ed', false, checkedTwo),
+            'eq',
+            'ned'
+        );
+    });
+
+    test('two checked, then uncheck another so blank is the only value left', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ed', false, checkedTwoWithBlank),
+            'isblank'
+        );
+    });
+
+    test('all checked, then uncheck blank', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, EMPTY_VALUE_DISPLAY, false, null),
+            'isnonblank'
+        );
+    });
+
+    test('none checked, then check blank', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, EMPTY_VALUE_DISPLAY, true, checkedZero),
+            'isblank'
+        );
+    });
+
+    test('none checked, then check one', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ed', true, checkedZero),
+            'eq',
+            'ed'
+        );
+    });
+
+    test('all checked, then check blank and uncheck everything else', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, EMPTY_VALUE_DISPLAY, true, null, true),
+            'isblank'
+        );
+    });
+
+    test('half checked, then check one more', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey,'red', true, checkedThree),
+            'notin',
+            ['', 'bed']
+        );
+    });
+
+    test('half checked, then uncheck one', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey,'ed', false, checkedThree),
+            'in',
+            ['ned', 'ted']
+        );
+    });
+
+    test('one checked, then uncheck that one', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey,'ed', false, checkedOne),
+            'notany'
+        );
+    });
+
+    test('one unchecked, then check that one', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey,'red', true, uncheckedOne),
+            ''
+        );
+    });
+
 });

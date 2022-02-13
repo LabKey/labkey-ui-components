@@ -346,35 +346,6 @@ export function getUpdateFilterExpressionFilter(
     return filter;
 }
 
-// // this util is only for string field type
-// export function isValueChecked(filter: Filter.IFilter, value: string): boolean {
-//     if (!filter) // if no existing filter, check all values by default
-//         return true;
-//
-//     const filterUrlSuffix = filter.getFilterType().getURLSuffix();
-//     const filterValues = getFilterValuesAsArray(filter);
-//
-//     switch (filterUrlSuffix) {
-//         case '':
-//         case 'any':
-//             return true;
-//         case 'isblank':
-//             return value === EMPTY_VALUE_DISPLAY;
-//         case 'isnonblank':
-//             return value !== EMPTY_VALUE_DISPLAY && value !== ALL_VALUE_DISPLAY;
-//         case 'neq':
-//             return value !== filterValues[0] && value !== ALL_VALUE_DISPLAY;
-//         case 'eq':
-//             return value === filterValues[0];
-//         case 'in':
-//             return filterValues.indexOf(value) > -1;
-//         case 'notin':
-//             return filterValues.indexOf(value) === -1 && value !== ALL_VALUE_DISPLAY;
-//         default:
-//             return false;
-//     }
-// }
-
 // this util is only for string field type
 export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string[]): string[] {
     if (!filter || !allValues) // if no existing filter, check all values by default
@@ -404,7 +375,7 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
     }
 }
 
-export function getUpdatedCheckedValues(allValues: string[], newValue: string, check: boolean, oldFilter: Filter.IFilter, uncheckOthers?: boolean) {
+export function getUpdatedCheckedValues(allValues: string[], newValue: string, check: boolean, oldFilter: Filter.IFilter, uncheckOthers?: boolean) : string[] {
     if (uncheckOthers)
         return [newValue];
 
@@ -426,7 +397,7 @@ export function getUpdatedCheckedValues(allValues: string[], newValue: string, c
     return newCheckedValues;
 }
 // this util is only for string field type
-export function getUpdatedChooseValuesFilter(allValues: string[], fieldKey: string, newValue: string, check: boolean, oldFilter: Filter.IFilter, uncheckOthers?: boolean): Filter.IFilter {
+export function getUpdatedChooseValuesFilter(allValues: string[], fieldKey: string, newValue: string, check: boolean, oldFilter: Filter.IFilter, uncheckOthers? /*click on the row but not on the checkbox would check the row value and uncheck everything else*/: boolean): Filter.IFilter {
 
     // if check all, or everything is checked
     if ((newValue === ALL_VALUE_DISPLAY && check))
@@ -455,7 +426,7 @@ export function getUpdatedChooseValuesFilter(allValues: string[], fieldKey: stri
 
     // if only one is checked
     if (newCheckedValues.length === 1) {
-        if (newCheckedValues[0] === EMPTY_VALUE_DISPLAY)
+        if (newCheckedValues[0] === '')
             return Filter.create(fieldKey, null, Filter.Types.ISBLANK);
 
         return Filter.create(fieldKey, newCheckedValues[0]);
@@ -466,7 +437,6 @@ export function getUpdatedChooseValuesFilter(allValues: string[], fieldKey: stri
         if (newUncheckedValues[0] === '')
             return Filter.create(fieldKey, null, Filter.Types.NONBLANK);
 
-        console.log('here');
         return Filter.create(fieldKey, newUncheckedValues[0], Filter.Types.NEQ_OR_NULL);
     }
 

@@ -7,7 +7,7 @@ import {genCellKey, getLookupValueDescriptors} from "../../actions";
 
 export const loadEditorModelData = async (queryModelData: Partial<QueryModel>): Promise<Partial<EditorModel>> => {
     const { orderedRows, rows, queryInfo } = queryModelData;
-    const columns = queryInfo.getInsertColumns(); // TODO see inclusion of model.requiredColumns in loadDataForEditor
+    const columns = queryInfo.getInsertColumns();
     const lookupValueDescriptors = await getLookupValueDescriptors(
         columns.toArray(),
         fromJS(rows),

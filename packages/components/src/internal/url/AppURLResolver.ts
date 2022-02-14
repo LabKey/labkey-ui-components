@@ -330,7 +330,8 @@ export class ExperimentRunResolver implements AppRouteResolver {
     }
 
     fetch(parts: any[]): Promise<AppURL | boolean> {
-        const rowId = parts[2];
+        const rowIdIndex = 2;
+        const rowId = parseInt(parts[rowIdIndex], 10);
 
         if (isNaN(rowId)) {
             // skip it
@@ -347,6 +348,7 @@ export class ExperimentRunResolver implements AppRouteResolver {
                 columns: 'RowId'
             }).then(result => {
                 if (Object.keys(result.models[result.key]).length) {
+                    this.jobs.add(rowId);
                     resolve(AppURL.create('workflow', rowId))
                 }
                 resolve(true);

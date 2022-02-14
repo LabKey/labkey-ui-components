@@ -91,6 +91,7 @@ import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem
 import { DisabledMenuItem } from './internal/components/menus/DisabledMenuItem';
 import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
+import { InsufficientPermissionsAlert } from './internal/components/permissions/InsufficientPermissionsAlert';
 import { InsufficientPermissionsPage } from './internal/components/permissions/InsufficientPermissionsPage';
 import { BasePermissionsCheckPage } from './internal/components/permissions/BasePermissionsCheckPage';
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from './internal/components/permissions/constants';
@@ -928,6 +929,7 @@ export {
     UserLink,
     ChangePasswordModal,
     UsersGridPanel,
+    InsufficientPermissionsAlert,
     InsufficientPermissionsPage,
     APPLICATION_SECURITY_ROLES,
     SITE_SECURITY_ROLES,

@@ -1,4 +1,4 @@
-import { Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
+import { Ajax, Domain, Filter, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
@@ -16,19 +16,14 @@ import { caseInsensitive, OperationConfirmationData, SCHEMAS } from '../../..';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
-import { isSampleStatusEnabled, isSubfolderDataEnabled } from '../../app/utils';
+import { isSampleStatusEnabled } from '../../app/utils';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
-
-export function getPicklistListingContainerFilter(): Query.ContainerFilter {
-    return isSubfolderDataEnabled() ? Query.ContainerFilter.current : undefined;
-}
 
 export function getPicklists(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
         const { queryName, schemaName } = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS;
         selectRows({
-            containerFilter: getPicklistListingContainerFilter(),
             schemaName,
             queryName,
             sort: 'Name',
@@ -492,8 +487,7 @@ export const getPicklistFromId = async (listId: number): Promise<Picklist> => {
 
     const listSampleTypeData = await selectRows({
         schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
-        sql: 'SELECT DISTINCT SampleID.SampleSet as SampleType FROM "' + picklist.name + '"',
-        saveInSession: true,
+        sql: `SELECT DISTINCT SampleID.SampleSet as SampleType FROM "${picklist.name}"`,
     });
     const sampleTypes = convertPicklistSampleTypeData(Object.values(listSampleTypeData.models[listSampleTypeData.key]));
     picklist = picklist.mutate({ sampleTypes });

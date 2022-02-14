@@ -14,8 +14,9 @@ import { resolveFilterType } from '../omnibox/actions/Filter';
 import { resolveFieldKey } from '../omnibox/utils';
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
+
 import { FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps } from './models';
-import {NOT_ANY_FILTER_TYPE} from "../../url/NotAnyFilterType";
 
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): string {
     const hintText = 'Start by adding ';
@@ -348,7 +349,8 @@ export function getUpdateFilterExpressionFilter(
 
 // this util is only for string field type
 export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string[]): string[] {
-    if (!filter || !allValues) // if no existing filter, check all values by default
+    if (!filter || !allValues)
+        // if no existing filter, check all values by default
         return allValues;
 
     const filterUrlSuffix = filter.getFilterType().getURLSuffix();
@@ -375,67 +377,73 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
     }
 }
 
-export function getUpdatedCheckedValues(allValues: string[], newValue: string, check: boolean, oldFilter: Filter.IFilter, uncheckOthers?: boolean) : string[] {
-    if (uncheckOthers)
-        return [newValue];
+export function getUpdatedCheckedValues(
+    allValues: string[],
+    newValue: string,
+    check: boolean,
+    oldFilter: Filter.IFilter,
+    uncheckOthers?: boolean
+): string[] {
+    if (uncheckOthers) return [newValue];
 
     const oldCheckedValues = getCheckedFilterValues(oldFilter, allValues);
     let newCheckedValues = [...oldCheckedValues];
     if (check) {
-        if (newCheckedValues.indexOf(newValue) === -1)
-            newCheckedValues.push(newValue);
+        if (newCheckedValues.indexOf(newValue) === -1) newCheckedValues.push(newValue);
         if (allValues.length - newCheckedValues.length === 1) {
-            if (newCheckedValues.indexOf(ALL_VALUE_DISPLAY) === -1)
-                newCheckedValues.push(ALL_VALUE_DISPLAY);
+            if (newCheckedValues.indexOf(ALL_VALUE_DISPLAY) === -1) newCheckedValues.push(ALL_VALUE_DISPLAY);
         }
-    }
-    else {
+    } else {
         newCheckedValues = newCheckedValues.filter(val => val !== newValue && val !== ALL_VALUE_DISPLAY);
-
     }
 
     return newCheckedValues;
 }
 // this util is only for string field type
-export function getUpdatedChooseValuesFilter(allValues: string[], fieldKey: string, newValue: string, check: boolean, oldFilter: Filter.IFilter, uncheckOthers? /*click on the row but not on the checkbox would check the row value and uncheck everything else*/: boolean): Filter.IFilter {
-
+export function getUpdatedChooseValuesFilter(
+    allValues: string[],
+    fieldKey: string,
+    newValue: string,
+    check: boolean,
+    oldFilter: Filter.IFilter,
+    uncheckOthers?: /* click on the row but not on the checkbox would check the row value and uncheck everything else*/ boolean
+): Filter.IFilter {
     // if check all, or everything is checked
-    if ((newValue === ALL_VALUE_DISPLAY && check))
-        return Filter.create(fieldKey, null, Filter.Types.HAS_ANY_VALUE);
+    if (newValue === ALL_VALUE_DISPLAY && check) return Filter.create(fieldKey, null, Filter.Types.HAS_ANY_VALUE);
 
     const newCheckedDisplayValues = getUpdatedCheckedValues(allValues, newValue, check, oldFilter, uncheckOthers);
     const newUncheckedDisplayValue = allValues.filter(val => newCheckedDisplayValues.indexOf(val) === -1);
 
-    let newCheckedValues = [];
-    let newUncheckedValues = [];
+    const newCheckedValues = [];
+    const newUncheckedValues = [];
 
     newCheckedDisplayValues.forEach(v => {
         newCheckedValues.push(v === EMPTY_VALUE_DISPLAY ? '' : v);
     });
-    newUncheckedDisplayValue.filter(v => v !== ALL_VALUE_DISPLAY).forEach(v => {
-        newUncheckedValues.push(v === EMPTY_VALUE_DISPLAY ? '' : v);
-    });
+    newUncheckedDisplayValue
+        .filter(v => v !== ALL_VALUE_DISPLAY)
+        .forEach(v => {
+            newUncheckedValues.push(v === EMPTY_VALUE_DISPLAY ? '' : v);
+        });
 
     // if everything is checked
-    if ((newValue === ALL_VALUE_DISPLAY && check) || (newCheckedValues.length === allValues.length))
+    if ((newValue === ALL_VALUE_DISPLAY && check) || newCheckedValues.length === allValues.length)
         return Filter.create(fieldKey, null, Filter.Types.HAS_ANY_VALUE);
 
     // if uncheck all or if everything is unchecked, create a new NOTANY filter type
-    if ((newValue === ALL_VALUE_DISPLAY && !check) || (newCheckedValues.length === 0))
+    if ((newValue === ALL_VALUE_DISPLAY && !check) || newCheckedValues.length === 0)
         return Filter.create(fieldKey, null, NOT_ANY_FILTER_TYPE);
 
     // if only one is checked
     if (newCheckedValues.length === 1) {
-        if (newCheckedValues[0] === '')
-            return Filter.create(fieldKey, null, Filter.Types.ISBLANK);
+        if (newCheckedValues[0] === '') return Filter.create(fieldKey, null, Filter.Types.ISBLANK);
 
         return Filter.create(fieldKey, newCheckedValues[0]);
     }
 
     // if only one is unchecked
     if (newUncheckedValues.length === 1) {
-        if (newUncheckedValues[0] === '')
-            return Filter.create(fieldKey, null, Filter.Types.NONBLANK);
+        if (newUncheckedValues[0] === '') return Filter.create(fieldKey, null, Filter.Types.NONBLANK);
 
         return Filter.create(fieldKey, newUncheckedValues[0], Filter.Types.NEQ_OR_NULL);
     }

@@ -16,12 +16,13 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { naturalSortByProperty } from '../../../public/sort';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter, FilterProps } from './models';
 import { getFieldFiltersValidationResult } from './utils';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -199,12 +200,11 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const fieldDistinctValueFilters = useMemo(() => {
         if (!dataTypeFilters || !activeQuery || !activeField) return null;
 
-        let filters = [];
+        const filters = [];
 
-        //use active filters to filter distinct values, but exclude filters on current field
+        // use active filters to filter distinct values, but exclude filters on current field
         dataTypeFilters?.[activeQuery]?.forEach(field => {
-            if (field.fieldKey !== activeField.fieldKey)
-                filters.push(field.filter);
+            if (field.fieldKey !== activeField.fieldKey) filters.push(field.filter);
         });
 
         return filters;
@@ -300,43 +300,48 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                     <div>
                                         <Nav bsStyle="tabs">
                                             <NavItem eventKey={EntityFieldFilterTabs.Filter}>Filter</NavItem>
-                                             {(!activeField || activeField?.allowFaceting()) &&
-                                                <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>Choose values</NavItem>}
+                                            {(!activeField || activeField?.allowFaceting()) && (
+                                                <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>
+                                                    Choose values
+                                                </NavItem>
+                                            )}
                                         </Nav>
                                         <Tab.Content animation className="parent-search-panel__values-col-content">
                                             <Tab.Pane eventKey={EntityFieldFilterTabs.Filter}>
                                                 <div className="parent-search-panel__col-sub-title">
                                                     Find values for {activeField.caption}
                                                 </div>
-                                                {activeTab === EntityFieldFilterTabs.Filter &&
+                                                {activeTab === EntityFieldFilterTabs.Filter && (
                                                     <FilterExpressionView
-                                                    key={activeField.fieldKey}
-                                                    field={activeField}
-                                                    fieldFilter={currentFieldFilter?.filter}
-                                                    onFieldFilterUpdate={onFilterUpdate}
-                                                />}
+                                                        key={activeField.fieldKey}
+                                                        field={activeField}
+                                                        fieldFilter={currentFieldFilter?.filter}
+                                                        onFieldFilterUpdate={onFilterUpdate}
+                                                    />
+                                                )}
                                             </Tab.Pane>
-                                             <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
-                                                <div className="parent-search-panel__col-sub-title">Find values for {activeField.caption}</div>
-                                                {
-                                                    (activeTab === EntityFieldFilterTabs.ChooseValues && activeField?.jsonType === 'string' && activeField?.allowFaceting()) &&
-                                                    <FilterFacetedSelector
-                                                        selectDistinctOptions={
-                                                            {
+                                            <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
+                                                <div className="parent-search-panel__col-sub-title">
+                                                    Find values for {activeField.caption}
+                                                </div>
+                                                {activeTab === EntityFieldFilterTabs.ChooseValues &&
+                                                    activeField?.jsonType === 'string' &&
+                                                    activeField?.allowFaceting() && (
+                                                        <FilterFacetedSelector
+                                                            selectDistinctOptions={{
                                                                 column: activeField?.fieldKey,
                                                                 schemaName: entityDataType?.instanceSchemaName,
                                                                 queryName: activeQuery,
-                                                                viewName: "",
+                                                                viewName: '',
                                                                 filterArray: fieldDistinctValueFilters,
-                                                            }
-                                                        }
-                                                        fieldFilter={currentFieldFilter?.filter}
-                                                        fieldKey={activeField.fieldKey}
-                                                        key={activeField.fieldKey}
-                                                        onFieldFilterUpdate={onFilterUpdate}
-                                                    />
-                                                }
-                                             </Tab.Pane>
+                                                            }}
+                                                            fieldFilter={currentFieldFilter?.filter}
+                                                            fieldKey={activeField.fieldKey}
+                                                            key={activeField.fieldKey}
+                                                            onFieldFilterUpdate={onFilterUpdate}
+                                                        />
+                                                    )}
+                                            </Tab.Pane>
                                         </Tab.Content>
                                     </div>
                                 </Tab.Container>

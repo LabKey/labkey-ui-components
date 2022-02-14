@@ -939,22 +939,24 @@ export function getContainerFilterForInsert(): Query.ContainerFilter {
     return Query.ContainerFilter.currentPlusProjectAndShared;
 }
 
-export interface  SelectDistinctResponse {
+export interface SelectDistinctResponse {
     values: any[];
     schemaName: string;
     queryName: string;
 }
 
-export function selectDistinctRows(selectDistinctOptions: Query.SelectDistinctOptions): Promise<SelectDistinctResponse> {
+export function selectDistinctRows(
+    selectDistinctOptions: Query.SelectDistinctOptions
+): Promise<SelectDistinctResponse> {
     return new Promise((resolve, reject) => {
         Query.selectDistinctRows({
             ...selectDistinctOptions,
-            success: (response) => {
+            success: response => {
                 console.log(response);
                 resolve({
-                    values: response["values"],
-                    schemaName: response["schemaName"],
-                    queryName: response["queryName"]
+                    values: response['values'],
+                    schemaName: response['schemaName'],
+                    queryName: response['queryName'],
                 });
             },
             failure: error => {

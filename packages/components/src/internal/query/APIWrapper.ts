@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable';
-import { Query } from "@labkey/api";
+import { Query } from '@labkey/api';
 
 import { QueryInfo } from '../../public/QueryInfo';
 import { EntityDataType, IEntityTypeOption } from '../components/entities/models';

@@ -1,5 +1,5 @@
-import React, {FC, memo, useCallback, useEffect, useMemo, useState} from 'react';
-import {Col, Row} from "react-bootstrap";
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 import { Filter, Query } from '@labkey/api';
 
@@ -7,11 +7,13 @@ import { naturalSort } from '../../../public/sort';
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from "./utils";
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from "../../APIWrapper";
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
 
 interface Props {
-    api?: ComponentsAPIWrapper,
+    api?: ComponentsAPIWrapper;
     selectDistinctOptions: Query.SelectDistinctOptions;
     fieldKey: string;
     fieldFilter: Filter.IFilter;
@@ -27,9 +29,10 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const [searchStr, setSearchStr] = useState<string>(undefined);
 
     useEffect(() => {
-        api.query.selectDistinctRows(selectDistinctOptions)
-            .then( result => {
-                let distinctValues = result.values
+        api.query
+            .selectDistinctRows(selectDistinctOptions)
+            .then(result => {
+                const distinctValues = result.values
                     .map(val => {
                         if (val === '' || val === null || val === undefined) return EMPTY_VALUE_DISPLAY;
                         return val;
@@ -45,30 +48,35 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     }, [selectDistinctOptions, fieldKey]);
 
     const checkedValues = useMemo(() => {
-        return getCheckedFilterValues(fieldFilter, fieldDistinctValues)
+        return getCheckedFilterValues(fieldFilter, fieldDistinctValues);
     }, [fieldFilter, fieldKey, fieldDistinctValues]); // need to add fieldKey
 
     const taggedValues = useMemo(() => {
-        if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) > -1)
-            return [];
+        if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) > -1) return [];
         return checkedValues;
     }, [checkedValues]);
 
-    const onSearchStrChange = useCallback((e) => {
+    const onSearchStrChange = useCallback(e => {
         setSearchStr(e.target.value);
     }, []);
 
     const onChange = useCallback(
         (value: string, checked: boolean, uncheckOthers?: boolean) => {
-            const newFilter = getUpdatedChooseValuesFilter(fieldDistinctValues, fieldKey, value, checked, fieldFilter, uncheckOthers);
+            const newFilter = getUpdatedChooseValuesFilter(
+                fieldDistinctValues,
+                fieldKey,
+                value,
+                checked,
+                fieldFilter,
+                uncheckOthers
+            );
             onFieldFilterUpdate(newFilter);
         },
         [fieldDistinctValues, fieldKey, fieldFilter, onFieldFilterUpdate]
     );
 
     const filteredFieldDistinctValues = useMemo(() => {
-        if (!searchStr)
-            return fieldDistinctValues;
+        if (!searchStr) return fieldDistinctValues;
 
         return fieldDistinctValues?.filter(val => {
             return val?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
@@ -80,7 +88,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             {error && <Alert>{error}</Alert>}
             {!fieldDistinctValues && <LoadingSpinner />}
             <div className="list-group search-parent-entity-col-values-list">
-                {fieldDistinctValues?.length > showSearchLength &&
+                {fieldDistinctValues?.length > showSearchLength && (
                     <div>
                         <input
                             id="find-filter-typeahead-input"
@@ -90,7 +98,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                             type="text"
                         />
                     </div>
-                }
+                )}
                 <Row>
                     <Col xs={6}>
                         <ul className="nav nav-stacked labkey-wizard-pills">
@@ -99,7 +107,8 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                 if (value === null || value === undefined) displayValue = '[blank]';
 
                                 return (
-                                    <li key={index}
+                                    <li
+                                        key={index}
                                         className="search-parent-entity-col-values-list-value"
                                         onClick={() => onChange(value, true, true)}
                                     >
@@ -108,12 +117,15 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                                 className="form-check-input"
                                                 type="checkbox"
                                                 name={'field-value-' + index}
-                                                onChange={(event) => onChange(value, event.target.checked)}
+                                                onChange={event => onChange(value, event.target.checked)}
                                                 checked={checkedValues.indexOf(value) > -1}
                                             />
                                             <span
                                                 className="search-parent-entity-col-values-list-value-val"
-                                                style={{ marginLeft: 5 }}>{displayValue}</span>
+                                                style={{ marginLeft: 5 }}
+                                            >
+                                                {displayValue}
+                                            </span>
                                         </div>
                                     </li>
                                 );
@@ -122,7 +134,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     </Col>
                     <Col xs={6}>
                         {taggedValues?.length > 0 && <div className="parent-search-panel__col-sub-title">Selected</div>}
-                        <ul className="nav nav-stacked labkey-wizard-pills" style={{width: '100%'}}>
+                        <ul className="nav nav-stacked labkey-wizard-pills" style={{ width: '100%' }}>
                             {taggedValues?.map((value, index) => {
                                 let displayValue = value;
 
@@ -140,7 +152,6 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                         </ul>
                     </Col>
                 </Row>
-
             </div>
         </>
     );
@@ -149,4 +160,4 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
 FilterFacetedSelector.defaultProps = {
     showSearchLength: 10,
     api: getDefaultAPIWrapper(),
-}
+};

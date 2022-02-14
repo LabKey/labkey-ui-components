@@ -1,12 +1,15 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
+import { Filter } from '@labkey/api';
+
+import { getTestAPIWrapper } from '../../APIWrapper';
+
+import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { waitForLifecycle } from '../../testHelpers';
+
 import { FilterFacetedSelector } from './FilterFacetedSelector';
-import { getTestAPIWrapper } from "../../APIWrapper";
-import { getQueryTestAPIWrapper } from "../../query/APIWrapper";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {waitForLifecycle} from "../../testHelpers";
-import {Filter} from "@labkey/api";
 
 beforeAll(() => {
     LABKEY.container = {
@@ -21,45 +24,64 @@ beforeAll(() => {
 const valuesListShort = ['ed', 'ned', '', 'ted', 'red', 'bed'];
 const allDisplayValuesShort = ['[All]', '[blank]', 'bed', 'ed', 'ned', 'red', 'ted'];
 const valuesListLong = [...valuesListShort, 'hop', 'pop', 'all', 'ball', 'fall', 'wall'];
-const allDisplayValuesLong = ['[All]', '[blank]', 'all', 'ball', 'bed', 'ed', 'fall', 'hop', 'ned', 'pop', 'red', 'ted', 'wall'];
+const allDisplayValuesLong = [
+    '[All]',
+    '[blank]',
+    'all',
+    'ball',
+    'bed',
+    'ed',
+    'fall',
+    'hop',
+    'ned',
+    'pop',
+    'red',
+    'ted',
+    'wall',
+];
 
 const distinctValuesResp = {
     values: valuesListShort,
     schemaName: 'samples',
-    queryName: 'sampleType1'
-}
+    queryName: 'sampleType1',
+};
 
 const distinctValuesRespLong = {
     values: valuesListLong,
     schemaName: 'samples',
-    queryName: 'sampleType1'
-}
+    queryName: 'sampleType1',
+};
 
 const DEFAULT_PROPS = {
     api: getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
-            selectDistinctRows: () => Promise.resolve(distinctValuesResp)
+            selectDistinctRows: () => Promise.resolve(distinctValuesResp),
         }),
     }),
     fieldKey: 'stringField',
     fieldFilter: null,
-    selectDistinctOptions: null
+    selectDistinctOptions: null,
 };
 
 const DEFAULT_PROPS_LONG = {
     api: getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
-            selectDistinctRows: () => Promise.resolve(distinctValuesRespLong)
+            selectDistinctRows: () => Promise.resolve(distinctValuesRespLong),
         }),
     }),
     fieldKey: 'stringField',
     fieldFilter: null,
-    selectDistinctOptions: null
+    selectDistinctOptions: null,
 };
 
 describe('FilterFacetedSelector', () => {
-
-    function validateFilterTypeDropdown(wrapper: ReactWrapper, checkedOptions: string[], valueTags: string[], allOptions?: string[], hasTypeAheadInput?: boolean) {
+    function validateFilterTypeDropdown(
+        wrapper: ReactWrapper,
+        checkedOptions: string[],
+        valueTags: string[],
+        allOptions?: string[],
+        hasTypeAheadInput?: boolean
+    ) {
         expect(wrapper.find('.find-filter-typeahead-input')).toHaveLength(hasTypeAheadInput ? 1 : 0);
 
         if (allOptions) {
@@ -73,10 +95,8 @@ describe('FilterFacetedSelector', () => {
                 expect(value).toEqual(allOptions[ind]);
 
                 const checkBox = valuesDiv.find('.form-check-input');
-                if (checkedOptions.indexOf(allOptions[ind]) > -1)
-                    expect(checkBox.props().checked).toBeTruthy();
-                else
-                    expect(checkBox.props().checked).toBeFalsy();
+                if (checkedOptions.indexOf(allOptions[ind]) > -1) expect(checkBox.props().checked).toBeTruthy();
+                else expect(checkBox.props().checked).toBeFalsy();
             }
         }
 
@@ -88,13 +108,10 @@ describe('FilterFacetedSelector', () => {
                 expect(tagDiv.text()).toEqual(valueTags[ind]);
             }
         }
-
     }
 
     test('with no initial filter', async () => {
-        const wrapper = mount(<FilterFacetedSelector
-            {...DEFAULT_PROPS}
-        />);
+        const wrapper = mount(<FilterFacetedSelector {...DEFAULT_PROPS} />);
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -106,10 +123,9 @@ describe('FilterFacetedSelector', () => {
     });
 
     test('with eq filter', async () => {
-        const wrapper = mount(<FilterFacetedSelector
-            {...DEFAULT_PROPS}
-            fieldFilter={Filter.create('stringField', 'ed')}
-        />);
+        const wrapper = mount(
+            <FilterFacetedSelector {...DEFAULT_PROPS} fieldFilter={Filter.create('stringField', 'ed')} />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -121,10 +137,12 @@ describe('FilterFacetedSelector', () => {
     });
 
     test('with is blank filter', async () => {
-        const wrapper = mount(<FilterFacetedSelector
-            {...DEFAULT_PROPS}
-            fieldFilter={Filter.create('stringField', null, Filter.Types.ISBLANK)}
-        />);
+        const wrapper = mount(
+            <FilterFacetedSelector
+                {...DEFAULT_PROPS}
+                fieldFilter={Filter.create('stringField', null, Filter.Types.ISBLANK)}
+            />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -136,40 +154,58 @@ describe('FilterFacetedSelector', () => {
     });
 
     test('with not eq filter', async () => {
-        const wrapper = mount(<FilterFacetedSelector
-            {...DEFAULT_PROPS}
-            fieldFilter={Filter.create('stringField', 'ed', Filter.Types.NOT_EQUAL)}
-        />);
+        const wrapper = mount(
+            <FilterFacetedSelector
+                {...DEFAULT_PROPS}
+                fieldFilter={Filter.create('stringField', 'ed', Filter.Types.NOT_EQUAL)}
+            />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        validateFilterTypeDropdown(wrapper, ['[blank]', 'bed', 'ned', 'red', 'ted'], ['[blank]', 'bed', 'ned', 'red', 'ted'], allDisplayValuesShort, false);
+        validateFilterTypeDropdown(
+            wrapper,
+            ['[blank]', 'bed', 'ned', 'red', 'ted'],
+            ['[blank]', 'bed', 'ned', 'red', 'ted'],
+            allDisplayValuesShort,
+            false
+        );
 
         wrapper.unmount();
     });
 
     test('with is not blank filter', async () => {
-        const wrapper = mount(<FilterFacetedSelector
-            {...DEFAULT_PROPS}
-            fieldFilter={Filter.create('stringField', null, Filter.Types.NONBLANK)}
-        />);
+        const wrapper = mount(
+            <FilterFacetedSelector
+                {...DEFAULT_PROPS}
+                fieldFilter={Filter.create('stringField', null, Filter.Types.NONBLANK)}
+            />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        validateFilterTypeDropdown(wrapper, ['bed', 'ed', 'ned', 'red', 'ted'], ['bed', 'ed', 'ned', 'red', 'ted'], allDisplayValuesShort, false);
+        validateFilterTypeDropdown(
+            wrapper,
+            ['bed', 'ed', 'ned', 'red', 'ted'],
+            ['bed', 'ed', 'ned', 'red', 'ted'],
+            allDisplayValuesShort,
+            false
+        );
 
         wrapper.unmount();
     });
 
     test('with in filter', async () => {
-        const wrapper = mount(<FilterFacetedSelector
-            {...DEFAULT_PROPS}
-            fieldFilter={Filter.create('stringField', 'ed;ned', Filter.Types.IN)}
-        />);
+        const wrapper = mount(
+            <FilterFacetedSelector
+                {...DEFAULT_PROPS}
+                fieldFilter={Filter.create('stringField', 'ed;ned', Filter.Types.IN)}
+            />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -181,24 +217,30 @@ describe('FilterFacetedSelector', () => {
     });
 
     test('with not in filter', async () => {
-        const wrapper = mount(<FilterFacetedSelector
-            {...DEFAULT_PROPS}
-            fieldFilter={Filter.create('stringField', 'ed;ned', Filter.Types.NOT_IN)}
-        />);
+        const wrapper = mount(
+            <FilterFacetedSelector
+                {...DEFAULT_PROPS}
+                fieldFilter={Filter.create('stringField', 'ed;ned', Filter.Types.NOT_IN)}
+            />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        validateFilterTypeDropdown(wrapper, ['[blank]', 'bed', 'red', 'ted'], ['[blank]', 'bed', 'red', 'ted'], allDisplayValuesShort, false);
+        validateFilterTypeDropdown(
+            wrapper,
+            ['[blank]', 'bed', 'red', 'ted'],
+            ['[blank]', 'bed', 'red', 'ted'],
+            allDisplayValuesShort,
+            false
+        );
 
         wrapper.unmount();
     });
 
     test('with type ahead input', async () => {
-        const wrapper = mount(<FilterFacetedSelector
-            {...DEFAULT_PROPS_LONG}
-        />);
+        const wrapper = mount(<FilterFacetedSelector {...DEFAULT_PROPS_LONG} />);
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -210,9 +252,7 @@ describe('FilterFacetedSelector', () => {
     });
 
     test('set type ahead input value', async () => {
-        const wrapper = mount(<FilterFacetedSelector
-            {...DEFAULT_PROPS_LONG}
-        />);
+        const wrapper = mount(<FilterFacetedSelector {...DEFAULT_PROPS_LONG} />);
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -221,9 +261,11 @@ describe('FilterFacetedSelector', () => {
         wrapper
             .find('input#find-filter-typeahead-input')
             .simulate('focus')
-            .simulate('change', { target: {
-                    value: 'op'
-                } });
+            .simulate('change', {
+                target: {
+                    value: 'op',
+                },
+            });
 
         await waitForLifecycle(wrapper);
 
@@ -231,5 +273,4 @@ describe('FilterFacetedSelector', () => {
 
         wrapper.unmount();
     });
-
 });

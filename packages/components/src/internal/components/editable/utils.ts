@@ -33,8 +33,8 @@ export const loadEditorModelData = async (queryModelData: Partial<QueryModel>): 
                 );
             } else {
                 // assume to be a {displayValue, value} object
-                const raw = value.value;
-                const display = value.displayValue ?? raw;
+                const raw = value?.value;
+                const display = value?.displayValue ?? raw;
                 let cellValue = List([{
                     display: display !== null ? display : undefined,
                     raw: raw !== null ? raw : undefined

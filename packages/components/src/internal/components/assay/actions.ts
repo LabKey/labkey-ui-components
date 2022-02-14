@@ -20,10 +20,11 @@ import {
     AssayDefinitionModel,
     AssayStateModel,
     buildURL,
+    caseInsensitive,
     naturalSortByProperty,
     SCHEMAS,
     QueryModel,
-    caseInsensitive,
+    User,
 } from '../../..';
 
 import { AssayUploadTabs } from '../../constants';
@@ -47,6 +48,17 @@ export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
     'WorkflowTask/Run',
     'Protocol/RowId'
 ).toList();
+
+/**
+ * Only support option to re-import run if user has insert permissions in current container
+ * and the current container is where the source run is located. This prevents runs from being
+ * re-imported "up" or "down" the folder structure.
+ */
+export function allowReimportAssayRun(user: User, runContainerId: string, targetContainerId: string): boolean {
+    return (
+        !!runContainerId && !!targetContainerId && targetContainerId === runContainerId && user.hasInsertPermission()
+    );
+}
 
 let assayDefinitionCache: { [key: string]: Promise<List<AssayDefinitionModel>> } = {};
 

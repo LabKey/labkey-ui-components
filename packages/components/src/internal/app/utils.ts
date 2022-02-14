@@ -266,7 +266,7 @@ export function addSourcesSectionConfig(
     appBase: string,
     sectionConfigs: List<Map<string, MenuSectionConfig>>
 ): List<Map<string, MenuSectionConfig>> {
-    if (!userCanReadDataClasses(user))
+    if (!userCanReadSources(user))
         return sectionConfigs;
 
     let sourcesMenuConfig = new MenuSectionConfig({

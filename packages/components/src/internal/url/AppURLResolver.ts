@@ -329,33 +329,35 @@ export class ExperimentRunResolver implements AppRouteResolver {
         this.jobs = jobs !== undefined ? jobs : new Set();
     }
 
-    fetch(parts: any[]): Promise<AppURL | boolean> {
+    async fetch(parts: any[]): Promise<AppURL | boolean> {
         const rowIdIndex = 2;
         const rowId = parseInt(parts[rowIdIndex], 10);
 
         if (isNaN(rowId)) {
             // skip it
-            return Promise.resolve(true);
+            return true;
         }
         if (this.jobs.has(rowId)) {
-            return Promise.resolve(AppURL.create('workflow', rowId));
+            return AppURL.create('workflow', rowId);
         }
-        return new Promise((resolve) => {
-            return selectRows({
+        try {
+            const result = await selectRows({
                 schemaName: SAMPLE_MANAGEMENT.JOBS.schemaName,
                 queryName: SAMPLE_MANAGEMENT.JOBS.queryName,
                 filterArray: [Filter.create('RowId', rowId)],
                 columns: 'RowId'
-            }).then(result => {
-                if (Object.keys(result.models[result.key]).length) {
-                    this.jobs.add(rowId);
-                    resolve(AppURL.create('workflow', rowId))
-                }
-                resolve(true);
-            }).catch(reason => {
-                resolve(true);
             });
-        });
+
+            if (Object.keys(result.models[result.key]).length) {
+                this.jobs.add(rowId);
+                return AppURL.create('workflow', rowId);
+            }
+            // skip it
+        } catch (e) {
+            // skip it
+        }
+
+        return true;
     }
 
     matches(route: string): boolean {

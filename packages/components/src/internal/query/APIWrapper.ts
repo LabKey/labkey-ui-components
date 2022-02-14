@@ -1,4 +1,5 @@
 import { List, Map } from 'immutable';
+import { Query } from "@labkey/api";
 
 import { QueryInfo } from '../../public/QueryInfo';
 import { EntityDataType, IEntityTypeOption } from '../components/entities/models';
@@ -6,7 +7,7 @@ import { getEntityTypeOptions } from '../components/entities/actions';
 
 import { incrementClientSideMetricCount } from '../actions';
 
-import { getQueryDetails, GetQueryDetailsOptions } from './api';
+import { getQueryDetails, GetQueryDetailsOptions, SelectDistinctResponse, selectDistinctRows } from './api';
 
 export interface QueryAPIWrapper {
     getEntityTypeOptions: (
@@ -15,12 +16,14 @@ export interface QueryAPIWrapper {
     ) => Promise<Map<string, List<IEntityTypeOption>>>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
+    selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<SelectDistinctResponse>;
 }
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {
     getEntityTypeOptions = getEntityTypeOptions;
     getQueryDetails = getQueryDetails;
     incrementClientSideMetricCount = incrementClientSideMetricCount;
+    selectDistinctRows = selectDistinctRows;
 }
 
 /**
@@ -34,6 +37,7 @@ export function getQueryTestAPIWrapper(
         getEntityTypeOptions: mockFn(),
         getQueryDetails: mockFn(),
         incrementClientSideMetricCount: mockFn(),
+        selectDistinctRows: mockFn(),
         ...overrides,
     };
 }

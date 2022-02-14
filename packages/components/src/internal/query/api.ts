@@ -415,13 +415,21 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                             resultSchemaQuery = schemaQuery;
                         }
 
-                        getQueryDetails(resultSchemaQuery)
-                            .then(d => {
-                                hasDetails = true;
-                                details = d;
-                                doResolve();
-                            })
-                            .catch(error => reject(error));
+                        // We're not guaranteed to have a schemaQuery provided. When executing with SQL
+                        // the user only needs to supply a schemaName. If they do not saveInSession then
+                        // a queryName is not generated and getQueryDetails() is unable to fetch details.
+                        if (resultSchemaQuery) {
+                            getQueryDetails(resultSchemaQuery)
+                                .then(d => {
+                                    hasDetails = true;
+                                    details = d;
+                                    doResolve();
+                                })
+                                .catch(error => reject(error));
+                        } else {
+                            hasDetails = true;
+                            doResolve();
+                        }
                     },
                     failure: (data, request) => {
                         console.error('There was a problem retrieving the data', data);

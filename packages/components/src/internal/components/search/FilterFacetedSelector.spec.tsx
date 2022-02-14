@@ -3,13 +3,12 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { Filter } from '@labkey/api';
 
-import { getTestAPIWrapper } from '../../APIWrapper';
-
-import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { waitForLifecycle } from '../../testHelpers';
-
 import { FilterFacetedSelector } from './FilterFacetedSelector';
+
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
 
 beforeAll(() => {
     LABKEY.container = {

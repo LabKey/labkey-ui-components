@@ -134,7 +134,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     </Col>
                     <Col xs={6}>
                         {taggedValues?.length > 0 && <div className="parent-search-panel__col-sub-title">Selected</div>}
-                        <ul className="nav nav-stacked labkey-wizard-pills" style={{ width: '100%' }}>
+                        <ul className="nav nav-stacked labkey-wizard-pills search-parent-entity-col-values-tags-div">
                             {taggedValues?.map((value, index) => {
                                 let displayValue = value;
 

@@ -49,7 +49,6 @@ exports[`<ExpandableContainer/> default props 1`] = `
 >
   <div
     className="container-expandable-detail container-expandable__inactive"
-    onClick={[Function]}
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   >

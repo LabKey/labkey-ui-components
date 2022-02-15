@@ -40,7 +40,6 @@ exports[`<PermissionAssignments/> custom props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -94,7 +93,6 @@ exports[`<PermissionAssignments/> custom props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -181,7 +179,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -235,7 +232,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -289,7 +285,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -343,7 +338,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -397,7 +391,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -451,7 +444,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -505,7 +497,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -559,7 +550,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -613,7 +603,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -667,7 +656,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -721,7 +709,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -775,7 +762,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -829,7 +815,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -883,7 +868,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -937,7 +921,6 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1054,7 +1037,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1108,7 +1090,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1162,7 +1143,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1216,7 +1196,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1270,7 +1249,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1324,7 +1302,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1378,7 +1355,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1432,7 +1408,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1486,7 +1461,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1540,7 +1514,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1594,7 +1567,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1648,7 +1620,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1702,7 +1673,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1756,7 +1726,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1810,7 +1779,6 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
-              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"

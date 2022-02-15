@@ -86,13 +86,13 @@ describe('FilterFacetedSelector', () => {
         expect(wrapper.find('.find-filter-typeahead-input')).toHaveLength(hasTypeAheadInput ? 1 : 0);
 
         if (allOptions) {
-            const valuesDivs = wrapper.find('.search-parent-entity-col-values-list-value');
+            const valuesDivs = wrapper.find('.search-filter-values__li');
 
             expect(valuesDivs.length).toBe(allOptions.length);
 
             for (let ind = 0; ind < allOptions.length; ind++) {
                 const valuesDiv = valuesDivs.at(ind);
-                const value = valuesDiv.find('.search-parent-entity-col-values-list-value-val').text();
+                const value = valuesDiv.find('.search-filter-values__value').text();
                 expect(value).toEqual(allOptions[ind]);
 
                 const checkBox = valuesDiv.find('.form-check-input');
@@ -102,7 +102,7 @@ describe('FilterFacetedSelector', () => {
         }
 
         if (valueTags) {
-            const valuesTagDivs = wrapper.find('.filter-result-pills-value');
+            const valuesTagDivs = wrapper.find('.search-filter-tags__value');
             expect(valuesTagDivs.length).toBe(valueTags.length);
             for (let ind = 0; ind < valueTags.length; ind++) {
                 const tagDiv = valuesTagDivs.at(ind);

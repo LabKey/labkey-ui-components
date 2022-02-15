@@ -90,7 +90,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         <>
             {error && <Alert>{error}</Alert>}
             {!fieldDistinctValues && <LoadingSpinner />}
-            <div className="list-group search-parent-entity-col-values-list">
+            <div className="search-filter-values__panel">
                 {fieldDistinctValues?.length > showSearchLength && (
                     <div>
                         <input
@@ -112,7 +112,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                 return (
                                     <li
                                         key={index}
-                                        className="search-parent-entity-col-values-list-value"
+                                        className="search-filter-values__li"
                                         onClick={() => onChange(value, true, true)}
                                     >
                                         <div className="form-check">
@@ -124,7 +124,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                                 checked={checkedValues.indexOf(value) > -1}
                                             />
                                             <span
-                                                className="search-parent-entity-col-values-list-value-val"
+                                                className="search-filter-values__value"
                                                 style={{ marginLeft: 5 }}
                                             >
                                                 {displayValue}
@@ -136,8 +136,8 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                         </ul>
                     </Col>
                     <Col xs={6}>
-                        {taggedValues?.length > 0 && <div className="search-parent-entity-col-values-tags-title">Selected</div>}
-                        <ul className="nav nav-stacked labkey-wizard-pills search-parent-entity-col-values-tags-div">
+                        {taggedValues?.length > 0 && <div className="search-filter-tags__title">Selected</div>}
+                        <ul className="nav nav-stacked labkey-wizard-pills search-filter-tags__div">
                             {taggedValues?.map((value, index) => {
                                 let displayValue = value;
 
@@ -145,7 +145,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
 
                                 return (
                                     <li key={index} className="OmniBox--multi">
-                                        <div className="OmniBox-value filter-result-pills-value">
+                                        <div className="OmniBox-value search-filter-tags__value">
                                             <i className="symbol fa fa-close" onClick={() => onChange(value, false)} />
                                             <span>{displayValue}</span>
                                         </div>

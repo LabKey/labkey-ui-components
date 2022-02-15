@@ -178,7 +178,7 @@
 }
 
 .OmniBox--multi {
-    .OmniBox-value.filter-result-pills-value {
+    .OmniBox-value.search-filter-tags__value {
         max-width: 90%;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -191,18 +191,18 @@
     }
 }
 
-.search-parent-entity-col-values-list-value {
+.search-filter-values__li {
     margin: 3px 0;
     line-height: 22px;
 }
 
-.search-parent-entity-col-values-list {
+.search-filter-values__panel {
         height: 355px;
         overflow-x: hidden;
         overflow-y: scroll;
 }
 
-.search-parent-entity-col-values-list-value-val {
+.search-filter-values__value {
     margin-left: 5px;
 
     &:hover {
@@ -211,7 +211,7 @@
     }
 }
 
-.search-parent-entity-col-values-tags-div {
+.search-filter-tags__div {
     width: 100%;
 }
 
@@ -219,7 +219,7 @@
     margin-bottom: 20px;
 }
 
-.search-parent-entity-col-values-tags-title {
+.search-filter-tags__title {
     font-weight: bold;
     padding-bottom: 5px;
 }

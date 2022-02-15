@@ -72,6 +72,7 @@ const DEFAULT_PROPS_LONG = {
     fieldKey: 'stringField',
     fieldFilter: null,
     selectDistinctOptions: null,
+    showSearchLength: 10
 };
 
 describe('FilterFacetedSelector', () => {

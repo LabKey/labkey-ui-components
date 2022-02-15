@@ -48,7 +48,7 @@ describe('FilterCard', () => {
         expect(wrapper.find('.filter-card__empty-content').exists()).toBeFalsy();
         const content = wrapper.find('.filter-card__card-content');
         expect(content.exists()).toBeTruthy();
-        expect(content.text().trim()).toBe('Showing only samples with parent test parents');
+        expect(content.text().trim()).toBe('Showing all samples with parent test parents');
         wrapper.unmount();
     });
 

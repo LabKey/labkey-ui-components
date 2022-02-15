@@ -18,7 +18,7 @@ class NotAnyFilterType implements Filter.IFilterType {
         return 'notany';
     }
     isDataValueRequired(): boolean {
-        return true;
+        return false;
     }
     isMultiValued(): boolean {
         return false;

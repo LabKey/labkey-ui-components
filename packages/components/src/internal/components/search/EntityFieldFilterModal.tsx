@@ -126,15 +126,19 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         [api, entityDataType, skipDefaultViewCheck, showAllFields]
     );
 
+    const allowFaceting = useMemo(() => {
+        return activeField?.allowFaceting() && activeField?.jsonType === 'string';
+    }, [activeField]);
+
     const onFieldClick = useCallback(
         (queryColumn: QueryColumn) => {
             setActiveField(queryColumn);
 
-            if (activeTab === EntityFieldFilterTabs.ChooseValues && !queryColumn.allowFaceting()) {
+            if (activeTab === EntityFieldFilterTabs.ChooseValues && (activeField?.allowFaceting() && activeField?.jsonType === 'string')) {
                 setActiveTab(EntityFieldFilterTabs.Filter);
             }
         },
-        [activeTab]
+        [activeTab, activeField]
     );
 
     const onTabChange = useCallback((tabKey: any) => {
@@ -145,11 +149,25 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         onCancel();
     }, [onCancel]);
 
+    const validDataTypeFilters = useMemo(() => {
+        if (!dataTypeFilters) return null;
+
+        const filters = {};
+        Object.keys(dataTypeFilters).forEach(parent => {
+            const filterFields = dataTypeFilters[parent];
+            filters[parent] = filterFields.filter(field => {
+                const urlSuffix = field?.filter?.getFilterType()?.getURLSuffix();
+                return urlSuffix !== 'notany' && urlSuffix !== '';
+            })
+        });
+        return filters;
+    }, [dataTypeFilters]);
+
     const _onFind = useCallback(() => {
-        const filterErrors = getFieldFiltersValidationResult(dataTypeFilters);
-        if (!filterErrors) onFind(entityDataType.instanceSchemaName, dataTypeFilters);
+        const filterErrors = getFieldFiltersValidationResult(validDataTypeFilters);
+        if (!filterErrors) onFind(entityDataType.instanceSchemaName, validDataTypeFilters);
         else setFilterError(filterErrors);
-    }, [onFind, dataTypeFilters]);
+    }, [onFind, validDataTypeFilters]);
 
     const currentFieldFilter = useMemo(() => {
         if (!dataTypeFilters || !activeField) return null;
@@ -300,7 +318,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                     <div>
                                         <Nav bsStyle="tabs">
                                             <NavItem eventKey={EntityFieldFilterTabs.Filter}>Filter</NavItem>
-                                            {(!activeField || activeField?.allowFaceting()) && (
+                                            {allowFaceting && (
                                                 <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>
                                                     Choose values
                                                 </NavItem>
@@ -320,28 +338,26 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                                     />
                                                 )}
                                             </Tab.Pane>
-                                            <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
-                                                <div className="parent-search-panel__col-sub-title">
-                                                    Find values for {activeField.caption}
-                                                </div>
-                                                {activeTab === EntityFieldFilterTabs.ChooseValues &&
-                                                    activeField?.jsonType === 'string' &&
-                                                    activeField?.allowFaceting() && (
-                                                        <FilterFacetedSelector
-                                                            selectDistinctOptions={{
-                                                                column: activeField?.fieldKey,
-                                                                schemaName: entityDataType?.instanceSchemaName,
-                                                                queryName: activeQuery,
-                                                                viewName: '',
-                                                                filterArray: fieldDistinctValueFilters,
-                                                            }}
-                                                            fieldFilter={currentFieldFilter?.filter}
-                                                            fieldKey={activeField.fieldKey}
-                                                            key={activeField.fieldKey}
-                                                            onFieldFilterUpdate={onFilterUpdate}
-                                                        />
-                                                    )}
-                                            </Tab.Pane>
+                                            {(activeTab === EntityFieldFilterTabs.ChooseValues && allowFaceting) &&
+                                                <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
+                                                    <div className="parent-search-panel__col-sub-title">
+                                                        Find values for {activeField.caption}
+                                                    </div>
+                                                    <FilterFacetedSelector
+                                                        selectDistinctOptions={{
+                                                            column: activeField?.fieldKey,
+                                                            schemaName: entityDataType?.instanceSchemaName,
+                                                            queryName: activeQuery,
+                                                            viewName: '',
+                                                            filterArray: fieldDistinctValueFilters,
+                                                        }}
+                                                        fieldFilter={currentFieldFilter?.filter}
+                                                        fieldKey={activeField.fieldKey}
+                                                        key={activeField.fieldKey}
+                                                        onFieldFilterUpdate={onFilterUpdate}
+                                                    />
+                                                </Tab.Pane>
+                                            }
                                         </Tab.Content>
                                     </div>
                                 </Tab.Container>
@@ -362,7 +378,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         type="button"
                         className="btn btn-success"
                         onClick={_onFind}
-                        disabled={Object.keys(dataTypeFilters).length === 0}
+                        disabled={Object.keys(validDataTypeFilters).length === 0}
                     >
                         Find Samples
                     </button>

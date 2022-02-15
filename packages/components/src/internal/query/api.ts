@@ -952,7 +952,6 @@ export function selectDistinctRows(
         Query.selectDistinctRows({
             ...selectDistinctOptions,
             success: response => {
-                console.log(response);
                 resolve({
                     values: response['values'],
                     schemaName: response['schemaName'],

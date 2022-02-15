@@ -60,6 +60,7 @@ const DEFAULT_PROPS = {
     fieldKey: 'stringField',
     fieldFilter: null,
     selectDistinctOptions: null,
+    showSearchLength: 10
 };
 
 const DEFAULT_PROPS_LONG = {

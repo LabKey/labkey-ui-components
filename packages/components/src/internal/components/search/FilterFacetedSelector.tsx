@@ -133,7 +133,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                         </ul>
                     </Col>
                     <Col xs={6}>
-                        {taggedValues?.length > 0 && <div className="parent-search-panel__col-sub-title">Selected</div>}
+                        {taggedValues?.length > 0 && <div className="search-parent-entity-col-values-tags-title">Selected</div>}
                         <ul className="nav nav-stacked labkey-wizard-pills search-parent-entity-col-values-tags-div">
                             {taggedValues?.map((value, index) => {
                                 let displayValue = value;
@@ -158,6 +158,6 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
 });
 
 FilterFacetedSelector.defaultProps = {
-    showSearchLength: 10,
+    showSearchLength: 20,
     api: getDefaultAPIWrapper(),
 };

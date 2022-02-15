@@ -274,4 +274,32 @@ describe('FilterFacetedSelector', () => {
 
         wrapper.unmount();
     });
+
+    test('set type ahead input value, with tagged values', async () => {
+        const wrapper = mount(<FilterFacetedSelector
+            {...DEFAULT_PROPS_LONG}
+            fieldFilter={Filter.create('stringField', 'ed;ned', Filter.Types.IN)}
+        />);
+
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
+
+        wrapper
+            .find('input#find-filter-typeahead-input')
+            .simulate('focus')
+            .simulate('change', {
+                target: {
+                    value: 'op',
+                },
+            });
+
+        await waitForLifecycle(wrapper);
+
+        validateFilterTypeDropdown(wrapper, ['ed', 'ned', 'hop', 'pop'], ['ed', 'ned'], ['ed', 'ned', 'hop', 'pop'], true);
+
+        wrapper.unmount();
+    });
+
+
 });

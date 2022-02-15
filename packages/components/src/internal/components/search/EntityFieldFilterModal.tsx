@@ -134,7 +134,11 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         (queryColumn: QueryColumn) => {
             setActiveField(queryColumn);
 
-            if (activeTab === EntityFieldFilterTabs.ChooseValues && (activeField?.allowFaceting() && activeField?.jsonType === 'string')) {
+            if (
+                activeTab === EntityFieldFilterTabs.ChooseValues &&
+                activeField?.allowFaceting() &&
+                activeField?.jsonType === 'string'
+            ) {
                 setActiveTab(EntityFieldFilterTabs.Filter);
             }
         },
@@ -158,7 +162,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             filters[parent] = filterFields.filter(field => {
                 const urlSuffix = field?.filter?.getFilterType()?.getURLSuffix();
                 return urlSuffix !== 'notany' && urlSuffix !== '';
-            })
+            });
         });
         return filters;
     }, [dataTypeFilters]);
@@ -338,7 +342,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                                     />
                                                 )}
                                             </Tab.Pane>
-                                            {(activeTab === EntityFieldFilterTabs.ChooseValues && allowFaceting) &&
+                                            {activeTab === EntityFieldFilterTabs.ChooseValues && allowFaceting && (
                                                 <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
                                                     <div className="parent-search-panel__col-sub-title">
                                                         Find values for {activeField.caption}
@@ -357,7 +361,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                                         onFieldFilterUpdate={onFilterUpdate}
                                                     />
                                                 </Tab.Pane>
-                                            }
+                                            )}
                                         </Tab.Content>
                                     </div>
                                 </Tab.Container>

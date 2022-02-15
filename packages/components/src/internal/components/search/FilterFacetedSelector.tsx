@@ -80,9 +80,8 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
 
         return fieldDistinctValues?.filter(val => {
             let valuesToKeep = [];
-            if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) === -1)
-                valuesToKeep = checkedValues;
-            return (valuesToKeep?.indexOf(val) > -1) || val?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
+            if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) === -1) valuesToKeep = checkedValues;
+            return valuesToKeep?.indexOf(val) > -1 || val?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
         });
     }, [fieldDistinctValues, searchStr]);
 
@@ -123,10 +122,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                                 onChange={event => onChange(value, event.target.checked)}
                                                 checked={checkedValues.indexOf(value) > -1}
                                             />
-                                            <span
-                                                className="search-filter-values__value"
-                                                style={{ marginLeft: 5 }}
-                                            >
+                                            <span className="search-filter-values__value" style={{ marginLeft: 5 }}>
                                                 {displayValue}
                                             </span>
                                         </div>

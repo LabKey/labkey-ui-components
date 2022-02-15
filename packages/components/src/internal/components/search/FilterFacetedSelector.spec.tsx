@@ -5,10 +5,11 @@ import { Filter } from '@labkey/api';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { waitForLifecycle } from '../../testHelpers';
-import { FilterFacetedSelector } from './FilterFacetedSelector';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
+
+import { FilterFacetedSelector } from './FilterFacetedSelector';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -60,7 +61,7 @@ const DEFAULT_PROPS = {
     fieldKey: 'stringField',
     fieldFilter: null,
     selectDistinctOptions: null,
-    showSearchLength: 10
+    showSearchLength: 10,
 };
 
 const DEFAULT_PROPS_LONG = {
@@ -72,7 +73,7 @@ const DEFAULT_PROPS_LONG = {
     fieldKey: 'stringField',
     fieldFilter: null,
     selectDistinctOptions: null,
-    showSearchLength: 10
+    showSearchLength: 10,
 };
 
 describe('FilterFacetedSelector', () => {
@@ -276,10 +277,12 @@ describe('FilterFacetedSelector', () => {
     });
 
     test('set type ahead input value, with tagged values', async () => {
-        const wrapper = mount(<FilterFacetedSelector
-            {...DEFAULT_PROPS_LONG}
-            fieldFilter={Filter.create('stringField', 'ed;ned', Filter.Types.IN)}
-        />);
+        const wrapper = mount(
+            <FilterFacetedSelector
+                {...DEFAULT_PROPS_LONG}
+                fieldFilter={Filter.create('stringField', 'ed;ned', Filter.Types.IN)}
+            />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -300,6 +303,4 @@ describe('FilterFacetedSelector', () => {
 
         wrapper.unmount();
     });
-
-
 });

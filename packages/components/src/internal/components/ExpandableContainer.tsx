@@ -39,12 +39,17 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
     }
 
     handleClick = () => {
+        if (!this.props.isExpandable) {
+            this.props.onClick?.(false);
+            return;
+        }
+
         this.setState(
             state => ({
                 visible: !state.visible,
             }),
             () => {
-                if (this.props.onClick) this.props.onClick(this.state.visible);
+                this.props.onClick?.(this.state.visible);
             }
         );
     };
@@ -60,12 +65,13 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
     render() {
         const { children, iconSrc, iconFaCls, isExpandable, clause, links, iconClickOnly, containerCls } = this.props;
         const { visible, isHover } = this.state;
+        const hasOnClick = this.props.onClick !== undefined;
         const containerDivCls = iconClickOnly ? 'container-expandable-icononly' : 'container-expandable-detail';
 
         return (
             <div className={classNames('row', 'container-expandable', { disabled: !isExpandable })}>
                 <div
-                    onClick={isExpandable && !iconClickOnly ? this.handleClick : undefined}
+                    onClick={hasOnClick && !iconClickOnly ? this.handleClick : undefined}
                     onMouseEnter={isExpandable ? this.handleMouseEnter : undefined}
                     onMouseLeave={isExpandable ? this.handleMouseLeave : undefined}
                     className={classNames(
@@ -90,7 +96,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
                         )}
                     </i>
                     <div
-                        onClick={isExpandable && iconClickOnly ? this.handleClick : undefined}
+                        onClick={hasOnClick && iconClickOnly ? this.handleClick : undefined}
                         className={classNames('pull-right', 'container-expandable-child__chevron', {
                             'text-muted': !isExpandable,
                         })}

@@ -296,7 +296,7 @@ describe('FilterFacetedSelector', () => {
 
         await waitForLifecycle(wrapper);
 
-        validateFilterTypeDropdown(wrapper, ['ed', 'ned', 'hop', 'pop'], ['ed', 'ned'], ['ed', 'ned', 'hop', 'pop'], true);
+        validateFilterTypeDropdown(wrapper, ['ed', 'ned'], ['ed', 'ned'], ['ed', 'hop', 'ned', 'pop'], true);
 
         wrapper.unmount();
     });

@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD February 2022
 * Item 9956: ...
+  * ExpandableContainer update to call onClick when defined regardless of isExpandable prop
 
 ### version 2.131.0
 *Released*: 8 February 2022

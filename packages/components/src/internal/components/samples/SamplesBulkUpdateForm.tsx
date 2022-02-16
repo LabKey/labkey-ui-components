@@ -21,10 +21,11 @@ import {
 
 import { OperationConfirmationData } from '../entities/models';
 
+import { userCanEditStorageData } from '../../app/utils';
+
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
-import { userCanEditStorageData } from '../../app/utils';
 
 interface OwnProps {
     queryModel: QueryModel;

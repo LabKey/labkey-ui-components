@@ -18,8 +18,9 @@ import { Filter } from '@labkey/api';
 
 import { AssayProtocolModel, caseInsensitive, fetchProtocol, getQueryDetails, SCHEMAS, selectRows } from '../..';
 
-import { AppURL, spliceURL } from './AppURL';
 import { SAMPLE_MANAGEMENT } from '../schemas';
+
+import { AppURL, spliceURL } from './AppURL';
 
 export interface AppRouteResolver {
     matches: (route: string) => boolean;
@@ -318,11 +319,10 @@ export class SamplesResolver implements AppRouteResolver {
  * to the lineage page for a sample, but the URL here doesn't have any info about the related entity.
  */
 export class ExperimentRunResolver implements AppRouteResolver {
-
-    jobs: Set<number> // set of rowIds that are jobs
+    jobs: Set<number>; // set of rowIds that are jobs
 
     static createURL(rowId: string | number): AppURL {
-        return AppURL.create('rd','run', rowId);
+        return AppURL.create('rd', 'run', rowId);
     }
 
     constructor(jobs?: Set<number>) {
@@ -345,7 +345,7 @@ export class ExperimentRunResolver implements AppRouteResolver {
                 schemaName: SAMPLE_MANAGEMENT.JOBS.schemaName,
                 queryName: SAMPLE_MANAGEMENT.JOBS.queryName,
                 filterArray: [Filter.create('RowId', rowId)],
-                columns: 'RowId'
+                columns: 'RowId',
             });
 
             if (Object.keys(result.models[result.key]).length) {
@@ -364,4 +364,3 @@ export class ExperimentRunResolver implements AppRouteResolver {
         return /\/rd\/run\/\d+$/.test(route);
     }
 }
-

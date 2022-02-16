@@ -90,7 +90,7 @@ export const TEST_USER_EDITOR = new User({
         PermissionTypes.ReadNotebooks,
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
-        PermissionTypes.ReadMedia
+        PermissionTypes.ReadMedia,
     ]),
 });
 

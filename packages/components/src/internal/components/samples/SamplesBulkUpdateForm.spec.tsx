@@ -7,9 +7,10 @@ import { Alert, BulkUpdateForm, makeTestQueryModel, QueryColumn, QueryInfo, Sche
 
 import { OperationConfirmationData } from '../entities/models';
 
+import { TEST_USER_EDITOR } from '../../../test/data/users';
+
 import { SamplesBulkUpdateAlert, SamplesBulkUpdateFormBase } from './SamplesBulkUpdateForm';
 import { getSamplesTestAPIWrapper } from './APIWrapper';
-import { TEST_USER_EDITOR } from '../../../test/data/users';
 
 describe('SamplesBulkUpdateForm', () => {
     const COLUMN_DESCRIPTION = new QueryColumn({

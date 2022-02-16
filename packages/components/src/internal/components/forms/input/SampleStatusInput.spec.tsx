@@ -15,9 +15,10 @@ import { getSamplesTestAPIWrapper } from '../../samples/APIWrapper';
 
 import { getTestAPIWrapper } from '../../../APIWrapper';
 
-import { SampleStatusInput } from './SampleStatusInput';
 import { TEST_USER_EDITOR, TEST_USER_STORAGE_EDITOR } from '../../../../test/data/users';
 import { QuerySelect } from '../QuerySelect';
+
+import { SampleStatusInput } from './SampleStatusInput';
 
 const COLUMN_STATUS = new QueryColumn({
     fieldKey: 'samplestate',
@@ -59,10 +60,9 @@ const DEFAULT_PROPS = {
 
 describe('SampleStatusInput', () => {
     test('initial value is blank', async () => {
-        const component = mountWithServerContext(
-            <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />,
-            { user: TEST_USER_STORAGE_EDITOR }
-        );
+        const component = mountWithServerContext(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} />, {
+            user: TEST_USER_STORAGE_EDITOR,
+        });
         await waitForLifecycle(component);
 
         const discardPanel = component.find(DiscardConsumedSamplesPanel);
@@ -80,13 +80,9 @@ describe('SampleStatusInput', () => {
         expect(discardPanel).toHaveLength(0);
     });
 
-
     test('change to consumed status, editor', async () => {
-        const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false}  allowDisable />;
-        const wrapper = mountWithServerContext(
-            component,
-            { user: TEST_USER_EDITOR }
-        );
+        const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} allowDisable />;
+        const wrapper = mountWithServerContext(component, { user: TEST_USER_EDITOR });
 
         await waitForLifecycle(wrapper); // retrieve statuses
         wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
@@ -97,11 +93,8 @@ describe('SampleStatusInput', () => {
     });
 
     test('change to consumed status, storage editor, allow disable (bulk edit)', async () => {
-        const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false}  allowDisable />;
-        const wrapper = mountWithServerContext(
-            component,
-            { user: TEST_USER_STORAGE_EDITOR }
-        );
+        const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} allowDisable />;
+        const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
 
         await waitForLifecycle(wrapper);
         wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
@@ -114,10 +107,7 @@ describe('SampleStatusInput', () => {
 
     test('change to consumed status, storage editor, no allowDisable', async () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />;
-        const wrapper = mountWithServerContext(
-            component,
-            { user: TEST_USER_STORAGE_EDITOR }
-        );
+        const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
 
         await waitForLifecycle(wrapper);
         wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
@@ -128,13 +118,9 @@ describe('SampleStatusInput', () => {
         expect(wrapper.find('.sample-bulk-update-discard-panel')).toHaveLength(0);
     });
 
-
     test('change to not consumed, storage editor', async () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />;
-        const wrapper = mountWithServerContext(
-            component,
-            { user: TEST_USER_STORAGE_EDITOR }
-        );
+        const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
 
         await waitForLifecycle(wrapper);
         wrapper.find(QuerySelect).prop('onQSChange')('name', 100, [], undefined);

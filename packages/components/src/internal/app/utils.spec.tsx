@@ -589,7 +589,6 @@ describe('addSourcesSectionConfig', () => {
         expect(configs.size).toBe(0);
     });
 
-
     test('storage designer', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
         configs = addSourcesSectionConfig(TEST_USER_STORAGE_DESIGNER, '/labkey/test/app.view', configs);

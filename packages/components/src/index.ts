@@ -214,7 +214,7 @@ import {
     AssayRunResolver,
     ExperimentRunResolver,
     ListResolver,
-    SamplesResolver
+    SamplesResolver,
 } from './internal/url/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
 import { EditableGridPanelDeprecated } from './internal/components/editable/EditableGridPanelDeprecated';

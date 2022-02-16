@@ -96,8 +96,10 @@ describe('<SelectionMenuItem/>', () => {
             totalRows: 5,
             selectedIds: List(['1', '2', '3']),
         });
-        const href = "http://my.href.test";
-        const wrapper = mount(<SelectionMenuItem maxSelection={2} id="jest-test-1" model={model} text={text} href={href} />);
+        const href = 'http://my.href.test';
+        const wrapper = mount(
+            <SelectionMenuItem maxSelection={2} id="jest-test-1" model={model} text={text} href={href} />
+        );
         expect(wrapper.prop('href')).toBe(href);
         expect(wrapper.prop('onClick')).toBe(undefined);
     });

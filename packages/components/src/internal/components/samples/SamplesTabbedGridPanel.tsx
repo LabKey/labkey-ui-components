@@ -27,11 +27,12 @@ import {
 
 import { TabbedGridPanelProps } from '../../../public/QueryModel/TabbedGridPanel';
 
+import { userCanEditStorageData } from '../../app/utils';
+
 import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
 import { SampleGridButtonProps } from './models';
-import { userCanEditStorageData } from '../../app/utils';
 
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 

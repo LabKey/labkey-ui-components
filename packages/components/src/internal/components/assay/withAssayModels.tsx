@@ -270,7 +270,7 @@ export function assayPage<Props>(
         const { user } = useServerContext();
 
         if (!App.userCanReadAssays(user)) {
-            return <InsufficientPermissionsPage title={"Assays"} />
+            return <InsufficientPermissionsPage title="Assays" />;
         }
         if (
             isLoading(assayModel.definitionsLoadingState) ||

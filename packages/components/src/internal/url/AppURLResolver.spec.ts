@@ -319,23 +319,23 @@ describe('App Route Resolvers', () => {
     });
 
     test('Should resolve /rd/run/### routes', () => {
-        const jobsResolver = new ExperimentRunResolver(new Set([4,5,10]));
+        const jobsResolver = new ExperimentRunResolver(new Set([4, 5, 10]));
 
         // test regex
         expect(jobsResolver.matches(undefined)).toBe(false);
-        expect(jobsResolver.matches("/rd/samples/4")).toBe(false);
-        expect(jobsResolver.matches("/rd/run/b")).toBe(false);
-        expect(jobsResolver.matches("/a/rd/run/b")).toBe(false);
-        expect(jobsResolver.matches("/rd/run/4")).toBe(true);
-        expect(jobsResolver.matches("/rd/run/141345")).toBe(true);
+        expect(jobsResolver.matches('/rd/samples/4')).toBe(false);
+        expect(jobsResolver.matches('/rd/run/b')).toBe(false);
+        expect(jobsResolver.matches('/a/rd/run/b')).toBe(false);
+        expect(jobsResolver.matches('/rd/run/4')).toBe(true);
+        expect(jobsResolver.matches('/rd/run/141345')).toBe(true);
 
         return Promise.all([
             jobsResolver.fetch(['rd', 'runs', 'notanumber']).then((result: boolean) => {
                 expect(result).toBe(true);
             }),
-            jobsResolver.fetch(['rd','runs', 4]).then((result: AppURL) => {
-                expect(result.toString()).toBe("/workflow/4");
-            })
+            jobsResolver.fetch(['rd', 'runs', 4]).then((result: AppURL) => {
+                expect(result.toString()).toBe('/workflow/4');
+            }),
         ]);
-    })
+    });
 });

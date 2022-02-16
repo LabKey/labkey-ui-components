@@ -52,6 +52,7 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
                         <div
                             key={index}
                             style={styleProps}
+                            data-title={row.title}
                             className={classNames('horizontal-bar-part', row.className, {
                                 'horizontal-bar--begin': !hasBegun,
                                 'horizontal-bar--filled': row.filled,

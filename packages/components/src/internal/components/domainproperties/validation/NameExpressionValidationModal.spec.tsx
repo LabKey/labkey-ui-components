@@ -1,8 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { Modal } from 'react-bootstrap';
-
 import { ConfirmModal } from '../../base/ConfirmModal';
 
 import { NameExpressionValidationModal } from './NameExpressionValidationModal';
@@ -36,9 +34,9 @@ describe('NameExpressionValidationModal', () => {
 
         const modal = wrapper.find(ConfirmModal);
         expect(modal.prop('confirmButtonText')).toBe('Save anyways...');
-        expect(modal.find('.modal-title').text()).toBe('Sample and Aliquot Naming Patten Warning(s)');
+        expect(modal.find('.modal-title').text()).toBe('Sample and Aliquot Naming Pattern Warning(s)');
         expect(modal.find('.modal-body').text()).toBe(
-            "Naming Patten Warning(s):Example name generated: S-1001No ending parentheses found.Invalid starting value xyz.Aliquot Naming Patten Warning(s):Example aliquot name generated: S-parentSample-002The 'withCounter' substitution pattern starting at position 27 should be enclosed in ${}."
+            "Naming Pattern Warning(s):Example name generated: S-1001No ending parentheses found.Invalid starting value xyz.Aliquot Naming Pattern Warning(s):Example aliquot name generated: S-parentSample-002The 'withCounter' substitution pattern starting at position 27 should be enclosed in ${}."
         );
         wrapper.unmount();
     });
@@ -48,7 +46,7 @@ describe('NameExpressionValidationModal', () => {
 
         const modal = wrapper.find(ConfirmModal);
         expect(modal.prop('confirmButtonText')).toBe('Save anyways...');
-        expect(modal.find('.modal-title').text()).toBe('Naming Patten Warning(s)');
+        expect(modal.find('.modal-title').text()).toBe('Naming Pattern Warning(s)');
         expect(modal.find('.modal-body').text()).toBe(
             'Example name generated: S-1001No ending parentheses found.Invalid starting value xyz.'
         );
@@ -60,7 +58,7 @@ describe('NameExpressionValidationModal', () => {
 
         const modal = wrapper.find(ConfirmModal);
         expect(modal.prop('confirmButtonText')).toBe('Save anyways...');
-        expect(modal.find('.modal-title').text()).toBe('Aliquot Naming Patten Warning(s)');
+        expect(modal.find('.modal-title').text()).toBe('Aliquot Naming Pattern Warning(s)');
         expect(modal.find('.modal-body').text()).toBe(
             "Example aliquot name generated: S-parentSample-002The 'withCounter' substitution pattern starting at position 27 should be enclosed in ${}."
         );

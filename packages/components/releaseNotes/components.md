@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.132.1
+*Released*: 16 February 2022
+* Issue 44742: Hide NameExpressionGenIdBanner when genId is not used in the current naming patterns
+* Issue 44771: Misspelling on naming pattern warning dialog
+* Issue 44852: Warning message when resetting the genId to a "conflicting value" is off by 1.
+
 ### version 2.132.0
 *Released*: 16 February 2022
 * Item 9998: Add permissions for restricting read for assays and data classes

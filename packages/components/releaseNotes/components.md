@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.132.0
+*Released*: 16 February 2022
 * Item 9998: Add permissions for restricting read for assays and data classes
   * Add utility methods for checking various read permissions
   * update `assayPage` to check assay read permission

@@ -16,9 +16,10 @@ import { NameExpressionValidationModal } from '../validation/NameExpressionValid
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
 
+import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
+
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
-import { GENID_SYNTAX_STRING } from "../NameExpressionGenIdBanner";
 
 interface Props {
     api?: ComponentsAPIWrapper;

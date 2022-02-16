@@ -98,6 +98,30 @@ export function registerWebSocketListeners(
     }
 }
 
+export function userCanReadAssays(user: User): boolean {
+    return hasAllPermissions(user, [PermissionTypes.ReadAssay]);
+}
+
+export function userCanReadSources(user: User): boolean {
+    return userCanReadDataClasses(user);
+}
+
+export function userCanReadRegistry(user: User): boolean {
+    return userCanReadDataClasses(user);
+}
+
+function userCanReadDataClasses(user: User): boolean {
+    return hasAllPermissions(user, [PermissionTypes.ReadDataClass]);
+}
+
+export function userCanReadMedia(user: User): boolean {
+    return hasAllPermissions(user, [PermissionTypes.ReadMedia]);
+}
+
+export function userCanReadNotebooks(user: User): boolean {
+    return hasAllPermissions(user, [PermissionTypes.ReadNotebooks]);
+}
+
 export function userCanManagePicklists(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.ManagePicklists]);
 }
@@ -242,6 +266,8 @@ export function addSourcesSectionConfig(
     appBase: string,
     sectionConfigs: List<Map<string, MenuSectionConfig>>
 ): List<Map<string, MenuSectionConfig>> {
+    if (!userCanReadSources(user)) return sectionConfigs;
+
     let sourcesMenuConfig = new MenuSectionConfig({
         emptyText: 'No source types have been defined',
         iconURL: imageURL('_images', 'source_type.svg'),
@@ -286,6 +312,8 @@ export function addAssaysSectionConfig(
     appBase: string,
     sectionConfigs: List<Map<string, MenuSectionConfig>>
 ): List<Map<string, MenuSectionConfig>> {
+    if (!userCanReadAssays(user)) return sectionConfigs;
+
     let assaysMenuConfig = new MenuSectionConfig({
         emptyText: 'No assays have been defined',
         iconURL: imageURL('_images', 'assay.svg'),
@@ -344,6 +372,19 @@ const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
     iconURL: imageURL('_images', 'default.svg'),
 });
 
+function getBioWorkflowNotebookMediaConfigs(appBase: string, user: User) {
+    let configs = Map({
+        [WORKFLOW_KEY]: getWorkflowSectionConfig(appBase),
+    });
+    if (userCanReadMedia(user)) {
+        configs = configs.set(MEDIA_KEY, getMediaSectionConfig(appBase));
+    }
+    if (userCanReadNotebooks(user)) {
+        configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
+    }
+    return configs;
+}
+
 // exported for testing
 export function getMenuSectionConfigs(
     user: User,
@@ -365,7 +406,9 @@ export function getMenuSectionConfigs(
     if (inSMApp) {
         sectionConfigs = addSourcesSectionConfig(user, appBase, sectionConfigs);
     } else if (isBioPrimary) {
-        sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig(appBase) }));
+        if (userCanReadDataClasses(user)) {
+            sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig(appBase) }));
+        }
     }
     if (isBioOrSM) {
         sectionConfigs = addSamplesSectionConfig(user, appBase, sectionConfigs);
@@ -400,25 +443,13 @@ export function getMenuSectionConfigs(
             if (storageConfig) {
                 requestsCol = requestsCol.set(FREEZERS_KEY, storageConfig);
             }
-            sectionConfigs = sectionConfigs.push(
-                requestsCol,
-                Map({
-                    [WORKFLOW_KEY]: workflowConfig,
-                    [MEDIA_KEY]: getMediaSectionConfig(appBase),
-                    [NOTEBOOKS_KEY]: getNotebooksSectionConfig(appBase),
-                })
-            );
+            sectionConfigs = sectionConfigs.push(requestsCol, getBioWorkflowNotebookMediaConfigs(appBase, user));
         } else {
             if (storageConfig) {
                 sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
             }
-            sectionConfigs = sectionConfigs.push(
-                Map({
-                    [WORKFLOW_KEY]: workflowConfig,
-                    [MEDIA_KEY]: getMediaSectionConfig(appBase),
-                    [NOTEBOOKS_KEY]: getNotebooksSectionConfig(appBase),
-                })
-            );
+
+            sectionConfigs = sectionConfigs.push(getBioWorkflowNotebookMediaConfigs(appBase, user));
         }
     } else {
         if (storageConfig) {

@@ -27,6 +27,8 @@ import {
 
 import { TabbedGridPanelProps } from '../../../public/QueryModel/TabbedGridPanel';
 
+import { userCanEditStorageData } from '../../app/utils';
+
 import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
@@ -326,7 +328,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     onBulkUpdateComplete={onBulkUpdateComplete}
                     editSelectionInGrid={onEditSelectionInGrid}
                     updateRows={onUpdateRows}
-                    determineStorage // determine storage for discard consumed samples
+                    determineStorage={userCanEditStorageData(user)} // determine storage for discard consumed samples
+                    user={user}
                 />
             )}
         </>

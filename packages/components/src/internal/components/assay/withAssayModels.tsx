@@ -5,14 +5,17 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 import {
     Alert,
+    App,
     AssayDefinitionModel,
     AssayProtocolModel,
     AssayStateModel,
     getActionErrorMessage,
+    InsufficientPermissionsPage,
     isLoading,
     LoadingPage,
     LoadingState,
     NotFound,
+    useServerContext,
 } from '../../..';
 
 import { fetchProtocol } from '../domainproperties/assay/actions';
@@ -264,7 +267,11 @@ export function assayPage<Props>(
         const { assayModel, params } = props;
         const assayName = params?.protocol;
         const hasProtocol = assayName !== undefined;
+        const { user } = useServerContext();
 
+        if (!App.userCanReadAssays(user)) {
+            return <InsufficientPermissionsPage title="Assays" />;
+        }
         if (
             isLoading(assayModel.definitionsLoadingState) ||
             (hasProtocol && isLoading(assayModel.protocolLoadingState))

@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.132.2
 *Released*: 17 February 2022
 * Update to package to eliminate alpha version reference from node_modules
+* Change return type for `useEnterEscape`
 
 ### version 2.132.1
 *Released*: 16 February 2022

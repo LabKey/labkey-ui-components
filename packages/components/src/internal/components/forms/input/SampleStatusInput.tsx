@@ -12,6 +12,8 @@ import { QueryColumn } from '../../../../public/QueryColumn';
 import { QuerySelect } from '../QuerySelect';
 import { SampleStateType } from '../../samples/constants';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
+import { userCanEditStorageData } from '../../../app/utils';
+import { useServerContext } from '../../base/ServerContext';
 
 interface SampleStatusInputProps {
     api?: ComponentsAPIWrapper;
@@ -31,7 +33,6 @@ interface SampleStatusInputProps {
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     inputClass?: string;
     formsy?: boolean; // for jest test
-    forceShowDiscard?: boolean; // workaround for jest test due to difficulty getting QuerySelect to work with jest
 }
 
 export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
@@ -52,6 +53,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         inputClass,
         formsy,
     } = props;
+    const { user } = useServerContext();
     const [consumedStatuses, setConsumedStatuses] = useState<number[]>(undefined);
     const [error, setError] = useState<string>(undefined);
     const [showDiscardPanel, setShowDiscardPanel] = useState<boolean>(false);
@@ -82,14 +84,15 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
     const onChange = useCallback(
         (name: string, newValue: any, items: any) => {
             onQSChange?.(name, newValue, items);
-
-            const isConsumed = consumedStatuses.indexOf(newValue) > -1 && value !== newValue;
-            const isInStorage = onAdditionalFormDataChange?.(
-                DISCARD_CONSUMED_CHECKBOX_FIELD,
-                shouldDiscard && isConsumed
-            );
-            const showPanel = isInStorage && isConsumed;
-            setShowDiscardPanel(showPanel);
+            if (userCanEditStorageData(user)) {
+                const isConsumed = consumedStatuses.indexOf(newValue) > -1 && value !== newValue;
+                const isInStorage = onAdditionalFormDataChange?.(
+                    DISCARD_CONSUMED_CHECKBOX_FIELD,
+                    shouldDiscard && isConsumed
+                );
+                const showPanel = isInStorage && isConsumed;
+                setShowDiscardPanel(showPanel);
+            }
         },
         [consumedStatuses, onAdditionalFormDataChange, onQSChange, shouldDiscard, value]
     );
@@ -163,7 +166,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 inputClass={inputClass}
             />
             {error && <Alert>{error}</Alert>}
-            {(showDiscardPanel || props.forceShowDiscard) && <>{discardPanel}</>}
+            {showDiscardPanel && <>{discardPanel}</>}
         </React.Fragment>
     );
 });

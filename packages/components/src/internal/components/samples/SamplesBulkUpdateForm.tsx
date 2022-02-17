@@ -4,21 +4,24 @@ import { List, Map, OrderedMap } from 'immutable';
 import { AuditBehaviorTypes } from '@labkey/api';
 
 import {
+    Alert,
     BulkUpdateForm,
+    createNotification,
+    deleteRows,
     getOperationNotPermittedMessage,
     QueryColumn,
     QueryInfo,
     QueryModel,
+    resolveErrorMessage,
     SampleOperation,
     SchemaQuery,
-    Alert,
-    deleteRows,
     SCHEMAS,
-    createNotification,
-    resolveErrorMessage,
+    User,
 } from '../../..';
 
 import { OperationConfirmationData } from '../entities/models';
+
+import { userCanEditStorageData } from '../../app/utils';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
@@ -33,6 +36,7 @@ interface OwnProps {
     onBulkUpdateError: (message: string) => void;
     onBulkUpdateComplete: (data: any, submitForEdit) => void;
     editSelectionInGrid: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any;
+    user: User;
 }
 
 type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultProps;
@@ -164,9 +168,11 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
     };
 
     onDiscardConsumedPanelChange = (field: string, value: any) => {
-        const { sampleItems } = this.props;
+        const { sampleItems, user } = this.props;
 
-        if (!sampleItems || Object.keys(sampleItems).length === 0) return false; // if no samples are in storage, skip showing discard panel
+        if (!sampleItems || Object.keys(sampleItems).length === 0 || !userCanEditStorageData(user)) {
+            return false; // if no samples are in storage or the user can't modify storage data, skip showing discard panel
+        }
 
         if (field === DISCARD_CONSUMED_CHECKBOX_FIELD) this.setState(() => ({ shouldDiscard: value }));
         else if (field === DISCARD_CONSUMED_COMMENT_FIELD) this.setState(() => ({ discardComment: value }));

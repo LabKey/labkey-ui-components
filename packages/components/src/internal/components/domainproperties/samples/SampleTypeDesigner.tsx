@@ -33,6 +33,8 @@ import { NameExpressionValidationModal } from '../validation/NameExpressionValid
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
 
+import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
+
 import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { UniqueIdBanner } from './UniqueIdBanner';
@@ -680,6 +682,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
         const options = initModel?.get('options');
 
+        const hasGenIdInExpression =
+            model.nameExpression?.indexOf(GENID_SYNTAX_STRING) > -1 ||
+            model.aliquotNameExpression?.indexOf(GENID_SYNTAX_STRING) > -1;
+
         return (
             <BaseDomainDesigner
                 name={model.name}
@@ -733,7 +739,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     namePreviews={namePreviews}
                     onNameFieldHover={this.onNameFieldHover}
                     nameExpressionGenIdProps={
-                        showGenIdBanner && options
+                        showGenIdBanner && options && hasGenIdInExpression
                             ? {
                                   containerPath: model.containerPath,
                                   dataTypeName: options.get('name'),

@@ -10,7 +10,7 @@ import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { DetailDisplay } from './DetailDisplay';
 
 describe('<DetailDisplay/>', () => {
-    const namePattenCol = new QueryColumn({
+    const namePatternCol = new QueryColumn({
         align: 'left',
         caption: 'Naming Pattern',
         conceptURI: null,
@@ -41,7 +41,7 @@ describe('<DetailDisplay/>', () => {
         derivationDataScope: null,
     });
 
-    const aliquotNamePattenCol = new QueryColumn({
+    const aliquotNamePatternCol = new QueryColumn({
         align: 'left',
         caption: 'Aliquot Naming Pattern',
         conceptURI: null,
@@ -104,7 +104,7 @@ describe('<DetailDisplay/>', () => {
     });
 
     test('with fieldHelpTexts', () => {
-        const cols = List.of(namePattenCol, aliquotNamePattenCol, metricCol);
+        const cols = List.of(namePatternCol, aliquotNamePatternCol, metricCol);
 
         const fieldHelpText = {
             nameexpression: 'Example name that will be generated from the current pattern: S-1001',

@@ -71,7 +71,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
         return (
             <div className={classNames('row', 'container-expandable', { disabled: !isExpandable })}>
                 <div
-                    onClick={hasOnClick && !iconClickOnly ? this.handleClick : undefined}
+                    onClick={(hasOnClick || isExpandable) && !iconClickOnly ? this.handleClick : undefined}
                     onMouseEnter={isExpandable ? this.handleMouseEnter : undefined}
                     onMouseLeave={isExpandable ? this.handleMouseLeave : undefined}
                     className={classNames(
@@ -96,7 +96,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
                         )}
                     </i>
                     <div
-                        onClick={hasOnClick && iconClickOnly ? this.handleClick : undefined}
+                        onClick={(hasOnClick || isExpandable) && iconClickOnly ? this.handleClick : undefined}
                         className={classNames('pull-right', 'container-expandable-child__chevron', {
                             'text-muted': !isExpandable,
                         })}

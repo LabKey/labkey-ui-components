@@ -59,26 +59,24 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
     const [showDiscardPanel, setShowDiscardPanel] = useState<boolean>(false);
     const [shouldDiscard, setShouldDiscard] = useState<boolean>(true);
 
-    const loadConsumedStatuses = async (): Promise<void> => {
-        try {
-            const statuses = await api.samples.getSampleStatuses();
-            const consumedStatusIds = [];
-            statuses.forEach(status => {
-                if (status.stateType == SampleStateType.Consumed) consumedStatusIds.push(status.rowId);
-            });
-            setConsumedStatuses(consumedStatusIds);
-        } catch (error) {
-            console.error(error.exception);
-            setError(
-                'Error loading sample statuses. If you want to discard ' +
-                    (allowDisable /* bulk update */ ? 'any samples' : 'the sample') +
-                    ' being updated to a Consumed status, you will have to do that separately.'
-            );
-        }
-    };
-
     useEffect(() => {
-        loadConsumedStatuses();
+        (async () => {
+            try {
+                const statuses = await api.samples.getSampleStatuses();
+                const consumedStatusIds = [];
+                statuses.forEach(status => {
+                    if (status.stateType === SampleStateType.Consumed) consumedStatusIds.push(status.rowId);
+                });
+                setConsumedStatuses(consumedStatusIds);
+            } catch (error) {
+                console.error(error.exception);
+                setError(
+                    'Error loading sample statuses. If you want to discard ' +
+                        (allowDisable /* bulk update */ ? 'any samples' : 'the sample') +
+                        ' being updated to a Consumed status, you will have to do that separately.'
+                );
+            }
+        })();
     }, []);
 
     const onChange = useCallback(
@@ -94,7 +92,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 setShowDiscardPanel(showPanel);
             }
         },
-        [consumedStatuses, onAdditionalFormDataChange, onQSChange, shouldDiscard, value]
+        [consumedStatuses, onAdditionalFormDataChange, onQSChange, shouldDiscard, user, value]
     );
 
     const onCommentChange = useCallback(

@@ -8,54 +8,6 @@ import { fetchAlternatePaths, getOntologyDetails } from './actions';
 const CONCEPT_CATEGORY = 'concept';
 const SEARCH_LIMIT = 20;
 
-interface OntologySearchInputProps extends Omit<OntologyTreeSearchContainerProps, 'ontology' | 'searchPathClickHandler' | 'onChangeListener'> {
-    ontologyId: string;
-    searchPathChangeHandler: (code: string) => void;
-}
-
-export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
-    const {ontologyId, searchPathChangeHandler, ...rest} = props;
-    const [ontologyModel, setOntologyModel] = useState<OntologyModel>();
-    const [error, setError] = useState<string>();
-
-    useEffect(() => {
-        if (ontologyId) {
-            getOntologyDetails(ontologyId)
-                .then((ontology: OntologyModel) => {
-                    setOntologyModel(ontology);
-                })
-                .catch(() => {
-                    setError('Error: unable to load ontology concept information for ' + ontologyId + '.');
-                });
-        } else {
-            setOntologyModel(undefined);
-        }
-    }, [ontologyId]);
-
-    const onSearchClickHandler = useCallback((path: PathModel) => {
-        searchPathChangeHandler(path.code)
-    }, [searchPathChangeHandler]);
-
-    const onChangeHandler = useCallback(
-        val => {
-            searchPathChangeHandler(val);
-        },
-        [searchPathChangeHandler]
-    );
-
-    return (
-        <>
-            <Alert>{error}</Alert>
-            {ontologyModel && <OntologyTreeSearchContainer
-                {...rest}
-                ontology={ontologyModel}
-                searchPathClickHandler={onSearchClickHandler}
-                onChangeListener={onChangeHandler}
-            />}
-        </>
-    );
-});
-
 interface OntologyTreeSearchContainerProps {
     ontology: OntologyModel;
     inputName?: string;
@@ -167,18 +119,18 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
 
     return (
         <div className="concept-search-container">
-                <input
-                    type="text"
-                    className={className}
-                    name={inputName}
-                    placeholder={'Search ' + ontology.abbreviation}
-                    onChange={onSearchChange}
-                    onFocus={onSearchFocus}
-                    onBlur={onSearchBlur}
-                    onKeyUp={keyHandler}
-                    value={searchTerm}
-                />
-            {showResults &&
+            <input
+                type="text"
+                className={className}
+                name={inputName}
+                placeholder={'Search ' + ontology.abbreviation}
+                onChange={onSearchChange}
+                onFocus={onSearchFocus}
+                onBlur={onSearchBlur}
+                onKeyUp={keyHandler}
+                value={searchTerm}
+            />
+            {showResults && (
                 <OntologySearchResultsMenu
                     searchHits={searchHits}
                     totalHits={totalHits}
@@ -186,7 +138,7 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
                     error={error}
                     onItemClick={onItemClick}
                 />
-            }
+            )}
         </div>
     );
 });
@@ -201,15 +153,15 @@ interface OntologySearchResultsMenuProps {
 
 // exported for jest testing
 export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = memo(props => {
-    const { searchHits, isFocused, totalHits, error, onItemClick, } = props;
-    const showMenu = useMemo(() => isFocused && (searchHits !== undefined || error !== undefined), [
-        isFocused,
-        searchHits,
-        error,
-    ]);
-    const hitsHaveDescriptions = useMemo(() => searchHits?.findIndex(hit => hit.description !== undefined) > -1, [
-        searchHits,
-    ]);
+    const { searchHits, isFocused, totalHits, error, onItemClick } = props;
+    const showMenu = useMemo(
+        () => isFocused && (searchHits !== undefined || error !== undefined),
+        [isFocused, searchHits, error]
+    );
+    const hitsHaveDescriptions = useMemo(
+        () => searchHits?.findIndex(hit => hit.description !== undefined) > -1,
+        [searchHits]
+    );
 
     if (!showMenu) {
         return null;
@@ -250,6 +202,58 @@ export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = mem
                 )}
             </ul>
         </div>
+    );
+});
+
+interface OntologySearchInputProps
+    extends Omit<OntologyTreeSearchContainerProps, 'ontology' | 'searchPathClickHandler' | 'onChangeListener'> {
+    ontologyId: string;
+    searchPathChangeHandler: (code: string) => void;
+}
+
+export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
+    const { ontologyId, searchPathChangeHandler, ...rest } = props;
+    const [ontologyModel, setOntologyModel] = useState<OntologyModel>();
+    const [error, setError] = useState<string>();
+
+    useEffect(() => {
+        if (ontologyId) {
+            getOntologyDetails(ontologyId)
+                .then((ontology: OntologyModel) => {
+                    setOntologyModel(ontology);
+                })
+                .catch(() => {
+                    setError('Error: unable to load ontology concept information for ' + ontologyId + '.');
+                });
+        }
+    }, [ontologyId]);
+
+    const onSearchClickHandler = useCallback(
+        (path: PathModel) => {
+            searchPathChangeHandler(path.code);
+        },
+        [searchPathChangeHandler]
+    );
+
+    const onChangeHandler = useCallback(
+        val => {
+            searchPathChangeHandler(val);
+        },
+        [searchPathChangeHandler]
+    );
+
+    return (
+        <>
+            <Alert>{error}</Alert>
+            {ontologyModel && (
+                <OntologyTreeSearchContainer
+                    {...rest}
+                    ontology={ontologyModel}
+                    searchPathClickHandler={onSearchClickHandler}
+                    onChangeListener={onChangeHandler}
+                />
+            )}
+        </>
     );
 });
 

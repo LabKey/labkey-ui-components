@@ -1,11 +1,9 @@
 import { HTMLProps } from 'react';
-import { MenuItem } from 'react-bootstrap';
 
-export interface ReactBootstrapMenuItemProps extends HTMLProps<MenuItem> {
+export interface ReactBootstrapMenuItemProps extends HTMLProps<any> {
     active?: boolean;
     bsClass?: string;
     divider?: boolean;
     eventKey?: any;
     header?: boolean;
-    onSelect?: any;
 }

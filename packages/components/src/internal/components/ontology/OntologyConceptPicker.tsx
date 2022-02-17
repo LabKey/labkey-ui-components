@@ -12,11 +12,10 @@ interface Props {
     fieldLabel: string;
     fieldValue?: string;
     onConceptSelection: (concept: ConceptModel) => void;
-    showPickerListener?: (val:() => void) => void;
 }
 
 export const OntologyConceptPicker: FC<Props> = memo((props: Props) => {
-    const { ontologyId, conceptSubtree, fieldLabel, onConceptSelection, fieldValue = '', showPickerListener } = props;
+    const { ontologyId, conceptSubtree, fieldLabel, onConceptSelection, fieldValue = '' } = props;
     const [concept, setConcept] = useState<ConceptModel>();
     const [subtreePath, setSubtreePath] = useState<PathModel>();
     const [isLoadingSubtreePath, setIsLoadingSubtreePath] = useState<boolean>(!!conceptSubtree);
@@ -48,25 +47,9 @@ export const OntologyConceptPicker: FC<Props> = memo((props: Props) => {
         }
     }, [conceptSubtree]);
 
-    const showPickerModal = useCallback(()=>{
-        setShowPicker(true);
-    },[showPickerListener])
-
-    useEffect(() => {
-        const helper = () => {
-            return showPickerModal;
-        };
-        if (showPickerListener !== undefined)
-            showPickerListener(helper);
-
-        return () => {
-            showPickerListener?.(null);
-        };
-    }, [showPickerListener]);
-
     const togglePicker = useCallback(() => {
         setShowPicker(!showPicker);
-    }, [showPicker, setShowPicker]);
+    }, [showPicker]);
 
     const onApplyConcept = useCallback(
         (selectedPath: PathModel, selectedConcept: ConceptModel) => {
@@ -74,7 +57,7 @@ export const OntologyConceptPicker: FC<Props> = memo((props: Props) => {
             setShowPicker(false);
             onConceptSelection(selectedConcept);
         },
-        [setConcept, setShowPicker, onConceptSelection]
+        [onConceptSelection]
     );
 
     const label = concept?.label ?? null;

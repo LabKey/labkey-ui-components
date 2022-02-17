@@ -8,18 +8,13 @@ import { fetchAlternatePaths, getOntologyDetails } from './actions';
 const CONCEPT_CATEGORY = 'concept';
 const SEARCH_LIMIT = 20;
 
-interface OntologySearchInputProps {
+interface OntologySearchInputProps extends Omit<OntologyTreeSearchContainerProps, 'ontology' | 'searchPathClickHandler' | 'onChangeListener'> {
     ontologyId: string;
-    initCode?: string; //initial concept code
-    inputName: string;
-    className: string;
-    searchPathClickHandler: (code: string) => void;
-    showBrowserHandler?: () => void;
-    fieldName?: string;
+    searchPathChangeHandler: (code: string) => void;
 }
 
 export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
-    const {ontologyId, searchPathClickHandler, ...rest} = props;
+    const {ontologyId, searchPathChangeHandler, ...rest} = props;
     const [ontologyModel, setOntologyModel] = useState<OntologyModel>();
     const [error, setError] = useState<string>();
 
@@ -31,16 +26,22 @@ export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
                 })
                 .catch(() => {
                     setError('Error: unable to load ontology concept information for ' + ontologyId + '.');
-                    // setSelectedOntologyId(undefined);
                 });
         } else {
             setOntologyModel(undefined);
         }
-    }, [ontologyId, setOntologyModel, setError]);
+    }, [ontologyId]);
 
     const onSearchClickHandler = useCallback((path: PathModel) => {
-        searchPathClickHandler(path.code)
-    }, [searchPathClickHandler]);
+        searchPathChangeHandler(path.code)
+    }, [searchPathChangeHandler]);
+
+    const onChangeHandler = useCallback(
+        val => {
+            searchPathChangeHandler(val);
+        },
+        [searchPathChangeHandler]
+    );
 
     return (
         <>
@@ -49,6 +50,7 @@ export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
                 {...rest}
                 ontology={ontologyModel}
                 searchPathClickHandler={onSearchClickHandler}
+                onChangeListener={onChangeHandler}
             />}
         </>
     );
@@ -60,12 +62,18 @@ interface OntologyTreeSearchContainerProps {
     initCode?: string;
     className?: string;
     searchPathClickHandler: (path: PathModel, isAlternatePath?: boolean) => void;
-    showBrowserHandler?: () => void;
-    fieldName?: string;
+    onChangeListener?: (val: string) => void;
 }
 
 export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> = memo(props => {
-    const { ontology, searchPathClickHandler, inputName = "concept-search", className = "form-control", initCode = "", showBrowserHandler, fieldName } = props;
+    const {
+        ontology,
+        searchPathClickHandler,
+        inputName = 'concept-search',
+        className = 'form-control',
+        initCode = '',
+        onChangeListener,
+    } = props;
     const [isFocused, setIsFocused] = useState<boolean>();
     const [searchTerm, setSearchTerm] = useState<string>(initCode);
     const [searchHits, setSearchHits] = useState<ConceptModel[]>();
@@ -75,22 +83,23 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
 
     useEffect(() => {
         setSearchTerm(initCode);
-    }, [initCode, setSearchTerm]);
+    }, [initCode]);
 
     const onSearchChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
             const { value } = evt.currentTarget;
             setSearchTerm(value?.length > 2 ? value : undefined);
+            onChangeListener?.(value);
         },
-        [setSearchTerm]
+        [onChangeListener]
     );
 
     const onSearchFocus = useCallback(() => {
         setIsFocused(true);
-    }, [setIsFocused]);
+    }, []);
     const onSearchBlur = useCallback(() => {
         setIsFocused(false);
-    }, [onSearchFocus]);
+    }, []);
 
     useEffect(() => {
         setError(undefined);
@@ -128,7 +137,7 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
 
             return () => clearTimeout(timeOutId);
         }
-    }, [searchTerm, setError, setSearchHits, setTotalHits]);
+    }, [ontology, searchTerm]);
 
     const onItemClick = useCallback(
         async (evt: MouseEvent<HTMLLIElement>, code: string) => {
@@ -140,14 +149,8 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
             }
             setSearchTerm(code);
         },
-        [setSearchTerm, searchPathClickHandler]
+        [searchPathClickHandler]
     );
-
-    // cancel form submit since we are just using the input for the search menu display
-    const onSubmit = useCallback(evt => {
-        evt.preventDefault();
-        return false;
-    }, []);
 
     const keyHandler = useCallback((evt: React.KeyboardEvent<HTMLElement>) => {
         switch (evt.key) {
@@ -160,7 +163,7 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
                 setShowResults(true);
                 return false;
         }
-    }, [setShowResults]);
+    }, []);
 
     return (
         <div className="concept-search-container">
@@ -182,8 +185,6 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
                     isFocused={isFocused}
                     error={error}
                     onItemClick={onItemClick}
-                    showBrowserHandler={showBrowserHandler}
-                    fieldName={fieldName}
                 />
             }
         </div>
@@ -196,13 +197,11 @@ interface OntologySearchResultsMenuProps {
     isFocused: boolean;
     error: string;
     onItemClick: (evt: MouseEvent<HTMLLIElement>, code: string) => void;
-    showBrowserHandler?: () => void;
-    fieldName?: string;
 }
 
 // exported for jest testing
 export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = memo(props => {
-    const { searchHits, isFocused, totalHits, error, onItemClick, showBrowserHandler, fieldName } = props;
+    const { searchHits, isFocused, totalHits, error, onItemClick, } = props;
     const showMenu = useMemo(() => isFocused && (searchHits !== undefined || error !== undefined), [
         isFocused,
         searchHits,
@@ -211,24 +210,6 @@ export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = mem
     const hitsHaveDescriptions = useMemo(() => searchHits?.findIndex(hit => hit.description !== undefined) > -1, [
         searchHits,
     ]);
-
-    const onOpenPicker = useCallback(() => {
-        showBrowserHandler();
-    },[showBrowserHandler]);
-
-    const browserLink = useMemo(():ReactNode => {
-        // If the field or link action isn't available, just end the text
-        if (!fieldName || !onOpenPicker) return '.';
-
-        return (
-            <>
-                {', '}
-                <a className="show-toggle" onMouseDown={onOpenPicker}>
-                    {`or click here to Find ${fieldName} by Tree`}
-                </a>
-            </>
-        );
-    },[fieldName, onOpenPicker]);
 
     if (!showMenu) {
         return null;
@@ -264,7 +245,7 @@ export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = mem
                 {searchHits?.length < totalHits && (
                     <div className="result-footer">
                         {Number(totalHits).toLocaleString()} results found. Update your search term to further refine
-                        your results{browserLink}
+                        your results.
                     </div>
                 )}
             </ul>

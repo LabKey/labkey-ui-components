@@ -5,7 +5,7 @@ import { AuditBehaviorTypes, Filter } from '@labkey/api';
 import {
     App,
     AppURL,
-    createNotification,
+    createNotification, getContainerFilter,
     InsufficientPermissionsPage,
     invalidateLineageResults,
     LoadingPage,
@@ -141,7 +141,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
         evt => {
             const updatedPicklist = picklist.mutate({
                 Category: evt.currentTarget.checked ? PUBLIC_PICKLIST_CATEGORY : PRIVATE_PICKLIST_CATEGORY,
-            }) as Picklist;
+            });
             updatePicklist(updatedPicklist)
                 .then(() => {
                     loadPicklist(false);
@@ -273,7 +273,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 setPicklist(new Picklist(/* use empty picklist to signal not found */));
             }
         },
-        [listId]
+        [api, listId]
     );
 
     useEffect(() => {
@@ -306,7 +306,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                     title: sampleType,
                     schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
                     requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-                    baseFilters: [Filter.create('RowId', picklist.listId, PICKLIST_SAMPLES_FILTER)],
+                    baseFilters: [Filter.create('RowId', picklist.name, PICKLIST_SAMPLES_FILTER)],
                 };
             });
         }

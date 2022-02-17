@@ -152,7 +152,7 @@ export const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props =
         });
     };
 
-    const onSavePicklist = useCallback(async () => {
+    const onSavePicklist = async (): Promise<void> => {
         setIsSubmitting(true);
         try {
             let updatedList;
@@ -160,6 +160,7 @@ export const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props =
             if (isUpdate) {
                 updatedList = await updatePicklist(
                     new Picklist({
+                        Container: picklist.Container,
                         name: trimmedName,
                         listId: picklist.listId,
                         Description: description,
@@ -187,7 +188,7 @@ export const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props =
             setPicklistError(resolveErrorMessage(e));
             setIsSubmitting(false);
         }
-    }, [name, description, onFinish, shared]);
+    };
 
     let title;
     if (isUpdate) {

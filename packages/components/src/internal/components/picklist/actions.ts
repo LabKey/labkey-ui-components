@@ -1,4 +1,4 @@
-import { Ajax, Domain, Filter, Utils } from '@labkey/api';
+import { Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
@@ -11,12 +11,11 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
 import { AppURL, buildURL, createProductUrlFromParts } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
-import { resolveErrorMessage } from '../../util/messaging';
 import { caseInsensitive, OperationConfirmationData, SCHEMAS } from '../../..';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
-import { isSampleStatusEnabled } from '../../app/utils';
+import { isSubfolderDataEnabled } from '../../app/utils';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
 
@@ -43,53 +42,6 @@ export function getPicklists(): Promise<Picklist[]> {
                 console.error(reason);
                 reject(reason);
             });
-    });
-}
-
-export function setPicklistDefaultView(name: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-        const columns = [
-            { fieldKey: 'SampleID/Name' },
-            { fieldKey: 'SampleID/LabelColor' },
-            { fieldKey: 'SampleID/SampleSet' },
-        ];
-        if (isSampleStatusEnabled()) {
-            columns.push({ fieldKey: 'SampleID/SampleState' });
-        }
-        columns.push(
-            { fieldKey: 'SampleID/StoredAmount' },
-            { fieldKey: 'SampleID/Units' },
-            { fieldKey: 'SampleID/freezeThawCount' },
-            { fieldKey: 'SampleID/StorageStatus' },
-            { fieldKey: 'SampleID/checkedOutBy' },
-            { fieldKey: 'SampleID/Created' },
-            { fieldKey: 'SampleID/CreatedBy' },
-            { fieldKey: 'SampleID/StorageLocation' },
-            { fieldKey: 'SampleID/StorageRow' },
-            { fieldKey: 'SampleID/StorageCol' },
-            { fieldKey: 'SampleID/isAliquot' }
-        );
-
-        const jsonData = {
-            schemaName: 'lists',
-            queryName: name,
-            views: [{ columns }],
-            shared: true,
-        };
-        return Ajax.request({
-            url: buildURL('query', 'saveQueryViews.api'),
-            method: 'POST',
-            jsonData,
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response.queryName);
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error(response);
-                reject(
-                    'There was a problem creating the default view for the picklist. ' + resolveErrorMessage(response)
-                );
-            }),
-        });
     });
 }
 
@@ -131,13 +83,13 @@ export function createPicklist(
             success: response => {
                 Promise.all([
                     getListIdFromDomainId(response.domainId),
-                    setPicklistDefaultView(name),
                     addSamplesToPicklist(name, statusData, selectionKey, sampleIds),
                 ])
                     .then(responses => {
                         const [listId] = responses;
                         resolve(
                             new Picklist({
+                                Container: response.container,
                                 listId,
                                 name,
                                 Description: description,
@@ -158,7 +110,7 @@ export function createPicklist(
 
 export function updatePicklist(picklist: Picklist): Promise<Picklist> {
     return new Promise((resolve, reject) => {
-        fetchListDesign(picklist.listId)
+        fetchListDesign(picklist.listId, picklist.Container)
             .then(listDesign => {
                 const domain = listDesign.domain;
                 const options = {
@@ -474,7 +426,7 @@ export function getPicklistUrl(listId: number, picklistProductId?: string, curre
     return picklistUrl;
 }
 
-export const getPicklistFromId = async (listId: number): Promise<Picklist> => {
+export const getPicklistFromId = async (listId: number, loadSampleTypes = true): Promise<Picklist> => {
     const listData = await selectRows({
         schemaName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.schemaName,
         queryName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.queryName,
@@ -485,21 +437,28 @@ export const getPicklistFromId = async (listId: number): Promise<Picklist> => {
     if (!listRow) return new Picklist(/* use empty picklist to signal not found */);
     let picklist = Picklist.create(listRow);
 
-    const listSampleTypeData = await selectRows({
-        schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
-        sql: `SELECT DISTINCT SampleID.SampleSet as SampleType FROM "${picklist.name}"`,
-    });
-    const sampleTypes = convertPicklistSampleTypeData(Object.values(listSampleTypeData.models[listSampleTypeData.key]));
-    picklist = picklist.mutate({ sampleTypes });
+    if (loadSampleTypes) {
+        const listSampleTypeData = await selectRows({
+            schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
+            sql: `SELECT DISTINCT SampleID.SampleSet FROM "${picklist.name}" WHERE SampleID.SampleSet IS NOT NULL`,
+        });
+
+        picklist = picklist.mutate({
+            sampleTypes:
+                Object.values(listSampleTypeData.models[listSampleTypeData.key])
+                    .map(row => caseInsensitive(row, 'SampleSet')?.displayValue)
+                    .filter(value => !!value),
+        });
+    }
 
     return picklist;
 };
 
-// exported for jest testing
-export const convertPicklistSampleTypeData = (data: Array<Record<string, any>>): string[] => {
-    const sampleTypes = [];
-    data.forEach(row => {
-        sampleTypes.push(caseInsensitive(row, 'SampleType').displayValue);
-    });
-    return sampleTypes;
-};
+/**
+ * In cross-folder scenarios we treat picklists like domains for other
+ * data types (i.e. lists, sample types, etc) in that we only share them "down"
+ * the folder hierarchy.
+ */
+export function getPicklistListingContainerFilter(): Query.ContainerFilter {
+    return isSubfolderDataEnabled() ? Query.ContainerFilter.currentPlusProjectAndShared : undefined;
+}

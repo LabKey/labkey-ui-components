@@ -51,6 +51,7 @@ function fetchGetQueries(schemaName: string): Promise<List<QueryInfo>> {
                 resolve(List(queries));
             },
             failure: error => {
+                console.error(error);
                 reject(error);
             },
         });
@@ -97,11 +98,10 @@ export class QueriesListing extends Component<QueriesListingProps, QueriesListin
         const { schemaName } = this.props;
         fetchGetQueries(schemaName)
             .then(queries => {
-                this.setState(() => ({ queries }));
+                this.setState({ queries });
             })
             .catch(error => {
-                console.error(error);
-                this.setState(() => ({ error: error.exception }));
+                this.setState({ error: error.exception });
             });
     };
 

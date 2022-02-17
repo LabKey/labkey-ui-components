@@ -689,7 +689,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             return (
                 <Alert>
                     The run "{runName}" cannot be re-imported into this folder. This run is declared in a different
-                    folder and re-import of runs is only supported within a folder.
+                    folder and re-import of runs is only supported within the same folder.
                 </Alert>
             );
         }

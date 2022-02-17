@@ -3,8 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD February 2022
-* Item 9956: ...
+* Item 9956: Freezer manager dashboard updates to the freezer listing panel
   * ExpandableContainer update to call onClick when defined regardless of isExpandable prop
+  * HorizontalBarSection updates for selenium test locators
 
 ### version 2.132.1
 *Released*: 16 February 2022

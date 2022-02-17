@@ -23,6 +23,7 @@ import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter, FilterProps } from './models';
 import { getFieldFiltersValidationResult } from './utils';
+import { NOT_ANY_FILTER_TYPE } from "../../url/NotAnyFilterType";
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -40,6 +41,8 @@ export enum EntityFieldFilterTabs {
     Filter = 'Filter',
     ChooseValues = 'Choose values',
 }
+
+const FIND_FILTER_VIEW_NAME = ''; // always use default view for selection
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const { api, entityDataType, onCancel, onFind, cards, queryName, fieldKey, showAllFields, skipDefaultViewCheck } =
@@ -127,7 +130,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     );
 
     const allowFaceting = useMemo(() => {
-        return activeField?.allowFaceting() && activeField?.jsonType === 'string';
+        return activeField?.allowFaceting() && activeField?.jsonType === 'string'; // current plan is to only support facet for string fields, to reduce scope
     }, [activeField]);
 
     const onFieldClick = useCallback(
@@ -161,7 +164,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             const filterFields = dataTypeFilters[parent];
             filters[parent] = filterFields.filter(field => {
                 const urlSuffix = field?.filter?.getFilterType()?.getURLSuffix();
-                return urlSuffix !== 'notany' && urlSuffix !== '';
+                return urlSuffix !== NOT_ANY_FILTER_TYPE.getURLSuffix() && urlSuffix !== '';
             });
         });
         return filters;
@@ -352,7 +355,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                                             column: activeField?.fieldKey,
                                                             schemaName: entityDataType?.instanceSchemaName,
                                                             queryName: activeQuery,
-                                                            viewName: '',
+                                                            viewName: FIND_FILTER_VIEW_NAME,
                                                             filterArray: fieldDistinctValueFilters,
                                                         }}
                                                         fieldFilter={currentFieldFilter?.filter}

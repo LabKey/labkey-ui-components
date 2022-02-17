@@ -43,9 +43,10 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             })
             .catch(error => {
                 console.error(error);
+                setFieldDistinctValues([]);
                 setError(resolveErrorMessage(error));
             });
-    }, [selectDistinctOptions, fieldKey]);
+    }, [selectDistinctOptions, fieldKey]); // on fieldKey change, reload selection values
 
     const checkedValues = useMemo(() => {
         return getCheckedFilterValues(fieldFilter, fieldDistinctValues);
@@ -78,9 +79,10 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const filteredFieldDistinctValues = useMemo(() => {
         if (!searchStr) return fieldDistinctValues;
 
+        let valuesToKeep = [];
+        if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) === -1) valuesToKeep = checkedValues;
+
         return fieldDistinctValues?.filter(val => {
-            let valuesToKeep = [];
-            if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) === -1) valuesToKeep = checkedValues;
             return valuesToKeep?.indexOf(val) > -1 || val?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
         });
     }, [fieldDistinctValues, searchStr]);
@@ -122,7 +124,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                                 onChange={event => onChange(value, event.target.checked)}
                                                 checked={checkedValues.indexOf(value) > -1}
                                             />
-                                            <span className="search-filter-values__value" style={{ marginLeft: 5 }}>
+                                            <span className="search-filter-values__value">
                                                 {displayValue}
                                             </span>
                                         </div>

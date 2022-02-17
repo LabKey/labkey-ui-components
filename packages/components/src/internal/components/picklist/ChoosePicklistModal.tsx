@@ -22,7 +22,7 @@ import { Picklist } from './models';
 import {
     addSamplesToPicklist,
     getPicklistCountsBySampleType,
-    getPicklists,
+    getPicklistsForInsert,
     getPicklistUrl,
     SampleTypeCount,
 } from './actions';
@@ -509,7 +509,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
     }, [api, sampleFieldKey, queryModel]);
 
     useEffect(() => {
-        getPicklists()
+        getPicklistsForInsert()
             .then(picklists => {
                 setItems(picklists);
                 setLoading(false);

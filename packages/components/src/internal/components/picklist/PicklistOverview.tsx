@@ -5,7 +5,7 @@ import { AuditBehaviorTypes, Filter } from '@labkey/api';
 import {
     App,
     AppURL,
-    createNotification, getContainerFilter,
+    createNotification,
     InsufficientPermissionsPage,
     invalidateLineageResults,
     LoadingPage,

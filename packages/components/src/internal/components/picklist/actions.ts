@@ -19,10 +19,11 @@ import { isSubfolderDataEnabled } from '../../app/utils';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
 
-export function getPicklists(): Promise<Picklist[]> {
+export function getPicklistsForInsert(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
         const { queryName, schemaName } = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS;
         selectRows({
+            containerFilter: isSubfolderDataEnabled() ? Query.ContainerFilter.current : undefined,
             schemaName,
             queryName,
             sort: 'Name',
@@ -428,6 +429,7 @@ export function getPicklistUrl(listId: number, picklistProductId?: string, curre
 
 export const getPicklistFromId = async (listId: number, loadSampleTypes = true): Promise<Picklist> => {
     const listData = await selectRows({
+        containerFilter: getPicklistListingContainerFilter(),
         schemaName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.schemaName,
         queryName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.queryName,
         requiredColumns: ['Category'],
@@ -444,21 +446,15 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
         });
 
         picklist = picklist.mutate({
-            sampleTypes:
-                Object.values(listSampleTypeData.models[listSampleTypeData.key])
-                    .map(row => caseInsensitive(row, 'SampleSet')?.displayValue)
-                    .filter(value => !!value),
+            sampleTypes: Object.values(listSampleTypeData.models[listSampleTypeData.key])
+                .map(row => caseInsensitive(row, 'SampleSet')?.displayValue)
+                .filter(value => !!value),
         });
     }
 
     return picklist;
 };
 
-/**
- * In cross-folder scenarios we treat picklists like domains for other
- * data types (i.e. lists, sample types, etc) in that we only share them "down"
- * the folder hierarchy.
- */
 export function getPicklistListingContainerFilter(): Query.ContainerFilter {
-    return isSubfolderDataEnabled() ? Query.ContainerFilter.currentPlusProjectAndShared : undefined;
+    return isSubfolderDataEnabled() ? Query.ContainerFilter.current : undefined;
 }

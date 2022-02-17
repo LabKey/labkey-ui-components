@@ -6,7 +6,7 @@ import { Picklist } from './models';
 
 export interface PicklistAPIWrapper {
     getPicklistDeleteData: (model: QueryModel, user: User) => Promise<PicklistDeletionData>;
-    getPicklistFromId: (listId: number) => Promise<Picklist>;
+    getPicklistFromId: (listId: number, loadSampleTypes?: boolean) => Promise<Picklist>;
 }
 
 export class PicklistServerAPIWrapper implements PicklistAPIWrapper {

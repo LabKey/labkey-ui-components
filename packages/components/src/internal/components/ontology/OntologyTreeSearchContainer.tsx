@@ -1,9 +1,9 @@
-import React, { ChangeEvent, FC, memo, MouseEvent, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-
-import { Alert, searchUsingIndex } from '../../..';
+import React, { ChangeEvent, FC, memo, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ConceptModel, OntologyModel, PathModel } from './models';
 import { fetchAlternatePaths, getOntologyDetails } from './actions';
+import { Alert } from '../base/Alert';
+import { searchUsingIndex } from '../search/actions';
 
 const CONCEPT_CATEGORY = 'concept';
 const SEARCH_LIMIT = 20;
@@ -89,8 +89,8 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
 
     const onItemClick = useCallback(
         async (evt: MouseEvent<HTMLLIElement>, code: string) => {
-            // for now we will just send the user to the first path for this concept, in the future we'll add in UI
-            // that lets the user select if more then one path exists for the concept
+            // for now, we will just send the user to the first path for this concept, in the future we'll add in UI
+            // that lets the user select if more than one path exists for the concept
             const codePaths = await fetchAlternatePaths(code);
             if (codePaths?.length > 0) {
                 searchPathClickHandler(codePaths[0], true);
@@ -255,5 +255,5 @@ export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
 
 // exported for jest testing
 export function getOntologySearchTerm(ontology: OntologyModel, searchTerm: string): string {
-    return '+ontology:' + ontology.abbreviation + ' AND ' + searchTerm;
+    return `+ontology:${ontology.abbreviation} AND ${searchTerm}`;
 }

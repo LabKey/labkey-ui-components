@@ -33,10 +33,6 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
     const [error, setError] = useState<string>();
     const [showResults, setShowResults] = useState<boolean>(false);
 
-    useEffect(() => {
-        setSearchTerm(initCode);
-    }, [initCode]);
-
     const onSearchChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
             const { value } = evt.currentTarget;

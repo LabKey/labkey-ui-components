@@ -79,7 +79,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
 
     useEffect(() => {
         loadConsumedStatuses();
-    });
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onChange = useCallback(
         (name: string, newValue: any, items: any) => {

@@ -52,6 +52,8 @@
 }
 
 .parent-search-panel__container {
+    min-width: 500px;
+
     .field_count_circle {
         border-radius: 50%;
         text-align: center;
@@ -116,7 +118,7 @@
             .parent-search-panel__col-content & {
                 overflow: hidden;
             }
-            height: 420px;
+            height: 380px;
         }
     }
 
@@ -204,7 +206,7 @@
 
 .search-filter-values__value {
     margin-left: 5px;
-
+    word-break: break-word;
     &:hover {
         color: $gray-light;
         cursor: pointer;

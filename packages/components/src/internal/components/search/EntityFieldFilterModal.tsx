@@ -105,6 +105,10 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             setQueryFields(undefined);
             setActiveField(undefined);
 
+            if (activeTab === EntityFieldFilterTabs.ChooseValues) {
+                setActiveTab(EntityFieldFilterTabs.Filter);
+            }
+
             setLoadingError(undefined);
             api.query
                 .getQueryDetails({ schemaName: entityDataType.instanceSchemaName, queryName })
@@ -137,11 +141,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         (queryColumn: QueryColumn) => {
             setActiveField(queryColumn);
 
-            if (
-                activeTab === EntityFieldFilterTabs.ChooseValues &&
-                activeField?.allowFaceting() &&
-                activeField?.jsonType === 'string'
-            ) {
+            if (activeTab === EntityFieldFilterTabs.ChooseValues) {
                 setActiveTab(EntityFieldFilterTabs.Filter);
             }
         },

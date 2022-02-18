@@ -91,6 +91,8 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) === -1) valuesToKeep = checkedValues;
 
         return fieldDistinctValues?.filter(val => {
+            return val !== ALL_VALUE_DISPLAY && val != EMPTY_VALUE_DISPLAY;
+        }).filter(val => {
             return valuesToKeep?.indexOf(val) > -1 || val?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
         });
     }, [fieldDistinctValues, searchStr]);
@@ -108,6 +110,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                             value={searchStr ?? ''}
                             onChange={onSearchStrChange}
                             type="text"
+                            placeholder="Type to filter"
                         />
                     </div>
                 )}
@@ -139,6 +142,9 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                     </li>
                                 );
                             })}
+                            {(searchStr && filteredFieldDistinctValues?.length === 0) &&
+                                <div className="parent-search-panel__empty-msg">No values match filter string '{searchStr}'.</div>
+                            }
                         </ul>
                     </Col>
                     <Col xs={6}>

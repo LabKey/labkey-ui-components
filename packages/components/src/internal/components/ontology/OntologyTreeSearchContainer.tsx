@@ -1,9 +1,11 @@
 import React, { ChangeEvent, FC, memo, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
 
+import { Alert } from '../base/Alert';
+
+import { searchUsingIndex } from '../search/actions';
+
 import { ConceptModel, OntologyModel, PathModel } from './models';
 import { fetchAlternatePaths, getOntologyDetails } from './actions';
-import { Alert } from '../base/Alert';
-import { searchUsingIndex } from '../search/actions';
 
 const CONCEPT_CATEGORY = 'concept';
 const SEARCH_LIMIT = 20;
@@ -255,5 +257,6 @@ export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
 
 // exported for jest testing
 export function getOntologySearchTerm(ontology: OntologyModel, searchTerm: string): string {
-    return `+ontology:${ontology.abbreviation} AND ${searchTerm}`;
+    // Quotes are needed to escape the ':' and the open term allows more flexible search of multi-token terms, e.g. ABC T
+    return `+ontology:${ontology.abbreviation} AND ("${searchTerm}" OR ${searchTerm})`;
 }

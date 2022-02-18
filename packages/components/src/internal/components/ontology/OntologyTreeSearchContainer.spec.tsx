@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert } from '../../..';
+import { Alert, OntologySearchInput } from '../../..';
 
 import {
     getOntologySearchTerm,
@@ -9,6 +9,7 @@ import {
     OntologyTreeSearchContainer,
 } from './OntologyTreeSearchContainer';
 import { ConceptModel, OntologyModel } from './models';
+import { waitForLifecycle } from '../../testHelpers';
 
 const TEST_ONTOLOGY = new OntologyModel({
     abbreviation: 't',
@@ -31,14 +32,15 @@ const TEST_SEARCH_HITS = [
 ];
 
 describe('OntologyTreeSearchContainer', () => {
-    test('default props', () => {
+    test('default props', async () => {
         const wrapper = mount(
             <OntologyTreeSearchContainer ontology={TEST_ONTOLOGY} searchPathClickHandler={jest.fn} />
         );
         expect(wrapper.find('.concept-search-container')).toHaveLength(1);
         expect(wrapper.find('input')).toHaveLength(1);
         expect(wrapper.find('input').prop('placeholder')).toBe('Search t');
-        expect(wrapper.find(OntologySearchResultsMenu)).toHaveLength(1);
+        expect(wrapper.find(OntologySearchResultsMenu)).toHaveLength(0); // No initial search term, so no result element expected
+
         wrapper.unmount();
     });
 });
@@ -136,6 +138,7 @@ describe('OntologySearchResultsMenu', () => {
 describe('getOntologySearchTerm', () => {
     test('validate', () => {
         const ont = new OntologyModel({ abbreviation: 'abbr' });
-        expect(getOntologySearchTerm(ont, 'test')).toBe('+ontology:abbr AND test');
+        expect(getOntologySearchTerm(ont, 'test')).toBe('+ontology:abbr AND ("test" OR test)');
+        expect(getOntologySearchTerm(ont, 'test 123')).toBe('+ontology:abbr AND ("test 123" OR test 123)');
     });
 });

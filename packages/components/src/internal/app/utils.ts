@@ -157,7 +157,7 @@ export function isProductNavigationEnabled(productId: string): boolean {
 }
 
 export function isSubfolderDataEnabled(): boolean {
-    return getServerContext().moduleContext?.biologics?.isSubfolderDataEnabled === true;
+    return getServerContext().moduleContext?.query?.isSubfolderDataEnabled === true;
 }
 
 export function isSampleManagerEnabled(moduleContext?: any): boolean {

@@ -7,7 +7,7 @@ import { FREEZER_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
-import { TestTypeDataType } from '../../../test/data/constants';
+import {TestTypeDataType, TestTypeDataTypeWithEntityFilter} from '../../../test/data/constants';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
@@ -352,9 +352,27 @@ const cardJSON =
     '"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~="},{"fieldKey":"strField","fieldCaption":"strField",' +
     '"filter":"query.strField~between=1%2C5"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1}],"filterChangeCounter":5}';
 
+const cardWithEntityTypeFilter = {
+    entityDataType: TestTypeDataTypeWithEntityFilter,
+    filterArray: [goodAnyValueFilter, goodBetweenFilter],
+    schemaQuery: SchemaQuery.create('TestSchema', 'samples1'),
+    index: 1,
+};
+
+const cardWithEntityTypeFilterJSON =
+    '{\"filters\":[{\"entityDataType\":{\"typeListingSchemaQuery\":{\"schemaName\":\"TestListing\",\"queryName\":\"query\"},\"listingSchemaQuery\":{\"schemaName\":\"Test\",\"queryName\":\"query\"},' +
+    '\"instanceSchemaName\":\"TestSchema\",\"operationConfirmationActionName\":\"test-delete-confirmation.api\",' +
+    '\"nounSingular\":\"test\",\"nounPlural\":\"tests\",\"nounAsParentSingular\":\"test Parent\",\"nounAsParentPlural\":\"test Parents\",' +
+    '\"typeNounSingular\":\"Test Type\",\"descriptionSingular\":\"parent test type\",\"descriptionPlural\":\"parent test types\",\"uniqueFieldKey\":\"Name\",\"dependencyText\":\"test data dependencies\",' +
+    '\"deleteHelpLinkTopic\":\"viewSampleSets#delete\",\"inputColumnName\":\"Inputs/Materials/First\",\"inputTypeValueField\":\"lsid\",\"insertColumnNamePrefix\":\"MaterialInputs/\",\"editTypeAppUrlPrefix\":\"Test\",' +
+    '\"importFileAction\":\"importSamples\",\"filterCardHeaderClass\":\"filter-card__header-success\",\"filterArray\":[\"query.Category~eq=Source\"]},\"filterArray\":[{\"fieldKey\":\"textField\",' +
+    '\"fieldCaption\":\"textField\",\"filter\":\"query.textField~=\"},{\"fieldKey\":\"strField\",\"fieldCaption\":\"strField\",\"filter\":\"query.strField~between=1%2C5\"}],\"schemaQuery\":{\"schemaName\":\"TestSchema\",' +
+    '\"queryName\":\"samples1\"},\"index\":1}],\"filterChangeCounter\":5}';
+
 describe('searchFiltersToJson', () => {
     test('searchFiltersToJson', () => {
         expect(searchFiltersToJson([card], 5)).toEqual(cardJSON);
+        expect(searchFiltersToJson([cardWithEntityTypeFilter], 5)).toEqual(cardWithEntityTypeFilterJSON);
     });
 });
 
@@ -369,6 +387,11 @@ describe('searchFiltersFromJson', () => {
         expect(fieldFilters[0]['fieldCaption']).toEqual('textField');
         const textFilter = fieldFilters[1]['filter'];
         expect(textFilter).toStrictEqual(goodBetweenFilter.filter);
+
+        const deserializedCardWithEntityFilter = searchFiltersFromJson(cardWithEntityTypeFilterJSON);
+        const entityTypeFilters = deserializedCardWithEntityFilter['filters'][0].entityDataType.filterArray;
+        expect(entityTypeFilters.length).toEqual(1);
+        expect(entityTypeFilters[0]).toStrictEqual(Filter.create('Category', 'Source'));
     });
 });
 

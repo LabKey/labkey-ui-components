@@ -200,7 +200,9 @@ export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCoun
     const filterPropsObj = [];
 
     filterProps.forEach(filterProp => {
-        const filterPropObj = { ...filterProp };
+        const filterPropsEntityDataType = {...filterProp.entityDataType};
+        const filterPropObj = { ...filterProp, entityDataType: filterPropsEntityDataType };
+
         const filterArrayObjs = [];
         [...filterPropObj.filterArray].forEach(field => {
             filterArrayObjs.push({
@@ -210,6 +212,17 @@ export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCoun
             });
         });
         filterPropObj.filterArray = filterArrayObjs;
+
+        const entityDataFilterArrayObjs = [];
+        if (filterPropObj.entityDataType.filterArray?.length > 0) {
+            [...filterPropObj.entityDataType.filterArray].forEach(filter => {
+                entityDataFilterArrayObjs.push(filterToJson(filter));
+            });
+
+            console.log(JSON.stringify(entityDataFilterArrayObjs));
+            filterPropObj.entityDataType.filterArray = entityDataFilterArrayObjs;
+        }
+
         filterPropsObj.push(filterPropObj);
     });
 
@@ -235,6 +248,16 @@ export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStor
             });
         });
         filterPropObj['filterArray'] = filterArray;
+
+        if (filterPropObj['entityDataType']?.['filterArray']) {
+            const filterArray = [];
+            filterPropObj['entityDataType']?.['filterArray']?.forEach(filter => {
+                filterArray.push(filterFromJson(filter));
+            });
+
+            filterPropObj['entityDataType']['filterArray'] = filterArray;
+        }
+
         filters.push(filterPropObj as FilterProps);
     });
 
@@ -268,7 +291,7 @@ export function getFieldFilterKey(fieldFilter: FieldFilter, schemaQuery?: Schema
     return schemaQuery.schemaName + '|' + schemaQuery.queryName + '|' + fieldFilter.fieldKey;
 }
 
-export function getFieldFiltersValidationResult(dataTypeFilters: { [key: string]: FieldFilter[] }): string {
+export function getFieldFiltersValidationResult(dataTypeFilters: { [key: string]: FieldFilter[] }, queryLabels?: { [key: string]: string}): string {
     let errorMsg = 'Invalid/incomplete filter values. Please correct input for fields. ',
         hasError = false,
         parentFields = {};
@@ -299,7 +322,8 @@ export function getFieldFiltersValidationResult(dataTypeFilters: { [key: string]
 
     if (hasError) {
         Object.keys(parentFields).forEach(parent => {
-            errorMsg += parent + ': ' + parentFields[parent].join(', ') + '. ';
+            const parentLabel = queryLabels?.[parent] ?? parent;
+            errorMsg += parentLabel + ': ' + parentFields[parent].join(', ') + '. ';
         });
         return errorMsg;
     }

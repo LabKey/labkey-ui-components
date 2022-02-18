@@ -32,7 +32,11 @@ export const SampleActionsButton: FC<Props> = memo(props => {
     const { children, disabled, user, model } = props;
     const sampleFieldKey = useMemo(() => model?.allColumns?.find(c => c.isSampleLookup())?.fieldKey, [model]);
     const id = 'sample-actions-menu';
-    const hasPerms = hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]);
+    const hasPerms = hasAnyPermissions(user, [
+        PermissionTypes.Insert,
+        PermissionTypes.Update,
+        PermissionTypes.ManagePicklists,
+    ]);
 
     if (!(!!children || hasPerms)) {
         return null;

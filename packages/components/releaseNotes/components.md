@@ -6,6 +6,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 9992: Add ontology type ahead search to forms
   * Split out `OntologySearchInput` from the existing `OntologyTreeSearchContainer`
 
+### version 2.132.3
+*Released*: 17 February 2022
+* Update to package to eliminate alpha version reference from node_modules
+* Change return type for `useEnterEscape`
+
+### version 2.132.2
+*Skipped*
+
 ### version 2.132.1
 *Released*: 16 February 2022
 * Issue 44742: Hide NameExpressionGenIdBanner when genId is not used in the current naming patterns

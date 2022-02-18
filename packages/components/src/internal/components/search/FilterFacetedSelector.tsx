@@ -33,11 +33,19 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             .selectDistinctRows(selectDistinctOptions)
             .then(result => {
                 const distinctValues = result.values
+                    .sort(naturalSort)
                     .map(val => {
                         if (val === '' || val === null || val === undefined) return EMPTY_VALUE_DISPLAY;
                         return val;
-                    })
-                    .sort(naturalSort);
+                    });
+
+                // move [blank] to first
+                if (distinctValues.indexOf(EMPTY_VALUE_DISPLAY) > 0) {
+                    distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
+                    distinctValues.unshift(EMPTY_VALUE_DISPLAY);
+                }
+
+                // add [All] to first
                 distinctValues.unshift(ALL_VALUE_DISPLAY);
                 setFieldDistinctValues(distinctValues);
             })

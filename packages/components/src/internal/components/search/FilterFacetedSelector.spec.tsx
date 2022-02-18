@@ -23,10 +23,11 @@ beforeAll(() => {
 
 const valuesListShort = ['ed', 'ned', '', 'ted', 'red', 'bed'];
 const allDisplayValuesShort = ['[All]', '[blank]', 'bed', 'ed', 'ned', 'red', 'ted'];
-const valuesListLong = [...valuesListShort, 'hop', 'pop', 'all', 'ball', 'fall', 'wall'];
+const valuesListLong = [...valuesListShort, 'hop', '1', 'pop', 'all', 'ball', 'fall', 'wall'];
 const allDisplayValuesLong = [
     '[All]',
     '[blank]',
+    '1',
     'all',
     'ball',
     'bed',

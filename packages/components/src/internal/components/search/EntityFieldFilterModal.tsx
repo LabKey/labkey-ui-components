@@ -171,7 +171,13 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     }, [dataTypeFilters]);
 
     const _onFind = useCallback(() => {
-        const filterErrors = getFieldFiltersValidationResult(validDataTypeFilters);
+        let queryLabels = {};
+        entityQueries?.map((parent) => {
+            const label = parent.label ?? parent.get?.('label');
+            const parentValue = parent.value ?? parent.get?.('value');
+            queryLabels[parentValue] = label;
+        });
+        const filterErrors = getFieldFiltersValidationResult(validDataTypeFilters, queryLabels);
         if (!filterErrors) onFind(entityDataType.instanceSchemaName, validDataTypeFilters);
         else setFilterError(filterErrors);
     }, [onFind, validDataTypeFilters]);

@@ -433,6 +433,15 @@ describe('getFieldFiltersValidationResult', () => {
         ).toEqual('Invalid/incomplete filter values. Please correct input for fields. sampleType1: intField. ');
     });
 
+    test('missing value, with query label', () => {
+        expect(
+            getFieldFiltersValidationResult({
+                sampleType1: [goodAnyValueFilter, badIntFilter],
+                sampleType2: [goodIntFilter],
+            }, {sampleType1: "Sample Type 1"})
+        ).toEqual('Invalid/incomplete filter values. Please correct input for fields. Sample Type 1: intField. ');
+    });
+
     test('missing between filter value', () => {
         expect(
             getFieldFiltersValidationResult({

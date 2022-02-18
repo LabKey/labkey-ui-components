@@ -6,7 +6,7 @@ import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
-import { App } from '../../../index';
+import { App, parseDate } from '../../../index';
 
 import { JsonType } from '../domainproperties/PropDescType';
 import { formatDate } from '../../util/Date';
@@ -136,7 +136,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         selectsEnd
                         isClearable
                         required
-                        selected={valueRaw ? new Date(valueRaw) : undefined}
+                        selected={valueRaw ? parseDate(valueRaw) : undefined}
                         name={'field-value-date' + suffix}
                         onChange={newDate => updateDateFilterFieldValue(newDate, isSecondInput)}
                         dateFormat={App.getDateFormat()}

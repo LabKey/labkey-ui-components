@@ -436,6 +436,18 @@ const USER_DETAILS_MAPPERS = [
     new ActionMapper('user', 'attachmentDownload', () => false),
 ];
 
+const EHR_MAPPERS = [
+    new ActionMapper('query', 'detailsQueryRow', row => {
+        const url = row.get('url');
+        if (url) {
+            const params = ActionURL.getParameters(url);
+            if (params.schemaName === 'ehr' || params.schemaName === 'ehr_lookups')
+                return false;
+        }
+    }),
+    new ActionMapper('ehr', 'participantView', () => false),
+];
+
 const DOWNLOAD_FILE_LINK_MAPPER = new ActionMapper('core', 'downloadFileLink', () => false);
 
 const AUDIT_DETAILS_MAPPER = new ActionMapper('audit', 'detailedAuditChanges', () => false);
@@ -501,6 +513,7 @@ export const URL_MAPPERS = {
     SAMPLE_TYPE_MAPPERS,
     LIST_MAPPERS,
     PICKLIST_MAPPER,
+    EHR_MAPPERS,
     DETAILS_QUERY_ROW_MAPPER,
     EXECUTE_QUERY_MAPPER,
     USER_DETAILS_MAPPERS,

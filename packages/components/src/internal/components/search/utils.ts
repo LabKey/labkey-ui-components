@@ -188,6 +188,24 @@ export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilte
     return suffix === filterType.getURLSuffix();
 }
 
+export function getFilterTypePlaceHolder(suffix: string, jsonType: string): string
+{
+    if (suffix !== 'in' && suffix !== 'notin')
+        return null;
+
+    switch (jsonType)
+    {
+        case "float":
+            return "Example: 1.0;2.2;3";
+        case "int":
+            return "Example: 1;2;3"
+        case "string":
+            return "Example: a;b;c"
+    }
+
+    return null;
+}
+
 export function filterToJson(filter: Filter.IFilter): string {
     return encodeURIComponent(filter.getURLParameterName()) + '=' + encodeURIComponent(filter.getURLParameterValue());
 }

@@ -87,13 +87,10 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const filteredFieldDistinctValues = useMemo(() => {
         if (!searchStr) return fieldDistinctValues;
 
-        let valuesToKeep = [];
-        if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) === -1) valuesToKeep = checkedValues;
-
         return fieldDistinctValues?.filter(val => {
             return val !== ALL_VALUE_DISPLAY && val != EMPTY_VALUE_DISPLAY;
         }).filter(val => {
-            return valuesToKeep?.indexOf(val) > -1 || val?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
+            return val?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
         });
     }, [fieldDistinctValues, searchStr]);
 

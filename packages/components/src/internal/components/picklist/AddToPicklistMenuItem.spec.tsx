@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 import { Modal } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+import { mountWithAppServerContext } from '../../testHelpers';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -27,7 +28,7 @@ describe('AddToPicklistMenuItem', () => {
     queryModelWithSelections = queryModelWithSelections.mutate({ selections: new Set(['1', '2']) });
 
     test('with queryModel', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <AddToPicklistMenuItem
                 itemText={text}
                 queryModel={queryModelWithSelections}
@@ -48,7 +49,7 @@ describe('AddToPicklistMenuItem', () => {
     });
 
     test('with selectedIds', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <AddToPicklistMenuItem
                 itemText={text}
                 queryModel={queryModelWithoutSelections}
@@ -70,7 +71,7 @@ describe('AddToPicklistMenuItem', () => {
     });
 
     test('not Editor', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <AddToPicklistMenuItem itemText={text} sampleIds={['1']} key={key} user={TEST_USER_READER} />
         );
         expect(wrapper.find('MenuItem')).toHaveLength(0);
@@ -85,7 +86,7 @@ describe('AddToPicklistMenuItem', () => {
     }
 
     test('modal open on click, queryModel selections', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <AddToPicklistMenuItem
                 itemText={text}
                 key={key}
@@ -105,7 +106,7 @@ describe('AddToPicklistMenuItem', () => {
     });
 
     test('modal open on click, sampleIds', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <AddToPicklistMenuItem
                 itemText={text}
                 queryModel={queryModelWithoutSelections}
@@ -129,7 +130,7 @@ describe('AddToPicklistMenuItem', () => {
             },
             orderedRows: ['1'],
         });
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <AddToPicklistMenuItem
                 itemText={text}
                 queryModel={model}

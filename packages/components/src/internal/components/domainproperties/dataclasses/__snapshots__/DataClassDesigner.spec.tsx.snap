@@ -1510,6 +1510,7 @@ exports[`DataClassDesigner initModel 1`] = `
           "validateDomainNameExpressions": [Function],
         },
         "picklist": PicklistServerAPIWrapper {
+          "getPicklistCountsBySampleType": [Function],
           "getPicklistDeleteData": [Function],
           "getPicklistFromId": [Function],
         },

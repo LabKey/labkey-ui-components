@@ -1,15 +1,23 @@
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
 
-import { getPicklistDeleteData, getPicklistFromId, PicklistDeletionData } from './actions';
+import {
+    getPicklistCountsBySampleType,
+    getPicklistDeleteData,
+    getPicklistFromId,
+    PicklistDeletionData,
+    SampleTypeCount,
+} from './actions';
 import { Picklist } from './models';
 
 export interface PicklistAPIWrapper {
+    getPicklistCountsBySampleType: (listName: string) => Promise<SampleTypeCount[]>;
     getPicklistDeleteData: (model: QueryModel, user: User) => Promise<PicklistDeletionData>;
     getPicklistFromId: (listId: number, loadSampleTypes?: boolean) => Promise<Picklist>;
 }
 
 export class PicklistServerAPIWrapper implements PicklistAPIWrapper {
+    getPicklistCountsBySampleType = getPicklistCountsBySampleType;
     getPicklistDeleteData = getPicklistDeleteData;
     getPicklistFromId = getPicklistFromId;
 }
@@ -22,8 +30,9 @@ export function getPicklistTestAPIWrapper(
     overrides: Partial<PicklistAPIWrapper> = {}
 ): PicklistAPIWrapper {
     return {
-        getPicklistDeleteData: mockFn(),
-        getPicklistFromId: mockFn(),
+        getPicklistCountsBySampleType: () => Promise.resolve([]),
+        getPicklistDeleteData: mockFn,
+        getPicklistFromId: mockFn,
         ...overrides,
     };
 }

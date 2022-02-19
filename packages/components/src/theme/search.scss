@@ -206,7 +206,7 @@
 
 .search-filter-values__value {
     margin-left: 5px;
-    word-break: break-word;
+    word-break: break-all;
     &:hover {
         color: $gray-light;
         cursor: pointer;

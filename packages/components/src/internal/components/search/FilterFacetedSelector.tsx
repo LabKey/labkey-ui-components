@@ -140,7 +140,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                 );
                             })}
                             {(searchStr && filteredFieldDistinctValues?.length === 0) &&
-                                <div className="parent-search-panel__empty-msg">No values match filter string '{searchStr}'.</div>
+                                <div className="parent-search-panel__empty-msg">No value matches '{searchStr}'.</div>
                             }
                         </ul>
                     </Col>

@@ -310,7 +310,6 @@ import {
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
 import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
-import { SampleDeleteMenuItem } from './internal/components/samples/SampleDeleteMenuItem';
 import { SamplesManageButton } from './internal/components/samples/SamplesManageButton';
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
@@ -1010,7 +1009,6 @@ export {
     SampleSetSummary,
     SampleCreationType,
     SampleSetDeleteModal,
-    SampleDeleteMenuItem,
     SampleActionsButton,
     SamplesManageButton,
     SamplesManageButtonSections,

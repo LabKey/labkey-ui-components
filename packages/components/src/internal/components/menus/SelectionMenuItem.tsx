@@ -59,7 +59,7 @@ export class SelectionMenuItem extends PureComponent<Props> {
         const { href, id, text, onClick, disabledMsg, maxSelection, maxSelectionDisabledMsg, nounPlural } = this.props;
         const { disabled, tooFewSelected } = this;
         const item = (
-            <MenuItem href={href} onClick={onClick} disabled={disabled}>
+            <MenuItem href={disabled ? undefined : href} onClick={disabled ? undefined : onClick} disabled={disabled}>
                 {text}
             </MenuItem>
         );

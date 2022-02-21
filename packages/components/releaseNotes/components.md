@@ -8,6 +8,23 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Added InExpAncestorsOfFilterType and InExpDescendantsOfFilterType
   * Enable non-text fields for EntityFieldFilterModal (Sample Finder)
 
+### version 2.136.0
+*Released*: 21 February 2022
+* Item 9992: Add ontology type ahead search to forms
+  * Split out `OntologySearchInput` from the existing `OntologyTreeSearchContainer`
+
+### version 2.135.0
+*Released*: 21 February 2022
+* Item 10004: Sample Finder V1 - Support Choose Values
+   * Added FilterFacetedSelector and utils to support faceted fitler selection
+
+### version 2.134.0
+*Released*: 21 February 2022
+* Core components page update to use QueryModel based EditableGridPanel
+  * factor loadEditorModelData() out of AssayWizardModel.ts to editable/utils.ts
+  * export EditableGridPanel, loadEditorModelData, and EditorModelProps from index.ts
+  * AssayImportPanels.tsx fix for undefined location prop in core-components case
+
 ### version 2.133.0
 *Released*: 21 February 2022
 * Item 9956: Freezer manager dashboard updates to the freezer listing panel

@@ -36,7 +36,13 @@ export const TEST_USER_READER = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([PermissionTypes.Read]),
+    permissionsList: List<string>([
+        PermissionTypes.Read,
+        PermissionTypes.ReadDataClass,
+        PermissionTypes.ReadAssay,
+        PermissionTypes.ReadMedia,
+        PermissionTypes.ReadNotebooks,
+    ]),
 });
 
 export const TEST_USER_AUTHOR = new User({
@@ -81,6 +87,10 @@ export const TEST_USER_EDITOR = new User({
         PermissionTypes.Update,
         PermissionTypes.ManagePicklists,
         PermissionTypes.ManageSampleWorkflows,
+        PermissionTypes.ReadNotebooks,
+        PermissionTypes.ReadDataClass,
+        PermissionTypes.ReadAssay,
+        PermissionTypes.ReadMedia,
     ]),
 });
 
@@ -131,6 +141,10 @@ export const TEST_USER_FOLDER_ADMIN = new User({
         PermissionTypes.ManagePicklists,
         PermissionTypes.ManageSampleWorkflows,
         PermissionTypes.Admin,
+        PermissionTypes.ReadNotebooks,
+        PermissionTypes.ReadDataClass,
+        PermissionTypes.ReadAssay,
+        PermissionTypes.ReadMedia,
     ]),
 });
 
@@ -163,6 +177,10 @@ export const TEST_USER_PROJECT_ADMIN = new User({
         PermissionTypes.ManageSampleWorkflows,
         PermissionTypes.Admin,
         PermissionTypes.AddUser,
+        PermissionTypes.ReadNotebooks,
+        PermissionTypes.ReadDataClass,
+        PermissionTypes.ReadAssay,
+        PermissionTypes.ReadMedia,
     ]),
 });
 
@@ -197,6 +215,10 @@ export const TEST_USER_APP_ADMIN = new User({
         PermissionTypes.UserManagement,
         PermissionTypes.ApplicationAdmin,
         PermissionTypes.AddUser,
+        PermissionTypes.ReadNotebooks,
+        PermissionTypes.ReadDataClass,
+        PermissionTypes.ReadAssay,
+        PermissionTypes.ReadMedia,
     ]),
 });
 

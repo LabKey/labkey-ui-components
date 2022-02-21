@@ -52,6 +52,7 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
                         <div
                             key={index}
                             style={styleProps}
+                            data-title={row.title}
                             className={classNames('horizontal-bar-part', row.className, {
                                 'horizontal-bar--begin': !hasBegun,
                                 'horizontal-bar--filled': row.filled,
@@ -72,7 +73,7 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
             }
         });
     } else {
-        horizontalBars.push(<div>{emptyText ?? DEFAULT_EMPTY_TEXT}</div>);
+        horizontalBars.push(<div className="horizontal-bar--empty-text">{emptyText ?? DEFAULT_EMPTY_TEXT}</div>);
     }
 
     return (

@@ -8,6 +8,38 @@ Components, models, actions, and utility functions for LabKey applications and p
   * export EditableGridPanel, loadEditorModelData, and EditorModelProps from index.ts
   * AssayImportPanels.tsx fix for undefined location prop in core-components case
 
+### version 2.133.0
+*Released*: 21 February 2022
+* Item 9956: Freezer manager dashboard updates to the freezer listing panel
+  * ExpandableContainer update to call onClick when defined regardless of isExpandable prop
+  * HorizontalBarSection updates for selenium test locators
+
+### version 2.132.4
+*Released*: 19 February 2022
+* Migrate subfolder data experimental flag to platform.
+
+### version 2.132.3
+*Released*: 17 February 2022
+* Update to package to eliminate alpha version reference from node_modules
+* Change return type for `useEnterEscape`
+
+### version 2.132.2
+*Skipped*
+
+### version 2.132.1
+*Released*: 16 February 2022
+* Issue 44742: Hide NameExpressionGenIdBanner when genId is not used in the current naming patterns
+* Issue 44771: Misspelling on naming pattern warning dialog
+* Issue 44852: Warning message when resetting the genId to a "conflicting value" is off by 1.
+
+### version 2.132.0
+*Released*: 16 February 2022
+* Item 9998: Add permissions for restricting read for assays and data classes
+  * Add utility methods for checking various read permissions
+  * update `assayPage` to check assay read permission
+* Update `SelectionMenuItem` to accept either an `onClick` or `href` property.
+* Don't show the option to discard samples when changing status if user doesn't have proper permissions
+
 ### version 2.131.0
 *Released*: 8 February 2022
 * Issue 44711: Field editor update to show confirm modal on change of data type for saved field

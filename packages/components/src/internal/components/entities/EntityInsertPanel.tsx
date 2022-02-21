@@ -87,6 +87,8 @@ import { GetNameExpressionOptionsResponse, loadNameExpressionOptions } from '../
 
 import { SampleStatusLegend } from '../samples/SampleStatusLegend';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -107,7 +109,6 @@ import {
     removeEntityParentType,
 } from './EntityParentTypeSelectors';
 import { ENTITY_CREATION_METRIC } from './constants';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';

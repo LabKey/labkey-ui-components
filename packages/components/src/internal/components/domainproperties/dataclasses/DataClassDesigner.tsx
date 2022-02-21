@@ -16,6 +16,8 @@ import { NameExpressionValidationModal } from '../validation/NameExpressionValid
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
 
+import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
+
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
 
@@ -273,6 +275,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         } = this.props;
         const { model, nameExpressionWarnings, namePreviews, namePreviewsLoading } = this.state;
 
+        const hasGenIdInExpression = model.nameExpression?.indexOf(GENID_SYNTAX_STRING) > -1;
+
         return (
             <BaseDomainDesigner
                 name={model.name}
@@ -310,7 +314,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     previewName={namePreviews?.[0]}
                     onNameFieldHover={this.onNameFieldHover}
                     nameExpressionGenIdProps={
-                        showGenIdBanner
+                        showGenIdBanner && hasGenIdInExpression
                             ? {
                                   containerPath: model.containerPath,
                                   dataTypeName: model.name,

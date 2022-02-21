@@ -68,7 +68,7 @@ export function createPercentageBarData(
     percentageBars: PercentageBarProps[],
     baseAppURL?: AppURL,
     urlFilterKey?: string
-) : { data: HorizontalBarData[], subtitle: string } {
+): { data: HorizontalBarData[]; subtitle: string } {
     const totalCount = caseInsensitive(row, totalCountKey)?.value ?? 0;
     let unusedCount = totalCount;
     const data = [];
@@ -128,7 +128,7 @@ export interface HorizontalBarLegendData {
 export function createHorizontalBarLegendData(data: HorizontalBarData[]): HorizontalBarLegendData[] {
     const legendMap = {};
     data.forEach(row => {
-        if (row.totalCount > 0) {
+        if (row.filled && row.totalCount > 0) {
             const labels = legendMap[row.backgroundColor] || [];
             if (labels.indexOf(row.name) == -1) {
                 labels.push(row.name);

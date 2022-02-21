@@ -3,13 +3,14 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { capitalizeFirstChar } from '../../util/utils';
 
-import { FindByIdsModal } from './FindByIdsModal';
 import { getCurrentAppProperties, getPrimaryAppProperties, isSampleFinderEnabled } from '../../app/utils';
 import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from '../samples/constants';
 import { FindField } from '../samples/models';
 import { createProductUrl } from '../../url/AppURL';
 import { FIND_SAMPLES_BY_FILTER_HREF } from '../../app/constants';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { FindByIdsModal } from './FindByIdsModal';
 import { SAMPLE_FILTER_METRIC_AREA } from './utils';
 
 interface Props {
@@ -27,10 +28,13 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
     const [findField, setFindField] = useState<FindField>(undefined);
     const [showFindModal, setShowFindModal] = useState<boolean>(false);
 
-    const onShowFind = useCallback((findField: FindField) => {
-        setFindField(findField);
-        setShowFindModal(true);
-    }, [setShowFindModal]);
+    const onShowFind = useCallback(
+        (findField: FindField) => {
+            setFindField(findField);
+            setShowFindModal(true);
+        },
+        [setShowFindModal]
+    );
 
     const onHideFindModal = useCallback(() => {
         setFindField(undefined);
@@ -88,7 +92,6 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
                         <i className="fa fa-search" /> Search
                     </MenuItem>
                 )}
-
             </DropdownButton>
             {!!onFindByIds && showFindModal && (
                 <FindByIdsModal

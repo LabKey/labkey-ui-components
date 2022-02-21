@@ -34,14 +34,18 @@ interface Props {
 export const SampleActionsButton: FC<Props> = memo(props => {
     const { disabled, user, model, moreMenuItems, metricFeatureArea } = props;
 
-    const sampleFieldKey = useMemo(() => model?.allColumns?.find(c =>
-        SAMPLE_TYPE_CONCEPT_URI.localeCompare(c.conceptURI, 'en', { sensitivity: 'base' }) === 0
-    )?.fieldKey,[model]);
+    const sampleFieldKey = useMemo(
+        () =>
+            model?.allColumns?.find(
+                c => SAMPLE_TYPE_CONCEPT_URI.localeCompare(c.conceptURI, 'en', { sensitivity: 'base' }) === 0
+            )?.fieldKey,
+        [model]
+    );
 
     const id = 'sample-actions-menu';
 
     return (
-        <DropdownButton disabled={disabled} id={`${id}-btn`} bsStyle={'default'} title={'Samples'}>
+        <DropdownButton disabled={disabled} id={`${id}-btn`} bsStyle="default" title="Samples">
             {hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]) && (
                 <>
                     {moreMenuItems}

@@ -5,8 +5,9 @@ import { AuditBehaviorTypes } from '@labkey/api';
 
 import { EntityDeleteModal, SampleTypeDataType, QueryModel, SelectionMenuItem } from '../../..';
 
-import { MAX_SELECTED_SAMPLES } from './constants';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { MAX_SELECTED_SAMPLES } from './constants';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -46,11 +47,14 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
         setShowConfirmDeleteSamples(false);
     }, []);
 
-    const onDeleteComplete = useCallback((rowsToKeep: any[]) => {
-        setShowConfirmDeleteSamples(false);
-        afterSampleDelete?.(rowsToKeep);
-        api.query.incrementClientSideMetricCount(metricFeatureArea, 'deleteSamples');
-    }, [afterSampleDelete, api, metricFeatureArea]);
+    const onDeleteComplete = useCallback(
+        (rowsToKeep: any[]) => {
+            setShowConfirmDeleteSamples(false);
+            afterSampleDelete?.(rowsToKeep);
+            api.query.incrementClientSideMetricCount(metricFeatureArea, 'deleteSamples');
+        },
+        [afterSampleDelete, api, metricFeatureArea]
+    );
 
     return (
         <>

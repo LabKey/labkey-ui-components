@@ -28,6 +28,8 @@ import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 import { invalidateQueryDetailsCache } from '../../query/api';
 import { getPrimaryAppProperties } from '../../app/utils';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { removeFinderGridView, saveFinderGridView } from './actions';
 import { FilterCards } from './FilterCards';
 import {
@@ -41,7 +43,6 @@ import {
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 import { FieldFilter, FilterProps } from './models';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 const SAMPLE_FINDER_TITLE = 'Find Samples';
 const SAMPLE_FINDER_CAPTION = 'Find samples that meet all the criteria defined below';

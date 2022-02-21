@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, OntologySearchInput } from '../../..';
+import { Alert } from '../base/Alert';
 
 import {
     getOntologySearchTerm,
@@ -9,7 +9,6 @@ import {
     OntologyTreeSearchContainer,
 } from './OntologyTreeSearchContainer';
 import { ConceptModel, OntologyModel } from './models';
-import { waitForLifecycle } from '../../testHelpers';
 
 const TEST_ONTOLOGY = new OntologyModel({
     abbreviation: 't',

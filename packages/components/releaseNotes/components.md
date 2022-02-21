@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 2.135.0
+*Released*: 21 February 2022
 * Item 10004: Sample Finder V1 - Support Choose Values
    * Added FilterFacetedSelector and utils to support faceted fitler selection
 

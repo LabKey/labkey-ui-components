@@ -30,7 +30,6 @@ interface Props {
     onFind: (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }) => void;
     queryName?: string;
     fieldKey?: string;
-    showAllFields?: boolean; // all fields types, including non-text fields
     cards?: FilterProps[];
     skipDefaultViewCheck?: boolean; // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
 }
@@ -41,7 +40,7 @@ export enum EntityFieldFilterTabs {
 }
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
-    const { api, entityDataType, onCancel, onFind, cards, queryName, fieldKey, showAllFields, skipDefaultViewCheck } =
+    const { api, entityDataType, onCancel, onFind, cards, queryName, fieldKey, skipDefaultViewCheck } =
         props;
 
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
@@ -106,13 +105,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 .getQueryDetails({ schemaName: entityDataType.instanceSchemaName, queryName })
                 .then(queryInfo => {
                     const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
-                    let supportedFields = fields;
-                    if (!showAllFields) {
-                        // TODO only support string fields until MVFK (multi value FK) server side work is completed
-                        supportedFields = fromJS(fields.filter(field => field.jsonType === 'string'));
-                    }
-
-                    setQueryFields(supportedFields);
+                    setQueryFields(fields);
                     if (fieldKey) {
                         const field = supportedFields.find(field => field.fieldKey === fieldKey);
                         setActiveField(field);
@@ -122,7 +115,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     setLoadingError(resolveErrorMessage(error, queryName, queryName, 'load'));
                 });
         },
-        [api, entityDataType, skipDefaultViewCheck, showAllFields]
+        [api, entityDataType, skipDefaultViewCheck]
     );
 
     const onFieldClick = useCallback(

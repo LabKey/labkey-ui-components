@@ -92,8 +92,8 @@ describe('EntityFieldFilterModal', () => {
         expect(queries.at(1).props()['active']).toEqual(isQuerySelected);
     }
 
-    function verifyOpenedFieldsPanel(wrapper, isIncludeAllFieldTypes?: boolean, isFieldSelected?: boolean) {
-        const fieldCount = isIncludeAllFieldTypes ? 28 : 13;
+    function verifyOpenedFieldsPanel(wrapper, isFieldSelected?: boolean) {
+        const fieldCount = 28 ;
 
         const fieldsContainerBody = wrapper.find('.parent-search-panel__fields-col-content');
         const fields = fieldsContainerBody.find(ChoicesListItem);
@@ -170,24 +170,11 @@ describe('EntityFieldFilterModal', () => {
 
         verifyOpeningCardWithFilters(wrapper, true);
 
-        verifyOpenedFieldsPanel(wrapper, true);
+        verifyOpenedFieldsPanel(wrapper);
 
         expect(wrapper.find('.parent-search-panel__empty-msg').text()).toContain('Select a field.'); // filter panel empty
 
         wrapper.unmount();
     });
 
-    test('open card with filters, list string field type only', async () => {
-        const wrapper = mount(<EntityFieldFilterModal {...DEFAULT_PROPS} cards={[card]} fieldKey={null} />);
-
-        expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
-        await waitForLifecycle(wrapper);
-        expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
-
-        verifyOpeningCardWithFilters(wrapper, true);
-
-        verifyOpenedFieldsPanel(wrapper, false);
-
-        wrapper.unmount();
-    });
 });

@@ -1,20 +1,20 @@
 import { Filter } from '@labkey/api';
 
 /**
- * This implements the filter corresponding to <code>QueryServiceImpl.WhereClause</code>
+ * This implements the filter corresponding to <code>QueryServiceImpl.InLineageOfClause: inexpdescendantsof</code>
  */
-class WhereFilterType implements Filter.IFilterType {
+class InExpDescendantsOfFilterType implements Filter.IFilterType {
     getDisplaySymbol(): string {
         return null;
     }
     getDisplayText(): string {
-        return 'Where';
+        return 'IN DESCENDANTS OF';
     }
     getLongDisplayText(): string {
         return this.getDisplayText();
     }
     getURLSuffix(): string {
-        return 'where';
+        return 'inexpdescendantsof';
     }
     isDataValueRequired(): boolean {
         return true;
@@ -55,4 +55,4 @@ class WhereFilterType implements Filter.IFilterType {
     }
 }
 
-export const WHERE_FILTER_TYPE = new WhereFilterType();
+export const IN_EXP_DESCENDANTS_OF_FILTER_TYPE = new InExpDescendantsOfFilterType();

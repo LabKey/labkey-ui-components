@@ -15,6 +15,8 @@
  */
 import { List } from 'immutable';
 import { Filter } from '@labkey/api';
+import {JsonType} from "../components/domainproperties/PropDescType";
+import {FieldFilter} from "../components/search/models";
 
 export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter>): boolean {
     if (first.size !== second.size) {
@@ -46,4 +48,104 @@ export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter
     });
 
     return isEqual;
+}
+
+
+
+function getColumnSelect(columnName: string) : string {
+    const columnNameParts = columnName.split("/");
+    let formattedParts = [];
+    columnNameParts.forEach(part => {
+        if (part) {
+            formattedParts.push('"' + part.replace('"', '""') + '"');
+        }
+    })
+
+    return formattedParts.join('.');
+}
+
+function getLabKeySqlValue(value: any, jsonType: JsonType) : any {
+    if (jsonType === 'string' || jsonType === 'date') {
+        return "'" + value.toString().replace("'", "''") + "'";
+    }
+
+    if (jsonType === 'boolean')
+        return 'true' === value?.toLowerCase() || 'yes' === value?.toLowerCase() || 'on' === value?.toLowerCase() ? 'TRUE' : 'FALSE';
+
+    return value;
+}
+
+/**
+ * Note: this is an experimental API that may change unexpectedly in future releases.
+ * From a filter and its column jsonType, return the LabKey sql operator clause
+ * @param filter The Filter
+ * @param jsonType The json type ("string", "int", "float", "date", or "boolean") of the field
+ * @return labkey sql fragment
+ */
+function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
+    const filterType = filter.getFilterType();
+
+    const columnNameSelect = getColumnSelect(filter.getColumnName());
+
+    let operatorSql = null;
+
+    if (filterType.getURLSuffix() === Filter.Types.HAS_ANY_VALUE.getURLSuffix())
+        return null;
+
+    if (filterType.getLabKeySqlOperator()) {
+        if (!filterType.isDataValueRequired())
+            operatorSql = filterType.getLabKeySqlOperator();
+        else
+            operatorSql = filterType.getLabKeySqlOperator() + ' ' + getLabKeySqlValue(filter.getValue(), jsonType);
+    }
+    else if (filterType.isMultiValued()) {
+        let values = filterType.parseValue(filter.getValue());
+
+        if (filterType.getURLSuffix() === Filter.Types.IN.getURLSuffix() || filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix()) {
+            const sqlValues = [];
+            values.forEach(val => {
+                sqlValues.push(getLabKeySqlValue(val, jsonType));
+            });
+
+            operatorSql = (filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix() ? "NOT " : "")
+                + "IN ("
+                + sqlValues.join(", ")
+                + ")"
+        }
+        else if (filterType.getURLSuffix() === Filter.Types.BETWEEN.getURLSuffix() || filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix()) {
+            operatorSql = (filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix() ? "NOT " : "")
+                + "BETWEEN " + getLabKeySqlValue(values[0], jsonType) +
+                " AND " + getLabKeySqlValue(values[1], jsonType);
+        }
+    }
+    else if (filterType.getURLSuffix() === Filter.Types.NEQ_OR_NULL.getURLSuffix()) {
+        return "(" + columnNameSelect + " " + Filter.Types.ISBLANK.getLabKeySqlOperator() +
+            " OR " + columnNameSelect + " " + Filter.Types.NOT_EQUAL.getLabKeySqlOperator() +
+            " " + getLabKeySqlValue(filter.getValue(), jsonType) + ")";
+    }
+
+    if (operatorSql)
+        return columnNameSelect + " " + operatorSql;
+
+    return null;
+}
+
+/**
+ * Note: this is an experimental API that may change unexpectedly in future releases.
+ * From an array of FieldFilter, LabKey sql where clause
+ * @param fieldFilters
+ * @return labkey sql where clauses
+ */
+export function getLabKeySqlWhere(fieldFilters: FieldFilter[]): string {
+    const clauses = [];
+    fieldFilters.forEach(fieldFilter => {
+        const clause = getLabKeySql(fieldFilter.filter, fieldFilter.jsonType);
+        if (clause)
+            clauses.push(clause);
+    })
+
+    if (clauses.length === 0)
+        return '';
+
+    return 'WHERE ' + clauses.join(" AND ");
 }

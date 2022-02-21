@@ -121,7 +121,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     );
 
     const renderFilterInput = useCallback(
-        (isSecondInput?: boolean) => {
+        (isMultiValueInput?: boolean, isSecondInput?: boolean) => {
             if (!activeFilterType || !activeFilterType.valueRequired) return null;
 
             const suffix = isSecondInput ? '-second' : '';
@@ -171,7 +171,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 );
             }
 
-            if (field.jsonType === 'int' || field.jsonType === 'float') {
+            if (!isMultiValueInput && (field.jsonType === 'int' || field.jsonType === 'float')) {
                 return (
                     <FormControl
                         className="form-control search-filter__input"
@@ -204,14 +204,15 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         if (!activeFilterType || !activeFilterType.valueRequired) return null;
 
         const isBetweenOperator = activeFilterType.betweenOperator;
+        const isMultiValueInput = activeFilterType.value === 'in' || activeFilterType.value === 'notin';
 
-        if (!isBetweenOperator) return renderFilterInput();
+        if (!isBetweenOperator) return renderFilterInput(isMultiValueInput);
 
         return (
             <>
-                {renderFilterInput()}
+                {renderFilterInput(isMultiValueInput)}
                 <div className="search-filter__and-op">and</div>
-                {renderFilterInput(true)}
+                {renderFilterInput(isMultiValueInput, true)}
             </>
         );
     }, [field, activeFilterType, firstFilterValue, secondFilterValue]);

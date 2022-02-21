@@ -171,7 +171,8 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     fieldKey: activeField.fieldKey,
                     fieldCaption: activeField.caption,
                     filter: newFilter,
-                });
+                    jsonType: activeField.jsonType
+                } as FieldFilter);
 
             if (newParentFilters?.length > 0) dataTypeFiltersUpdated[activeQuery] = newParentFilters;
             else delete dataTypeFiltersUpdated[activeQuery];

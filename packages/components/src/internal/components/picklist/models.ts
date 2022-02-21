@@ -114,6 +114,9 @@ class PicklistSamplesFilter implements Filter.IFilterType {
         return value;
     }
     validate(value: any, jsonType: string, columnName: string) {}
+    getLabKeySqlOperator(): string {
+        return null;
+    }
 }
 
 export const PICKLIST_SAMPLES_FILTER = new PicklistSamplesFilter();

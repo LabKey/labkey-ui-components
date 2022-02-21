@@ -161,7 +161,7 @@ describe('EntityFieldFilterModal', () => {
 
     test('open card with filters, list all field types', async () => {
         const wrapper = mount(
-            <EntityFieldFilterModal {...DEFAULT_PROPS} cards={[card]} showAllFields={true} fieldKey={null} />
+            <EntityFieldFilterModal {...DEFAULT_PROPS} cards={[card]} fieldKey={null} />
         );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);

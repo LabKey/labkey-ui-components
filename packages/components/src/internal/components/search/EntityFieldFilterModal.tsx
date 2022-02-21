@@ -107,7 +107,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
                     setQueryFields(fields);
                     if (fieldKey) {
-                        const field = supportedFields.find(field => field.fieldKey === fieldKey);
+                        const field = fields.find(field => field.fieldKey === fieldKey);
                         setActiveField(field);
                     }
                 })

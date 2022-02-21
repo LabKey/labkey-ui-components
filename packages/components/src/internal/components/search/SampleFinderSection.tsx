@@ -52,7 +52,6 @@ interface SampleFinderSamplesGridProps {
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     gridButtonProps?: any;
     sampleTypeNames: string[];
-    showAllFields?: boolean;
 }
 
 interface Props extends SampleFinderSamplesGridProps {
@@ -91,7 +90,7 @@ function getLocalStorageKey(): string {
 }
 
 export const SampleFinderSection: FC<Props> = memo(props => {
-    const { sampleTypeNames, parentEntityDataTypes, showAllFields, ...gridProps } = props;
+    const { sampleTypeNames, parentEntityDataTypes, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
@@ -225,7 +224,6 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     onFind={onFind}
                     queryName={chosenQueryName}
                     fieldKey={chosenField}
-                    showAllFields={showAllFields}
                 />
             )}
         </Section>

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD February 2022
+### version 2.133.0
+*Released*: 21 February 2022
 * Item 9956: Freezer manager dashboard updates to the freezer listing panel
   * ExpandableContainer update to call onClick when defined regardless of isExpandable prop
   * HorizontalBarSection updates for selenium test locators

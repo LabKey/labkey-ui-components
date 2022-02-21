@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 9992: Add ontology type ahead search to forms
   * Split out `OntologySearchInput` from the existing `OntologyTreeSearchContainer`
 
+### version 2.135.0
+*Released*: 21 February 2022
+* Item 10004: Sample Finder V1 - Support Choose Values
+   * Added FilterFacetedSelector and utils to support faceted fitler selection
+
 ### version 2.134.0
 *Released*: 21 February 2022
 * Core components page update to use QueryModel based EditableGridPanel

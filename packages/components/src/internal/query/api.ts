@@ -938,3 +938,30 @@ export function getContainerFilterForInsert(): Query.ContainerFilter {
     // the ContainerFilter filters "up" the folder hierarchy for data.
     return Query.ContainerFilter.currentPlusProjectAndShared;
 }
+
+export interface SelectDistinctResponse {
+    values: any[];
+    schemaName: string;
+    queryName: string;
+}
+
+export function selectDistinctRows(
+    selectDistinctOptions: Query.SelectDistinctOptions
+): Promise<SelectDistinctResponse> {
+    return new Promise((resolve, reject) => {
+        Query.selectDistinctRows({
+            ...selectDistinctOptions,
+            success: response => {
+                resolve({
+                    values: response['values'],
+                    schemaName: response['schemaName'],
+                    queryName: response['queryName'],
+                });
+            },
+            failure: error => {
+                console.error(error);
+                reject(error);
+            },
+        });
+    });
+}

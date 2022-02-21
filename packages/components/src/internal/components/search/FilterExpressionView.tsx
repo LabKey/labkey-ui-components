@@ -6,12 +6,13 @@ import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
-import { App } from '../../../index';
+import { App, parseDate } from '../../../index';
 
 import { JsonType } from '../domainproperties/PropDescType';
 import { formatDate } from '../../util/Date';
 
 import {
+    getFilterTypePlaceHolder,
     getFilterValuesAsArray,
     getSampleFinderFilterTypesForType,
     getUpdateFilterExpressionFilter,
@@ -45,7 +46,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             if (filterOption) {
                 setActiveFilterType(filterOption);
 
-                const values = getFilterValuesAsArray(fieldFilter);
+                const values = getFilterValuesAsArray(fieldFilter, '');
                 if (filterOption.betweenOperator) {
                     setFirstFilterValue(values[0]);
                     setSecondFilterValue(values[1]);
@@ -121,7 +122,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     );
 
     const renderFilterInput = useCallback(
-        (isSecondInput?: boolean) => {
+        (placeholder: string, isSecondInput?: boolean) => {
             if (!activeFilterType || !activeFilterType.valueRequired) return null;
 
             const suffix = isSecondInput ? '-second' : '';
@@ -136,7 +137,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         selectsEnd
                         isClearable
                         required
-                        selected={valueRaw ? new Date(valueRaw) : undefined}
+                        selected={valueRaw ? parseDate(valueRaw) : undefined}
                         name={'field-value-date' + suffix}
                         onChange={newDate => updateDateFilterFieldValue(newDate, isSecondInput)}
                         dateFormat={App.getDateFormat()}
@@ -181,6 +182,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         pattern={field.jsonType === 'int' ? '[0-9]*' : undefined}
                         type="number"
                         value={valueRaw ?? ''}
+                        placeholder={placeholder}
                         required
                     />
                 );
@@ -193,6 +195,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                     type="text"
                     value={valueRaw ?? ''}
                     onChange={updateTextFilterFieldValue}
+                    placeholder={placeholder}
                     required
                 />
             );
@@ -204,14 +207,15 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         if (!activeFilterType || !activeFilterType.valueRequired) return null;
 
         const isBetweenOperator = activeFilterType.betweenOperator;
+        const placeholder = getFilterTypePlaceHolder(activeFilterType.value, field.jsonType);
 
-        if (!isBetweenOperator) return renderFilterInput();
+        if (!isBetweenOperator) return renderFilterInput(placeholder);
 
         return (
             <>
-                {renderFilterInput()}
+                {renderFilterInput(placeholder)}
                 <div className="search-filter__and-op">and</div>
-                {renderFilterInput(true)}
+                {renderFilterInput(placeholder, true)}
             </>
         );
     }, [field, activeFilterType, firstFilterValue, secondFilterValue]);

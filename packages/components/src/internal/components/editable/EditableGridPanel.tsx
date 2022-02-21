@@ -1,5 +1,6 @@
 import { fromJS, List, Map } from 'immutable';
 import React, { FC, memo, useMemo } from 'react';
+
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { EditorModel, EditorModelProps } from '../../models';
 
@@ -16,6 +17,13 @@ interface Props extends SharedEditableGridProps {
     title?: string;
 }
 
+/**
+ * Note that there are some cases which will call the onChange callback prop back to back (i.e. see LookupCell.onInputChange)
+ * and pass through different sets of `editorModelChanges`. In that case, you will want to make sure that your onChange
+ * handler is getting the current state object before merging in the `editorModelChanges`. See example in platform/core
+ * (core/src/client/LabKeyUIComponentsPage/EditableGridPage.tsx) which uses the set state function which takes a function
+ * as the first parameter instead of the new state object.
+ */
 export const EditableGridPanel: FC<Props> = memo(props => {
     const { editorModel, model, onChange, title, ...gridProps } = props;
 

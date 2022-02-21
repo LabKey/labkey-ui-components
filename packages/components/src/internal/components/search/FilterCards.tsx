@@ -52,8 +52,10 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                         <div className="primary-text">{schemaQuery.queryName}</div>
                     </div>
                     <div className="pull-right actions">
-                        {onEdit && <i className="fa fa-pencil action-icon" onClick={_onEdit} />}
-                        {onDelete && <i className="fa fa-trash action-icon" onClick={_onDelete} />}
+                        {onEdit && <i className="fa fa-pencil action-icon" onClick={_onEdit} title="Edit filter" />}
+                        {onDelete && (
+                            <i className="fa fa-trash action-icon" onClick={_onDelete} title="Remove filter" />
+                        )}
                     </div>
                 </div>
                 <div className="filter-card__card-content">

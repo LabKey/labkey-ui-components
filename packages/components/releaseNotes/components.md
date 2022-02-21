@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD February 2022
+* Item 9945: add calls to incrementClientSideMetricCount() for sample finder related actions
+
 ### version 2.135.0
 *Released*: 21 February 2022
 * Item 10004: Sample Finder V1 - Support Choose Values

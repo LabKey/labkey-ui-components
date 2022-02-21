@@ -36,6 +36,7 @@ interface Props {
     showAllFields?: boolean; // all fields types, including non-text fields
     cards?: FilterProps[];
     skipDefaultViewCheck?: boolean; // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
+    metricFeatureArea?: string;
 }
 
 export enum EntityFieldFilterTabs {
@@ -46,8 +47,18 @@ export enum EntityFieldFilterTabs {
 const FIND_FILTER_VIEW_NAME = ''; // always use default view for selection
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
-    const { api, entityDataType, onCancel, onFind, cards, queryName, fieldKey, showAllFields, skipDefaultViewCheck } =
-        props;
+    const {
+        api,
+        entityDataType,
+        onCancel,
+        onFind,
+        cards,
+        queryName,
+        fieldKey,
+        showAllFields,
+        skipDefaultViewCheck,
+        metricFeatureArea,
+    } = props;
 
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
 
@@ -179,9 +190,13 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             queryLabels[parentValue] = label;
         });
         const filterErrors = getFieldFiltersValidationResult(validDataTypeFilters, queryLabels);
-        if (!filterErrors) onFind(entityDataType.instanceSchemaName, validDataTypeFilters);
-        else setFilterError(filterErrors);
-    }, [onFind, validDataTypeFilters]);
+        if (!filterErrors) {
+            if (metricFeatureArea) api.query.incrementClientSideMetricCount(metricFeatureArea, 'filterModalApply');
+            onFind(entityDataType.instanceSchemaName, validDataTypeFilters);
+        } else {
+            setFilterError(filterErrors);
+        }
+    }, [api, metricFeatureArea, entityQueries, entityDataType.instanceSchemaName, onFind, validDataTypeFilters]);
 
     const currentFieldFilter = useMemo(() => {
         if (!dataTypeFilters || !activeField) return null;

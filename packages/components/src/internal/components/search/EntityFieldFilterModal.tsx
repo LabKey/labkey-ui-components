@@ -16,12 +16,13 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { naturalSortByProperty } from '../../../public/sort';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter, FilterProps } from './models';
 import { getFieldFiltersValidationResult } from './utils';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -40,8 +41,7 @@ export enum EntityFieldFilterTabs {
 }
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
-    const { api, entityDataType, onCancel, onFind, cards, queryName, fieldKey, skipDefaultViewCheck } =
-        props;
+    const { api, entityDataType, onCancel, onFind, cards, queryName, fieldKey, skipDefaultViewCheck } = props;
 
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
 
@@ -164,7 +164,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     fieldKey: activeField.fieldKey,
                     fieldCaption: activeField.caption,
                     filter: newFilter,
-                    jsonType: activeField.jsonType
+                    jsonType: activeField.jsonType,
                 } as FieldFilter);
 
             if (newParentFilters?.length > 0) dataTypeFiltersUpdated[activeQuery] = newParentFilters;

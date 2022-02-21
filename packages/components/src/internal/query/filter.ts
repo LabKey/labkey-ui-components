@@ -15,8 +15,9 @@
  */
 import { List } from 'immutable';
 import { Filter } from '@labkey/api';
-import {JsonType} from "../components/domainproperties/PropDescType";
-import {FieldFilter} from "../components/search/models";
+
+import { JsonType } from '../components/domainproperties/PropDescType';
+import { FieldFilter } from '../components/search/models';
 
 export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter>): boolean {
     if (first.size !== second.size) {
@@ -50,27 +51,27 @@ export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter
     return isEqual;
 }
 
-
-
-function getColumnSelect(columnName: string) : string {
-    const columnNameParts = columnName.split("/");
-    let formattedParts = [];
+function getColumnSelect(columnName: string): string {
+    const columnNameParts = columnName.split('/');
+    const formattedParts = [];
     columnNameParts.forEach(part => {
         if (part) {
             formattedParts.push('"' + part.replace('"', '""') + '"');
         }
-    })
+    });
 
     return formattedParts.join('.');
 }
 
-function getLabKeySqlValue(value: any, jsonType: JsonType) : any {
+function getLabKeySqlValue(value: any, jsonType: JsonType): any {
     if (jsonType === 'string' || jsonType === 'date') {
         return "'" + value.toString().replace("'", "''") + "'";
     }
 
     if (jsonType === 'boolean')
-        return 'true' === value?.toLowerCase() || 'yes' === value?.toLowerCase() || 'on' === value?.toLowerCase() ? 'TRUE' : 'FALSE';
+        return value?.toLowerCase() === 'true' || value?.toLowerCase() === 'yes' || value?.toLowerCase() === 'on'
+            ? 'TRUE'
+            : 'FALSE';
 
     return value;
 }
@@ -89,43 +90,56 @@ function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
 
     let operatorSql = null;
 
-    if (filterType.getURLSuffix() === Filter.Types.HAS_ANY_VALUE.getURLSuffix())
-        return null;
+    if (filterType.getURLSuffix() === Filter.Types.HAS_ANY_VALUE.getURLSuffix()) return null;
 
     if (filterType.getLabKeySqlOperator()) {
-        if (!filterType.isDataValueRequired())
-            operatorSql = filterType.getLabKeySqlOperator();
-        else
-            operatorSql = filterType.getLabKeySqlOperator() + ' ' + getLabKeySqlValue(filter.getValue(), jsonType);
-    }
-    else if (filterType.isMultiValued()) {
-        let values = filterType.parseValue(filter.getValue());
+        if (!filterType.isDataValueRequired()) operatorSql = filterType.getLabKeySqlOperator();
+        else operatorSql = filterType.getLabKeySqlOperator() + ' ' + getLabKeySqlValue(filter.getValue(), jsonType);
+    } else if (filterType.isMultiValued()) {
+        const values = filterType.parseValue(filter.getValue());
 
-        if (filterType.getURLSuffix() === Filter.Types.IN.getURLSuffix() || filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix()) {
+        if (
+            filterType.getURLSuffix() === Filter.Types.IN.getURLSuffix() ||
+            filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix()
+        ) {
             const sqlValues = [];
             values.forEach(val => {
                 sqlValues.push(getLabKeySqlValue(val, jsonType));
             });
 
-            operatorSql = (filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix() ? "NOT " : "")
-                + "IN ("
-                + sqlValues.join(", ")
-                + ")"
+            operatorSql =
+                (filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix() ? 'NOT ' : '') +
+                'IN (' +
+                sqlValues.join(', ') +
+                ')';
+        } else if (
+            filterType.getURLSuffix() === Filter.Types.BETWEEN.getURLSuffix() ||
+            filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix()
+        ) {
+            operatorSql =
+                (filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix() ? 'NOT ' : '') +
+                'BETWEEN ' +
+                getLabKeySqlValue(values[0], jsonType) +
+                ' AND ' +
+                getLabKeySqlValue(values[1], jsonType);
         }
-        else if (filterType.getURLSuffix() === Filter.Types.BETWEEN.getURLSuffix() || filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix()) {
-            operatorSql = (filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix() ? "NOT " : "")
-                + "BETWEEN " + getLabKeySqlValue(values[0], jsonType) +
-                " AND " + getLabKeySqlValue(values[1], jsonType);
-        }
-    }
-    else if (filterType.getURLSuffix() === Filter.Types.NEQ_OR_NULL.getURLSuffix()) {
-        return "(" + columnNameSelect + " " + Filter.Types.ISBLANK.getLabKeySqlOperator() +
-            " OR " + columnNameSelect + " " + Filter.Types.NOT_EQUAL.getLabKeySqlOperator() +
-            " " + getLabKeySqlValue(filter.getValue(), jsonType) + ")";
+    } else if (filterType.getURLSuffix() === Filter.Types.NEQ_OR_NULL.getURLSuffix()) {
+        return (
+            '(' +
+            columnNameSelect +
+            ' ' +
+            Filter.Types.ISBLANK.getLabKeySqlOperator() +
+            ' OR ' +
+            columnNameSelect +
+            ' ' +
+            Filter.Types.NOT_EQUAL.getLabKeySqlOperator() +
+            ' ' +
+            getLabKeySqlValue(filter.getValue(), jsonType) +
+            ')'
+        );
     }
 
-    if (operatorSql)
-        return columnNameSelect + " " + operatorSql;
+    if (operatorSql) return columnNameSelect + ' ' + operatorSql;
 
     return null;
 }
@@ -140,12 +154,10 @@ export function getLabKeySqlWhere(fieldFilters: FieldFilter[]): string {
     const clauses = [];
     fieldFilters.forEach(fieldFilter => {
         const clause = getLabKeySql(fieldFilter.filter, fieldFilter.jsonType);
-        if (clause)
-            clauses.push(clause);
-    })
+        if (clause) clauses.push(clause);
+    });
 
-    if (clauses.length === 0)
-        return '';
+    if (clauses.length === 0) return '';
 
-    return 'WHERE ' + clauses.join(" AND ");
+    return 'WHERE ' + clauses.join(' AND ');
 }

@@ -13,10 +13,10 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ChoicesListItem } from '../base/ChoicesListItem';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { EntityFieldFilterModal } from './EntityFieldFilterModal';
-
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
+
+import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 const sampleTypes = {
     SampleSets: [
@@ -93,7 +93,7 @@ describe('EntityFieldFilterModal', () => {
     }
 
     function verifyOpenedFieldsPanel(wrapper, isFieldSelected?: boolean) {
-        const fieldCount = 28 ;
+        const fieldCount = 28;
 
         const fieldsContainerBody = wrapper.find('.parent-search-panel__fields-col-content');
         const fields = fieldsContainerBody.find(ChoicesListItem);
@@ -176,5 +176,4 @@ describe('EntityFieldFilterModal', () => {
 
         wrapper.unmount();
     });
-
 });

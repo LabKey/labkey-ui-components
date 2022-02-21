@@ -18,7 +18,7 @@ import { Filter } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import {JsonType} from "../domainproperties/PropDescType";
+import { JsonType } from '../domainproperties/PropDescType';
 
 export class SearchResultsModel extends Record({
     entities: undefined,

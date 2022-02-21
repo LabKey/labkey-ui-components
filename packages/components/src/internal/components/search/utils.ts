@@ -14,9 +14,10 @@ import { resolveFilterType } from '../omnibox/actions/Filter';
 import { resolveFieldKey } from '../omnibox/utils';
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfFilterType';
+import { getLabKeySqlWhere } from '../../query/filter';
+
 import { FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps } from './models';
-import {IN_EXP_DESCENDANTS_OF_FILTER_TYPE} from "../../url/InExpDescendantsOfFilterType";
-import {getLabKeySqlWhere} from "../../query/filter";
 
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): string {
     const hintText = 'Start by adding ';
@@ -84,7 +85,15 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
 
             const selectClauseWhere = getLabKeySqlWhere(card.filterArray);
             if (selectClauseWhere) {
-                const selectClause = "SELECT " + schemaQuery.queryName + ".expObject() FROM " + schemaQuery.schemaName + '.' + schemaQuery.queryName + " "  + selectClauseWhere;
+                const selectClause =
+                    'SELECT ' +
+                    schemaQuery.queryName +
+                    '.expObject() FROM ' +
+                    schemaQuery.schemaName +
+                    '.' +
+                    schemaQuery.queryName +
+                    ' ' +
+                    selectClauseWhere;
                 const filter = Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
                 baseFilters.push(filter);
             }
@@ -211,7 +220,7 @@ export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCoun
                 fieldKey: field.fieldKey,
                 fieldCaption: field.fieldCaption,
                 filter: filterToJson(field.filter),
-                jsonType: field.jsonType
+                jsonType: field.jsonType,
             });
         });
         filterPropObj.filterArray = filterArrayObjs;
@@ -236,7 +245,7 @@ export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStor
                 fieldKey: field.fieldKey,
                 fieldCaption: field.fieldCaption,
                 filter: filterFromJson(field.filter),
-                jsonType: field.jsonType
+                jsonType: field.jsonType,
             });
         });
         filterPropObj['filterArray'] = filterArray;
@@ -337,13 +346,12 @@ export function getUpdateFilterExpressionFilter(
             if (clearBothValues) {
                 value = null;
             } else if (isSecondValue) {
-                if (newFilterValue == null)
-                    value = previousFirstFilterValue != null ? previousFirstFilterValue : '';
-                else
-                    value = (previousFirstFilterValue != null ? previousFirstFilterValue + ',' : '') + newFilterValue;
+                if (newFilterValue == null) value = previousFirstFilterValue != null ? previousFirstFilterValue : '';
+                else value = (previousFirstFilterValue != null ? previousFirstFilterValue + ',' : '') + newFilterValue;
             } else {
                 if (newFilterValue == null) value = previousSecondFilterValue != null ? previousSecondFilterValue : '';
-                else value = newFilterValue + (previousSecondFilterValue != null ? ',' + previousSecondFilterValue : '');
+                else
+                    value = newFilterValue + (previousSecondFilterValue != null ? ',' + previousSecondFilterValue : '');
             }
         } else if (!value && field.jsonType === 'boolean') value = 'false';
 

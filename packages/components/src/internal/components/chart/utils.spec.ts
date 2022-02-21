@@ -317,7 +317,7 @@ describe('createHorizontalBarLegendData', () => {
         ]);
     });
 
-    test('some with zero count', () => {
+    test('only filled', () => {
         expect(
             createHorizontalBarLegendData([
                 {
@@ -331,11 +331,11 @@ describe('createHorizontalBarLegendData', () => {
                     filled: true,
                 },
                 {
-                    title: 'No samples in storage',
-                    count: 0,
-                    totalCount: 0,
-                    percent: 100,
-                    backgroundColor: 'green',
+                    title: '60 spaces available',
+                    count: 60,
+                    totalCount: 82,
+                    percent: 73.17073,
+                    backgroundColor: undefined,
                     filled: false,
                 },
             ])

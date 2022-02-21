@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map } from 'immutable';
-import {Filter, PermissionRoles} from '@labkey/api';
+import { Filter, PermissionRoles } from '@labkey/api';
 
 import {
     AssayDefinitionModel,
@@ -459,5 +459,5 @@ export const TestTypeDataType: EntityDataType = {
 
 export const TestTypeDataTypeWithEntityFilter: EntityDataType = {
     ...TestTypeDataType,
-    filterArray: [Filter.create('Category', 'Source')]
-}
+    filterArray: [Filter.create('Category', 'Source')],
+};

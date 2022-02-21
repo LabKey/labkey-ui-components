@@ -276,5 +276,4 @@ describe('FilterFacetedSelector', () => {
 
         wrapper.unmount();
     });
-
 });

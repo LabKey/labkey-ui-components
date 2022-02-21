@@ -7,7 +7,7 @@ import { FREEZER_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
-import {TestTypeDataType, TestTypeDataTypeWithEntityFilter} from '../../../test/data/constants';
+import { TestTypeDataType, TestTypeDataTypeWithEntityFilter } from '../../../test/data/constants';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
@@ -360,14 +360,14 @@ const cardWithEntityTypeFilter = {
 };
 
 const cardWithEntityTypeFilterJSON =
-    '{\"filters\":[{\"entityDataType\":{\"typeListingSchemaQuery\":{\"schemaName\":\"TestListing\",\"queryName\":\"query\"},\"listingSchemaQuery\":{\"schemaName\":\"Test\",\"queryName\":\"query\"},' +
-    '\"instanceSchemaName\":\"TestSchema\",\"operationConfirmationActionName\":\"test-delete-confirmation.api\",' +
-    '\"nounSingular\":\"test\",\"nounPlural\":\"tests\",\"nounAsParentSingular\":\"test Parent\",\"nounAsParentPlural\":\"test Parents\",' +
-    '\"typeNounSingular\":\"Test Type\",\"descriptionSingular\":\"parent test type\",\"descriptionPlural\":\"parent test types\",\"uniqueFieldKey\":\"Name\",\"dependencyText\":\"test data dependencies\",' +
-    '\"deleteHelpLinkTopic\":\"viewSampleSets#delete\",\"inputColumnName\":\"Inputs/Materials/First\",\"inputTypeValueField\":\"lsid\",\"insertColumnNamePrefix\":\"MaterialInputs/\",\"editTypeAppUrlPrefix\":\"Test\",' +
-    '\"importFileAction\":\"importSamples\",\"filterCardHeaderClass\":\"filter-card__header-success\",\"filterArray\":[\"query.Category~eq=Source\"]},\"filterArray\":[{\"fieldKey\":\"textField\",' +
-    '\"fieldCaption\":\"textField\",\"filter\":\"query.textField~=\"},{\"fieldKey\":\"strField\",\"fieldCaption\":\"strField\",\"filter\":\"query.strField~between=1%2C5\"}],\"schemaQuery\":{\"schemaName\":\"TestSchema\",' +
-    '\"queryName\":\"samples1\"},\"index\":1}],\"filterChangeCounter\":5}';
+    '{"filters":[{"entityDataType":{"typeListingSchemaQuery":{"schemaName":"TestListing","queryName":"query"},"listingSchemaQuery":{"schemaName":"Test","queryName":"query"},' +
+    '"instanceSchemaName":"TestSchema","operationConfirmationActionName":"test-delete-confirmation.api",' +
+    '"nounSingular":"test","nounPlural":"tests","nounAsParentSingular":"test Parent","nounAsParentPlural":"test Parents",' +
+    '"typeNounSingular":"Test Type","descriptionSingular":"parent test type","descriptionPlural":"parent test types","uniqueFieldKey":"Name","dependencyText":"test data dependencies",' +
+    '"deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","inputTypeValueField":"lsid","insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test",' +
+    '"importFileAction":"importSamples","filterCardHeaderClass":"filter-card__header-success","filterArray":["query.Category~eq=Source"]},"filterArray":[{"fieldKey":"textField",' +
+    '"fieldCaption":"textField","filter":"query.textField~="},{"fieldKey":"strField","fieldCaption":"strField","filter":"query.strField~between=1%2C5"}],"schemaQuery":{"schemaName":"TestSchema",' +
+    '"queryName":"samples1"},"index":1}],"filterChangeCounter":5}';
 
 describe('searchFiltersToJson', () => {
     test('searchFiltersToJson', () => {
@@ -458,10 +458,13 @@ describe('getFieldFiltersValidationResult', () => {
 
     test('missing value, with query label', () => {
         expect(
-            getFieldFiltersValidationResult({
-                sampleType1: [goodAnyValueFilter, badIntFilter],
-                sampleType2: [goodIntFilter],
-            }, {sampleType1: "Sample Type 1"})
+            getFieldFiltersValidationResult(
+                {
+                    sampleType1: [goodAnyValueFilter, badIntFilter],
+                    sampleType2: [goodIntFilter],
+                },
+                { sampleType1: 'Sample Type 1' }
+            )
         ).toEqual('Invalid/incomplete filter values. Please correct input for fields. Sample Type 1: intField. ');
     });
 

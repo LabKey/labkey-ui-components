@@ -188,19 +188,16 @@ export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilte
     return suffix === filterType.getURLSuffix();
 }
 
-export function getFilterTypePlaceHolder(suffix: string, jsonType: string): string
-{
-    if (suffix !== 'in' && suffix !== 'notin')
-        return null;
+export function getFilterTypePlaceHolder(suffix: string, jsonType: string): string {
+    if (suffix !== 'in' && suffix !== 'notin') return null;
 
-    switch (jsonType)
-    {
-        case "float":
-            return "Example: 1.0;2.2;3";
-        case "int":
-            return "Example: 1;2;3"
-        case "string":
-            return "Example: a;b;c"
+    switch (jsonType) {
+        case 'float':
+            return 'Example: 1.0;2.2;3';
+        case 'int':
+            return 'Example: 1;2;3';
+        case 'string':
+            return 'Example: a;b;c';
     }
 
     return null;
@@ -218,7 +215,7 @@ export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCoun
     const filterPropsObj = [];
 
     filterProps.forEach(filterProp => {
-        const filterPropsEntityDataType = {...filterProp.entityDataType};
+        const filterPropsEntityDataType = { ...filterProp.entityDataType };
         const filterPropObj = { ...filterProp, entityDataType: filterPropsEntityDataType };
 
         const filterArrayObjs = [];
@@ -309,7 +306,10 @@ export function getFieldFilterKey(fieldFilter: FieldFilter, schemaQuery?: Schema
     return schemaQuery.schemaName + '|' + schemaQuery.queryName + '|' + fieldFilter.fieldKey;
 }
 
-export function getFieldFiltersValidationResult(dataTypeFilters: { [key: string]: FieldFilter[] }, queryLabels?: { [key: string]: string}): string {
+export function getFieldFiltersValidationResult(
+    dataTypeFilters: { [key: string]: FieldFilter[] },
+    queryLabels?: { [key: string]: string }
+): string {
     let errorMsg = 'Invalid/incomplete filter values. Please correct input for fields. ',
         hasError = false,
         parentFields = {};

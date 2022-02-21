@@ -32,12 +32,10 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         api.query
             .selectDistinctRows(selectDistinctOptions)
             .then(result => {
-                const distinctValues = result.values
-                    .sort(naturalSort)
-                    .map(val => {
-                        if (val === '' || val === null || val === undefined) return EMPTY_VALUE_DISPLAY;
-                        return val;
-                    });
+                const distinctValues = result.values.sort(naturalSort).map(val => {
+                    if (val === '' || val === null || val === undefined) return EMPTY_VALUE_DISPLAY;
+                    return val;
+                });
 
                 // move [blank] to first
                 if (distinctValues.indexOf(EMPTY_VALUE_DISPLAY) > 0) {
@@ -87,11 +85,13 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const filteredFieldDistinctValues = useMemo(() => {
         if (!searchStr) return fieldDistinctValues;
 
-        return fieldDistinctValues?.filter(val => {
-            return val !== ALL_VALUE_DISPLAY && val != EMPTY_VALUE_DISPLAY;
-        }).filter(val => {
-            return val?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
-        });
+        return fieldDistinctValues
+            ?.filter(val => {
+                return val !== ALL_VALUE_DISPLAY && val != EMPTY_VALUE_DISPLAY;
+            })
+            .filter(val => {
+                return val?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
+            });
     }, [fieldDistinctValues, searchStr]);
 
     return (
@@ -132,16 +132,14 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                                 onChange={event => onChange(value, event.target.checked)}
                                                 checked={checkedValues.indexOf(value) > -1}
                                             />
-                                            <span className="search-filter-values__value">
-                                                {displayValue}
-                                            </span>
+                                            <span className="search-filter-values__value">{displayValue}</span>
                                         </div>
                                     </li>
                                 );
                             })}
-                            {(searchStr && filteredFieldDistinctValues?.length === 0) &&
+                            {searchStr && filteredFieldDistinctValues?.length === 0 && (
                                 <div className="parent-search-panel__empty-msg">No value matches '{searchStr}'.</div>
-                            }
+                            )}
                         </ul>
                     </Col>
                     <Col xs={6}>

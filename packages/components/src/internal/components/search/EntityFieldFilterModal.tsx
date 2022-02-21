@@ -18,12 +18,13 @@ import { naturalSortByProperty } from '../../../public/sort';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
+
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter, FilterProps } from './models';
 import { getFieldFiltersValidationResult } from './utils';
-import { NOT_ANY_FILTER_TYPE } from "../../url/NotAnyFilterType";
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -171,8 +172,8 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     }, [dataTypeFilters]);
 
     const _onFind = useCallback(() => {
-        let queryLabels = {};
-        entityQueries?.map((parent) => {
+        const queryLabels = {};
+        entityQueries?.map(parent => {
             const label = parent.label ?? parent.get?.('label');
             const parentValue = parent.value ?? parent.get?.('value');
             queryLabels[parentValue] = label;

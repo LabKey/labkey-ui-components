@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Update `EditInlineField` for input type text so input box resizes to fix input value.
+
 ### version 2.135.0
 *Released*: 21 February 2022
 * Item 10004: Sample Finder V1 - Support Choose Values

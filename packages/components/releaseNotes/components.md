@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.134.0
+*Released*: 21 February 2022
 * Core components page update to use QueryModel based EditableGridPanel
   * factor loadEditorModelData() out of AssayWizardModel.ts to editable/utils.ts
   * export EditableGridPanel, loadEditorModelData, and EditorModelProps from index.ts

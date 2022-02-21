@@ -28,10 +28,11 @@ interface Props {
     user: User;
     model: QueryModel;
     moreMenuItems: ReactNode;
+    metricFeatureArea?: string;
 }
 
 export const SampleActionsButton: FC<Props> = memo(props => {
-    const { disabled, user, model, moreMenuItems } = props;
+    const { disabled, user, model, moreMenuItems, metricFeatureArea } = props;
 
     const sampleFieldKey = useMemo(() => model?.allColumns?.find(c =>
         SAMPLE_TYPE_CONCEPT_URI.localeCompare(c.conceptURI, 'en', { sensitivity: 'base' }) === 0
@@ -52,8 +53,14 @@ export const SampleActionsButton: FC<Props> = memo(props => {
                         selectionKey={sampleFieldKey ? undefined : model.id}
                         queryModel={model}
                         sampleFieldKey={sampleFieldKey}
+                        metricFeatureArea={metricFeatureArea}
                     />
-                    <AddToPicklistMenuItem user={user} queryModel={model} sampleFieldKey={sampleFieldKey} />
+                    <AddToPicklistMenuItem
+                        user={user}
+                        queryModel={model}
+                        sampleFieldKey={sampleFieldKey}
+                        metricFeatureArea={metricFeatureArea}
+                    />
                 </>
             )}
         </DropdownButton>

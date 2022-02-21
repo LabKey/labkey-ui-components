@@ -44,6 +44,7 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
         toggleEditWithGridUpdate,
         hideButtons,
         model,
+        metricFeatureArea,
     } = props;
     const { user } = useServerContext();
     const { showImportDataButton, queryInfo } = model;
@@ -84,12 +85,16 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                 )}
                 {shouldShowButtons(SamplesManageButtonSections.DELETE, hideButtons) && (
                     <RequiresPermission perms={PermissionTypes.Delete}>
-                        <SampleDeleteMenuItem queryModel={model} afterSampleDelete={afterSampleDelete} />
+                        <SampleDeleteMenuItem
+                            queryModel={model}
+                            afterSampleDelete={afterSampleDelete}
+                            metricFeatureArea={metricFeatureArea}
+                        />
                     </RequiresPermission>
                 )}
                 {shouldShowButtons(SamplesManageButtonSections.PICKLIST, hideButtons) && (
                     <RequiresPermission perms={PermissionTypes.ManagePicklists}>
-                        <AddToPicklistMenuItem queryModel={model} user={user} />
+                        <AddToPicklistMenuItem queryModel={model} user={user} metricFeatureArea={metricFeatureArea} />
                     </RequiresPermission>
                 )}
                 {shouldShowButtons(SamplesManageButtonSections.EDIT, hideButtons) && (

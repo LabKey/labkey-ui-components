@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * ExpandableContainer update to call onClick when defined regardless of isExpandable prop
   * HorizontalBarSection updates for selenium test locators
 
+### version 2.132.4
+*Released*: 19 February 2022
+* Migrate subfolder data experimental flag to platform.
+
 ### version 2.132.3
 *Released*: 17 February 2022
 * Update to package to eliminate alpha version reference from node_modules

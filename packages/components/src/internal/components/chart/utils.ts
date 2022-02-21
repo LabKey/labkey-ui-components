@@ -68,7 +68,7 @@ export function createPercentageBarData(
     percentageBars: PercentageBarProps[],
     baseAppURL?: AppURL,
     urlFilterKey?: string
-) : { data: HorizontalBarData[], subtitle: string } {
+): { data: HorizontalBarData[]; subtitle: string } {
     const totalCount = caseInsensitive(row, totalCountKey)?.value ?? 0;
     let unusedCount = totalCount;
     const data = [];

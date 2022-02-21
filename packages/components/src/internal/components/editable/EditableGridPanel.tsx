@@ -1,5 +1,6 @@
 import { fromJS, List, Map } from 'immutable';
 import React, { FC, memo, useMemo } from 'react';
+
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { EditorModel, EditorModelProps } from '../../models';
 

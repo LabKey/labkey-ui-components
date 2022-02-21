@@ -13,7 +13,7 @@ import {
 } from '../../..';
 import { AssayUploadTabs } from '../../constants';
 import { generateNameWithTimestamp } from '../../util/Date';
-import { loadEditorModelData } from "../editable/utils";
+import { loadEditorModelData } from '../editable/utils';
 
 // exported for jest testing
 export function parseDataTextToRunRows(rawData: string): any[] {
@@ -235,7 +235,7 @@ export class AssayWizardModel
         return assayData;
     }
 
-    getInitialQueryModelData(): { rows: { [key: string]: any }; orderedRows: string[], queryInfo: QueryInfo } {
+    getInitialQueryModelData(): { rows: { [key: string]: any }; orderedRows: string[]; queryInfo: QueryInfo } {
         const { assayDef, selectedSamples } = this;
         const sampleColumnData = assayDef.getSampleColumn();
         const sampleColInResults = sampleColumnData && sampleColumnData.domain === AssayDomainTypes.RESULT;

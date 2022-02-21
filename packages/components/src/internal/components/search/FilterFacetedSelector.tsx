@@ -1,64 +1,173 @@
-import React, { FC, memo, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
-import { Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { naturalSort } from '../../../public/sort';
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
+
 interface Props {
+    api?: ComponentsAPIWrapper;
     selectDistinctOptions: Query.SelectDistinctOptions;
+    fieldKey: string;
+    fieldFilter: Filter.IFilter;
+    onFieldFilterUpdate?: (newFilter: Filter.IFilter) => void;
+    showSearchLength?: number; // show search box if number of unique values > N
 }
 
 export const FilterFacetedSelector: FC<Props> = memo(props => {
-    const { selectDistinctOptions } = props;
+    const { api, selectDistinctOptions, fieldKey, fieldFilter, onFieldFilterUpdate, showSearchLength } = props;
 
-    const [activeFieldDistinctValues, setActiveFieldDistinctValues] = useState<any[]>(undefined);
+    const [fieldDistinctValues, setFieldDistinctValues] = useState<string[]>(undefined);
     const [error, setError] = useState<string>(undefined);
+    const [searchStr, setSearchStr] = useState<string>(undefined);
 
     useEffect(() => {
-        Query.selectDistinctRows({
-            ...selectDistinctOptions,
-            success: result => {
-                const distinctValues = result.values.sort(naturalSort);
-                setActiveFieldDistinctValues(distinctValues);
-            },
-            failure: error => {
+        api.query
+            .selectDistinctRows(selectDistinctOptions)
+            .then(result => {
+                const distinctValues = result.values.sort(naturalSort).map(val => {
+                    if (val === '' || val === null || val === undefined) return EMPTY_VALUE_DISPLAY;
+                    return val;
+                });
+
+                // move [blank] to first
+                if (distinctValues.indexOf(EMPTY_VALUE_DISPLAY) > 0) {
+                    distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
+                    distinctValues.unshift(EMPTY_VALUE_DISPLAY);
+                }
+
+                // add [All] to first
+                distinctValues.unshift(ALL_VALUE_DISPLAY);
+                setFieldDistinctValues(distinctValues);
+            })
+            .catch(error => {
                 console.error(error);
+                setFieldDistinctValues([]);
                 setError(resolveErrorMessage(error));
-            },
-        });
-    }, [activeFieldDistinctValues, selectDistinctOptions]);
+            });
+    }, [selectDistinctOptions, fieldKey]); // on fieldKey change, reload selection values
+
+    const checkedValues = useMemo(() => {
+        return getCheckedFilterValues(fieldFilter, fieldDistinctValues);
+    }, [fieldFilter, fieldKey, fieldDistinctValues]); // need to add fieldKey
+
+    const taggedValues = useMemo(() => {
+        if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) > -1) return [];
+        return checkedValues;
+    }, [checkedValues]);
+
+    const onSearchStrChange = useCallback(e => {
+        setSearchStr(e.target.value);
+    }, []);
+
+    const onChange = useCallback(
+        (value: string, checked: boolean, uncheckOthers?: boolean) => {
+            const newFilter = getUpdatedChooseValuesFilter(
+                fieldDistinctValues,
+                fieldKey,
+                value,
+                checked,
+                fieldFilter,
+                uncheckOthers
+            );
+            onFieldFilterUpdate(newFilter);
+        },
+        [fieldDistinctValues, fieldKey, fieldFilter, onFieldFilterUpdate]
+    );
+
+    const filteredFieldDistinctValues = useMemo(() => {
+        if (!searchStr) return fieldDistinctValues;
+
+        return fieldDistinctValues
+            ?.filter(val => {
+                return val !== ALL_VALUE_DISPLAY && val != EMPTY_VALUE_DISPLAY;
+            })
+            .filter(val => {
+                return val?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
+            });
+    }, [fieldDistinctValues, searchStr]);
 
     return (
         <>
             {error && <Alert>{error}</Alert>}
-            {!activeFieldDistinctValues && <LoadingSpinner />}
-            <div className="list-group search-parent-entity-col">
-                <ul className="nav nav-stacked labkey-wizard-pills">
-                    {activeFieldDistinctValues?.map((value, index) => {
-                        let displayValue = value;
-                        if (value === null || value === undefined) displayValue = '[blank]';
-                        if (value === true) displayValue = 'TRUE';
-                        if (value === false) displayValue = 'FALSE';
-                        return (
-                            <li key={index}>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        name={'field-value-' + index}
-                                        disabled={true}
-                                        checked={false}
-                                    />
-                                    <span style={{ marginLeft: 5 }}>{displayValue}</span>
-                                </div>
-                            </li>
-                        );
-                    })}
-                </ul>
+            {!fieldDistinctValues && <LoadingSpinner />}
+            <div className="search-filter-values__panel">
+                {fieldDistinctValues?.length > showSearchLength && (
+                    <div>
+                        <input
+                            id="find-filter-typeahead-input"
+                            className="form-control find-filter-typeahead-input"
+                            value={searchStr ?? ''}
+                            onChange={onSearchStrChange}
+                            type="text"
+                            placeholder="Type to filter"
+                        />
+                    </div>
+                )}
+                <Row>
+                    <Col xs={6}>
+                        <ul className="nav nav-stacked labkey-wizard-pills">
+                            {filteredFieldDistinctValues?.map((value, index) => {
+                                let displayValue = value;
+                                if (value === null || value === undefined) displayValue = '[blank]';
+
+                                return (
+                                    <li
+                                        key={index}
+                                        className="search-filter-values__li"
+                                        onClick={() => onChange(value, true, true)}
+                                    >
+                                        <div className="form-check">
+                                            <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                name={'field-value-' + index}
+                                                onChange={event => onChange(value, event.target.checked)}
+                                                checked={checkedValues.indexOf(value) > -1}
+                                            />
+                                            <span className="search-filter-values__value">{displayValue}</span>
+                                        </div>
+                                    </li>
+                                );
+                            })}
+                            {searchStr && filteredFieldDistinctValues?.length === 0 && (
+                                <div className="parent-search-panel__empty-msg">No value matches '{searchStr}'.</div>
+                            )}
+                        </ul>
+                    </Col>
+                    <Col xs={6}>
+                        {taggedValues?.length > 0 && <div className="search-filter-tags__title">Selected</div>}
+                        <ul className="nav nav-stacked labkey-wizard-pills search-filter-tags__div">
+                            {taggedValues?.map((value, index) => {
+                                let displayValue = value;
+
+                                if (value === null || value === undefined) displayValue = '[blank]';
+
+                                return (
+                                    <li key={index} className="OmniBox--multi">
+                                        <div className="OmniBox-value search-filter-tags__value">
+                                            <i className="symbol fa fa-close" onClick={() => onChange(value, false)} />
+                                            <span>{displayValue}</span>
+                                        </div>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </Col>
+                </Row>
             </div>
         </>
     );
 });
+
+FilterFacetedSelector.defaultProps = {
+    showSearchLength: 20,
+    api: getDefaultAPIWrapper(),
+};

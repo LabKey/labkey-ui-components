@@ -61,7 +61,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                         <>
                             <hr />
                             <div>
-                                Showing only samples with {schemaQuery.queryName}{' '}
+                                Showing all samples with {schemaQuery.queryName}{' '}
                                 {entityDataType.nounAsParentSingular.toLowerCase()}s
                             </div>
                         </>

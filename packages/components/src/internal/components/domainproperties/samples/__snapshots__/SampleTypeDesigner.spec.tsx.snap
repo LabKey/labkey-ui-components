@@ -1098,6 +1098,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "getEntityTypeOptions": [Function],
           "getQueryDetails": [Function],
           "incrementClientSideMetricCount": [Function],
+          "selectDistinctRows": [Function],
         },
         "samples": SamplesServerAPIWrapper {
           "getFieldLookupFromSelection": [Function],

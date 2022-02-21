@@ -307,6 +307,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 gridButtonProps={{
                     excludedManageMenuKeys: [SamplesManageButtonSections.IMPORT],
                     excludeStartJob: true,
+                    metricFeatureArea: SAMPLE_FILTER_METRIC_AREA,
                 }}
                 tabbedGridPanelProps={{
                     alwaysShowTabs: true,

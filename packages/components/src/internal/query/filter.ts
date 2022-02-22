@@ -83,7 +83,7 @@ function getLabKeySqlValue(value: any, jsonType: JsonType): any {
  * @param jsonType The json type ("string", "int", "float", "date", or "boolean") of the field
  * @return labkey sql fragment
  */
-function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
+export function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
     const filterType = filter.getFilterType();
 
     const columnNameSelect = getColumnSelect(filter.getColumnName());
@@ -142,22 +142,4 @@ function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
     if (operatorSql) return columnNameSelect + ' ' + operatorSql;
 
     return null;
-}
-
-/**
- * Note: this is an experimental API that may change unexpectedly in future releases.
- * From an array of FieldFilter, LabKey sql where clause
- * @param fieldFilters
- * @return labkey sql where clauses
- */
-export function getLabKeySqlWhere(fieldFilters: FieldFilter[]): string {
-    const clauses = [];
-    fieldFilters.forEach(fieldFilter => {
-        const clause = getLabKeySql(fieldFilter.filter, fieldFilter.jsonType);
-        if (clause) clauses.push(clause);
-    });
-
-    if (clauses.length === 0) return '';
-
-    return 'WHERE ' + clauses.join(' AND ');
 }

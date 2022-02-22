@@ -17,6 +17,7 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
 
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
+import {FieldFilter} from "./models";
 
 const sampleTypes = {
     SampleSets: [
@@ -64,12 +65,14 @@ const filterArray = [
         fieldKey: 'Integer',
         fieldCaption: 'Integer',
         filter: Filter.create('Integer', 1),
-    },
+        jsonType: 'int'
+    } as FieldFilter,
     {
         fieldKey: 'Boolean',
         fieldCaption: 'Boolean',
         filter: Filter.create('Boolean', true),
-    },
+        jsonType: 'boolean'
+    } as FieldFilter,
 ];
 
 const card = {

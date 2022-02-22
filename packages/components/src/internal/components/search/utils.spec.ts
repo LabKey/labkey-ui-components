@@ -33,6 +33,8 @@ import {
     searchFiltersFromJson,
     searchFiltersToJson,
 } from './utils';
+import {FieldFilter} from "./models";
+import {IN_EXP_DESCENDANTS_OF_FILTER_TYPE} from "../../url/InExpDescendantsOfFilterType";
 
 test('getFinderStartText', () => {
     expect(getFinderStartText([])).toBe('Start by adding  properties.');
@@ -142,7 +144,8 @@ describe('getSampleFinderCommonConfigs', () => {
             fieldKey: 'TestColumn',
             fieldCaption: 'TestColumn',
             filter: Filter.create('TestColumn', 'value'),
-        };
+            jsonType: 'string'
+        } as FieldFilter;
 
         expect(
             getSampleFinderCommonConfigs([
@@ -159,7 +162,7 @@ describe('getSampleFinderCommonConfigs', () => {
         ).toStrictEqual({
             baseFilters: [
                 Filter.create('QueryableInputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK),
-                Filter.create('QueryableInputs/Materials/TestQuery2/TestColumn', 'value'),
+                Filter.create('*', "SELECT TestQuery2.expObject() FROM Samples.TestQuery2 WHERE \"TestColumn\" = 'value'", IN_EXP_DESCENDANTS_OF_FILTER_TYPE)
             ],
             requiredColumns: [
                 ...SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -304,37 +307,43 @@ const goodAnyValueFilter = {
     fieldKey: 'textField',
     fieldCaption: 'textField',
     filter: Filter.create('textField', null, Filter.Types.HAS_ANY_VALUE),
-};
+    jsonType: 'string'
+} as FieldFilter;
 
 const goodIntFilter = {
     fieldKey: 'intField',
     fieldCaption: 'intField',
     filter: Filter.create('intField', 1),
-};
+    jsonType: 'int'
+} as FieldFilter;
 
 const goodBetweenFilter = {
     fieldKey: 'strField',
     fieldCaption: 'strField',
     filter: Filter.create('strField', ['1', '5'], Filter.Types.BETWEEN),
-};
+    jsonType: 'string'
+} as FieldFilter;
 
 const goodBetweenFilter2 = {
     fieldKey: 'floatField2',
     fieldCaption: 'floatField2',
     filter: Filter.create('floatField2', '1,5', Filter.Types.BETWEEN),
-};
+    jsonType: 'float'
+} as FieldFilter;
 
 const badIntFilter = {
     fieldKey: 'intField',
     fieldCaption: 'intField',
     filter: Filter.create('intField', null),
-};
+    jsonType: 'int'
+} as FieldFilter;
 
 const badBetweenFilter = {
     fieldKey: 'doubleField',
     fieldCaption: 'doubleField',
     filter: Filter.create('doubleField', '1', Filter.Types.BETWEEN),
-};
+    jsonType: 'float'
+} as FieldFilter;
 
 const card = {
     entityDataType: TestTypeDataType,
@@ -349,8 +358,8 @@ const cardJSON =
     '"nounAsParentPlural":"test Parents","typeNounSingular":"Test Type","descriptionSingular":"parent test type","descriptionPlural":"parent test types","uniqueFieldKey":"Name",' +
     '"dependencyText":"test data dependencies","deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","inputTypeValueField":"lsid",' +
     '"insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test","importFileAction":"importSamples","filterCardHeaderClass":"filter-card__header-success"},' +
-    '"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~="},{"fieldKey":"strField","fieldCaption":"strField",' +
-    '"filter":"query.strField~between=1%2C5"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1}],"filterChangeCounter":5}';
+    '"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField",' +
+    '"filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1}],"filterChangeCounter":5}';
 
 const cardWithEntityTypeFilter = {
     entityDataType: TestTypeDataTypeWithEntityFilter,
@@ -366,7 +375,7 @@ const cardWithEntityTypeFilterJSON =
     '"typeNounSingular":"Test Type","descriptionSingular":"parent test type","descriptionPlural":"parent test types","uniqueFieldKey":"Name","dependencyText":"test data dependencies",' +
     '"deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","inputTypeValueField":"lsid","insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test",' +
     '"importFileAction":"importSamples","filterCardHeaderClass":"filter-card__header-success","filterArray":["query.Category~eq=Source"]},"filterArray":[{"fieldKey":"textField",' +
-    '"fieldCaption":"textField","filter":"query.textField~="},{"fieldKey":"strField","fieldCaption":"strField","filter":"query.strField~between=1%2C5"}],"schemaQuery":{"schemaName":"TestSchema",' +
+    '"fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField","filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema",' +
     '"queryName":"samples1"},"index":1}],"filterChangeCounter":5}';
 
 describe('searchFiltersToJson', () => {

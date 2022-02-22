@@ -445,6 +445,14 @@ const EHR_MAPPERS = [
                 return false;
         }
     }),
+    new ActionMapper('query', 'detailsQueryRow', row => {
+        const url = row.get('url');
+        if (url) {
+            const params = ActionURL.getParameters(url);
+            if (params.schemaName === 'ehr' || params.schemaName === 'ehr_lookups')
+                return false;
+        }
+    }),
     new ActionMapper('ehr', 'participantView', () => false),
 ];
 

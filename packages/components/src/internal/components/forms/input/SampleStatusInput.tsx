@@ -145,6 +145,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 componentId={col.fieldKey + key}
                 containerFilter={col.lookup.containerFilter ?? containerFilter}
                 containerPath={col.lookup.containerPath ?? containerPath}
+                description={col.description}
                 displayColumn={col.lookup.displayColumn}
                 formsy={formsy}
                 helpTipRenderer={col.helpTipRenderer}

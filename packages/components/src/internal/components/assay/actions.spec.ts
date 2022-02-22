@@ -19,8 +19,9 @@ import { ASSAY_DEFINITION_MODEL, TEST_ASSAY_STATE_MODEL } from '../../../test/da
 
 import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.json';
 
-import { allowReimportAssayRun, getImportItemsForAssayDefinitions, getRunPropertiesFileName } from './actions';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+
+import { allowReimportAssayRun, getImportItemsForAssayDefinitions, getRunPropertiesFileName } from './actions';
 
 beforeAll(() => {
     initQueryGridState();

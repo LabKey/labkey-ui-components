@@ -110,7 +110,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
             )}
             {showCreatePicklist && (
                 <PicklistEditModal
-                    selectionKey={sampleFieldKey ? undefined : id}   //If a sampleField is being used it, the id may not map correctly
+                    selectionKey={sampleFieldKey ? undefined : id} // If a sampleField is being used it, the id may not map correctly
                     selectedQuantity={numSelected}
                     sampleIds={sampleIds}
                     onFinish={afterCreatePicklist}

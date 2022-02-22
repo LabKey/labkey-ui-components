@@ -781,7 +781,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
     }
 }
 
-const AssayImportPanelWithQueryModels = withQueryModels<AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps>(AssayImportPanelsBody);
+const AssayImportPanelWithQueryModels = withQueryModels<AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps>(
+    AssayImportPanelsBody
+);
 
 const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
     const { assayDefinition, runId } = props;

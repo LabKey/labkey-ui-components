@@ -16,6 +16,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
+
 import { ReactBootstrapMenuItemProps } from './types';
 
 const emptyFn = () => {};

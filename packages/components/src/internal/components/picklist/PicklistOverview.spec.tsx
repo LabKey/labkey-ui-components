@@ -17,10 +17,11 @@ import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
+import { getTestAPIWrapper } from '../../APIWrapper';
+
 import { Picklist } from './models';
 import { PicklistOverview, PicklistOverviewImpl, PicklistOverviewWithQueryModels } from './PicklistOverview';
 import { getPicklistTestAPIWrapper } from './APIWrapper';
-import { getTestAPIWrapper } from '../../APIWrapper';
 
 const MULTI_SAMPLE_TYPE_PICKLIST = new Picklist({
     listId: 1,

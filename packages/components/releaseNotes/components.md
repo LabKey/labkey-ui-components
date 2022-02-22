@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 9945: add calls to incrementClientSideMetricCount() for sample finder related actions
   * add metricFeatureArea props to SampleActionButton, SampleDeleteMenuItem, and SamplesManageButton
 
+### version 2.136.0
+*Released*: 21 February 2022
+* Item 9992: Add ontology type ahead search to forms
+  * Split out `OntologySearchInput` from the existing `OntologyTreeSearchContainer`
+
 ### version 2.135.0
 *Released*: 21 February 2022
 * Item 10004: Sample Finder V1 - Support Choose Values

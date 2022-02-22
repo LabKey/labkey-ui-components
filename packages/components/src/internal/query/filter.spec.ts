@@ -11,16 +11,20 @@ const date2POSIX = 1597182283812; // Aug 11, 2020 14:44 America/PST
 const testDate2 = new Date(date2POSIX);
 const dateStr2 = formatDate(testDate2, 'America/PST', 'YYYY-MM-dd');
 
-describe('FilterValueDisplay', () => {
+describe('getLabKeySql', () => {
     test('has any value', () => {
         expect(getLabKeySql(Filter.create('StringField', null, Filter.Types.HAS_ANY_VALUE), 'string')).toBeNull();
     });
 
     test('simple operator, no filter value', () => {
-        expect(getLabKeySql(Filter.create('StringField', null, Filter.Types.ISBLANK), 'string')).toEqual("\"StringField\" IS NULL");
+        expect(getLabKeySql(Filter.create('LookupField/Name', null, Filter.Types.ISBLANK), 'string')).toEqual("\"LookupField\".\"Name\" IS NULL");
     });
 
     test('eq, string', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.Equals), 'string')).toEqual("\"StringField\" = 'ABC'");
+    });
+
+    test('eq, string, multipart field keys', () => {
         expect(getLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.Equals), 'string')).toEqual("\"StringField\" = 'ABC'");
     });
 

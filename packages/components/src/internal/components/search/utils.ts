@@ -17,7 +17,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
 import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfFilterType';
-import { getLabKeySqlWhere } from '../../query/filter';
+import { getLabKeySql } from '../../query/filter';
 
 import { FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps } from './models';
 
@@ -70,6 +70,48 @@ function getSampleFinderConfigId(finderId: string, suffix: string): string {
     return uuids[0] + '-' + finderId + '|' + suffix;
 }
 
+/**
+ * Note: this is an experimental API that may change unexpectedly in future releases.
+ * From an array of FieldFilter, LabKey sql where clause
+ * @param fieldFilters
+ * @return labkey sql where clauses
+ */
+export function getLabKeySqlWhere(fieldFilters: FieldFilter[]): string {
+    const clauses = [];
+    fieldFilters.forEach(fieldFilter => {
+        const clause = getLabKeySql(fieldFilter.filter, fieldFilter.jsonType);
+        if (clause) clauses.push(clause);
+    });
+
+    if (clauses.length === 0) return '';
+
+    return 'WHERE ' + clauses.join(' AND ');
+}
+
+export function getExpDescendantOfSelectClause(schemaQuery: SchemaQuery, fieldFilters: FieldFilter[]) : string {
+    const selectClauseWhere = getLabKeySqlWhere(fieldFilters);
+    if (!selectClauseWhere)
+        return null;
+
+    return 'SELECT \"' +
+        schemaQuery.queryName +
+        '\".expObject() FROM ' +
+        schemaQuery.schemaName +
+        '.\"' +
+        schemaQuery.queryName +
+        '\" ' +
+        selectClauseWhere;
+}
+
+export function getExpDescendantOfFilter(schemaQuery: SchemaQuery, fieldFilters: FieldFilter[]) : Filter.IFilter {
+    const selectClause = getExpDescendantOfSelectClause(schemaQuery, fieldFilters);
+
+    if (selectClause)
+        return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
+
+    return null;
+}
+
 // exported for jest testing
 export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<QueryConfig> {
     const baseFilters = [];
@@ -85,18 +127,8 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
                 requiredColumns.push(newColumnName);
             });
 
-            const selectClauseWhere = getLabKeySqlWhere(card.filterArray);
-            if (selectClauseWhere) {
-                const selectClause =
-                    'SELECT ' +
-                    schemaQuery.queryName +
-                    '.expObject() FROM ' +
-                    schemaQuery.schemaName +
-                    '.' +
-                    schemaQuery.queryName +
-                    ' ' +
-                    selectClauseWhere;
-                const filter = Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
+            const filter = getExpDescendantOfFilter(schemaQuery, card.filterArray);
+            if (filter) {
                 baseFilters.push(filter);
             }
         } else {

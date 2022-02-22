@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.136.0-fb-ehr-sm-module.0",
+  "version": "2.136.0-fb-ehr-sm-module.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

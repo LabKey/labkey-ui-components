@@ -1,6 +1,33 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.136.0
+*Released*: 21 February 2022
+* Item 9992: Add ontology type ahead search to forms
+  * Split out `OntologySearchInput` from the existing `OntologyTreeSearchContainer`
+
+### version 2.135.0
+*Released*: 21 February 2022
+* Item 10004: Sample Finder V1 - Support Choose Values
+   * Added FilterFacetedSelector and utils to support faceted fitler selection
+
+### version 2.134.0
+*Released*: 21 February 2022
+* Core components page update to use QueryModel based EditableGridPanel
+  * factor loadEditorModelData() out of AssayWizardModel.ts to editable/utils.ts
+  * export EditableGridPanel, loadEditorModelData, and EditorModelProps from index.ts
+  * AssayImportPanels.tsx fix for undefined location prop in core-components case
+
+### version 2.133.0
+*Released*: 21 February 2022
+* Item 9956: Freezer manager dashboard updates to the freezer listing panel
+  * ExpandableContainer update to call onClick when defined regardless of isExpandable prop
+  * HorizontalBarSection updates for selenium test locators
+
+### version 2.132.4
+*Released*: 19 February 2022
+* Migrate subfolder data experimental flag to platform.
+
 ### version 2.132.3
 *Released*: 17 February 2022
 * Update to package to eliminate alpha version reference from node_modules

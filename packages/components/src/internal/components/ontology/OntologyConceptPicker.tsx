@@ -49,7 +49,7 @@ export const OntologyConceptPicker: FC<Props> = memo((props: Props) => {
 
     const togglePicker = useCallback(() => {
         setShowPicker(!showPicker);
-    }, [showPicker, setShowPicker]);
+    }, [showPicker]);
 
     const onApplyConcept = useCallback(
         (selectedPath: PathModel, selectedConcept: ConceptModel) => {
@@ -57,7 +57,7 @@ export const OntologyConceptPicker: FC<Props> = memo((props: Props) => {
             setShowPicker(false);
             onConceptSelection(selectedConcept);
         },
-        [setConcept, setShowPicker, onConceptSelection]
+        [onConceptSelection]
     );
 
     const label = concept?.label ?? null;

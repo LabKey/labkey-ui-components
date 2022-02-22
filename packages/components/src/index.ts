@@ -217,6 +217,8 @@ import {
     SamplesResolver,
 } from './internal/url/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
+import { loadEditorModelData } from './internal/components/editable/utils';
+import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelDeprecated } from './internal/components/editable/EditableGridPanelDeprecated';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridLoader } from './internal/components/editable/EditableGridLoader';
@@ -561,6 +563,7 @@ import { OntologyConceptPicker } from './internal/components/ontology/OntologyCo
 import { OntologyBrowserPage } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
+import { OntologySearchInput } from './internal/components/ontology/OntologyTreeSearchContainer';
 import { AppModel, LogoutReason } from './internal/app/models';
 import { Picklist } from './internal/components/picklist/models';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
@@ -838,9 +841,11 @@ export {
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
     // editable grid related items
+    loadEditorModelData,
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
     EditableGridLoader,
+    EditableGridPanel,
     EditableGridPanelDeprecated,
     EditableGridPanelForUpdate,
     EditableGridModal,
@@ -1380,6 +1385,7 @@ export {
     OntologyConceptOverviewPanel,
     OntologyBrowserFilterPanel,
     OntologyConceptPicker,
+    OntologySearchInput,
     ConceptModel,
     // UserAvatars
     UserAvatar,
@@ -1429,7 +1435,7 @@ export type { MessageFunction, NotificationItemProps } from './internal/componen
 export type { VisGraphNode } from './internal/components/lineage/vis/VisGraphGenerator';
 export type { ITab } from './internal/components/navigation/SubNav';
 export type { NotificationCreatable } from './internal/components/notifications/actions';
-export type { IDataViewInfo } from './internal/models';
+export type { IDataViewInfo, EditorModelProps } from './internal/models';
 export type { HeatMapCell } from './internal/components/heatmap/HeatMap';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
 export type { SearchResultCardData } from './internal/components/search/models';

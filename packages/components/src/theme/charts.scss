@@ -11,8 +11,8 @@
 }
 
 .horizontal-bar--chart-legend {
-    color: grey;
-    margin-bottom: 15px;
+    color: $text-muted;
+    cursor: pointer;
 }
 
 .horizontal-bar-section {
@@ -27,8 +27,8 @@
     overflow-wrap: anywhere;
 }
 
-.horizontal-bar--subtitle {
-    color: grey;
+.horizontal-bar--subtitle, .horizontal-bar--empty-text {
+    color: $text-muted;
 }
 
 .horizontal-bar-part {

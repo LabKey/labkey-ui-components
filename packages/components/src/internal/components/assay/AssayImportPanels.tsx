@@ -221,7 +221,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const { schemaQuery } = this.state;
         let workflowTask;
 
-        if (location.query?.workflowTaskId) {
+        if (location?.query?.workflowTaskId) {
             const _workflowTask = parseInt(location.query?.workflowTaskId, 10);
             workflowTask = isNaN(_workflowTask) ? undefined : _workflowTask;
         }
@@ -477,15 +477,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     onFinish = (importAgain: boolean): void => {
-        const {
-            currentStep,
-            onSave,
-            maxRows,
-            beforeFinish,
-            jobNotificationProvider,
-            assayProtocol,
-            location,
-        } = this.props;
+        const { currentStep, onSave, maxRows, beforeFinish, jobNotificationProvider, assayProtocol, location } =
+            this.props;
         const { model } = this.state;
         let data = model.prepareFormData(currentStep, this.state.editorModel, this.state.dataModel);
 
@@ -514,8 +507,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     const backgroundUpload = assayProtocol?.backgroundUpload;
                     let forceAsync = false;
                     if (!backgroundUpload && assayProtocol?.allowBackgroundUpload) {
-                        const asyncFileSize = location.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE;
-                        const asyncRowSize = location.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_ROW_SIZE;
+                        const asyncFileSize =
+                            location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE;
+                        const asyncRowSize = location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_ROW_SIZE;
                         if (
                             (processedData.maxFileSize && processedData.maxFileSize >= asyncFileSize) ||
                             (processedData.maxRowCount && processedData.maxRowCount >= asyncRowSize)

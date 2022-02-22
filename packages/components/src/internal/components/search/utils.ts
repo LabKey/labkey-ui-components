@@ -14,6 +14,8 @@ import { resolveFilterType } from '../omnibox/actions/Filter';
 import { resolveFieldKey } from '../omnibox/utils';
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
+
 import { FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps } from './models';
 
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): string {
@@ -186,6 +188,21 @@ export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilte
     return suffix === filterType.getURLSuffix();
 }
 
+export function getFilterTypePlaceHolder(suffix: string, jsonType: string): string {
+    if (suffix !== 'in' && suffix !== 'notin') return null;
+
+    switch (jsonType) {
+        case 'float':
+            return 'Example: 1.0;2.2;3';
+        case 'int':
+            return 'Example: 1;2;3';
+        case 'string':
+            return 'Example: a;b;c';
+    }
+
+    return null;
+}
+
 export function filterToJson(filter: Filter.IFilter): string {
     return encodeURIComponent(filter.getURLParameterName()) + '=' + encodeURIComponent(filter.getURLParameterValue());
 }
@@ -198,7 +215,9 @@ export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCoun
     const filterPropsObj = [];
 
     filterProps.forEach(filterProp => {
-        const filterPropObj = { ...filterProp };
+        const filterPropsEntityDataType = { ...filterProp.entityDataType };
+        const filterPropObj = { ...filterProp, entityDataType: filterPropsEntityDataType };
+
         const filterArrayObjs = [];
         [...filterPropObj.filterArray].forEach(field => {
             filterArrayObjs.push({
@@ -208,6 +227,17 @@ export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCoun
             });
         });
         filterPropObj.filterArray = filterArrayObjs;
+
+        const entityDataFilterArrayObjs = [];
+        if (filterPropObj.entityDataType.filterArray?.length > 0) {
+            [...filterPropObj.entityDataType.filterArray].forEach(filter => {
+                entityDataFilterArrayObjs.push(filterToJson(filter));
+            });
+
+            console.log(JSON.stringify(entityDataFilterArrayObjs));
+            filterPropObj.entityDataType.filterArray = entityDataFilterArrayObjs;
+        }
+
         filterPropsObj.push(filterPropObj);
     });
 
@@ -233,6 +263,16 @@ export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStor
             });
         });
         filterPropObj['filterArray'] = filterArray;
+
+        if (filterPropObj['entityDataType']?.['filterArray']) {
+            const filterArray = [];
+            filterPropObj['entityDataType']?.['filterArray']?.forEach(filter => {
+                filterArray.push(filterFromJson(filter));
+            });
+
+            filterPropObj['entityDataType']['filterArray'] = filterArray;
+        }
+
         filters.push(filterPropObj as FilterProps);
     });
 
@@ -242,7 +282,8 @@ export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStor
     };
 }
 
-const EMPTY_VALUE_DISPLAY = '[blank]';
+export const ALL_VALUE_DISPLAY = '[All]';
+export const EMPTY_VALUE_DISPLAY = '[blank]';
 export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string): any[] {
     let values = [],
         rawValues;
@@ -265,7 +306,10 @@ export function getFieldFilterKey(fieldFilter: FieldFilter, schemaQuery?: Schema
     return schemaQuery.schemaName + '|' + schemaQuery.queryName + '|' + fieldFilter.fieldKey;
 }
 
-export function getFieldFiltersValidationResult(dataTypeFilters: { [key: string]: FieldFilter[] }): string {
+export function getFieldFiltersValidationResult(
+    dataTypeFilters: { [key: string]: FieldFilter[] },
+    queryLabels?: { [key: string]: string }
+): string {
     let errorMsg = 'Invalid/incomplete filter values. Please correct input for fields. ',
         hasError = false,
         parentFields = {};
@@ -296,7 +340,8 @@ export function getFieldFiltersValidationResult(dataTypeFilters: { [key: string]
 
     if (hasError) {
         Object.keys(parentFields).forEach(parent => {
-            errorMsg += parent + ': ' + parentFields[parent].join(', ') + '. ';
+            const parentLabel = queryLabels?.[parent] ?? parent;
+            errorMsg += parentLabel + ': ' + parentFields[parent].join(', ') + '. ';
         });
         return errorMsg;
     }
@@ -342,4 +387,113 @@ export function getUpdateFilterExpressionFilter(
     }
 
     return filter;
+}
+
+// this util is only for string field type
+export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string[]): string[] {
+    if (!filter || !allValues)
+        // if no existing filter, check all values by default
+        return allValues;
+
+    const filterUrlSuffix = filter.getFilterType().getURLSuffix();
+    const filterValues = getFilterValuesAsArray(filter);
+
+    switch (filterUrlSuffix) {
+        case '':
+        case 'any':
+            return allValues;
+        case 'isblank':
+            return [EMPTY_VALUE_DISPLAY];
+        case 'isnonblank':
+            return allValues.filter(value => value !== EMPTY_VALUE_DISPLAY && value !== ALL_VALUE_DISPLAY);
+        case 'neq':
+        case 'neqornull':
+            return allValues.filter(value => value !== filterValues[0] && value !== ALL_VALUE_DISPLAY);
+        case 'eq':
+        case 'in':
+            return filterValues;
+        case 'notin':
+            return allValues.filter(value => filterValues.indexOf(value) === -1 && value !== ALL_VALUE_DISPLAY);
+        default:
+            return [];
+    }
+}
+
+export function getUpdatedCheckedValues(
+    allValues: string[],
+    newValue: string,
+    check: boolean,
+    oldFilter: Filter.IFilter,
+    uncheckOthers?: boolean
+): string[] {
+    if (uncheckOthers) return [newValue];
+
+    const oldCheckedValues = getCheckedFilterValues(oldFilter, allValues);
+    let newCheckedValues = [...oldCheckedValues];
+    if (check) {
+        if (newCheckedValues.indexOf(newValue) === -1) newCheckedValues.push(newValue);
+        if (allValues.length - newCheckedValues.length === 1) {
+            if (newCheckedValues.indexOf(ALL_VALUE_DISPLAY) === -1) newCheckedValues.push(ALL_VALUE_DISPLAY);
+        }
+    } else {
+        newCheckedValues = newCheckedValues.filter(val => val !== newValue && val !== ALL_VALUE_DISPLAY);
+    }
+
+    return newCheckedValues;
+}
+// this util is only for string field type
+export function getUpdatedChooseValuesFilter(
+    allValues: string[],
+    fieldKey: string,
+    newValue: string,
+    check: boolean,
+    oldFilter: Filter.IFilter,
+    uncheckOthers?: /* click on the row but not on the checkbox would check the row value and uncheck everything else*/ boolean
+): Filter.IFilter {
+    // if check all, or everything is checked
+    if (newValue === ALL_VALUE_DISPLAY && check) return Filter.create(fieldKey, null, Filter.Types.HAS_ANY_VALUE);
+
+    const newCheckedDisplayValues = getUpdatedCheckedValues(allValues, newValue, check, oldFilter, uncheckOthers);
+    const newUncheckedDisplayValue = allValues.filter(val => newCheckedDisplayValues.indexOf(val) === -1);
+
+    const newCheckedValues = [];
+    const newUncheckedValues = [];
+
+    newCheckedDisplayValues.forEach(v => {
+        newCheckedValues.push(v === EMPTY_VALUE_DISPLAY ? '' : v);
+    });
+    newUncheckedDisplayValue
+        .filter(v => v !== ALL_VALUE_DISPLAY)
+        .forEach(v => {
+            newUncheckedValues.push(v === EMPTY_VALUE_DISPLAY ? '' : v);
+        });
+
+    // if everything is checked
+    if ((newValue === ALL_VALUE_DISPLAY && check) || newCheckedValues.length === allValues.length)
+        return Filter.create(fieldKey, null, Filter.Types.HAS_ANY_VALUE);
+
+    // if uncheck all or if everything is unchecked, create a new NOTANY filter type
+    if ((newValue === ALL_VALUE_DISPLAY && !check) || newCheckedValues.length === 0)
+        return Filter.create(fieldKey, null, NOT_ANY_FILTER_TYPE);
+
+    // if only one is checked
+    if (newCheckedValues.length === 1) {
+        if (newCheckedValues[0] === '') return Filter.create(fieldKey, null, Filter.Types.ISBLANK);
+
+        return Filter.create(fieldKey, newCheckedValues[0]);
+    }
+
+    // if only one is unchecked
+    if (newUncheckedValues.length === 1) {
+        if (newUncheckedValues[0] === '') return Filter.create(fieldKey, null, Filter.Types.NONBLANK);
+
+        return Filter.create(fieldKey, newUncheckedValues[0], Filter.Types.NEQ_OR_NULL);
+    }
+
+    // if number of checked is greater than unchecked, use Not_In unchecked
+    if (newCheckedValues.length > newUncheckedValues.length) {
+        return Filter.create(fieldKey, newUncheckedValues, Filter.Types.NOT_IN);
+    }
+
+    return Filter.create(fieldKey, newCheckedValues, Filter.Types.IN);
 }

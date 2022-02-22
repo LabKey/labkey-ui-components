@@ -208,7 +208,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
 
         return (
             <Section
-                panelClassName={isLoading || !hasData ? 'bar-chart-viewer-empty' : undefined}
+                panelClassName={isLoading || !hasData ? 'bar-chart-viewer-empty' : 'bar-chart-viewer-panel'}
                 title="Dashboard Insights"
                 titleSize="medium"
             >

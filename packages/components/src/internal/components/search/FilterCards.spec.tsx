@@ -8,7 +8,7 @@ import { capitalizeFirstChar } from '../../util/utils';
 import { TestTypeDataType } from '../../../test/data/constants';
 
 import { FilterCard } from './FilterCards';
-import {FieldFilter} from "./models";
+import { FieldFilter } from './models';
 
 describe('FilterCard', () => {
     const capParentNoun = capitalizeFirstChar(TestTypeDataType.nounAsParentSingular);
@@ -58,20 +58,20 @@ describe('FilterCard', () => {
             fieldKey: '1',
             fieldCaption: 'Field1',
             filter: Filter.create('IntField', 1),
-            jsonType: 'int'
+            jsonType: 'int',
         } as FieldFilter;
         const filter2 = {
             fieldKey: '2',
             fieldCaption: 'Field2',
             filter: Filter.create('IntField2', 2),
-            jsonType: 'int'
+            jsonType: 'int',
         } as FieldFilter;
 
         const wrapper = mount(
             <FilterCard
                 entityDataType={TestTypeDataType}
                 schemaQuery={SchemaQuery.create('testSample', 'parent')}
-                filterArray={[filter1, filter2,]}
+                filterArray={[filter1, filter2]}
                 onAdd={jest.fn}
                 onEdit={jest.fn}
                 onDelete={jest.fn}

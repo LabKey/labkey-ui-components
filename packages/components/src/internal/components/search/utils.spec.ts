@@ -16,6 +16,10 @@ import { TEXT_TYPE } from '../domainproperties/PropDescType';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
+import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfFilterType';
+
+import { formatDate } from '../../util/Date';
+
 import {
     ALL_VALUE_DISPLAY,
     EMPTY_VALUE_DISPLAY,
@@ -35,9 +39,7 @@ import {
     searchFiltersFromJson,
     searchFiltersToJson,
 } from './utils';
-import {FieldFilter} from "./models";
-import {IN_EXP_DESCENDANTS_OF_FILTER_TYPE} from "../../url/InExpDescendantsOfFilterType";
-import {formatDate} from "../../util/Date";
+import { FieldFilter } from './models';
 
 test('getFinderStartText', () => {
     expect(getFinderStartText([])).toBe('Start by adding  properties.');
@@ -147,7 +149,7 @@ describe('getSampleFinderCommonConfigs', () => {
             fieldKey: 'TestColumn',
             fieldCaption: 'TestColumn',
             filter: Filter.create('TestColumn', 'value'),
-            jsonType: 'string'
+            jsonType: 'string',
         } as FieldFilter;
 
         expect(
@@ -165,7 +167,11 @@ describe('getSampleFinderCommonConfigs', () => {
         ).toStrictEqual({
             baseFilters: [
                 Filter.create('QueryableInputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK),
-                Filter.create('*', "SELECT \"TestQuery2\".expObject() FROM Samples.\"TestQuery2\" WHERE \"TestColumn\" = 'value'", IN_EXP_DESCENDANTS_OF_FILTER_TYPE)
+                Filter.create(
+                    '*',
+                    'SELECT "TestQuery2".expObject() FROM Samples."TestQuery2" WHERE "TestColumn" = \'value\'',
+                    IN_EXP_DESCENDANTS_OF_FILTER_TYPE
+                ),
             ],
             requiredColumns: [
                 ...SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -310,42 +316,42 @@ const anyValueFilter = {
     fieldKey: 'textField',
     fieldCaption: 'textField',
     filter: Filter.create('textField', null, Filter.Types.HAS_ANY_VALUE),
-    jsonType: 'string'
+    jsonType: 'string',
 } as FieldFilter;
 
 const intEqFilter = {
     fieldKey: 'intField',
     fieldCaption: 'intField',
     filter: Filter.create('intField', 1),
-    jsonType: 'int'
+    jsonType: 'int',
 } as FieldFilter;
 
 const stringBetweenFilter = {
     fieldKey: 'strField',
     fieldCaption: 'strField',
     filter: Filter.create('strField', ['1', '5'], Filter.Types.BETWEEN),
-    jsonType: 'string'
+    jsonType: 'string',
 } as FieldFilter;
 
 const floatBetweenFilter = {
     fieldKey: 'floatField2',
     fieldCaption: 'floatField2',
     filter: Filter.create('floatField2', '1,5', Filter.Types.BETWEEN),
-    jsonType: 'float'
+    jsonType: 'float',
 } as FieldFilter;
 
 const badIntFilter = {
     fieldKey: 'intField',
     fieldCaption: 'intField',
     filter: Filter.create('intField', null),
-    jsonType: 'int'
+    jsonType: 'int',
 } as FieldFilter;
 
 const badBetweenFilter = {
     fieldKey: 'doubleField',
     fieldCaption: 'doubleField',
     filter: Filter.create('doubleField', '1', Filter.Types.BETWEEN),
-    jsonType: 'float'
+    jsonType: 'float',
 } as FieldFilter;
 
 const card = {
@@ -807,89 +813,102 @@ const isBlankFilter = {
     fieldKey: 'String Field',
     fieldCaption: 'String Field',
     jsonType: 'string',
-    filter: Filter.create('String Field', null, Filter.Types.ISBLANK)
+    filter: Filter.create('String Field', null, Filter.Types.ISBLANK),
 } as FieldFilter;
 
 const floatGreaterEqFilter = {
     fieldKey: 'float Field',
     fieldCaption: 'float Field',
     jsonType: 'float',
-    filter: Filter.create('float Field', 1.234, Filter.Types.GTE)
+    filter: Filter.create('float Field', 1.234, Filter.Types.GTE),
 } as FieldFilter;
 
 const stringInFilter = {
     fieldKey: 'String Field',
     fieldCaption: 'String Field',
     jsonType: 'string',
-    filter: Filter.create('String Field', 'value1;value2;value3', Filter.Types.IN)
+    filter: Filter.create('String Field', 'value1;value2;value3', Filter.Types.IN),
 } as FieldFilter;
 const floatNotInFilter = {
     fieldKey: 'float Field',
     fieldCaption: 'float Field',
     jsonType: 'float',
-    filter: Filter.create('FloatField', '1.1;2.2;3.3', Filter.Types.NOT_IN)
+    filter: Filter.create('FloatField', '1.1;2.2;3.3', Filter.Types.NOT_IN),
 } as FieldFilter;
 const booleanEqFilter = {
     fieldKey: 'Boolean Field',
     fieldCaption: 'Boolean Field',
     jsonType: 'boolean',
-    filter: Filter.create('Boolean Field', 'true', Filter.Types.Equals)
+    filter: Filter.create('Boolean Field', 'true', Filter.Types.Equals),
 } as FieldFilter;
 const dateNeqFilter = {
     fieldKey: 'Date Field',
     fieldCaption: 'Date Field',
     jsonType: 'date',
-    filter: Filter.create('Date Field', dateStr, Filter.Types.NEQ_OR_NULL)
+    filter: Filter.create('Date Field', dateStr, Filter.Types.NEQ_OR_NULL),
 } as FieldFilter;
 const dateNotBetweenFilter = {
     fieldKey: 'Date Field',
     fieldCaption: 'Date Field',
     jsonType: 'date',
-    filter: Filter.create('Date Field', dateStr + ',' + dateStr2, Filter.Types.NOT_BETWEEN)
+    filter: Filter.create('Date Field', dateStr + ',' + dateStr2, Filter.Types.NOT_BETWEEN),
 } as FieldFilter;
 const notSupportedFilter = {
     fieldKey: 'String Field',
     fieldCaption: 'String Field',
     jsonType: 'string',
-    filter: Filter.create('String Field', null, Filter.Types.STARTS_WITH)
+    filter: Filter.create('String Field', null, Filter.Types.STARTS_WITH),
 } as FieldFilter;
-
 
 describe('getLabKeySqlWhere', () => {
     test('empty', () => {
-        expect(getLabKeySqlWhere([])).toEqual("");
+        expect(getLabKeySqlWhere([])).toEqual('');
     });
 
     test('has any value', () => {
-        expect(getLabKeySqlWhere([anyValueFilter])).toEqual("");
+        expect(getLabKeySqlWhere([anyValueFilter])).toEqual('');
     });
 
     test('unsupported filters', () => {
-        expect(getLabKeySqlWhere([notSupportedFilter])).toEqual("");
+        expect(getLabKeySqlWhere([notSupportedFilter])).toEqual('');
     });
 
     test('has any value and unsupported filters', () => {
-        expect(getLabKeySqlWhere([anyValueFilter, notSupportedFilter])).toEqual("");
+        expect(getLabKeySqlWhere([anyValueFilter, notSupportedFilter])).toEqual('');
     });
 
     test('isBlankFilter: simple operator, no filter value', () => {
-        expect(getLabKeySqlWhere([isBlankFilter])).toEqual( "WHERE \"String Field\" IS NULL");
-        expect(getLabKeySqlWhere([anyValueFilter, isBlankFilter])).toEqual( "WHERE \"String Field\" IS NULL");
+        expect(getLabKeySqlWhere([isBlankFilter])).toEqual('WHERE "String Field" IS NULL');
+        expect(getLabKeySqlWhere([anyValueFilter, isBlankFilter])).toEqual('WHERE "String Field" IS NULL');
     });
 
     test('eq filter', () => {
-        expect(getLabKeySqlWhere([intEqFilter])).toEqual("WHERE \"intField\" = 1");
-        expect(getLabKeySqlWhere([intEqFilter, anyValueFilter])).toEqual("WHERE \"intField\" = 1");
+        expect(getLabKeySqlWhere([intEqFilter])).toEqual('WHERE "intField" = 1');
+        expect(getLabKeySqlWhere([intEqFilter, anyValueFilter])).toEqual('WHERE "intField" = 1');
     });
 
     test('multiple filter types and field types filter', () => {
-        expect(getLabKeySqlWhere([intEqFilter, booleanEqFilter])).toEqual("WHERE \"intField\" = 1 AND \"Boolean Field\" = TRUE");
+        expect(getLabKeySqlWhere([intEqFilter, booleanEqFilter])).toEqual(
+            'WHERE "intField" = 1 AND "Boolean Field" = TRUE'
+        );
 
-        const expectedWhere = "WHERE \"String Field\" IS NULL AND \"float Field\" >= 1.234 AND \"strField\" BETWEEN '1' AND '5' AND \"floatField2\" BETWEEN 1 AND 5 AND \"String Field\" IN ('value1', 'value2', 'value3') AND \"FloatField\" NOT IN (1.1, 2.2, 3.3) AND \"Boolean Field\" = TRUE AND (\"Date Field\" IS NULL OR \"Date Field\" <> '2020-08-06') AND \"Date Field\" NOT BETWEEN '2020-08-06' AND '2020-08-11'";
-        expect(getLabKeySqlWhere([isBlankFilter, floatGreaterEqFilter, stringBetweenFilter, floatBetweenFilter,
-            stringInFilter, floatNotInFilter, booleanEqFilter, dateNeqFilter, dateNotBetweenFilter, notSupportedFilter])).toEqual(expectedWhere);
+        const expectedWhere =
+            'WHERE "String Field" IS NULL AND "float Field" >= 1.234 AND "strField" BETWEEN \'1\' AND \'5\' AND "floatField2" BETWEEN 1 AND 5 AND "String Field" IN (\'value1\', \'value2\', \'value3\') AND "FloatField" NOT IN (1.1, 2.2, 3.3) AND "Boolean Field" = TRUE AND ("Date Field" IS NULL OR "Date Field" <> \'2020-08-06\') AND "Date Field" NOT BETWEEN \'2020-08-06\' AND \'2020-08-11\'';
+        expect(
+            getLabKeySqlWhere([
+                isBlankFilter,
+                floatGreaterEqFilter,
+                stringBetweenFilter,
+                floatBetweenFilter,
+                stringInFilter,
+                floatNotInFilter,
+                booleanEqFilter,
+                dateNeqFilter,
+                dateNotBetweenFilter,
+                notSupportedFilter,
+            ])
+        ).toEqual(expectedWhere);
     });
-
 });
 
 const schemaQuery = SchemaQuery.create('Test', 'SampleA');
@@ -914,16 +933,23 @@ describe('getExpDescendantOfSelectClause', () => {
     });
 
     test('isBlankFilter: simple operator, no filter value', () => {
-        expect(getExpDescendantOfSelectClause(schemaQuery, [isBlankFilter])).toEqual( "SELECT \"SampleA\".expObject() FROM Test.\"SampleA\" WHERE \"String Field\" IS NULL");
+        expect(getExpDescendantOfSelectClause(schemaQuery, [isBlankFilter])).toEqual(
+            'SELECT "SampleA".expObject() FROM Test."SampleA" WHERE "String Field" IS NULL'
+        );
     });
 
     test('eq filter', () => {
-        expect(getExpDescendantOfSelectClause(schemaQueryWithSpace, [intEqFilter])).toEqual("SELECT \"Sample Type A\".expObject() FROM Test.\"Sample Type A\" WHERE \"intField\" = 1");
+        expect(getExpDescendantOfSelectClause(schemaQueryWithSpace, [intEqFilter])).toEqual(
+            'SELECT "Sample Type A".expObject() FROM Test."Sample Type A" WHERE "intField" = 1'
+        );
     });
 
     test('multiple filter types and field types filter', () => {
-        expect(getExpDescendantOfSelectClause(schemaQuery,[intEqFilter, booleanEqFilter])).toEqual("SELECT \"SampleA\".expObject() FROM Test.\"SampleA\" WHERE \"intField\" = 1 AND \"Boolean Field\" = TRUE");
-        expect(getExpDescendantOfSelectClause(schemaQueryWithSpace,[intEqFilter, booleanEqFilter])).toEqual("SELECT \"Sample Type A\".expObject() FROM Test.\"Sample Type A\" WHERE \"intField\" = 1 AND \"Boolean Field\" = TRUE");
+        expect(getExpDescendantOfSelectClause(schemaQuery, [intEqFilter, booleanEqFilter])).toEqual(
+            'SELECT "SampleA".expObject() FROM Test."SampleA" WHERE "intField" = 1 AND "Boolean Field" = TRUE'
+        );
+        expect(getExpDescendantOfSelectClause(schemaQueryWithSpace, [intEqFilter, booleanEqFilter])).toEqual(
+            'SELECT "Sample Type A".expObject() FROM Test."Sample Type A" WHERE "intField" = 1 AND "Boolean Field" = TRUE'
+        );
     });
-
 });

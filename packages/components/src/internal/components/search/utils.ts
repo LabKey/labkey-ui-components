@@ -88,26 +88,26 @@ export function getLabKeySqlWhere(fieldFilters: FieldFilter[]): string {
     return 'WHERE ' + clauses.join(' AND ');
 }
 
-export function getExpDescendantOfSelectClause(schemaQuery: SchemaQuery, fieldFilters: FieldFilter[]) : string {
+export function getExpDescendantOfSelectClause(schemaQuery: SchemaQuery, fieldFilters: FieldFilter[]): string {
     const selectClauseWhere = getLabKeySqlWhere(fieldFilters);
-    if (!selectClauseWhere)
-        return null;
+    if (!selectClauseWhere) return null;
 
-    return 'SELECT \"' +
+    return (
+        'SELECT "' +
         schemaQuery.queryName +
-        '\".expObject() FROM ' +
+        '".expObject() FROM ' +
         schemaQuery.schemaName +
-        '.\"' +
+        '."' +
         schemaQuery.queryName +
-        '\" ' +
-        selectClauseWhere;
+        '" ' +
+        selectClauseWhere
+    );
 }
 
-export function getExpDescendantOfFilter(schemaQuery: SchemaQuery, fieldFilters: FieldFilter[]) : Filter.IFilter {
+export function getExpDescendantOfFilter(schemaQuery: SchemaQuery, fieldFilters: FieldFilter[]): Filter.IFilter {
     const selectClause = getExpDescendantOfSelectClause(schemaQuery, fieldFilters);
 
-    if (selectClause)
-        return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
+    if (selectClause) return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
 
     return null;
 }

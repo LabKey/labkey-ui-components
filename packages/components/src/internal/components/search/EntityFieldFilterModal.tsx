@@ -19,6 +19,7 @@ import { naturalSortByProperty } from '../../../public/sort';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
+
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter, FilterProps } from './models';

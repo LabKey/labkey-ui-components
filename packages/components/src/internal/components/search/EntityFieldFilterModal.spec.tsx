@@ -17,7 +17,7 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
 
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
-import {FieldFilter} from "./models";
+import { FieldFilter } from './models';
 
 const sampleTypes = {
     SampleSets: [
@@ -65,13 +65,13 @@ const filterArray = [
         fieldKey: 'Integer',
         fieldCaption: 'Integer',
         filter: Filter.create('Integer', 1),
-        jsonType: 'int'
+        jsonType: 'int',
     } as FieldFilter,
     {
         fieldKey: 'Boolean',
         fieldCaption: 'Boolean',
         filter: Filter.create('Boolean', true),
-        jsonType: 'boolean'
+        jsonType: 'boolean',
     } as FieldFilter,
 ];
 
@@ -163,9 +163,7 @@ describe('EntityFieldFilterModal', () => {
     });
 
     test('open card with filters, list all field types', async () => {
-        const wrapper = mount(
-            <EntityFieldFilterModal {...DEFAULT_PROPS} cards={[card]} fieldKey={null} />
-        );
+        const wrapper = mount(<EntityFieldFilterModal {...DEFAULT_PROPS} cards={[card]} fieldKey={null} />);
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);

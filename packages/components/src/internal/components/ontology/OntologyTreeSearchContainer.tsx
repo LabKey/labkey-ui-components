@@ -1,40 +1,55 @@
 import React, { ChangeEvent, FC, memo, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Alert, searchUsingIndex } from '../../..';
+import { Alert } from '../base/Alert';
+
+import { searchUsingIndex } from '../search/actions';
 
 import { ConceptModel, OntologyModel, PathModel } from './models';
-import { fetchAlternatePaths } from './actions';
+import { fetchAlternatePaths, getOntologyDetails } from './actions';
 
 const CONCEPT_CATEGORY = 'concept';
 const SEARCH_LIMIT = 20;
 
 interface OntologyTreeSearchContainerProps {
     ontology: OntologyModel;
+    inputName?: string;
+    initCode?: string;
+    className?: string;
     searchPathClickHandler: (path: PathModel, isAlternatePath?: boolean) => void;
+    onChangeListener?: (val: string) => void;
 }
 
 export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> = memo(props => {
-    const { ontology, searchPathClickHandler } = props;
+    const {
+        ontology,
+        searchPathClickHandler,
+        inputName = 'concept-search',
+        className = 'form-control',
+        initCode = '',
+        onChangeListener,
+    } = props;
     const [isFocused, setIsFocused] = useState<boolean>();
-    const [searchTerm, setSearchTerm] = useState<string>();
+    const [searchTerm, setSearchTerm] = useState<string>(initCode);
     const [searchHits, setSearchHits] = useState<ConceptModel[]>();
     const [totalHits, setTotalHits] = useState<number>();
     const [error, setError] = useState<string>();
+    const [showResults, setShowResults] = useState<boolean>(false);
 
     const onSearchChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
             const { value } = evt.currentTarget;
             setSearchTerm(value?.length > 2 ? value : undefined);
+            onChangeListener?.(value);
         },
-        [setSearchTerm]
+        [onChangeListener]
     );
 
     const onSearchFocus = useCallback(() => {
         setIsFocused(true);
-    }, [setIsFocused]);
+    }, []);
     const onSearchBlur = useCallback(() => {
         setIsFocused(false);
-    }, [onSearchFocus]);
+    }, []);
 
     useEffect(() => {
         setError(undefined);
@@ -72,46 +87,56 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
 
             return () => clearTimeout(timeOutId);
         }
-    }, [searchTerm, setError, setSearchHits, setTotalHits]);
+    }, [ontology, searchTerm]);
 
     const onItemClick = useCallback(
         async (evt: MouseEvent<HTMLLIElement>, code: string) => {
-            // for now we will just send the user to the first path for this concept, in the future we'll add in UI
-            // that lets the user select if more then one path exists for the concept
+            // for now, we will just send the user to the first path for this concept, in the future we'll add in UI
+            // that lets the user select if more than one path exists for the concept
             const codePaths = await fetchAlternatePaths(code);
             if (codePaths?.length > 0) {
                 searchPathClickHandler(codePaths[0], true);
             }
+            setSearchTerm(code);
         },
         [searchPathClickHandler]
     );
 
-    // cancel form submit since we are just using the input for the search menu display
-    const onSubmit = useCallback(evt => {
-        evt.preventDefault();
-        return false;
+    const keyHandler = useCallback((evt: React.KeyboardEvent<HTMLElement>) => {
+        switch (evt.key) {
+            case 'Escape':
+                setShowResults(false);
+                evt.stopPropagation();
+                evt.preventDefault();
+                return true;
+            default:
+                setShowResults(true);
+                return false;
+        }
     }, []);
 
     return (
         <div className="concept-search-container">
-            <form autoComplete="off" onSubmit={onSubmit}>
-                <input
-                    type="text"
-                    className="form-control"
-                    name="concept-search"
-                    placeholder={'Search ' + ontology.abbreviation}
-                    onChange={onSearchChange}
-                    onFocus={onSearchFocus}
-                    onBlur={onSearchBlur}
-                />
-            </form>
-            <OntologySearchResultsMenu
-                searchHits={searchHits}
-                totalHits={totalHits}
-                isFocused={isFocused}
-                error={error}
-                onItemClick={onItemClick}
+            <input
+                type="text"
+                className={className}
+                name={inputName}
+                placeholder={'Search ' + ontology.abbreviation}
+                onChange={onSearchChange}
+                onFocus={onSearchFocus}
+                onBlur={onSearchBlur}
+                onKeyUp={keyHandler}
+                value={searchTerm}
             />
+            {showResults && (
+                <OntologySearchResultsMenu
+                    searchHits={searchHits}
+                    totalHits={totalHits}
+                    isFocused={isFocused}
+                    error={error}
+                    onItemClick={onItemClick}
+                />
+            )}
         </div>
     );
 });
@@ -127,14 +152,14 @@ interface OntologySearchResultsMenuProps {
 // exported for jest testing
 export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = memo(props => {
     const { searchHits, isFocused, totalHits, error, onItemClick } = props;
-    const showMenu = useMemo(() => isFocused && (searchHits !== undefined || error !== undefined), [
-        isFocused,
-        searchHits,
-        error,
-    ]);
-    const hitsHaveDescriptions = useMemo(() => searchHits?.findIndex(hit => hit.description !== undefined) > -1, [
-        searchHits,
-    ]);
+    const showMenu = useMemo(
+        () => isFocused && (searchHits !== undefined || error !== undefined),
+        [isFocused, searchHits, error]
+    );
+    const hitsHaveDescriptions = useMemo(
+        () => searchHits?.findIndex(hit => hit.description !== undefined) > -1,
+        [searchHits]
+    );
 
     if (!showMenu) {
         return null;
@@ -178,7 +203,60 @@ export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = mem
     );
 });
 
+interface OntologySearchInputProps
+    extends Omit<OntologyTreeSearchContainerProps, 'ontology' | 'searchPathClickHandler' | 'onChangeListener'> {
+    ontologyId: string;
+    searchPathChangeHandler: (code: string) => void;
+}
+
+export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
+    const { ontologyId, searchPathChangeHandler, ...rest } = props;
+    const [ontologyModel, setOntologyModel] = useState<OntologyModel>();
+    const [error, setError] = useState<string>();
+
+    useEffect(() => {
+        if (ontologyId) {
+            getOntologyDetails(ontologyId)
+                .then((ontology: OntologyModel) => {
+                    setOntologyModel(ontology);
+                })
+                .catch(() => {
+                    setError('Error: unable to load ontology concept information for ' + ontologyId + '.');
+                });
+        }
+    }, [ontologyId]);
+
+    const onSearchClickHandler = useCallback(
+        (path: PathModel) => {
+            searchPathChangeHandler(path.code);
+        },
+        [searchPathChangeHandler]
+    );
+
+    const onChangeHandler = useCallback(
+        val => {
+            searchPathChangeHandler(val);
+        },
+        [searchPathChangeHandler]
+    );
+
+    return (
+        <>
+            <Alert>{error}</Alert>
+            {ontologyModel && (
+                <OntologyTreeSearchContainer
+                    {...rest}
+                    ontology={ontologyModel}
+                    searchPathClickHandler={onSearchClickHandler}
+                    onChangeListener={onChangeHandler}
+                />
+            )}
+        </>
+    );
+});
+
 // exported for jest testing
 export function getOntologySearchTerm(ontology: OntologyModel, searchTerm: string): string {
-    return '+ontology:' + ontology.abbreviation + ' AND ' + searchTerm;
+    // Quotes are needed to escape the ':' and the open term allows more flexible search of multi-token terms, e.g. ABC T
+    return `+ontology:${ontology.abbreviation} AND ("${searchTerm}" OR ${searchTerm})`;
 }

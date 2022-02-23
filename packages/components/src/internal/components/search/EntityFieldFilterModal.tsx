@@ -165,7 +165,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         setActiveTab(tabKey);
 
         if (tabKey === CHOOSE_VALUES_TAB_KEY) {
-            api.query.incrementClientSideMetricCount(metricFeatureArea, 'goToChooseValuesTab')
+            api.query.incrementClientSideMetricCount(metricFeatureArea, 'goToChooseValuesTab');
         }
     }, []);
 
@@ -199,7 +199,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             onFind(entityDataType.instanceSchemaName, validDataTypeFilters);
         } else {
             setFilterError(filterErrors);
-            api.query.incrementClientSideMetricCount(metricFeatureArea, 'filterModalError')
+            api.query.incrementClientSideMetricCount(metricFeatureArea, 'filterModalError');
         }
     }, [api, metricFeatureArea, entityQueries, entityDataType.instanceSchemaName, onFind, validDataTypeFilters]);
 

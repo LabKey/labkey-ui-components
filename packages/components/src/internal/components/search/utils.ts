@@ -123,8 +123,13 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
             const schemaQuery = card.schemaQuery;
             card.filterArray.forEach(f => {
                 const filter = f.filter;
-                const newColumnName = cardColumnName + '/' + filter.getColumnName();
-                requiredColumns.push(newColumnName);
+                const columnName = filter.getColumnName();
+
+                // lookup fields not supported for lineage MVFK column
+                if (columnName.indexOf("/")  === -1) {
+                    const newColumnName = cardColumnName + '/' + columnName;
+                    requiredColumns.push(newColumnName);
+                }
             });
 
             const filter = getExpDescendantOfFilter(schemaQuery, card.filterArray);

@@ -112,7 +112,11 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 .getQueryDetails({ schemaName: entityDataType.instanceSchemaName, queryName })
                 .then(queryInfo => {
                     const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
-                    setQueryFields(fields);
+                    let supportedFields = fields;
+                    if (!queryInfo.supportGroupConcatSubSelect && entityDataType.exprColumnsWithSubSelect?.length > 0) {
+                        supportedFields = fromJS(fields.filter(field => entityDataType.exprColumnsWithSubSelect.indexOf(field.fieldKey) === -1));
+                    }
+                    setQueryFields(supportedFields);
                     if (fieldKey) {
                         const field = fields.find(field => field.getDisplayFieldKey() === fieldKey);
                         setActiveField(field);

@@ -569,6 +569,7 @@ export interface EntityDataType {
     importFileAction: string; // the action in the 'experiment' controller to use for file import for the given data type
     isFromSharedContainer?: boolean; // if the data type is defined in /Shared project
     filterCardHeaderClass?: string; // css class to use for styling the header in the display of cards for Sample Finder
+    exprColumnsWithSubSelect?: string[] // A list of fields that are backed by ExprColumn and the ExprColumn's sql contain sub select clauses
 }
 
 export class OperationConfirmationData {

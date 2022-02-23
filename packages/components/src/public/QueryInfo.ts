@@ -44,6 +44,8 @@ export class QueryInfo extends Record({
     insertUrlDisabled: undefined,
     insertUrl: undefined,
 
+    supportGroupConcatSubSelect: false,
+
     // our stuff
     appEditableTable: false,
     isLoading: false,
@@ -81,6 +83,7 @@ export class QueryInfo extends Record({
     declare schemaQuery: SchemaQuery;
     declare singular: string;
     declare status: QueryInfoStatus;
+    declare supportGroupConcatSubSelect: boolean;
     // declare targetContainers: List<any>;
     declare title: string;
     declare titleColumn: string;

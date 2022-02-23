@@ -7,6 +7,7 @@ import { DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
 import { SAMPLE_TYPE_KEY } from '../../app/constants';
 
 import { EntityDataType } from './models';
+import { SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR } from "../samples/constants";
 
 export const DATA_DELETE_CONFIRMATION_ACTION = 'getDataDeleteConfirmationData.api';
 export const SAMPLE_DELETE_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
@@ -33,6 +34,7 @@ export const SampleTypeDataType: EntityDataType = {
     editTypeAppUrlPrefix: SAMPLE_TYPE_KEY,
     importFileAction: 'importSamples',
     filterCardHeaderClass: 'filter-card__header-success',
+    exprColumnsWithSubSelect: SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR
 };
 
 export const DataClassDataType: EntityDataType = {

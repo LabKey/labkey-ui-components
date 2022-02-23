@@ -149,7 +149,6 @@ export const EditInlineField: FC<Props> = memo(props => {
                 </span>
             )}
             {state.editing && isText && (
-                <>
                 <span className="input-group input-sizer">
                     <input
                         autoFocus
@@ -164,7 +163,6 @@ export const EditInlineField: FC<Props> = memo(props => {
                         onInput={onInputChange}
                     />
                 </span>
-                </>
             )}
             {!state.editing && (
                 <>
@@ -174,7 +172,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                         </span>
                     )}
                     <span
-                        className={ allowEdit ? "edit-inline-field__toggle" : ''}
+                        className={allowEdit ? 'edit-inline-field__toggle' : ''}
                         onClick={toggleEdit}
                         onKeyDown={toggleKeyDown}
                         tabIndex={1}
@@ -195,5 +193,5 @@ export const EditInlineField: FC<Props> = memo(props => {
 });
 
 EditInlineField.defaultProps = {
-    className: "edit-inline-field"
-}
+    className: 'edit-inline-field',
+};

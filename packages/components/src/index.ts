@@ -88,7 +88,6 @@ import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
 import { SubMenu } from './internal/components/menus/SubMenu';
 import { SubMenuItem } from './internal/components/menus/SubMenuItem';
 import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem';
-import { DisabledMenuItem } from './internal/components/menus/DisabledMenuItem';
 import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
 import { InsufficientPermissionsAlert } from './internal/components/permissions/InsufficientPermissionsAlert';
@@ -314,7 +313,6 @@ import {
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
 import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
-import { SampleDeleteMenuItem } from './internal/components/samples/SampleDeleteMenuItem';
 import { SamplesManageButton } from './internal/components/samples/SamplesManageButton';
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
@@ -370,6 +368,7 @@ import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportS
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
 import {
+    allowReimportAssayRun,
     clearAssayDefinitionCache,
     deleteAssayDesign,
     deleteAssayRuns,
@@ -1013,7 +1012,6 @@ export {
     SampleSetSummary,
     SampleCreationType,
     SampleSetDeleteModal,
-    SampleDeleteMenuItem,
     SampleActionsButton,
     SamplesManageButton,
     SamplesManageButtonSections,
@@ -1097,6 +1095,7 @@ export {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
+    allowReimportAssayRun,
     clearAssayDefinitionCache,
     fetchAllAssays,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
@@ -1267,7 +1266,6 @@ export {
     SubMenu,
     SubMenuItem,
     SelectionMenuItem,
-    DisabledMenuItem,
     ManageDropdownButton,
     SplitButtonGroup,
     PaginationButtons,

@@ -23,7 +23,7 @@ import { QueryGridModel } from '../../..';
 
 import { SelectionMenuItem } from './SelectionMenuItem';
 
-describe('<SelectionMenuItem/>', () => {
+describe('SelectionMenuItem', () => {
     test('without selections', () => {
         const text = 'Menu Item Text';
         const model = new QueryGridModel({

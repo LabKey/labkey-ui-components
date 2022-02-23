@@ -16,9 +16,9 @@
 import React, { Component, ReactNode } from 'react';
 import { Link } from 'react-router';
 import { List } from 'immutable';
+import { Query } from '@labkey/api';
 
-import { Alert, AppURL, Grid, GridColumn, LoadingSpinner, QueryInfo } from '../../..';
-import { fetchGetQueries } from '../../schemas';
+import { Alert, AppURL, Grid, GridColumn, LoadingSpinner, naturalSortByProperty, QueryInfo } from '../../..';
 
 import { SchemaListing } from './SchemaListing';
 
@@ -38,6 +38,25 @@ const columns = List([
         title: 'Description',
     }),
 ]);
+
+function fetchGetQueries(schemaName: string): Promise<List<QueryInfo>> {
+    return new Promise((resolve, reject) => {
+        Query.getQueries({
+            schemaName,
+            success: data => {
+                const queries = data.queries
+                    .map(result => QueryInfo.create({ ...result, schemaName }))
+                    .sort(naturalSortByProperty('name'));
+
+                resolve(List(queries));
+            },
+            failure: error => {
+                console.error(error);
+                reject(error);
+            },
+        });
+    });
+}
 
 interface QueriesListingProps {
     schemaName: string;
@@ -79,11 +98,10 @@ export class QueriesListing extends Component<QueriesListingProps, QueriesListin
         const { schemaName } = this.props;
         fetchGetQueries(schemaName)
             .then(queries => {
-                this.setState(() => ({ queries }));
+                this.setState({ queries });
             })
             .catch(error => {
-                console.error(error);
-                this.setState(() => ({ error: error.exception }));
+                this.setState({ error: error.exception });
             });
     };
 

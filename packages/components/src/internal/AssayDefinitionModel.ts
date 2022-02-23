@@ -206,11 +206,11 @@ export class AssayDefinitionModel extends Record({
      * returns the FieldKey string of the sample column relative from the assay Results table.
      */
     sampleColumnFieldKey(sampleCol: ScopedSampleColumn): string {
-        if (sampleCol.domain == AssayDomainTypes.RESULT) {
+        if (sampleCol.domain === AssayDomainTypes.RESULT) {
             return sampleCol.column.fieldKey;
-        } else if (sampleCol.domain == AssayDomainTypes.RUN) {
+        } else if (sampleCol.domain === AssayDomainTypes.RUN) {
             return `Run/${sampleCol.column.fieldKey}`;
-        } else if (sampleCol.domain == AssayDomainTypes.BATCH) {
+        } else if (sampleCol.domain === AssayDomainTypes.BATCH) {
             return `Run/Batch/${sampleCol.column.fieldKey}`;
         }
         throw new Error('Unexpected assay domain type: ' + sampleCol.domain);

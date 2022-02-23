@@ -19,10 +19,26 @@ import { ASSAY_DEFINITION_MODEL, TEST_ASSAY_STATE_MODEL } from '../../../test/da
 
 import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.json';
 
-import { getImportItemsForAssayDefinitions, getRunPropertiesFileName } from './actions';
+import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+
+import { allowReimportAssayRun, getImportItemsForAssayDefinitions, getRunPropertiesFileName } from './actions';
 
 beforeAll(() => {
     initQueryGridState();
+});
+
+describe('allowReimportAssayRun', () => {
+    test('require insert permissions', () => {
+        expect(allowReimportAssayRun(TEST_USER_READER, 'a', 'a')).toBe(false);
+        expect(allowReimportAssayRun(TEST_USER_EDITOR, 'a', 'a')).toBe(true);
+    });
+    test('match containerId', () => {
+        expect(allowReimportAssayRun(TEST_USER_EDITOR, undefined, undefined)).toBe(false);
+        expect(allowReimportAssayRun(TEST_USER_EDITOR, null, undefined)).toBe(false);
+        expect(allowReimportAssayRun(TEST_USER_EDITOR, '', '')).toBe(false);
+        expect(allowReimportAssayRun(TEST_USER_EDITOR, 'a', 'A')).toBe(false);
+        expect(allowReimportAssayRun(TEST_USER_EDITOR, 'B', 'B')).toBe(true);
+    });
 });
 
 describe('getImportItemsForAssayDefinitions', () => {

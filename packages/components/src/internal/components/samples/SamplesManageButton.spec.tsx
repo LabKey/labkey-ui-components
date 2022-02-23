@@ -11,7 +11,6 @@ import {
     makeTestQueryModel,
     ManageDropdownButton,
     QueryInfo,
-    SampleDeleteMenuItem,
     SamplesManageButtonSections,
     SampleTypeDataType,
     SchemaQuery,
@@ -27,6 +26,7 @@ import {
 import { mountWithServerContext } from '../../testHelpers';
 
 import { SamplesManageButton } from './SamplesManageButton';
+import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 
 describe('SamplesManageButton', () => {
     const queryInfo = new QueryInfo({

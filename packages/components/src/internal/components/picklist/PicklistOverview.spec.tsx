@@ -17,10 +17,11 @@ import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
+import { getTestAPIWrapper } from '../../APIWrapper';
+
 import { Picklist } from './models';
 import { PicklistOverview, PicklistOverviewImpl, PicklistOverviewWithQueryModels } from './PicklistOverview';
 import { getPicklistTestAPIWrapper } from './APIWrapper';
-import { getTestAPIWrapper } from '../../APIWrapper';
 
 const MULTI_SAMPLE_TYPE_PICKLIST = new Picklist({
     listId: 1,
@@ -81,12 +82,12 @@ describe('PicklistOverview', () => {
         expect(queryConfigs[1].schemaQuery.toString()).toBe('samples|type1|');
         expect(queryConfigs[1].baseFilters.length).toBe(1);
         expect(queryConfigs[1].baseFilters[0].getURLParameterName()).toBe('query.RowId~picklistsamples');
-        expect(queryConfigs[1].baseFilters[0].getValue()).toBe(1);
+        expect(queryConfigs[1].baseFilters[0].getValue()).toBe('Test Picklist 1');
         expect(queryConfigs[2].title).toBe('type2');
         expect(queryConfigs[2].schemaQuery.toString()).toBe('samples|type2|');
         expect(queryConfigs[2].baseFilters.length).toBe(1);
         expect(queryConfigs[2].baseFilters[0].getURLParameterName()).toBe('query.RowId~picklistsamples');
-        expect(queryConfigs[2].baseFilters[0].getValue()).toBe(1);
+        expect(queryConfigs[2].baseFilters[0].getValue()).toBe('Test Picklist 1');
 
         wrapper.unmount();
     });
@@ -114,7 +115,7 @@ describe('PicklistOverview', () => {
         expect(queryConfigs[1].schemaQuery.toString()).toBe('samples|type1|');
         expect(queryConfigs[1].baseFilters.length).toBe(1);
         expect(queryConfigs[1].baseFilters[0].getURLParameterName()).toBe('query.RowId~picklistsamples');
-        expect(queryConfigs[1].baseFilters[0].getValue()).toBe(2);
+        expect(queryConfigs[1].baseFilters[0].getValue()).toBe('Test Picklist 2');
 
         wrapper.unmount();
     });

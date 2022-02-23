@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map } from 'immutable';
-import { Query } from '@labkey/api';
+import { List } from 'immutable';
 
-// Have to import SchemaQuery like this or SchemaQuery.create fails because SchemaQuery is undefined.
-import { QueryInfo, SchemaDetails, SchemaQuery } from '..';
+import { SchemaQuery } from '../public/SchemaQuery';
 
 // Created By / Modified By
 export const CBMB = List<string>(['Created', 'CreatedBy', 'Modified', 'ModifiedBy']);
@@ -151,81 +149,3 @@ export const SCHEMAS = {
     PICKLIST_TABLES,
     SAMPLE_MANAGEMENT,
 };
-
-export function fetchSchemas(schemaName?: string): Promise<List<Map<string, SchemaDetails>>> {
-    return new Promise((resolve, reject) => {
-        Query.getSchemas({
-            apiVersion: 9.3,
-            schemaName,
-            success: schemas => {
-                resolve(
-                    processSchemas(schemas)
-                        .filter(schema => {
-                            const start = schemaName ? schemaName.length + 1 : 0;
-                            return schema.fullyQualifiedName.substring(start).indexOf('.') === -1;
-                        })
-                        .sortBy(schema => schema.schemaName.toLowerCase())
-                        .toList()
-                );
-            },
-            failure: error => {
-                reject(error);
-            },
-        });
-    });
-}
-
-export function processSchemas(schemas: any, allSchemas?: Map<string, SchemaDetails>): Map<string, SchemaDetails> {
-    let top = false;
-    if (allSchemas === undefined) {
-        top = true;
-        allSchemas = Map<string, SchemaDetails>().asMutable();
-    }
-
-    for (const schemaName in schemas) {
-        if (schemas.hasOwnProperty(schemaName)) {
-            const schema = schemas[schemaName];
-            allSchemas.set(schema.fullyQualifiedName.toLowerCase(), SchemaDetails.create(schema));
-            if (schema.schemas !== undefined) {
-                processSchemas(schema.schemas, allSchemas);
-            }
-        }
-    }
-
-    return top ? allSchemas.asImmutable() : allSchemas;
-}
-
-// DO NOT USE THIS if you're looking for QueryInfo
-export function fetchGetQueries(schemaName: string): Promise<List<QueryInfo>> {
-    return new Promise((resolve, reject) => {
-        Query.getQueries({
-            schemaName,
-            success: data => {
-                const queries = List<QueryInfo>(
-                    data.queries.map(getQueryResult =>
-                        QueryInfo.create({
-                            ...getQueryResult,
-                            schemaName,
-                        })
-                    )
-                )
-                    .sort((a, b) => {
-                        if (a.name && b.name) {
-                            const aLower = a.name.toLowerCase();
-                            const bLower = b.name.toLowerCase();
-
-                            return aLower === bLower ? 0 : aLower > bLower ? 1 : -1;
-                        }
-
-                        return a.name === b.name ? 0 : a.name > b.name ? 1 : -1;
-                    })
-                    .toList();
-
-                resolve(queries);
-            },
-            failure: error => {
-                reject(error);
-            },
-        });
-    });
-}

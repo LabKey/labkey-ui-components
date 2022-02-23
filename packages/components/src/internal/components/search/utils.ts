@@ -21,6 +21,8 @@ import { getLabKeySql } from '../../query/filter';
 
 import { FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps } from './models';
 
+export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
+
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): string {
     const hintText = 'Start by adding ';
     let names = parentEntityDataTypes.map(entityType => entityType.nounAsParentSingular).join(', ');

@@ -28,12 +28,15 @@ import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 import { invalidateQueryDetailsCache } from '../../query/api';
 import { getPrimaryAppProperties } from '../../app/utils';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { removeFinderGridView, saveFinderGridView } from './actions';
 import { FilterCards } from './FilterCards';
 import {
     getFinderStartText,
     getFinderViewColumnsConfig,
     getSampleFinderQueryConfigs,
+    SAMPLE_FILTER_METRIC_AREA,
     searchFiltersFromJson,
     searchFiltersToJson,
 } from './utils';
@@ -55,6 +58,7 @@ interface SampleFinderSamplesGridProps {
 }
 
 interface Props extends SampleFinderSamplesGridProps {
+    api?: ComponentsAPIWrapper;
     parentEntityDataTypes: EntityDataType[];
 }
 
@@ -90,7 +94,7 @@ function getLocalStorageKey(): string {
 }
 
 export const SampleFinderSection: FC<Props> = memo(props => {
-    const { sampleTypeNames, parentEntityDataTypes, ...gridProps } = props;
+    const { api, sampleTypeNames, parentEntityDataTypes, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
@@ -148,7 +152,6 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         (index: number) => {
             const newFilterCards = [...filters];
             newFilterCards.splice(index, 1);
-
             updateFilters(filterChangeCounter + 1, newFilterCards);
         },
         [filters, filterChangeCounter]
@@ -175,6 +178,8 @@ export const SampleFinderSection: FC<Props> = memo(props => {
 
             onFilterClose();
             updateFilters(filterChangeCounter + 1, newFilterCards);
+
+            api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'filterModalApply');
         },
         [filters, filterChangeCounter, onFilterEdit, onFilterDelete, chosenEntityType]
     );
@@ -224,11 +229,16 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     onFind={onFind}
                     queryName={chosenQueryName}
                     fieldKey={chosenField}
+                    metricFeatureArea={SAMPLE_FILTER_METRIC_AREA}
                 />
             )}
         </Section>
     );
 });
+
+SampleFinderSection.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};
 
 interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
     cards: FilterProps[];
@@ -296,6 +306,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 gridButtonProps={{
                     excludedManageMenuKeys: [SamplesManageButtonSections.IMPORT],
                     excludeStartJob: true,
+                    metricFeatureArea: SAMPLE_FILTER_METRIC_AREA,
                 }}
                 tabbedGridPanelProps={{
                     alwaysShowTabs: true,

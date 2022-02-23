@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Added InExpAncestorsOfFilterType and InExpDescendantsOfFilterType
   * Enable non-text fields for EntityFieldFilterModal (Sample Finder)
 
+### version 2.137.2
+*Released*: 23 February 2022
+* Item 9945: add calls to incrementClientSideMetricCount() for sample finder related actions
+  * add metricFeatureArea props to SampleActionButton, SampleDeleteMenuItem, and SamplesManageButton
+
 ### version 2.137.1
 *Released*: 23 February 2022
 * Update `EditInlineField` for input type text so input box resizes to fix input value.

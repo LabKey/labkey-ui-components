@@ -34,6 +34,7 @@ interface Props {
     fieldKey?: string;
     cards?: FilterProps[];
     skipDefaultViewCheck?: boolean; // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
+    metricFeatureArea?: string;
 }
 
 export enum EntityFieldFilterTabs {
@@ -42,9 +43,20 @@ export enum EntityFieldFilterTabs {
 }
 
 const FIND_FILTER_VIEW_NAME = ''; // always use default view for selection
+const CHOOSE_VALUES_TAB_KEY = 'Choose values';
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
-    const { api, entityDataType, onCancel, onFind, cards, queryName, fieldKey, skipDefaultViewCheck } = props;
+    const {
+        api,
+        entityDataType,
+        onCancel,
+        onFind,
+        cards,
+        queryName,
+        fieldKey,
+        skipDefaultViewCheck,
+        metricFeatureArea,
+    } = props;
 
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
 
@@ -150,6 +162,10 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
     const onTabChange = useCallback((tabKey: any) => {
         setActiveTab(tabKey);
+
+        if (tabKey === CHOOSE_VALUES_TAB_KEY) {
+            api.query.incrementClientSideMetricCount(metricFeatureArea, 'goToChooseValuesTab');
+        }
     }, []);
 
     const closeModal = useCallback(() => {
@@ -178,9 +194,13 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             queryLabels[parentValue] = label;
         });
         const filterErrors = getFieldFiltersValidationResult(validDataTypeFilters, queryLabels);
-        if (!filterErrors) onFind(entityDataType.instanceSchemaName, validDataTypeFilters);
-        else setFilterError(filterErrors);
-    }, [onFind, validDataTypeFilters]);
+        if (!filterErrors) {
+            onFind(entityDataType.instanceSchemaName, validDataTypeFilters);
+        } else {
+            setFilterError(filterErrors);
+            api.query.incrementClientSideMetricCount(metricFeatureArea, 'filterModalError');
+        }
+    }, [api, metricFeatureArea, entityQueries, entityDataType.instanceSchemaName, onFind, validDataTypeFilters]);
 
     const currentFieldFilter = useMemo(() => {
         if (!dataTypeFilters || !activeField) return null;
@@ -335,7 +355,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                             <NavItem eventKey={EntityFieldFilterTabs.Filter}>Filter</NavItem>
                                             {allowFaceting && (
                                                 <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>
-                                                    Choose values
+                                                    {CHOOSE_VALUES_TAB_KEY}
                                                 </NavItem>
                                             )}
                                         </Nav>

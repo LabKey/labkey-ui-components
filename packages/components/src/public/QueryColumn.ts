@@ -54,6 +54,9 @@ export class QueryColumn extends Record({
     description: undefined,
     dimension: undefined,
     displayAsLookup: undefined,
+    displayField: undefined,
+    displayFieldSqlType: undefined,
+    displayFieldJsonType: undefined,
     // excludeFromShifting: undefined,
     // ext: undefined,
     facetingBehaviorType: undefined,
@@ -118,6 +121,9 @@ export class QueryColumn extends Record({
     declare caption: string;
     declare conceptURI: string;
     // declare defaultScale: string;
+    declare displayField?: string;
+    declare displayFieldSqlType?: string;
+    declare displayFieldJsonType?: string;
     declare defaultValue: any;
     declare description: string;
     declare dimension: boolean;
@@ -279,6 +285,7 @@ export class QueryColumn extends Record({
         );
     }
 
+    // TODO is this redundant with getDisplayFieldKey?
     resolveFieldKey(): string {
         let fieldKey: string;
 
@@ -320,6 +327,14 @@ export class QueryColumn extends Record({
         }
 
         return false;
+    }
+
+    getDisplayFieldKey() : string {
+        return this.isLookup() && this.displayField ? this.displayField : this.fieldKey;
+    }
+
+    getDisplayFieldJsonType() : string {
+        return (this.displayFieldJsonType ? this.displayFieldJsonType : this.jsonType) ?? 'string';
     }
 }
 

@@ -35,7 +35,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     const [secondFilterValue, setSecondFilterValue] = useState<any>();
 
     useEffect(() => {
-        const filterOptions = getSampleFinderFilterTypesForType(field?.jsonType as JsonType);
+        const filterOptions = getSampleFinderFilterTypesForType(field?.getDisplayFieldJsonType() as JsonType);
         setFieldFilterOptions(filterOptions);
 
         if (fieldFilter) {
@@ -128,7 +128,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const suffix = isSecondInput ? '-second' : '';
             const valueRaw = isSecondInput ? secondFilterValue : firstFilterValue;
 
-            if (field.jsonType === 'date') {
+            const jsonType = field.getDisplayFieldJsonType();
+            if (jsonType === 'date') {
                 return (
                     <DatePicker
                         autoComplete="off"
@@ -143,7 +144,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         dateFormat={App.getDateFormat()}
                     />
                 );
-            } else if (field.jsonType === 'boolean') {
+            } else if (jsonType === 'boolean') {
                 return (
                     <>
                         <div key="field-value-bool-true">
@@ -172,14 +173,14 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 );
             }
 
-            if (!isMultiValueInput && (field.jsonType === 'int' || field.jsonType === 'float')) {
+            if (!isMultiValueInput && (jsonType === 'int' || jsonType === 'float')) {
                 return (
                     <FormControl
                         className="form-control search-filter__input"
-                        step={field.jsonType === 'int' ? 1 : undefined}
+                        step={jsonType === 'int' ? 1 : undefined}
                         name={'field-value-text' + suffix}
                         onChange={event => updateTextFilterFieldValue(event, true)}
-                        pattern={field.jsonType === 'int' ? '[0-9]*' : undefined}
+                        pattern={jsonType === 'int' ? '[0-9]*' : undefined}
                         type="number"
                         value={valueRaw ?? ''}
                         placeholder={placeholder}
@@ -208,7 +209,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
         const isBetweenOperator = activeFilterType.betweenOperator;
         const isMultiValueInput = activeFilterType.value === 'in' || activeFilterType.value === 'notin';
-        const placeholder = getFilterTypePlaceHolder(activeFilterType.value, field.jsonType);
+        const placeholder = getFilterTypePlaceHolder(activeFilterType.value, field.getDisplayFieldJsonType());
 
         if (!isBetweenOperator) return renderFilterInput(placeholder, isMultiValueInput);
 

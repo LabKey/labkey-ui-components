@@ -23,6 +23,7 @@ import { parseColumns, resolveFieldKey } from '../utils';
 import { decodePart } from '../../../../public/SchemaQuery';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
+import { JsonType } from "../../domainproperties/PropDescType";
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances
@@ -98,7 +99,7 @@ export function resolveFilterType(token: string, column: QueryColumn): Filter.IF
 
     if (SYMBOL_MAP.has(token)) {
         const symbolTypes = SYMBOL_MAP.get(token);
-        const types = Filter.getFilterTypesForType(column.get('jsonType'));
+        const types = Filter.getFilterTypesForType(column.getDisplayFieldJsonType() as JsonType);
 
         let value: Filter.IFilterType;
         let match = false;

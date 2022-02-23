@@ -114,7 +114,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
                     setQueryFields(fields);
                     if (fieldKey) {
-                        const field = fields.find(field => field.fieldKey === fieldKey);
+                        const field = fields.find(field => field.getDisplayFieldKey() === fieldKey);
                         setActiveField(field);
                     }
                 })
@@ -126,7 +126,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     );
 
     const allowFaceting = useMemo(() => {
-        return activeField?.allowFaceting() && activeField?.jsonType === 'string'; // current plan is to only support facet for string fields, to reduce scope
+        return activeField?.allowFaceting() && activeField?.getDisplayFieldJsonType() === 'string'; // current plan is to only support facet for string fields, to reduce scope
     }, [activeField]);
 
     const onFieldClick = useCallback(
@@ -139,6 +139,10 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         },
         [activeTab, activeField]
     );
+
+    const activeFieldKey = useMemo(() => {
+        return activeField?.getDisplayFieldKey();
+    }, [activeField]);
 
     const onTabChange = useCallback((tabKey: any) => {
         setActiveTab(tabKey);
@@ -178,8 +182,8 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         if (!dataTypeFilters || !activeField) return null;
 
         const activeParentFilters: FieldFilter[] = dataTypeFilters[activeQuery];
-        return activeParentFilters?.find(filter => filter.fieldKey === activeField.fieldKey);
-    }, [activeField, activeQuery, dataTypeFilters]);
+        return activeParentFilters?.find(filter => filter.fieldKey === activeFieldKey);
+    }, [activeField, activeQuery, dataTypeFilters, activeFieldKey]);
 
     const onFilterUpdate = useCallback(
         (newFilter: Filter.IFilter) => {
@@ -188,14 +192,14 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             const dataTypeFiltersUpdated = { ...dataTypeFilters };
             const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
             const newParentFilters =
-                activeParentFilters?.filter(filter => filter.fieldKey != activeField.fieldKey) ?? [];
+                activeParentFilters?.filter(filter => filter.fieldKey != activeFieldKey) ?? [];
 
             if (newFilter != null)
                 newParentFilters.push({
-                    fieldKey: activeField.fieldKey,
+                    fieldKey: activeFieldKey,
                     fieldCaption: activeField.caption,
                     filter: newFilter,
-                    jsonType: activeField.jsonType,
+                    jsonType: activeField.getDisplayFieldJsonType(),
                 } as FieldFilter);
 
             if (newParentFilters?.length > 0) dataTypeFiltersUpdated[activeQuery] = newParentFilters;
@@ -203,7 +207,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
             setDataTypeFilters(dataTypeFiltersUpdated);
         },
-        [dataTypeFilters, activeQuery, activeField]
+        [dataTypeFilters, activeQuery, activeField, activeFieldKey]
     );
 
     const filterStatus = useMemo(() => {
@@ -228,11 +232,11 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
         // use active filters to filter distinct values, but exclude filters on current field
         dataTypeFilters?.[activeQuery]?.forEach(field => {
-            if (field.fieldKey !== activeField.fieldKey) filters.push(field.filter);
+            if (field.fieldKey !== activeFieldKey) filters.push(field.filter);
         });
 
         return filters;
-    }, [dataTypeFilters, activeQuery, activeField]);
+    }, [dataTypeFilters, activeQuery, activeField, activeFieldKey]);
 
     // TODO when populating types, adjust container filter to include the proper set of sample types
     //  (current + project + shared, in most cases).  For LKB, check if we should filter out any of the
@@ -290,11 +294,12 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                             <div className="list-group parent-search-panel__col-content parent-search-panel__fields-col-content">
                                 {!queryFields && <LoadingSpinner />}
                                 {queryFields?.map((field, index) => {
-                                    const { fieldKey, caption } = field;
+                                    const { caption } = field;
+                                    const fieldKey = field.getDisplayFieldKey();
                                     const hasFilter = filterStatus?.[activeQuery + '-' + fieldKey];
                                     return (
                                         <ChoicesListItem
-                                            active={fieldKey === activeField?.fieldKey}
+                                            active={fieldKey === activeFieldKey}
                                             index={index}
                                             key={fieldKey}
                                             label={caption}
@@ -337,7 +342,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                                 </div>
                                                 {activeTab === EntityFieldFilterTabs.Filter && (
                                                     <FilterExpressionView
-                                                        key={activeField.fieldKey}
+                                                        key={activeFieldKey}
                                                         field={activeField}
                                                         fieldFilter={currentFieldFilter?.filter}
                                                         onFieldFilterUpdate={onFilterUpdate}
@@ -351,15 +356,15 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                                     </div>
                                                     <FilterFacetedSelector
                                                         selectDistinctOptions={{
-                                                            column: activeField?.fieldKey,
+                                                            column: activeFieldKey,
                                                             schemaName: entityDataType?.instanceSchemaName,
                                                             queryName: activeQuery,
                                                             viewName: FIND_FILTER_VIEW_NAME,
                                                             filterArray: fieldDistinctValueFilters,
                                                         }}
                                                         fieldFilter={currentFieldFilter?.filter}
-                                                        fieldKey={activeField.fieldKey}
-                                                        key={activeField.fieldKey}
+                                                        fieldKey={activeFieldKey}
+                                                        key={activeFieldKey}
                                                         onFieldFilterUpdate={onFilterUpdate}
                                                     />
                                                 </Tab.Pane>

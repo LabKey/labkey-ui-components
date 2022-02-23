@@ -415,8 +415,9 @@ export function getUpdateFilterExpressionFilter(
 
     let filter: Filter.IFilter;
 
+    const fieldKey = field.getDisplayFieldKey();
     if (!newFilterType.valueRequired) {
-        filter = Filter.create(resolveFieldKey(field.name, field), null, filterType);
+        filter = Filter.create(fieldKey, null, filterType);
     } else {
         let value = newFilterValue;
         if (newFilterType?.betweenOperator) {
@@ -430,9 +431,9 @@ export function getUpdateFilterExpressionFilter(
                 else
                     value = newFilterValue + (previousSecondFilterValue != null ? ',' + previousSecondFilterValue : '');
             }
-        } else if (!value && field.jsonType === 'boolean') value = 'false';
+        } else if (!value && field.getDisplayFieldJsonType() === 'boolean') value = 'false';
 
-        filter = Filter.create(resolveFieldKey(field.name, field), value, filterType);
+        filter = Filter.create(fieldKey, value, filterType);
     }
 
     return filter;

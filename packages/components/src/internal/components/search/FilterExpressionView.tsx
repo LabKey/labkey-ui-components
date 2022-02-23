@@ -102,7 +102,9 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
     const updateTextFilterFieldValue = useCallback(
         (event: any, isNumberInput?: boolean) => {
-            const newValue = isNumberInput ? event.target.valueAsNumber : event.target.value;
+            let newValue = isNumberInput ? event.target.valueAsNumber : event.target.value;
+            if (isNumberInput && isNaN(newValue))
+                newValue = null;
             const isSecondInput = event.target.name.endsWith('-second');
             if (isSecondInput) setSecondFilterValue(newValue);
             else setFirstFilterValue(newValue);

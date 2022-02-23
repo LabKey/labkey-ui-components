@@ -9,18 +9,26 @@ import { MAX_SELECTED_SAMPLES } from './constants';
 
 interface Props {
     queryModel: QueryModel;
-    key?: string;
     itemText?: string;
     verb?: string;
     beforeSampleDelete?: () => any;
     afterSampleDelete?: (rowsToKeep?: any[]) => any;
     auditBehavior?: AuditBehaviorTypes;
     maxDeleteRows?: number;
+    selectionMenuId?: string;
 }
 
 export const SampleDeleteMenuItem: FC<Props> = memo(props => {
-    const { key, itemText, queryModel, verb, beforeSampleDelete, afterSampleDelete, auditBehavior, maxDeleteRows } =
-        props;
+    const {
+        itemText,
+        queryModel,
+        verb,
+        beforeSampleDelete,
+        afterSampleDelete,
+        auditBehavior,
+        maxDeleteRows,
+        selectionMenuId,
+    } = props;
     const [showConfirmDeleteSamples, setShowConfirmDeleteSamples] = useState<boolean>(false);
 
     const onClick = useCallback(() => {
@@ -42,14 +50,14 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
         <>
             {queryModel !== undefined ? (
                 <SelectionMenuItem
-                    id={key}
+                    id={selectionMenuId}
                     text={itemText}
                     onClick={onClick}
                     queryModel={queryModel}
                     nounPlural="samples"
                 />
             ) : (
-                <MenuItem onClick={onClick} key={key}>
+                <MenuItem onClick={onClick} key={selectionMenuId}>
                     {itemText}
                 </MenuItem>
             )}
@@ -72,8 +80,8 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
 
 SampleDeleteMenuItem.defaultProps = {
     itemText: 'Delete Samples',
-    key: 'delete-samples-menu-item',
     verb: 'deleted and removed from storage',
     maxDeleteRows: MAX_SELECTED_SAMPLES,
     auditBehavior: AuditBehaviorTypes.DETAILED,
+    selectionMenuId: 'delete-samples-menu-item',
 };

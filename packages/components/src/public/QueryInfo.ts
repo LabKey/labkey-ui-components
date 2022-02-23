@@ -312,9 +312,9 @@ export class QueryInfo extends Record({
      */
     getVisibleViews(): ViewInfo[] {
         return this.views
+            .filter(view => view.isVisible)
             .sortBy(v => v.label, naturalSort)
-            .toArray()
-            .filter(view => view.isVisible);
+            .toArray();
     }
 
     getView(view: string): ViewInfo {

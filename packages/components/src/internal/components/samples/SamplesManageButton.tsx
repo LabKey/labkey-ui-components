@@ -11,7 +11,6 @@ import {
     ManageDropdownButton,
     MAX_EDITABLE_GRID_ROWS,
     RequiresPermission,
-    SampleDeleteMenuItem,
     SampleTypeDataType,
     SelectionMenuItem,
     useServerContext,
@@ -24,6 +23,7 @@ import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryMod
 import { SampleGridButtonProps } from './models';
 import { getSampleTypeRowId } from './actions';
 import { SamplesManageButtonSections, shouldShowButtons } from './utils';
+import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 
 const SAMPLE_IMPORT_TAB_ID = 2;
 

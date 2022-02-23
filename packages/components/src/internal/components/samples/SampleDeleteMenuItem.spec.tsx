@@ -40,7 +40,7 @@ describe('SampleDeleteMenuItem', () => {
 
     test('click menu item', () => {
         let queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
-        queryModel = queryModel.mutate({ selections: new Set(['1', '2']) });
+        queryModel = queryModel.mutate({ rowCount: 2, selections: new Set(['1', '2']) });
         const wrapper = mount(<SampleDeleteMenuItem queryModel={queryModel} />);
         validate(wrapper, 1);
         wrapper.unmount();

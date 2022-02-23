@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 import { Modal } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+import { mountWithAppServerContext } from '../../testHelpers';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -19,21 +20,18 @@ beforeAll(() => {
 });
 
 describe('AddToPicklistMenuItem', () => {
-    const key = 'picklists';
     const text = 'Picklist Testing';
 
     const queryModelWithoutSelections = makeTestQueryModel(SchemaQuery.create('test', 'query'));
     let queryModelWithSelections = makeTestQueryModel(SchemaQuery.create('test', 'query'));
-    queryModelWithSelections = queryModelWithSelections.mutate({ selections: new Set(['1', '2']) });
+    queryModelWithSelections = queryModelWithSelections.mutate({
+        rowCount: 2,
+        selections: new Set(['1', '2']),
+    });
 
     test('with queryModel', () => {
-        const wrapper = mount(
-            <AddToPicklistMenuItem
-                itemText={text}
-                queryModel={queryModelWithSelections}
-                key={key}
-                user={TEST_USER_EDITOR}
-            />
+        const wrapper = mountWithAppServerContext(
+            <AddToPicklistMenuItem itemText={text} queryModel={queryModelWithSelections} user={TEST_USER_EDITOR} />
         );
         const menuItem = wrapper.find(SelectionMenuItem);
         expect(menuItem).toHaveLength(1);
@@ -48,12 +46,11 @@ describe('AddToPicklistMenuItem', () => {
     });
 
     test('with selectedIds', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <AddToPicklistMenuItem
                 itemText={text}
                 queryModel={queryModelWithoutSelections}
                 sampleIds={['1']}
-                key={key}
                 user={TEST_USER_EDITOR}
             />
         );
@@ -70,8 +67,8 @@ describe('AddToPicklistMenuItem', () => {
     });
 
     test('not Editor', () => {
-        const wrapper = mount(
-            <AddToPicklistMenuItem itemText={text} sampleIds={['1']} key={key} user={TEST_USER_READER} />
+        const wrapper = mountWithAppServerContext(
+            <AddToPicklistMenuItem itemText={text} sampleIds={['1']} user={TEST_USER_READER} />
         );
         expect(wrapper.find('MenuItem')).toHaveLength(0);
         wrapper.unmount();
@@ -85,13 +82,8 @@ describe('AddToPicklistMenuItem', () => {
     }
 
     test('modal open on click, queryModel selections', () => {
-        const wrapper = mount(
-            <AddToPicklistMenuItem
-                itemText={text}
-                key={key}
-                queryModel={queryModelWithoutSelections}
-                user={TEST_USER_EDITOR}
-            />
+        const wrapper = mountWithAppServerContext(
+            <AddToPicklistMenuItem itemText={text} queryModel={queryModelWithoutSelections} user={TEST_USER_EDITOR} />
         );
         validateMenuItemClick(wrapper, false);
 
@@ -105,12 +97,11 @@ describe('AddToPicklistMenuItem', () => {
     });
 
     test('modal open on click, sampleIds', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <AddToPicklistMenuItem
                 itemText={text}
                 queryModel={queryModelWithoutSelections}
                 sampleIds={['1']}
-                key={key}
                 user={TEST_USER_EDITOR}
             />
         );
@@ -129,14 +120,8 @@ describe('AddToPicklistMenuItem', () => {
             },
             orderedRows: ['1'],
         });
-        const wrapper = mount(
-            <AddToPicklistMenuItem
-                itemText={text}
-                queryModel={model}
-                sampleIds={['1']}
-                key={key}
-                user={TEST_USER_EDITOR}
-            />
+        const wrapper = mountWithAppServerContext(
+            <AddToPicklistMenuItem itemText={text} queryModel={model} sampleIds={['1']} user={TEST_USER_EDITOR} />
         );
         validateMenuItemClick(wrapper, true);
         wrapper.unmount();

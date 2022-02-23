@@ -15,15 +15,16 @@
  */
 import React from 'react';
 import classNames from 'classnames';
-import { MenuItem, MenuItemProps, OverlayTrigger, Popover } from 'react-bootstrap';
+import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
+
+import { ReactBootstrapMenuItemProps } from './types';
 
 const emptyFn = () => {};
 
-export interface ISubItem extends MenuItemProps {
+export interface ISubItem extends ReactBootstrapMenuItemProps {
     disabledMsg?: string;
     disabledOverlayPlacement?: 'top' | 'right' | 'bottom' | 'left';
     text: string;
-    href?: string;
 }
 
 export interface SubMenuItemProps {

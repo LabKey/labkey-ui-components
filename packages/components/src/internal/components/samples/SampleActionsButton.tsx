@@ -26,10 +26,11 @@ interface Props {
     disabled?: boolean;
     model: QueryModel;
     user: User;
+    metricFeatureArea?: string;
 }
 
 export const SampleActionsButton: FC<Props> = memo(props => {
-    const { children, disabled, user, model } = props;
+    const { children, disabled, user, model, metricFeatureArea } = props;
     const sampleFieldKey = useMemo(() => model?.allColumns?.find(c => c.isSampleLookup())?.fieldKey, [model]);
     const id = 'sample-actions-menu';
     const hasPerms = hasAnyPermissions(user, [
@@ -54,8 +55,14 @@ export const SampleActionsButton: FC<Props> = memo(props => {
                         selectionKey={sampleFieldKey ? undefined : model.id}
                         queryModel={model}
                         sampleFieldKey={sampleFieldKey}
+                        metricFeatureArea={metricFeatureArea}
                     />
-                    <AddToPicklistMenuItem user={user} queryModel={model} sampleFieldKey={sampleFieldKey} />
+                    <AddToPicklistMenuItem
+                        user={user}
+                        queryModel={model}
+                        sampleFieldKey={sampleFieldKey}
+                        metricFeatureArea={metricFeatureArea}
+                    />
                 </>
             )}
         </DropdownButton>

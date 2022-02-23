@@ -5,9 +5,12 @@ import { AuditBehaviorTypes } from '@labkey/api';
 
 import { EntityDeleteModal, SampleTypeDataType, QueryModel, SelectionMenuItem } from '../../..';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { MAX_SELECTED_SAMPLES } from './constants';
 
 interface Props {
+    api?: ComponentsAPIWrapper;
     queryModel: QueryModel;
     itemText?: string;
     verb?: string;
@@ -16,6 +19,7 @@ interface Props {
     auditBehavior?: AuditBehaviorTypes;
     maxDeleteRows?: number;
     selectionMenuId?: string;
+    metricFeatureArea?: string;
 }
 
 export const SampleDeleteMenuItem: FC<Props> = memo(props => {
@@ -28,6 +32,8 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
         auditBehavior,
         maxDeleteRows,
         selectionMenuId,
+        metricFeatureArea,
+        api,
     } = props;
     const [showConfirmDeleteSamples, setShowConfirmDeleteSamples] = useState<boolean>(false);
 
@@ -41,10 +47,14 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
         setShowConfirmDeleteSamples(false);
     }, []);
 
-    const onDeleteComplete = useCallback((rowsToKeep: any[]) => {
-        setShowConfirmDeleteSamples(false);
-        afterSampleDelete?.(rowsToKeep);
-    }, []);
+    const onDeleteComplete = useCallback(
+        (rowsToKeep: any[]) => {
+            setShowConfirmDeleteSamples(false);
+            afterSampleDelete?.(rowsToKeep);
+            api.query.incrementClientSideMetricCount(metricFeatureArea, 'deleteSamples');
+        },
+        [afterSampleDelete, api, metricFeatureArea]
+    );
 
     return (
         <>
@@ -79,6 +89,7 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
 });
 
 SampleDeleteMenuItem.defaultProps = {
+    api: getDefaultAPIWrapper(),
     itemText: 'Delete Samples',
     verb: 'deleted and removed from storage',
     maxDeleteRows: MAX_SELECTED_SAMPLES,

@@ -11,6 +11,7 @@ import {
 interface Props {
     afterDelete: () => void;
     afterDeleteFailure: () => void;
+    containerPath?: string;
     numToDelete: number;
     onCancel: () => void;
     selectionKey?: string;
@@ -18,7 +19,8 @@ interface Props {
 }
 
 export const AssayRunDeleteModal: FC<Props> = props => {
-    const { afterDelete, afterDeleteFailure, numToDelete, onCancel, selectionKey, selectedRowId } = props;
+    const { afterDelete, afterDeleteFailure, containerPath, numToDelete, onCancel, selectionKey, selectedRowId } =
+        props;
     const [showProgress, setShowProgress] = useState<boolean>(false);
     const noun = useMemo<string>(() => (numToDelete === 1 ? ' assay run' : ' assay runs'), [numToDelete]);
 
@@ -26,7 +28,7 @@ export const AssayRunDeleteModal: FC<Props> = props => {
         setShowProgress(true);
 
         try {
-            const response = await deleteAssayRuns(selectionKey, selectedRowId, true);
+            const response = await deleteAssayRuns(selectionKey, selectedRowId, true, containerPath);
 
             const numRunsCascadeDeleted = response.hasOwnProperty('runIdsCascadeDeleted')
                 ? response.runIdsCascadeDeleted.length

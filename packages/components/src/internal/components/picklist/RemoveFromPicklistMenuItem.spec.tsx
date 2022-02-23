@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 
 import { ConfirmModal, makeTestQueryModel, Picklist, SchemaQuery, SelectionMenuItem } from '../../..';
 
@@ -33,7 +33,10 @@ describe('RemoveFromPicklistMenuItem', () => {
     const DEFAULT_PROPS = {
         user: TEST_USER_EDITOR,
         afterSampleActionComplete: jest.fn,
-        model: makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ selections: new Set(['1', '2']) }),
+        model: makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+            rowCount: 2,
+            selections: new Set(['1', '2']),
+        }),
     };
 
     function validate(wrapper: ReactWrapper, hasPerm = true, showConfirm = false): void {

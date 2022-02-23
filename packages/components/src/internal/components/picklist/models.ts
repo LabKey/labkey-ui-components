@@ -12,6 +12,7 @@ export const PICKLIST_KEY_COLUMN = 'id';
 export class Picklist {
     [immerable] = true;
 
+    readonly Container: string;
     readonly Category: string;
     readonly CreatedBy: number;
     readonly CreatedByDisplay: string;

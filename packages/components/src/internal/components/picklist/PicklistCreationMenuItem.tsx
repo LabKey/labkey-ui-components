@@ -1,45 +1,33 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 
 import { userCanManagePicklists } from '../../app/utils';
 import { User } from '../base/models/User';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
 
-import { PicklistEditModal } from './PicklistEditModal';
-import { Picklist } from './models';
-
-interface Props {
-    selectionKey?: string;
-    selectedQuantity?: number;
-    sampleIds?: string[];
-    key: string;
+interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | 'showNotification'> {
     itemText: string;
-    user: User;
-    currentProductId?: string;
-    picklistProductId?: string;
-    metricFeatureArea?: string;
     onCreatePicklist?: () => void;
-    queryModel?: QueryModel;
-    sampleFieldKey?: string;
+    user: User;
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {
-    const { key, itemText, user, onCreatePicklist } = props;
+    const { itemText, user, onCreatePicklist, ...editModalProps } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
-    const onFinish = (picklist: Picklist) => {
+    const onFinish = useCallback(() => {
         setShowModal(false);
         onCreatePicklist?.();
-    };
+    }, [onCreatePicklist]);
 
-    const onCancel = () => {
+    const onCancel = useCallback(() => {
         setShowModal(false);
-    };
+    }, []);
 
-    const onClick = () => {
+    const onClick = useCallback(() => {
         setShowModal(true);
-    };
+    }, []);
 
     if (!userCanManagePicklists(user)) {
         return null;
@@ -47,10 +35,12 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
 
     return (
         <>
-            <MenuItem onClick={onClick} key={key}>
-                {itemText}
-            </MenuItem>
-            {showModal && <PicklistEditModal {...props} showNotification onFinish={onFinish} onCancel={onCancel} />}
+            <MenuItem onClick={onClick}>{itemText}</MenuItem>
+            {showModal && (
+                <PicklistEditModal {...editModalProps} showNotification onFinish={onFinish} onCancel={onCancel} />
+            )}
         </>
     );
 };
+
+PicklistCreationMenuItem.displayName = 'PicklistCreationMenuItem';

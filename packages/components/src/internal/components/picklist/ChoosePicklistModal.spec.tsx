@@ -1,26 +1,27 @@
 import React from 'react';
 
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import { Button, ModalBody, ModalTitle, NavItem } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR } from '../../../test/data/users';
+import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
-import { Picklist } from './models';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { OperationConfirmationData } from '../entities/models';
 
 import {
     AddedToPicklistNotification,
     ChoosePicklistModalDisplay,
     PicklistDetails,
-    PicklistItemsSummaryDisplay,
+    PicklistItemsSummary,
     PicklistList,
 } from './ChoosePicklistModal';
-import { getTestAPIWrapper } from '../../APIWrapper';
-import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
-import { OperationConfirmationData } from '../entities/models';
-import { waitForLifecycle } from '../../testHelpers';
+
+import { Picklist } from './models';
+import { getPicklistTestAPIWrapper } from './APIWrapper';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -149,9 +150,10 @@ describe('PicklistList', () => {
     });
 });
 
-describe('PicklistItemsSummaryDisplay', () => {
-    test('empty counts by type', () => {
-        const wrapper = mount(<PicklistItemsSummaryDisplay countsByType={[]} picklist={EMPTY_EDITOR_PICKLIST} />);
+describe('PicklistItemsSummary', () => {
+    test('empty counts by type', async () => {
+        const wrapper = mountWithAppServerContext(<PicklistItemsSummary picklist={EMPTY_EDITOR_PICKLIST} />);
+        await waitForLifecycle(wrapper);
         const emptyMessage = wrapper.find('.choices-detail__empty-message');
         expect(emptyMessage).toHaveLength(1);
         expect(emptyMessage.text()).toBe('This list is empty.');
@@ -159,15 +161,15 @@ describe('PicklistItemsSummaryDisplay', () => {
         wrapper.unmount();
     });
 
-    test('empty counts by type, non-zero item count', () => {
-        const wrapper = mount(<PicklistItemsSummaryDisplay countsByType={[]} picklist={PUBLIC_EDITOR_PICKLIST} />);
-        const emptyMessage = wrapper.find('.choices-detail__empty-message');
-        expect(emptyMessage).toHaveLength(0);
+    test('empty counts by type, non-zero item count', async () => {
+        const wrapper = mountWithAppServerContext(<PicklistItemsSummary picklist={PUBLIC_EDITOR_PICKLIST} />);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.choices-detail__empty-message').exists()).toBe(false);
         expect(wrapper.text()).toBe('Sample Counts' + PUBLIC_EDITOR_PICKLIST.ItemCount + ' samples');
         wrapper.unmount();
     });
 
-    test('multiple items', () => {
+    test('multiple items', async () => {
         const countsByType = [
             {
                 ItemCount: 42,
@@ -180,11 +182,15 @@ describe('PicklistItemsSummaryDisplay', () => {
                 LabelColor: 'red',
             },
         ];
-        const wrapper = mount(
-            <PicklistItemsSummaryDisplay countsByType={countsByType} picklist={PUBLIC_EDITOR_PICKLIST} />
-        );
-        const emptyMessage = wrapper.find('.choices-detail__empty-message');
-        expect(emptyMessage).toHaveLength(0);
+        const getPicklistCountsBySampleType = jest.fn().mockResolvedValue(countsByType);
+
+        const wrapper = mountWithAppServerContext(<PicklistItemsSummary picklist={PUBLIC_EDITOR_PICKLIST} />, {
+            api: getTestAPIWrapper(jest.fn, {
+                picklist: getPicklistTestAPIWrapper(jest.fn, { getPicklistCountsBySampleType }),
+            }),
+        });
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.choices-detail__empty-message').exists()).toBe(false);
         const items = wrapper.find('.picklist-items__row');
         expect(items).toHaveLength(2);
         expect(items.at(0).find('ColorIcon')).toHaveLength(1);
@@ -200,7 +206,7 @@ describe('PicklistItemsSummaryDisplay', () => {
 
 describe('PicklistDetails', () => {
     test('public picklist', () => {
-        const wrapper = mount(<PicklistDetails picklist={PUBLIC_EDITOR_PICKLIST} />);
+        const wrapper = shallow(<PicklistDetails picklist={PUBLIC_EDITOR_PICKLIST} />);
         const name = wrapper.find('.choice-details__name');
         expect(name).toHaveLength(1);
         expect(name.text()).toBe(PUBLIC_EDITOR_PICKLIST.name);
@@ -218,7 +224,7 @@ describe('PicklistDetails', () => {
     });
 
     test('private picklist', () => {
-        const wrapper = mount(<PicklistDetails picklist={PRIVATE_EDITOR_PICKLIST} />);
+        const wrapper = shallow(<PicklistDetails picklist={PRIVATE_EDITOR_PICKLIST} />);
         const name = wrapper.find('.choice-details__name');
         expect(name).toHaveLength(1);
         expect(name.text()).toBe(PRIVATE_EDITOR_PICKLIST.name);
@@ -296,7 +302,8 @@ describe('AddToPicklistNotification', () => {
 
 describe('ChoosePicklistModalDisplay', () => {
     test('loading', async () => {
-        const wrapper = mount(
+        const statusData = new OperationConfirmationData({ allowed: [1, 2], notAllowed: [] });
+        const wrapper = mountWithAppServerContext(
             <ChoosePicklistModalDisplay
                 picklists={[]}
                 picklistLoadError={undefined}
@@ -306,12 +313,8 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2']}
                 numSelected={2}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData({ allowed: [1, 2], notAllowed: [] })),
-                    }),
-                })}
+                statusData={statusData}
+                validCount={statusData.allowed.length}
             />
         );
 
@@ -336,7 +339,8 @@ describe('ChoosePicklistModalDisplay', () => {
 
     test('loading error', async () => {
         const errorText = "Couldn't get your data";
-        const wrapper = mount(
+        const statusData = new OperationConfirmationData({ allowed: [1, 2], notAllowed: [] });
+        const wrapper = mountWithAppServerContext(
             <ChoosePicklistModalDisplay
                 picklists={[]}
                 picklistLoadError={errorText}
@@ -346,12 +350,8 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2']}
                 numSelected={2}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData({ allowed: [1, 2], notAllowed: [] })),
-                    }),
-                })}
+                statusData={statusData}
+                validCount={statusData.allowed.length}
             />
         );
         await waitForLifecycle(wrapper);
@@ -363,7 +363,8 @@ describe('ChoosePicklistModalDisplay', () => {
     });
 
     test('adding one sample', async () => {
-        const wrapper = mount(
+        const statusData = new OperationConfirmationData({ allowed: [1], notAllowed: [] });
+        const wrapper = mountWithAppServerContext(
             <ChoosePicklistModalDisplay
                 picklists={[]}
                 picklistLoadError={undefined}
@@ -373,12 +374,8 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1']}
                 numSelected={1}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData({ allowed: [1], notAllowed: [] })),
-                    }),
-                })}
+                statusData={statusData}
+                validCount={statusData.allowed.length}
             />
         );
         await waitForLifecycle(wrapper);
@@ -390,7 +387,8 @@ describe('ChoosePicklistModalDisplay', () => {
     });
 
     test('with active item', async () => {
-        const wrapper = mount(
+        const statusData = new OperationConfirmationData({ allowed: [1], notAllowed: [] });
+        const wrapper = mountWithAppServerContext(
             <ChoosePicklistModalDisplay
                 picklists={[PUBLIC_EDITOR_PICKLIST]}
                 picklistLoadError={undefined}
@@ -400,12 +398,8 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1']}
                 numSelected={1}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData({ allowed: [1], notAllowed: [] })),
-                    }),
-                })}
+                statusData={statusData}
+                validCount={statusData.allowed.length}
             />
         );
         await waitForLifecycle(wrapper);
@@ -417,7 +411,8 @@ describe('ChoosePicklistModalDisplay', () => {
     });
 
     test('some not allowed', async () => {
-        const wrapper = mount(
+        const statusData = new OperationConfirmationData({ allowed: [1], notAllowed: [2, 3] });
+        const wrapper = mountWithAppServerContext(
             <ChoosePicklistModalDisplay
                 picklists={[PUBLIC_EDITOR_PICKLIST]}
                 picklistLoadError={undefined}
@@ -427,12 +422,8 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2', '3']}
                 numSelected={1}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData({ allowed: [1], notAllowed: [2, 3] })),
-                    }),
-                })}
+                statusData={statusData}
+                validCount={statusData.allowed.length}
             />
         );
         await waitForLifecycle(wrapper);
@@ -446,7 +437,8 @@ describe('ChoosePicklistModalDisplay', () => {
     });
 
     test('none allowed', async () => {
-        const wrapper = mount(
+        const statusData = new OperationConfirmationData({ allowed: [], notAllowed: [1, 2, 3] });
+        const wrapper = mountWithAppServerContext(
             <ChoosePicklistModalDisplay
                 picklists={[PUBLIC_EDITOR_PICKLIST]}
                 picklistLoadError={undefined}
@@ -456,12 +448,8 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2', '3']}
                 numSelected={1}
-                api={getTestAPIWrapper(jest.fn, {
-                    samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleOperationConfirmationData: () =>
-                            Promise.resolve(new OperationConfirmationData({ allowed: [], notAllowed: [1, 2, 3] })),
-                    }),
-                })}
+                statusData={statusData}
+                validCount={statusData.allowed.length}
             />
         );
         await waitForLifecycle(wrapper);

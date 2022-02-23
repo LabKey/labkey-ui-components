@@ -26,7 +26,7 @@ import {
     AssayUploadResultModel,
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
-    caseInsensitive,
+    Container,
     dismissNotifications,
     EditorModel,
     FileSizeLimitProps,
@@ -46,6 +46,8 @@ import {
     SampleOperation,
     SchemaQuery,
     SCHEMAS,
+    User,
+    useServerContext,
     withFormSteps,
     WithFormStepsProps,
     WizardNavButtons,
@@ -64,6 +66,7 @@ import { loadSelectedSamples } from '../samples/actions';
 import { STATUS_DATA_RETRIEVAL_ERROR } from '../samples/constants';
 
 import {
+    allowReimportAssayRun,
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
     flattenQueryModelRow,
@@ -105,7 +108,12 @@ interface OwnProps {
     backgroundUpload?: boolean; // assay design setting
 }
 
-type Props = OwnProps & WithFormStepsProps & InjectedQueryModels;
+interface AssayImportPanelsBodyProps {
+    container: Partial<Container>;
+    user: User;
+}
+
+type Props = AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps & InjectedQueryModels;
 
 interface State {
     duplicateFileResponse?: DuplicateFilesResponse;
@@ -182,7 +190,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
     getRunPropertiesMap = (): Map<string, any> => {
         const { location } = this.props;
-        let runProperties = flattenQueryModelRow(this.getRunPropsQueryModel()?.getRow());
+        let runProperties = flattenQueryModelRow(this.getRunPropsQueryModel().getRow());
 
         // Issue 38711: Need to pre-populate the run properties form with assayRequest if it is present on the URL
         if (location?.query?.assayRequest !== undefined) {
@@ -193,8 +201,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     getBatchId = (): string => {
-        const runPropRow = this.getRunPropsQueryModel()?.getRow();
-        return runPropRow ? caseInsensitive(runPropRow, 'Batch').value : undefined;
+        return this.getRunPropsQueryModel().getRowValue('Batch');
     };
 
     getBatchPropsQueryModel = (): QueryModel => {
@@ -335,17 +342,16 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     onInitModelComplete = async (): Promise<void> => {
-        const runPropsRow = this.getRunPropsQueryModel()?.getRow();
-        const isReimport = this.isReimport();
-        const fileName = getRunPropertiesFileName(runPropsRow);
-        const runName = runPropsRow ? caseInsensitive(runPropsRow, 'Name').value : undefined;
+        const runPropsModel = this.getRunPropsQueryModel();
+        const runName = runPropsModel.getRowValue('Name');
+        const fileName = getRunPropertiesFileName(runPropsModel.getRow());
         const gridData = await this.state.model.getInitialGridData();
 
         // Issue 38237: set the runName and comments for the re-import case
         this.setState(state => {
             const model = state.model.merge({
-                runName: isReimport && runName === fileName ? undefined : runName, // Issue 39328
-                comment: runPropsRow ? caseInsensitive(runPropsRow, 'Comments').value : '',
+                runName: this.isReimport() && runName === fileName ? undefined : runName, // Issue 39328
+                comment: runPropsModel.getRowValue('Comments') ?? '',
             }) as AssayWizardModel;
             return {
                 model,
@@ -642,6 +648,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
     render(): ReactNode {
         const {
+            container,
             currentStep,
             onCancel,
             acceptedPreviewFileFormats,
@@ -654,26 +661,49 @@ class AssayImportPanelsBody extends Component<Props, State> {
             showQuerySelectPreviewOptions,
             runDataPanelTitle,
             fileSizeLimits,
+            user,
         } = this.props;
         const { dataModel, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } =
             this.state;
+        const runPropsModel = this.getRunPropsQueryModel();
 
-        if (!model.isInit) {
+        if (!model.isInit || runPropsModel.isLoading) {
             return <LoadingSpinner />;
+        } else if (runPropsModel.hasLoadErrors) {
+            return (
+                <Alert>
+                    <ul>
+                        {runPropsModel.loadErrors.map((error, i) => (
+                            <li key={i}>{error}</li>
+                        ))}
+                    </ul>
+                </Alert>
+            );
         }
 
-        const runPropsModel = this.getRunPropsQueryModel();
         const isReimport = this.isReimport();
-        const showReimportHeader = isReimport && !runPropsModel?.isLoading;
+        const runContainerId = runPropsModel.getRowValue('Folder');
+
+        if (isReimport && !allowReimportAssayRun(user, runContainerId, container.id)) {
+            const runName = runPropsModel.getRowValue('Name');
+            return (
+                <Alert>
+                    The run "{runName}" cannot be re-imported into this folder. This run is declared in a different
+                    folder and re-import of runs is only supported within the same folder.
+                </Alert>
+            );
+        }
+
         const showSaveAgainBtn = !isReimport && onSave !== undefined;
         const disabledSave = model.isSubmitting || !model.hasData(currentStep);
+        const runProps = runPropsModel.getRow();
 
         return (
             <>
-                {showReimportHeader && (
+                {isReimport && (
                     <AssayReimportHeader
                         assay={model.assayDef}
-                        replacedRunProperties={runPropsModel.getRow()}
+                        replacedRunProperties={runProps}
                         hasBatchProperties={model.batchColumns.size > 0}
                     />
                 )}
@@ -703,12 +733,12 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     onGridChange={this.onGridChange}
                     onTextChange={this.handleDataTextChange}
                     queryModel={dataModel}
-                    runPropertiesRow={runPropsModel.getRow()}
+                    runPropertiesRow={runProps}
                     showTabs={showUploadTabs}
                     title={runDataPanelTitle}
                     wizardModel={model}
                 />
-                {this.state.error && <Alert bsStyle="danger">{this.state.error}</Alert>}
+                <Alert>{this.state.error}</Alert>
                 <WizardNavButtons cancel={onCancel} containerClassName="" includeNext={false}>
                     {showSaveAgainBtn && (
                         <Button type="submit" onClick={this.onSaveClick.bind(this, true)} disabled={disabledSave}>
@@ -751,10 +781,13 @@ class AssayImportPanelsBody extends Component<Props, State> {
     }
 }
 
-const AssayImportPanelWithQueryModels = withQueryModels<OwnProps & WithFormStepsProps>(AssayImportPanelsBody);
+const AssayImportPanelWithQueryModels = withQueryModels<AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps>(
+    AssayImportPanelsBody
+);
 
 const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
     const { assayDefinition, runId } = props;
+    const { container, user } = useServerContext();
     const key = [runId, assayDefinition.protocolSchemaName].join('|');
     const schemaQuery = useMemo(
         () => SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'),
@@ -776,7 +809,16 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
         [runId, schemaQuery]
     );
 
-    return <AssayImportPanelWithQueryModels autoLoad key={key} queryConfigs={queryConfigs} {...props} />;
+    return (
+        <AssayImportPanelWithQueryModels
+            {...props}
+            autoLoad
+            container={container}
+            key={key}
+            queryConfigs={queryConfigs}
+            user={user}
+        />
+    );
 };
 
 export const AssayImportPanels = withFormSteps(AssayImportPanelsBodyImpl, {

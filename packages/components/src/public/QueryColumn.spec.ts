@@ -136,20 +136,29 @@ describe('QueryColumn: Sample Lookup', () => {
         removeFromViews: false,
     });
 
-    test('lookup to samples/Samples', () => {
+    test('isSampleLookup', () => {
         expect(validColumn.isSampleLookup()).toBe(true);
-    });
-
-    test('verify invalid column (into bogus schema/table)', () => {
         expect(bogusColumn.isSampleLookup()).toBe(false);
-    });
-
-    test('lookup to exp.Materials/Samples', () => {
         expect(materialSamplesColumn.isSampleLookup()).toBe(true);
-    });
-
-    test('lookup with different casing for query, schema and table names', () => {
         expect(materialSamplesWithAllCapsColumn.isSampleLookup()).toBe(true);
+
+        const samplesDataTypeColumnNonLookup = QueryColumn.create({
+            conceptURI: 'http://www.labkey.org/exp/xml#sample',
+        });
+        expect(samplesDataTypeColumnNonLookup.isSampleLookup()).toBe(false);
+
+        const samplesDataTypeColumnLookup = QueryColumn.create({
+            conceptURI: 'http://www.labkey.org/exp/xml#sample',
+            lookup: {
+                displayColumn: 'Name',
+                isPublic: true,
+                keyColumn: 'Name',
+                queryName: 'MySampleType',
+                schemaName: 'SaMpLeS',
+                table: 'SAMPLES',
+            },
+        });
+        expect(samplesDataTypeColumnLookup.isSampleLookup()).toBe(true);
     });
 
     test('isImportColumn', () => {

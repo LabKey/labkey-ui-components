@@ -301,7 +301,7 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
     }
 
     componentDidMount(): void {
-        getValidPublishTargets()
+        getValidPublishTargets(this.props.model.container)
             .then(containers => {
                 this.setState(() => ({ containers }));
             })

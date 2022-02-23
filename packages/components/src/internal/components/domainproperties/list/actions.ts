@@ -18,13 +18,11 @@ import { ActionURL, Ajax, Utils, Domain, getServerContext } from '@labkey/api';
 import { ListModel } from './models';
 import { INT_LIST } from './constants';
 
-export function getListProperties(listId?: number): Promise<ListModel> {
+export function getListProperties(listId?: number, containerPath?: string): Promise<ListModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('list', 'getListProperties.api'),
-            method: 'GET',
+            url: ActionURL.buildURL('list', 'getListProperties.api', containerPath),
             params: { listId },
-            scope: this,
             success: Utils.getCallbackWrapper(data => {
                 resolve(ListModel.create(null, data));
             }),
@@ -35,13 +33,14 @@ export function getListProperties(listId?: number): Promise<ListModel> {
     });
 }
 
-export function fetchListDesign(listId?: number): Promise<ListModel> {
+export function fetchListDesign(listId?: number, containerPath?: string): Promise<ListModel> {
     return new Promise((resolve, reject) => {
         // first need to retrieve domainId, given a listId (or the default properties in the create case where listId is undefined)
-        getListProperties(listId)
-            .then((model: ListModel) => {
+        getListProperties(listId, containerPath)
+            .then(model => {
                 // then we can use the getDomainDetails function to get the ListModel
                 Domain.getDomainDetails({
+                    containerPath,
                     domainId: model.domainId,
                     domainKind: listId === undefined ? INT_LIST : undefined, // NOTE there is also a VarList domain kind but for this purpose either will work
                     success: data => {

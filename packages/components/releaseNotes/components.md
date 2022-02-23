@@ -1,6 +1,27 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.137.0
+*Released*: 23 February 2022
+* Assay
+    * `deleteAssayRuns()` endpoint wrapper for `experiment-deleteRuns.api` updated accept optional `containerPath`.
+    * Assay designs now always saved to container specified on `AssayProtocolModel`.
+    * Address Issue 44845 by consolidating logic and usages for determining if a lookup column is to a Sample Type. This is done in `QueryColumn.isSampleLookup()`.
+* `SampleActionsButton`
+    * Refactor to use `children` instead of `moreMenuItems` for component hierarchy.
+    * Update to allow `children` items to be displayed regardless of picklist permissions. Previously, these would not render if the user was not allowed to access picklist actions.
+    * Add `PermissionsType.ManagePicklists` to permissions check.
+* Components
+    * Update `RequiresPermission` to optionally accept a `user` prop which will be used if provided instead of default from `useServerContext`.
+    * Refactor `DisableableMenuItem` to use `children` instead of `menuItemContent`.
+    * Remove `DisabledMenuItem` as it is supplanted by `DisableableMenuItem`.
+    * Move `fetchQueries()` and `fetchSchemas()` methods to their local component implementation usages. Done to simplify imports of `schemas/constants.ts`.
+* Picklists
+    * Update `PicklistSamplesFilter` to filter lists by name instead of by listId.
+    * Incorporate container filtering into picklist requests.
+    * Update `PicklistSubNav` to handle errors.
+    * Picklist custom view save has been moved to server-side.
+
 ### version 2.136.0
 *Released*: 21 February 2022
 * Item 9992: Add ontology type ahead search to forms

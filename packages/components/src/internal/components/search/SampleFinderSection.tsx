@@ -153,11 +153,9 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         (index: number) => {
             const newFilterCards = [...filters];
             newFilterCards.splice(index, 1);
-
             updateFilters(filterChangeCounter + 1, newFilterCards);
-            api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'deleteFilter');
         },
-        [api, filters, filterChangeCounter]
+        [filters, filterChangeCounter]
     );
 
     const onFilterClose = () => {
@@ -181,6 +179,8 @@ export const SampleFinderSection: FC<Props> = memo(props => {
 
             onFilterClose();
             updateFilters(filterChangeCounter + 1, newFilterCards);
+
+            api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'filterModalApply');
         },
         [filters, filterChangeCounter, onFilterEdit, onFilterDelete, chosenEntityType]
     );

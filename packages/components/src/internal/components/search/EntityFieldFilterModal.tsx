@@ -45,6 +45,7 @@ export enum EntityFieldFilterTabs {
 }
 
 const FIND_FILTER_VIEW_NAME = ''; // always use default view for selection
+const CHOOSE_VALUES_TAB_KEY = 'Choose values';
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const {
@@ -162,6 +163,10 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
     const onTabChange = useCallback((tabKey: any) => {
         setActiveTab(tabKey);
+
+        if (tabKey === CHOOSE_VALUES_TAB_KEY) {
+            api.query.incrementClientSideMetricCount(metricFeatureArea, 'goToChooseValuesTab')
+        }
     }, []);
 
     const closeModal = useCallback(() => {
@@ -191,10 +196,10 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         });
         const filterErrors = getFieldFiltersValidationResult(validDataTypeFilters, queryLabels);
         if (!filterErrors) {
-            if (metricFeatureArea) api.query.incrementClientSideMetricCount(metricFeatureArea, 'filterModalApply');
             onFind(entityDataType.instanceSchemaName, validDataTypeFilters);
         } else {
             setFilterError(filterErrors);
+            api.query.incrementClientSideMetricCount(metricFeatureArea, 'filterModalError')
         }
     }, [api, metricFeatureArea, entityQueries, entityDataType.instanceSchemaName, onFind, validDataTypeFilters]);
 
@@ -349,7 +354,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                             <NavItem eventKey={EntityFieldFilterTabs.Filter}>Filter</NavItem>
                                             {allowFaceting && (
                                                 <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>
-                                                    Choose values
+                                                    {CHOOSE_VALUES_TAB_KEY}
                                                 </NavItem>
                                             )}
                                         </Nav>

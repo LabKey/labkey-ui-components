@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
 import { Checkbox, Modal } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
@@ -22,7 +22,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
 
-interface Props {
+export interface PicklistEditModalProps {
     selectionKey?: string; // pass in either selectionKey and selectedQuantity or sampleIds.
     selectedQuantity?: number;
     sampleIds?: string[];
@@ -38,7 +38,7 @@ interface Props {
     queryModel?: QueryModel;
 }
 
-export const PicklistEditModal: FC<Props> = memo(props => {
+export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
     const { api, selectionKey, queryModel, sampleFieldKey, sampleIds } = props;
     const [ids, setIds] = useState<string[]>(sampleIds);
     const [selKey, setSelKey] = useState<string>(selectionKey);
@@ -48,13 +48,14 @@ export const PicklistEditModal: FC<Props> = memo(props => {
             // Look up SampleIds from the selected row ids.
             // Using sampleFieldKey as proxy flag to determine if lookup is needed
             if (sampleFieldKey && queryModel) {
-                const ids = await api.samples.getFieldLookupFromSelection(
+                // TODO: This needs error handling
+                const ids_ = await api.samples.getFieldLookupFromSelection(
                     queryModel.schemaQuery.schemaName,
                     queryModel.schemaQuery.queryName,
                     [...queryModel.selections],
                     sampleFieldKey
                 );
-                setIds(ids);
+                setIds(ids_);
 
                 // Clear the selection key as it will not correctly map to the sampleIds
                 setSelKey(undefined);
@@ -65,7 +66,7 @@ export const PicklistEditModal: FC<Props> = memo(props => {
     return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} />;
 });
 
-export const PicklistEditModalDisplay: FC<Props> = memo(props => {
+export const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
     const {
         api,
         onCancel,
@@ -133,7 +134,7 @@ export const PicklistEditModalDisplay: FC<Props> = memo(props => {
     const onHide = useCallback(() => {
         reset();
         onCancel();
-    }, []);
+    }, [onCancel]);
 
     const createSuccessNotification = (picklist: Picklist) => {
         createNotification({
@@ -151,7 +152,7 @@ export const PicklistEditModalDisplay: FC<Props> = memo(props => {
         });
     };
 
-    const onSavePicklist = useCallback(async () => {
+    const onSavePicklist = async (): Promise<void> => {
         setIsSubmitting(true);
         try {
             let updatedList;
@@ -159,6 +160,7 @@ export const PicklistEditModalDisplay: FC<Props> = memo(props => {
             if (isUpdate) {
                 updatedList = await updatePicklist(
                     new Picklist({
+                        Container: picklist.Container,
                         name: trimmedName,
                         listId: picklist.listId,
                         Description: description,
@@ -186,7 +188,7 @@ export const PicklistEditModalDisplay: FC<Props> = memo(props => {
             setPicklistError(resolveErrorMessage(e));
             setIsSubmitting(false);
         }
-    }, [name, description, onFinish, shared]);
+    };
 
     let title;
     if (isUpdate) {

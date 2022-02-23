@@ -15,7 +15,7 @@
  */
 import React, { FC, useMemo } from 'react';
 
-import { hasPermissions, useServerContext } from '../../..';
+import { hasPermissions, User, useServerContext } from '../../..';
 
 interface Props {
     /** Indicates if user.isAdmin should override check */
@@ -28,6 +28,8 @@ interface Props {
     permissionCheck?: 'all' | 'any';
     /** The permission(s) to check against the user. */
     perms: string | string[];
+    /** Optionally, specify the User object to check permissions against. Defaults to user from ServerContext. */
+    user?: User;
 }
 
 /**
@@ -38,7 +40,8 @@ interface Props {
  */
 export const RequiresPermission: FC<Props> = props => {
     const { checkIsAdmin, children, permissionCheck, perms } = props;
-    const { user } = useServerContext();
+    const serverContext = useServerContext();
+    const user = props.user ?? serverContext.user;
 
     const allow = useMemo<boolean>(
         () => hasPermissions(user, typeof perms === 'string' ? [perms] : perms, checkIsAdmin, permissionCheck),

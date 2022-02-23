@@ -29,7 +29,7 @@ import {
     SCHEMAS,
 } from '../../..';
 
-import { processSchemas } from '../../schemas';
+import { processSchemas } from '../../query/api';
 
 import { SimpleResponse } from '../files/models';
 

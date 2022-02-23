@@ -15,19 +15,19 @@ import { ChoosePicklistModal } from './ChoosePicklistModal';
 interface Props {
     queryModel?: QueryModel;
     sampleIds?: string[];
-    key?: string;
     itemText?: string;
     user: User;
     currentProductId?: string;
     picklistProductId?: string;
     metricFeatureArea?: string;
     sampleFieldKey?: string;
+    selectionMenuId?: string;
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {
     const {
         sampleIds,
-        key,
+        selectionMenuId,
         itemText,
         user,
         queryModel,
@@ -76,7 +76,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         <>
             {useSelection ? (
                 <SelectionMenuItem
-                    id={key}
+                    id={selectionMenuId}
                     text={itemText}
                     onClick={onClick}
                     queryModel={queryModel}
@@ -84,13 +84,14 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                 />
             ) : (
                 <DisableableMenuItem
+                    onClick={onClick}
                     operationPermitted={isSampleOperationPermitted(
                         getSampleStatusType(queryModel.getRow()),
                         SampleOperation.AddToPicklist
                     )}
-                    menuItemProps={{ onClick, key }}
-                    menuItemContent={itemText}
-                />
+                >
+                    {itemText}
+                </DisableableMenuItem>
             )}
             {showChoosePicklist && (
                 <ChoosePicklistModal
@@ -109,7 +110,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
             )}
             {showCreatePicklist && (
                 <PicklistEditModal
-                    selectionKey={sampleFieldKey ? undefined : id}   //If a sampleField is being used it, the id may not map correctly
+                    selectionKey={sampleFieldKey ? undefined : id} // If a sampleField is being used it, the id may not map correctly
                     selectedQuantity={numSelected}
                     sampleIds={sampleIds}
                     onFinish={afterCreatePicklist}
@@ -126,5 +127,5 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
 
 AddToPicklistMenuItem.defaultProps = {
     itemText: 'Add to Picklist',
-    key: 'add-to-picklist-menu-item',
+    selectionMenuId: 'add-to-picklist-menu-item',
 };

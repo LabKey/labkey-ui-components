@@ -1,7 +1,6 @@
-import { mount } from 'enzyme';
-import { fromJS } from 'immutable';
-
 import React from 'react';
+import { act } from 'react-dom/test-utils';
+import { fromJS } from 'immutable';
 
 import { SampleStateType } from '../../samples/constants';
 
@@ -85,8 +84,9 @@ describe('SampleStatusInput', () => {
         const wrapper = mountWithServerContext(component, { user: TEST_USER_EDITOR });
 
         await waitForLifecycle(wrapper); // retrieve statuses
-        wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
-
+        act(() => {
+            wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
+        });
         await waitForLifecycle(wrapper); // update after select
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(0);
@@ -97,7 +97,9 @@ describe('SampleStatusInput', () => {
         const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
 
         await waitForLifecycle(wrapper);
-        wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
+        act(() => {
+            wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
+        });
         await waitForLifecycle(wrapper);
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(1);
@@ -110,7 +112,9 @@ describe('SampleStatusInput', () => {
         const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
 
         await waitForLifecycle(wrapper);
-        wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
+        act(() => {
+            wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
+        });
         await waitForLifecycle(wrapper);
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(1);
@@ -123,7 +127,9 @@ describe('SampleStatusInput', () => {
         const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
 
         await waitForLifecycle(wrapper);
-        wrapper.find(QuerySelect).prop('onQSChange')('name', 100, [], undefined);
+        act(() => {
+            wrapper.find(QuerySelect).prop('onQSChange')('name', 100, [], undefined);
+        });
         await waitForLifecycle(wrapper);
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(0);

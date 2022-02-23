@@ -26,7 +26,7 @@ import {
 
 import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
-import { deletePicklists } from './actions';
+import { deletePicklists, getPicklistListingContainerFilter } from './actions';
 import { Picklist } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 
@@ -90,11 +90,11 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
         setActiveTabId(tab);
     }, []);
 
-    const showDeleteConfirm = () => {
+    const showDeleteConfirm = (): void => {
         setShowDeleteModal(true);
     };
 
-    const hideDeleteConfirm = () => {
+    const hideDeleteConfirm = (): void => {
         setShowDeleteModal(false);
     };
 
@@ -168,6 +168,7 @@ export const PicklistListing: FC<OwnProps> = memo(props => {
     const queryConfigs = {
         [MY_PICKLISTS_GRID_ID]: {
             baseFilters: [Filter.create('CreatedBy', user.id)],
+            containerFilter: getPicklistListingContainerFilter(),
             sorts: [new QuerySort({ fieldKey: 'Name' })],
             id: MY_PICKLISTS_GRID_ID,
             title: 'My Picklists',
@@ -176,6 +177,7 @@ export const PicklistListing: FC<OwnProps> = memo(props => {
         },
         [TEAM_PICKLISTS_GRID_ID]: {
             baseFilters: [Filter.create('Category', PUBLIC_PICKLIST_CATEGORY)],
+            containerFilter: getPicklistListingContainerFilter(),
             sorts: [new QuerySort({ fieldKey: 'Name' })],
             id: TEAM_PICKLISTS_GRID_ID,
             title: 'Team Picklists',

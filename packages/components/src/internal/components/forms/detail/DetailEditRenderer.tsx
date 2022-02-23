@@ -112,6 +112,7 @@ export function resolveDetailEditRenderer(
                         componentId={col.fieldKey}
                         containerFilter={col.lookup.containerFilter ?? options?.containerFilter}
                         containerPath={col.lookup.containerPath ?? options?.containerPath}
+                        description={col.description}
                         displayColumn={col.lookup.displayColumn}
                         formsy
                         inputClass="col-sm-12"

@@ -28,7 +28,6 @@ import {
     MEDIA_KEY,
     MENU_RELOAD,
     NEW_ASSAY_DESIGN_HREF,
-    NEW_FREEZER_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_SOURCE_TYPE_HREF,
     NOTEBOOKS_KEY,
@@ -251,7 +250,7 @@ export function getStorageSectionConfig(
         });
         if (userCanDesignLocations(user)) {
             locationsMenuConfig = locationsMenuConfig.merge({
-                emptyURL: fmAppBase + NEW_FREEZER_DESIGN_HREF.toHref(),
+                emptyURL: fmAppBase + AppURL.create(FREEZERS_KEY, 'new').toHref(),
                 emptyURLText: 'Create a freezer',
             }) as MenuSectionConfig;
         }

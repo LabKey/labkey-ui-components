@@ -361,7 +361,6 @@ import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEm
 import { AssaysHeatMap } from './internal/components/assay/AssaysHeatMap';
 import { AssaySubNavMenu } from './internal/components/assay/AssaySubNavMenu';
 import { AssayTypeSummary } from './internal/components/assay/AssayTypeSummary';
-import { RecentAssayPanel } from './internal/components/assay/RecentAssayPanel';
 import { AssayPicker, AssayPickerTabs } from './internal/components/assay/AssayPicker';
 import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportSubMenuItem';
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
@@ -1073,7 +1072,6 @@ export {
     AssayPicker,
     AssayPickerTabs,
     assayPage,
-    RecentAssayPanel,
     withAssayModels,
     withAssayModelsFromLocation,
     AssayContextConsumer,

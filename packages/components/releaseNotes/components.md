@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 9968: Show FM Freezer List on LKB and LKSM dashboards
   * Update createProductUrl() to use ActionURL.getAction() to stay in appDev mode
   * Remove NEW_FREEZER_DESIGN_HREF and MANAGE_STORAGE_UNITS_HREF
+  * Remove RecentAssayPanel.tsx and related code
 
 ### version 2.136.0
 *Released*: 21 February 2022

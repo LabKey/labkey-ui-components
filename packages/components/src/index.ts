@@ -293,6 +293,9 @@ import { SearchResultsPanel } from './internal/components/search/SearchResultsPa
 import { SampleFinderSection } from './internal/components/search/SampleFinderSection';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { loadNameExpressionOptions } from './internal/components/settings/actions';
+import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
+import { UserManagementPageImpl } from './internal/components/administration/UserManagementPageImpl';
+import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './internal/components/administration/utils';
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
@@ -1062,6 +1065,11 @@ export {
     // settings
     NameIdSettings,
     loadNameExpressionOptions,
+    // administration
+    AdministrationSubNav,
+    UserManagementPageImpl,
+    isLoginAutoRedirectEnabled,
+    showPremiumFeatures,
     // assay
     AssayUploadResultModel,
     AssayDesignDeleteModal,

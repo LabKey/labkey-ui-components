@@ -296,12 +296,11 @@ div.react-datepicker__current-month {
 // Borrowed from here: https://css-tricks.com/auto-growing-inputs-textareas/#aa-other-ideas
 .input-sizer {
     display: inline-grid;
-
+    height: 34px;
     &::after,
-    input,
-    textarea {
+    input {
         width: auto;
-        grid-area: 1/1;
+        grid-area: 1 / 2;
         resize: none;
         margin: 0;
     }

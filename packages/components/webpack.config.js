@@ -104,7 +104,10 @@ module.exports = {
                 }
             ]
         }),
-        new IgnorePlugin(/^\.\/locale$/, /moment$/)
+        new IgnorePlugin({
+            resourceRegExp: /^\.\/locale$/,
+            contextRegExp: /moment$/,
+        })
     ],
     externals: [
         '@labkey/api',

@@ -38,6 +38,7 @@ export const AliasInput: FC<Props> = memo(props => {
         <SelectInput
             allowCreate
             allowDisable={allowDisable}
+            description={col.description}
             formsy
             id={id}
             initiallyDisabled={initiallyDisabled}

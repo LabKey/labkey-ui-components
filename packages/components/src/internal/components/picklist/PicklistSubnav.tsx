@@ -1,8 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, memo, useEffect, useState } from 'react';
 import { List } from 'immutable';
 
-import { AppURL, getListProperties, ITab, ListModel, SubNav } from '../../..';
+import { AppURL, ITab, SubNav, useServerContext } from '../../..';
 import { PICKLIST_HOME_HREF, PICKLIST_KEY } from '../../app/constants';
+
+import { getPicklistFromId } from './actions';
 
 const PARENT_TAB: ITab = {
     text: 'Picklists',
@@ -10,28 +12,37 @@ const PARENT_TAB: ITab = {
 };
 
 interface SubNavProps {
-    params?: any;
+    params: Record<string, any>;
 }
 
-export const PicklistSubNav: FC<SubNavProps> = props => {
-    const { params } = props;
-    const [listModel, setListModel] = useState<ListModel>(undefined);
+export const PicklistSubNav: FC<SubNavProps> = memo(({ params }) => {
+    const { id } = params;
+    const [tabs, setTabs] = useState<List<ITab>>(List());
+    const { user } = useServerContext();
 
     useEffect(() => {
-        const { id } = params;
-        getListProperties(id).then(listModel => setListModel(listModel));
-    }, [params]);
+        setTabs(List());
+        (async () => {
+            try {
+                const picklist = await getPicklistFromId(id, false);
 
-    const generateTabs = (): List<ITab> => {
-        return List<ITab>([
-            {
-                text: listModel.name,
-                url: AppURL.create(PICKLIST_KEY, listModel.listId),
-            },
-        ]);
-    };
+                if (picklist.isValid() && (picklist.isPublic() || picklist.isUserList(user))) {
+                    setTabs(
+                        List([
+                            {
+                                text: picklist.name,
+                                url: AppURL.create(PICKLIST_KEY, picklist.listId),
+                            },
+                        ])
+                    );
+                }
+            } catch (e) {
+                console.error(`PicklistSubNav: failed to fetch picklist "${id}"`, e);
+            }
+        })();
+    }, [id, user]);
 
-    if (!listModel) return null;
+    return <SubNav key={id} noun={PARENT_TAB} tabs={tabs} />;
+});
 
-    return <SubNav tabs={generateTabs()} noun={PARENT_TAB} />;
-};
+PicklistSubNav.displayName = 'PicklistSubNav';

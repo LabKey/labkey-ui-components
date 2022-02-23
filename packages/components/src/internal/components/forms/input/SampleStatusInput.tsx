@@ -64,7 +64,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
             const statuses = await api.samples.getSampleStatuses();
             const consumedStatusIds = [];
             statuses.forEach(status => {
-                if (status.stateType == SampleStateType.Consumed) consumedStatusIds.push(status.rowId);
+                if (status.stateType === SampleStateType.Consumed) consumedStatusIds.push(status.rowId);
             });
             setConsumedStatuses(consumedStatusIds);
         } catch (error) {
@@ -79,7 +79,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
 
     useEffect(() => {
         loadConsumedStatuses();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onChange = useCallback(
         (name: string, newValue: any, items: any) => {
@@ -94,7 +94,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 setShowDiscardPanel(showPanel);
             }
         },
-        [consumedStatuses, onAdditionalFormDataChange, onQSChange, shouldDiscard, value]
+        [consumedStatuses, onAdditionalFormDataChange, onQSChange, shouldDiscard, user, value]
     );
 
     const onCommentChange = useCallback(
@@ -145,6 +145,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 componentId={col.fieldKey + key}
                 containerFilter={col.lookup.containerFilter ?? containerFilter}
                 containerPath={col.lookup.containerPath ?? containerPath}
+                description={col.description}
                 displayColumn={col.lookup.displayColumn}
                 formsy={formsy}
                 helpTipRenderer={col.helpTipRenderer}

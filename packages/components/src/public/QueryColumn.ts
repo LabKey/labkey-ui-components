@@ -3,7 +3,11 @@
 import { Record } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
+import {
+    SAMPLE_TYPE_CONCEPT_URI,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
+} from '../internal/components/domainproperties/constants';
+import { SCHEMAS } from '../internal/schemas';
 
 import { SchemaQuery } from './SchemaQuery';
 
@@ -230,21 +234,20 @@ export class QueryColumn extends Record({
     }
 
     isSampleLookup(): boolean {
-        /**
-         * 35881: Ensure that a column is a valid lookup to one of the following
-         * - exp.Materials
-         * - samples.* (any sample set)
-         */
-
         if (!this.isLookup()) {
             return false;
         }
 
-        const lookupSQ = this.lookup.schemaQuery;
-        // materialsSQ can't be a constant declared at the top of the file due to circular imports.
-        const materialsSQ = SchemaQuery.create('exp', 'Materials');
+        // Issue 44845: Support resolving sample lookup columns by Concept URI
+        if (this.conceptURI === SAMPLE_TYPE_CONCEPT_URI) {
+            return true;
+        }
 
-        return materialsSQ.isEqual(lookupSQ) || lookupSQ.hasSchema('samples');
+        // Issue 35881: Ensure that a column is a valid lookup to one of the following:
+        // - exp.Materials
+        // - samples.* (any sample set)
+        const lookupSQ = this.lookup.schemaQuery;
+        return SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ) || lookupSQ.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA);
     }
 
     isMaterialInput(): boolean {

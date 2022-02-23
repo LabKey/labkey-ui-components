@@ -15,17 +15,14 @@ import { createNotification } from '../notifications/actions';
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+
+import { useAppContext } from '../../../index';
+
 import { Picklist } from './models';
-import {
-    addSamplesToPicklist,
-    getPicklistCountsBySampleType,
-    getPicklists,
-    getPicklistUrl,
-    SampleTypeCount,
-} from './actions';
+import { addSamplesToPicklist, getPicklistsForInsert, getPicklistUrl, SampleTypeCount } from './actions';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -65,79 +62,66 @@ export const PicklistList: FC<PicklistListProps> = memo(props => {
     );
 });
 
-interface PicklistItemsSummaryDisplayProps {
-    countsByType: SampleTypeCount[];
-}
-
 interface PicklistItemsSummaryProps {
     picklist: Picklist;
 }
 
 // export for jest testing
-export const PicklistItemsSummaryDisplay: FC<PicklistItemsSummaryDisplayProps & PicklistItemsSummaryProps> = memo(
-    props => {
-        const { countsByType, picklist } = props;
-
-        const summaryData = [];
-        if (countsByType.length === 0) {
-            if (picklist.ItemCount === 0) {
-                summaryData.push(
-                    <div key="summary" className="choices-detail__empty-message">
-                        This list is empty.
-                    </div>
-                );
-            } else {
-                summaryData.push(<div key="summary">{Utils.pluralize(picklist.ItemCount, 'sample', 'samples')}</div>);
-            }
-        } else {
-            countsByType.forEach(countData => {
-                summaryData.push(
-                    <div key={countData.SampleType} className="row picklist-items__row">
-                        <span className="col-md-1">
-                            <ColorIcon useSmall={true} value={countData.LabelColor} />
-                        </span>
-                        <span className="col-md-5 picklist-items__sample-type choice-metadata-item__name">
-                            {countData.SampleType}
-                        </span>
-                        <span className="col-md-4 picklist-items__item-count">{countData.ItemCount}</span>
-                    </div>
-                );
-            });
-        }
-
-        return (
-            <div key="picklist-items-summary">
-                <div key="header" className="picklist-items__header">
-                    Sample Counts
-                </div>
-                {summaryData}
-            </div>
-        );
-    }
-);
-
-const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo(props => {
-    const { picklist } = props;
-    const [countsByType, setCountsByType] = useState<SampleTypeCount[]>(undefined);
-    const [loadingCounts, setLoadingCounts] = useState<boolean>(true);
+export const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo(({ picklist }) => {
+    const { name } = picklist;
+    const [countsByType, setCountsByType] = useState<SampleTypeCount[]>([]);
+    const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const { api } = useAppContext();
 
     useEffect(() => {
-        getPicklistCountsBySampleType(picklist.name)
-            .then(counts => {
+        (async () => {
+            setLoadingState(LoadingState.LOADING);
+            try {
+                const counts = await api.picklist.getPicklistCountsBySampleType(name);
                 setCountsByType(counts);
-                setLoadingCounts(false);
-            })
-            .catch(reason => {
+            } catch (e) {
                 setCountsByType([]);
-                setLoadingCounts(false);
-            });
-    }, [picklist, getPicklistCountsBySampleType, setCountsByType, setLoadingCounts]);
+            }
+            setLoadingState(LoadingState.LOADED);
+        })();
+    }, [api.picklist, name]);
 
-    if (loadingCounts) {
-        return <LoadingSpinner />;
-    }
+    const isLoaded = !isLoading(loadingState);
+    const hasCounts = countsByType.length > 0;
+    const hasItems = picklist.ItemCount > 0;
 
-    return <PicklistItemsSummaryDisplay {...props} countsByType={countsByType} />;
+    return (
+        <div key="picklist-items-summary">
+            <div key="header" className="picklist-items__header">
+                Sample Counts
+            </div>
+            {!isLoaded && <LoadingSpinner />}
+            {isLoaded && (
+                <>
+                    {hasCounts &&
+                        countsByType.map(countData => (
+                            <div key={countData.SampleType} className="row picklist-items__row">
+                                <span className="col-md-1">
+                                    <ColorIcon useSmall value={countData.LabelColor} />
+                                </span>
+                                <span className="col-md-5 picklist-items__sample-type choice-metadata-item__name">
+                                    {countData.SampleType}
+                                </span>
+                                <span className="col-md-4 picklist-items__item-count">{countData.ItemCount}</span>
+                            </div>
+                        ))}
+                    {hasItems && !hasCounts && (
+                        <div key="summary">{Utils.pluralize(picklist.ItemCount, 'sample', 'samples')}</div>
+                    )}
+                    {!hasItems && !hasCounts && (
+                        <div key="summary" className="choices-detail__empty-message">
+                            This list is empty.
+                        </div>
+                    )}
+                </>
+            )}
+        </div>
+    );
 });
 
 interface PicklistDetailsProps {
@@ -187,7 +171,7 @@ interface AddedToPicklistNotificationProps {
 export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> = props => {
     const { picklist, numAdded, numSelected, currentProductId, picklistProductId } = props;
     let numAddedNotification;
-    if (numAdded == 0) {
+    if (numAdded === 0) {
         numAddedNotification = 'No samples added';
     } else {
         numAddedNotification = 'Successfully added ' + Utils.pluralize(numAdded, 'sample', 'samples');
@@ -213,13 +197,14 @@ interface ChoosePicklistModalDisplayProps {
     picklists: Picklist[];
     picklistLoadError: ReactNode;
     loading: boolean;
+    statusData: OperationConfirmationData;
+    validCount: number;
 }
 
 // export for jest testing
 export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePicklistModalDisplayProps> = memo(
     props => {
         const {
-            api,
             picklists,
             loading,
             picklistLoadError,
@@ -227,34 +212,18 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             afterAddToPicklist,
             user,
             selectionKey,
-            numSelected,
             sampleIds,
             currentProductId,
             picklistProductId,
             metricFeatureArea,
+            statusData,
+            validCount,
         } = props;
         const [search, setSearch] = useState<string>('');
         const [error, setError] = useState<string>(undefined);
         const [submitting, setSubmitting] = useState<boolean>(false);
         const [activeItem, setActiveItem] = useState<Picklist>(undefined);
-        const [validCount, setValidCount] = useState<number>(numSelected);
-        const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
-
-        useEffect(() => {
-            (async () => {
-                try {
-                    const data = await api.samples.getSampleOperationConfirmationData(
-                        SampleOperation.AddToPicklist,
-                        selectionKey,
-                        sampleIds
-                    );
-                    setStatusData(data);
-                    setValidCount(data.allowed.length);
-                } catch (reason) {
-                    setError(reason);
-                }
-            })();
-        }, [api, selectionKey, sampleIds]);
+        const { api } = useAppContext();
 
         const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
             setSearch(event.target.value.trim().toLowerCase());
@@ -282,34 +251,39 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             });
 
             return [mine, team];
-        }, [filteredItems]);
+        }, [filteredItems, user]);
 
-        const onAddClicked = useCallback(async () => {
+        const onAddClicked = async (): Promise<void> => {
             setSubmitting(true);
-            try {
-                const insertResponse = await addSamplesToPicklist(activeItem.name, statusData, selectionKey, sampleIds);
-                setError(undefined);
-                setSubmitting(false);
-                api.query.incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
-                createNotification({
-                    message: () => (
-                        <AddedToPicklistNotification
-                            picklist={activeItem}
-                            numAdded={insertResponse.rows.length}
-                            numSelected={validCount}
-                            currentProductId={currentProductId}
-                            picklistProductId={picklistProductId}
-                        />
-                    ),
-                    alertClass: insertResponse.rows.length === 0 ? 'info' : 'success',
-                });
+            setError(undefined);
+            let numAdded = 0;
 
-                afterAddToPicklist();
+            try {
+                const response = await addSamplesToPicklist(activeItem.name, statusData, selectionKey, sampleIds);
+                api.query.incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
+                numAdded = response.rows.length;
+                setSubmitting(false);
             } catch (e) {
                 setSubmitting(false);
-                setError(resolveErrorMessage(e));
+                setError(resolveErrorMessage(e) ?? 'Failed to add samples to picklist.');
+                return;
             }
-        }, [activeItem, selectionKey, setSubmitting, setError, sampleIds, validCount]);
+
+            createNotification({
+                message: () => (
+                    <AddedToPicklistNotification
+                        picklist={activeItem}
+                        numAdded={numAdded}
+                        numSelected={validCount}
+                        currentProductId={currentProductId}
+                        picklistProductId={picklistProductId}
+                    />
+                ),
+                alertClass: numAdded === 0 ? 'info' : 'success',
+            });
+
+            afterAddToPicklist();
+        };
 
         const closeModal = useCallback(() => {
             setError(undefined);
@@ -444,6 +418,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             );
             body = getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData);
         }
+
         return (
             <Modal show bsSize="large" onHide={closeModal}>
                 <Modal.Header closeButton>
@@ -451,7 +426,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 </Modal.Header>
 
                 <Modal.Body>
-                    <Alert bsStyle="danger">{picklistLoadError ?? error}</Alert>
+                    <Alert>{picklistLoadError ?? error}</Alert>
                     {body}
                 </Modal.Body>
 
@@ -462,71 +437,100 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
 );
 
 interface ChoosePicklistModalProps {
-    onCancel: (cancelToCreate?: boolean) => void;
     afterAddToPicklist: () => void;
-    user: User;
-    selectionKey?: string;
-    numSelected: number;
-    sampleIds?: string[];
     currentProductId?: string;
-    picklistProductId?: string;
+    numSelected: number;
+    onCancel: (cancelToCreate?: boolean) => void;
     metricFeatureArea?: string;
-    api?: ComponentsAPIWrapper;
+    picklistProductId?: string;
     queryModel?: QueryModel;
     sampleFieldKey?: string;
+    sampleIds?: string[];
+    selectionKey?: string;
+    user: User;
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
-    const { api, selectionKey, queryModel, sampleFieldKey, sampleIds } = props;
-    const [error, setError] = useState<string>(undefined);
+    const { numSelected, selectionKey, queryModel, sampleFieldKey, sampleIds } = props;
+    const [error, setError] = useState<string>();
     const [items, setItems] = useState<Picklist[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [idsLoading, setIdsLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const [itemsLoading, setItemsLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [ids, setIds] = useState<string[]>(sampleIds);
-    const [selKey, setSelKey] = useState<string>(selectionKey);
+    const [validCount, setValidCount] = useState<number>(numSelected);
+    const [statusData, setStatusData] = useState<OperationConfirmationData>();
+    const schemaQuery = queryModel?.schemaQuery;
+    const selections = queryModel?.selections;
+    const { api } = useAppContext();
 
     useEffect(() => {
+        setItemsLoading(LoadingState.LOADING);
         (async () => {
-            // Look up SampleIds from the selected row ids.
-            // Using sampleFieldKey as proxy flag to determine if lookup is needed
-            if (sampleFieldKey && queryModel) {
-                const ids = await api.samples.getFieldLookupFromSelection(
-                    queryModel.schemaQuery.schemaName,
-                    queryModel.schemaQuery.queryName,
-                    [...queryModel.selections],
-                    sampleFieldKey
-                );
-                setIds(ids);
-
-                // Clear the selection key as it will not correctly map to the sampleIds
-                setSelKey(undefined);
+            try {
+                const picklists = await getPicklistsForInsert();
+                setItems(picklists);
+            } catch (e) {
+                setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklists.');
             }
+            setItemsLoading(LoadingState.LOADED);
         })();
-    }, [sampleFieldKey, queryModel]);
+    }, []);
 
     useEffect(() => {
-        getPicklists()
-            .then(picklists => {
-                setItems(picklists);
-                setLoading(false);
-            })
-            .catch(reason => {
-                setError('There was a problem retrieving the picklist data. ' + resolveErrorMessage(reason));
-                setLoading(false);
-            });
-    }, [getPicklists, setItems, setError, setLoading]);
+        setIdsLoading(LoadingState.LOADING);
+        (async () => {
+            // This method is responsible for:
+            // 1. Determining the sample IDs for the set of samples to be added to the picklist.
+            // 2. Verifying what operations are allowed for those samples.
+            let ids_: string[];
+            if (sampleIds) {
+                ids_ = sampleIds;
+            } else if (sampleFieldKey && schemaQuery) {
+                // Look up SampleIds from the selected row ids.
+                // Using sampleFieldKey as proxy flag to determine if lookup is needed.
+                try {
+                    ids_ = await api.samples.getFieldLookupFromSelection(
+                        schemaQuery.schemaName,
+                        schemaQuery.queryName,
+                        [...selections],
+                        sampleFieldKey
+                    );
+                } catch (e) {
+                    setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklist selection.');
+                }
+            }
+
+            try {
+                const data = await api.samples.getSampleOperationConfirmationData(
+                    SampleOperation.AddToPicklist,
+                    // If sample IDs are explicitly provided, then do not pass
+                    // the selectionKey to ensure the ids are processed.
+                    ids_ ? undefined : selectionKey,
+                    ids_
+                );
+                setIds(ids_);
+                setStatusData(data);
+                setValidCount(data.allowed.length);
+            } catch (e) {
+                setError(resolveErrorMessage(e) ?? 'Failed to retrieve sample operations.');
+            }
+
+            setIdsLoading(LoadingState.LOADED);
+        })();
+    }, [api.samples, sampleFieldKey, sampleIds, schemaQuery, selectionKey, selections]);
 
     return (
         <ChoosePicklistModalDisplay
             {...props}
+            loading={isLoading(itemsLoading) || isLoading(idsLoading)}
             picklists={items}
             picklistLoadError={error}
-            loading={loading}
             sampleIds={ids}
-            selectionKey={selKey}
+            selectionKey={selectionKey}
+            statusData={statusData}
+            validCount={validCount}
         />
     );
 });
 
-ChoosePicklistModal.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
+ChoosePicklistModal.displayName = 'ChoosePicklistModal';

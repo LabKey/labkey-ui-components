@@ -30,8 +30,8 @@ describe('getLabKeySql', () => {
     });
 
     test('eq, string, multipart field keys', () => {
-        expect(getLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.Equals), 'string')).toEqual(
-            '"StringField" = \'ABC\''
+        expect(getLabKeySql(Filter.create('StringField/Name', 'ABC', Filter.Types.Equals), 'string')).toEqual(
+            '"StringField"."Name" = \'ABC\''
         );
     });
 

@@ -738,10 +738,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.10.0-fb-sampleFinderLineageSql.1":
-  version "1.10.0-fb-sampleFinderLineageSql.1"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.10.0-fb-sampleFinderLineageSql.1.tgz#ebdfeb053a1532aa64272fd974b48223d8c6be43"
-  integrity sha1-69/rBToVMqpkJy/ZdLSCI9jGvkM=
+"@labkey/api@1.10.0-fb-sampleFinderLineageSql.2":
+  version "1.10.0-fb-sampleFinderLineageSql.2"
+  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.10.0-fb-sampleFinderLineageSql.2.tgz#d7c021f89d2c64228b61d2fb856f45f06b855a64"
+  integrity sha1-18Ah+J0sZCKLYdL7hW9F8GuFWmQ=
 
 "@labkey/eslint-config-base@0.0.11-fb-discussions.2":
   version "0.0.11-fb-discussions.2"

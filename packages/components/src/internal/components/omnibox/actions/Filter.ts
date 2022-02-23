@@ -22,8 +22,9 @@ import { parseColumns, resolveFieldKey } from '../utils';
 
 import { decodePart } from '../../../../public/SchemaQuery';
 
+import { JsonType } from '../../domainproperties/PropDescType';
+
 import { Action, ActionOption, ActionValue, Value } from './Action';
-import { JsonType } from "../../domainproperties/PropDescType";
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances

@@ -126,7 +126,11 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
                     let supportedFields = fields;
                     if (!queryInfo.supportGroupConcatSubSelect && entityDataType.exprColumnsWithSubSelect?.length > 0) {
-                        supportedFields = fromJS(fields.filter(field => entityDataType.exprColumnsWithSubSelect.indexOf(field.fieldKey) === -1));
+                        supportedFields = fromJS(
+                            fields.filter(
+                                field => entityDataType.exprColumnsWithSubSelect.indexOf(field.fieldKey) === -1
+                            )
+                        );
                     }
                     setQueryFields(supportedFields);
                     if (fieldKey) {
@@ -215,8 +219,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
             const dataTypeFiltersUpdated = { ...dataTypeFilters };
             const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
-            const newParentFilters =
-                activeParentFilters?.filter(filter => filter.fieldKey != activeFieldKey) ?? [];
+            const newParentFilters = activeParentFilters?.filter(filter => filter.fieldKey != activeFieldKey) ?? [];
 
             if (newFilter != null)
                 newParentFilters.push({

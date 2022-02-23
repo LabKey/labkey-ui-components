@@ -332,11 +332,11 @@ export class QueryColumn extends Record({
         return false;
     }
 
-    getDisplayFieldKey() : string {
+    getDisplayFieldKey(): string {
         return this.isLookup() && this.displayField ? this.displayField : this.fieldKey;
     }
 
-    getDisplayFieldJsonType() : string {
+    getDisplayFieldJsonType(): string {
         return (this.displayFieldJsonType ? this.displayFieldJsonType : this.jsonType) ?? 'string';
     }
 }

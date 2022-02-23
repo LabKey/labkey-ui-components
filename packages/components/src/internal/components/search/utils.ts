@@ -128,7 +128,7 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
                 const columnName = filter.getColumnName();
 
                 // lookup fields not supported for lineage MVFK column
-                if (columnName.indexOf("/")  === -1) {
+                if (columnName.indexOf('/') === -1) {
                     const newColumnName = cardColumnName + '/' + columnName;
                     requiredColumns.push(newColumnName);
                 }
@@ -452,8 +452,7 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
         // if no existing filter, check all values by default
         return allValues;
 
-    if (filter.getFilterType().isDataValueRequired() && filter.getValue() == null)
-        return allValues;
+    if (filter.getFilterType().isDataValueRequired() && filter.getValue() == null) return allValues;
 
     const filterUrlSuffix = filter.getFilterType().getURLSuffix();
     const filterValues = getFilterValuesAsArray(filter);

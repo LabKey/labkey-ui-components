@@ -19,6 +19,7 @@ import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 import { QueryGridModel, QueryModel } from '../../..';
 
 interface Props {
+    href?: string;
     id: string;
     model?: QueryGridModel;
     queryModel?: QueryModel;
@@ -28,7 +29,6 @@ interface Props {
     maxSelection?: number;
     maxSelectionDisabledMsg?: string;
     nounPlural: string;
-    href?: string;
 }
 
 export class SelectionMenuItem extends PureComponent<Props> {
@@ -56,10 +56,10 @@ export class SelectionMenuItem extends PureComponent<Props> {
     }
 
     render() {
-        const { id, text, onClick, href, disabledMsg, maxSelection, maxSelectionDisabledMsg, nounPlural } = this.props;
+        const { href, id, text, onClick, disabledMsg, maxSelection, maxSelectionDisabledMsg, nounPlural } = this.props;
         const { disabled, tooFewSelected } = this;
         const item = (
-            <MenuItem href={href} onClick={onClick} disabled={disabled}>
+            <MenuItem href={disabled ? undefined : href} onClick={disabled ? undefined : onClick} disabled={disabled}>
                 {text}
             </MenuItem>
         );

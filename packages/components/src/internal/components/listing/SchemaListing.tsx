@@ -13,12 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { Component, ReactNode } from 'react';
+import React, { FC, memo, useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
+import { Query } from '@labkey/api';
 
-import { AppURL, Grid, GridColumn, LoadingSpinner, SchemaDetails } from '../../..';
-import { fetchSchemas } from '../../schemas';
+import {
+    Alert,
+    AppURL,
+    Grid,
+    GridColumn,
+    isLoading,
+    LoadingSpinner,
+    LoadingState,
+    naturalSortByProperty,
+    resolveErrorMessage,
+    SchemaDetails,
+} from '../../..';
+import { processSchemas } from '../../query/api';
 
 const columns = List([
     new GridColumn({
@@ -42,69 +54,81 @@ const columns = List([
     }),
 ]);
 
-interface SchemaListingProps {
-    schemaName?: string;
-    hideEmpty?: boolean;
+function fetchSchemas(schemaName?: string): Promise<List<SchemaDetails>> {
+    return new Promise((resolve, reject) => {
+        Query.getSchemas({
+            apiVersion: 9.3,
+            schemaName,
+            success: schemas => {
+                resolve(
+                    processSchemas(schemas)
+                        .filter(schema => {
+                            // Here we parse each schema's fullyQualifiedName to determine if it
+                            // represents a nested schema (e.g. "assay.General.AminoAcidInClientC")
+                            // of the currently supplied "schemaName".
+                            const start = schemaName ? schemaName.length + 1 : 0;
+                            return schema.fullyQualifiedName.substring(start).indexOf('.') === -1;
+                        })
+                        .sort(naturalSortByProperty('schemaName'))
+                        .toList()
+                );
+            },
+            failure: error => {
+                console.error(error);
+                reject(error);
+            },
+        });
+    });
+}
+
+interface Props {
     asPanel?: boolean;
+    hideEmpty?: boolean;
+    schemaName?: string;
     title?: string;
 }
 
-interface SchemaListingState {
-    schemas: List<Map<string, SchemaDetails>>;
-}
+export const SchemaListing: FC<Props> = memo(({ asPanel, hideEmpty, schemaName, title = 'Schemas' }) => {
+    const [error, setError] = useState<string>();
+    const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const [schemas, setSchemas] = useState<List<SchemaDetails>>(List());
 
-export class SchemaListing extends Component<SchemaListingProps, SchemaListingState> {
-    static defaultProps = {
-        title: 'Schemas',
-    };
+    useEffect(() => {
+        setError(undefined);
+        setLoadingState(LoadingState.LOADING);
+        (async () => {
+            try {
+                const schemas_ = await fetchSchemas(schemaName);
+                setSchemas(schemas_);
+            } catch (e) {
+                setError(resolveErrorMessage(e) ?? 'Failed to load schema information.');
+            }
+            setLoadingState(LoadingState.LOADED);
+        })();
+    }, [schemaName]);
 
-    constructor(props: SchemaListingProps) {
-        super(props);
-
-        this.state = {
-            schemas: undefined,
-        };
+    if (isLoading(loadingState)) {
+        return <LoadingSpinner />;
+    } else if (error) {
+        return <Alert>{error}</Alert>;
     }
 
-    componentDidMount = (): void => {
-        this.loadSchemas();
-    };
+    if (hideEmpty && schemas.count() === 0) {
+        return null;
+    }
 
-    componentDidUpdate = (prevProps: Readonly<SchemaListingProps>): void => {
-        if (prevProps.schemaName !== this.props.schemaName) {
-            this.loadSchemas();
-        }
-    };
+    const grid = <Grid columns={columns} data={schemas} />;
 
-    loadSchemas = (): void => {
-        fetchSchemas(this.props.schemaName).then(schemas => {
-            this.setState({ schemas });
-        });
-    };
+    if (asPanel) {
+        return (
+            <div className="panel panel-default">
+                <div className="panel-heading">{title}</div>
+                <div className="panel-body">{grid}</div>
+            </div>
+        );
+    }
 
-    render = (): ReactNode => {
-        const { hideEmpty, asPanel, title } = this.props;
-        const { schemas } = this.state;
+    return grid;
+});
 
-        if (schemas) {
-            if (hideEmpty && schemas.count() === 0) {
-                return null;
-            }
-
-            const grid = <Grid data={schemas} columns={columns} />;
-
-            if (asPanel) {
-                return (
-                    <div className="panel panel-default">
-                        <div className="panel-heading">{title}</div>
-                        <div className="panel-body">{grid}</div>
-                    </div>
-                );
-            }
-
-            return grid;
-        }
-
-        return <LoadingSpinner />;
-    };
-}
+SchemaListing.displayName = 'SchemaListing';

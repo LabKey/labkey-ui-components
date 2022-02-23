@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode, useCallback, useMemo, useReducer, useRef, useState } from 'react';
+import React, { FC, FormEvent, memo, ReactNode, useCallback, useMemo, useReducer, useRef, useState } from 'react';
 import moment from 'moment';
 
 import { getDateFormat } from '../util/Date';
@@ -87,6 +87,11 @@ export const EditInlineField: FC<Props> = memo(props => {
 
     const onKeyDown = useEnterEscape(saveEdit, onCancel);
 
+    // This is used in conjunction with the input-resizer class  to get the input field to resize based on the size of the value.
+    const onInputChange = useCallback((event: FormEvent<HTMLInputElement>) => {
+        event.currentTarget.parentElement.dataset.value = event.currentTarget.value + '';
+    }, []);
+
     const toggleEdit = useCallback(() => {
         if (allowEdit) {
             setState({ editing: !state.editing });
@@ -144,7 +149,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                 </span>
             )}
             {state.editing && isText && (
-                <span className="input-group">
+                <span className="input-group input-sizer">
                     <input
                         autoFocus
                         className="form-control"
@@ -154,6 +159,8 @@ export const EditInlineField: FC<Props> = memo(props => {
                         name={name}
                         ref={inputRef}
                         type="text"
+                        size={Math.max(value?.length, 20)}
+                        onInput={onInputChange}
                     />
                 </span>
             )}
@@ -165,7 +172,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                         </span>
                     )}
                     <span
-                        className={ allowEdit ? "edit-inline-field__toggle" : ''}
+                        className={allowEdit ? 'edit-inline-field__toggle' : ''}
                         onClick={toggleEdit}
                         onKeyDown={toggleKeyDown}
                         tabIndex={1}
@@ -186,5 +193,5 @@ export const EditInlineField: FC<Props> = memo(props => {
 });
 
 EditInlineField.defaultProps = {
-    className: "edit-inline-field"
-}
+    className: 'edit-inline-field',
+};

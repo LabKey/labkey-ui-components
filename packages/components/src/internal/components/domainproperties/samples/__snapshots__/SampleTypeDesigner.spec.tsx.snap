@@ -1091,6 +1091,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "validateDomainNameExpressions": [Function],
         },
         "picklist": PicklistServerAPIWrapper {
+          "getPicklistCountsBySampleType": [Function],
           "getPicklistDeleteData": [Function],
           "getPicklistFromId": [Function],
         },

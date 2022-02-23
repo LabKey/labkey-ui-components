@@ -251,6 +251,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         componentId={id}
                                         containerFilter={col.lookup.containerFilter ?? containerFilter}
                                         containerPath={col.lookup.containerPath}
+                                        description={col.description}
                                         displayColumn={col.lookup.displayColumn}
                                         fireQSChangeOnInit={fireQSChangeOnInit}
                                         formsy

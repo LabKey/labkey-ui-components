@@ -160,7 +160,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                         name={name}
                         ref={inputRef}
                         type="text"
-                        size={value?.length || 20}
+                        size={Math.max(value?.length, 20)}
                         onInput={onInputChange}
                     />
                 </span>

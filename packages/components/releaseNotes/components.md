@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item 9968: ...
+  * Update createProductUrl() to use ActionURL.getAction() to stay in appDev mode
 
 ### version 2.136.0
 *Released*: 21 February 2022

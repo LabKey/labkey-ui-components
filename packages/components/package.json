@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.137.0",
+  "version": "2.137.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -12,7 +12,7 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "yarn install && yarn build",
     "test": "cross-env NODE_ENV=test jest --maxWorkers=6 --silent",
     "test-ci": "cross-env NODE_ENV=test jest --ci --runInBand --silent",
     "watch:build": "watch 'yarn build' ./src",

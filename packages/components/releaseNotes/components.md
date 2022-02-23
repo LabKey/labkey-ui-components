@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.137.1
+*Released*: 23 February 2022
+* Update `EditInlineField` for input type text so input box resizes to fix input value.
+
 ### version 2.137.0
 *Released*: 23 February 2022
 * Assay

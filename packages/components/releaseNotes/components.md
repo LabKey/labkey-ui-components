@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD February 2022
+### version 2.137.2
+*Released*: 23 February 2022
 * Item 9945: add calls to incrementClientSideMetricCount() for sample finder related actions
   * add metricFeatureArea props to SampleActionButton, SampleDeleteMenuItem, and SamplesManageButton
 

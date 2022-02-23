@@ -7,64 +7,80 @@ import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
 import { getServerContext, PermissionRoles, Utils } from '@labkey/api';
 
+import { User } from '../base/models/User';
+import { Container } from '../base/models/Container';
+import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
+import { PermissionsProviderProps, SecurityPolicy } from '../permissions/models';
+import { fetchContainerSecurityPolicy } from '../permissions/actions';
+import { createNotification } from '../notifications/actions';
+import { queryGridInvalidate } from '../../actions';
+import { SCHEMAS } from '../../schemas';
+import { invalidateUsers } from '../../global';
+import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
+import { AppURL } from '../../url/AppURL';
+import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
+import { UsersGridPanel } from '../user/UsersGridPanel';
+
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
+import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 
-import {User} from "../base/models/User";
-import {Container} from "../base/models/Container";
-import {APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES} from "../permissions/constants";
-import {PermissionsProviderProps, SecurityPolicy} from "../permissions/models";
-import {fetchContainerSecurityPolicy} from "../permissions/actions";
-import {createNotification} from "../notifications/actions";
-import {queryGridInvalidate} from "../../actions";
-import {SCHEMAS} from "../../schemas";
-import {invalidateUsers} from "../../global";
-import {ManageDropdownButton} from "../buttons/ManageDropdownButton";
-import {AppURL} from "../../url/AppURL";
-import {BasePermissionsCheckPage} from "../permissions/BasePermissionsCheckPage";
-import {UsersGridPanel} from "../user/UsersGridPanel";
-import {isLoginAutoRedirectEnabled, showPremiumFeatures} from "./utils";
-
-export function getNewUserRoles(user: User, container: Partial<Container>, project: any, extraRoles?: string[][]): Record<string, any>[] {
+export function getNewUserRoles(
+    user: User,
+    container: Partial<Container>,
+    project: any,
+    extraRoles?: string[][]
+): Array<Record<string, any>> {
     const roles = [
-        {id: PermissionRoles.Reader.toString(), label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.Reader) + ' (default)'},
-        {id: PermissionRoles.Editor.toString(), label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.Editor)},
+        {
+            id: PermissionRoles.Reader.toString(),
+            label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.Reader) + ' (default)',
+        },
+        { id: PermissionRoles.Editor.toString(), label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.Editor) },
     ];
     if (showPremiumFeatures()) {
-        roles.push({id: PermissionRoles.FolderAdmin.toString(), label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.FolderAdmin)});
+        roles.push({
+            id: PermissionRoles.FolderAdmin.toString(),
+            label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.FolderAdmin),
+        });
         if (container.parentId === project.rootId) {
-            roles.push({id: PermissionRoles.ProjectAdmin.toString(), label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.ProjectAdmin)});
+            roles.push({
+                id: PermissionRoles.ProjectAdmin.toString(),
+                label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.ProjectAdmin),
+            });
         }
     }
     if (extraRoles) {
         extraRoles.forEach(role => {
-            roles.push({id: role[0], label: role[1]});
+            roles.push({ id: role[0], label: role[1] });
         });
     }
     if (user.isAppAdmin()) {
-        roles.push({id: PermissionRoles.ApplicationAdmin, label: SITE_SECURITY_ROLES.get(PermissionRoles.ApplicationAdmin)});
+        roles.push({
+            id: PermissionRoles.ApplicationAdmin,
+            label: SITE_SECURITY_ROLES.get(PermissionRoles.ApplicationAdmin),
+        });
     }
     return roles;
 }
 
 interface StateProps {
     extraRoles?: string[][];
-    user: User
+    user: User;
 }
 
 type Props = StateProps & PermissionsProviderProps;
 
 interface State {
-    policy: SecurityPolicy
+    policy: SecurityPolicy;
 }
 
 // exported for jest testing
 export class UserManagementPageImpl extends PureComponent<Props, State> {
-
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            policy: undefined
+            policy: undefined,
         };
     }
 
@@ -76,14 +92,16 @@ export class UserManagementPageImpl extends PureComponent<Props, State> {
 
     loadSecurityPolicy() {
         fetchContainerSecurityPolicy(getServerContext().container.id, this.props.principalsById)
-            .then((policy) => {
-                this.setState(() => ({policy: SecurityPolicy.updateAssignmentsData(policy, this.props.principalsById)}));
+            .then(policy => {
+                this.setState(() => ({
+                    policy: SecurityPolicy.updateAssignmentsData(policy, this.props.principalsById),
+                }));
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error(error);
                 createNotification({
                     alertClass: 'danger',
-                    message: 'Unable to load permissions information. ' + (error.exception ? error.exception : '')
+                    message: 'Unable to load permissions information. ' + (error.exception ? error.exception : ''),
                 });
             });
     }
@@ -92,12 +110,12 @@ export class UserManagementPageImpl extends PureComponent<Props, State> {
         this.invalidateGlobal();
 
         // split response to count new vs existing users separately
-        let newUsers = List<number>(), existingUsers = List<number>();
-        response.users.forEach((user) => {
+        let newUsers = List<number>(),
+            existingUsers = List<number>();
+        response.users.forEach(user => {
             if (user.isNew) {
                 newUsers = newUsers.push(user.userId);
-            }
-            else {
+            } else {
                 existingUsers = existingUsers.push(user.userId);
             }
         });
@@ -107,28 +125,32 @@ export class UserManagementPageImpl extends PureComponent<Props, State> {
                 const promises = [];
                 // application admin role applies to the Site root container, others apply to current project container
                 if (roleUniqueNames.indexOf(PermissionRoles.ApplicationAdmin) >= 0) {
-                    promises.push(updateSecurityPolicy(getServerContext().project.rootId, newUsers, [PermissionRoles.ApplicationAdmin]));
+                    promises.push(
+                        updateSecurityPolicy(getServerContext().project.rootId, newUsers, [
+                            PermissionRoles.ApplicationAdmin,
+                        ])
+                    );
                 }
                 const nonAppAdmin = roleUniqueNames.filter(name => name !== PermissionRoles.ApplicationAdmin);
                 if (nonAppAdmin.length) {
-                    promises.push(updateSecurityPolicy(getServerContext().container.id, newUsers, nonAppAdmin))
+                    promises.push(updateSecurityPolicy(getServerContext().container.id, newUsers, nonAppAdmin));
                 }
                 Promise.all(promises)
                     .then(() => {
                         this.afterCreateComplete(newUsers, true);
                         this.loadSecurityPolicy();
                     })
-                    .catch((error) => {
+                    .catch(error => {
                         console.error(error);
                         createNotification({
                             alertClass: 'danger',
-                            message: 'Unable to update permissions information. ' + (error.exception ? error.exception : '')
+                            message:
+                                'Unable to update permissions information. ' + (error.exception ? error.exception : ''),
                         });
 
                         this.afterCreateComplete(newUsers, false);
                     });
-            }
-            else {
+            } else {
                 this.afterCreateComplete(newUsers, false);
             }
         }
@@ -139,13 +161,16 @@ export class UserManagementPageImpl extends PureComponent<Props, State> {
                     return (
                         <>
                             <span>
-                                {Utils.pluralBasic(existingUsers.size, 'user')} already
-                                existed and {(existingUsers.size > 1 ? 'were' : 'was')} not updated.
+                                {Utils.pluralBasic(existingUsers.size, 'user')} already existed and{' '}
+                                {existingUsers.size > 1 ? 'were' : 'was'} not updated.
                             </span>
-                            &nbsp;<a href={getUserGridFilterURL(existingUsers, 'all').addParam('usersView', 'all').toHref()}>view</a>
+                            &nbsp;
+                            <a href={getUserGridFilterURL(existingUsers, 'all').addParam('usersView', 'all').toHref()}>
+                                view
+                            </a>
                         </>
-                    )
-                }
+                    );
+                },
             });
         }
     };
@@ -156,14 +181,18 @@ export class UserManagementPageImpl extends PureComponent<Props, State> {
         if (response.resetPassword) {
             createNotification({
                 message: () => {
-                    return <span>Successfully reset password for <b>{response.email}</b>.</span>
-                }
+                    return (
+                        <span>
+                            Successfully reset password for <b>{response.email}</b>.
+                        </span>
+                    );
+                },
             });
             return;
         }
 
         const updatedUserIds = List<number>(response.userIds);
-        const action = response.delete ? 'deleted' : (response.activate ? 'reactivated' : 'deactivated');
+        const action = response.delete ? 'deleted' : response.activate ? 'reactivated' : 'deactivated';
         const urlPrefix = response.activate ? 'active' : 'inactive';
 
         createNotification({
@@ -173,12 +202,18 @@ export class UserManagementPageImpl extends PureComponent<Props, State> {
                         <span>
                             Successfully {action} {Utils.pluralBasic(updatedUserIds.size, 'user')}.&nbsp;
                         </span>
-                        {!response.delete &&
-                            <a href={getUserGridFilterURL(updatedUserIds, urlPrefix).addParam('usersView', urlPrefix).toHref()}>view</a>
-                        }
+                        {!response.delete && (
+                            <a
+                                href={getUserGridFilterURL(updatedUserIds, urlPrefix)
+                                    .addParam('usersView', urlPrefix)
+                                    .toHref()}
+                            >
+                                view
+                            </a>
+                        )}
                     </>
-                )
-            }
+                );
+            },
         });
     };
 
@@ -191,10 +226,13 @@ export class UserManagementPageImpl extends PureComponent<Props, State> {
                             Successfully created {Utils.pluralBasic(newUsers.size, 'new user')}
                             {permissionsSet ? ' and assigned the selected role' : ''}.
                         </span>
-                        &nbsp;<a href={getUserGridFilterURL(newUsers, 'active').addParam('usersView', 'active').toHref()}>view</a>
+                        &nbsp;
+                        <a href={getUserGridFilterURL(newUsers, 'active').addParam('usersView', 'active').toHref()}>
+                            view
+                        </a>
                     </>
-                )
-            }
+                );
+            },
         });
     }
 
@@ -205,10 +243,10 @@ export class UserManagementPageImpl extends PureComponent<Props, State> {
 
     renderButtons = () => {
         return (
-            <ManageDropdownButton id={'user-management-page-manage'} pullRight={true} collapsed={true}>
+            <ManageDropdownButton id="user-management-page-manage" pullRight={true} collapsed={true}>
                 <MenuItem href={AppURL.create('audit', 'userauditevent').toHref()}>View Audit History</MenuItem>
             </ManageDropdownButton>
-        )
+        );
     };
 
     render() {
@@ -217,12 +255,13 @@ export class UserManagementPageImpl extends PureComponent<Props, State> {
         const { container, project } = getServerContext();
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
-        const newUserRoleOptions = policy && !policy.isInheritFromParent() ? getNewUserRoles(user, container, project, extraRoles) : undefined;
+        const newUserRoleOptions =
+            policy && !policy.isInheritFromParent() ? getNewUserRoles(user, container, project, extraRoles) : undefined;
 
         return (
             <BasePermissionsCheckPage
                 user={user}
-                title={'User Management'}
+                title="User Management"
                 hasPermission={user.isAdmin}
                 renderButtons={this.renderButtons}
             >
@@ -236,6 +275,6 @@ export class UserManagementPageImpl extends PureComponent<Props, State> {
                     showDetailsPanel={user.hasManageUsersPermission()}
                 />
             </BasePermissionsCheckPage>
-        )
+        );
     }
 }

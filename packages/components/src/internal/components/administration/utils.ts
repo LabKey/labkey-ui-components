@@ -1,5 +1,6 @@
-import {ActionURL, getServerContext} from "@labkey/api";
-import {App} from "../../../index";
+import { ActionURL, getServerContext } from '@labkey/api';
+
+import { App } from '../../../index';
 
 export function isLoginAutoRedirectEnabled(): boolean {
     return getServerContext().moduleContext.api.AutoRedirectSSOAuthConfiguration != undefined;

@@ -2,14 +2,13 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import {
-    getAdministrationSubNavTabs, getUserGridFilterURL,
-} from "./actions";
-import {App} from "../../../index";
-import {List} from "immutable";
+import { List } from 'immutable';
+
+import { App } from '../../../index';
+
+import { getAdministrationSubNavTabs, getUserGridFilterURL } from './actions';
 
 describe('Administration actions', () => {
-
     test('getAdministrationSubNavTabs', () => {
         expect(getAdministrationSubNavTabs(App.TEST_USER_GUEST).size).toBe(0);
         expect(getAdministrationSubNavTabs(App.TEST_USER_READER).size).toBe(0);

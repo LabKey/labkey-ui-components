@@ -1,9 +1,11 @@
-import { List } from 'immutable'
-import {User} from "../base/models/User";
+import { List } from 'immutable';
+
+import { Security } from '@labkey/api';
+
+import { User } from '../base/models/User';
 import { ITab } from '../navigation/SubNav';
-import {AppURL} from "../../url/AppURL";
-import {SecurityPolicy} from "../permissions/models";
-import {Security} from "@labkey/api";
+import { AppURL } from '../../url/AppURL';
+import { SecurityPolicy } from '../permissions/models';
 
 export function getAdministrationSubNavTabs(user: User): List<ITab> {
     let tabs = List<string>();
@@ -16,10 +18,12 @@ export function getAdministrationSubNavTabs(user: User): List<ITab> {
         tabs = tabs.push('Settings');
     }
 
-    return tabs.map(text => ({
-        text,
-        url: AppURL.create('admin', text.toLowerCase())
-    })).toList()
+    return tabs
+        .map(text => ({
+            text,
+            url: AppURL.create('admin', text.toLowerCase()),
+        }))
+        .toList();
 }
 
 export function getUserGridFilterURL(userIds: List<number>, urlPrefix: string): AppURL {
@@ -30,33 +34,37 @@ export function getUserGridFilterURL(userIds: List<number>, urlPrefix: string): 
     return url;
 }
 
-export function updateSecurityPolicy(containerPath: string, userIds: List<number>, roleUniqueNames: string[]): Promise<any> {
+export function updateSecurityPolicy(
+    containerPath: string,
+    userIds: List<number>,
+    roleUniqueNames: string[]
+): Promise<any> {
     return new Promise((resolve, reject) => {
         Security.getPolicy({
-            containerPath: containerPath,
+            containerPath,
             resourceId: containerPath,
             success: (data, relevantRoles) => {
-                let policy = SecurityPolicy.create({policy: data, relevantRoles});
-                userIds.forEach((userId) => {
+                let policy = SecurityPolicy.create({ policy: data, relevantRoles });
+                userIds.forEach(userId => {
                     roleUniqueNames.forEach(name => {
                         policy = SecurityPolicy.addUserIdAssignment(policy, userId, name);
                     });
                 });
 
                 Security.savePolicy({
-                    containerPath: containerPath,
-                    policy: {policy},
-                    success: (response) => {
+                    containerPath,
+                    policy: { policy },
+                    success: response => {
                         resolve(response);
                     },
-                    failure: (error) => {
+                    failure: error => {
                         reject(error);
-                    }
+                    },
                 });
             },
-            failure: (error) => {
+            failure: error => {
                 reject(error);
-            }
+            },
         });
     });
 }

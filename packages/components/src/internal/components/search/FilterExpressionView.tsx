@@ -6,10 +6,10 @@ import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
-import { App, parseDate } from '../../../index';
+import { App, formatDateTime, parseDate } from '../../../index';
 
 import { JsonType } from '../domainproperties/PropDescType';
-import { formatDate } from '../../util/Date';
+import { formatDate, isDateTimeCol } from '../../util/Date';
 
 import {
     getFilterTypePlaceHolder,
@@ -114,8 +114,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     );
 
     const updateDateFilterFieldValue = useCallback(
-        (newValue: any, isSecondInput?: boolean) => {
-            const newDate = newValue ? formatDate(newValue) : null;
+        (newValue: any, isTime: boolean, isSecondInput?: boolean) => {
+            const newDate = newValue ? (isTime ? formatDateTime(newValue): formatDate(newValue)) : null;
             if (isSecondInput) setSecondFilterValue(newDate);
             else setFirstFilterValue(newDate);
             updateFilter(activeFilterType, newDate, isSecondInput);
@@ -132,6 +132,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
             const jsonType = field.getDisplayFieldJsonType();
             if (jsonType === 'date') {
+                const showTimeStamp = isDateTimeCol(field);
                 return (
                     <DatePicker
                         autoComplete="off"
@@ -142,8 +143,9 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         required
                         selected={valueRaw ? parseDate(valueRaw) : undefined}
                         name={'field-value-date' + suffix}
-                        onChange={newDate => updateDateFilterFieldValue(newDate, isSecondInput)}
-                        dateFormat={App.getDateFormat()}
+                        onChange={newDate => updateDateFilterFieldValue(newDate, showTimeStamp, isSecondInput)}
+                        dateFormat={showTimeStamp ? App.getDateTimeFormat() : App.getDateFormat()}
+                        showTimeSelect={showTimeStamp}
                     />
                 );
             } else if (jsonType === 'boolean') {
@@ -182,7 +184,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         step={jsonType === 'int' ? 1 : undefined}
                         name={'field-value-text' + suffix}
                         onChange={event => updateTextFilterFieldValue(event, true)}
-                        pattern={jsonType === 'int' ? '[0-9]*' : undefined}
+                        pattern={jsonType === 'int' ? '-?[0-9]*' : undefined}
                         type="number"
                         value={valueRaw ?? ''}
                         placeholder={placeholder}

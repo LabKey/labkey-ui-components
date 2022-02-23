@@ -487,6 +487,9 @@ export function getDateFormat(): string {
     return getServerContext().container.formats.dateFormat;
 }
 
+export function getDateTimeFormat(): string {
+    return getServerContext().container.formats.dateTimeFormat;
+}
 // Returns the friendly name of the product, primarly for use in help text.
 export function getCurrentProductName() {
     const lcController = ActionURL.getController().toLowerCase();

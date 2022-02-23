@@ -586,6 +586,7 @@ import {
 import {
     CloseEventCode,
     getDateFormat as getAppDateFormat,
+    getDateTimeFormat as getAppDateTimeFormat,
     getPrimaryAppProperties,
     hasModule,
     hasPremiumModule,
@@ -709,6 +710,7 @@ const App = {
     hasPremiumModule,
     hasModule,
     getDateFormat: getAppDateFormat,
+    getDateTimeFormat: getAppDateTimeFormat,
     useMenuSectionConfigs,
     getUserPermissions,
     doResetQueryGridState,

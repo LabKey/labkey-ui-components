@@ -445,6 +445,9 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
         // if no existing filter, check all values by default
         return allValues;
 
+    if (filter.getFilterType().isDataValueRequired() && filter.getValue() == null)
+        return allValues;
+
     const filterUrlSuffix = filter.getFilterType().getURLSuffix();
     const filterValues = getFilterValuesAsArray(filter);
 

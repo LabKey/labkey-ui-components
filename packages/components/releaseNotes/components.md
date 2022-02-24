@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.137.3
+*Released*: 24 February 2022
 * Item 9968: Show FM Freezer List on LKB and LKSM dashboards
   * Update createProductUrl() to use ActionURL.getAction() to stay in appDev mode
   * Remove NEW_FREEZER_DESIGN_HREF and MANAGE_STORAGE_UNITS_HREF

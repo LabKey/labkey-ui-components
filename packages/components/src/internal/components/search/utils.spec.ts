@@ -500,7 +500,7 @@ describe('getFieldFiltersValidationResult', () => {
 
 describe('getUpdateFilterExpressionFilter', () => {
     const fieldKey = 'StringField';
-    const stringField = QueryColumn.create({ name: fieldKey, rangeURI: TEXT_TYPE.rangeURI, jsonType: 'string' });
+    const stringField = QueryColumn.create({ name: fieldKey, rangeURI: TEXT_TYPE.rangeURI, jsonType: 'string', fieldKey: fieldKey });
 
     const anyOp = {
         betweenOperator: false,

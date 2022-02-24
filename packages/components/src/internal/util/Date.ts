@@ -20,6 +20,9 @@ import { Container, getServerContext } from '@labkey/api';
 
 import { QueryColumn } from '../..';
 
+const CREATED_CONCEPT_URI = "http://www.labkey.org/types#createdTimestamp";    // JbcType.TIMESTAMP
+const MODIFIED_CONCEPT_URI = "http://www.labkey.org/types#modifiedTimestamp";   // JbcType.TIMESTAMP
+
 export function datePlaceholder(col: QueryColumn): string {
     let placeholder;
 
@@ -45,10 +48,13 @@ export function isDateTimeCol(col: QueryColumn): boolean {
         const rangeURI = col.rangeURI?.toLowerCase();
 
         // attempt to use the rangeURI to figure out if we are working with a dateTime or date object
-        // note Created and Modified columns do not include the rangeURI information
         if (rangeURI?.indexOf('datetime') > -1) {
             return true;
         }
+
+        // note Created and Modified columns do not include the rangeURI information
+        if (CREATED_CONCEPT_URI === col.conceptURI || MODIFIED_CONCEPT_URI === col.conceptURI)
+            return true;
     }
 
     return false;

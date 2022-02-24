@@ -48,13 +48,10 @@ export function isDateTimeCol(col: QueryColumn): boolean {
         const rangeURI = col.rangeURI?.toLowerCase();
 
         // attempt to use the rangeURI to figure out if we are working with a dateTime or date object
+        // note Created and Modified columns do not include the rangeURI information
         if (rangeURI?.indexOf('datetime') > -1) {
             return true;
         }
-
-        // note Created and Modified columns do not include the rangeURI information
-        if (CREATED_CONCEPT_URI === col.conceptURI || MODIFIED_CONCEPT_URI === col.conceptURI)
-            return true;
     }
 
     return false;
@@ -115,4 +112,26 @@ export function generateNameWithTimestamp(name: string): string {
     let timeStr = date.toTimeString().split(' ')[0];
     timeStr = timeStr.replace(/:/g, '-');
     return name + '_' + dateStr + '_' + timeStr;
+}
+
+function twoDigit(num: number): string {
+    if (num < 10) {
+        return '0' + num;
+    }
+    return '' + num;
+}
+
+// From a current date string, get the next date string
+// example, from "2022-02-02", return "2022-02-03"
+export function getNextDateStr(currentDateStr: string) : string {
+    let nextDate = new Date(new Date(currentDateStr).getTime() + 60 * 60 * 24 * 1000); // add 24 hours
+
+    const userTimezoneOffset = nextDate.getTimezoneOffset() * 60*1000;
+    nextDate = new Date(nextDate.getTime() + userTimezoneOffset);
+
+    const year = nextDate.getFullYear();
+    const month = nextDate.getMonth() + 1;
+    const day = nextDate.getDate();
+
+    return '' + year + '-' + twoDigit(month) + '-' + twoDigit(day);
 }

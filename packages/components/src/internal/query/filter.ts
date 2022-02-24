@@ -17,7 +17,7 @@ import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { JsonType } from '../components/domainproperties/PropDescType';
-import { FieldFilter } from '../components/search/models';
+import { getNextDateStr } from "../util/Date";
 
 export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter>): boolean {
     if (first.size !== second.size) {
@@ -76,6 +76,71 @@ function getLabKeySqlValue(value: any, jsonType: JsonType): any {
     return value;
 }
 
+function getDateStrRange(dateStr: string): string[] {
+
+    let datePart : string;
+    if (dateStr.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
+        datePart = dateStr;
+    }else if (dateStr.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*(\d\d):(\d\d)\s*$/)) {
+        datePart = dateStr.split("\s")[0];
+    }
+
+    if (!datePart)
+        return [dateStr, dateStr];
+
+    return ["'" + dateStr + "'", "'" + getNextDateStr(dateStr) + "'"];
+}
+
+// for date (not datetime) field, ignore the time portion and do date only comparison
+export function getDateFieldLabKeySql(filter: Filter.IFilter): string {
+    const filterType = filter.getFilterType();
+    const columnNameSelect = getColumnSelect(filter.getColumnName());
+
+    let startDateStart, startDateEnd, endDateStart, endDateEnd : string;
+    const urlSuffix = filterType.getURLSuffix();
+    if (filterType.isDataValueRequired()) {
+        if (filterType.isMultiValued()) {
+            const values = filterType.parseValue(filter.getValue());
+            [startDateStart, startDateEnd] = getDateStrRange(values[0]);
+            if (values.length > 1) {
+                [endDateStart, endDateEnd] = getDateStrRange(values[1]);
+            }
+        } else {
+            [startDateStart, startDateEnd] = getDateStrRange(filter.getValue());
+        }
+
+        if (urlSuffix ===  Filter.Types.DATE_EQUAL.getURLSuffix()) {
+            return "(" + columnNameSelect + " >= " + startDateStart + " AND " + columnNameSelect + " < " + startDateEnd + ")";
+        } else if (urlSuffix ===  Filter.Types.DATE_NOT_EQUAL.getURLSuffix()) {
+            return "(" + columnNameSelect + " < " + startDateStart + " OR " + columnNameSelect + " >= " + startDateEnd + ")";
+        }
+        else if (urlSuffix ===  Filter.Types.BETWEEN.getURLSuffix()) {
+            return "(" + columnNameSelect + " >= " + startDateStart + " AND " + columnNameSelect + " < " + endDateEnd + ")";
+        }
+        else if (urlSuffix ===  Filter.Types.NOT_BETWEEN.getURLSuffix()) {
+            return "(" + columnNameSelect + " < " + startDateStart + " OR " + columnNameSelect + " >= " + endDateEnd + ")";
+        }
+        else if (urlSuffix ===  Filter.Types.DATE_GREATER_THAN.getURLSuffix()) {
+            return "(" + columnNameSelect + " >= " + startDateEnd + ")";
+        }
+        else if (urlSuffix ===  Filter.Types.DATE_LESS_THAN.getURLSuffix()) {
+            return "(" + columnNameSelect + " < " + startDateStart + ")";
+        }
+        else if (urlSuffix ===  Filter.Types.DATE_GREATER_THAN_OR_EQUAL.getURLSuffix()) {
+            return "(" + columnNameSelect + " >= " + startDateStart + ")";
+        }
+        else if (urlSuffix ===  Filter.Types.DATE_LESS_THAN_OR_EQUAL.getURLSuffix()) {
+            return "(" + columnNameSelect + " < " + startDateEnd + ")";
+        }
+    }
+
+    if (filterType.getLabKeySqlOperator() && !filterType.isDataValueRequired()) {
+        return columnNameSelect + ' ' + filterType.getLabKeySqlOperator();
+    }
+
+    return null;
+}
+
 /**
  * Note: this is an experimental API that may change unexpectedly in future releases.
  * From a filter and its column jsonType, return the LabKey sql operator clause
@@ -91,6 +156,23 @@ export function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string
     let operatorSql = null;
 
     if (filterType.getURLSuffix() === Filter.Types.HAS_ANY_VALUE.getURLSuffix()) return null;
+
+    if (jsonType === 'date' && filterType.isDataValueRequired()) {
+        let dateValue : string;
+        if (filterType.isMultiValued()) {
+            const values = filterType.parseValue(filter.getValue());
+            if (values.length > 1) {
+                dateValue = values[0];
+            }
+        } else {
+            dateValue = filter.getValue();
+        }
+
+        if (dateValue?.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
+            // for date (not datetime) field, ignore the time portion and do date only comparison
+            return getDateFieldLabKeySql(filter);
+        }
+    }
 
     if (filterType.getLabKeySqlOperator()) {
         if (!filterType.isDataValueRequired()) operatorSql = filterType.getLabKeySqlOperator();

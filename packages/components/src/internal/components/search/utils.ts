@@ -11,7 +11,6 @@ import { getOmittedSampleTypeColumns } from '../samples/utils';
 import { SCHEMAS } from '../../schemas';
 
 import { resolveFilterType } from '../omnibox/actions/Filter';
-import { resolveFieldKey } from '../omnibox/utils';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';

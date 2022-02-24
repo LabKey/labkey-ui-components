@@ -103,15 +103,36 @@ export function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string
             filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix()
         ) {
             const sqlValues = [];
+            const negate = filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix();
+            const includeNull = values.indexOf(null) > -1 || values.indexOf('') > -1;
             values.forEach(val => {
                 sqlValues.push(getLabKeySqlValue(val, jsonType));
             });
 
-            operatorSql =
-                (filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix() ? 'NOT ' : '') +
+            operatorSql = "(" + columnNameSelect + " " +
+                (negate ? 'NOT ' : '') +
                 'IN (' +
                 sqlValues.join(', ') +
                 ')';
+
+            if (includeNull) {
+                if (negate) {
+                    operatorSql = operatorSql + " AND " + columnNameSelect + " IS NOT NULL)"
+                }
+                else {
+                    operatorSql = operatorSql + " OR " + columnNameSelect + " IS NULL)";
+                }
+            }
+            else {
+                if (negate) {
+                    operatorSql = operatorSql + " OR " + columnNameSelect + " IS NULL)";
+                }
+                else {
+                    operatorSql = operatorSql + ")"
+                }
+            }
+
+            return operatorSql;
         } else if (
             filterType.getURLSuffix() === Filter.Types.BETWEEN.getURLSuffix() ||
             filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix()

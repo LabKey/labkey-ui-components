@@ -47,7 +47,13 @@ describe('getLabKeySql', () => {
 
     test('value list, string', () => {
         expect(getLabKeySql(Filter.create('StringField', 'value1;value2;value3', Filter.Types.IN), 'string')).toEqual(
-            "\"StringField\" IN ('value1', 'value2', 'value3')"
+            "(\"StringField\" IN ('value1', 'value2', 'value3'))"
+        );
+    });
+
+    test('value list, include null, string', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'value1;value2;;value3', Filter.Types.IN), 'string')).toEqual(
+            "(\"StringField\" IN ('value1', 'value2', '', 'value3') OR \"StringField\" IS NULL)"
         );
     });
 
@@ -57,18 +63,27 @@ describe('getLabKeySql', () => {
                 Filter.create('StringField', 'value1;value2;value3;value4;value5;value6;value7', Filter.Types.NOT_IN),
                 'string'
             )
-        ).toEqual("\"StringField\" NOT IN ('value1', 'value2', 'value3', 'value4', 'value5', 'value6', 'value7')");
+        ).toEqual("(\"StringField\" NOT IN ('value1', 'value2', 'value3', 'value4', 'value5', 'value6', 'value7') OR \"StringField\" IS NULL)");
+    });
+
+    test('value list, string, exclusion, exclude null', () => {
+        expect(
+            getLabKeySql(
+                Filter.create('StringField', 'value1;value2;value3;;value4;value5;value6;value7', Filter.Types.NOT_IN),
+                'string'
+            )
+        ).toEqual("(\"StringField\" NOT IN ('value1', 'value2', 'value3', '', 'value4', 'value5', 'value6', 'value7') AND \"StringField\" IS NOT NULL)");
     });
 
     test('value list, int', () => {
         expect(getLabKeySql(Filter.create('IntField', '1;2;3', Filter.Types.IN), 'int')).toEqual(
-            '"IntField" IN (1, 2, 3)'
+            '("IntField" IN (1, 2, 3))'
         );
     });
 
     test('value list, float, exclusion', () => {
         expect(getLabKeySql(Filter.create('FloatField', '1.1;2.2;3.3', Filter.Types.NOT_IN), 'float')).toEqual(
-            '"FloatField" NOT IN (1.1, 2.2, 3.3)'
+            '("FloatField" NOT IN (1.1, 2.2, 3.3) OR "FloatField" IS NULL)'
         );
     });
 

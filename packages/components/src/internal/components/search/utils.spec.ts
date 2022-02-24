@@ -500,7 +500,12 @@ describe('getFieldFiltersValidationResult', () => {
 
 describe('getUpdateFilterExpressionFilter', () => {
     const fieldKey = 'StringField';
-    const stringField = QueryColumn.create({ name: fieldKey, rangeURI: TEXT_TYPE.rangeURI, jsonType: 'string', fieldKey: fieldKey });
+    const stringField = QueryColumn.create({
+        name: fieldKey,
+        rangeURI: TEXT_TYPE.rangeURI,
+        jsonType: 'string',
+        fieldKey,
+    });
 
     const anyOp = {
         betweenOperator: false,
@@ -893,7 +898,7 @@ describe('getLabKeySqlWhere', () => {
         );
 
         const expectedWhere =
-            "WHERE \"String Field\" IS NULL AND \"float Field\" >= 1.234 AND \"strField\" BETWEEN '1' AND '5' AND \"floatField2\" BETWEEN 1 AND 5 AND (\"String Field\" IN ('value1', 'value2', 'value3')) AND (\"FloatField\" NOT IN (1.1, 2.2, 3.3) OR \"FloatField\" IS NULL) AND \"Boolean Field\" = TRUE AND (\"Date Field\" IS NULL OR \"Date Field\" <> '2020-08-06') AND \"Date Field\" NOT BETWEEN '2020-08-06' AND '2020-08-11'";
+            'WHERE "String Field" IS NULL AND "float Field" >= 1.234 AND "strField" BETWEEN \'1\' AND \'5\' AND "floatField2" BETWEEN 1 AND 5 AND ("String Field" IN (\'value1\', \'value2\', \'value3\')) AND ("FloatField" NOT IN (1.1, 2.2, 3.3) OR "FloatField" IS NULL) AND "Boolean Field" = TRUE AND ("Date Field" IS NULL OR "Date Field" <> \'2020-08-06\') AND "Date Field" NOT BETWEEN \'2020-08-06\' AND \'2020-08-11\'';
         expect(
             getLabKeySqlWhere([
                 isBlankFilter,

@@ -63,7 +63,9 @@ describe('getLabKeySql', () => {
                 Filter.create('StringField', 'value1;value2;value3;value4;value5;value6;value7', Filter.Types.NOT_IN),
                 'string'
             )
-        ).toEqual("(\"StringField\" NOT IN ('value1', 'value2', 'value3', 'value4', 'value5', 'value6', 'value7') OR \"StringField\" IS NULL)");
+        ).toEqual(
+            "(\"StringField\" NOT IN ('value1', 'value2', 'value3', 'value4', 'value5', 'value6', 'value7') OR \"StringField\" IS NULL)"
+        );
     });
 
     test('value list, string, exclusion, exclude null', () => {
@@ -72,7 +74,9 @@ describe('getLabKeySql', () => {
                 Filter.create('StringField', 'value1;value2;value3;;value4;value5;value6;value7', Filter.Types.NOT_IN),
                 'string'
             )
-        ).toEqual("(\"StringField\" NOT IN ('value1', 'value2', 'value3', '', 'value4', 'value5', 'value6', 'value7') AND \"StringField\" IS NOT NULL)");
+        ).toEqual(
+            "(\"StringField\" NOT IN ('value1', 'value2', 'value3', '', 'value4', 'value5', 'value6', 'value7') AND \"StringField\" IS NOT NULL)"
+        );
     });
 
     test('value list, int', () => {

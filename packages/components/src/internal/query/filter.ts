@@ -109,26 +109,19 @@ export function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string
                 sqlValues.push(getLabKeySqlValue(val, jsonType));
             });
 
-            operatorSql = "(" + columnNameSelect + " " +
-                (negate ? 'NOT ' : '') +
-                'IN (' +
-                sqlValues.join(', ') +
-                ')';
+            operatorSql = '(' + columnNameSelect + ' ' + (negate ? 'NOT ' : '') + 'IN (' + sqlValues.join(', ') + ')';
 
             if (includeNull) {
                 if (negate) {
-                    operatorSql = operatorSql + " AND " + columnNameSelect + " IS NOT NULL)"
+                    operatorSql = operatorSql + ' AND ' + columnNameSelect + ' IS NOT NULL)';
+                } else {
+                    operatorSql = operatorSql + ' OR ' + columnNameSelect + ' IS NULL)';
                 }
-                else {
-                    operatorSql = operatorSql + " OR " + columnNameSelect + " IS NULL)";
-                }
-            }
-            else {
+            } else {
                 if (negate) {
-                    operatorSql = operatorSql + " OR " + columnNameSelect + " IS NULL)";
-                }
-                else {
-                    operatorSql = operatorSql + ")"
+                    operatorSql = operatorSql + ' OR ' + columnNameSelect + ' IS NULL)';
+                } else {
+                    operatorSql = operatorSql + ')';
                 }
             }
 

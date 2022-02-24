@@ -70,8 +70,9 @@ interface StateProps {
 }
 
 interface OwnProps extends SelectInputProps {
-    queryColumn: QueryColumn;
+    containerPath?: string;
     filterArray?: Filter.IFilter[];
+    queryColumn: QueryColumn;
     sort?: string;
     selectedRows?: ISelectRowsResult;
 }
@@ -121,7 +122,7 @@ export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps>
     }
 
     getOptions() {
-        const { queryColumn, filterArray, sort } = this.props;
+        const { containerPath, filterArray, queryColumn, sort } = this.props;
 
         if (!queryColumn || !queryColumn.isLookup()) {
             throw 'querygrid forms/input/<LookupSelectInput> only works with lookup columns.';
@@ -133,7 +134,7 @@ export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps>
         this.setState(() => ({ isLoading: true }));
 
         const { schemaName, queryName } = queryColumn.lookup;
-        selectRows({ schemaName, queryName, filterArray, sort })
+        selectRows({ containerPath, schemaName, queryName, filterArray, sort })
             .then(response => {
                 this.setState(() => ({
                     isLoading: false,

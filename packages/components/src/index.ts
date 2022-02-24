@@ -359,7 +359,6 @@ import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEm
 import { AssaysHeatMap } from './internal/components/assay/AssaysHeatMap';
 import { AssaySubNavMenu } from './internal/components/assay/AssaySubNavMenu';
 import { AssayTypeSummary } from './internal/components/assay/AssayTypeSummary';
-import { RecentAssayPanel } from './internal/components/assay/RecentAssayPanel';
 import { AssayPicker, AssayPickerTabs } from './internal/components/assay/AssayPicker';
 import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportSubMenuItem';
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
@@ -645,9 +644,7 @@ import {
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
-    MANAGE_STORAGE_UNITS_HREF,
     NEW_ASSAY_DESIGN_HREF,
-    NEW_FREEZER_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_SAMPLES_HREF,
     NEW_SOURCE_TYPE_HREF,
@@ -763,8 +760,6 @@ const App = {
     FIND_SAMPLES_BY_ID_HREF,
     PICKLIST_HOME_HREF,
     WORKFLOW_HOME_HREF,
-    NEW_FREEZER_DESIGN_HREF,
-    MANAGE_STORAGE_UNITS_HREF,
     NOTIFICATION_TIMEOUT,
     STICKY_HEADER_HEIGHT,
     SERVER_NOTIFICATION_MAX_ROWS,
@@ -1075,7 +1070,6 @@ export {
     AssayPicker,
     AssayPickerTabs,
     assayPage,
-    RecentAssayPanel,
     withAssayModels,
     withAssayModelsFromLocation,
     AssayContextConsumer,

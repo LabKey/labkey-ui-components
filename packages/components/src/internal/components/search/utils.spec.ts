@@ -897,8 +897,7 @@ describe('getLabKeySqlWhere', () => {
             'WHERE "intField" = 1 AND "Boolean Field" = TRUE'
         );
 
-        const expectedWhere =
-            'WHERE "String Field" IS NULL AND "float Field" >= 1.234 AND "strField" BETWEEN \'1\' AND \'5\' AND "floatField2" BETWEEN 1 AND 5 AND ("String Field" IN (\'value1\', \'value2\', \'value3\')) AND ("FloatField" NOT IN (1.1, 2.2, 3.3) OR "FloatField" IS NULL) AND "Boolean Field" = TRUE AND ("Date Field" IS NULL OR "Date Field" <> \'2020-08-06\') AND "Date Field" NOT BETWEEN \'2020-08-06\' AND \'2020-08-11\'';
+        const expectedWhere = "WHERE \"String Field\" IS NULL AND \"float Field\" >= 1.234 AND \"strField\" BETWEEN '1' AND '5' AND \"floatField2\" BETWEEN 1 AND 5 AND (\"String Field\" IN ('value1', 'value2', 'value3')) AND (\"FloatField\" NOT IN (1.1, 2.2, 3.3) OR \"FloatField\" IS NULL) AND \"Boolean Field\" = TRUE AND (\"Date Field\" < '2020-08-06' OR \"Date Field\" >= '2020-08-12')";
         expect(
             getLabKeySqlWhere([
                 isBlankFilter,

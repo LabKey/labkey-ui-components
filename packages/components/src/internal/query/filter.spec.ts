@@ -7,10 +7,12 @@ import { getLabKeySql } from './filter';
 const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/PST
 const testDate = new Date(datePOSIX);
 const dateStr = formatDate(testDate, 'America/PST', 'YYYY-MM-dd');
+const dateTimeStr = formatDate(testDate, 'America/PST', 'YYYY-MM-dd HH:mm');
 
 const date2POSIX = 1597182283812; // Aug 11, 2020 14:44 America/PST
 const testDate2 = new Date(date2POSIX);
 const dateStr2 = formatDate(testDate2, 'America/PST', 'YYYY-MM-dd');
+const dateTimeStr2 = formatDate(testDate2, 'America/PST', 'YYYY-MM-dd HH:mm');
 
 describe('getLabKeySql', () => {
     test('has any value', () => {
@@ -134,39 +136,99 @@ describe('getLabKeySql', () => {
     });
 
     test('date filter, eq', () => {
-        expect(getLabKeySql(Filter.create('DateField', dateStr, Filter.Types.Equals), 'date')).toEqual(
-            '"DateField" = \'2020-08-06\''
+        expect(getLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_EQUAL), 'date')).toEqual(
+            "(\"DateField\" >= '2020-08-06' AND \"DateField\" < '2020-08-07')"
         );
     });
 
-    test('date filter, neq OR null', () => {
-        expect(getLabKeySql(Filter.create('DateField', dateStr, Filter.Types.NEQ_OR_NULL), 'date')).toEqual(
-            '("DateField" IS NULL OR "DateField" <> \'2020-08-06\')'
+    test('datetime filter, eq', () => {
+        expect(getLabKeySql(Filter.create('DateField', dateTimeStr, Filter.Types.DATE_EQUAL), 'date')).toEqual(
+            "\"DateField\" = '2020-08-06 14:44'"
+        );
+    });
+
+    test('date filter, neq', () => {
+        expect(getLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_NOT_EQUAL), 'date')).toEqual(
+            "(\"DateField\" < '2020-08-06' OR \"DateField\" >= '2020-08-07')"
+        );
+    });
+
+    test('datetime filter, neq', () => {
+        expect(getLabKeySql(Filter.create('DateField', dateTimeStr, Filter.Types.DATE_NOT_EQUAL), 'date')).toEqual(
+            "\"DateField\" <> '2020-08-06 14:44'"
         );
     });
 
     test('date filter, >', () => {
-        expect(getLabKeySql(Filter.create('DateField', dateStr, Filter.Types.GT), 'date')).toEqual(
-            '"DateField" > \'2020-08-06\''
+        expect(getLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_GREATER_THAN), 'date')).toEqual(
+            "(\"DateField\" >= '2020-08-07')"
+        );
+    });
+
+    test('datetime filter, >', () => {
+        expect(getLabKeySql(Filter.create('DateField', dateTimeStr, Filter.Types.DATE_GREATER_THAN), 'date')).toEqual(
+            "\"DateField\" > '2020-08-06 14:44'"
+        );
+    });
+
+    test('date filter, >=', () => {
+        expect(getLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_GREATER_THAN_OR_EQUAL), 'date')).toEqual(
+            "(\"DateField\" >= '2020-08-06')"
+        );
+    });
+
+    test('datetime filter, >=', () => {
+        expect(getLabKeySql(Filter.create('DateField', dateTimeStr, Filter.Types.DATE_GREATER_THAN_OR_EQUAL), 'date')).toEqual(
+            "\"DateField\" >= '2020-08-06 14:44'"
         );
     });
 
     test('date filter, <=', () => {
-        expect(getLabKeySql(Filter.create('DateField', dateStr, Filter.Types.LTE), 'date')).toEqual(
-            '"DateField" <= \'2020-08-06\''
+        expect(getLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_LESS_THAN_OR_EQUAL), 'date')).toEqual(
+            "(\"DateField\" < '2020-08-07')"
+        );
+    });
+
+    test('datetime filter, <=', () => {
+        expect(getLabKeySql(Filter.create('DateField', dateTimeStr, Filter.Types.DATE_LESS_THAN_OR_EQUAL), 'date')).toEqual(
+            "\"DateField\" <= '2020-08-06 14:44'"
+        );
+    });
+
+    test('date filter, <', () => {
+        expect(getLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_LESS_THAN), 'date')).toEqual(
+            "(\"DateField\" < '2020-08-06')"
+        );
+    });
+
+    test('datetime filter, <', () => {
+        expect(getLabKeySql(Filter.create('DateField', dateTimeStr, Filter.Types.DATE_LESS_THAN), 'date')).toEqual(
+            "\"DateField\" < '2020-08-06 14:44'"
         );
     });
 
     test('date filter, between', () => {
         expect(
             getLabKeySql(Filter.create('DateField', dateStr + ',' + dateStr2, Filter.Types.BETWEEN), 'date')
-        ).toEqual("\"DateField\" BETWEEN '2020-08-06' AND '2020-08-11'");
+        ).toEqual("(\"DateField\" >= '2020-08-06' AND \"DateField\" < '2020-08-12')");
+    });
+
+    test('datetime filter, between', () => {
+        expect(
+            getLabKeySql(Filter.create('DateField', dateTimeStr + ',' + dateTimeStr2, Filter.Types.BETWEEN), 'date')
+        ).toEqual("\"DateField\" BETWEEN '2020-08-06 14:44' AND '2020-08-11 14:44'");
     });
 
     test('date filter, not between', () => {
         expect(
             getLabKeySql(Filter.create('DateField', dateStr + ',' + dateStr2, Filter.Types.NOT_BETWEEN), 'date')
-        ).toEqual("\"DateField\" NOT BETWEEN '2020-08-06' AND '2020-08-11'");
+        ).toEqual("(\"DateField\" < '2020-08-06' OR \"DateField\" >= '2020-08-12')");
+    });
+
+    test('datetime filter, not between', () => {
+        expect(
+            getLabKeySql(Filter.create('DateField', dateTimeStr + ',' + dateTimeStr2, Filter.Types.NOT_BETWEEN), 'date')
+        ).toEqual("\"DateField\" NOT BETWEEN '2020-08-06 14:44' AND '2020-08-11 14:44'");
     });
 
     test('filter types not supported', () => {

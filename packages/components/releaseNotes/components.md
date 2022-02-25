@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Support EditableGridPanel conversion for LKFM add and move samples use cases
+  * AppURL switch back to hardcoded app.view
+  * remove unused EditableGridModal
+  * loadEditorModelData update to support raw value not being an object
+
 ### version 2.137.3
 *Released*: 24 February 2022
 * Item 9968: Show FM Freezer List on LKB and LKSM dashboards

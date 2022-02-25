@@ -222,7 +222,6 @@ import { EditableGridPanelDeprecated } from './internal/components/editable/Edit
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridLoader } from './internal/components/editable/EditableGridLoader';
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
-import { EditableGridModal } from './internal/components/editable/EditableGridModal';
 
 import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
@@ -842,7 +841,6 @@ export {
     EditableGridPanel,
     EditableGridPanelDeprecated,
     EditableGridPanelForUpdate,
-    EditableGridModal,
     EditorModel,
     cancelEvent,
     // url and location related items

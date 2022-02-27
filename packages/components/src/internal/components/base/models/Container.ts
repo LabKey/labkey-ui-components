@@ -45,4 +45,20 @@ export class Container extends Record(defaultContainer) implements Partial<ICont
     hasActiveModule(moduleName: string): boolean {
         return this.activeModules?.indexOf(moduleName) > -1;
     }
+
+    get isFolder(): boolean {
+        return this.type === 'folder';
+    }
+
+    get isProject(): boolean {
+        return this.type === 'project' && !this.isRoot;
+    }
+
+    get isRoot(): boolean {
+        return this.path === '/';
+    }
+
+    get isSharedProject(): boolean {
+        return this.path === '/Shared';
+    }
 }

@@ -63,7 +63,7 @@ export class Container extends Record(defaultContainer) implements IContainer {
     }
 
     get isFolder(): boolean {
-        return this.type === 'folder';
+        return this.type === 'folder' && !this.isRoot;
     }
 
     get isProject(): boolean {

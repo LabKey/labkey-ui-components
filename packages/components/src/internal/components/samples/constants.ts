@@ -171,6 +171,19 @@ export const SAMPLE_STORAGE_COLUMNS = [
     'StorageComment',
 ];
 
+export const SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR = [
+    'SourceProtocolLSID',
+    'StorageStatus',
+    'SampleTypeUnits',
+    'StoredAmount',
+    'Units',
+    'FreezeThawCount',
+    'CheckedOutBy',
+    'StorageRow',
+    'StorageCol',
+    'CheckedOut',
+];
+
 export const SAMPLE_INSERT_EXTRA_COLUMNS = [...SAMPLE_STORAGE_COLUMNS, ALIQUOTED_FROM_COL];
 
 export const SAMPLE_EXPORT_CONFIG = {

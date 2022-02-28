@@ -1,11 +1,23 @@
 import { Record } from 'immutable';
 import { Container as IContainer } from '@labkey/api';
 
-const defaultContainer: Partial<IContainer> = {
+interface ContainerDateFormats {
+    dateFormat: string;
+    dateTimeFormat: string;
+    numberFormat: string;
+}
+
+const defaultContainer: IContainer = {
     activeModules: [],
     effectivePermissions: [],
     folderType: '',
+    formats: {
+        dateFormat: '',
+        dateTimeFormat: '',
+        numberFormat: '',
+    },
     hasRestrictedActiveModule: false,
+    iconHref: '',
     id: '',
     isContainerTab: false,
     isWorkbook: false,
@@ -14,6 +26,7 @@ const defaultContainer: Partial<IContainer> = {
     parentPath: '',
     path: '',
     sortOrder: 0,
+    startUrl: '',
     title: '',
     type: '',
 };
@@ -21,11 +34,13 @@ const defaultContainer: Partial<IContainer> = {
 /**
  * Model for org.labkey.api.data.Container as returned by Container.toJSON()
  */
-export class Container extends Record(defaultContainer) implements Partial<IContainer> {
+export class Container extends Record(defaultContainer) implements IContainer {
     declare activeModules: string[];
     declare effectivePermissions: string[];
     declare folderType: string;
+    declare formats: ContainerDateFormats;
     declare hasRestrictedActiveModule: boolean;
+    declare iconHref: string;
     declare id: string;
     declare isContainerTab: boolean;
     declare isWorkbook: boolean;
@@ -34,6 +49,7 @@ export class Container extends Record(defaultContainer) implements Partial<ICont
     declare parentPath: string;
     declare path: string;
     declare sortOrder: number;
+    declare startUrl: string;
     declare title: string;
     declare type: string;
 

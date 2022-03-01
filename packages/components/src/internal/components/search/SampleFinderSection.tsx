@@ -291,6 +291,10 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
         };
     }, []);
 
+    const afterSampleActionComplete = useCallback((): void => {
+        actions.loadAllModels();
+    }, [actions]);
+
     if (isLoading) return <LoadingSpinner />;
 
     return (
@@ -298,6 +302,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
             <SamplesTabbedGridPanel
                 {...props}
                 withTitle={false}
+                afterSampleActionComplete={afterSampleActionComplete}
                 asPanel={false}
                 actions={actions}
                 queryModels={queryModels}

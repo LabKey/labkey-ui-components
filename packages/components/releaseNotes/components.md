@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.138.X
+*Released*: TBD
+* Sample Finder Polishing
+  * Add `containerFilter` property to `EntityDataType` model
+  * Assure grid is updated after sample actions are taken
+
 ### version 2.138.0
 *Released*: 28 February 2022
 * Item 10056: Sample Finder v1 - Wire up new lineage filters

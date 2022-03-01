@@ -3218,6 +3218,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "filterType": Object {
                 "getDisplaySymbol": [Function],
                 "getDisplayText": [Function],
+                "getLabKeySqlOperator": [Function],
                 "getLongDisplayText": [Function],
                 "getMultiValueFilter": [Function],
                 "getMultiValueMaxOccurs": [Function],
@@ -3365,6 +3366,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "filterType": Object {
                   "getDisplaySymbol": [Function],
                   "getDisplayText": [Function],
+                  "getLabKeySqlOperator": [Function],
                   "getLongDisplayText": [Function],
                   "getMultiValueFilter": [Function],
                   "getMultiValueMaxOccurs": [Function],
@@ -3526,6 +3528,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                   "filterType": Object {
                     "getDisplaySymbol": [Function],
                     "getDisplayText": [Function],
+                    "getLabKeySqlOperator": [Function],
                     "getLongDisplayText": [Function],
                     "getMultiValueFilter": [Function],
                     "getMultiValueMaxOccurs": [Function],
@@ -3654,6 +3657,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     "filterType": Object {
                       "getDisplaySymbol": [Function],
                       "getDisplayText": [Function],
+                      "getLabKeySqlOperator": [Function],
                       "getLongDisplayText": [Function],
                       "getMultiValueFilter": [Function],
                       "getMultiValueMaxOccurs": [Function],

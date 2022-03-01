@@ -11,10 +11,12 @@ import { getOmittedSampleTypeColumns } from '../samples/utils';
 import { SCHEMAS } from '../../schemas';
 
 import { resolveFilterType } from '../omnibox/actions/Filter';
-import { resolveFieldKey } from '../omnibox/utils';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
+
+import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfFilterType';
+import { getLabKeySql } from '../../query/filter';
 
 import { FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps } from './models';
 
@@ -69,6 +71,48 @@ function getSampleFinderConfigId(finderId: string, suffix: string): string {
     return uuids[0] + '-' + finderId + '|' + suffix;
 }
 
+/**
+ * Note: this is an experimental API that may change unexpectedly in future releases.
+ * From an array of FieldFilter, LabKey sql where clause
+ * @param fieldFilters
+ * @return labkey sql where clauses
+ */
+export function getLabKeySqlWhere(fieldFilters: FieldFilter[]): string {
+    const clauses = [];
+    fieldFilters.forEach(fieldFilter => {
+        const clause = getLabKeySql(fieldFilter.filter, fieldFilter.jsonType);
+        if (clause) clauses.push(clause);
+    });
+
+    if (clauses.length === 0) return '';
+
+    return 'WHERE ' + clauses.join(' AND ');
+}
+
+export function getExpDescendantOfSelectClause(schemaQuery: SchemaQuery, fieldFilters: FieldFilter[]): string {
+    const selectClauseWhere = getLabKeySqlWhere(fieldFilters);
+    if (!selectClauseWhere) return null;
+
+    return (
+        'SELECT "' +
+        schemaQuery.queryName +
+        '".expObject() FROM ' +
+        schemaQuery.schemaName +
+        '."' +
+        schemaQuery.queryName +
+        '" ' +
+        selectClauseWhere
+    );
+}
+
+export function getExpDescendantOfFilter(schemaQuery: SchemaQuery, fieldFilters: FieldFilter[]): Filter.IFilter {
+    const selectClause = getExpDescendantOfSelectClause(schemaQuery, fieldFilters);
+
+    if (selectClause) return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
+
+    return null;
+}
+
 // exported for jest testing
 export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<QueryConfig> {
     const baseFilters = [];
@@ -77,15 +121,22 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
         const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
 
         if (card.filterArray?.length) {
-            const filters = [];
+            const schemaQuery = card.schemaQuery;
             card.filterArray.forEach(f => {
                 const filter = f.filter;
-                const newColumnName = cardColumnName + '/' + filter.getColumnName();
-                const updatedFilter = Filter.create(newColumnName, filter.getValue(), filter.getFilterType());
-                filters.push(updatedFilter);
-                requiredColumns.push(newColumnName);
+                const columnName = filter.getColumnName();
+
+                // lookup fields not supported for lineage MVFK column
+                if (columnName.indexOf('/') === -1) {
+                    const newColumnName = cardColumnName + '/' + columnName;
+                    requiredColumns.push(newColumnName);
+                }
             });
-            baseFilters.push(...filters);
+
+            const filter = getExpDescendantOfFilter(schemaQuery, card.filterArray);
+            if (filter) {
+                baseFilters.push(filter);
+            }
         } else {
             requiredColumns.push(cardColumnName);
             baseFilters.push(Filter.create(cardColumnName + '/Name', null, Filter.Types.NONBLANK));
@@ -226,6 +277,7 @@ export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCoun
                 fieldKey: field.fieldKey,
                 fieldCaption: field.fieldCaption,
                 filter: filterToJson(field.filter),
+                jsonType: field.jsonType,
             });
         });
         filterPropObj.filterArray = filterArrayObjs;
@@ -261,7 +313,7 @@ export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStor
                 fieldKey: field.fieldKey,
                 fieldCaption: field.fieldCaption,
                 filter: filterFromJson(field.filter),
-                expanded: field.expanded,
+                jsonType: field.jsonType,
             });
         });
         filterPropObj['filterArray'] = filterArray;
@@ -369,23 +421,25 @@ export function getUpdateFilterExpressionFilter(
 
     let filter: Filter.IFilter;
 
+    const fieldKey = field.getDisplayFieldKey();
     if (!newFilterType.valueRequired) {
-        filter = Filter.create(resolveFieldKey(field.name, field), null, filterType);
+        filter = Filter.create(fieldKey, null, filterType);
     } else {
         let value = newFilterValue;
         if (newFilterType?.betweenOperator) {
             if (clearBothValues) {
                 value = null;
             } else if (isSecondValue) {
-                if (!newFilterValue) value = previousFirstFilterValue ? previousFirstFilterValue : '';
-                else value = (previousFirstFilterValue ? previousFirstFilterValue + ',' : '') + newFilterValue;
+                if (newFilterValue == null) value = previousFirstFilterValue != null ? previousFirstFilterValue : '';
+                else value = (previousFirstFilterValue != null ? previousFirstFilterValue + ',' : '') + newFilterValue;
             } else {
-                if (!newFilterValue) value = previousSecondFilterValue ? previousSecondFilterValue : '';
-                else value = newFilterValue + (previousSecondFilterValue ? ',' + previousSecondFilterValue : '');
+                if (newFilterValue == null) value = previousSecondFilterValue != null ? previousSecondFilterValue : '';
+                else
+                    value = newFilterValue + (previousSecondFilterValue != null ? ',' + previousSecondFilterValue : '');
             }
-        } else if (!value && field.jsonType === 'boolean') value = 'false';
+        } else if (!value && field.getDisplayFieldJsonType() === 'boolean') value = 'false';
 
-        filter = Filter.create(resolveFieldKey(field.name, field), value, filterType);
+        filter = Filter.create(fieldKey, value, filterType);
     }
 
     return filter;
@@ -396,6 +450,8 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
     if (!filter || !allValues)
         // if no existing filter, check all values by default
         return allValues;
+
+    if (filter.getFilterType().isDataValueRequired() && filter.getValue() == null) return allValues;
 
     const filterUrlSuffix = filter.getFilterType().getURLSuffix();
     const filterValues = getFilterValuesAsArray(filter);

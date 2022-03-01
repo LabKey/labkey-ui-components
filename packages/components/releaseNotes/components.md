@@ -5,6 +5,20 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * TODO
 
+### version 2.138.0
+*Released*: 28 February 2022
+* Item 10056: Sample Finder v1 - Wire up new lineage filters
+  * Added getLabKeySqlWhere util
+  * Added InExpAncestorsOfFilterType and InExpDescendantsOfFilterType
+  * Enable non-text fields for EntityFieldFilterModal (Sample Finder)
+
+### version 2.137.3
+*Released*: 24 February 2022
+* Item 9968: Show FM Freezer List on LKB and LKSM dashboards
+  * Update createProductUrl() to use ActionURL.getAction() to stay in appDev mode
+  * Remove NEW_FREEZER_DESIGN_HREF and MANAGE_STORAGE_UNITS_HREF
+  * Remove RecentAssayPanel.tsx and related code
+
 ### version 2.137.2
 *Released*: 23 February 2022
 * Item 9945: add calls to incrementClientSideMetricCount() for sample finder related actions

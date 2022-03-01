@@ -6,10 +6,10 @@ import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
-import { App, parseDate } from '../../../index';
+import { App, formatDateTime, parseDate } from '../../../index';
 
 import { JsonType } from '../domainproperties/PropDescType';
-import { formatDate } from '../../util/Date';
+import { formatDate, isDateTimeCol } from '../../util/Date';
 
 import {
     getFilterTypePlaceHolder,
@@ -35,7 +35,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     const [secondFilterValue, setSecondFilterValue] = useState<any>();
 
     useEffect(() => {
-        const filterOptions = getSampleFinderFilterTypesForType(field?.jsonType as JsonType);
+        const filterOptions = getSampleFinderFilterTypesForType(field?.getDisplayFieldJsonType() as JsonType);
         setFieldFilterOptions(filterOptions);
 
         if (fieldFilter) {
@@ -102,7 +102,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
     const updateTextFilterFieldValue = useCallback(
         (event: any, isNumberInput?: boolean) => {
-            const newValue = isNumberInput ? event.target.valueAsNumber : event.target.value;
+            let newValue = isNumberInput ? event.target.valueAsNumber : event.target.value;
+            if (isNumberInput && isNaN(newValue)) newValue = null;
             const isSecondInput = event.target.name.endsWith('-second');
             if (isSecondInput) setSecondFilterValue(newValue);
             else setFirstFilterValue(newValue);
@@ -112,8 +113,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     );
 
     const updateDateFilterFieldValue = useCallback(
-        (newValue: any, isSecondInput?: boolean) => {
-            const newDate = newValue ? formatDate(newValue) : null;
+        (newValue: any, isTime: boolean, isSecondInput?: boolean) => {
+            const newDate = newValue ? (isTime ? formatDateTime(newValue) : formatDate(newValue)) : null;
             if (isSecondInput) setSecondFilterValue(newDate);
             else setFirstFilterValue(newDate);
             updateFilter(activeFilterType, newDate, isSecondInput);
@@ -122,13 +123,15 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     );
 
     const renderFilterInput = useCallback(
-        (placeholder: string, isSecondInput?: boolean) => {
+        (placeholder: string, isMultiValueInput?: boolean, isSecondInput?: boolean) => {
             if (!activeFilterType || !activeFilterType.valueRequired) return null;
 
             const suffix = isSecondInput ? '-second' : '';
             const valueRaw = isSecondInput ? secondFilterValue : firstFilterValue;
 
-            if (field.jsonType === 'date') {
+            const jsonType = field.getDisplayFieldJsonType();
+            if (jsonType === 'date') {
+                const showTimeStamp = isDateTimeCol(field);
                 return (
                     <DatePicker
                         autoComplete="off"
@@ -139,11 +142,12 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         required
                         selected={valueRaw ? parseDate(valueRaw) : undefined}
                         name={'field-value-date' + suffix}
-                        onChange={newDate => updateDateFilterFieldValue(newDate, isSecondInput)}
-                        dateFormat={App.getDateFormat()}
+                        onChange={newDate => updateDateFilterFieldValue(newDate, showTimeStamp, isSecondInput)}
+                        dateFormat={showTimeStamp ? App.getDateTimeFormat() : App.getDateFormat()}
+                        showTimeSelect={showTimeStamp}
                     />
                 );
-            } else if (field.jsonType === 'boolean') {
+            } else if (jsonType === 'boolean') {
                 return (
                     <>
                         <div key="field-value-bool-true">
@@ -172,14 +176,14 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 );
             }
 
-            if (field.jsonType === 'int' || field.jsonType === 'float') {
+            if (!isMultiValueInput && (jsonType === 'int' || jsonType === 'float')) {
                 return (
                     <FormControl
                         className="form-control search-filter__input"
-                        step={field.jsonType === 'int' ? 1 : undefined}
+                        step={jsonType === 'int' ? 1 : undefined}
                         name={'field-value-text' + suffix}
                         onChange={event => updateTextFilterFieldValue(event, true)}
-                        pattern={field.jsonType === 'int' ? '[0-9]*' : undefined}
+                        pattern={jsonType === 'int' ? '-?[0-9]*' : undefined}
                         type="number"
                         value={valueRaw ?? ''}
                         placeholder={placeholder}
@@ -207,15 +211,16 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         if (!activeFilterType || !activeFilterType.valueRequired) return null;
 
         const isBetweenOperator = activeFilterType.betweenOperator;
-        const placeholder = getFilterTypePlaceHolder(activeFilterType.value, field.jsonType);
+        const isMultiValueInput = activeFilterType.value === 'in' || activeFilterType.value === 'notin';
+        const placeholder = getFilterTypePlaceHolder(activeFilterType.value, field.getDisplayFieldJsonType());
 
-        if (!isBetweenOperator) return renderFilterInput(placeholder);
+        if (!isBetweenOperator) return renderFilterInput(placeholder, isMultiValueInput);
 
         return (
             <>
-                {renderFilterInput(placeholder)}
+                {renderFilterInput(placeholder, isMultiValueInput)}
                 <div className="search-filter__and-op">and</div>
-                {renderFilterInput(placeholder, true)}
+                {renderFilterInput(placeholder, isMultiValueInput, true)}
             </>
         );
     }, [field, activeFilterType, firstFilterValue, secondFilterValue]);

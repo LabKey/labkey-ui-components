@@ -20,6 +20,9 @@ import { Container, getServerContext } from '@labkey/api';
 
 import { QueryColumn } from '../..';
 
+const CREATED_CONCEPT_URI = "http://www.labkey.org/types#createdTimestamp";    // JbcType.TIMESTAMP
+const MODIFIED_CONCEPT_URI = "http://www.labkey.org/types#modifiedTimestamp";   // JbcType.TIMESTAMP
+
 export function datePlaceholder(col: QueryColumn): string {
     let placeholder;
 
@@ -109,4 +112,26 @@ export function generateNameWithTimestamp(name: string): string {
     let timeStr = date.toTimeString().split(' ')[0];
     timeStr = timeStr.replace(/:/g, '-');
     return name + '_' + dateStr + '_' + timeStr;
+}
+
+function twoDigit(num: number): string {
+    if (num < 10) {
+        return '0' + num;
+    }
+    return '' + num;
+}
+
+// From a current date string, get the next date string
+// example, from "2022-02-02", return "2022-02-03"
+export function getNextDateStr(currentDateStr: string) : string {
+    let nextDate = new Date(new Date(currentDateStr).getTime() + 60 * 60 * 24 * 1000); // add 24 hours
+
+    const userTimezoneOffset = nextDate.getTimezoneOffset() * 60*1000;
+    nextDate = new Date(nextDate.getTime() + userTimezoneOffset);
+
+    const year = nextDate.getFullYear();
+    const month = nextDate.getMonth() + 1;
+    const day = nextDate.getDate();
+
+    return '' + year + '-' + twoDigit(month) + '-' + twoDigit(day);
 }

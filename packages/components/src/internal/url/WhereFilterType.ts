@@ -50,6 +50,9 @@ class WhereFilterType implements Filter.IFilterType {
         return value;
     }
     validate(value: any, jsonType: string, columnName: string) {}
+    getLabKeySqlOperator(): string {
+        return null;
+    }
 }
 
 export const WHERE_FILTER_TYPE = new WhereFilterType();

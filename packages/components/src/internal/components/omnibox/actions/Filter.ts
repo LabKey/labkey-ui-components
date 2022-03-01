@@ -22,6 +22,8 @@ import { parseColumns, resolveFieldKey } from '../utils';
 
 import { decodePart } from '../../../../public/SchemaQuery';
 
+import { JsonType } from '../../domainproperties/PropDescType';
+
 import { Action, ActionOption, ActionValue, Value } from './Action';
 
 /**
@@ -98,7 +100,7 @@ export function resolveFilterType(token: string, column: QueryColumn): Filter.IF
 
     if (SYMBOL_MAP.has(token)) {
         const symbolTypes = SYMBOL_MAP.get(token);
-        const types = Filter.getFilterTypesForType(column.get('jsonType'));
+        const types = Filter.getFilterTypesForType(column.getDisplayFieldJsonType() as JsonType);
 
         let value: Filter.IFilterType;
         let match = false;

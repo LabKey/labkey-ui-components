@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.138.1
+*Released*: 1 March 2022
 * Item 44544: Sample type dataset definitions should be locked similar to assays
     * Generalize IDatasetModel.isFromAssay to isFromLinkedSource to handle both assay and sample type datasets
 

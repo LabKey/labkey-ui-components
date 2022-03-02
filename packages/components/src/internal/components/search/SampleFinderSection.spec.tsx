@@ -49,7 +49,7 @@ describe('SampleFinderSection', () => {
         );
         const section = wrapper.find(Section);
         expect(section.prop('title')).toBe('Find Samples');
-        expect(section.prop('caption')).toBe('Find samples that meet all the criteria defined below');
+        expect(section.prop('caption')).toBe('Find all generations of samples that meet all the criteria defined below');
         expect(section.find('.filter-hint').exists()).toBeTruthy();
         const cards = wrapper.find(FilterCards);
         expect(cards.prop('className')).toBe('empty');

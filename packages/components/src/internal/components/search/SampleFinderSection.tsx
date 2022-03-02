@@ -34,7 +34,8 @@ import { removeFinderGridView, saveFinderGridView } from './actions';
 import { FilterCards } from './FilterCards';
 import {
     getFinderStartText,
-    getFinderViewColumnsConfig, getSampleFinderColumnNames,
+    getFinderViewColumnsConfig,
+    getSampleFinderColumnNames,
     getSampleFinderQueryConfigs,
     SAMPLE_FILTER_METRIC_AREA,
     searchFiltersFromJson,

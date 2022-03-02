@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.138.TBD
+*Released*: TBD March 2022
+* Item 9817: Sample Finder v1 polish fixes/updates
+  * Add padding to loading spinner
+  * Choose Values panel fix for long text options and empty state
+
 ### version 2.138.1
 *Released*: 1 March 2022
 * Item 44544: Sample type dataset definitions should be locked similar to assays

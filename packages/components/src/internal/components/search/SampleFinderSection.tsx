@@ -353,7 +353,9 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
 
     return (
         <>
-            <div className={"bottom-spacing filter-results__message"}>Showing all generations of samples for the criteria given above.</div>
+            <div className={"bottom-spacing filter-results__message"}>
+                Showing all generations of samples for the criteria given above.
+            </div>
             <SampleFinderSamplesWithQueryModels
                 columnDisplayNames={getSampleFinderColumnNames(cards)}
                 sampleTypeNames={sampleTypeNames}

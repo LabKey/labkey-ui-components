@@ -283,7 +283,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                             {entityDataType.nounAsParentPlural ?? entityDataType.nounPlural}
                         </div>
                         <div className="list-group parent-search-panel__col-content">
-                            {!entityQueries && <LoadingSpinner />}
+                            {!entityQueries && <LoadingSpinner wrapperClassName="loading-spinner" />}
                             {entityQueries?.map((parent, index) => {
                                 const label = parent.label ?? parent.get?.('label'); // jest test data is Map, instead of js object
                                 const parentValue = parent.value ?? parent.get?.('value');
@@ -319,7 +319,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         )}
                         {activeQuery && (
                             <div className="list-group parent-search-panel__col-content parent-search-panel__fields-col-content">
-                                {!queryFields && <LoadingSpinner />}
+                                {!queryFields && <LoadingSpinner wrapperClassName="loading-spinner" />}
                                 {queryFields?.map((field, index) => {
                                     const { caption } = field;
                                     const fieldKey = field.getDisplayFieldKey();

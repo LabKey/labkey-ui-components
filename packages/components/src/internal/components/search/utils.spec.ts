@@ -12,7 +12,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
 
-import { JsonType, TEXT_TYPE } from '../domainproperties/PropDescType';
+import { TEXT_TYPE } from '../domainproperties/PropDescType';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
@@ -29,7 +29,8 @@ import {
     getFilterValuesAsArray,
     getFinderStartText,
     getFinderViewColumnsConfig,
-    getLabKeySqlWhere, getSampleFinderColumnNames,
+    getLabKeySqlWhere,
+    getSampleFinderColumnNames,
     getSampleFinderCommonConfigs,
     getSampleFinderQueryConfigs,
     getUpdatedCheckedValues,

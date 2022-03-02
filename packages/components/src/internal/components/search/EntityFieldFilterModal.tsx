@@ -278,7 +278,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 {loadingError && <Alert>{loadingError}</Alert>}
                 {filterError && <Alert>{filterError}</Alert>}
                 <Row className="parent-search-panel__container">
-                    <Col xs={3} className="parent-search-panel__col parent-search-panel__col_queries">
+                    <Col xs={6} sm={3} className="parent-search-panel__col parent-search-panel__col_queries">
                         <div className="parent-search-panel__col-title">
                             {entityDataType.nounAsParentPlural ?? entityDataType.nounPlural}
                         </div>
@@ -307,7 +307,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                             })}
                         </div>
                     </Col>
-                    <Col xs={3} className="parent-search-panel__col parent-search-panel__col_fields">
+                    <Col xs={6} sm={3} className="parent-search-panel__col parent-search-panel__col_fields">
                         <div className="parent-search-panel__col-title">Fields</div>
                         {!activeQuery && (
                             <div className="parent-search-panel__empty-msg">
@@ -340,7 +340,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                             </div>
                         )}
                     </Col>
-                    <Col xs={6} className="parent-search-panel__col parent-search-panel__col_filter_exp">
+                    <Col xs={12} sm={6} className="parent-search-panel__col parent-search-panel__col_filter_exp">
                         <div className="parent-search-panel__col-title">Values</div>
                         {activeQuery && !activeField && (
                             <div className="parent-search-panel__empty-msg">Select a field.</div>

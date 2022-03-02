@@ -120,6 +120,7 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
     cards.forEach(card => {
         const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
 
+        requiredColumns.push(cardColumnName);
         if (card.filterArray?.length) {
             const schemaQuery = card.schemaQuery;
             card.filterArray.forEach(f => {
@@ -138,7 +139,6 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
                 baseFilters.push(filter);
             }
         } else {
-            requiredColumns.push(cardColumnName);
             baseFilters.push(Filter.create(cardColumnName + '/Name', null, Filter.Types.NONBLANK));
         }
     });

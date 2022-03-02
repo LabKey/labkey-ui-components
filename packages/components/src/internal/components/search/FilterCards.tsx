@@ -43,13 +43,15 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
             </>
         );
     }
+
+    const dataTypeName = dataTypeDisplayName ?? schemaQuery.queryName;
     return (
         <>
             <div className="filter-cards__card">
                 <div className={'filter-card__header ' + entityDataType.filterCardHeaderClass}>
                     <div className="pull-left">
                         <div className="secondary-text">{capitalizeFirstChar(entityDataType.nounAsParentSingular)}</div>
-                        <div className="primary-text">{dataTypeDisplayName}</div>
+                        <div className="primary-text">{dataTypeName}</div>
                     </div>
                     <div className="pull-right actions">
                         {onEdit && <i className="fa fa-pencil action-icon" onClick={_onEdit} title="Edit filter" />}
@@ -63,7 +65,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                         <>
                             <hr />
                             <div>
-                                Showing all samples with {dataTypeDisplayName}{' '}
+                                Showing all samples with {dataTypeName}{' '}
                                 {entityDataType.nounAsParentSingular.toLowerCase()}s
                             </div>
                         </>

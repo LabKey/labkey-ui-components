@@ -53,8 +53,9 @@ export interface IDatasetModel {
     description?: string;
     dataSharing?: string;
     definitionIsShared?: boolean;
-    sourceAssayName?: string;
-    sourceAssayUrl?: string;
+    sourceName?: string;
+    sourceUrl?: string;
+    sourceType?: string;
     useTimeKeyField?: boolean;
 }
 
@@ -79,8 +80,9 @@ export class DatasetModel implements IDatasetModel {
     readonly description?: string;
     readonly dataSharing?: string;
     readonly definitionIsShared?: boolean;
-    readonly sourceAssayName?: string;
-    readonly sourceAssayUrl?: string;
+    readonly sourceName?: string;
+    readonly sourceUrl?: string;
+    readonly sourceType?: string;
     readonly useTimeKeyField?: boolean;
 
     constructor(datasetModel: IDatasetModel) {
@@ -95,8 +97,8 @@ export class DatasetModel implements IDatasetModel {
             const domain = DomainDesign.create(raw.domainDesign);
             let model = new DatasetModel({ ...raw.options, domain });
 
-            // if the dataset is from an assay source, disable/lock the fields
-            if (model.isFromAssay()) {
+            // if the dataset is from a linked source, disable/lock the fields
+            if (model.isFromLinkedSource()) {
                 const newDomain = domain.merge({
                     fields: domain.fields
                         .map((field: DomainField) => {
@@ -186,7 +188,7 @@ export class DatasetModel implements IDatasetModel {
         return this.hasValidProperties() && !this.domain.hasInvalidFields();
     }
 
-    isFromAssay(): boolean {
-        return this.sourceAssayName !== undefined && this.sourceAssayName !== null;
+    isFromLinkedSource(): boolean {
+        return this.sourceName !== undefined && this.sourceName !== null;
     }
 }

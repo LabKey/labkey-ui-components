@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Sample Finder Polishing
   * Add `containerFilter` property to `EntityDataType` model
   * Assure grid is updated after sample actions are taken
+  * Update grid columns to always show parent id columns and add parent type name to column name
 
 ### version 2.138.0
 *Released*: 28 February 2022

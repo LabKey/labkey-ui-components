@@ -54,6 +54,15 @@
 .parent-search-panel__container {
     min-width: 500px;
 
+    .list-group-item {
+        padding: 8px 10px;
+        border-radius: 0;
+    }
+
+    .list-group-item.active {
+        font-weight: bold;
+    }
+
     .field_count_circle {
         border-radius: 50%;
         text-align: center;
@@ -193,6 +202,7 @@
         margin: 3px 0;
         padding: 0 6px 0 20px;
         word-break: break-all;
+        color: $gray;
 
         &:hover {
             white-space: normal;
@@ -225,6 +235,7 @@
     margin-left: 20px;
     padding-right: 5px;
     word-break: break-all;
+    color: $gray;
 
     &:hover {
         color: $gray-light;

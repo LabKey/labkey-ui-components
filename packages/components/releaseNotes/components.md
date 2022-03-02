@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 9817: Sample Finder v1 polish fixes/updates
   * Add padding to loading spinner
   * Choose Values panel fix for long text options and empty state
+  * Filter modal styling fixes for list group: remove rounded corner, reduce padding, bold when active
 
 ### version 2.138.1
 *Released*: 1 March 2022

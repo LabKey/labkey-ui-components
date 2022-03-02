@@ -38,12 +38,14 @@ export function getEventDataValueDisplay(d: any, showLink = true): ReactNode {
             }
 
             if (showLink) {
-                if (d.get('url')) {
-                    display = React.createElement('a', { href: d.get('url') }, display);
-                } else {
-                    const url = getTimelineEntityUrl(d.toJS());
-                    if (url) {
-                        display = React.createElement('a', { href: url.toHref() }, display);
+                if (!d.get('hideLink')) {
+                    if (d.get('url')) {
+                        display = React.createElement('a', { href: d.get('url') }, display);
+                    } else {
+                        const url = getTimelineEntityUrl(d.toJS());
+                        if (url) {
+                            display = React.createElement('a', { href: url.toHref() }, display);
+                        }
                     }
                 }
             }

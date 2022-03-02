@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.138.2
+*Released*: 2 March 2022
+* Container: add isFolder, isProject, isRoot, and isSharedProject
+
 ### version 2.138.1
 *Released*: 1 March 2022
 * Item 44544: Sample type dataset definitions should be locked similar to assays

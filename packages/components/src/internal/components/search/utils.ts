@@ -189,10 +189,12 @@ export function getSampleFinderColumnNames(cards: FilterProps[]): {[key: string]
     const columnNames = {};
     cards?.forEach(card => {
         const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
-        columnNames[cardColumnName] = card.dataTypeDisplayName + " ID";
-        card.filterArray.forEach(filter => {
-            columnNames[cardColumnName + "/" + filter.fieldKey] = card.dataTypeDisplayName + " " + filter.fieldCaption
-        })
+        if (card.dataTypeDisplayName) {
+            columnNames[cardColumnName] = card.dataTypeDisplayName + " ID";
+            card.filterArray?.forEach(filter => {
+                columnNames[cardColumnName + "/" + filter.fieldKey] = card.dataTypeDisplayName + " " + filter.fieldCaption
+            });
+        }
     });
     return columnNames;
 }

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX 2022
+* Item 9748: Shared freezers across containers
+    * Hide 'Create a freezer' link for sub folders
+
 ### version 2.138.0
 *Released*: 28 February 2022
 * Item 10056: Sample Finder v1 - Wire up new lineage filters

@@ -235,6 +235,10 @@ export function getStorageSectionConfig(
     maxItemsPerColumn: number
 ): MenuSectionConfig {
     if (isFreezerManagementEnabled(moduleContext)) {
+
+        // freezer creation not supported in sub folders
+        const isSubfolder = getServerContext().container.path.split('/').filter(p => !!p).length > 1
+
         const fmAppBase = getApplicationUrlBase(
             FREEZER_MANAGER_APP_PROPERTIES.moduleName,
             currentProductId,
@@ -248,7 +252,7 @@ export function getStorageSectionConfig(
             seeAllURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),
             headerURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),
         });
-        if (userCanDesignLocations(user)) {
+        if (userCanDesignLocations(user) && !isSubfolder) {
             locationsMenuConfig = locationsMenuConfig.merge({
                 emptyURL: fmAppBase + AppURL.create(FREEZERS_KEY, 'new').toHref(),
                 emptyURLText: 'Create a freezer',

@@ -30,6 +30,7 @@ describe('FilterCard', () => {
     test('empty filters', () => {
         const wrapper = mount(
             <FilterCard
+                dataTypeDisplayName="Parent"
                 entityDataType={TestTypeDataType}
                 schemaQuery={SchemaQuery.create('testSample', 'parent')}
                 filterArray={[]}
@@ -42,14 +43,14 @@ describe('FilterCard', () => {
         expect(header.prop('className').indexOf('without-secondary')).toBe(-1);
         expect(header.prop('className')).toContain(TestTypeDataType.filterCardHeaderClass);
         expect(header.find('.secondary-text').text()).toBe(capParentNoun);
-        expect(header.find('.primary-text').text()).toBe('parent');
+        expect(header.find('.primary-text').text()).toBe('Parent');
         expect(header.find('.fa-pencil').exists()).toBeTruthy();
         expect(header.find('.fa-trash').exists()).toBeTruthy();
 
         expect(wrapper.find('.filter-card__empty-content').exists()).toBeFalsy();
         const content = wrapper.find('.filter-card__card-content');
         expect(content.exists()).toBeTruthy();
-        expect(content.text().trim()).toBe('Showing all samples with parent test parents');
+        expect(content.text().trim()).toBe('Showing all samples with Parent test parents');
         wrapper.unmount();
     });
 

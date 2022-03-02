@@ -29,7 +29,7 @@ interface Props {
     api?: ComponentsAPIWrapper;
     entityDataType: EntityDataType;
     onCancel: () => void;
-    onFind: (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }) => void;
+    onFind: (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }, queryLabels: { [key: string]: string }) => void;
     queryName?: string;
     fieldKey?: string;
     cards?: FilterProps[];
@@ -199,7 +199,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         });
         const filterErrors = getFieldFiltersValidationResult(validDataTypeFilters, queryLabels);
         if (!filterErrors) {
-            onFind(entityDataType.instanceSchemaName, validDataTypeFilters);
+            onFind(entityDataType.instanceSchemaName, validDataTypeFilters, queryLabels);
         } else {
             setFilterError(filterErrors);
             api.query.incrementClientSideMetricCount(metricFeatureArea, 'filterModalError');
@@ -264,10 +264,6 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
         return filters;
     }, [dataTypeFilters, activeQuery, activeField, activeFieldKey]);
-
-    // TODO when populating types, adjust container filter to include the proper set of sample types
-    //  (current + project + shared, in most cases).  For LKB, check if we should filter out any of the
-    //  registry data types or the media types.
 
     return (
         <Modal show bsSize="lg" onHide={closeModal}>

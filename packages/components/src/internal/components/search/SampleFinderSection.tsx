@@ -46,7 +46,7 @@ import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 import { FieldFilter, FilterProps } from './models';
 
 const SAMPLE_FINDER_TITLE = 'Find Samples';
-const SAMPLE_FINDER_CAPTION = 'Find samples that meet all the criteria defined below';
+const SAMPLE_FINDER_CAPTION = 'Find all generations of samples that meet all the criteria defined below';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: {[key: string]: string}
@@ -353,19 +353,14 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
     if (!queryConfigs) return <LoadingSpinner />;
 
     return (
-        <>
-            <div className={"bottom-spacing filter-results__message"}>
-                Showing all generations of samples for the criteria given above.
-            </div>
-            <SampleFinderSamplesWithQueryModels
-                columnDisplayNames={getSampleFinderColumnNames(cards)}
-                sampleTypeNames={sampleTypeNames}
-                key={selectionKeyPrefix}
-                user={user}
-                {...gridProps}
-                autoLoad
-                queryConfigs={queryConfigs}
-            />
-        </>
+        <SampleFinderSamplesWithQueryModels
+            columnDisplayNames={getSampleFinderColumnNames(cards)}
+            sampleTypeNames={sampleTypeNames}
+            key={selectionKeyPrefix}
+            user={user}
+            {...gridProps}
+            autoLoad
+            queryConfigs={queryConfigs}
+        />
     );
 });

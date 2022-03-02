@@ -32,7 +32,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
     if (!schemaQuery) {
         return (
             <>
-                <div className="filter-cards__card" onClick={_onAdd}>
+                <div className="filter-cards__card filter-cards__popout" onClick={_onAdd}>
                     <div className={'filter-card__header without-secondary ' + entityDataType.filterCardHeaderClass}>
                         <div className="primary-text">
                             {capitalizeFirstChar(entityDataType.nounAsParentSingular)} Properties

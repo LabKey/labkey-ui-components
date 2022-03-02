@@ -288,7 +288,6 @@ export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCoun
                 entityDataFilterArrayObjs.push(filterToJson(filter));
             });
 
-            console.log(JSON.stringify(entityDataFilterArrayObjs));
             filterPropObj.entityDataType.filterArray = entityDataFilterArrayObjs;
         }
 

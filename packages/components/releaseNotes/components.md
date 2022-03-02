@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add padding to loading spinner
   * Choose Values panel fix for long text options and empty state
   * Filter modal styling fixes for list group: remove rounded corner, reduce padding, bold when active
+  * Update cursor behavior and hover behavior on filter cards and edit/remove icons
 
 ### version 2.138.2
 *Released*: 2 March 2022

@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, {FC, PureComponent} from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
 import { Filter, PermissionTypes, Query } from '@labkey/api';
 
 import {
     Alert,
+    App,
     AppURL,
     AssayDesignEmptyAlert,
     getActionErrorMessage,
@@ -20,7 +21,7 @@ import {
     User,
 } from '../../..';
 
-import { getDateFormat } from '../../app/utils';
+import { getDateFormat, isSampleFinderEnabled } from '../../app/utils';
 
 import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 
@@ -250,21 +251,34 @@ export class BarChartViewer extends PureComponent<Props, State> {
                         </Tip>
                     </div>
                 )}
-                {!hasError && hasSectionItems && !!selectedGroup.createURL && !!selectedGroup.createText && (
-                    <RequiresPermission perms={PermissionTypes.Insert}>
-                        <div className="pull-right">
-                            <Button
-                                bsStyle="primary"
-                                className="button-right-spacing"
-                                href={selectedGroup.createURL().toHref()}
-                            >
-                                {selectedGroup.createText}
-                            </Button>
-                        </div>
-                    </RequiresPermission>
-                )}
+                {!hasError && hasSectionItems && selectedGroup.showSampleButtons && <SampleButtons />}
                 <div className="margin-top">{body}</div>
             </Section>
         );
     }
 }
+
+const SampleButtons: FC = () => {
+    return (
+        <RequiresPermission perms={PermissionTypes.Insert}>
+            <div className="pull-right bar-chart-viewer-sample-buttons">
+                {isSampleFinderEnabled() && (
+                    <Button
+                        bsStyle="primary"
+                        className="button-right-spacing"
+                        href={App.FIND_SAMPLES_BY_FILTER_HREF.toHref()}
+                    >
+                        Go to Sample Finder
+                    </Button>
+                )}
+                <Button
+                    bsStyle="success"
+                    className="button-right-spacing"
+                    href={App.NEW_SAMPLES_HREF.toHref()}
+                >
+                    Create Samples
+                </Button>
+            </div>
+        </RequiresPermission>
+    );
+};

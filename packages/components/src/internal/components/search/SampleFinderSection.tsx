@@ -45,7 +45,7 @@ import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 import { FieldFilter, FilterProps } from './models';
 
-const SAMPLE_FINDER_TITLE = 'Find Samples';
+const SAMPLE_FINDER_TITLE = 'Sample Finder';
 const SAMPLE_FINDER_CAPTION = 'Find all generations of samples that meet all the criteria defined below';
 
 interface SampleFinderSamplesGridProps {

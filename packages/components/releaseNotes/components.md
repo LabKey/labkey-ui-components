@@ -19,6 +19,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Added getLabKeySqlWhere util
   * Added InExpAncestorsOfFilterType and InExpDescendantsOfFilterType
   * Enable non-text fields for EntityFieldFilterModal (Sample Finder)
+  * Add "showing all generations" message
 
 ### version 2.137.3
 *Released*: 24 February 2022

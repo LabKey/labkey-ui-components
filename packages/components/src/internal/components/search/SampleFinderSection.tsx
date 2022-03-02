@@ -352,14 +352,17 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
     if (!queryConfigs) return <LoadingSpinner />;
 
     return (
-        <SampleFinderSamplesWithQueryModels
-            columnDisplayNames={getSampleFinderColumnNames(cards)}
-            sampleTypeNames={sampleTypeNames}
-            key={selectionKeyPrefix}
-            user={user}
-            {...gridProps}
-            autoLoad
-            queryConfigs={queryConfigs}
-        />
+        <>
+            <div className={"bottom-spacing filter-results__message"}>Showing all generations of samples for the criteria given above.</div>
+            <SampleFinderSamplesWithQueryModels
+                columnDisplayNames={getSampleFinderColumnNames(cards)}
+                sampleTypeNames={sampleTypeNames}
+                key={selectionKeyPrefix}
+                user={user}
+                {...gridProps}
+                autoLoad
+                queryConfigs={queryConfigs}
+            />
+        </>
     );
 });

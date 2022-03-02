@@ -10,6 +10,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Update cursor behavior and hover behavior on filter cards and edit/remove icons
   * Filter modal updates to better support display on narrow screen
 
+### version 2.138.3
+*Released*: 2 March 2022
+* Sample Finder Polishing
+  * Add `containerFilter` property to `EntityDataType` model
+  * Assure grid is updated after sample actions are taken
+  * Update grid columns to always show parent id columns and add parent type name to column name
+
 ### version 2.138.2
 *Released*: 2 March 2022
 * Container: add isFolder, isProject, isRoot, and isSharedProject

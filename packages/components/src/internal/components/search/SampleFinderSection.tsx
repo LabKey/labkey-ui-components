@@ -35,6 +35,7 @@ import { FilterCards } from './FilterCards';
 import {
     getFinderStartText,
     getFinderViewColumnsConfig,
+    getSampleFinderColumnNames,
     getSampleFinderQueryConfigs,
     SAMPLE_FILTER_METRIC_AREA,
     searchFiltersFromJson,
@@ -45,9 +46,10 @@ import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 import { FieldFilter, FilterProps } from './models';
 
 const SAMPLE_FINDER_TITLE = 'Find Samples';
-const SAMPLE_FINDER_CAPTION = 'Find samples that meet all the criteria defined below';
+const SAMPLE_FINDER_CAPTION = 'Find all generations of samples that meet all the criteria defined below';
 
 interface SampleFinderSamplesGridProps {
+    columnDisplayNames?: {[key: string]: string}
     user: User;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
@@ -164,7 +166,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     };
 
     const onFind = useCallback(
-        (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }) => {
+        (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] },  queryLabels: { [key: string]: string }) => {
             const newFilterCards = [...filters].filter(filter => {
                 return filter.entityDataType.instanceSchemaName !== chosenEntityType.instanceSchemaName;
             });
@@ -173,6 +175,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     schemaQuery: SchemaQuery.create(schemaName, queryName),
                     filterArray: dataTypeFilters[queryName],
                     entityDataType: chosenEntityType,
+                    dataTypeDisplayName: queryLabels[queryName],
                 });
             });
 
@@ -247,7 +250,7 @@ interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
 }
 
 export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryModels> = memo(props => {
-    const { actions, queryModels, gridButtons, excludedCreateMenuKeys } = props;
+    const { actions, columnDisplayNames, queryModels, gridButtons, excludedCreateMenuKeys } = props;
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -255,7 +258,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
         if (allModelsLoaded && isLoading) {
             const promises = [];
             Object.values(queryModels).forEach(queryModel => {
-                const { hasUpdates, columns } = getFinderViewColumnsConfig(queryModel);
+                const { hasUpdates, columns } = getFinderViewColumnsConfig(queryModel, columnDisplayNames);
                 if (hasUpdates) {
                     promises.push(saveFinderGridView(queryModel.schemaQuery, columns));
                 }
@@ -291,6 +294,10 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
         };
     }, []);
 
+    const afterSampleActionComplete = useCallback((): void => {
+        actions.loadAllModels();
+    }, [actions]);
+
     if (isLoading) return <LoadingSpinner />;
 
     return (
@@ -298,6 +305,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
             <SamplesTabbedGridPanel
                 {...props}
                 withTitle={false}
+                afterSampleActionComplete={afterSampleActionComplete}
                 asPanel={false}
                 actions={actions}
                 queryModels={queryModels}
@@ -346,6 +354,7 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
 
     return (
         <SampleFinderSamplesWithQueryModels
+            columnDisplayNames={getSampleFinderColumnNames(cards)}
             sampleTypeNames={sampleTypeNames}
             key={selectionKeyPrefix}
             user={user}

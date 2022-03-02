@@ -30,6 +30,7 @@ import {
     getFinderStartText,
     getFinderViewColumnsConfig,
     getLabKeySqlWhere,
+    getSampleFinderColumnNames,
     getSampleFinderCommonConfigs,
     getSampleFinderQueryConfigs,
     getUpdatedCheckedValues,
@@ -40,6 +41,7 @@ import {
     searchFiltersToJson,
 } from './utils';
 import { FieldFilter } from './models';
+import { SampleTypeDataType } from '../entities/constants';
 
 test('getFinderStartText', () => {
     expect(getFinderStartText([])).toBe('Start by adding  properties.');
@@ -99,25 +101,25 @@ describe('getFinderViewColumnsConfig', () => {
         'test-samples'
     );
     test('no required columns', () => {
-        expect(getFinderViewColumnsConfig(model)).toStrictEqual({
+        expect(getFinderViewColumnsConfig(model, {})).toStrictEqual({
             hasUpdates: false,
-            columns: [{ fieldKey: 'Name' }],
+            columns: [{ fieldKey: 'Name', title: undefined }],
         });
     });
 
     test('no new required columns', () => {
         const modelUpdate = model.mutate({ requiredColumns: ['Name'] });
-        expect(getFinderViewColumnsConfig(modelUpdate)).toStrictEqual({
+        expect(getFinderViewColumnsConfig(modelUpdate, {})).toStrictEqual({
             hasUpdates: false,
-            columns: [{ fieldKey: 'Name' }],
+            columns: [{ fieldKey: 'Name', title: undefined }],
         });
     });
 
     test('with new required columns', () => {
         const modelUpdate = model.mutate({ requiredColumns: ['Name', 'ExtraField', 'SampleState'] });
-        expect(getFinderViewColumnsConfig(modelUpdate)).toStrictEqual({
+        expect(getFinderViewColumnsConfig(modelUpdate, {ExtraField: 'Extra Field Display'})).toStrictEqual({
             hasUpdates: true,
-            columns: [{ fieldKey: 'Name' }, { fieldKey: 'ExtraField' }],
+            columns: [{ fieldKey: 'Name', title: undefined }, { fieldKey: 'ExtraField', title: 'Extra Field Display' }],
         });
     });
 });
@@ -176,6 +178,7 @@ describe('getSampleFinderCommonConfigs', () => {
             requiredColumns: [
                 ...SAMPLE_STATUS_REQUIRED_COLUMNS,
                 'QueryableInputs/Materials/TestQuery',
+                'QueryableInputs/Materials/TestQuery2',
                 'QueryableInputs/Materials/TestQuery2/TestColumn',
             ],
         });
@@ -808,11 +811,11 @@ describe('getUpdatedChooseValuesFilter', () => {
 
 const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/PST
 const testDate = new Date(datePOSIX);
-const dateStr = formatDate(testDate, 'America/PST', 'YYYY-MM-dd');
+const dateStr = formatDate(testDate, 'America/Los_Angeles', 'YYYY-MM-dd');
 
 const date2POSIX = 1597182283812; // Aug 11, 2020 14:44 America/PST
 const testDate2 = new Date(date2POSIX);
-const dateStr2 = formatDate(testDate2, 'America/PST', 'YYYY-MM-dd');
+const dateStr2 = formatDate(testDate2, 'America/Los_Angeles', 'YYYY-MM-dd');
 
 const isBlankFilter = {
     fieldKey: 'String Field',
@@ -956,4 +959,56 @@ describe('getExpDescendantOfSelectClause', () => {
             'SELECT "Sample Type A".expObject() FROM Test."Sample Type A" WHERE "intField" = 1 AND "Boolean Field" = TRUE'
         );
     });
+});
+
+describe("getSampleFinderColumnNames", () => {
+
+   test("no cards", () => {
+       expect(getSampleFinderColumnNames(undefined)).toStrictEqual({});
+   });
+
+   test("empty cards", () => {
+      expect(getSampleFinderColumnNames([])).toStrictEqual({});
+   });
+
+   test("cards without dataTypeDisplayName", () => {
+       expect(getSampleFinderColumnNames([{
+           entityDataType: SampleTypeDataType,
+           schemaQuery: SchemaQuery.create("test", "query"),
+           filterArray: [{
+               fieldKey: "IntValue",
+               fieldCaption: "Integer",
+               filter: Filter.create("IntValue", 3, Filter.Types.GT),
+               jsonType: 'int'
+           }],
+       }])).toStrictEqual({});
+   });
+
+   test("cards without filters", () => {
+       expect(getSampleFinderColumnNames([{
+           entityDataType: SampleTypeDataType,
+           schemaQuery: SchemaQuery.create("test", "query"),
+           dataTypeDisplayName: "Test Samples",
+           filterArray: [],
+       }])).toStrictEqual({
+           'QueryableInputs/Materials/query': 'Test Samples ID',
+       });
+   });
+
+   test("cards with filters", () => {
+       expect(getSampleFinderColumnNames([{
+           entityDataType: SampleTypeDataType,
+           schemaQuery: SchemaQuery.create("test", "query"),
+           dataTypeDisplayName: "Test Samples",
+           filterArray: [{
+               fieldKey: "IntValue",
+               fieldCaption: "Integer",
+               filter: Filter.create("IntValue", 3, Filter.Types.GT),
+               jsonType: 'int'
+           }],
+       }])).toStrictEqual({
+           'QueryableInputs/Materials/query': 'Test Samples ID',
+           'QueryableInputs/Materials/query/IntValue': 'Test Samples Integer'
+       });
+   });
 });

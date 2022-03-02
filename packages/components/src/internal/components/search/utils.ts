@@ -38,7 +38,7 @@ export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQu
 
 const FIRST_COLUMNS_IN_VIEW = ['Name', 'SampleSet'];
 
-export function getFinderViewColumnsConfig(queryModel: QueryModel): { hasUpdates: boolean; columns: any } {
+export function getFinderViewColumnsConfig(queryModel: QueryModel, columnDisplayNames: {[key: string]: string}): { hasUpdates: boolean; columns: any } {
     const defaultDisplayColumns = queryModel.queryInfo?.getDisplayColumns().toArray();
     const displayColumnKeys = defaultDisplayColumns.map(col => col.fieldKey);
     const columnKeys = [];
@@ -59,7 +59,7 @@ export function getFinderViewColumnsConfig(queryModel: QueryModel): { hasUpdates
             .filter(col => FIRST_COLUMNS_IN_VIEW.indexOf(col.fieldKey) === -1)
             .map(col => col.fieldKey)
     );
-    return { hasUpdates, columns: columnKeys.map(fieldKey => ({ fieldKey })) };
+    return { hasUpdates, columns: columnKeys.map(fieldKey => ({ fieldKey, title: columnDisplayNames[fieldKey] })) };
 }
 
 export const SAMPLE_FINDER_VIEW_NAME = 'Sample Finder';
@@ -120,6 +120,7 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
     cards.forEach(card => {
         const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
 
+        requiredColumns.push(cardColumnName);
         if (card.filterArray?.length) {
             const schemaQuery = card.schemaQuery;
             card.filterArray.forEach(f => {
@@ -138,7 +139,6 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
                 baseFilters.push(filter);
             }
         } else {
-            requiredColumns.push(cardColumnName);
             baseFilters.push(Filter.create(cardColumnName + '/Name', null, Filter.Types.NONBLANK));
         }
     });
@@ -183,6 +183,20 @@ export function getSampleFinderQueryConfigs(
         };
     }
     return configs;
+}
+
+export function getSampleFinderColumnNames(cards: FilterProps[]): {[key: string]: string } {
+    const columnNames = {};
+    cards?.forEach(card => {
+        const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
+        if (card.dataTypeDisplayName) {
+            columnNames[cardColumnName] = card.dataTypeDisplayName + " ID";
+            card.filterArray?.forEach(filter => {
+                columnNames[cardColumnName + "/" + filter.fieldKey] = card.dataTypeDisplayName + " " + filter.fieldCaption
+            });
+        }
+    });
+    return columnNames;
 }
 
 export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [

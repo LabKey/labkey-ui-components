@@ -15,7 +15,7 @@ interface FilterEditProps extends FilterProps {
 
 // exported for jest testing
 export const FilterCard: FC<FilterEditProps> = memo(props => {
-    const { entityDataType, filterArray, index, onAdd, onDelete, onEdit, schemaQuery, onFilterValueExpand } = props;
+    const { entityDataType, filterArray, index, onAdd, onDelete, onEdit, schemaQuery, onFilterValueExpand, dataTypeDisplayName } = props;
 
     const _onAdd = useCallback(() => {
         onAdd(entityDataType);
@@ -43,13 +43,15 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
             </>
         );
     }
+
+    const dataTypeName = dataTypeDisplayName ?? schemaQuery.queryName;
     return (
         <>
             <div className="filter-cards__card">
                 <div className={'filter-card__header ' + entityDataType.filterCardHeaderClass}>
                     <div className="pull-left">
                         <div className="secondary-text">{capitalizeFirstChar(entityDataType.nounAsParentSingular)}</div>
-                        <div className="primary-text">{schemaQuery.queryName}</div>
+                        <div className="primary-text">{dataTypeName}</div>
                     </div>
                     <div className="pull-right actions">
                         {onEdit && <i className="fa fa-pencil action-icon" onClick={_onEdit} title="Edit filter" />}
@@ -59,11 +61,11 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                     </div>
                 </div>
                 <div className="filter-card__card-content">
-                    {!filterArray?.length /* TODO: support finding by parent type without filters*/ && (
+                    {!filterArray?.length && (
                         <>
                             <hr />
                             <div>
-                                Showing all samples with {schemaQuery.queryName}{' '}
+                                Showing all samples with {dataTypeName}{' '}
                                 {entityDataType.nounAsParentSingular.toLowerCase()}s
                             </div>
                         </>
